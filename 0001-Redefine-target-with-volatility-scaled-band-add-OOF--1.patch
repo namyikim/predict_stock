@@ -1,0 +1,681 @@
+From dac01089cf8138aaac47280276f287aeebc3418f Mon Sep 17 00:00:00 2001
+From: Claude <claude@anthropic.com>
+Date: Fri, 4 Sep 2026 07:26:41 +0000
+Subject: [PATCH] Redefine target with volatility-scaled band, add OOF stacking
+ ensemble and Samsung-specific features
+
+- TARGET_MODE (close_to_close | open_to_close) and BAND_MODE (fixed | vol_scaled,
+  default 0.3 x 20-day vol, computed from d-1 data only) in the config cell
+- New features: SK Hynix, London Samsung GDR (SMSN.IL) and GDR-minus-Samsung
+  overnight signal, calendar dummies; open_to_close mode adds the 09:00 gap
+- New section 6.5: OOF stacking (multinomial logistic on log-probabilities),
+  trained on previous folds only, plus a mean-ensemble comparison and a
+  per-fold balanced-accuracy table
+- Live performance-weighted ensemble now uses full walk-forward OOF log loss
+  (min 250 days) instead of the ~60-day Kronos common window; adds Stacked
+  live forecast
+- Kronos uses the per-date band and the open price in open_to_close mode
+- Multi-horizon regression reports a zero-return baseline MAE and warns when
+  a model is worse than it
+- Fix failing test (price_close vs sam_close), compile every code cell, and
+  test the new leakage rules
+---
+ .gitignore                          |   2 +
+ README.md                           |  28 ++--
+ samsung_direction_model_colab.ipynb | 242 +++++++++++++++++++++++++---
+ tests/test_multihorizon_notebook.py |  74 ++++++---
+ 4 files changed, 290 insertions(+), 56 deletions(-)
+ create mode 100644 .gitignore
+
+diff --git a/.gitignore b/.gitignore
+new file mode 100644
+index 0000000..7a60b85
+--- /dev/null
++++ b/.gitignore
+@@ -0,0 +1,2 @@
++__pycache__/
++*.pyc
+diff --git a/README.md b/README.md
+index 5870ebf..3e6eba5 100644
+--- a/README.md
++++ b/README.md
+@@ -8,10 +8,10 @@
+ 
+ ## 주요 기능
+ 
+-- 다음 거래일의 삼성전자 종가 수익률을 `하락`, `보합`, `상승`으로 분류합니다.
+-  - 하락: 수익률 < -0.5%
+-  - 보합: -0.5% ≤ 수익률 ≤ +0.5%
+-  - 상승: 수익률 > +0.5%
++- 다음 거래일의 삼성전자 수익률을 `하락`, `보합`, `상승`으로 분류합니다.
++  - 하락: 수익률 < -band, 보합: -band ≤ 수익률 ≤ +band, 상승: 수익률 > +band
++  - `band`는 기본값으로 **최근 20일 일간 변동성 × 0.3**(변동성 스케일 밴드)이며, 고정 ±0.5%로 바꿀 수 있습니다. 변동성 국면과 무관하게 클래스 비율이 유지되어 모델이 변동성이 아니라 방향을 학습합니다.
++  - 타깃은 종가→종가(07:00 예측) 또는 시가→종가(09:00 시가 확정 후 예측) 중 선택합니다.
+ - 5거래일(약 1주일), 20거래일(약 1개월) 뒤의 예상 수익률과 종가를 계산합니다.
+ - 과거 데이터로 학습하고 이후 구간을 예측하는 워크포워드 방식으로 모델을 평가합니다.
+ - 방향 예측 확률, 중기 가격 예측, 검증 지표, 학습 모델과 재현 설정을 파일로 저장합니다.
+@@ -26,13 +26,14 @@
+ 3. LightGBM 분류기
+ 4. 30거래일 특징 시퀀스를 사용하는 소형 Transformer Encoder
+ 5. 금융 OHLCV 시계열 파운데이션 모델 [Kronos-small](https://github.com/shiyu-coder/Kronos)의 zero-shot 예측
+-6. 공통 평가 기간의 log loss를 기준으로 가중치를 정한 성과 가중 앙상블
++6. 전체 워크포워드 OOF log loss를 기준으로 가중치를 정한 성과 가중 앙상블
++7. 워크포워드 OOF 확률(로그)을 다항 로지스틱 메타모델로 결합한 **스태킹 앙상블** — 메타모델도 이전 폴드로만 학습해 다음 폴드를 예측하며, 비교용 단순 평균 앙상블과 함께 평가합니다.
+ 
+ 모델은 `accuracy`, `balanced_accuracy`, `macro_f1`, `log_loss`, `Brier score`로 비교합니다. Kronos는 실행 시간이 길어 일부 최근 날짜만 평가하므로, 모든 모델이 예측한 날짜의 교집합 성능과 각 모델의 전체 평가 구간 성능을 함께 제공합니다.
+ 
+ ### 1주일·1개월 가격 예측
+ 
+-Ridge와 LightGBM 회귀 모델이 각 예측 기간의 미래 수익률을 직접 학습합니다. `TimeSeriesSplit` 검증 MAE가 낮은 모델에 더 큰 가중치를 주어 예상 수익률과 종가를 계산합니다.
++Ridge와 LightGBM 회귀 모델이 각 예측 기간의 미래 수익률을 직접 학습합니다. `TimeSeriesSplit` 검증 MAE가 낮은 모델에 더 큰 가중치를 주어 예상 수익률과 종가를 계산합니다. 검증 MAE는 항상 **"수익률 0% 예측" 기준선**과 함께 보고되며, 기준선보다 나쁘면 경고합니다.
+ 
+ ## 사용 데이터
+ 
+@@ -40,9 +41,11 @@ Ridge와 LightGBM 회귀 모델이 각 예측 기간의 미래 수익률을 직
+ 
+ | 구분 | 데이터 |
+ | --- | --- |
+-| 한국 시장 | 삼성전자, KOSPI, KOSPI 200 |
++| 한국 시장 | 삼성전자, KOSPI, KOSPI 200, SK하이닉스 |
++| 해외 삼성 가격 | 런던 삼성전자 GDR(SMSN.IL) — 한국 장 마감 후 삼성전자 가격의 대리변수(야간 신호) |
+ | 미국 주식·지수 | 필라델피아 반도체 지수, Nasdaq, S&P 500, Micron, Nvidia, TSMC ADR, EWY |
+ | 거시·시장 변수 | 원/달러 환율, 달러 지수, VIX, 미국 10년물 금리, WTI |
++| 달력 변수 | 요일, 월말 여부 |
+ 
+ 삼성전자와 한국 시장의 과거 수익률·추세·변동성·거래량, 그리고 예측 시점에 확인할 수 있는 해외 시장·거시 변수로 특징을 구성합니다. 다운로드에 일시적으로 실패한 보조 자산은 제외하고 계속 진행하지만, 삼성전자 데이터가 없으면 실행을 중단합니다.
+ 
+@@ -73,7 +76,11 @@ Ridge와 LightGBM 회귀 모델이 각 예측 기간의 미래 수익률을 직
+ | 설정 | 기본값 | 설명 |
+ | --- | --- | --- |
+ | `START_DATE` | `2015-01-01` | 데이터 수집 시작일 |
+-| `NEUTRAL_BAND` | `0.005` | 보합으로 분류할 수익률 범위(±0.5%) |
++| `TARGET_MODE` | `close_to_close` | `close_to_close`(종가→종가) 또는 `open_to_close`(시가→종가) |
++| `BAND_MODE` | `vol_scaled` | `vol_scaled`(변동성 × `VOL_BAND_MULT`) 또는 `fixed`(±`NEUTRAL_BAND`) |
++| `VOL_BAND_MULT` | `0.3` | 변동성 스케일 밴드 배수 |
++| `NEUTRAL_BAND` | `0.005` | `fixed` 모드의 보합 범위(±0.5%) |
++| `LIVE_OPEN_PRICE` | `None` | `open_to_close` 모드에서 예측일 09:00 시가 |
+ | `QUICK_MODE` | `False` | 전체 워크포워드 폴드와 확장된 학습·평가 횟수로 실행 |
+ | `RUN_KRONOS` | `True` | Kronos-small 평가와 최신 예측 실행 여부 |
+ | `PREDICTION_DATE_OVERRIDE` | `None` | 한국 휴일 때문에 자동 계산된 예측일을 수정할 때 사용 |
+@@ -93,6 +100,7 @@ Ridge와 LightGBM 회귀 모델이 각 예측 기간의 미래 수익률을 직
+ | `multi_horizon_price_forecast.csv` | 1주일·1개월 예상 수익률과 종가 |
+ | `feature_list.csv` | 최종 학습에 사용한 특징 목록 |
+ | `config.json` | 실행 설정, 예측 기간, 검증 MAE와 앙상블 가중치 |
++| `stacking_meta_model.joblib` | 스태킹 메타모델 |
+ | `*.joblib`, `transformer_model.pt` | 학습한 회귀·분류 모델과 Transformer 가중치 |
+ 
+ ## 저장소 구조
+@@ -101,7 +109,7 @@ Ridge와 LightGBM 회귀 모델이 각 예측 기간의 미래 수익률을 직
+ predict_stock/
+ ├── samsung_direction_model_colab.ipynb  # 전체 분석·학습·예측 노트북
+ ├── tests/
+-│   └── test_multihorizon_notebook.py    # 중기 예측 셀의 구조와 문법 검증
++│   └── test_multihorizon_notebook.py    # 노트북 구조·누수 방지 규칙·문법 검증
+ └── README.md
+ ```
+ 
+@@ -113,7 +121,7 @@ predict_stock/
+ python -m unittest discover -s tests -v
+ ```
+ 
+-현재 테스트는 1주일·1개월 예측 기간, 미래 정보 누수 방지에 필요한 시계열 분할, 최종 보고서 열, 결과 저장 메타데이터, 예측 셀의 Python 문법을 확인합니다. 실제 모델 성능은 최신 데이터와 실행 환경에 따라 달라지므로 노트북의 워크포워드 결과를 직접 확인해야 합니다.
++현재 테스트는 모든 코드 셀의 Python 문법, 타깃·밴드 설정, 변동성 밴드가 전일 정보만 쓰는지, 스태킹이 이전 폴드로만 학습하는지, 앙상블 가중치가 전체 OOF 구간을 쓰는지, 중기 예측의 시계열 분할과 0% 기준선, 결과 저장 메타데이터를 확인합니다. 실제 모델 성능은 최신 데이터와 실행 환경에 따라 달라지므로 노트북의 워크포워드 결과를 직접 확인해야 합니다.
+ 
+ ## 주의사항
+ 
+diff --git a/samsung_direction_model_colab.ipynb b/samsung_direction_model_colab.ipynb
+index d0e0084..2b78073 100644
+--- a/samsung_direction_model_colab.ipynb
++++ b/samsung_direction_model_colab.ipynb
+@@ -11,9 +11,11 @@
+         "\n",
+         "이 노트북은 **Google Colab에서 위에서부터 순서대로 실행**하도록 만들었습니다. 삼성전자(005930)의 당일 종가가 전일 종가보다 얼마나 움직였는지를 다음 세 클래스로 예측합니다.\n",
+         "\n",
+-        "- **하락(0)**: 수익률 < -0.5%\n",
+-        "- **보합(1)**: -0.5% ≤ 수익률 ≤ +0.5%\n",
+-        "- **상승(2)**: 수익률 > +0.5%\n",
++        "- **하락(0)**: 수익률 < -band\n",
++        "- **보합(1)**: -band ≤ 수익률 ≤ +band\n",
++        "- **상승(2)**: 수익률 > +band\n",
++        "\n",
++        "`band`는 기본적으로 **최근 20일 변동성의 0.3배**(변동성 스케일 밴드)이며, 설정에서 고정 ±0.5%로 바꿀 수 있습니다. 타깃도 종가→종가 또는 시가→종가(장중 수익률) 중에서 고를 수 있습니다.\n",
+         "\n",
+         "동일한 시간 순서 검증에서 다음 방법을 비교합니다.\n",
+         "\n",
+@@ -22,6 +24,7 @@
+         "3. LightGBM\n",
+         "4. 직접 학습하는 작은 Transformer Encoder\n",
+         "5. 금융 OHLCV 전용 시계열 파운데이션 모델 **Kronos-small**(zero-shot)\n",
++        "6. 워크포워드 OOF 확률을 로지스틱 메타모델로 결합한 **스태킹 앙상블**\n",
+         "\n",
+         "> 중요: 주가 방향은 잡음이 매우 큰 문제입니다. 이 노트북은 투자수익을 보장하지 않으며, **어떤 모델이 동일 조건의 과거 외삽 검증에서 상대적으로 나았는지** 확인하기 위한 연구용 도구입니다.\n",
+         "\n",
+@@ -173,7 +176,22 @@
+       "source": [
+         "START_DATE = \"2015-01-01\"\n",
+         "END_DATE = None                 # None이면 현재까지\n",
+-        "NEUTRAL_BAND = 0.005            # ±0.5%\n",
++        "NEUTRAL_BAND = 0.005            # BAND_MODE=\"fixed\"일 때 ±0.5%\n",
++        "\n",
++        "# --- 타깃 정의 ---\n",
++        "# TARGET_MODE\n",
++        "#   \"close_to_close\": 전일 종가 대비 당일 종가 수익률 (07:00 예측)\n",
++        "#   \"open_to_close\" : 당일 시가 대비 당일 종가 수익률 (09:00 시가 확정 후 예측).\n",
++        "#                     해외시장 정보가 시가에 이미 반영된 부분이 제거되어 더 깨끗한 문제가 된다.\n",
++        "TARGET_MODE = \"close_to_close\"\n",
++        "# BAND_MODE\n",
++        "#   \"fixed\"     : ±NEUTRAL_BAND 고정\n",
++        "#   \"vol_scaled\": ±VOL_BAND_MULT × 최근 20일 일간수익률 표준편차(전일까지). 변동성 국면과 무관하게\n",
++        "#                 클래스 비율이 안정되어 모델이 \"변동성\"이 아니라 \"방향\"을 학습한다.\n",
++        "BAND_MODE = \"vol_scaled\"\n",
++        "VOL_BAND_MULT = 0.3\n",
++        "# open_to_close 모드에서 예측일 09:00 시가를 직접 입력한다. None이면 전일 종가(갭 0)로 대체하고 경고한다.\n",
++        "LIVE_OPEN_PRICE = None\n",
+         "\n",
+         "FIRST_TEST_DATE = \"2021-01-01\"\n",
+         "TEST_MONTHS = 6                 # 워크포워드 한 구간의 길이\n",
+@@ -203,6 +221,8 @@
+         "    \"Transformer epochs\": TRANSFORMER_EPOCHS,\n",
+         "    \"Kronos evaluation days\": KRONOS_EVAL_DAYS,\n",
+         "    \"Kronos Monte Carlo samples\": KRONOS_MC_SAMPLES,\n",
++        "    \"TARGET_MODE\": TARGET_MODE,\n",
++        "    \"BAND_MODE\": BAND_MODE,\n",
+         "})"
+       ]
+     },
+@@ -219,7 +239,9 @@
+         "\n",
+         "**예측일 오전 7시까지 사용할 신호**\n",
+         "\n",
+-        "- 삼성전자·KOSPI·KOSPI200의 과거 수익률, 추세, 변동성, 거래량\n",
++        "- 삼성전자·KOSPI·KOSPI200·SK하이닉스의 과거 수익률, 추세, 변동성, 거래량\n",
++        "- 런던 삼성전자 GDR(SMSN.IL): 한국 장 마감 후 거래되는 삼성전자 가격의 대리변수\n",
++        "- 요일, 월말 여부 등 달력 변수\n",
+         "- SOX, Nasdaq, S&P 500, Micron, Nvidia, TSMC ADR, EWY\n",
+         "- 원/달러, 달러지수, VIX, 미국 10년물 금리, WTI\n",
+         "\n",
+@@ -536,6 +558,8 @@
+         "    \"samsung\": \"005930.KS\",\n",
+         "    \"kospi\": \"^KS11\",\n",
+         "    \"kospi200\": \"^KS200\",\n",
++        "    \"sk_hynix\": \"000660.KS\",\n",
++        "    \"samsung_gdr\": \"SMSN.IL\",\n",
+         "    \"sox\": \"^SOX\",\n",
+         "    \"nasdaq\": \"^IXIC\",\n",
+         "    \"sp500\": \"^GSPC\",\n",
+@@ -724,7 +748,7 @@
+         "feat[\"sam_rsi14\"] = (rsi(sam_close, 14) / 100).reindex(all_dates).shift(1)\n",
+         "\n",
+         "# 한국시장: 같은 날짜의 종가는 오전 7시에 아직 없으므로 1거래일 지연.\n",
+-        "for name in [\"kospi\", \"kospi200\"]:\n",
++        "for name in [\"kospi\", \"kospi200\", \"sk_hynix\"]:\n",
+         "    frame = raw.get(name, pd.DataFrame())\n",
+         "    if not frame.empty and \"adj_close\" in frame:\n",
+         "        close = frame[\"adj_close\"]\n",
+@@ -735,7 +759,7 @@
+         "# 해외시장: 미국 세션 d의 정보는 한국 날짜 d+1 아침에 사용 가능하다고 보수적으로 정렬.\n",
+         "GLOBAL_ASSETS = [\n",
+         "    \"sox\", \"nasdaq\", \"sp500\", \"micron\", \"nvidia\", \"tsmc_adr\",\n",
+-        "    \"korea_etf\", \"usdkrw\", \"dxy\", \"vix\", \"us10y\", \"wti\",\n",
++        "    \"korea_etf\", \"usdkrw\", \"dxy\", \"vix\", \"us10y\", \"wti\", \"samsung_gdr\",\n",
+         "]\n",
+         "for name in GLOBAL_ASSETS:\n",
+         "    frame = raw.get(name, pd.DataFrame())\n",
+@@ -749,30 +773,66 @@
+         "            all_dates, rolling_zscore(close, 60), 1\n",
+         "        )\n",
+         "\n",
++        "# 런던 GDR 세션 d 수익률 - 삼성전자 세션 d 수익률: 한국 장 마감 이후의 삼성전자 가격 변화(야간 신호).\n",
++        "if \"samsung_gdr_ret_1\" in feat:\n",
++        "    feat[\"gdr_overnight_signal\"] = feat[\"samsung_gdr_ret_1\"] - feat[\"sam_ret_1\"]\n",
++        "\n",
++        "# 달력 변수: 예측일 자체의 속성이므로 shift가 필요 없다.\n",
++        "feat[\"cal_dow\"] = feat.index.dayofweek.astype(float)\n",
++        "feat[\"cal_is_monday\"] = (feat.index.dayofweek == 0).astype(float)\n",
++        "feat[\"cal_is_friday\"] = (feat.index.dayofweek == 4).astype(float)\n",
++        "feat[\"cal_month_end\"] = (feat.index.day >= 26).astype(float)\n",
++        "\n",
+         "# 발표 빈도가 다른 자료를 합칠 때 미래값으로 backfill하지 않는다.\n",
+         "feat = feat.replace([np.inf, -np.inf], np.nan).ffill(limit=5)\n",
+         "\n",
+-        "target_return = sam_close.pct_change().reindex(all_dates)\n",
++        "# 시가→종가 모드: 당일 시가는 09:00에 확정되므로 당일 갭을 특징으로 쓸 수 있다.\n",
++        "if TARGET_MODE == \"open_to_close\":\n",
++        "    feat[\"sam_gap_0\"] = sam_gap.reindex(all_dates)\n",
++        "\n",
++        "if TARGET_MODE == \"open_to_close\":\n",
++        "    target_return = (sam[\"close\"] / sam[\"open\"] - 1).reindex(all_dates)\n",
++        "elif TARGET_MODE == \"close_to_close\":\n",
++        "    target_return = sam_close.pct_change().reindex(all_dates)\n",
++        "else:\n",
++        "    raise ValueError(f\"Unknown TARGET_MODE: {TARGET_MODE}\")\n",
++        "\n",
++        "# 보합 밴드. vol_scaled는 전일까지의 20일 변동성만 사용하므로 예측 시점에 알 수 있는 값이다.\n",
++        "if BAND_MODE == \"vol_scaled\":\n",
++        "    band = (VOL_BAND_MULT * sam_ret.rolling(20).std()).reindex(all_dates).shift(1)\n",
++        "elif BAND_MODE == \"fixed\":\n",
++        "    band = pd.Series(NEUTRAL_BAND, index=all_dates, dtype=float)\n",
++        "else:\n",
++        "    raise ValueError(f\"Unknown BAND_MODE: {BAND_MODE}\")\n",
++        "feat[\"band\"] = band\n",
++        "\n",
+         "target = np.select(\n",
+-        "    [target_return < -NEUTRAL_BAND, target_return > NEUTRAL_BAND],\n",
++        "    [target_return < -band, target_return > band],\n",
+         "    [0, 2],\n",
+         "    default=1,\n",
+         ").astype(float)\n",
+-        "target[pd.isna(target_return)] = np.nan\n",
++        "target[pd.isna(target_return) | pd.isna(band)] = np.nan\n",
+         "\n",
+         "feat[\"target_return\"] = target_return\n",
+         "feat[\"target\"] = target\n",
+         "\n",
+         "# 결측이 지나치게 많은 특징은 제거한다.\n",
+-        "candidate_features = [c for c in feat.columns if c not in [\"target\", \"target_return\"]]\n",
++        "candidate_features = [c for c in feat.columns if c not in [\"target\", \"target_return\", \"band\"]]\n",
+         "coverage = feat.loc[sam.index, candidate_features].notna().mean()\n",
+         "feature_cols = coverage[coverage >= 0.80].index.tolist()\n",
+         "removed_features = coverage[coverage < 0.80].index.tolist()\n",
+         "\n",
+-        "model_df = feat.loc[sam.index, feature_cols + [\"target_return\", \"target\"]].dropna().copy()\n",
++        "model_df = feat.loc[sam.index, feature_cols + [\"band\", \"target_return\", \"target\"]].dropna().copy()\n",
+         "model_df[\"target\"] = model_df[\"target\"].astype(int)\n",
+         "\n",
+         "live_row = feat.loc[[prediction_date], feature_cols].copy()\n",
++        "live_band = float(feat.loc[prediction_date, \"band\"]) if pd.notna(feat.loc[prediction_date, \"band\"]) else float(model_df[\"band\"].iloc[-1])\n",
++        "if TARGET_MODE == \"open_to_close\":\n",
++        "    if LIVE_OPEN_PRICE is None:\n",
++        "        print(\"⚠️ LIVE_OPEN_PRICE가 없어 예측일 갭을 0으로 둡니다. 09:00 시가를 입력하면 정확도가 올라갑니다.\")\n",
++        "        live_row.loc[prediction_date, \"sam_gap_0\"] = 0.0\n",
++        "    else:\n",
++        "        live_row.loc[prediction_date, \"sam_gap_0\"] = float(LIVE_OPEN_PRICE) / float(sam[\"close\"].iloc[-1]) - 1\n",
+         "for col in feature_cols:\n",
+         "    if pd.isna(live_row.iloc[0][col]):\n",
+         "        live_row.loc[prediction_date, col] = model_df[col].iloc[-1]\n",
+@@ -782,6 +842,7 @@
+         "print(\"Removed low-coverage features:\", removed_features)\n",
+         "print(\"Backtest range:\", model_df.index.min().date(), \"~\", model_df.index.max().date())\n",
+         "print(\"Candidate prediction date:\", prediction_date.date())\n",
++        "print(\"Target mode:\", TARGET_MODE, \"| Band mode:\", BAND_MODE, \"| Live band: ±{:.2%}\".format(live_band))\n",
+         "\n",
+         "assert prediction_date > last_samsung_date\n",
+         "assert model_df.index.is_monotonic_increasing\n",
+@@ -905,9 +966,11 @@
+         "axes[0].set_title(\"Target class distribution\")\n",
+         "axes[0].set_xlabel(\"\")\n",
+         "model_df[\"target_return\"].clip(-0.08, 0.08).hist(bins=60, ax=axes[1], color=\"#4c78a8\")\n",
+-        "axes[1].axvline(-NEUTRAL_BAND, color=\"black\", ls=\"--\")\n",
+-        "axes[1].axvline(NEUTRAL_BAND, color=\"black\", ls=\"--\")\n",
+-        "axes[1].set_title(\"Samsung close-to-close return\")\n",
++        "median_band = float(model_df[\"band\"].median())\n",
++        "axes[1].axvline(-median_band, color=\"black\", ls=\"--\", label=f\"median band ±{median_band:.2%}\")\n",
++        "axes[1].axvline(median_band, color=\"black\", ls=\"--\")\n",
++        "axes[1].legend()\n",
++        "axes[1].set_title(f\"Samsung {TARGET_MODE} return\")\n",
+         "plt.tight_layout()\n",
+         "plt.show()\n"
+       ]
+@@ -1761,6 +1824,89 @@
+         "plt.show()\n"
+       ]
+     },
++    {
++      "cell_type": "markdown",
++      "metadata": {},
++      "source": [
++        "## 6.5 OOF 스태킹 앙상블\n",
++        "\n",
++        "워크포워드에서 나온 각 모델의 out-of-fold(OOF) 확률을 입력으로 다항 로지스틱 메타모델을 학습합니다. 메타모델도 시간 순서를 지켜 **이전 폴드들의 OOF로만 학습하고 다음 폴드를 예측**하므로 스태킹 자체가 미래 정보를 쓰지 않습니다. 로그확률을 입력으로 쓰기 때문에 메타모델은 각 기본모델의 과신/과소신을 보정(calibration)하는 역할도 겸합니다. 비교용으로 단순 평균 앙상블도 함께 계산합니다.\n"
++      ]
++    },
++    {
++      "cell_type": "code",
++      "metadata": {},
++      "execution_count": null,
++      "outputs": [],
++      "source": [
++        "STACK_BASE_MODELS = [\"Logistic\", \"LightGBM\", \"Transformer\"]\n",
++        "STACK_MIN_TRAIN_ROWS = 120\n",
++        "\n",
++        "\n",
++        "def stacking_matrix(frame, models):\n",
++        "    \"\"\"모델별 OOF 확률을 (date × [model×class]) 로그확률 행렬로 변환한다.\"\"\"\n",
++        "    wide = (\n",
++        "        frame[frame[\"model\"].isin(models)]\n",
++        "        .pivot_table(index=\"date\", columns=\"model\", values=PROB_COLS)\n",
++        "        .dropna()\n",
++        "    )\n",
++        "    cols = [(p, m) for m in models for p in PROB_COLS]\n",
++        "    Z = np.log(np.clip(wide[cols].to_numpy(dtype=float), 1e-6, 1.0))\n",
++        "    return pd.DatetimeIndex(wide.index), Z\n",
++        "\n",
++        "\n",
++        "def make_meta_model():\n",
++        "    return LogisticRegression(C=0.5, max_iter=3000, class_weight=\"balanced\", random_state=SEED)\n",
++        "\n",
++        "\n",
++        "oof_dates, oof_Z = stacking_matrix(predictions, STACK_BASE_MODELS)\n",
++        "oof_y = model_df.loc[oof_dates, \"target\"].to_numpy(dtype=int)\n",
++        "fold_by_date = (\n",
++        "    predictions[predictions[\"model\"] == \"Logistic\"].set_index(\"date\")[\"fold\"].reindex(oof_dates)\n",
++        ")\n",
++        "\n",
++        "stacked_rows = []\n",
++        "for fold in folds:\n",
++        "    fold_id = fold[\"fold\"]\n",
++        "    test_mask = (fold_by_date == fold_id).to_numpy()\n",
++        "    train_mask = (fold_by_date < fold_id).to_numpy()\n",
++        "    if train_mask.sum() < STACK_MIN_TRAIN_ROWS or test_mask.sum() == 0:\n",
++        "        continue\n",
++        "    meta = make_meta_model().fit(oof_Z[train_mask], oof_y[train_mask])\n",
++        "    p_meta = meta.predict_proba(oof_Z[test_mask])[:, np.argsort(meta.classes_)]\n",
++        "    stacked_rows.append(prediction_frame(\n",
++        "        \"Stacked\", oof_dates[test_mask], oof_y[test_mask], p_meta, fold_id\n",
++        "    ))\n",
++        "\n",
++        "    # 비교용: 세 모델 확률의 단순 평균\n",
++        "    p_mean = np.exp(oof_Z[test_mask]).reshape(test_mask.sum(), len(STACK_BASE_MODELS), 3).mean(axis=1)\n",
++        "    stacked_rows.append(prediction_frame(\n",
++        "        \"Mean ensemble\", oof_dates[test_mask], oof_y[test_mask], p_mean, fold_id\n",
++        "    ))\n",
++        "\n",
++        "if stacked_rows:\n",
++        "    stacked_predictions = pd.concat(stacked_rows, ignore_index=True)\n",
++        "    predictions = pd.concat([predictions, stacked_predictions], ignore_index=True)\n",
++        "    print(f\"Stacked OOF rows: {int((stacked_predictions['model'] == 'Stacked').sum())} \"\n",
++        "          f\"(첫 폴드는 메타모델 학습 데이터가 없어 제외)\")\n",
++        "    display(summarize_predictions(predictions).style.format(\"{:.4f}\"))\n",
++        "else:\n",
++        "    print(\"⚠️ 스태킹에 필요한 폴드가 부족합니다. QUICK_MODE=False로 폴드를 늘리세요.\")\n",
++        "\n",
++        "# 최신 예측용: 전체 OOF로 메타모델을 한 번 더 학습한다.\n",
++        "stack_meta_full = make_meta_model().fit(oof_Z, oof_y) if len(oof_y) >= STACK_MIN_TRAIN_ROWS else None\n",
++        "\n",
++        "# 폴드별 성능: 우위가 여러 구간에서 반복되는지 확인\n",
++        "fold_table = (\n",
++        "    predictions[predictions[\"model\"].isin([\"Always flat\", *STACK_BASE_MODELS, \"Mean ensemble\", \"Stacked\"])]\n",
++        "    .groupby([\"fold\", \"model\"])\n",
++        "    .apply(lambda g: pd.Series(metric_row(g)))\n",
++        "    .reset_index()\n",
++        "    .pivot(index=\"fold\", columns=\"model\", values=\"balanced_accuracy\")\n",
++        ")\n",
++        "display(fold_table.style.format(\"{:.3f}\").set_caption(\"Balanced accuracy by walk-forward fold\"))\n"
++      ]
++    },
+     {
+       "cell_type": "markdown",
+       "id": "F3YZMkCROFlJ",
+@@ -2996,12 +3142,26 @@
+         "    if len(hist) < 100:\n",
+         "        raise ValueError(\"Kronos context is too short\")\n",
+         "\n",
++        "    # 날짜별 보합 밴드 (vol_scaled면 전일까지의 변동성으로 계산된 값).\n",
++        "    if target_date in model_df.index:\n",
++        "        band_value = float(model_df.loc[target_date, \"band\"])\n",
++        "    else:\n",
++        "        band_value = live_band\n",
++        "\n",
+         "    x_df = hist[[\"open\", \"high\", \"low\", \"close\", \"volume\"]].copy()\n",
+         "    x_df.columns = [\"open\", \"high\", \"low\", \"close\", \"volume\"]\n",
+         "    x_df[\"volume\"] = x_df[\"volume\"].fillna(0).clip(lower=0)\n",
+         "    x_timestamp = pd.Series(hist.index)\n",
+         "    y_timestamp = pd.Series([target_date])\n",
+         "    previous_close = float(hist[\"close\"].iloc[-1])\n",
++        "    # open_to_close 모드에서는 당일 시가(09:00 확정) 대비 수익률로 환산한다.\n",
++        "    if TARGET_MODE == \"open_to_close\":\n",
++        "        if target_date in sam.index:\n",
++        "            reference_price = float(sam.loc[target_date, \"open\"])\n",
++        "        else:\n",
++        "            reference_price = float(LIVE_OPEN_PRICE) if LIVE_OPEN_PRICE is not None else previous_close\n",
++        "    else:\n",
++        "        reference_price = previous_close\n",
+         "\n",
+         "    sampled_returns = []\n",
+         "    for sample_no in range(mc_samples):\n",
+@@ -3022,13 +3182,13 @@
+         "            sample_count=1,\n",
+         "        )\n",
+         "        predicted_close = float(pred_df[\"close\"].iloc[0])\n",
+-        "        sampled_returns.append(predicted_close / previous_close - 1)\n",
++        "        sampled_returns.append(predicted_close / reference_price - 1)\n",
+         "\n",
+         "    sampled_returns = np.asarray(sampled_returns)\n",
+         "    counts = np.array([\n",
+-        "        np.sum(sampled_returns < -NEUTRAL_BAND),\n",
+-        "        np.sum((sampled_returns >= -NEUTRAL_BAND) & (sampled_returns <= NEUTRAL_BAND)),\n",
+-        "        np.sum(sampled_returns > NEUTRAL_BAND),\n",
++        "        np.sum(sampled_returns < -band_value),\n",
++        "        np.sum((sampled_returns >= -band_value) & (sampled_returns <= band_value)),\n",
++        "        np.sum(sampled_returns > band_value),\n",
+         "    ], dtype=float)\n",
+         "    # 작은 표본에서 확률 0/1을 피하기 위한 Jeffreys smoothing.\n",
+         "    probs = (counts + 0.5) / (counts.sum() + 1.5)\n",
+@@ -3985,10 +4145,15 @@
+         "    except Exception as exc:\n",
+         "        print(\"⚠️ Latest Kronos forecast failed:\", exc)\n",
+         "\n",
+-        "# 공통기간 log loss가 낮은 모델에 더 큰 비중을 주는 단순 성과가중 앙상블.\n",
+-        "eligible = [name for name in live_probs if name in common_metrics.index]\n",
++        "# 성과가중 앙상블. 가중치는 Kronos 때문에 짧아진 공통기간(약 60일)이 아니라\n",
++        "# 전체 워크포워드 OOF(native window) log loss로 정하고, 표본이 짧은 모델은 제외한다.\n",
++        "MIN_OOF_DAYS_FOR_WEIGHT = 250\n",
++        "eligible = [\n",
++        "    name for name in live_probs\n",
++        "    if name in native_metrics.index and native_metrics.loc[name, \"n\"] >= MIN_OOF_DAYS_FOR_WEIGHT\n",
++        "]\n",
+         "if eligible:\n",
+-        "    losses = np.array([common_metrics.loc[name, \"log_loss\"] for name in eligible], dtype=float)\n",
++        "    losses = np.array([native_metrics.loc[name, \"log_loss\"] for name in eligible], dtype=float)\n",
+         "    weights = np.exp(-2.0 * (losses - losses.min()))\n",
+         "    weights = weights / weights.sum()\n",
+         "    ensemble = sum(w * live_probs[name] for w, name in zip(weights, eligible))\n",
+@@ -4000,6 +4165,13 @@
+         "\n",
+         "live_probs[\"Performance-weighted ensemble\"] = ensemble\n",
+         "\n",
++        "# OOF 스태킹: 전체 OOF로 메타모델을 학습한 뒤 오늘의 기본모델 확률에 적용한다.\n",
++        "if stack_meta_full is not None and all(name in live_probs for name in STACK_BASE_MODELS):\n",
++        "    live_Z = np.log(np.clip(np.concatenate([np.asarray(live_probs[name], dtype=float) for name in STACK_BASE_MODELS]), 1e-6, 1.0))[None, :]\n",
++        "    p_stack_live = stack_meta_full.predict_proba(live_Z)\n",
++        "    p_stack_live = p_stack_live[:, np.argsort(stack_meta_full.classes_)][0]\n",
++        "    live_probs[\"Stacked\"] = p_stack_live\n",
++        "\n",
+         "live_table = []\n",
+         "for name, probs in live_probs.items():\n",
+         "    probs = np.asarray(probs) / np.asarray(probs).sum()\n",
+@@ -4157,6 +4329,7 @@
+         "    templates = make_price_regressors()\n",
+         "\n",
+         "    validation_mae = {}\n",
++        "    zero_errors = []\n",
+         "    for name, template in templates.items():\n",
+         "        absolute_errors = []\n",
+         "        for train_idx, valid_idx in splitter.split(X_reg):\n",
+@@ -4164,9 +4337,16 @@
+         "            fold_model.fit(X_reg[train_idx], y_reg[train_idx])\n",
+         "            fold_prediction = fold_model.predict(X_reg[valid_idx])\n",
+         "            absolute_errors.extend(np.abs(y_reg[valid_idx] - fold_prediction))\n",
++        "            if name == next(iter(templates)):\n",
++        "                zero_errors.extend(np.abs(y_reg[valid_idx]))  # \"수익률 0\" 기준선\n",
+         "        validation_mae[name] = float(np.mean(absolute_errors))\n",
++        "    # 모델 MAE는 반드시 \"항상 0% 예측\" 기준선과 비교해야 의미가 있다.\n",
++        "    validation_mae[\"Zero-return baseline\"] = float(np.mean(zero_errors))\n",
++        "    for name in templates:\n",
++        "        if validation_mae[name] >= validation_mae[\"Zero-return baseline\"]:\n",
++        "            print(f\"⚠️ horizon={horizon}: {name} MAE({validation_mae[name]:.4f})가 0% 기준선({validation_mae['Zero-return baseline']:.4f})보다 나쁩니다.\")\n",
+         "\n",
+-        "    inverse_mae = {name: 1.0 / max(mae, 1e-8) for name, mae in validation_mae.items()}\n",
++        "    inverse_mae = {name: 1.0 / max(validation_mae[name], 1e-8) for name in templates}\n",
+         "    inverse_sum = sum(inverse_mae.values())\n",
+         "    weights = {name: value / inverse_sum for name, value in inverse_mae.items()}\n",
+         "\n",
+@@ -4213,6 +4393,7 @@
+         "        \"validation_mae\": sum(\n",
+         "            model_weights[name] * validation_mae[name] for name in model_weights\n",
+         "        ),\n",
++        "        \"zero_baseline_mae\": validation_mae[\"Zero-return baseline\"],\n",
+         "        \"model_weights\": json.dumps(\n",
+         "            {name: round(float(value), 4) for name, value in model_weights.items()},\n",
+         "            ensure_ascii=False,\n",
+@@ -4227,6 +4408,7 @@
+         "    \"predicted_return\": \"{:+.2%}\",\n",
+         "    \"predicted_close\": \"{:,.0f}원\",\n",
+         "    \"validation_mae\": \"{:.2%}\",\n",
++        "    \"zero_baseline_mae\": \"{:.2%}\",\n",
+         "}))\n"
+       ]
+     },
+@@ -4276,6 +4458,11 @@
+         "config = {\n",
+         "    \"start_date\": START_DATE,\n",
+         "    \"neutral_band\": NEUTRAL_BAND,\n",
++        "    \"target_mode\": TARGET_MODE,\n",
++        "    \"band_mode\": BAND_MODE,\n",
++        "    \"vol_band_mult\": VOL_BAND_MULT,\n",
++        "    \"live_band\": live_band,\n",
++        "    \"stacking_base_models\": STACK_BASE_MODELS,\n",
+         "    \"first_test_date\": FIRST_TEST_DATE,\n",
+         "    \"test_months\": TEST_MONTHS,\n",
+         "    \"rolling_train_years\": ROLLING_TRAIN_YEARS,\n",
+@@ -4296,6 +4483,8 @@
+         "joblib.dump(logistic_full, OUTPUT_DIR / \"logistic_model.joblib\")\n",
+         "joblib.dump(lgbm_full, OUTPUT_DIR / \"lightgbm_model.joblib\")\n",
+         "joblib.dump(transformer_scaler, OUTPUT_DIR / \"transformer_scaler.joblib\")\n",
++        "if stack_meta_full is not None:\n",
++        "    joblib.dump(stack_meta_full, OUTPUT_DIR / \"stacking_meta_model.joblib\")\n",
+         "for horizon_label, fitted_models in price_forecast_models.items():\n",
+         "    for model_name, fitted_model in fitted_models.items():\n",
+         "        horizon_days = FORECAST_HORIZONS[horizon_label]\n",
+@@ -4336,12 +4525,15 @@
+         "4. 하락·보합·상승 중 한 클래스만 잘 맞히는 것은 아닌가?\n",
+         "5. Kronos 결과는 동일 날짜 표본이 충분한가? 빠른 모드 20일만으로 결론 내리지 마세요.\n",
+         "6. 전체 모드에서도 우위가 없으면 최신 모델이라는 이유만으로 채택하지 마세요.\n",
++        "7. `Stacked`가 `Mean ensemble`과 개별 모델보다 log loss가 낮은가? 그렇지 않으면 메타모델이 과적합한 것이다.\n",
++        "8. 중기 회귀 MAE가 `zero_baseline_mae`보다 낮은가? 아니면 예상 종가는 정보가 없는 것이다.\n",
+         "\n",
+         "### 다음 개선 순서\n",
+         "\n",
+         "- KRX 투자자별 수급·선물·옵션 데이터를 발표시각 기준으로 추가\n",
+         "- 오전 8시 50분 예상체결가와 주문불균형을 별도 장직전 모델에 추가\n",
+-        "- 데이터 기간과 보합 밴드에 대한 민감도 분석\n",
++        "- `TARGET_MODE=\\\"open_to_close\\\"` + 09:00 시가 입력으로 장직전 모델 운용\n",
++        "- `VOL_BAND_MULT`, 데이터 기간에 대한 민감도 분석\n",
+         "- Kronos가 유망할 때만 한국 주식 데이터로 파인튜닝\n",
+         "- 최소 월 1회 재학습, 매일 예측 결과와 실제 종가 기록\n",
+         "\n",
+@@ -7117,4 +7309,4 @@
+   },
+   "nbformat": 4,
+   "nbformat_minor": 5
+-}
+\ No newline at end of file
++}
+diff --git a/tests/test_multihorizon_notebook.py b/tests/test_multihorizon_notebook.py
+index 730aa97..7b309f9 100644
+--- a/tests/test_multihorizon_notebook.py
++++ b/tests/test_multihorizon_notebook.py
+@@ -6,13 +6,46 @@ from pathlib import Path
+ NOTEBOOK_PATH = Path(__file__).resolve().parents[1] / "samsung_direction_model_colab.ipynb"
+ 
+ 
+-class MultiHorizonNotebookTests(unittest.TestCase):
++def _strip_magics(source):
++    return "\n".join(
++        line for line in source.splitlines()
++        if not line.lstrip().startswith(("%", "!"))
++    )
++
++
++class NotebookStructureTests(unittest.TestCase):
+     @classmethod
+     def setUpClass(cls):
+         cls.notebook = json.loads(NOTEBOOK_PATH.read_text(encoding="utf-8"))
+-        cls.source = "\n".join(
+-            "".join(cell.get("source", [])) for cell in cls.notebook["cells"]
+-        )
++        cls.code_cells = [
++            "".join(cell.get("source", []))
++            for cell in cls.notebook["cells"]
++            if cell.get("cell_type") == "code"
++        ]
++        cls.source = "\n".join(cls.code_cells)
++
++    def test_every_code_cell_is_valid_python(self):
++        for index, cell in enumerate(self.code_cells):
++            compile(_strip_magics(cell), f"cell-{index}", "exec")
++
++    def test_target_and_band_modes_are_configurable(self):
++        for setting in ("TARGET_MODE", "BAND_MODE", "VOL_BAND_MULT", "LIVE_OPEN_PRICE"):
++            self.assertIn(f"{setting} = ", self.source)
++        self.assertIn('if TARGET_MODE == "open_to_close":', self.source)
++        self.assertIn('if BAND_MODE == "vol_scaled":', self.source)
++        # 변동성 밴드는 전일까지의 정보만 사용해야 한다.
++        self.assertIn("sam_ret.rolling(20).std()).reindex(all_dates).shift(1)", self.source)
++        # band 열은 특징이 아니라 라벨 정의에만 쓰인다.
++        self.assertIn('c not in ["target", "target_return", "band"]', self.source)
++
++    def test_stacking_uses_only_previous_folds(self):
++        self.assertIn('STACK_BASE_MODELS = ["Logistic", "LightGBM", "Transformer"]', self.source)
++        self.assertIn("train_mask = (fold_by_date < fold_id).to_numpy()", self.source)
++        self.assertIn("stack_meta_full", self.source)
++
++    def test_live_ensemble_weights_use_full_oof_window(self):
++        self.assertIn("MIN_OOF_DAYS_FOR_WEIGHT", self.source)
++        self.assertIn('native_metrics.loc[name, "log_loss"]', self.source)
+ 
+     def test_defines_week_and_month_as_trading_day_horizons(self):
+         self.assertIn('FORECAST_HORIZONS = {"1주일": 5, "1개월": 20}', self.source)
+@@ -20,12 +53,16 @@ class MultiHorizonNotebookTests(unittest.TestCase):
+     def test_trains_direct_return_regressors_without_future_feature_leakage(self):
+         self.assertIn("from sklearn.linear_model import LogisticRegression, Ridge", self.source)
+         self.assertIn("from lightgbm import LGBMClassifier, LGBMRegressor", self.source)
+-        self.assertIn('price_close = sam["close"]', self.source)
++        self.assertIn('sam_close = sam["adj_close"]', self.source)
+         self.assertIn(
+-            "price_close.shift(-(horizon - 1)) / price_close.shift(1) - 1",
++            "sam_close.shift(-(horizon - 1)) / sam_close.shift(1) - 1",
+             self.source,
+         )
+-        self.assertIn("TimeSeriesSplit", self.source)
++        self.assertIn("TimeSeriesSplit(n_splits=n_splits, gap=horizon - 1)", self.source)
++
++    def test_price_forecast_reports_zero_return_baseline(self):
++        self.assertIn('validation_mae["Zero-return baseline"]', self.source)
++        self.assertIn('"zero_baseline_mae"', self.source)
+ 
+     def test_final_report_contains_price_and_return_forecasts(self):
+         for column in (
+@@ -39,20 +76,15 @@ class MultiHorizonNotebookTests(unittest.TestCase):
+         self.assertIn("price_forecast_table", self.source)
+ 
+     def test_forecast_is_exported_with_reproducibility_metadata(self):
+-        self.assertIn('"multi_horizon_price_forecast.csv"', self.source)
+-        self.assertIn('"forecast_horizons"', self.source)
+-        self.assertIn('"price_forecast_validation_mae"', self.source)
+-
+-    def test_new_forecast_cell_is_valid_python(self):
+-        matching_cells = [
+-            cell
+-            for cell in self.notebook["cells"]
+-            if 'FORECAST_HORIZONS = {"1주일": 5, "1개월": 20}'
+-            in "".join(cell.get("source", []))
+-            and cell.get("cell_type") == "code"
+-        ]
+-        self.assertEqual(len(matching_cells), 1)
+-        compile("".join(matching_cells[0]["source"]), "forecast-cell", "exec")
++        for key in (
++            '"multi_horizon_price_forecast.csv"',
++            '"forecast_horizons"',
++            '"price_forecast_validation_mae"',
++            '"target_mode"',
++            '"band_mode"',
++            '"stacking_base_models"',
++        ):
++            self.assertIn(key, self.source)
+ 
+ 
+ if __name__ == "__main__":
+-- 
+2.43.0
+

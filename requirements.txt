@@ -1,0 +1,27 @@
+# 이 노트북의 숫자를 재현하려면 아래 버전을 쓰세요.
+# (같은 코드·같은 시드라도 LightGBM 빌드가 다르면 폴드별 balanced accuracy가
+#  0.07까지 움직입니다. yfinance는 데이터 스키마가 바뀌므로 함께 고정합니다.)
+#
+# Colab에서는 2절 셀이 lightgbm/yfinance만 고정 설치합니다.
+# 나머지는 런타임에 이미 설치되어 있고, 실제 사용된 버전은 매 실행마다
+# config.json 의 "versions" 에 기록됩니다.
+
+numpy==2.5.2
+pandas==3.0.5
+scikit-learn==1.9.0
+lightgbm==4.7.0
+yfinance==1.7.0
+matplotlib==3.11.1
+seaborn==0.13.2
+joblib==1.5.2
+tqdm==4.67.1
+pyarrow==22.0.0
+exchange_calendars==4.13.2   # KRX 휴일 반영(없으면 주말만 제외하고 경고)
+
+# 선택: Transformer(RUN_TRANSFORMER=True)에만 필요
+# torch==2.9.1
+
+# 선택: Kronos(RUN_KRONOS=True)에만 필요
+# einops==0.8.1
+# huggingface_hub==0.33.1
+# safetensors==0.6.2

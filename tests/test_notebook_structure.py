@@ -39,14 +39,20 @@ class NotebookStructureTests(unittest.TestCase):
             with self.subTest(cell=index):
                 ast.parse(strip_magics(cell))
 
-    def test_no_executed_output_is_committed(self):
-        """실행 출력이 커밋되면 저장소가 비대해지고, 코드와 어긋난 숫자가 남는다."""
+    def test_notebook_stays_small_enough_to_review(self):
+        """Colab에서 저장하면 실행 출력이 함께 커밋된다. 그 자체는 문제가 아니지만,
+        base64 이미지가 쌓이면 저장소가 비대해지고 diff를 읽을 수 없게 된다.
+        출력을 금지하는 대신 크기 상한만 둔다(출력을 비우려면 `nbstripout`)."""
+        size_mb = NOTEBOOK_PATH.stat().st_size / 1024 / 1024
+        self.assertLess(size_mb, 3.0, f"노트북이 {size_mb:.1f}MB입니다. 출력을 정리하세요.")
+
+    def test_no_single_output_is_enormous(self):
         for index, cell in enumerate(self.notebook["cells"]):
             if cell.get("cell_type") != "code":
                 continue
+            payload = sum(len(json.dumps(o)) for o in cell.get("outputs", []))
             with self.subTest(cell=index):
-                self.assertEqual(cell.get("outputs", []), [])
-                self.assertIsNone(cell.get("execution_count"))
+                self.assertLess(payload / 1024, 400, f"셀 {index}의 출력이 {payload/1024:.0f}KB입니다.")
 
     def test_configuration_switches_exist(self):
         for setting in (

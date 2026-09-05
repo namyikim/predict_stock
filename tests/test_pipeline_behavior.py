@@ -107,6 +107,10 @@ def run_feature_cell(raw, **overrides):
         ],
     }
     ns.update(overrides)
+    # 특징 셀은 '쓰겠다는 설정'(USE_MACRO_FEATURES)이 아니라 '실제로 실렸는지'(MACRO_ACTIVE)로
+    # 분기한다. 앞 셀에서 정해지는 값이므로 여기서 기본값을 넣어 준다.
+    ns.setdefault("MACRO_STRICT", False)
+    ns.setdefault("MACRO_ACTIVE", bool(ns.get("USE_MACRO_FEATURES")))
     exec(compile(cell, "cell-features", "exec"), ns)
     return ns
 

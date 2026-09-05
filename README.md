@@ -6,7 +6,7 @@
 
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/namyikim/predict_stock/blob/main/samsung_direction_model_colab.ipynb)
 
-Drive 연결 시 계정 승인 팝업에 401 오류가 발생하면 [Drive 연결 진단 노트북을 Colab에서 열기](https://colab.research.google.com/github/namyikim/predict_stock/blob/main/colab_drive_check.ipynb)로 두 줄의 연결 코드만 실행해 보세요. 원본은 [`colab_drive_check.ipynb`](colab_drive_check.ipynb)입니다. 이 노트북은 인증 오류의 발생 단계를 확인하는 용도이며 오류를 자동으로 해결하지는 않습니다.
+메인 노트북의 첫 실행 셀 **Google Drive 연결 — 먼저 실행**에서 Drive 연결을 승인한 뒤 나머지를 실행하세요. 승인 팝업에 401 오류가 발생하면 해당 셀만 실행하여 인증 상태를 확인할 수 있습니다. 별도 진단 노트북은 필요하지 않습니다.
 
 ---
 
@@ -137,7 +137,7 @@ Drive의 `macro_snapshots/<해시>.csv`와 JSON은 내려받은 수치와 최초
 ## Colab에서 매일 실행하기
 
 1. 수정된 `samsung_direction_model_colab.ipynb`를 Colab에 업로드합니다. 저장소에 변경을 게시한 뒤에는 위 Open in Colab 링크로도 열 수 있습니다.
-2. `런타임 → 모두 실행`을 선택하고 Google Drive 연결을 승인합니다. `SAVE_TO_DRIVE=True`가 기본입니다. 연결에 실패하면 영구 저장 없이 진행하지 않고 멈춥니다.
+2. 첫 실행 셀 **Google Drive 연결 — 먼저 실행**에서 연결을 승인한 뒤 나머지 셀을 순서대로 실행합니다. `런타임 → 모두 실행`을 사용해도 첫 셀에서 먼저 승인을 요청합니다. `SAVE_TO_DRIVE=True`가 기본이며 첫 셀에서 변경할 수 있습니다. 연결에 실패하면 영구 저장 없이 진행하지 않고 멈춥니다.
 3. 기본 `close_to_close` 모드는 한국 시간 07시 무렵 실행하고, 예측이 09시 전에 완료되도록 합니다. 기본 모델은 CPU에서 실행하며 Transformer와 Kronos는 꺼져 있습니다.
 4. 다음 거래일 실행 시 전날 예측의 확정 실제값을 먼저 갱신하고, 새 예측을 추가합니다. 장 마감 데이터는 15:40 이후 채점하며, 주말·휴일은 KRX 거래일 달력을 따릅니다.
 5. Google Drive의 **내 드라이브 → predict_stock** 폴더에서 아래 CSV를 확인합니다.

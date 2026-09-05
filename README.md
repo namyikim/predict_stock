@@ -6,7 +6,7 @@
 
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/namyikim/predict_stock/blob/main/samsung_direction_model_colab.ipynb)
 
-메인 노트북의 첫 실행 셀 **Google Drive 연결 — 먼저 실행**에서 Drive 연결을 승인한 뒤 나머지를 실행하세요. 승인 팝업에 401 오류가 발생하면 해당 셀만 실행하여 인증 상태를 확인할 수 있습니다. 별도 진단 노트북은 필요하지 않습니다.
+결과는 Colab 런타임의 `/content/samsung_direction_outputs/`에 로컬 저장합니다. Google Drive 연결·인증 코드는 제거했습니다. 런타임이 종료·삭제되기 전에 `latest_outputs.zip`을 다운로드하여 보관하세요.
 
 ---
 
@@ -37,7 +37,7 @@
 - 모든 성능 비교에 **월 블록 부트스트랩 95% 신뢰구간**을 붙입니다. 신뢰구간이 0을 포함하면 "동률"입니다.
 - 1거래일, 5거래일(약 1주일), 20거래일(약 1개월) 뒤 예상 종가를 **구간과 함께** 제시합니다. 신호 선택 구간에서 기준선 대비 우위가 없으면 점 예측을 비우고 현재가 중심의 구간을 제공합니다.
 - 원본 시세를 캐시에 저장합니다. 기본은 매 실행 새 데이터 수집이며, 고정 스냅샷 재현은 `USE_DATA_CACHE=True`로 선택합니다.
-- 예측 결과를 Google Drive의 `forecast_log.csv`에 누적하고, 다음 실행 때 실제값·방향 적중 여부·가격 오차를 CSV로 갱신합니다.
+- 예측 결과를 로컬 저장 폴더의 `forecast_log.csv`에 누적하고, 다음 실행 때 실제값·방향 적중 여부·가격 오차를 CSV로 갱신합니다.
 
 ## 선행지수 순환변동치와 월별 반도체 수출액
 
@@ -56,7 +56,7 @@ Colab 설정:
 2. Colab 왼쪽 열쇠 아이콘 **보안 비밀**에 이름 `KOSIS_API_KEY`, 값에 본인 키를 넣고 노트북 접근을 허용합니다. 채팅·노트북 코드에 키를 쓰지 마세요. 로컬에서는 같은 이름의 환경변수를 사용합니다.
 3. 노트북 전체를 실행합니다. KOSIS 공식 API로 두 통계의 과거 2년 준비 구간부터 최신 월까지 조회합니다. 키와 인증 URL은 출력물에 저장하지 않습니다.
 
-API 대신 CSV를 사용하려면 Drive의 `predict_stock/macro_inputs/`에 `leading_cycle.csv`, `semiconductor_exports.csv`를 저장합니다. 해당 파일이 있으면 API보다 우선합니다. KOSIS에서 정확한 항목 하나와 충분한 과거 기간을 선택하고 **시점을 열**로 내려받은 CSV를 지원합니다. 복잡한 다중 헤더 형식은 아래 형식으로 정리하세요. 반도체 `value` 단위는 **달러**입니다(천 달러·백만 달러로 받은 경우 환산 필요).
+API 대신 CSV를 사용하려면 로컬 저장 폴더의 `macro_inputs/`(Colab 기본값: `/content/samsung_direction_outputs/macro_inputs/`)에 `leading_cycle.csv`, `semiconductor_exports.csv`를 저장합니다. 해당 파일이 있으면 API보다 우선합니다. KOSIS에서 정확한 항목 하나와 충분한 과거 기간을 선택하고 **시점을 열**로 내려받은 CSV를 지원합니다. 복잡한 다중 헤더 형식은 아래 형식으로 정리하세요. 반도체 `value` 단위는 **달러**입니다(천 달러·백만 달러로 받은 경우 환산 필요).
 
 ```csv
 month,value
@@ -70,7 +70,7 @@ month,value
 
 추가 효과는 동일한 평가 날짜·학습 구간·내부 모델 선택 방법으로 `Mean ensemble`과 `No macro ensemble`을 비교합니다. `macro_comparison.csv`에 정확도·균형 정확도·log loss 차이와 신뢰구간을 저장하며, 앞으로 두 모델의 사전 예측도 함께 원장에 쌓습니다. 상관관계가 있어도 다음 거래일 방향의 정확도가 반드시 높아지는 것은 아닙니다.
 
-Drive의 `macro_snapshots/<해시>.csv`와 JSON은 내려받은 수치와 최초 관측 시각을 보존합니다. 통계가 수정되면 새 스냅샷을 만듭니다. 실행별 `macro_monthly.csv`, `macro_daily_features.csv`, `config.json`과 예측 원장의 `macro_snapshot_hash`로 당시 입력을 추적할 수 있습니다. 이 스냅샷은 수집 시작 전의 발표 이력을 복원하지 않습니다. `USE_DATA_CACHE=True`는 시세·월별 지표 모두 저장 자료 재현용이며 매일 갱신할 때는 `False`를 유지하세요.
+로컬 저장 폴더의 `macro_snapshots/<해시>.csv`와 JSON은 내려받은 수치와 최초 관측 시각을 보존합니다. 통계가 수정되면 새 스냅샷을 만듭니다. 실행별 `macro_monthly.csv`, `macro_daily_features.csv`, `config.json`과 예측 원장의 `macro_snapshot_hash`로 당시 입력을 추적할 수 있습니다. 이 스냅샷은 수집 시작 전의 발표 이력을 복원하지 않습니다. `USE_DATA_CACHE=True`는 시세·월별 지표 모두 저장 자료 재현용이며 매일 갱신할 때는 `False`를 유지하세요.
 
 ## 비교 모델
 
@@ -137,10 +137,10 @@ Drive의 `macro_snapshots/<해시>.csv`와 JSON은 내려받은 수치와 최초
 ## Colab에서 매일 실행하기
 
 1. 수정된 `samsung_direction_model_colab.ipynb`를 Colab에 업로드합니다. 저장소에 변경을 게시한 뒤에는 위 Open in Colab 링크로도 열 수 있습니다.
-2. 첫 실행 셀 **Google Drive 연결 — 먼저 실행**에서 연결을 승인한 뒤 나머지 셀을 순서대로 실행합니다. `런타임 → 모두 실행`을 사용해도 첫 셀에서 먼저 승인을 요청합니다. `SAVE_TO_DRIVE=True`가 기본이며 첫 셀에서 변경할 수 있습니다. 연결에 실패하면 영구 저장 없이 진행하지 않고 멈춥니다.
+2. 첫 실행 셀 **로컬 저장 위치**를 실행합니다. 이전 기록이 있으면 보관한 `forecast_log.csv`를 표시된 저장 폴더에 업로드한 뒤 나머지 셀을 순서대로 실행합니다. 새 기록을 시작할 때는 `런타임 → 모두 실행`을 사용할 수 있습니다.
 3. 기본 `close_to_close` 모드는 한국 시간 07시 무렵 실행하고, 예측이 09시 전에 완료되도록 합니다. 기본 모델은 CPU에서 실행하며 Transformer와 Kronos는 꺼져 있습니다.
 4. 다음 거래일 실행 시 전날 예측의 확정 실제값을 먼저 갱신하고, 새 예측을 추가합니다. 장 마감 데이터는 15:40 이후 채점하며, 주말·휴일은 KRX 거래일 달력을 따릅니다.
-5. Google Drive의 **내 드라이브 → predict_stock** 폴더에서 아래 CSV를 확인합니다.
+5. Colab 왼쪽 파일 패널의 **samsung_direction_outputs** 폴더에서 아래 CSV를 확인하고, `latest_outputs.zip`을 다운로드하여 보관합니다.
 
 | 파일 | 내용 |
 | --- | --- |
@@ -156,7 +156,7 @@ Drive의 `macro_snapshots/<해시>.csv`와 JSON은 내려받은 수치와 최초
 
 같은 날 여러 번 학습하면 모든 실행을 보존하고, 저장 셀만 다시 실행하면 중복 추가하지 않습니다. 일별 성능은 `close_to_close`에서 09시 이전, `open_to_close`에서 시가 확인 직후 09:05 이전에 생성한 최초 기록만 집계합니다. 나중에 만든 기록은 원장에 남지만 사전 예측 성능에서 제외합니다. 생성 시각을 모르는 기존 형식의 로그도 보존하되 사전 예측 통계에서는 제외합니다.
 
-기존 `/content/samsung_direction_outputs/forecast_log.csv`를 이어 쓰려면 Drive의 `predict_stock/forecast_log.csv`로 복사한 뒤 실행하세요. 동시에 여러 Colab 런타임에서 같은 원장을 쓰지 마세요. CSV 교체는 원자적으로 처리하지만 여러 작성자 간 동시 병합은 지원하지 않습니다.
+**Colab 로컬 저장은 런타임 간 자동 보존되지 않습니다.** 다음 실행에서 기록을 이어 쓰려면 다운로드한 ZIP에서 `forecast_log.csv`를 꺼내 `/content/samsung_direction_outputs/forecast_log.csv`로 업로드하세요. 일별 비교와 요약 CSV는 해당 원장으로 다시 계산합니다. KOSIS CSV를 사용한다면 `macro_inputs/`에도 두 파일을 다시 업로드해야 합니다. 동시에 여러 실행이 같은 원장을 쓰는 방식은 지원하지 않습니다.
 
 **이 기능은 노트북 실행 시 저장·채점하는 기능입니다. Colab이 닫힌 상태에서 매일 스스로 실행되는 예약 작업은 아닙니다.** 하루 실행을 건너뛰면 그날의 사전 예측은 만들 수 없지만, 이미 저장한 예측의 실제값은 다음 실행 때 갱신됩니다.
 
@@ -189,13 +189,13 @@ python tools/run_notebook.py --storage samsung_direction_outputs
 | `COST_BP` | `20.0` | 왕복 거래비용(bp). 한국 단일종목은 매도 거래세 0.15% 포함 |
 | `BOOTSTRAP_B` | `2000` | 월 블록 부트스트랩 반복수 |
 | `USE_DATA_CACHE` | `False` | 캐시된 시세 스냅샷 재사용 여부 |
-| `SAVE_TO_DRIVE` | `True` | Colab에서 Google Drive 영구 저장 사용 |
+| `STORAGE_PATH_OVERRIDE` | 환경변수 `PREDICT_STOCK_STORAGE` 또는 미지정 | 첫 셀에서 로컬 저장 위치 지정. 기본은 현재 폴더의 `samsung_direction_outputs/` |
 | `QUICK_MODE` | `False` | 최근 3개 폴드만, 학습·평가 횟수를 줄여 빠르게 확인 |
 | `PREDICTION_DATE_OVERRIDE` | `None` | 자동 계산된 예측일을 수정할 때 사용 |
 
 ## 생성 결과
 
-실행 결과는 Drive의 `predict_stock/runs/<run_id>/`에 저장되고, `latest_outputs.zip`으로 묶입니다. 누적 원장은 `predict_stock/` 바로 아래에 보관됩니다.
+실행 결과는 로컬 저장 폴더의 `runs/<run_id>/`에 저장되고, `latest_outputs.zip`으로 묶입니다. 누적 원장은 로컬 저장 폴더 바로 아래에 보관됩니다. Colab 기본 폴더는 `/content/samsung_direction_outputs/`입니다.
 
 | 파일 | 내용 |
 | --- | --- |

@@ -101,6 +101,14 @@ class NotebookStructureTests(unittest.TestCase):
             with self.subTest(token=token):
                 self.assertIn(token, self.source)
 
+    def test_final_summary_report_exists(self):
+        """마지막 셀이 결과를 한 화면으로 정리해 주어야 한다."""
+        for token in ("def build_summary()", "종합 보고서", "auc_session", "자동 판정"):
+            with self.subTest(token=token):
+                self.assertIn(token, self.source)
+        # 판정은 사람이 아니라 코드가 내려야 한다.
+        self.assertIn("session_tradeable", self.source)
+
     def test_staleness_guard_exists(self):
         """보조 시계열의 공백이 최근 학습 구간을 조용히 잘라내지 못하게 한다."""
         self.assertIn("staleness_days", self.source)

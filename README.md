@@ -6,6 +6,8 @@
 
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/namyikim/predict_stock/blob/main/samsung_direction_model_colab.ipynb)
 
+Drive 연결 시 계정 승인 팝업에 401 오류가 발생하면 [Drive 연결 진단 노트북을 Colab에서 열기](https://colab.research.google.com/github/namyikim/predict_stock/blob/main/colab_drive_check.ipynb)로 두 줄의 연결 코드만 실행해 보세요. 원본은 [`colab_drive_check.ipynb`](colab_drive_check.ipynb)입니다. 이 노트북은 인증 오류의 발생 단계를 확인하는 용도이며 오류를 자동으로 해결하지는 않습니다.
+
 ---
 
 ## ⚠️ 먼저 알아야 할 것: 이 모델이 실제로 예측하는 것

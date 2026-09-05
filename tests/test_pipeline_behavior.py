@@ -94,6 +94,7 @@ def run_feature_cell(raw, **overrides):
     ns = {
         "np": np, "pd": pd, "math": __import__("math"),
         "raw": raw,
+        "USE_MACRO_FEATURES": False,
         "TARGET_MODE": "close_to_close",
         "BAND_MODE": "vol_scaled",
         "VOL_BAND_MULT": 0.3,
@@ -299,6 +300,13 @@ class ValidationHarnessTests(unittest.TestCase):
                                  y_pred=np.ones(3, dtype=int))
         self.assertTrue((frame["y_pred"] == 1).all())
         np.testing.assert_allclose(frame["p_up"].to_numpy(), 0.38, atol=1e-9)
+
+
+class ForecastCalendarTests(unittest.TestCase):
+    def test_horizon_counts_start_session_inclusively(self):
+        fn = load_notebook_functions(["def krx_sessions_ahead"])["krx_sessions_ahead"]
+        self.assertEqual(fn("2026-09-07", 1), pd.Timestamp("2026-09-07"))
+        self.assertEqual(fn("2026-09-07", 5), pd.Timestamp("2026-09-11"))
 
 
 class BootstrapTests(unittest.TestCase):

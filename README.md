@@ -1,8 +1,8 @@
 # predict_stock
 
-삼성전자(`005930.KS`)의 **다음 거래일 주가 방향**과 **1주일·1개월 뒤 종가**를 예측하고, 여러 머신러닝·딥러닝 모델을 동일한 시계열 검증 조건에서 비교하는 연구용 프로젝트입니다.
+삼성전자(`005930.KS`)의 **다음 거래일 주가 방향**과 **1거래일·1주일·1개월 뒤 종가**를 예측하고, 여러 머신러닝·딥러닝 모델을 동일한 시계열 검증 조건에서 비교하는 연구용 프로젝트입니다.
 
-프로젝트의 중심은 Google Colab에서 위에서부터 순서대로 실행할 수 있는 [`samsung_direction_model_colab.ipynb`](samsung_direction_model_colab.ipynb) 노트북입니다. Yahoo Finance에서 데이터를 내려받고, 특징 생성부터 워크포워드 검증, 최신 예측, 결과 저장까지 한 번에 수행합니다.
+프로젝트의 중심은 Google Colab에서 위에서부터 순서대로 실행할 수 있는 [`samsung_direction_model_colab.ipynb`](samsung_direction_model_colab.ipynb) 노트북입니다. Yahoo Finance 시세와 KOSIS 월별 통계를 받아 특징 생성, 워크포워드 검증, 최신 예측, 결과 저장을 수행합니다. 월별 통계는 아래 API 키 또는 CSV 설정이 필요합니다.
 
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/namyikim/predict_stock/blob/main/samsung_direction_model_colab.ipynb)
 
@@ -33,26 +33,69 @@
   - 타깃은 종가→종가(07:00 예측) 또는 시가→종가(09:00 시가 확정 후 예측) 중 선택합니다.
 - **갭/세션 분해**로 예측력이 어느 구간에서 나오는지, 거래비용 차감 후 기대손익(bp)이 얼마인지 함께 보고합니다.
 - 모든 성능 비교에 **월 블록 부트스트랩 95% 신뢰구간**을 붙입니다. 신뢰구간이 0을 포함하면 "동률"입니다.
-- 5거래일(약 1주일), 20거래일(약 1개월) 뒤 예상 종가를 **구간과 함께** 제시하고, 0% 기준선을 유의하게 이기지 못하면 예상 수익률을 0%로 둡니다.
-- 원본 시세를 캐시에 저장해 같은 스냅샷으로 다시 실행할 수 있습니다.
-- 예측 결과를 `forecast_log.csv`에 누적하고, 나중에 실제값과 대조해 채점합니다.
+- 1거래일, 5거래일(약 1주일), 20거래일(약 1개월) 뒤 예상 종가를 **구간과 함께** 제시합니다. 신호 선택 구간에서 기준선 대비 우위가 없으면 점 예측을 비우고 현재가 중심의 구간을 제공합니다.
+- 원본 시세를 캐시에 저장합니다. 기본은 매 실행 새 데이터 수집이며, 고정 스냅샷 재현은 `USE_DATA_CACHE=True`로 선택합니다.
+- 예측 결과를 Google Drive의 `forecast_log.csv`에 누적하고, 다음 실행 때 실제값·방향 적중 여부·가격 오차를 CSV로 갱신합니다.
+
+## 선행지수 순환변동치와 월별 반도체 수출액
+
+`USE_MACRO_FEATURES=True`가 기본값입니다. 다음 공식 통계를 사용합니다.
+
+| 지표 | 공식 통계표 | 모델 입력 |
+| --- | --- | --- |
+| 선행지수 순환변동치 | [KOSIS 경기종합지수, DT_1C8015](https://kosis.kr/statHtml/statHtml.do?orgId=101&tblId=DT_1C8015&conn_path=I2) | 100 대비 수준, 1개월·3개월 변화량 |
+| 한국 반도체 수출액 | [KOSIS IT산업별/월별 수출 현황, DT_092_115_2009_S023](https://kosis.kr/statHtml/statHtml.do?orgId=127&tblId=DT_092_115_2009_S023&conn_path=I2) | 달러 금액의 로그, 전년 동월·전월 대비 증가율, 3개월 평균 전년 동월 증가율 |
+
+반도체 자료의 작성기관은 **과학기술정보통신부**, 제공 포털은 KOSIS입니다. ICT산업분류의 **반도체 전체**를 선택하며 메모리반도체만 쓰거나 다른 품목분류 통계를 합치지 않습니다. API 응답에서 정확한 분류명을 확인하고 수출액 단위를 달러로 통일합니다.
+
+Colab 설정:
+
+1. [KOSIS 공유서비스](https://kosis.kr/openapi/index/index.jsp)에서 본인 API 키를 발급받습니다.
+2. Colab 왼쪽 열쇠 아이콘 **보안 비밀**에 이름 `KOSIS_API_KEY`, 값에 본인 키를 넣고 노트북 접근을 허용합니다. 채팅·노트북 코드에 키를 쓰지 마세요. 로컬에서는 같은 이름의 환경변수를 사용합니다.
+3. 노트북 전체를 실행합니다. KOSIS 공식 API로 두 통계의 과거 2년 준비 구간부터 최신 월까지 조회합니다. 키와 인증 URL은 출력물에 저장하지 않습니다.
+
+API 대신 CSV를 사용하려면 Drive의 `predict_stock/macro_inputs/`에 `leading_cycle.csv`, `semiconductor_exports.csv`를 저장합니다. 해당 파일이 있으면 API보다 우선합니다. KOSIS에서 정확한 항목 하나와 충분한 과거 기간을 선택하고 **시점을 열**로 내려받은 CSV를 지원합니다. 복잡한 다중 헤더 형식은 아래 형식으로 정리하세요. 반도체 `value` 단위는 **달러**입니다(천 달러·백만 달러로 받은 경우 환산 필요).
+
+```csv
+month,value
+2025-01,100.1
+2025-02,100.2
+```
+
+위 숫자는 형식 예시입니다. 실제 학습에는 공식 통계 값을 사용하세요. 최소 `START_DATE`보다 2년 이전부터 최신 월까지 준비해야 합니다. 파일을 사용하는 경우 새 월이 발표될 때 파일도 갱신해야 합니다. 키나 자료가 없으면 설정 안내와 함께 중단하며, 조용히 두 지표를 빼지 않습니다. 기존 시세 모델만 쓰려면 명시적으로 `USE_MACRO_FEATURES=False`로 설정합니다.
+
+**발표 시점과 수정치:** 해당 월의 값은 보수적으로 **월+2의 첫날**부터 사용합니다(예: 7월 통계 → 9월 1일). 이는 실제 발표일을 복원한 것이 아닌 지연 가정입니다. 최신 조회 자료에는 과거 수정치가 포함될 수 있어, 이 방식의 백테스트를 엄밀한 당시 정보 검증으로 해석하면 안 됩니다. 발표가 예상보다 늦은 과거 월도 있을 수 있습니다. 지표를 100일 이상 무기한 유지하지 않으며 최신 자료가 부족하면 갱신을 요구합니다. 월이 누락되면 전월 변화율을 잘못 계산하지 않습니다.
+
+추가 효과는 동일한 평가 날짜·학습 구간·내부 모델 선택 방법으로 `Mean ensemble`과 `No macro ensemble`을 비교합니다. `macro_comparison.csv`에 정확도·균형 정확도·log loss 차이와 신뢰구간을 저장하며, 앞으로 두 모델의 사전 예측도 함께 원장에 쌓습니다. 상관관계가 있어도 다음 거래일 방향의 정확도가 반드시 높아지는 것은 아닙니다.
+
+Drive의 `macro_snapshots/<해시>.csv`와 JSON은 내려받은 수치와 최초 관측 시각을 보존합니다. 통계가 수정되면 새 스냅샷을 만듭니다. 실행별 `macro_monthly.csv`, `macro_daily_features.csv`, `config.json`과 예측 원장의 `macro_snapshot_hash`로 당시 입력을 추적할 수 있습니다. 이 스냅샷은 수집 시작 전의 발표 이력을 복원하지 않습니다. `USE_DATA_CACHE=True`는 시세·월별 지표 모두 저장 자료 재현용이며 매일 갱신할 때는 `False`를 유지하세요.
 
 ## 비교 모델
 
 ### 다음 거래일 방향 예측
 
 1. 항상 보합을 예측하는 기준선 (학습 구간의 클래스 사전확률)
-2. 다항 로지스틱 회귀 (`C=0.01`)
-3. LightGBM 분류기 (60트리 × 7리프)
-4. 30거래일 특징 시퀀스를 사용하는 소형 Transformer Encoder — `RUN_TRANSFORMER`
+2. 다항 로지스틱 회귀 — 과거 내부 3개 시계열 구간에서 `C`와 클래스 가중치를 선택
+3. LightGBM 분류기 — 과거 내부 검증에서 60/120트리와 클래스 가중치를 선택(7리프)
+4. 30거래일 특징 시퀀스를 사용하는 소형 Transformer Encoder — `RUN_TRANSFORMER`, 기본 꺼짐
 5. 금융 OHLCV 시계열 파운데이션 모델 [Kronos-small](https://github.com/shiyu-coder/Kronos)의 zero-shot 예측 — `RUN_KRONOS`, **기본 꺼짐**
 6. `ENSEMBLE_MODELS`의 확률을 **단순 평균**한 앙상블
 
 모델은 `accuracy`, `balanced_accuracy`, `macro_f1`, `log_loss`, `Brier score`에 **신뢰구간을 붙여** 비교하고, 여기에 갭/세션 분해와 "항상 보합" 대비 쌍체 차이를 함께 보고합니다.
 
-### 1주일·1개월 가격 예측
+### 1거래일·1주일·1개월 가격 예측
 
-변동성 스케일 타깃에 강한 축소(Ridge)를 적용하고, OOF에서 추정한 축소계수를 곱합니다. 손실 차이의 신뢰구간이 0을 포함하면 — 즉 "수익률 0% 예측" 기준선을 유의하게 이기지 못하면 — 예상 수익률을 **0%로 두고** `signal` 열에 "없음"으로 표시합니다. 단일 예상 종가 대신 변동성 스케일 구간(`low_close` ~ `high_close`)과 실제 달성 커버리지를 함께 제공합니다.
+변동성 스케일 타깃에 Ridge를 적용합니다. OOF(과거 데이터로 학습한 모델의 후속 구간 예측)를 시간순으로 보정 50%, 신호 선택 25%, 최종 평가 25%로 나눕니다. 경계에서는 예측 기간만큼 겹치는 라벨을 제거합니다.
+
+축소계수와 구간 폭은 보정 구간에서 정하고, 신호 선택 구간에서 0% 기준선 대비 손실 차이의 신뢰구간이 음수일 때만 점 예측을 제공합니다. 마지막 평가 구간의 실제값은 이 선택에 사용하지 않습니다. `band_coverage`는 최종 평가 구간에서 측정한 적중률이므로 명목 80%와 다를 수 있습니다.
+
+신호가 없으면 `predicted_close`와 `predicted_return`은 비워 둡니다. `center_close`는 현재 종가를 기준으로 제공하며, 이후 실제 종가와의 차이는 `center_price_error`에 따로 저장합니다.
+
+### 개선 여부 확인
+
+분류 모델은 각 외부 폴드의 과거 데이터 안에서만 설정을 고릅니다. 내부 검증 정확도를 우선하고 동률이면 log loss를 비교합니다. 온도 보정은 확률의 크기를 조절하되 예측 클래스는 바꾸지 않습니다. 최신 예측도 백테스트와 동일하게 최근 5년으로 학습합니다.
+
+`Previous ensemble`은 이전 고정설정(Logistic C=0.01, LightGBM 60×7, 두 모델 모두 balanced 가중치)의 평균입니다. `improvement_vs_previous.csv`에 새 앙상블과 이 기준선의 정확도·balanced accuracy·log loss 차이 및 쌍체 월 블록 신뢰구간을 저장합니다. 정확도 향상은 보장하지 않으며, 외부 평가 차이의 신뢰구간이 0을 포함하면 개선이 확인되지 않은 것으로 읽습니다.
 
 ## 사용 데이터
 
@@ -89,13 +132,42 @@
 
 이 방식은 명백한 미래 정보 유입을 막기 위한 장치이지만, 실거래 환경의 거래비용, 체결 가능성, 데이터 발표 지연까지 완전히 모사하지는 않습니다.
 
-## Colab에서 실행하기
+## Colab에서 매일 실행하기
 
-1. 위의 **Open in Colab** 배지를 누르거나 노트북 파일을 Google Colab에서 엽니다.
-2. 기본 설정(`RUN_TRANSFORMER=True`, `RUN_KRONOS=False`)은 GPU 없이도 동작하지만, Transformer는 `런타임 → 런타임 유형 변경`에서 **T4 GPU**를 쓰는 편이 훨씬 빠릅니다. GPU가 없으면 `RUN_TRANSFORMER=False`로 두면 수십 초 만에 끝납니다.
-3. `런타임 → 모두 실행`으로 셀을 위에서부터 실행합니다.
-4. 마지막 결과 저장 셀까지 완료되면 `/content/samsung_direction_outputs.zip`이 생성됩니다.
-5. zip 파일을 바로 내려받으려면 마지막 셀의 `files.download(zip_path)` 관련 두 줄의 주석을 해제합니다.
+1. 수정된 `samsung_direction_model_colab.ipynb`를 Colab에 업로드합니다. 저장소에 변경을 게시한 뒤에는 위 Open in Colab 링크로도 열 수 있습니다.
+2. `런타임 → 모두 실행`을 선택하고 Google Drive 연결을 승인합니다. `SAVE_TO_DRIVE=True`가 기본입니다. 연결에 실패하면 영구 저장 없이 진행하지 않고 멈춥니다.
+3. 기본 `close_to_close` 모드는 한국 시간 07시 무렵 실행하고, 예측이 09시 전에 완료되도록 합니다. 기본 모델은 CPU에서 실행하며 Transformer와 Kronos는 꺼져 있습니다.
+4. 다음 거래일 실행 시 전날 예측의 확정 실제값을 먼저 갱신하고, 새 예측을 추가합니다. 장 마감 데이터는 15:40 이후 채점하며, 주말·휴일은 KRX 거래일 달력을 따릅니다.
+5. Google Drive의 **내 드라이브 → predict_stock** 폴더에서 아래 CSV를 확인합니다.
+
+| 파일 | 내용 |
+| --- | --- |
+| `forecast_log.csv` | 모든 실행의 방향·가격 예측과 실제값, 확률, 당시 밴드·설정·시각, 오차 |
+| `daily_forecast_comparison.csv` | 날짜·모델·예측 기간·설정별 최초 사전 예측만 뽑은 일별 비교 |
+| `forecast_accuracy_summary.csv` | 위 일별 기록의 누적 정확도, log loss, Brier, 가격 MAE/MAPE, 구간 적중률 |
+| `runs/<run_id>/` | 실행별 백테스트, 최신 예측, 학습 설정, 모델 파일 |
+| `latest_outputs.zip` | 가장 최근 실행 결과와 누적 CSV 사본 |
+
+`actual_close`는 실제 종가, `actual_return`은 해당 예측 타깃의 실제 수익률, `direction_correct`는 방향 적중(1/0)입니다. `price_error`는 **예상 종가 - 실제 종가**, `absolute_price_error`는 절대 오차(원), `price_ape`는 절대 오차율(비율), `return_error`는 예측 수익률 - 실제 수익률입니다. `interval_hit`는 실제 종가가 예측 구간 안이면 1입니다. 방향 분류에는 예상 종가가 없으므로 가격 오차는 Ridge 가격 예측 행에서 확인합니다.
+
+미래 예측은 `status=pending`으로 유지합니다. `scored`는 실제값 대조 완료, `missing_actual`/`missing_reference`는 필요한 확정 가격을 아직 얻지 못했다는 뜻입니다. 예측 원문은 변경하지 않고 실제값·오차만 새 시세에 맞춰 갱신합니다.
+
+같은 날 여러 번 학습하면 모든 실행을 보존하고, 저장 셀만 다시 실행하면 중복 추가하지 않습니다. 일별 성능은 `close_to_close`에서 09시 이전, `open_to_close`에서 시가 확인 직후 09:05 이전에 생성한 최초 기록만 집계합니다. 나중에 만든 기록은 원장에 남지만 사전 예측 성능에서 제외합니다. 생성 시각을 모르는 기존 형식의 로그도 보존하되 사전 예측 통계에서는 제외합니다.
+
+기존 `/content/samsung_direction_outputs/forecast_log.csv`를 이어 쓰려면 Drive의 `predict_stock/forecast_log.csv`로 복사한 뒤 실행하세요. 동시에 여러 Colab 런타임에서 같은 원장을 쓰지 마세요. CSV 교체는 원자적으로 처리하지만 여러 작성자 간 동시 병합은 지원하지 않습니다.
+
+**이 기능은 노트북 실행 시 저장·채점하는 기능입니다. Colab이 닫힌 상태에서 매일 스스로 실행되는 예약 작업은 아닙니다.** 하루 실행을 건너뛰면 그날의 사전 예측은 만들 수 없지만, 이미 저장한 예측의 실제값은 다음 실행 때 갱신됩니다.
+
+### 로컬 검증 및 실행
+
+```bash
+python -m venv .venv
+# 생성한 가상환경을 활성화한 뒤:
+python -m pip install -r requirements.txt
+python tools/run_notebook.py --storage samsung_direction_outputs
+```
+
+`--quick`은 최근 3개 폴드와 작은 부트스트랩으로 확인합니다. `--use-cache`는 고정 스냅샷 재현 전용이며 매일 최신 예측에는 사용하지 않습니다. Colab에서는 `STORAGE_PATH_OVERRIDE`로 보관 위치를 바꿀 수 있습니다.
 
 ### 주요 설정
 
@@ -110,17 +182,18 @@
 | `NEUTRAL_BAND` | `0.005` | `fixed` 모드의 보합 범위(±0.5%) |
 | `LIVE_OPEN_PRICE` | `None` | `open_to_close` 모드의 필수 입력(예측일 09:00 시가). 없으면 중단합니다 |
 | `ENSEMBLE_MODELS` | `["Logistic", "LightGBM"]` | 단순 평균 앙상블에 넣을 모델 |
-| `RUN_TRANSFORMER` | `True` | Transformer 비교 실행 여부 |
+| `RUN_TRANSFORMER` | `False` | Transformer 비교 실행 여부 |
 | `RUN_KRONOS` | `False` | Kronos-small 평가 실행 여부 |
 | `COST_BP` | `20.0` | 왕복 거래비용(bp). 한국 단일종목은 매도 거래세 0.15% 포함 |
 | `BOOTSTRAP_B` | `2000` | 월 블록 부트스트랩 반복수 |
-| `USE_DATA_CACHE` | `True` | 캐시된 시세 스냅샷 재사용 여부 |
+| `USE_DATA_CACHE` | `False` | 캐시된 시세 스냅샷 재사용 여부 |
+| `SAVE_TO_DRIVE` | `True` | Colab에서 Google Drive 영구 저장 사용 |
 | `QUICK_MODE` | `False` | 최근 3개 폴드만, 학습·평가 횟수를 줄여 빠르게 확인 |
 | `PREDICTION_DATE_OVERRIDE` | `None` | 자동 계산된 예측일을 수정할 때 사용 |
 
 ## 생성 결과
 
-결과는 `/content/samsung_direction_outputs/`에 저장된 뒤 하나의 zip 파일로 묶입니다.
+실행 결과는 Drive의 `predict_stock/runs/<run_id>/`에 저장되고, `latest_outputs.zip`으로 묶입니다. 누적 원장은 `predict_stock/` 바로 아래에 보관됩니다.
 
 | 파일 | 내용 |
 | --- | --- |
@@ -129,7 +202,7 @@
 | `metrics_common_dates.csv` | (Kronos 실행 시) 모든 모델이 예측한 공통 날짜의 성능 |
 | `latest_forecast.csv` | 다음 거래일 방향과 클래스별 확률 |
 | `forecast_log.csv` | 실행마다 누적되는 예측 로그(run_id, 데이터 해시, 대체된 특징 포함) |
-| `multi_horizon_price_forecast.csv` | 1주일·1개월 예상 수익률·종가·구간과 `signal` |
+| `multi_horizon_price_forecast.csv` | 1거래일·1주일·1개월 예상 수익률·종가·구간과 `signal` |
 | `feature_list.csv` | 최종 학습에 사용한 특징 목록 |
 | `config.json` | 실행 설정, 패키지 버전, 데이터 스냅샷 해시, 자산별 마지막 봉 날짜 |
 | `*.joblib`, `transformer_model.pt` | 학습한 회귀·분류 모델과 Transformer 가중치 |
@@ -154,7 +227,10 @@ predict_stock/
 ├── requirements.txt                     # 재현용 버전 고정
 ├── tests/
 │   ├── test_notebook_structure.py       # 문법·설정 스위치·회귀 방지 검사
-│   └── test_pipeline_behavior.py        # 합성 데이터로 누수·정렬·폴드 동작 검증
+│   ├── test_pipeline_behavior.py        # 합성 데이터로 누수·정렬·폴드 동작 검증
+│   └── test_forecast_improvements.py     # 시간순 선택·일별 원장·오차 검증
+├── forecast_utils.py                    # 테스트 가능한 학습/기록 함수
+├── tools/                              # 로컬 실행 및 노트북 함수 동기화
 └── README.md
 ```
 
@@ -185,3 +261,7 @@ python -m unittest discover -s tests -v
 ## 주의사항
 
 이 저장소는 연구·교육 목적입니다. 어떤 결과도 투자 자문이 아니며, 수익을 보장하지 않습니다. Yahoo Finance는 편의용 데이터이므로 실제 운영에서는 KRX, 한국은행 ECOS 등 원천 자료로 교체하는 것이 좋습니다.
+
+## 개발 시 노트북 동기화
+
+노트북은 단독 다운로드로 Colab에서 실행할 수 있도록 `forecast_utils.py`와 `macro_utils.py`의 소스를 포함합니다. 공통 함수를 수정한 뒤 `python tools/sync_notebook_helpers.py`를 실행하세요. 테스트가 소스 일치를 확인합니다. 모델 저장 파일은 estimator와 보정 온도를 담은 dict이며, 다시 불러온 뒤 `predict_direction_model(fitted, X)`로 예측합니다. 로컬 실행에서 월별 지표 없이 비교하려면 `python tools/run_notebook.py --storage ./outputs --no-macro`를 사용합니다.

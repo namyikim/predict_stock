@@ -17,6 +17,7 @@ joblib==1.5.2
 tqdm==4.67.1
 pyarrow==22.0.0
 exchange_calendars==4.13.2   # KRX 휴일 반영(없으면 주말만 제외하고 경고)
+jinja2>=3.1,<4              # pandas Styler 표 렌더링
 
 # 선택: Transformer(RUN_TRANSFORMER=True)에만 필요
 # torch==2.9.1

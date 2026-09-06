@@ -137,7 +137,7 @@ month,value
 ## Colab에서 매일 실행하기
 
 1. 수정된 `samsung_direction_model_colab.ipynb`를 Colab에 업로드합니다. 저장소에 변경을 게시한 뒤에는 위 Open in Colab 링크로도 열 수 있습니다.
-2. 첫 실행 셀 **로컬 저장 위치**를 실행합니다. 이전 기록이 있으면 보관한 `forecast_log.csv`를 표시된 저장 폴더에 업로드한 뒤 나머지 셀을 순서대로 실행합니다. 새 기록을 시작할 때는 `런타임 → 모두 실행`을 사용할 수 있습니다.
+2. `런타임 → 모두 실행`으로 전체를 실행합니다. 아래 **예측 원장을 GitHub에 보관하기**를 설정해 두면 이전 기록을 자동으로 받아와 이어서 쌓습니다. 설정하지 않으면 런타임 로컬에만 저장되므로, 실행 전에 보관해 둔 `forecast_log.csv`를 첫 셀이 표시한 저장 폴더에 직접 업로드해야 합니다.
 3. 기본 `close_to_close` 모드는 한국 시간 07시 무렵 실행하고, 예측이 09시 전에 완료되도록 합니다. 기본 모델은 CPU에서 실행하며 Transformer와 Kronos는 꺼져 있습니다.
 4. 다음 거래일 실행 시 전날 예측의 확정 실제값을 먼저 갱신하고, 새 예측을 추가합니다. 장 마감 데이터는 15:40 이후 채점하며, 주말·휴일은 KRX 거래일 달력을 따릅니다.
 5. Colab 왼쪽 파일 패널의 **samsung_direction_outputs** 폴더에서 아래 CSV를 확인하고, `latest_outputs.zip`을 다운로드하여 보관합니다.
@@ -147,6 +147,32 @@ month,value
 | `forecast_log.csv` | 모든 실행의 방향·가격 예측과 실제값, 확률, 당시 밴드·설정·시각, 오차 |
 | `daily_forecast_comparison.csv` | 날짜·모델·예측 기간·설정별 최초 사전 예측만 뽑은 일별 비교 |
 | `forecast_accuracy_summary.csv` | 위 일별 기록의 누적 정확도, log loss, Brier, 가격 MAE/MAPE, 구간 적중률 |
+
+### 예측 원장을 GitHub에 보관하기
+
+Colab 런타임은 삭제되면 `forecast_log.csv`도 함께 사라집니다. 사전 예측을 몇 달씩 쌓아 실제 성능을 확인하려면 원장을 저장소에 두어야 합니다. 설정하면 노트북이 **시작할 때 저장소에서 원장을 받아오고, 끝날 때 되돌려 올립니다.**
+
+1. GitHub → **Settings → Developer settings → Personal access tokens → Fine-grained tokens** 에서 토큰을 발급합니다.
+   - **Repository access**: 이 저장소 하나만 선택
+   - **Permissions → Repository permissions → Contents**: `Read and write`
+   - 다른 권한은 주지 마세요.
+2. Colab 왼쪽 **열쇠 아이콘(보안 비밀)** 에 이름 `GITHUB_TOKEN`, 값에 발급받은 토큰을 넣고 **노트북 액세스**를 켭니다. 토큰을 노트북 코드나 채팅에 붙여넣지 마세요.
+3. 노트북을 전체 실행합니다. 원장은 저장소의 `forecast_history/` 폴더에 커밋됩니다.
+
+첫 실행 셀 설정으로 동작을 바꿀 수 있습니다.
+
+| 설정 | 기본값 | 설명 |
+| --- | --- | --- |
+| `SYNC_LEDGER_TO_GITHUB` | `True` | `False`면 저장소를 쓰지 않고 런타임 로컬에만 저장 |
+| `GITHUB_REPO` | `namyikim/predict_stock` | 원장을 보관할 저장소 |
+| `GITHUB_LEDGER_DIR` | `forecast_history` | 저장소 안의 폴더 |
+
+동작 방식과 주의사항입니다.
+
+- 예측은 **불변**입니다. 같은 `record_id`는 다시 올려도 최초 예측을 유지하고, 실제값·오차만 갱신됩니다. 여러 기기에서 실행해도 `record_id` 기준으로 합쳐집니다.
+- 토큰이 없거나 조회·업로드에 실패하면 **경고만 남기고 계속 진행**합니다. 전체 실행이 중간에 멈추지 않습니다. 다만 그 실행 기록은 런타임에만 남으므로 `latest_outputs.zip`을 내려받아 두세요.
+- 오류 메시지에는 토큰이 포함되지 않습니다(HTTP 상태 코드만 표시).
+- **저장소가 공개면 예측 원장도 공개됩니다.** 예측값과 실제 종가만 들어 있어 민감 정보는 없지만, 공개를 원치 않으면 저장소를 비공개로 바꾸거나 `SYNC_LEDGER_TO_GITHUB=False`로 두세요.
 | `runs/<run_id>/` | 실행별 백테스트, 최신 예측, 학습 설정, 모델 파일 |
 | `latest_outputs.zip` | 가장 최근 실행 결과와 누적 CSV 사본 |
 

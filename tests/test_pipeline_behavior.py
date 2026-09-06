@@ -79,11 +79,12 @@ def make_synthetic_raw(n_days=520, seed=0):
             "volume": rng.integers(1_000_000, 5_000_000, n_days).astype(float),
         }, index=dates)
 
-    raw = {"samsung": frame}
-    for name in ["kospi", "sk_hynix"]:
+    # 노트북은 대상 종목을 "target", 같은 업종 비교 종목을 "peer"로 부른다.
+    raw = {"target": frame}
+    for name in ["kospi", "peer"]:
         raw[name] = series_like(rng.normal(0, 0.008, n_days))
     for name in ["sox", "nasdaq", "sp500", "micron", "nvidia", "tsmc_adr",
-                 "korea_etf", "usdkrw", "dxy", "vix", "us10y", "wti", "samsung_gdr"]:
+                 "korea_etf", "usdkrw", "dxy", "vix", "us10y", "wti", "target_gdr"]:
         raw[name] = series_like(foreign_shock)          # 전부 해외 신호를 담고 있다
     return raw, dates, sam_ret, hidden_shock
 
@@ -103,7 +104,7 @@ def run_feature_cell(raw, **overrides):
         "PREDICTION_DATE_OVERRIDE": None,
         "GLOBAL_ASSETS": [
             "sox", "nasdaq", "sp500", "micron", "nvidia", "tsmc_adr",
-            "korea_etf", "usdkrw", "dxy", "vix", "us10y", "wti", "samsung_gdr",
+            "korea_etf", "usdkrw", "dxy", "vix", "us10y", "wti", "target_gdr",
         ],
     }
     ns.update(overrides)
@@ -129,7 +130,7 @@ class FeatureLeakageTests(unittest.TestCase):
 
     def test_sam_ret_1_is_the_previous_day_return(self):
         """가장 기본적인 누수 검사: 오늘 행의 sam_ret_1은 '어제' 수익률이어야 한다."""
-        ret = self.raw["samsung"]["adj_close"].pct_change()
+        ret = self.raw["target"]["adj_close"].pct_change()
         aligned = self.feat["sam_ret_1"].reindex(self.dates).dropna()
         expected = ret.shift(1).reindex(aligned.index)
         np.testing.assert_allclose(aligned.to_numpy(), expected.to_numpy(), rtol=1e-9, atol=1e-12)

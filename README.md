@@ -1,6 +1,6 @@
 # predict_stock
 
-삼성전자(`005930.KS`)의 **다음 거래일 주가 방향**과 **1거래일·1주일·1개월 뒤 종가**를 예측하고, 여러 머신러닝·딥러닝 모델을 동일한 시계열 검증 조건에서 비교하는 연구용 프로젝트입니다.
+삼성전자(`005930.KS`)와 SK하이닉스(`000660.KS`)의 **다음 거래일 주가 방향**과 **1거래일·1주일·1개월 뒤 종가**를 예측하고, 여러 머신러닝·딥러닝 모델을 동일한 시계열 검증 조건에서 비교하는 연구용 프로젝트입니다.
 
 프로젝트의 중심은 Google Colab에서 위에서부터 순서대로 실행할 수 있는 [`samsung_direction_model_colab.ipynb`](samsung_direction_model_colab.ipynb) 노트북입니다. Yahoo Finance 시세와 KOSIS 월별 통계를 받아 특징 생성, 워크포워드 검증, 최신 예측, 결과 저장을 수행합니다. 월별 통계는 아래 API 키 또는 CSV 설정이 필요합니다.
 
@@ -148,19 +148,58 @@ month,value
 | `daily_forecast_comparison.csv` | 날짜·모델·예측 기간·설정별 최초 사전 예측만 뽑은 일별 비교 |
 | `forecast_accuracy_summary.csv` | 위 일별 기록의 누적 정확도, log loss, Brier, 가격 MAE/MAPE, 구간 적중률 |
 
+## 예측 대상 종목 고르기
+
+첫 실행 셀의 `TARGET`으로 종목을 바꿉니다.
+
+```python
+TARGET = "samsung"     # 또는 "sk_hynix"
+```
+
+| TARGET | 종목 | 비교 종목 | 특징 수 |
+| --- | --- | --- | --- |
+| `samsung` | 삼성전자 005930.KS | SK하이닉스 | 54 |
+| `sk_hynix` | SK하이닉스 000660.KS | 삼성전자 | 51 |
+
+SK하이닉스가 3개 적은 것은 런던 GDR(`SMSN.IL`)이 삼성전자에만 있기 때문입니다. 그 3개(`target_gdr_ret_1`, `target_gdr_ret_5`, `gdr_overnight_signal`)가 자동으로 빠집니다.
+
+원장과 보고서는 **종목별로 따로 쌓입니다.** 서로 덮어쓰지 않으므로 두 종목을 번갈아 실행해도 됩니다.
+
+| 대상 | 경로 |
+| --- | --- |
+| 예측 원장 | `forecast_history/<종목>/` |
+| 보고서 | `docs/<종목>/index.html` |
+| Colab 로컬 출력 | `/content/<종목>_outputs/` |
+
+> **다른 종목을 넣을 때 주의.** `TARGET_SPEC`에 티커를 추가하면 코드는 돌아가지만, 해외 피처가 반도체 대형주에 맞춰져 있습니다(SOX 반도체 지수, Micron, Nvidia, TSMC ADR). 감사에서 해외 야간 피처 31개가 예측력 상승분의 83%를 설명했는데 그 대부분이 이 종목들입니다. 다른 업종에 그대로 쓰면 **그 종목과 무관한 정보로 예측**하게 됩니다.
+
+### 두 종목에서 같은 결론이 나왔습니다
+
+SK하이닉스로 돌려도 구조는 동일합니다. 이 프로젝트의 핵심 발견이 삼성전자 고유의 성질이 아니라 **시장 구조**임을 보여줍니다.
+
+| 종목 | 갭 AUC | 세션 AUC | 세션 순 bp |
+| --- | --- | --- | --- |
+| 삼성전자 | 0.807 | 0.499 | −21.0 |
+| SK하이닉스 | 0.832 | 0.493 | −18.7 |
+
+밤사이 해외 정보가 다음날 시가에 반영되는 것은 한국 시장 전체에 해당하며, 시가 이후 구간은 두 종목 모두 무작위에 가깝습니다.
+
 ### 최신 보고서를 웹에서 보기 (GitHub Pages)
 
 노트북을 열지 않고 URL 하나로 최신 보고서를 볼 수 있습니다. 실행이 끝날 때 종합 보고서를 독립 HTML로 만들어 저장소에 올립니다.
 
 | 경로 | 내용 |
 | --- | --- |
-| `docs/index.html` | 항상 최신 보고서 |
-| `docs/reports/<예측일>.html` | 예측일별 보관본(같은 날 다시 돌리면 덮어씀) |
+| `docs/index.html` | 종목 목록 페이지 |
+| `docs/<종목>/index.html` | 그 종목의 최신 보고서 |
+| `docs/<종목>/reports/<예측일>.html` | 예측일별 보관본(같은 날 다시 돌리면 덮어씀) |
 
 **한 번만 설정하면 됩니다.** 저장소 **Settings → Pages → Source**를 `Deploy from a branch`, 브랜치 `main`, 폴더 `/docs`로 지정합니다. 그러면 아래 주소로 열립니다.
 
 ```
-https://namyikim.github.io/predict_stock/
+https://namyikim.github.io/predict_stock/            ← 종목 목록
+https://namyikim.github.io/predict_stock/samsung/    ← 삼성전자 보고서
+https://namyikim.github.io/predict_stock/sk_hynix/   ← SK하이닉스 보고서
 ```
 
 - 위 **예측 원장을 GitHub에 보관하기**의 `GITHUB_TOKEN` 설정이 되어 있어야 발행됩니다. 토큰이 없으면 발행만 건너뛰고 `report.html`은 로컬에 저장됩니다.

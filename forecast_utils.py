@@ -130,9 +130,56 @@ def calibrate_price_forecast(y, prediction, sigma, dates, horizon, ci_function, 
         "selection_mae_diff_lo": float(gate_lo), "selection_mae_diff_hi": float(gate_hi),
         "oof_slope": slope, "beats_baseline": beats_baseline, "band_q": q,
         "band_coverage_realized": float(np.mean(test_error <= q * sigma[evaluation])),
+        "band_halfwidth_mean": float(np.mean(q * sigma[evaluation])),
         "n_oof": n, "n_evaluation": len(evaluation), "calibration_end": int(cal[-1]),
         "gate_start": int(gate[0]), "gate_end": int(gate[-1]), "evaluation_start": int(evaluation[0]),
     }
+
+
+def har_sigma_forecast(returns, horizon, refit_every=60, min_train=500):
+    """h거래일 수익률의 스케일(sigma)을 HAR로 예측한다. (시계열, 다음 시점 예측값) 반환.
+
+    HAR: 일/주/월 실현변동성으로 다음 구간 변동성을 회귀한다. 고정된 20일 표준편차보다
+    최근 변화에 빠르게 반응해, 같은 적중률에서 예측 구간이 좁아진다.
+
+    각 시점의 예측은 그 시점 이전 자료로만 적합한다. 학습 표본도 목표가 이미 실현된
+    구간(i - horizon 이전)으로 제한해 겹치는 라벨이 계수에 들어가지 않게 한다.
+    """
+    r = pd.Series(returns).astype(float)
+    v = r ** 2
+    X = pd.DataFrame({
+        "const": 1.0,
+        "d": np.log(v.shift(1).clip(lower=1e-12)),
+        "w": np.log(v.rolling(5).mean().shift(1).clip(lower=1e-12)),
+        "m": np.log(v.rolling(22).mean().shift(1).clip(lower=1e-12)),
+    }, index=r.index)
+    forward = np.sqrt(v.rolling(horizon).sum().shift(-(horizon - 1)))
+    y = np.log(forward.clip(lower=1e-12))
+
+    Xv, yv = X.to_numpy(dtype=float), y.to_numpy(dtype=float)
+    rows_ok = np.isfinite(Xv).all(axis=1)
+    out = np.full(len(r), np.nan)
+    beta, last_fit = None, -(10 ** 9)
+    for i in range(len(r)):
+        end = i - horizon                     # 목표가 이미 실현된 구간만 학습에 쓴다
+        if end > min_train and i - last_fit >= refit_every:
+            usable = rows_ok[:end] & np.isfinite(yv[:end])
+            if usable.sum() >= min_train:
+                beta = np.linalg.lstsq(Xv[:end][usable], yv[:end][usable], rcond=None)[0]
+                last_fit = i
+        if beta is not None and rows_ok[i]:
+            out[i] = float(np.exp(Xv[i] @ beta))
+
+    live = np.nan
+    usable = rows_ok & np.isfinite(yv)         # y가 NaN인 마지막 h-1행은 자동 제외된다
+    if usable.sum() >= min_train:
+        full = np.linalg.lstsq(Xv[usable], yv[usable], rcond=None)[0]
+        latest = np.array([1.0,
+                           np.log(max(float(v.iloc[-1]), 1e-12)),
+                           np.log(max(float(v.iloc[-5:].mean()), 1e-12)),
+                           np.log(max(float(v.iloc[-22:].mean()), 1e-12))])
+        live = float(np.exp(latest @ full))
+    return pd.Series(out, index=r.index), live
 
 
 def snapshot_hash(raw):

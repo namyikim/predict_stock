@@ -1,0 +1,126 @@
+{
+  "run_id": "20260906T125053_bd719e299b0e",
+  "created_at_utc": "2026-09-06T12:51:55.257419+00:00",
+  "target": "sk_hynix",
+  "runtime": "colab",
+  "versions": {
+    "python": "3.13.15",
+    "numpy": "2.1.3",
+    "pandas": "2.2.3",
+    "scikit-learn": "1.6.1",
+    "lightgbm": "4.7.0",
+    "yfinance": "1.7.0",
+    "torch": "2.11.0+cu128"
+  },
+  "versions_hash": "c641f7cbc9ea",
+  "data_snapshot_hash": "07dcf7c8521593b70937",
+  "config_hash": "2ec55db3788c15b3ca29",
+  "quick_mode": false,
+  "seq_len": 30,
+  "transformer_epochs": 25,
+  "transformer_patience": 5,
+  "device": "cuda",
+  "n_folds": 12,
+  "evaluation_days": 1359,
+  "metrics": [
+    {
+      "model": "Always flat",
+      "n": 1359.0,
+      "balanced_accuracy": 0.3333333333333333,
+      "log_loss": 1.0924410133308293,
+      "brier": 0.6628047460308794
+    },
+    {
+      "model": "Logistic",
+      "n": 1359.0,
+      "balanced_accuracy": 0.4606751165010759,
+      "log_loss": 1.013955264623941,
+      "brier": 0.609168114260022
+    },
+    {
+      "model": "LightGBM",
+      "n": 1359.0,
+      "balanced_accuracy": 0.4753580732186456,
+      "log_loss": 1.0251702159075455,
+      "brier": 0.6153034954492739
+    },
+    {
+      "model": "Transformer",
+      "n": 1359.0,
+      "balanced_accuracy": 0.445281925461988,
+      "log_loss": 1.0379592905609403,
+      "brier": 0.625639773766001
+    },
+    {
+      "model": "Mean ensemble",
+      "n": 1359.0,
+      "balanced_accuracy": 0.4649504817969416,
+      "log_loss": 1.012261576415845,
+      "brier": 0.6071378463014534
+    },
+    {
+      "model": "Mean ensemble +Transformer",
+      "n": 1359.0,
+      "balanced_accuracy": 0.4633646138004243,
+      "log_loss": 1.0139666998423378,
+      "brier": 0.608916875760483
+    }
+  ],
+  "paired": [
+    {
+      "비교": "Mean ensemble +Transformer − Mean ensemble",
+      "지표": "log_loss",
+      "n": 1359,
+      "차이": 0.0017051234264928716,
+      "lo": -0.002671812957736086,
+      "hi": 0.006348321869034027,
+      "판정": "동률(CI가 0 포함)"
+    },
+    {
+      "비교": "Mean ensemble +Transformer − Mean ensemble",
+      "지표": "balanced_accuracy",
+      "n": 1359,
+      "차이": -0.0015858679965172762,
+      "lo": -0.014372755021794173,
+      "hi": 0.010344712983727774,
+      "판정": "동률(CI가 0 포함)"
+    },
+    {
+      "비교": "Transformer − Mean ensemble",
+      "지표": "log_loss",
+      "n": 1359,
+      "차이": 0.025697714145095363,
+      "lo": 0.012622303864828427,
+      "hi": 0.04027905362582011,
+      "판정": "유의하게 열위"
+    },
+    {
+      "비교": "Transformer − Mean ensemble",
+      "지표": "balanced_accuracy",
+      "n": 1359,
+      "차이": -0.01966855633495357,
+      "lo": -0.04084136984219845,
+      "hi": 0.0016884375023676881,
+      "판정": "동률(CI가 0 포함)"
+    },
+    {
+      "비교": "Transformer − Always flat",
+      "지표": "log_loss",
+      "n": 1359,
+      "차이": -0.05448172276988905,
+      "lo": -0.07523327281443642,
+      "hi": -0.0345764932861485,
+      "판정": "유의하게 우위"
+    },
+    {
+      "비교": "Transformer − Always flat",
+      "지표": "balanced_accuracy",
+      "n": 1359,
+      "차이": 0.11194859212865471,
+      "lo": 0.0872895189661894,
+      "hi": 0.13671470772475533,
+      "판정": "유의하게 우위"
+    }
+  ],
+  "verdict": "동률 — 현재 구성 유지 (CI가 0을 포함)"
+}

@@ -21,6 +21,7 @@
   --series-1:#2a78d6;
   --series-2:#eb6834;
   --series-3:#1baf7a;
+  --series-4:#eda100;
 }
 @media (prefers-color-scheme:dark){
   :root:not([data-theme="light"]){
@@ -38,6 +39,7 @@
     --series-1:#3987e5;
     --series-2:#d95926;
     --series-3:#199e70;
+    --series-4:#c98500;
   }
 }
 *{box-sizing:border-box}
@@ -188,7 +190,8 @@ a{color:var(--accent)}
   var PAGES = [
     { key: "main",     name: "메인",       color: "var(--series-1)" },
     { key: "samsung",  name: "삼성전자",   color: "var(--series-2)" },
-    { key: "sk_hynix", name: "SK하이닉스", color: "var(--series-3)" }
+    { key: "sk_hynix", name: "SK하이닉스", color: "var(--series-3)" },
+    { key: "trends",   name: "급상승 검색어", color: "var(--series-4)" }
   ];
   var PAGE_BY_KEY = {};
   PAGES.forEach(function (p) { PAGE_BY_KEY[p.key] = p; });

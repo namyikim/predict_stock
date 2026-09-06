@@ -385,6 +385,27 @@ python -m unittest discover -s tests -v
 
 한 종목이 실패해도 다른 종목은 끝까지 돈다(`fail-fast: false`).
 
+### 인기 급상승 검색어 보고서
+
+`tools/build_trends_report.py`가 구글 트렌드 RSS를 받아 `docs/trends/`에 발행한다.
+같은 워크플로의 별도 잡으로 돌며, 예측 보고서가 실패해도 이것은 갱신된다.
+
+```bash
+python tools/build_trends_report.py --out runs/trends            # 로컬에만 저장
+python tools/build_trends_report.py --out runs/trends --publish  # 저장소에 발행
+```
+
+Google Trends의 관심도 시계열(0~100)에는 공식 API가 없고 비공식 스크래퍼는 클라우드
+IP에서 자주 막힌다. 반면 **인기 급상승 검색어는 RSS로 공개**되어 있어 스크래핑 없이
+받을 수 있다. 그래서 이쪽만 쓴다.
+
+- 피드는 **하루 전체 순위가 아니라 조회 시점 기준 최근 급상승 10건**이다(관측상 1시간
+  남짓 구간). 보고서에도 그렇게 적어 둔다.
+- 검색량은 구글이 반올림한 근사치(`100+`, `1000+` …)다.
+- 피드 내용은 외부 입력이므로 전부 이스케이프하고, 뉴스 링크는 `http(s)`만 통과시킨다.
+  스킴 검사는 파싱과 렌더링 양쪽에서 한다.
+- 항목이 하나도 오지 않으면 발행하지 않는다. 멀쩡한 보고서를 빈 것으로 덮어쓰지 않기 위함이다.
+
 ### 환경 차이 추적
 
 Colab과 Actions는 라이브러리 버전이 다르다(Actions는 `requirements.txt` 고정 버전,

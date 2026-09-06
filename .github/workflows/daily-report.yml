@@ -101,3 +101,39 @@ jobs:
             200|201|409) echo "Pages 재빌드 요청 완료" ;;
             *) echo "::warning::Pages 재빌드 요청이 거부되었습니다($code). 브랜치 배포 설정이면 잠시 뒤 자동으로 반영될 수 있습니다." ;;
           esac
+
+  # 예측 보고서와 독립적으로 돈다. 종목 쪽이 실패해도(예: 월별 지표 없음)
+  # 검색어 보고서는 그대로 갱신되어야 한다.
+  trends:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+        # 표준 라이브러리만 쓰므로 pip install이 필요 없다.
+
+      - name: 인기 급상승 검색어 보고서
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python tools/build_trends_report.py --out runs/trends --geo KR --publish
+
+      - name: Pages 재빌드 요청
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+        run: |
+          # 예측 보고서 잡이 실패해도 이 커밋은 반영되어야 하므로 여기서도 요청한다.
+          # 이미 빌드가 걸려 있으면 409가 오는데 그건 실패가 아니다.
+          code=$(curl -sS -o /tmp/pages.json -w '%{http_code}' -X POST \
+            -H "Authorization: Bearer $GH_TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            "https://api.github.com/repos/$REPO/pages/builds")
+          echo "HTTP $code"
+          case "$code" in
+            200|201|409) echo "Pages 재빌드 요청 완료" ;;
+            *) echo "::warning::Pages 재빌드 요청 실패 ($code)" ;;
+          esac

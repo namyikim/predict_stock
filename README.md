@@ -148,6 +148,26 @@ month,value
 | `daily_forecast_comparison.csv` | 날짜·모델·예측 기간·설정별 최초 사전 예측만 뽑은 일별 비교 |
 | `forecast_accuracy_summary.csv` | 위 일별 기록의 누적 정확도, log loss, Brier, 가격 MAE/MAPE, 구간 적중률 |
 
+### 최신 보고서를 웹에서 보기 (GitHub Pages)
+
+노트북을 열지 않고 URL 하나로 최신 보고서를 볼 수 있습니다. 실행이 끝날 때 종합 보고서를 독립 HTML로 만들어 저장소에 올립니다.
+
+| 경로 | 내용 |
+| --- | --- |
+| `docs/index.html` | 항상 최신 보고서 |
+| `docs/reports/<예측일>.html` | 예측일별 보관본(같은 날 다시 돌리면 덮어씀) |
+
+**한 번만 설정하면 됩니다.** 저장소 **Settings → Pages → Source**를 `Deploy from a branch`, 브랜치 `main`, 폴더 `/docs`로 지정합니다. 그러면 아래 주소로 열립니다.
+
+```
+https://namyikim.github.io/predict_stock/
+```
+
+- 위 **예측 원장을 GitHub에 보관하기**의 `GITHUB_TOKEN` 설정이 되어 있어야 발행됩니다. 토큰이 없으면 발행만 건너뛰고 `report.html`은 로컬에 저장됩니다.
+- 끄려면 보고서 셀의 `PUBLISH_REPORT_TO_PAGES = False`로 두세요.
+- 보고서는 외부 자원을 쓰지 않는 단일 HTML이라 파일 하나만 열어도 그대로 보입니다. 넓은 표는 휴대폰에서 표 안에서만 좌우로 스크롤되고 페이지는 밀리지 않습니다.
+- **저장소가 공개면 이 페이지도 공개됩니다.** 비공개 저장소에서 Pages를 쓰려면 유료 플랜이 필요합니다.
+
 ### 예측 원장을 GitHub에 보관하기
 
 Colab 런타임은 삭제되면 `forecast_log.csv`도 함께 사라집니다. 사전 예측을 몇 달씩 쌓아 실제 성능을 확인하려면 원장을 저장소에 두어야 합니다. 설정하면 노트북이 **시작할 때 저장소에서 원장을 받아오고, 끝날 때 되돌려 올립니다.**

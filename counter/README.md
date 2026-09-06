@@ -9,7 +9,7 @@ Worker가 그 역할을 대신한다. 외부 카운터 서비스에 의존하지
 | `worker.js` | Cloudflare Worker 본체. 대시보드 편집기에 그대로 붙여넣는다. |
 | `schema.sql` | D1 테이블 정의. D1 Console에 그대로 붙여넣는다. |
 
-세는 단위는 **페이지 키**다(`main` / `samsung` / `sk_hynix` / `trends` / `interest`). 날짜별 보관본
+세는 단위는 **페이지 키**다(`main` / `samsung` / `sk_hynix` / `china` / `trends` / `interest`). 날짜별 보관본
 (`reports/<날짜>.html`)은 해당 종목 키로 합산된다.
 
 ## 개인정보
@@ -56,10 +56,10 @@ CREATE TABLE IF NOT EXISTS counters (page TEXT PRIMARY KEY, total INTEGER NOT NU
 ```
 
 ```sql
-INSERT OR IGNORE INTO counters (page, total) VALUES ('main', 0), ('samsung', 0), ('sk_hynix', 0), ('trends', 0), ('interest', 0);
+INSERT OR IGNORE INTO counters (page, total) VALUES ('main', 0), ('samsung', 0), ('sk_hynix', 0), ('china', 0), ('trends', 0), ('interest', 0);
 ```
 
-`SELECT * FROM counters;` 가 5행을 0으로 돌려주면 정상이다.
+`SELECT * FROM counters;` 가 6행을 0으로 돌려주면 정상이다.
 
 **이미 예전 안내로 표를 만들었다면** `region`·`city` 열과 인덱스가 없어 `/hit`가
 `no such column: region`으로 실패한다(보고서의 조회수가 "—"로만 보인다). 아래를 한 문장씩
@@ -78,7 +78,7 @@ CREATE INDEX IF NOT EXISTS idx_hits_visitor ON hits (visitor, page, day);
 ```
 
 ```sql
-INSERT OR IGNORE INTO counters (page, total) VALUES ('trends', 0), ('interest', 0);
+INSERT OR IGNORE INTO counters (page, total) VALUES ('china', 0), ('trends', 0), ('interest', 0);
 ```
 
 ### 2. Worker 만들기

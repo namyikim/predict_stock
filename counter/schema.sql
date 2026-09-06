@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS counters (
   total INTEGER NOT NULL DEFAULT 0
 );
 
-INSERT OR IGNORE INTO counters (page, total) VALUES ('main', 0), ('samsung', 0), ('sk_hynix', 0), ('trends', 0);
+INSERT OR IGNORE INTO counters (page, total) VALUES ('main', 0), ('samsung', 0), ('sk_hynix', 0), ('trends', 0), ('interest', 0);
 
 -- 이미 표를 만든 뒤에 위치 열을 추가하는 경우에만 아래 두 줄을 실행한다.
 -- (새로 만든 DB라면 위 CREATE TABLE에 이미 들어 있으므로 실행하면 오류가 난다.)

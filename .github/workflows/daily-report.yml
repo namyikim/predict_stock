@@ -71,6 +71,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           KOSIS_API_KEY: ${{ secrets.KOSIS_API_KEY }}
           PREDICT_STOCK_TARGETS: ${{ matrix.target }}
+          # 자동 감지(GITHUB_ACTIONS)로도 켜지지만, 발행 주체를 파일에 명시해 둔다.
+          PREDICT_STOCK_PUBLISH: "true"
           # 자동 실행은 사람이 출력을 지켜보지 않는다. 월별 지표가 빠진 채
           # 조용히 발행되면 다른 계보의 예측이 원장에 섞인다. 차라리 실패해서
           # 메일을 받는 편이 낫다. Colab은 지금까지처럼 계속 진행한다.

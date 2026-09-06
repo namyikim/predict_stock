@@ -118,6 +118,19 @@ GitHub Pages 반영에 1~2분 걸린다.
 
 ## 통계 보기
 
+### 대시보드
+
+```
+https://namyikim.github.io/predict_stock/admin/
+```
+
+`STATS_TOKEN`을 입력하면 요약·일별 추이·페이지별 누적·국가·유입 경로를 그래프로 보여준다.
+토큰은 브라우저를 벗어나지 않고, 저장 체크박스를 켰을 때만 이 브라우저의 localStorage에
+남는다. 페이지 자체는 공개되어 있지만 토큰 없이는 아무 데이터도 나오지 않는다.
+검색엔진에는 `noindex`로 막아 두었다.
+
+### API 직접 호출
+
 ```bash
 curl "https://predict-stock-counter.kimname1.workers.dev/stats?token=<STATS_TOKEN>&days=30"
 ```

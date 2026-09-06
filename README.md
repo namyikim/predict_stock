@@ -79,7 +79,7 @@ month,value
 1. 항상 보합을 예측하는 기준선 (학습 구간의 클래스 사전확률)
 2. 다항 로지스틱 회귀 — 과거 내부 3개 시계열 구간에서 `C`와 클래스 가중치를 선택
 3. LightGBM 분류기 — 과거 내부 검증에서 60/120트리와 클래스 가중치를 선택(7리프)
-4. 30거래일 특징 시퀀스를 사용하는 소형 Transformer Encoder — `RUN_TRANSFORMER`, 기본 꺼짐
+4. 30거래일 특징 시퀀스를 사용하는 소형 Transformer Encoder — `RUN_TRANSFORMER`, 기본 켜짐(비교·실험용, 앙상블 미포함)
 5. 금융 OHLCV 시계열 파운데이션 모델 [Kronos-small](https://github.com/shiyu-coder/Kronos)의 zero-shot 예측 — `RUN_KRONOS`, **기본 꺼짐**
 6. `ENSEMBLE_MODELS`의 확률을 **단순 평균**한 앙상블
 
@@ -134,6 +134,17 @@ month,value
 
 이 방식은 명백한 미래 정보 유입을 막기 위한 장치이지만, 실거래 환경의 거래비용, 체결 가능성, 데이터 발표 지연까지 완전히 모사하지는 않습니다.
 
+## Transformer 실험 기록
+
+13절이 매 실행마다 "Transformer를 넣은 3모델 평균 vs 현재 2모델 평균"의 log loss 쌍체 차이를
+월 블록 부트스트랩 95% CI로 재고, `experiments/transformer/<종목>/<run_id>.json`과
+`experiments/transformer/summary.csv`에 남긴다. 예측 원장·보고서와 별개의 기록이라 Colab에서도
+올린다(발행 계보가 섞이지 않는다). 판정 규칙은 8절과 같다 — CI가 0을 포함하면 동률.
+
+편입은 자동으로 하지 않는다. `summary.csv`에 같은 판정이 여러 실행에서 반복되면 그때
+`ENSEMBLE_MODELS`에 `"Transformer"`를 추가할지 정한다. 단, Actions에는 GPU가 없으므로 편입하면
+매일 발행을 어떻게 돌릴지(가중치 저장 후 추론만, 또는 CPU 학습 시간 측정)를 먼저 정해야 한다.
+
 ## Colab에서 매일 실행하기
 
 1. 수정된 `samsung_direction_model_colab.ipynb`를 Colab에 업로드합니다. 저장소에 변경을 게시한 뒤에는 위 Open in Colab 링크로도 열 수 있습니다.
@@ -157,7 +168,7 @@ RUN_TARGETS = ["samsung", "sk_hynix"]   # 순서대로 전부 실행
 TARGET = RUN_TARGETS[0]
 ```
 
-첫 종목은 노트북을 위에서 아래로 훑으며 처리되고, 나머지는 마지막 **14절** 셀이 설정 셀부터 보고서 셀까지를 종목만 바꿔 한 번 더 실행합니다. 한 종목만 원하면 목록에 하나만 남기세요.
+첫 종목은 노트북을 위에서 아래로 훑으며 처리되고, 나머지는 마지막 **15절** 셀이 설정 셀부터 실험 기록 셀까지를 종목만 바꿔 한 번 더 실행합니다. 한 종목만 원하면 목록에 하나만 남기세요.
 
 실행이 끝나면 노트북 변수(`live_table`, `predictions` 등)에는 **마지막 종목**의 결과가 남습니다. 앞 종목의 결과는 저장된 파일과 보고서에서 확인하세요.
 
@@ -274,7 +285,7 @@ python tools/run_notebook.py --storage samsung_direction_outputs
 | `NEUTRAL_BAND` | `0.005` | `fixed` 모드의 보합 범위(±0.5%) |
 | `LIVE_OPEN_PRICE` | `None` | `open_to_close` 모드의 필수 입력(예측일 09:00 시가). 없으면 중단합니다 |
 | `ENSEMBLE_MODELS` | `["Logistic", "LightGBM"]` | 단순 평균 앙상블에 넣을 모델 |
-| `RUN_TRANSFORMER` | `False` | Transformer 비교 실행 여부 |
+| `RUN_TRANSFORMER` | `True` | Transformer 실험 실행 여부. torch가 없으면(Actions) 자동으로 건너뛴다. 앙상블에 넣으려면 `ENSEMBLE_MODELS`에 추가해야 한다 |
 | `RUN_KRONOS` | `False` | Kronos-small 평가 실행 여부 |
 | `COST_BP` | `20.0` | 왕복 거래비용(bp). 한국 단일종목은 매도 거래세 0.15% 포함 |
 | `BOOTSTRAP_B` | `2000` | 월 블록 부트스트랩 반복수 |

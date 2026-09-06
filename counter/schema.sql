@@ -10,6 +10,8 @@ CREATE TABLE IF NOT EXISTS hits (
   ts       TEXT NOT NULL,          -- ISO8601 UTC
   day      TEXT NOT NULL,          -- YYYY-MM-DD (UTC) — 집계 편의용
   country  TEXT NOT NULL DEFAULT '',
+  region   TEXT NOT NULL DEFAULT '',   -- 시/도. IP 추정이라 대체로만 맞다
+  city     TEXT NOT NULL DEFAULT '',   -- 시/군/구. NAT·회사 회선 때문에 편차가 크다
   referrer TEXT NOT NULL DEFAULT '',
   ua       TEXT NOT NULL DEFAULT '',
   visitor  TEXT NOT NULL DEFAULT ''
@@ -24,3 +26,8 @@ CREATE TABLE IF NOT EXISTS counters (
 );
 
 INSERT OR IGNORE INTO counters (page, total) VALUES ('main', 0), ('samsung', 0), ('sk_hynix', 0);
+
+-- 이미 표를 만든 뒤에 위치 열을 추가하는 경우에만 아래 두 줄을 실행한다.
+-- (새로 만든 DB라면 위 CREATE TABLE에 이미 들어 있으므로 실행하면 오류가 난다.)
+-- ALTER TABLE hits ADD COLUMN region TEXT NOT NULL DEFAULT '';
+-- ALTER TABLE hits ADD COLUMN city TEXT NOT NULL DEFAULT '';

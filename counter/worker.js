@@ -7,6 +7,7 @@
 // 엔드포인트
 //   GET /hit?page=<키>     조회 1건을 기록하고 그 페이지의 누적 조회수를 돌려준다.
 //   GET /stats?token=<토큰> 최근 방문 통계를 JSON으로 돌려준다(비공개).
+//   GET /geo               호출자 자신의 대략적인 위치만 돌려준다(점검용).
 //
 // 바인딩(대시보드 Settings에서 설정)
 //   DB            D1 데이터베이스
@@ -53,6 +54,18 @@ async function visitorHash(request, salt, day) {
     .join("");
 }
 
+// Cloudflare가 IP로 추정해 붙여 주는 대략적인 위치. 정확도의 한계가 분명하다:
+// 시/도까지는 대체로 맞지만, 도시는 통신사 NAT나 회사 회선 때문에 실제와 다를 수 있고
+// 동 단위는 애초에 얻을 수 없다. 좌표도 도시 중심점이라 저장하지 않는다.
+function geoOf(request) {
+  const cf = request.cf || {};
+  return {
+    country: cf.country || "",
+    region: cf.region || "",
+    city: cf.city || "",
+  };
+}
+
 // 유입경로는 도메인까지만 남긴다. 전체 URL에는 검색어 같은 게 붙어 오는 일이 있다.
 function referrerHost(raw) {
   if (!raw) return "";
@@ -82,15 +95,19 @@ async function handleHit(request, env, url, origin) {
   const now = new Date();
   const day = now.toISOString().slice(0, 10);
   const visitor = await visitorHash(request, env.VISITOR_SALT || "no-salt", day);
+  const geo = geoOf(request);
 
   const results = await env.DB.batch([
     env.DB.prepare(
-      "INSERT INTO hits (page, ts, day, country, referrer, ua, visitor) VALUES (?, ?, ?, ?, ?, ?, ?)"
+      "INSERT INTO hits (page, ts, day, country, region, city, referrer, ua, visitor) " +
+        "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"
     ).bind(
       page,
       now.toISOString(),
       day,
-      request.cf && request.cf.country ? request.cf.country : "",
+      geo.country,
+      geo.region,
+      geo.city,
       referrerHost(request.headers.get("Referer")),
       ua.slice(0, 300),
       visitor
@@ -115,7 +132,7 @@ async function handleStats(env, url, origin) {
   const days = Math.min(Math.max(parseInt(url.searchParams.get("days") || "30", 10), 1), 365);
   const since = new Date(Date.now() - days * 86400000).toISOString().slice(0, 10);
 
-  const [totals, daily, countries, referrers] = await env.DB.batch([
+  const [totals, daily, countries, regions, cities, referrers] = await env.DB.batch([
     env.DB.prepare("SELECT page, total FROM counters ORDER BY total DESC"),
     env.DB.prepare(
       "SELECT day, page, COUNT(*) AS views, COUNT(DISTINCT visitor) AS visitors " +
@@ -124,6 +141,14 @@ async function handleStats(env, url, origin) {
     env.DB.prepare(
       "SELECT country, COUNT(*) AS views FROM hits WHERE day >= ? AND country <> '' " +
         "GROUP BY country ORDER BY views DESC LIMIT 30"
+    ).bind(since),
+    env.DB.prepare(
+      "SELECT region, COUNT(*) AS views FROM hits WHERE day >= ? AND region <> '' " +
+        "GROUP BY region ORDER BY views DESC LIMIT 30"
+    ).bind(since),
+    env.DB.prepare(
+      "SELECT city, COUNT(*) AS views FROM hits WHERE day >= ? AND city <> '' " +
+        "GROUP BY city ORDER BY views DESC LIMIT 30"
     ).bind(since),
     env.DB.prepare(
       "SELECT referrer, COUNT(*) AS views FROM hits WHERE day >= ? AND referrer <> '' " +
@@ -138,10 +163,25 @@ async function handleStats(env, url, origin) {
       totals: totals.results,
       daily: daily.results,
       countries: countries.results,
+      regions: regions.results,
+      cities: cities.results,
       referrers: referrers.results,
     },
     origin
   );
+}
+
+// 호출자 자신의 위치만 돌려준다. 다른 방문자 정보는 나오지 않으며, Cloudflare가
+// 이 계정에서 시/도·도시를 실제로 채워 주는지 확인하기 위한 점검용이다.
+function handleGeo(request, origin) {
+  const cf = request.cf || {};
+  return json({
+    country: cf.country || "",
+    region: cf.region || "",
+    city: cf.city || "",
+    timezone: cf.timezone || "",
+    colo: cf.colo || "",
+  }, origin);
 }
 
 export default {
@@ -159,6 +199,7 @@ export default {
     try {
       if (url.pathname === "/hit") return await handleHit(request, env, url, origin);
       if (url.pathname === "/stats") return await handleStats(env, url, origin);
+      if (url.pathname === "/geo") return handleGeo(request, origin);
       return json({ error: "not found" }, origin, 404);
     } catch (err) {
       // 카운터가 실패해도 보고서 페이지는 그대로 보여야 하므로, 오류를 조용히 JSON으로 돌려준다.

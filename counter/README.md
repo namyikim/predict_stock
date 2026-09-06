@@ -151,6 +151,23 @@ FROM hits WHERE day >= date('now', '-14 day')
 GROUP BY day, page ORDER BY day DESC;
 ```
 
+## 위치 정보
+
+`hits.region`(시/도)과 `hits.city`(시/군/구)는 Cloudflare가 IP로 추정해 붙여 주는 값이다.
+정확도의 한계가 분명하다.
+
+- **시/도**는 대체로 맞는다. 분포를 보는 용도로는 쓸 만하다.
+- **시/군/구**는 참고용이다. 모바일 통신사 NAT나 회사 회선을 거치면 실제와 크게 다르다.
+- **동 단위는 얻을 수 없다.** IP 기반 추정의 해상도 한계이며, 브라우저 위치권한(GPS)을
+  받지 않는 한 방법이 없다. 좌표도 도시 중심점이라 저장하지 않는다.
+
+`/geo` 엔드포인트는 **호출자 자신의** 위치만 돌려준다(다른 방문자 정보는 나오지 않는다).
+Cloudflare가 이 계정에서 시/도·도시를 실제로 채워 주는지 확인할 때 쓴다.
+
+```bash
+curl "https://predict-stock-counter.kimname1.workers.dev/geo"
+```
+
 ## 운영 메모
 
 - **봇 제외** — User-Agent로 명백한 크롤러를 걸러 집계에서 뺀다. 봇에게도 현재

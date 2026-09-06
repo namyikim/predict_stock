@@ -154,6 +154,15 @@ a{color:var(--accent)}
   <h2>국가</h2>
   <div class="chart-box" id="chart-countries"></div>
 
+  <h2>시 / 도</h2>
+  <div class="hint">IP로 추정한 값입니다. 대체로 맞지만 정확하지는 않습니다.</div>
+  <div class="chart-box" id="chart-regions"></div>
+
+  <h2>시 / 군 / 구</h2>
+  <div class="hint">참고용입니다. 통신사 NAT나 회사 회선을 거치면 실제 위치와 크게 달라집니다.
+    동 단위는 IP만으로는 알 수 없습니다.</div>
+  <div class="chart-box" id="chart-cities"></div>
+
   <h2>유입 경로</h2>
   <div class="hint">주소 직접 입력·북마크·메신저로 들어온 방문은 출처가 남지 않아 여기 나오지 않습니다.</div>
   <div id="referrers"></div>
@@ -385,6 +394,7 @@ a{color:var(--accent)}
   function render(data, days) {
     var totals = data.totals || [], daily = data.daily || [];
     var countries = data.countries || [], referrers = data.referrers || [];
+    var regions = data.regions || [], cities = data.cities || [];
 
     var allTime = totals.reduce(function (a, r) { return a + r.total; }, 0);
     var periodViews = daily.reduce(function (a, r) { return a + r.views; }, 0);
@@ -413,6 +423,16 @@ a{color:var(--accent)}
     drawBars("chart-countries", countries.map(function (r) {
       return { name: r.country, value: r.views, color: "var(--series-1)" };
     }), { labelW: 52, empty: "기간 내 국가 정보가 없습니다.", label: "국가별 조회수" });
+
+    // 위치 열은 나중에 추가했으므로, 그 이전 방문 기록에는 값이 없다.
+    var geoEmpty = "아직 기록이 없습니다. 위치 수집을 켠 뒤의 방문부터 쌓입니다.";
+    drawBars("chart-regions", regions.map(function (r) {
+      return { name: r.region, value: r.views, color: "var(--series-1)" };
+    }), { labelW: 110, empty: geoEmpty, label: "시/도별 조회수" });
+
+    drawBars("chart-cities", cities.map(function (r) {
+      return { name: r.city, value: r.views, color: "var(--series-1)" };
+    }), { labelW: 110, empty: geoEmpty, label: "시/군/구별 조회수" });
 
     $("referrers").innerHTML = referrers.length
       ? '<table><thead><tr><th>출처</th><th class="num">조회수</th></tr></thead><tbody>' +

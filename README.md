@@ -79,7 +79,7 @@ month,value
 1. 항상 보합을 예측하는 기준선 (학습 구간의 클래스 사전확률)
 2. 다항 로지스틱 회귀 — 과거 내부 3개 시계열 구간에서 `C`와 클래스 가중치를 선택
 3. LightGBM 분류기 — 과거 내부 검증에서 60/120트리와 클래스 가중치를 선택(7리프)
-4. 30거래일 특징 시퀀스를 사용하는 소형 Transformer Encoder — `RUN_TRANSFORMER`, 기본 켜짐(비교·실험용, 앙상블 미포함)
+4. 30거래일 특징 시퀀스를 사용하는 소형 Transformer Encoder — `RUN_TRANSFORMER`, 기본 꺼짐(실험용, 앙상블 미포함)
 5. 금융 OHLCV 시계열 파운데이션 모델 [Kronos-small](https://github.com/shiyu-coder/Kronos)의 zero-shot 예측 — `RUN_KRONOS`, **기본 꺼짐**
 6. `ENSEMBLE_MODELS`의 확률을 **단순 평균**한 앙상블
 
@@ -140,6 +140,12 @@ month,value
 월 블록 부트스트랩 95% CI로 재고, `experiments/transformer/<종목>/<run_id>.json`과
 `experiments/transformer/summary.csv`에 남긴다. 예측 원장·보고서와 별개의 기록이라 Colab에서도
 올린다(발행 계보가 섞이지 않는다). 판정 규칙은 8절과 같다 — CI가 0을 포함하면 동률.
+
+**2026-09-06 첫 측정(삼성전자, Colab A100, 12폴드·25 epoch, 평가 1,362일):** Transformer 단독
+log loss 1.0849(Logistic 1.0321, LightGBM 1.0428), 3모델 평균 − 2모델 평균 = **+0.0091
+[+0.0044, +0.0141] → 편입 반대**. 확률 품질은 "항상 보합"과 동률이고 앙상블을 유의하게
+해친다. 그래서 `RUN_TRANSFORMER` 기본값을 다시 껐다. 다시 재려면 True로 두고 실행하거나
+Actions의 "Transformer 실험" 워크플로를 돌리면 같은 기록이 쌓인다.
 
 편입은 자동으로 하지 않는다. `summary.csv`에 같은 판정이 여러 실행에서 반복되면 그때
 `ENSEMBLE_MODELS`에 `"Transformer"`를 추가할지 정한다. 단, Actions에는 GPU가 없으므로 편입하면
@@ -285,7 +291,7 @@ python tools/run_notebook.py --storage samsung_direction_outputs
 | `NEUTRAL_BAND` | `0.005` | `fixed` 모드의 보합 범위(±0.5%) |
 | `LIVE_OPEN_PRICE` | `None` | `open_to_close` 모드의 필수 입력(예측일 09:00 시가). 없으면 중단합니다 |
 | `ENSEMBLE_MODELS` | `["Logistic", "LightGBM"]` | 단순 평균 앙상블에 넣을 모델 |
-| `RUN_TRANSFORMER` | `True` | Transformer 실험 실행 여부. torch가 없으면(Actions) 자동으로 건너뛴다. 앙상블에 넣으려면 `ENSEMBLE_MODELS`에 추가해야 한다 |
+| `RUN_TRANSFORMER` | `False` | Transformer 실험 실행 여부. True면 13절이 결과를 `experiments/`에 기록한다(torch 없는 Actions는 건너뜀). 2026-09-06 측정에서 편입 반대로 판정되어 껐다 |
 | `RUN_KRONOS` | `False` | Kronos-small 평가 실행 여부 |
 | `COST_BP` | `20.0` | 왕복 거래비용(bp). 한국 단일종목은 매도 거래세 0.15% 포함 |
 | `BOOTSTRAP_B` | `2000` | 월 블록 부트스트랩 반복수 |

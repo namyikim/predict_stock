@@ -101,7 +101,7 @@ class MacroTests(unittest.TestCase):
         self.assertNotIn('private-api-key', str(error.exception))
         self.assertTrue(error.exception.__suppress_context__)
 
-    def test_notebook_uses_all_seven_macro_features(self):
+    def test_notebook_uses_core_macro_features_including_acceleration(self):
         from test_pipeline_behavior import make_synthetic_raw, run_feature_cell
         months = pd.date_range('2019-01-01', '2025-05-01', freq='MS')
         monthly = pd.DataFrame({'month': months, 'value': 100 + np.sin(np.arange(len(months)))})
@@ -109,7 +109,9 @@ class MacroTests(unittest.TestCase):
         ns = run_feature_cell(raw, USE_MACRO_FEATURES=True,
                               macro_features=mu.macro_features,
                               macro_data={k: monthly for k in mu.MACRO_SERIES})
-        self.assertEqual(sum(c.startswith('macro_') for c in ns['feature_cols']), 7)
+        self.assertIn('macro_semiconductor_yoy_change_1m', ns['feature_cols'])
+        self.assertIn('macro_semiconductor_yoy_change_3m', ns['feature_cols'])
+        self.assertIn('macro_leading_cycle', ns['feature_cols'])
         self.assertEqual(ns['live_row'].filter(like='macro_').isna().sum().sum(), 0)
 
 

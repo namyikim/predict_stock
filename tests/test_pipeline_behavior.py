@@ -112,6 +112,9 @@ def run_feature_cell(raw, **overrides):
     # 분기한다. 앞 셀에서 정해지는 값이므로 여기서 기본값을 넣어 준다.
     ns.setdefault("MACRO_STRICT", False)
     ns.setdefault("MACRO_ACTIVE", bool(ns.get("USE_MACRO_FEATURES")))
+    from macro_utils import OPTIONAL_MACRO_SERIES
+    ns.setdefault("OPTIONAL_MACRO_SERIES", OPTIONAL_MACRO_SERIES)
+    ns.setdefault("macro_info", {"enabled": ns["MACRO_ACTIVE"]})
     exec(compile(cell, "cell-features", "exec"), ns)
     return ns
 

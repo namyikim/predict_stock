@@ -136,6 +136,64 @@ def calibrate_price_forecast(y, prediction, sigma, dates, horizon, ci_function, 
     }
 
 
+def price_macro_ablation(X, y, sigma, dates, feature_names, horizon, estimator,
+                         ci_function, n_splits=5, coverage=.8):
+    """Paired macro-vs-market price evaluation; never choose deployment on the final test.
+
+    Uses identical rows, purged chronological folds and separate calibration/gating for
+    both models. Errors are in return units (0.01 = one percentage point), not currency.
+    """
+    from sklearn.base import clone
+    from sklearn.model_selection import TimeSeriesSplit
+    X, y, sigma = np.asarray(X), np.asarray(y), np.asarray(sigma)
+    dates = pd.DatetimeIndex(dates)
+    market = [i for i, name in enumerate(feature_names) if not name.startswith('macro_')]
+    if not market or len(market) == len(feature_names):
+        raise ValueError('Both market and macro features are required for comparison')
+    if (len(X) != len(y) or len(y) != len(sigma) or len(dates) != len(y)
+            or not dates.is_monotonic_increasing or not dates.is_unique
+            or not np.isfinite(X).all() or not np.isfinite(y).all()
+            or not np.isfinite(sigma).all() or np.any(sigma <= 0)):
+        raise ValueError('Comparison requires aligned finite rows and positive volatility')
+    splits = list(TimeSeriesSplit(n_splits=n_splits, gap=horizon - 1).split(X))
+    outputs, stats = {}, {}
+    mask = np.zeros(len(y), dtype=bool)
+    for _, valid in splits:
+        mask[valid] = True
+    for name, columns in [('macro', np.arange(X.shape[1])), ('market', market)]:
+        oof = np.full(len(y), np.nan)
+        for train, valid in splits:
+            fitted = clone(estimator).fit(X[train][:, columns], y[train] / sigma[train])
+            oof[valid] = fitted.predict(X[valid][:, columns]) * sigma[valid]
+        outputs[name] = oof[mask]
+        stats[name] = calibrate_price_forecast(y[mask], oof[mask], sigma[mask], dates[mask],
+                                               horizon, ci_function, coverage=coverage)
+    rows = pd.DataFrame({'actual_return': y[mask], 'macro_raw': outputs['macro'],
+                         'market_raw': outputs['market']}, index=dates[mask])
+    rows.index.name = 'prediction_date'
+    start = stats['macro']['evaluation_start']
+    rows['is_evaluation'] = np.arange(len(rows)) >= start
+    summary = {'horizon_days': int(horizon), 'n_evaluation': len(rows) - start,
+               'evaluation_start': rows.index[start].date().isoformat(),
+               'evaluation_end': rows.index[-1].date().isoformat(), 'unit': 'return',
+               'comparison': 'macro_minus_market', 'deployment_changed': False}
+    for name in outputs:
+        rows[name + '_center'] = outputs[name] * stats[name]['oof_slope']
+        summary[name + '_slope'] = stats[name]['oof_slope']
+        summary[name + '_signal'] = stats[name]['beats_baseline']
+        summary[name + '_interval_coverage'] = stats[name]['band_coverage_realized']
+    evaluation = rows.iloc[start:]
+    for label, suffix in [('raw', 'raw'), ('center', 'center')]:
+        macro_error = np.abs(evaluation.actual_return - evaluation['macro_' + suffix]).to_numpy()
+        market_error = np.abs(evaluation.actual_return - evaluation['market_' + suffix]).to_numpy()
+        delta = macro_error - market_error
+        low, high = ci_function(evaluation.index, lambda i: float(delta[i].mean()))
+        summary.update({label + '_mae_delta': float(delta.mean()), label + '_mae_delta_lo': float(low),
+                        label + '_mae_delta_hi': float(high), label + '_macro_mae': float(macro_error.mean()),
+                        label + '_market_mae': float(market_error.mean())})
+    return summary, rows
+
+
 def har_sigma_forecast(returns, horizon, refit_every=60, min_train=500):
     """h거래일 수익률의 스케일(sigma)을 HAR로 예측한다. (시계열, 다음 시점 예측값) 반환.
 

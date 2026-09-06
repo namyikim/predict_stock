@@ -18,7 +18,12 @@ MACRO_SERIES = {
     'semiconductor_exports': {'orgId': '127', 'tblId': 'DT_092_115_2009_S023',
                               'name': '반도체', 'itmId': '13103131003T1', 'unit': 'USD'},
 }
-MACRO_HISTORY_NOTE = 'lagged_latest_vintage: 월+2 첫날부터 사용, 과거 수정치 누출 가능; 실시간 실적으로 재검증 필요'
+OPTIONAL_MACRO_SERIES = {
+    'daily_exports': {'name': '한국 일평균 수출액', 'unit': 'USD per working day'},
+    'oecd_g20_cli': {'name': 'OECD Major G20 CLI (amplitude adjusted)', 'unit': 'long-term average=100'},
+}
+MACRO_HISTORY_NOTE = ('발표 이력 CSV는 각 발표/수정 시각 이후 사용. 이력이 없는 자료는 '
+                      'lagged_latest_vintage(월+2 첫날) 가정이며 과거 수정치 누출 가능; 실시간 재검증 필요')
 
 
 def kosis_key():
@@ -58,17 +63,31 @@ def _series_rows(rows, series):
 
 
 def normalize_monthly(frame):
-    out = frame[['month', 'value']].copy()
+    columns = ['month', 'value'] + [c for c in ('released_at', 'vintage', 'source') if c in frame]
+    out = frame[columns].copy()
     months = out['month'].astype(str).str.replace(r'^(\d{4})[./](\d{1,2})$', r'\1-\2', regex=True)
     months = months.str.replace(r'^(\d{4})(\d{2})$', r'\1-\2', regex=True)
     out['month'] = pd.to_datetime(months, format='mixed', errors='raise').dt.to_period('M').dt.to_timestamp()
     out['value'] = pd.to_numeric(out['value'].astype(str).str.replace(',', ''), errors='coerce')
-    if out['month'].duplicated().any():
+    keys = ['month']
+    if 'released_at' in out:
+        releases = []
+        for value in out['released_at']:
+            stamp = pd.Timestamp(value)
+            if pd.isna(stamp) or stamp.tzinfo is None:
+                raise ValueError('released_at에는 시간대가 포함된 정확한 발표/수정 시각이 필요합니다.')
+            releases.append(stamp.tz_convert('UTC'))
+        out['released_at'] = pd.to_datetime(releases, utc=True)
+        earliest = (out['month'] + pd.offsets.MonthBegin(1)).dt.tz_localize('Asia/Seoul')
+        if (out['released_at'] < earliest).any():
+            raise ValueError('완결 월별 통계의 발표 시각이 해당 월 종료보다 빠릅니다.')
+        keys.append('released_at')
+    if out.duplicated(keys).any():
         raise ValueError('월별 통계에 같은 월이 중복됩니다. 하나의 지표/단위만 선택하세요.')
     out.loc[~np.isfinite(out.value) | (out.value <= 0), 'value'] = np.nan
     if out.value.notna().sum() == 0:
         raise ValueError('월별 통계에 유효한 양수 값이 없습니다.')
-    return out.sort_values('month').reset_index(drop=True)
+    return out.sort_values(keys).reset_index(drop=True)
 
 
 def parse_kosis_rows(rows, series):
@@ -113,6 +132,8 @@ def read_macro_csv(path, series):
     frame = pd.read_csv(io.StringIO(text), dtype=str)
     if {'month', 'value'}.issubset(frame.columns):
         return normalize_monthly(frame)
+    if series in OPTIONAL_MACRO_SERIES:
+        raise ValueError(f'{path.name}: month,value와 선택적 released_at 형식이 필요합니다.')
     month_cols = [c for c in frame if re.fullmatch(r'\d{4}[./-]\d{1,2}|\d{6}', c.strip())]
     target = MACRO_SERIES[series]['name'].replace(' ', '')
     mask = frame.apply(lambda col: col.fillna('').str.replace(' ', '').eq(target)).any(axis=1)
@@ -154,13 +175,34 @@ def load_macro_data(storage, start, end, use_cache=False):
             raise RuntimeError('월별 지표가 없습니다. Colab 보안 비밀에 KOSIS_API_KEY를 등록하거나 '
                                f'{local}에 공식 CSV를 저장하세요. 기존 모델만 실행하려면 USE_MACRO_FEATURES=False.')
         data[series].to_csv(cached, index=False)
+    optional_status = {}
+    for series in OPTIONAL_MACRO_SERIES:
+        local = storage / 'macro_inputs' / f'{series}.csv'
+        cached = cache / f'{series}.csv'
+        path = cached if use_cache and cached.exists() else local
+        if not path.exists():
+            optional_status[series] = 'not_provided'
+            continue
+        try:
+            frame = read_macro_csv(path, series)
+            frame.to_csv(cached, index=False)
+        except (ValueError, OSError, KeyError) as exc:
+            optional_status[series] = f'invalid:{type(exc).__name__}'
+            continue
+        data[series] = frame
+        sources[series] = 'explicit_cache_replay' if path == cached else 'user_csv'
+        optional_status[series] = 'loaded'
     combined = pd.concat([f.assign(series=s) for s, f in data.items()], ignore_index=True)
     payload = combined.to_csv(index=False)
     digest = hashlib.sha256(payload.encode()).hexdigest()[:20]
     snapshots = storage / 'macro_snapshots'
     snapshots.mkdir(parents=True, exist_ok=True)
     info = {'snapshot_hash': digest, 'retrieved_at_utc': pd.Timestamp.now(tz='UTC').isoformat(),
-            'history_note': MACRO_HISTORY_NOTE, 'sources': sources, 'series': MACRO_SERIES,
+            'history_note': MACRO_HISTORY_NOTE, 'sources': sources,
+            'series': {s: {**MACRO_SERIES, **OPTIONAL_MACRO_SERIES}[s] for s in data},
+            'optional_status': optional_status,
+            'availability_modes': {s: ('supplied_release_history' if 'released_at' in f else
+                                       'lagged_latest_vintage') for s, f in data.items()},
             'latest_month': {s: f.loc[f.value.notna(), 'month'].max().date().isoformat() for s, f in data.items()}}
     path = snapshots / f'{digest}.csv'
     if not path.exists():
@@ -169,31 +211,72 @@ def load_macro_data(storage, start, end, use_cache=False):
     return data, info
 
 
-def macro_features(data, dates, max_age_days=100):
-    """Conservative MONTH+2 alignment, not an assertion about actual release dates.
+def _monthly_features(series, monthly):
+    f = pd.DataFrame(index=monthly.index)
+    if series in ('leading_cycle', 'oecd_g20_cli'):
+        prefix = 'macro_leading' if series == 'leading_cycle' else 'macro_oecd_g20_cli'
+        f[prefix + ('_cycle' if series == 'leading_cycle' else '_level')] = monthly - 100
+        f[prefix + '_change_1m'] = monthly.diff()
+        f[prefix + '_change_3m'] = monthly.diff(3)
+    elif series in ('semiconductor_exports', 'daily_exports'):
+        prefix = 'macro_semiconductor' if series == 'semiconductor_exports' else 'macro_daily_exports'
+        f[prefix + '_log_usd'] = np.log(monthly)
+        yoy = monthly.pct_change(12, fill_method=None)
+        f[prefix + '_yoy'] = yoy
+        f[prefix + '_mom'] = monthly.pct_change(1, fill_method=None)
+        f[prefix + '_yoy_3m'] = yoy.rolling(3).mean()
+        f[prefix + '_yoy_change_1m'] = yoy.diff()
+        f[prefix + '_yoy_change_3m'] = yoy.diff(3)
+    else:
+        raise ValueError(f'Unknown macro series: {series}')
+    return f
 
-    All rolling operations use calendar months (including missing months). Values expire.
-    This is latest-vintage research; use immutable prospective forecasts to assess live value.
+
+def macro_features(data, dates, max_age_days=100, prediction_hour=7):
+    """Use releases known at the specified Seoul prediction hour; never backfill revisions.
+
+    Date-only monthly inputs retain the conservative MONTH+2 latest-vintage assumption.
+    Explicit released_at rows must contain the actual values published at those instants,
+    not today's revised values labelled with original publication dates.
     """
-    dates = pd.DatetimeIndex(dates).astype('datetime64[ns]')
+    if not 0 <= prediction_hour < 24:
+        raise ValueError('prediction_hour must be in [0, 24)')
+    dates = pd.DatetimeIndex(dates)
+    local = dates.tz_localize('Asia/Seoul') if dates.tz is None else dates.tz_convert('Asia/Seoul')
+    cutoff = (local.normalize() + pd.Timedelta(hours=prediction_hour)).tz_convert('UTC').as_unit('ns')
+    left = pd.DataFrame({'available_date': cutoff, '_order': np.arange(len(dates))}).sort_values('available_date')
     result = pd.DataFrame(index=dates)
     for series, frame in data.items():
-        monthly = normalize_monthly(frame).set_index('month').asfreq('MS')['value']
-        f = pd.DataFrame(index=monthly.index)
-        if series == 'leading_cycle':
-            f['macro_leading_cycle'] = monthly - 100
-            f['macro_leading_change_1m'] = monthly.diff()
-            f['macro_leading_change_3m'] = monthly.diff(3)
-        elif series == 'semiconductor_exports':
-            f['macro_semiconductor_log_usd'] = np.log(monthly)
-            f['macro_semiconductor_yoy'] = monthly.pct_change(12, fill_method=None)
-            f['macro_semiconductor_mom'] = monthly.pct_change(1, fill_method=None)
-            f['macro_semiconductor_yoy_3m'] = f['macro_semiconductor_yoy'].rolling(3).mean()
+        monthly = normalize_monthly(frame)
+        if 'released_at' not in monthly:
+            f = _monthly_features(series, monthly.set_index('month').asfreq('MS')['value'])
+            f.index = (f.index + pd.offsets.MonthBegin(2)).tz_localize('Asia/Seoul').tz_convert('UTC').as_unit('ns')
+            f['_expires'] = f.index + pd.Timedelta(days=max_age_days, hours=prediction_hour)
         else:
-            raise ValueError(f'Unknown macro series: {series}')
-        f.index = (f.index + pd.offsets.MonthBegin(2)).astype('datetime64[ns]')
-        joined = pd.merge_asof(pd.DataFrame({'available_date': dates}), f.rename_axis('available_date').reset_index(),
-                               on='available_date', direction='backward', tolerance=pd.Timedelta(days=max_age_days))
-        for col in f:
-            result[col] = joined[col].to_numpy()
+            events = []
+            known = pd.Series(dtype=float)
+            first_release = {}
+            for released, batch in monthly.sort_values('released_at').groupby('released_at', sort=True):
+                if released > cutoff.max():
+                    break
+                for row in batch.itertuples():
+                    known.loc[row.month] = row.value
+                    first_release.setdefault(row.month, released)
+                known = known.sort_index()
+                values = _monthly_features(series, known.asfreq('MS')).iloc[-1].to_dict()
+                values['available_date'] = released
+                # Revising an old month must not make an obsolete last observation fresh.
+                values['_expires'] = first_release[known.index[-1]] + pd.Timedelta(days=max_age_days)
+                events.append(values)
+            if not events:
+                cols = _monthly_features(series, pd.Series(dtype=float)).columns
+                result[cols] = np.nan
+                continue
+            f = pd.DataFrame(events).set_index('available_date')
+            f.index = pd.DatetimeIndex(f.index).as_unit('ns')
+        joined = pd.merge_asof(left, f.rename_axis('available_date').reset_index(),
+                               on='available_date', direction='backward').sort_values('_order')
+        valid = joined['available_date'] <= joined['_expires']
+        for col in f.columns.difference(['_expires'], sort=False):
+            result[col] = joined[col].where(valid).to_numpy()
     return result

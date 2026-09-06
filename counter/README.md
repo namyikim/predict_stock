@@ -33,7 +33,29 @@ Node·wrangler 없이 대시보드만으로 끝난다.
 대시보드 → **Storage & Databases → D1 SQL Database → Create**
 이름은 `predict-stock-counter`.
 
-만든 DB의 **Console** 탭에 [`schema.sql`](schema.sql) 내용을 붙여넣고 실행한다.
+만든 DB의 **Console** 탭에서 [`schema.sql`](schema.sql)의 문장을 **한 문장씩** 실행한다.
+
+콘솔에 파일을 통째로 붙여넣으면 줄바꿈이 사라지면서 `--` 주석이 뒤따르는 코드까지
+삼켜 `incomplete input: SQLITE_ERROR`가 난다. 주석을 빼고 한 줄로 만든 아래 네 문장을
+차례로 실행하는 편이 확실하다.
+
+```sql
+CREATE TABLE IF NOT EXISTS hits (id INTEGER PRIMARY KEY AUTOINCREMENT, page TEXT NOT NULL, ts TEXT NOT NULL, day TEXT NOT NULL, country TEXT NOT NULL DEFAULT '', referrer TEXT NOT NULL DEFAULT '', ua TEXT NOT NULL DEFAULT '', visitor TEXT NOT NULL DEFAULT '');
+```
+
+```sql
+CREATE INDEX IF NOT EXISTS idx_hits_day_page ON hits (day, page);
+```
+
+```sql
+CREATE TABLE IF NOT EXISTS counters (page TEXT PRIMARY KEY, total INTEGER NOT NULL DEFAULT 0);
+```
+
+```sql
+INSERT OR IGNORE INTO counters (page, total) VALUES ('main', 0), ('samsung', 0), ('sk_hynix', 0);
+```
+
+`SELECT * FROM counters;` 가 3행을 0으로 돌려주면 정상이다.
 
 ### 2. Worker 만들기
 

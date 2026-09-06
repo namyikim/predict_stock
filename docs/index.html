@@ -46,10 +46,10 @@ a{color:#1a5490}
 // 브라우저에서 한 번 호출하는 방식이다. 카운터가 죽어도 페이지는 그대로 보여야 하므로
 // 실패는 조용히 무시하고 자리표시자를 그대로 둔다.
 (function () {
-  var ENDPOINT = "https://predict-stock-counter.WORKERS-SUBDOMAIN.workers.dev";
+  var ENDPOINT = "https://predict-stock-counter.kimname1.workers.dev";
   var PAGE = "main";
   var el = document.getElementById("view-count");
-  if (!el || ENDPOINT.indexOf("WORKERS-SUBDOMAIN") >= 0) return;
+  if (!el || !ENDPOINT) return;
   fetch(ENDPOINT + "/hit?page=" + encodeURIComponent(PAGE))
     .then(function (r) { return r.ok ? r.json() : null; })
     .then(function (d) {

@@ -86,20 +86,27 @@ openssl rand -hex 32
 
 ### 4. 페이지에 Worker 주소 넣기
 
-Worker 주소는 `https://predict-stock-counter.<계정 서브도메인>.workers.dev` 형태다.
-Worker 개요 화면에 표시된다. 저장소 루트에서 아래를 실행해 자리표시자를 바꾼다.
+이 저장소에는 이미 배포된 주소가 들어가 있다.
 
-```bash
-grep -rl WORKERS-SUBDOMAIN . --exclude-dir=.git | xargs sed -i '' 's/WORKERS-SUBDOMAIN/<계정 서브도메인>/g'
+```
+https://predict-stock-counter.kimname1.workers.dev
 ```
 
-바뀌는 곳은 네 군데다.
+Worker를 다시 만들어 주소가 바뀌었다면 아래처럼 한 번에 바꾼다.
+
+```bash
+grep -rl 'predict-stock-counter\.[a-z0-9]*\.workers\.dev' -r . --exclude-dir=.git \
+  | xargs sed -i '' 's/predict-stock-counter\.[a-z0-9]*\.workers\.dev/predict-stock-counter.<새 서브도메인>.workers.dev/g'
+```
+
+주소가 들어가는 곳은 네 군데다.
 
 - `docs/index.html` — 메인 페이지
 - `docs/samsung/`, `docs/sk_hynix/` 의 `index.html`과 `reports/*.html` — 이미 발행된 보고서
 - `samsung_direction_model_colab.ipynb` 첫 셀의 `COUNTER_ENDPOINT` — 이후 실행에서 생성될 보고서
 
-자리표시자가 남아 있는 동안에는 카운터 코드가 호출을 하지 않는다(페이지는 정상 표시).
+카운터를 끄려면 주소를 빈 문자열로 두면 된다. 노트북은 `COUNTER_ENDPOINT = ""`,
+페이지 쪽은 스크립트의 `E`/`ENDPOINT` 값을 비우면 호출하지 않는다(페이지는 정상 표시).
 
 ### 5. 커밋과 배포
 
@@ -112,7 +119,7 @@ GitHub Pages 반영에 1~2분 걸린다.
 ## 통계 보기
 
 ```bash
-curl "https://predict-stock-counter.<계정 서브도메인>.workers.dev/stats?token=<STATS_TOKEN>&days=30"
+curl "https://predict-stock-counter.kimname1.workers.dev/stats?token=<STATS_TOKEN>&days=30"
 ```
 
 돌려주는 값은 다음과 같다.

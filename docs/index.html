@@ -19,6 +19,7 @@ a.card:hover{border-color:#1a5490;background:#f8fafc}
       font-size:13px;color:#6b7178}
 .foot{margin-top:26px;padding-top:14px;border-top:1px solid #e5e5e5;
       font-size:12px;color:#8a9199}
+.views{margin-top:10px;font-variant-numeric:tabular-nums}
 a{color:#1a5490}
 </style></head><body><div class="wrap">
 <div class="eyebrow">DIRECTION &amp; PRICE FORECAST</div>
@@ -38,5 +39,23 @@ a{color:#1a5490}
   <a href="https://github.com/namyikim/predict_stock">저장소</a> ·
   <a href="https://github.com/namyikim/predict_stock/tree/main/forecast_history">예측 원장</a><br>
   연구·교육용입니다. 투자 자문이 아닙니다.
+  <div class="views">조회 <span id="view-count">—</span></div>
 </div>
-</div></body></html>
+</div><script>
+// 조회수는 Cloudflare Worker(counter/worker.js)가 센다. 정적 페이지에는 서버가 없어
+// 브라우저에서 한 번 호출하는 방식이다. 카운터가 죽어도 페이지는 그대로 보여야 하므로
+// 실패는 조용히 무시하고 자리표시자를 그대로 둔다.
+(function () {
+  var ENDPOINT = "https://predict-stock-counter.WORKERS-SUBDOMAIN.workers.dev";
+  var PAGE = "main";
+  var el = document.getElementById("view-count");
+  if (!el || ENDPOINT.indexOf("WORKERS-SUBDOMAIN") >= 0) return;
+  fetch(ENDPOINT + "/hit?page=" + encodeURIComponent(PAGE))
+    .then(function (r) { return r.ok ? r.json() : null; })
+    .then(function (d) {
+      if (d && typeof d.total === "number") el.textContent = d.total.toLocaleString("ko-KR");
+    })
+    .catch(function () {});
+})();
+</script>
+</body></html>

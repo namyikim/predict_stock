@@ -1,0 +1,97 @@
+name: 일일 보고서
+
+# 평일 아침에 종목별 보고서를 새로 만들어 GitHub Pages에 발행한다.
+# 21:30 UTC(일~목) = 06:30 KST(월~금). GitHub의 cron은 정시를 보장하지 않고
+# 수십 분씩 밀리는 일이 잦으므로, 장 시작(09:00 KST) 전에 여유를 두고 잡았다.
+on:
+  schedule:
+    - cron: "30 21 * * 0-4"
+  workflow_dispatch:
+    inputs:
+      targets:
+        description: "실행할 종목"
+        type: choice
+        default: "samsung,sk_hynix"
+        options:
+          - "samsung,sk_hynix"
+          - "samsung"
+          - "sk_hynix"
+
+permissions:
+  contents: write   # 원장·보고서를 Contents API로 커밋한다
+  pages: write      # 발행 뒤 Pages 재빌드를 요청한다
+
+# 겹쳐 돌면 같은 파일을 서로 덮어쓴다. 앞 실행이 끝날 때까지 기다린다.
+concurrency:
+  group: daily-report
+  cancel-in-progress: false
+
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    strategy:
+      fail-fast: false    # 한 종목이 실패해도 다른 종목은 끝까지 돌린다
+      max-parallel: 1     # github_put이 쓰기 직전에 sha를 읽으므로 순차가 안전하다
+      matrix:
+        target: [samsung, sk_hynix]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+          cache: pip
+
+      - name: 의존성 설치
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: 이번 종목이 대상인지 확인
+        id: gate
+        env:
+          # 입력값은 반드시 env로 넘긴다. run 스크립트에 직접 끼워 넣으면
+          # 입력이 셸 명령으로 해석될 수 있다.
+          WANTED: ${{ inputs.targets }}
+          THIS: ${{ matrix.target }}
+        run: |
+          wanted="${WANTED:-samsung,sk_hynix}"
+          if printf ',%s,' "$wanted" | grep -q ",$THIS,"; then
+            echo "run=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "run=false" >> "$GITHUB_OUTPUT"
+            echo "$THIS 은(는) 이번 실행 대상이 아닙니다."
+          fi
+
+      - name: 보고서 생성·발행
+        if: steps.gate.outputs.run == 'true'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          KOSIS_API_KEY: ${{ secrets.KOSIS_API_KEY }}
+          PREDICT_STOCK_TARGETS: ${{ matrix.target }}
+          MPLBACKEND: Agg
+        run: python tools/run_notebook.py --storage "runs/${{ matrix.target }}"
+
+      - name: Pages 재빌드 요청
+        if: steps.gate.outputs.run == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+        run: |
+          # 보고서는 git push가 아니라 Contents API로 커밋된다. GITHUB_TOKEN이
+          # 만든 커밋은 다른 워크플로를 트리거하지 않으므로, Pages 빌드가 자동으로
+          # 돌지 않을 수 있다. 그래서 명시적으로 한 번 요청한다.
+          # 이미 빌드가 걸려 있으면 409가 오는데 그건 실패가 아니다.
+          code=$(curl -sS -o /tmp/pages.json -w '%{http_code}' -X POST \
+            -H "Authorization: Bearer $GH_TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            "https://api.github.com/repos/$REPO/pages/builds")
+          echo "HTTP $code"
+          cat /tmp/pages.json || true
+          case "$code" in
+            200|201|409) echo "Pages 재빌드 요청 완료" ;;
+            *) echo "::warning::Pages 재빌드 요청이 거부되었습니다($code). 브랜치 배포 설정이면 잠시 뒤 자동으로 반영될 수 있습니다." ;;
+          esac

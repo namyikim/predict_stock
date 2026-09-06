@@ -357,3 +357,46 @@ python -m unittest discover -s tests -v
 ## 개발 시 노트북 동기화
 
 노트북은 단독 다운로드로 Colab에서 실행할 수 있도록 `forecast_utils.py`와 `macro_utils.py`의 소스를 포함합니다. 공통 함수를 수정한 뒤 `python tools/sync_notebook_helpers.py`를 실행하세요. 테스트가 소스 일치를 확인합니다. 모델 저장 파일은 estimator와 보정 온도를 담은 dict이며, 다시 불러온 뒤 `predict_direction_model(fitted, X)`로 예측합니다. 로컬 실행에서 월별 지표 없이 비교하려면 `python tools/run_notebook.py --storage ./outputs --no-macro`를 사용합니다.
+
+## 자동 실행 (GitHub Actions)
+
+평일 06:30 KST에 두 종목의 보고서를 새로 만들어 Pages에 발행한다.
+워크플로는 `.github/workflows/daily-report.yml`.
+
+수동 실행은 저장소 **Actions → 일일 보고서 → Run workflow**. 종목을 골라 돌릴 수 있다.
+
+### 준비물
+
+저장소 **Settings → Secrets and variables → Actions**에 하나만 등록하면 된다.
+
+| 시크릿 | 용도 |
+| --- | --- |
+| `KOSIS_API_KEY` | 월별 경기·반도체 수출 지표. 없으면 시세만으로 돌고 보고서에 사유가 남는다 |
+
+`GITHUB_TOKEN`은 Actions가 자동으로 넣어 주므로 따로 등록하지 않는다.
+
+### 구조
+
+`tools/run_notebook.py`가 Jupyter 없이 노트북 셀을 순서대로 실행한다. 종목은
+`PREDICT_STOCK_TARGETS` 환경변수로 넘긴다 — 노트북의 '이어서 실행' 셀은 IPython
+실행 히스토리에 기대므로 Jupyter 밖에서는 동작하지 않기 때문에, **종목마다 별도
+프로세스**로 돌린다. 두 종목은 순차로 실행한다(`max-parallel: 1`). `github_put`이
+쓰기 직전에 sha를 읽으므로 동시에 돌면 서로 덮어쓸 수 있다.
+
+한 종목이 실패해도 다른 종목은 끝까지 돈다(`fail-fast: false`).
+
+### 알아둘 점
+
+- **Yahoo Finance가 클라우드 IP를 막을 수 있다.** GitHub 러너 IP는 스로틀·차단
+  대상이 되는 일이 있다. 이 경우 자동 실행은 쓸 수 없고, 맥에서 launchd로
+  돌리는 쪽으로 바꿔야 한다.
+- **결과가 Colab과 정확히 같지 않을 수 있다.** Actions는 `requirements.txt`의
+  고정 버전을 쓰고 Colab은 런타임 기본 버전을 쓴다. 실제 사용 버전은 매 실행마다
+  원장과 보고서에 기록되므로 추적은 된다.
+- **cron은 정시를 보장하지 않는다.** 수십 분 밀리는 일이 잦아 장 시작(09:00 KST)
+  전에 여유를 두고 06:30으로 잡았다.
+- **Pages 재빌드를 명시적으로 요청한다.** 보고서는 git push가 아니라 Contents
+  API로 커밋되는데, `GITHUB_TOKEN`이 만든 커밋은 다른 워크플로를 트리거하지
+  않으므로 Pages 빌드가 자동으로 돌지 않을 수 있다.
+- **실패하면 GitHub이 저장소 소유자에게 메일을 보낸다.** 예약 실행이 실패했을 때
+  알림을 받는 기본 경로다.

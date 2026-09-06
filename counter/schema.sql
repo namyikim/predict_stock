@@ -6,7 +6,7 @@
 -- 날짜를 넘어 같은 사람을 이어붙일 수 없고, 하루 단위 순방문자만 셀 수 있다.
 CREATE TABLE IF NOT EXISTS hits (
   id       INTEGER PRIMARY KEY AUTOINCREMENT,
-  page     TEXT NOT NULL,          -- main / samsung / sk_hynix / china / trends / interest
+  page     TEXT NOT NULL,          -- main / samsung / sk_hynix / china / metals / trends / interest
   ts       TEXT NOT NULL,          -- ISO8601 UTC
   day      TEXT NOT NULL,          -- YYYY-MM-DD (UTC) — 집계 편의용
   country  TEXT NOT NULL DEFAULT '',
@@ -27,7 +27,7 @@ CREATE TABLE IF NOT EXISTS counters (
   total INTEGER NOT NULL DEFAULT 0
 );
 
-INSERT OR IGNORE INTO counters (page, total) VALUES ('main', 0), ('samsung', 0), ('sk_hynix', 0), ('china', 0), ('trends', 0), ('interest', 0);
+INSERT OR IGNORE INTO counters (page, total) VALUES ('main', 0), ('samsung', 0), ('sk_hynix', 0), ('china', 0), ('metals', 0), ('trends', 0), ('interest', 0);
 
 -- 이미 표를 만든 뒤에 위치 열을 추가하는 경우에만 아래 두 줄을 실행한다.
 -- (새로 만든 DB라면 위 CREATE TABLE에 이미 들어 있으므로 실행하면 오류가 난다.)

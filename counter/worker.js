@@ -32,7 +32,7 @@ const DEDUPE_MINUTES = 10;
 const RETENTION_DAYS = 400;
 
 // 페이지 키도 화이트리스트로 고정한다. 임의 키를 허용하면 남이 테이블을 부풀릴 수 있다.
-const ALLOWED_PAGES = ["main", "samsung", "sk_hynix", "china", "trends", "interest"];
+const ALLOWED_PAGES = ["main", "samsung", "sk_hynix", "china", "metals", "trends", "interest"];
 
 // 크롤러는 사람의 조회가 아니므로 세지 않는다. 완벽한 판별은 불가능하고, 목적은
 // 검색엔진·모니터링 봇이 만드는 명백한 과다 집계를 걷어내는 것이다.

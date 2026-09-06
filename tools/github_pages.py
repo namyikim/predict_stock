@@ -33,6 +33,17 @@ def _api(path, tok, method="GET", body=None):
         return json.loads(response.read().decode())
 
 
+def fetch(path, tok):
+    """저장소의 텍스트 파일을 돌려준다. 없으면 None."""
+    try:
+        data = _api(path, tok)
+    except Exception as exc:
+        if getattr(exc, "code", None) == 404:
+            return None
+        raise RuntimeError(f"조회 실패({type(exc).__name__} {getattr(exc, 'code', '')})") from None
+    return base64.b64decode(data["content"]).decode("utf-8")
+
+
 def publish(path, text, tok, message):
     """파일을 올리고 커밋 sha 앞 7자리를 돌려준다. 오류 문구에 토큰이 섞이지 않게 한다."""
     sha = None

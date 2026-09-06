@@ -385,6 +385,37 @@ python -m unittest discover -s tests -v
 
 한 종목이 실패해도 다른 종목은 끝까지 돈다(`fail-fast: false`).
 
+### 환경 차이 추적
+
+Colab과 Actions는 라이브러리 버전이 다르다(Actions는 `requirements.txt` 고정 버전,
+Colab은 런타임 기본값). 같은 코드·같은 시드라도 폴드별 지표가 움직이므로, 두 곳에서
+발행하면 서로 다른 수치 환경의 예측이 한 원장에 쌓인다.
+
+`config_hash`는 '무엇을 선택했는가'(특징 목록, 밴드, 시드, 지표 포함 여부)만 담아
+환경 차이를 구분하지 못한다. 그래서 원장에 두 열을 따로 둔다.
+
+| 열 | 값 |
+| --- | --- |
+| `runtime` | `colab` / `github-actions` / `local` (`PREDICT_STOCK_RUNTIME`으로 덮어쓸 수 있다) |
+| `versions_hash` | `VERSIONS`의 해시. 라이브러리가 바뀌면 값이 바뀐다 |
+
+정확도 집계(`summarize_daily`)는 여전히 `config_hash`로 그룹을 나눈다. 환경이 바뀌었다고
+"설정이 바뀌었다"고 기록하면 의미가 흐려지기 때문이다. 두 열은 결과가 갈렸을 때
+원인을 되짚기 위한 것이다.
+
+**발행은 한 곳에서만 하는 편이 낫다.** Actions를 단일 출처로 두고 Colab은 탐색용으로 쓰면
+원장에 하나의 계보만 쌓인다.
+
+### 월별 지표가 없을 때
+
+`KOSIS_API_KEY`가 없으면 기본값(`MACRO_STRICT=False`)에서는 경고만 남기고 시세 모델로
+계속 진행한다. 이때 `config_hash`가 달라지므로 정확도 집계에서 별개 계보로 채점된다 —
+섞이지는 않지만 이력이 두 갈래로 쪼개져 표본이 줄어든다.
+
+**자동 실행에서는 `PREDICT_STOCK_MACRO_STRICT=true`로 즉시 중단시킨다.** 사람이 출력을
+지켜보지 않으므로, 지표가 빠진 채 조용히 발행되느니 실패해서 메일을 받는 편이 낫다.
+Colab은 지금까지처럼 계속 진행한다.
+
 ### 알아둘 점
 
 - **Yahoo Finance가 클라우드 IP를 막을 수 있다.** GitHub 러너 IP는 스로틀·차단

@@ -1,0 +1,79 @@
+name: Transformer 실험
+
+# 수동으로만 돈다. 노트북 13절이 "Transformer를 넣은 3모델 평균 vs 현재 2모델 평균"을 재고
+# experiments/transformer/ 에 기록한다. 예측 원장·보고서는 건드리지 않는다(발행 스위치 off).
+#
+# Colab 대신 여기서 돌리는 이유: Colab은 브라우저와의 상호작용이 끊기면 세션을 지우는데,
+# 이 실행은 한 시간이 넘는다. Actions는 작업당 6시간까지 끊김 없이 돈다. GPU는 없지만
+# 이 Transformer는 30일 시퀀스의 소형 인코더라 CPU로도 학습된다(1~2시간 예상).
+on:
+  workflow_dispatch:
+    inputs:
+      targets:
+        description: "실험할 종목"
+        type: choice
+        default: "samsung"
+        options:
+          - "samsung"
+          - "sk_hynix"
+          - "samsung,sk_hynix"
+
+permissions:
+  contents: write   # 실험 기록을 Contents API로 커밋한다
+
+jobs:
+  experiment:
+    runs-on: ubuntu-latest
+    timeout-minutes: 330
+    strategy:
+      fail-fast: false
+      max-parallel: 1     # summary.csv를 읽고 쓰므로 순차가 안전하다
+      matrix:
+        target: [samsung, sk_hynix]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+          cache: pip
+
+      - name: 이번 종목이 대상인지 확인
+        id: gate
+        env:
+          WANTED: ${{ inputs.targets }}
+          THIS: ${{ matrix.target }}
+        run: |
+          if printf ',%s,' "${WANTED:-samsung}" | grep -q ",$THIS,"; then
+            echo "run=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "run=false" >> "$GITHUB_OUTPUT"
+            echo "$THIS 은(는) 이번 실행 대상이 아닙니다."
+          fi
+
+      - name: 의존성 설치 (CPU torch 포함)
+        if: steps.gate.outputs.run == 'true'
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install torch --index-url https://download.pytorch.org/whl/cpu
+
+      - name: 노트북 실행 (발행 없음, 실험 기록만 업로드)
+        if: steps.gate.outputs.run == 'true'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          KOSIS_API_KEY: ${{ secrets.KOSIS_API_KEY }}
+          PREDICT_STOCK_TARGETS: ${{ matrix.target }}
+          # 원장·Pages는 건드리지 않는다. 13절의 실험 기록은 이 스위치와 무관하게 올라간다.
+          PREDICT_STOCK_PUBLISH: "false"
+          # 매일 발행과 같은 피처로 재야 비교가 공정하다. 지표가 없으면 실패시킨다.
+          PREDICT_STOCK_MACRO_STRICT: "true"
+          MPLBACKEND: Agg
+        run: python tools/run_notebook.py --storage "runs/${{ matrix.target }}"
+
+      - name: 결과 요약
+        if: steps.gate.outputs.run == 'true'
+        run: |
+          echo "실험 기록: https://github.com/${{ github.repository }}/blob/main/experiments/transformer/summary.csv"
+          ls -la "runs/${{ matrix.target }}/experiments" 2>/dev/null || true

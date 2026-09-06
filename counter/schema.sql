@@ -6,7 +6,7 @@
 -- 날짜를 넘어 같은 사람을 이어붙일 수 없고, 하루 단위 순방문자만 셀 수 있다.
 CREATE TABLE IF NOT EXISTS hits (
   id       INTEGER PRIMARY KEY AUTOINCREMENT,
-  page     TEXT NOT NULL,          -- main / samsung / sk_hynix
+  page     TEXT NOT NULL,          -- main / samsung / sk_hynix / trends / interest
   ts       TEXT NOT NULL,          -- ISO8601 UTC
   day      TEXT NOT NULL,          -- YYYY-MM-DD (UTC) — 집계 편의용
   country  TEXT NOT NULL DEFAULT '',
@@ -18,6 +18,8 @@ CREATE TABLE IF NOT EXISTS hits (
 );
 
 CREATE INDEX IF NOT EXISTS idx_hits_day_page ON hits (day, page);
+-- 같은 방문자의 최근 조회를 찾는 데 쓴다(중복 억제).
+CREATE INDEX IF NOT EXISTS idx_hits_visitor ON hits (visitor, page, day);
 
 -- 누적 조회수. hits를 매번 COUNT(*) 하면 표가 커질수록 느려지므로 따로 둔다.
 CREATE TABLE IF NOT EXISTS counters (

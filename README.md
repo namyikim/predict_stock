@@ -360,7 +360,7 @@ python -m unittest discover -s tests -v
 
 ## 자동 실행 (GitHub Actions)
 
-평일 06:30 KST에 두 종목의 보고서를 새로 만들어 Pages에 발행한다.
+평일 07:00 KST에 두 종목의 보고서를 새로 만들어 Pages에 발행한다.
 워크플로는 `.github/workflows/daily-report.yml`.
 
 수동 실행은 저장소 **Actions → 일일 보고서 → Run workflow**. 종목을 골라 돌릴 수 있다.
@@ -371,7 +371,7 @@ python -m unittest discover -s tests -v
 
 | 시크릿 | 용도 |
 | --- | --- |
-| `KOSIS_API_KEY` | 월별 경기·반도체 수출 지표. 없으면 시세만으로 돌고 보고서에 사유가 남는다 |
+| `KOSIS_API_KEY` | 월별 경기·반도체 수출 지표. **자동 실행은 이것이 없으면 의도적으로 실패한다**(`PREDICT_STOCK_MACRO_STRICT=true`). 지표가 빠진 예측이 조용히 원장에 섞이느니 실패 메일을 받는 편이 낫기 때문이다. Colab에서는 없어도 시세만으로 돈다 |
 
 `GITHUB_TOKEN`은 Actions가 자동으로 넣어 주므로 따로 등록하지 않는다.
 
@@ -494,8 +494,9 @@ Colab은 지금까지처럼 계속 진행한다.
 - **결과가 Colab과 정확히 같지 않을 수 있다.** Actions는 `requirements.txt`의
   고정 버전을 쓰고 Colab은 런타임 기본 버전을 쓴다. 실제 사용 버전은 매 실행마다
   원장과 보고서에 기록되므로 추적은 된다.
-- **cron은 정시를 보장하지 않는다.** 수십 분 밀리는 일이 잦아 장 시작(09:00 KST)
-  전에 여유를 두고 06:30으로 잡았다.
+- **cron은 정시를 보장하지 않는다.** 수십 분 밀리는 일이 잦다. 07:00 KST로 잡은 것은
+  모델이 07:00 시점 예측이고, 미국 장 마감(겨울 06:00 KST)이 야후 일봉에 반영될
+  여유가 필요해서다. 밀려도 장 시작(09:00 KST) 전에는 끝난다.
 - **Pages 재빌드를 명시적으로 요청한다.** 보고서는 git push가 아니라 Contents
   API로 커밋되는데, `GITHUB_TOKEN`이 만든 커밋은 다른 워크플로를 트리거하지
   않으므로 Pages 빌드가 자동으로 돌지 않을 수 있다.

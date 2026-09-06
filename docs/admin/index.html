@@ -468,7 +468,8 @@ a{color:var(--accent)}
     $("go").disabled = true;
     say("info", "불러오는 중…");
 
-    fetch(ENDPOINT + "/stats?token=" + encodeURIComponent(token) + "&days=" + days)
+    // 토큰은 헤더로 보낸다. URL에 실으면 Worker 로그와 브라우저 기록에 남는다.
+    fetch(ENDPOINT + "/stats?days=" + days, { headers: { "Authorization": "Bearer " + token } })
       .then(function (r) {
         // Worker가 죽었거나 배포가 안 되어 있으면 JSON이 아닌 오류 페이지가 온다.
         // 그 경우 파서 예외가 그대로 노출되지 않도록 여기서 걸러 낸다.

@@ -9,7 +9,7 @@ Worker가 그 역할을 대신한다. 외부 카운터 서비스에 의존하지
 | `worker.js` | Cloudflare Worker 본체. 대시보드 편집기에 그대로 붙여넣는다. |
 | `schema.sql` | D1 테이블 정의. D1 Console에 그대로 붙여넣는다. |
 
-세는 단위는 **종목별 페이지**다(`main` / `samsung` / `sk_hynix`). 날짜별 보관본
+세는 단위는 **페이지 키**다(`main` / `samsung` / `sk_hynix` / `trends` / `interest`). 날짜별 보관본
 (`reports/<날짜>.html`)은 해당 종목 키로 합산된다.
 
 ## 개인정보
@@ -36,11 +36,11 @@ Node·wrangler 없이 대시보드만으로 끝난다.
 만든 DB의 **Console** 탭에서 [`schema.sql`](schema.sql)의 문장을 **한 문장씩** 실행한다.
 
 콘솔에 파일을 통째로 붙여넣으면 줄바꿈이 사라지면서 `--` 주석이 뒤따르는 코드까지
-삼켜 `incomplete input: SQLITE_ERROR`가 난다. 주석을 빼고 한 줄로 만든 아래 네 문장을
-차례로 실행하는 편이 확실하다.
+삼켜 `incomplete input: SQLITE_ERROR`가 난다. 주석을 빼고 한 줄로 만든 아래 다섯 문장을
+차례로 실행하는 편이 확실하다(`schema.sql`과 같은 내용이다).
 
 ```sql
-CREATE TABLE IF NOT EXISTS hits (id INTEGER PRIMARY KEY AUTOINCREMENT, page TEXT NOT NULL, ts TEXT NOT NULL, day TEXT NOT NULL, country TEXT NOT NULL DEFAULT '', referrer TEXT NOT NULL DEFAULT '', ua TEXT NOT NULL DEFAULT '', visitor TEXT NOT NULL DEFAULT '');
+CREATE TABLE IF NOT EXISTS hits (id INTEGER PRIMARY KEY AUTOINCREMENT, page TEXT NOT NULL, ts TEXT NOT NULL, day TEXT NOT NULL, country TEXT NOT NULL DEFAULT '', region TEXT NOT NULL DEFAULT '', city TEXT NOT NULL DEFAULT '', referrer TEXT NOT NULL DEFAULT '', ua TEXT NOT NULL DEFAULT '', visitor TEXT NOT NULL DEFAULT '');
 ```
 
 ```sql
@@ -48,14 +48,38 @@ CREATE INDEX IF NOT EXISTS idx_hits_day_page ON hits (day, page);
 ```
 
 ```sql
+CREATE INDEX IF NOT EXISTS idx_hits_visitor ON hits (visitor, page, day);
+```
+
+```sql
 CREATE TABLE IF NOT EXISTS counters (page TEXT PRIMARY KEY, total INTEGER NOT NULL DEFAULT 0);
 ```
 
 ```sql
-INSERT OR IGNORE INTO counters (page, total) VALUES ('main', 0), ('samsung', 0), ('sk_hynix', 0);
+INSERT OR IGNORE INTO counters (page, total) VALUES ('main', 0), ('samsung', 0), ('sk_hynix', 0), ('trends', 0), ('interest', 0);
 ```
 
-`SELECT * FROM counters;` 가 3행을 0으로 돌려주면 정상이다.
+`SELECT * FROM counters;` 가 5행을 0으로 돌려주면 정상이다.
+
+**이미 예전 안내로 표를 만들었다면** `region`·`city` 열과 인덱스가 없어 `/hit`가
+`no such column: region`으로 실패한다(보고서의 조회수가 "—"로만 보인다). 아래를 한 문장씩
+실행하면 된다.
+
+```sql
+ALTER TABLE hits ADD COLUMN region TEXT NOT NULL DEFAULT '';
+```
+
+```sql
+ALTER TABLE hits ADD COLUMN city TEXT NOT NULL DEFAULT '';
+```
+
+```sql
+CREATE INDEX IF NOT EXISTS idx_hits_visitor ON hits (visitor, page, day);
+```
+
+```sql
+INSERT OR IGNORE INTO counters (page, total) VALUES ('trends', 0), ('interest', 0);
+```
 
 ### 2. Worker 만들기
 
@@ -132,7 +156,7 @@ https://namyikim.github.io/predict_stock/admin/
 ### API 직접 호출
 
 ```bash
-curl "https://predict-stock-counter.kimname1.workers.dev/stats?token=<STATS_TOKEN>&days=30"
+curl -H "Authorization: Bearer <STATS_TOKEN>" "https://predict-stock-counter.kimname1.workers.dev/stats?days=30"
 ```
 
 돌려주는 값은 다음과 같다.

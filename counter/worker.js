@@ -5,17 +5,31 @@
 // 의존하지 않으므로 서비스가 사라질 걱정이 없고 원본 데이터도 저장소 소유자에게 남는다.
 //
 // 엔드포인트
-//   GET /hit?page=<키>     조회 1건을 기록하고 그 페이지의 누적 조회수를 돌려준다.
-//   GET /stats?token=<토큰> 최근 방문 통계를 JSON으로 돌려준다(비공개).
-//   GET /geo               호출자 자신의 대략적인 위치만 돌려준다(점검용).
+//   GET /hit?page=<키>   조회 1건을 기록하고 그 페이지의 누적 조회수를 돌려준다.
+//   GET /stats?days=30   최근 방문 통계를 JSON으로 돌려준다(비공개).
+//                        헤더 `Authorization: Bearer <STATS_TOKEN>` 필요. URL에 토큰을
+//                        싣지 않는다 — 쿼리스트링은 로그와 브라우저 기록에 남는다.
+//   GET /geo             호출자 자신의 대략적인 위치만 돌려준다(점검용).
+//
+// Cron Trigger(대시보드 Settings → Triggers → Cron Triggers, 예: `0 3 * * *`)를 걸면
+// 아래 scheduled()가 매일 오래된 조회 기록을 지운다(보관기간 관리).
 //
 // 바인딩(대시보드 Settings에서 설정)
 //   DB            D1 데이터베이스
 //   VISITOR_SALT  방문자 해시용 비밀값(시크릿)
 //   STATS_TOKEN   /stats 접근 토큰(시크릿)
 
-// 이 오리진에서 온 요청만 집계한다. 열어두면 아무 사이트나 우리 카운터를 올릴 수 있다.
+// 이 오리진에서 온 요청만 집계한다. 열어두면 아무 사이트나(혹은 curl 반복문이) 우리
+// 카운터를 올릴 수 있다. CORS 헤더는 브라우저의 *읽기*만 막을 뿐 요청 자체는 막지
+// 못하므로, 집계 전에 Origin/Referer를 직접 확인한다(countable 참고).
 const ALLOWED_ORIGINS = ["https://namyikim.github.io"];
+
+// 같은 방문자가 같은 페이지를 이 시간 안에 다시 열면 세지 않는다. 새로고침 연타나
+// 스크립트 반복 호출이 숫자를 부풀리는 것을 막는다.
+const DEDUPE_MINUTES = 10;
+
+// 조회 기록 보관 일수. 일별 통계용이라 이보다 오래된 행은 필요 없다.
+const RETENTION_DAYS = 400;
 
 // 페이지 키도 화이트리스트로 고정한다. 임의 키를 허용하면 남이 테이블을 부풀릴 수 있다.
 const ALLOWED_PAGES = ["main", "samsung", "sk_hynix", "trends", "interest"];
@@ -28,6 +42,7 @@ function corsHeaders(origin) {
   const allowed = ALLOWED_ORIGINS.includes(origin) ? origin : ALLOWED_ORIGINS[0];
   return {
     "Access-Control-Allow-Origin": allowed,
+    "Access-Control-Allow-Headers": "Authorization",
     "Vary": "Origin",
     // 카운터 응답이 CDN이나 브라우저에 캐시되면 숫자가 멈춘 것처럼 보인다.
     "Cache-Control": "no-store",
@@ -77,6 +92,24 @@ function referrerHost(raw) {
   }
 }
 
+// 브라우저의 교차 출처 fetch에는 Origin이 실린다. 없으면(대개 curl·스크립트)
+// Referer로 한 번 더 본다. 둘 다 허용 목록 밖이면 세지 않는다.
+function countable(request) {
+  const origin = request.headers.get("Origin") || "";
+  if (origin) return ALLOWED_ORIGINS.includes(origin);
+  try {
+    const ref = new URL(request.headers.get("Referer") || "");
+    return ALLOWED_ORIGINS.includes(ref.origin);
+  } catch {
+    return false;
+  }
+}
+
+async function currentTotal(env, page) {
+  const row = await env.DB.prepare("SELECT total FROM counters WHERE page = ?").bind(page).first();
+  return row ? row.total : 0;
+}
+
 async function handleHit(request, env, url, origin) {
   const page = url.searchParams.get("page") || "";
   if (!ALLOWED_PAGES.includes(page)) {
@@ -84,18 +117,22 @@ async function handleHit(request, env, url, origin) {
   }
 
   const ua = request.headers.get("User-Agent") || "";
-  if (BOT_PATTERN.test(ua)) {
-    // 봇에게도 현재 숫자는 돌려주되 집계에는 넣지 않는다.
-    const row = await env.DB.prepare("SELECT total FROM counters WHERE page = ?")
-      .bind(page)
-      .first();
-    return json({ page, total: row ? row.total : 0, counted: false }, origin);
+  if (BOT_PATTERN.test(ua) || !countable(request)) {
+    // 봇과 외부 호출에도 현재 숫자는 돌려주되 집계에는 넣지 않는다.
+    return json({ page, total: await currentTotal(env, page), counted: false }, origin);
   }
 
   const now = new Date();
   const day = now.toISOString().slice(0, 10);
   const visitor = await visitorHash(request, env.VISITOR_SALT || "no-salt", day);
   const geo = geoOf(request);
+
+  const recent = await env.DB.prepare(
+    "SELECT ts FROM hits WHERE visitor = ? AND page = ? AND day = ? ORDER BY id DESC LIMIT 1"
+  ).bind(visitor, page, day).first();
+  if (recent && now.getTime() - Date.parse(recent.ts) < DEDUPE_MINUTES * 60000) {
+    return json({ page, total: await currentTotal(env, page), counted: false }, origin);
+  }
 
   const results = await env.DB.batch([
     env.DB.prepare(
@@ -123,10 +160,12 @@ async function handleHit(request, env, url, origin) {
   return json({ page, total: row ? row.total : 0, counted: true }, origin);
 }
 
-async function handleStats(env, url, origin) {
+async function handleStats(request, env, url, origin) {
   // 통계는 공개 대상이 아니다. 토큰이 설정되지 않았으면 아예 막는다.
-  const token = url.searchParams.get("token") || "";
-  if (!env.STATS_TOKEN || token !== env.STATS_TOKEN) {
+  // 토큰은 헤더로만 받는다. 쿼리스트링에 실으면 로그와 브라우저 기록에 남는다.
+  const auth = request.headers.get("Authorization") || "";
+  const token = auth.startsWith("Bearer ") ? auth.slice(7).trim() : "";
+  if (!env.STATS_TOKEN || !token || token !== env.STATS_TOKEN) {
     return json({ error: "unauthorized" }, origin, 401);
   }
   const days = Math.min(Math.max(parseInt(url.searchParams.get("days") || "30", 10), 1), 365);
@@ -198,12 +237,19 @@ export default {
 
     try {
       if (url.pathname === "/hit") return await handleHit(request, env, url, origin);
-      if (url.pathname === "/stats") return await handleStats(env, url, origin);
+      if (url.pathname === "/stats") return await handleStats(request, env, url, origin);
       if (url.pathname === "/geo") return handleGeo(request, origin);
       return json({ error: "not found" }, origin, 404);
     } catch (err) {
       // 카운터가 실패해도 보고서 페이지는 그대로 보여야 하므로, 오류를 조용히 JSON으로 돌려준다.
       return json({ error: String(err && err.message ? err.message : err) }, origin, 500);
     }
+  },
+
+  // Cron Trigger가 부른다. 누적 조회수(counters)는 그대로 두고, 일별 통계에 더는
+  // 쓰이지 않는 오래된 조회 기록만 지운다.
+  async scheduled(event, env) {
+    const cutoff = new Date(Date.now() - RETENTION_DAYS * 86400000).toISOString().slice(0, 10);
+    await env.DB.prepare("DELETE FROM hits WHERE day < ?").bind(cutoff).run();
   },
 };

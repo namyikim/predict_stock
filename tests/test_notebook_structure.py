@@ -64,6 +64,11 @@ class NotebookStructureTests(unittest.TestCase):
                 self.assertLess(payload / 1024, budget,
                                 f"셀 {index}의 출력이 {payload/1024:.0f}KB입니다(상한 {budget}KB).")
 
+    def test_report_warns_when_it_is_old(self):
+        """자동 발행이 실패하면 Pages에는 옛 보고서가 남는다. 보는 쪽에서 알 수 있어야 한다."""
+        self.assertIn('id="stale-note"', self.source)
+        self.assertIn("prediction_date.date().isoformat()", self.source)
+
     def test_configuration_switches_exist(self):
         for setting in (
             "TARGET_MODE", "BAND_MODE", "VOL_BAND_MULT", "LIVE_OPEN_PRICE",

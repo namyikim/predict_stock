@@ -34,7 +34,7 @@ sys.path.insert(0, str(ROOT / "tools"))
 import github_pages  # noqa: E402
 from forecast_utils import (  # noqa: E402
     append_forecasts, atomic_csv, calibrate_price_forecast, daily_comparison, evaluate_forecasts,
-    fit_direction_model, predict_direction_model, probability_loss, summarize_daily,
+    fit_direction_model, predict_direction_model, probability_loss, review_ledger, summarize_daily,
 )
 
 warnings.filterwarnings("ignore")
@@ -85,12 +85,20 @@ def load_bars(ticker, cache_dir, fetch=True):
     return frame
 
 
-def drop_unclosed(frame):
-    """미국 선물 전자세션은 17:00 ET에 끝난다. 그 전이면 당일 봉은 미완성이다."""
+def drop_unclosed(frame, now=None):
+    """미국 선물 전자세션은 17:00 ET에 끝난다. 그 전이면 당일 봉은 미완성이다.
+
+    주말 날짜가 붙은 봉도 버린다. Globex는 일요일 18:00 ET에 열리는데, Yahoo는 그 몇 시간을
+    '일요일' 봉으로 내보낸다(정산은 월요일). 2026-09-07 실행이 일요일 19:52 ET에 돌면서 이
+    봉을 '기준 봉 2026-09-06 종가'로 썼고, 그 값은 이후 Yahoo에서 바뀐다. 주말에는 정산가가
+    없으므로 날짜만 보고 걸러도 안전하다.
+    """
     if frame is None or frame.empty:
         return frame
-    now = pd.Timestamp.now(tz="America/New_York")
-    if frame.index[-1].date() >= now.date() and (now.hour, now.minute) < (17, 15):
+    now = pd.Timestamp.now(tz="America/New_York") if now is None else pd.Timestamp(now).tz_convert("America/New_York")
+    while len(frame) and frame.index[-1].weekday() >= 5:
+        frame = frame.iloc[:-1]
+    if len(frame) and frame.index[-1].date() >= now.date() and (now.hour, now.minute) < (17, 15):
         return frame.iloc[:-1]
     return frame
 
@@ -348,13 +356,19 @@ def render_asset(key, res, usdkrw):
     parts.append('<div style="max-width:420px">' + prob_bar(live["p_down"], "하락", "#a8322a") + prob_bar(live["p_flat"], "보합", "#8a9199") + prob_bar(live["p_up"], "상승", "#1a7f37") + "</div>")
     top = max(PROB_COLS, key=lambda k: live[k])
     label = {"p_down": "하락", "p_flat": "보합", "p_up": "상승"}[top]
-    verdict = (f"모델의 최빈 판정은 <b>{label}</b>({live[top] * 100:.0f}%)입니다. "
-               + (f"워크포워드 {wf['n']:,}일에서 이 모델의 log loss는 기저 확률보다 낮았고 95% 구간이 0을 배제합니다"
-                  f"([{wf['log_loss_diff_lo']:+.4f}, {wf['log_loss_diff_hi']:+.4f}]) — 확률에 작지만 실제 정보가 있습니다."
-                  if skill else
-                  f"그러나 워크포워드 {wf['n']:,}일에서 이 모델의 log loss가 기저 확률(과거 빈도)보다 낫다는 증거가 없습니다"
-                  f"(차이 95% 구간 [{wf['log_loss_diff_lo']:+.4f}, {wf['log_loss_diff_hi']:+.4f}]가 0을 포함). "
-                  "<b>이 확률은 과거 빈도와 다를 바 없다고 보고 참고만 하세요.</b>"))
+    share = {k: v for k, v in zip(["하락", "보합", "상승"], wf["class_share"])}
+    if skill:
+        verdict = (f"모델의 최빈 판정은 <b>{label}</b>({live[top] * 100:.0f}%)입니다. "
+                   f"워크포워드 {wf['n']:,}일에서 이 모델의 log loss는 기저 확률보다 낮았고 95% 구간이 0을 배제합니다"
+                   f"([{wf['log_loss_diff_lo']:+.4f}, {wf['log_loss_diff_hi']:+.4f}]) — 확률에 작지만 실제 정보가 있습니다.")
+    else:
+        # 기저 빈도가 한쪽으로 치우쳐 있으면(금은 상승 38% / 하락 33%) 정보가 없는 모델도 매일 같은
+        # 클래스를 최빈으로 내놓는다. 그걸 '판정'이라고 적으면 예측으로 읽힌다. 그래서 판정을 내지 않는다.
+        verdict = (f"<b>방향 판정: 보류.</b> 위 확률은 과거 빈도(하락 {share['하락'] * 100:.0f}% · 보합 {share['보합'] * 100:.0f}% · "
+                   f"상승 {share['상승'] * 100:.0f}%)와 구분되지 않습니다 — 워크포워드 {wf['n']:,}일에서 log loss 차이의 95% 구간 "
+                   f"[{wf['log_loss_diff_lo']:+.4f}, {wf['log_loss_diff_hi']:+.4f}]가 0을 포함합니다. "
+                   f"가장 큰 확률이 {label}({live[top] * 100:.0f}%)이지만, 그것은 과거에 {label}이 잦았다는 뜻이지 내일에 대한 판단이 아닙니다. "
+                   "이 종목에서 쓸 수 있는 것은 아래 변동성 구간뿐입니다.")
     parts.append(note(verdict, warn=not skill))
 
     # 1주·1개월
@@ -384,6 +398,44 @@ def render_asset(key, res, usdkrw):
             f'<tr><td {TD}>AUC — 상승 vs 나머지 / 상승 vs 하락</td><td {TDR}>{wf["auc_up"]:.3f} / {wf["auc_up_vs_down"]:.3f}</td></tr>'
             f'<tr><td {TD}>실제 클래스 비율 (하락/보합/상승)</td><td {TDR}>{" / ".join(f"{s * 100:.0f}%" for s in wf["class_share"])}</td></tr>')
     parts.append(table(f'<th {TH}>지표</th><th {THR}></th>', body, 420))
+
+    # 어제 예측 vs 실제 — 실제 사전 예측만 채점한 것. 백테스트 숫자와 섞지 않는다.
+    review = res.get("review") or {}
+    if review.get("n_scored_days"):
+        parts.append('<h4 style="font-size:14px;margin:18px 0 6px">어제 예측 vs 실제 '
+                     '<span style="font-size:11px;color:#8a9199;font-weight:400">실제로 미리 낸 예측만 채점 · 백테스트 아님</span></h4>')
+        latest = review["latest"]
+        body = ""
+        d = latest[(latest["kind"] == "direction")]
+        if len(d):
+            r = d.iloc[0]
+            actual = ["하락", "보합", "상승"][int(r["actual_class"])] if pd.notna(r["actual_class"]) else "—"
+            body += (f'<tr><td {TD}>{r["target_date"].date()} 방향</td>'
+                     f'<td {TDR}>{e(str(r["prediction"]))} (상승 {r["p_up"] * 100:.0f}·보합 {r["p_flat"] * 100:.0f}·하락 {r["p_down"] * 100:.0f}%)</td>'
+                     f'<td {TDR}>{actual} ({r["actual_return"] * 100:+.2f}%, 밴드 ±{r["band"] * 100:.2f}%)</td>'
+                     f'<td {TDR}>{"적중" if r["direction_correct"] == 1 else "미적중"}</td></tr>')
+        p1 = latest[(latest["kind"] == "price") & (latest["horizon_days"] == 1)]
+        if len(p1):
+            r = p1.iloc[0]
+            pred = f'${r["predicted_close"]:,.2f} ({r["predicted_return"] * 100:+.2f}%)' if pd.notna(r["predicted_close"]) else "예측하지 않음 (신호 없음)"
+            body += (f'<tr><td {TD}>{r["target_date"].date()} 종가</td><td {TDR}>{pred}</td>'
+                     f'<td {TDR}>${r["actual_close"]:,.2f} ({r["actual_return"] * 100:+.2f}%)</td>'
+                     f'<td {TDR}>구간 {"적중" if r["interval_hit"] == 1 else "이탈"}</td></tr>')
+        parts.append(table(f'<th {TH}>항목</th><th {THR}>예측</th><th {THR}>실제</th><th {THR}>판정</th>', body))
+        body = ""
+        for _, r in review["rolling"].iterrows():
+            if r["kind"] == "direction":
+                detail = (f'적중률 {r["hit_rate"] * 100:.0f}% · log loss {r["mean_log_loss"]:.3f} vs 빈도기준 {r["prior_log_loss"]:.3f}')
+            else:
+                cov = f'{r["interval_coverage"] * 100:.0f}%' if pd.notna(r["interval_coverage"]) else "—"
+                detail = (f'구간 적중 {cov} · MAE {r["mae_return"] * 100:.2f}% vs 변화없음 {r["zero_mae_return"] * 100:.2f}% · '
+                          f'신호 {int(r["signal_days"])}/{int(r["n"])}일')
+            label2 = "방향" if r["kind"] == "direction" else f'{int(r["horizon_days"])}거래일 종가'
+            body += f'<tr><td {TD}>최근 {int(r["window"])}일 · {label2}</td><td {TDR}>{int(r["n"])}</td><td {TD}>{detail}</td></tr>'
+        parts.append(table(f'<th {TH}>창</th><th {THR}>n</th><th {TH}>누적 성능 (사전 예측만)</th>', body))
+        for a_ in review.get("alerts", []):
+            parts.append(note(e(a_), warn=True))
+        parts.append(note(f'채점된 예측일 {review["n_scored_days"]}일 · 하루 결과는 잡음입니다. 판단은 60일 창으로 하세요.'))
 
     # 원장 성적
     scored = res.get("scored")
@@ -518,7 +570,11 @@ def main():
                 print(f"  원장 불러옴: {ledger_path}")
         evaluated, daily, scored = ledger_update(storage, key, bars, run_id, common, live, price_rows)
         print(f"  원장 {len(evaluated)}건 · 채점 {int((evaluated.status == 'scored').sum())}건")
-        results[key] = dict(live=live, wf=wf, price_rows=price_rows, price_stats=price_stats, prediction_date=prediction_date, scored=scored)
+        review = review_ledger(daily, bars, ensemble_model="Logistic", windows=(20, 60))
+        for a_ in review["alerts"]:
+            print("  ⚠️", a_)
+        results[key] = dict(live=live, wf=wf, price_rows=price_rows, price_stats=price_stats, prediction_date=prediction_date,
+                            scored=scored, review=review)
         if args.dump:
             print(f"  방향: 하락 {live['p_down']:.3f} 보합 {live['p_flat']:.3f} 상승 {live['p_up']:.3f} · 밴드 ±{live['band']:.4f}")
             print(f"  WF n={wf['n']} bal.acc {wf['balanced_accuracy']:.3f}/{wf['prior_balanced_accuracy']:.3f} logloss {wf['log_loss']:.4f}/{wf['prior_log_loss']:.4f} "

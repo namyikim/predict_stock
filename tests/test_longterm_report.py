@@ -142,3 +142,28 @@ class LongTermTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class DetrendedChartTests(unittest.TestCase):
+    """수준이 아니라 추세를 뺀 사이클끼리 겹쳐야 오르내림이 맞물려 보인다."""
+
+    def test_chart_uses_price_returns_not_levels_for_the_overlay(self):
+        price, macro = synthetic()
+        f = lt.build_frame(price, macro)
+        svg = lt.render_chart(f, "삼성전자")
+        self.assertIn("12개월 수익률", svg)          # 위 칸은 수익률
+        self.assertIn("실제 주가 수준", svg)          # 수준은 아래 참고 칸에만
+        self.assertEqual(svg.count("<polyline"), 4)  # 수익률·수출·선행 + 수준
+
+    def test_lead_lag_finds_a_known_shift(self):
+        # 수출이 주가보다 6개월 뒤에 오도록 만들면, 주가가 6개월 선행으로 잡혀야 한다.
+        idx = pd.date_range("2000-01-31", periods=300, freq="ME")
+        cycle = np.sin(np.arange(len(idx)) / 9)
+        f = pd.DataFrame({"mom_12m": cycle,
+                          "macro_semiconductor_yoy": np.roll(cycle, 6)}, index=idx)
+        got = lt.lead_lag(f)
+        self.assertEqual(got["lead_months"], 6)
+        self.assertGreater(got["corr"], 0.9)
+
+    def test_lead_lag_is_none_without_the_columns(self):
+        self.assertIsNone(lt.lead_lag(pd.DataFrame({"mom_12m": [1, 2, 3]})))

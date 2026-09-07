@@ -77,8 +77,8 @@ def monthly_prices(ticker, cache_dir, fetch=True):
             print("  ⚠️ 수정종가에 0 이하 값이 많아 원종가를 씁니다.", flush=True)
             daily = raw[raw > 0]
         daily = daily.dropna()
-        # 이번 달이 아직 안 끝났으면 진행 중인 달은 뺀다(월말 종가가 아니다).
-        last_full = (pd.Timestamp.now(tz="Asia/Seoul").tz_localize(None).normalize() - pd.offsets.MonthBegin(1)) - pd.Timedelta(days=1)
+        # 진행 중인 달은 월말 종가가 아니므로 뺀다(이번 달 1일이어도 전월까지만 남는다).
+        last_full = pd.Timestamp.now(tz="Asia/Seoul").tz_localize(None).normalize().replace(day=1) - pd.Timedelta(days=1)
         daily = daily[daily.index <= last_full]
         monthly = daily.resample("ME").last().dropna()
         monthly = prepend_history(monthly, cache_dir.parent)
@@ -300,6 +300,21 @@ def table(head, body, min_width=560):
 PHASE_COLOR = {PHASES[0]: "#dbe9f6", PHASES[1]: "#dff0e3", PHASES[2]: "#fbeed6", PHASES[3]: "#f6dcd9"}
 
 
+def log_ticks(lo, hi):
+    """1·2·5 × 10^k 중 [lo, hi]에 드는 눈금. 종목마다 가격대가 달라(수백 원~수백만 원) 고정 목록은 못 쓴다."""
+    if not (np.isfinite(lo) and np.isfinite(hi)) or lo <= 0 or hi <= lo:
+        return []
+    out = []
+    k = math.floor(math.log10(lo))
+    while 10 ** k <= hi:
+        for m in (1, 2, 5):
+            v = m * 10 ** k
+            if lo <= v <= hi:
+                out.append(int(v) if v >= 1 else v)
+        k += 1
+    return out
+
+
 def render_chart(f, name):
     """실제 통계치와 주가를 한 그림에. 외부 라이브러리 없이 SVG를 직접 그린다(보고서 HTML에 인라인).
 
@@ -323,7 +338,16 @@ def render_chart(f, name):
     for key, ph in panels:
         y_top, y_bot = y, y + ph
         series = d[key] if key in d else pd.Series(np.nan, index=d.index)
-        vals = series.dropna()
+        vals = series.replace([np.inf, -np.inf], np.nan).dropna()
+        if not len(vals):
+            # 지표를 못 받은 경우. 빈 칸에 사유만 적고 넘어간다(라벨에 nan이 찍히지 않게).
+            label = {"macro_semiconductor_yoy": "반도체 수출액 전년 동월 대비",
+                     "macro_leading_cycle": "선행지수 순환변동치 − 100"}.get(key, key)
+            out.append(f'<text x="{L}" y="{y_top - 4}" fill="#1a1a1a" font-weight="600">{html.escape(label)}</text>')
+            out.append(f'<rect x="{L}" y="{y_top}" width="{W - L - R}" height="{ph}" fill="none" stroke="#ddd"/>')
+            out.append(f'<text x="{(L + W - R) / 2:.0f}" y="{(y_top + y_bot) / 2:.0f}" text-anchor="middle" fill="#8a9199">자료 없음</text>')
+            y = y_bot + gap
+            continue
         if key == "price":
             lo, hi = float(np.log(vals.min())), float(np.log(vals.max()))
             def Y(v, lo=lo, hi=hi, y_top=y_top, y_bot=y_bot):
@@ -336,7 +360,7 @@ def render_chart(f, name):
                         if prev is not None and start is not None:
                             out.append(f'<rect x="{X(start):.1f}" y="{y_top}" width="{max(X(t) - X(start), 1):.1f}" height="{ph}" fill="{PHASE_COLOR.get(prev, "#fff")}"/>')
                         prev, start = phv, t
-            ticks = [v for v in [1000, 2000, 5000, 10000, 20000, 50000, 100000, 200000, 500000] if vals.min() <= v <= vals.max()]
+            ticks = log_ticks(float(vals.min()), float(vals.max()))
             for v in ticks:
                 out.append(f'<line x1="{L}" x2="{W - R}" y1="{Y(v):.1f}" y2="{Y(v):.1f}" stroke="#eee"/>'
                            f'<text x="{L - 6}" y="{Y(v) + 4:.1f}" text-anchor="end" fill="#8a9199">{v:,}</text>')
@@ -436,17 +460,20 @@ def render_fragment(result):
             body += f'<tr><td {TD}>{label}</td><td {TDR} colspan="6">{e(ev.get("note", "표본 부족"))}</td></tr>'
             continue
         verdict = ("<b style='color:#1e6b34'>0% 기준선을 이김</b>" if ev["beats_zero"] else "동률(CI가 0 포함)")
+        _corr = ev.get("corr_spearman")
         body += (f'<tr><td {TD}>{label}</td><td {TDR}>{ev["n_evaluation"]}({ev["n_independent"]})</td>'
-                 f'<td {TDR}>{ev["corr_spearman"]:.2f}</td><td {TDR}>{ev["sign_hit"] * 100:.0f}%</td>'
+                 f'<td {TDR}>{"—" if _corr is None or not np.isfinite(_corr) else format(_corr, ".2f")}</td><td {TDR}>{ev["sign_hit"] * 100:.0f}%</td>'
                  f'<td {TDR}>{ev["mae_model"] * 100:.1f}% / {ev["mae_zero"] * 100:.1f}%</td>'
                  f'<td {TDR}>[{ev["mae_diff_lo"] * 100:+.1f}, {ev["mae_diff_hi"] * 100:+.1f}]</td><td {TDR}>{verdict}</td></tr>')
     parts.append(table(f'<th {TH}>지평</th><th {THR}>평가 월(독립)</th><th {THR}>순위상관</th><th {THR}>부호 적중</th>'
                        f'<th {THR}>MAE 모델/0%</th><th {THR}>차이 95% CI</th><th {THR}>판정</th>', body, 640))
     body = ""
+    def _f2(v):
+        return "—" if v is None or not np.isfinite(v) else f"{v:+.2f}"
     for row in r["ic"]["12"]:
         sig = "유의" if row["significant"] else "동률"
-        body += (f'<tr><td {TD}>{e(row["label"])}</td><td {TDR}>{row["ic"]:+.2f}</td>'
-                 f'<td {TDR}>[{row["ic_lo"]:+.2f}, {row["ic_hi"]:+.2f}]</td><td {TDR}>{sig}</td></tr>')
+        body += (f'<tr><td {TD}>{e(row["label"])}</td><td {TDR}>{_f2(row["ic"])}</td>'
+                 f'<td {TDR}>[{_f2(row["ic_lo"])}, {_f2(row["ic_hi"])}]</td><td {TDR}>{sig}</td></tr>')
     parts.append('<div style="font-size:12px;color:#6b7178;margin:10px 0 4px">지표별 12개월 수익률과의 순위상관(IC). CI가 0을 포함하면 동률.</div>')
     parts.append(table(f'<th {TH}>지표</th><th {THR}>IC</th><th {THR}>95% CI</th><th {THR}>판정</th>', body, 420))
 

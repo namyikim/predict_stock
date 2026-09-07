@@ -106,6 +106,29 @@ class LongTermTests(unittest.TestCase):
         self.assertTrue((f["price"] > 0).all())
         self.assertIn("<svg", lt.render_chart(f, "x"))
 
+    def test_log_ticks_cover_any_price_level(self):
+        self.assertIn(1000000, lt.log_ticks(15000, 1650000))     # SK하이닉스는 100만원대다
+        self.assertIn(500, lt.log_ticks(300, 260000))
+        self.assertEqual(lt.log_ticks(0, 10), [])                # 0 이하는 로그축에 못 그린다
+        self.assertEqual(lt.log_ticks(float("nan"), 10), [])
+
+    def test_chart_shows_no_data_instead_of_nan_labels(self):
+        idx = pd.date_range("2000-01-31", periods=120, freq="ME")
+        f = pd.DataFrame({"price": np.linspace(1000, 50000, len(idx))}, index=idx)   # 지표 없음
+        svg = lt.render_chart(f, "x")
+        self.assertIn("자료 없음", svg)
+        self.assertNotIn("nan", svg)
+
+    def test_late_starting_exports_series_does_not_crash(self):
+        price, macro = synthetic()
+        ex = macro["semiconductor_exports"]
+        macro["semiconductor_exports"] = ex[ex["month"] >= "2009-01-01"].reset_index(drop=True)
+        f = lt.build_frame(price, macro)
+        cols = [c for c, _ in lt.FEATURES if c in f.columns]
+        ev, _ = lt.evaluate(f, cols, 12)
+        self.assertGreater(ev["n_oof"], 0)
+        self.assertIn("<svg", lt.render_chart(f, "x"))
+
     def test_fragment_renders(self):
         from pathlib import Path
         lt.monthly_prices = lambda t, c, fetch=True: synthetic()[0]

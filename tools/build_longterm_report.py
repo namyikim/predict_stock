@@ -316,79 +316,101 @@ def log_ticks(lo, hi):
 
 
 def render_chart(f, name):
-    """실제 통계치와 주가를 한 그림에. 외부 라이브러리 없이 SVG를 직접 그린다(보고서 HTML에 인라인).
+    """주가와 사이클 지표를 한 판에 겹쳐 그린다. 선후 관계는 겹쳐 봐야 눈에 들어온다.
 
-    위: 주가(로그축) + 사이클 국면 배경. 가운데: 반도체 수출 전년 동월 대비(월+2 지연 반영, 즉 그 시점에
-    알 수 있던 값). 아래: 선행지수 순환변동치(100 기준). 모두 같은 시간축이라 선후 관계를 눈으로 볼 수 있다.
+    왼쪽 축: 주가(로그). 오른쪽 축: 수출 YoY와 선행지수를 각각 표준화(평균 0, 표준편차 1)한 값 —
+    단위가 서로 달라 그대로는 같은 축에 올릴 수 없다. 표준화는 **보기 위한 것**이고 모형은 원값을
+    쓴다. 배경색은 반도체 사이클 국면이다.
     """
     d = f.dropna(subset=["price"]).copy()
     d = d[d["price"] > 0]
     if len(d) < 24:
         return ""
-    W, L, R = 900, 60, 24
-    panels = [("price", 230), ("macro_semiconductor_yoy", 130), ("macro_leading_cycle", 130)]
-    top, gap, bottom = 16, 28, 30
-    H = top + sum(h for _, h in panels) + gap * (len(panels) - 1) + bottom
+    W, L, R, TOP, BOT = 900, 62, 58, 34, 34
+    PH = 330
+    H = TOP + PH + BOT
     x0, x1 = d.index[0].value, d.index[-1].value
+
     def X(t):
         return L + (t.value - x0) / (x1 - x0) * (W - L - R)
-    out = [f'<svg viewBox="0 0 {W} {H}" width="100%" style="max-width:{W}px;font-family:-apple-system,\'Malgun Gothic\',sans-serif;font-size:11px">']
-    y = top
-    years = [t for t in d.index if t.month == 12 and t.year % 2 == 1]
-    for key, ph in panels:
-        y_top, y_bot = y, y + ph
-        series = d[key] if key in d else pd.Series(np.nan, index=d.index)
-        vals = series.replace([np.inf, -np.inf], np.nan).dropna()
-        if not len(vals):
-            # 지표를 못 받은 경우. 빈 칸에 사유만 적고 넘어간다(라벨에 nan이 찍히지 않게).
-            label = {"macro_semiconductor_yoy": "반도체 수출액 전년 동월 대비",
-                     "macro_leading_cycle": "선행지수 순환변동치 − 100"}.get(key, key)
-            out.append(f'<text x="{L}" y="{y_top - 4}" fill="#1a1a1a" font-weight="600">{html.escape(label)}</text>')
-            out.append(f'<rect x="{L}" y="{y_top}" width="{W - L - R}" height="{ph}" fill="none" stroke="#ddd"/>')
-            out.append(f'<text x="{(L + W - R) / 2:.0f}" y="{(y_top + y_bot) / 2:.0f}" text-anchor="middle" fill="#8a9199">자료 없음</text>')
-            y = y_bot + gap
+
+    price = d["price"]
+    plo, phi = math.log(float(price.min())), math.log(float(price.max()))
+
+    def YP(v):
+        return TOP + PH - (math.log(v) - plo) / (phi - plo) * PH
+
+    # 오른쪽 축: 표준화 지표. 3.2 표준편차까지 담아 이상치가 눌러버리지 않게 한다.
+    ZMAX = 3.2
+
+    def YZ(z):
+        return TOP + PH / 2 - max(-ZMAX, min(ZMAX, z)) / ZMAX * (PH / 2 - 6)
+
+    out = [f'<svg viewBox="0 0 {W} {H}" width="100%" style="max-width:{W}px;'
+           f'font-family:-apple-system,\'Malgun Gothic\',sans-serif;font-size:11px">']
+
+    # 국면 배경
+    if "phase" in d:
+        # 한두 달짜리 국면 전환은 배경을 깜빡이게만 하고 읽는 데 방해가 된다. 3개월 이상만 칠한다.
+        runs, prev, start_t, count = [], None, None, 0
+        for t, phv in list(d["phase"].items()) + [(d.index[-1], None)]:
+            if phv != prev:
+                if prev is not None and count >= 3:
+                    runs.append((start_t, t, prev))
+                prev, start_t, count = phv, t, 1
+            else:
+                count += 1
+        for a, b, phv in runs:
+            out.append(f'<rect x="{X(a):.1f}" y="{TOP}" width="{max(X(b) - X(a), 1):.1f}" '
+                       f'height="{PH}" fill="{PHASE_COLOR.get(phv, "#fff")}"/>')
+
+    # 왼쪽 눈금(주가)과 오른쪽 눈금(표준화)
+    for v in log_ticks(float(price.min()), float(price.max())):
+        out.append(f'<line x1="{L}" x2="{W - R}" y1="{YP(v):.1f}" y2="{YP(v):.1f}" stroke="#e9e9e9"/>'
+                   f'<text x="{L - 6}" y="{YP(v) + 4:.1f}" text-anchor="end" fill="#1a5490">{v:,}</text>')
+    for z in (-3, -2, -1, 0, 1, 2, 3):
+        dash = ' stroke-dasharray="3,3"' if z == 0 else ''
+        if z == 0:
+            out.append(f'<line x1="{L}" x2="{W - R}" y1="{YZ(z):.1f}" y2="{YZ(z):.1f}" stroke="#999"{dash}/>')
+        out.append(f'<text x="{W - R + 6}" y="{YZ(z) + 4:.1f}" fill="#8a9199">{z:+d}σ</text>')
+
+    out.append(f'<polyline points="{" ".join(f"{X(t):.1f},{YP(v):.1f}" for t, v in price.items())}" '
+               'fill="none" stroke="#1a5490" stroke-width="2"/>')
+
+    missing = []
+    for key, label, color in (("macro_semiconductor_yoy", "반도체 수출 전년 동월 대비", "#b5453c"),
+                              ("macro_leading_cycle", "선행지수 순환변동치", "#2e7d32")):
+        vals = d[key].replace([np.inf, -np.inf], np.nan).dropna() if key in d else pd.Series(dtype=float)
+        if len(vals) < 12 or not np.isfinite(vals.std()) or vals.std() == 0:
+            missing.append(label)
             continue
-        if key == "price":
-            lo, hi = float(np.log(vals.min())), float(np.log(vals.max()))
-            def Y(v, lo=lo, hi=hi, y_top=y_top, y_bot=y_bot):
-                return y_bot - (math.log(v) - lo) / (hi - lo) * (y_bot - y_top)
-            # 국면 배경
-            if "phase" in d:
-                prev, start = None, None
-                for t, phv in list(d["phase"].items()) + [(d.index[-1], None)]:
-                    if phv != prev:
-                        if prev is not None and start is not None:
-                            out.append(f'<rect x="{X(start):.1f}" y="{y_top}" width="{max(X(t) - X(start), 1):.1f}" height="{ph}" fill="{PHASE_COLOR.get(prev, "#fff")}"/>')
-                        prev, start = phv, t
-            ticks = log_ticks(float(vals.min()), float(vals.max()))
-            for v in ticks:
-                out.append(f'<line x1="{L}" x2="{W - R}" y1="{Y(v):.1f}" y2="{Y(v):.1f}" stroke="#eee"/>'
-                           f'<text x="{L - 6}" y="{Y(v) + 4:.1f}" text-anchor="end" fill="#8a9199">{v:,}</text>')
-            title = f"{name} 월말 수정종가 (로그축) · 배경 = 반도체 사이클 국면"
-        else:
-            lo, hi = float(min(vals.min(), 0)), float(max(vals.max(), 0))
-            pad = (hi - lo) * .08 or 1
-            lo, hi = lo - pad, hi + pad
-            def Y(v, lo=lo, hi=hi, y_top=y_top, y_bot=y_bot):
-                return y_bot - (v - lo) / (hi - lo) * (y_bot - y_top)
-            out.append(f'<line x1="{L}" x2="{W - R}" y1="{Y(0):.1f}" y2="{Y(0):.1f}" stroke="#999" stroke-dasharray="3,3"/>')
-            for v in (lo + pad, hi - pad):
-                lab = f"{v * 100:+.0f}%" if key == "macro_semiconductor_yoy" else f"{v:+.1f}"
-                out.append(f'<text x="{L - 6}" y="{Y(v) + 4:.1f}" text-anchor="end" fill="#8a9199">{lab}</text>')
-            title = ("반도체 수출액 전년 동월 대비 (그 시점에 알 수 있던 값, 월+2 지연)" if key == "macro_semiconductor_yoy"
-                     else "선행지수 순환변동치 − 100 (월+2 지연)")
-        if len(vals):
-            pts = " ".join(f"{X(t):.1f},{Y(v):.1f}" for t, v in vals.items())
-            color = "#1a5490" if key == "price" else ("#b5453c" if key == "macro_semiconductor_yoy" else "#2e7d32")
-            out.append(f'<polyline points="{pts}" fill="none" stroke="{color}" stroke-width="1.6"/>')
-        out.append(f'<text x="{L}" y="{y_top - 4}" fill="#1a1a1a" font-weight="600">{html.escape(title)}</text>')
-        out.append(f'<rect x="{L}" y="{y_top}" width="{W - L - R}" height="{ph}" fill="none" stroke="#ddd"/>')
-        y = y_bot + gap
-    for t in years:
-        out.append(f'<line x1="{X(t):.1f}" x2="{X(t):.1f}" y1="{top}" y2="{H - bottom}" stroke="#f0f0f0"/>'
-                   f'<text x="{X(t):.1f}" y="{H - bottom + 14}" text-anchor="middle" fill="#8a9199">{t.year + 1}</text>')
-    legend = " ".join(f'<tspan fill="{c}">■</tspan> {html.escape(p.split("(")[0])}' for p, c in PHASE_COLOR.items())
-    out.append(f'<text x="{W - R}" y="{H - 4}" text-anchor="end" fill="#6b7178">{legend}</text>')
+        z = (vals - vals.mean()) / vals.std()
+        out.append(f'<polyline points="{" ".join(f"{X(t):.1f},{YZ(v):.1f}" for t, v in z.items())}" '
+                   f'fill="none" stroke="{color}" stroke-width="1.5" opacity="0.9"/>')
+
+    # 연도 눈금
+    for t in [t for t in d.index if t.month == 12 and t.year % 2 == 1]:
+        out.append(f'<line x1="{X(t):.1f}" x2="{X(t):.1f}" y1="{TOP}" y2="{TOP + PH}" stroke="#f2f2f2"/>'
+                   f'<text x="{X(t):.1f}" y="{TOP + PH + 15:.1f}" text-anchor="middle" fill="#8a9199">{t.year + 1}</text>')
+    out.append(f'<rect x="{L}" y="{TOP}" width="{W - L - R}" height="{PH}" fill="none" stroke="#ddd"/>')
+
+    # 제목과 범례
+    out.append(f'<text x="{L}" y="14" fill="#1a1a1a" font-weight="600">'
+               f'{html.escape(name)} 주가와 반도체 사이클 — 같은 시간축에 겹쳐 그림</text>')
+    legend = [(f"{html.escape(name)} 월말 종가 (왼쪽, 로그)", "#1a5490"),
+              ("반도체 수출 YoY (오른쪽, 표준화)", "#b5453c"),
+              ("선행지수 순환변동치 (오른쪽, 표준화)", "#2e7d32")]
+    x = L
+    for text, color in legend:
+        out.append(f'<line x1="{x}" x2="{x + 16}" y1="26" y2="26" stroke="{color}" stroke-width="2"/>'
+                   f'<text x="{x + 21}" y="30" fill="#6b7178">{text}</text>')
+        x += 26 + len(text) * 6.4
+    phases_legend = " ".join(f'<tspan fill="{c}">■</tspan> {html.escape(p.split("(")[0])}'
+                             for p, c in PHASE_COLOR.items())
+    out.append(f'<text x="{L}" y="{H - 6}" fill="#6b7178">배경 = 사이클 국면: {phases_legend}</text>')
+    if missing:
+        out.append(f'<text x="{W - R}" y="{H - 6}" text-anchor="end" fill="#a8322a">'
+                   f'{html.escape(" · ".join(missing))}: 자료 없음</text>')
     out.append("</svg>")
     return "".join(out)
 
@@ -408,11 +430,12 @@ def render_fragment(result):
     # 그림: 실제 통계치와 주가
     if r.get("chart_svg"):
         first = r.get("chart_first", "")
-        parts.append('<h4 style="font-size:14px;margin:18px 0 6px">실제 통계치와 주가 — 같은 시간축</h4>')
+        parts.append('<h4 style="font-size:14px;margin:18px 0 6px">실제 통계치와 주가 — 겹쳐 보기</h4>')
         parts.append(f'<div style="border:1px solid #e5e5e5;border-radius:6px;padding:8px">{r["chart_svg"]}</div>')
         parts.append(f'<div style="font-size:11px;color:#8a9199;margin-top:4px">시세는 Yahoo Finance 월말 수정종가({e(first)}부터 제공). '
                      '수출액·선행지수는 KOSIS 원자료이며 발표 지연(월+2)을 반영해 "그 시점에 알 수 있던 값"으로 그렸습니다. '
-                     '주가가 수출 사이클을 앞서는지, 뒤따르는지 눈으로 확인하세요 — 주가가 앞서면 수출은 설명 변수이지 예측 변수가 아닙니다.</div>')
+                     '두 지표는 단위가 달라 오른쪽 축에 표준화(평균 0, 표준편차 1)해 겹쳤습니다 — 표준화는 보기 위한 것이고 모형은 원값을 씁니다. '
+                     '주가 봉우리가 수출 봉우리보다 <b>왼쪽</b>에 있으면 주가가 사이클을 앞선 것이고, 그때 수출은 설명 변수이지 예측 변수가 아닙니다.</div>')
 
     # 현재 값·국면
     cur = r["current"]

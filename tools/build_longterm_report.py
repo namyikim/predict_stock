@@ -258,6 +258,127 @@ def phase_table(f, h):
     return rows
 
 
+def merge_short_runs(phases, min_len=3):
+    """한두 달 깜빡이는 국면 전환은 국면이 아니다. min_len 미만 구간은 앞 구간에 흡수시킨다."""
+    values = list(phases)
+    runs = []
+    for value in values:
+        if runs and runs[-1][0] == value:
+            runs[-1][1] += 1
+        else:
+            runs.append([value, 1])
+    changed = True
+    while changed and len(runs) > 1:
+        changed = False
+        for i, (value, length) in enumerate(runs):
+            if length >= min_len or value is None:
+                continue
+            target = i - 1 if i > 0 else i + 1        # 앞 구간에 붙이되, 첫 구간이면 뒤로
+            runs[target][1] += length
+            runs.pop(i)
+            # 흡수 뒤 같은 국면이 이웃하면 합친다
+            merged = []
+            for value2, length2 in runs:
+                if merged and merged[-1][0] == value2:
+                    merged[-1][1] += length2
+                else:
+                    merged.append([value2, length2])
+            runs = merged
+            changed = True
+            break
+    out = []
+    for value, length in runs:
+        out.extend([value] * length)
+    return out
+
+
+def phase_episodes(f, min_len=3):
+    """국면 구간 목록. 기간은 행(달) 수로 센다. 마지막 구간은 진행 중이라 기간이 확정되지 않았다."""
+    if "phase" not in f:
+        return []
+    series = f["phase"].dropna()
+    if len(series) < min_len * 2:
+        return []
+    smoothed = merge_short_runs(series.tolist(), min_len)
+    index = series.index
+    episodes, start_pos = [], 0
+    for pos in range(1, len(smoothed) + 1):
+        if pos == len(smoothed) or smoothed[pos] != smoothed[start_pos]:
+            episodes.append({"phase": smoothed[start_pos],
+                             "start": index[start_pos].strftime("%Y-%m"),
+                             "end": index[pos - 1].strftime("%Y-%m"),
+                             "end_period": pd.Period(index[pos - 1], freq="M"),
+                             "months": pos - start_pos,
+                             "ongoing": pos == len(smoothed)})
+            start_pos = pos
+    return episodes
+
+
+def phase_duration_outlook(f, min_len=3, min_sample=3):
+    """지금 국면이 얼마나 더 갈까 — 과거 같은 국면의 조건부 잔여 기간.
+
+    '이미 k개월 지속된 국면이 앞으로 몇 달 더 가는가'는 전체 기간 분포가 아니라 k개월을 넘긴
+    구간들만 놓고 봐야 한다(생존분석의 조건부 잔여수명). 표본이 열 개 남짓이라 점 예측이 아니라
+    중앙값과 사분위로만 말한다.
+    """
+    episodes = phase_episodes(f, min_len)
+    if not episodes:
+        return None
+    current = episodes[-1]
+    same = [e for e in episodes[:-1] if e["phase"] == current["phase"]]
+    out = {
+        "phase": current["phase"],
+        "since": current["start"], "as_of": current["end"],
+        "months_so_far": current["months"],
+        "episodes": [{"start": e["start"], "end": e["end"], "months": e["months"]} for e in same],
+        "n_past": len(same),
+        "median_total": float(np.median([e["months"] for e in same])) if same else None,
+    }
+    survived = [e["months"] - current["months"] for e in same if e["months"] > current["months"]]
+    out["n_conditional"] = len(survived)
+    out["n_shorter"] = len(same) - len(survived)
+    if len(survived) >= min_sample:
+        out["remaining_median"] = float(np.median(survived))
+        out["remaining_q25"] = float(np.percentile(survived, 25))
+        out["remaining_q75"] = float(np.percentile(survived, 75))
+        out["expected_end"] = str(current["end_period"] + int(round(out["remaining_median"])))
+    else:
+        out["reason"] = (f"지금까지 {current['months']}개월 이어졌는데, 과거 같은 국면 {len(same)}번 중 "
+                         f"이보다 길었던 것이 {len(survived)}번뿐이라 잔여 기간을 말할 표본이 없습니다.")
+    return out
+
+
+def render_duration_chart(outlook, current_months):
+    """과거 같은 국면의 기간을 가로 막대로. 지금 국면은 진행 중임을 화살표로 표시한다."""
+    episodes = outlook.get("episodes") or []
+    if not episodes:
+        return ""
+    rows = episodes + [{"start": outlook["since"], "end": "진행 중", "months": current_months}]
+    W, L, R, ROW, TOP = 680, 118, 46, 22, 22
+    H = TOP + ROW * len(rows) + 16
+    longest = max(r["months"] for r in rows)
+    scale = (W - L - R) / max(longest, 1)
+    out = [f'<svg viewBox="0 0 {W} {H}" width="100%" style="max-width:{W}px;'
+           f'font-family:-apple-system,\'Malgun Gothic\',sans-serif;font-size:11px">']
+    for i, row in enumerate(rows):
+        y = TOP + ROW * i
+        ongoing = i == len(rows) - 1
+        color = "#c8952a" if ongoing else "#4c78a8"
+        width = max(row["months"] * scale, 2)
+        out.append(f'<rect x="{L}" y="{y}" width="{width:.1f}" height="{ROW - 8}" fill="{color}" '
+                   f'opacity="{0.95 if ongoing else 0.75}"/>')
+        label = f'{row["start"]} ~ {row["end"]}'
+        out.append(f'<text x="{L - 8}" y="{y + ROW - 13}" text-anchor="end" fill="#6b7178">{html.escape(label)}</text>')
+        out.append(f'<text x="{L + width + 6:.1f}" y="{y + ROW - 13}" fill="{color}">'
+                   f'{row["months"]}개월{"(진행 중)" if ongoing else ""}</text>')
+    if outlook.get("remaining_median") is not None:
+        x = L + (current_months + outlook["remaining_median"]) * scale
+        out.append(f'<line x1="{x:.1f}" x2="{x:.1f}" y1="{TOP - 6}" y2="{H - 14}" stroke="#a8322a" stroke-dasharray="4,3"/>')
+        out.append(f'<text x="{x + 5:.1f}" y="{TOP - 9}" fill="#a8322a">중앙값 종료 지점</text>')
+    out.append("</svg>")
+    return "".join(out)
+
+
 def similar_episodes(f, cols, h, k=3, min_gap_months=12):
     """표준화한 특징 공간에서 지금과 가장 가까운 과거 월말 k개와 그 뒤 h개월 수익률."""
     X = f[cols].dropna()
@@ -474,6 +595,32 @@ def render_fragment(result):
     parts.append(f'<div style="font-size:13px;margin-top:8px">반도체 사이클 국면: <b>{e(cur.get("phase") or "판정 불가")}</b> '
                  f'<span style="color:#8a9199;font-size:12px">(3개월 평균 수출 YoY의 부호 × 3개월 가속/감속, 월+2 발표 지연 반영)</span></div>')
 
+    # 이 국면이 얼마나 더 갈까
+    outlook = r.get("duration")
+    if outlook:
+        parts.append('<h4 style="font-size:14px;margin:18px 0 6px">'
+                     f'이 국면이 얼마나 더 갈까 — {e(outlook["phase"].split("(")[0])} 국면 {outlook["months_so_far"]}개월째</h4>')
+        if outlook.get("remaining_median") is not None:
+            end_text = e(outlook["expected_end"])
+            parts.append('<div style="font-size:13px">'
+                         f'과거에 같은 국면이 {outlook["months_so_far"]}개월을 넘긴 경우는 {outlook["n_conditional"]}번이었고, '
+                         f'그때 <b>{outlook["remaining_median"]:.0f}개월</b> 더 이어졌습니다'
+                         f'(사분위 {outlook["remaining_q25"]:.0f}~{outlook["remaining_q75"]:.0f}개월). '
+                         f'중앙값대로면 <b>{end_text}</b>쯤 국면이 바뀝니다. '
+                         f'{outlook["as_of"]} 수출 자료 기준입니다.</div>')
+        else:
+            parts.append(f'<div style="font-size:13px;color:#6b7178">{e(outlook.get("reason", ""))}</div>')
+        chart = render_duration_chart(outlook, outlook["months_so_far"])
+        if chart:
+            parts.append(f'<div style="border:1px solid #e5e5e5;border-radius:6px;padding:8px;margin-top:8px">{chart}</div>')
+        parts.append('<div style="font-size:11px;color:#8a9199;margin-top:4px">'
+                     f'과거 같은 국면 {outlook["n_past"]}번의 기간(중앙값 '
+                     f'{outlook["median_total"]:.0f}개월)에서 <b>이미 지난 {outlook["months_so_far"]}개월을 뺀</b> 값입니다 — '
+                     '전체 기간 분포를 그대로 쓰면 이미 지난 기간을 두 번 세게 됩니다. '
+                     '표본이 열 개 남짓이라 점 예측이 아니라 범위로만 읽어야 하고, 국면 판정 자체가 '
+                     '월+2 발표 지연을 반영한 것이라 실제 전환보다 늦게 인지됩니다. '
+                     '한두 달짜리 깜빡임은 국면으로 세지 않았습니다(3개월 이상).</div>')
+
     # 국면별 과거 분포
     parts.append('<h4 style="font-size:14px;margin:18px 0 6px">이 국면에서 과거에는 어땠나 — 12개월 뒤 수익률 분포</h4>')
     body = ""
@@ -591,6 +738,7 @@ def analyse(target, out_dir, fetch=True):
         "similar": similar_episodes(f, cols, 12),
         "chart_svg": render_chart(f, spec["name"]),
         "lead_lag": lead_lag(f),
+        "duration": phase_duration_outlook(f),
         "chart_first": f.index[0].date().isoformat(),
         "generated_at": datetime.now(KST).strftime("%Y-%m-%d %H:%M KST"),
         "macro_snapshot_hash": macro_info.get("snapshot_hash", ""),

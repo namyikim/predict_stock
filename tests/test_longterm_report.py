@@ -167,3 +167,51 @@ class DetrendedChartTests(unittest.TestCase):
 
     def test_lead_lag_is_none_without_the_columns(self):
         self.assertIsNone(lt.lead_lag(pd.DataFrame({"mom_12m": [1, 2, 3]})))
+
+
+class PhaseDurationTests(unittest.TestCase):
+    """지금 국면이 얼마나 더 갈까 — 조건부 잔여 기간."""
+
+    def frame(self, phases):
+        index = pd.date_range("2000-01-31", periods=len(phases), freq="ME")
+        return pd.DataFrame({"phase": phases}, index=index)
+
+    def test_short_flickers_are_not_episodes(self):
+        # 확장 5개월 → 둔화 1개월(깜빡임) → 확장 5개월 은 확장 11개월 하나로 봐야 한다.
+        phases = ["확장"] * 5 + ["둔화"] * 1 + ["확장"] * 5
+        episodes = lt.phase_episodes(self.frame(phases))
+        self.assertEqual(len(episodes), 1)
+        self.assertEqual(episodes[0]["months"], 11)
+
+    def test_episode_boundaries_and_ongoing_flag(self):
+        phases = ["확장"] * 6 + ["둔화"] * 4
+        episodes = lt.phase_episodes(self.frame(phases))
+        self.assertEqual([(e["phase"], e["months"], e["ongoing"]) for e in episodes],
+                         [("확장", 6, False), ("둔화", 4, True)])
+        self.assertEqual(episodes[0]["start"], "2000-01")
+        self.assertEqual(episodes[0]["end"], "2000-06")
+
+    def test_remaining_uses_only_episodes_that_lasted_longer(self):
+        # 과거 확장: 12·10·8개월. 지금 9개월째면 9개월을 넘긴 12·10만 세어 잔여는 3·1 → 중앙값 2.
+        phases = (["확장"] * 12 + ["둔화"] * 4 + ["확장"] * 10 + ["둔화"] * 4
+                  + ["확장"] * 8 + ["둔화"] * 4 + ["확장"] * 9)
+        got = lt.phase_duration_outlook(self.frame(phases), min_sample=2)
+        self.assertEqual(got["months_so_far"], 9)
+        self.assertEqual(got["n_past"], 3)
+        self.assertEqual(got["n_conditional"], 2)
+        self.assertEqual(got["remaining_median"], 2.0)
+
+    def test_says_so_when_the_current_run_is_already_the_longest(self):
+        phases = ["확장"] * 5 + ["둔화"] * 4 + ["확장"] * 20
+        got = lt.phase_duration_outlook(self.frame(phases))
+        self.assertIsNone(got.get("remaining_median"))
+        self.assertIn("표본이 없습니다", got["reason"])
+
+    def test_outlook_is_included_in_the_fragment(self):
+        price, macro = synthetic()
+        f = lt.build_frame(price, macro)
+        outlook = lt.phase_duration_outlook(f)
+        self.assertIsNotNone(outlook)
+        chart = lt.render_duration_chart(outlook, outlook["months_so_far"])
+        self.assertIn("<svg", chart)
+        self.assertIn("진행 중", chart)

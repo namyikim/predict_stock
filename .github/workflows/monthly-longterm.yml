@@ -1,0 +1,34 @@
+name: 장기 전망 (월간)
+
+# 반도체 수출액·선행지수 순환변동치와 3·6·12개월 수익률을 월 1회 다시 계산해
+# docs/<종목>/longterm.html 조각으로 올린다. 매일 보고서가 그 조각을 맨 아래 절로 붙인다.
+# 매달 6일 22:00 UTC(= 7일 07:00 KST): 전월 수출액(관세청 1일 발표)이 KOSIS에 실리는 시점을 지난 뒤.
+# 실패하면 이전 달 조각이 그대로 남는다(매일 보고서는 멈추지 않는다).
+on:
+  schedule:
+    - cron: "0 22 6 * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  longterm:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        target: [samsung, sk_hynix]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - name: 의존성 설치
+        run: pip install numpy==2.5.2 pandas==3.0.5 scikit-learn==1.9.0 yfinance==1.7.0
+      - name: 장기 전망 계산·발행
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          KOSIS_API_KEY: ${{ secrets.KOSIS_API_KEY }}
+        run: python tools/build_longterm_report.py --target ${{ matrix.target }} --out runs/longterm --dump --publish

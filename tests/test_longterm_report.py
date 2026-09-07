@@ -1,0 +1,112 @@
+"""장기 전망 모듈: 겹치는 타깃의 purge, 국면 분류, 유사 시기, 잡음에서의 판정."""
+import sys
+import unittest
+from pathlib import Path
+
+import numpy as np
+import pandas as pd
+
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "tools"))
+sys.path.insert(0, str(ROOT))
+import build_longterm_report as lt  # noqa: E402
+
+
+def synthetic(seed=0, with_cycle=True, n_years=26):
+    rng = np.random.default_rng(seed)
+    months = pd.date_range("2000-01-31", periods=n_years * 12, freq="ME")
+    n = len(months)
+    cycle = np.sin(np.arange(n) / 9) if with_cycle else np.zeros(n)
+    exports = pd.DataFrame({"month": months.to_period("M").to_timestamp(),
+                            "value": (5e9 * np.exp(0.006 * np.arange(n) + 0.4 * cycle + rng.normal(0, .05, n))).round()})
+    leading = pd.DataFrame({"month": months.to_period("M").to_timestamp(),
+                            "value": 100 + 3 * np.roll(cycle, -2) + rng.normal(0, .3, n)})
+    drift = 0.03 * np.roll(cycle, -4) if with_cycle else 0.
+    price = pd.Series(1000 * np.exp(np.cumsum(0.005 + drift + rng.normal(0, .07, n))), index=months)
+    return price, {"semiconductor_exports": exports, "leading_cycle": leading}
+
+
+class LongTermTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        lt.BOOTSTRAP_B = 100
+        price, macro = synthetic()
+        cls.frame = lt.build_frame(price, macro)
+        cls.cols = [c for c, _ in lt.FEATURES if c in cls.frame.columns]
+
+    def test_features_do_not_use_the_future(self):
+        f = self.frame
+        # 월+2 지연: t월 말에 보이는 수출 YoY는 늦어도 (t-2)월 값이다 → 마지막 두 달의 지표를 바꿔도 앞선 행은 그대로.
+        price, macro = synthetic()
+        macro["semiconductor_exports"].loc[macro["semiconductor_exports"].index[-2:], "value"] *= 3
+        g = lt.build_frame(price, macro)
+        cut = f.index[-3]
+        pd.testing.assert_series_equal(f.loc[:cut, "macro_semiconductor_yoy"], g.loc[:cut, "macro_semiconductor_yoy"])
+
+    def test_walk_forward_purges_overlapping_targets(self):
+        # 시험 시점 t의 학습 행은 타깃이 t 이전에 실현된 행(t-h 이하)뿐이어야 한다.
+        seen = {}
+        original = lt.walk_forward
+
+        from sklearn.linear_model import Ridge
+        captured = []
+        real_fit = Ridge.fit
+
+        def spy(self_, X, y, *a, **k):
+            captured.append(len(y))
+            return real_fit(self_, X, y, *a, **k)
+        Ridge.fit = spy
+        try:
+            oof = lt.walk_forward(self.frame, self.cols, 12)
+        finally:
+            Ridge.fit = real_fit
+        first_t = oof.dropna().index[0]
+        f = self.frame
+        allowed = f.loc[f.index <= first_t - pd.DateOffset(months=12)]
+        allowed = allowed[allowed[self.cols].notna().all(axis=1) & allowed["fwd_12m"].notna()]
+        self.assertEqual(captured[0], len(allowed))
+
+    def test_phase_classification(self):
+        self.assertEqual(lt.phase_of(-.1, .02), lt.PHASES[0])
+        self.assertEqual(lt.phase_of(.1, .02), lt.PHASES[1])
+        self.assertEqual(lt.phase_of(.1, -.02), lt.PHASES[2])
+        self.assertEqual(lt.phase_of(-.1, -.02), lt.PHASES[3])
+        self.assertIsNone(lt.phase_of(np.nan, .1))
+
+    def test_similar_episodes_are_realized_and_spaced(self):
+        sims = lt.similar_episodes(self.frame, self.cols, 12, k=3)
+        self.assertEqual(len(sims), 3)
+        last = self.frame.index[-1]
+        for s in sims:
+            self.assertLessEqual(pd.Timestamp(s["date"]), last - pd.DateOffset(months=12))
+            self.assertTrue(np.isfinite(s["fwd"]))
+        dates = [pd.Timestamp(s["date"]) for s in sims]
+        for a in dates:
+            for b in dates:
+                if a != b:
+                    self.assertGreaterEqual(abs((a - b).days), 360)
+
+    def test_no_signal_on_pure_noise(self):
+        price, macro = synthetic(seed=1, with_cycle=False)
+        f = lt.build_frame(price, macro)
+        cols = [c for c, _ in lt.FEATURES if c in f.columns]
+        ev, _ = lt.evaluate(f, cols, 12)
+        self.assertFalse(ev["beats_zero"])
+
+    def test_signal_on_embedded_cycle(self):
+        ev, _ = lt.evaluate(self.frame, self.cols, 12)
+        self.assertGreater(ev["corr_spearman"], 0.3)
+
+    def test_fragment_renders(self):
+        from pathlib import Path
+        lt.monthly_prices = lambda t, c, fetch=True: synthetic()[0]
+        lt.load_macro_data = lambda *a, **k: (synthetic()[1], {"latest_month": {}, "snapshot_hash": "x"})
+        res, _ = lt.analyse("samsung", Path("/tmp/lt_test"), fetch=False)
+        html_ = lt.render_fragment(res)
+        self.assertIn("7. 장기 전망", html_)
+        self.assertIn("검증", html_)
+        self.assertNotIn("HP 필터를 적용", html_)
+
+
+if __name__ == "__main__":
+    unittest.main()

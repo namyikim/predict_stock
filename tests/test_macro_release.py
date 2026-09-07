@@ -102,3 +102,48 @@ class MacroReleaseTests(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+
+
+class ApiRetryTests(unittest.TestCase):
+    """같은 키로 잡이 동시에 조회하면 거절되는 일이 있다. 재시도하고, 실패 사유를 남긴다."""
+
+    def _patch(self, fake):
+        import macro_utils as mu
+        self._saved = (mu.urlopen, mu.time.sleep)
+        mu.urlopen, mu.time.sleep = fake, lambda s: None
+        self.addCleanup(lambda: setattr(mu, "urlopen", self._saved[0]))
+        self.addCleanup(lambda: setattr(mu.time, "sleep", self._saved[1]))
+        return mu
+
+    def test_transient_failure_is_retried(self):
+        import io
+        import json as js
+        calls = {"n": 0}
+
+        class Resp(io.BytesIO):
+            def __enter__(self): return self
+            def __exit__(self, *a): return False
+
+        def flaky(url, timeout=None):
+            calls["n"] += 1
+            if calls["n"] < 3:
+                raise OSError("temporary")
+            return Resp(js.dumps([{"PRD_DE": "202601", "DT": "1", "C1_NM": "반도체", "UNIT_NM": "달러"}]).encode())
+
+        mu = self._patch(flaky)
+        rows = mu._kosis_request("key", {})
+        self.assertEqual(calls["n"], 3)
+        self.assertEqual(rows[0]["PRD_DE"], "202601")
+
+    def test_final_failure_reports_the_reason_without_the_key(self):
+        def always(url, timeout=None):
+            exc = OSError("nope")
+            exc.code = 429
+            raise exc
+
+        mu = self._patch(always)
+        with self.assertRaises(RuntimeError) as ctx:
+            mu._kosis_request("SECRETKEY", {})
+        message = str(ctx.exception)
+        self.assertIn("429", message)          # 원인을 알 수 있어야 한다
+        self.assertNotIn("SECRETKEY", message)  # 키는 절대 새지 않는다

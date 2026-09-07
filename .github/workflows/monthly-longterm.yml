@@ -18,6 +18,9 @@ jobs:
     timeout-minutes: 30
     strategy:
       fail-fast: false
+      # 두 종목이 같은 KOSIS 키로 동시에 조회하면 한쪽이 거절된다(첫 실행에서 삼성전자만 실패).
+      # 잡당 2분이라 순차로 돌려도 부담이 없다.
+      max-parallel: 1
       matrix:
         target: [samsung, sk_hynix]
     steps:

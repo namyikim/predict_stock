@@ -5,6 +5,8 @@ import json
 import os
 import re
 from pathlib import Path
+import random
+import time
 from urllib.parse import urlencode
 from urllib.request import urlopen
 
@@ -37,16 +39,27 @@ def kosis_key():
     return key
 
 
-def _kosis_request(key, params):
-    # HTTP exceptions contain the full URL and API key: never propagate or log them.
+def _kosis_request(key, params, retries=4):
+    """KOSIS 조회. HTTP 예외에는 URL(=API 키)이 들어 있으므로 절대 그대로 올리지 않는다.
+
+    같은 키로 여러 잡이 동시에 부르면 한쪽이 거절된다(2026-09-07: 종목 병렬 실행에서 삼성전자만 실패).
+    그래서 지수 백오프로 재시도하고, 마지막에는 종류·HTTP 코드만 메시지에 남긴다 — 이것이 없으면
+    '조회 실패' 한 줄만 남아 한도 초과인지 일시 장애인지 구분할 수 없다.
+    """
     query = {'method': 'getList', 'apiKey': key, 'format': 'json', 'jsonVD': 'Y',
              'prdSe': 'M', **params}
-    try:
-        with urlopen('https://kosis.kr/openapi/Param/statisticsParameterData.do?' + urlencode(query),
-                     timeout=60) as response:
-            result = json.loads(response.read().decode('utf-8-sig'))
-    except Exception:
-        raise RuntimeError('KOSIS API 조회 실패. 키 권한/연결을 확인하거나 macro_inputs CSV를 사용하세요.') from None
+    url = 'https://kosis.kr/openapi/Param/statisticsParameterData.do?' + urlencode(query)
+    for attempt in range(retries):
+        try:
+            with urlopen(url, timeout=60) as response:
+                result = json.loads(response.read().decode('utf-8-sig'))
+            break
+        except Exception as exc:
+            detail = f'{type(exc).__name__} {getattr(exc, "code", "")}'.strip()
+            if attempt == retries - 1:
+                raise RuntimeError(f'KOSIS API 조회 실패({detail}). 키 권한·호출 한도·연결을 확인하거나 '
+                                   'macro_inputs CSV를 사용하세요.') from None
+            time.sleep(3 * (2 ** attempt) + random.uniform(0, 3))
     if not isinstance(result, list) or not result:
         raise ValueError('KOSIS API에 수치가 없습니다. API 키, 통계표 접근 권한과 조회 기간을 확인하세요.')
     return result
@@ -310,14 +323,20 @@ def ecos_key():
     return key
 
 
-def _ecos_request(key, path):
-    # URL에 키가 들어가므로 예외 메시지에 URL을 절대 싣지 않는다.
+def _ecos_request(key, path, retries=3):
+    # URL에 키가 들어가므로 예외 메시지에 URL을 절대 싣지 않는다. KOSIS와 같은 이유로 재시도한다.
     url = f'https://ecos.bok.or.kr/api/{path.format(key=key)}'
-    try:
-        with urlopen(url, timeout=60) as response:
-            result = json.loads(response.read().decode('utf-8-sig'))
-    except Exception as exc:
-        raise RuntimeError(f'ECOS API 조회 실패({type(exc).__name__}). 키·연결을 확인하거나 macro_inputs/news_sentiment.csv를 사용하세요.') from None
+    for attempt in range(retries):
+        try:
+            with urlopen(url, timeout=60) as response:
+                result = json.loads(response.read().decode('utf-8-sig'))
+            break
+        except Exception as exc:
+            detail = f'{type(exc).__name__} {getattr(exc, "code", "")}'.strip()
+            if attempt == retries - 1:
+                raise RuntimeError(f'ECOS API 조회 실패({detail}). 키·연결을 확인하거나 '
+                                   'macro_inputs/news_sentiment.csv를 사용하세요.') from None
+            time.sleep(3 * (2 ** attempt) + random.uniform(0, 3))
     if 'RESULT' in result:
         info = result['RESULT']
         raise RuntimeError(f"ECOS 응답 오류 {info.get('CODE', '')}: {info.get('MESSAGE', '')} "

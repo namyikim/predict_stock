@@ -81,6 +81,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           KOSIS_API_KEY: ${{ secrets.KOSIS_API_KEY }}
+          # 뉴스심리지수(한국은행 ECOS). 없거나 실패하면 그 지표만 빼고 진행한다(선택 지표).
+          ECOS_API_KEY: ${{ secrets.ECOS_API_KEY }}
           PREDICT_STOCK_TARGETS: ${{ matrix.target }}
           # 자동 감지(GITHUB_ACTIONS)로도 켜지지만, 발행 주체를 파일에 명시해 둔다.
           PREDICT_STOCK_PUBLISH: "true"

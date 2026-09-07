@@ -115,6 +115,12 @@ def run_feature_cell(raw, **overrides):
     from macro_utils import OPTIONAL_MACRO_SERIES
     ns.setdefault("OPTIONAL_MACRO_SERIES", OPTIONAL_MACRO_SERIES)
     ns.setdefault("macro_info", {"enabled": ns["MACRO_ACTIVE"]})
+    # 뉴스심리지수도 같은 방식이다. 테스트가 넘기지 않으면 꺼진 상태로 둔다.
+    ns.setdefault("NSI_ACTIVE", False)
+    ns.setdefault("nsi_frame", None)
+    ns.setdefault("nsi_info", {"enabled": False})
+    from macro_utils import nsi_features
+    ns.setdefault("nsi_features", nsi_features)
     exec(compile(cell, "cell-features", "exec"), ns)
     return ns
 

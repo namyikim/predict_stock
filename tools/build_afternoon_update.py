@@ -97,9 +97,11 @@ def main():
 
     review = review_ledger(daily, bars, ensemble_model=spec["ensemble"], windows=(20, 60))
     now = datetime.now(KST)
+    version = github_pages.code_version(token)
+    stamp = (f' · 코드 커밋 <code>{version["short"]}</code>' if version["short"] else "")
     note = ('<div style="font-size:12px;color:#6b7178;margin:4px 0 8px;padding:8px 12px;'
             'background:#f7f8fa;border-radius:5px">'
-            f'<b>장 마감 후 갱신 {now:%H:%M} KST</b> — 이 절만 오늘 종가로 다시 채점했습니다. '
+            f'<b>장 마감 후 갱신 {now:%H:%M} KST</b>{stamp} — 이 절만 오늘 종가로 다시 채점했습니다. '
             '아래 성능표와 다음 거래일 예측은 <b>오늘 아침 06:30 기준</b> 그대로입니다.</div>')
     section = ledger_section_html(review, spec["ensemble"], updated_note=note)
     (storage / "ledger_section.html").write_text(section, encoding="utf-8")

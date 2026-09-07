@@ -62,3 +62,71 @@ def publish(path, text, tok, message):
     except Exception as exc:
         raise RuntimeError(f"업로드 실패({type(exc).__name__} "
                            f"{getattr(exc, 'code', '')})") from None
+
+
+def _git_head():
+    """체크아웃이 있으면 로컬 HEAD를 읽는다(Actions의 GITHUB_SHA가 없을 때)."""
+    import subprocess
+    try:
+        out = subprocess.run(["git", "rev-parse", "HEAD"], capture_output=True, text=True, timeout=10)
+        return out.stdout.strip() or None
+    except Exception:
+        return None
+
+
+def code_version(tok=None, branch=GITHUB_BRANCH):
+    """이 보고서를 만든 코드가 어느 커밋인지. (sha, short, message, date_kst, url)
+
+    보고서만 보고 있으면 '언제 만든 것인지'는 알아도 '무슨 코드로 만든 것인지'는 알 수 없다.
+    고친 내용이 반영됐는지 확인하려면 커밋이 필요하다. Actions는 GITHUB_SHA를 주고,
+    체크아웃만 있으면 git에서 읽으며, 둘 다 없으면 원격 브랜치의 최신 커밋을 조회한다.
+    """
+    import datetime
+    import json as _json
+    import urllib.request
+    sha = os.environ.get("GITHUB_SHA") or _git_head()
+    info = {"sha": sha, "short": sha[:7] if sha else None, "message": None, "date_kst": None,
+            "url": f"https://github.com/{GITHUB_REPO}/commit/{sha}" if sha else None}
+    try:
+        path = f"commits/{sha}" if sha else f"commits/{branch}"
+        request = urllib.request.Request(
+            f"https://api.github.com/repos/{GITHUB_REPO}/{path}",
+            headers={"Accept": "application/vnd.github+json",
+                     **({"Authorization": f"Bearer {tok}"} if tok else {})})
+        with urllib.request.urlopen(request, timeout=30) as response:
+            payload = _json.loads(response.read().decode())
+        info["sha"] = payload["sha"]
+        info["short"] = payload["sha"][:7]
+        info["url"] = payload.get("html_url") or info["url"]
+        info["message"] = (payload["commit"]["message"] or "").splitlines()[0][:90]
+        stamp = datetime.datetime.fromisoformat(
+            payload["commit"]["committer"]["date"].replace("Z", "+00:00"))
+        info["date_kst"] = stamp.astimezone(
+            datetime.timezone(datetime.timedelta(hours=9))).strftime("%Y-%m-%d %H:%M KST")
+    except Exception:
+        pass                      # 커밋 정보를 못 받아도 보고서는 나와야 한다
+    return info
+
+
+def version_line(tok=None, generated_at=None, extra=""):
+    """보고서 상단에 넣을 '생성 시각 · 코드 커밋' 한 줄(HTML)."""
+    import html as _html
+    info = code_version(tok)
+    parts = []
+    if generated_at:
+        parts.append(f"생성 <b>{_html.escape(generated_at)}</b>")
+    if info["short"]:
+        link = (f'<a href="{info["url"]}" style="color:#1a5490">{info["short"]}</a>'
+                if info["url"] else info["short"])
+        text = f"코드 커밋 <code>{link}</code>"
+        if info["message"]:
+            text += f' “{_html.escape(info["message"])}”'
+        if info["date_kst"]:
+            text += f' · 커밋 {_html.escape(info["date_kst"])}'
+        parts.append(text)
+    else:
+        parts.append("코드 커밋 정보 없음")
+    if extra:
+        parts.append(extra)
+    return ('<div style="font-size:12px;color:#8a9199;margin:-6px 0 14px">'
+            + " · ".join(parts) + "</div>")

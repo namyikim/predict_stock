@@ -461,7 +461,9 @@ def render(results, usdkrw, today, quality):
              '<style>code{font-family:ui-monospace,monospace;font-size:12px;word-break:break-all}a{color:#1a5490}</style>'
              '<div style="font-size:11px;letter-spacing:2px;color:#8a9199">GOLD &amp; SILVER · DIRECTION &amp; PRICE FORECAST</div>'
              '<h1 style="font-size:24px;margin:6px 0 4px">금·은 예측 보고서</h1>'
-             f'<div style="font-size:13px;color:#6b7178">예측일 {pred.date()} · 시세 기준일 {today.date()} · 삼성전자·SK하이닉스 보고서와 같은 검증 장치를 씁니다</div>']
+             f'<div style="font-size:13px;color:#6b7178">예측일 {pred.date()} · 시세 기준일 {today.date()} · 삼성전자·SK하이닉스 보고서와 같은 검증 장치를 씁니다</div>',
+             github_pages.version_line(os.environ.get("GITHUB_TOKEN"),
+                                       generated_at=datetime.now(KST).strftime("%Y-%m-%d %H:%M KST"))]
     parts.append(note("<b>먼저 읽을 것.</b> 금·은은 거의 24시간 거래되는 시장이라 삼성전자 보고서의 예측력을 만들던 '야간 갭'이 없습니다. "
                       "따라서 다음 거래일 방향 확률은 과거 빈도와 크게 다르지 않을 가능성이 높고, 아래 각 금속의 '과거 성적' 표가 그것을 "
                       "그대로 보여 줍니다. 쓸모가 있는 쪽은 <b>변동성으로 보정한 1주일·1개월 구간</b>입니다 — 그 구간의 실제 적중률을 함께 적었습니다. "

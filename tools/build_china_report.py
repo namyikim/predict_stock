@@ -23,6 +23,7 @@ import argparse
 import html
 import json
 import math
+import os
 import sys
 import warnings
 from datetime import datetime, timedelta, timezone
@@ -441,7 +442,9 @@ def render(plan_results, csi, rows15, today, fetched):
         '<div style="font-size:11px;letter-spacing:2px;color:#8a9199">CHINA · FIVE-YEAR PLANS &amp; EQUITY RETURNS</div>'
         '<h1 style="font-size:24px;margin:6px 0 4px">중국 5개년 계획과 주식 수익</h1>'
         f'<div style="font-size:13px;color:#6b7178">시세 기준일 {fetched} · 진행 중인 15차(2026~2030) 후보 종목과, 14차(2025)부터 8차(1991)까지 최신순으로 계획별 정책 종목의 '
-        '수익률과 CSI 300 분석</div>')
+        '수익률과 CSI 300 분석</div>'
+        + github_pages.version_line(os.environ.get("GITHUB_TOKEN"),
+                                    generated_at=datetime.now(KST).strftime("%Y-%m-%d %H:%M KST")))
 
     # ---- 요약
     with_b = [r for pr in plan_results for r in pr["rows"] if not r["missing"] and not math.isnan(r["bench_ret"])]

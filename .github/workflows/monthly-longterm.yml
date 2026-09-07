@@ -1,4 +1,4 @@
-name: 장기 전망 (월간)
+name: 장기 전망·영업이익 추정 (월간)
 
 # 반도체 수출액·선행지수 순환변동치와 3·6·12개월 수익률을 월 1회 다시 계산해
 # docs/<종목>/longterm.html 조각으로 올린다. 매일 보고서가 그 조각을 맨 아래 절로 붙인다.
@@ -35,3 +35,13 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           KOSIS_API_KEY: ${{ secrets.KOSIS_API_KEY }}
         run: python tools/build_longterm_report.py --target ${{ matrix.target }} --out runs/longterm --dump --publish
+
+      # 영업이익 나우캐스트. 이력은 DART에서 받거나 macro_inputs CSV로 넣는다.
+      # 실패해도 장기 전망 결과는 이미 발행되었으므로 이 단계만 경고로 남긴다.
+      - name: 이번 분기 영업이익 추정·발행
+        continue-on-error: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          KOSIS_API_KEY: ${{ secrets.KOSIS_API_KEY }}
+          DART_API_KEY: ${{ secrets.DART_API_KEY }}
+        run: python tools/build_earnings_forecast.py --target ${{ matrix.target }} --out runs/earnings --dump --publish

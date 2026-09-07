@@ -247,7 +247,7 @@ COMMENT = {
           "텐센트·알리바바(올해 -25%·-23%), 선그로우(올해 -48%, 반내권 정리 국면), 이노밴스(-21%), 항서(-22%), "
           "마인드레이(5년 고점 대비 -53%). 정책이 다시 수요를 만들면 회복 여지가 큰 쪽이지만, 눌린 데는 이유가 있다. "
           "<b>(다) 꾸준한 것</b> — 창장전력, 메이디, CNOOC, 즈진광업. 배당과 실적이 받쳐 준다. "
-          "2절의 교훈을 15차에 적용하면: 정책이 <i>수요</i>를 만드는 곳은 반도체 국산화 조달·전력망·AI 인프라이고, "
+          "3절의 교훈을 15차에 적용하면: 정책이 <i>수요</i>를 만드는 곳은 반도체 국산화 조달·전력망·AI 인프라이고, "
           "<i>공급</i>을 정리하는 곳(반내권)은 태양광·배터리·전기차다. 후자는 설비가 줄어드는 국면에서 살아남는 "
           "1~2위(CATL·BYD)만 의미가 있다. 이 목록은 연구·교육용이며 개인의 상황을 고려한 투자 자문이 아니다.",
 }
@@ -440,8 +440,8 @@ def render(plan_results, csi, rows15, today, fetched):
         'word-break:break-all}a{color:#1a5490}</style>'
         '<div style="font-size:11px;letter-spacing:2px;color:#8a9199">CHINA · FIVE-YEAR PLANS &amp; EQUITY RETURNS</div>'
         '<h1 style="font-size:24px;margin:6px 0 4px">중국 5개년 계획과 주식 수익</h1>'
-        f'<div style="font-size:13px;color:#6b7178">시세 기준일 {fetched} · 14차(2025)부터 8차(1991)까지 최신순으로 계획별 정책 종목의 '
-        '수익률, CSI 300 분석, 15차(2026~2030) 후보</div>')
+        f'<div style="font-size:13px;color:#6b7178">시세 기준일 {fetched} · 진행 중인 15차(2026~2030) 후보 종목과, 14차(2025)부터 8차(1991)까지 최신순으로 계획별 정책 종목의 '
+        '수익률과 CSI 300 분석</div>')
 
     # ---- 요약
     with_b = [r for pr in plan_results for r in pr["rows"] if not r["missing"] and not math.isnan(r["bench_ret"])]
@@ -457,10 +457,11 @@ def render(plan_results, csi, rows15, today, fetched):
         "② 정책 수혜주라도 거품 꼭대기에 상장한 종목은 10년 넘게 공모가를 회복하지 못했다(중국중철·철건, 신화). "
         "③ 정책이 억누른 쪽(부동산·플랫폼)은 지수 이하였다. "
         "통한 쪽은 정책이 <i>수요</i>를 만들어 준 업종이다 — 부양기의 건설기계, 배터리·전기차 초기, 반도체 국산화 조달, "
-        "에너지 안보와 배당. 그리고 지수 자체가 약했다(3절): 중국에서 수익은 지수가 아니라 종목 선택에서 나왔다."))
+        "에너지 안보와 배당. 그리고 지수 자체가 약했다(4절): 중국에서 수익은 지수가 아니라 종목 선택에서 나왔다."))
 
     # ---- 계획별
-    parts.append(h3("2. 계획별: 정책 업종 대표 종목의 계획 기간 수익률"))
+    _i_plans = len(parts)   # 아래에서 절 순서를 바꾸기 위한 경계
+    parts.append(h3("3. 계획별: 정책 업종 대표 종목의 계획 기간 수익률"))
     parts.append('<div style="font-size:13px;color:#6b7178;margin-bottom:8px">수익률은 계획 첫 거래일 → 마지막 거래일'
                  '(배당 재투자 반영). "상장 후"는 계획 시작 뒤에 상장해 상장일부터 계산한 것. 지수는 같은 구간의 상해종합. '
                  '"지금까지"는 그 시작점에서 시세 기준일까지의 누적.</div>')
@@ -502,7 +503,8 @@ def render(plan_results, csi, rows15, today, fetched):
             parts.append(note(COMMENT[plan["n"]]))
 
     # ---- CSI 300
-    parts.append(h3("3. CSI 300(沪深300) 분석"))
+    _i_csi = len(parts)
+    parts.append(h3("4. CSI 300(沪深300) 분석"))
     parts.append(f'<div style="font-size:13px;margin-bottom:8px">상해·심천 양 시장 대형주 300종목 지수. 시가총액 상위에 금융·'
                  f'제조·소비·IT가 고루 들어 있어 "중국 본토 대형주"의 대표다. 원지수의 Yahoo 데이터가 2021년부터라 '
                  f'여기서는 <b>화타이 CSI300 ETF(510300, 2012-05 상장, 배당 포함)</b>를 대리로 쓴다. '
@@ -536,10 +538,11 @@ def render(plan_results, csi, rows15, today, fetched):
     if "csi" in COMMENT:
         parts.append(note(COMMENT["csi"]))
 
-    # ---- 15차
-    parts.append(h3("4. 15차 계획(2026~2030)과 후보 종목"))
+    # ---- 15차 (진행 중인 계획이므로 아래에서 2절 자리로 옮긴다)
+    _i_15 = len(parts)
+    parts.append(h3("2. 15차 계획(2026~2030)과 후보 종목"))
     parts.append(f'<div style="font-size:13px;margin-bottom:8px">{e(PLAN15["summary"])}</div>')
-    parts.append(note("아래는 <b>추천 목록이 아니라 계획이 지목한 산업과 겹치는 상장사 목록</b>이다. 2절의 교훈을 그대로 적용하면: "
+    parts.append(note("아래는 <b>추천 목록이 아니라 계획이 지목한 산업과 겹치는 상장사 목록</b>이다. 3절의 교훈을 그대로 적용하면: "
                       "정책이 <i>수요</i>를 만드는 쪽(반도체 국산화 조달, 전력망 투자, AI 인프라 지출)은 통할 확률이 높았고, "
                       "정책이 <i>공급</i>을 부추기는 쪽(설비 증설 보조)은 과잉으로 끝나는 일이 많았다. 15차의 '반내권'은 "
                       "그 과잉을 정부가 직접 정리하겠다는 뜻이라, 이미 과잉인 업종(태양광·일부 배터리)은 <i>설비가 줄어드는 국면</i>에서 "
@@ -564,7 +567,12 @@ def render(plan_results, csi, rows15, today, fetched):
     if "15" in COMMENT:
         parts.append(note(COMMENT["15"]))
 
+    # 진행 중인 계획을 맨 앞에 둔다: 1 한눈에 → 2 15차 → 3 계획별(14차→8차) → 4 CSI 300 → 5 데이터
+    parts = (parts[:_i_plans] + parts[_i_15:_i_data]
+             + parts[_i_plans:_i_csi] + parts[_i_csi:_i_15] + parts[_i_data:])
+
     # ---- 데이터·방법
+    _i_data = len(parts)
     parts.append(h3("5. 데이터와 방법"))
     parts.append(
         '<div style="font-size:13px;line-height:1.7">'

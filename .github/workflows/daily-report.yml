@@ -1,20 +1,22 @@
 name: 일일 보고서
 
 # 평일 아침에 종목별 보고서를 새로 만들어 GitHub Pages에 발행한다.
-# 21:30 UTC(일~목) = 06:30 KST(월~금). 모델은 07:00 시점 예측으로 설계돼 있고,
+# 21:22 UTC(일~목) = 06:22 KST(월~금). 모델은 07:00 시점 예측으로 설계돼 있고,
 # 유일한 신호원인 미국 장 마감(겨울 06:00 KST, 여름 05:00 KST)이 야후 일봉에
 # 반영될 여유가 필요하다. 그보다 이르면 미완성 봉으로 판정되어 그날 미국 신호가
 # 통째로 빠진다.
 #
+# 시각을 :22로 둔 이유: GitHub의 cron은 :00과 :30에 전 세계 요청이 몰려 가장 많이 밀리고,
+# 아예 건너뛰기도 한다(2026-09-08 06:30 예정 실행은 실행 흔적조차 없었다).
+# 그래서 붐비는 지점을 피하고, 한 시간 뒤에 백업 스케줄을 하나 더 건다.
+# 백업은 오늘 사전 예측이 이미 원장에 있으면 아무것도 하지 않는다(tools/should_run_today.py).
+#
 # 원장은 09:00 KST 이후에 만들어진 예측을 '사전 예측'으로 세지 않는다(is_prospective).
-# 2026-09-07 실행에서 22:00 cron이 1시간 넘게 밀린 데다 두 종목을 순차로 돌려
-# 삼성전자가 09:01 KST에 끝났고, 그 예측은 집계에서 빠졌다. 그래서
-#   - cron은 수십 분 밀릴 수 있으므로 06:30 KST에 걸어 07:00~07:30에 보고서가 나오게 하고,
-#   - 종목을 병렬로 돌리며(종목별 경로가 달라 서로 덮어쓰지 않는다),
-#   - 부트스트랩 반복수를 줄여 장 시작 전에 확실히 끝낸다.
+# 그래서 두 스케줄 모두 09:00 전에 끝나야 하고, 종목을 병렬로 돌리며 부트스트랩 반복수를 줄인다.
 on:
   schedule:
-    - cron: "30 21 * * 0-4"
+    - cron: "22 21 * * 0-4"   # 06:22 KST — 본 실행
+    - cron: "25 22 * * 0-4"   # 07:25 KST — 백업(이미 기록됐으면 건너뜀)
   workflow_dispatch:
     inputs:
       targets:
@@ -76,8 +78,15 @@ jobs:
             echo "$THIS 은(는) 이번 실행 대상이 아닙니다."
           fi
 
+      # 백업 스케줄(07:25 KST)은 본 실행이 이미 성공했으면 돌 필요가 없다.
+      # 수동 실행은 사람이 의도한 것이므로 이 검사를 하지 않는다.
+      - name: 오늘 예측이 이미 기록됐는지 확인
+        id: recorded
+        if: github.event_name == 'schedule' && steps.gate.outputs.run == 'true'
+        run: python tools/should_run_today.py --target ${{ matrix.target }}
+
       - name: 보고서 생성·발행
-        if: steps.gate.outputs.run == 'true'
+        if: steps.gate.outputs.run == 'true' && steps.recorded.outputs.run != 'false'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           KOSIS_API_KEY: ${{ secrets.KOSIS_API_KEY }}
@@ -96,7 +105,7 @@ jobs:
         run: python tools/run_notebook.py --storage "runs/${{ matrix.target }}"
 
       - name: Pages 재빌드 요청
-        if: steps.gate.outputs.run == 'true'
+        if: steps.gate.outputs.run == 'true' && steps.recorded.outputs.run != 'false'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           REPO: ${{ github.repository }}
@@ -121,6 +130,9 @@ jobs:
   # 검색어 보고서는 그대로 갱신되어야 한다.
   trends:
     runs-on: ubuntu-latest
+    # 백업 스케줄(07:25)에는 돌지 않는다. 이 잡들은 원장이 없어 '이미 기록됐는지'를
+    # 판단할 수 없고, 두 번 돌면 같은 내용을 두 번 발행하게 된다.
+    if: github.event_name != 'schedule' || github.event.schedule == '22 21 * * 0-4'
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
@@ -157,6 +169,9 @@ jobs:
   # 종목 보고서(report)와 독립적으로 돈다. 원장은 forecast_history/gold, silver.
   metals:
     runs-on: ubuntu-latest
+    # 백업 스케줄(07:25)에는 돌지 않는다. 이 잡들은 원장이 없어 '이미 기록됐는지'를
+    # 판단할 수 없고, 두 번 돌면 같은 내용을 두 번 발행하게 된다.
+    if: github.event_name != 'schedule' || github.event.schedule == '22 21 * * 0-4'
     timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
@@ -192,6 +207,9 @@ jobs:
   # 5개년 계획 분석은 시세만 새로 받는다. 종목 56개라 몇 분이면 끝난다.
   china:
     runs-on: ubuntu-latest
+    # 백업 스케줄(07:25)에는 돌지 않는다. 이 잡들은 원장이 없어 '이미 기록됐는지'를
+    # 판단할 수 없고, 두 번 돌면 같은 내용을 두 번 발행하게 된다.
+    if: github.event_name != 'schedule' || github.event.schedule == '22 21 * * 0-4'
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
@@ -228,6 +246,9 @@ jobs:
   # 위키백과 조회수는 월 단위로만 갱신되지만, 매일 돌려도 API 호출 40회로 가볍다.
   interest:
     runs-on: ubuntu-latest
+    # 백업 스케줄(07:25)에는 돌지 않는다. 이 잡들은 원장이 없어 '이미 기록됐는지'를
+    # 판단할 수 없고, 두 번 돌면 같은 내용을 두 번 발행하게 된다.
+    if: github.event_name != 'schedule' || github.event.schedule == '22 21 * * 0-4'
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4

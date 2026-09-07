@@ -120,6 +120,15 @@ class NotebookStructureTests(unittest.TestCase):
         self.assertIn('"raw_predicted_return": stats["raw_point"]', self.source)
         self.assertIn('"raw_predicted_return": open_forecast_stats["raw_point"]', self.source)
 
+    def test_after_close_run_does_not_record_a_forecast(self):
+        # 장 마감 후 실행은 채점·보고서만 갱신한다. 원장은 날짜별 최초 사전 예측만 집계하므로,
+        # 정보가 적은 오후 예측을 넣으면 아침 예측이 중복으로 버려진다.
+        self.assertIn('PREDICT_STOCK_RECORD_FORECAST', self.source)
+        self.assertIn("if RECORD_FORECAST:\n    all_log = append_forecasts", self.source)
+        workflow = (Path(__file__).resolve().parents[1] / ".github/workflows/afternoon-report.yml").read_text(encoding="utf-8")
+        self.assertIn('PREDICT_STOCK_RECORD_FORECAST: "false"', workflow)
+        self.assertIn('cron: "10 7 * * 1-5"', workflow)   # 16:10 KST, 미완성 봉 기준(15:40) 이후
+
     def test_bootstrap_size_can_be_reduced_for_automation(self):
         self.assertIn('os.environ.get("PREDICT_STOCK_BOOTSTRAP_B")', self.source)
 

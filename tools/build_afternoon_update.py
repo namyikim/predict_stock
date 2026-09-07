@@ -18,6 +18,7 @@ import sys
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
+import numpy as np
 import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -38,8 +39,14 @@ LEDGER_FILES = ["forecast_log.csv", "daily_forecast_comparison.csv", "forecast_a
 MARK_START, MARK_END = "<!--LEDGER_SECTION_START-->", "<!--LEDGER_SECTION_END-->"
 
 
-def load_bars(ticker):
-    """대상 종목 일봉. 한국장 마감(15:40 KST) 전이면 당일 봉은 미완성이므로 버린다."""
+def load_bars(ticker, scope="all"):
+    """대상 종목 일봉.
+
+    scope="all"  : 장 마감(15:40 KST) 전이면 당일 봉을 버린다. 종가가 확정되지 않았다.
+    scope="open" : 개장 직후 실행. 시가만 쓰려고 봉은 남기되 종가·고가·저가를 비운다.
+                   야후의 장중 close는 마지막 체결가일 뿐 종가가 아니어서, 남겨 두면
+                   나중에 그 값으로 무언가를 채점할 위험이 있다.
+    """
     import yfinance as yf
     frame = yf.Ticker(ticker).history(start="2015-01-01", auto_adjust=False)
     if frame is None or frame.empty:
@@ -50,7 +57,11 @@ def load_bars(ticker):
         frame["adj_close"] = frame["close"]
     now = pd.Timestamp.now(tz="Asia/Seoul")
     if frame.index[-1].date() >= now.date() and (now.hour, now.minute) < (15, 40):
-        frame = frame.iloc[:-1]
+        if scope == "open":
+            frame = frame.copy()
+            frame.loc[frame.index[-1], ["close", "high", "low", "adj_close"]] = np.nan
+        else:
+            frame = frame.iloc[:-1]
     # 거래량 0에 시가=고가=저가=종가인 유령봉은 '보합'을 조작하므로 채점에서 뺀다(노트북과 같은 규칙).
     ghost = (frame["volume"] == 0) & (frame["high"] == frame["low"]) & (frame["open"] == frame["close"])
     return frame[~ghost][["open", "high", "low", "close", "adj_close", "volume"]].astype(float)
@@ -85,13 +96,15 @@ def main():
     parser.add_argument("--target", default="samsung", choices=list(TARGETS))
     parser.add_argument("--out", type=Path, required=True)
     parser.add_argument("--publish", action="store_true")
+    parser.add_argument("--scope", default="all", choices=("all", "open"),
+                        help="open: 개장 직후 시초가만 채점 · all: 마감 후 전체 채점")
     args = parser.parse_args()
     spec = TARGETS[args.target]
     storage = args.out / args.target
     token = github_pages.token() if args.publish else None
 
-    bars = load_bars(spec["ticker"])
-    print(f"시세 {len(bars):,}행 · 마지막 봉 {bars.index[-1].date()}", flush=True)
+    bars = load_bars(spec["ticker"], scope=args.scope)
+    print(f"시세 {len(bars):,}행 · 마지막 봉 {bars.index[-1].date()} · scope={args.scope}", flush=True)
     evaluated, daily = score(storage, args.target, bars, token)
     print("채점 상태:", evaluated["status"].value_counts().to_dict(), flush=True)
 
@@ -99,10 +112,14 @@ def main():
     now = datetime.now(KST)
     version = github_pages.code_version(token)
     stamp = (f' · 코드 커밋 <code>{version["short"]}</code>' if version["short"] else "")
+    if args.scope == "open":
+        headline = (f'<b>시초가 확인 {now:%H:%M} KST</b>{stamp} — 오늘 시가가 확정되어 '
+                    '<b>시초가 예측만</b> 채점했습니다. 종가 관련 항목은 장 마감 후(16:10)에 채워집니다.')
+    else:
+        headline = f'<b>장 마감 후 갱신 {now:%H:%M} KST</b>{stamp} — 이 절만 오늘 종가로 다시 채점했습니다.'
     note = ('<div style="font-size:12px;color:#6b7178;margin:4px 0 8px;padding:8px 12px;'
             'background:#f7f8fa;border-radius:5px">'
-            f'<b>장 마감 후 갱신 {now:%H:%M} KST</b>{stamp} — 이 절만 오늘 종가로 다시 채점했습니다. '
-            '아래 성능표와 다음 거래일 예측은 <b>오늘 아침 06:30 기준</b> 그대로입니다.</div>')
+            f'{headline} 아래 성능표와 다음 거래일 예측은 <b>오늘 아침 기준</b> 그대로입니다.</div>')
     section = ledger_section_html(review, spec["ensemble"], updated_note=note)
     (storage / "ledger_section.html").write_text(section, encoding="utf-8")
     for alert in review["alerts"]:

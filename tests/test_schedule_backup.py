@@ -47,6 +47,43 @@ class ScheduleTests(unittest.TestCase):
         self.assertIn("steps.recorded.outputs.run != 'false'", build["if"])
 
 
+class PushTriggerTests(unittest.TestCase):
+    """코드가 바뀌면 바로 다시 만들되, 원장은 건드리지 않는다."""
+
+    def test_push_is_limited_to_code_paths(self):
+        push = WORKFLOW[True]["push"]
+        self.assertEqual(push["branches"], ["main"])
+        for path in ("samsung_direction_model_colab.ipynb", "tools/**", "forecast_utils.py"):
+            self.assertIn(path, push["paths"])
+        # 자기 자신이 만든 커밋(보고서·원장)이 다시 실행을 부르면 안 된다.
+        for path in push["paths"]:
+            self.assertFalse(path.startswith(("docs/", "forecast_history/", "runs/")), path)
+
+    def test_push_runs_do_not_record_a_forecast(self):
+        steps = {s.get("name"): s for s in WORKFLOW["jobs"]["report"]["steps"]}
+        record = steps["보고서 생성·발행"]["env"]["PREDICT_STOCK_RECORD_FORECAST"]
+        self.assertIn("github.event_name == 'push'", record)
+        self.assertIn("'false'", record)
+
+
+class ScoringScheduleTests(unittest.TestCase):
+    """개장 후·마감 후 두 번 채점한다."""
+
+    def setUp(self):
+        self.wf = yaml.safe_load(
+            (ROOT / ".github/workflows/afternoon-report.yml").read_text(encoding="utf-8"))
+
+    def test_two_scoring_schedules(self):
+        crons = [item["cron"] for item in self.wf[True]["schedule"]]
+        self.assertEqual(crons, ["37 0 * * 1-5", "10 7 * * 1-5"])   # 09:37 / 16:10 KST
+
+    def test_morning_run_scores_only_the_open(self):
+        step = {s.get("name"): s for s in self.wf["jobs"]["report"]["steps"]}["채점·보고서 절 갱신"]
+        self.assertIn("37 0 * * 1-5", step["env"]["SCOPE"])
+        self.assertIn("'open'", step["env"]["SCOPE"])
+        self.assertIn("--scope", step["run"])
+
+
 class LedgerGateTests(unittest.TestCase):
     def setUp(self):
         self.dir = Path(tempfile.mkdtemp())

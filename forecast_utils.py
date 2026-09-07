@@ -312,19 +312,24 @@ def evaluate_forecasts(log, bars, now=None):
             if mode == "open_to_close":
                 deadline += pd.Timedelta(minutes=5)
             result.loc[i, "is_prospective"] = bool(created < deadline)
-        if target.date() > market_now.date() or (target.date() == market_now.date() and (market_now.hour, market_now.minute) < (15, 40)):
+        kind = row.get("kind", "direction")
+        if pd.isna(kind):
+            kind = "direction"
+        # 시가는 09:00에 확정되므로 그날 오전에 채점할 수 있다. 종가는 15:30 마감 뒤라야 한다.
+        # (야후 반영 여유를 두어 09:05 / 15:40을 쓴다.)
+        ready_at = (9, 5) if kind == "open" else (15, 40)
+        if target.date() > market_now.date() or (target.date() == market_now.date()
+                                                 and (market_now.hour, market_now.minute) < ready_at):
             continue
         if target not in bars.index:
             result.loc[i, "status"] = "missing_actual"
             continue
         bar = bars.loc[target]
-        if not np.isfinite(bar["close"]) or bar["close"] <= 0:
+        needed = "open" if kind == "open" else "close"
+        if not np.isfinite(bar[needed]) or bar[needed] <= 0:
             result.loc[i, "status"] = "missing_actual"
             continue
         result.loc[i, ["actual_open", "actual_close"]] = [bar["open"], bar["close"]]
-        kind = row.get("kind", "direction")
-        if pd.isna(kind):
-            kind = "direction"
         if kind in ("price", "open"):
             # "price": 전일 종가 대비 target_date 종가. "open": 전일 종가 대비 target_date 시가(갭).
             # 시가 예측은 09:00 이전에만 의미가 있으므로 열 이름을 *_open 으로 분리해 종가 예측과 섞지 않는다.

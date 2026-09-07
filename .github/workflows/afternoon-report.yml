@@ -1,8 +1,9 @@
-name: 장 마감 후 갱신
+name: 채점 갱신 (개장 후·마감 후)
 
 # 한국 정규장은 15:30에 끝난다. 07:10 UTC(= 16:10 KST)에 돌려 그날 종가로 예측을 채점하고
 # 보고서를 새로 발행한다. 15:40 이후여야 야후의 당일 봉이 완성으로 처리된다(노트북의 미완성 봉 제거 규칙).
 #
+# 09:37 회차는 시가 확정 직후라 시초가 예측만 채점하고, 16:10 회차는 종가로 나머지를 채점한다.
 # 새 예측은 만들지 않는다. 원장은 날짜별 '최초 사전 예측'만 집계하는데, 오후 예측에는 그날 밤
 # 미국 장 정보가 없어 아침 06:30 예측보다 정보가 적다. 기록하면 나쁜 쪽이 채택되고 좋은 쪽이
 # 중복으로 버려진다.
@@ -11,9 +12,17 @@ name: 장 마감 후 갱신
 # 대상 종목 시세만 받아 채점하고 보고서의 '어제 예측 vs 실제' 절만 바꿔 끼운다 — 1분이면 끝난다.
 on:
   schedule:
-    - cron: "10 7 * * 1-5"
+    - cron: "37 0 * * 1-5"   # 09:37 KST — 개장 직후. 시가가 확정되어 시초가 예측을 채점한다.
+    - cron: "10 7 * * 1-5"   # 16:10 KST — 마감 후. 종가로 나머지를 채점한다.
   workflow_dispatch:
     inputs:
+      scope:
+        description: "채점 범위"
+        type: choice
+        default: "all"
+        options:
+          - "all"
+          - "open"
       targets:
         description: "실행할 종목"
         type: choice
@@ -55,7 +64,9 @@ jobs:
         if: steps.gate.outputs.run == 'true'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: python tools/build_afternoon_update.py --target ${{ matrix.target }} --out runs/afternoon --publish
+          # 09:37 회차는 시가만, 16:10 회차와 수동 실행은 전체를 채점한다.
+          SCOPE: ${{ github.event.schedule == '37 0 * * 1-5' && 'open' || (inputs.scope || 'all') }}
+        run: python tools/build_afternoon_update.py --target ${{ matrix.target }} --out runs/afternoon --scope "$SCOPE" --publish
 
       - name: Pages 재빌드 요청
         if: steps.gate.outputs.run == 'true'

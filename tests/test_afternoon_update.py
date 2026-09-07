@@ -76,3 +76,74 @@ class UnclosedBarTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class ScopeTests(unittest.TestCase):
+    """개장 직후(09:37) 회차는 시가만 채점한다. 장중 close는 종가가 아니다."""
+
+    def bars(self, scope, now="2026-09-08 09:37"):
+        idx = pd.to_datetime(["2026-09-07", "2026-09-08"])
+        frame = pd.DataFrame({"Open": [100., 104.], "High": [101., 105.], "Low": [99., 103.],
+                              "Close": [100., 104.5], "Adj Close": [100., 104.5],
+                              "Volume": [1e6, 5e5]}, index=idx)
+
+        class FakeTicker:
+            def __init__(self, *a, **k): pass
+            def history(self, **k): return frame.copy()
+
+        import yfinance
+        saved_ticker, saved_now = yfinance.Ticker, pd.Timestamp.now
+        yfinance.Ticker = FakeTicker
+        pd.Timestamp.now = classmethod(
+            lambda cls, tz=None: saved_now(tz=tz) if tz is None else pd.Timestamp(now, tz="Asia/Seoul"))
+        try:
+            return af.load_bars("005930.KS", scope=scope)
+        finally:
+            yfinance.Ticker, pd.Timestamp.now = saved_ticker, saved_now
+
+    def test_open_scope_keeps_the_open_and_drops_the_intraday_close(self):
+        bars = self.bars("open")
+        self.assertEqual(len(bars), 2)
+        self.assertEqual(bars["open"].iloc[-1], 104.)
+        self.assertTrue(np.isnan(bars["close"].iloc[-1]))
+
+    def test_all_scope_drops_the_unfinished_bar(self):
+        bars = self.bars("all")
+        self.assertEqual(len(bars), 1)
+
+    def test_after_close_all_scope_keeps_today(self):
+        bars = self.bars("all", now="2026-09-08 16:10")
+        self.assertEqual(len(bars), 2)
+        self.assertEqual(bars["close"].iloc[-1], 104.5)
+
+
+class OpenScoringTimeTests(unittest.TestCase):
+    """시가는 09:00에 확정되므로 그날 오전에 채점할 수 있다. 종가는 마감 뒤라야 한다."""
+
+    def log(self):
+        common = dict(run_id="r", target_date="2026-09-08", prediction_date="2026-09-08",
+                      created_at_utc="2026-09-07T22:30:00Z", current_close=100., horizon_days=1)
+        return pd.DataFrame([
+            dict(common, record_id="o", kind="open", model="Ridge", predicted_open=103.,
+                 center_open=103., low_open=101., high_open=106., predicted_return=.03),
+            dict(common, record_id="d", kind="direction", model="Mean ensemble", band=.01,
+                 p_down=.2, p_flat=.3, p_up=.5, prediction="상승"),
+        ])
+
+    def bars(self):
+        return pd.DataFrame({"open": [100., 104.], "high": [101., np.nan], "low": [99., np.nan],
+                             "close": [100., np.nan], "adj_close": [100., np.nan],
+                             "volume": [1e6, 1e6]},
+                            index=pd.to_datetime(["2026-09-07", "2026-09-08"]))
+
+    def status_at(self, when):
+        got = fu.evaluate_forecasts(self.log(), self.bars(), now=when)
+        return dict(zip(got["kind"], got["status"]))
+
+    def test_open_is_scored_after_the_bell_but_the_close_is_not(self):
+        self.assertEqual(self.status_at("2026-09-08T00:30:00Z"),   # 09:30 KST
+                         {"open": "scored", "direction": "pending"})
+
+    def test_nothing_is_scored_before_the_bell(self):
+        self.assertEqual(self.status_at("2026-09-07T23:50:00Z"),   # 08:50 KST
+                         {"open": "pending", "direction": "pending"})

@@ -43,7 +43,7 @@
 
 ## 뉴스심리지수 (한국은행 ECOS, 선택)
 
-`USE_NSI_FEATURES=True`가 기본값입니다. 한국은행 뉴스심리지수(일별)를 ECOS Open API로 받아 수준(−100), 5일·20일 변화, 60일 z-score 네 특징을 만듭니다. 지수는 일별로 작성되지만 **공개는 주 1회(2026-09부터 매주 월요일 16:00)** 이므로, 미래 정보가 섞이지 않도록 **지수 날짜+8일 이후에만** 사용합니다. 한은이 말하는 "1개월 선행"은 소비자·기업심리지수에 대한 선행이지 주가에 대한 선행이 아닙니다. 효과는 매 실행 `Mean ensemble − No NSI ensemble` 쌍체 비교(95% CI)로 측정하며, CI가 0을 배제하기 전에는 채택 근거로 보지 않습니다.
+`USE_NSI_FEATURES=True`가 기본값입니다. 한국은행 뉴스심리지수(일별)를 ECOS Open API로 받아 수준(−100), 5일·20일 변화, 60일 z-score 네 특징을 만듭니다. 지수는 일별로 작성되지만 **공개는 주 1회(2026-09부터 매주 월요일 16:00)** 이므로, 미래 정보가 섞이지 않도록 **지수 날짜+14일 이후에만** 사용합니다(2026-09-08 확인 시 9/7 공개분이 8/31까지였음). 한은이 말하는 "1개월 선행"은 소비자·기업심리지수에 대한 선행이지 주가에 대한 선행이 아닙니다. 효과는 매 실행 `Mean ensemble − No NSI ensemble` 쌍체 비교(95% CI)로 측정하며, CI가 0을 배제하기 전에는 채택 근거로 보지 않습니다.
 
 설정: [ECOS Open API](https://ecos.bok.or.kr/api/) 인증키를 발급받아 Colab 보안 비밀 / GitHub Secrets에 `ECOS_API_KEY`로 등록합니다. 못 받으면 그 지표만 빼고 계속 진행합니다(KOSIS와 달리 `MACRO_STRICT`의 대상이 아님). 2026-09-01 신(新)지수로 통계표 코드가 바뀌었을 수 있으니, 조회가 실패하면 `python tools/probe_ecos.py`로 코드를 확인하고 `ECOS_NSI_STAT_CODE`, `ECOS_NSI_ITEM_CODE` 환경변수로 넘기세요. CSV로 쓰려면 `macro_inputs/news_sentiment.csv`(`date,value`)를 둡니다.
 

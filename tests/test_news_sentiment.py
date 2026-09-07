@@ -17,8 +17,9 @@ class NsiFeatureTests(unittest.TestCase):
         frame = self.series()
         level = frame.set_index("date")["value"]
         f = mu.nsi_features(frame, pd.bdate_range("2026-03-01", "2026-09-08"))
-        # 9/8 예측에 보이는 값은 8/31 지수(= 9/8 - 8일)까지다.
-        self.assertAlmostEqual(f.loc["2026-09-08", "nsi_level"], level.loc["2026-08-31"] - 100)
+        # 9/8 예측에 보이는 값은 (9/8 - lag) 지수까지다.
+        lag = pd.Timedelta(days=mu.NSI_RELEASE_LAG_DAYS)
+        self.assertAlmostEqual(f.loc["2026-09-08", "nsi_level"], level.loc[pd.Timestamp("2026-09-08") - lag] - 100)
         self.assertNotAlmostEqual(f.loc["2026-09-08", "nsi_level"], level.loc["2026-09-06"] - 100)
 
     def test_a_future_revision_cannot_change_the_past_row(self):
@@ -26,13 +27,16 @@ class NsiFeatureTests(unittest.TestCase):
         base = mu.nsi_features(frame, pd.bdate_range("2026-06-01", "2026-07-01"))
         frame.loc[frame["date"] >= "2026-06-25", "value"] += 30      # 6/25 이후를 바꿔도
         changed = mu.nsi_features(frame, pd.bdate_range("2026-06-01", "2026-07-01"))
-        pd.testing.assert_frame_equal(base.loc[:"2026-07-02"], changed.loc[:"2026-07-02"])  # 7/2까지의 행은 그대로
+        cutoff = pd.Timestamp("2026-06-24") + pd.Timedelta(days=mu.NSI_RELEASE_LAG_DAYS)
+        pd.testing.assert_frame_equal(base.loc[:cutoff], changed.loc[:cutoff])  # 공개 전 구간의 행은 그대로
 
     def test_stale_series_expires(self):
         frame = self.series()
         f = mu.nsi_features(frame, pd.bdate_range("2026-09-01", "2026-10-30"))
-        self.assertTrue(f.loc["2026-09-14"].notna().all())      # 9/6 + 8일 = 9/14까지 신선
-        self.assertTrue(f.loc["2026-10-15"].isna().all())       # 9/14 + 21일 뒤에는 만료
+        fresh = pd.Timestamp("2026-09-06") + pd.Timedelta(days=mu.NSI_RELEASE_LAG_DAYS)
+        fresh = pd.bdate_range(fresh, periods=1)[0]
+        self.assertTrue(f.loc[fresh].notna().all())                                 # 공개 직후 신선
+        self.assertTrue(f.loc[fresh + pd.Timedelta(days=mu.NSI_MAX_AGE_DAYS + 3)].isna().all())  # 만료
 
     def test_parse_and_normalize_reject_bad_input(self):
         got = mu.parse_ecos_daily({"StatisticSearch": {"row": [{"TIME": "20260901", "DATA_VALUE": "101.2"},
@@ -53,9 +57,9 @@ class NsiInNotebookTests(unittest.TestCase):
         ns = run_feature_cell(raw, NSI_ACTIVE=True, nsi_frame=frame, nsi_info={"enabled": True, "last": "x"})
         self.assertTrue(set(ns["nsi_feature_cols"]) >= {"nsi_level", "nsi_change_5d", "nsi_change_20d", "nsi_z60"})
         self.assertTrue(all(c in ns["feature_cols"] for c in ns["nsi_feature_cols"]))
-        # 라이브 행의 nsi_level은 예측일-8일 지수여야 한다.
+        # 라이브 행의 nsi_level은 예측일-lag 지수여야 한다.
         pred = ns["prediction_date"]
-        expected = float(frame.set_index("date").loc[pred - pd.Timedelta(days=8), "value"]) - 100
+        expected = float(frame.set_index("date").loc[pred - pd.Timedelta(days=mu.NSI_RELEASE_LAG_DAYS), "value"]) - 100
         self.assertAlmostEqual(float(ns["live_row"]["nsi_level"].iloc[0]), expected, places=6)
 
     def test_feature_cell_drops_nsi_when_live_row_is_stale(self):

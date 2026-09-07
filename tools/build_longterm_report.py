@@ -73,6 +73,7 @@ def monthly_prices(ticker, cache_dir, fetch=True):
         last_full = (pd.Timestamp.now(tz="Asia/Seoul").tz_localize(None).normalize() - pd.offsets.MonthBegin(1)) - pd.Timedelta(days=1)
         daily = daily[daily.index <= last_full]
         monthly = daily.resample("ME").last().dropna()
+        monthly = prepend_history(monthly, cache_dir.parent)
         monthly.to_csv(path, header=["adj_close"])
         return monthly
     if not path.exists():
@@ -80,10 +81,29 @@ def monthly_prices(ticker, cache_dir, fetch=True):
     return pd.read_csv(path, index_col=0, parse_dates=True)["adj_close"]
 
 
+def prepend_history(monthly, storage):
+    """Yahoo는 2000년부터다. 그 이전 월말 종가를 CSV(date,close)로 두면 앞에 이어 붙인다.
+    겹치는 첫 달로 스케일을 맞춰(수정계수) 하나의 연속 계열로 만든다. 파일: macro_inputs/price_history_monthly.csv"""
+    path = Path(storage) / "macro_inputs" / "price_history_monthly.csv"
+    if not path.exists():
+        return monthly
+    old = pd.read_csv(path)
+    old["date"] = pd.to_datetime(old["date"]).dt.normalize()
+    old = old.set_index("date")["close"].astype(float).resample("ME").last().dropna()
+    old = old[old.index < monthly.index[0]]
+    if old.empty:
+        return monthly
+    # 스케일 맞춤: 옛 계열의 마지막 값과 새 계열의 첫 값 사이 수익률이 보존되도록 비율을 곱한다.
+    bridge = old.index[-1]
+    ratio = float(monthly.iloc[0]) / float(old.iloc[-1])
+    return pd.concat([old * ratio, monthly])
+
+
 def build_frame(monthly, macro):
     """월말 인덱스의 특징·타깃 프레임. 모든 특징은 그 월말까지의 자료만 쓴다."""
     idx = monthly.index
     f = pd.DataFrame(index=idx)
+    f["price"] = monthly.to_numpy()
     logp = np.log(monthly)
     f["mom_12m"] = logp - logp.shift(12)
     f["drawdown_36m"] = monthly / monthly.rolling(36, min_periods=12).max() - 1
@@ -96,6 +116,11 @@ def build_frame(monthly, macro):
     if exports is not None:
         ratio = logp - np.log(exports.rolling(12, min_periods=6).mean())
         f["price_to_exports_z"] = (ratio - ratio.rolling(60, min_periods=24).mean()) / ratio.rolling(60, min_periods=24).std()
+    # 국면 판정은 3개월 평균 YoY와 그 3개월 변화로 한다(월별 YoY는 달마다 부호가 뒤집혀 국면이 깜빡인다).
+    if "macro_semiconductor_yoy_3m" in f:
+        f["exports_cycle"] = f["macro_semiconductor_yoy_3m"]
+        f["exports_accel"] = f["macro_semiconductor_yoy_3m"].diff(3)
+        f["phase"] = [phase_of(a, b) for a, b in zip(f["exports_cycle"], f["exports_accel"])]
     for label, h in HORIZONS.items():
         f[f"fwd_{h}m"] = logp.shift(-h) - logp
     return f
@@ -199,7 +224,7 @@ def feature_ic(f, cols, h):
 # ---------------------------------------------------------------------------
 # 국면과 유사 시기
 # ---------------------------------------------------------------------------
-PHASES = ["회복(수출 YoY<0, 상승)", "확장(YoY>0, 상승)", "둔화(YoY>0, 하락)", "침체(YoY<0, 하락)"]
+PHASES = ["회복(수출 YoY<0, 가속)", "확장(YoY>0, 가속)", "둔화(YoY>0, 감속)", "침체(YoY<0, 감속)"]
 
 
 def phase_of(yoy, change):
@@ -211,9 +236,7 @@ def phase_of(yoy, change):
 
 
 def phase_table(f, h):
-    ph = [phase_of(a, b) for a, b in zip(f.get("macro_semiconductor_yoy", pd.Series(np.nan, index=f.index)),
-                                         f.get("macro_semiconductor_yoy_change_3m", pd.Series(np.nan, index=f.index)))]
-    d = pd.DataFrame({"phase": ph, "fwd": f[f"fwd_{h}m"]}).dropna()
+    d = pd.DataFrame({"phase": f.get("phase", pd.Series(None, index=f.index)), "fwd": f[f"fwd_{h}m"]}).dropna()
     rows = []
     for p in PHASES:
         g = d.loc[d.phase == p, "fwd"]
@@ -265,6 +288,77 @@ def table(head, body, min_width=560):
             f'<tr>{head}</tr>{body}</table></div>')
 
 
+PHASE_COLOR = {PHASES[0]: "#dbe9f6", PHASES[1]: "#dff0e3", PHASES[2]: "#fbeed6", PHASES[3]: "#f6dcd9"}
+
+
+def render_chart(f, name):
+    """실제 통계치와 주가를 한 그림에. 외부 라이브러리 없이 SVG를 직접 그린다(보고서 HTML에 인라인).
+
+    위: 주가(로그축) + 사이클 국면 배경. 가운데: 반도체 수출 전년 동월 대비(월+2 지연 반영, 즉 그 시점에
+    알 수 있던 값). 아래: 선행지수 순환변동치(100 기준). 모두 같은 시간축이라 선후 관계를 눈으로 볼 수 있다.
+    """
+    d = f.dropna(subset=["price"]).copy()
+    if len(d) < 24:
+        return ""
+    W, L, R = 900, 60, 24
+    panels = [("price", 230), ("macro_semiconductor_yoy", 130), ("macro_leading_cycle", 130)]
+    top, gap, bottom = 16, 28, 30
+    H = top + sum(h for _, h in panels) + gap * (len(panels) - 1) + bottom
+    x0, x1 = d.index[0].value, d.index[-1].value
+    def X(t):
+        return L + (t.value - x0) / (x1 - x0) * (W - L - R)
+    out = [f'<svg viewBox="0 0 {W} {H}" width="100%" style="max-width:{W}px;font-family:-apple-system,\'Malgun Gothic\',sans-serif;font-size:11px">']
+    y = top
+    years = [t for t in d.index if t.month == 12 and t.year % 2 == 1]
+    for key, ph in panels:
+        y_top, y_bot = y, y + ph
+        series = d[key] if key in d else pd.Series(np.nan, index=d.index)
+        vals = series.dropna()
+        if key == "price":
+            lo, hi = float(np.log(vals.min())), float(np.log(vals.max()))
+            def Y(v, lo=lo, hi=hi, y_top=y_top, y_bot=y_bot):
+                return y_bot - (math.log(v) - lo) / (hi - lo) * (y_bot - y_top)
+            # 국면 배경
+            if "phase" in d:
+                prev, start = None, None
+                for t, phv in list(d["phase"].items()) + [(d.index[-1], None)]:
+                    if phv != prev:
+                        if prev is not None and start is not None:
+                            out.append(f'<rect x="{X(start):.1f}" y="{y_top}" width="{max(X(t) - X(start), 1):.1f}" height="{ph}" fill="{PHASE_COLOR.get(prev, "#fff")}"/>')
+                        prev, start = phv, t
+            ticks = [v for v in [1000, 2000, 5000, 10000, 20000, 50000, 100000, 200000, 500000] if vals.min() <= v <= vals.max()]
+            for v in ticks:
+                out.append(f'<line x1="{L}" x2="{W - R}" y1="{Y(v):.1f}" y2="{Y(v):.1f}" stroke="#eee"/>'
+                           f'<text x="{L - 6}" y="{Y(v) + 4:.1f}" text-anchor="end" fill="#8a9199">{v:,}</text>')
+            title = f"{name} 월말 수정종가 (로그축) · 배경 = 반도체 사이클 국면"
+        else:
+            lo, hi = float(min(vals.min(), 0)), float(max(vals.max(), 0))
+            pad = (hi - lo) * .08 or 1
+            lo, hi = lo - pad, hi + pad
+            def Y(v, lo=lo, hi=hi, y_top=y_top, y_bot=y_bot):
+                return y_bot - (v - lo) / (hi - lo) * (y_bot - y_top)
+            out.append(f'<line x1="{L}" x2="{W - R}" y1="{Y(0):.1f}" y2="{Y(0):.1f}" stroke="#999" stroke-dasharray="3,3"/>')
+            for v in (lo + pad, hi - pad):
+                lab = f"{v * 100:+.0f}%" if key == "macro_semiconductor_yoy" else f"{v:+.1f}"
+                out.append(f'<text x="{L - 6}" y="{Y(v) + 4:.1f}" text-anchor="end" fill="#8a9199">{lab}</text>')
+            title = ("반도체 수출액 전년 동월 대비 (그 시점에 알 수 있던 값, 월+2 지연)" if key == "macro_semiconductor_yoy"
+                     else "선행지수 순환변동치 − 100 (월+2 지연)")
+        if len(vals):
+            pts = " ".join(f"{X(t):.1f},{Y(v):.1f}" for t, v in vals.items())
+            color = "#1a5490" if key == "price" else ("#b5453c" if key == "macro_semiconductor_yoy" else "#2e7d32")
+            out.append(f'<polyline points="{pts}" fill="none" stroke="{color}" stroke-width="1.6"/>')
+        out.append(f'<text x="{L}" y="{y_top - 4}" fill="#1a1a1a" font-weight="600">{html.escape(title)}</text>')
+        out.append(f'<rect x="{L}" y="{y_top}" width="{W - L - R}" height="{ph}" fill="none" stroke="#ddd"/>')
+        y = y_bot + gap
+    for t in years:
+        out.append(f'<line x1="{X(t):.1f}" x2="{X(t):.1f}" y1="{top}" y2="{H - bottom}" stroke="#f0f0f0"/>'
+                   f'<text x="{X(t):.1f}" y="{H - bottom + 14}" text-anchor="middle" fill="#8a9199">{t.year + 1}</text>')
+    legend = " ".join(f'<tspan fill="{c}">■</tspan> {html.escape(p.split("(")[0])}' for p, c in PHASE_COLOR.items())
+    out.append(f'<text x="{W - R}" y="{H - 4}" text-anchor="end" fill="#6b7178">{legend}</text>')
+    out.append("</svg>")
+    return "".join(out)
+
+
 def render_fragment(result):
     e = html.escape
     r = result
@@ -276,6 +370,15 @@ def render_fragment(result):
                  'HP 필터처럼 미래 자료를 쓰는 양방향 추세도 쓰지 않았습니다. 아래는 그 시점까지의 자료로 계산한 지표가 '
                  '<b>앞으로</b> h개월 수익률을 맞히는지를 2012년 이후 워크포워드로 잰 결과입니다. 12개월 지평은 독립 표본이 '
                  f'{r["evaluation"]["12"]["n_independent"]}개뿐이라 결론은 잠정적입니다.</div>')
+
+    # 그림: 실제 통계치와 주가
+    if r.get("chart_svg"):
+        first = r.get("chart_first", "")
+        parts.append('<h4 style="font-size:14px;margin:18px 0 6px">실제 통계치와 주가 — 같은 시간축</h4>')
+        parts.append(f'<div style="border:1px solid #e5e5e5;border-radius:6px;padding:8px">{r["chart_svg"]}</div>')
+        parts.append(f'<div style="font-size:11px;color:#8a9199;margin-top:4px">시세는 Yahoo Finance 월말 수정종가({e(first)}부터 제공). '
+                     '수출액·선행지수는 KOSIS 원자료이며 발표 지연(월+2)을 반영해 "그 시점에 알 수 있던 값"으로 그렸습니다. '
+                     '주가가 수출 사이클을 앞서는지, 뒤따르는지 눈으로 확인하세요 — 주가가 앞서면 수출은 설명 변수이지 예측 변수가 아닙니다.</div>')
 
     # 현재 값·국면
     cur = r["current"]
@@ -290,7 +393,7 @@ def render_fragment(result):
         body += f'<tr><td {TD}>{e(label)}</td><td {TDR}>{shown}</td><td {TDR}>{cur.get(c + "_pct", float("nan")) * 100:.0f}번째 백분위</td></tr>'
     parts.append(table(f'<th {TH}>지표</th><th {THR}>현재</th><th {THR}>2000년 이후 위치</th>', body, 420))
     parts.append(f'<div style="font-size:13px;margin-top:8px">반도체 사이클 국면: <b>{e(cur.get("phase") or "판정 불가")}</b> '
-                 f'<span style="color:#8a9199;font-size:12px">(수출 YoY 부호 × 3개월 가속/감속, 월+2 발표 지연 반영)</span></div>')
+                 f'<span style="color:#8a9199;font-size:12px">(3개월 평균 수출 YoY의 부호 × 3개월 가속/감속, 월+2 발표 지연 반영)</span></div>')
 
     # 국면별 과거 분포
     parts.append('<h4 style="font-size:14px;margin:18px 0 6px">이 국면에서 과거에는 어땠나 — 12개월 뒤 수익률 분포</h4>')
@@ -383,14 +486,15 @@ def analyse(target, out_dir, fetch=True):
             current[c] = float(v) if pd.notna(v) else None
             hist = f[c].dropna()
             current[c + "_pct"] = float((hist < v).mean()) if pd.notna(v) and len(hist) else float("nan")
-    current["phase"] = phase_of(current.get("macro_semiconductor_yoy", np.nan) if current.get("macro_semiconductor_yoy") is not None else np.nan,
-                                current.get("macro_semiconductor_yoy_change_3m", np.nan) if current.get("macro_semiconductor_yoy_change_3m") is not None else np.nan)
+    current["phase"] = f["phase"].iloc[-1] if "phase" in f else None
     result = {
         "target": target, "name": spec["name"], "as_of": last.date().isoformat(),
         "price_last": last.date().isoformat(), "macro_last": macro_info.get("latest_month", {}),
         "features": cols, "current": current, "phases": phases, "ic": ic,
         "evaluation": evaluation, "forecast": forecast,
         "similar": similar_episodes(f, cols, 12),
+        "chart_svg": render_chart(f, spec["name"]),
+        "chart_first": f.index[0].date().isoformat(),
         "generated_at": datetime.now(KST).strftime("%Y-%m-%d %H:%M KST"),
         "macro_snapshot_hash": macro_info.get("snapshot_hash", ""),
         "frame_hash": hashlib.sha256(f.to_csv().encode()).hexdigest()[:16],

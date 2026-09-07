@@ -147,3 +147,47 @@ class ApiRetryTests(unittest.TestCase):
         message = str(ctx.exception)
         self.assertIn("429", message)          # 원인을 알 수 있어야 한다
         self.assertNotIn("SECRETKEY", message)  # 키는 절대 새지 않는다
+
+
+class MacroFallbackTests(unittest.TestCase):
+    """KOSIS 조회가 막히면 저장소에 보관된 마지막 성공분으로 계속 돌아야 한다."""
+
+    def setUp(self):
+        import tempfile
+        self.dir = Path(tempfile.mkdtemp())
+        (self.dir / "fallback").mkdir()
+        for series in ("leading_cycle", "semiconductor_exports"):
+            pd.DataFrame({"month": ["2026-06", "2026-07"], "value": [101.2, 5.5e9]}).to_csv(
+                self.dir / "fallback" / f"{series}.csv", index=False)
+
+    def test_fallback_is_used_and_marked(self):
+        import macro_utils as mu
+        saved_key, saved_fetch = mu.kosis_key, mu.fetch_kosis_monthly
+        mu.kosis_key = lambda: "key"
+
+        def boom(*a, **k):
+            raise RuntimeError("KOSIS API 조회 실패(URLError).")
+        mu.fetch_kosis_monthly = boom
+        try:
+            data, info = mu.load_macro_data(self.dir, "2020-01-01", "2026-09-01",
+                                            fallback_dir=self.dir / "fallback")
+        finally:
+            mu.kosis_key, mu.fetch_kosis_monthly = saved_key, saved_fetch
+        self.assertEqual(set(info["sources"].values()), {"last_successful_fetch"})
+        self.assertFalse(info["fresh"])
+        self.assertIn("URLError", str(info["fetch_errors"]))
+        self.assertEqual(len(data["leading_cycle"]), 2)
+
+    def test_without_fallback_the_error_still_propagates(self):
+        import macro_utils as mu
+        saved_key, saved_fetch = mu.kosis_key, mu.fetch_kosis_monthly
+        mu.kosis_key = lambda: "key"
+
+        def boom(*a, **k):
+            raise RuntimeError("KOSIS API 조회 실패(URLError).")
+        mu.fetch_kosis_monthly = boom
+        try:
+            with self.assertRaises(RuntimeError):
+                mu.load_macro_data(self.dir, "2020-01-01", "2026-09-01")
+        finally:
+            mu.kosis_key, mu.fetch_kosis_monthly = saved_key, saved_fetch

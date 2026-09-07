@@ -166,15 +166,23 @@ def read_macro_csv(path, series):
     return result
 
 
-def load_macro_data(storage, start, end, use_cache=False):
+def load_macro_data(storage, start, end, use_cache=False, fallback_dir=None):
+    """월별 지표를 읽는다. 우선순위: 명시적 캐시 재현 > 사용자 CSV > KOSIS API > 최근 성공분(fallback).
+
+    fallback_dir은 저장소에 보관해 둔 '마지막으로 조회에 성공한' CSV 폴더다. KOSIS는 해외 IP에서
+    간헐적으로 연결 자체가 막히는데(URLError), 월 단위 지표라 며칠 전 값과 오늘 값이 같다. 그래서
+    조회에 실패하면 그 값을 쓰고 출처를 sources에 남긴다 — 조용히 빠지거나 실행이 죽는 것보다 낫다.
+    너무 오래된 값은 macro_features의 만료 규칙이 알아서 걸러낸다.
+    """
     storage = Path(storage)
     cache = storage / 'macro_cache'
     cache.mkdir(parents=True, exist_ok=True)
     key = kosis_key()
-    data, sources = {}, {}
+    data, sources, errors = {}, {}, {}
     for series, spec in MACRO_SERIES.items():
         local = storage / 'macro_inputs' / f'{series}.csv'
         cached = cache / f'{series}.csv'
+        fallback = Path(fallback_dir) / f'{series}.csv' if fallback_dir else None
         if use_cache and cached.exists():
             data[series] = read_macro_csv(cached, series)
             sources[series] = 'explicit_cache_replay'
@@ -182,8 +190,18 @@ def load_macro_data(storage, start, end, use_cache=False):
             data[series] = read_macro_csv(local, series)
             sources[series] = 'user_csv'
         elif key:
-            data[series] = fetch_kosis_monthly(series, start, end, key)
-            sources[series] = 'KOSIS_API'
+            try:
+                data[series] = fetch_kosis_monthly(series, start, end, key)
+                sources[series] = 'KOSIS_API'
+            except Exception as exc:
+                if not (fallback and fallback.exists()):
+                    raise
+                errors[series] = str(exc)
+                data[series] = normalize_monthly(pd.read_csv(fallback, dtype=str))
+                sources[series] = 'last_successful_fetch'
+        elif fallback and fallback.exists():
+            data[series] = normalize_monthly(pd.read_csv(fallback, dtype=str))
+            sources[series] = 'last_successful_fetch'
         else:
             raise RuntimeError('월별 지표가 없습니다. Colab 보안 비밀에 KOSIS_API_KEY를 등록하거나 '
                                f'{local}에 공식 CSV를 저장하세요. 기존 모델만 실행하려면 USE_MACRO_FEATURES=False.')
@@ -211,6 +229,8 @@ def load_macro_data(storage, start, end, use_cache=False):
     snapshots = storage / 'macro_snapshots'
     snapshots.mkdir(parents=True, exist_ok=True)
     info = {'snapshot_hash': digest, 'retrieved_at_utc': pd.Timestamp.now(tz='UTC').isoformat(),
+            'fetch_errors': errors,
+            'fresh': all(v in ('KOSIS_API', 'user_csv') for v in sources.values()),
             'history_note': MACRO_HISTORY_NOTE, 'sources': sources,
             'series': {s: {**MACRO_SERIES, **OPTIONAL_MACRO_SERIES}[s] for s in data},
             'optional_status': optional_status,

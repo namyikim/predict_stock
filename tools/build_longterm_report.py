@@ -499,8 +499,22 @@ def analyse(target, out_dir, fetch=True):
     spec = TARGETS[target]
     cache = out_dir / "cache"
     monthly = monthly_prices(spec["ticker"], cache, fetch=fetch)
+    # KOSIS가 막히면 저장소에 보관된 마지막 성공분을 쓴다(일일 보고서가 매일 갱신해 둔다).
+    fallback_dir = out_dir / "macro_fallback"
+    try:
+        tok = github_pages.token()
+        fallback_dir.mkdir(parents=True, exist_ok=True)
+        for series in ("leading_cycle", "semiconductor_exports"):
+            text = github_pages.fetch(f"macro_history/{series}.csv", tok)
+            if text:
+                (fallback_dir / f"{series}.csv").write_text(text, encoding="utf-8")
+    except Exception as exc:
+        print("  월별 지표 사본을 받지 못했습니다(계속 진행):", exc, flush=True)
     macro, macro_info = load_macro_data(out_dir, pd.Timestamp(START) - pd.DateOffset(years=2),
-                                        pd.Timestamp.now(tz="Asia/Seoul").date(), use_cache=not fetch)
+                                        pd.Timestamp.now(tz="Asia/Seoul").date(), use_cache=not fetch,
+                                        fallback_dir=fallback_dir)
+    if not macro_info.get("fresh", True):
+        print("  ⚠️ KOSIS 조회 실패 → 저장소 보관본 사용:", macro_info.get("fetch_errors", {}), flush=True)
     macro = {k: v for k, v in macro.items() if k in ("semiconductor_exports", "leading_cycle")}
     f = build_frame(monthly, macro)
     cols = [c for c, _ in FEATURES if c in f.columns and f[c].notna().mean() > 0.5]
@@ -534,6 +548,7 @@ def analyse(target, out_dir, fetch=True):
         "chart_first": f.index[0].date().isoformat(),
         "generated_at": datetime.now(KST).strftime("%Y-%m-%d %H:%M KST"),
         "macro_snapshot_hash": macro_info.get("snapshot_hash", ""),
+        "macro_sources": macro_info.get("sources", {}),
         "frame_hash": hashlib.sha256(f.to_csv().encode()).hexdigest()[:16],
     }
     return result, f

@@ -1,13 +1,20 @@
 name: 일일 보고서
 
 # 평일 아침에 종목별 보고서를 새로 만들어 GitHub Pages에 발행한다.
-# 22:00 UTC(일~목) = 07:00 KST(월~금). 모델은 07:00 시점 예측으로 설계돼 있고,
-# 유일한 신호원인 미국 장 마감(겨울 06:00 KST)이 야후 일봉에 반영될 여유도 필요하다.
-# GitHub의 cron은 정시를 보장하지 않고 수십 분씩 밀리는 일이 잦지만, 그래도
-# 장 시작(09:00 KST) 전에는 끝난다.
+# 21:17 UTC(일~목) = 06:17 KST(월~금). 모델은 07:00 시점 예측으로 설계돼 있고,
+# 유일한 신호원인 미국 장 마감(겨울 06:00 KST, 여름 05:00 KST)이 야후 일봉에
+# 반영될 여유가 필요하다. 그보다 이르면 미완성 봉으로 판정되어 그날 미국 신호가
+# 통째로 빠진다.
+#
+# 원장은 09:00 KST 이후에 만들어진 예측을 '사전 예측'으로 세지 않는다(is_prospective).
+# 2026-09-07 실행에서 22:00 cron이 1시간 넘게 밀린 데다 두 종목을 순차로 돌려
+# 삼성전자가 09:01 KST에 끝났고, 그 예측은 집계에서 빠졌다. 그래서
+#   - 정각(:00)은 GitHub cron이 가장 많이 밀리는 시각이라 :17로 피하고,
+#   - 종목을 병렬로 돌리며(종목별 경로가 달라 서로 덮어쓰지 않는다),
+#   - 부트스트랩 반복수를 줄여 장 시작 전에 확실히 끝낸다.
 on:
   schedule:
-    - cron: "0 22 * * 0-4"
+    - cron: "17 21 * * 0-4"
   workflow_dispatch:
     inputs:
       targets:
@@ -34,7 +41,9 @@ jobs:
     timeout-minutes: 180
     strategy:
       fail-fast: false    # 한 종목이 실패해도 다른 종목은 끝까지 돌린다
-      max-parallel: 1     # github_put이 쓰기 직전에 sha를 읽으므로 순차가 안전하다
+      # 병렬 실행. 종목별로 forecast_history/<종목>, docs/<종목>만 쓰므로 같은 파일을
+      # 건드리지 않는다. 같은 브랜치에 동시에 커밋할 때 드물게 나는 409/422는
+      # 노트북의 github_put이 sha를 다시 읽어 재시도한다.
       matrix:
         target: [samsung, sk_hynix]
 
@@ -79,6 +88,8 @@ jobs:
           # 조용히 발행되면 다른 계보의 예측이 원장에 섞인다. 차라리 실패해서
           # 메일을 받는 편이 낫다. Colab은 지금까지처럼 계속 진행한다.
           PREDICT_STOCK_MACRO_STRICT: "true"
+          # 신뢰구간 폭만 조금 거칠어지고 예측값은 같다. 09:00 전에 끝내는 것이 우선이다.
+          PREDICT_STOCK_BOOTSTRAP_B: "500"
           MPLBACKEND: Agg
         run: python tools/run_notebook.py --storage "runs/${{ matrix.target }}"
 

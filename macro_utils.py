@@ -289,7 +289,7 @@ def macro_features(data, dates, max_age_days=100, prediction_hour=7):
 # 지수 날짜의 값을 그날 예측에 쓰면 최대 8일치 미래 정보가 들어간다. 지수 날짜 + NSI_RELEASE_LAG_DAYS
 # 이후에만 사용하는 보수적 정렬을 쓴다. 2026-09-01 신(新)지수로 바뀌며 과거치가 새 방법으로
 # 재계산되었으므로 백테스트는 '재계산된 이력' 기준이라는 한계가 있다(선행지수와 같은 주의).
-NSI_STAT_CODE = os.environ.get('ECOS_NSI_STAT_CODE', '521Y001')
+NSI_STAT_CODE = os.environ.get('ECOS_NSI_STAT_CODE', '523Y001')   # 6.4. 뉴스심리지수(실험적 통계), 항목 A001 일별
 NSI_ITEM_CODE = os.environ.get('ECOS_NSI_ITEM_CODE', 'A001')
 NSI_RELEASE_LAG_DAYS = 8
 NSI_MAX_AGE_DAYS = 21

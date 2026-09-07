@@ -418,3 +418,101 @@ def summarize_daily(daily):
         point_forecasts=("absolute_price_error", "count"), price_mae=("absolute_price_error", "mean"),
         price_mape=("price_ape", "mean"), interval_coverage=("interval_hit", "mean"),
     ).reset_index()
+
+
+def review_ledger(daily, bars, ensemble_model="Mean ensemble", windows=(20, 60), min_alert_n=20):
+    """실제 사전 예측(daily_comparison)만으로 최근 성능을 계산하고 경고를 만든다.
+
+    백테스트 숫자와 섞지 않는다. 반환:
+      latest   — 마지막으로 채점된 예측일의 행(갭/세션 분해 포함)
+      rolling  — 최근 w거래일 창별 지표. 방향: 적중률·log loss vs 클래스빈도 기준선.
+                 시가/종가: 구간 적중률, 수익률 MAE vs '변화 없음' 기준선, 실현 기울기 vs OOF 축소계수.
+      alerts   — 가장 긴 창(표본 min_alert_n 이상)에서 나온 경고 문구
+    """
+    empty = {"latest": pd.DataFrame(), "rolling": pd.DataFrame(), "alerts": [], "n_scored_days": 0,
+             "latest_date": None}
+    if daily is None or daily.empty or "status" not in daily:
+        return empty
+    scored = daily.loc[daily["status"] == "scored"].copy()
+    if scored.empty:
+        return empty
+    scored["target_date"] = pd.to_datetime(scored["target_date"]).dt.tz_localize(None).dt.normalize()
+    scored["horizon_days"] = pd.to_numeric(scored.get("horizon_days", 1), errors="coerce").fillna(1).astype(int)
+    if "raw_predicted_return" not in scored:
+        scored["raw_predicted_return"] = np.nan
+    if "oof_slope" not in scored:
+        scored["oof_slope"] = np.nan
+
+    bars = bars.sort_index().copy()
+    bars.index = pd.DatetimeIndex(bars.index).tz_localize(None).normalize()
+    gap = (bars["open"] / bars["close"].shift(1) - 1).rename("actual_gap")
+    session = (bars["close"] / bars["open"] - 1).rename("actual_session")
+    scored = scored.join(gap, on="target_date").join(session, on="target_date")
+
+    latest_date = scored["target_date"].max()
+    keep = [c for c in ["target_date", "kind", "horizon_days", "model", "prediction", "p_down", "p_flat",
+                        "p_up", "band", "actual_class", "direction_correct", "log_loss", "current_close",
+                        "predicted_return", "raw_predicted_return", "predicted_close", "center_close",
+                        "low_close", "high_close", "predicted_open", "center_open", "low_open", "high_open",
+                        "actual_open", "actual_close", "actual_return", "actual_gap", "actual_session",
+                        "return_error", "interval_hit", "oof_slope", "run_id"] if c in scored]
+    latest = scored.loc[scored["target_date"] == latest_date, keep].reset_index(drop=True)
+
+    dates = np.sort(scored["target_date"].unique())
+    rows = []
+    for w in windows:
+        recent = scored[scored["target_date"].isin(dates[-w:])]
+        d = recent[(recent["kind"] == "direction") & (recent["model"] == ensemble_model)]
+        d = d.dropna(subset=["actual_class"])
+        if len(d):
+            freq = d["actual_class"].astype(int).value_counts(normalize=True).reindex([0, 1, 2]).fillna(0.)
+            prior_ll = float(-np.sum(freq * np.log(np.clip(freq, 1e-7, 1.))))
+            rows.append({"window": w, "kind": "direction", "horizon_days": 1, "n": len(d),
+                         "hit_rate": float(d["direction_correct"].mean()),
+                         "flat_share": float(freq.loc[1]),
+                         "mean_log_loss": float(d["log_loss"].mean()), "prior_log_loss": prior_ll})
+        for kind in ("open", "price"):
+            for h, g in recent[recent["kind"] == kind].groupby("horizon_days"):
+                g = g.dropna(subset=["actual_return"])
+                if not len(g):
+                    continue
+                actual = g["actual_return"].to_numpy(dtype=float)
+                # 신호가 없어 점 예측을 비운 날은 '변화 없음'(0%)으로 예측한 것과 같다.
+                point = g["predicted_return"].fillna(0.).to_numpy(dtype=float)
+                raw = g["raw_predicted_return"].to_numpy(dtype=float)
+                slope = np.nan
+                ok = np.isfinite(raw)
+                if ok.sum() >= 5 and np.sum(raw[ok] ** 2) > 0:
+                    slope = float(np.sum(raw[ok] * actual[ok]) / np.sum(raw[ok] ** 2))
+                rows.append({"window": w, "kind": kind, "horizon_days": int(h), "n": len(g),
+                             "interval_coverage": float(g["interval_hit"].mean()) if g["interval_hit"].notna().any() else np.nan,
+                             "mae_return": float(np.mean(np.abs(actual - point))),
+                             "zero_mae_return": float(np.mean(np.abs(actual))),
+                             "signal_days": int(g["predicted_return"].notna().sum()),
+                             "realized_slope": slope,
+                             "oof_slope_mean": float(g["oof_slope"].mean()) if g["oof_slope"].notna().any() else np.nan})
+    rolling = pd.DataFrame(rows)
+
+    alerts = []
+    if len(rolling):
+        w_max = max(windows)
+        big = rolling[rolling["window"] == w_max]
+        d = big[big["kind"] == "direction"]
+        if len(d) and d["n"].iloc[0] >= min_alert_n and d["mean_log_loss"].iloc[0] > d["prior_log_loss"].iloc[0]:
+            alerts.append(f"방향 모델 열화: 최근 {w_max}일 log loss {d['mean_log_loss'].iloc[0]:.3f} > "
+                          f"클래스빈도 기준선 {d['prior_log_loss'].iloc[0]:.3f}")
+        for _, r in big[big["kind"].isin(["open", "price"])].iterrows():
+            label = "시초가" if r["kind"] == "open" else f"{int(r['horizon_days'])}거래일 종가"
+            if r["n"] < min_alert_n:
+                continue
+            if np.isfinite(r["interval_coverage"]) and r["interval_coverage"] < 0.70:
+                alerts.append(f"{label} 구간 과소: 최근 {w_max}일 적중률 {r['interval_coverage']:.0%} (목표 80%)")
+            if (np.isfinite(r["realized_slope"]) and np.isfinite(r["oof_slope_mean"]) and r["oof_slope_mean"] > 0
+                    and not 0.5 <= r["realized_slope"] / r["oof_slope_mean"] <= 1.5):
+                direction = "과소" if r["realized_slope"] > r["oof_slope_mean"] else "과대"
+                alerts.append(f"{label} {direction}예측: 실현 기울기 {r['realized_slope']:.2f} vs "
+                              f"OOF 축소계수 {r['oof_slope_mean']:.2f}")
+            if r["mae_return"] > r["zero_mae_return"]:
+                alerts.append(f"{label} 점 예측이 '변화 없음'보다 나쁨: MAE {r['mae_return']:.2%} vs {r['zero_mae_return']:.2%}")
+    return {"latest": latest, "rolling": rolling, "alerts": alerts, "n_scored_days": int(len(dates)),
+            "latest_date": pd.Timestamp(latest_date)}

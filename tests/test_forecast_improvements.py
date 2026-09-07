@@ -130,6 +130,75 @@ class ForecastLedgerTests(unittest.TestCase):
             self.assertEqual(saved.direction_correct, 1.)
 
 
+class LedgerReviewTests(unittest.TestCase):
+    """실제 사전 예측만으로 최근 성능을 계산하는 review_ledger."""
+
+    def make_daily(self, n=30, seed=0):
+        rng = np.random.default_rng(seed)
+        dates = pd.bdate_range("2026-06-01", periods=n + 1)
+        close = 100 * np.exp(np.cumsum(rng.normal(0, .02, n + 1)))
+        open_ = close * np.exp(rng.normal(0, .01, n + 1))
+        bars = pd.DataFrame({"open": open_, "close": close, "adj_close": close}, index=dates)
+        rows = []
+        for i in range(1, n + 1):
+            t = dates[i].date().isoformat()
+            base = dict(record_id=f"r{i}", run_id=f"run{i}", target_date=t, prediction_date=t,
+                        created_at_utc=f"{dates[i-1].date()}T22:00:00Z", status="scored",
+                        is_prospective=True, config_hash="c", target_mode="close_to_close",
+                        current_close=close[i - 1])
+            actual_gap = open_[i] / close[i - 1] - 1
+            actual_ret = close[i] / close[i - 1] - 1
+            cls = 0 if actual_ret < -.005 else 2 if actual_ret > .005 else 1
+            p = np.full(3, .2); p[cls] = .6
+            rows.append(dict(base, record_id=f"d{i}", model="Mean ensemble", kind="direction", horizon_days=1,
+                             prediction="상승", p_down=p[0], p_flat=p[1], p_up=p[2], band=.005,
+                             actual_class=cls, direction_correct=1., log_loss=-np.log(.6),
+                             actual_return=actual_ret))
+            rows.append(dict(base, record_id=f"o{i}", model="Ridge", kind="open", horizon_days=1,
+                             predicted_return=actual_gap * .5, raw_predicted_return=actual_gap,
+                             oof_slope=.5, interval_hit=1., actual_return=actual_gap))
+            rows.append(dict(base, record_id=f"p{i}", model="Ridge", kind="price", horizon_days=1,
+                             predicted_return=np.nan, raw_predicted_return=np.nan, oof_slope=0.,
+                             interval_hit=float(i % 5 != 0), actual_return=actual_ret))
+        return pd.DataFrame(rows), bars
+
+    def test_empty_ledger_is_handled(self):
+        out = fu.review_ledger(pd.DataFrame(), pd.DataFrame())
+        self.assertEqual(out["n_scored_days"], 0)
+        self.assertEqual(out["alerts"], [])
+
+    def test_rolling_metrics_use_only_scored_prospective_rows(self):
+        daily, bars = self.make_daily()
+        pending = daily.iloc[[0]].assign(record_id="x", status="pending", target_date="2026-09-01")
+        out = fu.review_ledger(pd.concat([daily, pending]), bars, windows=(20, 60))
+        self.assertEqual(out["n_scored_days"], 30)
+        r = out["rolling"].set_index(["window", "kind"])
+        self.assertEqual(r.loc[(20, "direction"), "n"], 20)
+        self.assertEqual(r.loc[(60, "direction"), "n"], 30)
+        self.assertAlmostEqual(r.loc[(60, "direction"), "hit_rate"], 1.)
+        # 원시 예측이 실제 갭과 같으면 실현 기울기는 1, 축소계수 0.5 대비 과소예측 경고가 난다.
+        self.assertAlmostEqual(r.loc[(60, "open"), "realized_slope"], 1., places=6)
+        self.assertTrue(any("시초가 과소예측" in a for a in out["alerts"]))
+        # 점 예측을 비운 날은 '변화 없음' 예측으로 채점된다.
+        self.assertAlmostEqual(r.loc[(60, "price"), "mae_return"], r.loc[(60, "price"), "zero_mae_return"])
+        self.assertEqual(r.loc[(60, "price"), "signal_days"], 0)
+
+    def test_latest_rows_carry_gap_and_session(self):
+        daily, bars = self.make_daily()
+        out = fu.review_ledger(daily, bars)
+        latest = out["latest"]
+        self.assertEqual(out["latest_date"], bars.index[-1])
+        self.assertEqual(set(latest["kind"]), {"direction", "open", "price"})
+        t = bars.index[-1]
+        self.assertAlmostEqual(latest["actual_gap"].iloc[0], bars.loc[t, "open"] / bars["close"].shift(1).loc[t] - 1)
+        self.assertAlmostEqual(latest["actual_session"].iloc[0], bars.loc[t, "close"] / bars.loc[t, "open"] - 1)
+
+    def test_no_alert_below_minimum_sample(self):
+        daily, bars = self.make_daily(n=10)
+        out = fu.review_ledger(daily, bars)
+        self.assertEqual(out["alerts"], [])
+
+
 class SelectionTests(unittest.TestCase):
     def test_live_window_contains_only_recent_past(self):
         dates = pd.bdate_range("2015-01-01", "2026-09-04")

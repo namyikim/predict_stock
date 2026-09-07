@@ -113,6 +113,13 @@ class NotebookStructureTests(unittest.TestCase):
         self.assertIn('"predicted_open"', self.source)
         self.assertIn("gap_sign_auc", self.source)
 
+    def test_report_reviews_prospective_ledger(self):
+        # 보고서는 원장의 사전 예측만 채점한 결과를 보여주고, 축소 전 원시 예측을 원장에 남긴다.
+        self.assertIn("review_ledger(daily, sam", self.source)
+        self.assertIn("_ledger_section_html(ledger_review", self.source)
+        self.assertIn('"raw_predicted_return": stats["raw_point"]', self.source)
+        self.assertIn('"raw_predicted_return": open_forecast_stats["raw_point"]', self.source)
+
     def test_bootstrap_size_can_be_reduced_for_automation(self):
         self.assertIn('os.environ.get("PREDICT_STOCK_BOOTSTRAP_B")', self.source)
 

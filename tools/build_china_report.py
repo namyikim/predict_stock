@@ -358,7 +358,7 @@ def analyse_csi(prices, today):
     out["peers"] = peers
     # 계획 구간별
     plan_rows = []
-    for y0, y1, label in [(2011, 2015, "12차(2012-05부터)"), (2016, 2020, "13차"), (2021, 2025, "14차"), (2026, 2030, "15차(진행 중)")]:
+    for y0, y1, label in [(2026, 2030, "15차(진행 중)"), (2021, 2025, "14차"), (2016, 2020, "13차"), (2011, 2015, "12차(2012-05부터)")]:
         w = window(etf, pd.Timestamp(y0, 1, 1), min(pd.Timestamp(y1, 12, 31), today))
         b = window(prices[BENCH], pd.Timestamp(y0, 1, 1), min(pd.Timestamp(y1, 12, 31), today))
         if w is not None:
@@ -440,7 +440,7 @@ def render(plan_results, csi, rows15, today, fetched):
         'word-break:break-all}a{color:#1a5490}</style>'
         '<div style="font-size:11px;letter-spacing:2px;color:#8a9199">CHINA · FIVE-YEAR PLANS &amp; EQUITY RETURNS</div>'
         '<h1 style="font-size:24px;margin:6px 0 4px">중국 5개년 계획과 주식 수익</h1>'
-        f'<div style="font-size:13px;color:#6b7178">시세 기준일 {fetched} · 8차(1991)부터 14차(2025)까지 계획별 정책 종목의 '
+        f'<div style="font-size:13px;color:#6b7178">시세 기준일 {fetched} · 14차(2025)부터 8차(1991)까지 최신순으로 계획별 정책 종목의 '
         '수익률, CSI 300 분석, 15차(2026~2030) 후보</div>')
 
     # ---- 요약
@@ -464,7 +464,8 @@ def render(plan_results, csi, rows15, today, fetched):
     parts.append('<div style="font-size:13px;color:#6b7178;margin-bottom:8px">수익률은 계획 첫 거래일 → 마지막 거래일'
                  '(배당 재투자 반영). "상장 후"는 계획 시작 뒤에 상장해 상장일부터 계산한 것. 지수는 같은 구간의 상해종합. '
                  '"지금까지"는 그 시작점에서 시세 기준일까지의 누적.</div>')
-    for pr in plan_results:
+    # 최신 계획이 위로 오게 역순으로 보여 준다(읽는 사람은 지금에 가까운 것부터 본다).
+    for pr in reversed(plan_results):
         plan, agg = pr["plan"], pr["agg"]
         parts.append(f'<h4 style="font-size:15px;margin:26px 0 6px">{e(plan["title"])}</h4>')
         parts.append(f'<div style="font-size:13px;margin-bottom:8px">{e(plan["summary"])}</div>')

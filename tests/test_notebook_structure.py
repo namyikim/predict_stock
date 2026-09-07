@@ -116,18 +116,21 @@ class NotebookStructureTests(unittest.TestCase):
     def test_report_reviews_prospective_ledger(self):
         # 보고서는 원장의 사전 예측만 채점한 결과를 보여주고, 축소 전 원시 예측을 원장에 남긴다.
         self.assertIn("review_ledger(daily, sam", self.source)
-        self.assertIn("_ledger_section_html(ledger_review", self.source)
+        self.assertIn("ledger_section_html(ledger_review", self.source)
+        self.assertIn("LEDGER_SECTION_START", self.source)   # 오후 갱신 도구가 바꿔 끼울 경계
         self.assertIn('"raw_predicted_return": stats["raw_point"]', self.source)
         self.assertIn('"raw_predicted_return": open_forecast_stats["raw_point"]', self.source)
 
-    def test_after_close_run_does_not_record_a_forecast(self):
-        # 장 마감 후 실행은 채점·보고서만 갱신한다. 원장은 날짜별 최초 사전 예측만 집계하므로,
-        # 정보가 적은 오후 예측을 넣으면 아침 예측이 중복으로 버려진다.
-        self.assertIn('PREDICT_STOCK_RECORD_FORECAST', self.source)
-        self.assertIn("if RECORD_FORECAST:\n    all_log = append_forecasts", self.source)
+    def test_after_close_run_only_scores(self):
+        # 장 마감 후 실행은 워크포워드를 다시 돌리지 않고 채점·절 교체만 한다.
+        # 예측을 기록하면 정보가 적은 오후 예측이 아침 예측을 밀어낸다(원장은 최초 사전 예측만 집계).
         workflow = (Path(__file__).resolve().parents[1] / ".github/workflows/afternoon-report.yml").read_text(encoding="utf-8")
-        self.assertIn('PREDICT_STOCK_RECORD_FORECAST: "false"', workflow)
-        self.assertIn('cron: "10 7 * * 1-5"', workflow)   # 16:10 KST, 미완성 봉 기준(15:40) 이후
+        self.assertIn('cron: "10 7 * * 1-5"', workflow)        # 16:10 KST, 미완성 봉 기준(15:40) 이후
+        self.assertIn("build_afternoon_update.py", workflow)
+        self.assertNotIn("run_notebook.py", workflow)          # 무거운 재계산을 하지 않는다
+        # 노트북에도 예측을 기록하지 않는 스위치가 남아 있다(수동 실행용).
+        self.assertIn("PREDICT_STOCK_RECORD_FORECAST", self.source)
+        self.assertIn("if RECORD_FORECAST:\n    all_log = append_forecasts", self.source)
 
     def test_bootstrap_size_can_be_reduced_for_automation(self):
         self.assertIn('os.environ.get("PREDICT_STOCK_BOOTSTRAP_B")', self.source)

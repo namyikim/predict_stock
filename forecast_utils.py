@@ -516,3 +516,100 @@ def review_ledger(daily, bars, ensemble_model="Mean ensemble", windows=(20, 60),
                 alerts.append(f"{label} 점 예측이 '변화 없음'보다 나쁨: MAE {r['mae_return']:.2%} vs {r['zero_mae_return']:.2%}")
     return {"latest": latest, "rolling": rolling, "alerts": alerts, "n_scored_days": int(len(dates)),
             "latest_date": pd.Timestamp(latest_date)}
+
+
+# ---------------------------------------------------------------------------
+# 보고서의 '어제 예측 vs 실제' 절
+# ---------------------------------------------------------------------------
+# 노트북(아침 실행)과 tools/build_afternoon_update.py(장 마감 후 갱신)가 같은 함수를 쓴다.
+# 오후에는 이 절만 다시 그려 넣기 때문에, 두 곳의 표가 어긋나지 않으려면 한 군데서 만들어야 한다.
+_LABELS = {0: "하락", 1: "보합", 2: "상승"}
+
+
+def _fmt_num(x, kind="num"):
+    if x is None or (isinstance(x, float) and not np.isfinite(x)):
+        return "—"
+    if kind == "won":
+        return f"{x:,.0f}원"
+    if kind == "pct":
+        return f"{x:+.2%}"
+    if kind == "bp":
+        return f"{x:+.1f}bp"
+    return f"{x:.4f}"
+
+
+def ledger_section_html(review, ensemble_name, updated_note=""):
+    cell = 'style="padding:7px 11px;border-top:1px solid #eee;text-align:right"'
+    head = ('<h3 style="font-size:15px;margin:24px 0 9px;padding-bottom:6px;border-bottom:1px solid #ddd">'
+            '어제 예측 vs 실제 <span style="font-weight:400;color:#8a9199;font-size:12px">'
+            '&nbsp;실제로 미리 낸 예측만 채점 · 백테스트 숫자가 아님</span></h3>')
+    if not review["n_scored_days"]:
+        return head + ('<div style="border:1px solid #e5e5e5;border-radius:6px;padding:14px;font-size:13px;color:#6b7178">'
+                       '아직 채점된 사전 예측이 없습니다. 오늘 예측은 다음 거래일 실행에서 실제 시가·종가와 대조됩니다.</div>')
+    latest = review["latest"]
+    d = latest[(latest["kind"] == "direction") & (latest["model"] == ensemble_name)]
+    o = latest[latest["kind"] == "open"]
+    p1 = latest[(latest["kind"] == "price") & (latest["horizon_days"] == 1)]
+    rows = ""
+    def _row(label, predicted, actual, verdict, ok):
+        color = "#1e6b34" if ok else "#a8322a"
+        return (f'<tr><td style="padding:8px 11px;border-top:1px solid #eee">{label}</td>'
+                f'<td {cell}>{predicted}</td><td {cell}>{actual}</td>'
+                f'<td {cell};color:{color};font-weight:600">{verdict}</td></tr>')
+    if len(d):
+        r = d.iloc[0]
+        actual_label = _LABELS.get(int(r["actual_class"]), "?") if pd.notna(r["actual_class"]) else "—"
+        rows += _row("종가 방향", f'{r["prediction"]} (상승 {r["p_up"]:.0%}·보합 {r["p_flat"]:.0%}·하락 {r["p_down"]:.0%})',
+                     f'{actual_label} ({_fmt_num(r["actual_return"], "pct")}, 밴드 ±{r["band"]:.2%})',
+                     "적중" if r["direction_correct"] == 1 else "미적중", r["direction_correct"] == 1)
+    if len(o):
+        r = o.iloc[0]
+        pred = (f'{_fmt_num(r["predicted_open"], "won")} ({_fmt_num(r["predicted_return"], "pct")})'
+                if pd.notna(r["predicted_open"]) else f'{_fmt_num(r["center_open"], "won")} (신호 없음)')
+        rows += _row("시초가(갭)", pred, f'{_fmt_num(r["actual_open"], "won")} ({_fmt_num(r["actual_gap"], "pct")})',
+                     f'구간 {"적중" if r["interval_hit"] == 1 else "이탈"} · 오차 {_fmt_num(r["return_error"], "pct") if pd.notna(r["return_error"]) else "—"}',
+                     r["interval_hit"] == 1)
+    if len(p1):
+        r = p1.iloc[0]
+        pred = (f'{_fmt_num(r["predicted_close"], "won")} ({_fmt_num(r["predicted_return"], "pct")})'
+                if pd.notna(r["predicted_close"]) else f'{_fmt_num(r["center_close"], "won")} (신호 없음)')
+        rows += _row("1거래일 종가", pred,
+                     f'{_fmt_num(r["actual_close"], "won")} ({_fmt_num(r["actual_return"], "pct")} = 갭 {_fmt_num(r["actual_gap"], "pct")} + 세션 {_fmt_num(r["actual_session"], "pct")})',
+                     f'구간 {"적중" if r["interval_hit"] == 1 else "이탈"}', r["interval_hit"] == 1)
+    table = ('<div style="overflow-x:auto"><table style="width:100%;min-width:520px;border-collapse:collapse;'
+             'font-size:13px;border:1px solid #e5e5e5"><tr style="background:#fafafa;font-size:11px;color:#6b7178">'
+             '<th style="padding:8px 11px;text-align:left">항목</th><th style="padding:8px 11px;text-align:right">예측</th>'
+             '<th style="padding:8px 11px;text-align:right">실제</th><th style="padding:8px 11px;text-align:right">판정</th></tr>'
+             f'{rows}</table></div>')
+    # 누적 창
+    roll = review["rolling"]
+    rrows = ""
+    for _, r in roll.iterrows():
+        if r["kind"] == "direction":
+            label, detail = "종가 방향", (f'적중률 {r["hit_rate"]:.0%} (보합 비중 {r["flat_share"]:.0%}) · '
+                                        f'log loss {r["mean_log_loss"]:.3f} vs 빈도기준 {r["prior_log_loss"]:.3f}')
+        else:
+            label = "시초가(갭)" if r["kind"] == "open" else f'{int(r["horizon_days"])}거래일 종가'
+            detail = (f'구간 적중 {_fmt_num(r["interval_coverage"], "num") if pd.isna(r["interval_coverage"]) else format(r["interval_coverage"], ".0%")} · '
+                      f'MAE {r["mae_return"]:.2%} vs 변화없음 {r["zero_mae_return"]:.2%} · 신호 {int(r["signal_days"])}/{int(r["n"])}일')
+            if pd.notna(r["realized_slope"]):
+                detail += f' · 실현 기울기 {r["realized_slope"]:.2f} / OOF {r["oof_slope_mean"]:.2f}'
+        rrows += (f'<tr><td style="padding:7px 11px;border-top:1px solid #eee">최근 {int(r["window"])}일 · {label}</td>'
+                  f'<td style="padding:7px 11px;border-top:1px solid #eee;text-align:right">{int(r["n"])}</td>'
+                  f'<td style="padding:7px 11px;border-top:1px solid #eee">{detail}</td></tr>')
+    rtable = ('<div style="overflow-x:auto;margin-top:10px"><table style="width:100%;min-width:520px;border-collapse:collapse;'
+              'font-size:12px;border:1px solid #e5e5e5"><tr style="background:#fafafa;font-size:11px;color:#6b7178">'
+              '<th style="padding:8px 11px;text-align:left">창</th><th style="padding:8px 11px;text-align:right">n</th>'
+              '<th style="padding:8px 11px;text-align:left">누적 성능 (사전 예측만)</th></tr>'
+              f'{rrows}</table></div>')
+    alerts = ""
+    if review["alerts"]:
+        alerts = ('<div style="background:#fdf3f2;border-left:4px solid #b5453c;padding:10px 14px;margin-top:10px;font-size:13px">'
+                  '<b>경고</b><ul style="margin:6px 0 0;padding-left:18px">'
+                  + "".join(f"<li>{a}</li>" for a in review["alerts"]) + "</ul>"
+                  '<div style="font-size:11px;color:#8a9199;margin-top:4px">경고는 판단 근거이며 자동으로 설정을 바꾸지 않습니다. '
+                  '같은 경고가 두 달 이상 이어질 때 사람이 조정합니다.</div></div>')
+    note = (f'<div style="font-size:11px;color:#8a9199;margin-top:6px">채점된 예측일 {review["n_scored_days"]}일 · '
+            f'마지막 채점 {review["latest_date"].date()} · 하루 결과는 잡음입니다(1거래일 MAE ≈ 2~3%). '
+            '판단은 60일 창으로 하세요.</div>')
+    return head + updated_note + table + rtable + alerts + note

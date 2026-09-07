@@ -3,9 +3,12 @@ name: 장 마감 후 갱신
 # 한국 정규장은 15:30에 끝난다. 07:10 UTC(= 16:10 KST)에 돌려 그날 종가로 예측을 채점하고
 # 보고서를 새로 발행한다. 15:40 이후여야 야후의 당일 봉이 완성으로 처리된다(노트북의 미완성 봉 제거 규칙).
 #
-# 이 실행은 새 예측을 원장에 기록하지 않는다(PREDICT_STOCK_RECORD_FORECAST=false).
-# 원장은 날짜별 '최초 사전 예측'만 집계하는데, 오후 예측에는 그날 밤 미국 장 정보가 없어
-# 아침 06:30 예측보다 정보가 적다. 기록하면 나쁜 쪽이 채택되고 좋은 쪽이 중복으로 버려진다.
+# 새 예측은 만들지 않는다. 원장은 날짜별 '최초 사전 예측'만 집계하는데, 오후 예측에는 그날 밤
+# 미국 장 정보가 없어 아침 06:30 예측보다 정보가 적다. 기록하면 나쁜 쪽이 채택되고 좋은 쪽이
+# 중복으로 버려진다.
+#
+# 전 구간 워크포워드도 다시 돌리지 않는다(아침에 이미 했고 하루 사이에 달라지지 않는다).
+# 대상 종목 시세만 받아 채점하고 보고서의 '어제 예측 vs 실제' 절만 바꿔 끼운다 — 1분이면 끝난다.
 on:
   schedule:
     - cron: "10 7 * * 1-5"
@@ -31,7 +34,7 @@ concurrency:
 jobs:
   report:
     runs-on: ubuntu-latest
-    timeout-minutes: 180
+    timeout-minutes: 20
     strategy:
       fail-fast: false
       matrix:
@@ -46,38 +49,13 @@ jobs:
           cache: pip
 
       - name: 의존성 설치
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
+        run: pip install pandas==3.0.5 numpy==2.5.2 yfinance==1.7.0
 
-      - name: 이번 종목이 대상인지 확인
-        id: gate
-        env:
-          WANTED: ${{ inputs.targets }}
-          THIS: ${{ matrix.target }}
-        run: |
-          wanted="${WANTED:-samsung,sk_hynix}"
-          if printf ',%s,' "$wanted" | grep -q ",$THIS,"; then
-            echo "run=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "run=false" >> "$GITHUB_OUTPUT"
-          fi
-
-      - name: 채점·보고서 갱신
+      - name: 채점·보고서 절 갱신
         if: steps.gate.outputs.run == 'true'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          KOSIS_API_KEY: ${{ secrets.KOSIS_API_KEY }}
-          ECOS_API_KEY: ${{ secrets.ECOS_API_KEY }}
-          PREDICT_STOCK_TARGETS: ${{ matrix.target }}
-          PREDICT_STOCK_PUBLISH: "true"
-          # 예측은 기록하지 않는다. 채점과 보고서만 갱신한다.
-          PREDICT_STOCK_RECORD_FORECAST: "false"
-          # 월별 지표를 못 받아도 저장소 보관본으로 계속 진행한다(아침 실행이 사본을 갱신해 둔다).
-          PREDICT_STOCK_MACRO_STRICT: "false"
-          PREDICT_STOCK_BOOTSTRAP_B: "500"
-          MPLBACKEND: Agg
-        run: python tools/run_notebook.py --storage "runs/${{ matrix.target }}"
+        run: python tools/build_afternoon_update.py --target ${{ matrix.target }} --out runs/afternoon --publish
 
       - name: Pages 재빌드 요청
         if: steps.gate.outputs.run == 'true'

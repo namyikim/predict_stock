@@ -354,13 +354,18 @@ def render_fragment(result):
     ev = r["evaluation"]
     parts = ['<h3 style="font-size:15px;margin:24px 0 9px;padding-bottom:6px;border-bottom:1px solid #ddd">'
              f'8. 이번 분기 영업이익 추정 <span style="font-weight:400;color:#8a9199;font-size:12px">'
-             f'&nbsp;{e(r["quarter"])} · 월별 반도체 수출액 기준 · {r["months_used"]}개월 반영</span></h3>']
+             f'&nbsp;{e(r["quarter"])} · 월별 반도체 수출액 기준 · '
+             f'{e(r.get("months_included") or "")} 반영</span></h3>']
     parts.append('<div style="background:#fdf8ec;border-left:4px solid #c8952a;padding:12px 16px;'
                  'border-radius:0 5px 5px 0;font-size:13px">'
                  '주가 예측과 성격이 다릅니다. 이것은 <b>이미 진행 중인 분기의 결과를 발표 전에 추정</b>하는 '
                  '나우캐스트입니다. 메모리 영업이익과 한국 반도체 수출액은 같은 것(D램·낸드 가격과 물량)을 재고 있어 '
-                 f'여지가 실제로 있습니다. 분기가 끝나기 전이므로 이번 분기의 <b>앞 {r["months_used"]}개월</b> 수출만 썼고, '
-                 '과거 분기도 똑같이 앞 몇 달로 특징을 만들어 학습했습니다.</div>')
+                 f'여지가 실제로 있습니다. 분기가 끝나기 전이므로 이번 분기의 <b>{e(r.get("months_included") or "")}</b> 수출만 썼고, '
+                 f'과거 분기도 똑같이 <b>각 분기의 앞 {r["months_used"]}개월</b>로 특징을 만들어 학습했습니다 — '
+                 '3개월 평균으로 학습한 계수를 2개월 평균에 적용하면 성질이 다른 값을 넣는 셈이 되기 때문입니다.'
+                 + (f' <b>{e(r["months_missing"])} 수출은 아직 KOSIS에 올라오지 않았습니다.</b> '
+                    '그 달이 들어오면 추정이 더 단단해집니다.' if r.get("months_missing") else "")
+                 + '</div>')
 
     if r.get("chart_svg"):
         parts.append(f'<div style="border:1px solid #e5e5e5;border-radius:6px;padding:8px;margin-top:10px">{r["chart_svg"]}</div>')
@@ -430,7 +435,12 @@ def analyse(target, out_dir, fetch=True):
 
     # 이번 분기에 실제로 확보된 월 수 = 나우캐스트에 쓸 k
     live_quarter = pd.Period(exports.index[-1], freq="Q")
-    months_used = int(sum(pd.PeriodIndex(exports.index, freq="Q") == live_quarter))
+    in_quarter = exports.index[pd.PeriodIndex(exports.index, freq="Q") == live_quarter]
+    months_used = len(in_quarter)
+    month_names = ", ".join(f"{d.month}월" for d in in_quarter)
+    missing_months = ", ".join(
+        f"{m}월" for m in range(live_quarter.start_time.month, live_quarter.end_time.month + 1)
+        if m not in {d.month for d in in_quarter})
 
     f = build_frame(profit, exports, usdkrw, months_used)
     oof = walk_forward(f)
@@ -450,6 +460,7 @@ def analyse(target, out_dir, fetch=True):
         "target": target, "name": spec["name"],
         "quarter": f"{live_quarter.year}년 {live_quarter.quarter}분기",
         "quarter_code": str(live_quarter), "months_used": months_used,
+        "months_included": month_names, "months_missing": missing_months,
         "point": point,
         "low": (point + ev["residual_q10"]) if point is not None else None,
         "high": (point + ev["residual_q90"]) if point is not None else None,
@@ -464,7 +475,7 @@ def analyse(target, out_dir, fetch=True):
         "generated_at": datetime.now(KST).strftime("%Y-%m-%d %H:%M KST"),
     }
     result["chart_svg"] = render_chart(f, oof, spec["name"])
-    return result, f, oof
+    return result, f, oof, profit
 
 
 def main():
@@ -476,13 +487,15 @@ def main():
     parser.add_argument("--publish", action="store_true")
     args = parser.parse_args()
     out_dir = args.out / args.target
-    result, frame, oof = analyse(args.target, out_dir, fetch=not args.no_fetch)
+    result, frame, oof, profit_series = analyse(args.target, out_dir, fetch=not args.no_fetch)
     fragment = render_fragment(result)
     (out_dir / "earnings.json").write_text(json.dumps(result, ensure_ascii=False, indent=2, default=str), encoding="utf-8")
     (out_dir / "earnings.html").write_text(fragment, encoding="utf-8")
     frame.to_csv(out_dir / "earnings_frame.csv")
+    profit_series.rename_axis("quarter").rename("value").reset_index().assign(
+        quarter=lambda d: d["quarter"].astype(str)).to_csv(out_dir / "earnings_profit.csv", index=False)
     oof.to_csv(out_dir / "earnings_oof.csv")
-    print(f"{result['name']} {result['quarter']} ({result['months_used']}개월 반영): "
+    print(f"{result['name']} {result['quarter']} ({result.get('months_included')} 반영): "
           f"{jo(result['point']) if result['point'] is not None else '예측하지 않음'}"
           f" · 직전 {jo(result['last_actual'])} ({result['last_actual_quarter']})", flush=True)
     if args.dump:
@@ -490,6 +503,13 @@ def main():
         print(oof.tail(8).to_string())
     if args.publish:
         token = github_pages.token()
+        # 다음 실행이 최근 2년만 다시 받으면 되도록 이력을 저장소에 남긴다.
+        if result["profit_source"].startswith("DART"):
+            series = pd.read_csv(out_dir / "earnings_profit.csv") if (out_dir / "earnings_profit.csv").exists() else None
+            if series is not None:
+                github_pages.publish(f"macro_history/operating_profit_{args.target}.csv",
+                                     series.to_csv(index=False), token,
+                                     f"earnings: {args.target} 영업이익 이력 ({result['profit_last']})")
         for name in ("earnings.html", "earnings.json"):
             sha = github_pages.publish(f"docs/{args.target}/{name}",
                                        (out_dir / name).read_text(encoding="utf-8"),

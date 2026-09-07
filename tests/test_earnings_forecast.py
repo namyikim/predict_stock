@@ -156,3 +156,33 @@ class RenderTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class NowcastWindowTests(unittest.TestCase):
+    """이번 분기에 확보된 달만큼 과거 분기도 같은 방식으로 자른다."""
+
+    def test_training_and_serving_use_the_same_month_count(self):
+        profit, exports, fx = synthetic()
+        for k in (1, 2):
+            f = ef.build_frame(profit, exports, fx, k)
+            live = pd.Period("2026Q3", freq="Q")
+            past = pd.Period("2025Q3", freq="Q")
+            # 두 분기 모두 '앞 k개월'의 평균이어야 한다.
+            for quarter, months in ((live, ["2026-07-01", "2026-08-01"][:k]),
+                                    (past, ["2025-07-01", "2025-08-01"][:k])):
+                expected = exports.loc[months].mean() * fx.loc[months].mean()
+                self.assertAlmostEqual(f.loc[quarter, "exports_krw_k"], expected, places=3)
+
+    def test_missing_month_is_named(self):
+        import re
+        result = {"name": "삼성전자", "quarter": "2026년 3분기", "quarter_code": "2026Q3",
+                  "months_used": 2, "months_included": "7월, 8월", "months_missing": "9월",
+                  "point": 3e12, "low": 2e12, "high": 4e12, "change_vs_last": .1,
+                  "no_point_reason": "", "last_actual": 2.7e12, "last_actual_quarter": "2026Q2",
+                  "evaluation": {"n": 0, "note": "표본 부족", "beats_baselines": False},
+                  "profit_source": "DART_API", "profit_n": 42, "profit_first": "2016Q1",
+                  "profit_last": "2026Q2", "exports_last_month": "2026-08-01",
+                  "generated_at": "2026-09-08 07:00 KST"}
+        html = ef.render_fragment(result)
+        self.assertIn("7월, 8월 반영", re.sub(r"\s+", " ", html))
+        self.assertIn("9월 수출은 아직 KOSIS에 올라오지 않았습니다", html)

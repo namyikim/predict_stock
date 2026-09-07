@@ -145,6 +145,33 @@ jobs:
 
   # 예측 보고서와 독립적으로 돈다. 종목 쪽이 실패해도(예: 월별 지표 없음)
   # 검색어 보고서는 그대로 갱신되어야 한다.
+  # 분기 영업이익 나우캐스트. 월별 수출이 KOSIS에 올라오는 날짜가 들쭉날쭉해서(관세청 속보 다음
+  # 며칠~2주) 매달 한 번이 아니라 매일 확인한다. 영업이익 이력은 저장소 캐시를 쓰고 최근 2년만
+  # 다시 받으므로 DART 요청은 종목당 8건이다.
+  earnings:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    if: github.event_name != 'schedule' || github.event.schedule == '22 21 * * 0-4'
+    strategy:
+      fail-fast: false
+      max-parallel: 1     # 같은 KOSIS 키로 동시에 부르면 한쪽이 거절된다
+      matrix:
+        target: [samsung, sk_hynix]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - name: 의존성 설치
+        run: pip install numpy==2.5.2 pandas==3.0.5 scikit-learn==1.9.0 yfinance==1.7.0
+      - name: 이번 분기 영업이익 추정·발행
+        continue-on-error: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          KOSIS_API_KEY: ${{ secrets.KOSIS_API_KEY }}
+          DART_API_KEY: ${{ secrets.DART_API_KEY }}
+        run: python tools/build_earnings_forecast.py --target ${{ matrix.target }} --out runs/earnings --publish
+
   trends:
     runs-on: ubuntu-latest
     # 백업 스케줄(07:25)에는 돌지 않는다. 이 잡들은 원장이 없어 '이미 기록됐는지'를

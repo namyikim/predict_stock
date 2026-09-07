@@ -325,25 +325,32 @@ def evaluate_forecasts(log, bars, now=None):
         kind = row.get("kind", "direction")
         if pd.isna(kind):
             kind = "direction"
-        if kind == "price":
+        if kind in ("price", "open"):
+            # "price": 전일 종가 대비 target_date 종가. "open": 전일 종가 대비 target_date 시가(갭).
+            # 시가 예측은 09:00 이전에만 의미가 있으므로 열 이름을 *_open 으로 분리해 종가 예측과 섞지 않는다.
             base = row.get("current_close", np.nan)
             if not np.isfinite(base) or base <= 0:
                 result.loc[i, "status"] = "missing_reference"
                 continue
-            actual_return = float(bar["close"] / base - 1)
-            predicted = row.get("predicted_close", np.nan)
+            price_col = "close" if kind == "price" else "open"
+            actual_price = bar[price_col]
+            if not np.isfinite(actual_price) or actual_price <= 0:
+                result.loc[i, "status"] = "missing_actual"
+                continue
+            actual_return = float(actual_price / base - 1)
+            predicted = row.get(f"predicted_{price_col}", np.nan)
             if pd.notna(predicted):
-                error = float(predicted - bar["close"])
-                result.loc[i, ["price_error", "absolute_price_error", "price_ape"]] = [error, abs(error), abs(error) / bar["close"]]
-            center = row.get("center_close", np.nan)
+                error = float(predicted - actual_price)
+                result.loc[i, ["price_error", "absolute_price_error", "price_ape"]] = [error, abs(error), abs(error) / actual_price]
+            center = row.get(f"center_{price_col}", np.nan)
             if pd.notna(center):
-                result.loc[i, "center_price_error"] = center - bar["close"]
+                result.loc[i, "center_price_error"] = center - actual_price
             predicted_return = row.get("predicted_return", np.nan)
             if pd.notna(predicted_return):
                 result.loc[i, "return_error"] = predicted_return - actual_return
-            low, high = row.get("low_close", np.nan), row.get("high_close", np.nan)
+            low, high = row.get(f"low_{price_col}", np.nan), row.get(f"high_{price_col}", np.nan)
             if pd.notna(low) and pd.notna(high):
-                result.loc[i, "interval_hit"] = float(low <= bar["close"] <= high)
+                result.loc[i, "interval_hit"] = float(low <= actual_price <= high)
         else:
             if mode == "open_to_close":
                 if not np.isfinite(bar["open"]) or bar["open"] <= 0:

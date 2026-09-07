@@ -106,6 +106,16 @@ class NotebookStructureTests(unittest.TestCase):
             with self.subTest(token=token):
                 self.assertIn(token, self.source)
 
+    def test_open_price_forecast_is_separate_and_scored_on_the_open(self):
+        # 갭(시가) 예측은 종가 예측과 다른 kind로 원장에 남고, 시가 변동성은 d-1까지만 쓴다.
+        self.assertIn('"kind": "open", "horizon_days": 1', self.source)
+        self.assertIn("sam_gap.rolling(20).std().shift(1)", self.source)
+        self.assertIn('"predicted_open"', self.source)
+        self.assertIn("gap_sign_auc", self.source)
+
+    def test_bootstrap_size_can_be_reduced_for_automation(self):
+        self.assertIn('os.environ.get("PREDICT_STOCK_BOOTSTRAP_B")', self.source)
+
     def test_price_forecast_is_gated_on_a_baseline_test(self):
         for token in ("beats_baseline", "oof_slope", "band_coverage", "mae_diff_lo"):
             with self.subTest(token=token):

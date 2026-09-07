@@ -51,6 +51,22 @@ class ForecastLedgerTests(unittest.TestCase):
         self.assertAlmostEqual(got.return_error, -.02)
         self.assertEqual(got.interval_hit, 0.)
 
+    def test_open_forecast_is_scored_against_the_open_not_the_close(self):
+        rec = dict(self.record, kind="open", target_date="2026-09-03", horizon_days=1,
+                   current_close=101., predicted_open=103., center_open=103.,
+                   predicted_return=103. / 101. - 1, low_open=103.5, high_open=106.)
+        got = self.score([rec]).iloc[0]
+        self.assertEqual(got.status, "scored")
+        self.assertEqual(got.actual_open, 104.)
+        self.assertAlmostEqual(got.actual_return, 104. / 101. - 1)   # 시가 기준
+        self.assertEqual(got.price_error, -1.)                        # 103 - 104(시가), 105(종가)가 아니다
+        self.assertEqual(got.interval_hit, 1.)
+        # 시가가 없는 봉은 채점하지 않는다.
+        bars = self.bars.copy()
+        bars.loc["2026-09-03", "open"] = np.nan
+        got = fu.evaluate_forecasts(pd.DataFrame([rec]), bars, now="2026-09-04T00:00:00Z").iloc[0]
+        self.assertEqual(got.status, "missing_actual")
+
     def test_no_signal_does_not_turn_into_a_point_prediction(self):
         rec = dict(self.record, kind="price", current_close=100., predicted_close=np.nan,
                    predicted_return=np.nan, center_close=100., low_close=99., high_close=103.)

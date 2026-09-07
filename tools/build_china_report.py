@@ -570,10 +570,6 @@ def render(plan_results, csi, rows15, today, fetched):
     if "15" in COMMENT:
         parts.append(note(COMMENT["15"]))
 
-    # 진행 중인 계획을 맨 앞에 둔다: 1 한눈에 → 2 15차 → 3 계획별(14차→8차) → 4 CSI 300 → 5 데이터
-    parts = (parts[:_i_plans] + parts[_i_15:_i_data]
-             + parts[_i_plans:_i_csi] + parts[_i_csi:_i_15] + parts[_i_data:])
-
     # ---- 데이터·방법
     _i_data = len(parts)
     parts.append(h3("5. 데이터와 방법"))
@@ -589,6 +585,10 @@ def render(plan_results, csi, rows15, today, fetched):
         '<b>생성</b> <code>tools/build_china_report.py</code>가 매 실행마다 시세를 새로 받아 만든다.'
         '</div>')
     parts.append("</div>")
+    # 진행 중인 계획을 맨 앞에 둔다: 1 한눈에 → 2 15차 → 3 계획별(14차→8차) → 4 CSI 300 → 5 데이터.
+    # 모든 절을 다 만든 뒤에 자른다 — 경계값(_i_data)이 마지막 절에서 정해지기 때문이다.
+    parts = (parts[:_i_plans] + parts[_i_15:_i_data]
+             + parts[_i_plans:_i_csi] + parts[_i_csi:_i_15] + parts[_i_data:])
     return "".join(parts)
 
 

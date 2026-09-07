@@ -67,8 +67,16 @@ def monthly_prices(ticker, cache_dir, fetch=True):
         if h is None or h.empty:
             raise RuntimeError(f"{ticker} 시세를 받지 못했습니다.")
         h.index = pd.to_datetime(h.index).tz_localize(None).normalize()
-        col = "Adj Close" if "Adj Close" in h else "Close"
-        daily = h[col].astype(float).dropna()
+        # Yahoo의 옛 한국 종목 수정종가는 배당 조정 계산 탓에 0이나 음수가 섞인다(SK하이닉스 2000년대
+        # 초반). 0 이하는 값이 아니라 오류이므로 버리고, 그 비율이 크면 원종가로 대체한다.
+        adj = h["Adj Close"].astype(float) if "Adj Close" in h else None
+        raw = h["Close"].astype(float)
+        if adj is not None and (adj > 0).mean() >= 0.98:
+            daily = adj[adj > 0]
+        else:
+            print("  ⚠️ 수정종가에 0 이하 값이 많아 원종가를 씁니다.", flush=True)
+            daily = raw[raw > 0]
+        daily = daily.dropna()
         # 이번 달이 아직 안 끝났으면 진행 중인 달은 뺀다(월말 종가가 아니다).
         last_full = (pd.Timestamp.now(tz="Asia/Seoul").tz_localize(None).normalize() - pd.offsets.MonthBegin(1)) - pd.Timedelta(days=1)
         daily = daily[daily.index <= last_full]
@@ -101,6 +109,7 @@ def prepend_history(monthly, storage):
 
 def build_frame(monthly, macro):
     """월말 인덱스의 특징·타깃 프레임. 모든 특징은 그 월말까지의 자료만 쓴다."""
+    monthly = monthly[monthly > 0].dropna()
     idx = monthly.index
     f = pd.DataFrame(index=idx)
     f["price"] = monthly.to_numpy()
@@ -298,6 +307,7 @@ def render_chart(f, name):
     알 수 있던 값). 아래: 선행지수 순환변동치(100 기준). 모두 같은 시간축이라 선후 관계를 눈으로 볼 수 있다.
     """
     d = f.dropna(subset=["price"]).copy()
+    d = d[d["price"] > 0]
     if len(d) < 24:
         return ""
     W, L, R = 900, 60, 24

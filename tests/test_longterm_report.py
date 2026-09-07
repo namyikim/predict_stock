@@ -97,6 +97,15 @@ class LongTermTests(unittest.TestCase):
         ev, _ = lt.evaluate(self.frame, self.cols, 12)
         self.assertGreater(ev["corr_spearman"], 0.3)
 
+    def test_nonpositive_prices_are_dropped_not_logged(self):
+        price, macro = synthetic()
+        bad = price.copy()
+        bad.iloc[:6] = 0.0              # Yahoo 수정종가 오류 흉내
+        f = lt.build_frame(bad, macro)
+        self.assertEqual(f.index[0], price.index[6])
+        self.assertTrue((f["price"] > 0).all())
+        self.assertIn("<svg", lt.render_chart(f, "x"))
+
     def test_fragment_renders(self):
         from pathlib import Path
         lt.monthly_prices = lambda t, c, fetch=True: synthetic()[0]

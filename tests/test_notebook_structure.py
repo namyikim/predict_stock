@@ -223,7 +223,8 @@ class PublishFailureTests(unittest.TestCase):
         self.assertIn('if PUBLISH_FAILURES:\n            PUBLISH_STATUS[TARGET] = ("일부 실패"', self.source)
 
     def test_automation_raises_on_failure_but_not_on_skip(self):
+        # '실행 안 됨'은 그 종목을 다루지 않은 실행(단일 종목·테스트)이라 실패가 아니다.
         self.assertIn('_failed = [t for t in _bad if _done.get(t, ("", ""))[0] in '
-                      '("실패", "일부 실패", "실행 안 됨")]', self.source)
+                      '("실패", "일부 실패")]', self.source)
         self.assertIn('if _failed and RUNTIME != "colab":', self.source)
         self.assertIn("raise RuntimeError(", self.source)

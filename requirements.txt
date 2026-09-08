@@ -18,6 +18,7 @@ tqdm==4.67.1
 pyarrow==22.0.0
 exchange_calendars==4.13.2   # KRX 휴일 반영(없으면 주말만 제외하고 경고)
 jinja2>=3.1,<4              # pandas Styler 표 렌더링
+PyYAML>=6,<7                # 테스트가 워크플로 yml 을 읽는다
 lxml>=5                    # 네이버 표 파싱(pandas.read_html)
 
 # 선택: Transformer(RUN_TRANSFORMER=True)에만 필요

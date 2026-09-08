@@ -299,3 +299,28 @@ class CiAndPathTests(unittest.TestCase):
         for path in ("data_sources/**", "report_html.py", "forecast_utils.py", "tools/**",
                      "samsung_direction_model_colab.ipynb"):
             self.assertIn(path, paths, f"{path} 를 고쳐도 보고서가 다시 만들어지지 않습니다")
+
+
+class GateDependencyTests(unittest.TestCase):
+    """게이트는 3시간마다 두 종목에서 돈다. 무거운 의존성 없이 몇 초에 끝나야 한다."""
+
+    def test_next_trading_day_needs_no_pandas(self):
+        source = (ROOT / "tools" / "should_run_today.py").read_text(encoding="utf-8")
+        self.assertNotIn("import pandas", source)
+        # 달력은 선택이다 — 없으면 주말 규칙으로 넘어간다.
+        self.assertIn("except Exception:", source)
+
+    def test_falls_back_to_weekday_rule_without_the_calendar(self):
+        import builtins
+        real_import = builtins.__import__
+
+        def blocked(name, *args, **kwargs):
+            if name == "exchange_calendars":
+                raise ImportError("차단")
+            return real_import(name, *args, **kwargs)
+        builtins.__import__ = blocked
+        try:
+            saturday = datetime(2026, 9, 12, 12, 0, tzinfo=timezone(timedelta(hours=9)))
+            self.assertEqual(str(srt.next_trading_day(saturday)), "2026-09-14")
+        finally:
+            builtins.__import__ = real_import

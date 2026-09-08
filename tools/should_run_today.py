@@ -3,7 +3,7 @@
 
 GitHub의 cron은 밀리거나 아예 건너뛴다(2026-09-08 06:30 예정 실행이 실행 흔적도 없이
 누락됐다). 그래서 아침 스케줄을 두 번 건다. 두 번째는 첫 번째가 이미 성공했으면 아무것도
-하지 않아야 한다. 판단 기준은 '오늘 날짜(KST)의 사전 예측이 원장에 있는가' 하나다.
+하지 않아야 한다. 판단 기준은 '다음 거래일(KST)의 사전 예측이 원장에 있는가' 하나다.
 
     python tools/should_run_today.py --target samsung
         → GITHUB_OUTPUT 에 run=true|false 를 쓰고, 이유를 표준출력에 남긴다.
@@ -27,22 +27,24 @@ def next_trading_day(now):
     09:00 전이면 오늘이 거래일일 때 오늘이 대상이고, 09:00 뒤에는 그날 예측 기회가 끝났으므로
     다음 거래일이 대상이다.
     """
-    today = pd.Timestamp(now.date())
+    today = now.date()
     before_open = (now.hour, now.minute) < (9, 0)
     try:
+        # 이 스크립트는 표준 라이브러리만으로 돌아야 한다(게이트는 가볍고 빨라야 한다).
+        # 달력은 있으면 쓰고 없으면 주말 규칙으로 넘어간다.
         import exchange_calendars as xc
         calendar = xc.get_calendar("XKRX")
-        if before_open and calendar.is_session(today):
-            return today.date()
-        return calendar.next_session(today).date()
+        stamp = today.isoformat()
+        if before_open and calendar.is_session(stamp):
+            return today
+        return calendar.next_session(stamp).date()
     except Exception:
-        # 달력을 못 쓰면 주말만 건너뛴다(공휴일은 놓친다). 없는 것보다 낫다.
         if before_open and today.weekday() < 5:
-            return today.date()
-        day = today + pd.Timedelta(days=1)
-        while day.weekday() >= 5:
-            day += pd.Timedelta(days=1)
-        return day.date()
+            return today
+        day = today + timedelta(days=1)
+        while day.weekday() >= 5:       # 공휴일은 놓친다. 없는 것보다 낫다.
+            day += timedelta(days=1)
+        return day
 
 
 def already_recorded(path, today, now=None):

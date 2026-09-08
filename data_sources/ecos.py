@@ -116,24 +116,39 @@ def search_ecos_tables(key, keyword):
 
 
 
-def load_nsi(storage, start, end, use_cache=False):
-    """(DataFrame(date,value), info). 우선순위: 명시적 캐시 재현 > macro_inputs CSV > ECOS API."""
+def load_nsi(storage, start, end, use_cache=False, fallback_dir=None):
+    """(DataFrame(date,value), info).
+
+    우선순위: 명시적 캐시 재현 > macro_inputs CSV > ECOS API > 저장소 보관본.
+    fallback_dir 는 다른 자료원(load_macro_data·load_cli·load_term_spread)과 같은 규약이다.
+    이 인자가 없어서 장기 전망이 매번 TypeError 로 NSI 를 통째로 빠뜨리고 있었다(2026-09-08).
+    """
     storage = Path(storage)
     cache = storage / 'macro_cache'
     cache.mkdir(parents=True, exist_ok=True)
     local = storage / 'macro_inputs' / 'news_sentiment.csv'
     cached = cache / 'news_sentiment.csv'
+    fallback = Path(fallback_dir) / 'news_sentiment.csv' if fallback_dir else None
+    error = None
     if use_cache and cached.exists():
         frame, source = normalize_daily(pd.read_csv(cached, dtype=str)), 'explicit_cache_replay'
     elif local.exists():
         frame, source = normalize_daily(pd.read_csv(local, dtype=str)), 'user_csv'
     else:
-        key = ecos_key()
-        if not key:
-            raise RuntimeError('ECOS_API_KEY가 없습니다. Colab 보안 비밀/Secrets에 등록하거나 macro_inputs/news_sentiment.csv를 두세요.')
-        frame, source = fetch_ecos_daily(NSI_STAT_CODE, NSI_ITEM_CODE, start, end, key), 'ECOS_API'
+        try:
+            key = ecos_key()
+            if not key:
+                raise RuntimeError('ECOS_API_KEY가 없습니다. Colab 보안 비밀/Secrets에 등록하거나 '
+                                   'macro_inputs/news_sentiment.csv를 두세요.')
+            frame, source = fetch_ecos_daily(NSI_STAT_CODE, NSI_ITEM_CODE, start, end, key), 'ECOS_API'
+        except Exception as exc:
+            if not (fallback and fallback.exists()):
+                raise
+            error = str(exc)
+            frame, source = normalize_daily(pd.read_csv(fallback, dtype=str)), 'last_successful_fetch'
     frame.to_csv(cached, index=False)
     info = {'source': source, 'stat_code': NSI_STAT_CODE, 'item_code': NSI_ITEM_CODE,
+            'fresh': source in ('ECOS_API', 'user_csv'), 'fetch_error': error,
             'first': frame['date'].min().date().isoformat(), 'last': frame['date'].max().date().isoformat(),
             'rows': int(len(frame)), 'release_lag_days': NSI_RELEASE_LAG_DAYS, 'note': NSI_NOTE,
             'snapshot_hash': hashlib.sha256(frame.to_csv(index=False).encode()).hexdigest()[:20]}

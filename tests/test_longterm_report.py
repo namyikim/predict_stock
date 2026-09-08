@@ -1,5 +1,6 @@
 """장기 전망 모듈: 겹치는 타깃의 purge, 국면 분류, 유사 시기, 잡음에서의 판정."""
 import sys
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -295,3 +296,56 @@ class LegendLayoutTests(unittest.TestCase):
         for x1, tx, label in items:
             self.assertGreaterEqual(int(x1), end, f"'{label}' 범례가 앞 항목과 겹칩니다")
             end = int(tx) + lt.text_width(label)
+
+
+class OptionalSourcesActuallyLoadTests(unittest.TestCase):
+    """선택 자료원이 '조용히 빠지는' 것을 잡는다.
+
+    2026-09-08까지 장기 전망은 load_nsi()에 fallback_dir 를 넘겼는데 그 함수에는 인자가 없었다.
+    호출부가 예외를 잡고 계속 진행했으므로 테스트도 Actions 도 초록불이었고, NSI 는 매번 통째로
+    빠져 있었다. '실행이 됐는가'가 아니라 '실제로 켜졌는가'를 봐야 한다.
+    """
+
+    def test_every_optional_loader_accepts_the_shared_arguments(self):
+        import inspect
+        import macro_utils as mu
+        for name in ("load_macro_data", "load_nsi", "load_cli", "load_term_spread",
+                     "load_investor_flows"):
+            parameters = inspect.signature(getattr(mu, name)).parameters
+            self.assertIn("use_cache", parameters, name)
+            self.assertIn("fallback_dir", parameters, f"{name} 이 보관본을 받지 못합니다")
+
+    def test_analyse_reports_each_source_as_enabled(self):
+        import macro_utils as mu
+        from pathlib import Path as _Path
+        price, macro = synthetic()
+        months = pd.date_range("1998-01-01", "2026-07-01", freq="MS")
+        days = pd.date_range("1998-01-01", "2026-09-06")
+        rng = np.random.default_rng(3)
+        cli = pd.DataFrame({"month": months, "value": 100 + np.sin(np.arange(len(months)) / 9)})
+        nsi = pd.DataFrame({"date": days, "value": 100 + np.cumsum(rng.normal(0, .3, len(days)))})
+        spread = pd.DataFrame({"date": days, "value": .5 + np.sin(np.arange(len(days)) / 300)})
+        saved = (lt.monthly_prices, lt.load_macro_data, lt.load_cli, lt.load_nsi,
+                 lt.load_term_spread, lt.github_pages.token, lt.BOOTSTRAP_B)
+        lt.BOOTSTRAP_B = 50
+        lt.monthly_prices = lambda *a, **k: price
+        lt.load_macro_data = lambda *a, **k: (macro, {"latest_month": {}, "snapshot_hash": "x"})
+        # 실제 호출과 같은 방식으로 부른다 — 인자가 맞지 않으면 여기서 드러난다.
+        lt.load_cli = lambda storage, start, end, use_cache=False, fallback_dir=None: (
+            cli, {"source": "test", "first": "1998-01", "last": "2026-07"})
+        lt.load_nsi = lambda storage, start, end, use_cache=False, fallback_dir=None: (
+            nsi, {"source": "test", "last": "2026-09-06"})
+        lt.load_term_spread = lambda storage, start, end, use_cache=False, fallback_dir=None: (
+            spread, {"source": "test", "last": "2026-09-06"})
+        lt.github_pages.token = lambda: None
+        try:
+            result, _ = lt.analyse("samsung", _Path(tempfile.mkdtemp()), fetch=False)
+        finally:
+            (lt.monthly_prices, lt.load_macro_data, lt.load_cli, lt.load_nsi,
+             lt.load_term_spread, lt.github_pages.token, lt.BOOTSTRAP_B) = saved
+        self.assertTrue(result["cli_active"], "G20 CLI 가 켜지지 않았습니다")
+        for name in ("nsi", "term_spread"):
+            self.assertTrue(result["extra_info"][name].get("enabled"),
+                            f"{name} 가 켜지지 않았습니다: {result['extra_info'][name].get('reason')}")
+        self.assertTrue(result["cycle_active"], "합성 사이클 점수가 만들어지지 않았습니다")
+        self.assertEqual(len(result["cycle_components"]), 4)

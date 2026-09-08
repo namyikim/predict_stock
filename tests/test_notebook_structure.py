@@ -202,3 +202,28 @@ class NotebookStructureTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class PublishFailureTests(unittest.TestCase):
+    """원장이 저장되지 않았는데 Actions 가 성공으로 끝나면 안 된다."""
+
+    @classmethod
+    def setUpClass(cls):
+        import json
+        nb = json.loads((Path(__file__).resolve().parents[1] /
+                         "samsung_direction_model_colab.ipynb").read_text(encoding="utf-8"))
+        cls.source = "\n".join("".join(c["source"]) for c in nb["cells"])
+
+    def test_ledger_upload_failure_is_recorded(self):
+        self.assertIn('PUBLISH_FAILURES.append(f"원장 업로드 실패', self.source)
+        self.assertIn('PUBLISH_FAILURES.append(f"보고서 발행 실패', self.source)
+
+    def test_report_only_success_is_not_reported_as_published(self):
+        # 원장이 실패했으면 보고서가 올라갔어도 '발행됨'이 아니다.
+        self.assertIn('if PUBLISH_FAILURES:\n            PUBLISH_STATUS[TARGET] = ("일부 실패"', self.source)
+
+    def test_automation_raises_on_failure_but_not_on_skip(self):
+        self.assertIn('_failed = [t for t in _bad if _done.get(t, ("", ""))[0] in '
+                      '("실패", "일부 실패", "실행 안 됨")]', self.source)
+        self.assertIn('if _failed and RUNTIME != "colab":', self.source)
+        self.assertIn("raise RuntimeError(", self.source)

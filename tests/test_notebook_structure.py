@@ -125,6 +125,16 @@ class NotebookStructureTests(unittest.TestCase):
         self.assertIn('"raw_predicted_return": stats["raw_point"]', self.source)
         self.assertIn('"raw_predicted_return": open_forecast_stats["raw_point"]', self.source)
 
+    def test_macro_fallback_is_pulled_independently_of_ledger_sync(self):
+        # 보관본 내려받기는 '읽기'라서 발행 여부·토큰과 무관해야 하고, 원장 조회 실패에
+        # 휩쓸리면 안 된다(2026-09-09: KOSIS가 막힌 날 실행이 통째로 죽었다).
+        source = self.source
+        pull = source.index("월별 지표 보관본:")
+        sync = source.index("if SYNC_LEDGER_TO_GITHUB:\n    _token = github_token()")
+        self.assertLess(pull, sync, "보관본 내려받기가 원장 동기화 블록보다 앞에 있어야 한다")
+        self.assertIn("raw.githubusercontent.com", source)      # 토큰 없이 받는다
+        self.assertIn('fallback_dir=STORAGE_ROOT / "macro_fallback"', source)
+
     def test_after_close_run_only_scores(self):
         # 장 마감 후 실행은 워크포워드를 다시 돌리지 않고 채점·절 교체만 한다.
         # 예측을 기록하면 정보가 적은 오후 예측이 아침 예측을 밀어낸다(원장은 최초 사전 예측만 집계).

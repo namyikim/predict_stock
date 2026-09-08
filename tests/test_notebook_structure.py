@@ -72,15 +72,17 @@ class NotebookStructureTests(unittest.TestCase):
     def test_configuration_switches_exist(self):
         for setting in (
             "TARGET_MODE", "BAND_MODE", "VOL_BAND_MULT", "LIVE_OPEN_PRICE",
-            "ENSEMBLE_MODELS", "RUN_TRANSFORMER", "RUN_KRONOS",
+            "ENSEMBLE_MODELS", "RUN_TRANSFORMER",
             "COST_BP", "BOOTSTRAP_B", "USE_DATA_CACHE",
         ):
             with self.subTest(setting=setting):
                 self.assertIn(f"{setting} = ", self.source)
 
-    def test_kronos_is_opt_in(self):
-        """Kronos는 기준선보다 나쁘고 무거운 의존성의 유일한 원인이므로 기본 꺼짐."""
-        self.assertIn("RUN_KRONOS = False", self.source)
+    def test_kronos_was_removed_from_the_notebook(self):
+        """Kronos는 기준선보다 나빴고 항상 꺼져 있었다. 노트북에서 걷어내고 experiments/에 보존했다."""
+        self.assertNotIn("RUN_KRONOS", self.source)
+        self.assertNotIn("kronos_predictor", self.source)
+        self.assertTrue((Path(__file__).resolve().parents[1] / "experiments" / "kronos" / "kronos_cells.py").exists())
 
     def test_kospi200_is_not_used(self):
         """^KS200은 KOSPI와 중복이면서 Yahoo 공백이 학습 구간을 잘라낸 원인이었다.

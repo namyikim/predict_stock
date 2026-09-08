@@ -216,7 +216,7 @@ month,value,released_at,vintage,source
 2. 다항 로지스틱 회귀 — 과거 내부 3개 시계열 구간에서 `C`와 클래스 가중치를 선택
 3. LightGBM 분류기 — 과거 내부 검증에서 60/120트리와 클래스 가중치를 선택(7리프)
 4. 30거래일 특징 시퀀스를 사용하는 소형 Transformer Encoder — `RUN_TRANSFORMER`, 기본 꺼짐(실험용, 앙상블 미포함)
-5. 금융 OHLCV 시계열 파운데이션 모델 [Kronos-small](https://github.com/shiyu-coder/Kronos)의 zero-shot 예측 — `RUN_KRONOS`, **기본 꺼짐**
+5. ~~Kronos-small 파운데이션 모델~~ — 기준선보다 나빠(log loss 1.87 vs 1.10) 2026-09에 노트북에서 걷어냈습니다. 셀은 `experiments/kronos/kronos_cells.py`에 보존.
 6. `ENSEMBLE_MODELS`의 확률을 **단순 평균**한 앙상블
 
 모델은 `accuracy`, `balanced_accuracy`, `macro_f1`, `log_loss`, `Brier score`에 **신뢰구간을 붙여** 비교하고, 여기에 갭/세션 분해와 "항상 보합" 대비 쌍체 차이를 함께 보고합니다.
@@ -291,7 +291,7 @@ Actions의 "Transformer 실험" 워크플로를 돌리면 같은 기록이 쌓�
 
 1. 수정된 `samsung_direction_model_colab.ipynb`를 Colab에 업로드합니다. 저장소에 변경을 게시한 뒤에는 위 Open in Colab 링크로도 열 수 있습니다.
 2. `런타임 → 모두 실행`으로 전체를 실행합니다. 아래 **예측 원장을 GitHub에 보관하기**를 설정해 두면 이전 기록을 자동으로 받아와 이어서 쌓습니다. 설정하지 않으면 런타임 로컬에만 저장되므로, 실행 전에 보관해 둔 `forecast_log.csv`를 첫 셀이 표시한 저장 폴더에 직접 업로드해야 합니다.
-3. 기본 `close_to_close` 모드는 한국 시간 07시 무렵 실행하고, 예측이 09시 전에 완료되도록 합니다. 기본 모델은 CPU에서 실행하며 Transformer와 Kronos는 꺼져 있습니다.
+3. 기본 `close_to_close` 모드는 한국 시간 07시 무렵 실행하고, 예측이 09시 전에 완료되도록 합니다. 기본 모델은 CPU에서 실행하며 Transformer는 꺼져 있습니다.
 4. 다음 거래일 실행 시 전날 예측의 확정 실제값을 먼저 갱신하고, 새 예측을 추가합니다. 장 마감 데이터는 15:40 이후 채점하며, 주말·휴일은 KRX 거래일 달력을 따릅니다.
 5. Colab 왼쪽 파일 패널의 **samsung_direction_outputs** 폴더에서 아래 CSV를 확인하고, `latest_outputs.zip`을 다운로드하여 보관합니다.
 
@@ -428,7 +428,6 @@ python tools/run_notebook.py --storage samsung_direction_outputs
 | `LIVE_OPEN_PRICE` | `None` | `open_to_close` 모드의 필수 입력(예측일 09:00 시가). 없으면 중단합니다 |
 | `ENSEMBLE_MODELS` | `["Logistic", "LightGBM"]` | 단순 평균 앙상블에 넣을 모델 |
 | `RUN_TRANSFORMER` | `False` | Transformer 실험 실행 여부. True면 13절이 결과를 `experiments/`에 기록한다(torch 없는 Actions는 건너뜀). 2026-09-06 측정에서 편입 반대로 판정되어 껐다 |
-| `RUN_KRONOS` | `False` | Kronos-small 평가 실행 여부 |
 | `COST_BP` | `20.0` | 왕복 거래비용(bp). 한국 단일종목은 매도 거래세 0.15% 포함 |
 | `BOOTSTRAP_B` | `2000` | 월 블록 부트스트랩 반복수 |
 | `USE_DATA_CACHE` | `False` | 캐시된 시세 스냅샷 재사용 여부 |
@@ -444,7 +443,6 @@ python tools/run_notebook.py --storage samsung_direction_outputs
 | --- | --- |
 | `backtest_predictions.csv` | 날짜·모델별 과거 방향 예측 확률과 실제값 |
 | `metrics_native_window.csv` | 모델별 성능, 신뢰구간, 갭/세션 분해 |
-| `metrics_common_dates.csv` | (Kronos 실행 시) 모든 모델이 예측한 공통 날짜의 성능 |
 | `latest_forecast.csv` | 다음 거래일 방향과 클래스별 확률 |
 | `forecast_log.csv` | 실행마다 누적되는 예측 로그(run_id, 데이터 해시, 대체된 특징 포함) |
 | `multi_horizon_price_forecast.csv` | 1거래일·1주일·1개월 종가예측·예상 수익률·구간과 `signal` |

@@ -171,7 +171,7 @@ async function handleStats(request, env, url, origin) {
   const days = Math.min(Math.max(parseInt(url.searchParams.get("days") || "30", 10), 1), 365);
   const since = new Date(Date.now() - days * 86400000).toISOString().slice(0, 10);
 
-  const [totals, daily, countries, regions, cities, referrers] = await env.DB.batch([
+  const [totals, daily, countries, regions, regionsDaily, cities, referrers] = await env.DB.batch([
     env.DB.prepare("SELECT page, total FROM counters ORDER BY total DESC"),
     env.DB.prepare(
       "SELECT day, page, COUNT(*) AS views, COUNT(DISTINCT visitor) AS visitors " +
@@ -184,6 +184,13 @@ async function handleStats(request, env, url, origin) {
     env.DB.prepare(
       "SELECT region, COUNT(*) AS views FROM hits WHERE day >= ? AND region <> '' " +
         "GROUP BY region ORDER BY views DESC LIMIT 30"
+    ).bind(since),
+    // 날짜별 시/도. 기간 전체 합계만으로는 "어느 날 어디서 들어왔나"를 볼 수 없다.
+    // 행 수는 (날짜 × 시/도)라 상한을 둔다.
+    env.DB.prepare(
+      "SELECT day, region, COUNT(*) AS views, COUNT(DISTINCT visitor) AS visitors " +
+        "FROM hits WHERE day >= ? AND region <> '' " +
+        "GROUP BY day, region ORDER BY day DESC, views DESC LIMIT 5000"
     ).bind(since),
     env.DB.prepare(
       "SELECT city, COUNT(*) AS views FROM hits WHERE day >= ? AND city <> '' " +
@@ -203,6 +210,7 @@ async function handleStats(request, env, url, origin) {
       daily: daily.results,
       countries: countries.results,
       regions: regions.results,
+      regionsDaily: regionsDaily.results,
       cities: cities.results,
       referrers: referrers.results,
     },

@@ -220,3 +220,16 @@ Workers & Pages → 해당 Worker → Edit code → 내용을 붙여넣고 Deplo
 없으면 admin 페이지가 "배포된 Worker가 오래되었습니다"라고 알려 준다.
 
 확인: admin 페이지의 "기간 조회수"·"기록된 날" 타일에 숫자가 뜨면 정상이다.
+
+## /stats 응답 항목
+
+| 키 | 내용 |
+| --- | --- |
+| `totals` | 페이지별 누적 조회수(전체 기간) |
+| `daily` | 날짜 × 페이지 조회수·방문자 |
+| `countries` / `regions` / `cities` | 기간 합계 |
+| `regionsDaily` | **날짜 × 시/도** 조회수·방문자 (2026-09-08 추가) |
+| `referrers` | 유입 경로 |
+
+admin 페이지는 응답에 키가 없으면 "Worker가 오래되었습니다"로 안내한다. 새 키를 추가한 뒤에는
+Cloudflare에 다시 배포해야 화면에 나온다.

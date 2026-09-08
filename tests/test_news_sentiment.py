@@ -73,3 +73,25 @@ class NsiInNotebookTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class CliFeatureTests(unittest.TestCase):
+    """G20 CLI: 참조월+1개월 20일 이후에만 보인다."""
+
+    def frame(self):
+        months = pd.date_range("2024-01-01", "2026-07-01", freq="MS")
+        return pd.DataFrame({"month": months, "value": 100 + np.sin(np.arange(len(months)) / 4)})
+
+    def test_value_appears_on_release_day(self):
+        f = self.frame()
+        level = f.set_index("month")["value"]
+        feat = mu.cli_features(f, pd.bdate_range("2026-08-01", "2026-09-08"))
+        self.assertAlmostEqual(feat.loc["2026-08-19", "cli_level"], level["2026-06-01"] - 100)
+        self.assertAlmostEqual(feat.loc["2026-08-20", "cli_level"], level["2026-07-01"] - 100)
+
+    def test_fred_missing_values_are_dropped(self):
+        got = mu.parse_fred_observations({"observations": [{"date": "2026-06-01", "value": "100.8"},
+                                                            {"date": "2026-07-01", "value": "."}]})
+        self.assertEqual(len(got), 1)
+        with self.assertRaises(ValueError):
+            mu.parse_fred_observations({"observations": [{"date": "2026-07-01", "value": "."}]})

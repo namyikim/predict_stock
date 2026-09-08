@@ -35,7 +35,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "tools"))
 import github_pages  # noqa: E402
-from macro_utils import load_macro_data  # noqa: E402
+from macro_utils import cli_features, load_cli, load_macro_data  # noqa: E402
 
 KST = timezone(timedelta(hours=9))
 TARGETS = {
@@ -202,8 +202,13 @@ def first_k_months(monthly, k):
     return means.where(counts == k)
 
 
-def build_frame(profit, exports, usdkrw, k):
-    """분기 표. 특징은 모두 그 분기의 앞 k개월 또는 그 이전 자료만 쓴다."""
+def build_frame(profit, exports, usdkrw, k, cli=None):
+    """분기 표. 특징은 모두 그 분기의 앞 k개월 또는 그 이전 자료만 쓴다.
+
+    다음 분기 전망을 위해 profit_next(=t+1 분기 영업이익)와, 분기 t의 k번째 달 말 시점에 보이는
+    G20 CLI를 함께 둔다. CLI는 참조월+1개월 20일 이후에만 보이므로 k번째 달 말에는 (k-1)번째 달
+    값까지 들어온다.
+    """
     exp_k = first_k_months(exports, k)
     fx_k = first_k_months(usdkrw, k)
     f = pd.DataFrame({"exports_k": exp_k, "usdkrw_k": fx_k})
@@ -212,34 +217,50 @@ def build_frame(profit, exports, usdkrw, k):
     f["exports_qoq"] = f["exports_k"] / f["exports_k"].shift(1) - 1
     f["profit"] = profit.reindex(f.index)
     f["profit_lag1"] = f["profit"].shift(1)                    # 직전 분기(이번 분기 중에 이미 발표됨)
+    f["profit_lag3"] = f["profit"].shift(3)                    # 다음 분기의 '4분기 전'
     f["profit_lag4"] = f["profit"].shift(4)
+    f["profit_next"] = f["profit"].shift(-1)                   # 다음 분기 타깃
+    if cli is not None and len(cli):
+        asof = pd.DatetimeIndex([(q.start_time + pd.DateOffset(months=k)) - pd.Timedelta(days=1) for q in f.index])
+        cf = cli_features(cli, asof)
+        f["cli_level"] = cf["cli_level"].to_numpy()
+        f["cli_change_3m"] = cf["cli_change_3m"].to_numpy()
     return f
 
 
 FEATURES = ["exports_krw_k", "exports_yoy", "exports_qoq", "profit_lag1", "profit_lag4"]
+# 다음 분기: 직전 분기 영업이익은 profit_lag1(t-1)이 마지막으로 아는 값이고, 계절 기준선은 t-3이다.
+FEATURES_NEXT = ["exports_krw_k", "exports_yoy", "exports_qoq", "profit_lag1", "profit_lag3"]
+CLI_FEATURES = ["cli_level", "cli_change_3m"]
 
 
-def walk_forward(f, first_test=FIRST_TEST_QUARTER, min_train=MIN_TRAIN_QUARTERS):
-    """확장 창. 분기 t는 t 이전 분기들로만 학습한다(영업이익은 분기 종료 후 발표되므로 안전)."""
+def walk_forward(f, target="profit", features=None, gap=0, rw="profit_lag1", sn="profit_lag4",
+                 first_test=FIRST_TEST_QUARTER, min_train=MIN_TRAIN_QUARTERS):
+    """확장 창. 분기 t는 타깃이 이미 알려진 분기들로만 학습한다.
+
+    gap=0: 이번 분기 나우캐스트. t 이전 분기의 영업이익은 다 발표됐다.
+    gap=1: 다음 분기 전망. 행 s의 타깃은 profit(s+1)이라, 분기 t 중에는 s+1<=t-1, 즉 s<=t-2까지만 안다.
+    """
     from sklearn.linear_model import Ridge
     from sklearn.pipeline import make_pipeline
     from sklearn.preprocessing import StandardScaler
-    usable = f.dropna(subset=FEATURES + ["profit"])
+    features = features or FEATURES
+    usable = f.dropna(subset=features + [target, rw, sn])
     rows = []
     for t in usable.index[usable.index >= pd.Period(first_test, freq="Q")]:
-        train = usable[usable.index < t]
+        train = usable[usable.index < t - gap]
         if len(train) < min_train:
             continue
         model = make_pipeline(StandardScaler(), Ridge(alpha=1.0))
-        model.fit(train[FEATURES], train["profit"])
+        model.fit(train[features], train[target])
         rows.append({
             "quarter": t,
-            "actual": float(usable.loc[t, "profit"]),
-            "model": float(model.predict(usable.loc[[t], FEATURES])[0]),
-            "random_walk": float(usable.loc[t, "profit_lag1"]),
-            "seasonal_naive": float(usable.loc[t, "profit_lag4"]),
+            "actual": float(usable.loc[t, target]),
+            "model": float(model.predict(usable.loc[[t], features])[0]),
+            "random_walk": float(usable.loc[t, rw]),
+            "seasonal_naive": float(usable.loc[t, sn]),
         })
-    return pd.DataFrame(rows).set_index("quarter")
+    return pd.DataFrame(rows).set_index("quarter") if rows else pd.DataFrame()
 
 
 def evaluate(oof):
@@ -258,16 +279,17 @@ def evaluate(oof):
     return out
 
 
-def fit_live(f, live_quarter):
+def fit_live(f, live_quarter, target="profit", features=None, gap=0):
     from sklearn.linear_model import Ridge
     from sklearn.pipeline import make_pipeline
     from sklearn.preprocessing import StandardScaler
-    usable = f.dropna(subset=FEATURES + ["profit"])
-    train = usable[usable.index < live_quarter]
-    live = f.loc[[live_quarter], FEATURES] if live_quarter in f.index else None
+    features = features or FEATURES
+    usable = f.dropna(subset=features + [target])
+    train = usable[usable.index < live_quarter - gap]
+    live = f.loc[[live_quarter], features] if live_quarter in f.index else None
     if len(train) < MIN_TRAIN_QUARTERS or live is None or live.isna().any(axis=1).iloc[0]:
         return None, len(train)
-    model = make_pipeline(StandardScaler(), Ridge(alpha=1.0)).fit(train[FEATURES], train["profit"])
+    model = make_pipeline(StandardScaler(), Ridge(alpha=1.0)).fit(train[features], train[target])
     return float(model.predict(live)[0]), len(train)
 
 
@@ -399,6 +421,40 @@ def render_fragment(result):
     else:
         parts.append(f'<div style="font-size:13px;color:#6b7178">{e(ev.get("note", "표본 부족"))}</div>')
 
+    # ---- 다음 분기 전망
+    nq = r.get("next_quarter")
+    if nq:
+        parts.append('<h4 style="font-size:14px;margin:22px 0 6px">'
+                     f'다음 분기({e(nq["quarter"])}) 전망 — G20 경기선행지수를 넣어 보다</h4>')
+        parts.append('<div style="font-size:12px;color:#6b7178;margin-bottom:6px">이번 분기 나우캐스트와 달리 '
+                     '아직 시작하지 않은 분기를 내다보는 것이라 훨씬 어렵습니다. 선행지수가 쓸모 있다면 여기서 '
+                     '나타나야 합니다. 같은 날짜에서 CLI를 넣은 모델과 뺀 모델을 나란히 쟀습니다.</div>')
+        if nq["point"] is not None:
+            parts.append(f'<div style="font-size:20px;font-weight:700">{jo(nq["point"])}'
+                         f'<span style="font-size:13px;font-weight:400;color:#6b7178"> · 80% 구간 '
+                         f'{jo(nq["low"])} ~ {jo(nq["high"])} · {"CLI 포함" if nq["chosen"] == "with_cli" else "CLI 제외"} 모델</span></div>')
+        else:
+            parts.append('<div style="font-size:16px;font-weight:600;color:#6b7178">예측하지 않음</div>'
+                         f'<div style="font-size:12px;color:#8a9199;margin-top:4px">{e(nq["no_point_reason"])}</div>')
+        body = ""
+        for label, evx in (("CLI 제외", nq["evaluation_without_cli"]), ("CLI 포함", nq.get("evaluation_with_cli"))):
+            if not evx or not evx.get("n"):
+                body += f'<tr><td {TD}>{label}</td><td {TDR} colspan="4">{e((evx or {}).get("note", "미포함"))}</td></tr>'
+                continue
+            body += (f'<tr><td {TD}>{label}</td><td {TDR}>{evx["n"]}</td>'
+                     f'<td {TDR}>{evx["mae_model"] / TRILLION:,.2f}조원</td>'
+                     f'<td {TDR}>{evx["mae_random_walk"] / TRILLION:,.2f} / {evx["mae_seasonal_naive"] / TRILLION:,.2f}조원</td>'
+                     f'<td {TDR}>{"이김" if evx["beats_baselines"] else "못 이김"}</td></tr>')
+        parts.append('<div style="overflow-x:auto"><table style="width:100%;min-width:520px;border-collapse:collapse;'
+                     f'font-size:13px;border:1px solid #e5e5e5"><tr><th {TH}>모델</th><th {THR}>분기 수</th>'
+                     f'<th {THR}>MAE</th><th {THR}>기준선 MAE (직전/4분기 전)</th><th {THR}>판정</th></tr>{body}</table></div>')
+        if r.get("cli_active"):
+            parts.append('<div style="font-size:11px;color:#8a9199;margin-top:4px">G20 CLI는 참조월+1개월 20일 이후 값만 썼습니다. '
+                         'CLI는 매달 소급 수정되므로 이 표는 최종 수정치 기준이라 낙관적입니다.</div>')
+        else:
+            parts.append(f'<div style="font-size:11px;color:#8a9199;margin-top:4px">G20 CLI 미포함 — '
+                         f'{e(str(r.get("cli_info", {}).get("reason", "")))}</div>')
+
     parts.append(f'<div style="font-size:11px;color:#8a9199;margin-top:10px">'
                  f'영업이익 출처: {e(r["profit_source"])} · 이력 {e(r["profit_first"])}~{e(r["profit_last"])} '
                  f'({r["profit_n"]}개 분기) · 수출액 최신월 {e(r["exports_last_month"])} · '
@@ -442,10 +498,50 @@ def analyse(target, out_dir, fetch=True):
         f"{m}월" for m in range(live_quarter.start_time.month, live_quarter.end_time.month + 1)
         if m not in {d.month for d in in_quarter})
 
-    f = build_frame(profit, exports, usdkrw, months_used)
+    cli, cli_info = None, {"enabled": False, "reason": "USE_CLI=False"}
+    if os.environ.get("USE_CLI", "true").strip().lower() not in ("0", "false", "no"):
+        try:
+            cli, cli_info = load_cli(out_dir, "2000-01-01", datetime.now(KST).date(),
+                                     use_cache=not fetch, fallback_dir=fallback_dir)
+            cli_info["enabled"] = True
+        except Exception as exc:
+            cli, cli_info = None, {"enabled": False, "reason": f"{type(exc).__name__}: {exc}"}
+            print("  ⚠️ G20 CLI를 쓸 수 없어 빼고 진행합니다:", cli_info["reason"], flush=True)
+
+    f = build_frame(profit, exports, usdkrw, months_used, cli)
     oof = walk_forward(f)
     ev = evaluate(oof)
     point, n_train = fit_live(f, live_quarter)
+
+    # ---- 다음 분기 전망 (CLI가 이론적으로 맞는 자리) --------------------------------
+    # 분기 t 중간에 t+1의 영업이익을 내다본다. 같은 날짜에서 CLI를 넣은 것과 뺀 것을 나란히 재고,
+    # 기준선(마지막으로 아는 영업이익 t-1, 4분기 전 t-3)을 이길 때만 숫자를 낸다.
+    cli_active = cli is not None and all(c in f.columns and f[c].notna().mean() > 0.5 for c in CLI_FEATURES)
+    next_quarter = live_quarter + 1
+    next_variants = {"without_cli": FEATURES_NEXT}
+    if cli_active:
+        next_variants["with_cli"] = FEATURES_NEXT + CLI_FEATURES
+    next_results = {}
+    for name, feats in next_variants.items():
+        oof_n = walk_forward(f, target="profit_next", features=feats, gap=1, rw="profit_lag1", sn="profit_lag3")
+        ev_n = evaluate(oof_n)
+        pt_n, ntr = fit_live(f, live_quarter, target="profit_next", features=feats, gap=1)
+        next_results[name] = {"evaluation": ev_n, "raw_point": pt_n, "n_train": ntr}
+    chosen = ("with_cli" if cli_active and next_results["with_cli"]["evaluation"].get("mae_model", np.inf)
+              < next_results["without_cli"]["evaluation"].get("mae_model", np.inf) else "without_cli")
+    nr = next_results[chosen]
+    next_point = nr["raw_point"] if nr["evaluation"].get("beats_baselines") and nr["raw_point"] is not None else None
+    next_block = {
+        "quarter": f"{next_quarter.year}년 {next_quarter.quarter}분기", "quarter_code": str(next_quarter),
+        "chosen": chosen, "point": next_point,
+        "low": (next_point + nr["evaluation"]["residual_q10"]) if next_point is not None else None,
+        "high": (next_point + nr["evaluation"]["residual_q90"]) if next_point is not None else None,
+        "raw_point": nr["raw_point"], "evaluation": nr["evaluation"],
+        "evaluation_without_cli": next_results["without_cli"]["evaluation"],
+        "evaluation_with_cli": next_results.get("with_cli", {}).get("evaluation"),
+        "no_point_reason": ("" if next_point is not None else
+                            "워크포워드에서 '마지막으로 아는 영업이익 그대로'·'4분기 전 그대로'보다 오차가 작다는 것을 보이지 못했습니다."),
+    }
     no_point_reason = ""
     if point is None:
         no_point_reason = f"학습 분기가 {n_train}개로 부족하거나 이번 분기 특징이 비어 있습니다."
@@ -472,6 +568,8 @@ def analyse(target, out_dir, fetch=True):
         "profit_first": str(profit.index[0]), "profit_last": str(profit.index[-1]),
         "exports_last_month": exports.index[-1].date().isoformat(),
         "macro_sources": macro_info.get("sources", {}),
+        "cli_info": cli_info, "cli_active": cli_active,
+        "next_quarter": next_block,
         "generated_at": datetime.now(KST).strftime("%Y-%m-%d %H:%M KST"),
     }
     result["chart_svg"] = render_chart(f, oof, spec["name"])
@@ -510,6 +608,10 @@ def main():
                 github_pages.publish(f"macro_history/operating_profit_{args.target}.csv",
                                      series.to_csv(index=False), token,
                                      f"earnings: {args.target} 영업이익 이력 ({result['profit_last']})")
+        cli_cache = out_dir / "macro_cache" / "cli_g20.csv"
+        if result.get("cli_info", {}).get("fresh") and cli_cache.exists():
+            github_pages.publish("macro_history/cli_g20.csv", cli_cache.read_text(encoding="utf-8"),
+                                 token, f"macro: cli_g20 ({result['cli_info'].get('last')})")
         for name in ("earnings.html", "earnings.json"):
             sha = github_pages.publish(f"docs/{args.target}/{name}",
                                        (out_dir / name).read_text(encoding="utf-8"),

@@ -33,7 +33,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "tools"))
 import github_pages  # noqa: E402
-from macro_utils import load_macro_data, macro_features  # noqa: E402
+from macro_utils import cli_features, load_cli, load_macro_data, macro_features  # noqa: E402
 
 KST = timezone(timedelta(hours=9))
 TARGETS = {
@@ -51,7 +51,10 @@ FEATURES = [
     ("price_to_exports_z", "주가/수출액 비율 z-score(5년)"),
     ("mom_12m", "주가 12개월 모멘텀"),
     ("drawdown_36m", "36개월 고점 대비 낙폭"),
+    ("cli_level", "G20 경기선행지수(100 기준)"),
+    ("cli_change_3m", "G20 선행지수 3개월 변화"),
 ]
+CLI_FEATURES = ["cli_level", "cli_change_3m"]
 BOOTSTRAP_B, SEED = 1000, 42
 
 
@@ -107,7 +110,7 @@ def prepend_history(monthly, storage):
     return pd.concat([old * ratio, monthly])
 
 
-def build_frame(monthly, macro):
+def build_frame(monthly, macro, cli=None):
     """월말 인덱스의 특징·타깃 프레임. 모든 특징은 그 월말까지의 자료만 쓴다."""
     monthly = monthly[monthly > 0].dropna()
     idx = monthly.index
@@ -130,6 +133,10 @@ def build_frame(monthly, macro):
         f["exports_cycle"] = f["macro_semiconductor_yoy_3m"]
         f["exports_accel"] = f["macro_semiconductor_yoy_3m"].diff(3)
         f["phase"] = [phase_of(a, b) for a, b in zip(f["exports_cycle"], f["exports_accel"])]
+    if cli is not None and len(cli):
+        cf = cli_features(cli, idx)          # 참조월+1개월 20일 이후에만 보인다
+        for col in CLI_FEATURES:
+            f[col] = cf[col].to_numpy()
     for label, h in HORIZONS.items():
         f[f"fwd_{h}m"] = logp.shift(-h) - logp
     return f
@@ -447,7 +454,8 @@ def lead_lag(f, a="mom_12m", b="macro_semiconductor_yoy", span=15):
         if ok.sum() < 60:
             continue
         r = float(x[ok].corr(y[ok]))
-        if np.isfinite(r) and (best is None or abs(r) > abs(best[1])):
+        # 같이 움직이는 관계(양의 상관)만 본다. 역위상 정렬에서 |r|이 커지는 것은 선행이 아니다.
+        if np.isfinite(r) and (best is None or r > best[1]):
             best = (k, r)
     return None if best is None else {"lead_months": best[0], "corr": best[1]}
 
@@ -669,6 +677,35 @@ def render_fragment(result):
     parts.append('<div style="font-size:12px;color:#6b7178;margin:10px 0 4px">지표별 12개월 수익률과의 순위상관(IC). CI가 0을 포함하면 동률.</div>')
     parts.append(table(f'<th {TH}>지표</th><th {THR}>IC</th><th {THR}>95% CI</th><th {THR}>판정</th>', body, 420))
 
+    # G20 CLI 효과
+    parts.append('<h4 style="font-size:14px;margin:18px 0 6px">G20 경기선행지수(OECD CLI)를 넣으면 나아지는가</h4>')
+    if r.get("cli_active"):
+        body = ""
+        for label, h in HORIZONS.items():
+            ab = r["cli_ablation"].get(str(h))
+            if not ab or ab["mae_with"] is None or ab["mae_without"] is None:
+                continue
+            better = ab["mae_with"] < ab["mae_without"]
+            body += (f'<tr><td {TD}>{label}</td>'
+                     f'<td {TDR}>{ab["mae_with"] * 100:.1f}%</td><td {TDR}>{ab["mae_without"] * 100:.1f}%</td>'
+                     f'<td {TDR}>{(ab["mae_with"] - ab["mae_without"]) * 100:+.2f}%p</td>'
+                     f'<td {TDR}>{"조금 낫다" if better else "낫지 않다"}</td></tr>')
+        parts.append(table(f'<th {TH}>지평</th><th {THR}>MAE (CLI 포함)</th><th {THR}>MAE (CLI 제외)</th>'
+                           f'<th {THR}>차이</th><th {THR}>판정</th>', body, 520))
+        cll = r.get("cli_lead_lag")
+        lead_text = ""
+        if cll:
+            lead_text = (f' CLI 3개월 변화는 수출 YoY를 <b>{cll["lead_months"]}개월</b> '
+                         f'{"앞섰습니다" if cll["lead_months"] > 0 else "뒤따랐습니다" if cll["lead_months"] < 0 else "같이 움직였습니다"}'
+                         f'(상관 {cll["corr"]:+.2f}).')
+        parts.append('<div style="font-size:11px;color:#8a9199;margin-top:4px">'
+                     '"G20 CLI가 한국 수출을 2개월 앞선다"는 차트는 최종 수정치로 사후에 그린 것입니다. CLI는 추세제거·평활 '
+                     '필터를 전체 시계열에 걸어 계산하므로 매달 소급 수정되고, 발표는 참조월로부터 5~6주 뒤입니다. 여기서는 '
+                     '참조월+1개월 20일 이후에만 썼지만 개정 문제는 남아 있어 <b>이 표도 낙관적</b>입니다. 수출을 앞서는 것과 '
+                     f'주가를 앞서는 것은 다른 문제이고, 주가는 수출을 앞섭니다(위 시차 상관).{lead_text}</div>')
+    else:
+        parts.append(f'<div style="font-size:13px;color:#6b7178">미포함 — {e(str(r.get("cli_info", {}).get("reason", "")))}</div>')
+
     # 점 예측
     parts.append('<h4 style="font-size:14px;margin:18px 0 6px">전망</h4>')
     lines = []
@@ -708,13 +745,30 @@ def analyse(target, out_dir, fetch=True):
     if not macro_info.get("fresh", True):
         print("  ⚠️ KOSIS 조회 실패 → 저장소 보관본 사용:", macro_info.get("fetch_errors", {}), flush=True)
     macro = {k: v for k, v in macro.items() if k in ("semiconductor_exports", "leading_cycle")}
-    f = build_frame(monthly, macro)
+    cli, cli_info = None, {"enabled": False, "reason": "USE_CLI=False"}
+    if os.environ.get("USE_CLI", "true").strip().lower() not in ("0", "false", "no"):
+        try:
+            cli, cli_info = load_cli(out_dir, "1998-01-01", datetime.now(KST).date(),
+                                     use_cache=not fetch, fallback_dir=fallback_dir)
+            cli_info["enabled"] = True
+            print(f"  G20 CLI: {cli_info['source']} · {cli_info['first']}~{cli_info['last']}", flush=True)
+        except Exception as exc:
+            cli, cli_info = None, {"enabled": False, "reason": f"{type(exc).__name__}: {exc}"}
+            print("  ⚠️ G20 CLI를 쓸 수 없어 빼고 진행합니다:", cli_info["reason"], flush=True)
+    f = build_frame(monthly, macro, cli)
     cols = [c for c, _ in FEATURES if c in f.columns and f[c].notna().mean() > 0.5]
+    cli_active = all(c in cols for c in CLI_FEATURES)
+    cols_no_cli = [c for c in cols if c not in CLI_FEATURES]
 
-    evaluation, forecast, phases, ic = {}, {}, {}, {}
+    evaluation, forecast, phases, ic, cli_ablation = {}, {}, {}, {}, {}
     for label, h in HORIZONS.items():
         ev, oof = evaluate(f, cols, h)
         evaluation[str(h)] = ev
+        if cli_active:
+            # 같은 방법·같은 날짜에서 CLI만 뺀 결과. 두 MAE의 차이가 CLI의 추가 효과다.
+            ev_no, _ = evaluate(f, cols_no_cli, h)
+            cli_ablation[str(h)] = {"mae_with": ev.get("mae_model"), "mae_without": ev_no.get("mae_model"),
+                                    "corr_with": ev.get("corr_spearman"), "corr_without": ev_no.get("corr_spearman")}
         phases[str(h)] = phase_table(f, h)
         ic[str(h)] = feature_ic(f, cols, h)
         raw = float(oof.iloc[-1]) if pd.notna(oof.iloc[-1]) else None
@@ -739,6 +793,8 @@ def analyse(target, out_dir, fetch=True):
         "chart_svg": render_chart(f, spec["name"]),
         "lead_lag": lead_lag(f),
         "duration": phase_duration_outlook(f),
+        "cli_info": cli_info, "cli_active": cli_active, "cli_ablation": cli_ablation,
+        "cli_lead_lag": lead_lag(f, a="cli_change_3m", b="macro_semiconductor_yoy") if cli_active else None,
         "chart_first": f.index[0].date().isoformat(),
         "generated_at": datetime.now(KST).strftime("%Y-%m-%d %H:%M KST"),
         "macro_snapshot_hash": macro_info.get("snapshot_hash", ""),

@@ -186,3 +186,63 @@ class NowcastWindowTests(unittest.TestCase):
         html = ef.render_fragment(result)
         self.assertIn("7월, 8월 반영", re.sub(r"\s+", " ", html))
         self.assertIn("9월 수출은 아직 KOSIS에 올라오지 않았습니다", html)
+
+
+class NextQuarterTests(unittest.TestCase):
+    """다음 분기 전망: 타깃이 아직 모르는 행을 학습에서 빼고, CLI는 발표 지연 뒤 값만 쓴다."""
+
+    def cli(self, exports):
+        months = exports.index
+        return pd.DataFrame({"month": months, "value": 100 + 1.2 * np.sin((np.arange(len(months)) + 3) / 11)})
+
+    def test_next_quarter_training_excludes_unknown_targets(self):
+        profit, exports, fx = synthetic()
+        f = ef.build_frame(profit, exports, fx, 2, self.cli(exports))
+        from sklearn.linear_model import Ridge
+        seen = []
+        real_fit = Ridge.fit
+
+        def spy(self_, X, y, *a, **k):
+            seen.append(len(y))
+            return real_fit(self_, X, y, *a, **k)
+        Ridge.fit = spy
+        try:
+            oof = ef.walk_forward(f, target="profit_next", features=ef.FEATURES_NEXT + ef.CLI_FEATURES,
+                                  gap=1, rw="profit_lag1", sn="profit_lag3")
+        finally:
+            Ridge.fit = real_fit
+        first = oof.index[0]
+        usable = f.dropna(subset=ef.FEATURES_NEXT + ef.CLI_FEATURES + ["profit_next", "profit_lag1", "profit_lag3"])
+        # 분기 t의 학습 행은 s <= t-2 (s+1의 영업이익이 t 중에 이미 발표된 행)뿐이어야 한다.
+        self.assertEqual(seen[0], int((usable.index < first - 1).sum()))
+
+    def test_cli_column_uses_the_release_lag(self):
+        profit, exports, fx = synthetic()
+        cli = self.cli(exports)
+        f = ef.build_frame(profit, exports, fx, 2, cli)
+        # 2026Q3, k=2 → 8월 말 시점. 그때 보이는 CLI는 7월 값(8/20 공개)이다.
+        level = cli.set_index("month")["value"]
+        self.assertAlmostEqual(f.loc[pd.Period("2026Q3", freq="Q"), "cli_level"], level["2026-07-01"] - 100, places=6)
+
+    def test_next_quarter_block_is_rendered(self):
+        result = {"name": "삼성전자", "quarter": "2026년 3분기", "quarter_code": "2026Q3",
+                  "months_used": 2, "months_included": "7월, 8월", "months_missing": "9월",
+                  "point": None, "low": None, "high": None, "change_vs_last": float("nan"),
+                  "no_point_reason": "x", "last_actual": 2.7e12, "last_actual_quarter": "2026Q2",
+                  "evaluation": {"n": 0, "note": "표본 부족", "beats_baselines": False},
+                  "profit_source": "DART_API", "profit_n": 42, "profit_first": "2016Q1",
+                  "profit_last": "2026Q2", "exports_last_month": "2026-08-01",
+                  "generated_at": "2026-09-08 07:00 KST", "cli_active": True, "cli_info": {},
+                  "next_quarter": {"quarter": "2026년 4분기", "quarter_code": "2026Q4", "chosen": "with_cli",
+                                   "point": 3.65e12, "low": 2.6e12, "high": 6.2e12, "raw_point": 3.65e12,
+                                   "no_point_reason": "",
+                                   "evaluation": {"n": 41, "beats_baselines": True},
+                                   "evaluation_without_cli": {"n": 41, "mae_model": 1.22e12, "mae_random_walk": 1.74e12,
+                                                              "mae_seasonal_naive": 2.53e12, "beats_baselines": True},
+                                   "evaluation_with_cli": {"n": 41, "mae_model": 1.21e12, "mae_random_walk": 1.74e12,
+                                                           "mae_seasonal_naive": 2.53e12, "beats_baselines": True}}}
+        html = ef.render_fragment(result)
+        self.assertIn("다음 분기(2026년 4분기) 전망", html)
+        self.assertIn("3.65조원", html)
+        self.assertIn("CLI 포함", html)
+        self.assertIn("낙관적", html)

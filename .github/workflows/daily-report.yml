@@ -170,6 +170,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           KOSIS_API_KEY: ${{ secrets.KOSIS_API_KEY }}
           DART_API_KEY: ${{ secrets.DART_API_KEY }}
+          FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
         run: python tools/build_earnings_forecast.py --target ${{ matrix.target }} --out runs/earnings --publish
 
   trends:

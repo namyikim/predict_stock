@@ -453,3 +453,125 @@ def nsi_features(frame, dates, lag_days=NSI_RELEASE_LAG_DAYS, max_age_days=NSI_M
     for col in ['nsi_level', 'nsi_change_5d', 'nsi_change_20d', 'nsi_z60']:
         out[col] = joined[col].where(valid).to_numpy()
     return out
+
+
+# ---------------------------------------------------------------------------
+# OECD G20 경기선행지수(CLI) — FRED 경유
+# ---------------------------------------------------------------------------
+# "G20 CLI가 한국 수출을 2개월 앞선다"는 차트는 최종 수정치로 사후에 그린 것이다. CLI는 추세제거·
+# 평활 필터를 전체 시계열에 걸어 계산하므로 매달 소급 수정되고(OECD FAQ), 발표는 참조월로부터
+# 약 5~6주 뒤다. 여기서는 참조월 M의 값을 (M+1)월 20일 이후에만 쓴다. 개정 문제는 없앨 수 없어
+# 백테스트가 낙관적이라는 점을 보고서에 적는다.
+FRED_CLI_SERIES_ID = os.environ.get('FRED_CLI_SERIES_ID', 'G20LOLITOAASTSAM')  # 진폭조정 CLI, G20, 월별 SA
+CLI_RELEASE_DAY = 20          # 참조월 다음 달의 이 날짜부터 사용
+CLI_MAX_AGE_DAYS = 75
+CLI_NOTE = ('OECD G20 경기선행지수(FRED 경유). 참조월+1개월 20일 이후에만 사용. '
+            '매달 소급 수정되므로 백테스트는 최종 수정치 기준이라 낙관적')
+
+
+def fred_key():
+    key = os.environ.get('FRED_API_KEY')
+    if not key:
+        try:
+            from google.colab import userdata
+            key = userdata.get('FRED_API_KEY')
+        except Exception:
+            pass
+    return key
+
+
+def _fred_request(key, path, params, retries=3):
+    # URL에 키가 들어가므로 예외 메시지에 URL을 싣지 않는다.
+    query = urlencode({**params, 'api_key': key, 'file_type': 'json'})
+    url = f'https://api.stlouisfed.org/fred/{path}?{query}'
+    for attempt in range(retries):
+        try:
+            with urlopen(url, timeout=60) as response:
+                return json.loads(response.read().decode('utf-8'))
+        except Exception as exc:
+            detail = f'{type(exc).__name__} {getattr(exc, "code", "")}'.strip()
+            if attempt == retries - 1:
+                raise RuntimeError(f'FRED API 조회 실패({detail}). 키·시리즈 코드를 확인하거나 '
+                                   'macro_inputs/cli_g20.csv를 사용하세요.') from None
+            time.sleep(3 * (2 ** attempt) + random.uniform(0, 3))
+
+
+def parse_fred_observations(payload):
+    rows = payload.get('observations') or []
+    if not rows:
+        raise ValueError('FRED 응답에 관측치가 없습니다.')
+    out = pd.DataFrame({'month': [r['date'] for r in rows],
+                        'value': pd.to_numeric([r.get('value') for r in rows], errors='coerce')})
+    out = out.dropna(subset=['value'])            # FRED는 결측을 '.'로 보낸다
+    if out.empty:
+        raise ValueError('FRED 응답에 유효한 값이 없습니다.')
+    return normalize_monthly(out)
+
+
+def fetch_fred_monthly(series_id, key, start):
+    payload = _fred_request(key, 'series/observations',
+                            {'series_id': series_id, 'observation_start': pd.Timestamp(start).strftime('%Y-%m-%d')})
+    return parse_fred_observations(payload)
+
+
+def search_fred_series(key, text):
+    payload = _fred_request(key, 'series/search', {'search_text': text, 'limit': 20})
+    return [(s.get('id'), s.get('title'), s.get('frequency_short'), s.get('observation_end'))
+            for s in payload.get('seriess', [])]
+
+
+def load_cli(storage, start, end, use_cache=False, fallback_dir=None):
+    """(DataFrame(month,value), info). 우선순위: 캐시 재현 > 사용자 CSV > FRED > 저장소 보관본."""
+    storage = Path(storage)
+    cache = storage / 'macro_cache'
+    cache.mkdir(parents=True, exist_ok=True)
+    local = storage / 'macro_inputs' / 'cli_g20.csv'
+    cached = cache / 'cli_g20.csv'
+    fallback = Path(fallback_dir) / 'cli_g20.csv' if fallback_dir else None
+    source, error = None, None
+    if use_cache and cached.exists():
+        frame, source = normalize_monthly(pd.read_csv(cached, dtype=str)), 'explicit_cache_replay'
+    elif local.exists():
+        frame, source = normalize_monthly(pd.read_csv(local, dtype=str)), 'user_csv'
+    else:
+        key = fred_key()
+        try:
+            if not key:
+                raise RuntimeError('FRED_API_KEY가 없습니다.')
+            frame, source = fetch_fred_monthly(FRED_CLI_SERIES_ID, key, start), 'FRED_API'
+        except Exception as exc:
+            if not (fallback and fallback.exists()):
+                raise
+            error = str(exc)
+            frame, source = normalize_monthly(pd.read_csv(fallback, dtype=str)), 'last_successful_fetch'
+    frame.to_csv(cached, index=False)
+    info = {'source': source, 'series_id': FRED_CLI_SERIES_ID, 'fresh': source in ('FRED_API', 'user_csv'),
+            'fetch_error': error, 'first': frame['month'].min().strftime('%Y-%m'),
+            'last': frame['month'].max().strftime('%Y-%m'), 'rows': int(len(frame)),
+            'release_day': CLI_RELEASE_DAY, 'note': CLI_NOTE,
+            'snapshot_hash': hashlib.sha256(frame.to_csv(index=False).encode()).hexdigest()[:20]}
+    return frame, info
+
+
+def cli_features(frame, dates, release_day=CLI_RELEASE_DAY, max_age_days=CLI_MAX_AGE_DAYS):
+    """참조월+1개월 release_day 이후에만 보이는 CLI 특징. 수준(100 기준)과 3·6개월 변화."""
+    monthly = normalize_monthly(frame).set_index('month')['value'].asfreq('MS')
+    f = pd.DataFrame({
+        'cli_level': monthly - 100.0,
+        'cli_change_3m': monthly.diff(3),
+        'cli_change_6m': monthly.diff(6),
+    })
+    available = (pd.DatetimeIndex(f.index) + pd.DateOffset(months=1)) + pd.Timedelta(days=release_day - 1)
+    f.index = available
+    f = f.dropna(how='all')
+    f['_expires'] = f.index + pd.Timedelta(days=max_age_days)
+    dates = pd.DatetimeIndex(dates)
+    left = pd.DataFrame({'available_date': dates.as_unit('ns'), '_order': np.arange(len(dates))}).sort_values('available_date')
+    right = f.rename_axis('available_date').reset_index()
+    right['available_date'] = pd.DatetimeIndex(right['available_date']).as_unit('ns')
+    joined = pd.merge_asof(left, right, on='available_date', direction='backward').sort_values('_order')
+    valid = joined['available_date'] <= joined['_expires']
+    out = pd.DataFrame(index=dates)
+    for col in ('cli_level', 'cli_change_3m', 'cli_change_6m'):
+        out[col] = joined[col].where(valid).to_numpy()
+    return out

@@ -9,6 +9,141 @@ import numpy as np
 import pandas as pd
 
 
+def easy_summary_html(*, name, prediction_date, data_date, summary, open_forecast,
+                      price_forecasts, review=None, longterm=None, earnings=None,
+                      target_mode="close_to_close", record_forecast=True,
+                      macro_active=True, nsi_active=True):
+    """Summarize already-computed results; never infer news causes or bypass signal gates.
+
+    This is a generation-time snapshot. Intraday ledger refreshes remain separate and
+    must not make the original forecast look as though it used later observations.
+    """
+    from html import escape
+
+    def number(value):
+        try:
+            result = float(value)
+            return result if np.isfinite(result) else None
+        except (TypeError, ValueError):
+            return None
+
+    def date_text(value):
+        return str(value)[:10] if value is not None else "날짜 미확인"
+
+    def mapping(value):
+        return value if isinstance(value, dict) else {}
+
+    sections = []
+    live = summary.get("live", {})
+    probabilities = [number(live.get(k)) for k in ("p_down", "p_flat", "p_up")]
+    basis = "당일 시초가 대비" if target_mode == "open_to_close" else "전일 종가 대비"
+    direction = "방향을 판단하기 어렵습니다."
+    if (all(p is not None and 0 <= p <= 1 for p in probabilities)
+            and abs(sum(probabilities) - 1) < .01):
+        best = max(probabilities)
+        if sum(abs(p - best) < 1e-9 for p in probabilities) == 1:
+            label = ("내림", "큰 변화 없음", "오름")[probabilities.index(best)]
+            direction = (f"{basis} 종가 방향은 ‘{label}’ 쪽의 계산상 가능성이 가장 높습니다 "
+                         f"({best:.1%}). 이 확률은 실제 적중률이 아닙니다.")
+    sections.append(("전체 결론", f"{name} · {date_text(prediction_date)}: {direction}"))
+    if not record_forecast:
+        sections.append(("예측 상태", "이번 실행의 예측은 원장에 기록되지 않는 참고값입니다. "
+                         "실제 성적은 별도로 저장된 장 시작 전 예측으로 평가합니다."))
+
+    def price_text(row, field):
+        point = number(row.get(field))
+        if row.get("signal") != "있음" or point is None or point <= 0:
+            return "예측하기 어렵습니다(검증 근거 부족)."
+        return f"약 {point:,.0f}원. 확정 가격이 아닌 모델 예상입니다."
+
+    sections.append(("시초가예측 — 장이 시작할 때의 가격",
+                     f"{date_text(open_forecast.get('target_date', prediction_date))}: "
+                     + price_text(open_forecast, "predicted_open")))
+    close_parts = []
+    by_days = {r.get("trading_days"): r for r in price_forecasts}
+    for days, label in ((1, "다음 거래일"), (5, "5거래일 뒤"), (20, "20거래일 뒤")):
+        row = by_days.get(days, {})
+        stamp = f" ({date_text(row['target_date'])})" if row.get("target_date") is not None else ""
+        close_parts.append(f"{label}{stamp}: {price_text(row, 'predicted_close')}")
+    sections.append(("종가예측 — 장이 끝날 때의 가격", " / ".join(close_parts)))
+
+    longterm = mapping(longterm)
+    long_parts = []
+    for months in ("3", "6", "12"):
+        forecast = mapping(mapping(longterm.get("forecast")).get(months))
+        evaluation = mapping(mapping(longterm.get("evaluation")).get(months))
+        point = number(forecast.get("point"))
+        if evaluation.get("beats_zero") and point is not None:
+            # Monthly model targets log returns; match the detail report's ordinary returns.
+            long_parts.append(f"{months}개월 뒤 주가 변화 {np.expm1(point):+.1%} 예상")
+        else:
+            long_parts.append(f"{months}개월: 판단 근거 부족")
+    long_stamp = f"{date_text(longterm.get('as_of'))} 기준. " if longterm else "장기 자료 미확인. "
+    sections.append(("중장기 전망", long_stamp + " / ".join(long_parts)
+                     + ". 장기 전망은 매일 계산하는 단기 전망과 기준일이 다릅니다."))
+
+    earnings = mapping(earnings)
+    earnings_parts = []
+    for item in (earnings, mapping(earnings.get("next_quarter"))):
+        if not item:
+            continue
+        quarter = item.get("quarter", "분기 미확인")
+        point = number(item.get("point"))
+        if (mapping(item.get("evaluation")).get("beats_baselines") and point is not None
+                and not item.get("no_point_reason")):
+            earnings_parts.append(f"{quarter} 영업이익 약 {point / 1e12:,.1f}조 원 예상")
+        else:
+            earnings_parts.append(f"{quarter} 영업이익은 예측하기 어렵습니다")
+    earnings_text = " / ".join(earnings_parts) if earnings_parts else "실적 추정 자료를 확인하지 못했습니다"
+    if earnings:
+        earnings_text += ". 회사 발표나 증권사 전망 평균이 아닌 자체 모델의 추정입니다."
+        months_used = number(earnings.get("months_used"))
+        if months_used is not None:
+            earnings_text += f" 분기 3개월 중 {months_used:.0f}개월 자료 반영."
+        if earnings.get("exports_last_month"):
+            earnings_text += f" 수출 자료 기준 {date_text(earnings['exports_last_month'])}."
+    sections.append(("회사 실적 — 본업으로 번 이익", earnings_text))
+
+    confidence = ("과거 검증에서는 거래비용을 빼도 수익 가능성이 나타났지만, "
+                  "앞으로의 수익을 보장하지 않습니다." if summary.get("session_tradeable") else
+                  "과거 검증만으로는 장중 매매로 수익을 낼 만큼 정확하다는 근거가 부족합니다.")
+    review = review or {}
+    rolling = review.get("rolling")
+    if isinstance(rolling, pd.DataFrame) and {"kind", "window", "n", "hit_rate"}.issubset(rolling.columns):
+        direction_rows = rolling.loc[rolling["kind"] == "direction"].sort_values("window")
+    else:
+        direction_rows = pd.DataFrame()
+    if not direction_rows.empty:
+        row = direction_rows.iloc[0]
+        n, hit = number(row["n"]), number(row["hit_rate"])
+        if n is not None and n > 0 and hit is not None:
+            confidence += (f" 실제 사전 예측은 최근 {n:.0f}일 중 방향 적중률 {hit:.1%} "
+                           f"(마지막 채점 {date_text(review.get('latest_date'))}).")
+            if n < 20:
+                confidence += " 아직 자료가 적어 성능을 단정하기 어렵습니다."
+        else:
+            confidence += " 실제 사전 예측 성적은 아직 확인되지 않았습니다."
+    else:
+        confidence += " 실제 사전 예측 성적은 아직 확인되지 않았습니다."
+    confidence += " 위 성적은 보고서 생성 시점 기준이며, 이후 채점 결과는 아래 ‘예측 vs 실제’에서 확인하세요."
+    sections.append(("얼마나 믿을 수 있나요?", confidence))
+    warnings = ["‘예측하기 어렵다’는 가격이 그대로라는 뜻은 아닙니다",
+                "갑작스러운 뉴스나 시장 변화로 예측이 빗나갈 수 있습니다"]
+    if not macro_active:
+        warnings.append("단기 예측에 월별 경제지표가 빠져 있습니다")
+    if not nsi_active:
+        warnings.append("단기 예측에 뉴스 분위기 지표가 빠져 있습니다")
+    sections.append(("주의할 점", ". ".join(warnings) + ". 매수·매도 권유가 아닌 참고 자료입니다."))
+    body = "".join(f'<li style="margin:9px 0"><b>{escape(label)}</b><br>{escape(text)}</li>'
+                   for label, text in sections)
+    return ('<section id="easy-summary" aria-label="한눈에 보는 쉬운 요약" '
+            'style="background:#f0f6fc;border:1px solid #cedff0;border-radius:8px;padding:16px 20px;margin:0 0 20px">'
+            '<h3 style="margin:0 0 6px;font-size:19px">한눈에 보는 쉬운 요약</h3>'
+            f'<div style="font-size:12px;color:#586575">단기 데이터 기준 {escape(date_text(data_date))} · '
+            '보고서 생성 시점의 계산 결과를 쉬운 말로 풀었습니다.</div>'
+            f'<ul style="font-size:14px;padding-left:18px;margin:8px 0 0">{body}</ul></section>')
+
+
 def rolling_train_indices(date_index, before, years=5):
     dates = pd.DatetimeIndex(date_index)
     before = pd.Timestamp(before)

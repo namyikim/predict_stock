@@ -150,6 +150,16 @@ class NotebookStructureTests(unittest.TestCase):
         block = source[cache_block:ledger_block]
         self.assertNotIn("GITHUB_LEDGER_DIR", block)
 
+    def test_methodology_switches_are_reversible(self):
+        # 6·7번은 설정 한 줄로 되돌릴 수 있어야 하고, 어느 쪽이 나은지는 원장이 답해야 한다.
+        self.assertIn('SELECTION_METRIC = "log_loss"', self.source)
+        self.assertIn('HEADLINE_MODEL = "No macro ensemble"', self.source)
+        self.assertNotIn("seed=SEED)\n", self.source.replace("seed=SEED, selection=SELECTION_METRIC)", ""))
+        self.assertIn('"selection_metric": SELECTION_METRIC', self.source)   # config.json에 남는다
+        self.assertIn('"headline_model": HEADLINE_MODEL', self.source)
+        # 대표가 바뀌어도 Mean ensemble·Previous ensemble은 원장에 계속 기록된다(비교 근거).
+        self.assertIn('"Previous ensemble"', self.source)
+
     def test_after_close_run_only_scores(self):
         # 장 마감 후 실행은 워크포워드를 다시 돌리지 않고 채점·절 교체만 한다.
         # 예측을 기록하면 정보가 적은 오후 예측이 아침 예측을 밀어낸다(원장은 최초 사전 예측만 집계).

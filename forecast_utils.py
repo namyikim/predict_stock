@@ -184,12 +184,23 @@ def probability_loss(y, p):
     return float(-np.log(np.clip(p[np.arange(len(y)), np.asarray(y, dtype=int)], 1e-7, 1.)).mean())
 
 
-def fit_direction_model(X, y, train_indices, family, seed=42):
-    """바깥 평가 구간을 보지 않고, 과거 내부 3개 구간의 정확도로 설정을 고른다.
+# 설정 선택 기준. 확률 모형이므로 log loss(proper scoring rule)가 기본이다.
+# accuracy로 고르면 class_weight=None 쪽으로 기울어 다수 클래스만 맞히는 설정이 뽑히고
+# balanced accuracy가 떨어진다(2026-09 검증에서 고정 설정 'Previous ensemble'이 오히려 나았다).
+# 되돌리려면 노트북 설정 셀의 SELECTION_METRIC = "accuracy" 로 바꾸면 된다. 어느 쪽이 나은지는
+# 원장의 Mean ensemble(선택된 설정) vs Previous ensemble(고정 설정) 쌍체 비교로 계속 잰다.
+SELECTION_METRICS = ("log_loss", "accuracy")
 
-    정확도가 같으면 log loss가 낮은 설정을 선택한다. 온도 보정은 argmax를 유지한다.
-    반환값은 표준 estimator와 dict뿐이어서 노트북/로컬 모두 joblib로 다시 읽을 수 있다.
+
+def fit_direction_model(X, y, train_indices, family, seed=42, selection="log_loss"):
+    """바깥 평가 구간을 보지 않고, 과거 내부 3개 구간의 성적으로 설정을 고른다.
+
+    selection="log_loss": 내부 log loss가 가장 낮은 설정(동률이면 정확도가 높은 쪽).
+    selection="accuracy": 내부 정확도가 가장 높은 설정(동률이면 log loss가 낮은 쪽) — 예전 기준.
+    온도 보정은 argmax를 유지한다. 반환값은 표준 estimator와 dict뿐이어서 joblib로 다시 읽을 수 있다.
     """
+    if selection not in SELECTION_METRICS:
+        raise ValueError(f"selection은 {SELECTION_METRICS} 중 하나여야 합니다: {selection!r}")
     from sklearn.model_selection import TimeSeriesSplit
     from sklearn.dummy import DummyClassifier
     indices = np.asarray(train_indices, dtype=int)
@@ -215,14 +226,17 @@ def fit_direction_model(X, y, train_indices, family, seed=42):
         probs = np.vstack(predictions)
         accuracy = float(np.mean(probs.argmax(axis=1) == labels))
         trials.append((accuracy, probability_loss(labels, probs), params, probs))
-    best = min(trials, key=lambda t: (-t[0], t[1]))
+    if selection == "log_loss":
+        best = min(trials, key=lambda t: (t[1], -t[0]))
+    else:
+        best = min(trials, key=lambda t: (-t[0], t[1]))
     temperatures = (1., .75, 1.5, 2.)
     temperature = min(temperatures, key=lambda t: probability_loss(labels, temperature_probabilities(best[3], t)))
     estimator = (direction_estimator(family, best[2], seed) if len(np.unique(yt)) > 1
                  else DummyClassifier(strategy="prior"))
     estimator.fit(xt, yt)
     return {"estimator": estimator, "temperature": temperature, "selection": {
-        "family": family, "params": best[2], "temperature": temperature,
+        "family": family, "params": best[2], "temperature": temperature, "selection_metric": selection,
         "inner_accuracy": best[0], "inner_log_loss": probability_loss(labels, temperature_probabilities(best[3], temperature)),
         "last_validation_position": int(indices[splits[-1][1][-1]]), "training_rows": len(indices),
     }}

@@ -597,6 +597,42 @@ def load_cli(storage, start, end, use_cache=False, fallback_dir=None):
     return frame, info
 
 
+def cache_age_days(storage, names=None, now=None):
+    """저장소에서 받아 둔 보관본이 며칠 된 자료인지. {이름: 경과일}.
+
+    보관본은 한국에서 돌린 실행이 갱신한다. 그걸 잊으면 100일 만료 규칙이 걸릴 때까지 낡은 값을
+    조용히 쓰게 된다. 여기서 경과일을 재어 보고서에 적을 수 있게 한다.
+    """
+    names = names or ('leading_cycle', 'semiconductor_exports', 'news_sentiment', 'term_spread')
+    now = pd.Timestamp(now or pd.Timestamp.now(tz='Asia/Seoul').tz_localize(None)).normalize()
+    out = {}
+    for name in names:
+        path = Path(storage) / 'macro_fallback' / f'{name}.csv'
+        if not path.exists():
+            continue
+        try:
+            frame = pd.read_csv(path, dtype=str)
+            column = 'month' if 'month' in frame.columns else 'date'
+            last = pd.to_datetime(frame[column].astype(str), format='mixed', errors='coerce').max()
+        except Exception:
+            continue
+        if pd.notna(last):
+            out[name] = int((now - pd.Timestamp(last).normalize()).days)
+    return out
+
+
+def stale_cache_note(ages, warn_after=45, expire_after=100):
+    """경고 문구. 경고할 것이 없으면 빈 문자열."""
+    stale = {name: age for name, age in ages.items() if age >= warn_after}
+    if not stale:
+        return ''
+    worst = max(stale.values())
+    listed = ', '.join(f'{name} {age}일' for name, age in sorted(stale.items(), key=lambda x: -x[1]))
+    tail = (' 만료(100일)가 가까워 곧 지표에서 빠집니다.' if worst >= expire_after - 20 else '')
+    return (f'참고자료 보관본이 오래되었습니다({listed}). 한국에서 Colab으로 노트북을 한 번 '
+            f'실행하면 갱신됩니다.{tail}')
+
+
 def cli_features(frame, dates, release_day=CLI_RELEASE_DAY, max_age_days=CLI_MAX_AGE_DAYS):
     """참조월+1개월 release_day 이후에만 보이는 CLI 특징. 수준(100 기준)과 3·6개월 변화."""
     monthly = normalize_monthly(frame).set_index('month')['value'].asfreq('MS')

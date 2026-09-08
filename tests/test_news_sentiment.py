@@ -165,3 +165,37 @@ class UserAgentTests(unittest.TestCase):
         direct = [l.strip() for l in source.splitlines()
                   if "urlopen(" in l and "open_url(" not in l and not l.strip().startswith(("#", "from", "import"))]
         self.assertEqual(direct, ["return urlopen(urllib_request_with_agent(url, accept), timeout=timeout)"])
+
+
+class CacheAgeTests(unittest.TestCase):
+    """보관본이 오래되면 만료 전에 알린다. 잊으면 낡은 값을 조용히 쓰게 된다."""
+
+    def storage(self):
+        import tempfile
+        root = Path(tempfile.mkdtemp())
+        (root / "macro_fallback").mkdir()
+        pd.DataFrame({"month": ["2026-05", "2026-06"], "value": [1, 2]}).to_csv(
+            root / "macro_fallback" / "leading_cycle.csv", index=False)
+        pd.DataFrame({"date": ["2026-09-01", "2026-09-06"], "value": [1, 2]}).to_csv(
+            root / "macro_fallback" / "news_sentiment.csv", index=False)
+        return root
+
+    def test_age_is_measured_from_the_last_data_point(self):
+        ages = mu.cache_age_days(self.storage(), now="2026-09-08")
+        self.assertEqual(ages["news_sentiment"], 2)          # 2026-09-06 → 2일
+        self.assertEqual(ages["leading_cycle"], 99)          # 2026-06-01 → 99일
+
+    def test_note_only_appears_past_the_threshold(self):
+        self.assertEqual(mu.stale_cache_note({"a": 10}), "")
+        note = mu.stale_cache_note({"leading_cycle": 60})
+        self.assertIn("60일", note)
+        self.assertIn("Colab", note)
+        self.assertNotIn("만료", note)
+        self.assertIn("만료", mu.stale_cache_note({"leading_cycle": 95}))
+
+    def test_missing_or_broken_files_are_skipped(self):
+        import tempfile
+        root = Path(tempfile.mkdtemp())
+        (root / "macro_fallback").mkdir()
+        (root / "macro_fallback" / "term_spread.csv").write_text("쓰레기", encoding="utf-8")
+        self.assertEqual(mu.cache_age_days(root), {})

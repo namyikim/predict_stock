@@ -1,0 +1,30 @@
+name: 감시 (원장 점검)
+
+# 워크플로가 초록불로 끝나면서 아무것도 하지 않는 일이 실제로 있었다(2026-09-08: 지운 스텝을
+# 참조하는 if 조건 때문에 채점이 하루 종일 건너뛰어졌다). cron 누락도 커밋 이력을 봐야 알았다.
+# 그래서 하루 한 번, 결과만 본다: 오늘 사전 예측이 원장에 있는가.
+#
+# 없으면 일부러 실패한다. GitHub이 실패 알림을 보내므로 그것이 유일한 자동 알림이 된다.
+# 09:20 KST(00:20 UTC)에 본다 — 아침 회차(06:22·07:25)와 3시간 회차(09:22 직전)를 모두 지난 뒤이고,
+# 09:00을 넘겼으므로 그날 사전 예측을 만들 기회는 이미 끝났다.
+on:
+  schedule:
+    - cron: "20 0 * * 1-5"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - name: 의존성 설치
+        run: pip install pandas==3.0.5 numpy==2.5.2
+      - name: 오늘 예측이 원장에 있는지 확인
+        run: python tools/check_ledger_health.py

@@ -153,3 +153,51 @@ class LedgerGateTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class WatchdogTests(unittest.TestCase):
+    """자동 실행이 조용히 멈추면 알려야 한다. 결과(원장)만 보고 판단한다."""
+
+    def setUp(self):
+        sys.path.insert(0, str(ROOT / "tools"))
+        import check_ledger_health
+        self.check = check_ledger_health
+        self.dir = Path(tempfile.mkdtemp())
+        (self.dir / "samsung").mkdir()
+        self.path = self.dir / "samsung" / "forecast_log.csv"
+
+    def write(self, prediction_date, prospective=True):
+        pd.DataFrame([{"prediction_date": prediction_date, "is_prospective": prospective,
+                       "kind": "direction", "run_id": "r"}]).to_csv(self.path, index=False)
+
+    def test_today_is_healthy(self):
+        today = datetime.now(timezone(timedelta(hours=9))).date()
+        self.write(today.isoformat())
+        ok, message = self.check.check_target("samsung", today, self.dir, 4)
+        self.assertTrue(ok)
+        self.assertIn("오늘", message)
+
+    def test_a_holiday_gap_is_tolerated(self):
+        today = datetime.now(timezone(timedelta(hours=9))).date()
+        self.write((today - timedelta(days=3)).isoformat())
+        self.assertTrue(self.check.check_target("samsung", today, self.dir, 4)[0])
+
+    def test_a_long_gap_fails(self):
+        today = datetime.now(timezone(timedelta(hours=9))).date()
+        self.write((today - timedelta(days=9)).isoformat())
+        ok, message = self.check.check_target("samsung", today, self.dir, 4)
+        self.assertFalse(ok)
+        self.assertIn("자동 실행이 멈췄을 수 있습니다", message)
+
+    def test_missing_ledger_fails(self):
+        today = datetime.now(timezone(timedelta(hours=9))).date()
+        self.assertFalse(self.check.check_target("sk_hynix", today, self.dir, 4)[0])
+
+    def test_watchdog_runs_after_the_market_opens(self):
+        import yaml
+        workflow = yaml.safe_load((ROOT / ".github/workflows/watchdog.yml").read_text(encoding="utf-8"))
+        cron = workflow[True]["schedule"][0]["cron"]
+        minute, hour = int(cron.split()[0]), int(cron.split()[1])
+        kst = (hour + 9) % 24 + minute / 60
+        self.assertGreater(kst, 9.0, "09:00 이후여야 그날 사전 예측 기회가 끝난 뒤다")
+        self.assertLess(kst, 12.0)

@@ -21,12 +21,14 @@
     "macro_leading_cycle_pct": 0.9938271604938271,
     "macro_leading_change_3m": 2.0,
     "macro_leading_change_3m_pct": 0.9937106918238994,
-    "price_to_exports_z": 1.8092543008449644,
+    "price_to_exports_z": 1.8092543008449646,
     "price_to_exports_z_pct": 0.8059701492537313,
     "mom_12m": 1.8282598714475817,
     "mom_12m_pct": 0.9837662337662337,
     "drawdown_36m": -0.3683018867924528,
     "drawdown_36m_pct": 0.284789644012945,
+    "cycle_score": 2.441287513456611,
+    "cycle_score_pct": 0.989010989010989,
     "phase": "확장(YoY>0, 가속)"
   },
   "phases": {
@@ -236,7 +238,7 @@
       "mae_zero": 0.24981257365688128,
       "mae_diff": -0.03231446340593199,
       "mae_diff_lo": -0.06427108547346853,
-      "mae_diff_hi": -0.00033612369134126323,
+      "mae_diff_hi": -0.0003361236913412655,
       "beats_zero": true,
       "n_evaluation": 49
     },
@@ -248,12 +250,12 @@
       "last": "2026-02-28",
       "corr_spearman": 0.5226469182990922,
       "sign_hit": 0.7582417582417582,
-      "shrink_slope": 0.9253055783670219,
-      "mae_model": 0.32587850222717174,
+      "shrink_slope": 0.9253055783670217,
+      "mae_model": 0.3258785022271718,
       "mae_zero": 0.4245446920274326,
       "mae_diff": -0.09866618980026079,
       "mae_diff_lo": -0.19236502598828456,
-      "mae_diff_hi": 0.012842825605598638,
+      "mae_diff_hi": 0.012842825605598627,
       "beats_zero": false,
       "n_evaluation": 46
     },
@@ -282,11 +284,11 @@
     },
     "6": {
       "raw": 0.6777917440464979,
-      "point": 0.6271644817373372
+      "point": 0.6271644817373371
     },
     "12": {
-      "raw": 0.6290866748219748,
-      "point": 0.3719132212525823
+      "raw": 0.6290866748219747,
+      "point": 0.37191322125258225
     }
   },
   "similar": [
@@ -311,12 +313,99 @@
     "lead_months": 4,
     "corr": 0.8688545680985273
   },
+  "duration": {
+    "phase": "확장(YoY>0, 가속)",
+    "since": "2025-07",
+    "as_of": "2026-08",
+    "months_so_far": 14,
+    "episodes": [
+      {
+        "start": "2014-12",
+        "end": "2015-03",
+        "months": 4
+      },
+      {
+        "start": "2016-12",
+        "end": "2018-02",
+        "months": 15
+      },
+      {
+        "start": "2020-09",
+        "end": "2021-04",
+        "months": 8
+      },
+      {
+        "start": "2021-08",
+        "end": "2022-03",
+        "months": 8
+      },
+      {
+        "start": "2024-02",
+        "end": "2024-08",
+        "months": 7
+      }
+    ],
+    "n_past": 5,
+    "median_total": 8.0,
+    "n_conditional": 1,
+    "n_shorter": 4,
+    "reason": "지금까지 14개월 이어졌는데, 과거 같은 국면 5번 중 이보다 길었던 것이 1번뿐이라 잔여 기간을 말할 표본이 없습니다."
+  },
+  "cli_info": {
+    "enabled": false,
+    "reason": "RuntimeError: OECD CLI 조회 실패(HTTPError 403). 연결을 확인하거나 macro_inputs/cli_g20.csv를 사용하세요."
+  },
+  "cli_active": false,
+  "cli_ablation": {},
+  "cycle_active": false,
+  "cycle_ablation": {},
+  "cycle_components": [
+    "exports_daily_yoy",
+    "macro_leading_change_3m",
+    "term_spread"
+  ],
+  "extra_info": {
+    "nsi": {
+      "enabled": false,
+      "reason": "TypeError: load_nsi() got an unexpected keyword argument 'fallback_dir'"
+    },
+    "term_spread": {
+      "source": "ECOS_API",
+      "fresh": true,
+      "fetch_error": null,
+      "first": "2000-12-18",
+      "last": "2026-09-07",
+      "rows": 6369,
+      "snapshot_hash": "09d1cf670994ce1ea564",
+      "enabled": true
+    }
+  },
+  "duration_by_spread": {
+    "months_so_far": 14,
+    "now_spread": 0.4976000000000001,
+    "now_inverted": "False",
+    "rows": [
+      {
+        "start": "2016-12",
+        "end": "2018-02",
+        "months": 15,
+        "remaining": 1,
+        "spread_at_k": 0.4362727272727273,
+        "inverted": false
+      }
+    ],
+    "inverted_median": null,
+    "n_inverted": 0,
+    "normal_median": 1.0,
+    "n_normal": 1
+  },
+  "cli_lead_lag": null,
   "chart_first": "2000-01-31",
-  "generated_at": "2026-09-07 18:53 KST",
+  "generated_at": "2026-09-08 10:04 KST",
   "macro_snapshot_hash": "7ed3ebee8562f01fbf17",
   "macro_sources": {
     "leading_cycle": "last_successful_fetch",
     "semiconductor_exports": "last_successful_fetch"
   },
-  "frame_hash": "b03009e89c51984c"
+  "frame_hash": "babedf229b7bc70e"
 }

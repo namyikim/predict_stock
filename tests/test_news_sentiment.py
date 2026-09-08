@@ -4,6 +4,8 @@ import unittest
 import numpy as np
 import pandas as pd
 
+from pathlib import Path
+
 import macro_utils as mu
 from test_pipeline_behavior import make_synthetic_raw, run_feature_cell
 
@@ -147,3 +149,19 @@ class InvestorFlowTests(unittest.TestCase):
                               "volume": 2e7, "foreign_ratio": 50.})
         feat = mu.flow_features(flows, pd.bdate_range("2026-09-01", "2026-09-09"))
         self.assertEqual(feat.loc["2026-09-09", "flow_frgn_streak"], -4)   # 9/8까지 4일 연속 순매도
+
+
+class UserAgentTests(unittest.TestCase):
+    """파이썬 기본 User-Agent는 CDN이 막는다(OECD가 Actions에서 403). 모든 외부 요청에 붙인다."""
+
+    def test_requests_carry_a_browser_user_agent(self):
+        request = mu.urllib_request_with_agent("https://example.com", accept="text/csv")
+        self.assertIn("Mozilla/5.0", request.get_header("User-agent"))
+        self.assertEqual(request.get_header("Accept"), "text/csv")
+
+    def test_no_raw_urlopen_left_in_fetchers(self):
+        source = Path(mu.__file__).read_text(encoding="utf-8")
+        # 외부 조회는 모두 open_url을 거쳐야 한다. urlopen 직접 호출은 open_url 정의 한 줄뿐이다.
+        direct = [l.strip() for l in source.splitlines()
+                  if "urlopen(" in l and "open_url(" not in l and not l.strip().startswith(("#", "from", "import"))]
+        self.assertEqual(direct, ["return urlopen(urllib_request_with_agent(url, accept), timeout=timeout)"])

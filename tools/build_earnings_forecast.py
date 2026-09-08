@@ -528,28 +528,47 @@ def analyse(target, out_dir, fetch=True):
     out_dir.mkdir(parents=True, exist_ok=True)
     profit, profit_source = load_operating_profit(out_dir, target)
 
+    # 보관본은 파일마다 따로 받는다. 하나가 실패해도 나머지는 들어와야 한다.
     fallback_dir = out_dir / "macro_fallback"
+    fallback_dir.mkdir(parents=True, exist_ok=True)
+    _token = None
     try:
-        token = github_pages.token()
-        fallback_dir.mkdir(parents=True, exist_ok=True)
-        text = github_pages.fetch("macro_history/semiconductor_exports.csv", token)
-        if text:
-            (fallback_dir / "semiconductor_exports.csv").write_text(text, encoding="utf-8")
-        text = github_pages.fetch("macro_history/leading_cycle.csv", token)
-        if text:
-            (fallback_dir / "leading_cycle.csv").write_text(text, encoding="utf-8")
-    except Exception as exc:
-        print("  월별 지표 사본을 받지 못했습니다(계속 진행):", exc, flush=True)
+        _token = github_pages.token()
+    except Exception:
+        pass
+    loaded = []
+    for _name in ("semiconductor_exports.csv", "leading_cycle.csv", "customs_exports.csv", "cli_g20.csv"):
+        try:
+            text = github_pages.fetch(f"macro_history/{_name}", _token)
+            if text:
+                (fallback_dir / _name).write_text(text, encoding="utf-8")
+                loaded.append(_name)
+        except Exception:
+            continue
+    print("  보관본:", ", ".join(loaded) if loaded else "(없음)", flush=True)
     macro, macro_info = load_macro_data(out_dir, "2005-01-01",
                                         datetime.now(KST).date(), use_cache=not fetch,
                                         fallback_dir=fallback_dir)
     # 관세청 원천에서 최근 달을 먼저 채운다. KOSIS 확정치는 그대로 두고 없는 달만 더한다.
     customs_info = {"enabled": False, "reason": "DATA_GO_KR_KEY 없음"}
+    customs_cache = fallback_dir / "customs_exports.csv"
     key = data_go_kr_key()
     if key and fetch:
         try:
-            customs = fetch_customs_exports(pd.Timestamp.now(tz=KST).date().replace(day=1) - pd.DateOffset(months=30),
-                                            pd.Timestamp.now(tz=KST).date(), key)
+            try:
+                customs = fetch_customs_exports(pd.Timestamp.now(tz=KST).date().replace(day=1) - pd.DateOffset(months=30),
+                                                pd.Timestamp.now(tz=KST).date(), key)
+                customs_info["source"] = "customs_api"
+                (out_dir / "customs_exports.csv").parent.mkdir(parents=True, exist_ok=True)
+                customs.to_csv(out_dir / "customs_exports.csv", index=False)
+            except Exception as exc:
+                # 한국 정부 API는 해외 IP(Actions 러너)에서 간헐적으로 연결 자체가 막힌다.
+                # 지난 성공분이 저장소에 있으면 그것으로 계속 간다(월 단위 자료라 값이 같다).
+                if not customs_cache.exists():
+                    raise
+                print(f"  관세청 조회 실패 → 저장소 보관본 사용: {exc}", flush=True)
+                customs = pd.read_csv(customs_cache)
+                customs_info["source"] = "customs_cache"
             ok, diag = reconcile_customs(macro["semiconductor_exports"], customs)
             customs_info = {"enabled": ok, **diag}
             if ok:
@@ -562,7 +581,7 @@ def analyse(target, out_dir, fetch=True):
                 print("  ⚠️ 관세청 계열을 쓰지 않습니다:", diag.get("reason"), flush=True)
         except Exception as exc:
             customs_info = {"enabled": False, "reason": f"{type(exc).__name__}: {exc}"}
-            print("  ⚠️ 관세청 조회 실패(무시):", exc, flush=True)
+            print("  ⚠️ 관세청을 쓰지 못했습니다(무시):", exc, flush=True)
 
     exports = (macro["semiconductor_exports"].set_index("month")["value"]
                .asfreq("MS").dropna())
@@ -689,6 +708,14 @@ def main():
         print(oof.tail(8).to_string())
     if args.publish:
         token = github_pages.token()
+        # 관세청 원본을 보관본으로 남긴다(해외 IP에서 막히는 날을 대비).
+        if (result.get("customs_info") or {}).get("source") == "customs_api" and (out_dir / "customs_exports.csv").exists():
+            try:
+                github_pages.publish("macro_history/customs_exports.csv",
+                                     (out_dir / "customs_exports.csv").read_text(encoding="utf-8"),
+                                     token, "macro: customs_exports")
+            except Exception as exc:
+                print("  관세청 사본 업로드 실패:", exc, flush=True)
         # 다음 실행이 최근 2년만 다시 받으면 되도록 이력을 저장소에 남긴다.
         if result["profit_source"].startswith("DART"):
             series = pd.read_csv(out_dir / "earnings_profit.csv") if (out_dir / "earnings_profit.csv").exists() else None

@@ -51,7 +51,7 @@ def _kosis_request(key, params, retries=4):
     url = 'https://kosis.kr/openapi/Param/statisticsParameterData.do?' + urlencode(query)
     for attempt in range(retries):
         try:
-            with urlopen(url, timeout=60) as response:
+            with open_url(url, accept='application/json') as response:
                 result = json.loads(response.read().decode('utf-8-sig'))
             break
         except Exception as exc:
@@ -348,7 +348,7 @@ def _ecos_request(key, path, retries=3):
     url = f'https://ecos.bok.or.kr/api/{path.format(key=key)}'
     for attempt in range(retries):
         try:
-            with urlopen(url, timeout=60) as response:
+            with open_url(url, accept='application/json') as response:
                 result = json.loads(response.read().decode('utf-8-sig'))
             break
         except Exception as exc:
@@ -493,7 +493,7 @@ def _fred_request(key, path, params, retries=3):
     url = f'https://api.stlouisfed.org/fred/{path}?{query}'
     for attempt in range(retries):
         try:
-            with urlopen(url, timeout=60) as response:
+            with open_url(url, accept='application/json') as response:
                 return json.loads(response.read().decode('utf-8'))
         except Exception as exc:
             detail = f'{type(exc).__name__} {getattr(exc, "code", "")}'.strip()
@@ -545,7 +545,8 @@ def fetch_oecd_cli(ref_area, start, retries=2):
     for url in OECD_CLI_URLS:
         for attempt in range(retries):
             try:
-                with urlopen(url.format(area=ref_area, start=start_text), timeout=90) as response:
+                with open_url(url.format(area=ref_area, start=start_text), timeout=90,
+                              accept='application/vnd.sdmx.data+csv; charset=utf-8, text/csv, */*') as response:
                     return parse_oecd_csv(response.read().decode('utf-8-sig'), ref_area)
             except Exception as exc:
                 last = f'{type(exc).__name__} {getattr(exc, "code", "")}'.strip()
@@ -760,7 +761,7 @@ def fetch_customs_exports(start, end, key, hs_codes=CUSTOMS_HS, retries=3):
         query = urlencode({'serviceKey': key, 'strtYymm': start_text, 'endYymm': end_text, 'hsSgn': hs})
         for attempt in range(retries):
             try:
-                with urlopen(f'{CUSTOMS_URL}?{query}', timeout=90) as response:
+                with open_url(f'{CUSTOMS_URL}?{query}', timeout=90, accept='application/xml, text/xml, */*') as response:
                     frame = parse_customs_xml(response.read().decode('utf-8'))
                 break
             except Exception as exc:
@@ -880,8 +881,7 @@ def _flows_from_naver(ticker, start, max_pages=200):
     frames, start = [], pd.Timestamp(start)
     for page in range(1, max_pages + 1):
         url = f'https://finance.naver.com/item/frgn.naver?code={code}&page={page}'
-        request = urllib_request_with_agent(url)
-        with urlopen(request, timeout=60) as response:
+        with open_url(url) as response:
             html_text = response.read().decode('euc-kr', errors='ignore')
         frame = parse_naver_frgn_html(html_text)
         if frame.empty:
@@ -896,9 +896,22 @@ def _flows_from_naver(ticker, start, max_pages=200):
     return out[out['date'] >= start].reset_index(drop=True)
 
 
-def urllib_request_with_agent(url):
+# 파이썬 기본 User-Agent(Python-urllib/3.x)는 CDN이 자동으로 막는 일이 흔하다. OECD가 Actions에서
+# 403을 돌려준 것도 이 때문이었다(같은 요청이 브라우저·requests로는 통과). 모든 외부 요청에 붙인다.
+USER_AGENT = ('Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) '
+              'Chrome/126.0 Safari/537.36 predict_stock/1.0 (research; non-commercial)')
+
+
+def urllib_request_with_agent(url, accept=None):
     from urllib.request import Request
-    return Request(url, headers={'User-Agent': 'Mozilla/5.0 (predict_stock research; non-commercial)'})
+    headers = {'User-Agent': USER_AGENT, 'Accept-Language': 'ko,en;q=0.8'}
+    if accept:
+        headers['Accept'] = accept
+    return Request(url, headers=headers)
+
+
+def open_url(url, timeout=60, accept=None):
+    return urlopen(urllib_request_with_agent(url, accept), timeout=timeout)
 
 
 def load_investor_flows(storage, ticker, start, end, use_cache=False, fallback_dir=None):

@@ -696,12 +696,8 @@ def ledger_section_html(review, ensemble_name, updated_note=""):
         return (f'<tr><td style="padding:8px 11px;border-top:1px solid #eee">{label}</td>'
                 f'<td {cell}>{predicted}</td><td {cell}>{actual}</td>'
                 f'<td {cell};color:{color};font-weight:600">{verdict}</td></tr>')
-    if len(d):
-        r = d.iloc[0]
-        actual_label = _LABELS.get(int(r["actual_class"]), "?") if pd.notna(r["actual_class"]) else "—"
-        rows += _row("종가 방향", f'{r["prediction"]} (상승 {r["p_up"]:.0%}·보합 {r["p_flat"]:.0%}·하락 {r["p_down"]:.0%})',
-                     f'{actual_label} ({_fmt_num(r["actual_return"], "pct")}, 밴드 ±{r["band"]:.2%})',
-                     "적중" if r["direction_correct"] == 1 else "미적중", r["direction_correct"] == 1)
+    # 하루의 시간 순서대로 놓는다: 09:00 시초가 → 15:30 종가.
+    # 09:37 채점 회차에는 시초가 행만 채워지므로 순서가 맞아야 읽기도 자연스럽다.
     if len(o):
         r = o.iloc[0]
         pred = (f'{_fmt_num(r["predicted_open"], "won")} ({_fmt_num(r["predicted_return"], "pct")})'
@@ -709,6 +705,12 @@ def ledger_section_html(review, ensemble_name, updated_note=""):
         rows += _row("시초가(갭)", pred, f'{_fmt_num(r["actual_open"], "won")} ({_fmt_num(r["actual_gap"], "pct")})',
                      f'구간 {"적중" if r["interval_hit"] == 1 else "이탈"} · 오차 {_fmt_num(r["return_error"], "pct") if pd.notna(r["return_error"]) else "—"}',
                      r["interval_hit"] == 1)
+    if len(d):
+        r = d.iloc[0]
+        actual_label = _LABELS.get(int(r["actual_class"]), "?") if pd.notna(r["actual_class"]) else "—"
+        rows += _row("종가 방향", f'{r["prediction"]} (상승 {r["p_up"]:.0%}·보합 {r["p_flat"]:.0%}·하락 {r["p_down"]:.0%})',
+                     f'{actual_label} ({_fmt_num(r["actual_return"], "pct")}, 밴드 ±{r["band"]:.2%})',
+                     "적중" if r["direction_correct"] == 1 else "미적중", r["direction_correct"] == 1)
     if len(p1):
         r = p1.iloc[0]
         pred = (f'{_fmt_num(r["predicted_close"], "won")} ({_fmt_num(r["predicted_return"], "pct")})'

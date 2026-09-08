@@ -217,3 +217,29 @@ class PublishRetryTests(unittest.TestCase):
         with self.assertRaises(RuntimeError):
             self.gp.publish("p", "t", "k", "m")
         self.assertEqual(calls["put"], 1)
+
+
+class RowOrderTests(unittest.TestCase):
+    """표는 하루의 시간 순서대로 놓는다: 09:00 시초가 → 15:30 종가."""
+
+    def test_open_row_comes_before_close_rows(self):
+        import re
+        bars = pd.DataFrame({"open": [100., 104.], "close": [100., 99.], "adj_close": [100., 99.]},
+                            index=pd.to_datetime(["2026-09-07", "2026-09-08"]))
+        common = dict(run_id="r", target_date="2026-09-08", status="scored",
+                      is_prospective=True, horizon_days=1, current_close=100.)
+        daily = pd.DataFrame([
+            dict(common, record_id="d", kind="direction", model="Mean ensemble", prediction="상승",
+                 p_down=.2, p_flat=.3, p_up=.5, band=.01, actual_class=0, direction_correct=0.,
+                 log_loss=1.6, actual_return=-.01),
+            dict(common, record_id="o", kind="open", model="Ridge", predicted_open=103.,
+                 center_open=103., low_open=101., high_open=106., predicted_return=.03,
+                 actual_open=104., interval_hit=1., return_error=-.01, actual_return=.04),
+            dict(common, record_id="p", kind="price", model="Ridge", predicted_close=101.,
+                 center_close=101., low_close=98., high_close=104., predicted_return=.01,
+                 actual_close=99., interval_hit=1., actual_return=-.01),
+        ])
+        review = fu.review_ledger(daily, bars, ensemble_model="Mean ensemble")
+        html = fu.ledger_section_html(review, "Mean ensemble")
+        labels = re.findall(r'border-top:1px solid #eee">([^<]+)</td>', html)[:3]
+        self.assertEqual(labels, ["시초가(갭)", "종가 방향", "1거래일 종가예측"])

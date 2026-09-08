@@ -18,7 +18,6 @@ tqdm==4.67.1
 pyarrow==22.0.0
 exchange_calendars==4.13.2   # KRX 휴일 반영(없으면 주말만 제외하고 경고)
 jinja2>=3.1,<4              # pandas Styler 표 렌더링
-pykrx==1.2.8                # 외국인·기관 수급(KRX 계정 필요, 없으면 네이버 금융 페이지로 대체)
 lxml>=5                    # 네이버 표 파싱(pandas.read_html)
 
 # 선택: Transformer(RUN_TRANSFORMER=True)에만 필요
@@ -28,3 +27,7 @@ lxml>=5                    # 네이버 표 파싱(pandas.read_html)
 # einops==0.8.1
 # huggingface_hub==0.33.1
 # safetensors==0.6.2
+
+# 선택: 외국인·기관 수급을 KRX에서 받을 때(pykrx). pandas<3.0 제약이 있어 requirements에서 함께
+# 설치하면 충돌한다. 워크플로가 --no-deps 로 따로 설치하며, 없으면 네이버 금융 페이지로 대체한다.
+# pykrx==1.2.8

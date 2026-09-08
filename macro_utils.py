@@ -931,6 +931,8 @@ def load_investor_flows(storage, ticker, start, end, use_cache=False, fallback_d
         if os.environ.get('KRX_ID') and os.environ.get('KRX_PW'):
             try:
                 fresh, source = _flows_from_pykrx(ticker, fetch_start, end), 'KRX(pykrx)'
+            except ImportError:
+                errors.append('KRX: pykrx 미설치')
             except Exception as exc:
                 errors.append(f'KRX: {type(exc).__name__}: {exc}')
         if fresh is None:

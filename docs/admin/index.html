@@ -258,9 +258,15 @@ a{color:var(--accent)}
   }
 
   // ---- 일별 누적 막대 -------------------------------------------------------
-  function drawDaily(daily) {
+  function drawDaily(daily, staleWorker) {
     var box = $("chart-daily"), legend = $("legend-daily");
     box.innerHTML = ""; legend.innerHTML = "";
+    $("table-daily").innerHTML = "";
+    if (staleWorker) {
+      box.innerHTML = '<div class="empty">배포된 Worker가 오래되어 일별 자료를 주지 않습니다.<br>' +
+        'Cloudflare 대시보드에서 <code>counter/worker.js</code>를 다시 배포하세요.</div>';
+      return;
+    }
     if (!daily.length) { box.innerHTML = '<div class="empty">기간 내 기록이 없습니다.</div>'; return; }
 
     // 날짜별로 페이지 값을 모은다.
@@ -352,18 +358,34 @@ a{color:var(--accent)}
     box.appendChild(svg);
 
     // 표 보기 — 색을 못 읽는 경우의 대체 경로.
+    var sums = {}, sumViews = 0, sumVisitors = 0;
     var rows = days.slice().reverse().map(function (d) {
+      var dayViews = 0, dayVisitors = 0;
       var cells = series.map(function (p) {
         var r = byDay[d][p.key];
+        if (r) {
+          dayViews += r.views; dayVisitors += r.visitors;
+          sums[p.key] = sums[p.key] || { views: 0, visitors: 0 };
+          sums[p.key].views += r.views; sums[p.key].visitors += r.visitors;
+        }
         return '<td class="num">' + (r ? nf.format(r.views) + " / " + nf.format(r.visitors) : "—") + "</td>";
       }).join("");
-      return "<tr><td>" + esc(d) + "</td>" + cells + "</tr>";
+      sumViews += dayViews; sumVisitors += dayVisitors;
+      return "<tr><td>" + esc(d) + "</td>" + cells +
+        '<td class="num"><b>' + nf.format(dayViews) + " / " + nf.format(dayVisitors) + "</b></td></tr>";
     }).join("");
+    var footer = "<tr><td><b>기간 합계</b></td>" +
+      series.map(function (p) {
+        var t = sums[p.key];
+        return '<td class="num">' + (t ? nf.format(t.views) + " / " + nf.format(t.visitors) : "—") + "</td>";
+      }).join("") +
+      '<td class="num"><b>' + nf.format(sumViews) + " / " + nf.format(sumVisitors) + "</b></td></tr>";
     $("table-daily").innerHTML =
       '<table><thead><tr><th>날짜</th>' +
       series.map(function (p) { return '<th class="num">' + p.name + "</th>"; }).join("") +
-      "</tr></thead><tbody>" + rows + "</tbody></table>" +
-      '<div class="hint" style="margin-top:6px">각 칸은 조회수 / 방문자입니다.</div>';
+      '<th class="num">합계</th></tr></thead><tbody>' + rows + footer + "</tbody></table>" +
+      '<div class="hint" style="margin-top:6px">각 칸은 조회수 / 방문자입니다. 방문자는 ' +
+      '날짜·페이지 단위로 세므로 여러 페이지를 본 한 사람이 여러 번 셉니다.</div>';
   }
 
   // ---- 가로 막대 (페이지·국가 공용) -----------------------------------------
@@ -398,6 +420,9 @@ a{color:var(--accent)}
 
   // ---- 렌더 ---------------------------------------------------------------
   function render(data, days) {
+    // /stats 응답에 daily 키가 아예 없으면 배포된 Worker가 옛 버전이다. "기록 없음"과
+    // 구분해서 알려야 한다 — 실제로 D1에는 자료가 쌓이는데 화면만 비어 원인을 찾기 어려웠다.
+    var staleWorker = !("daily" in data);
     var totals = data.totals || [], daily = data.daily || [];
     var countries = data.countries || [], referrers = data.referrers || [];
     var regions = data.regions || [], cities = data.cities || [];
@@ -418,7 +443,7 @@ a{color:var(--accent)}
              t[1] + '</div><div class="n">' + t[2] + "</div></div>";
     }).join("");
 
-    drawDaily(daily);
+    drawDaily(daily, staleWorker);
 
     drawBars("chart-pages", totals.map(function (r) {
       var p = PAGE_BY_KEY[r.page];

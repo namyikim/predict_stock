@@ -208,3 +208,15 @@ curl "https://predict-stock-counter.kimname1.workers.dev/geo"
 
 - **무료 플랜 한도** — 조회 1건당 D1 쓰기 2회(로그 1 + 누적 1)를 쓴다. 개인
   사이트 트래픽에서는 여유가 크지만, 한도 수치는 Cloudflare 문서에서 확인한다.
+
+## Worker를 고친 뒤에는 반드시 다시 배포한다
+
+`counter/worker.js`는 저장소에 커밋해도 자동으로 배포되지 않는다. Cloudflare 대시보드 →
+Workers & Pages → 해당 Worker → Edit code → 내용을 붙여넣고 Deploy 해야 반영된다.
+
+배포를 잊으면 admin 페이지의 일별 조회수만 비어 보인다(누적 조회수는 `counters` 표에서 오므로
+정상으로 보인다). 2026-09-08에 실제로 그런 일이 있었다 — D1의 `hits`에는 하루 140여 건이
+쌓이는데 화면만 비어 원인을 찾는 데 시간이 걸렸다. 지금은 `/stats` 응답에 `daily` 키가 아예
+없으면 admin 페이지가 "배포된 Worker가 오래되었습니다"라고 알려 준다.
+
+확인: admin 페이지의 "기간 조회수"·"기록된 날" 타일에 숫자가 뜨면 정상이다.

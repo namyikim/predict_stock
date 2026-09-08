@@ -199,3 +199,25 @@ class CacheAgeTests(unittest.TestCase):
         (root / "macro_fallback").mkdir()
         (root / "macro_fallback" / "term_spread.csv").write_text("쓰레기", encoding="utf-8")
         self.assertEqual(mu.cache_age_days(root), {})
+
+
+class DisclosureEventTests(unittest.TestCase):
+    """공시는 예측 특징이 아니라 이벤트 표시와 참고용이다."""
+
+    DISCLOSURES = [
+        {"report_nm": "연결재무제표기준영업(잠정)실적(공정공시)", "rcept_dt": "20261007", "rcept_no": "1"},
+        {"report_nm": "주요사항보고서(자기주식취득결정)", "rcept_dt": "20261006", "rcept_no": "2"},
+        {"report_nm": "기업설명회(IR)개최(안내공시)", "rcept_dt": "20260901", "rcept_no": "3"},
+    ]
+
+    def test_earnings_season_is_the_two_weeks_after_quarter_end(self):
+        self.assertTrue(mu.earnings_season("2026-10-01"))
+        self.assertTrue(mu.earnings_season("2026-10-14"))
+        self.assertFalse(mu.earnings_season("2026-10-15"))
+        self.assertFalse(mu.earnings_season("2026-09-08"))
+
+    def test_classification_and_flags(self):
+        self.assertEqual([mu.classify_disclosure(d["report_nm"]) for d in self.DISCLOSURES],
+                         ["잠정실적", "자사주", ""])
+        self.assertEqual(mu.event_flags("2026-10-08", self.DISCLOSURES), ["실적시즌", "공시:잠정실적"])
+        self.assertEqual(mu.event_flags("2026-09-08", self.DISCLOSURES), [])

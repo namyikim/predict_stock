@@ -125,6 +125,9 @@ def run_feature_cell(raw, **overrides):
     ns.setdefault("flow_frame", None)
     ns.setdefault("flow_info", {"enabled": False})
     ns.setdefault("flow_features", flow_features)
+    ns.setdefault("USE_DISCLOSURES", False)
+    ns.setdefault("disclosures", [])
+    ns.setdefault("disclosure_info", {"enabled": False})
     exec(compile(cell, "cell-features", "exec"), ns)
     return ns
 

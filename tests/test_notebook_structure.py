@@ -135,6 +135,21 @@ class NotebookStructureTests(unittest.TestCase):
         self.assertIn("raw.githubusercontent.com", source)      # 토큰 없이 받는다
         self.assertIn('fallback_dir=STORAGE_ROOT / "macro_fallback"', source)
 
+    def test_macro_cache_upload_is_independent_of_ledger_publishing(self):
+        # 한국 정부 API가 해외 IP(Actions)에서 막히므로, 한국에서 돌린 실행이 보관본을 갱신해야 한다.
+        # 그 갱신은 원장 발행과 무관해야 Colab에서 그냥 전체 실행만 해도 보관본이 채워진다.
+        source = self.source
+        cache_block = source.index("SYNC_MACRO_CACHE = ")
+        ledger_block = source.index("if SYNC_LEDGER_TO_GITHUB:\n    try:")
+        self.assertLess(cache_block, ledger_block)
+        # 이번 실행에서 직접 받은 자료만 올린다(보관본을 보관본으로 덮어쓰지 않는다).
+        self.assertIn('macro_info.get("fresh")', source)
+        self.assertIn('nsi_info.get("source") in ("ECOS_API", "user_csv")', source)
+        self.assertIn('flow_info.get("fresh")', source)
+        # 원장 파일은 이 블록에서 올리지 않는다.
+        block = source[cache_block:ledger_block]
+        self.assertNotIn("GITHUB_LEDGER_DIR", block)
+
     def test_after_close_run_only_scores(self):
         # 장 마감 후 실행은 워크포워드를 다시 돌리지 않고 채점·절 교체만 한다.
         # 예측을 기록하면 정보가 적은 오후 예측이 아침 예측을 밀어낸다(원장은 최초 사전 예측만 집계).

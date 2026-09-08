@@ -160,7 +160,8 @@ class UserAgentTests(unittest.TestCase):
         self.assertEqual(request.get_header("Accept"), "text/csv")
 
     def test_no_raw_urlopen_left_in_fetchers(self):
-        source = Path(mu.__file__).read_text(encoding="utf-8")
+        root = Path(mu.__file__).resolve().parent / "data_sources"
+        source = "\n".join(p.read_text(encoding="utf-8") for p in sorted(root.glob("*.py")))
         # 외부 조회는 모두 open_url을 거쳐야 한다. urlopen 직접 호출은 open_url 정의 한 줄뿐이다.
         direct = [l.strip() for l in source.splitlines()
                   if "urlopen(" in l and "open_url(" not in l and not l.strip().startswith(("#", "from", "import"))]

@@ -8,6 +8,7 @@ import numpy as np
 import pandas as pd
 
 import macro_utils as mu
+from data_sources import _common, kosis
 
 
 class MacroTests(unittest.TestCase):
@@ -83,11 +84,15 @@ class MacroTests(unittest.TestCase):
         nb = json.loads((root / 'samsung_direction_model_colab.ipynb').read_text(encoding='utf-8'))
         cells = [c for c in nb['cells'] if 'macro_utils' in c.get('metadata', {}).get('tags', [])]
         self.assertEqual(len(cells), 1)
-        self.assertEqual(''.join(cells[0]['source']), (root / 'macro_utils.py').read_text(encoding='utf-8'))
+        # macro_utils 는 facade 라서 노트북에는 data_sources/ 모듈을 이어 붙인 본문이 들어간다.
+        import sys
+        sys.path.insert(0, str(root / 'tools'))
+        from sync_notebook_helpers import helper_source
+        self.assertEqual(''.join(cells[0]['source']), helper_source('macro_utils'))
 
     def test_api_resolves_total_code_then_requests_monthly_history(self):
         row = dict(PRD_DE='202507', DT='125', C1='total-code', C1_NM='반도체', UNIT_NM='달러')
-        with patch.object(mu, '_kosis_request', side_effect=[[row], [row]]) as api:
+        with patch.object(kosis, '_kosis_request', side_effect=[[row], [row]]) as api:
             got = mu.fetch_kosis_monthly('semiconductor_exports', '2023-01-01', '2025-09-01', 'private')
         self.assertEqual(got.value.iloc[0], 125)
         self.assertEqual(api.call_args_list[0].args[1]['objL1'], 'ALL')
@@ -95,7 +100,7 @@ class MacroTests(unittest.TestCase):
         self.assertEqual(api.call_args_list[1].args[1]['startPrdDe'], '202301')
 
     def test_http_failure_does_not_expose_key(self):
-        with patch.object(mu, 'urlopen', side_effect=OSError('URL with private-api-key')):
+        with patch.object(_common, 'urlopen', side_effect=OSError('URL with private-api-key')):
             with self.assertRaises(RuntimeError) as error:
                 mu._kosis_request('private-api-key', {})
         self.assertNotIn('private-api-key', str(error.exception))
@@ -116,3 +121,47 @@ class MacroTests(unittest.TestCase):
 
 
 if __name__ == '__main__': unittest.main()
+
+
+class DataSourcesPackageTests(unittest.TestCase):
+    """macro_utils 는 facade 이고 구현은 data_sources/ 에 있다. 두 경로가 같은 것을 가리켜야 한다."""
+
+    def test_facade_reexports_every_public_and_private_helper(self):
+        import data_sources as ds
+        for name in ("load_macro_data", "macro_features", "load_nsi", "load_cli", "load_term_spread",
+                     "load_investor_flows", "fetch_customs_exports", "event_flags", "open_url",
+                     "_kosis_request", "_flows_from_naver"):
+            self.assertIs(getattr(mu, name), getattr(ds, name), name)
+
+    def test_modules_only_depend_on_common(self):
+        import ast
+        root = Path(mu.__file__).resolve().parent / "data_sources"
+        defined = {}
+        for path in root.glob("*.py"):
+            if path.name == "__init__.py":
+                continue
+            for node in ast.parse(path.read_text(encoding="utf-8")).body:
+                if isinstance(node, (ast.FunctionDef, ast.ClassDef)):
+                    defined[node.name] = path.stem
+                elif isinstance(node, ast.Assign):
+                    for target in node.targets:
+                        if isinstance(target, ast.Name):
+                            defined[target.id] = path.stem
+        for path in root.glob("*.py"):
+            if path.name == "__init__.py":
+                continue
+            tree = ast.parse(path.read_text(encoding="utf-8"))
+            used = {n.id for n in ast.walk(tree) if isinstance(n, ast.Name) and isinstance(n.ctx, ast.Load)}
+            foreign = {u for u in used if u in defined and defined[u] not in (path.stem, "_common")}
+            self.assertEqual(foreign, set(), f"{path.stem} 이 다른 자료원 모듈의 이름을 씁니다: {foreign}")
+
+    def test_notebook_copy_runs_standalone(self):
+        # Colab 은 패키지 없이 셀 하나로 돈다. 이어 붙인 본문이 그 자체로 실행돼야 한다.
+        root = Path(__file__).resolve().parents[1]
+        import sys
+        sys.path.insert(0, str(root / 'tools'))
+        from sync_notebook_helpers import helper_source
+        namespace = {}
+        exec(compile(helper_source('macro_utils'), 'macro_cell', 'exec'), namespace)
+        for name in ("load_macro_data", "load_nsi", "load_cli", "load_investor_flows", "event_flags"):
+            self.assertIn(name, namespace)

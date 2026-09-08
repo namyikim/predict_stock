@@ -108,11 +108,14 @@ class ApiRetryTests(unittest.TestCase):
     """같은 키로 잡이 동시에 조회하면 거절되는 일이 있다. 재시도하고, 실패 사유를 남긴다."""
 
     def _patch(self, fake):
+        # 함수는 자기 모듈의 전역을 본다. _kosis_request 는 data_sources.kosis 에 있고 open_url 은
+        # data_sources._common 에 있으므로 그 둘을 바꿔친다.
         import macro_utils as mu
-        self._saved = (mu.urlopen, mu.time.sleep)
-        mu.urlopen, mu.time.sleep = fake, lambda s: None
-        self.addCleanup(lambda: setattr(mu, "urlopen", self._saved[0]))
-        self.addCleanup(lambda: setattr(mu.time, "sleep", self._saved[1]))
+        from data_sources import _common
+        self._saved = (_common.urlopen, _common.time.sleep)
+        _common.urlopen, _common.time.sleep = fake, lambda s: None
+        self.addCleanup(lambda: setattr(_common, "urlopen", self._saved[0]))
+        self.addCleanup(lambda: setattr(_common.time, "sleep", self._saved[1]))
         return mu
 
     def test_transient_failure_is_retried(self):
@@ -162,17 +165,18 @@ class MacroFallbackTests(unittest.TestCase):
 
     def test_fallback_is_used_and_marked(self):
         import macro_utils as mu
-        saved_key, saved_fetch = mu.kosis_key, mu.fetch_kosis_monthly
-        mu.kosis_key = lambda: "key"
+        from data_sources import kosis
+        saved_key, saved_fetch = kosis.kosis_key, kosis.fetch_kosis_monthly
+        kosis.kosis_key = lambda: "key"
 
         def boom(*a, **k):
             raise RuntimeError("KOSIS API 조회 실패(URLError).")
-        mu.fetch_kosis_monthly = boom
+        kosis.fetch_kosis_monthly = boom
         try:
             data, info = mu.load_macro_data(self.dir, "2020-01-01", "2026-09-01",
                                             fallback_dir=self.dir / "fallback")
         finally:
-            mu.kosis_key, mu.fetch_kosis_monthly = saved_key, saved_fetch
+            kosis.kosis_key, kosis.fetch_kosis_monthly = saved_key, saved_fetch
         self.assertEqual(set(info["sources"].values()), {"last_successful_fetch"})
         self.assertFalse(info["fresh"])
         self.assertIn("URLError", str(info["fetch_errors"]))
@@ -180,14 +184,15 @@ class MacroFallbackTests(unittest.TestCase):
 
     def test_without_fallback_the_error_still_propagates(self):
         import macro_utils as mu
-        saved_key, saved_fetch = mu.kosis_key, mu.fetch_kosis_monthly
-        mu.kosis_key = lambda: "key"
+        from data_sources import kosis
+        saved_key, saved_fetch = kosis.kosis_key, kosis.fetch_kosis_monthly
+        kosis.kosis_key = lambda: "key"
 
         def boom(*a, **k):
             raise RuntimeError("KOSIS API 조회 실패(URLError).")
-        mu.fetch_kosis_monthly = boom
+        kosis.fetch_kosis_monthly = boom
         try:
             with self.assertRaises(RuntimeError):
                 mu.load_macro_data(self.dir, "2020-01-01", "2026-09-01")
         finally:
-            mu.kosis_key, mu.fetch_kosis_monthly = saved_key, saved_fetch
+            kosis.kosis_key, kosis.fetch_kosis_monthly = saved_key, saved_fetch

@@ -462,10 +462,17 @@ def nsi_features(frame, dates, lag_days=NSI_RELEASE_LAG_DAYS, max_age_days=NSI_M
 # 평활 필터를 전체 시계열에 걸어 계산하므로 매달 소급 수정되고(OECD FAQ), 발표는 참조월로부터
 # 약 5~6주 뒤다. 여기서는 참조월 M의 값을 (M+1)월 20일 이후에만 쓴다. 개정 문제는 없앨 수 없어
 # 백테스트가 낙관적이라는 점을 보고서에 적는다.
-FRED_CLI_SERIES_ID = os.environ.get('FRED_CLI_SERIES_ID', 'G20LOLITOAASTSAM')  # 진폭조정 CLI, G20, 월별 SA
+# 원본은 OECD 데이터 API(키 불필요). FRED에는 G20 집계가 없다(G7·개별국만 있고 OECD 전체는 2022-11에서 끊겼다).
+# FRED_CLI_SERIES_ID를 명시하면(예: G7LOLITOAASTSAM) OECD 대신 FRED를 쓴다.
+CLI_REF_AREA = os.environ.get('OECD_CLI_REF_AREA', 'G20')
+OECD_CLI_URLS = [
+    'https://sdmx.oecd.org/public/rest/data/OECD.SDD.STES,DSD_STES@DF_CLI,/{area}.M.LI...AA...H?startPeriod={start}&format=csvfilewithlabels',
+    'https://sdmx.oecd.org/public/rest/data/OECD.SDD.STES,DSD_STES@DF_CLI,4.1/{area}.M.LI...AA...H?startPeriod={start}&format=csvfilewithlabels',
+]
+FRED_CLI_SERIES_ID = os.environ.get('FRED_CLI_SERIES_ID', '')
 CLI_RELEASE_DAY = 20          # 참조월 다음 달의 이 날짜부터 사용
 CLI_MAX_AGE_DAYS = 75
-CLI_NOTE = ('OECD G20 경기선행지수(FRED 경유). 참조월+1개월 20일 이후에만 사용. '
+CLI_NOTE = ('OECD G20 경기선행지수(OECD 데이터 API). 참조월+1개월 20일 이후에만 사용. '
             '매달 소급 수정되므로 백테스트는 최종 수정치 기준이라 낙관적')
 
 
@@ -514,6 +521,38 @@ def fetch_fred_monthly(series_id, key, start):
     return parse_fred_observations(payload)
 
 
+def parse_oecd_csv(text, ref_area=None):
+    """OECD csvfilewithlabels → DataFrame(month, value). REF_AREA·TIME_PERIOD·OBS_VALUE 열을 쓴다."""
+    import io
+    frame = pd.read_csv(io.StringIO(text), dtype=str)
+    needed = {'TIME_PERIOD', 'OBS_VALUE'}
+    if not needed.issubset(frame.columns):
+        raise ValueError(f'OECD 응답에 {needed} 열이 없습니다: {list(frame.columns)[:8]}')
+    if ref_area and 'REF_AREA' in frame.columns:
+        frame = frame[frame['REF_AREA'].astype(str) == ref_area]
+    out = pd.DataFrame({'month': frame['TIME_PERIOD'].astype(str),
+                        'value': pd.to_numeric(frame['OBS_VALUE'], errors='coerce')}).dropna(subset=['value'])
+    if out.empty:
+        raise ValueError('OECD 응답에 유효한 관측치가 없습니다.')
+    out = out.drop_duplicates('month', keep='last')
+    return normalize_monthly(out)
+
+
+def fetch_oecd_cli(ref_area, start, retries=2):
+    """OECD 데이터 API에서 진폭조정 CLI를 받는다. 키가 필요 없다."""
+    start_text = pd.Timestamp(start).strftime('%Y-%m')
+    last = ''
+    for url in OECD_CLI_URLS:
+        for attempt in range(retries):
+            try:
+                with urlopen(url.format(area=ref_area, start=start_text), timeout=90) as response:
+                    return parse_oecd_csv(response.read().decode('utf-8-sig'), ref_area)
+            except Exception as exc:
+                last = f'{type(exc).__name__} {getattr(exc, "code", "")}'.strip()
+                time.sleep(2 + random.uniform(0, 2))
+    raise RuntimeError(f'OECD CLI 조회 실패({last}). 연결을 확인하거나 macro_inputs/cli_g20.csv를 사용하세요.')
+
+
 def search_fred_series(key, text):
     payload = _fred_request(key, 'series/search', {'search_text': text, 'limit': 20})
     return [(s.get('id'), s.get('title'), s.get('frequency_short'), s.get('observation_end'))
@@ -534,18 +573,22 @@ def load_cli(storage, start, end, use_cache=False, fallback_dir=None):
     elif local.exists():
         frame, source = normalize_monthly(pd.read_csv(local, dtype=str)), 'user_csv'
     else:
-        key = fred_key()
         try:
-            if not key:
-                raise RuntimeError('FRED_API_KEY가 없습니다.')
-            frame, source = fetch_fred_monthly(FRED_CLI_SERIES_ID, key, start), 'FRED_API'
+            if FRED_CLI_SERIES_ID:
+                key = fred_key()
+                if not key:
+                    raise RuntimeError('FRED_API_KEY가 없습니다.')
+                frame, source = fetch_fred_monthly(FRED_CLI_SERIES_ID, key, start), f'FRED_API({FRED_CLI_SERIES_ID})'
+            else:
+                frame, source = fetch_oecd_cli(CLI_REF_AREA, start), f'OECD_API({CLI_REF_AREA})'
         except Exception as exc:
             if not (fallback and fallback.exists()):
                 raise
             error = str(exc)
             frame, source = normalize_monthly(pd.read_csv(fallback, dtype=str)), 'last_successful_fetch'
     frame.to_csv(cached, index=False)
-    info = {'source': source, 'series_id': FRED_CLI_SERIES_ID, 'fresh': source in ('FRED_API', 'user_csv'),
+    info = {'source': source, 'series_id': FRED_CLI_SERIES_ID or f'OECD {CLI_REF_AREA}',
+            'fresh': source.startswith(('OECD_API', 'FRED_API')) or source == 'user_csv',
             'fetch_error': error, 'first': frame['month'].min().strftime('%Y-%m'),
             'last': frame['month'].max().strftime('%Y-%m'), 'rows': int(len(frame)),
             'release_day': CLI_RELEASE_DAY, 'note': CLI_NOTE,

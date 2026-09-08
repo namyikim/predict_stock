@@ -89,6 +89,17 @@ class CliFeatureTests(unittest.TestCase):
         self.assertAlmostEqual(feat.loc["2026-08-19", "cli_level"], level["2026-06-01"] - 100)
         self.assertAlmostEqual(feat.loc["2026-08-20", "cli_level"], level["2026-07-01"] - 100)
 
+    def test_oecd_csv_is_parsed_and_filtered(self):
+        csv = ("STRUCTURE,REF_AREA,Reference area,TIME_PERIOD,Time period,OBS_VALUE,Observation value\n"
+               "DATAFLOW,G20,G20,2026-05,2026-05,100.41,100.41\n"
+               "DATAFLOW,G7,G7,2026-05,2026-05,99.9,99.9\n"
+               "DATAFLOW,G20,G20,2026-06,2026-06,100.52,100.52\n"
+               "DATAFLOW,G20,G20,2026-07,2026-07,,\n")
+        got = mu.parse_oecd_csv(csv, "G20")
+        self.assertEqual(list(got["value"]), [100.41, 100.52])      # G7 행과 결측은 빠진다
+        with self.assertRaises(ValueError):
+            mu.parse_oecd_csv("a,b\n1,2\n")
+
     def test_fred_missing_values_are_dropped(self):
         got = mu.parse_fred_observations({"observations": [{"date": "2026-06-01", "value": "100.8"},
                                                             {"date": "2026-07-01", "value": "."}]})

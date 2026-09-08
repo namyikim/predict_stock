@@ -24,6 +24,7 @@ import argparse
 import html
 import json
 import os
+import re
 import sys
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
@@ -160,6 +161,121 @@ def fetch_operating_profit_dart(corp_code, key, start_year=2010, end_year=None):
         if previous in series.index:            # 누적 - 직전 누적
             quarterly[period] = value - series[previous]
     return pd.Series(quarterly, name="operating_profit").sort_index()
+
+
+# ---------------------------------------------------------------------------
+# 잠정실적 공시 — 확정 재무제표보다 5주쯤 빠르다
+# ---------------------------------------------------------------------------
+# 분기보고서(확정치)는 분기 종료 후 45일쯤 뒤에 나온다. 그런데 두 회사는 분기가 끝나고 일주일
+# 안팎에 '연결재무제표기준 영업(잠정)실적'을 공시한다. 나우캐스트를 그만큼 빨리 채점할 수 있다.
+# 다만 잠정치는 공시 본문 표를 읽어야 해서 확정치보다 불안정하다. 그래서 단위를 못 읽거나 값이
+# 직전 분기의 0.2~5배를 벗어나면 쓰지 않고, 확정치가 나오면 언제든 그것으로 덮어쓴다.
+PROVISIONAL_PATTERN = re.compile(r"영업\s*\(?\s*잠정\s*\)?\s*실적")
+
+
+def dart_disclosures(corp_code, key, start, end, max_pages=5):
+    """기간 내 공시 목록. list.json은 status/list 구조라 따로 다룬다."""
+    import json as _json
+    import random
+    import time
+    from urllib.parse import urlencode
+    from urllib.request import urlopen
+    out, page = [], 1
+    while page <= max_pages:
+        url = ("https://opendart.fss.or.kr/api/list.json?" + urlencode({
+            "crtfc_key": key, "corp_code": corp_code,
+            "bgn_de": pd.Timestamp(start).strftime("%Y%m%d"),
+            "end_de": pd.Timestamp(end).strftime("%Y%m%d"),
+            "page_no": str(page), "page_count": "100"}))
+        payload = None
+        for attempt in range(3):
+            try:
+                with urlopen(url, timeout=60) as response:
+                    payload = _json.loads(response.read().decode("utf-8"))
+                break
+            except Exception as exc:
+                if attempt == 2:
+                    raise RuntimeError(f"DART 공시목록 조회 실패({type(exc).__name__} "
+                                       f"{getattr(exc, 'code', '')})") from None
+                time.sleep(2 * (2 ** attempt) + random.uniform(0, 2))
+        status = payload.get("status")
+        if status == "013":                 # 조회 결과 없음
+            break
+        if status != "000":
+            raise RuntimeError(f"DART 공시목록 오류 {status}: {payload.get('message', '')}")
+        out.extend(payload.get("list", []))
+        if page >= int(payload.get("total_page", 1) or 1):
+            break
+        page += 1
+    return out
+
+
+def find_provisional(disclosures):
+    """영업(잠정)실적 공시만 접수일 최신순으로."""
+    hits = [d for d in disclosures if PROVISIONAL_PATTERN.search(str(d.get("report_nm", "")))]
+    return sorted(hits, key=lambda d: str(d.get("rcept_dt", "")), reverse=True)
+
+
+def parse_provisional_amount(text):
+    """공시 본문에서 영업이익 당기실적(원)을 뽑는다. 확실한 경우에만 값을 돌려준다."""
+    plain = re.sub(r"<[^>]+>", " ", text).replace("&nbsp;", " ")
+    units = ((r"백만\s*원", 1e6), (r"억\s*원", 1e8), (r"천\s*원", 1e3))
+    unit = next((mult for pattern, mult in units
+                 if re.search(r"단위\s*[:：(]?\s*" + pattern, plain)), None)
+    if unit is None:
+        return None                          # 단위를 모르면 쓰지 않는다
+    match = re.search(r"영업\s*이익(.{0,400})", plain, re.S)
+    if not match:
+        return None
+    for raw in re.findall(r"-?[\d,]{2,}", match.group(1)):
+        try:
+            value = float(raw.replace(",", ""))
+        except ValueError:
+            continue
+        if abs(value) >= 10:                 # 표 머리글의 연도·분기 숫자를 건너뛴다
+            return value * unit
+    return None
+
+
+def fetch_provisional_profit(corp_code, key, quarter, previous_value=None):
+    """(값, 정보). 잠정실적 공시를 찾아 영업이익을 읽는다. 못 읽거나 이상하면 (None, 사유)."""
+    import io
+    import zipfile
+    from urllib.parse import urlencode
+    from urllib.request import urlopen
+    end = pd.Period(quarter, freq="Q").end_time
+    try:
+        disclosures = dart_disclosures(corp_code, key, end, end + pd.Timedelta(days=75))
+    except Exception as exc:
+        return None, {"reason": str(exc)}
+    hits = find_provisional(disclosures)
+    if not hits:
+        return None, {"reason": "잠정실적 공시가 아직 없습니다"}
+    top = hits[0]
+    info = {"report_nm": top.get("report_nm"), "rcept_dt": top.get("rcept_dt"),
+            "rcept_no": top.get("rcept_no")}
+    try:
+        url = "https://opendart.fss.or.kr/api/document.xml?" + urlencode(
+            {"crtfc_key": key, "rcept_no": top["rcept_no"]})
+        with urlopen(url, timeout=90) as response:
+            blob = response.read()
+        with zipfile.ZipFile(io.BytesIO(blob)) as archive:
+            raw = archive.read(archive.namelist()[0])
+        text = raw.decode("utf-8", errors="ignore")
+        if "영업" not in text:
+            text = raw.decode("euc-kr", errors="ignore")
+    except Exception as exc:
+        info["reason"] = f"본문을 받지 못했습니다({type(exc).__name__})"
+        return None, info
+    value = parse_provisional_amount(text)
+    if value is None:
+        info["reason"] = "본문에서 영업이익을 찾지 못했습니다"
+        return None, info
+    if previous_value and previous_value > 0 and not (0.2 <= value / previous_value <= 5.0):
+        info["reason"] = f"직전 분기의 {value / previous_value:.1f}배라 잘못 읽은 값으로 봅니다"
+        return None, info
+    info["value"] = value
+    return value, info
 
 
 def load_operating_profit(storage, target):
@@ -346,6 +462,113 @@ def fit_live(f, live_quarter, target="profit", features=None, gap=0):
 
 
 # ---------------------------------------------------------------------------
+# 추정 원장 — 나우캐스트도 기록하고 채점한다
+# ---------------------------------------------------------------------------
+# 8절은 지금까지 추정만 하고 채점이 없었다. 분기마다 몇 개뿐인 관측이라 백테스트만으로는
+# 이 모듈이 쓸 만한지 알 수 없다. 그래서 (분기, 반영 개월 수)마다 '그 시점의 첫 추정'을 한 번만
+# 남기고, 실제 영업이익이 나오면 그 행을 채점한다. 예측값은 절대 고쳐 쓰지 않는다.
+LEDGER_COLUMNS = [
+    "record_id", "run_id", "created_at_kst", "target", "quarter", "months_used", "months_included",
+    "point", "low", "high", "raw_point", "beats_baselines", "mae_model", "mae_random_walk",
+    "mae_seasonal_naive", "n_eval", "last_actual", "status", "actual", "actual_source",
+    "error", "ape", "scored_at_kst",
+]
+
+
+def read_ledger(path):
+    if not Path(path).exists():
+        return pd.DataFrame(columns=LEDGER_COLUMNS)
+    frame = pd.read_csv(path, dtype=str)
+    for column in LEDGER_COLUMNS:
+        if column not in frame.columns:
+            frame[column] = np.nan
+    for column in ("point", "low", "high", "raw_point", "mae_model", "mae_random_walk",
+                   "mae_seasonal_naive", "last_actual", "actual", "error", "ape", "months_used", "n_eval"):
+        frame[column] = pd.to_numeric(frame[column], errors="coerce")
+    return frame[LEDGER_COLUMNS]
+
+
+def append_estimate(ledger, result, run_id):
+    """(분기, 반영 개월 수)마다 첫 추정만 남긴다. 같은 조합이 이미 있으면 그대로 둔다."""
+    key = (str(result["quarter_code"]), int(result["months_used"]))
+    months = pd.to_numeric(ledger["months_used"], errors="coerce")
+    existing = set(zip(ledger["quarter"].astype(str), months.where(months.notna(), -1).astype(int)))
+    if key in existing:
+        return ledger, False
+    ev = result.get("evaluation") or {}
+    row = {
+        "record_id": f"{result['target']}:{key[0]}:k{key[1]}",
+        "run_id": run_id, "created_at_kst": datetime.now(KST).strftime("%Y-%m-%d %H:%M"),
+        "target": result["target"], "quarter": key[0], "months_used": key[1],
+        "months_included": result.get("months_included"),
+        "point": result.get("point"), "low": result.get("low"), "high": result.get("high"),
+        "raw_point": (result.get("evaluation") or {}).get("shrink_slope"),
+        "beats_baselines": ev.get("beats_baselines"), "mae_model": ev.get("mae_model"),
+        "mae_random_walk": ev.get("mae_random_walk"), "mae_seasonal_naive": ev.get("mae_seasonal_naive"),
+        "n_eval": ev.get("n"), "last_actual": result.get("last_actual"),
+        "status": "pending", "actual": np.nan, "actual_source": "", "error": np.nan,
+        "ape": np.nan, "scored_at_kst": "",
+    }
+    new = pd.DataFrame([row], columns=LEDGER_COLUMNS)
+    if ledger.empty:                     # 빈 프레임과 concat하면 dtype 경고가 난다
+        return new, True
+    return pd.concat([ledger, new], ignore_index=True)[LEDGER_COLUMNS], True
+
+
+def score_ledger(ledger, profit, provisional=None):
+    """실제 영업이익이 나온 분기를 채점한다. 확정치가 잠정치보다 우선한다."""
+    provisional = provisional or {}
+    confirmed = {str(period): float(value) for period, value in profit.items()}
+    scored = 0
+    for i, row in ledger.iterrows():
+        quarter = str(row["quarter"])
+        actual, source = None, ""
+        if quarter in confirmed:
+            actual, source = confirmed[quarter], "confirmed"
+        elif quarter in provisional and provisional[quarter] is not None:
+            actual, source = float(provisional[quarter]), "provisional"
+        if actual is None:
+            continue
+        if row["status"] == "scored" and row["actual_source"] == "confirmed":
+            continue                     # 확정치로 채점한 행은 다시 건드리지 않는다
+        ledger.loc[i, ["status", "actual", "actual_source", "scored_at_kst"]] = [
+            "scored", actual, source, datetime.now(KST).strftime("%Y-%m-%d %H:%M")]
+        if pd.notna(row["point"]):
+            ledger.loc[i, "error"] = float(row["point"]) - actual
+            ledger.loc[i, "ape"] = abs(float(row["point"]) - actual) / abs(actual) if actual else np.nan
+        scored += 1
+    return ledger, scored
+
+
+def render_ledger_block(ledger, target):
+    """지난 분기 추정 vs 실제. 실제로 미리 낸 추정만 채점한 것이라 백테스트와 섞지 않는다."""
+    mine = ledger[(ledger["target"] == target) & (ledger["status"] == "scored")]
+    parts = ['<h4 style="font-size:14px;margin:18px 0 6px">지난 분기 추정 vs 실제 '
+             '<span style="font-size:11px;color:#8a9199;font-weight:400">실제로 미리 낸 추정만 채점</span></h4>']
+    if mine.empty:
+        parts.append('<div style="font-size:13px;color:#6b7178">아직 채점된 추정이 없습니다. '
+                     '분기 영업이익이 공시되면 이 표에 쌓입니다.</div>')
+        return "".join(parts)
+    body = ""
+    for _, r in mine.sort_values(["quarter", "months_used"], ascending=[False, True]).iterrows():
+        point = jo(r["point"]) if pd.notna(r["point"]) else "예측하지 않음"
+        err = "—" if pd.isna(r["error"]) else f'{r["error"] / TRILLION:+,.2f}조원 ({r["ape"]:.0%})'
+        source = "확정" if r["actual_source"] == "confirmed" else "잠정"
+        body += (f'<tr><td {TD}>{html.escape(str(r["quarter"]))}</td>'
+                 f'<td {TDR}>{int(r["months_used"])}개월</td><td {TDR}>{point}</td>'
+                 f'<td {TDR}>{jo(r["actual"])} <span style="color:#8a9199">({source})</span></td>'
+                 f'<td {TDR}>{err}</td></tr>')
+    parts.append('<div style="overflow-x:auto"><table style="width:100%;min-width:520px;'
+                 'border-collapse:collapse;font-size:13px;border:1px solid #e5e5e5">'
+                 f'<tr><th {TH}>분기</th><th {THR}>반영</th><th {THR}>추정</th>'
+                 f'<th {THR}>실제</th><th {THR}>오차</th></tr>{body}</table></div>')
+    parts.append('<div style="font-size:11px;color:#8a9199;margin-top:4px">'
+                 '분기·반영 개월 수마다 그 시점의 <b>첫 추정</b>만 남깁니다. 잠정실적으로 채점한 행은 '
+                 '확정 재무제표가 나오면 그 값으로 다시 채점됩니다.</div>')
+    return "".join(parts)
+
+
+# ---------------------------------------------------------------------------
 # 렌더링
 # ---------------------------------------------------------------------------
 TD = 'style="padding:6px 10px;border-top:1px solid #eee"'
@@ -478,6 +701,9 @@ def render_fragment(result):
                      f'실제값과의 상관 {ev.get("corr", float("nan")):.2f} · 평균 오차율 {ev.get("mape_model", float("nan")):.1%}</div>')
     else:
         parts.append(f'<div style="font-size:13px;color:#6b7178">{e(ev.get("note", "표본 부족"))}</div>')
+
+    if r.get("ledger_html"):
+        parts.append(r["ledger_html"])
 
     # ---- 다음 분기 전망
     nq = r.get("next_quarter")
@@ -656,6 +882,23 @@ def analyse(target, out_dir, fetch=True):
                            "오차가 작다는 것을 보이지 못했습니다.")
         point = None
 
+    # 잠정실적: 확정 재무제표보다 5주쯤 빠르다. 원장 채점을 그만큼 앞당긴다.
+    provisional, provisional_info = {}, {}
+    key = dart_key()
+    if key and fetch:
+        for period in pd.period_range(live_quarter - 2, live_quarter, freq="Q"):
+            if str(period) in {str(p) for p in profit.index}:
+                continue                        # 확정치가 이미 있으면 볼 필요가 없다
+            previous = float(profit.iloc[-1]) if len(profit) else None
+            value, info = fetch_provisional_profit(spec["corp_code"], key, period, previous)
+            provisional_info[str(period)] = info
+            if value is not None:
+                provisional[str(period)] = value
+                print(f"  잠정실적 {period}: {value / TRILLION:,.2f}조원 "
+                      f"({info.get('report_nm')}, {info.get('rcept_dt')})", flush=True)
+            elif info.get("reason"):
+                print(f"  잠정실적 {period}: {info['reason']}", flush=True)
+
     last_actual_quarter = profit.index[-1]
     last_actual = float(profit.iloc[-1])
     result = {
@@ -676,6 +919,7 @@ def analyse(target, out_dir, fetch=True):
         "exports_last_month": exports.index[-1].date().isoformat(),
         "macro_sources": macro_info.get("sources", {}),
         "cli_info": cli_info, "cli_active": cli_active,
+        "provisional": provisional, "provisional_info": provisional_info,
         "next_quarter": next_block,
         "generated_at": datetime.now(KST).strftime("%Y-%m-%d %H:%M KST"),
     }
@@ -693,6 +937,26 @@ def main():
     args = parser.parse_args()
     out_dir = args.out / args.target
     result, frame, oof, profit_series = analyse(args.target, out_dir, fetch=not args.no_fetch)
+
+    # ---- 추정 원장: 저장소 것을 받아 이번 추정을 더하고, 실제가 나온 분기를 채점한다 ----
+    run_id = datetime.now(KST).strftime("%Y%m%dT%H%M%S")
+    ledger_name = f"forecast_history/{args.target}/earnings_log.csv"
+    ledger_path = out_dir / "earnings_log.csv"
+    token = None
+    try:
+        token = github_pages.token()
+        remote = github_pages.fetch(ledger_name, token)
+        if remote:
+            ledger_path.write_text(remote, encoding="utf-8")
+    except Exception as exc:
+        print("  원장을 받지 못했습니다(로컬만 사용):", exc, flush=True)
+    ledger = read_ledger(ledger_path)
+    ledger, added = append_estimate(ledger, result, run_id)
+    ledger, scored = score_ledger(ledger, profit_series, result.get("provisional"))
+    ledger.to_csv(ledger_path, index=False)
+    print(f"  추정 원장: {len(ledger)}행 (이번에 추가 {int(added)}건, 채점 {scored}건)", flush=True)
+    result["ledger_html"] = render_ledger_block(ledger, args.target)
+
     fragment = render_fragment(result)
     (out_dir / "earnings.json").write_text(json.dumps(result, ensure_ascii=False, indent=2, default=str), encoding="utf-8")
     (out_dir / "earnings.html").write_text(fragment, encoding="utf-8")
@@ -727,6 +991,9 @@ def main():
         if result.get("cli_info", {}).get("fresh") and cli_cache.exists():
             github_pages.publish("macro_history/cli_g20.csv", cli_cache.read_text(encoding="utf-8"),
                                  token, f"macro: cli_g20 ({result['cli_info'].get('last')})")
+        github_pages.publish(ledger_name, ledger_path.read_text(encoding="utf-8"), token,
+                             f"earnings ledger: {args.target} ({result['quarter_code']})")
+        print(f"발행 {ledger_name}")
         for name in ("earnings.html", "earnings.json"):
             sha = github_pages.publish(f"docs/{args.target}/{name}",
                                        (out_dir / name).read_text(encoding="utf-8"),

@@ -334,3 +334,69 @@ class CustomsSourceTests(unittest.TestCase):
                 os.environ.pop("DATA_GO_KR_KEY", None)
             else:
                 os.environ["DATA_GO_KR_KEY"] = saved
+
+
+class EarningsLedgerTests(unittest.TestCase):
+    """8절 추정도 원장에 남기고 실제가 나오면 채점한다."""
+
+    def result(self, k=2, point=122e12):
+        return {"target": "samsung", "quarter_code": "2026Q3", "months_used": k,
+                "months_included": "7월, 8월", "point": point, "low": 118e12, "high": 128e12,
+                "last_actual": 89e12,
+                "evaluation": {"beats_baselines": True, "mae_model": 4.3e12,
+                               "mae_random_walk": 5.6e12, "mae_seasonal_naive": 11.7e12,
+                               "n": 22, "shrink_slope": .5}}
+
+    def test_one_row_per_quarter_and_month_count(self):
+        ledger = ef.read_ledger(Path(tempfile.mkdtemp()) / "none.csv")
+        ledger, added = ef.append_estimate(ledger, self.result(), "r1")
+        self.assertTrue(added)
+        ledger, again = ef.append_estimate(ledger, self.result(point=999e12), "r2")
+        self.assertFalse(again, "같은 (분기, 반영 개월)은 첫 추정만 남아야 한다")
+        self.assertEqual(len(ledger), 1)
+        self.assertEqual(ledger["point"].iloc[0], 122e12)     # 나중 값으로 덮이지 않는다
+        ledger, added3 = ef.append_estimate(ledger, self.result(k=3), "r3")
+        self.assertTrue(added3)
+        self.assertEqual(len(ledger), 2)
+
+    def test_confirmed_overwrites_provisional_and_is_final(self):
+        ledger = ef.read_ledger(Path(tempfile.mkdtemp()) / "none.csv")
+        ledger, _ = ef.append_estimate(ledger, self.result(), "r1")
+        ledger, n = ef.score_ledger(ledger, pd.Series(dtype=float), {"2026Q3": 120e12})
+        self.assertEqual((n, ledger["actual_source"].iloc[0]), (1, "provisional"))
+        confirmed = pd.Series({pd.Period("2026Q3", freq="Q"): 118e12})
+        ledger, n = ef.score_ledger(ledger, confirmed, {"2026Q3": 120e12})
+        self.assertEqual((n, ledger["actual_source"].iloc[0]), (1, "confirmed"))
+        self.assertAlmostEqual(ledger["actual"].iloc[0], 118e12)
+        self.assertAlmostEqual(ledger["error"].iloc[0], 4e12)
+        ledger, n = ef.score_ledger(ledger, confirmed, {})
+        self.assertEqual(n, 0, "확정치로 채점한 행은 다시 건드리지 않는다")
+
+    def test_round_trip_through_csv_keeps_numbers(self):
+        tmp = Path(tempfile.mkdtemp()) / "l.csv"
+        ledger = ef.read_ledger(tmp)
+        ledger, _ = ef.append_estimate(ledger, self.result(), "r1")
+        ledger.to_csv(tmp, index=False)
+        again = ef.read_ledger(tmp)
+        self.assertEqual(again["point"].iloc[0], 122e12)
+        self.assertEqual(int(again["months_used"].iloc[0]), 2)
+
+
+class ProvisionalDisclosureTests(unittest.TestCase):
+    """잠정실적 공시는 확정치보다 5주 빠르지만 본문을 읽어야 해서 불안정하다."""
+
+    def test_parses_amount_with_a_declared_unit(self):
+        html_text = ('<table><tr><td>단위 : 억원</td></tr>'
+                     '<tr><td>영업이익</td><td>1,222,000</td><td>895,000</td></tr></table>')
+        self.assertAlmostEqual(ef.parse_provisional_amount(html_text), 122.2e12)
+
+    def test_refuses_without_a_unit_or_without_the_line(self):
+        self.assertIsNone(ef.parse_provisional_amount("<p>영업이익 1,222,000</p>"))
+        self.assertIsNone(ef.parse_provisional_amount("단위 : 억원 매출액 900,000"))
+
+    def test_picks_only_provisional_filings(self):
+        got = ef.find_provisional([
+            {"report_nm": "연결재무제표기준영업(잠정)실적(공정공시)", "rcept_dt": "20261007"},
+            {"report_nm": "분기보고서 (2026.09)", "rcept_dt": "20261114"},
+        ])
+        self.assertEqual([d["rcept_dt"] for d in got], ["20261007"])

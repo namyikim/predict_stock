@@ -63,6 +63,11 @@ CLI_FEATURES = ["cli_level", "cli_change_3m"]
 # 학습되는 계수가 하나뿐이라 과적합 위험이 낮고, 개별 지표의 잡음이 서로 상쇄된다.
 CYCLE_COMPONENTS = ["exports_daily_yoy", "macro_leading_change_3m", "nsi_change_20d", "term_spread"]
 BOOTSTRAP_B, SEED = 1000, 42
+# 판정에 필요한 최소 독립 표본 수. 겹치는 h개월 타깃은 h개월마다 하나씩만 독립이다.
+# 이 하한이 없을 때 SK하이닉스 12개월이 독립 표본 6개로 'MAE 72.3% vs 73.0%'를 우위로 선언했다.
+# 그 정도 표본에서는 블록 부트스트랩 신뢰구간도 믿을 수 없다. 미달이면 점 예측을 내지 않고
+# 판정 불가로 적는다 — 최종 평가 구간을 따로 떼기에는 표본이 애초에 부족하다.
+MIN_INDEPENDENT = 20
 
 
 # ---------------------------------------------------------------------------
@@ -241,15 +246,20 @@ def evaluate(f, cols, h):
     err_zero = np.abs(yy[half:])
     diff = err_model - err_zero
     lo, hi = block_bootstrap_ci(len(diff), lambda i: float(diff[i].mean()), block=h)
+    enough = (n // h) >= MIN_INDEPENDENT
     out.update(
         corr_spearman=spearman(pp, yy),
         sign_hit=float(np.mean(np.sign(pp) == np.sign(yy))),
         shrink_slope=slope,
         mae_model=float(err_model.mean()), mae_zero=float(err_zero.mean()),
         mae_diff=float(diff.mean()), mae_diff_lo=float(lo), mae_diff_hi=float(hi),
-        beats_zero=bool(np.isfinite(hi) and hi < 0),
+        beats_zero=bool(enough and np.isfinite(hi) and hi < 0),
+        enough_samples=bool(enough),
         n_evaluation=int(len(diff)),
     )
+    if not enough:
+        out["note"] = (f"독립 표본 {n // h}개로 판정에 필요한 {MIN_INDEPENDENT}개에 못 미칩니다 "
+                       "— 우위 여부를 말하지 않습니다")
     return out, oof
 
 
@@ -743,7 +753,8 @@ def render_fragment(result):
         if "mae_model" not in ev:
             body += f'<tr><td {TD}>{label}</td><td {TDR} colspan="6">{e(ev.get("note", "표본 부족"))}</td></tr>'
             continue
-        verdict = ("<b style='color:#1e6b34'>0% 기준선을 이김</b>" if ev["beats_zero"] else "동률(CI가 0 포함)")
+        verdict = ("<b style='color:#1e6b34'>0% 기준선을 이김</b>" if ev["beats_zero"]
+                   else ("판정 불가(표본 부족)" if not ev.get("enough_samples", True) else "동률(CI가 0 포함)"))
         _corr = ev.get("corr_spearman")
         body += (f'<tr><td {TD}>{label}</td><td {TDR}>{ev["n_evaluation"]}({ev["n_independent"]})</td>'
                  f'<td {TDR}>{"—" if _corr is None or not np.isfinite(_corr) else format(_corr, ".2f")}</td><td {TDR}>{ev["sign_hit"] * 100:.0f}%</td>'
@@ -847,7 +858,9 @@ def render_fragment(result):
         if ev.get("beats_zero") and fc.get("point") is not None:
             lines.append(f'<li><b>{label}</b>: {pct(fc["point"])} (축소계수 {ev["shrink_slope"]:.2f} 적용, 원시 {pct(fc["raw"])})</li>')
         else:
-            lines.append(f'<li><b>{label}</b>: 점 예측하지 않음 — 워크포워드에서 0% 기준선 대비 우위가 확인되지 않았습니다. '
+            reason = (ev.get("note") if not ev.get("enough_samples", True)
+                      else "워크포워드에서 0% 기준선 대비 우위가 확인되지 않았습니다")
+            lines.append(f'<li><b>{label}</b>: 점 예측하지 않음 — {e(str(reason))}. '
                          f'위 국면별 분포와 유사 시기를 참고하세요.</li>')
     parts.append('<ul style="font-size:13px;margin:4px 0 0;padding-left:20px">' + "".join(lines) + '</ul>')
     parts.append(f'<div style="font-size:11px;color:#8a9199;margin-top:8px">월 1회 갱신 · 시세 {e(r["price_last"])}까지 · '

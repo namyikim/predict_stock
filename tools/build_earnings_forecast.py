@@ -861,8 +861,13 @@ def analyse(target, out_dir, fetch=True):
         ev_n = evaluate(oof_n)
         pt_n, ntr = fit_live(f, live_quarter, target="profit_next", features=feats, gap=1)
         next_results[name] = {"evaluation": ev_n, "raw_point": pt_n, "n_train": ntr}
-    chosen = ("with_cli" if cli_active and next_results["with_cli"]["evaluation"].get("mae_model", np.inf)
-              < next_results["without_cli"]["evaluation"].get("mae_model", np.inf) else "without_cli")
+    # 두 모델의 MAE 를 비교해 좋은 쪽을 고르면, 그 MAE 를 그대로 성능으로 보고하는 순간
+    # 선택과 평가가 같은 표본에서 이뤄진다(분기 40개 남짓이라 편향이 크다). 그래서 성능 순위로
+    # 고르지 않고 규칙으로 정한다: 기본은 단순한 쪽(CLI 제외)이고, 그것이 기준선을 못 이기는데
+    # CLI 포함이 이길 때만 CLI 를 쓴다. 두 모델의 수치는 어느 쪽을 골랐든 표에 함께 보여 준다.
+    simple_ok = next_results["without_cli"]["evaluation"].get("beats_baselines")
+    cli_ok = cli_active and next_results["with_cli"]["evaluation"].get("beats_baselines")
+    chosen = "with_cli" if (not simple_ok and cli_ok) else "without_cli"
     nr = next_results[chosen]
     next_point = nr["raw_point"] if nr["evaluation"].get("beats_baselines") and nr["raw_point"] is not None else None
     next_block = {

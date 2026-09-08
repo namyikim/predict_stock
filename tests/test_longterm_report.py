@@ -349,3 +349,34 @@ class OptionalSourcesActuallyLoadTests(unittest.TestCase):
                             f"{name} 가 켜지지 않았습니다: {result['extra_info'][name].get('reason')}")
         self.assertTrue(result["cycle_active"], "합성 사이클 점수가 만들어지지 않았습니다")
         self.assertEqual(len(result["cycle_components"]), 4)
+
+
+class SampleSizeGateTests(unittest.TestCase):
+    """표본이 적으면 우위를 선언하지 않는다.
+
+    하한이 없을 때 SK하이닉스 12개월이 독립 표본 6개로 'MAE 72.3% vs 73.0%'를 우위로 선언했다.
+    최종 평가 구간을 따로 떼기에는 표본이 애초에 부족하므로, 떼는 대신 판정을 보류한다.
+    """
+
+    def frame(self, quarters):
+        index = pd.date_range("2000-01-31", periods=quarters, freq="ME")
+        rng = np.random.default_rng(0)
+        f = pd.DataFrame(index=index)
+        for column in ("mom_12m", "drawdown_36m"):
+            f[column] = rng.normal(0, 1, len(index))
+        f["fwd_12m"] = rng.normal(0, .1, len(index))
+        return f
+
+    def test_short_history_is_undecided_not_a_win(self):
+        f = self.frame(140)                       # 12개월 지평 독립 표본 10개 남짓
+        ev, _ = lt.evaluate(f, ["mom_12m", "drawdown_36m"], 12)
+        if "mae_model" in ev:
+            self.assertLess(ev["n_evaluation"] // 12, lt.MIN_INDEPENDENT)
+            self.assertFalse(ev["beats_zero"], "표본이 부족한데 우위로 판정했습니다")
+            self.assertFalse(ev["enough_samples"])
+            self.assertIn("독립 표본", ev["note"])
+
+    def test_gate_is_reported_in_the_fragment(self):
+        source = (ROOT / "tools" / "build_longterm_report.py").read_text(encoding="utf-8")
+        self.assertIn("판정 불가(표본 부족)", source)
+        self.assertIn("MIN_INDEPENDENT = 20", source)

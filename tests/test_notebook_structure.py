@@ -113,6 +113,10 @@ class NotebookStructureTests(unittest.TestCase):
         self.assertIn('"predicted_open"', self.source)
         self.assertIn("gap_sign_auc", self.source)
 
+    def test_report_labels_open_and_close_predictions_explicitly(self):
+        self.assertIn("시초가예측", self.source)
+        self.assertIn("종가예측", self.source)
+
     def test_report_reviews_prospective_ledger(self):
         # 보고서는 원장의 사전 예측만 채점한 결과를 보여주고, 축소 전 원시 예측을 원장에 남긴다.
         self.assertIn("review_ledger(daily, sam", self.source)

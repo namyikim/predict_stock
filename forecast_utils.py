@@ -507,7 +507,7 @@ def review_ledger(daily, bars, ensemble_model="Mean ensemble", windows=(20, 60),
             alerts.append(f"방향 모델 열화: 최근 {w_max}일 log loss {d['mean_log_loss'].iloc[0]:.3f} > "
                           f"클래스빈도 기준선 {d['prior_log_loss'].iloc[0]:.3f}")
         for _, r in big[big["kind"].isin(["open", "price"])].iterrows():
-            label = "시초가" if r["kind"] == "open" else f"{int(r['horizon_days'])}거래일 종가"
+            label = "시초가" if r["kind"] == "open" else f"{int(r['horizon_days'])}거래일 종가예측"
             if r["n"] < min_alert_n:
                 continue
             if np.isfinite(r["interval_coverage"]) and r["interval_coverage"] < 0.70:
@@ -578,7 +578,7 @@ def ledger_section_html(review, ensemble_name, updated_note=""):
         r = p1.iloc[0]
         pred = (f'{_fmt_num(r["predicted_close"], "won")} ({_fmt_num(r["predicted_return"], "pct")})'
                 if pd.notna(r["predicted_close"]) else f'{_fmt_num(r["center_close"], "won")} (신호 없음)')
-        rows += _row("1거래일 종가", pred,
+        rows += _row("1거래일 종가예측", pred,
                      f'{_fmt_num(r["actual_close"], "won")} ({_fmt_num(r["actual_return"], "pct")} = 갭 {_fmt_num(r["actual_gap"], "pct")} + 세션 {_fmt_num(r["actual_session"], "pct")})',
                      f'구간 {"적중" if r["interval_hit"] == 1 else "이탈"}', r["interval_hit"] == 1)
     table = ('<div style="overflow-x:auto"><table style="width:100%;min-width:520px;border-collapse:collapse;'
@@ -594,7 +594,7 @@ def ledger_section_html(review, ensemble_name, updated_note=""):
             label, detail = "종가 방향", (f'적중률 {r["hit_rate"]:.0%} (보합 비중 {r["flat_share"]:.0%}) · '
                                         f'log loss {r["mean_log_loss"]:.3f} vs 빈도기준 {r["prior_log_loss"]:.3f}')
         else:
-            label = "시초가(갭)" if r["kind"] == "open" else f'{int(r["horizon_days"])}거래일 종가'
+            label = "시초가예측(갭)" if r["kind"] == "open" else f'{int(r["horizon_days"])}거래일 종가예측'
             detail = (f'구간 적중 {_fmt_num(r["interval_coverage"], "num") if pd.isna(r["interval_coverage"]) else format(r["interval_coverage"], ".0%")} · '
                       f'MAE {r["mae_return"]:.2%} vs 변화없음 {r["zero_mae_return"]:.2%} · 신호 {int(r["signal_days"])}/{int(r["n"])}일')
             if pd.notna(r["realized_slope"]):

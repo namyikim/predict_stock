@@ -60,6 +60,21 @@ jobs:
       - name: 의존성 설치
         run: pip install pandas==3.0.5 numpy==2.5.2 yfinance==1.7.0
 
+      # 수동 실행에서 종목을 고를 수 있게 한다. 예약 실행에는 입력이 없어 둘 다 대상이다.
+      - name: 이번 종목이 대상인지 확인
+        id: gate
+        env:
+          WANTED: ${{ inputs.targets }}
+          THIS: ${{ matrix.target }}
+        run: |
+          wanted="${WANTED:-samsung,sk_hynix}"
+          if printf ',%s,' "$wanted" | grep -q ",$THIS,"; then
+            echo "run=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "run=false" >> "$GITHUB_OUTPUT"
+            echo "$THIS 은(는) 이번 실행 대상이 아닙니다."
+          fi
+
       - name: 채점·보고서 절 갱신
         if: steps.gate.outputs.run == 'true'
         env:

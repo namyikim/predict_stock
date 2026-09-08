@@ -147,3 +147,23 @@ class OpenScoringTimeTests(unittest.TestCase):
     def test_nothing_is_scored_before_the_bell(self):
         self.assertEqual(self.status_at("2026-09-07T23:50:00Z"),   # 08:50 KST
                          {"open": "pending", "direction": "pending"})
+
+
+class WorkflowStepTests(unittest.TestCase):
+    """`if: steps.X.outputs...` 가 있으면 그 X 스텝이 실제로 있어야 한다.
+
+    2026-09-08에 경량화하면서 gate 스텝을 지웠는데 조건은 남겨, 워크플로가 초록불로 끝나면서
+    채점을 한 번도 하지 않았다(원장에 score 커밋이 전무했다). 조용한 실패라 눈치채기 어렵다.
+    """
+
+    def test_every_step_condition_refers_to_an_existing_step(self):
+        import re
+        import yaml
+        root = Path(__file__).resolve().parents[1]
+        for path in sorted((root / ".github" / "workflows").glob("*.yml")):
+            workflow = yaml.safe_load(path.read_text(encoding="utf-8"))
+            for job_name, job in (workflow.get("jobs") or {}).items():
+                ids = {s.get("id") for s in job.get("steps", []) if s.get("id")}
+                for step in job.get("steps", []):
+                    for ref in re.findall(r"steps\.([A-Za-z0-9_-]+)\.outputs", str(step.get("if", ""))):
+                        self.assertIn(ref, ids, f"{path.name}:{job_name} — 없는 스텝 '{ref}'를 참조합니다")

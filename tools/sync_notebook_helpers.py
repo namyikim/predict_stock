@@ -26,13 +26,17 @@ def helper_source(tag):
 def sync():
     path = ROOT / "samsung_direction_model_colab.ipynb"
     notebook = json.loads(path.read_text(encoding="utf-8"))
-    for tag in ["forecast_utils", "macro_utils"]:
+    for tag in ["forecast_utils", "macro_utils", "report_html"]:
         source = helper_source(tag)
         cells = [c for c in notebook["cells"] if tag in c.get("metadata", {}).get("tags", [])]
         if not cells:
+            # 새 헬퍼 셀은 기존 헬퍼 셀들 바로 뒤에 끼운다(설정 셀보다 앞이어야 한다).
+            tagged = [i for i, c in enumerate(notebook["cells"])
+                      if set(c.get("metadata", {}).get("tags", [])) & {"forecast_utils", "macro_utils", "report_html"}]
+            position = (max(tagged) + 1) if tagged else 4
             cell = {"cell_type": "code", "execution_count": None,
                     "metadata": {"tags": [tag]}, "outputs": [], "source": []}
-            notebook["cells"].insert(4, cell)
+            notebook["cells"].insert(position, cell)
         else:
             cell = cells[0]
         cell["source"] = source.splitlines(keepends=True)

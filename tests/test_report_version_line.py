@@ -50,7 +50,9 @@ class ReportsUseItTests(unittest.TestCase):
         import json
         nb = json.loads((ROOT / "samsung_direction_model_colab.ipynb").read_text(encoding="utf-8"))
         source = "\n".join("".join(c["source"]) for c in nb["cells"])
-        self.assertIn("def _code_version():", source)
+        # 구현은 report_html.code_version 에 있고 노트북은 전역을 묶어 넘기는 어댑터만 둔다.
+        self.assertIn("def code_version(repo, branch, token=None):", source)
+        self.assertIn("_code_version = lambda: code_version(GITHUB_REPO, GITHUB_BRANCH, github_token())", source)
         self.assertIn("version_html", source)
         self.assertIn('f\'{version_html}\'', source)
 

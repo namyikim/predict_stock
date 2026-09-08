@@ -125,14 +125,24 @@ class EasySummaryTests(unittest.TestCase):
         source = next("".join(c["source"]) for c in notebook["cells"]
                       if "def build_summary():" in "".join(c.get("source", [])))
         tree = ast.parse(source)
+        # _load_summary_data 는 report_html.load_summary_data 를 감싸는 어댑터라 여기서는 직접 준다.
         nodes = [n for n in tree.body if
-                 (isinstance(n, ast.FunctionDef) and n.name == "_load_summary_data") or
                  (isinstance(n, ast.Assign) and any(isinstance(t, ast.Name) and t.id == "easy_html"
                                                   for t in n.targets))]
+
+        def summary_loader(fragment):
+            def load(_name):
+                try:
+                    payload = json.loads(fragment or "{}")
+                    return payload if isinstance(payload, dict) else {}
+                except (TypeError, ValueError):
+                    return {}
+            return load
         for name in ("삼성전자", "SK하이닉스"):
             for fragment in (None, "not json", "[]", '{"quarter":"2026년 3분기"}'):
                 with self.subTest(name=name, fragment=fragment):
                     ns = dict(json=json, _load_fragment=lambda _: fragment,
+                              _load_summary_data=summary_loader(fragment),
                               easy_summary_html=forecast_utils.easy_summary_html,
                               TARGET_NAME=name, prediction_date=pd.Timestamp("2026-09-09"),
                               last_samsung_date=pd.Timestamp("2026-09-08"),

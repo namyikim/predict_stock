@@ -9,11 +9,10 @@ GitHub의 cron은 밀리거나 아예 건너뛴다(2026-09-08 06:30 예정 실�
         → GITHUB_OUTPUT 에 run=true|false 를 쓰고, 이유를 표준출력에 남긴다.
 """
 import argparse
+import csv
 import os
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
-
-import pandas as pd
 
 KST = timezone(timedelta(hours=9))
 
@@ -29,18 +28,24 @@ def already_recorded(path, today, now=None):
     before_open = (now.hour, now.minute) < (9, 0)
     if not Path(path).exists():
         return False, "원장 파일이 없습니다"
-    log = pd.read_csv(path, dtype=str)
+    with open(path, newline="", encoding="utf-8-sig") as handle:
+        reader = csv.DictReader(handle)
+        columns = reader.fieldnames or []
+        rows = list(reader)
     for column in ("prediction_date", "is_prospective"):
-        if column not in log.columns:
+        if column not in columns:
             return False, f"원장에 {column} 열이 없습니다"
-    same_day = log["prediction_date"].astype(str).str.slice(0, 10) == today
-    prospective = log["is_prospective"].astype(str).str.strip().str.lower().isin(("true", "1", "yes"))
-    kind = log["kind"].astype(str) == "direction" if "kind" in log.columns else True
-    hit = log[same_day & prospective & kind] if before_open else log[same_day & kind]
-    if hit.empty:
+    hit = []
+    for row in rows:
+        same_day = str(row.get("prediction_date", ""))[:10] == today
+        prospective = str(row.get("is_prospective", "")).strip().lower() in ("true", "1", "yes")
+        is_direction = "kind" not in columns or str(row.get("kind", "")) == "direction"
+        if same_day and is_direction and (prospective or not before_open):
+            hit.append(row)
+    if not hit:
         return False, (f"{today} 사전 예측이 원장에 없습니다" if before_open
                        else f"{today} 기록이 원장에 없습니다(09:00 이후라 사전 예측은 못 만듭니다)")
-    run_id = hit["run_id"].iloc[0] if "run_id" in hit.columns else "?"
+    run_id = hit[0].get("run_id", "?") if "run_id" in columns else "?"
     label = "사전 예측이" if before_open else "기록이"
     return True, f"{today} {label} 이미 있습니다({len(hit)}행, run_id {run_id})"
 

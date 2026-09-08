@@ -1,0 +1,2 @@
+record_id,run_id,created_at_kst,target,quarter,months_used,months_included,point,low,high,raw_point,beats_baselines,mae_model,mae_random_walk,mae_seasonal_naive,n_eval,last_actual,status,actual,actual_source,error,ape,scored_at_kst
+sk_hynix:2026Q3:k1,20260908T203120,2026-09-08 20:31,sk_hynix,2026Q3,1,7월,83165648895166.56,81819835007503.42,86364059740522.61,,True,2176576108114.9155,3580497090909.091,7933173954545.454,22,60542608000000.0,pending,,,,,

@@ -263,3 +263,15 @@ class CycleScoreTests(unittest.TestCase):
         self.assertEqual(got["n_inverted"] + got["n_normal"], len(got["rows"]))
         for row in got["rows"]:
             self.assertEqual(row["inverted"], row["spread_at_k"] <= 0)
+
+
+class FallbackFetchTests(unittest.TestCase):
+    """외부 API가 막힌 날을 대비해, 쓰는 자료는 모두 저장소 보관본을 받아 둔다."""
+
+    def test_every_optional_source_has_a_cache_pull(self):
+        source = (ROOT / "tools" / "build_longterm_report.py").read_text(encoding="utf-8")
+        for name in ("leading_cycle.csv", "semiconductor_exports.csv", "cli_g20.csv",
+                     "news_sentiment.csv", "term_spread.csv"):
+            self.assertIn(f'"{name}"', source, name)
+        # 파일마다 따로 받아야 하나가 실패해도 나머지가 들어온다.
+        self.assertIn("except Exception:\n            continue", source)

@@ -846,17 +846,25 @@ def analyse(target, out_dir, fetch=True):
     spec = TARGETS[target]
     cache = out_dir / "cache"
     monthly = monthly_prices(spec["ticker"], cache, fetch=fetch)
-    # KOSIS가 막히면 저장소에 보관된 마지막 성공분을 쓴다(일일 보고서가 매일 갱신해 둔다).
+    # 외부 API가 막히면 저장소에 보관된 마지막 성공분을 쓴다(다른 실행이 갱신해 둔다).
+    # 파일마다 따로 받는다 — 하나가 없거나 실패해도 나머지는 들어와야 한다.
     fallback_dir = out_dir / "macro_fallback"
+    fallback_dir.mkdir(parents=True, exist_ok=True)
     try:
         tok = github_pages.token()
-        fallback_dir.mkdir(parents=True, exist_ok=True)
-        for series in ("leading_cycle", "semiconductor_exports"):
-            text = github_pages.fetch(f"macro_history/{series}.csv", tok)
+    except Exception:
+        tok = None
+    loaded = []
+    for name in ("leading_cycle.csv", "semiconductor_exports.csv", "cli_g20.csv",
+                 "news_sentiment.csv", "term_spread.csv"):
+        try:
+            text = github_pages.fetch(f"macro_history/{name}", tok)
             if text:
-                (fallback_dir / f"{series}.csv").write_text(text, encoding="utf-8")
-    except Exception as exc:
-        print("  월별 지표 사본을 받지 못했습니다(계속 진행):", exc, flush=True)
+                (fallback_dir / name).write_text(text, encoding="utf-8")
+                loaded.append(name)
+        except Exception:
+            continue
+    print("  보관본:", ", ".join(loaded) if loaded else "(없음)", flush=True)
     macro, macro_info = load_macro_data(out_dir, pd.Timestamp(START) - pd.DateOffset(years=2),
                                         pd.Timestamp.now(tz="Asia/Seoul").date(), use_cache=not fetch,
                                         fallback_dir=fallback_dir)

@@ -33,7 +33,10 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "tools"))
 import github_pages  # noqa: E402
-from macro_utils import cli_features, load_cli, load_macro_data, macro_features  # noqa: E402
+from macro_utils import (  # noqa: E402
+    cli_features, daily_average, load_cli, load_macro_data, load_nsi, load_term_spread,
+    macro_features, monthly_mean_by_month_end, nsi_features,
+)
 
 KST = timezone(timedelta(hours=9))
 TARGETS = {
@@ -53,8 +56,12 @@ FEATURES = [
     ("drawdown_36m", "36개월 고점 대비 낙폭"),
     ("cli_level", "G20 경기선행지수(100 기준)"),
     ("cli_change_3m", "G20 선행지수 3개월 변화"),
+    ("cycle_score", "합성 사이클 점수(일평균 수출 YoY·선행지수 변화·뉴스심리 변화·금리차, 등가중)"),
 ]
 CLI_FEATURES = ["cli_level", "cli_change_3m"]
+# 합성 점수의 구성 요소. 각각 확장 창 z-score로 표준화한 뒤 가중치 없이 평균한다.
+# 학습되는 계수가 하나뿐이라 과적합 위험이 낮고, 개별 지표의 잡음이 서로 상쇄된다.
+CYCLE_COMPONENTS = ["exports_daily_yoy", "macro_leading_change_3m", "nsi_change_20d", "term_spread"]
 BOOTSTRAP_B, SEED = 1000, 42
 
 
@@ -110,7 +117,14 @@ def prepend_history(monthly, storage):
     return pd.concat([old * ratio, monthly])
 
 
-def build_frame(monthly, macro, cli=None):
+def expanding_z(series, min_periods=60):
+    """확장 창 z-score. 그 시점까지의 평균·표준편차만 쓴다(전체 표본 표준화는 미래를 본다)."""
+    mean = series.expanding(min_periods).mean()
+    std = series.expanding(min_periods).std().replace(0, np.nan)
+    return (series - mean) / std
+
+
+def build_frame(monthly, macro, cli=None, nsi=None, spread=None):
     """월말 인덱스의 특징·타깃 프레임. 모든 특징은 그 월말까지의 자료만 쓴다."""
     monthly = monthly[monthly > 0].dropna()
     idx = monthly.index
@@ -137,6 +151,25 @@ def build_frame(monthly, macro, cli=None):
         cf = cli_features(cli, idx)          # 참조월+1개월 20일 이후에만 보인다
         for col in CLI_FEATURES:
             f[col] = cf[col].to_numpy()
+
+    # ---- 합성 사이클 점수의 구성 요소 -----------------------------------------
+    # 일평균 수출 YoY: 월 합계를 조업일수로 나눠 달력 효과를 없앤 뒤 전년 동월 대비. 월+2 지연은
+    # macro_features가 이미 반영한 원달러 수출 로그값을 쓰지 않고, 같은 지연을 직접 건다.
+    if "semiconductor_exports" in macro:
+        da = daily_average(macro["semiconductor_exports"]).set_index("month")["value"]
+        yoy = (da / da.shift(12) - 1)
+        yoy.index = pd.DatetimeIndex(yoy.index) + pd.DateOffset(months=2)   # 월+2 발표 지연
+        f["exports_daily_yoy"] = yoy.reindex(idx, method="ffill", tolerance=pd.Timedelta(days=45)).to_numpy()
+    if nsi is not None and len(nsi):
+        nf = nsi_features(nsi, idx)            # 지수 날짜+14일 이후에만 보인다
+        f["nsi_change_20d"] = nf["nsi_change_20d"].to_numpy()
+    if spread is not None and len(spread):
+        f["term_spread"] = monthly_mean_by_month_end(spread, idx).to_numpy()
+    have = [c for c in CYCLE_COMPONENTS if c in f.columns]
+    if len(have) >= 3:
+        z = pd.concat([expanding_z(f[c]) for c in have], axis=1)
+        f["cycle_score"] = z.mean(axis=1, skipna=False)
+        f["cycle_components"] = len(have)
     for label, h in HORIZONS.items():
         f[f"fwd_{h}m"] = logp.shift(-h) - logp
     return f
@@ -353,6 +386,42 @@ def phase_duration_outlook(f, min_len=3, min_sample=3):
         out["reason"] = (f"지금까지 {current['months']}개월 이어졌는데, 과거 같은 국면 {len(same)}번 중 "
                          f"이보다 길었던 것이 {len(survived)}번뿐이라 잔여 기간을 말할 표본이 없습니다.")
     return out
+
+
+def phase_duration_by_spread(f, min_len=3):
+    """같은 국면에서 '같은 개월째'의 장단기 금리차가 역전(≤0)이었는지로 나눠 잔여 기간을 본다.
+
+    모델이 아니라 서술 통계다. 표본이 몇 개 안 되므로 숫자보다 '역전이었던 구간이 더 빨리 끝났나'만
+    읽어야 한다. 금리차는 매일 나오고 소급 수정이 없어 이런 조건으로 쓰기에 가장 깨끗하다.
+    """
+    if "term_spread" not in f or "phase" not in f:
+        return None
+    episodes = phase_episodes(f, min_len)
+    if len(episodes) < 2:
+        return None
+    current = episodes[-1]
+    k = current["months_so_far"] if "months_so_far" in current else current["months"]
+    spread = f["term_spread"]
+    now_spread = spread.iloc[-1] if pd.notna(spread.iloc[-1]) else None
+    rows = []
+    for ep in episodes[:-1]:
+        if ep["phase"] != current["phase"] or ep["months"] <= k:
+            continue
+        start = pd.Timestamp(ep["start"] + "-01") + pd.offsets.MonthEnd(0)
+        at_k = start + pd.DateOffset(months=k - 1) + pd.offsets.MonthEnd(0)
+        if at_k not in spread.index or pd.isna(spread.loc[at_k]):
+            continue
+        rows.append({"start": ep["start"], "end": ep["end"], "months": ep["months"],
+                     "remaining": ep["months"] - k, "spread_at_k": float(spread.loc[at_k]),
+                     "inverted": bool(spread.loc[at_k] <= 0)})
+    if not rows:
+        return None
+    inverted = [r["remaining"] for r in rows if r["inverted"]]
+    normal = [r["remaining"] for r in rows if not r["inverted"]]
+    return {"months_so_far": k, "now_spread": now_spread, "now_inverted": (now_spread is not None and now_spread <= 0),
+            "rows": rows,
+            "inverted_median": float(np.median(inverted)) if inverted else None, "n_inverted": len(inverted),
+            "normal_median": float(np.median(normal)) if normal else None, "n_normal": len(normal)}
 
 
 def render_duration_chart(outlook, current_months):
@@ -706,6 +775,55 @@ def render_fragment(result):
     else:
         parts.append(f'<div style="font-size:13px;color:#6b7178">미포함 — {e(str(r.get("cli_info", {}).get("reason", "")))}</div>')
 
+    # 합성 사이클 점수 효과
+    parts.append('<h4 style="font-size:14px;margin:18px 0 6px">합성 사이클 점수를 넣으면 나아지는가</h4>')
+    if r.get("cycle_active"):
+        names = {"exports_daily_yoy": "일평균 수출 YoY", "macro_leading_change_3m": "선행지수 3개월 변화",
+                 "nsi_change_20d": "뉴스심리 20일 변화", "term_spread": "장단기 금리차(10년-3년)"}
+        parts.append('<div style="font-size:12px;color:#6b7178;margin-bottom:6px">'
+                     + " · ".join(names.get(c, c) for c in r["cycle_components"])
+                     + '를 각각 확장 창 z-score로 표준화해 <b>가중치 없이 평균</b>한 지표 하나입니다. '
+                     '지표를 하나씩 더하면 표본(12개월 지평 독립 표본 약 13개)에 비해 계수가 너무 많아지므로, '
+                     '학습되는 계수가 하나뿐인 합성 점수로 묶었습니다. 같은 날짜에서 점수를 뺀 모델과 비교합니다.</div>')
+        body = ""
+        for label, h in HORIZONS.items():
+            ab = r["cycle_ablation"].get(str(h))
+            if not ab or ab["mae_with"] is None or ab["mae_without"] is None:
+                continue
+            better = ab["mae_with"] < ab["mae_without"]
+            body += (f'<tr><td {TD}>{label}</td>'
+                     f'<td {TDR}>{ab["mae_with"] * 100:.1f}%</td><td {TDR}>{ab["mae_without"] * 100:.1f}%</td>'
+                     f'<td {TDR}>{(ab["mae_with"] - ab["mae_without"]) * 100:+.2f}%p</td>'
+                     f'<td {TDR}>{"조금 낫다" if better else "낫지 않다"}</td></tr>')
+        parts.append(table(f'<th {TH}>지평</th><th {THR}>MAE (점수 포함)</th><th {THR}>MAE (점수 제외)</th>'
+                           f'<th {THR}>차이</th><th {THR}>판정</th>', body, 520))
+        parts.append('<div style="font-size:11px;color:#8a9199;margin-top:4px">차이가 1%p 안팎이면 동률로 읽으세요. '
+                     '일평균 수출은 월+2, 뉴스심리는 지수 날짜+14일 지연을 반영했고 금리차는 지연이 없습니다. '
+                     '선행지수·뉴스심리는 소급 수정되므로 이 표도 낙관적입니다.</div>')
+    else:
+        missing = [k for k, v in r.get("extra_info", {}).items() if not v.get("enabled")]
+        parts.append(f'<div style="font-size:13px;color:#6b7178">구성 요소가 부족해 만들지 않았습니다'
+                     f'{" — 빠진 자료: " + ", ".join(missing) if missing else ""}.</div>')
+
+    # 금리차 조건부 잔여 기간
+    ds = r.get("duration_by_spread")
+    if ds:
+        parts.append('<h4 style="font-size:14px;margin:18px 0 6px">같은 국면, 같은 개월째에 금리차가 역전됐던 경우와 아니었던 경우</h4>')
+        now_text = ("지금 금리차 " + (f'{ds["now_spread"]:+.2f}%p' if ds["now_spread"] is not None else "—")
+                    + (" (역전)" if ds["now_inverted"] else " (정상)"))
+        parts.append(f'<div style="font-size:13px">{now_text}. 과거 같은 국면 {ds["months_so_far"]}개월째에 '
+                     f'금리차가 역전이었던 {ds["n_inverted"]}번은 그 뒤 중앙값 '
+                     f'{"—" if ds["inverted_median"] is None else format(ds["inverted_median"], ".0f") + "개월"}, '
+                     f'정상이었던 {ds["n_normal"]}번은 '
+                     f'{"—" if ds["normal_median"] is None else format(ds["normal_median"], ".0f") + "개월"} 더 갔습니다.</div>')
+        body = "".join(f'<tr><td {TD}>{e(row["start"])} ~ {e(row["end"])}</td><td {TDR}>{row["months"]}</td>'
+                       f'<td {TDR}>{row["spread_at_k"]:+.2f}%p</td><td {TDR}>{"역전" if row["inverted"] else "정상"}</td>'
+                       f'<td {TDR}>{row["remaining"]}개월</td></tr>' for row in ds["rows"])
+        parts.append(table(f'<th {TH}>구간</th><th {THR}>총 기간</th><th {THR}>{ds["months_so_far"]}개월째 금리차</th>'
+                           f'<th {THR}>상태</th><th {THR}>그 뒤 잔여</th>', body, 520))
+        parts.append('<div style="font-size:11px;color:#8a9199;margin-top:4px">모델이 아니라 서술 통계입니다. '
+                     '표본이 몇 개 안 되므로 숫자보다 "역전이었던 구간이 더 빨리 끝났는가"만 읽으세요.</div>')
+
     # 점 예측
     parts.append('<h4 style="font-size:14px;margin:18px 0 6px">전망</h4>')
     lines = []
@@ -755,12 +873,29 @@ def analyse(target, out_dir, fetch=True):
         except Exception as exc:
             cli, cli_info = None, {"enabled": False, "reason": f"{type(exc).__name__}: {exc}"}
             print("  ⚠️ G20 CLI를 쓸 수 없어 빼고 진행합니다:", cli_info["reason"], flush=True)
-    f = build_frame(monthly, macro, cli)
+    nsi, spread = None, None
+    extra_info = {}
+    for name, loader in (("nsi", load_nsi), ("term_spread", load_term_spread)):
+        try:
+            frame_, info_ = loader(out_dir, "1998-01-01", datetime.now(KST).date(),
+                                   use_cache=not fetch, fallback_dir=fallback_dir)
+            extra_info[name] = {**info_, "enabled": True}
+            if name == "nsi":
+                nsi = frame_
+            else:
+                spread = frame_
+            print(f"  {name}: {info_['source']} · ~{info_['last']}", flush=True)
+        except Exception as exc:
+            extra_info[name] = {"enabled": False, "reason": f"{type(exc).__name__}: {exc}"}
+            print(f"  ⚠️ {name}을(를) 쓸 수 없어 빼고 진행합니다: {exc}", flush=True)
+    f = build_frame(monthly, macro, cli, nsi, spread)
     cols = [c for c, _ in FEATURES if c in f.columns and f[c].notna().mean() > 0.5]
     cli_active = all(c in cols for c in CLI_FEATURES)
     cols_no_cli = [c for c in cols if c not in CLI_FEATURES]
+    cycle_active = "cycle_score" in cols
+    cols_no_cycle = [c for c in cols if c != "cycle_score"]
 
-    evaluation, forecast, phases, ic, cli_ablation = {}, {}, {}, {}, {}
+    evaluation, forecast, phases, ic, cli_ablation, cycle_ablation = {}, {}, {}, {}, {}, {}
     for label, h in HORIZONS.items():
         ev, oof = evaluate(f, cols, h)
         evaluation[str(h)] = ev
@@ -769,6 +904,10 @@ def analyse(target, out_dir, fetch=True):
             ev_no, _ = evaluate(f, cols_no_cli, h)
             cli_ablation[str(h)] = {"mae_with": ev.get("mae_model"), "mae_without": ev_no.get("mae_model"),
                                     "corr_with": ev.get("corr_spearman"), "corr_without": ev_no.get("corr_spearman")}
+        if cycle_active:
+            ev_no, _ = evaluate(f, cols_no_cycle, h)
+            cycle_ablation[str(h)] = {"mae_with": ev.get("mae_model"), "mae_without": ev_no.get("mae_model"),
+                                      "corr_with": ev.get("corr_spearman"), "corr_without": ev_no.get("corr_spearman")}
         phases[str(h)] = phase_table(f, h)
         ic[str(h)] = feature_ic(f, cols, h)
         raw = float(oof.iloc[-1]) if pd.notna(oof.iloc[-1]) else None
@@ -794,6 +933,10 @@ def analyse(target, out_dir, fetch=True):
         "lead_lag": lead_lag(f),
         "duration": phase_duration_outlook(f),
         "cli_info": cli_info, "cli_active": cli_active, "cli_ablation": cli_ablation,
+        "cycle_active": cycle_active, "cycle_ablation": cycle_ablation,
+        "cycle_components": [c for c in CYCLE_COMPONENTS if c in f.columns],
+        "extra_info": extra_info,
+        "duration_by_spread": phase_duration_by_spread(f),
         "cli_lead_lag": lead_lag(f, a="cli_change_3m", b="macro_semiconductor_yoy") if cli_active else None,
         "chart_first": f.index[0].date().isoformat(),
         "generated_at": datetime.now(KST).strftime("%Y-%m-%d %H:%M KST"),
@@ -826,6 +969,17 @@ def main():
         print("phase:", result["current"]["phase"], "| similar:", result["similar"])
     if args.publish:
         tok = github_pages.token()
+        # 이번에 새로 받은 보조 자료를 '마지막 성공분'으로 남긴다(다음에 API가 막혀도 계속 돌 수 있게).
+        for name, key in (("cli_g20.csv", "cli_info"), ("news_sentiment.csv", None), ("term_spread.csv", None)):
+            cache = out_dir / "macro_cache" / name
+            info = result.get(key) if key else result.get("extra_info", {}).get(
+                "nsi" if name.startswith("news") else "term_spread", {})
+            if cache.exists() and (info or {}).get("fresh"):
+                try:
+                    github_pages.publish(f"macro_history/{name}", cache.read_text(encoding="utf-8"), tok,
+                                         f"macro: {name} ({(info or {}).get('last', '')})")
+                except Exception as exc:
+                    print(f"  사본 업로드 실패({name}):", exc, flush=True)
         for name in ("longterm.html", "longterm.json"):
             sha = github_pages.publish(f"docs/{args.target}/{name}", (out_dir / name).read_text(encoding="utf-8"),
                                        tok, f"longterm: {args.target} {result['as_of']}")

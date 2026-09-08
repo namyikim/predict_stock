@@ -618,3 +618,83 @@ def cli_features(frame, dates, release_day=CLI_RELEASE_DAY, max_age_days=CLI_MAX
     for col in ('cli_level', 'cli_change_3m', 'cli_change_6m'):
         out[col] = joined[col].where(valid).to_numpy()
     return out
+
+
+# ---------------------------------------------------------------------------
+# 장단기 금리차 (ECOS 시장금리 일별: 국고채 10년 - 3년)
+# ---------------------------------------------------------------------------
+# 매일 나오고, 발표 지연이 없고, 소급 수정이 없다. CLI·선행지수·뉴스심리지수가 모두 갖는
+# '사후에 보면 잘 맞는' 문제가 없는 유일한 후보라 합성 점수에 넣는다.
+# 다만 장단기금리차는 한국 선행종합지수의 구성 항목이라 '선행지수를 앞선다'는 것은 구조적이다.
+TERM_SPREAD_STAT_CODE = os.environ.get('ECOS_RATE_STAT_CODE', '817Y002')      # 시장금리(일별)
+TERM_SPREAD_LONG_ITEM = os.environ.get('ECOS_RATE_LONG_ITEM', '010210000')    # 국고채(10년)
+TERM_SPREAD_SHORT_ITEM = os.environ.get('ECOS_RATE_SHORT_ITEM', '010200000')  # 국고채(3년)
+
+
+def load_term_spread(storage, start, end, use_cache=False, fallback_dir=None):
+    """(DataFrame(date, value=10년-3년 %p), info). 우선순위: 캐시 재현 > 사용자 CSV > ECOS > 저장소 보관본."""
+    storage = Path(storage)
+    cache = storage / 'macro_cache'
+    cache.mkdir(parents=True, exist_ok=True)
+    local = storage / 'macro_inputs' / 'term_spread.csv'
+    cached = cache / 'term_spread.csv'
+    fallback = Path(fallback_dir) / 'term_spread.csv' if fallback_dir else None
+    error = None
+    if use_cache and cached.exists():
+        frame, source = normalize_daily(pd.read_csv(cached, dtype=str)), 'explicit_cache_replay'
+    elif local.exists():
+        frame, source = normalize_daily(pd.read_csv(local, dtype=str)), 'user_csv'
+    else:
+        try:
+            key = ecos_key()
+            if not key:
+                raise RuntimeError('ECOS_API_KEY가 없습니다.')
+            long_ = fetch_ecos_daily(TERM_SPREAD_STAT_CODE, TERM_SPREAD_LONG_ITEM, start, end, key).set_index('date')['value']
+            short = fetch_ecos_daily(TERM_SPREAD_STAT_CODE, TERM_SPREAD_SHORT_ITEM, start, end, key).set_index('date')['value']
+            spread = (long_ - short).dropna()
+            if spread.empty:
+                raise ValueError('국고채 10년·3년 금리가 겹치는 날이 없습니다.')
+            frame, source = pd.DataFrame({'date': spread.index, 'value': spread.to_numpy()}), 'ECOS_API'
+        except Exception as exc:
+            if not (fallback and fallback.exists()):
+                raise
+            error = str(exc)
+            frame, source = normalize_daily(pd.read_csv(fallback, dtype=str)), 'last_successful_fetch'
+    frame.to_csv(cached, index=False)
+    info = {'source': source, 'fresh': source in ('ECOS_API', 'user_csv'), 'fetch_error': error,
+            'first': frame['date'].min().date().isoformat(), 'last': frame['date'].max().date().isoformat(),
+            'rows': int(len(frame)),
+            'snapshot_hash': hashlib.sha256(frame.to_csv(index=False).encode()).hexdigest()[:20]}
+    return frame, info
+
+
+def monthly_mean_by_month_end(daily_frame, dates):
+    """일별 계열을 '그 월말까지의 그 달 평균'으로. 금리처럼 지연 없는 자료에 쓴다(월말 인덱스용)."""
+    series = normalize_daily(daily_frame).set_index('date')['value']
+    monthly = series.resample('ME').mean()
+    dates = pd.DatetimeIndex(dates)
+    return monthly.reindex(dates, method='ffill', tolerance=pd.Timedelta(days=45))
+
+
+# ---------------------------------------------------------------------------
+# 일평균 수출: 월 합계 / 조업일수(주중일 - 한국 휴장일 근사)
+# ---------------------------------------------------------------------------
+def korean_working_days(month_start):
+    """그 달의 조업일수 근사. 관세청 조업일수(토요일 0.5일)와 정확히 같지는 않지만 달력 효과의 대부분을 없앤다."""
+    month_start = pd.Timestamp(month_start).normalize().replace(day=1)
+    month_end = month_start + pd.offsets.MonthEnd(0)
+    days = pd.bdate_range(month_start, month_end)
+    try:
+        import exchange_calendars as xc
+        cal = xc.get_calendar('XKRX')
+        sessions = cal.sessions_in_range(month_start.strftime('%Y-%m-%d'), month_end.strftime('%Y-%m-%d'))
+        return float(len(sessions))
+    except Exception:
+        return float(len(days))
+
+
+def daily_average(monthly_frame):
+    """DataFrame(month, value) → DataFrame(month, value=일평균). 조업일수로 나눈다."""
+    out = normalize_monthly(monthly_frame).copy()
+    out['value'] = [v / max(korean_working_days(m), 1.0) for m, v in zip(out['month'], out['value'])]
+    return out

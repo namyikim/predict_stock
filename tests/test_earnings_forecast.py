@@ -246,3 +246,35 @@ class NextQuarterTests(unittest.TestCase):
         self.assertIn("3.65조원", html)
         self.assertIn("CLI 포함", html)
         self.assertIn("낙관적", html)
+
+
+class ExportsFlashTests(unittest.TestCase):
+    """관세청 속보: 확정치가 없는 달만 잠정 추정하고, 확정치가 오면 무시한다."""
+
+    def test_flash_fills_missing_months_only(self):
+        exports = pd.Series({pd.Timestamp("2025-08-01"): 31e9, pd.Timestamp("2025-09-01"): 33e9,
+                             pd.Timestamp("2026-07-01"): 41e9, pd.Timestamp("2026-08-01"): 42e9})
+        flash = pd.DataFrame({"month": pd.to_datetime(["2026-08-01", "2026-09-01"]), "days": [20, 10],
+                              "semiconductor_yoy": [0.31, 0.28], "released": [None, None]})
+        out, applied = ef.apply_exports_flash(exports, flash)
+        self.assertEqual(out.loc["2026-08-01"], 42e9)                     # 확정치 우선
+        self.assertAlmostEqual(out.loc["2026-09-01"], 33e9 * 1.28)        # 속보로 잠정 추정
+        self.assertEqual([a["month"] for a in applied], ["2026-09"])
+
+    def test_flash_needs_last_years_month(self):
+        exports = pd.Series({pd.Timestamp("2026-07-01"): 41e9})
+        flash = pd.DataFrame({"month": pd.to_datetime(["2026-09-01"]), "days": [20],
+                              "semiconductor_yoy": [0.3], "released": [None]})
+        out, applied = ef.apply_exports_flash(exports, flash)
+        self.assertEqual(len(out), 1)
+        self.assertEqual(applied, [])
+
+    def test_csv_accepts_percent_strings_and_prefers_longer_window(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            (Path(tmp) / "macro_inputs").mkdir()
+            (Path(tmp) / "macro_inputs" / "exports_flash.csv").write_text(
+                "month,days,semiconductor_yoy\n2026-09,10,28%\n2026-09,20,0.31\n", encoding="utf-8")
+            got = ef.load_exports_flash(tmp)
+            self.assertEqual(len(got), 1)
+            self.assertEqual(int(got["days"].iloc[0]), 20)
+            self.assertAlmostEqual(got["semiconductor_yoy"].iloc[0], 0.31)

@@ -172,6 +172,55 @@ def load_operating_profit(storage, target):
 
 
 # ---------------------------------------------------------------------------
+# 관세청 수출 속보(1~10일·1~20일)로 월 확정치를 앞당긴다
+# ---------------------------------------------------------------------------
+# 관세청은 매달 11일·21일경 그 달 1~10일·1~20일 수출입 현황을 발표하고 반도체 증감률을 따로 적는다.
+# KOSIS 품목별 월 확정치는 그보다 2~5주 늦다. 속보의 반도체 YoY로 그 달을 잠정 추정하면
+# 나우캐스트에 한 달을 앞당겨 넣을 수 있다.
+#   추정 = 전년 동월 확정치 × (1 + 속보 반도체 YoY)
+# 입력: macro_inputs/exports_flash.csv  (month,days,semiconductor_yoy,released)
+#   예: 2026-09,20,0.31,2026-09-21   ← 9월 1~20일 반도체 수출 전년 대비 +31%
+# 확정치가 KOSIS에 들어오면 그 달의 속보는 자동으로 무시된다(확정치 우선).
+def load_exports_flash(storage):
+    path = Path(storage) / "macro_inputs" / "exports_flash.csv"
+    if not path.exists():
+        return pd.DataFrame(columns=["month", "days", "semiconductor_yoy", "released"])
+    frame = pd.read_csv(path, dtype=str)
+    needed = {"month", "days", "semiconductor_yoy"}
+    if not needed.issubset(frame.columns):
+        raise ValueError(f"{path.name}: {needed} 열이 필요합니다.")
+    out = pd.DataFrame({
+        "month": pd.to_datetime(frame["month"].astype(str).str.replace(r"^(\d{4})[-./]?(\d{2})$", r"\1-\2", regex=True) + "-01"),
+        "days": pd.to_numeric(frame["days"], errors="coerce"),
+        "semiconductor_yoy": pd.to_numeric(frame["semiconductor_yoy"].astype(str).str.rstrip("%"), errors="coerce"),
+        "released": frame.get("released", pd.Series([None] * len(frame))),
+    }).dropna(subset=["month", "semiconductor_yoy"])
+    # 같은 달에 10일치와 20일치가 다 있으면 더 긴 쪽을 쓴다.
+    out = out.sort_values(["month", "days"]).drop_duplicates("month", keep="last")
+    out.loc[out["semiconductor_yoy"].abs() > 5, "semiconductor_yoy"] /= 100.0   # 31 → 0.31
+    return out.reset_index(drop=True)
+
+
+def apply_exports_flash(exports, flash):
+    """확정치가 없는 달을 속보로 잠정 추정해 덧붙인다. (계열, 적용된 달 목록)"""
+    if flash is None or flash.empty:
+        return exports, []
+    out = exports.copy()
+    applied = []
+    for _, row in flash.iterrows():
+        month = pd.Timestamp(row["month"])
+        if month in out.index and pd.notna(out.loc[month]):
+            continue                                   # 확정치 우선
+        base = month - pd.DateOffset(years=1)
+        if base not in out.index or pd.isna(out.loc[base]):
+            continue
+        out.loc[month] = float(out.loc[base]) * (1.0 + float(row["semiconductor_yoy"]))
+        applied.append({"month": month.strftime("%Y-%m"), "days": int(row["days"]) if pd.notna(row["days"]) else None,
+                        "yoy": float(row["semiconductor_yoy"])})
+    return out.sort_index(), applied
+
+
+# ---------------------------------------------------------------------------
 # 특징: 분기의 '앞 k개월'만 쓴다
 # ---------------------------------------------------------------------------
 def monthly_usdkrw(cache_dir, fetch=True):
@@ -387,6 +436,9 @@ def render_fragment(result):
                  '3개월 평균으로 학습한 계수를 2개월 평균에 적용하면 성질이 다른 값을 넣는 셈이 되기 때문입니다.'
                  + (f' <b>{e(r["months_missing"])} 수출은 아직 KOSIS에 올라오지 않았습니다.</b> '
                     '그 달이 들어오면 추정이 더 단단해집니다.' if r.get("months_missing") else "")
+                 + (" " + " ".join(
+                     f'<b>{e(a["month"])}</b>은 관세청 1~{a["days"]}일 속보(반도체 {a["yoy"]:+.0%})로 잠정 추정한 값입니다.'
+                     for a in r.get("flash_applied") or []) if r.get("flash_applied") else "")
                  + '</div>')
 
     if r.get("chart_svg"):
@@ -487,7 +539,15 @@ def analyse(target, out_dir, fetch=True):
                                         fallback_dir=fallback_dir)
     exports = (macro["semiconductor_exports"].set_index("month")["value"]
                .asfreq("MS").dropna())
-    usdkrw = monthly_usdkrw(out_dir / "cache", fetch=fetch).reindex(exports.index).ffill()
+    flash_applied = []
+    try:
+        exports, flash_applied = apply_exports_flash(exports, load_exports_flash(out_dir))
+        if flash_applied:
+            print("  관세청 속보로 잠정 추정한 달:", flash_applied, flush=True)
+    except Exception as exc:
+        print("  ⚠️ 수출 속보를 읽지 못했습니다(무시):", exc, flush=True)
+    usdkrw = monthly_usdkrw(out_dir / "cache", fetch=fetch)
+    usdkrw = usdkrw.reindex(usdkrw.index.union(exports.index)).ffill().reindex(exports.index)
 
     # 이번 분기에 실제로 확보된 월 수 = 나우캐스트에 쓸 k
     live_quarter = pd.Period(exports.index[-1], freq="Q")
@@ -557,6 +617,7 @@ def analyse(target, out_dir, fetch=True):
         "quarter": f"{live_quarter.year}년 {live_quarter.quarter}분기",
         "quarter_code": str(live_quarter), "months_used": months_used,
         "months_included": month_names, "months_missing": missing_months,
+        "flash_applied": flash_applied,
         "point": point,
         "low": (point + ev["residual_q10"]) if point is not None else None,
         "high": (point + ev["residual_q90"]) if point is not None else None,

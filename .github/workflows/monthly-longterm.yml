@@ -35,6 +35,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           KOSIS_API_KEY: ${{ secrets.KOSIS_API_KEY }}
           FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
+          # 뉴스심리지수·장단기 금리차(한국은행 ECOS). 없거나 실패하면 그 요소만 빼고 진행한다.
+          ECOS_API_KEY: ${{ secrets.ECOS_API_KEY }}
         run: python tools/build_longterm_report.py --target ${{ matrix.target }} --out runs/longterm --dump --publish
 
       # 영업이익 나우캐스트. 이력은 DART에서 받거나 macro_inputs CSV로 넣는다.

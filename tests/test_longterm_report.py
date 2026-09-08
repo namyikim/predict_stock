@@ -215,3 +215,51 @@ class PhaseDurationTests(unittest.TestCase):
         chart = lt.render_duration_chart(outlook, outlook["months_so_far"])
         self.assertIn("<svg", chart)
         self.assertIn("진행 중", chart)
+
+
+class CycleScoreTests(unittest.TestCase):
+    """합성 사이클 점수: 확장 창 표준화, 등가중, 구성 요소 부족 시 미생성."""
+
+    def inputs(self):
+        price, macro = synthetic()
+        days = pd.date_range("1998-01-01", "2026-09-06")
+        nsi = pd.DataFrame({"date": days, "value": 100 + 4 * np.sin(np.arange(len(days)) / 270)})
+        spread = pd.DataFrame({"date": days, "value": 0.6 + 0.8 * np.sin(np.arange(len(days)) / 300)})
+        return price, macro, nsi, spread
+
+    def test_expanding_z_uses_only_the_past(self):
+        s = pd.Series(np.arange(100, dtype=float))
+        z = lt.expanding_z(s, min_periods=10)
+        self.assertTrue(z.iloc[:9].isna().all())
+        # 뒤쪽 값을 바꿔도 앞쪽 z는 그대로
+        s2 = s.copy(); s2.iloc[50:] += 1000
+        pd.testing.assert_series_equal(z.iloc[:50], lt.expanding_z(s2, min_periods=10).iloc[:50])
+
+    def test_score_is_the_equal_weight_mean_of_components(self):
+        price, macro, nsi, spread = self.inputs()
+        f = lt.build_frame(price, macro, None, nsi, spread)
+        have = [c for c in lt.CYCLE_COMPONENTS if c in f.columns]
+        self.assertEqual(len(have), 4)
+        z = pd.concat([lt.expanding_z(f[c]) for c in have], axis=1).mean(axis=1, skipna=False)
+        pd.testing.assert_series_equal(f["cycle_score"], z, check_names=False)
+
+    def test_score_absent_with_too_few_components(self):
+        price, macro, _, _ = self.inputs()
+        f = lt.build_frame(price, macro)      # 수출·선행지수만 → 2개
+        self.assertNotIn("cycle_score", f.columns)
+
+    def test_term_spread_has_no_publication_lag(self):
+        price, macro, nsi, spread = self.inputs()
+        f = lt.build_frame(price, macro, None, nsi, spread)
+        last = f.index[-1]                                   # 합성 가격의 마지막 월말
+        month = spread.set_index("date")["value"].loc[last.strftime("%Y-%m")].mean()
+        self.assertAlmostEqual(f.loc[last, "term_spread"], month, places=9)
+
+    def test_spread_conditional_table(self):
+        price, macro, nsi, spread = self.inputs()
+        f = lt.build_frame(price, macro, None, nsi, spread)
+        got = lt.phase_duration_by_spread(f)
+        self.assertIsNotNone(got)
+        self.assertEqual(got["n_inverted"] + got["n_normal"], len(got["rows"]))
+        for row in got["rows"]:
+            self.assertEqual(row["inverted"], row["spread_at_k"] <= 0)

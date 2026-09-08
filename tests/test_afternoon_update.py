@@ -10,6 +10,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "tools"))
 sys.path.insert(0, str(ROOT))
 import build_afternoon_update as af  # noqa: E402
+import github_pages  # noqa: E402,F401
 import forecast_utils as fu  # noqa: E402
 
 
@@ -167,3 +168,52 @@ class WorkflowStepTests(unittest.TestCase):
                 for step in job.get("steps", []):
                     for ref in re.findall(r"steps\.([A-Za-z0-9_-]+)\.outputs", str(step.get("if", ""))):
                         self.assertIn(ref, ids, f"{path.name}:{job_name} — 없는 스텝 '{ref}'를 참조합니다")
+
+
+class PublishRetryTests(unittest.TestCase):
+    """여러 워크플로가 같은 파일을 건드린다. sha 충돌(409)은 재시도로 넘긴다."""
+
+    def setUp(self):
+        import github_pages as gp
+        import time
+        self.gp = gp
+        self.saved_api, self.saved_sleep = gp._api, time.sleep
+        time.sleep = lambda s: None
+        self.addCleanup(self._restore)
+
+    def _restore(self):
+        import time
+        self.gp._api, time.sleep = self.saved_api, self.saved_sleep
+
+    def api(self, put_results):
+        calls = {"put": 0}
+
+        def fake(path, tok, method="GET", body=None):
+            if method == "GET":
+                return {"sha": "abc"}
+            outcome = put_results[min(calls["put"], len(put_results) - 1)]
+            calls["put"] += 1
+            if isinstance(outcome, int):
+                error = OSError("conflict")
+                error.code = outcome
+                raise error
+            return {"content": {"sha": "deadbeef1234"}}
+        self.gp._api = fake
+        return calls
+
+    def test_conflict_is_retried_with_a_fresh_sha(self):
+        calls = self.api([409, 409, "ok"])
+        self.assertEqual(self.gp.publish("p", "t", "k", "m"), "deadbee")
+        self.assertEqual(calls["put"], 3)
+
+    def test_gives_up_with_a_clear_message(self):
+        self.api([409])
+        with self.assertRaises(RuntimeError) as ctx:
+            self.gp.publish("p", "t", "k", "m")
+        self.assertIn("409", str(ctx.exception))
+
+    def test_other_errors_are_not_retried(self):
+        calls = self.api([403])
+        with self.assertRaises(RuntimeError):
+            self.gp.publish("p", "t", "k", "m")
+        self.assertEqual(calls["put"], 1)

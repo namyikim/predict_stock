@@ -44,24 +44,35 @@ def fetch(path, tok):
     return base64.b64decode(data["content"]).decode("utf-8")
 
 
-def publish(path, text, tok, message):
-    """파일을 올리고 커밋 sha 앞 7자리를 돌려준다. 오류 문구에 토큰이 섞이지 않게 한다."""
-    sha = None
-    try:
-        sha = _api(path, tok)["sha"]
-    except Exception as exc:            # 404면 새 파일이다.
-        if getattr(exc, "code", None) != 404:
-            raise RuntimeError(f"조회 실패({type(exc).__name__} "
-                               f"{getattr(exc, 'code', '')})") from None
-    body = {"message": message, "branch": GITHUB_BRANCH,
-            "content": base64.b64encode(text.encode("utf-8")).decode()}
-    if sha:
-        body["sha"] = sha
-    try:
-        return _api(path, tok, "PUT", body)["content"]["sha"][:7]
-    except Exception as exc:
-        raise RuntimeError(f"업로드 실패({type(exc).__name__} "
-                           f"{getattr(exc, 'code', '')})") from None
+def publish(path, text, tok, message, attempts=4):
+    """파일을 올리고 커밋 sha 앞 7자리를 돌려준다. 오류 문구에 토큰이 섞이지 않게 한다.
+
+    sha를 읽고 쓰는 사이에 다른 잡이 같은 파일을 커밋하면 409(또는 422)가 온다. 여러 워크플로가
+    같은 원장·보고서를 건드리므로 드문 일이 아니다(2026-09-08 채점 실행이 이것으로 죽었다).
+    충돌이면 sha를 다시 읽어 재시도한다 — 이 함수는 파일 전체를 덮어쓰므로 재시도가 안전하다.
+    """
+    import random
+    import time
+    for attempt in range(attempts):
+        sha = None
+        try:
+            sha = _api(path, tok)["sha"]
+        except Exception as exc:            # 404면 새 파일이다.
+            if getattr(exc, "code", None) != 404:
+                raise RuntimeError(f"조회 실패({type(exc).__name__} "
+                                   f"{getattr(exc, 'code', '')})") from None
+        body = {"message": message, "branch": GITHUB_BRANCH,
+                "content": base64.b64encode(text.encode("utf-8")).decode()}
+        if sha:
+            body["sha"] = sha
+        try:
+            return _api(path, tok, "PUT", body)["content"]["sha"][:7]
+        except Exception as exc:
+            code = getattr(exc, "code", None)
+            if code in (409, 422) and attempt < attempts - 1:
+                time.sleep(2 * (2 ** attempt) + random.uniform(0, 2))
+                continue
+            raise RuntimeError(f"업로드 실패({type(exc).__name__} {code or ''})") from None
 
 
 def _git_head():

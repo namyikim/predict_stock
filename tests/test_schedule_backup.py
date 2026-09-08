@@ -18,25 +18,30 @@ MAIN_CRON = "22 21 * * 0-4"
 
 
 class ScheduleTests(unittest.TestCase):
-    def test_two_morning_schedules_off_the_busy_minutes(self):
+    def test_schedules_cover_the_morning_twice_and_every_three_hours(self):
         crons = [item["cron"] for item in WORKFLOW[True]["schedule"]]
-        self.assertEqual(crons, [MAIN_CRON, "25 22 * * 0-4"])
+        self.assertEqual(crons, [MAIN_CRON, "25 22 * * 0-4", "22 0,3,6,9,12,15,18 * * *"])
         for cron in crons:
             minute = int(cron.split()[0])
             self.assertNotIn(minute, (0, 30), "정각·30분은 GitHub cron이 가장 많이 밀리는 지점")
+        # 3시간 간격 회차가 하루를 고르게 덮는지
+        hours = sorted(int(h) for h in crons[2].split()[1].split(","))
+        self.assertEqual(hours, [0, 3, 6, 9, 12, 15, 18])
 
-    def test_both_schedules_finish_before_the_market_opens(self):
-        # 원장은 09:00 KST 이후 예측을 사전 예측으로 세지 않는다.
-        for item in WORKFLOW[True]["schedule"]:
+    def test_morning_schedules_finish_before_the_market_opens(self):
+        # 원장은 09:00 KST 이후 예측을 사전 예측으로 세지 않는다. 아침 두 회차가 그 전이어야 한다.
+        for item in WORKFLOW[True]["schedule"][:2]:
             minute, hour = int(item["cron"].split()[0]), int(item["cron"].split()[1])
             kst_hour = (hour + 9) % 24
             self.assertLess(kst_hour + minute / 60, 8.0, item["cron"])
 
-    def test_only_the_stock_job_runs_on_the_backup_schedule(self):
+    def test_heavy_side_reports_run_once_a_day(self):
         jobs = WORKFLOW["jobs"]
-        self.assertNotIn("if", jobs["report"])          # 종목 잡은 백업에서도 돈다
-        for name in ("trends", "metals", "china", "interest"):
-            self.assertIn(MAIN_CRON, jobs[name]["if"], name)
+        self.assertNotIn("if", jobs["report"])          # 종목 잡은 모든 회차에서 게이트가 판단한다
+        for name in ("metals", "china", "interest", "earnings"):
+            self.assertIn(f"== '{MAIN_CRON}'", jobs[name]["if"], name)
+        # 검색어만 3시간 간격 회차에도 돈다(하루 사이에 실제로 바뀌는 유일한 보고서).
+        self.assertIn("!= '25 22 * * 0-4'", jobs["trends"]["if"])
 
     def test_backup_run_is_gated_on_the_ledger(self):
         steps = {s.get("name"): s for s in WORKFLOW["jobs"]["report"]["steps"]}
@@ -102,10 +107,11 @@ class LedgerGateTests(unittest.TestCase):
         self.assertIn("r1", reason)
 
     def test_runs_when_todays_record_is_not_prospective(self):
-        # 09:00 이후에 만들어진 예측은 집계되지 않으므로 다시 돌아야 한다.
+        # 아침에는 09:00 이후에 만들어진 옛 기록을 인정하지 않는다 — 아직 제대로 만들 시간이 있다.
         self.write([{"prediction_date": self.today, "is_prospective": False,
                      "kind": "direction", "run_id": "late"}])
-        self.assertFalse(srt.already_recorded(self.path, self.today)[0])
+        morning = datetime(2026, 9, 9, 6, 30, tzinfo=timezone(timedelta(hours=9)))
+        self.assertFalse(srt.already_recorded(self.path, self.today, now=morning)[0])
 
     def test_runs_when_only_older_dates_are_recorded(self):
         self.write([{"prediction_date": "2020-01-02", "is_prospective": True,
@@ -116,6 +122,16 @@ class LedgerGateTests(unittest.TestCase):
         recorded, reason = srt.already_recorded(self.dir / "nope.csv", self.today)
         self.assertFalse(recorded)
         self.assertIn("없습니다", reason)
+
+    def test_after_the_open_any_record_counts_as_done(self):
+        # 09:00 이후에는 무엇을 만들어도 사전 예측이 될 수 없다. 그날 기록이 하나라도 있으면
+        # 넘어가야 3시간마다 전체 재계산이 반복되지 않는다.
+        self.write([{"prediction_date": self.today, "is_prospective": False,
+                     "kind": "direction", "run_id": "late"}])
+        morning = datetime(2026, 9, 9, 6, 30, tzinfo=timezone(timedelta(hours=9)))
+        afternoon = datetime(2026, 9, 9, 15, 30, tzinfo=timezone(timedelta(hours=9)))
+        self.assertFalse(srt.already_recorded(self.path, self.today, now=morning)[0])
+        self.assertTrue(srt.already_recorded(self.path, self.today, now=afternoon)[0])
 
     def test_writes_the_github_output(self):
         self.write([{"prediction_date": self.today, "is_prospective": True,

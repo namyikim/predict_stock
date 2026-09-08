@@ -18,8 +18,15 @@ import pandas as pd
 KST = timezone(timedelta(hours=9))
 
 
-def already_recorded(path, today):
-    """오늘 예측일로 기록된 사전 예측(방향)이 있으면 True."""
+def already_recorded(path, today, now=None):
+    """다시 돌 필요가 없으면 True.
+
+    09:00 KST 전에는 '오늘의 사전 예측'이 있어야 넘어간다 — 아직 제대로 된 예측을 만들 시간이
+    남아 있기 때문이다. 09:00 이후에는 무엇을 만들어도 사전 예측이 될 수 없으므로, 그날 기록이
+    하나라도 있으면 넘어간다. 그러지 않으면 3시간마다 전체 재계산이 반복된다.
+    """
+    now = now or datetime.now(KST)
+    before_open = (now.hour, now.minute) < (9, 0)
     if not Path(path).exists():
         return False, "원장 파일이 없습니다"
     log = pd.read_csv(path, dtype=str)
@@ -29,11 +36,13 @@ def already_recorded(path, today):
     same_day = log["prediction_date"].astype(str).str.slice(0, 10) == today
     prospective = log["is_prospective"].astype(str).str.strip().str.lower().isin(("true", "1", "yes"))
     kind = log["kind"].astype(str) == "direction" if "kind" in log.columns else True
-    hit = log[same_day & prospective & kind]
+    hit = log[same_day & prospective & kind] if before_open else log[same_day & kind]
     if hit.empty:
-        return False, f"{today} 사전 예측이 원장에 없습니다"
+        return False, (f"{today} 사전 예측이 원장에 없습니다" if before_open
+                       else f"{today} 기록이 원장에 없습니다(09:00 이후라 사전 예측은 못 만듭니다)")
     run_id = hit["run_id"].iloc[0] if "run_id" in hit.columns else "?"
-    return True, f"{today} 사전 예측이 이미 있습니다({len(hit)}행, run_id {run_id})"
+    label = "사전 예측이" if before_open else "기록이"
+    return True, f"{today} {label} 이미 있습니다({len(hit)}행, run_id {run_id})"
 
 
 def main():

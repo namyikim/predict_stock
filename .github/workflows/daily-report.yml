@@ -21,8 +21,12 @@ name: 일일 보고서
 # 만든 커밋이 다시 실행을 부른다.
 on:
   schedule:
-    - cron: "22 21 * * 0-4"   # 06:22 KST — 본 실행
-    - cron: "25 22 * * 0-4"   # 07:25 KST — 백업(이미 기록됐으면 건너뜀)
+    - cron: "22 21 * * 0-4"   # 06:22 KST — 본 실행(종목 보고서 + 모든 보조 보고서)
+    - cron: "25 22 * * 0-4"   # 07:25 KST — 아침 백업. 09:00(사전 예측 마감) 전 두 번째 기회
+    # 3시간 간격 보강. 09:22·12:22·15:22·18:22·21:22·00:22·03:22 KST.
+    # GitHub cron은 한 시간 넘게 밀리거나 통째로 건너뛴다(2026-09-08 06:22 예정분은 흔적도 없었다).
+    # 종목 보고서는 오늘 기록이 이미 있으면 몇 초 만에 끝나고, 검색어만 매번 새로 만든다.
+    - cron: "22 0,3,6,9,12,15,18 * * *"
   push:
     branches: [main]
     paths:
@@ -181,11 +185,11 @@ jobs:
           DATA_GO_KR_KEY: ${{ secrets.DATA_GO_KR_KEY }}
         run: python tools/build_earnings_forecast.py --target ${{ matrix.target }} --out runs/earnings --publish
 
+  # 검색어는 하루 사이에 실제로 바뀌는 유일한 보고서라 3시간 간격 회차에도 돌린다.
+  # 아침 백업(07:25) 회차만 건너뛴다 — 한 시간 전에 만든 것과 같은 내용이 된다.
   trends:
     runs-on: ubuntu-latest
-    # 백업 스케줄(07:25)에는 돌지 않는다. 이 잡들은 원장이 없어 '이미 기록됐는지'를
-    # 판단할 수 없고, 두 번 돌면 같은 내용을 두 번 발행하게 된다.
-    if: github.event_name != 'schedule' || github.event.schedule == '22 21 * * 0-4'
+    if: github.event_name != 'schedule' || github.event.schedule != '25 22 * * 0-4'
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4

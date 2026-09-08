@@ -497,6 +497,21 @@ def table(head, body, min_width=560):
 PHASE_COLOR = {PHASES[0]: "#dbe9f6", PHASES[1]: "#dff0e3", PHASES[2]: "#fbeed6", PHASES[3]: "#f6dcd9"}
 
 
+def text_width(text, size=11):
+    """SVG 텍스트의 대략적인 픽셀 폭. 한글·한자는 라틴 문자의 두 배 가까이 넓다.
+
+    글자 수에 고정 폭을 곱하면 한글 범례가 서로 겹친다(2026-09-08에 실제로 겹쳐 보였다).
+    """
+    width = 0.0
+    for ch in text:
+        code = ord(ch)
+        wide = (0x1100 <= code <= 0x115F or 0x2E80 <= code <= 0xA4CF
+                or 0xAC00 <= code <= 0xD7A3 or 0xF900 <= code <= 0xFAFF
+                or 0xFF00 <= code <= 0xFF60)
+        width += size * (1.0 if wide else 0.55)
+    return width
+
+
 def log_ticks(lo, hi):
     """1·2·5 × 10^k 중 [lo, hi]에 드는 눈금. 종목마다 가격대가 달라(수백 원~수백만 원) 고정 목록은 못 쓴다."""
     if not (np.isfinite(lo) and np.isfinite(hi)) or lo <= 0 or hi <= lo:
@@ -611,11 +626,11 @@ def render_chart(f, name):
     out.append(f'<text x="{L}" y="14" fill="#1a1a1a" font-weight="600">'
                f'{html.escape(name)} 주가와 반도체 사이클 — 추세를 뺀 뒤 겹쳐 그림 (모두 표준화)</text>')
     x = L
-    for text, color in ((f"{html.escape(name)} 12개월 수익률", "#1a5490"),
+    for text, color in ((f"{name} 12개월 수익률", "#1a5490"),
                         ("반도체 수출 YoY", "#b5453c"), ("선행지수 순환변동치", "#2e7d32")):
-        out.append(f'<line x1="{x}" x2="{x + 16}" y1="30" y2="30" stroke="{color}" stroke-width="2"/>'
-                   f'<text x="{x + 21}" y="34" fill="#6b7178">{text}</text>')
-        x += 30 + len(text) * 6.6
+        out.append(f'<line x1="{x:.0f}" x2="{x + 16:.0f}" y1="30" y2="30" stroke="{color}" stroke-width="2"/>'
+                   f'<text x="{x + 21:.0f}" y="34" fill="#6b7178">{html.escape(text)}</text>')
+        x += 21 + text_width(text) + 18
     phases_legend = " ".join(f'<tspan fill="{c}">■</tspan> {html.escape(p.split("(")[0])}'
                              for p, c in PHASE_COLOR.items())
     out.append(f'<text x="{L}" y="{H - 6}" fill="#6b7178">배경 = 사이클 국면: {phases_legend}</text>')

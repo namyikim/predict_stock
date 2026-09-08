@@ -275,3 +275,23 @@ class FallbackFetchTests(unittest.TestCase):
             self.assertIn(f'"{name}"', source, name)
         # 파일마다 따로 받아야 하나가 실패해도 나머지가 들어온다.
         self.assertIn("except Exception:\n            continue", source)
+
+
+class LegendLayoutTests(unittest.TestCase):
+    """한글은 라틴 문자보다 두 배 가까이 넓다. 글자 수에 고정 폭을 곱하면 범례가 겹친다."""
+
+    def test_text_width_counts_hangul_as_wide(self):
+        self.assertGreater(lt.text_width("반도체"), lt.text_width("abc") * 1.5)
+        self.assertAlmostEqual(lt.text_width("abcd", size=10), 4 * 5.5)
+
+    def test_legend_items_do_not_overlap(self):
+        import re
+        price, macro = synthetic()
+        svg = lt.render_chart(lt.build_frame(price, macro), "삼성전자")
+        items = re.findall(
+            r'<line x1="(\d+)" x2="\d+" y1="30" y2="30".*?<text x="(\d+)" y="34"[^>]*>([^<]+)</text>', svg)
+        self.assertEqual(len(items), 3)
+        end = 0
+        for x1, tx, label in items:
+            self.assertGreaterEqual(int(x1), end, f"'{label}' 범례가 앞 항목과 겹칩니다")
+            end = int(tx) + lt.text_width(label)

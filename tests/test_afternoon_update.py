@@ -243,3 +243,13 @@ class RowOrderTests(unittest.TestCase):
         html = fu.ledger_section_html(review, "Mean ensemble")
         labels = re.findall(r'border-top:1px solid #eee">([^<]+)</td>', html)[:3]
         self.assertEqual(labels, ["시초가(갭)", "종가 방향", "1거래일 종가예측"])
+
+
+class CounterSecurityTests(unittest.TestCase):
+    """방문자 해시 비밀값이 없으면 집계하지 않는다(공개된 고정 문자열로 해시하지 않는다)."""
+
+    def test_worker_refuses_without_a_salt(self):
+        source = (Path(__file__).resolve().parents[1] / "counter" / "worker.js").read_text(encoding="utf-8")
+        self.assertNotIn('"no-salt"', source)
+        self.assertIn("if (!env.VISITOR_SALT)", source)
+        self.assertIn("VISITOR_SALT가 설정되지 않았습니다", source)

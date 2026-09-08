@@ -20,8 +20,32 @@ KST = timezone(timedelta(hours=9))
 ROOT = Path(__file__).resolve().parents[1]
 
 
-def check_target(target, today, ledger_root, max_age_days):
-    """(정상 여부, 메시지). 휴장일에는 오늘 예측이 없는 것이 정상이므로 그것만으로 실패시키지 않는다."""
+def last_trading_day(today):
+    """오늘 포함, 가장 최근 거래일(KRX 달력). 달력을 못 쓰면 주말만 건너뛴다.
+
+    '며칠 지났는가'로 판단하면 연휴 뒤에는 느슨하고 평일 연속 실패에는 늦다. 거래일로 세면
+    '지난 거래일에 예측이 있었는가'를 정확히 물을 수 있다.
+    """
+    day = pd.Timestamp(today)
+    try:
+        import exchange_calendars as xc
+        calendar = xc.get_calendar("XKRX")
+        if calendar.is_session(day):
+            return day.date()
+        return calendar.previous_session(day).date()
+    except Exception:
+        while day.weekday() >= 5:
+            day -= pd.Timedelta(days=1)
+        return day.date()
+
+
+def check_target(target, today, ledger_root, max_age_days=None):
+    """(정상 여부, 메시지).
+
+    기준은 '가장 최근 거래일에 그 날짜의 사전 예측이 있는가'다. 휴장일·연휴에는 그 거래일이
+    자동으로 뒤로 밀리므로 오탐이 없고, 평일에 실행이 멈추면 바로 잡힌다. max_age_days 는
+    쓰이지 않으며 옛 호출 호환을 위해 남겨 둔다.
+    """
     path = Path(ledger_root) / target / "forecast_log.csv"
     if not path.exists():
         return False, f"{target}: 원장 파일이 없습니다 ({path})"
@@ -33,27 +57,26 @@ def check_target(target, today, ledger_root, max_age_days):
     if dates.empty:
         return False, f"{target}: 사전 예측이 하나도 없습니다"
     latest = dates.max().date()
-    age = (today - latest).days
-    if latest == today:
-        return True, f"{target}: 오늘({today}) 사전 예측이 있습니다"
-    if age <= max_age_days:
-        # 주말·공휴일이면 며칠 비는 것이 정상이다. 그 이상 벌어지면 자동 실행이 멈춘 것으로 본다.
-        return True, f"{target}: 최근 사전 예측 {latest} ({age}일 전) — 휴장일 범위 안입니다"
-    return False, (f"{target}: 최근 사전 예측이 {latest}로 {age}일 지났습니다. "
-                   "자동 실행이 멈췄을 수 있습니다(Actions 실행 기록을 확인하세요)")
+    session = last_trading_day(today)
+    if latest >= session:
+        return True, f"{target}: 최근 거래일({session}) 사전 예측이 있습니다"
+    missed = sum(1 for d in pd.bdate_range(latest, session) if d.date() > latest)
+    return False, (f"{target}: 최근 사전 예측이 {latest}인데 마지막 거래일은 {session}입니다"
+                   f"(거래일 {missed}회 누락). 자동 실행이 멈췄을 수 있습니다 — "
+                   "Actions 실행 기록을 확인하세요")
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--targets", default="samsung,sk_hynix")
     parser.add_argument("--ledger-root", default=str(ROOT / "forecast_history"))
-    parser.add_argument("--max-age-days", type=int, default=4,
-                        help="연휴를 감안한 허용 공백. 이보다 오래되면 실패한다")
+    parser.add_argument("--max-age-days", type=int, default=None,
+                        help="쓰이지 않는다(거래일 기준으로 바뀌었다). 옛 호출 호환용")
     args = parser.parse_args()
     today = datetime.now(KST).date()
     failures = []
     for target in [t.strip() for t in args.targets.split(",") if t.strip()]:
-        ok, message = check_target(target, today, args.ledger_root, args.max_age_days)
+        ok, message = check_target(target, today, args.ledger_root)
         print(("OK   " if ok else "실패 ") + message)
         if not ok:
             failures.append(message)

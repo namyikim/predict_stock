@@ -1,0 +1,44 @@
+name: 테스트
+
+# 코드가 바뀌면 먼저 테스트를 돌린다. 지금까지는 테스트가 253개 있어도 자동으로 실행되지 않아,
+# 바뀐 코드가 바로 아침 보고서에 들어갔다. 노트북 전체 실행 테스트(약 100초)까지 포함한다 —
+# 셀 순서·변수 이름 오류는 그것만 잡는다.
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - "docs/**"
+      - "forecast_history/**"
+      - "macro_history/**"
+      - "runs/**"
+      - "**.md"
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: tests-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+          cache: pip
+      - name: 의존성 설치
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          # 수급 경로에 쓰인다. pandas 제약이 requirements와 충돌해 따로 넣는다.
+          pip install --no-deps pykrx==1.2.8 deprecated multipledispatch || echo "::warning::pykrx 설치 실패"
+      - name: 테스트
+        env:
+          MPLBACKEND: Agg
+        run: python -m unittest discover -s tests -v

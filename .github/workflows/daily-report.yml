@@ -42,6 +42,8 @@ on:
       - "samsung_direction_model_colab.ipynb"
       - "forecast_utils.py"
       - "macro_utils.py"
+      - "data_sources/**"
+      - "report_html.py"
       - "tools/**"
       - "requirements.txt"
       - ".github/workflows/daily-report.yml"

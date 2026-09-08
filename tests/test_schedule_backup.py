@@ -3,7 +3,7 @@ import os
 import sys
 import tempfile
 import unittest
-from datetime import datetime, timedelta, timezone
+from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 
 import pandas as pd
@@ -155,14 +155,28 @@ class LedgerGateTests(unittest.TestCase):
         self.assertIn("없습니다", reason)
 
     def test_after_the_open_any_record_counts_as_done(self):
-        # 09:00 이후에는 무엇을 만들어도 사전 예측이 될 수 없다. 그날 기록이 하나라도 있으면
+        # 09:00 이후에는 무엇을 만들어도 사전 예측이 될 수 없다. 그 거래일 기록이 하나라도 있으면
         # 넘어가야 3시간마다 전체 재계산이 반복되지 않는다.
-        self.write([{"prediction_date": self.today, "is_prospective": False,
-                     "kind": "direction", "run_id": "late"}])
+        # 수요일 09:00 이후의 대상 거래일은 목요일이다.
         morning = datetime(2026, 9, 9, 6, 30, tzinfo=timezone(timedelta(hours=9)))
         afternoon = datetime(2026, 9, 9, 15, 30, tzinfo=timezone(timedelta(hours=9)))
-        self.assertFalse(srt.already_recorded(self.path, self.today, now=morning)[0])
-        self.assertTrue(srt.already_recorded(self.path, self.today, now=afternoon)[0])
+        self.write([{"prediction_date": str(srt.next_trading_day(afternoon)),
+                     "is_prospective": False, "kind": "direction", "run_id": "late"}])
+        self.assertTrue(srt.already_recorded(self.path, "무시됨", now=afternoon)[0])
+        # 아침에는 그 거래일의 '사전' 예측이어야 인정한다.
+        self.write([{"prediction_date": str(srt.next_trading_day(morning)),
+                     "is_prospective": False, "kind": "direction", "run_id": "late"}])
+        self.assertFalse(srt.already_recorded(self.path, "무시됨", now=morning)[0])
+
+    def test_weekend_runs_do_not_duplicate_mondays_forecast(self):
+        # 주말 실행의 예측일은 다음 개장일이다. 오늘 날짜로 비교하면 못 찾아 계속 다시 만든다
+        # (2026-09-07 예측일에 8건이 쌓였다).
+        saturday = datetime(2026, 9, 12, 12, 0, tzinfo=timezone(timedelta(hours=9)))
+        monday = srt.next_trading_day(saturday)
+        self.assertEqual(str(monday), "2026-09-14")
+        self.write([{"prediction_date": str(monday), "is_prospective": True,
+                     "kind": "direction", "run_id": "friday"}])
+        self.assertTrue(srt.already_recorded(self.path, "무시됨", now=saturday)[0])
 
     def test_writes_the_github_output(self):
         self.write([{"prediction_date": self.today, "is_prospective": True,
@@ -237,28 +251,27 @@ class WatchdogTests(unittest.TestCase):
         pd.DataFrame([{"prediction_date": prediction_date, "is_prospective": prospective,
                        "kind": "direction", "run_id": "r"}]).to_csv(self.path, index=False)
 
-    def test_today_is_healthy(self):
-        today = datetime.now(timezone(timedelta(hours=9))).date()
-        self.write(today.isoformat())
-        ok, message = self.check.check_target("samsung", today, self.dir, 4)
+    def test_latest_trading_day_is_healthy(self):
+        # 금요일 예측이 있고 토요일에 점검하면 정상이다(마지막 거래일 = 금요일).
+        self.write("2026-09-11")
+        ok, message = self.check.check_target("samsung", date(2026, 9, 12), self.dir)
         self.assertTrue(ok)
-        self.assertIn("오늘", message)
+        self.assertIn("2026-09-11", message)
 
-    def test_a_holiday_gap_is_tolerated(self):
-        today = datetime.now(timezone(timedelta(hours=9))).date()
-        self.write((today - timedelta(days=3)).isoformat())
-        self.assertTrue(self.check.check_target("samsung", today, self.dir, 4)[0])
+    def test_a_weekend_or_holiday_is_not_a_failure(self):
+        self.write("2026-09-11")
+        for day in (date(2026, 9, 12), date(2026, 9, 13)):    # 토·일
+            self.assertTrue(self.check.check_target("samsung", day, self.dir)[0], day)
 
-    def test_a_long_gap_fails(self):
-        today = datetime.now(timezone(timedelta(hours=9))).date()
-        self.write((today - timedelta(days=9)).isoformat())
-        ok, message = self.check.check_target("samsung", today, self.dir, 4)
+    def test_missing_a_trading_day_fails_immediately(self):
+        # 하루만 밀려도 잡아야 한다. '4일 허용'은 평일 연속 실패를 며칠 놓쳤다.
+        self.write("2026-09-10")
+        ok, message = self.check.check_target("samsung", date(2026, 9, 11), self.dir)
         self.assertFalse(ok)
-        self.assertIn("자동 실행이 멈췄을 수 있습니다", message)
+        self.assertIn("거래일 1회 누락", message)
 
     def test_missing_ledger_fails(self):
-        today = datetime.now(timezone(timedelta(hours=9))).date()
-        self.assertFalse(self.check.check_target("sk_hynix", today, self.dir, 4)[0])
+        self.assertFalse(self.check.check_target("sk_hynix", date(2026, 9, 11), self.dir)[0])
 
     def test_watchdog_runs_after_the_market_opens(self):
         import yaml
@@ -268,3 +281,21 @@ class WatchdogTests(unittest.TestCase):
         kst = (hour + 9) % 24 + minute / 60
         self.assertGreater(kst, 9.0, "09:00 이후여야 그날 사전 예측 기회가 끝난 뒤다")
         self.assertLess(kst, 12.0)
+
+
+class CiAndPathTests(unittest.TestCase):
+    """코드가 바뀌면 테스트가 먼저 돌아야 하고, 새로 나눈 파일도 재생성 대상이어야 한다."""
+
+    def test_ci_workflow_runs_the_suite(self):
+        import yaml
+        workflow = yaml.safe_load((ROOT / ".github/workflows/tests.yml").read_text(encoding="utf-8"))
+        self.assertIn("push", workflow[True])
+        self.assertIn("pull_request", workflow[True])
+        run = "\n".join(str(s.get("run", "")) for s in workflow["jobs"]["test"]["steps"])
+        self.assertIn("unittest discover -s tests", run)
+
+    def test_push_paths_cover_the_split_modules(self):
+        paths = WORKFLOW[True]["push"]["paths"]
+        for path in ("data_sources/**", "report_html.py", "forecast_utils.py", "tools/**",
+                     "samsung_direction_model_colab.ipynb"):
+            self.assertIn(path, paths, f"{path} 를 고쳐도 보고서가 다시 만들어지지 않습니다")

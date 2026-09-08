@@ -17,6 +17,34 @@ from pathlib import Path
 KST = timezone(timedelta(hours=9))
 
 
+def next_trading_day(now):
+    """지금 시점에서 예측 대상이 되는 다음 거래일(KRX 달력).
+
+    원장의 prediction_date 는 '오늘'이 아니라 '다음 거래일'이다. 주말·휴장일에 돌린 실행의
+    예측일은 다음 개장일이므로, 오늘 날짜와 비교하면 이미 만들어 둔 예측을 못 찾고 계속 다시
+    만든다(2026-09-07 예측일에 8건이 쌓였다). 그래서 같은 기준으로 비교한다.
+
+    09:00 전이면 오늘이 거래일일 때 오늘이 대상이고, 09:00 뒤에는 그날 예측 기회가 끝났으므로
+    다음 거래일이 대상이다.
+    """
+    today = pd.Timestamp(now.date())
+    before_open = (now.hour, now.minute) < (9, 0)
+    try:
+        import exchange_calendars as xc
+        calendar = xc.get_calendar("XKRX")
+        if before_open and calendar.is_session(today):
+            return today.date()
+        return calendar.next_session(today).date()
+    except Exception:
+        # 달력을 못 쓰면 주말만 건너뛴다(공휴일은 놓친다). 없는 것보다 낫다.
+        if before_open and today.weekday() < 5:
+            return today.date()
+        day = today + pd.Timedelta(days=1)
+        while day.weekday() >= 5:
+            day += pd.Timedelta(days=1)
+        return day.date()
+
+
 def already_recorded(path, today, now=None):
     """다시 돌 필요가 없으면 True.
 
@@ -26,6 +54,7 @@ def already_recorded(path, today, now=None):
     """
     now = now or datetime.now(KST)
     before_open = (now.hour, now.minute) < (9, 0)
+    today = str(next_trading_day(now))          # 오늘이 아니라 '예측 대상 거래일'로 비교한다
     if not Path(path).exists():
         return False, "원장 파일이 없습니다"
     with open(path, newline="", encoding="utf-8-sig") as handle:
@@ -55,9 +84,10 @@ def main():
     parser.add_argument("--target", required=True)
     parser.add_argument("--ledger-root", default="forecast_history")
     args = parser.parse_args()
-    today = datetime.now(KST).date().isoformat()
+    now = datetime.now(KST)
+    today = str(next_trading_day(now))
     path = Path(args.ledger_root) / args.target / "forecast_log.csv"
-    recorded, reason = already_recorded(path, today)
+    recorded, reason = already_recorded(path, today, now=now)
     print(f"{args.target}: {reason}")
     output = os.environ.get("GITHUB_OUTPUT")
     if output:

@@ -502,7 +502,8 @@ def append_estimate(ledger, result, run_id):
         "target": result["target"], "quarter": key[0], "months_used": key[1],
         "months_included": result.get("months_included"),
         "point": result.get("point"), "low": result.get("low"), "high": result.get("high"),
-        "raw_point": (result.get("evaluation") or {}).get("shrink_slope"),
+        # 축소·게이트 이전의 원시 추정값. 게이트에 걸려 point 가 비어도 무엇을 계산했는지는 남는다.
+        "raw_point": result.get("raw_point"),
         "beats_baselines": ev.get("beats_baselines"), "mae_model": ev.get("mae_model"),
         "mae_random_walk": ev.get("mae_random_walk"), "mae_seasonal_naive": ev.get("mae_seasonal_naive"),
         "n_eval": ev.get("n"), "last_actual": result.get("last_actual"),
@@ -844,6 +845,7 @@ def analyse(target, out_dir, fetch=True):
     oof = walk_forward(f)
     ev = evaluate(oof)
     point, n_train = fit_live(f, live_quarter)
+    raw_point = point          # 기준선 게이트에 걸리기 전의 원시 추정값
 
     # ---- 다음 분기 전망 (CLI가 이론적으로 맞는 자리) --------------------------------
     # 분기 t 중간에 t+1의 영업이익을 내다본다. 같은 날짜에서 CLI를 넣은 것과 뺀 것을 나란히 재고,
@@ -907,7 +909,7 @@ def analyse(target, out_dir, fetch=True):
         "quarter_code": str(live_quarter), "months_used": months_used,
         "months_included": month_names, "months_missing": missing_months,
         "flash_applied": flash_applied, "customs_info": customs_info,
-        "point": point,
+        "point": point, "raw_point": raw_point,
         "low": (point + ev["residual_q10"]) if point is not None else None,
         "high": (point + ev["residual_q90"]) if point is not None else None,
         "change_vs_last": (point / last_actual - 1) if (point is not None and last_actual) else float("nan"),

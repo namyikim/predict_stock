@@ -106,3 +106,44 @@ class CliFeatureTests(unittest.TestCase):
         self.assertEqual(len(got), 1)
         with self.assertRaises(ValueError):
             mu.parse_fred_observations({"observations": [{"date": "2026-07-01", "value": "."}]})
+
+
+class InvestorFlowTests(unittest.TestCase):
+    """외국인·기관 수급: 네이버 표 파싱, 전일까지만 쓰는 특징."""
+
+    HTML = """<table class="type2"><tr><th>날짜</th><th>종가</th><th>전일비</th><th>등락률</th><th>거래량</th>
+      <th colspan="2">순매매량</th><th colspan="2">외국인</th></tr>
+      <tr><th></th><th></th><th></th><th></th><th></th><th>기관</th><th>외국인</th><th>보유주수</th><th>보유율</th></tr>
+      <tr><td>2026.09.08</td><td>270,000</td><td>+12,500</td><td>+4.86%</td><td>30,123,456</td><td>-1,234,567</td><td>+5,678,901</td><td>3,000,000,000</td><td>50.25%</td></tr>
+      <tr><td>2026.09.07</td><td>257,500</td><td>+2,000</td><td>+0.78%</td><td>20,000,000</td><td>+300,000</td><td>-1,000,000</td><td>2,994,321,099</td><td>50.15%</td></tr></table>"""
+
+    def test_naver_two_level_header_maps_to_the_right_columns(self):
+        got = mu.parse_naver_frgn_html(self.HTML).set_index("date")
+        self.assertEqual(got.loc["2026-09-08", "foreign_net"], 5678901)
+        self.assertEqual(got.loc["2026-09-08", "inst_net"], -1234567)
+        self.assertEqual(got.loc["2026-09-08", "volume"], 30123456)
+        self.assertAlmostEqual(got.loc["2026-09-08", "foreign_ratio"], 50.25)
+        self.assertEqual(list(got.index), list(pd.to_datetime(["2026-09-07", "2026-09-08"])))
+
+    def test_features_use_only_the_previous_day(self):
+        days = pd.bdate_range("2026-06-01", "2026-09-08")
+        rng = np.random.default_rng(0)
+        flows = pd.DataFrame({"date": days, "foreign_net": rng.normal(0, 2e6, len(days)),
+                              "inst_net": rng.normal(0, 1e6, len(days)), "indiv_net": np.nan,
+                              "volume": rng.integers(1e7, 3e7, len(days)).astype(float),
+                              "foreign_ratio": 50 + np.cumsum(rng.normal(0, .02, len(days)))})
+        feat = mu.flow_features(flows, pd.bdate_range("2026-08-01", "2026-09-09"))
+        f = flows.set_index("date")
+        vol20 = f["volume"].rolling(20, min_periods=10).mean()
+        self.assertAlmostEqual(feat.loc["2026-09-08", "flow_frgn_1"], (f["foreign_net"] / vol20).loc["2026-09-07"])
+        # 9/9 예측일(자료 없음)은 9/8까지의 값으로 채워진다
+        self.assertAlmostEqual(feat.loc["2026-09-09", "flow_frgn_1"], (f["foreign_net"] / vol20).loc["2026-09-08"])
+
+    def test_streak_counts_consecutive_signed_days(self):
+        days = pd.bdate_range("2026-08-01", "2026-09-08")
+        net = np.ones(len(days)) * 1e6
+        net[-4:] = -1e6                     # 마지막 4일 순매도
+        flows = pd.DataFrame({"date": days, "foreign_net": net, "inst_net": 0., "indiv_net": np.nan,
+                              "volume": 2e7, "foreign_ratio": 50.})
+        feat = mu.flow_features(flows, pd.bdate_range("2026-09-01", "2026-09-09"))
+        self.assertEqual(feat.loc["2026-09-09", "flow_frgn_streak"], -4)   # 9/8까지 4일 연속 순매도

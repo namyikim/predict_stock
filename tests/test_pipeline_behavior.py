@@ -119,8 +119,12 @@ def run_feature_cell(raw, **overrides):
     ns.setdefault("NSI_ACTIVE", False)
     ns.setdefault("nsi_frame", None)
     ns.setdefault("nsi_info", {"enabled": False})
-    from macro_utils import nsi_features
+    from macro_utils import flow_features, nsi_features
     ns.setdefault("nsi_features", nsi_features)
+    ns.setdefault("FLOW_ACTIVE", False)
+    ns.setdefault("flow_frame", None)
+    ns.setdefault("flow_info", {"enabled": False})
+    ns.setdefault("flow_features", flow_features)
     exec(compile(cell, "cell-features", "exec"), ns)
     return ns
 

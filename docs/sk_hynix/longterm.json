@@ -21,7 +21,7 @@
     "macro_leading_cycle_pct": 0.9938271604938271,
     "macro_leading_change_3m": 2.0,
     "macro_leading_change_3m_pct": 0.9937106918238994,
-    "price_to_exports_z": 1.8092543008449646,
+    "price_to_exports_z": 1.8092543008449644,
     "price_to_exports_z_pct": 0.8059701492537313,
     "mom_12m": 1.8282598714475817,
     "mom_12m_pct": 0.9837662337662337,
@@ -238,7 +238,7 @@
       "mae_zero": 0.24981257365688128,
       "mae_diff": -0.03231446340593199,
       "mae_diff_lo": -0.06427108547346853,
-      "mae_diff_hi": -0.0003361236913412655,
+      "mae_diff_hi": -0.00033612369134126323,
       "beats_zero": true,
       "n_evaluation": 49
     },
@@ -250,12 +250,12 @@
       "last": "2026-02-28",
       "corr_spearman": 0.5226469182990922,
       "sign_hit": 0.7582417582417582,
-      "shrink_slope": 0.9253055783670217,
-      "mae_model": 0.3258785022271718,
+      "shrink_slope": 0.9253055783670219,
+      "mae_model": 0.32587850222717174,
       "mae_zero": 0.4245446920274326,
       "mae_diff": -0.09866618980026079,
       "mae_diff_lo": -0.19236502598828456,
-      "mae_diff_hi": 0.012842825605598627,
+      "mae_diff_hi": 0.012842825605598638,
       "beats_zero": false,
       "n_evaluation": 46
     },
@@ -284,11 +284,11 @@
     },
     "6": {
       "raw": 0.6777917440464979,
-      "point": 0.6271644817373371
+      "point": 0.6271644817373372
     },
     "12": {
-      "raw": 0.6290866748219747,
-      "point": 0.37191322125258225
+      "raw": 0.6290866748219748,
+      "point": 0.3719132212525823
     }
   },
   "similar": [
@@ -401,11 +401,11 @@
   },
   "cli_lead_lag": null,
   "chart_first": "2000-01-31",
-  "generated_at": "2026-09-08 10:04 KST",
+  "generated_at": "2026-09-08 14:28 KST",
   "macro_snapshot_hash": "7ed3ebee8562f01fbf17",
   "macro_sources": {
     "leading_cycle": "last_successful_fetch",
     "semiconductor_exports": "last_successful_fetch"
   },
-  "frame_hash": "babedf229b7bc70e"
+  "frame_hash": "b9b3c3d619329c13"
 }

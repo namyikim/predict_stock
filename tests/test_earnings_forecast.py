@@ -11,6 +11,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "tools"))
 sys.path.insert(0, str(ROOT))
 import build_earnings_forecast as ef  # noqa: E402
+import macro_utils as mu  # noqa: E402
 
 
 def synthetic(seed=0, link=True, last_month="2026-08-01"):
@@ -278,3 +279,58 @@ class ExportsFlashTests(unittest.TestCase):
             self.assertEqual(len(got), 1)
             self.assertEqual(int(got["days"].iloc[0]), 20)
             self.assertAlmostEqual(got["semiconductor_yoy"].iloc[0], 0.31)
+
+
+class CustomsSourceTests(unittest.TestCase):
+    """관세청 원천: HS 세부코드 합산, 연 합계 행 제외, 단위 검증, KOSIS 우선."""
+
+    XML = """<?xml version="1.0"?><response><header><resultCode>00</resultCode>
+      <resultMsg>정상서비스.</resultMsg></header><body><items>
+      <item><expDlr>2286791909</expDlr><hsCode>8542311000</hsCode><year>2026.06</year></item>
+      <item><expDlr>11175623231</expDlr><hsCode>8542321010</hsCode><year>2026.06</year></item>
+      <item><expDlr>1000000000</expDlr><hsCode>8542321030</hsCode><year>2026.07</year></item>
+      <item><expDlr>99999999999</expDlr><hsCode>8542</hsCode><year>2026</year></item>
+      </items></body></response>"""
+
+    def test_monthly_rows_are_summed_and_annual_rows_dropped(self):
+        got = mu.parse_customs_xml(self.XML).set_index("month")["value"]
+        self.assertAlmostEqual(got.loc["2026-06-01"], 2286791909 + 11175623231)
+        self.assertAlmostEqual(got.loc["2026-07-01"], 1e9)
+        self.assertEqual(len(got), 2)          # year='2026' 행은 빠진다
+
+    def test_api_error_is_raised(self):
+        bad = self.XML.replace("<resultCode>00</resultCode>", "<resultCode>30</resultCode>")
+        with self.assertRaises(RuntimeError):
+            mu.parse_customs_xml(bad)
+
+    def test_unit_mismatch_is_rejected(self):
+        kosis = pd.DataFrame({"month": ["2026-01", "2026-02", "2026-03", "2026-04", "2026-05", "2026-06"],
+                              "value": [3.5e10] * 6})
+        thousands = kosis.assign(value=kosis["value"] / 1000)
+        ok, info = mu.reconcile_customs(kosis, thousands)
+        self.assertFalse(ok)
+        self.assertIn("배율", info["reason"])
+        ok, info = mu.reconcile_customs(kosis, kosis)
+        self.assertTrue(ok)
+        self.assertAlmostEqual(info["ratio_median"], 1.0)
+
+    def test_kosis_values_are_kept_and_only_new_months_added(self):
+        kosis = pd.DataFrame({"month": ["2026-05", "2026-06"], "value": [3.5e10, 3.6e10]})
+        customs = pd.DataFrame({"month": ["2026-05", "2026-06", "2026-07"], "value": [1.0, 2.0, 3.9e10]})
+        merged, added = mu.merge_customs_exports(kosis, customs)
+        values = merged.set_index("month")["value"]
+        self.assertEqual(float(values.loc[pd.Timestamp("2026-05-01")]), 3.5e10)   # KOSIS 값 유지
+        self.assertEqual(float(values.loc[pd.Timestamp("2026-07-01")]), 3.9e10)
+        self.assertEqual(added, ["2026-07"])
+
+    def test_encoded_key_is_decoded(self):
+        import os
+        saved = os.environ.get("DATA_GO_KR_KEY")
+        os.environ["DATA_GO_KR_KEY"] = "abc%2Bdef%3D"
+        try:
+            self.assertEqual(mu.data_go_kr_key(), "abc+def=")
+        finally:
+            if saved is None:
+                os.environ.pop("DATA_GO_KR_KEY", None)
+            else:
+                os.environ["DATA_GO_KR_KEY"] = saved

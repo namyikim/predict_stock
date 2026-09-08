@@ -171,6 +171,8 @@ jobs:
           KOSIS_API_KEY: ${{ secrets.KOSIS_API_KEY }}
           DART_API_KEY: ${{ secrets.DART_API_KEY }}
           FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
+          # 관세청 품목별 수출입실적(공공데이터포털). KOSIS보다 빠른 원천이다.
+          DATA_GO_KR_KEY: ${{ secrets.DATA_GO_KR_KEY }}
         run: python tools/build_earnings_forecast.py --target ${{ matrix.target }} --out runs/earnings --publish
 
   trends:

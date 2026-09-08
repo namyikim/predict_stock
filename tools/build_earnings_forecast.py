@@ -35,7 +35,10 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "tools"))
 import github_pages  # noqa: E402
-from macro_utils import cli_features, load_cli, load_macro_data  # noqa: E402
+from macro_utils import (  # noqa: E402
+    cli_features, data_go_kr_key, fetch_customs_exports, load_cli, load_macro_data,
+    merge_customs_exports, reconcile_customs,
+)
 
 KST = timezone(timedelta(hours=9))
 TARGETS = {
@@ -439,6 +442,9 @@ def render_fragment(result):
                  + (" " + " ".join(
                      f'<b>{e(a["month"])}</b>은 관세청 1~{a["days"]}일 속보(반도체 {a["yoy"]:+.0%})로 잠정 추정한 값입니다.'
                      for a in r.get("flash_applied") or []) if r.get("flash_applied") else "")
+                 + ((f' {e(", ".join(r["customs_info"]["months_added"]))}은 관세청 원천(HS 8541·8542 합계)에서 받았습니다 — '
+                     f'KOSIS 확정치와 겹치는 달의 배율 중앙값 {r["customs_info"]["ratio_median"]:.3f}로 같은 계열임을 확인했습니다.')
+                    if (r.get("customs_info") or {}).get("months_added") else "")
                  + '</div>')
 
     if r.get("chart_svg"):
@@ -537,6 +543,27 @@ def analyse(target, out_dir, fetch=True):
     macro, macro_info = load_macro_data(out_dir, "2005-01-01",
                                         datetime.now(KST).date(), use_cache=not fetch,
                                         fallback_dir=fallback_dir)
+    # 관세청 원천에서 최근 달을 먼저 채운다. KOSIS 확정치는 그대로 두고 없는 달만 더한다.
+    customs_info = {"enabled": False, "reason": "DATA_GO_KR_KEY 없음"}
+    key = data_go_kr_key()
+    if key and fetch:
+        try:
+            customs = fetch_customs_exports(pd.Timestamp.now(tz=KST).date().replace(day=1) - pd.DateOffset(months=30),
+                                            pd.Timestamp.now(tz=KST).date(), key)
+            ok, diag = reconcile_customs(macro["semiconductor_exports"], customs)
+            customs_info = {"enabled": ok, **diag}
+            if ok:
+                macro["semiconductor_exports"], added = merge_customs_exports(
+                    macro["semiconductor_exports"], customs)
+                customs_info["months_added"] = added
+                print(f"  관세청으로 채운 달: {added or '없음(KOSIS가 이미 최신)'} "
+                      f"· KOSIS 대비 배율 중앙값 {diag['ratio_median']:.3f}", flush=True)
+            else:
+                print("  ⚠️ 관세청 계열을 쓰지 않습니다:", diag.get("reason"), flush=True)
+        except Exception as exc:
+            customs_info = {"enabled": False, "reason": f"{type(exc).__name__}: {exc}"}
+            print("  ⚠️ 관세청 조회 실패(무시):", exc, flush=True)
+
     exports = (macro["semiconductor_exports"].set_index("month")["value"]
                .asfreq("MS").dropna())
     flash_applied = []
@@ -617,7 +644,7 @@ def analyse(target, out_dir, fetch=True):
         "quarter": f"{live_quarter.year}년 {live_quarter.quarter}분기",
         "quarter_code": str(live_quarter), "months_used": months_used,
         "months_included": month_names, "months_missing": missing_months,
-        "flash_applied": flash_applied,
+        "flash_applied": flash_applied, "customs_info": customs_info,
         "point": point,
         "low": (point + ev["residual_q10"]) if point is not None else None,
         "high": (point + ev["residual_q90"]) if point is not None else None,

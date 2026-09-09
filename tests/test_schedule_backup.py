@@ -368,3 +368,37 @@ class GateDependencyTests(unittest.TestCase):
             self.assertEqual(str(srt.next_trading_day(saturday)), "2026-09-14")
         finally:
             builtins.__import__ = real_import
+
+
+class WorkflowSecretTests(unittest.TestCase):
+    """노트북이 읽는 키가 워크플로에서 실제로 전달되는지.
+
+    2026-09-09에 DART_API_KEY 가 earnings 잡에만 있고 보고서를 만드는 report 잡에는 없어,
+    키가 등록돼 있는데도 보고서에 '공시 목록 없음 — DART_API_KEY 없음'이 떴다. 키를 새로 쓰기
+    시작할 때 워크플로에 넣는 것을 잊기 쉬우므로 테스트로 묶는다.
+    """
+
+    NOTEBOOK_SECRETS = {"KOSIS_API_KEY", "ECOS_API_KEY", "DART_API_KEY", "KRX_ID", "KRX_PW"}
+
+    def notebook_calls(self):
+        import json
+        import re
+        nb = json.loads((ROOT / "samsung_direction_model_colab.ipynb").read_text(encoding="utf-8"))
+        return "\n".join("".join(c["source"]) for c in nb["cells"])
+
+    def test_notebook_still_uses_these_sources(self):
+        source = self.notebook_calls()
+        for name in ("load_macro_data(", "load_nsi(", "load_investor_flows(", "fetch_dart_disclosures("):
+            self.assertIn(name, source, f"{name} 호출이 사라졌다면 이 테스트의 키 목록도 줄여야 합니다")
+
+    def test_every_notebook_workflow_passes_them(self):
+        import yaml
+        for path in sorted((ROOT / ".github" / "workflows").glob("*.yml")):
+            workflow = yaml.safe_load(path.read_text(encoding="utf-8"))
+            for job_name, job in (workflow.get("jobs") or {}).items():
+                for step in job.get("steps", []):
+                    if "run_notebook.py" not in str(step.get("run", "")):
+                        continue
+                    given = set(step.get("env", {}) or {})
+                    missing = sorted(self.NOTEBOOK_SECRETS - given)
+                    self.assertEqual(missing, [], f"{path.name}:{job_name} 에 {missing} 가 없습니다")

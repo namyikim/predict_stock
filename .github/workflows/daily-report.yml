@@ -143,6 +143,8 @@ jobs:
           # 외국인·기관 수급. KRX 정보데이터시스템 계정(무료). 없으면 네이버 금융 페이지에서 받는다.
           KRX_ID: ${{ secrets.KRX_ID }}
           KRX_PW: ${{ secrets.KRX_PW }}
+          # DART 공시 목록. 보고서의 '최근 공시' 절과 이벤트 표시에 쓴다(예측 특징은 아니다).
+          DART_API_KEY: ${{ secrets.DART_API_KEY }}
           PREDICT_STOCK_TARGETS: ${{ matrix.target }}
           # 자동 감지(GITHUB_ACTIONS)로도 켜지지만, 발행 주체를 파일에 명시해 둔다.
           PREDICT_STOCK_PUBLISH: "true"

@@ -64,6 +64,12 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           KOSIS_API_KEY: ${{ secrets.KOSIS_API_KEY }}
+          # 노트북이 쓰는 나머지 선택 자료원. 없으면 그 지표만 빠지지만, 실험 결과를 일일 보고서와
+          # 비교하려면 같은 입력이어야 한다.
+          ECOS_API_KEY: ${{ secrets.ECOS_API_KEY }}
+          DART_API_KEY: ${{ secrets.DART_API_KEY }}
+          KRX_ID: ${{ secrets.KRX_ID }}
+          KRX_PW: ${{ secrets.KRX_PW }}
           PREDICT_STOCK_TARGETS: ${{ matrix.target }}
           # 원장·Pages는 건드리지 않는다. 13절의 실험 기록은 이 스위치와 무관하게 올라간다.
           PREDICT_STOCK_PUBLISH: "false"

@@ -52,6 +52,10 @@ CREATE INDEX IF NOT EXISTS idx_hits_visitor ON hits (visitor, page, day);
 ```
 
 ```sql
+CREATE INDEX IF NOT EXISTS idx_hits_day_geo ON hits (day, region, city);
+```
+
+```sql
 CREATE TABLE IF NOT EXISTS counters (page TEXT PRIMARY KEY, total INTEGER NOT NULL DEFAULT 0);
 ```
 
@@ -75,6 +79,10 @@ ALTER TABLE hits ADD COLUMN city TEXT NOT NULL DEFAULT '';
 
 ```sql
 CREATE INDEX IF NOT EXISTS idx_hits_visitor ON hits (visitor, page, day);
+```
+
+```sql
+CREATE INDEX IF NOT EXISTS idx_hits_day_geo ON hits (day, region, city);
 ```
 
 ```sql

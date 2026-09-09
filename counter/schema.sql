@@ -20,6 +20,8 @@ CREATE TABLE IF NOT EXISTS hits (
 CREATE INDEX IF NOT EXISTS idx_hits_day_page ON hits (day, page);
 -- 같은 방문자의 최근 조회를 찾는 데 쓴다(중복 억제).
 CREATE INDEX IF NOT EXISTS idx_hits_visitor ON hits (visitor, page, day);
+-- 날짜별 지역·도시 집계용.
+CREATE INDEX IF NOT EXISTS idx_hits_day_geo ON hits (day, region, city);
 
 -- 누적 조회수. hits를 매번 COUNT(*) 하면 표가 커질수록 느려지므로 따로 둔다.
 CREATE TABLE IF NOT EXISTS counters (

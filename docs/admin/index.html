@@ -23,6 +23,8 @@
   --series-3:#1baf7a;
   --series-4:#eda100;
   --series-5:#e87ba4;
+  --series-6:#7d5bd0;
+  --series-7:#0e8f9e;
 }
 @media (prefers-color-scheme:dark){
   :root:not([data-theme="light"]){
@@ -42,6 +44,8 @@
     --series-3:#199e70;
     --series-4:#c98500;
     --series-5:#d55181;
+    --series-6:#9a7ae8;
+    --series-7:#26a3b2;
   }
 }
 *{box-sizing:border-box}
@@ -170,7 +174,12 @@ a{color:var(--accent)}
   <h2>시 / 군 / 구</h2>
   <div class="hint">참고용입니다. 통신사 NAT나 회사 회선을 거치면 실제 위치와 크게 달라집니다.
     동 단위는 IP만으로는 알 수 없습니다.</div>
+  <div style="margin:6px 0 10px">
+    <label for="city-day" style="font-size:13px;color:var(--text-2)">날짜</label>
+    <select id="city-day" style="margin-left:6px;padding:4px 8px;font-size:13px"></select>
+  </div>
   <div class="chart-box" id="chart-cities"></div>
+  <details><summary>날짜별로 보기</summary><div id="table-cities"></div></details>
 
   <h2>유입 경로</h2>
   <div class="hint">주소 직접 입력·북마크·메신저로 들어온 방문은 출처가 남지 않아 여기 나오지 않습니다.</div>
@@ -199,8 +208,28 @@ a{color:var(--accent)}
     { key: "samsung",  name: "삼성전자",   color: "var(--series-2)" },
     { key: "sk_hynix", name: "SK하이닉스", color: "var(--series-3)" },
     { key: "trends",   name: "급상승 검색어", color: "var(--series-4)" },
-    { key: "interest", name: "장기 관심도",   color: "var(--series-5)" }
+    { key: "interest", name: "장기 관심도",   color: "var(--series-5)" },
+    { key: "china",    name: "중국 주식",   color: "var(--series-6)" },
+    { key: "metals",   name: "금·은",       color: "var(--series-7)" }
   ];
+
+  // Cloudflare는 시/도를 영어 ISO 표기로 준다(North Chungcheong 등). 그대로 두면
+  // 12px 기준 110px 라벨 칸을 넘고, 한국 사용자가 읽기에도 불편하다.
+  var REGION_KO = {
+    "Seoul": "서울", "Busan": "부산", "Daegu": "대구", "Incheon": "인천",
+    "Gwangju": "광주", "Daejeon": "대전", "Ulsan": "울산", "Sejong": "세종",
+    "Gyeonggi-do": "경기", "Gyeonggi": "경기",
+    "Gangwon-do": "강원", "Gangwon": "강원",
+    "North Chungcheong": "충북", "Chungcheongbuk-do": "충북",
+    "South Chungcheong": "충남", "Chungcheongnam-do": "충남",
+    "North Jeolla": "전북", "Jeollabuk-do": "전북",
+    "South Jeolla": "전남", "Jeollanam-do": "전남",
+    "North Gyeongsang": "경북", "Gyeongsangbuk-do": "경북",
+    "South Gyeongsang": "경남", "Gyeongsangnam-do": "경남",
+    "Jeju": "제주", "Jeju-do": "제주"
+  };
+  // 모르는 이름은 그대로 둔다. 폭은 drawBars가 재서 맞춘다.
+  function regionName(name) { return REGION_KO[name] || name; }
   var PAGE_BY_KEY = {};
   PAGES.forEach(function (p) { PAGE_BY_KEY[p.key] = p; });
 
@@ -260,6 +289,30 @@ a{color:var(--accent)}
     if (v <= 5) return Math.max(v, 1);
     var mag = Math.pow(10, Math.floor(Math.log10(v)));
     return Math.ceil(v / (mag / 2)) * (mag / 2);
+  }
+
+  // 라벨 폭을 실제로 잰다. 고정 폭에 맞추면 긴 이름이 SVG 밖으로 나가 잘린다.
+  // 캔버스가 없거나 막힌 환경에서는 글자 수로 어림잡는다(한글·한자는 넓게 본다).
+  var _measureCtx = null;
+  function textWidth(text, font) {
+    try {
+      if (!_measureCtx) _measureCtx = document.createElement("canvas").getContext("2d");
+      if (_measureCtx) {
+        _measureCtx.font = font;
+        return _measureCtx.measureText(text).width;
+      }
+    } catch (ignored) {}
+    var w = 0;
+    for (var i = 0; i < text.length; i++) w += text.charCodeAt(i) > 0x2e80 ? 12 : 6.6;
+    return w;
+  }
+
+  // 상한을 넘는 라벨은 끝을 줄인다. 전체 이름은 막대 툴팁에 그대로 남는다.
+  function fitLabel(text, font, max) {
+    if (textWidth(text, font) <= max) return text;
+    var t = text;
+    while (t.length > 1 && textWidth(t + "…", font) > max) t = t.slice(0, -1);
+    return t + "…";
   }
 
   // ---- 일별 누적 막대 -------------------------------------------------------
@@ -393,32 +446,32 @@ a{color:var(--accent)}
       '날짜·페이지 단위로 세므로 여러 페이지를 본 한 사람이 여러 번 셉니다.</div>';
   }
 
-  // ---- 시/도: 전체 기간과 특정 날짜를 오갈 수 있게 한다 -----------------------
+  // ---- 지역(시/도·시/군/구): 전체 기간과 특정 날짜를 오갈 수 있게 한다 --------
   // 기간 합계만 보면 "어느 날 어디서 들어왔나"를 알 수 없다. 유입이 튄 날의 지역을 보려면
-  // 날짜를 골라야 한다. 옛 Worker는 regionsDaily를 주지 않으므로 그때는 선택 상자를 감춘다.
-  function drawRegions(regions, regionsDaily, emptyText, staleWorker) {
-    var sel = $("region-day"), table = $("table-regions");
+  // 날짜를 골라야 한다. 두 절이 하는 일이 같으므로 한 함수로 두 번 그린다.
+  // 옛 Worker는 <종류>Daily를 주지 않으므로 그때는 선택 상자를 감춘다.
+  //   spec: { field, chartId, tableId, selectId, chartLabel, unitName, display }
+  function drawGeo(spec, totalsRows, dailyRows, emptyText, staleWorker) {
+    var field = spec.field, display = spec.display || function (v) { return v; };
+    var sel = $(spec.selectId), table = $(spec.tableId);
     var byDay = {};
-    regionsDaily.forEach(function (r) { (byDay[r.day] = byDay[r.day] || []).push(r); });
+    dailyRows.forEach(function (r) { (byDay[r.day] = byDay[r.day] || []).push(r); });
     var days = Object.keys(byDay).sort().reverse();
 
     function paint(day) {
-      var items = (day === "all" ? regions.map(function (r) {
-        return { name: r.region, value: r.views };
-      }) : (byDay[day] || []).map(function (r) {
-        return { name: r.region, value: r.views };
-      }));
-      drawBars("chart-regions", items.map(function (d) {
-        return { name: d.name, value: d.value, color: "var(--series-1)" };
-      }), { labelW: 110, empty: day === "all" ? emptyText : "그날은 지역 기록이 없습니다.",
-            label: "시/도별 조회수" });
+      var items = (day === "all" ? totalsRows : (byDay[day] || [])).map(function (r) {
+        return { name: display(r[field]), value: r.views, color: "var(--series-1)" };
+      });
+      drawBars(spec.chartId, items,
+        { labelW: 110, empty: day === "all" ? emptyText : "그날은 " + spec.unitName + " 기록이 없습니다.",
+          label: spec.chartLabel });
     }
 
     if (staleWorker || !days.length) {
       sel.parentNode.style.display = "none";
       table.innerHTML = staleWorker
-        ? '<div class="empty">배포된 Worker가 오래되어 날짜별 지역 자료를 주지 않습니다.<br>' +
-          '<code>counter/worker.js</code>를 다시 배포하세요.</div>'
+        ? '<div class="empty">배포된 Worker가 오래되어 날짜별 ' + spec.unitName +
+          ' 자료를 주지 않습니다.<br><code>counter/worker.js</code>를 다시 배포하세요.</div>'
         : '<div class="empty">날짜별 기록이 없습니다.</div>';
       paint("all");
       return;
@@ -429,13 +482,13 @@ a{color:var(--accent)}
     sel.onchange = function () { paint(sel.value); };
     paint("all");
 
-    // 표: 날짜 × 상위 시/도. 열이 무한정 늘지 않도록 기간 상위 8곳만 두고 나머지는 기타로 묶는다.
-    var top = regions.slice(0, 8).map(function (r) { return r.region; });
+    // 표: 날짜 × 상위 지역. 열이 무한정 늘지 않도록 기간 상위 8곳만 두고 나머지는 기타로 묶는다.
+    var top = totalsRows.slice(0, 8).map(function (r) { return r[field]; });
     var rows = days.map(function (d) {
       var m = {}, other = 0, total = 0;
       byDay[d].forEach(function (r) {
         total += r.views;
-        if (top.indexOf(r.region) >= 0) { m[r.region] = r.views; } else { other += r.views; }
+        if (top.indexOf(r[field]) >= 0) { m[r[field]] = r.views; } else { other += r.views; }
       });
       return "<tr><td>" + esc(d) + "</td>" +
         top.map(function (name) {
@@ -446,11 +499,11 @@ a{color:var(--accent)}
     }).join("");
     table.innerHTML =
       '<table><thead><tr><th>날짜</th>' +
-      top.map(function (name) { return '<th class="num">' + esc(name) + "</th>"; }).join("") +
+      top.map(function (name) { return '<th class="num">' + esc(display(name)) + "</th>"; }).join("") +
       '<th class="num">기타</th><th class="num">합계</th></tr></thead><tbody>' + rows +
       "</tbody></table>" +
-      '<div class="hint" style="margin-top:6px">조회수 기준입니다. 열은 기간 상위 8개 시/도이고 ' +
-      '나머지는 기타로 묶었습니다.</div>';
+      '<div class="hint" style="margin-top:6px">조회수 기준입니다. 열은 기간 상위 8개 ' +
+      spec.unitName + '이고 나머지는 기타로 묶었습니다.</div>';
   }
 
   // ---- 가로 막대 (페이지·국가 공용) -----------------------------------------
@@ -460,7 +513,15 @@ a{color:var(--accent)}
     if (!items.length) { box.innerHTML = '<div class="empty">' + opts.empty + "</div>"; return; }
     items = items.slice(0, 12);
     var max = niceMax(Math.max.apply(null, items.map(function (d) { return d.value; })));
-    var rowH = 30, padL = opts.labelW, padR = 58, W = Math.max(320, 700), H = items.length * rowH + 6;
+    // 라벨 칸은 실제 글자 폭에 맞춘다. opts.labelW는 최소치일 뿐이고, 상한을 두어
+    // 막대가 지나치게 짧아지지 않게 한다. 상한을 넘는 이름은 말줄임한다.
+    var LABEL_FONT = "12px -apple-system, BlinkMacSystemFont, 'Malgun Gothic', sans-serif";
+    var LABEL_MAX = 190;
+    var widest = Math.max.apply(null, items.map(function (d) {
+      return Math.min(textWidth(d.name, LABEL_FONT), LABEL_MAX);
+    }));
+    var rowH = 30, padL = Math.max(opts.labelW, Math.ceil(widest) + 12);
+    var padR = 58, W = Math.max(320, 700), H = items.length * rowH + 6;
     var svg = el("svg", { width: W, height: H, viewBox: "0 0 " + W + " " + H,
                           role: "img", "aria-label": opts.label });
     items.forEach(function (d, i) {
@@ -468,7 +529,8 @@ a{color:var(--accent)}
       var w = Math.max(2, (W - padL - padR) * (d.value / max));
       var lb = el("text", { x: padL - 8, y: y + 13, "text-anchor": "end",
         "font-size": 12, fill: "var(--text-2)" });
-      lb.textContent = d.name;
+      lb.textContent = fitLabel(d.name, LABEL_FONT, LABEL_MAX);
+      if (lb.textContent !== d.name) hoverable(lb, "<b>" + esc(d.name) + "</b>");
       svg.appendChild(lb);
       var bar = el("path", { d: rightRoundedPath(padL, y, w, h, 4), fill: d.color || "var(--series-1)" });
       hoverable(bar, "<b>" + esc(d.name) + "</b><br>조회 <b>" + nf.format(d.value) + "</b>" +
@@ -491,7 +553,7 @@ a{color:var(--accent)}
     var totals = data.totals || [], daily = data.daily || [];
     var countries = data.countries || [], referrers = data.referrers || [];
     var regions = data.regions || [], cities = data.cities || [];
-    var regionsDaily = data.regionsDaily || [];
+    var regionsDaily = data.regionsDaily || [], citiesDaily = data.citiesDaily || [];
 
     var allTime = totals.reduce(function (a, r) { return a + r.total; }, 0);
     var periodViews = daily.reduce(function (a, r) { return a + r.views; }, 0);
@@ -523,11 +585,14 @@ a{color:var(--accent)}
 
     // 위치 열은 나중에 추가했으므로, 그 이전 방문 기록에는 값이 없다.
     var geoEmpty = "아직 기록이 없습니다. 위치 수집을 켠 뒤의 방문부터 쌓입니다.";
-    drawRegions(regions, regionsDaily, geoEmpty, !("regionsDaily" in data));
+    drawGeo({ field: "region", chartId: "chart-regions", tableId: "table-regions",
+              selectId: "region-day", chartLabel: "시/도별 조회수", unitName: "시/도",
+              display: regionName },
+            regions, regionsDaily, geoEmpty, !("regionsDaily" in data));
 
-    drawBars("chart-cities", cities.map(function (r) {
-      return { name: r.city, value: r.views, color: "var(--series-1)" };
-    }), { labelW: 110, empty: geoEmpty, label: "시/군/구별 조회수" });
+    drawGeo({ field: "city", chartId: "chart-cities", tableId: "table-cities",
+              selectId: "city-day", chartLabel: "시/군/구별 조회수", unitName: "시/군/구" },
+            cities, citiesDaily, geoEmpty, !("citiesDaily" in data));
 
     $("referrers").innerHTML = referrers.length
       ? '<table><thead><tr><th>출처</th><th class="num">조회수</th></tr></thead><tbody>' +

@@ -176,7 +176,8 @@ async function handleStats(request, env, url, origin) {
   const days = Math.min(Math.max(parseInt(url.searchParams.get("days") || "30", 10), 1), 365);
   const since = new Date(Date.now() - days * 86400000).toISOString().slice(0, 10);
 
-  const [totals, daily, countries, regions, regionsDaily, cities, referrers] = await env.DB.batch([
+  const [totals, daily, countries, regions, regionsDaily,
+         cities, citiesDaily, referrers] = await env.DB.batch([
     env.DB.prepare("SELECT page, total FROM counters ORDER BY total DESC"),
     env.DB.prepare(
       "SELECT day, page, COUNT(*) AS views, COUNT(DISTINCT visitor) AS visitors " +
@@ -201,6 +202,14 @@ async function handleStats(request, env, url, origin) {
       "SELECT city, COUNT(*) AS views FROM hits WHERE day >= ? AND city <> '' " +
         "GROUP BY city ORDER BY views DESC LIMIT 30"
     ).bind(since),
+    // 날짜별 시/군/구. 시/도와 같은 이유로 둔다 — 유입이 튄 날 어디서 왔는지 보려면
+    // 기간 합계가 아니라 그날의 분포가 필요하다. 도시는 시/도보다 종류가 많으므로
+    // 상한을 넉넉히 둔다.
+    env.DB.prepare(
+      "SELECT day, city, COUNT(*) AS views, COUNT(DISTINCT visitor) AS visitors " +
+        "FROM hits WHERE day >= ? AND city <> '' " +
+        "GROUP BY day, city ORDER BY day DESC, views DESC LIMIT 8000"
+    ).bind(since),
     env.DB.prepare(
       "SELECT referrer, COUNT(*) AS views FROM hits WHERE day >= ? AND referrer <> '' " +
         "GROUP BY referrer ORDER BY views DESC LIMIT 30"
@@ -217,6 +226,7 @@ async function handleStats(request, env, url, origin) {
       regions: regions.results,
       regionsDaily: regionsDaily.results,
       cities: cities.results,
+      citiesDaily: citiesDaily.results,
       referrers: referrers.results,
     },
     origin

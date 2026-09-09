@@ -125,7 +125,10 @@ class LedgerGateTests(unittest.TestCase):
         self.dir = Path(tempfile.mkdtemp())
         (self.dir / "samsung").mkdir()
         self.path = self.dir / "samsung" / "forecast_log.csv"
-        self.today = datetime.now(timezone(timedelta(hours=9))).date().isoformat()
+        # 시각을 고정한다. 게이트는 09:00 전후로 동작이 다르고 예측 대상 거래일도 달라지므로,
+        # 실제 시계를 쓰면 CI 가 언제 도느냐에 따라 결과가 뒤집힌다(실제로 그랬다).
+        self.now = datetime(2026, 9, 9, 6, 30, tzinfo=timezone(timedelta(hours=9)))   # 수요일 아침
+        self.today = str(srt.next_trading_day(self.now))
 
     def write(self, rows):
         pd.DataFrame(rows).to_csv(self.path, index=False)
@@ -133,24 +136,24 @@ class LedgerGateTests(unittest.TestCase):
     def test_skips_when_todays_prospective_forecast_exists(self):
         self.write([{"prediction_date": self.today, "is_prospective": True,
                      "kind": "direction", "run_id": "r1"}])
-        recorded, reason = srt.already_recorded(self.path, self.today)
+        recorded, reason = srt.already_recorded(self.path, self.today, now=self.now)
         self.assertTrue(recorded)
         self.assertIn("r1", reason)
 
     def test_runs_when_todays_record_is_not_prospective(self):
         # 아침에는 09:00 이후에 만들어진 옛 기록을 인정하지 않는다 — 아직 제대로 만들 시간이 있다.
-        self.write([{"prediction_date": self.today, "is_prospective": False,
-                     "kind": "direction", "run_id": "late"}])
         morning = datetime(2026, 9, 9, 6, 30, tzinfo=timezone(timedelta(hours=9)))
-        self.assertFalse(srt.already_recorded(self.path, self.today, now=morning)[0])
+        self.write([{"prediction_date": str(srt.next_trading_day(morning)), "is_prospective": False,
+                     "kind": "direction", "run_id": "late"}])
+        self.assertFalse(srt.already_recorded(self.path, "무시됨", now=morning)[0])
 
     def test_runs_when_only_older_dates_are_recorded(self):
         self.write([{"prediction_date": "2020-01-02", "is_prospective": True,
                      "kind": "direction", "run_id": "old"}])
-        self.assertFalse(srt.already_recorded(self.path, self.today)[0])
+        self.assertFalse(srt.already_recorded(self.path, self.today, now=self.now)[0])
 
     def test_runs_when_the_ledger_is_missing(self):
-        recorded, reason = srt.already_recorded(self.dir / "nope.csv", self.today)
+        recorded, reason = srt.already_recorded(self.dir / "nope.csv", self.today, now=self.now)
         self.assertFalse(recorded)
         self.assertIn("없습니다", reason)
 
@@ -182,12 +185,21 @@ class LedgerGateTests(unittest.TestCase):
         self.write([{"prediction_date": self.today, "is_prospective": True,
                      "kind": "direction", "run_id": "r1"}])
         out = self.dir / "out.txt"
-        saved = (os.environ.get("GITHUB_OUTPUT"), sys.argv)
+        saved = (os.environ.get("GITHUB_OUTPUT"), sys.argv, srt.datetime)
         os.environ["GITHUB_OUTPUT"] = str(out)
         sys.argv = ["x", "--target", "samsung", "--ledger-root", str(self.dir)]
+
+        fixed = self.now
+
+        class FrozenDatetime(datetime):
+            @classmethod
+            def now(cls, tz=None):
+                return fixed
+        srt.datetime = FrozenDatetime      # main() 이 실제 시계를 보지 않게 한다
         try:
             srt.main()
         finally:
+            srt.datetime = saved[2]
             sys.argv = saved[1]
             if saved[0] is None:
                 os.environ.pop("GITHUB_OUTPUT", None)

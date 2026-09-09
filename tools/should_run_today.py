@@ -10,6 +10,7 @@ GitHub의 cron은 밀리거나 아예 건너뛴다(2026-09-08 06:30 예정 실�
 """
 import argparse
 import csv
+import io
 import os
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
@@ -50,7 +51,29 @@ def next_trading_day(now):
         return day
 
 
-def already_recorded(path, today, now=None):
+def published_ledger(path, ref="origin/main"):
+    """원격 브랜치에 지금 올라가 있는 원장. 못 읽으면 작업 트리로 물러선다.
+
+    작업 트리를 보면 안 된다. :22·:37·:52 재시도 실행은 거의 같은 시각에 만들어져 각자 '서로가
+    원장을 올리기 전'의 커밋을 체크아웃한다. 그래서 셋 다 게이트를 통과해 같은 날 예측을 세 번
+    다시 계산했다(2026-09-09: 24시간에 23회, 종목당 10~20분짜리 작업이다).
+    """
+    import subprocess
+    if ref:
+        try:
+            subprocess.run(["git", "fetch", "--quiet", "--depth=1", "origin",
+                            ref.split("/", 1)[-1]], check=True, timeout=60)
+            out = subprocess.run(["git", "show", f"{ref}:{path}"], capture_output=True,
+                                 text=True, timeout=60)
+            if out.returncode == 0:
+                return out.stdout
+        except Exception:
+            pass
+    local = Path(path)
+    return local.read_text(encoding="utf-8-sig", errors="replace") if local.exists() else None
+
+
+def already_recorded(path, today, now=None, ref=None):
     """다시 돌 필요가 없으면 True.
 
     15:40 KST 전에는 모델이 오늘을 예측하므로 '오늘의 사전 예측'이 있어야 넘어간다. 장 마감 뒤에는
@@ -59,12 +82,12 @@ def already_recorded(path, today, now=None):
     now = now or datetime.now(KST)
     before_close = (now.hour, now.minute) < (15, 40)
     today = str(next_trading_day(now))          # 오늘이 아니라 '예측 대상 거래일'로 비교한다
-    if not Path(path).exists():
+    text = published_ledger(path, ref)
+    if text is None:
         return False, "원장 파일이 없습니다"
-    with open(path, newline="", encoding="utf-8-sig") as handle:
-        reader = csv.DictReader(handle)
-        columns = reader.fieldnames or []
-        rows = list(reader)
+    reader = csv.DictReader(io.StringIO(text))
+    columns = reader.fieldnames or []
+    rows = list(reader)
     for column in ("prediction_date", "is_prospective"):
         if column not in columns:
             return False, f"원장에 {column} 열이 없습니다"
@@ -87,11 +110,13 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--target", required=True)
     parser.add_argument("--ledger-root", default="forecast_history")
+    parser.add_argument("--ref", default="origin/main",
+                        help="이 ref 의 원장을 본다. 빈 문자열이면 작업 트리를 본다(테스트용)")
     args = parser.parse_args()
     now = datetime.now(KST)
     today = str(next_trading_day(now))
     path = Path(args.ledger_root) / args.target / "forecast_log.csv"
-    recorded, reason = already_recorded(path, today, now=now)
+    recorded, reason = already_recorded(path, today, now=now, ref=args.ref or None)
     print(f"{args.target}: {reason}")
     output = os.environ.get("GITHUB_OUTPUT")
     if output:

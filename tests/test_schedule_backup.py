@@ -402,3 +402,46 @@ class WorkflowSecretTests(unittest.TestCase):
                     given = set(step.get("env", {}) or {})
                     missing = sorted(self.NOTEBOOK_SECRETS - given)
                     self.assertEqual(missing, [], f"{path.name}:{job_name} 에 {missing} 가 없습니다")
+
+
+class StaleCheckoutTests(unittest.TestCase):
+    """게이트는 작업 트리가 아니라 원격의 현재 내용을 봐야 한다.
+
+    :22·:37·:52 재시도 실행은 거의 같은 시각에 만들어져 각자 '서로가 발행하기 전'의 커밋을
+    체크아웃한다. 작업 트리를 보면 셋 다 게이트를 통과해 같은 일을 세 번 한다
+    (2026-09-09: 종목 보고서 23회, 검색어 23회를 24시간에 다시 만들었다).
+    """
+
+    def test_ledger_gate_reads_the_remote_ref(self):
+        source = (ROOT / "tools" / "should_run_today.py").read_text(encoding="utf-8")
+        self.assertIn("def published_ledger(", source)
+        self.assertIn('"git", "show", f"{ref}:{path}"', source)
+        self.assertIn('parser.add_argument("--ref", default="origin/main"', source)
+
+    def test_trends_gate_reads_the_remote_ref(self):
+        source = (ROOT / "tools" / "should_run_trends.py").read_text(encoding="utf-8")
+        self.assertIn("def published_text(", source)
+        self.assertIn('"git", "show", f"{ref}:{path}"', source)
+
+    def test_both_fall_back_to_the_working_tree(self):
+        # 원격을 못 읽어도 게이트가 죽으면 안 된다(로컬 실행·첫 실행).
+        import csv
+        import should_run_today as gate
+        import should_run_trends as trends_gate
+        root = Path(tempfile.mkdtemp())
+        (root / "samsung").mkdir()
+        path = root / "samsung" / "forecast_log.csv"
+        now = datetime(2026, 9, 9, 6, 30, tzinfo=timezone(timedelta(hours=9)))
+        with open(path, "w", newline="", encoding="utf-8") as handle:
+            writer = csv.DictWriter(handle, fieldnames=["prediction_date", "is_prospective",
+                                                        "kind", "run_id"])
+            writer.writeheader()
+            writer.writerow({"prediction_date": str(gate.next_trading_day(now)),
+                             "is_prospective": "True", "kind": "direction", "run_id": "r1"})
+        # 존재하지 않는 ref → 작업 트리로 물러서서 정상 판정
+        self.assertTrue(gate.already_recorded(path, "x", now=now, ref="origin/no-such-branch")[0])
+
+        page = root / "index.html"
+        page.write_text("생성 2026-09-09 12:59 KST", encoding="utf-8")
+        recent = datetime(2026, 9, 9, 13, 25, tzinfo=timezone(timedelta(hours=9)))
+        self.assertFalse(trends_gate.should_run(page, now=recent, ref="origin/no-such-branch")[0])

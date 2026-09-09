@@ -157,16 +157,19 @@ class LedgerGateTests(unittest.TestCase):
         self.assertFalse(recorded)
         self.assertIn("없습니다", reason)
 
-    def test_after_the_open_any_record_counts_as_done(self):
-        # 09:00 이후에는 무엇을 만들어도 사전 예측이 될 수 없다. 그 거래일 기록이 하나라도 있으면
-        # 넘어가야 3시간마다 전체 재계산이 반복되지 않는다.
-        # 수요일 09:00 이후의 대상 거래일은 목요일이다.
+    def test_intraday_run_still_checks_the_current_trading_day(self):
+        # 모델은 15:40 전에는 미완성인 당일 봉을 버리고 오늘을 예측한다. 게이트도 같은 날짜를
+        # 찾아야 아침 예측이 있는데 09:22·12:22·15:22에 다시 계산하지 않는다.
         morning = datetime(2026, 9, 9, 6, 30, tzinfo=timezone(timedelta(hours=9)))
         afternoon = datetime(2026, 9, 9, 15, 30, tzinfo=timezone(timedelta(hours=9)))
-        self.write([{"prediction_date": str(srt.next_trading_day(afternoon)),
-                     "is_prospective": False, "kind": "direction", "run_id": "late"}])
+        self.assertEqual(srt.next_trading_day(afternoon), date(2026, 9, 9))
+        self.write([{"prediction_date": "2026-09-09",
+                     "is_prospective": True, "kind": "direction", "run_id": "morning"}])
         self.assertTrue(srt.already_recorded(self.path, "무시됨", now=afternoon)[0])
-        # 아침에는 그 거래일의 '사전' 예측이어야 인정한다.
+        # 다음 거래일은 당일 봉이 확정된 뒤에만 대상이 된다.
+        after_close = datetime(2026, 9, 9, 15, 40, tzinfo=timezone(timedelta(hours=9)))
+        self.assertEqual(srt.next_trading_day(after_close), date(2026, 9, 10))
+        # 마감 전에는 그 거래일의 '사전' 예측이어야 인정한다.
         self.write([{"prediction_date": str(srt.next_trading_day(morning)),
                      "is_prospective": False, "kind": "direction", "run_id": "late"}])
         self.assertFalse(srt.already_recorded(self.path, "무시됨", now=morning)[0])

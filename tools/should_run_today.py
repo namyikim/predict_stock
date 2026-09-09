@@ -24,22 +24,22 @@ def next_trading_day(now):
     예측일은 다음 개장일이므로, 오늘 날짜와 비교하면 이미 만들어 둔 예측을 못 찾고 계속 다시
     만든다(2026-09-07 예측일에 8건이 쌓였다). 그래서 같은 기준으로 비교한다.
 
-    09:00 전이면 오늘이 거래일일 때 오늘이 대상이고, 09:00 뒤에는 그날 예측 기회가 끝났으므로
-    다음 거래일이 대상이다.
+    모델은 15:40 전에는 미완성인 오늘 봉을 버리고 오늘을 예측한다. 따라서 그 전이면 오늘이
+    거래일일 때 오늘이 대상이고, 15:40부터 다음 거래일이 대상이다.
     """
     today = now.date()
-    before_open = (now.hour, now.minute) < (9, 0)
+    before_close = (now.hour, now.minute) < (15, 40)
     try:
         # 이 스크립트는 표준 라이브러리만으로 돌아야 한다(게이트는 가볍고 빨라야 한다).
         # 달력은 있으면 쓰고 없으면 주말 규칙으로 넘어간다.
         import exchange_calendars as xc
         calendar = xc.get_calendar("XKRX")
         stamp = today.isoformat()
-        if before_open and calendar.is_session(stamp):
+        if before_close and calendar.is_session(stamp):
             return today
         return calendar.next_session(stamp).date()
     except Exception:
-        if before_open and today.weekday() < 5:
+        if before_close and today.weekday() < 5:
             return today
         day = today + timedelta(days=1)
         while day.weekday() >= 5:       # 공휴일은 놓친다. 없는 것보다 낫다.
@@ -50,12 +50,11 @@ def next_trading_day(now):
 def already_recorded(path, today, now=None):
     """다시 돌 필요가 없으면 True.
 
-    09:00 KST 전에는 '오늘의 사전 예측'이 있어야 넘어간다 — 아직 제대로 된 예측을 만들 시간이
-    남아 있기 때문이다. 09:00 이후에는 무엇을 만들어도 사전 예측이 될 수 없으므로, 그날 기록이
-    하나라도 있으면 넘어간다. 그러지 않으면 3시간마다 전체 재계산이 반복된다.
+    15:40 KST 전에는 모델이 오늘을 예측하므로 '오늘의 사전 예측'이 있어야 넘어간다. 장 마감 뒤에는
+    모델이 다음 거래일을 예측하므로 그 날짜의 기록이 하나라도 있으면 넘어간다.
     """
     now = now or datetime.now(KST)
-    before_open = (now.hour, now.minute) < (9, 0)
+    before_close = (now.hour, now.minute) < (15, 40)
     today = str(next_trading_day(now))          # 오늘이 아니라 '예측 대상 거래일'로 비교한다
     if not Path(path).exists():
         return False, "원장 파일이 없습니다"
@@ -71,13 +70,13 @@ def already_recorded(path, today, now=None):
         same_day = str(row.get("prediction_date", ""))[:10] == today
         prospective = str(row.get("is_prospective", "")).strip().lower() in ("true", "1", "yes")
         is_direction = "kind" not in columns or str(row.get("kind", "")) == "direction"
-        if same_day and is_direction and (prospective or not before_open):
+        if same_day and is_direction and (prospective or not before_close):
             hit.append(row)
     if not hit:
-        return False, (f"{today} 사전 예측이 원장에 없습니다" if before_open
-                       else f"{today} 기록이 원장에 없습니다(09:00 이후라 사전 예측은 못 만듭니다)")
+        return False, (f"{today} 사전 예측이 원장에 없습니다" if before_close
+                       else f"{today} 기록이 원장에 없습니다(장 마감 후 다음 거래일 대상)")
     run_id = hit[0].get("run_id", "?") if "run_id" in columns else "?"
-    label = "사전 예측이" if before_open else "기록이"
+    label = "사전 예측이" if before_close else "기록이"
     return True, f"{today} {label} 이미 있습니다({len(hit)}행, run_id {run_id})"
 
 

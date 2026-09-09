@@ -574,6 +574,40 @@ def summarize_daily(daily):
     ).reset_index()
 
 
+def _pending_status(daily, ensemble_model, last_scored_date):
+    """마지막으로 완전히 채점된 날보다 뒤에 있는 예측일의 항목별 상태.
+
+    오후 1시에 보면 시초가는 채점됐지만 종가는 아직이다. 그 날짜를 숨기고 전날 결과만 보여 주면
+    '오늘 종가가 벌써 판정됐나' 하는 오해가 생긴다. 항목마다 '채점됨/판정 전'을 그대로 적는다.
+    """
+    if daily is None or len(daily) == 0 or "target_date" not in daily:
+        return None
+    frame = daily.copy()
+    frame["target_date"] = pd.to_datetime(frame["target_date"]).dt.tz_localize(None).dt.normalize()
+    if "is_prospective" in frame:
+        frame = frame[frame["is_prospective"].astype(str).str.lower().isin(("true", "1", "yes"))]
+    if frame.empty:
+        return None
+    newest = frame["target_date"].max()
+    if pd.notna(last_scored_date) and newest <= pd.Timestamp(last_scored_date):
+        # 최신 예측일이 이미 완전히 채점된 날이면 따로 보여 줄 것이 없다.
+        fully = frame[frame["target_date"] == newest]
+        if (fully["status"] == "scored").all():
+            return None
+    rows = frame[frame["target_date"] == newest]
+    horizon = pd.to_numeric(rows.get("horizon_days", 1), errors="coerce").fillna(1).astype(int)
+    items = {}
+    for kind, label, mask in (
+            ("open", "시초가(갭)", rows["kind"] == "open"),
+            ("direction", "종가 방향", (rows["kind"] == "direction") & (rows["model"] == ensemble_model)),
+            ("price", "1거래일 종가예측", (rows["kind"] == "price") & (horizon == 1))):
+        sub = rows[mask]
+        if sub.empty:
+            continue
+        items[kind] = {"label": label, "status": str(sub["status"].iloc[0]), "row": sub.iloc[0]}
+    return {"date": pd.Timestamp(newest), "items": items} if items else None
+
+
 def review_ledger(daily, bars, ensemble_model="Mean ensemble", windows=(20, 60), min_alert_n=20):
     """실제 사전 예측(daily_comparison)만으로 최근 성능을 계산하고 경고를 만든다.
 
@@ -584,7 +618,7 @@ def review_ledger(daily, bars, ensemble_model="Mean ensemble", windows=(20, 60),
       alerts   — 가장 긴 창(표본 min_alert_n 이상)에서 나온 경고 문구
     """
     empty = {"latest": pd.DataFrame(), "rolling": pd.DataFrame(), "alerts": [], "n_scored_days": 0,
-             "latest_date": None}
+             "latest_date": None, "pending": _pending_status(daily, ensemble_model, None)}
     if daily is None or daily.empty or "status" not in daily:
         return empty
     scored = daily.loc[daily["status"] == "scored"].copy()
@@ -603,7 +637,10 @@ def review_ledger(daily, bars, ensemble_model="Mean ensemble", windows=(20, 60),
     session = (bars["close"] / bars["open"] - 1).rename("actual_session")
     scored = scored.join(gap, on="target_date").join(session, on="target_date")
 
-    latest_date = scored["target_date"].max()
+    # 아래 표의 기준일은 '종가까지 채점된 마지막 날'이다. 시초가만 채점된 오늘을 기준으로 잡으면
+    # 어제의 종가 결과가 표에서 사라진다(오늘의 부분 상태는 위 블록이 따로 보여 준다).
+    full = scored[(scored["kind"] == "direction") & (scored["model"] == ensemble_model)]
+    latest_date = full["target_date"].max() if len(full) else scored["target_date"].max()
     keep = [c for c in ["target_date", "kind", "horizon_days", "model", "prediction", "p_down", "p_flat",
                         "p_up", "band", "actual_class", "direction_correct", "log_loss", "current_close",
                         "predicted_return", "raw_predicted_return", "predicted_close", "center_close",
@@ -669,7 +706,8 @@ def review_ledger(daily, bars, ensemble_model="Mean ensemble", windows=(20, 60),
             if r["mae_return"] > r["zero_mae_return"]:
                 alerts.append(f"{label} 점 예측이 '변화 없음'보다 나쁨: MAE {r['mae_return']:.2%} vs {r['zero_mae_return']:.2%}")
     return {"latest": latest, "rolling": rolling, "alerts": alerts, "n_scored_days": int(len(dates)),
-            "latest_date": pd.Timestamp(latest_date)}
+            "latest_date": pd.Timestamp(latest_date),
+          "pending": _pending_status(daily, ensemble_model, latest_date)}
 
 
 # ---------------------------------------------------------------------------
@@ -706,10 +744,53 @@ def ledger_section_html(review, ensemble_name, updated_note=""):
                 f'{title} <span style="font-weight:400;color:#8a9199;font-size:12px">'
                 '&nbsp;실제로 미리 낸 예측만 채점 · 백테스트 숫자가 아님</span></h3>')
 
+    def _pending_block(pending):
+        """최신 예측일의 항목별 상태. 판정 전 항목은 그렇게 적는다 — 전날 결과로 오해하지 않게."""
+        if not pending:
+            return ""
+        day = pending["date"]
+        title = f'{day.date().isoformat()} ({"월화수목금토일"[day.weekday()]}) 오늘 예측 — 채점 상태'
+        rows = ""
+        when = {"open": "09:37 시초가 확인 회차", "direction": "16:10 장 마감 후 회차", "price": "16:10 장 마감 후 회차"}
+        for kind in ("open", "direction", "price"):
+            item = pending["items"].get(kind)
+            if not item:
+                continue
+            r = item["row"]
+            if item["status"] == "scored":
+                if kind == "open":
+                    gap = (r.get("actual_open") / r.get("current_close") - 1
+                           if pd.notna(r.get("actual_open")) and r.get("current_close") else np.nan)
+                    result = (f'실제 시가 {_fmt_num(r.get("actual_open"), "won")} ({_fmt_num(gap, "pct")}) · '
+                              f'구간 {"적중" if r.get("interval_hit") == 1 else "이탈"}')
+                elif kind == "direction":
+                    result = f'{"적중" if r.get("direction_correct") == 1 else "미적중"}'
+                else:
+                    result = f'구간 {"적중" if r.get("interval_hit") == 1 else "이탈"}'
+                color, text = "#1e6b34", f"채점됨 — {result}"
+            else:
+                color, text = "#8a9199", f"판정 전 — {when[kind]}에 채점"
+            if kind == "open":
+                pred = (f'{_fmt_num(r.get("predicted_open"), "won")}' if pd.notna(r.get("predicted_open"))
+                        else f'{_fmt_num(r.get("center_open"), "won")} (신호 없음)')
+            elif kind == "direction":
+                pred = f'{r.get("prediction")} (상승 {float(r.get("p_up", 0)):.0%})'
+            else:
+                pred = (f'{_fmt_num(r.get("predicted_close"), "won")}' if pd.notna(r.get("predicted_close"))
+                        else f'{_fmt_num(r.get("center_close"), "won")} (신호 없음)')
+            rows += (f'<tr><td style="padding:7px 11px;border-top:1px solid #eee">{item["label"]}</td>'
+                     f'<td {cell}>{pred}</td>'
+                     f'<td {cell};color:{color}">{text}</td></tr>')
+        return ('<div style="overflow-x:auto;margin-bottom:14px"><table style="width:100%;min-width:520px;border-collapse:collapse;'
+                'font-size:13px;border:1px solid #e5e5e5">'
+                f'<tr style="background:#fafafa;font-size:11px;color:#6b7178"><th colspan="3" style="padding:8px 11px;text-align:left">{title}</th></tr>'
+                f'{rows}</table></div>')
+
     head = _headline()
     if not review["n_scored_days"]:
-        return head + ('<div style="border:1px solid #e5e5e5;border-radius:6px;padding:14px;font-size:13px;color:#6b7178">'
-                       '아직 채점된 사전 예측이 없습니다. 오늘 예측은 다음 거래일 실행에서 실제 시가·종가와 대조됩니다.</div>')
+        return head + _pending_block(review.get("pending")) + (
+            '<div style="border:1px solid #e5e5e5;border-radius:6px;padding:14px;font-size:13px;color:#6b7178">'
+            '아직 채점된 사전 예측이 없습니다. 오늘 예측은 다음 거래일 실행에서 실제 시가·종가와 대조됩니다.</div>')
     latest = review["latest"]
     # 채점 대상일을 제목에 넣는다. 표의 값이 어느 날 결과인지 한눈에 보여야 한다.
     scored_date = None
@@ -720,7 +801,7 @@ def ledger_section_html(review, ensemble_name, updated_note=""):
             scored_date = f'{moment.date().isoformat()} ({"월화수목금토일"[moment.weekday()]})'
         except (TypeError, ValueError):
             scored_date = str(stamp)[:10]
-    head = _headline(scored_date)
+    head = _headline(scored_date) + _pending_block(review.get("pending"))
     d = latest[(latest["kind"] == "direction") & (latest["model"] == ensemble_name)]
     o = latest[latest["kind"] == "open"]
     p1 = latest[(latest["kind"] == "price") & (latest["horizon_days"] == 1)]

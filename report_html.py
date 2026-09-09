@@ -153,7 +153,8 @@ def flow_section_html(flow_frame, flow_info, active, close_series, last_date, co
     # 60일 그림: 외국인 누적 순매수(막대 누적) vs 종가
     window = fl.tail(60)
     if len(window) >= 20:
-        W, L, R, TOP, PH, BOT = 900, 66, 66, 24, 200, 30
+        # 제목은 그림 영역(TOP 아래) 바깥에 두고, 그림 요소는 clipPath 로 영역 안에 가둔다.
+        W, L, R, TOP, PH, BOT = 900, 66, 66, 40, 200, 30
         H = TOP + PH + BOT
         cum = window["foreign_net"].fillna(0).cumsum()
         px = close.reindex(window.index)
@@ -162,20 +163,28 @@ def flow_section_html(flow_frame, flow_info, active, close_series, last_date, co
         plo, phi = float(px.min()), float(px.max()); ppad = (phi - plo) * .1 or 1
         YC = lambda v: TOP + PH - (v - (clo - pad)) / ((chi + pad) - (clo - pad)) * PH
         YP = lambda v: TOP + PH - (v - (plo - ppad)) / ((phi + ppad) - (plo - ppad)) * PH
-        svg = [f'<svg viewBox="0 0 {W} {H}" width="100%" style="max-width:{W}px;font-family:-apple-system,\'Malgun Gothic\',sans-serif;font-size:11px">']
+        svg = [f'<svg viewBox="0 0 {W} {H}" width="100%" style="max-width:{W}px;font-family:-apple-system,\'Malgun Gothic\',sans-serif;font-size:11px">',
+               f'<defs><clipPath id="flowplot"><rect x="{L}" y="{TOP}" width="{W - L - R}" height="{PH}"/></clipPath></defs>',
+               '<g clip-path="url(#flowplot)">']
         svg.append(f'<line x1="{L}" x2="{W - R}" y1="{YC(0):.1f}" y2="{YC(0):.1f}" stroke="#999" stroke-dasharray="3,3"/>')
         step = (W - L - R) / len(window)
-        for x, v in zip(xs, window["foreign_net"].fillna(0)):
-            y0, y1 = YC(0), YC(v * 5)   # 일별 막대는 보기 좋게 5배 확대
-            top, hgt = (min(y0, y1), abs(y1 - y0))
+        # 일별 막대는 누적선 축이 아니라 자체 축으로 그린다. 예전에는 누적 축에 5배 확대해 그려서
+        # 큰 날이 그림 영역 위 제목 자리까지 삐져나갔다. 가장 큰 날이 그림 높이의 40%가 되게 한다.
+        daily = window["foreign_net"].fillna(0)
+        bar_scale = (0.4 * PH) / max(float(daily.abs().max()), 1e-9)
+        for x, v in zip(xs, daily):
+            y0 = YC(0)
+            hgt = abs(float(v)) * bar_scale
+            top = y0 - hgt if v > 0 else y0
             svg.append(f'<rect x="{x - step * .3:.1f}" y="{top:.1f}" width="{step * .6:.1f}" height="{max(hgt, .5):.1f}" fill="{"#4c78a8" if v > 0 else "#b5453c"}" opacity="0.35"/>')
         svg.append(f'<polyline points="{" ".join(f"{x:.1f},{YC(v):.1f}" for x, v in zip(xs, cum))}" fill="none" stroke="#1a5490" stroke-width="2"/>')
         svg.append(f'<polyline points="{" ".join(f"{x:.1f},{YP(v):.1f}" for x, v in zip(xs, px))}" fill="none" stroke="#c8952a" stroke-width="1.6"/>')
+        svg.append('</g>')
         for v in (clo, 0, chi):
             svg.append(f'<text x="{L - 6}" y="{YC(v) + 4:.1f}" text-anchor="end" fill="#1a5490">{v / 1e4:+,.0f}만주</text>')
         for v in (plo, phi):
             svg.append(f'<text x="{W - R + 6}" y="{YP(v) + 4:.1f}" fill="#c8952a">{v:,.0f}</text>')
-        svg.append(f'<text x="{L}" y="14" fill="#1a1a1a" font-weight="600">최근 60거래일 — 외국인 누적 순매수(파랑, 왼쪽) · 일별 순매수(막대, 5배) · 종가(주황, 오른쪽)</text>')
+        svg.append(f'<text x="{L}" y="16" fill="#1a1a1a" font-weight="600">최근 60거래일 — 외국인 누적 순매수(파랑, 왼쪽) · 일별 순매수(막대, 자체 눈금) · 종가(주황, 오른쪽)</text>')
         for k in range(0, len(window), 10):
             svg.append(f'<text x="{xs[k]:.1f}" y="{H - 8}" text-anchor="middle" fill="#8a9199">{window.index[k].strftime("%m/%d")}</text>')
         svg.append(f'<rect x="{L}" y="{TOP}" width="{W - L - R}" height="{PH}" fill="none" stroke="#ddd"/></svg>')

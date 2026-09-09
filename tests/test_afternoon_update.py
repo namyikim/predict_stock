@@ -12,6 +12,7 @@ sys.path.insert(0, str(ROOT))
 import build_afternoon_update as af  # noqa: E402
 import github_pages  # noqa: E402,F401
 import forecast_utils as fu  # noqa: E402
+import report_html  # noqa: E402,F401
 
 
 class SectionReplacementTests(unittest.TestCase):
@@ -291,3 +292,75 @@ class ScoredDateInTitleTests(unittest.TestCase):
         source = (Path(__file__).resolve().parents[1] / "tools" / "build_metals_report.py").read_text(encoding="utf-8")
         self.assertIn('_label}예측 vs 실제', source)
         self.assertNotIn(">어제 예측 vs 실제", source)
+
+
+class PendingStatusTests(unittest.TestCase):
+    """오후에 보면 시초가는 채점됐지만 종가는 아직이다. 판정 전 항목은 그렇게 적는다."""
+
+    def rows(self, td, o, d, p):
+        c = dict(run_id="r", target_date=td, is_prospective=True, horizon_days=1, current_close=100.)
+        return [
+            dict(c, record_id=f"o{td}", kind="open", model="Ridge", status=o, predicted_open=103.,
+                 center_open=103., low_open=101., high_open=106., predicted_return=.03,
+                 actual_open=104. if o == "scored" else np.nan,
+                 interval_hit=1. if o == "scored" else np.nan, return_error=-.01, actual_return=.04),
+            dict(c, record_id=f"d{td}", kind="direction", model="Mean ensemble", status=d,
+                 prediction="상승", p_down=.2, p_flat=.3, p_up=.5, band=.01,
+                 actual_class=0 if d == "scored" else np.nan,
+                 direction_correct=0. if d == "scored" else np.nan, log_loss=1.6, actual_return=-.01),
+            dict(c, record_id=f"p{td}", kind="price", model="Ridge", status=p, predicted_close=101.,
+                 center_close=101., low_close=98., high_close=104., predicted_return=.01,
+                 actual_close=99. if p == "scored" else np.nan,
+                 interval_hit=1. if p == "scored" else np.nan, actual_return=-.01),
+        ]
+
+    def bars(self):
+        return pd.DataFrame({"open": [100., 104., 105.], "close": [100., 99., np.nan],
+                             "adj_close": [100., 99., np.nan]},
+                            index=pd.to_datetime(["2026-09-07", "2026-09-08", "2026-09-09"]))
+
+    def test_afternoon_shows_today_partially_and_yesterday_fully(self):
+        daily = pd.DataFrame(self.rows("2026-09-08", "scored", "scored", "scored")
+                             + self.rows("2026-09-09", "scored", "pending", "pending"))
+        html = fu.ledger_section_html(fu.review_ledger(daily, self.bars(), ensemble_model="Mean ensemble"),
+                                      "Mean ensemble")
+        self.assertIn("2026-09-09 (수) 오늘 예측 — 채점 상태", html)
+        self.assertIn("채점됨 — 실제 시가 104원 (+4.00%)", html)
+        self.assertEqual(html.count("판정 전 — 16:10 장 마감 후 회차에 채점"), 2)
+        # 아래 표는 종가까지 채점된 어제로 남는다(오늘로 바뀌면 어제 종가 결과가 사라진다).
+        self.assertIn("2026-09-08 (화) 예측 vs 실제", html)
+        self.assertIn("미적중", html)
+
+    def test_morning_shows_all_pending(self):
+        daily = pd.DataFrame(self.rows("2026-09-08", "scored", "scored", "scored")
+                             + self.rows("2026-09-09", "pending", "pending", "pending"))
+        html = fu.ledger_section_html(fu.review_ledger(daily, self.bars(), ensemble_model="Mean ensemble"),
+                                      "Mean ensemble")
+        self.assertIn("판정 전 — 09:37 시초가 확인 회차에 채점", html)
+        self.assertEqual(html.count("판정 전"), 3)
+
+    def test_no_block_when_everything_is_scored(self):
+        daily = pd.DataFrame(self.rows("2026-09-08", "scored", "scored", "scored"))
+        html = fu.ledger_section_html(fu.review_ledger(daily, self.bars(), ensemble_model="Mean ensemble"),
+                                      "Mean ensemble")
+        self.assertNotIn("채점 상태", html)
+
+
+class FlowChartLayoutTests(unittest.TestCase):
+    """일별 막대가 제목 글자를 덮지 않아야 한다."""
+
+    def test_bars_stay_inside_the_plot_even_on_an_extreme_day(self):
+        import re
+        import report_html as rh
+        days = pd.bdate_range("2026-06-01", "2026-09-08")
+        net = np.random.default_rng(1).normal(0, 2e6, len(days))
+        net[-3] = 3e7                                    # 하루 유난히 큰 날
+        flows = pd.DataFrame({"date": days, "foreign_net": net, "inst_net": 0., "indiv_net": np.nan,
+                              "volume": 2e7, "foreign_ratio": 50.})
+        html = rh.flow_section_html(flows, {"source": "t"}, True, pd.Series(70000., index=days),
+                                    days[-1], pd.DataFrame())
+        svg = re.search(r"<svg.*?</svg>", html, re.S).group()
+        tops = [float(m) for m in re.findall(
+            r'<rect x="[\d.]+" y="([\d.]+)" width="[\d.]+" height="[\d.]+" fill="#(?:4c78a8|b5453c)"', svg)]
+        self.assertGreaterEqual(min(tops), 40, "막대가 그림 영역(TOP=40) 위로 올라갔습니다")
+        self.assertIn('clip-path="url(#flowplot)"', svg)

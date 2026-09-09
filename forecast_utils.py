@@ -693,14 +693,34 @@ def _fmt_num(x, kind="num"):
 
 
 def ledger_section_html(review, ensemble_name, updated_note=""):
+    """채점 결과 절. 제목에 '어느 날짜를 채점한 것인지'를 반드시 적는다.
+
+    '어제'뿐이면 09:37 회차인지 16:10 회차인지, 휴장일을 건너뛴 것인지 알 수 없다.
+    채점 대상일은 원장의 target_date 이고 그 값을 그대로 보여 준다.
+    """
     cell = 'style="padding:7px 11px;border-top:1px solid #eee;text-align:right"'
-    head = ('<h3 style="font-size:15px;margin:24px 0 9px;padding-bottom:6px;border-bottom:1px solid #ddd">'
-            '어제 예측 vs 실제 <span style="font-weight:400;color:#8a9199;font-size:12px">'
-            '&nbsp;실제로 미리 낸 예측만 채점 · 백테스트 숫자가 아님</span></h3>')
+
+    def _headline(scored_date=None):
+        title = f"{scored_date} 예측 vs 실제" if scored_date else "예측 vs 실제 (채점 대기)"
+        return ('<h3 style="font-size:15px;margin:24px 0 9px;padding-bottom:6px;border-bottom:1px solid #ddd">'
+                f'{title} <span style="font-weight:400;color:#8a9199;font-size:12px">'
+                '&nbsp;실제로 미리 낸 예측만 채점 · 백테스트 숫자가 아님</span></h3>')
+
+    head = _headline()
     if not review["n_scored_days"]:
         return head + ('<div style="border:1px solid #e5e5e5;border-radius:6px;padding:14px;font-size:13px;color:#6b7178">'
                        '아직 채점된 사전 예측이 없습니다. 오늘 예측은 다음 거래일 실행에서 실제 시가·종가와 대조됩니다.</div>')
     latest = review["latest"]
+    # 채점 대상일을 제목에 넣는다. 표의 값이 어느 날 결과인지 한눈에 보여야 한다.
+    scored_date = None
+    stamp = review.get("latest_date")
+    if stamp is not None:
+        try:
+            moment = pd.Timestamp(stamp)
+            scored_date = f'{moment.date().isoformat()} ({"월화수목금토일"[moment.weekday()]})'
+        except (TypeError, ValueError):
+            scored_date = str(stamp)[:10]
+    head = _headline(scored_date)
     d = latest[(latest["kind"] == "direction") & (latest["model"] == ensemble_name)]
     o = latest[latest["kind"] == "open"]
     p1 = latest[(latest["kind"] == "price") & (latest["horizon_days"] == 1)]

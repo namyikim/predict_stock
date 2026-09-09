@@ -46,7 +46,8 @@ class LedgerSectionTests(unittest.TestCase):
 
     def test_shared_renderer_shows_the_scored_row(self):
         html = fu.ledger_section_html(self.review(), "Mean ensemble")
-        self.assertIn("어제 예측 vs 실제", html)
+        self.assertIn("예측 vs 실제", html)
+        self.assertIn("2026-09-08", html)      # 제목에 채점 대상일이 들어간다
         self.assertIn("미적중", html)
 
     def test_update_note_is_placed_before_the_tables(self):
@@ -253,3 +254,40 @@ class CounterSecurityTests(unittest.TestCase):
         self.assertNotIn('"no-salt"', source)
         self.assertIn("if (!env.VISITOR_SALT)", source)
         self.assertIn("VISITOR_SALT가 설정되지 않았습니다", source)
+
+
+class ScoredDateInTitleTests(unittest.TestCase):
+    """제목에 채점 대상일이 없으면 09:37 회차인지 16:10 회차인지, 휴장일을 건너뛴 것인지 알 수 없다."""
+
+    def review(self, target_date="2026-09-08"):
+        bars = pd.DataFrame({"open": [100., 104.], "close": [100., 99.], "adj_close": [100., 99.]},
+                            index=pd.to_datetime(["2026-09-07", "2026-09-08"]))
+        common = dict(run_id="r", target_date=target_date, status="scored", is_prospective=True,
+                      horizon_days=1, current_close=100.)
+        daily = pd.DataFrame([
+            dict(common, record_id="o", kind="open", model="Ridge", predicted_open=103.,
+                 center_open=103., low_open=101., high_open=106., predicted_return=.03,
+                 actual_open=104., interval_hit=1., return_error=-.01, actual_return=.04),
+            dict(common, record_id="d", kind="direction", model="Mean ensemble", prediction="상승",
+                 p_down=.2, p_flat=.3, p_up=.5, band=.01, actual_class=0, direction_correct=0.,
+                 log_loss=1.6, actual_return=-.01),
+        ])
+        return fu.review_ledger(daily, bars, ensemble_model="Mean ensemble")
+
+    def title(self, html):
+        import re
+        return re.search(r'border-bottom:1px solid #ddd">(.*?)<span', html).group(1).strip()
+
+    def test_title_carries_the_scored_date_and_weekday(self):
+        html = fu.ledger_section_html(self.review(), "Mean ensemble")
+        self.assertEqual(self.title(html), "2026-09-08 (화) 예측 vs 실제")
+
+    def test_title_says_pending_when_nothing_is_scored(self):
+        empty = {"n_scored_days": 0, "latest": pd.DataFrame(), "rolling": pd.DataFrame(),
+                 "alerts": [], "latest_date": None}
+        self.assertIn("채점 대기", self.title(fu.ledger_section_html(empty, "Mean ensemble")))
+
+    def test_metals_report_also_dates_its_section(self):
+        source = (Path(__file__).resolve().parents[1] / "tools" / "build_metals_report.py").read_text(encoding="utf-8")
+        self.assertIn('_label}예측 vs 실제', source)
+        self.assertNotIn(">어제 예측 vs 실제", source)

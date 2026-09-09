@@ -131,7 +131,7 @@ class NotebookSmokeTests(unittest.TestCase):
 
     def test_report_has_every_section_and_the_replaceable_marker(self):
         page = (self.storage / "report.html").read_text(encoding="utf-8")
-        for token in ("어제 예측 vs 실제", "외국인·기관 수급", "최근 공시", "시초가예측", "종가예측",
+        for token in ("예측 vs 실제", "외국인·기관 수급", "최근 공시", "시초가예측", "종가예측",
                       "장기 전망", "영업이익 추정", "자동 판정",
                       "<!--LEDGER_SECTION_START-->", "<!--LEDGER_SECTION_END-->", "코드 커밋"):
             # assertIn을 쓰면 실패할 때 25만 자짜리 보고서가 통째로 로그에 찍힌다.

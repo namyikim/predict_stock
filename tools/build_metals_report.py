@@ -402,7 +402,13 @@ def render_asset(key, res, usdkrw):
     # 어제 예측 vs 실제 — 실제 사전 예측만 채점한 것. 백테스트 숫자와 섞지 않는다.
     review = res.get("review") or {}
     if review.get("n_scored_days"):
-        parts.append('<h4 style="font-size:14px;margin:18px 0 6px">어제 예측 vs 실제 '
+        # 제목에 채점 대상일을 적는다. '어제'만으로는 어느 회차의 결과인지 알 수 없다.
+        _stamp = review.get("latest_date")
+        _label = ""
+        if _stamp is not None:
+            _moment = pd.Timestamp(_stamp)
+            _label = f'{_moment.date().isoformat()} ({"월화수목금토일"[_moment.weekday()]}) '
+        parts.append(f'<h4 style="font-size:14px;margin:18px 0 6px">{_label}예측 vs 실제 '
                      '<span style="font-size:11px;color:#8a9199;font-weight:400">실제로 미리 낸 예측만 채점 · 백테스트 아님</span></h4>')
         latest = review["latest"]
         body = ""

@@ -74,7 +74,8 @@ class RenderTests(unittest.TestCase):
                                    current_close=100., oof_slope=.3)])
         review = fu.review_ledger(daily, bars, ensemble_model="Logistic")
         html = mr.render_asset("gold", self.make_res(skill=False, review=review), 1355.)
-        self.assertIn("어제 예측 vs 실제", html)
+        self.assertIn("예측 vs 실제", html)
+        self.assertIn("2026-09-07 (월) 예측 vs 실제", html)   # 채점 대상일이 제목에
         self.assertIn("미적중", html)
         self.assertIn("$99.00", html)
 

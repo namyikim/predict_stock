@@ -218,6 +218,44 @@ class PublishFailureTests(unittest.TestCase):
         self.assertIn('PUBLISH_FAILURES.append(f"원장 업로드 실패', self.source)
         self.assertIn('PUBLISH_FAILURES.append(f"보고서 발행 실패', self.source)
 
+    def test_preflight_failure_is_recorded_and_fails_automation(self):
+        self.assertIn('PUBLISH_FAILURES.append("발행 사전 점검 실패: GITHUB_TOKEN 없음")',
+                      self.source)
+        self.assertIn('PUBLISH_FAILURES.append(f"발행 사전 점검 실패: 원장 조회 실패',
+                      self.source)
+        self.assertIn('if PUBLISH_FAILURES and RUNTIME != "colab":', self.source)
+
+    def test_failure_list_is_reset_at_the_start_of_a_run(self):
+        self.assertIn('if TARGET == RUN_TARGETS[0]:\n    PUBLISH_STATUS = {}\n    PUBLISH_FAILURES = []',
+                      self.source)
+
+    def test_preflight_fetch_failure_raises_in_automation(self):
+        import ast
+        import tempfile
+
+        nb = json.loads((Path(__file__).resolve().parents[1] /
+                         "samsung_direction_model_colab.ipynb").read_text(encoding="utf-8"))
+        setup = "".join(nb["cells"][1]["source"])
+        preflight = next(node for node in ast.parse(setup).body
+                         if isinstance(node, ast.If) and isinstance(node.test, ast.Name)
+                         and node.test.id == "SYNC_LEDGER_TO_GITHUB")
+        with tempfile.TemporaryDirectory() as tmp:
+            namespace = {
+                "SYNC_LEDGER_TO_GITHUB": True, "github_token": lambda: "token",
+                "github_get": lambda *_: (_ for _ in ()).throw(RuntimeError("timeout")),
+                "LEDGER_FILES": ["forecast_log.csv"], "GITHUB_LEDGER_DIR": "history",
+                "STORAGE_ROOT": Path(tmp), "PUBLISH_SKIP_REASON": "",
+                "PUBLISH_FAILURES": [], "RUN_TARGETS": ["samsung"],
+                "PUBLISH_STATUS": {"samsung": ("건너뜀", "원장 조회 실패")},
+                "RUNTIME": "github-actions",
+            }
+            exec(compile(ast.Module(body=[preflight], type_ignores=[]), "<preflight>", "exec"),
+                 namespace)
+            final = "".join(nb["cells"][45]["source"])
+            final = "# ---- 종목별 발행 결과" + final.split("# ---- 종목별 발행 결과", 1)[1]
+            with self.assertRaisesRegex(RuntimeError, "원장 조회 실패"):
+                exec(compile(final, "<publication-summary>", "exec"), namespace)
+
     def test_report_only_success_is_not_reported_as_published(self):
         # 원장이 실패했으면 보고서가 올라갔어도 '발행됨'이 아니다.
         self.assertIn('if PUBLISH_FAILURES:\n            PUBLISH_STATUS[TARGET] = ("일부 실패"', self.source)
@@ -226,5 +264,5 @@ class PublishFailureTests(unittest.TestCase):
         # '실행 안 됨'은 그 종목을 다루지 않은 실행(단일 종목·테스트)이라 실패가 아니다.
         self.assertIn('_failed = [t for t in _bad if _done.get(t, ("", ""))[0] in '
                       '("실패", "일부 실패")]', self.source)
-        self.assertIn('if _failed and RUNTIME != "colab":', self.source)
+        self.assertIn('if PUBLISH_FAILURES and RUNTIME != "colab":', self.source)
         self.assertIn("raise RuntimeError(", self.source)

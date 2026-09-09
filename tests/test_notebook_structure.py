@@ -306,3 +306,34 @@ class MacroPriceFeatureTests(unittest.TestCase):
         # 상수를 끼워 넣다가 GDR 추가를 가로챈 적이 있다(스모크 테스트가 잡았다).
         self.assertIn('GLOBAL_ASSETS = GLOBAL_ASSETS + (["target_gdr"] if TARGET_SPEC["gdr"] else [])',
                       self.source)
+
+
+class PageLayoutTests(unittest.TestCase):
+    """모든 보고서의 본문 컨테이너는 가운데 정렬(margin:0 auto)이어야 한다.
+
+    종목 보고서만 max-width 에 margin 이 없어 왼쪽으로 붙어 있었고, 금·은·중국·검색어는
+    가운데였다(2026-09-09 지적).
+    """
+
+    def test_every_report_container_is_centered(self):
+        import json
+        import re
+        root = Path(__file__).resolve().parents[1]
+        nb = json.loads((root / "samsung_direction_model_colab.ipynb").read_text(encoding="utf-8"))
+        notebook = "\n".join("".join(c["source"]) for c in nb["cells"] if c["cell_type"] == "code")
+        sources = {"notebook": notebook}
+        for name in ("build_metals_report.py", "build_china_report.py",
+                     "build_trends_report.py", "build_interest_report.py"):
+            sources[name] = (root / "tools" / name).read_text(encoding="utf-8")
+        # 본문 컨테이너를 식별하는 문자열. 노트북은 문자열이 줄로 나뉘어 있어 조각으로 찾는다.
+        expectations = {
+            "notebook": "max-width:980px;margin:0 auto;",
+            "build_metals_report.py": "max-width:980px;margin:0 auto;",
+            "build_china_report.py": "max-width:980px;margin:0 auto;",
+            "build_trends_report.py": ".wrap{max-width:760px;margin:0 auto}",
+            "build_interest_report.py": ".wrap{max-width:860px;margin:0 auto}",
+        }
+        for name, needle in expectations.items():
+            self.assertIn(needle, sources[name], f"{name}: 본문이 가운데 정렬이 아닙니다")
+        # 종목 보고서에 margin 없는 옛 컨테이너가 남아 있으면 안 된다.
+        self.assertNotIn("sans-serif;max-width:980px;'", notebook)

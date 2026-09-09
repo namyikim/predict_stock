@@ -68,7 +68,15 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  validation:
+    if: github.event_name == 'push'
+    uses: ./.github/workflows/tests.yml
+
   report:
+    needs: validation
+    if: >-
+      ${{ always() &&
+          (needs.validation.result == 'success' || needs.validation.result == 'skipped') }}
     runs-on: ubuntu-latest
     timeout-minutes: 180
     strategy:

@@ -4,6 +4,7 @@ name: 테스트
 # 바뀐 코드가 바로 아침 보고서에 들어갔다. 노트북 전체 실행 테스트(약 100초)까지 포함한다 —
 # 셀 순서·변수 이름 오류는 그것만 잡는다.
 on:
+  workflow_call:
   push:
     branches: [main]
     paths-ignore:

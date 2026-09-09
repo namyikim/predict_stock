@@ -72,7 +72,7 @@ class ScheduleTests(unittest.TestCase):
 
     def test_heavy_side_reports_run_once_a_day(self):
         jobs = WORKFLOW["jobs"]
-        self.assertNotIn("if", jobs["report"])          # 종목 잡은 모든 회차에서 게이트가 판단한다
+        self.assertIn("needs.validation.result", jobs["report"]["if"])
         for name in ("metals", "china", "interest", "earnings"):
             self.assertIn(f"== '{MAIN_CRON}'", jobs[name]["if"], name)
         # 검색어만 3시간 간격 회차에도 돈다(하루 사이에 실제로 바뀌는 유일한 보고서).
@@ -325,8 +325,18 @@ class CiAndPathTests(unittest.TestCase):
         workflow = yaml.safe_load((ROOT / ".github/workflows/tests.yml").read_text(encoding="utf-8"))
         self.assertIn("push", workflow[True])
         self.assertIn("pull_request", workflow[True])
+        self.assertIn("workflow_call", workflow[True])
         run = "\n".join(str(s.get("run", "")) for s in workflow["jobs"]["test"]["steps"])
         self.assertIn("unittest discover -s tests", run)
+
+    def test_code_push_publication_needs_successful_tests(self):
+        jobs = WORKFLOW["jobs"]
+        validation = jobs["validation"]
+        self.assertEqual(validation["uses"], "./.github/workflows/tests.yml")
+        self.assertIn("github.event_name == 'push'", validation["if"])
+        self.assertEqual(jobs["report"]["needs"], "validation")
+        self.assertIn("needs.validation.result == 'success'", jobs["report"]["if"])
+        self.assertIn("needs.validation.result == 'skipped'", jobs["report"]["if"])
 
     def test_push_paths_cover_the_split_modules(self):
         paths = WORKFLOW[True]["push"]["paths"]

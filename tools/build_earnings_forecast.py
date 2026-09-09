@@ -956,6 +956,11 @@ def main():
         if remote:
             ledger_path.write_text(remote, encoding="utf-8")
     except Exception as exc:
+        if args.publish:
+            raise RuntimeError(
+                "기존 추정 원장을 확인하지 못해 발행을 중단합니다. "
+                "원격 이력을 빈 원장으로 덮어쓰지 않습니다."
+            ) from exc
         print("  원장을 받지 못했습니다(로컬만 사용):", exc, flush=True)
     ledger = read_ledger(ledger_path)
     ledger, added = append_estimate(ledger, result, run_id)

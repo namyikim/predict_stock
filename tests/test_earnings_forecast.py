@@ -3,6 +3,7 @@ import sys
 import tempfile
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 import numpy as np
 import pandas as pd
@@ -12,6 +13,33 @@ sys.path.insert(0, str(ROOT / "tools"))
 sys.path.insert(0, str(ROOT))
 import build_earnings_forecast as ef  # noqa: E402
 import macro_utils as mu  # noqa: E402
+
+
+class PublicationSafetyTests(unittest.TestCase):
+    def test_publish_aborts_when_existing_ledger_cannot_be_read(self):
+        """원격 이력을 확인하지 못한 상태에서 빈 원장으로 덮어쓰면 안 된다."""
+        result = {
+            "name": "삼성전자", "quarter": "2026년 3분기", "quarter_code": "2026Q3",
+            "months_used": 2, "months_included": "7월, 8월", "point": None,
+            "low": None, "high": None, "raw_point": None, "last_actual": 1.0,
+            "last_actual_quarter": "2026Q2", "profit_source": "fallback",
+            "customs_info": {}, "cli_info": {}, "evaluation": {}, "provisional": {},
+        }
+        profit = pd.Series([1.0], index=pd.PeriodIndex(["2026Q2"], freq="Q"))
+        with tempfile.TemporaryDirectory() as tmp:
+            (Path(tmp) / "samsung").mkdir()
+            with patch.object(sys, "argv", ["earnings", "--out", tmp, "--publish"]), \
+                patch.object(ef, "analyse", return_value=(result, pd.DataFrame(), pd.DataFrame(), profit)), \
+                patch.object(ef.github_pages, "token", return_value="token"), \
+                patch.object(ef.github_pages, "fetch", side_effect=RuntimeError("timeout")), \
+                patch.object(ef, "append_estimate", return_value=(pd.DataFrame(), False)), \
+                patch.object(ef, "score_ledger", return_value=(pd.DataFrame(), 0)), \
+                patch.object(ef, "render_ledger_block", return_value=""), \
+                patch.object(ef, "render_fragment", return_value=""), \
+                patch.object(ef.github_pages, "publish") as publish:
+                with self.assertRaisesRegex(RuntimeError, "기존 추정 원장"):
+                    ef.main()
+                publish.assert_not_called()
 
 
 def synthetic(seed=0, link=True, last_month="2026-08-01"):

@@ -62,10 +62,11 @@ def normalize_daily(frame):
 
 
 def cache_age_days(storage, names=None, now=None):
-    """저장소에서 받아 둔 보관본이 며칠 된 자료인지. {이름: 경과일}.
+    """보관본이 예상 갱신 시점 이후 며칠 지났는지. {이름: 경과일}.
 
     보관본은 한국에서 돌린 실행이 갱신한다. 그걸 잊으면 100일 만료 규칙이 걸릴 때까지 낡은 값을
-    조용히 쓰게 된다. 여기서 경과일을 재어 보고서에 적을 수 있게 한다.
+    조용히 쓰게 된다. 일별 자료는 마지막 관측일부터 세고, 발표 이력이 없는 월별 자료는 모델의
+    시점 처리와 동일하게 기준월+2개월을 공개 가능 시점으로 보고 그날부터 센다.
     """
     names = names or ('leading_cycle', 'semiconductor_exports', 'news_sentiment', 'term_spread')
     now = pd.Timestamp(now or pd.Timestamp.now(tz='Asia/Seoul').tz_localize(None)).normalize()
@@ -81,7 +82,10 @@ def cache_age_days(storage, names=None, now=None):
         except Exception:
             continue
         if pd.notna(last):
-            out[name] = int((now - pd.Timestamp(last).normalize()).days)
+            anchor = pd.Timestamp(last).normalize()
+            if column == 'month':
+                anchor = anchor.to_period('M').to_timestamp() + pd.offsets.MonthBegin(2)
+            out[name] = max(0, int((now - anchor).days))
     return out
 
 
@@ -95,8 +99,9 @@ def stale_cache_note(ages, warn_after=45, expire_after=100):
     worst = max(stale.values())
     listed = ', '.join(f'{name} {age}일' for name, age in sorted(stale.items(), key=lambda x: -x[1]))
     tail = (' 만료(100일)가 가까워 곧 지표에서 빠집니다.' if worst >= expire_after - 20 else '')
-    return (f'참고자료 보관본이 오래되었습니다({listed}). 한국에서 Colab으로 노트북을 한 번 '
-            f'실행하면 갱신됩니다.{tail}')
+    return (f'참고자료가 예상 공개 시점 이후 오래 갱신되지 않았습니다({listed}). 한국에서 Colab으로 '
+            f'노트북을 한 번 실행해 확인하세요. 공식 통계 발표가 늦으면 같은 최신 관측치가 정상일 수 '
+            f'있습니다.{tail}')
 
 
 

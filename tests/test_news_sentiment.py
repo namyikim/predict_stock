@@ -181,15 +181,29 @@ class CacheAgeTests(unittest.TestCase):
             root / "macro_fallback" / "news_sentiment.csv", index=False)
         return root
 
-    def test_age_is_measured_from_the_last_data_point(self):
+    def test_daily_age_is_measured_from_the_last_data_point(self):
         ages = mu.cache_age_days(self.storage(), now="2026-09-08")
         self.assertEqual(ages["news_sentiment"], 2)          # 2026-09-06 → 2일
-        self.assertEqual(ages["leading_cycle"], 99)          # 2026-06-01 → 99일
+
+    def test_monthly_age_starts_at_the_assumed_release_date(self):
+        ages = mu.cache_age_days(self.storage(), now="2026-09-08")
+        # 발표 이력이 없는 월별 자료는 모델과 동일하게 기준월+2개월 공개를 가정한다.
+        self.assertEqual(ages["leading_cycle"], 38)          # 2026-06 → 2026-08-01 공개 가정
+
+    def test_recent_monthly_release_does_not_trigger_a_colab_warning(self):
+        root = self.storage()
+        pd.DataFrame({"month": ["2026-07"], "value": [1]}).to_csv(
+            root / "macro_fallback" / "leading_cycle.csv", index=False)
+        ages = mu.cache_age_days(root, now="2026-09-09")
+        self.assertEqual(ages["leading_cycle"], 8)           # 2026-07 → 2026-09-01 공개 가정
+        self.assertEqual(mu.stale_cache_note(ages), "")
 
     def test_note_only_appears_past_the_threshold(self):
         self.assertEqual(mu.stale_cache_note({"a": 10}), "")
         note = mu.stale_cache_note({"leading_cycle": 60})
         self.assertIn("60일", note)
+        self.assertIn("예상 공개 시점", note)
+        self.assertIn("공식 통계", note)
         self.assertIn("Colab", note)
         self.assertNotIn("만료", note)
         self.assertIn("만료", mu.stale_cache_note({"leading_cycle": 95}))

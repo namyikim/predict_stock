@@ -3,6 +3,7 @@ import sys
 import tempfile
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 import numpy as np
 import pandas as pd
@@ -380,3 +381,15 @@ class SampleSizeGateTests(unittest.TestCase):
         source = (ROOT / "tools" / "build_longterm_report.py").read_text(encoding="utf-8")
         self.assertIn("판정 불가(표본 부족)", source)
         self.assertIn("MIN_INDEPENDENT = 20", source)
+
+    def test_gate_counts_only_the_final_evaluation_half(self):
+        index = pd.date_range("2000-01-31", periods=240, freq="ME")
+        frame = pd.DataFrame({"fwd_12m": np.full(len(index), .10)}, index=index)
+        predictions = pd.Series(np.full(len(index), .10), index=index)
+        with patch.object(lt, "walk_forward", return_value=predictions):
+            ev, _ = lt.evaluate(frame, [], 12)
+        self.assertEqual(ev["n_oof"], 240)
+        self.assertEqual(ev["n_evaluation"], 120)
+        self.assertEqual(ev["n_independent"], 10)
+        self.assertFalse(ev["enough_samples"])
+        self.assertFalse(ev["beats_zero"])

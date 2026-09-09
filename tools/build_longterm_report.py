@@ -232,7 +232,7 @@ def evaluate(f, cols, h):
     ok = oof.notna() & y.notna()
     yy, pp = y[ok].to_numpy(), oof[ok].to_numpy()
     n = len(yy)
-    out = {"horizon_months": h, "n_oof": int(n), "n_independent": int(n // h),
+    out = {"horizon_months": h, "n_oof": int(n), "n_independent": 0,
            "first": ok[ok].index[0].date().isoformat() if n else None,
            "last": ok[ok].index[-1].date().isoformat() if n else None}
     if n < 3 * h:
@@ -246,7 +246,8 @@ def evaluate(f, cols, h):
     err_zero = np.abs(yy[half:])
     diff = err_model - err_zero
     lo, hi = block_bootstrap_ci(len(diff), lambda i: float(diff[i].mean()), block=h)
-    enough = (n // h) >= MIN_INDEPENDENT
+    n_independent = len(diff) // h
+    enough = n_independent >= MIN_INDEPENDENT
     out.update(
         corr_spearman=spearman(pp, yy),
         sign_hit=float(np.mean(np.sign(pp) == np.sign(yy))),
@@ -256,9 +257,10 @@ def evaluate(f, cols, h):
         beats_zero=bool(enough and np.isfinite(hi) and hi < 0),
         enough_samples=bool(enough),
         n_evaluation=int(len(diff)),
+        n_independent=int(n_independent),
     )
     if not enough:
-        out["note"] = (f"독립 표본 {n // h}개로 판정에 필요한 {MIN_INDEPENDENT}개에 못 미칩니다 "
+        out["note"] = (f"독립 표본 {n_independent}개로 판정에 필요한 {MIN_INDEPENDENT}개에 못 미칩니다 "
                        "— 우위 여부를 말하지 않습니다")
     return out, oof
 

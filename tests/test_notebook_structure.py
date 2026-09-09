@@ -119,6 +119,22 @@ class NotebookStructureTests(unittest.TestCase):
         self.assertIn("시초가예측", self.source)
         self.assertIn("종가예측", self.source)
 
+    def test_direction_heading_names_the_actual_prediction_date(self):
+        self.assertIn('_prediction_date_label = ', self.source)
+        self.assertIn('1. 다음 거래일 방향 ({_prediction_date_label})', self.source)
+
+    def test_flow_supports_direction_but_disclosures_are_reference_material(self):
+        direction = self.source.index("1. 다음 거래일 방향")
+        flow = self.source.index("f'{flow_html}'", direction)
+        price = self.source.index("2. 시초가예측과 종가예측", direction)
+        data = self.source.index("6. 이 보고서의 데이터", price)
+        disclosure = self.source.index("f'{disclosure_html}'", data)
+        longterm = self.source.index("f'{longterm_html}'", disclosure)
+        self.assertLess(direction, flow)
+        self.assertLess(flow, price)
+        self.assertLess(data, disclosure)
+        self.assertLess(disclosure, longterm)
+
     def test_report_reviews_prospective_ledger(self):
         # 보고서는 원장의 사전 예측만 채점한 결과를 보여주고, 축소 전 원시 예측을 원장에 남긴다.
         self.assertIn("review_ledger(daily, sam", self.source)

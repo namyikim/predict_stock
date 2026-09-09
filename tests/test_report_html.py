@@ -60,6 +60,7 @@ class SectionTests(unittest.TestCase):
         self.assertIn("https://dart.example/1", html)
         self.assertIn("2026-10-07", html)
         self.assertIn("잠정실적", html)
+        self.assertIn("참고 정보: 최근 공시와 예정 발표", html)
 
     def test_disclosure_section_explains_absence(self):
         html = rh.disclosure_section_html([], {"enabled": False, "reason": "DART_API_KEY 없음"},
@@ -81,6 +82,7 @@ class SectionTests(unittest.TestCase):
         for label in ("최근 1일", "최근 5일", "최근 20일", "최근 60일", "외국인 지분율"):
             self.assertIn(label, html)
         self.assertIn("naver", html)
+        self.assertIn("1-1. 외국인·기관 수급", html)
 
     def test_flow_section_says_when_absent(self):
         html = rh.flow_section_html(None, {"reason": "자료 없음"}, False, pd.Series(dtype=float),

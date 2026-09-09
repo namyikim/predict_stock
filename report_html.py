@@ -86,7 +86,7 @@ def upcoming_events_html(events):
 def disclosure_section_html(disclosures, disclosure_info, classify):
     import html as _html
     head = ('<h3 style="font-size:15px;margin:24px 0 9px;padding-bottom:6px;border-bottom:1px solid #ddd">'
-            '최근 공시 <span style="font-weight:400;color:#8a9199;font-size:12px">&nbsp;DART · 최근 10일 · '
+            '참고 정보: 최근 공시와 예정 발표 <span style="font-weight:400;color:#8a9199;font-size:12px">&nbsp;DART · 최근 10일 · '
             '예측에 쓰지 않음, 빗나간 날의 이유를 찾는 참고용</span></h3>')
     if not disclosure_info.get("enabled"):
         return head + f'<div style="font-size:13px;color:#6b7178">공시 목록 없음 — {disclosure_info.get("reason", "")}</div>'
@@ -108,7 +108,7 @@ def disclosure_section_html(disclosures, disclosure_info, classify):
 def flow_section_html(flow_frame, flow_info, active, close_series, last_date, comparison):
     """외국인·기관 수급 절. close_series 는 종가(원화 환산용), comparison 은 쌍체 비교표(DataFrame)."""
     head = ('<h3 style="font-size:15px;margin:24px 0 9px;padding-bottom:6px;border-bottom:1px solid #ddd">'
-            '외국인·기관 수급 <span style="font-weight:400;color:#8a9199;font-size:12px">&nbsp;전일까지 · '
+            '1-1. 외국인·기관 수급 <span style="font-weight:400;color:#8a9199;font-size:12px">&nbsp;방향 판단 보조자료 · 전일까지 · '
             '투자자별 순매수(주식 수)와 외국인 지분율</span></h3>')
     if not active or flow_frame is None or flow_frame.empty:
         return head + ('<div style="font-size:13px;color:#6b7178">이번 실행에는 수급 자료가 없습니다 — '

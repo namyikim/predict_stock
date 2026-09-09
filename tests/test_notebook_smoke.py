@@ -136,6 +136,10 @@ class NotebookSmokeTests(unittest.TestCase):
                       "<!--LEDGER_SECTION_START-->", "<!--LEDGER_SECTION_END-->", "코드 커밋"):
             # assertIn을 쓰면 실패할 때 25만 자짜리 보고서가 통째로 로그에 찍힌다.
             self.assertTrue(token in page, f"보고서에 '{token}' 이(가) 없습니다")
+        prediction_date = self.namespace["prediction_date"]
+        weekday = "월화수목금토일"[prediction_date.weekday()]
+        dated_heading = f"1. 다음 거래일 방향 ({prediction_date.date()} {weekday}요일)"
+        self.assertTrue(dated_heading in page, f"보고서에 '{dated_heading}' 이(가) 없습니다")
 
     def test_offline_run_publishes_nothing(self):
         # 발행을 껐으므로 저장소로 나가는 흔적이 없어야 한다.

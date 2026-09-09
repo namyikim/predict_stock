@@ -41,19 +41,23 @@ class ScheduleTests(unittest.TestCase):
             self.assertIn(label, run_name)
         self.assertIn(THREE_HOUR_CRON, run_name)
 
-    def test_duplicate_gate_runs_before_python_setup_and_heavy_install(self):
+    def test_duplicate_gate_installs_calendar_before_check_and_heavy_deps_after(self):
         steps = WORKFLOW["jobs"]["report"]["steps"]
         by_name = {step.get("name", step.get("uses")): step for step in steps}
         gate_index = next(i for i, step in enumerate(steps)
                           if step.get("name") == "오늘 예측이 이미 기록됐는지 확인")
         setup_index = next(i for i, step in enumerate(steps)
                            if step.get("uses") == "actions/setup-python@v5")
+        calendar_index = next(i for i, step in enumerate(steps)
+                              if step.get("name") == "거래일 달력 설치")
         install_index = next(i for i, step in enumerate(steps)
                              if step.get("name") == "의존성 설치")
-        self.assertLess(gate_index, setup_index)
+        self.assertLess(setup_index, gate_index)
+        self.assertLess(calendar_index, gate_index)
         self.assertLess(gate_index, install_index)
-        for step in (steps[setup_index], by_name["의존성 설치"]):
-            self.assertIn("steps.recorded.outputs.run != 'false'", step["if"])
+        self.assertIn("github.event_name == 'schedule'", steps[calendar_index]["if"])
+        self.assertIn("exchange_calendars==4.13.2", steps[calendar_index]["run"])
+        self.assertIn("steps.recorded.outputs.run != 'false'", by_name["의존성 설치"]["if"])
 
     def test_duplicate_gate_uses_only_python_standard_library(self):
         source = (ROOT / "tools/should_run_today.py").read_text(encoding="utf-8")
@@ -184,6 +188,10 @@ class LedgerGateTests(unittest.TestCase):
                      "kind": "direction", "run_id": "friday"}])
         self.assertTrue(srt.already_recorded(self.path, "무시됨", now=saturday)[0])
 
+    def test_krx_holiday_uses_the_next_open_session(self):
+        holiday = datetime(2026, 5, 5, 6, 30, tzinfo=timezone(timedelta(hours=9)))
+        self.assertEqual(srt.next_trading_day(holiday), date(2026, 5, 6))
+
     def test_writes_the_github_output(self):
         self.write([{"prediction_date": self.today, "is_prospective": True,
                      "kind": "direction", "run_id": "r1"}])
@@ -278,6 +286,12 @@ class WatchdogTests(unittest.TestCase):
         for day in (date(2026, 9, 12), date(2026, 9, 13)):    # 토·일
             self.assertTrue(self.check.check_target("samsung", day, self.dir)[0], day)
 
+    def test_krx_weekday_holiday_uses_previous_session(self):
+        self.write("2026-05-04")
+        ok, message = self.check.check_target("samsung", date(2026, 5, 5), self.dir)
+        self.assertTrue(ok, message)
+        self.assertIn("2026-05-04", message)
+
     def test_missing_a_trading_day_fails_immediately(self):
         # 하루만 밀려도 잡아야 한다. '4일 허용'은 평일 연속 실패를 며칠 놓쳤다.
         self.write("2026-09-10")
@@ -296,6 +310,11 @@ class WatchdogTests(unittest.TestCase):
         kst = (hour + 9) % 24 + minute / 60
         self.assertGreater(kst, 9.0, "09:00 이후여야 그날 사전 예측 기회가 끝난 뒤다")
         self.assertLess(kst, 12.0)
+
+    def test_watchdog_installs_the_krx_calendar(self):
+        workflow = yaml.safe_load((ROOT / ".github/workflows/watchdog.yml").read_text(encoding="utf-8"))
+        commands = "\n".join(str(step.get("run", "")) for step in workflow["jobs"]["check"]["steps"])
+        self.assertIn("exchange_calendars==4.13.2", commands)
 
 
 class CiAndPathTests(unittest.TestCase):

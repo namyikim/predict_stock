@@ -35,9 +35,12 @@ def next_trading_day(now):
         import exchange_calendars as xc
         calendar = xc.get_calendar("XKRX")
         stamp = today.isoformat()
-        if before_close and calendar.is_session(stamp):
-            return today
-        return calendar.next_session(stamp).date()
+        is_session = calendar.is_session(stamp)
+        if before_close:
+            return (today if is_session else
+                    calendar.date_to_session(stamp, direction="next").date())
+        return (calendar.next_session(stamp).date() if is_session else
+                calendar.date_to_session(stamp, direction="next").date())
     except Exception:
         if before_close and today.weekday() < 5:
             return today

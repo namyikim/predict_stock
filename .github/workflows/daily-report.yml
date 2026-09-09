@@ -98,18 +98,23 @@ jobs:
             echo "$THIS 은(는) 이번 실행 대상이 아닙니다."
           fi
 
+      - uses: actions/setup-python@v5
+        if: steps.gate.outputs.run == 'true'
+        with:
+          python-version: "3.13"
+          cache: pip
+
+      # 휴장일에도 평일 규칙으로 잘못 실행하지 않도록, 빠른 게이트에 필요한 달력만 먼저 설치한다.
+      - name: 거래일 달력 설치
+        if: github.event_name == 'schedule' && steps.gate.outputs.run == 'true'
+        run: pip install exchange_calendars==4.13.2
+
       # 백업 스케줄(07:25 KST)은 본 실행이 이미 성공했으면 돌 필요가 없다.
       # 수동 실행은 사람이 의도한 것이므로 이 검사를 하지 않는다.
       - name: 오늘 예측이 이미 기록됐는지 확인
         id: recorded
         if: github.event_name == 'schedule' && steps.gate.outputs.run == 'true'
         run: python tools/should_run_today.py --target ${{ matrix.target }}
-
-      - uses: actions/setup-python@v5
-        if: steps.gate.outputs.run == 'true' && steps.recorded.outputs.run != 'false'
-        with:
-          python-version: "3.13"
-          cache: pip
 
       - name: 의존성 설치
         if: steps.gate.outputs.run == 'true' && steps.recorded.outputs.run != 'false'

@@ -30,9 +30,7 @@ def last_trading_day(today):
     try:
         import exchange_calendars as xc
         calendar = xc.get_calendar("XKRX")
-        if calendar.is_session(day):
-            return day.date()
-        return calendar.previous_session(day).date()
+        return calendar.date_to_session(day, direction="previous").date()
     except Exception:
         while day.weekday() >= 5:
             day -= pd.Timedelta(days=1)

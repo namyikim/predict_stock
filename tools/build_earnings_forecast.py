@@ -804,7 +804,8 @@ def analyse(target, out_dir, fetch=True):
     except Exception:
         pass
     loaded = []
-    for _name in ("semiconductor_exports.csv", "leading_cycle.csv", "customs_exports.csv", "cli_g20.csv"):
+    for _name in ("semiconductor_exports.csv", "leading_cycle.csv", "customs_exports.csv",
+                  "cli_g20.csv", "tsmc_revenue.csv"):
         try:
             text = github_pages.fetch(f"macro_history/{_name}", _token)
             if text:
@@ -883,9 +884,11 @@ def analyse(target, out_dir, fetch=True):
 
     tsmc, tsmc_info = None, {"enabled": False, "reason": "자료 없음"}
     try:
-        tsmc, tsmc_info = load_tsmc_revenue(out_dir, fallback_dir=fallback_dir)
+        tsmc, tsmc_info = load_tsmc_revenue(out_dir, fallback_dir=fallback_dir, fetch=fetch)
         tsmc_info["enabled"] = True
-        print(f"  TSMC 월매출: {tsmc_info['source']} · {tsmc_info['first']}~{tsmc_info['last']}", flush=True)
+        (out_dir / "tsmc_revenue.csv").write_text(tsmc.to_csv(index=False), encoding="utf-8")
+        print(f"  TSMC 월매출: {tsmc_info['source']} · {tsmc_info['first']}~{tsmc_info['last']} "
+              f"({tsmc_info['rows']}개월)", flush=True)
     except Exception as exc:
         tsmc_info = {"enabled": False, "reason": f"{type(exc).__name__}: {exc}"}
 
@@ -1049,6 +1052,15 @@ def main():
         print(oof.tail(8).to_string())
     if args.publish:
         token = github_pages.token()
+        # TSMC 는 API 가 최근 공시월만 주므로, 받은 것을 보관본과 합쳐 매달 누적한다.
+        if (result.get("tsmc_info") or {}).get("fresh") and (out_dir / "tsmc_revenue.csv").exists():
+            try:
+                github_pages.publish("macro_history/tsmc_revenue.csv",
+                                     (out_dir / "tsmc_revenue.csv").read_text(encoding="utf-8"),
+                                     token, f"macro: tsmc_revenue ({result['tsmc_info'].get('last')})")
+            except Exception as exc:
+                print("  TSMC 사본 업로드 실패:", exc, flush=True)
+
         # 관세청 원본을 보관본으로 남긴다(해외 IP에서 막히는 날을 대비).
         if (result.get("customs_info") or {}).get("source") == "customs_api" and (out_dir / "customs_exports.csv").exists():
             try:

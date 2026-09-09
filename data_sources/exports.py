@@ -169,27 +169,107 @@ def merge_customs_exports(kosis, customs):
 # 확정치는 2~5주 늦으므로, 분기 이익 나우캐스트에 한 달 가까이 앞당겨 넣을 수 있다.
 # 다만 '다음 날 주가를 맞히는가'가 아니라 '분기 이익을 더 잘 맞히는가'로만 검증한다.
 #
-# 자동 수집원이 마땅치 않다(TWSE 공시는 중국어 PDF·HTML). 그래서 CSV 입력을 기본으로 두고,
-# 값이 있으면 쓰고 없으면 그 지표만 빠진다.
-#   macro_inputs/tsmc_revenue.csv : month,value  (예: 2026-08, 350000000000  ← 신대만달러)
+# 대만거래소가 키 없이 쓸 수 있는 공식 OpenAPI 를 제공한다(openapi.twse.com.tw). 응답은 최근
+# 공시월 스냅샷이지만 한 행에 당월·전월·전년동월이 함께 있어 한 번 조회로 세 달치를 얻는다.
+# 매달 받아 저장소에 누적하면 이력이 알아서 쌓인다. 날짜는 민국 연호라 서기로 바꾼다(11507 → 2026-07).
+TWSE_REVENUE_URL = 'https://openapi.twse.com.tw/v1/opendata/t187ap05_L'
+TSMC_STOCK_CODE = '2330'
 TSMC_RELEASE_DAY = 10        # 매달 10일 전후 공시. 그 전에는 전월 값을 모른다.
 
 
-def load_tsmc_revenue(storage, fallback_dir=None):
-    """(DataFrame(month,value), info). 단위는 CSV 에 적힌 그대로 쓰되 비율만 사용한다."""
+def roc_month_to_date(text):
+    """민국 연월(11507) → Timestamp(2026-07-01). 형식이 다르면 ValueError."""
+    digits = re.sub(r'[^0-9]', '', str(text))
+    if len(digits) not in (5, 6):
+        raise ValueError(f'민국 연월 형식이 아닙니다: {text!r}')
+    year, month = int(digits[:-2]) + 1911, int(digits[-2:])
+    if not 1 <= month <= 12:
+        raise ValueError(f'월이 범위를 벗어납니다: {text!r}')
+    # 서기 표기('2026-07' → 3937년)를 민국으로 잘못 읽지 않도록 결과 연도를 확인한다.
+    if not 1990 <= year <= 2100:
+        raise ValueError(f'민국 연월로 보기 어렵습니다(변환 결과 {year}년): {text!r}')
+    return pd.Timestamp(year=year, month=month, day=1)
+
+
+def parse_twse_revenue(payload, stock_code=TSMC_STOCK_CODE):
+    """TWSE OpenAPI 응답 → DataFrame(month, value). 한 행에서 세 달치를 뽑는다.
+
+    단위는 신대만달러 천 원이고, 모델은 비율만 쓰므로 그대로 둔다.
+    """
+    rows = [r for r in payload if str(r.get('公司代號', '')).strip() == stock_code]
+    if not rows:
+        raise ValueError(f'{stock_code} 행이 응답에 없습니다.')
+    out = {}
+    for row in rows:
+        month = roc_month_to_date(row['資料年月'])
+        for key, offset in (('營業收入-當月營收', 0), ('營業收入-上月營收', -1),
+                            ('營業收入-去年當月營收', -12)):
+            raw = str(row.get(key, '')).replace(',', '').strip()
+            if raw in ('', '-'):
+                continue
+            try:
+                value = float(raw)
+            except ValueError:
+                continue
+            if value > 0:
+                out[month + pd.DateOffset(months=offset)] = value
+    if not out:
+        raise ValueError('응답에서 매출 값을 찾지 못했습니다.')
+    frame = pd.DataFrame({'month': list(out), 'value': list(out.values())})
+    return normalize_monthly(frame)
+
+
+def fetch_tsmc_revenue(stock_code=TSMC_STOCK_CODE, retries=3):
+    """대만거래소 OpenAPI 에서 최근 공시월을 받는다. 인증키가 필요 없다."""
+    for attempt in range(retries):
+        try:
+            with open_url(TWSE_REVENUE_URL, timeout=60, accept='application/json') as response:
+                payload = json.loads(response.read().decode('utf-8-sig'))
+            return parse_twse_revenue(payload, stock_code)
+        except Exception as exc:
+            detail = f'{type(exc).__name__} {getattr(exc, "code", "")}'.strip()
+            if attempt == retries - 1:
+                raise RuntimeError(f'TWSE 월매출 조회 실패({detail}). '
+                                   'macro_inputs/tsmc_revenue.csv 로 대신할 수 있습니다.') from None
+            time.sleep(3 * (2 ** attempt) + random.uniform(0, 3))
+
+
+def load_tsmc_revenue(storage, fallback_dir=None, fetch=True):
+    """(DataFrame(month,value), info).
+
+    우선순위: 사용자 CSV > (보관본 + API 로 받은 최근분 병합) > 보관본 > API.
+    API 는 최근 공시월만 주므로 보관본과 합쳐야 이력이 이어진다. 매달 실행이 조금씩 누적한다.
+    """
     storage = Path(storage)
     local = storage / 'macro_inputs' / 'tsmc_revenue.csv'
     fallback = Path(fallback_dir) / 'tsmc_revenue.csv' if fallback_dir else None
-    path = local if local.exists() else (fallback if fallback and fallback.exists() else None)
-    if path is None:
-        raise RuntimeError('TSMC 매출 자료가 없습니다. macro_inputs/tsmc_revenue.csv (month,value) 를 두세요.')
-    frame = normalize_monthly(pd.read_csv(path, dtype=str))
-    info = {'source': 'user_csv' if path == local else 'last_successful_fetch',
-            'fresh': path == local,
+    if local.exists():
+        frame = normalize_monthly(pd.read_csv(local, dtype=str))
+        source, error = 'user_csv', None
+    else:
+        base = normalize_monthly(pd.read_csv(fallback, dtype=str)) if (fallback and fallback.exists()) else None
+        fresh, error = None, None
+        if fetch:
+            try:
+                fresh = fetch_tsmc_revenue()
+            except Exception as exc:
+                error = str(exc)
+        if fresh is None and base is None:
+            raise RuntimeError('TSMC 매출 자료가 없습니다. ' + (error or 'API 조회를 하지 않았습니다.'))
+        if fresh is None:
+            frame, source = base, 'last_successful_fetch'
+        elif base is None:
+            frame, source = fresh, 'TWSE_API'
+        else:
+            merged = pd.concat([base, fresh]).drop_duplicates('month', keep='last').sort_values('month')
+            frame, source = merged.reset_index(drop=True), 'TWSE_API+cache'
+    info = {'source': source, 'fresh': source.startswith(('TWSE_API', 'user_csv')),
+            'fetch_error': error if 'error' in dir() else None,
             'first': frame['month'].min().strftime('%Y-%m'),
             'last': frame['month'].max().strftime('%Y-%m'), 'rows': int(len(frame)),
             'release_day': TSMC_RELEASE_DAY,
-            'note': 'TSMC 월매출은 매달 10일 전후 공시. 참조월+1개월 10일 이후에만 사용'}
+            'note': 'TSMC 월매출(대만거래소 OpenAPI). 참조월+1개월 10일 이후에만 사용',
+            'snapshot_hash': hashlib.sha256(frame.to_csv(index=False).encode()).hexdigest()[:20]}
     return frame, info
 
 

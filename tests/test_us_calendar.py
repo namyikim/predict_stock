@@ -64,7 +64,79 @@ class TsmcTests(unittest.TestCase):
         # 2개월 시점(8월 말): 7월 매출은 8/10 에 나왔으므로 쓸 수 있다.
         self.assertFalse(pd.isna(mu.tsmc_features(self.frame(), quarters, 2)["tsmc_rev_k"].iloc[0]))
 
-    def test_missing_file_is_reported_not_raised_into_the_report(self):
+    def test_missing_source_raises_so_the_caller_can_skip(self):
         import macro_utils as mu
         with self.assertRaises(RuntimeError):
-            mu.load_tsmc_revenue(Path(tempfile.mkdtemp()))
+            mu.load_tsmc_revenue(Path(tempfile.mkdtemp()), fetch=False)
+
+
+class TwseApiTests(unittest.TestCase):
+    """대만거래소 OpenAPI: 키가 필요 없고, 한 행에 세 달치가 들어 있다."""
+
+    PAYLOAD = [
+        {"出表日期": "1150817", "資料年月": "11507", "公司代號": "2330", "公司名稱": "台積電",
+         "營業收入-當月營收": "467580548", "營業收入-上月營收": "442679969",
+         "營業收入-去年當月營收": "323165707"},
+        {"資料年月": "11507", "公司代號": "2454", "營業收入-當月營收": "1"},
+    ]
+
+    def test_roc_year_is_converted(self):
+        import macro_utils as mu
+        self.assertEqual(mu.roc_month_to_date("11507").date().isoformat(), "2026-07-01")
+        self.assertEqual(mu.roc_month_to_date("11412").date().isoformat(), "2025-12-01")
+        with self.assertRaises(ValueError):
+            mu.roc_month_to_date("2026-07")
+
+    def test_one_row_yields_three_months_for_the_right_company(self):
+        import macro_utils as mu
+        got = mu.parse_twse_revenue(self.PAYLOAD).set_index("month")["value"]
+        self.assertEqual(len(got), 3)
+        self.assertEqual(got.loc[pd.Timestamp("2026-07-01")], 467580548)
+        self.assertEqual(got.loc[pd.Timestamp("2026-06-01")], 442679969)
+        self.assertEqual(got.loc[pd.Timestamp("2025-07-01")], 323165707)   # 전년 동월
+
+    def test_missing_company_is_an_error(self):
+        import macro_utils as mu
+        with self.assertRaises(ValueError):
+            mu.parse_twse_revenue(self.PAYLOAD, stock_code="9999")
+
+    def test_api_result_is_merged_onto_the_stored_history(self):
+        """API 는 최근 공시월만 준다. 보관본과 합쳐야 이력이 이어진다."""
+        import macro_utils as mu
+        root = Path(tempfile.mkdtemp())
+        fallback = root / "fb"
+        fallback.mkdir()
+        months = pd.date_range("2024-01-01", "2026-05-01", freq="MS")
+        pd.DataFrame({"month": months.strftime("%Y-%m"), "value": range(len(months))}).to_csv(
+            fallback / "tsmc_revenue.csv", index=False)
+        saved = mu.exports.fetch_tsmc_revenue
+        mu.exports.fetch_tsmc_revenue = lambda *a, **k: mu.parse_twse_revenue(self.PAYLOAD)
+        try:
+            frame, info = mu.load_tsmc_revenue(root, fallback_dir=fallback)
+        finally:
+            mu.exports.fetch_tsmc_revenue = saved
+        self.assertEqual(info["source"], "TWSE_API+cache")
+        self.assertEqual((info["first"], info["last"]), ("2024-01", "2026-07"))
+        self.assertTrue(info["fresh"])
+        # 겹치는 달은 새 값으로 갱신된다.
+        value = frame.set_index("month")["value"].loc[pd.Timestamp("2025-07-01")]
+        self.assertEqual(value, 323165707)
+
+    def test_falls_back_to_cache_when_the_api_fails(self):
+        import macro_utils as mu
+        root = Path(tempfile.mkdtemp())
+        fallback = root / "fb"
+        fallback.mkdir()
+        pd.DataFrame({"month": ["2026-05"], "value": [1]}).to_csv(
+            fallback / "tsmc_revenue.csv", index=False)
+        saved = mu.exports.fetch_tsmc_revenue
+
+        def boom(*a, **k):
+            raise RuntimeError("TWSE 월매출 조회 실패(URLError).")
+        mu.exports.fetch_tsmc_revenue = boom
+        try:
+            _, info = mu.load_tsmc_revenue(root, fallback_dir=fallback)
+        finally:
+            mu.exports.fetch_tsmc_revenue = saved
+        self.assertEqual(info["source"], "last_successful_fetch")
+        self.assertFalse(info["fresh"])

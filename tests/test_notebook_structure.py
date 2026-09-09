@@ -273,3 +273,36 @@ class PublishFailureTests(unittest.TestCase):
                       '("실패", "일부 실패")]', self.source)
         self.assertIn('if PUBLISH_FAILURES and RUNTIME != "colab":', self.source)
         self.assertIn("raise RuntimeError(", self.source)
+
+
+class MacroPriceFeatureTests(unittest.TestCase):
+    """유가·엔화는 '전일까지'만 쓴다. 장중에 반영되는 뉴스는 07:00 예측에 넣을 수 없다."""
+
+    @classmethod
+    def setUpClass(cls):
+        import json
+        nb = json.loads((Path(__file__).resolve().parents[1] /
+                         "samsung_direction_model_colab.ipynb").read_text(encoding="utf-8"))
+        cls.source = "\n".join("".join(c["source"]) for c in nb["cells"])
+
+    def test_oil_and_yen_are_collected(self):
+        self.assertIn('"wti": "CL=F"', self.source)
+        self.assertIn('"usdjpy": "JPY=X"', self.source)
+        self.assertIn('"korea_etf", "usdkrw", "dxy", "vix", "us10y", "wti", "usdjpy",', self.source)
+
+    def test_cross_rate_uses_lagged_series_only(self):
+        # 원/엔은 두 달러 환율의 비율로 만들고, 다른 글로벌 자산과 같은 지연 규칙을 쓴다.
+        self.assertIn('_krwjpy = (raw["usdkrw"]["close"] / raw["usdjpy"]["close"])', self.source)
+        for name in ("krwjpy_ret_1", "krwjpy_ret_20", "krwjpy_level_z60"):
+            self.assertIn(f'feat["{name}"] = merge_latest_available(all_dates', self.source)
+
+    def test_effect_is_measured_by_a_paired_comparison(self):
+        self.assertIn('MACRO_PRICE_PREFIXES = ("wti_", "usdjpy_", "krwjpy_")', self.source)
+        self.assertIn('"No macro price ensemble"', self.source)
+        self.assertIn('paired_delta_ci(predictions, "Mean ensemble", "No macro price ensemble", metric)',
+                      self.source)
+
+    def test_global_assets_still_appends_the_gdr(self):
+        # 상수를 끼워 넣다가 GDR 추가를 가로챈 적이 있다(스모크 테스트가 잡았다).
+        self.assertIn('GLOBAL_ASSETS = GLOBAL_ASSETS + (["target_gdr"] if TARGET_SPEC["gdr"] else [])',
+                      self.source)

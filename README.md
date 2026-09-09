@@ -1,5 +1,13 @@
 # predict_stock
 
+## 📊 최종 보고서: **https://namyikim.github.io/predict_stock/**
+
+매일 아침 자동으로 갱신되는 보고서를 위 주소에서 볼 수 있습니다. 종목별 페이지는 [삼성전자](https://namyikim.github.io/predict_stock/samsung/) · [SK하이닉스](https://namyikim.github.io/predict_stock/sk_hynix/)이고, 그 밖에 [금·은](https://namyikim.github.io/predict_stock/metals/) · [중국 주식](https://namyikim.github.io/predict_stock/china/) · [인기 급상승 검색어](https://namyikim.github.io/predict_stock/trends/) · [장기 관심도](https://namyikim.github.io/predict_stock/interest/) 보고서가 있습니다.
+
+아래 문서는 그 보고서를 어떻게 만드는지, 무엇을 검증했고 무엇이 아직 안 되는지에 대한 설명입니다.
+
+---
+
 삼성전자(`005930.KS`)와 SK하이닉스(`000660.KS`)의 **다음 거래일 주가 방향·시초가예측**과 **1거래일·1주일·1개월 종가예측**을 만들고, 여러 머신러닝·딥러닝 모델을 동일한 시계열 검증 조건에서 비교하는 연구용 프로젝트입니다.
 
 프로젝트의 중심은 Google Colab에서 위에서부터 순서대로 실행할 수 있는 [`samsung_direction_model_colab.ipynb`](samsung_direction_model_colab.ipynb) 노트북입니다. Yahoo Finance 시세와 KOSIS 월별 통계를 받아 특징 생성, 워크포워드 검증, 최신 예측, 결과 저장을 수행합니다. 월별 통계는 아래 API 키 또는 CSV 설정이 필요합니다.

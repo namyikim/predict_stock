@@ -7,7 +7,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 # data_sources/ 의 모듈 순서. _common 이 먼저여야 나머지가 참조하는 이름이 정의된다.
-DATA_SOURCE_MODULES = ["_common", "kosis", "ecos", "oecd", "exports", "flows", "dart"]
+DATA_SOURCE_MODULES = ["_common", "kosis", "ecos", "oecd", "exports", "flows", "dart", "us_calendar"]
 _PACKAGE_IMPORT = re.compile(r"^from data_sources[.\w]* import .*$", re.M)
 
 

@@ -38,7 +38,7 @@ sys.path.insert(0, str(ROOT / "tools"))
 import github_pages  # noqa: E402
 from macro_utils import (  # noqa: E402
     cli_features, data_go_kr_key, fetch_customs_exports, load_cli, load_macro_data,
-    merge_customs_exports, reconcile_customs,
+    load_tsmc_revenue, merge_customs_exports, reconcile_customs, tsmc_features,
 )
 
 KST = timezone(timedelta(hours=9))
@@ -370,7 +370,7 @@ def first_k_months(monthly, k):
     return means.where(counts == k)
 
 
-def build_frame(profit, exports, usdkrw, k, cli=None):
+def build_frame(profit, exports, usdkrw, k, cli=None, tsmc=None):
     """분기 표. 특징은 모두 그 분기의 앞 k개월 또는 그 이전 자료만 쓴다.
 
     다음 분기 전망을 위해 profit_next(=t+1 분기 영업이익)와, 분기 t의 k번째 달 말 시점에 보이는
@@ -393,10 +393,17 @@ def build_frame(profit, exports, usdkrw, k, cli=None):
         cf = cli_features(cli, asof)
         f["cli_level"] = cf["cli_level"].to_numpy()
         f["cli_change_3m"] = cf["cli_change_3m"].to_numpy()
+    if tsmc is not None and len(tsmc):
+        # TSMC 는 매달 10일 전후 공시라, 분기 앞 k개월 중 그 시점에 이미 나온 달만 센다.
+        tf = tsmc_features(tsmc, f.index, k)
+        for column in TSMC_FEATURES:
+            f[column] = tf[column].to_numpy()
     return f
 
 
 FEATURES = ["exports_krw_k", "exports_yoy", "exports_qoq", "profit_lag1", "profit_lag4"]
+# TSMC 월매출. 한국 수출 확정치보다 빠르고 AI·HBM 수요를 직접 반영한다. 넣을지는 쌍체 비교로 정한다.
+TSMC_FEATURES = ["tsmc_yoy", "tsmc_qoq"]
 # 다음 분기: 직전 분기 영업이익은 profit_lag1(t-1)이 마지막으로 아는 값이고, 계절 기준선은 t-3이다.
 FEATURES_NEXT = ["exports_krw_k", "exports_yoy", "exports_qoq", "profit_lag1", "profit_lag3"]
 CLI_FEATURES = ["cli_level", "cli_change_3m"]
@@ -709,6 +716,32 @@ def render_fragment(result):
     else:
         parts.append(f'<div style="font-size:13px;color:#6b7178">{e(ev.get("note", "표본 부족"))}</div>')
 
+    # TSMC 효과
+    if r.get("tsmc_active") and r.get("tsmc_ablation"):
+        ab = r["tsmc_ablation"]
+        if ab.get("mae_with") is not None and ab.get("mae_without") is not None:
+            better = ab["mae_with"] < ab["mae_without"]
+            parts.append('<h4 style="font-size:14px;margin:18px 0 6px">TSMC 월매출을 넣으면 나아지는가</h4>')
+            parts.append('<div style="font-size:12px;color:#6b7178;margin-bottom:6px">'
+                         'TSMC 는 매달 10일 전후에 전월 매출을 공시합니다. KOSIS 반도체 수출 확정치보다 빠르고 '
+                         'AI·HBM 수요를 직접 반영하지만, 도움이 되는지는 재 봐야 압니다. 공시 시점을 반영해 '
+                         '그 시점에 이미 나온 달만 썼습니다.</div>')
+            parts.append('<div style="overflow-x:auto"><table style="width:100%;min-width:460px;'
+                         'border-collapse:collapse;font-size:13px;border:1px solid #e5e5e5">'
+                         f'<tr><th {TH}>모델</th><th {THR}>MAE</th><th {THR}>기준선 통과</th></tr>'
+                         f'<tr><td {TD}>TSMC 제외</td><td {TDR}>{ab["mae_without"] / TRILLION:,.2f}조원</td>'
+                         f'<td {TDR}>{"이김" if ab["beats_without"] else "못 이김"}</td></tr>'
+                         f'<tr><td {TD}>TSMC 포함</td><td {TDR}>{ab["mae_with"] / TRILLION:,.2f}조원</td>'
+                         f'<td {TDR}>{"이김" if ab["beats_with"] else "못 이김"}</td></tr></table></div>')
+            parts.append(f'<div style="font-size:11px;color:#8a9199;margin-top:4px">'
+                         f'{"TSMC 를 넣은 쪽이 오차가 작습니다" if better else "넣어도 오차가 줄지 않습니다"} '
+                         f'(분기 {ab.get("n")}개). 차이가 작으면 동률로 읽으세요. 발표 결과가 아니라 '
+                         '월매출 자체를 쓰며, 다음 날 주가가 아니라 분기 이익을 맞히는지로만 판단합니다.</div>')
+    elif not (r.get("tsmc_info") or {}).get("enabled"):
+        parts.append('<div style="font-size:11px;color:#8a9199;margin-top:8px">TSMC 월매출 미포함 — '
+                     f'{html.escape(str((r.get("tsmc_info") or {}).get("reason", "")))}. '
+                     '<code>macro_inputs/tsmc_revenue.csv</code>(month,value)를 두면 비교표가 나옵니다.</div>')
+
     if r.get("ledger_html"):
         parts.append(r["ledger_html"])
 
@@ -848,10 +881,28 @@ def analyse(target, out_dir, fetch=True):
             cli, cli_info = None, {"enabled": False, "reason": f"{type(exc).__name__}: {exc}"}
             print("  ⚠️ G20 CLI를 쓸 수 없어 빼고 진행합니다:", cli_info["reason"], flush=True)
 
-    f = build_frame(profit, exports, usdkrw, months_used, cli)
+    tsmc, tsmc_info = None, {"enabled": False, "reason": "자료 없음"}
+    try:
+        tsmc, tsmc_info = load_tsmc_revenue(out_dir, fallback_dir=fallback_dir)
+        tsmc_info["enabled"] = True
+        print(f"  TSMC 월매출: {tsmc_info['source']} · {tsmc_info['first']}~{tsmc_info['last']}", flush=True)
+    except Exception as exc:
+        tsmc_info = {"enabled": False, "reason": f"{type(exc).__name__}: {exc}"}
+
+    f = build_frame(profit, exports, usdkrw, months_used, cli, tsmc)
     oof = walk_forward(f)
     ev = evaluate(oof)
     point, n_train = fit_live(f, live_quarter)
+
+    # TSMC 를 넣으면 이번 분기 추정이 나아지는가. 같은 날짜·같은 방법으로 쌍체 비교한다.
+    tsmc_active = all(c in f.columns and f[c].notna().mean() > 0.5 for c in TSMC_FEATURES)
+    tsmc_ablation = {}
+    if tsmc_active:
+        with_tsmc = evaluate(walk_forward(f, features=FEATURES + TSMC_FEATURES))
+        tsmc_ablation = {"mae_with": with_tsmc.get("mae_model"), "mae_without": ev.get("mae_model"),
+                         "n": with_tsmc.get("n"),
+                         "beats_with": with_tsmc.get("beats_baselines"),
+                         "beats_without": ev.get("beats_baselines")}
     raw_point = point          # 기준선 게이트에 걸리기 전의 원시 추정값
 
     # ---- 다음 분기 전망 (CLI가 이론적으로 맞는 자리) --------------------------------
@@ -939,6 +990,7 @@ def analyse(target, out_dir, fetch=True):
         "exports_last_month": exports.index[-1].date().isoformat(),
         "macro_sources": macro_info.get("sources", {}),
         "cli_info": cli_info, "cli_active": cli_active,
+        "tsmc_info": tsmc_info, "tsmc_active": tsmc_active, "tsmc_ablation": tsmc_ablation,
         "provisional": provisional, "provisional_info": provisional_info,
         "next_quarter": next_block,
         "generated_at": datetime.now(KST).strftime("%Y-%m-%d %H:%M KST"),

@@ -59,6 +59,9 @@ def event_notice_html(flags):
     if not flags:
         return ""
     words = {"실적시즌": "분기 실적 발표 시즌(분기 종료 후 2주 안)", "공시:잠정실적": "잠정실적 공시 직후",
+             "미국지표:미국 소비자물가(CPI)": "미국 CPI 발표 다음 거래일",
+             "미국지표:미국 생산자물가(PPI)": "미국 PPI 발표 다음 거래일",
+             "미국지표:FOMC 금리 결정": "FOMC 금리 결정 다음 거래일",
              "공시:배당": "배당 관련 공시 직후", "공시:자사주": "자사주 공시 직후",
              "공시:공급계약": "공급계약 공시 직후", "공시:자본변동": "자본 변동 공시 직후",
              "공시:정기보고서": "정기보고서 제출 직후"}
@@ -67,6 +70,17 @@ def event_notice_html(flags):
             'border-radius:0 5px 5px 0;font-size:13px;margin-bottom:12px">'
             f'<b>이벤트일</b> — {described}. 이런 날은 방향과 무관하게 <b>변동폭이 커지는 경향</b>이 있어 '
             '구간이 실제보다 좁을 수 있습니다. 원장에 표시가 남으므로 나중에 평일과 나눠 채점됩니다.</div>')
+
+
+def upcoming_events_html(events):
+    """다가오는 미국 지표 일정. 예측에 쓰지 않고, 며칠 안에 변동성이 커질 날을 미리 알린다."""
+    if not events:
+        return ""
+    items = " · ".join(f'<b>{e["date"]}</b> {e["label"]}' for e in events[:5])
+    return ('<div style="font-size:12px;color:#6b7178;margin:8px 0 0;padding:8px 12px;'
+            f'background:#f7f8fa;border-radius:5px">다가오는 발표 — {items}. '
+            '발표 자체는 예측에 쓰지 않지만, 그 다음 거래일은 방향과 무관하게 변동폭이 커지는 '
+            '경향이 있습니다.</div>')
 
 
 def disclosure_section_html(disclosures, disclosure_info, classify):

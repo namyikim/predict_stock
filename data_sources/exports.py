@@ -160,3 +160,59 @@ def merge_customs_exports(kosis, customs):
     merged = pd.concat([k, c.loc[added]]).sort_index()
     return (pd.DataFrame({'month': merged.index, 'value': merged.to_numpy()}),
             [pd.Timestamp(m).strftime('%Y-%m') for m in added])
+
+
+# ---------------------------------------------------------------------------
+# TSMC 월매출 — 한국 수출 통계보다 빠른 반도체 수요 지표
+# ---------------------------------------------------------------------------
+# TSMC 는 매달 10일 전후에 전월 매출을 공시한다(대만 증권거래소 공시 의무). KOSIS 반도체 수출
+# 확정치는 2~5주 늦으므로, 분기 이익 나우캐스트에 한 달 가까이 앞당겨 넣을 수 있다.
+# 다만 '다음 날 주가를 맞히는가'가 아니라 '분기 이익을 더 잘 맞히는가'로만 검증한다.
+#
+# 자동 수집원이 마땅치 않다(TWSE 공시는 중국어 PDF·HTML). 그래서 CSV 입력을 기본으로 두고,
+# 값이 있으면 쓰고 없으면 그 지표만 빠진다.
+#   macro_inputs/tsmc_revenue.csv : month,value  (예: 2026-08, 350000000000  ← 신대만달러)
+TSMC_RELEASE_DAY = 10        # 매달 10일 전후 공시. 그 전에는 전월 값을 모른다.
+
+
+def load_tsmc_revenue(storage, fallback_dir=None):
+    """(DataFrame(month,value), info). 단위는 CSV 에 적힌 그대로 쓰되 비율만 사용한다."""
+    storage = Path(storage)
+    local = storage / 'macro_inputs' / 'tsmc_revenue.csv'
+    fallback = Path(fallback_dir) / 'tsmc_revenue.csv' if fallback_dir else None
+    path = local if local.exists() else (fallback if fallback and fallback.exists() else None)
+    if path is None:
+        raise RuntimeError('TSMC 매출 자료가 없습니다. macro_inputs/tsmc_revenue.csv (month,value) 를 두세요.')
+    frame = normalize_monthly(pd.read_csv(path, dtype=str))
+    info = {'source': 'user_csv' if path == local else 'last_successful_fetch',
+            'fresh': path == local,
+            'first': frame['month'].min().strftime('%Y-%m'),
+            'last': frame['month'].max().strftime('%Y-%m'), 'rows': int(len(frame)),
+            'release_day': TSMC_RELEASE_DAY,
+            'note': 'TSMC 월매출은 매달 10일 전후 공시. 참조월+1개월 10일 이후에만 사용'}
+    return frame, info
+
+
+def tsmc_features(frame, quarters, months_used, release_day=TSMC_RELEASE_DAY):
+    """분기 인덱스에 맞춘 TSMC 매출 특징.
+
+    분기의 앞 k개월만 쓰는 것은 수출액과 같다. 다만 공시가 다음 달 10일이라, k번째 달 값은
+    분기가 끝나기 전에는 못 볼 수도 있다. 그래서 '그 분기 시작 시점에 이미 공시된 달'까지만 센다.
+    """
+    monthly = normalize_monthly(frame).set_index('month')['value'].asfreq('MS')
+    rows = {}
+    for quarter in pd.PeriodIndex(quarters, freq='Q'):
+        start = quarter.start_time
+        picked = []
+        for offset in range(months_used):
+            month = start + pd.DateOffset(months=offset)
+            visible_from = month + pd.DateOffset(months=1) + pd.Timedelta(days=release_day - 1)
+            asof = start + pd.DateOffset(months=months_used) - pd.Timedelta(days=1)
+            if visible_from <= asof and month in monthly.index and pd.notna(monthly.loc[month]):
+                picked.append(float(monthly.loc[month]))
+        rows[quarter] = np.mean(picked) if picked else np.nan
+    series = pd.Series(rows, name='tsmc_rev_k')
+    out = pd.DataFrame({'tsmc_rev_k': series})
+    out['tsmc_yoy'] = series / series.shift(4) - 1
+    out['tsmc_qoq'] = series / series.shift(1) - 1
+    return out

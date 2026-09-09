@@ -21,8 +21,11 @@ def published_text(path, ref="origin/main"):
     import subprocess
     if ref:
         try:
-            subprocess.run(["git", "fetch", "--quiet", "--depth=1", "origin",
-                            ref.split("/", 1)[-1]], check=True, timeout=60)
+            # --depth 를 주면 안 된다. 전체 복제본에서 실행하면 그 저장소의 origin/main 이 얕은
+            # 이력이 되어 이후 rebase 가 모든 파일에서 충돌한다(2026-09-09 실제로 겪었다).
+            # Actions 의 얕은 체크아웃에서는 이 fetch 가 이력을 채우지만 이 저장소 크기에서는 몇 초다.
+            subprocess.run(["git", "fetch", "--quiet", "origin", ref.split("/", 1)[-1]],
+                           check=True, timeout=120)
             out = subprocess.run(["git", "show", f"{ref}:{path}"], capture_output=True,
                                  text=True, timeout=60)
             if out.returncode == 0:

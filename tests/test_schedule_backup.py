@@ -445,3 +445,22 @@ class StaleCheckoutTests(unittest.TestCase):
         page.write_text("생성 2026-09-09 12:59 KST", encoding="utf-8")
         recent = datetime(2026, 9, 9, 13, 25, tzinfo=timezone(timedelta(hours=9)))
         self.assertFalse(trends_gate.should_run(page, now=recent, ref="origin/no-such-branch")[0])
+
+
+class GateFetchSafetyTests(unittest.TestCase):
+    """게이트의 git fetch 에 --depth 를 주면 전체 복제본을 얕은 이력으로 만들어 버린다."""
+
+    def test_no_shallow_fetch_in_gates(self):
+        import ast
+        for name in ("should_run_today.py", "should_run_trends.py"):
+            tree = ast.parse((ROOT / "tools" / name).read_text(encoding="utf-8"))
+            fetch_calls = []
+            for node in ast.walk(tree):
+                if isinstance(node, ast.Call) and node.args and isinstance(node.args[0], ast.List):
+                    literals = [e.value for e in node.args[0].elts if isinstance(e, ast.Constant)]
+                    if literals[:2] == ["git", "fetch"]:
+                        fetch_calls.append(literals)
+            self.assertTrue(fetch_calls, f"{name}: git fetch 호출이 없습니다")
+            for call in fetch_calls:
+                self.assertFalse(any(str(a).startswith("--depth") for a in call),
+                                 f"{name}: {call} — --depth 는 전체 복제본을 얕게 만듭니다")

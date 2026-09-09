@@ -71,6 +71,7 @@ Colab·로컬 실행 결과는 기본적으로 해당 실행 환경에만 저장
 | [실행 안내](guides/running.md) | Colab·로컬 실행, 설정과 생성 파일 |
 | [자동 실행과 발행](guides/automation.md) | Actions 일정, 재시도, 감시와 Secrets |
 | [검증 방법](guides/validation.md) | 워크포워드, 누수 방지, 기준선과 성능 판정 |
+| [모델 성능 개선 계획](guides/model-improvement-plan.md) | 단계별 실험, 완료 체크리스트와 재개 방법 |
 | [기타 보고서](guides/other-reports.md) | 금·은, 중국, 검색어와 관심도 보고서 |
 | [개발자 안내](guides/development.md) | 코드 구조, 테스트와 노트북 동기화 |
 | [조회수 카운터](counter/README.md) | Cloudflare Worker와 통계 대시보드 운영 |

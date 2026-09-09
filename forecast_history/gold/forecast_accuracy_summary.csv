@@ -1,2 +1,2 @@
 model,kind,horizon_days,target_mode,config_hash,n,accuracy,mean_log_loss,mean_brier,point_forecasts,price_mae,price_mape,interval_coverage
-Ridge,price,1,close_to_close,9b0b1adcafba0fea37db,1,,,,1,39.95542529994418,0.009042552939139631,1.0
+Ridge,price,1,close_to_close,9b0b1adcafba0fea37db,1,,,,1,45.65562061244418,0.010345945211264791,1.0

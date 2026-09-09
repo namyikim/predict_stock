@@ -137,6 +137,13 @@ class NotebookStructureTests(unittest.TestCase):
         self.assertIn("raw.githubusercontent.com", source)      # 토큰 없이 받는다
         self.assertIn('fallback_dir=STORAGE_ROOT / "macro_fallback"', source)
 
+    def test_news_sentiment_fallback_is_downloaded_and_used(self):
+        self.assertIn('"news_sentiment.csv"', self.source)
+        self.assertIn('nsi_frame, nsi_info = load_nsi(', self.source)
+        nsi_call = self.source.index('nsi_frame, nsi_info = load_nsi(')
+        self.assertIn('fallback_dir=STORAGE_ROOT / "macro_fallback"',
+                      self.source[nsi_call:nsi_call + 500])
+
     def test_macro_cache_upload_is_independent_of_ledger_publishing(self):
         # 한국 정부 API가 해외 IP(Actions)에서 막히므로, 한국에서 돌린 실행이 보관본을 갱신해야 한다.
         # 그 갱신은 원장 발행과 무관해야 Colab에서 그냥 전체 실행만 해도 보관본이 채워진다.

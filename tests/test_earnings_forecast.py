@@ -275,6 +275,7 @@ class NextQuarterTests(unittest.TestCase):
         self.assertIn("3.65조원", html)
         self.assertIn("CLI 포함", html)
         self.assertIn("낙관적", html)
+        self.assertIn("앞 절반에서 모델을 선택하고 뒤 절반에서 최종 평가", html)
 
 
 class ExportsFlashTests(unittest.TestCase):
@@ -431,10 +432,18 @@ class ProvisionalDisclosureTests(unittest.TestCase):
 
 
 class ModelChoiceRuleTests(unittest.TestCase):
-    """CLI 포함/제외를 성능 순위로 고르면 선택과 평가가 같은 표본이 된다. 규칙으로 정한다."""
+    """CLI 포함/제외 선택 구간과 최종 성능 평가 구간을 시간 순서로 분리한다."""
 
-    def test_simpler_model_wins_unless_it_fails_the_baselines(self):
+    def test_selection_and_evaluation_use_separate_oof_periods(self):
         source = (Path(__file__).resolve().parents[1] / "tools" / "build_earnings_forecast.py").read_text(encoding="utf-8")
+        self.assertIn("selection_oof, evaluation_oof = split_selection_evaluation(oof_n)", source)
+        self.assertIn('next_results["without_cli"]["selection"].get("beats_baselines")', source)
         self.assertIn('chosen = "with_cli" if (not simple_ok and cli_ok) else "without_cli"', source)
-        # MAE 비교로 고르는 옛 규칙이 남아 있으면 안 된다.
-        self.assertNotIn('next_results["with_cli"]["evaluation"].get("mae_model", np.inf)\n              <', source)
+
+    def test_split_keeps_later_period_only_for_final_evaluation(self):
+        index = pd.period_range("2018Q1", periods=9, freq="Q")
+        oof = pd.DataFrame({"actual": range(9)}, index=index)
+        selection, evaluation = ef.split_selection_evaluation(oof)
+        self.assertEqual(list(selection.index), list(index[:4]))
+        self.assertEqual(list(evaluation.index), list(index[4:]))
+        self.assertLess(selection.index.max(), evaluation.index.min())

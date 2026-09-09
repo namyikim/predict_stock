@@ -447,6 +447,12 @@ def evaluate(oof):
     return out
 
 
+def split_selection_evaluation(oof):
+    """시간 순서 OOF의 앞 절반은 모델 선택, 뒤 절반은 최종 평가에만 쓴다."""
+    split = len(oof) // 2
+    return oof.iloc[:split].copy(), oof.iloc[split:].copy()
+
+
 def fit_live(f, live_quarter, target="profit", features=None, gap=0):
     from sklearn.linear_model import Ridge
     from sklearn.pipeline import make_pipeline
@@ -713,7 +719,8 @@ def render_fragment(result):
                      f'다음 분기({e(nq["quarter"])}) 전망 — G20 경기선행지수를 넣어 보다</h4>')
         parts.append('<div style="font-size:12px;color:#6b7178;margin-bottom:6px">이번 분기 나우캐스트와 달리 '
                      '아직 시작하지 않은 분기를 내다보는 것이라 훨씬 어렵습니다. 선행지수가 쓸모 있다면 여기서 '
-                     '나타나야 합니다. 같은 날짜에서 CLI를 넣은 모델과 뺀 모델을 나란히 쟀습니다.</div>')
+                     '나타나야 합니다. 같은 날짜에서 CLI를 넣은 모델과 뺀 모델을 나란히 쟀습니다. '
+                     '과거 OOF의 앞 절반에서 모델을 선택하고 뒤 절반에서 최종 평가했습니다.</div>')
         if nq["point"] is not None:
             parts.append(f'<div style="font-size:20px;font-weight:700">{jo(nq["point"])}'
                          f'<span style="font-size:13px;font-weight:400;color:#6b7178"> · 80% 구간 '
@@ -858,15 +865,18 @@ def analyse(target, out_dir, fetch=True):
     next_results = {}
     for name, feats in next_variants.items():
         oof_n = walk_forward(f, target="profit_next", features=feats, gap=1, rw="profit_lag1", sn="profit_lag3")
-        ev_n = evaluate(oof_n)
+        selection_oof, evaluation_oof = split_selection_evaluation(oof_n)
+        selection_n = evaluate(selection_oof)
+        ev_n = evaluate(evaluation_oof)
         pt_n, ntr = fit_live(f, live_quarter, target="profit_next", features=feats, gap=1)
-        next_results[name] = {"evaluation": ev_n, "raw_point": pt_n, "n_train": ntr}
+        next_results[name] = {"selection": selection_n, "evaluation": ev_n,
+                              "raw_point": pt_n, "n_train": ntr}
     # 두 모델의 MAE 를 비교해 좋은 쪽을 고르면, 그 MAE 를 그대로 성능으로 보고하는 순간
     # 선택과 평가가 같은 표본에서 이뤄진다(분기 40개 남짓이라 편향이 크다). 그래서 성능 순위로
     # 고르지 않고 규칙으로 정한다: 기본은 단순한 쪽(CLI 제외)이고, 그것이 기준선을 못 이기는데
     # CLI 포함이 이길 때만 CLI 를 쓴다. 두 모델의 수치는 어느 쪽을 골랐든 표에 함께 보여 준다.
-    simple_ok = next_results["without_cli"]["evaluation"].get("beats_baselines")
-    cli_ok = cli_active and next_results["with_cli"]["evaluation"].get("beats_baselines")
+    simple_ok = next_results["without_cli"]["selection"].get("beats_baselines")
+    cli_ok = cli_active and next_results["with_cli"]["selection"].get("beats_baselines")
     chosen = "with_cli" if (not simple_ok and cli_ok) else "without_cli"
     nr = next_results[chosen]
     next_point = nr["raw_point"] if nr["evaluation"].get("beats_baselines") and nr["raw_point"] is not None else None
@@ -876,6 +886,9 @@ def analyse(target, out_dir, fetch=True):
         "low": (next_point + nr["evaluation"]["residual_q10"]) if next_point is not None else None,
         "high": (next_point + nr["evaluation"]["residual_q90"]) if next_point is not None else None,
         "raw_point": nr["raw_point"], "evaluation": nr["evaluation"],
+        "selection": nr["selection"],
+        "selection_without_cli": next_results["without_cli"]["selection"],
+        "selection_with_cli": next_results.get("with_cli", {}).get("selection"),
         "evaluation_without_cli": next_results["without_cli"]["evaluation"],
         "evaluation_with_cli": next_results.get("with_cli", {}).get("evaluation"),
         "no_point_reason": ("" if next_point is not None else

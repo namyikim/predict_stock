@@ -104,3 +104,13 @@ python tools/run_notebook.py --storage ./outputs --no-macro
 
 공식 원장의 계보가 섞이지 않도록 평소에는 Actions만 발행 주체로 사용합니다. Colab에서 일시적으로 발행해야 하더라도 GitHub 토큰을 파일에 저장하지 마세요.
 
+
+## 로컬 다종목 실행 (P00 수정)
+
+```bash
+python tools/run_notebook.py --targets samsung,sk_hynix --storage ./outputs --quick
+```
+
+두 종목을 순서대로 실행하고 `outputs/samsung`, `outputs/sk_hynix`로 분리한다. 단일 종목 `--targets samsung`은 지정한 저장 폴더를 그대로 사용한다. 둘째 종목의 실패도 CLI 오류로 표시한다. `--use-cache`는 누락 시세 다운로드와 첫 셀의 보관본 조회까지 차단하는 완전 오프라인 옵션은 아니다. 고정 데이터 실험에서는 별도 재현 절차를 사용한다.
+
+Windows에서 직접 unittest를 실행할 때는 `$env:PYTHONIOENCODING='utf-8'`을 설정한다. 로컬 CLI 자체는 UTF-8 출력을 설정한다.

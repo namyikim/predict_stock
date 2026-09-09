@@ -127,7 +127,7 @@ async function handleHit(request, env, url, origin) {
   // 비밀값이 없으면 방문자 해시가 공개된 고정 문자열로 계산되어 보호가 사라진다.
   // 그럴 바에는 집계하지 않는다. 설정 누락을 조용히 넘기지 않기 위해 500으로 알린다.
   if (!env.VISITOR_SALT) {
-    return json({ error: "VISITOR_SALT가 설정되지 않았습니다" }, 500, origin);
+    return json({ error: "VISITOR_SALT가 설정되지 않았습니다" }, origin, 500);
   }
   const visitor = await visitorHash(request, env.VISITOR_SALT, day);
   const geo = geoOf(request);

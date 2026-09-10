@@ -72,7 +72,7 @@
 | P04 | [x] | 학습 기간 비교 | P03 | CPU/Colab | 완료: 5년 유지. sk_hynix expanding이 외부에서 유의 우위지만 내부 선택이 못 고름 → P15 후보 |
 | P05 | [x] | 최근 표본 가중 학습 | P04 | CPU/Colab | 완료: 채택 없음. 반감기 짧을수록 유의 열위, 504도 동률 |
 | P06 | [x] | 재학습 주기 비교 | P05 | CPU/Colab | 완료: 채택 없음. 전부 동률, sk_hynix 21일은 유의 열위 |
-| P07 | [ ] | 소수 모델 앙상블 비교 | P06 | CPU/Colab | 미실행 |
+| P07 | [x] | 소수 모델 앙상블 비교 | P06 | CPU/Colab | 완료: 채택 없음. 최선 단일(expanding)을 이기는 결합 없음 |
 | P08 | [ ] | 확률 신뢰도·예측 보류 평가 | P07 | CPU | 미실행 |
 | P09 | [ ] | 갭·장중 별도 학습 비교 | P08 | CPU/Colab | 미실행 |
 | P10 | [ ] | 국내 관련 종목 공동 학습 기반 | P09 | CPU/Colab, 선택 | 미실행 |
@@ -408,11 +408,27 @@ balanced_accuracy는 전부 동률. 비용은 일별 재학습이 2,724회·245�
 **파일:** 러너 P07 등록, 필요한 순수 함수는 forecast_utils.py, 생성 tests/test_model_ensemble.py.
 **입출력:** 동일 날짜의 후보별 p_down/p_flat/p_up → 3클래스 결합 확률.
 
-- [ ] 현재 대표 모델·최근 창 모델·최근 가중 모델 중 최대 3개를 고정한다. 같은 모델의 이름만 바꾼 중복 후보는 제외한다.
-- [ ] 단순 평균을 먼저 평가하고, 두 모델 결합 가중치는 0·0.25·0.5·0.75·1 후보만 내부 검증에서 선택한다.
-- [ ] 확률 클래스 순서·합 1·유한값 및 후보 누락 시 fallback을 테스트한다.
-- [ ] 외부 라벨을 바꿔도 해당 외부 구간의 앙상블 가중치가 변하지 않는지 확인한다.
-- [ ] 최선 단일 후보와 현행 대표 모델 양쪽에 대해 추가 가치를 기록한다.
+- [x] 현재 대표 모델·최근 창 모델·최근 가중 모델 중 최대 3개를 고정한다. → `ENSEMBLE_CANDIDATES = (headline_5y, expanding, half_life_504)`, `dedupe_candidates`로 중복 제거(실제 중복 없음)
+- [x] 단순 평균을 먼저 평가하고, 두 모델 결합 가중치는 0·0.25·0.5·0.75·1 후보만 내부 검증에서 선택한다. → `ENSEMBLE_WEIGHT_GRID`, `select_pair_weight`. 폴드 학습 끝 6개월에서만 선택
+- [x] 확률 클래스 순서·합 1·유한값 및 후보 누락 시 fallback을 테스트한다. → `tests/test_model_ensemble.py` 13개
+- [x] 외부 라벨을 바꿔도 해당 외부 구간의 앙상블 가중치가 변하지 않는지 확인한다. → `test_outer_labels_do_not_change_the_weight`
+- [x] 최선 단일 후보와 현행 대표 모델 양쪽에 대해 추가 가치를 기록한다. → `comparisons.csv` 32행(4결합 × 2기준 × 2지표 × 2종목)
+
+#### 결과 (2026-09-10, `experiments/model_improvement/P07/20260910T0500Z_ensemble/`)
+
+log_loss, 음수가 개선.
+
+| 종목 | 단순 평균 − 현행 대표 | 단순 평균 − 최선 단일(expanding) |
+| --- | --- | --- |
+| samsung | -0.00338 [-0.00700, +0.00013] 동률(경계) | -0.00154 [-0.00652, +0.00359] 동률 |
+| sk_hynix | -0.00464 [-0.00806, -0.00105] **유의 우위** | +0.00519 [-0.00049, +0.01058] 동률 |
+
+두 모델 격자 결합도 최선 단일을 이기지 못했다(하이닉스 `headline_5y|half_life_504`는 유의 열위).
+balanced_accuracy는 전부 동률. 내부 검증이 고른 가중치가 폴드마다 0↔1을 오가 결합 가중치 선택에
+쓸 만한 신호가 없다.
+
+**채택 없음.** 하이닉스에서 앙상블이 현행 대표를 이기는 것은 expanding 하나의 우위(P04)를 그대로
+물려받은 것이다. P15 후보는 sk_hynix `expanding` 단독이 1순위로 유지된다.
 
 **완료 증거:** 확률·시간 분리 테스트, 앙상블 채택/동률/미채택 판정.
 
@@ -567,6 +583,7 @@ P00 이후에는 작업 ID만 바꿔 요청한다. Colab 실행이 필요한 경
 | --- | --- | --- | --- | --- |
 | 2026-09-09 | PLAN | 이 문서 및 README 링크 | 저장소 문서·핵심 함수·기존 Transformer 결과 확인 | 계획 생성. P00부터 시작 |
 | 2026-09-10 | P00 사전 수정 | `tools/run_notebook.py`, `tests/test_run_notebook.py` | 8개 오프라인 회귀 테스트 통과 | 기존 CLI가 IPython 히스토리 부재로 둘째 종목을 건너뛰던 결함 수정. P00 전체 완료 아님 |
+| 2026-09-10 | P07 | `experiments/model_improvement/P07/20260910T0500Z_ensemble/`, `tests/test_model_ensemble.py` | 13개 통과, 두 종목 후보 3·결합 4 재학습 | **완료.** 채택 없음. 최선 단일을 이기는 결합 없음 |
 | 2026-09-10 | P06 | `experiments/model_improvement/P06/20260910T0400Z_retrain_schedule/`, `tests/test_retraining_schedule.py` | 13개 통과, 두 종목 주기 3종 재학습(일별 2,724회 포함) | **완료.** 채택 없음. 전부 동률, sk_hynix 21일 유의 열위 |
 | 2026-09-10 | P05 | `experiments/model_improvement/P05/20260910T0300Z_recency_weights/`, `forecast_utils.recency_weights`, `fit_direction_model(sample_weight)` | `discover -p test_recency_weighting.py` 18개, 기존 forecast_improvements 21·notebook_structure 36 통과 | **완료.** 채택 없음. 반감기 짧을수록 유의 열위 |
 | 2026-09-10 | P04 | `experiments/model_improvement/P04/20260910T0200Z_training_windows/` | `discover -p test_training_window.py` 11개 통과, 두 종목 12폴드 재학습 | **완료.** 5년 유지. 3y는 두 종목 유의 열위, 2y는 표본 부족 제외, sk_hynix expanding은 유의 우위지만 내부 선택이 못 골라 P15 후보로 등록 |
@@ -576,9 +593,9 @@ P00 이후에는 작업 ID만 바꿔 요청한다. Colab 실행이 필요한 경
 | 2026-09-10 | P01 | `tools/run_model_improvement.py`, `tests/test_model_improvement_runner.py` | `discover -p test_model_improvement_runner.py` 15개 통과 | 완료. 재개·해시 격리·원자적 쓰기·발행 차단 검증. 구현 중 결함 2건(재개 시 반환형 불일치, 같은 초 run_id 충돌) 발견·수정 |
 | 2026-09-10 | P00 quick | `experiments/model_improvement/P00/20260910T0000Z_baseline_quick/` | 두 종목 46셀 무오류 완료, 평가 276일 | 기준선 계약 기록·스냅샷 고정 완료. 기존 캐시는 자산 키 불일치로 폐기. full 평가 실행 중 |
 
-- 현재 작업: P07 — 소수 모델 앙상블(코드·13개 테스트 완료, 실험 실행 중)
-- 완료한 신규 작업: 7/16 (P00~P06)
-- 다음 작업: P07 결과 기록 → P08 → P09
+- 현재 작업: P08 — 확률 신뢰도·예측 보류(코드·10개 테스트 완료, 실험 실행 중)
+- 완료한 신규 작업: 8/16 (P00~P07)
+- 다음 작업: P08 결과 기록 → P09
 - P15로 넘긴 후보: sk_hynix `expanding` 학습 창 (P04에서 외부 유의 우위, 내부 선택 미채택)
 - 고쳐야 할 절차: P04 내부 선택을 폴드 반복형으로 (현재 마지막 폴드 하나만 사용)
 - 보류 작업: 없음

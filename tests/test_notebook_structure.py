@@ -353,3 +353,35 @@ class PageLayoutTests(unittest.TestCase):
             self.assertIn(needle, sources[name], f"{name}: 본문이 가운데 정렬이 아닙니다")
         # 종목 보고서에 margin 없는 옛 컨테이너가 남아 있으면 안 된다.
         self.assertNotIn("sans-serif;max-width:980px;'", notebook)
+
+
+class DataSectionTableTests(unittest.TestCase):
+    """6절: 월별 지표·뉴스심리지수도 위 자산 표와 같은 표 형식이어야 한다(목록·문장이 아니라).
+
+    2026-09-11 지적: WTI 같은 자산은 표로 나오는데 월별 지표는 <ul> 목록, 뉴스심리지수는 한 줄
+    문장이라 통일감이 없었다.
+    """
+
+    @classmethod
+    def setUpClass(cls):
+        import json
+        nb = json.loads((Path(__file__).resolve().parents[1] /
+                         "samsung_direction_model_colab.ipynb").read_text(encoding="utf-8"))
+        cls.source = next("".join(c["source"]) for c in nb["cells"]
+                          if "def build_summary():" in "".join(c.get("source", [])))
+
+    def test_indicator_table_has_the_same_columns_as_the_asset_table(self):
+        self.assertIn('<th style="padding:8px 10px;text-align:left">월별·심리 지표</th>', self.source)
+        self.assertIn('<th style="padding:8px 10px;text-align:right">최신월</th>', self.source)
+        self.assertIn('<th style="padding:8px 10px;text-align:right">출처</th>', self.source)
+        # 옛 목록·문장 형태가 남아 있으면 안 된다.
+        self.assertNotIn("<ul style='margin:6px 0 0;padding-left:18px'>", self.source)
+        self.assertNotIn("<b>월별 지표</b>", self.source)
+        self.assertNotIn("<b>뉴스심리지수</b>", self.source)
+
+    def test_missing_indicator_spans_the_row_instead_of_a_bare_message(self):
+        self.assertIn('colspan="4"', self.source)
+
+    def test_html_module_is_available_in_this_cell(self):
+        # 다른 로컬 render 함수들과 같은 관례(import html as _html)를 따라야 노트북 단독 실행이 된다.
+        self.assertIn("import html as _html", self.source)

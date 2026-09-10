@@ -67,7 +67,7 @@
 | --- | --- | --- | --- | --- | --- |
 | P00 | [ ] | 현행 기준선·평가 계약 고정 | 없음 | CPU, 전체 평가는 Colab | 진행 중: 로컬 러너 수정, 고정 데이터 평가 |
 | P01 | [x] | 한 작업씩 실행·재개하는 실험 러너 | P00 | CPU | 완료: `tools/run_model_improvement.py`, 15개 테스트 통과 |
-| P02 | [ ] | 정보 공개 시각·데이터 품질 점검 | P01 | CPU | 미실행 |
+| P02 | [x] | 정보 공개 시각·데이터 품질 점검 | P01 | CPU | 완료: 미래 날짜 봉 결함 1건 수정, `tests/test_release_timing.py` 15개 |
 | P03 | [ ] | 기존 특징군의 추가 가치 비교 | P02 | CPU/Colab | 미실행 |
 | P04 | [ ] | 학습 기간 비교 | P03 | CPU/Colab | 미실행 |
 | P05 | [ ] | 최근 표본 가중 학습 | P04 | CPU/Colab | 미실행 |
@@ -218,11 +218,29 @@ python -m unittest discover -s tests -p 'test_model_improvement_runner.py' -v
 **파일:** 수정이 필요한 경우에만 data_sources/ 해당 모듈과 노트북 정렬 셀. 확장 tests/test_pipeline_behavior.py, tests/test_macro_release.py. 생성 결과 P02.
 **입출력:** P00 스냅샷·시각 계약 → 특징별 source/as_of/available_at/수정치 여부/결측 비율 표.
 
-- [ ] 기존 국내 shift, 미국 마감 시각·서머타임·양국 휴일, 보조 자산 결측 처리 테스트를 읽고 빠진 경계 사례만 추가한다.
-- [ ] 예측 마감 뒤 국내 가격·미국 미완성 봉을 변경해도 해당 시각 특징이 같다는 테스트를 실행한다.
-- [ ] released_at 없는 월별 최신 수정치를 “지연 가정 자료”로 표시한다. 보고서 설명과 엄밀한 과거 재현 실험을 구분한다.
-- [ ] 노후 자료 제외·결측 여부 때문에 모델별 평가 날짜가 달라지는지 확인하고 공통 평가 집합을 저장한다.
-- [ ] 발견한 결함만 수정하고, 수정으로 결과가 바뀌면 P00 기준선 버전을 새로 만든다.
+- [x] 기존 국내 shift, 미국 마감 시각·서머타임·양국 휴일, 보조 자산 결측 처리 테스트를 읽고 빠진 경계 사례만 추가한다. → 기존 20+12개를 읽고 겹치지 않는 경계만 `tests/test_release_timing.py`에 넣었다(마감 정각/1분 전, 서머타임 UTC 동일 시각 여름·겨울, 미래 날짜 봉, tz 없는 시각, 허용치 초과 노후값)
+- [x] 예측 마감 뒤 국내 가격·미국 미완성 봉을 변경해도 해당 시각 특징이 같다는 테스트를 실행한다. → 기존 `test_todays_data_cannot_change_todays_features_or_band`, `test_global_features_come_from_an_earlier_bar` 통과 확인
+- [x] released_at 없는 월별 최신 수정치를 “지연 가정 자료”로 표시한다. → `macro_history_mode="lagged_latest_vintage"`가 원장·config에 남는 것을 `LaggedVintageLabelTests`로 고정
+- [x] 노후 자료 제외·결측 여부 때문에 모델별 평가 날짜가 달라지는지 확인하고 공통 평가 집합을 저장한다. → 두 종목 모두 9개 모델이 동일한 276일(2025-07-01~2026-09-09). `experiments/model_improvement/P00/<run_id>/common_evaluation.json`
+- [x] 발견한 결함만 수정하고, 수정으로 결과가 바뀌면 P00 기준선 버전을 새로 만든다. → 아래 결함 1건 수정. 백테스트 지표 영향 여부는 같은 스냅샷 quick 재실행으로 대조한다
+
+#### 발견·수정한 결함 (2026-09-10)
+
+`drop_unclosed_last_bar`가 **그 시장 기준 미래 날짜인 봉을 남겼다.**
+
+옛 판정은 `last_date >= now.date() and 지금 < 마감시각` 이었다. 한국 07:00 예측은 뉴욕 기준
+전날 18:00이고 이는 미국 마감(16:05)·연속시장 마감(17:05) 이후라 시간 조건이 거짓이 되어,
+아직 열리지도 않은 날짜의 봉이 "마감된 봉"으로 통과했다.
+
+실제 자료에서 확인했다. 2026-09-10 고정 스냅샷에서 `usdjpy`, `usdkrw`가 뉴욕 날짜
+2026-09-09 시점에 2026-09-10 봉을 갖고 있었다(FX는 17:00 ET에 날짜가 넘어간다).
+
+수정: 미래 날짜 봉을 먼저 모두 버리고, 남은 마지막 봉이 오늘 날짜일 때만 마감 시각과 비교한다.
+검증을 위해 `now`를 주입할 수 있게 했다(그전에는 `pd.Timestamp.now()`를 직접 불러 시각
+경계를 고정할 수 없었다).
+
+**영향 범위:** 과거 폴드의 봉은 미래 날짜가 될 수 없으므로 백테스트 지표는 바뀌지 않을 것으로
+보지만, 라이브 예측 행은 바뀔 수 있다. 같은 스냅샷 quick 재실행으로 대조한 뒤 기록한다.
 
 **완료 증거:** 관련 누수·공개 시각 테스트 통과, 날짜별 입력 가용성 표, 기준선 영향 기록.
 
@@ -456,12 +474,13 @@ P00 이후에는 작업 ID만 바꿔 요청한다. Colab 실행이 필요한 경
 | --- | --- | --- | --- | --- |
 | 2026-09-09 | PLAN | 이 문서 및 README 링크 | 저장소 문서·핵심 함수·기존 Transformer 결과 확인 | 계획 생성. P00부터 시작 |
 | 2026-09-10 | P00 사전 수정 | `tools/run_notebook.py`, `tests/test_run_notebook.py` | 8개 오프라인 회귀 테스트 통과 | 기존 CLI가 IPython 히스토리 부재로 둘째 종목을 건너뛰던 결함 수정. P00 전체 완료 아님 |
+| 2026-09-10 | P02 | `tests/test_release_timing.py`, 노트북 `drop_unclosed_last_bar` | `discover -p test_release_timing.py` 15개 통과 | 완료. 미래 날짜 봉을 마감된 봉으로 취급하던 결함 수정(실제 스냅샷의 usdjpy·usdkrw에서 확인). 공통 평가 집합 276일 저장 |
 | 2026-09-10 | P01 | `tools/run_model_improvement.py`, `tests/test_model_improvement_runner.py` | `discover -p test_model_improvement_runner.py` 15개 통과 | 완료. 재개·해시 격리·원자적 쓰기·발행 차단 검증. 구현 중 결함 2건(재개 시 반환형 불일치, 같은 초 run_id 충돌) 발견·수정 |
 | 2026-09-10 | P00 quick | `experiments/model_improvement/P00/20260910T0000Z_baseline_quick/` | 두 종목 46셀 무오류 완료, 평가 276일 | 기준선 계약 기록·스냅샷 고정 완료. 기존 캐시는 자산 키 불일치로 폐기. full 평가 실행 중 |
 
-- 현재 작업: P00 full 평가 실행 중(quick·계약 기록 완료), P01 완료
-- 완료한 신규 작업: 1/16 (P01)
-- 다음 작업: P00 full 결과 기록 → P02
+- 현재 작업: P00 full 평가 실행 중(quick·계약 기록 완료). P01·P02 완료
+- 완료한 신규 작업: 2/16 (P01, P02)
+- 다음 작업: P00 full 결과 기록 → P03
 - 보류 작업: 없음
 - 마지막 검증 결과: `python -m unittest discover -s tests -p test_run_notebook.py -v` — 8개 통과. 전체 기존 테스트는 Windows 출력 인코딩 오류가 확인되어 `PYTHONIOENCODING=utf-8`로 재검증 중.
 - 재개 시 먼저 읽을 파일: 이 문서의 P00, guides/validation.md, guides/running.md

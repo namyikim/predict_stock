@@ -58,7 +58,7 @@
     <label class="field">모델
       <select id="model"></select>
     </label>
-    <label class="field">규칙
+    <label class="field">자세히 볼 규칙
       <select id="rule">
         <option value="up_over_flat">상승 확률이 하락보다 높으면 보유</option>
         <option value="up_over_third">상승 확률 &gt; 1/3 이면 보유</option>
@@ -83,7 +83,10 @@
   <div id="status" class="muted">원장을 불러오는 중…</div>
   <div id="result"></div>
 
-  <h2>거래 내역</h2>
+  <h2>규칙별 비교</h2>
+  <div id="compare"></div>
+
+  <h2>거래 내역 <span class="muted" id="trades-rule"></span></h2>
   <div id="trades"></div>
 
   <div class="muted" style="margin-top:18px">
@@ -225,6 +228,39 @@
 
   function pct(v) { return (v * 100).toFixed(2) + "%"; }
 
+  var RULES = [
+    { id: "up_over_flat", name: "상승 확률 > 하락 확률" },
+    { id: "up_over_third", name: "상승 확률 > 1/3" },
+    { id: "predicted_up", name: "예측이 '상승'일 때만" },
+    { id: "always", name: "항상 보유(보유 전략)" }
+  ];
+
+  function compareTable(picked, cost, current) {
+    // 네 규칙을 같은 자료·같은 비용으로 동시에 돌린다. 규칙마다 따로 보면 비교가 어렵다.
+    var hold = simulate(picked, "always", cost);
+    var body = RULES.map(function (rule) {
+      var sim = simulate(picked, rule.id, cost);
+      var diff = sim.total - hold.total;
+      var tone = function (v) { return v > 0 ? "up" : (v < 0 ? "down" : ""); };
+      var mark = rule.id === current ? ' style="background:#f3f7fb"' : "";
+      var wins = sim.trades.filter(function (t) { return t.net > 0; }).length;
+      return "<tr" + mark + "><td>" + rule.name + (rule.id === current ? " ←" : "") + "</td>" +
+        '<td class="num ' + tone(sim.total) + '">' + pct(sim.total) + "</td>" +
+        '<td class="num ' + tone(diff) + '">' + (rule.id === "always" ? "—" : pct(diff)) + "</td>" +
+        '<td class="num down">' + pct(sim.mdd) + "</td>" +
+        '<td class="num">' + sim.trades.length + " / " + sim.days + "</td>" +
+        '<td class="num">' + (sim.trades.length ? Math.round(100 * wins / sim.trades.length) + "%" : "—") + "</td>" +
+        '<td class="num down">-' + pct(sim.fees) + "</td></tr>";
+    }).join("");
+    return '<table><tr><th>규칙</th><th class="num">수익률</th><th class="num">보유 대비</th>' +
+      '<th class="num">최대 낙폭</th><th class="num">보유일</th><th class="num">이익 낸 날</th>' +
+      '<th class="num">누적 비용</th></tr>' + body + "</table>" +
+      '<div class="warn" style="margin-top:10px"><b>이 표에서 제일 좋은 규칙을 고르지 마세요.</b> ' +
+      picked.length + '일 자료에 규칙을 맞추는 것(과적합)이고, 그렇게 고른 규칙은 다음 달에 같은 성적을 ' +
+      '내지 않습니다. 규칙은 미리 정해 두고 바꾸지 않아야 결과가 의미를 가집니다. ' +
+      '여기서 볼 것은 <b>어느 규칙이 이겼나</b>가 아니라 <b>네 규칙이 보유 전략과 얼마나 다른가</b>입니다.</div>';
+  }
+
   function run() {
     var model = $("model").value, rule = $("rule").value;
     var capital = Math.max(0, num($("capital").value) || 0);
@@ -259,6 +295,8 @@
         '<div class="tile">누적 비용<b class="down">-' + pct(sim.fees) + "</b>" +
           '<span class="muted">' + nf.format(Math.round(capital * sim.fees)) + "원</span></div>" +
       "</div>" + sparkline(sim.curve, hold.curve);
+    $("compare").innerHTML = compareTable(picked, cost, rule);
+    $("trades-rule").textContent = "· " + (RULES.filter(function (r) { return r.id === rule; })[0] || {}).name;
 
     var body = sim.trades.map(function (t) {
       return "<tr><td>" + t.date + "</td>" +

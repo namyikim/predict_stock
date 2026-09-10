@@ -69,3 +69,21 @@ class LabPageTests(unittest.TestCase):
     def test_admin_links_to_it(self):
         admin = (ROOT / "docs" / "admin" / "index.html").read_text(encoding="utf-8")
         self.assertIn('href="../lab/"', admin)
+
+    def test_all_rules_are_computed_side_by_side(self):
+        # 규칙을 하나씩 바꿔가며 보면 비교가 어렵다. 같은 자료·같은 비용으로 동시에 돌린다.
+        self.assertIn("var RULES = [", self.script)
+        for rule in ("up_over_flat", "up_over_third", "predicted_up", "always"):
+            self.assertIn(f'id: "{rule}"', self.script)
+        self.assertIn("function compareTable(", self.script)
+        self.assertIn('$("compare").innerHTML = compareTable(picked, cost, rule)', self.script)
+
+    def test_comparison_warns_against_picking_the_winner(self):
+        # 표에서 제일 좋은 규칙을 고르면 그 표본에 맞춘 것이다. 화면에 그 함정을 적는다.
+        self.assertIn("이 표에서 제일 좋은 규칙을 고르지 마세요", self.script)
+        self.assertIn("과적합", self.script)
+        self.assertIn("규칙은 미리 정해 두고", self.script)
+
+    def test_comparison_shows_relative_to_buy_and_hold(self):
+        self.assertIn("보유 대비", self.script)
+        self.assertIn('simulate(picked, "always", cost)', self.script)

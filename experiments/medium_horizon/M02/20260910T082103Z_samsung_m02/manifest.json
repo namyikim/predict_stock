@@ -1,0 +1,128 @@
+{
+  "task_id": "M02",
+  "run_id": "20260910T082103Z_samsung_m02",
+  "target": "samsung",
+  "code_commit": "aa1dd90f7fe3c4274fd61247edc5bdcd2650fc46",
+  "seed": 42,
+  "mode": "full",
+  "status": "completed",
+  "started_at_utc": "2026-09-10T08:21:03.282722+00:00",
+  "completed_units": [
+    "samsung:h5",
+    "samsung:h20"
+  ],
+  "failed_units": [],
+  "artifact_paths": {
+    "metrics": "D:\\SourceCode\\predict_stock\\experiments\\medium_horizon\\M02\\20260910T082103Z_samsung_m02\\metrics.csv",
+    "comparisons": "D:\\SourceCode\\predict_stock\\experiments\\medium_horizon\\M02\\20260910T082103Z_samsung_m02\\comparisons.csv"
+  },
+  "config": {
+    "task": "M02",
+    "mode": "full",
+    "horizons": [
+      5,
+      20
+    ],
+    "candidates": [
+      "current_full",
+      "market_only",
+      "no_macro",
+      "full_plus_A"
+    ],
+    "group_a": {
+      "assets": [
+        "kospi",
+        "peer",
+        "sox",
+        "nasdaq",
+        "micron",
+        "nvidia",
+        "tsmc_adr",
+        "korea_etf"
+      ],
+      "windows": [
+        20,
+        60
+      ],
+      "relative": [
+        "kospi",
+        "sox"
+      ]
+    },
+    "model": "StandardScaler+Ridge(alpha=1e4), target=future_return/sigma_simple",
+    "vol_model": "simple",
+    "folds": {
+      "first_test": "2021-01-01",
+      "test_months": 6,
+      "lock_months": 12,
+      "min_train_rows": 500,
+      "min_test_rows": 60,
+      "inner_blocks": 3
+    },
+    "selection": "내부 3구간 평균 raw MAE 최소 + 현행을 2구간 이상 이길 때만 교체",
+    "bootstrap_b": 2000,
+    "seed": 42
+  },
+  "data_hash": "d8a92744da7a2ec2b7d0",
+  "config_hash": "54b3ffeaa7df6ab6e78a",
+  "storage": "D:\\SourceCode\\predict_stock\\runs\\medium_horizon",
+  "snapshot_files": [
+    "dxy.parquet",
+    "korea_etf.parquet",
+    "kospi.parquet",
+    "micron.parquet",
+    "nasdaq.parquet",
+    "nvidia.parquet",
+    "peer.parquet",
+    "sox.parquet",
+    "sp500.parquet",
+    "target.parquet",
+    "target_gdr.parquet",
+    "tsmc_adr.parquet",
+    "us10y.parquet",
+    "usdjpy.parquet",
+    "usdkrw.parquet",
+    "vix.parquet",
+    "wti.parquet"
+  ],
+  "snapshot_sha256": {
+    "dxy.parquet": "2960450db3d94c04e357b10117d5ac0e218b56706f2b4813329775ff3fb7cd05",
+    "korea_etf.parquet": "8c04497448ca29b9ba4117be245aa0d864a49f02d401b3dedd2158428b23a0b5",
+    "kospi.parquet": "1293563517523d228b8d42b8e446de35c71675f74d81bb29ef42f2c1eb5450d6",
+    "micron.parquet": "e2c29478ec7f43910c4ea66374cbe01c8ba435c845425a5d657a01c962c83114",
+    "nasdaq.parquet": "200b0f3968670e463bd248fe2a885c105564d7ec1db0d3d4aeabbc9d952437e9",
+    "nvidia.parquet": "76c0032d9054f74e1c8adc79ae2257bcadce4fbf6006fa72844e6f01f1f285a2",
+    "peer.parquet": "444f85884469bde6ee4b7999f0f984d6ac04e4fb69926da9d1e6f916730f287f",
+    "sox.parquet": "a3db02fb69d29ea58d561a5be118ba967ff3d6fef3ecd16dfb9e09d49df8ef69",
+    "sp500.parquet": "e8c98a802946cfeb0f29fc8770ebb7b65a66bbb30608b15f428beef96761cdb6",
+    "target.parquet": "3c272d29df8ba42e303601f9206d8d7c06171d5272af2f196f08d5def923cd6c",
+    "target_gdr.parquet": "97fdeb016dacbeedbfe065c9b2c5033cb8131c6a21d9e59b6c882dfb1b9179f2",
+    "tsmc_adr.parquet": "51470d3b0db3e0ac5810376b1051a7a8ea8799687662550905677b63517f6e19",
+    "us10y.parquet": "e79ef1cac265b08043b5645ffc02aceaefc897b30c602d6ea966bf5929357a74",
+    "usdjpy.parquet": "eb340ebaf44845540ad4f29672da835534ecf1c4d7287f4e0bd63d46a311273f",
+    "usdkrw.parquet": "767f877d7b13bb5b7907e4547a5956a581487d54ee14509b5c579616c6e5bd39",
+    "vix.parquet": "b452c9b88a8b6d4fd0ea5c8e6584f8afdb584462914ec48af282aed87b026b00",
+    "wti.parquet": "89a02e3b5e627e8651afdd760701cf7a5132d3dba5d8c043b5e6de6296ca6888"
+  },
+  "notebook": {
+    "data_snapshot_hash": "855fdf4d8d46b020355d",
+    "versions": {
+      "python": "3.14.5",
+      "numpy": "2.5.2",
+      "pandas": "3.0.5",
+      "scikit-learn": "1.9.0",
+      "lightgbm": "4.7.0",
+      "yfinance": "1.7.0",
+      "torch": "2.14.0+cpu"
+    },
+    "prediction_date": "2026-09-10",
+    "last_bar": "2026-09-09",
+    "macro_active": true,
+    "quick_mode": false,
+    "bootstrap_b": 2000,
+    "vol_model": "simple",
+    "inputs_from_cache": true,
+    "notebook_commit": "e34f96126c1d17d1101f9b6117d566f1b7a112cb"
+  },
+  "finished_at_utc": "2026-09-10T08:21:14.078160+00:00"
+}

@@ -1,0 +1,31 @@
+{
+  "completed_units": [
+    "samsung:h5",
+    "samsung:h20"
+  ],
+  "results": {
+    "samsung:h5": {
+      "oof_sha256": "20cf183cc8614c1e855b4db365dda3a364ca1ff555b55afb707572f1c75657bb",
+      "oof_file": "D:\\SourceCode\\predict_stock\\runs\\medium_horizon\\samsung\\M02_h5_full_oof.csv",
+      "selection_counts": {
+        "market_only": 4,
+        "current_full": 3,
+        "no_macro": 2
+      },
+      "purge_violations": 0,
+      "fixed_features_for_m03": "inner_selected 경로가 현행보다 유의하게 낫지 않음 → current_full 유지"
+    },
+    "samsung:h20": {
+      "oof_sha256": "f76d176a27cbc7f0d48e3a55ed6df97e09fbb76114f3fb628b1d47ffa9ada06d",
+      "oof_file": "D:\\SourceCode\\predict_stock\\runs\\medium_horizon\\samsung\\M02_h20_full_oof.csv",
+      "selection_counts": {
+        "current_full": 5,
+        "market_only": 3,
+        "no_macro": 1
+      },
+      "purge_violations": 0,
+      "fixed_features_for_m03": "inner_selected 경로가 현행보다 유의하게 낫지 않음 → current_full 유지"
+    }
+  },
+  "updated_at_utc": "2026-09-10T08:21:14.066242+00:00"
+}

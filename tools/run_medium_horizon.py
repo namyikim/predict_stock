@@ -45,7 +45,8 @@ MODES = ("quick", "full")
 HORIZONS = (5, 20)
 COVERAGE = 0.8
 TASKS = {"M00": "현행 5·20일 가격 모델 기준선과 실패 유형 진단",
-         "M01": "평가 계약(외부 6개월 폴드·잠금 12개월·내부 3구간)과 고정 입력 로더 검증"}
+         "M01": "평가 계약(외부 6개월 폴드·잠금 12개월·내부 3구간)과 고정 입력 로더 검증",
+         "M02": "지평별 특징군 비교(현행 전체 vs 시세만 vs 월별 제외 vs 그룹 A 추가)"}
 HORIZON_LABELS = {5: "1주일", 20: "1개월"}
 
 # 평가 계약(계획 4절). 점수를 보기 전에 고정한다.
@@ -601,8 +602,280 @@ def run_m01(target, mode, storage, results_dir, state, run_notebook_fn=None):
     return collect_rows(state, target)
 
 
-TASK_RUNNERS = {"M00": run_m00, "M01": run_m01}
-TASK_CONFIGS = {"M00": m00_config, "M01": m01_config}
+# ---------------------------------------------------------------------------
+# M02 — 특징군 후보
+# ---------------------------------------------------------------------------
+# 그룹 A: 종목·KOSPI·동종·반도체 해외 자산의 20/60일 누적 수익률, 종목의 상대 수익률(5/20/60), 상대 변동성.
+# 기존 열과 겹치는 것(5일 누적: sam_ret_5·kospi_ret_5·sox_ret_5…, sam_ret_20, *_vol_20)은 다시 만들지 않는다.
+# 그룹 B(수급 비율)와 그룹 C(월별 변화율)는 기존 flow_*·macro_* 열이 이미 같은 정의라 후보를 만들지 않는다
+# (summary 의 duplicates 에 기록). 대신 계획이 요구하는 '시세만' 비교와 노트북의 '월별 제외' 비교를 둔다.
+GROUP_A_ASSETS = ("kospi", "peer", "sox", "nasdaq", "micron", "nvidia", "tsmc_adr", "korea_etf")
+GROUP_A_WINDOWS = (20, 60)
+GROUP_A_RELATIVE = ("kospi", "sox")
+DUPLICATE_CANDIDATES = {
+    "A": ["sam_ret_5", "sam_ret_20", "kospi_ret_5", "peer_ret_5", "sox_ret_5", "nasdaq_ret_5", "micron_ret_5",
+          "nvidia_ret_5", "tsmc_adr_ret_5", "korea_etf_ret_5", "sam_vol_20", "kospi_vol_20", "peer_vol_20"],
+    "B": ["flow_frgn_5", "flow_frgn_20", "flow_inst_5", "flow_frgn_1", "flow_frgn_streak", "flow_frgn_ratio_chg_20"],
+    "C": ["macro_leading_change_1m", "macro_leading_change_3m", "macro_semiconductor_mom",
+          "macro_semiconductor_yoy_change_1m", "macro_semiconductor_yoy_change_3m", "macro_semiconductor_yoy_3m"],
+}
+DROP_PREFIXES = {"market_only": ("macro_", "nsi_", "flow_"), "no_macro": ("macro_",)}
+CANDIDATE_ORDER = ("current_full", "market_only", "no_macro", "full_plus_A")
+
+
+def load_asset_close(storage, target, name):
+    """고정 스냅샷의 자산 종가(수정 종가 우선). 자산 자체 거래일 인덱스를 유지한다."""
+    path = Path(storage) / target / "data_cache" / f"{name}.parquet"
+    if not path.is_file():
+        return None
+    frame = pd.read_parquet(path)
+    frame.columns = [str(c).strip().lower().replace(" ", "_") for c in frame.columns]
+    frame.index = pd.DatetimeIndex(pd.to_datetime(frame.index)).tz_localize(None).normalize()
+    col = "adj_close" if "adj_close" in frame.columns else "close"
+    return frame[col].astype(float).dropna().sort_index()
+
+
+def align_before(series, dates):
+    """예측일 d 에는 d 보다 앞선 마지막 관측만 쓴다(같은 날 값은 쓰지 않는다). 6일 넘게 오래된 값은 결측."""
+    dates = pd.DatetimeIndex(dates)
+    left = pd.DataFrame({"date": dates.as_unit("ns"), "_order": np.arange(len(dates))}).sort_values("date")
+    right = pd.DataFrame({"date": pd.DatetimeIndex(series.index).as_unit("ns"), "value": series.to_numpy()}).sort_values("date")
+    joined = pd.merge_asof(left, right, on="date", direction="backward", allow_exact_matches=False,
+                           tolerance=pd.Timedelta(days=6)).sort_values("_order")
+    return pd.Series(joined["value"].to_numpy(), index=dates)
+
+
+def group_a_features(sam_adj_close, asset_closes, dates, windows=GROUP_A_WINDOWS, relative=GROUP_A_RELATIVE):
+    """그룹 A. 각 자산의 k거래일(자산 달력) 누적 수익률을 d 전 마지막 관측으로 정렬한다.
+
+    sam_adj_close: 대상 종목 수정 종가(KRX 달력). asset_closes: {이름: 종가 시계열}. 반환 열 이름은 모두 새 것이다.
+    """
+    dates = pd.DatetimeIndex(dates)
+    out = pd.DataFrame(index=dates)
+    sam = pd.Series(sam_adj_close).astype(float).sort_index()
+    sam_cum = {k: align_before(sam.pct_change(k).dropna(), dates) for k in (5,) + tuple(windows)}
+    out["sam_cum_60"] = sam_cum[60] if 60 in sam_cum else np.nan
+    sam_vol = align_before(sam.pct_change().rolling(20).std().dropna(), dates)
+    for name, close in asset_closes.items():
+        if close is None or close.empty:
+            continue
+        close = pd.Series(close).astype(float).sort_index()
+        cum = {k: align_before(close.pct_change(k).dropna(), dates) for k in (5,) + tuple(windows)}
+        for k in windows:
+            out[f"{name}_cum_{k}"] = cum[k]
+        if name in relative:
+            for k in (5,) + tuple(windows):
+                out[f"sam_rel_{name}_{k}"] = sam_cum[k] - cum[k]
+            vol = align_before(close.pct_change().rolling(20).std().dropna(), dates)
+            out[f"sam_relvol_{name}_20"] = sam_vol / vol.replace(0, np.nan)
+            if name != "kospi":
+                out[f"{name}_vol_20"] = vol
+    return out.replace([np.inf, -np.inf], np.nan)
+
+
+def candidate_columns(base_cols, group_a_cols):
+    """후보 → 열 목록. 후보 이름은 CANDIDATE_ORDER 에 고정한다."""
+    base = list(base_cols)
+    return {
+        "current_full": base,
+        "market_only": [c for c in base if not c.startswith(DROP_PREFIXES["market_only"])],
+        "no_macro": [c for c in base if not c.startswith(DROP_PREFIXES["no_macro"])],
+        "full_plus_A": base + list(group_a_cols),
+    }
+
+
+def augment_inputs(inputs, storage, target):
+    """feat 에 그룹 A 열을 붙인 사본과 새 열 이름을 돌려준다."""
+    closes = {name: load_asset_close(storage, target, name) for name in GROUP_A_ASSETS}
+    a = group_a_features(inputs["sam"]["adj_close"], closes, inputs["feat"].index)
+    feat = inputs["feat"].copy()
+    for col in a.columns:
+        feat[col] = a[col]
+    return feat, list(a.columns), {k: (v is not None and not v.empty) for k, v in closes.items()}
+
+
+def fit_predict(template, X, z, sigma, train, test):
+    from sklearn.base import clone
+    model = clone(template).fit(X[train], z[train])
+    return model.predict(X[test]) * sigma[test]
+
+
+def inner_slope(pred, y):
+    denom = float(np.sum(pred ** 2))
+    return float(np.clip(np.sum(pred * y) / denom, 0., 1.)) if denom > 0 else 0.
+
+
+def fold_candidate_predictions(reg, cols_by_candidate, folds, horizon, template):
+    """개발 폴드마다 후보별 외부 예측(raw)·내부 기울기·내부 MAE 를 만든다. 모든 후보가 같은 행을 쓴다."""
+    y = reg["future_return"].to_numpy(dtype=float)
+    sigma = reg["sigma_simple"].to_numpy(dtype=float)
+    z = y / np.maximum(sigma, 1e-6)
+    matrices = {name: reg[cols].to_numpy(dtype=np.float32) for name, cols in cols_by_candidate.items()}
+    dev = [f for f in folds if f["name"].startswith("dev") and not f.get("excluded")]
+    records = []
+    for f in dev:
+        record = {"fold": f["name"], "test": f["test"], "candidates": {}}
+        for name, X in matrices.items():
+            raw = fit_predict(template, X, z, sigma, f["train"], f["test"])
+            inner_pred, inner_y, inner_mae = [], [], []
+            for block in f["inner"]:
+                if block.get("excluded") or len(block["train"]) < MIN_TRAIN_ROWS:
+                    continue
+                p = fit_predict(template, X, z, sigma, block["train"], block["test"])
+                inner_pred.append(p); inner_y.append(y[block["test"]])
+                inner_mae.append(float(np.abs(y[block["test"]] - p).mean()))
+            slope = inner_slope(np.concatenate(inner_pred), np.concatenate(inner_y)) if inner_pred else 0.
+            record["candidates"][name] = {"raw": raw, "slope": slope, "inner_mae": inner_mae}
+        records.append(record)
+    return records, y, sigma
+
+
+def select_by_inner(record, reference="current_full"):
+    """내부 3구간 평균 raw MAE 가 가장 낮고 기준 후보를 2개 이상 구간에서 이기는 후보. 없으면 기준 유지."""
+    ref = record["candidates"][reference]["inner_mae"]
+    best, best_mean = reference, float(np.mean(ref)) if ref else np.inf
+    for name, c in record["candidates"].items():
+        if name == reference or not c["inner_mae"] or len(c["inner_mae"]) != len(ref):
+            continue
+        wins = sum(a < b for a, b in zip(c["inner_mae"], ref))
+        mean = float(np.mean(c["inner_mae"]))
+        if wins >= 2 and mean < best_mean:
+            best, best_mean = name, mean
+    return best
+
+
+def m02_config(mode):
+    return {"task": "M02", "mode": mode, "horizons": list(HORIZONS), "candidates": list(CANDIDATE_ORDER),
+            "group_a": {"assets": list(GROUP_A_ASSETS), "windows": list(GROUP_A_WINDOWS), "relative": list(GROUP_A_RELATIVE)},
+            "model": "StandardScaler+Ridge(alpha=1e4), target=future_return/sigma_simple", "vol_model": "simple",
+            "folds": {"first_test": FIRST_TEST, "test_months": TEST_MONTHS, "lock_months": LOCK_MONTHS,
+                      "min_train_rows": MIN_TRAIN_ROWS, "min_test_rows": MIN_TEST_ROWS, "inner_blocks": INNER_BLOCKS},
+            "selection": "내부 3구간 평균 raw MAE 최소 + 현행을 2구간 이상 이길 때만 교체",
+            "bootstrap_b": 400 if mode == "quick" else 2000, "seed": SEED}
+
+
+def run_m02(target, mode, storage, results_dir, state, run_notebook_fn=None):
+    inputs = None
+    for horizon in HORIZONS:
+        unit = f"{target}:h{horizon}"
+        if state.is_done(unit) and artifacts_intact(state, unit, target, horizon):
+            print(f"  이미 완료된 단위 건너뜀: {unit}")
+            continue
+        if inputs is None:
+            inputs = load_inputs(target, mode, storage, run_notebook_fn)
+            record_inputs(state, inputs)
+            feat_aug, a_cols, available = augment_inputs(inputs, storage, target)
+        base_cols = list(inputs["feature_cols"])
+        cols_by_candidate = candidate_columns(base_cols, a_cols)
+        union = base_cols + a_cols
+        sam = inputs["sam"]
+        reg, _ = fu.price_design_frame(feat_aug, sam.index, union, inputs["sam_raw_close"], feat_aug["sam_vol_20"], horizon)
+        reg_base, _ = fu.price_design_frame(feat_aug, sam.index, base_cols, inputs["sam_raw_close"], feat_aug["sam_vol_20"], horizon)
+        folds, lock_start = evaluation_folds(reg.index, sam.index, horizon)
+        dev = [f for f in folds if f["name"].startswith("dev") and not f.get("excluded")]
+        violations = purge_check(reg.index, sam.index, horizon, [(f["train"], f["test"]) for f in dev]
+                                 + [(i["train"], i["test"]) for f in dev for i in f["inner"] if not i.get("excluded")])
+        template = fu.make_price_model()
+        records, y, sigma = fold_candidate_predictions(reg, cols_by_candidate, folds, horizon, template)
+        if not records:
+            raise SystemExit(f"{unit}: 학습 행 {MIN_TRAIN_ROWS} 이상인 개발 폴드가 없습니다(설계 행렬 {len(reg)}행, {reg.index[0].date()}~). 기준을 낮추지 않는다.")
+        b = 400 if mode == "quick" else 2000
+
+        test_idx = np.concatenate([r["test"] for r in records])
+        y_dev, dates_dev = y[test_idx], reg.index[test_idx]
+        preds = {}
+        for name in CANDIDATE_ORDER:
+            preds[name] = {"raw": np.concatenate([r["candidates"][name]["raw"] for r in records]),
+                           "calibrated": np.concatenate([r["candidates"][name]["slope"] * r["candidates"][name]["raw"] for r in records])}
+        selections = [{"fold": r["fold"], "selected": select_by_inner(r),
+                       "inner_mae": {n: [round(v, 6) for v in c["inner_mae"]] for n, c in r["candidates"].items()},
+                       "slope": {n: round(c["slope"], 4) for n, c in r["candidates"].items()}} for r in records]
+        preds["inner_selected"] = {
+            "raw": np.concatenate([r["candidates"][s["selected"]]["raw"] for r, s in zip(records, selections)]),
+            "calibrated": np.concatenate([r["candidates"][s["selected"]]["slope"] * r["candidates"][s["selected"]]["raw"]
+                                          for r, s in zip(records, selections)])}
+        zero = np.abs(y_dev)
+        block = max(20, 2 * horizon)
+
+        def ci_pair(diff, label, metric):
+            lo_m, hi_m = month_block_ci(dates_dev, lambda i: float(diff[i].mean()), b=b)
+            lo_c, hi_c = contiguous_block_ci(len(diff), lambda i: float(diff[i].mean()), block, b=b)
+            base = {"target": target, "horizon": horizon, "comparison": label, "metric": metric, "delta": float(diff.mean()),
+                    "common_n": int(len(diff)), "calibrated": "calibrated" in metric}
+            return [dict(base, ci_lo=lo_m, ci_hi=hi_m, block="month"), dict(base, ci_lo=lo_c, ci_hi=hi_c, block=f"contiguous_{block}")]
+
+        metrics, comparisons = [], []
+        ref_raw, ref_cal = preds["current_full"]["raw"], preds["current_full"]["calibrated"]
+        metrics.append({"target": target, "horizon": horizon, "candidate": "hold_current", "fold": "dev_all",
+                        "evaluation_stage": "dev_common", "n": int(len(y_dev)), "mae": float(zero.mean()),
+                        "rmse": float(np.sqrt(np.mean(y_dev ** 2)))})
+        for name, p in preds.items():
+            err_raw, err_cal = np.abs(y_dev - p["raw"]), np.abs(y_dev - p["calibrated"])
+            metrics.append({"target": target, "horizon": horizon, "candidate": name, "fold": "dev_all", "evaluation_stage": "dev_common",
+                            "n": int(len(y_dev)), "mae": float(err_raw.mean()), "rmse": float(np.sqrt(np.mean((y_dev - p["raw"]) ** 2))),
+                            "mae_calibrated": float(err_cal.mean()), "n_features": len(cols_by_candidate.get(name, [])) or "",
+                            "mean_slope": float(np.mean([r["candidates"][name]["slope"] for r in records])) if name in cols_by_candidate else ""})
+            for r in records:
+                te = r["test"]; sel = name if name in cols_by_candidate else None
+                rp = (r["candidates"][sel]["raw"] if sel else
+                      r["candidates"][next(s["selected"] for s in selections if s["fold"] == r["fold"])]["raw"])
+                metrics.append({"target": target, "horizon": horizon, "candidate": name, "fold": r["fold"], "evaluation_stage": "dev_fold",
+                                "n": int(len(te)), "mae": float(np.abs(y[te] - rp).mean()), "zero_mae": float(np.abs(y[te]).mean())})
+            if name != "current_full":
+                comparisons += ci_pair(err_raw - np.abs(y_dev - ref_raw), f"{name} - current_full", "mae_return_raw")
+                comparisons += ci_pair(err_cal - np.abs(y_dev - ref_cal), f"{name} - current_full", "mae_return_calibrated")
+            comparisons += ci_pair(err_cal - zero, f"{name} - hold_current", "mae_return_calibrated")
+            comparisons += ci_pair(err_raw - zero, f"{name} - hold_current", "mae_return_raw")
+
+        # 후보별 전체 가용 행(후보 자신의 열만으로 결측 제거) — 공통 행과 비교해 '쉬운 날짜만 남았는지' 본다
+        available_rows = {}
+        for name, cols in cols_by_candidate.items():
+            r_own, _ = fu.price_design_frame(feat_aug, sam.index, cols, inputs["sam_raw_close"], feat_aug["sam_vol_20"], horizon)
+            f_own, _ = evaluation_folds(r_own.index, sam.index, horizon)
+            d_own = [f for f in f_own if f["name"].startswith("dev") and not f.get("excluded")]
+            yo, so = r_own["future_return"].to_numpy(float), r_own["sigma_simple"].to_numpy(float)
+            Xo = r_own[cols].to_numpy(np.float32); zo = yo / np.maximum(so, 1e-6)
+            po = np.concatenate([fit_predict(template, Xo, zo, so, f["train"], f["test"]) for f in d_own])
+            to = np.concatenate([f["test"] for f in d_own])
+            available_rows[name] = {"n": int(len(to)), "mae_raw": float(np.abs(yo[to] - po).mean()), "zero_mae": float(np.abs(yo[to]).mean())}
+
+        raw_dir = Path(storage) / target
+        raw_dir.mkdir(parents=True, exist_ok=True)
+        oof_frame = pd.DataFrame({"prediction_date": dates_dev, "y": y_dev, "sigma": sigma[test_idx],
+                                  **{f"raw_{n}": p["raw"] for n, p in preds.items()},
+                                  **{f"cal_{n}": p["calibrated"] for n, p in preds.items()}})
+        oof_path = raw_dir / f"M02_h{horizon}_{mode}_oof.csv"
+        oof_frame.to_csv(oof_path, index=False, lineterminator="\n")
+
+        sel_delta = next(c for c in comparisons if c["comparison"] == "inner_selected - current_full"
+                         and c["metric"] == "mae_return_calibrated" and c["block"] == "month")
+        counts = pd.Series([s["selected"] for s in selections]).value_counts().to_dict()
+        summary = {
+            "target": target, "horizon": horizon, "n_common_rows": int(len(reg)), "n_base_rows": int(len(reg_base)),
+            "rows_excluded_by_group_a": int(len(reg_base) - len(reg)), "design_start": str(reg.index[0].date()),
+            "candidates": {n: {"n_features": len(c), "columns": c} for n, c in cols_by_candidate.items()},
+            "group_a_new_columns": a_cols, "group_a_assets_available": available, "duplicates_not_reimplemented": DUPLICATE_CANDIDATES,
+            "dev_folds": [r["fold"] for r in records], "lock_start": str(lock_start.date()), "n_dev_rows": int(len(y_dev)),
+            "purge_violations": violations, "selections": selections, "selection_counts": counts,
+            "all_available_rows": available_rows,
+            "inner_selected_vs_current_calibrated_month_ci": [sel_delta["ci_lo"], sel_delta["ci_hi"]],
+            "fixed_features_for_m03": ("inner_selected 경로가 현행보다 유의하게 낫지 않음 → current_full 유지"
+                                        if not (np.isfinite(sel_delta["ci_hi"]) and sel_delta["ci_hi"] < 0)
+                                        else f"inner_selected 경로 우위 → 가장 자주 선택된 후보 {max(counts, key=counts.get)}"),
+            "oof_file": str(oof_path), "oof_sha256": file_sha256(oof_path),
+        }
+        write_json(state.run_dir / f"summary_{target}_h{horizon}.json", summary)
+        save_unit_rows(state, target, horizon, metrics, comparisons)
+        state.mark(unit, {"oof_sha256": summary["oof_sha256"], "oof_file": summary["oof_file"],
+                          "selection_counts": counts, "purge_violations": len(violations),
+                          "fixed_features_for_m03": summary["fixed_features_for_m03"]})
+        print(f"  {unit}: 공통 {len(reg)}행(그룹 A 로 {len(reg_base) - len(reg)}행 제외) · 개발 {len(records)}폴드 · 선택 {counts} · "
+              f"inner_selected−현행(보정) {sel_delta['delta']:+.5f} [{sel_delta['ci_lo']:+.5f}, {sel_delta['ci_hi']:+.5f}] · purge {len(violations)}")
+    return collect_rows(state, target)
+
+
+TASK_RUNNERS = {"M00": run_m00, "M01": run_m01, "M02": run_m02}
+TASK_CONFIGS = {"M00": m00_config, "M01": m01_config, "M02": m02_config}
 
 
 def execute(task, target, mode, storage, results_dir, resume, run_notebook_fn=None):

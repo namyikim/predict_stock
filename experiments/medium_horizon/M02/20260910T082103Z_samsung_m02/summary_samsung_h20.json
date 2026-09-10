@@ -1,0 +1,749 @@
+{
+  "target": "samsung",
+  "horizon": 20,
+  "n_common_rows": 2250,
+  "n_base_rows": 2251,
+  "rows_excluded_by_group_a": 1,
+  "design_start": "2017-03-15",
+  "candidates": {
+    "current_full": {
+      "n_features": 78,
+      "columns": [
+        "sam_ret_1",
+        "sam_ret_2",
+        "sam_ret_5",
+        "sam_ret_20",
+        "sam_vol_5",
+        "sam_vol_20",
+        "sam_gap_1",
+        "sam_range_1",
+        "sam_volume_z20",
+        "sam_price_to_ma20",
+        "sam_price_to_ma60",
+        "sam_rsi14",
+        "kospi_ret_1",
+        "kospi_ret_5",
+        "kospi_vol_20",
+        "peer_ret_1",
+        "peer_ret_5",
+        "peer_vol_20",
+        "sox_ret_1",
+        "sox_ret_5",
+        "nasdaq_ret_1",
+        "nasdaq_ret_5",
+        "sp500_ret_1",
+        "sp500_ret_5",
+        "micron_ret_1",
+        "micron_ret_5",
+        "nvidia_ret_1",
+        "nvidia_ret_5",
+        "tsmc_adr_ret_1",
+        "tsmc_adr_ret_5",
+        "korea_etf_ret_1",
+        "korea_etf_ret_5",
+        "usdkrw_ret_1",
+        "usdkrw_ret_5",
+        "usdkrw_level_z60",
+        "dxy_ret_1",
+        "dxy_ret_5",
+        "dxy_level_z60",
+        "vix_ret_1",
+        "vix_ret_5",
+        "vix_level_z60",
+        "us10y_ret_1",
+        "us10y_ret_5",
+        "us10y_level_z60",
+        "wti_ret_1",
+        "wti_ret_5",
+        "wti_level_z60",
+        "usdjpy_ret_1",
+        "usdjpy_ret_5",
+        "target_gdr_ret_1",
+        "target_gdr_ret_5",
+        "gdr_overnight_signal",
+        "krwjpy_ret_1",
+        "krwjpy_ret_20",
+        "krwjpy_level_z60",
+        "cal_dow",
+        "cal_is_monday",
+        "cal_is_friday",
+        "cal_month_end",
+        "macro_leading_cycle",
+        "macro_leading_change_1m",
+        "macro_leading_change_3m",
+        "macro_semiconductor_log_usd",
+        "macro_semiconductor_yoy",
+        "macro_semiconductor_mom",
+        "macro_semiconductor_yoy_3m",
+        "macro_semiconductor_yoy_change_1m",
+        "macro_semiconductor_yoy_change_3m",
+        "nsi_level",
+        "nsi_change_5d",
+        "nsi_change_20d",
+        "nsi_z60",
+        "flow_frgn_1",
+        "flow_frgn_5",
+        "flow_frgn_20",
+        "flow_frgn_streak",
+        "flow_inst_5",
+        "flow_frgn_ratio_chg_20"
+      ]
+    },
+    "market_only": {
+      "n_features": 59,
+      "columns": [
+        "sam_ret_1",
+        "sam_ret_2",
+        "sam_ret_5",
+        "sam_ret_20",
+        "sam_vol_5",
+        "sam_vol_20",
+        "sam_gap_1",
+        "sam_range_1",
+        "sam_volume_z20",
+        "sam_price_to_ma20",
+        "sam_price_to_ma60",
+        "sam_rsi14",
+        "kospi_ret_1",
+        "kospi_ret_5",
+        "kospi_vol_20",
+        "peer_ret_1",
+        "peer_ret_5",
+        "peer_vol_20",
+        "sox_ret_1",
+        "sox_ret_5",
+        "nasdaq_ret_1",
+        "nasdaq_ret_5",
+        "sp500_ret_1",
+        "sp500_ret_5",
+        "micron_ret_1",
+        "micron_ret_5",
+        "nvidia_ret_1",
+        "nvidia_ret_5",
+        "tsmc_adr_ret_1",
+        "tsmc_adr_ret_5",
+        "korea_etf_ret_1",
+        "korea_etf_ret_5",
+        "usdkrw_ret_1",
+        "usdkrw_ret_5",
+        "usdkrw_level_z60",
+        "dxy_ret_1",
+        "dxy_ret_5",
+        "dxy_level_z60",
+        "vix_ret_1",
+        "vix_ret_5",
+        "vix_level_z60",
+        "us10y_ret_1",
+        "us10y_ret_5",
+        "us10y_level_z60",
+        "wti_ret_1",
+        "wti_ret_5",
+        "wti_level_z60",
+        "usdjpy_ret_1",
+        "usdjpy_ret_5",
+        "target_gdr_ret_1",
+        "target_gdr_ret_5",
+        "gdr_overnight_signal",
+        "krwjpy_ret_1",
+        "krwjpy_ret_20",
+        "krwjpy_level_z60",
+        "cal_dow",
+        "cal_is_monday",
+        "cal_is_friday",
+        "cal_month_end"
+      ]
+    },
+    "no_macro": {
+      "n_features": 69,
+      "columns": [
+        "sam_ret_1",
+        "sam_ret_2",
+        "sam_ret_5",
+        "sam_ret_20",
+        "sam_vol_5",
+        "sam_vol_20",
+        "sam_gap_1",
+        "sam_range_1",
+        "sam_volume_z20",
+        "sam_price_to_ma20",
+        "sam_price_to_ma60",
+        "sam_rsi14",
+        "kospi_ret_1",
+        "kospi_ret_5",
+        "kospi_vol_20",
+        "peer_ret_1",
+        "peer_ret_5",
+        "peer_vol_20",
+        "sox_ret_1",
+        "sox_ret_5",
+        "nasdaq_ret_1",
+        "nasdaq_ret_5",
+        "sp500_ret_1",
+        "sp500_ret_5",
+        "micron_ret_1",
+        "micron_ret_5",
+        "nvidia_ret_1",
+        "nvidia_ret_5",
+        "tsmc_adr_ret_1",
+        "tsmc_adr_ret_5",
+        "korea_etf_ret_1",
+        "korea_etf_ret_5",
+        "usdkrw_ret_1",
+        "usdkrw_ret_5",
+        "usdkrw_level_z60",
+        "dxy_ret_1",
+        "dxy_ret_5",
+        "dxy_level_z60",
+        "vix_ret_1",
+        "vix_ret_5",
+        "vix_level_z60",
+        "us10y_ret_1",
+        "us10y_ret_5",
+        "us10y_level_z60",
+        "wti_ret_1",
+        "wti_ret_5",
+        "wti_level_z60",
+        "usdjpy_ret_1",
+        "usdjpy_ret_5",
+        "target_gdr_ret_1",
+        "target_gdr_ret_5",
+        "gdr_overnight_signal",
+        "krwjpy_ret_1",
+        "krwjpy_ret_20",
+        "krwjpy_level_z60",
+        "cal_dow",
+        "cal_is_monday",
+        "cal_is_friday",
+        "cal_month_end",
+        "nsi_level",
+        "nsi_change_5d",
+        "nsi_change_20d",
+        "nsi_z60",
+        "flow_frgn_1",
+        "flow_frgn_5",
+        "flow_frgn_20",
+        "flow_frgn_streak",
+        "flow_inst_5",
+        "flow_frgn_ratio_chg_20"
+      ]
+    },
+    "full_plus_A": {
+      "n_features": 104,
+      "columns": [
+        "sam_ret_1",
+        "sam_ret_2",
+        "sam_ret_5",
+        "sam_ret_20",
+        "sam_vol_5",
+        "sam_vol_20",
+        "sam_gap_1",
+        "sam_range_1",
+        "sam_volume_z20",
+        "sam_price_to_ma20",
+        "sam_price_to_ma60",
+        "sam_rsi14",
+        "kospi_ret_1",
+        "kospi_ret_5",
+        "kospi_vol_20",
+        "peer_ret_1",
+        "peer_ret_5",
+        "peer_vol_20",
+        "sox_ret_1",
+        "sox_ret_5",
+        "nasdaq_ret_1",
+        "nasdaq_ret_5",
+        "sp500_ret_1",
+        "sp500_ret_5",
+        "micron_ret_1",
+        "micron_ret_5",
+        "nvidia_ret_1",
+        "nvidia_ret_5",
+        "tsmc_adr_ret_1",
+        "tsmc_adr_ret_5",
+        "korea_etf_ret_1",
+        "korea_etf_ret_5",
+        "usdkrw_ret_1",
+        "usdkrw_ret_5",
+        "usdkrw_level_z60",
+        "dxy_ret_1",
+        "dxy_ret_5",
+        "dxy_level_z60",
+        "vix_ret_1",
+        "vix_ret_5",
+        "vix_level_z60",
+        "us10y_ret_1",
+        "us10y_ret_5",
+        "us10y_level_z60",
+        "wti_ret_1",
+        "wti_ret_5",
+        "wti_level_z60",
+        "usdjpy_ret_1",
+        "usdjpy_ret_5",
+        "target_gdr_ret_1",
+        "target_gdr_ret_5",
+        "gdr_overnight_signal",
+        "krwjpy_ret_1",
+        "krwjpy_ret_20",
+        "krwjpy_level_z60",
+        "cal_dow",
+        "cal_is_monday",
+        "cal_is_friday",
+        "cal_month_end",
+        "macro_leading_cycle",
+        "macro_leading_change_1m",
+        "macro_leading_change_3m",
+        "macro_semiconductor_log_usd",
+        "macro_semiconductor_yoy",
+        "macro_semiconductor_mom",
+        "macro_semiconductor_yoy_3m",
+        "macro_semiconductor_yoy_change_1m",
+        "macro_semiconductor_yoy_change_3m",
+        "nsi_level",
+        "nsi_change_5d",
+        "nsi_change_20d",
+        "nsi_z60",
+        "flow_frgn_1",
+        "flow_frgn_5",
+        "flow_frgn_20",
+        "flow_frgn_streak",
+        "flow_inst_5",
+        "flow_frgn_ratio_chg_20",
+        "sam_cum_60",
+        "kospi_cum_20",
+        "kospi_cum_60",
+        "sam_rel_kospi_5",
+        "sam_rel_kospi_20",
+        "sam_rel_kospi_60",
+        "sam_relvol_kospi_20",
+        "peer_cum_20",
+        "peer_cum_60",
+        "sox_cum_20",
+        "sox_cum_60",
+        "sam_rel_sox_5",
+        "sam_rel_sox_20",
+        "sam_rel_sox_60",
+        "sam_relvol_sox_20",
+        "sox_vol_20",
+        "nasdaq_cum_20",
+        "nasdaq_cum_60",
+        "micron_cum_20",
+        "micron_cum_60",
+        "nvidia_cum_20",
+        "nvidia_cum_60",
+        "tsmc_adr_cum_20",
+        "tsmc_adr_cum_60",
+        "korea_etf_cum_20",
+        "korea_etf_cum_60"
+      ]
+    }
+  },
+  "group_a_new_columns": [
+    "sam_cum_60",
+    "kospi_cum_20",
+    "kospi_cum_60",
+    "sam_rel_kospi_5",
+    "sam_rel_kospi_20",
+    "sam_rel_kospi_60",
+    "sam_relvol_kospi_20",
+    "peer_cum_20",
+    "peer_cum_60",
+    "sox_cum_20",
+    "sox_cum_60",
+    "sam_rel_sox_5",
+    "sam_rel_sox_20",
+    "sam_rel_sox_60",
+    "sam_relvol_sox_20",
+    "sox_vol_20",
+    "nasdaq_cum_20",
+    "nasdaq_cum_60",
+    "micron_cum_20",
+    "micron_cum_60",
+    "nvidia_cum_20",
+    "nvidia_cum_60",
+    "tsmc_adr_cum_20",
+    "tsmc_adr_cum_60",
+    "korea_etf_cum_20",
+    "korea_etf_cum_60"
+  ],
+  "group_a_assets_available": {
+    "kospi": true,
+    "peer": true,
+    "sox": true,
+    "nasdaq": true,
+    "micron": true,
+    "nvidia": true,
+    "tsmc_adr": true,
+    "korea_etf": true
+  },
+  "duplicates_not_reimplemented": {
+    "A": [
+      "sam_ret_5",
+      "sam_ret_20",
+      "kospi_ret_5",
+      "peer_ret_5",
+      "sox_ret_5",
+      "nasdaq_ret_5",
+      "micron_ret_5",
+      "nvidia_ret_5",
+      "tsmc_adr_ret_5",
+      "korea_etf_ret_5",
+      "sam_vol_20",
+      "kospi_vol_20",
+      "peer_vol_20"
+    ],
+    "B": [
+      "flow_frgn_5",
+      "flow_frgn_20",
+      "flow_inst_5",
+      "flow_frgn_1",
+      "flow_frgn_streak",
+      "flow_frgn_ratio_chg_20"
+    ],
+    "C": [
+      "macro_leading_change_1m",
+      "macro_leading_change_3m",
+      "macro_semiconductor_mom",
+      "macro_semiconductor_yoy_change_1m",
+      "macro_semiconductor_yoy_change_3m",
+      "macro_semiconductor_yoy_3m"
+    ]
+  },
+  "dev_folds": [
+    "dev_01",
+    "dev_02",
+    "dev_03",
+    "dev_04",
+    "dev_05",
+    "dev_06",
+    "dev_07",
+    "dev_08",
+    "dev_09"
+  ],
+  "lock_start": "2025-08-13",
+  "n_dev_rows": 1086,
+  "purge_violations": [],
+  "selections": [
+    {
+      "fold": "dev_01",
+      "selected": "no_macro",
+      "inner_mae": {
+        "current_full": [
+          0.083732,
+          0.076506,
+          0.06105
+        ],
+        "market_only": [
+          0.08398,
+          0.069569,
+          0.062036
+        ],
+        "no_macro": [
+          0.084423,
+          0.071812,
+          0.060953
+        ],
+        "full_plus_A": [
+          0.085472,
+          0.083053,
+          0.061798
+        ]
+      },
+      "slope": {
+        "current_full": 0.3612,
+        "market_only": 0.8131,
+        "no_macro": 0.5934,
+        "full_plus_A": 0.187
+      }
+    },
+    {
+      "fold": "dev_02",
+      "selected": "market_only",
+      "inner_mae": {
+        "current_full": [
+          0.03223,
+          0.083732,
+          0.076506
+        ],
+        "market_only": [
+          0.030974,
+          0.08398,
+          0.069569
+        ],
+        "no_macro": [
+          0.031171,
+          0.084423,
+          0.071812
+        ],
+        "full_plus_A": [
+          0.031568,
+          0.085472,
+          0.083053
+        ]
+      },
+      "slope": {
+        "current_full": 0.0738,
+        "market_only": 0.301,
+        "no_macro": 0.1705,
+        "full_plus_A": 0.0667
+      }
+    },
+    {
+      "fold": "dev_03",
+      "selected": "current_full",
+      "inner_mae": {
+        "current_full": [
+          0.051224,
+          0.03223,
+          0.083732
+        ],
+        "market_only": [
+          0.051757,
+          0.030974,
+          0.08398
+        ],
+        "no_macro": [
+          0.051394,
+          0.031171,
+          0.084423
+        ],
+        "full_plus_A": [
+          0.052174,
+          0.031568,
+          0.085472
+        ]
+      },
+      "slope": {
+        "current_full": 0.602,
+        "market_only": 0.6672,
+        "no_macro": 0.5775,
+        "full_plus_A": 0.1246
+      }
+    },
+    {
+      "fold": "dev_04",
+      "selected": "current_full",
+      "inner_mae": {
+        "current_full": [
+          0.061429,
+          0.051224,
+          0.03223
+        ],
+        "market_only": [
+          0.062872,
+          0.051757,
+          0.030974
+        ],
+        "no_macro": [
+          0.06244,
+          0.051394,
+          0.031171
+        ],
+        "full_plus_A": [
+          0.063549,
+          0.052174,
+          0.031568
+        ]
+      },
+      "slope": {
+        "current_full": 0.0,
+        "market_only": 0.0,
+        "no_macro": 0.0,
+        "full_plus_A": 0.0
+      }
+    },
+    {
+      "fold": "dev_05",
+      "selected": "current_full",
+      "inner_mae": {
+        "current_full": [
+          0.054099,
+          0.061429,
+          0.051224
+        ],
+        "market_only": [
+          0.054583,
+          0.062872,
+          0.051757
+        ],
+        "no_macro": [
+          0.054847,
+          0.06244,
+          0.051394
+        ],
+        "full_plus_A": [
+          0.054438,
+          0.063549,
+          0.052174
+        ]
+      },
+      "slope": {
+        "current_full": 0.0,
+        "market_only": 0.0,
+        "no_macro": 0.0,
+        "full_plus_A": 0.0
+      }
+    },
+    {
+      "fold": "dev_06",
+      "selected": "current_full",
+      "inner_mae": {
+        "current_full": [
+          0.055768,
+          0.054099,
+          0.061429
+        ],
+        "market_only": [
+          0.043835,
+          0.054583,
+          0.062872
+        ],
+        "no_macro": [
+          0.058413,
+          0.054847,
+          0.06244
+        ],
+        "full_plus_A": [
+          0.055339,
+          0.054438,
+          0.063549
+        ]
+      },
+      "slope": {
+        "current_full": 0.0,
+        "market_only": 0.0,
+        "no_macro": 0.0,
+        "full_plus_A": 0.0
+      }
+    },
+    {
+      "fold": "dev_07",
+      "selected": "market_only",
+      "inner_mae": {
+        "current_full": [
+          0.039448,
+          0.055768,
+          0.054099
+        ],
+        "market_only": [
+          0.038838,
+          0.043835,
+          0.054583
+        ],
+        "no_macro": [
+          0.038796,
+          0.058413,
+          0.054847
+        ],
+        "full_plus_A": [
+          0.039204,
+          0.055339,
+          0.054438
+        ]
+      },
+      "slope": {
+        "current_full": 0.0312,
+        "market_only": 1.0,
+        "no_macro": 0.0,
+        "full_plus_A": 0.0301
+      }
+    },
+    {
+      "fold": "dev_08",
+      "selected": "market_only",
+      "inner_mae": {
+        "current_full": [
+          0.053076,
+          0.039448,
+          0.055768
+        ],
+        "market_only": [
+          0.05338,
+          0.038838,
+          0.043835
+        ],
+        "no_macro": [
+          0.052732,
+          0.038796,
+          0.058413
+        ],
+        "full_plus_A": [
+          0.053998,
+          0.039204,
+          0.055339
+        ]
+      },
+      "slope": {
+        "current_full": 0.0774,
+        "market_only": 1.0,
+        "no_macro": 0.0461,
+        "full_plus_A": 0.0703
+      }
+    },
+    {
+      "fold": "dev_09",
+      "selected": "current_full",
+      "inner_mae": {
+        "current_full": [
+          0.091748,
+          0.053076,
+          0.039448
+        ],
+        "market_only": [
+          0.093955,
+          0.05338,
+          0.038838
+        ],
+        "no_macro": [
+          0.095771,
+          0.052732,
+          0.038796
+        ],
+        "full_plus_A": [
+          0.093421,
+          0.053998,
+          0.039204
+        ]
+      },
+      "slope": {
+        "current_full": 0.0,
+        "market_only": 0.0,
+        "no_macro": 0.0,
+        "full_plus_A": 0.0
+      }
+    }
+  ],
+  "selection_counts": {
+    "current_full": 5,
+    "market_only": 3,
+    "no_macro": 1
+  },
+  "all_available_rows": {
+    "current_full": {
+      "n": 1086,
+      "mae_raw": 0.054048122149700624,
+      "zero_mae": 0.05006206151118869
+    },
+    "market_only": {
+      "n": 1088,
+      "mae_raw": 0.05296586340869283,
+      "zero_mae": 0.050017224181962416
+    },
+    "no_macro": {
+      "n": 1086,
+      "mae_raw": 0.05470510216723254,
+      "zero_mae": 0.05006206151118869
+    },
+    "full_plus_A": {
+      "n": 1086,
+      "mae_raw": 0.054590002897352254,
+      "zero_mae": 0.05006206151118869
+    }
+  },
+  "inner_selected_vs_current_calibrated_month_ci": [
+    0.00026581103203762436,
+    0.004069202419649235
+  ],
+  "fixed_features_for_m03": "inner_selected 경로가 현행보다 유의하게 낫지 않음 → current_full 유지",
+  "oof_file": "D:\\SourceCode\\predict_stock\\runs\\medium_horizon\\samsung\\M02_h20_full_oof.csv",
+  "oof_sha256": "f76d176a27cbc7f0d48e3a55ed6df97e09fbb76114f3fb628b1d47ffa9ada06d"
+}

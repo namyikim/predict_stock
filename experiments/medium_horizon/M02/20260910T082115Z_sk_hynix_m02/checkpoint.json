@@ -1,0 +1,32 @@
+{
+  "completed_units": [
+    "sk_hynix:h5",
+    "sk_hynix:h20"
+  ],
+  "results": {
+    "sk_hynix:h5": {
+      "oof_sha256": "6b3f85e52baa0787ba190fee546e68cfe57c3e0f0eef9f42a0abf2c94d3ee434",
+      "oof_file": "D:\\SourceCode\\predict_stock\\runs\\medium_horizon\\sk_hynix\\M02_h5_full_oof.csv",
+      "selection_counts": {
+        "market_only": 4,
+        "current_full": 3,
+        "no_macro": 1,
+        "full_plus_A": 1
+      },
+      "purge_violations": 0,
+      "fixed_features_for_m03": "inner_selected 경로가 현행보다 유의하게 낫지 않음 → current_full 유지"
+    },
+    "sk_hynix:h20": {
+      "oof_sha256": "859b05cd4a820c66b54a58c9b1f669a593c4eca491cb0e12943dbd3c176a8bd5",
+      "oof_file": "D:\\SourceCode\\predict_stock\\runs\\medium_horizon\\sk_hynix\\M02_h20_full_oof.csv",
+      "selection_counts": {
+        "market_only": 4,
+        "current_full": 4,
+        "full_plus_A": 1
+      },
+      "purge_violations": 0,
+      "fixed_features_for_m03": "inner_selected 경로가 현행보다 유의하게 낫지 않음 → current_full 유지"
+    }
+  },
+  "updated_at_utc": "2026-09-10T08:21:27.337589+00:00"
+}

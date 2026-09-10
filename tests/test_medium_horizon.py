@@ -269,6 +269,83 @@ class DiagnosticToolTests(unittest.TestCase):
         self.assertTrue(mh.boundary_anomalies(sam, 5, np.zeros(10))["flag"])
 
 
+class FeatureGroupTests(unittest.TestCase):
+    """그룹 A 특징의 시점: 예측일 d 에는 d 보다 앞선 마지막 관측만, 자산 자체 달력의 k거래일 누적."""
+
+    def closes(self):
+        rng = np.random.default_rng(5)
+        krx = pd.DatetimeIndex(pd.bdate_range("2020-01-01", periods=300))
+        us = krx[~krx.isin(pd.DatetimeIndex(["2020-07-03", "2020-11-26"]))]    # 미국 휴장일
+        sam = pd.Series(100 * np.cumprod(1 + rng.normal(0, .02, len(krx))), index=krx)
+        sox = pd.Series(100 * np.cumprod(1 + rng.normal(0, .02, len(us))), index=us)
+        return krx, sam, sox
+
+    def test_uses_only_observations_strictly_before_the_prediction_date(self):
+        krx, sam, sox = self.closes()
+        a = mh.group_a_features(sam, {"sox": sox, "kospi": sam * 1.1}, krx)
+        d = pd.Timestamp("2020-08-14")
+        prev = sox.index[sox.index < d][-1]
+        k = sox.index.get_loc(prev)
+        expected = sox.iloc[k] / sox.iloc[k - 20] - 1
+        self.assertAlmostEqual(a.loc[d, "sox_cum_20"], expected, places=12)
+        sam_prev = krx[krx < d][-1]; j = krx.get_loc(sam_prev)
+        self.assertAlmostEqual(a.loc[d, "sam_rel_sox_20"], (sam.iloc[j] / sam.iloc[j - 20] - 1) - expected, places=12)
+
+    def test_us_holiday_does_not_duplicate_returns(self):
+        krx, sam, sox = self.closes()
+        a = mh.group_a_features(sam, {"sox": sox}, krx)
+        # 휴장일 다음 KRX 날짜(2020-07-06)의 sox_cum_20 은 7/2 종가 기준 20거래일 누적이어야 한다(7/3 없음)
+        d = pd.Timestamp("2020-07-06")
+        k = sox.index.get_loc(pd.Timestamp("2020-07-02"))
+        self.assertAlmostEqual(a.loc[d, "sox_cum_20"], sox.iloc[k] / sox.iloc[k - 20] - 1, places=12)
+
+    def test_future_changes_leave_earlier_rows_untouched(self):
+        krx, sam, sox = self.closes()
+        before = mh.group_a_features(sam, {"sox": sox, "kospi": sam}, krx)
+        sox2 = sox.copy(); sox2.iloc[-30:] *= 2
+        after = mh.group_a_features(sam, {"sox": sox2, "kospi": sam}, krx)
+        cut = sox.index[-30]
+        safe = krx[krx <= cut]
+        pd.testing.assert_frame_equal(before.loc[safe], after.loc[safe])
+
+    def test_candidates_share_rows_and_names_are_fixed(self):
+        base = ["sam_ret_1", "macro_x", "nsi_level", "flow_frgn_5", "kospi_ret_5"]
+        cols = mh.candidate_columns(base, ["sox_cum_20"])
+        self.assertEqual(list(cols), list(mh.CANDIDATE_ORDER))
+        self.assertEqual(cols["market_only"], ["sam_ret_1", "kospi_ret_5"])
+        self.assertEqual(cols["no_macro"], ["sam_ret_1", "nsi_level", "flow_frgn_5", "kospi_ret_5"])
+        self.assertEqual(cols["full_plus_A"], base + ["sox_cum_20"])
+
+    def test_inner_selection_needs_two_of_three_wins(self):
+        rec = {"candidates": {"current_full": {"inner_mae": [.03, .03, .03]},
+                              "full_plus_A": {"inner_mae": [.02, .02, .04]},
+                              "market_only": {"inner_mae": [.01, .05, .05]}}}
+        self.assertEqual(mh.select_by_inner(rec), "full_plus_A")
+        rec["candidates"]["full_plus_A"]["inner_mae"] = [.02, .04, .04]      # 1승 → 현행 유지
+        self.assertEqual(mh.select_by_inner(rec), "current_full")
+
+    def test_m02_runs_on_synthetic_inputs_and_records_the_contract(self):
+        tmp = Path(tempfile.mkdtemp())
+        storage, results = tmp / "runs", tmp / "results"
+        cache = storage / "samsung" / "data_cache"; cache.mkdir(parents=True)
+        (cache / "target.parquet").write_bytes(b"snapshot-v1")
+        ns = synthetic_namespace(n=2000)          # HAR 워밍업 500행 + 그룹 A 60일 뒤에도 개발 폴드가 남게
+        rng = np.random.default_rng(9)
+        for name in ("kospi", "sox", "micron"):              # 그룹 A 자산 일부만 있다 — 없는 자산은 건너뛴다
+            close = ns["sam"]["adj_close"] * (1 + rng.normal(0, .01, len(ns["sam"])))
+            pd.DataFrame({"Close": close, "Adj Close": close}, index=ns["sam"].index).to_parquet(cache / f"{name}.parquet")
+        state = mh.execute("M02", "samsung", "quick", storage, results, False,
+                           run_notebook_fn=lambda *a, **k: {"samsung": ns})
+        summary = __import__("json").loads((state.run_dir / "summary_samsung_h5.json").read_text(encoding="utf-8"))
+        self.assertEqual(list(summary["candidates"]), list(mh.CANDIDATE_ORDER))
+        self.assertEqual(summary["purge_violations"], [])
+        self.assertIn("fixed_features_for_m03", summary)
+        self.assertTrue(any(c.startswith("sox_cum_") for c in summary["group_a_new_columns"]))
+        self.assertFalse(summary["group_a_assets_available"]["nvidia"])
+        rows = pd.read_csv(state.run_dir / "comparisons.csv")
+        self.assertIn("inner_selected - current_full", set(rows["comparison"]))
+
+
 class FakeNotebook:
     def __init__(self, fail=False):
         self.calls = 0

@@ -164,7 +164,7 @@ GitHub의 cron은 이 저장소에서 예정보다 4~5시간 늦게 실행을 �
 
    토큰은 생성 화면에서 한 번만 보인다. 저장소·노트북·채팅 어디에도 붙여 넣지 않는다.
 2. **Worker에 시크릿 넣기** — Worker → **Settings → Variables and Secrets** → Add → Type **Secret**,
-   이름 `GITHUB_DISPATCH_TOKEN`, 값은 위 토큰.
+   이름 `GH_DISPATCH_TOKEN`, 값은 위 토큰. (대시보드가 `GITHUB_`로 시작하는 이름을 받지 않아 `GH_`를 쓴다.)
 3. **Cron Trigger 두 개 추가** — Worker → **Settings → Triggers → Cron Triggers** → Add. 입력 방식에서
    "Execute worker every"(간격) 대신 **Cron** 식(custom expression)을 고르고 UTC로 넣는다.
    - `37 0 * * 1-5` — 09:37 KST 시가 채점

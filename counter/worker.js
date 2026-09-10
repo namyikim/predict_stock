@@ -13,14 +13,15 @@
 //
 // Cron Trigger(대시보드 Settings → Triggers → Cron Triggers, 예: `0 3 * * *`)를 걸면
 // 아래 scheduled()가 매일 오래된 조회 기록을 지운다(보관기간 관리).
-// `37 0 * * 1-5`·`10 7 * * 1-5`(UTC) 트리거를 더 걸고 GITHUB_DISPATCH_TOKEN 을 넣으면 같은
+// `37 0 * * 1-5`·`10 7 * * 1-5`(UTC) 트리거를 더 걸고 GH_DISPATCH_TOKEN 을 넣으면 같은
 // scheduled()가 그 시각에 GitHub의 채점 워크플로를 정시에 깨운다(README "채점 워크플로 정시 호출").
 //
 // 바인딩(대시보드 Settings에서 설정)
 //   DB                    D1 데이터베이스
 //   VISITOR_SALT          방문자 해시용 비밀값(시크릿)
 //   STATS_TOKEN           /stats 접근 토큰(시크릿)
-//   GITHUB_DISPATCH_TOKEN (선택) 채점 워크플로를 깨우는 fine-grained PAT(시크릿).
+//   GH_DISPATCH_TOKEN (선택) 채점 워크플로를 깨우는 fine-grained PAT(시크릿).
+//                     (Cloudflare 대시보드가 GITHUB_ 로 시작하는 이름을 받지 않아 GH_ 를 쓴다.)
 //                         이 저장소 하나, Actions: Read and write 권한만. 없으면 깨우지 않는다.
 
 // 이 오리진에서 온 요청만 집계한다. 열어두면 아무 사이트나(혹은 curl 반복문이) 우리
@@ -64,12 +65,12 @@ export function dispatchDue(scheduledTime, times = DISPATCH_TIMES_UTC) {
 // GitHub에 workflow_dispatch 를 보낸다. 토큰이 없으면 아무것도 하지 않는다 — 조회수 카운터만 쓰는
 // 배포도 그대로 동작해야 한다. 응답 본문은 기록하지 않는다(오류 문구에 토큰 정보가 섞일 수 있다).
 async function dispatchScoring(env) {
-  if (!env.GITHUB_DISPATCH_TOKEN) return { status: "skipped", reason: "GITHUB_DISPATCH_TOKEN 없음" };
+  if (!env.GH_DISPATCH_TOKEN) return { status: "skipped", reason: "GH_DISPATCH_TOKEN 없음" };
   const url = `https://api.github.com/repos/${DISPATCH_REPO}/actions/workflows/${DISPATCH_WORKFLOW}/dispatches`;
   const response = await fetch(url, {
     method: "POST",
     headers: {
-      Authorization: `Bearer ${env.GITHUB_DISPATCH_TOKEN}`,
+      Authorization: `Bearer ${env.GH_DISPATCH_TOKEN}`,
       Accept: "application/vnd.github+json",
       "X-GitHub-Api-Version": "2022-11-28",
       "Content-Type": "application/json",

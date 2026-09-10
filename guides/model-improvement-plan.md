@@ -73,7 +73,7 @@
 | P05 | [x] | 최근 표본 가중 학습 | P04 | CPU/Colab | 완료: 채택 없음. 반감기 짧을수록 유의 열위, 504도 동률 |
 | P06 | [x] | 재학습 주기 비교 | P05 | CPU/Colab | 완료: 채택 없음. 전부 동률, sk_hynix 21일은 유의 열위 |
 | P07 | [x] | 소수 모델 앙상블 비교 | P06 | CPU/Colab | 완료: 채택 없음. 최선 단일(expanding)을 이기는 결합 없음 |
-| P08 | [ ] | 확률 신뢰도·예측 보류 평가 | P07 | CPU | 미실행 |
+| P08 | [x] | 확률 신뢰도·예측 보류 평가 | P07 | CPU | 완료: 온도 보정 동률, 보류 진단만 저장(보고서 반영은 P15) |
 | P09 | [ ] | 갭·장중 별도 학습 비교 | P08 | CPU/Colab | 미실행 |
 | P10 | [ ] | 국내 관련 종목 공동 학습 기반 | P09 | CPU/Colab, 선택 | 미실행 |
 | P11 | [ ] | MASTER 비교 실험 | P10 | GPU, 선택 | 미실행 |
@@ -437,11 +437,21 @@ balanced_accuracy는 전부 동률. 내부 검증이 고른 가중치가 폴드�
 **파일:** 기존 temperature_probabilities 재사용, 러너 P08 등록, 필요 시 report_html.py, 생성 tests/test_probability_diagnostics.py.
 **입출력:** 과거 보정 구간과 외부 확률 → 신뢰도 구간 표·전체 및 선택 예측 성능.
 
-- [ ] 기존 온도 보정 전후 log_loss·Brier·클래스별 신뢰도 구간을 비교한다. 같은 기능을 새로 구현하지 않는다.
-- [ ] 온도 보정이 argmax를 유지하는지 테스트한다. 보정으로 정확도가 향상됐다고 잘못 기록하지 않는다.
-- [ ] 보류 임계치는 없음·최대 확률 0.50·0.60·0.70만 비교한다. 필요 선택은 내부 검증에서 하고 외부 평가로 재선택하지 않는다.
-- [ ] 전체 날짜 정확도, 선택 날짜 정확도, coverage, 선택 건수를 같이 출력한다. 신호 0건의 정확도는 미정 값으로 처리한다.
-- [ ] 기본 보고서 반영은 P15까지 보류하고 진단 결과만 저장한다.
+- [x] 기존 온도 보정 전후 log_loss·Brier·클래스별 신뢰도 구간을 비교한다. → 노트북이 고른 온도의 전(1.0)/후를 같은 날짜에서 비교. `reliability_bins`
+- [x] 온도 보정이 argmax를 유지하는지 테스트한다. → `test_temperature_keeps_argmax`(멤버별). 앙상블 평균에서는 argmax가 미세하게 바뀔 수 있음을 decision에 명시하고 정확도 변화는 동률로 기록
+- [x] 보류 임계치는 없음·최대 확률 0.50·0.60·0.70만 비교한다. → `ABSTAIN_THRESHOLDS`. 폴드별 내부 6개월에서 선택, 외부 표는 나란히 보여줄 뿐
+- [x] 전체 날짜 정확도, 선택 날짜 정확도, coverage, 선택 건수를 같이 출력한다. → `abstention_table`; 0건이면 NaN(`test_empty_selection_is_nan_not_error`)
+- [x] 기본 보고서 반영은 P15까지 보류하고 진단 결과만 저장한다. → `detail.json`, 보고서 코드 미변경
+
+#### 결과 (2026-09-10, `experiments/model_improvement/P08/20260910T0600Z_calibration/`)
+
+온도 보정 후 − 전 (log_loss): samsung +0.00010 [-0.00196, +0.00209] 동률 · sk_hynix +0.00152 [-0.00058, +0.00382] 동률.
+balanced_accuracy·accuracy도 동률. 보정으로 정확도가 향상됐다고 기록하지 않는다.
+
+보류 임계치(외부, 보정 후): 0.5 이상만 예측하면 coverage 약 1/4에 선택 정확도가 크게 오른다
+(samsung 0.4559 → 0.6725, 345/1,362일). 0.6·0.7은 수십 건이라 표본오차가 크다. 내부 선택은 대체로 0.5.
+
+**채택 없음(보고서 변경 없음).** 진단만 저장. 운영 반영 여부는 P15 사전 예측에서 coverage와 함께 본다.
 
 **완료 증거:** 확률 보정 및 빈 선택 집합 테스트, coverage 포함 비교표.
 
@@ -583,6 +593,7 @@ P00 이후에는 작업 ID만 바꿔 요청한다. Colab 실행이 필요한 경
 | --- | --- | --- | --- | --- |
 | 2026-09-09 | PLAN | 이 문서 및 README 링크 | 저장소 문서·핵심 함수·기존 Transformer 결과 확인 | 계획 생성. P00부터 시작 |
 | 2026-09-10 | P00 사전 수정 | `tools/run_notebook.py`, `tests/test_run_notebook.py` | 8개 오프라인 회귀 테스트 통과 | 기존 CLI가 IPython 히스토리 부재로 둘째 종목을 건너뛰던 결함 수정. P00 전체 완료 아님 |
+| 2026-09-10 | P08 | `experiments/model_improvement/P08/20260910T0600Z_calibration/`, `tests/test_probability_diagnostics.py` | 10개 통과, 두 종목 보정 전후·신뢰도·보류 표 | **완료.** 온도 보정 동률. 보류 진단만 저장 |
 | 2026-09-10 | P07 | `experiments/model_improvement/P07/20260910T0500Z_ensemble/`, `tests/test_model_ensemble.py` | 13개 통과, 두 종목 후보 3·결합 4 재학습 | **완료.** 채택 없음. 최선 단일을 이기는 결합 없음 |
 | 2026-09-10 | P06 | `experiments/model_improvement/P06/20260910T0400Z_retrain_schedule/`, `tests/test_retraining_schedule.py` | 13개 통과, 두 종목 주기 3종 재학습(일별 2,724회 포함) | **완료.** 채택 없음. 전부 동률, sk_hynix 21일 유의 열위 |
 | 2026-09-10 | P05 | `experiments/model_improvement/P05/20260910T0300Z_recency_weights/`, `forecast_utils.recency_weights`, `fit_direction_model(sample_weight)` | `discover -p test_recency_weighting.py` 18개, 기존 forecast_improvements 21·notebook_structure 36 통과 | **완료.** 채택 없음. 반감기 짧을수록 유의 열위 |
@@ -593,9 +604,9 @@ P00 이후에는 작업 ID만 바꿔 요청한다. Colab 실행이 필요한 경
 | 2026-09-10 | P01 | `tools/run_model_improvement.py`, `tests/test_model_improvement_runner.py` | `discover -p test_model_improvement_runner.py` 15개 통과 | 완료. 재개·해시 격리·원자적 쓰기·발행 차단 검증. 구현 중 결함 2건(재개 시 반환형 불일치, 같은 초 run_id 충돌) 발견·수정 |
 | 2026-09-10 | P00 quick | `experiments/model_improvement/P00/20260910T0000Z_baseline_quick/` | 두 종목 46셀 무오류 완료, 평가 276일 | 기준선 계약 기록·스냅샷 고정 완료. 기존 캐시는 자산 키 불일치로 폐기. full 평가 실행 중 |
 
-- 현재 작업: P08 — 확률 신뢰도·예측 보류(코드·10개 테스트 완료, 실험 실행 중)
-- 완료한 신규 작업: 8/16 (P00~P07)
-- 다음 작업: P08 결과 기록 → P09
+- 현재 작업: P09 — 갭·장중 별도 학습(코드·10개 테스트 완료, 실험 실행 중)
+- 완료한 신규 작업: 9/16 (P00~P08)
+- 다음 작업: P09 결과 기록 → P10~P14 중 하나 선택 또는 보류 → P15
 - P15로 넘긴 후보: sk_hynix `expanding` 학습 창 (P04에서 외부 유의 우위, 내부 선택 미채택)
 - 고쳐야 할 절차: P04 내부 선택을 폴드 반복형으로 (현재 마지막 폴드 하나만 사용)
 - 보류 작업: 없음

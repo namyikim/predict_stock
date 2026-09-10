@@ -1,0 +1,614 @@
+{
+  "samsung": {
+    "temperatures": [
+      {
+        "fold": 0,
+        "family": "Logistic",
+        "temperature": 1.5
+      },
+      {
+        "fold": 0,
+        "family": "LightGBM",
+        "temperature": 1.0
+      },
+      {
+        "fold": 1,
+        "family": "Logistic",
+        "temperature": 1.5
+      },
+      {
+        "fold": 1,
+        "family": "LightGBM",
+        "temperature": 1.0
+      },
+      {
+        "fold": 2,
+        "family": "Logistic",
+        "temperature": 1.0
+      },
+      {
+        "fold": 2,
+        "family": "LightGBM",
+        "temperature": 1.5
+      },
+      {
+        "fold": 3,
+        "family": "Logistic",
+        "temperature": 1.0
+      },
+      {
+        "fold": 3,
+        "family": "LightGBM",
+        "temperature": 1.0
+      },
+      {
+        "fold": 4,
+        "family": "Logistic",
+        "temperature": 1.0
+      },
+      {
+        "fold": 4,
+        "family": "LightGBM",
+        "temperature": 1.0
+      },
+      {
+        "fold": 5,
+        "family": "Logistic",
+        "temperature": 0.75
+      },
+      {
+        "fold": 5,
+        "family": "LightGBM",
+        "temperature": 1.0
+      },
+      {
+        "fold": 6,
+        "family": "Logistic",
+        "temperature": 1.0
+      },
+      {
+        "fold": 6,
+        "family": "LightGBM",
+        "temperature": 0.75
+      },
+      {
+        "fold": 7,
+        "family": "Logistic",
+        "temperature": 1.0
+      },
+      {
+        "fold": 7,
+        "family": "LightGBM",
+        "temperature": 0.75
+      },
+      {
+        "fold": 8,
+        "family": "Logistic",
+        "temperature": 0.75
+      },
+      {
+        "fold": 8,
+        "family": "LightGBM",
+        "temperature": 1.0
+      },
+      {
+        "fold": 9,
+        "family": "Logistic",
+        "temperature": 1.0
+      },
+      {
+        "fold": 9,
+        "family": "LightGBM",
+        "temperature": 1.0
+      },
+      {
+        "fold": 10,
+        "family": "Logistic",
+        "temperature": 1.0
+      },
+      {
+        "fold": 10,
+        "family": "LightGBM",
+        "temperature": 1.0
+      },
+      {
+        "fold": 11,
+        "family": "Logistic",
+        "temperature": 1.5
+      },
+      {
+        "fold": 11,
+        "family": "LightGBM",
+        "temperature": 1.0
+      }
+    ],
+    "argmax_unchanged_by_temperature": false,
+    "reliability_after": [
+      {
+        "bin": "[0.33, 0.47)",
+        "count": 851,
+        "mean_confidence": 0.4066905610839598,
+        "hit_rate": 0.372502937720329
+      },
+      {
+        "bin": "[0.47, 0.60)",
+        "count": 422,
+        "mean_confidence": 0.5183105803914324,
+        "hit_rate": 0.54739336492891
+      },
+      {
+        "bin": "[0.60, 0.73)",
+        "count": 75,
+        "mean_confidence": 0.6404354853885209,
+        "hit_rate": 0.8133333333333334
+      },
+      {
+        "bin": "[0.73, 0.87)",
+        "count": 14,
+        "mean_confidence": 0.7787112671813449,
+        "hit_rate": 0.8571428571428571
+      },
+      {
+        "bin": "[0.87, 1.00)",
+        "count": 0,
+        "mean_confidence": NaN,
+        "hit_rate": NaN
+      }
+    ],
+    "reliability_before": [
+      {
+        "bin": "[0.33, 0.47)",
+        "count": 849,
+        "mean_confidence": 0.40798650546597404,
+        "hit_rate": 0.3710247349823322
+      },
+      {
+        "bin": "[0.47, 0.60)",
+        "count": 432,
+        "mean_confidence": 0.5183934961079444,
+        "hit_rate": 0.5462962962962963
+      },
+      {
+        "bin": "[0.60, 0.73)",
+        "count": 71,
+        "mean_confidence": 0.6413343858014694,
+        "hit_rate": 0.8169014084507042
+      },
+      {
+        "bin": "[0.73, 0.87)",
+        "count": 10,
+        "mean_confidence": 0.7697065681710684,
+        "hit_rate": 1.0
+      },
+      {
+        "bin": "[0.87, 1.00)",
+        "count": 0,
+        "mean_confidence": NaN,
+        "hit_rate": NaN
+      }
+    ],
+    "abstention_outer_after": [
+      {
+        "threshold": "none",
+        "selected": 1362,
+        "total": 1362,
+        "coverage": 1.0,
+        "selected_accuracy": 0.45594713656387664,
+        "overall_accuracy": 0.45594713656387664
+      },
+      {
+        "threshold": "0.5",
+        "selected": 345,
+        "total": 1362,
+        "coverage": 0.2533039647577093,
+        "selected_accuracy": 0.672463768115942,
+        "overall_accuracy": 0.45594713656387664
+      },
+      {
+        "threshold": "0.6",
+        "selected": 89,
+        "total": 1362,
+        "coverage": 0.06534508076358296,
+        "selected_accuracy": 0.8202247191011236,
+        "overall_accuracy": 0.45594713656387664
+      },
+      {
+        "threshold": "0.7",
+        "selected": 18,
+        "total": 1362,
+        "coverage": 0.013215859030837005,
+        "selected_accuracy": 0.8333333333333334,
+        "overall_accuracy": 0.45594713656387664
+      }
+    ],
+    "inner_threshold_choice_by_fold": [
+      {
+        "fold": 0,
+        "chosen_threshold": "none"
+      },
+      {
+        "fold": 1,
+        "chosen_threshold": "none"
+      },
+      {
+        "fold": 2,
+        "chosen_threshold": "0.5"
+      },
+      {
+        "fold": 3,
+        "chosen_threshold": "0.5"
+      },
+      {
+        "fold": 4,
+        "chosen_threshold": "0.6"
+      },
+      {
+        "fold": 5,
+        "chosen_threshold": "0.6"
+      },
+      {
+        "fold": 6,
+        "chosen_threshold": "0.5"
+      },
+      {
+        "fold": 7,
+        "chosen_threshold": "0.6"
+      },
+      {
+        "fold": 8,
+        "chosen_threshold": "0.5"
+      },
+      {
+        "fold": 9,
+        "chosen_threshold": "0.5"
+      },
+      {
+        "fold": 10,
+        "chosen_threshold": "0.5"
+      },
+      {
+        "fold": 11,
+        "chosen_threshold": "0.5"
+      }
+    ],
+    "comparisons": [
+      {
+        "target": "samsung",
+        "comparison": "온도 보정 후 − 전",
+        "metric": "balanced_accuracy",
+        "delta": 0.0011701773439214413,
+        "ci_low": -0.004932614229578825,
+        "ci_high": 0.007880847352841412,
+        "common_n": 1362,
+        "verdict": "동률(CI가 0 포함)"
+      },
+      {
+        "target": "samsung",
+        "comparison": "온도 보정 후 − 전",
+        "metric": "log_loss",
+        "delta": 9.64468969348875e-05,
+        "ci_low": -0.001956499721960331,
+        "ci_high": 0.002087438166056588,
+        "common_n": 1362,
+        "verdict": "동률(CI가 0 포함)"
+      },
+      {
+        "target": "samsung",
+        "comparison": "온도 보정 후 − 전",
+        "metric": "accuracy",
+        "delta": 0.001468428781204123,
+        "ci_low": -0.004434753922937943,
+        "ci_high": 0.00810074551375624,
+        "common_n": 1362,
+        "verdict": "동률(CI가 0 포함)"
+      }
+    ],
+    "note": "보류 임계치는 내부 구간에서 골랐다. 외부 표는 모든 임계치를 나란히 보여 줄 뿐 선택 근거가 아니다."
+  },
+  "sk_hynix": {
+    "temperatures": [
+      {
+        "fold": 0,
+        "family": "Logistic",
+        "temperature": 1.5
+      },
+      {
+        "fold": 0,
+        "family": "LightGBM",
+        "temperature": 1.0
+      },
+      {
+        "fold": 1,
+        "family": "Logistic",
+        "temperature": 1.5
+      },
+      {
+        "fold": 1,
+        "family": "LightGBM",
+        "temperature": 1.5
+      },
+      {
+        "fold": 2,
+        "family": "Logistic",
+        "temperature": 1.0
+      },
+      {
+        "fold": 2,
+        "family": "LightGBM",
+        "temperature": 1.5
+      },
+      {
+        "fold": 3,
+        "family": "Logistic",
+        "temperature": 1.0
+      },
+      {
+        "fold": 3,
+        "family": "LightGBM",
+        "temperature": 1.5
+      },
+      {
+        "fold": 4,
+        "family": "Logistic",
+        "temperature": 1.0
+      },
+      {
+        "fold": 4,
+        "family": "LightGBM",
+        "temperature": 1.0
+      },
+      {
+        "fold": 5,
+        "family": "Logistic",
+        "temperature": 1.0
+      },
+      {
+        "fold": 5,
+        "family": "LightGBM",
+        "temperature": 1.0
+      },
+      {
+        "fold": 6,
+        "family": "Logistic",
+        "temperature": 1.0
+      },
+      {
+        "fold": 6,
+        "family": "LightGBM",
+        "temperature": 1.0
+      },
+      {
+        "fold": 7,
+        "family": "Logistic",
+        "temperature": 1.0
+      },
+      {
+        "fold": 7,
+        "family": "LightGBM",
+        "temperature": 1.0
+      },
+      {
+        "fold": 8,
+        "family": "Logistic",
+        "temperature": 1.0
+      },
+      {
+        "fold": 8,
+        "family": "LightGBM",
+        "temperature": 0.75
+      },
+      {
+        "fold": 9,
+        "family": "Logistic",
+        "temperature": 0.75
+      },
+      {
+        "fold": 9,
+        "family": "LightGBM",
+        "temperature": 1.0
+      },
+      {
+        "fold": 10,
+        "family": "Logistic",
+        "temperature": 0.75
+      },
+      {
+        "fold": 10,
+        "family": "LightGBM",
+        "temperature": 1.0
+      },
+      {
+        "fold": 11,
+        "family": "Logistic",
+        "temperature": 1.0
+      },
+      {
+        "fold": 11,
+        "family": "LightGBM",
+        "temperature": 1.0
+      }
+    ],
+    "argmax_unchanged_by_temperature": false,
+    "reliability_after": [
+      {
+        "bin": "[0.33, 0.47)",
+        "count": 811,
+        "mean_confidence": 0.40591010948940376,
+        "hit_rate": 0.4352651048088779
+      },
+      {
+        "bin": "[0.47, 0.60)",
+        "count": 437,
+        "mean_confidence": 0.5226413196413172,
+        "hit_rate": 0.562929061784897
+      },
+      {
+        "bin": "[0.60, 0.73)",
+        "count": 94,
+        "mean_confidence": 0.6532863648634805,
+        "hit_rate": 0.7127659574468085
+      },
+      {
+        "bin": "[0.73, 0.87)",
+        "count": 15,
+        "mean_confidence": 0.7637262823596918,
+        "hit_rate": 0.8666666666666667
+      },
+      {
+        "bin": "[0.87, 1.00)",
+        "count": 0,
+        "mean_confidence": NaN,
+        "hit_rate": NaN
+      }
+    ],
+    "reliability_before": [
+      {
+        "bin": "[0.33, 0.47)",
+        "count": 752,
+        "mean_confidence": 0.40729690560656717,
+        "hit_rate": 0.4348404255319149
+      },
+      {
+        "bin": "[0.47, 0.60)",
+        "count": 490,
+        "mean_confidence": 0.5183892406361188,
+        "hit_rate": 0.5428571428571428
+      },
+      {
+        "bin": "[0.60, 0.73)",
+        "count": 103,
+        "mean_confidence": 0.6438578226086723,
+        "hit_rate": 0.7864077669902912
+      },
+      {
+        "bin": "[0.73, 0.87)",
+        "count": 12,
+        "mean_confidence": 0.7519530722860113,
+        "hit_rate": 0.8333333333333334
+      },
+      {
+        "bin": "[0.87, 1.00)",
+        "count": 0,
+        "mean_confidence": NaN,
+        "hit_rate": NaN
+      }
+    ],
+    "abstention_outer_after": [
+      {
+        "threshold": "none",
+        "selected": 1357,
+        "total": 1357,
+        "coverage": 1.0,
+        "selected_accuracy": 0.5003684598378777,
+        "overall_accuracy": 0.5003684598378777
+      },
+      {
+        "threshold": "0.5",
+        "selected": 397,
+        "total": 1357,
+        "coverage": 0.29255711127487105,
+        "selected_accuracy": 0.6397984886649875,
+        "overall_accuracy": 0.5003684598378777
+      },
+      {
+        "threshold": "0.6",
+        "selected": 109,
+        "total": 1357,
+        "coverage": 0.08032424465733234,
+        "selected_accuracy": 0.7339449541284404,
+        "overall_accuracy": 0.5003684598378777
+      },
+      {
+        "threshold": "0.7",
+        "selected": 28,
+        "total": 1357,
+        "coverage": 0.020633750921149593,
+        "selected_accuracy": 0.8928571428571429,
+        "overall_accuracy": 0.5003684598378777
+      }
+    ],
+    "inner_threshold_choice_by_fold": [
+      {
+        "fold": 0,
+        "chosen_threshold": "0.5"
+      },
+      {
+        "fold": 1,
+        "chosen_threshold": "0.5"
+      },
+      {
+        "fold": 2,
+        "chosen_threshold": "none"
+      },
+      {
+        "fold": 3,
+        "chosen_threshold": "0.5"
+      },
+      {
+        "fold": 4,
+        "chosen_threshold": "0.6"
+      },
+      {
+        "fold": 5,
+        "chosen_threshold": "0.5"
+      },
+      {
+        "fold": 6,
+        "chosen_threshold": "0.5"
+      },
+      {
+        "fold": 7,
+        "chosen_threshold": "0.6"
+      },
+      {
+        "fold": 8,
+        "chosen_threshold": "0.5"
+      },
+      {
+        "fold": 9,
+        "chosen_threshold": "0.7"
+      },
+      {
+        "fold": 10,
+        "chosen_threshold": "0.5"
+      },
+      {
+        "fold": 11,
+        "chosen_threshold": "0.6"
+      }
+    ],
+    "comparisons": [
+      {
+        "target": "sk_hynix",
+        "comparison": "온도 보정 후 − 전",
+        "metric": "balanced_accuracy",
+        "delta": -0.003678339153773469,
+        "ci_low": -0.009487228654759643,
+        "ci_high": 0.0015385208387028043,
+        "common_n": 1357,
+        "verdict": "동률(CI가 0 포함)"
+      },
+      {
+        "target": "sk_hynix",
+        "comparison": "온도 보정 후 − 전",
+        "metric": "log_loss",
+        "delta": 0.0015218985010052588,
+        "ci_low": -0.0005848010664334823,
+        "ci_high": 0.0038201953839203905,
+        "common_n": 1357,
+        "verdict": "동률(CI가 0 포함)"
+      },
+      {
+        "target": "sk_hynix",
+        "comparison": "온도 보정 후 − 전",
+        "metric": "accuracy",
+        "delta": -0.00368459837877666,
+        "ci_low": -0.009560237556561109,
+        "ci_high": 0.0014870165073464807,
+        "common_n": 1357,
+        "verdict": "동률(CI가 0 포함)"
+      }
+    ],
+    "note": "보류 임계치는 내부 구간에서 골랐다. 외부 표는 모든 임계치를 나란히 보여 줄 뿐 선택 근거가 아니다."
+  }
+}

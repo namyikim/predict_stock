@@ -32,6 +32,9 @@ import tempfile
 from datetime import datetime, timezone
 from pathlib import Path
 
+import numpy as np
+import pandas as pd
+
 ROOT = Path(__file__).resolve().parents[1]
 SUPPORTED_TARGETS = ("samsung", "sk_hynix")
 MODES = ("quick", "full")
@@ -41,6 +44,7 @@ MODES = ("quick", "full")
 TASKS = {
     "P00": "현행 기준선과 평가 계약 고정",
     "P03": "기존 특징군의 추가 가치 비교",
+    "P04": "학습 기간 비교",
 }
 
 # P03에서 비교하는 특징군. 노트북이 같은 폴드·같은 날짜로 이미 계산해 CSV로 남기므로
@@ -340,7 +344,7 @@ def verdict_for(metric, lo, hi):
     if lo <= 0 <= hi:
         return "동률(CI가 0 포함)"
     better = hi < 0 if metric == "log_loss" else lo > 0
-    return "추가가 유의하게 우위" if better else "추가가 유의하게 열위"
+    return "후보가 유의하게 우위" if better else "후보가 유의하게 열위"
 
 
 def run_p03(target, mode, storage, state, run_notebook_fn=None):
@@ -409,7 +413,151 @@ def run_p03(target, mode, storage, state, run_notebook_fn=None):
     return rows
 
 
-TASK_RUNNERS = {"P00": run_p00, "P03": run_p03}
+# ---------------------------------------------------------------------------
+# P04 — 학습 기간 비교
+# ---------------------------------------------------------------------------
+# 후보는 넷으로 제한한다. 후보를 늘릴수록 "그중 하나는 좋아 보인다"가 쉬워진다
+# (계획 4절: 반복 비교의 낙관 편향).
+WINDOW_CANDIDATES = ("2y", "3y", "5y", "expanding")
+BASELINE_WINDOW = "5y"
+MIN_TRAIN_ROWS = 500      # 노트북 폴드 생성과 같은 기준
+
+
+def window_train_indices(date_index, before, window):
+    """창 이름으로 학습 행 위치를 고른다. 예측일 당일은 어떤 창에서도 넣지 않는다."""
+    # 선언한 후보만 받는다. 형식만 맞으면 통과시키면 후보를 몰래 늘릴 수 있고, 그러면
+    # "그중 하나는 좋아 보인다"가 쉬워진다(계획 4절의 반복 비교 편향).
+    if window not in WINDOW_CANDIDATES:
+        raise ValueError(f"등록되지 않은 학습 창입니다: {window}. 사용 가능: {', '.join(WINDOW_CANDIDATES)}")
+    dates = pd.DatetimeIndex(date_index)
+    before = pd.Timestamp(before)
+    if window == "expanding":
+        return np.flatnonzero(dates < before)
+    years = int(window[:-1])
+    return np.flatnonzero((dates >= before - pd.DateOffset(years=years)) & (dates < before))
+
+
+def _ensemble_probabilities(ns, features, y, train_idx, test_idx):
+    """대표 모델과 같은 방식: Logistic·LightGBM을 각각 적합해 확률을 단순 평균한다."""
+    probs = []
+    for family in ("Logistic", "LightGBM"):
+        fitted = ns["fit_direction_model"](features, y, train_idx, family,
+                                           seed=ns.get("SEED", 42),
+                                           selection=ns.get("SELECTION_METRIC", "log_loss"))
+        probs.append(ns["predict_direction_model"](fitted, features[test_idx]))
+    return np.mean(probs, axis=0)
+
+
+def _inner_choice(ns, features, y, dates, train_idx, inner_months=6):
+    """외부 평가를 보지 않고 창을 고른다.
+
+    학습 구간의 마지막 inner_months를 내부 검증으로 떼고, 각 창 후보를 그 앞 자료로만
+    학습해 내부 log loss가 가장 낮은 창을 고른다. 외부 폴드의 라벨은 쓰지 않는다.
+    """
+    train_dates = pd.DatetimeIndex(dates)[train_idx]
+    split = train_dates[-1] - pd.DateOffset(months=inner_months)
+    inner_test = train_idx[train_dates > split]
+    if len(inner_test) < 20:
+        return BASELINE_WINDOW, {}
+    scores = {}
+    for window in WINDOW_CANDIDATES:
+        inner_train = window_train_indices(dates, train_dates[train_dates > split][0], window)
+        inner_train = np.intersect1d(inner_train, train_idx)
+        if len(inner_train) < MIN_TRAIN_ROWS or len(np.unique(y[inner_train])) < 2:
+            continue
+        probs = _ensemble_probabilities(ns, features, y, inner_train, inner_test)
+        scores[window] = ns["probability_loss"](y[inner_test], probs)
+    if not scores:
+        return BASELINE_WINDOW, {}
+    return min(scores, key=scores.get), scores
+
+
+def run_p04(target, mode, storage, state, run_notebook_fn=None):
+    """창 후보별로 같은 외부 폴드에서 워크포워드를 다시 돌리고 쌍체 비교한다."""
+    import time
+
+    unit = f"{target}:windows"
+    if state.is_done(unit):
+        print(f"  이미 완료된 단위 건너뜀: {unit} (metrics.csv 유지)")
+        return None
+
+    if run_notebook_fn is None:
+        sys.path.insert(0, str(ROOT / "tools"))
+        from run_notebook import run_notebook as run_notebook_fn
+
+    snapshot = snapshot_paths(storage, target)
+    ns = run_notebook_fn(Path(storage) / target, targets=target,
+                         quick=(mode == "quick"), use_cache=bool(snapshot))[target]
+
+    # 대표 모델의 입력(시세만)을 그대로 쓴다. P03에서 고정한 특징 목록이다.
+    features, y, dates, folds = ns["market_X"], ns["y"], ns["dates"], ns["folds"]
+    frames, notes, timing = [], [], {}
+
+    for window in WINDOW_CANDIDATES:
+        started, kept, skipped = time.time(), [], []
+        rows_used = []
+        for fold in folds:
+            test_idx = fold["test_idx"]
+            train_idx = window_train_indices(dates, dates[test_idx[0]], window)
+            if len(train_idx) < MIN_TRAIN_ROWS:
+                skipped.append({"fold": fold["fold"], "reason": f"학습 행 {len(train_idx)} < {MIN_TRAIN_ROWS}"})
+                continue
+            if len(np.unique(y[train_idx])) < 3:
+                skipped.append({"fold": fold["fold"],
+                                "reason": f"클래스 {len(np.unique(y[train_idx]))}종만 존재"})
+                continue
+            probs = _ensemble_probabilities(ns, features, y, train_idx, test_idx)
+            frames.append(ns["prediction_frame"](f"window {window}", dates[test_idx],
+                                                 y[test_idx], probs, fold["fold"]))
+            kept.append(fold["fold"])
+            rows_used.append(len(train_idx))
+        timing[window] = {"seconds": round(time.time() - started, 1), "folds": len(kept),
+                          "mean_train_rows": int(np.mean(rows_used)) if rows_used else 0,
+                          "skipped": skipped}
+        if skipped:
+            notes.append(f"{window}: {len(skipped)}개 폴드 제외 — {skipped[0]['reason']}")
+        print(f"  {window}: {len(kept)}폴드 · 평균 학습 {timing[window]['mean_train_rows']}행 "
+              f"· {timing[window]['seconds']}초" + (f" · 제외 {len(skipped)}" if skipped else ""))
+
+    predictions = pd.concat(frames, ignore_index=True)
+
+    # 내부 검증만으로 고른 창(외부 라벨을 보지 않는다)
+    chosen, inner_scores = _inner_choice(ns, features, y, dates, folds[-1]["train_idx"])
+    print(f"  내부 검증이 고른 창: {chosen}  (내부 log loss {inner_scores})")
+
+    rows, comparisons = [], []
+    metrics = ns["summarize_predictions"](predictions, with_ci=False)
+    for model, row in metrics.iterrows():
+        window = model.replace("window ", "")
+        rows.append({"target": target, "model": model, "window": window,
+                     "target_mode": "close_to_close", "fold": "all",
+                     **{k: row.get(k, "") for k in ("n", "accuracy", "balanced_accuracy",
+                                                    "log_loss", "brier", "auc_gap", "auc_session")},
+                     "seconds": timing[window]["seconds"],
+                     "mean_train_rows": timing[window]["mean_train_rows"],
+                     "folds": timing[window]["folds"]})
+    for window in WINDOW_CANDIDATES:
+        if window == BASELINE_WINDOW:
+            continue
+        for metric in ("balanced_accuracy", "log_loss"):
+            delta = ns["paired_delta_ci"](predictions, f"window {window}",
+                                          f"window {BASELINE_WINDOW}", metric)
+            comparisons.append({
+                "target": target, "comparison": f"{window} − {BASELINE_WINDOW}", "metric": metric,
+                "delta": delta["delta"], "ci_low": delta["lo"], "ci_high": delta["hi"],
+                "common_n": delta["n"],
+                "verdict": verdict_for(metric, delta["lo"], delta["hi"])})
+
+    write_json(state.run_dir / f"windows_{target}.json",
+               {"timing": timing, "inner_selection": {"chosen": chosen, "scores": inner_scores},
+                "notes": notes, "comparisons": comparisons})
+    write_metrics_named(state, comparisons, "comparisons.csv")
+    state.mark(unit, {"windows": len(WINDOW_CANDIDATES), "chosen_by_inner": chosen,
+                      "evaluation_days": int(metrics["n"].max())})
+    return rows
+
+
+TASK_RUNNERS = {"P00": run_p00, "P03": run_p03, "P04": run_p04}
 
 
 # ---------------------------------------------------------------------------
@@ -425,6 +573,22 @@ def write_metrics(state, rows):
     path = state.run_dir / "metrics.csv"
     write_atomic(path, buffer.getvalue())
     state.manifest.setdefault("artifact_paths", {})["metrics"] = str(path)
+    write_json(state.manifest_path, state.manifest)
+
+
+def write_metrics_named(state, rows, filename):
+    """metrics.csv 외의 표(비교표 등)를 같은 방식으로 쓴다."""
+    if not rows:
+        return
+    import csv
+    import io as _io
+    buffer = _io.StringIO()
+    writer = csv.DictWriter(buffer, fieldnames=list(rows[0]), lineterminator="\n")
+    writer.writeheader()
+    writer.writerows(rows)
+    path = state.run_dir / filename
+    write_atomic(path, buffer.getvalue())
+    state.manifest.setdefault("artifact_paths", {})[Path(filename).stem] = str(path)
     write_json(state.manifest_path, state.manifest)
 
 
@@ -445,6 +609,9 @@ def execute(task, target, mode, storage, resume, run_notebook_fn=None):
     elif task == "P03":
         # 비교 대상 목록이 곧 이 작업의 설정이다. 목록이 바뀌면 다른 실험이다.
         config = {"task": "P03", "mode": mode, "groups": sorted(FEATURE_GROUPS)}
+    elif task == "P04":
+        config = {"task": "P04", "mode": mode, "windows": list(WINDOW_CANDIDATES),
+                  "baseline": BASELINE_WINDOW, "min_train_rows": MIN_TRAIN_ROWS}
     else:
         config = {"mode": mode}
     identity = {
@@ -463,7 +630,7 @@ def execute(task, target, mode, storage, resume, run_notebook_fn=None):
     try:
         rows = TASK_RUNNERS[task](target, mode, storage, state, run_notebook_fn=run_notebook_fn)
     except Exception as exc:
-        state.fail(f"{target}:baseline", f"{type(exc).__name__}: {exc}")
+        state.fail(f"{target}:{task.lower()}", f"{type(exc).__name__}: {exc}")
         raise
     write_metrics(state, rows or [])
     state.finish()

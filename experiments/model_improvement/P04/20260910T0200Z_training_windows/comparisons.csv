@@ -1,0 +1,13 @@
+target,comparison,metric,delta,ci_low,ci_high,common_n,verdict
+samsung,2y − 5y,balanced_accuracy,nan,nan,nan,0,판단 보류(구간 없음)
+samsung,2y − 5y,log_loss,nan,nan,nan,0,판단 보류(구간 없음)
+samsung,3y − 5y,balanced_accuracy,-0.009351253146109573,-0.026821106801108968,0.008932420096176364,1362,동률(CI가 0 포함)
+samsung,3y − 5y,log_loss,0.015052413472883774,0.006399363463026559,0.024018912231478593,1362,후보가 유의하게 열위
+samsung,expanding − 5y,balanced_accuracy,0.005639442130171812,-0.009597533586922514,0.020739752053277147,1362,동률(CI가 0 포함)
+samsung,expanding − 5y,log_loss,-0.0026184088424827667,-0.010624709072682897,0.005195212952589728,1362,동률(CI가 0 포함)
+sk_hynix,2y − 5y,balanced_accuracy,nan,nan,nan,0,판단 보류(구간 없음)
+sk_hynix,2y − 5y,log_loss,nan,nan,nan,0,판단 보류(구간 없음)
+sk_hynix,3y − 5y,balanced_accuracy,-0.008944511914808995,-0.02590445594699971,0.009131652959636347,1357,동률(CI가 0 포함)
+sk_hynix,3y − 5y,log_loss,0.012035449013793054,0.004413080351194615,0.01992830173619646,1357,후보가 유의하게 열위
+sk_hynix,expanding − 5y,balanced_accuracy,0.005414630372597873,-0.012489199491356726,0.0235769061601018,1357,동률(CI가 0 포함)
+sk_hynix,expanding − 5y,log_loss,-0.009874767442551002,-0.018063894771191795,-0.0009921857249589336,1357,후보가 유의하게 우위

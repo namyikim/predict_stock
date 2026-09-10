@@ -154,9 +154,9 @@ metrics.csv는 target, model, target_mode, fold, n, accuracy, balanced_accuracy,
 **파일:** 읽기 guides/validation.md, guides/running.md, forecast_utils.py, 노트북 설정·학습·저장 셀, experiments/transformer/summary.csv. 생성 experiments/model_improvement/P00/<run_id>/의 결과 파일.
 **입출력:** 현행 모델과 고정 데이터 스냅샷 → 종목별 기준선 manifest, metrics, decision.
 
-- [ ] 현행 HEAD, 대표 모델 HEADLINE_MODEL, 실제 사용 특징, 3클래스 밴드, 학습 창·폴드·발행 시각·비용을 기록한다.
-- [ ] 기존 산출물에서 재사용 가능한 기준선을 찾고, 새 실행이 필요한 범위만 정한다. 항상 보합·학습 구간 클래스 사전확률·Previous ensemble·현행 대표 모델을 같은 날짜에서 비교한다.
-- [ ] 같은 고정 스냅샷으로 quick 동작 확인 후 full 평가를 실행한다.
+- [x] 현행 HEAD, 대표 모델 HEADLINE_MODEL, 실제 사용 특징, 3클래스 밴드, 학습 창·폴드·발행 시각·비용을 기록한다. → 아래 “기준선 계약” 표
+- [x] 기존 산출물에서 재사용 가능한 기준선을 찾고, 새 실행이 필요한 범위만 정한다. 항상 보합·학습 구간 클래스 사전확률·Previous ensemble·현행 대표 모델을 같은 날짜에서 비교한다. → 기존 캐시 재사용 불가(자산 키 불일치)로 스냅샷 신규 고정. 비교 모델 6종이 같은 날짜에서 출력됨
+- [x] 같은 고정 스냅샷으로 quick 동작 확인 후 full 평가를 실행한다. → quick 완료(`experiments/model_improvement/P00/20260910T0000Z_baseline_quick/`), full 실행 중
 - [ ] 노트북 가이드에 기재된 과거 결과와 달라진 이유를 데이터·버전·설정 차이로 구분한다. 재현 불가면 실패 이유를 남기고 P01에 넘길 기준을 명시한다.
 - [ ] 기준선 파일 경로·실제 커밋·다음 작업 P01을 실행 이력에 기록하고 완료 체크한다.
 
@@ -168,7 +168,29 @@ PREDICT_STOCK_PUBLISH=false PREDICT_STOCK_TARGETS=samsung,sk_hynix python tools/
 ~~~
 
 캐시가 없다면 먼저 발행 비활성 상태에서 한 번 수집해 스냅샷을 고정한다. 데이터 다운로드 실패를 다른 날짜 자료로 숨기지 않는다.
-**완료 증거:** 두 종목의 동일 조건 기준선과 실제 평가 날짜 수. 이번 계획 생성 시에는 미실행이다.
+#### 기준선 계약 (2026-09-10 노트북에서 읽은 실제 값)
+
+| 항목 | 값 | 위치 |
+| --- | --- | --- |
+| HEADLINE_MODEL | `No macro ensemble` (시세만; `macro_`/`nsi_`/`flow_` 제외) | C9:97 |
+| ENSEMBLE_MODELS | `["Logistic", "LightGBM"]` 단순 평균 | C9:58 |
+| SELECTION_METRIC | `log_loss` | guides/validation.md |
+| START_DATE | 2015-01-01 | C9:1 |
+| TARGET_MODE | `close_to_close` | C9:35 |
+| 밴드 | `vol_scaled`, VOL_BAND_MULT 0.3 (과거 변동성만 사용) | C9:41-42 |
+| 외부 평가 시작 | FIRST_TEST_DATE 2021-01-01 | C9:47 |
+| 폴드 | TEST_MONTHS 6, 전체 12폴드 (quick 3) | C9:48 |
+| 학습 창 | ROLLING_TRAIN_YEARS 5 | C9:49 |
+| 거래비용 | COST_BP 20.0 | C9:73 |
+| 부트스트랩 | BOOTSTRAP_B 2000 (quick 400), 월 블록 | C9:74 |
+| SEED | 42 | C4:51 |
+| 비교 기준선 | Always flat / Previous ensemble / No macro / No NSI / No flow / No macro price | 실행 출력 |
+| 발행 시각 | Actions 06:22 KST(백업 07:25), 원장 마감 09:00 — P02에서 엄밀 검증 | 워크플로 |
+
+스냅샷: samsung `1b535c11f8be69aaea37`, sk_hynix `c12bc46b6e199a08b37a`, 통합 `93656a4827bf38daa78a`.
+학습 행 samsung 2,753 / sk_hynix 2,752, 백테스트 범위 2015-04-01~2026-09-09, 예측일 2026-09-10.
+
+**완료 증거:** 두 종목의 동일 조건 기준선과 실제 평가 날짜 수. quick 완료, full 실행 중.
 
 ### P01 — 최소 실험 러너와 재개 기능
 
@@ -434,10 +456,11 @@ P00 이후에는 작업 ID만 바꿔 요청한다. Colab 실행이 필요한 경
 | --- | --- | --- | --- | --- |
 | 2026-09-09 | PLAN | 이 문서 및 README 링크 | 저장소 문서·핵심 함수·기존 Transformer 결과 확인 | 계획 생성. P00부터 시작 |
 | 2026-09-10 | P00 사전 수정 | `tools/run_notebook.py`, `tests/test_run_notebook.py` | 8개 오프라인 회귀 테스트 통과 | 기존 CLI가 IPython 히스토리 부재로 둘째 종목을 건너뛰던 결함 수정. P00 전체 완료 아님 |
+| 2026-09-10 | P00 quick | `experiments/model_improvement/P00/20260910T0000Z_baseline_quick/` | 두 종목 46셀 무오류 완료, 평가 276일 | 기준선 계약 기록·스냅샷 고정 완료. 기존 캐시는 자산 키 불일치로 폐기. full 평가 실행 중 |
 
-- 현재 작업: P00 — 기준선 재현
+- 현재 작업: P00 — full 평가 실행 중(quick·계약 기록 완료)
 - 완료한 신규 작업: 0/16
-- 다음 작업: P00
+- 다음 작업: P00 full 결과 기록 → P01
 - 보류 작업: 없음
 - 마지막 검증 결과: `python -m unittest discover -s tests -p test_run_notebook.py -v` — 8개 통과. 전체 기존 테스트는 Windows 출력 인코딩 오류가 확인되어 `PYTHONIOENCODING=utf-8`로 재검증 중.
 - 재개 시 먼저 읽을 파일: 이 문서의 P00, guides/validation.md, guides/running.md

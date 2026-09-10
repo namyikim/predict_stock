@@ -1,0 +1,88 @@
+{
+  "task_id": "P00",
+  "run_id": "20260910T0000Z_baseline_quick",
+  "target": [
+    "samsung",
+    "sk_hynix"
+  ],
+  "code_commit": "9b8e32048432ee0c720c5026989abb96f28a9c13",
+  "data_hash": "93656a4827bf38daa78a",
+  "config_hash": "ccc868c3f7fdb2078ab3",
+  "seed": 42,
+  "mode": "quick",
+  "target_mode": "close_to_close",
+  "classes": [
+    "down",
+    "flat",
+    "up"
+  ],
+  "status": "completed",
+  "completed_units": [
+    "samsung:baseline",
+    "sk_hynix:baseline"
+  ],
+  "failed_units": [],
+  "config": {
+    "headline_model": "No macro ensemble",
+    "ensemble_models": [
+      "Logistic",
+      "LightGBM"
+    ],
+    "target_mode": "close_to_close",
+    "band_mode": "vol_scaled",
+    "vol_band_mult": 0.3,
+    "start_date": "2015-01-01",
+    "first_test_date": "2021-01-01",
+    "test_months": 6,
+    "rolling_train_years": 5,
+    "cost_bp": 20.0,
+    "seed": 42,
+    "mode": "quick",
+    "classes": [
+      "down",
+      "flat",
+      "up"
+    ]
+  },
+  "per_target": {
+    "samsung": {
+      "run_dir": "20260910T003203_22eba56404c7",
+      "data_snapshot_hash": "1b535c11f8be69aaea37",
+      "config_hash": "6701a4d30368f2a2bcc8",
+      "versions_hash": null,
+      "runtime": null,
+      "model_rows": 2753,
+      "backtest_range": [
+        "2015-04-01",
+        "2026-09-09"
+      ],
+      "n_folds": 3,
+      "last_samsung_date": "2026-09-09",
+      "prediction_date": "2026-09-10",
+      "quick_mode": true
+    },
+    "sk_hynix": {
+      "run_dir": "20260910T003406_534591ffae7f",
+      "data_snapshot_hash": "c12bc46b6e199a08b37a",
+      "config_hash": "0c4c360d58da89f77a18",
+      "versions_hash": null,
+      "runtime": null,
+      "model_rows": 2752,
+      "backtest_range": [
+        "2015-04-01",
+        "2026-09-09"
+      ],
+      "n_folds": 3,
+      "last_samsung_date": "2026-09-09",
+      "prediction_date": "2026-09-10",
+      "quick_mode": true
+    }
+  },
+  "artifact_paths": {
+    "metrics": "experiments/model_improvement/P00/20260910T0000Z_baseline_quick/metrics.csv",
+    "raw_outputs": "runs/model_improvement/P00/<target>/runs/<run>/ (Git 미포함)",
+    "snapshot": "runs/model_improvement/P00/<target>/data_cache/ (Git 미포함)"
+  },
+  "note": "quick(3폴드·부트스트랩 400)은 동작 확인용이다. 성능 채택 근거로 쓰지 않는다.",
+  "created_at_utc": "2026-09-10T00:44:44.342975+00:00"
+}

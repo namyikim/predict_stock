@@ -107,21 +107,62 @@ class PushTriggerTests(unittest.TestCase):
 
 
 class ScoringScheduleTests(unittest.TestCase):
-    """개장 후·마감 후 두 번 채점한다."""
+    """개장 후·마감 후 채점. 범위는 cron 문자열이 아니라 실행 시각으로 정한다.
+
+    GitHub cron이 이 저장소에서 4~5시간 밀린다(09:37 회차가 14:10, 16:10 회차가 21:10 — 2026-09-08~10).
+    그래서 정시 호출은 Cloudflare Worker가 맡고(counter/worker.js), GitHub cron은 백업으로 여러 개 건다.
+    """
 
     def setUp(self):
         self.wf = yaml.safe_load(
             (ROOT / ".github/workflows/afternoon-report.yml").read_text(encoding="utf-8"))
+        self.steps = {s.get("name", s.get("uses")): s for s in self.wf["jobs"]["report"]["steps"]}
 
-    def test_two_scoring_schedules(self):
+    def test_schedules_cover_open_and_close_with_after_close_backups(self):
         crons = [item["cron"] for item in self.wf[True]["schedule"]]
-        self.assertEqual(crons, ["37 0 * * 1-5", "10 7 * * 1-5"])   # 09:37 / 16:10 KST
+        self.assertEqual(crons[:2], ["37 0 * * 1-5", "10 7 * * 1-5"])   # 09:37 / 16:10 KST 정시 회차
+        self.assertGreaterEqual(len(crons), 4, "마감 후 백업 회차가 있어야 한다")
+        for cron in crons:
+            minute, hour, _, _, dow = cron.split()
+            self.assertNotIn(int(minute), (0, 30), "정각·30분은 GitHub cron이 가장 많이 밀리는 지점")
+            self.assertEqual(dow, "1-5")
+        for cron in crons[2:]:
+            minute, hour = int(cron.split()[0]), int(cron.split()[1])
+            kst = (hour + 9) % 24 + minute / 60
+            self.assertGreaterEqual(kst, 15 + 40 / 60, f"{cron}: 백업은 당일 봉이 확정되는 15:40 KST 뒤여야 한다")
 
-    def test_morning_run_scores_only_the_open(self):
-        step = {s.get("name"): s for s in self.wf["jobs"]["report"]["steps"]}["채점·보고서 절 갱신"]
-        self.assertIn("37 0 * * 1-5", step["env"]["SCOPE"])
-        self.assertIn("'open'", step["env"]["SCOPE"])
-        self.assertIn("--scope", step["run"])
+    def test_scope_is_decided_by_the_gate_not_the_cron_string(self):
+        gate = self.steps["이번 실행이 할 일 결정"]
+        self.assertEqual(gate["id"], "gate")
+        self.assertIn("should_score_now.py", gate["run"])
+        self.assertIn("--event", gate["run"])
+        score = self.steps["채점·보고서 절 갱신"]
+        self.assertEqual(score["env"]["SCOPE"], "${{ steps.gate.outputs.scope }}")
+        self.assertIn("steps.gate.outputs.score == 'true'", score["if"])
+        self.assertNotIn("github.event.schedule", str(score))   # cron 문자열로 범위를 정하지 않는다
+        review = self.steps["장 마감 회고"]
+        self.assertIn("steps.gate.outputs.review == 'true'", review["if"])
+        self.assertNotIn("github.event.schedule", str(review))
+        self.assertIn('--date "$SESSION"', review["run"])
+        self.assertEqual(review["env"]["SESSION"], "${{ steps.gate.outputs.session }}")
+
+    def test_gate_runs_before_heavy_dependencies(self):
+        names = [s.get("name") for s in self.wf["jobs"]["report"]["steps"]]
+        self.assertLess(names.index("거래일 달력 설치"), names.index("이번 실행이 할 일 결정"))
+        self.assertLess(names.index("이번 실행이 할 일 결정"), names.index("의존성 설치"))
+        self.assertIn("steps.gate.outputs.run == 'true'", self.steps["의존성 설치"]["if"])
+
+    def test_dispatch_inputs_default_to_auto_scope_and_name_the_caller(self):
+        inputs = self.wf[True]["workflow_dispatch"]["inputs"]
+        self.assertEqual(inputs["scope"]["default"], "auto")
+        self.assertIn("auto", inputs["scope"]["options"])
+        self.assertIn("caller", inputs)          # Cloudflare cron이 'cloudflare-cron' 을 넘긴다
+        self.assertIn("inputs.caller", self.wf["run-name"])
+
+    def test_gate_uses_only_the_standard_library(self):
+        source = (ROOT / "tools/should_score_now.py").read_text(encoding="utf-8")
+        self.assertNotIn("import pandas", source)
+        self.assertIn("except Exception:", source)   # 달력은 선택 — 없으면 주말 규칙
 
 
 class LedgerGateTests(unittest.TestCase):

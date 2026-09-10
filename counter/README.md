@@ -148,6 +148,39 @@ git add -A && git commit -m "feat: 보고서 페이지에 조회수 표시" && g
 
 GitHub Pages 반영에 1~2분 걸린다.
 
+### 6. (선택) 채점 워크플로 정시 호출
+
+GitHub의 cron은 이 저장소에서 예정보다 4~5시간 늦게 실행을 만든다(2026-09-08~10 사흘 모두 09:37 회차가
+14:10에, 16:10 회차가 21:06~21:18에 실행). Cloudflare의 Cron Trigger는 분 단위로 정확하므로, 이 Worker가
+그 시각에 GitHub의 `workflow_dispatch` API로 채점 워크플로(`afternoon-report.yml`)를 깨운다. 토큰이 없으면
+이 기능은 꺼져 있고 카운터만 동작한다.
+
+1. **토큰 만들기** — GitHub → Settings → Developer settings → Personal access tokens →
+   **Fine-grained tokens** → Generate new token.
+   - Repository access: **Only select repositories** → `predict_stock` 하나
+   - Permissions → Repository permissions → **Actions: Read and write** (Metadata: Read는 자동으로 붙는다).
+     다른 권한은 주지 않는다.
+   - Expiration: 만료일을 정하고 달력에 적어 둔다. 만료되면 정시 호출만 멈추고 GitHub cron 백업은 계속 돈다.
+
+   토큰은 생성 화면에서 한 번만 보인다. 저장소·노트북·채팅 어디에도 붙여 넣지 않는다.
+2. **Worker에 시크릿 넣기** — Worker → **Settings → Variables and Secrets** → Add → Type **Secret**,
+   이름 `GITHUB_DISPATCH_TOKEN`, 값은 위 토큰.
+3. **Cron Trigger 두 개 추가** — Worker → **Settings → Triggers → Cron Triggers** → Add. 입력 방식에서
+   "Execute worker every"(간격) 대신 **Cron** 식(custom expression)을 고르고 UTC로 넣는다.
+   - `37 0 * * 1-5` — 09:37 KST 시가 채점
+   - `10 7 * * 1-5` — 16:10 KST 마감 채점·회고
+
+   기존의 보관기간 정리 트리거는 그대로 둔다(그 시각에는 정리만 한다).
+4. **Worker 다시 배포** — Edit code에 `worker.js`의 최신 내용을 붙여넣고 Deploy. 배포하지 않으면
+   트리거가 와도 옛 코드가 돈다.
+5. **확인** — 다음 평일 16:10 KST 직후 GitHub → Actions → "채점 갱신 (개장 후·마감 후)"에
+   `채점 갱신 · cloudflare-cron` 실행이 생기면 된다. Worker → Logs에서
+   `workflow_dispatch {"status":"dispatched","code":204}` 를 볼 수 있다. `code` 가 401·403이면 토큰
+   권한(Actions: write)이나 만료를, 404면 저장소 접근 범위를 확인한다.
+
+토큰이 새도 할 수 있는 일은 이 저장소의 워크플로를 실행시키는 것뿐이다(코드·원장 변경 불가).
+그래도 의심되면 GitHub에서 토큰을 폐기하고 새로 만들어 시크릿을 바꾼다.
+
 ## 통계 보기
 
 ### 대시보드

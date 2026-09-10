@@ -1,26 +1,40 @@
 name: 채점 갱신 (개장 후·마감 후)
+run-name: >-
+  ${{ github.event_name == 'workflow_dispatch' && format('채점 갱신 · {0}', inputs.caller || '수동')
+      || '채점 갱신 · GitHub 예약' }}
 
-# 한국 정규장은 15:30에 끝난다. 07:10 UTC(= 16:10 KST)에 돌려 그날 종가로 예측을 채점하고
-# 보고서를 새로 발행한다. 15:40 이후여야 야후의 당일 봉이 완성으로 처리된다(노트북의 미완성 봉 제거 규칙).
+# 한국 정규장은 15:30에 끝난다. 09:37 KST(00:37 UTC)에 시가로 시초가 예측을 채점하고, 16:10 KST(07:10 UTC)에
+# 종가로 나머지를 채점한 뒤 그날 장 회고를 붙인다. 15:40 이후여야 야후의 당일 봉이 완성으로 처리된다
+# (노트북의 미완성 봉 제거 규칙).
 #
-# 09:37 회차는 시가 확정 직후라 시초가 예측만 채점하고, 16:10 회차는 종가로 나머지를 채점한다.
 # 새 예측은 만들지 않는다. 원장은 날짜별 '최초 사전 예측'만 집계하는데, 오후 예측에는 그날 밤
 # 미국 장 정보가 없어 아침 06:30 예측보다 정보가 적다. 기록하면 나쁜 쪽이 채택되고 좋은 쪽이
-# 중복으로 버려진다.
+# 중복으로 버려진다. 전 구간 워크포워드도 다시 돌리지 않는다(아침에 이미 했고 하루 사이에 달라지지
+# 않는다). 대상 종목 시세만 받아 채점하고 보고서의 '어제 예측 vs 실제' 절만 바꿔 끼운다 — 1분이면 끝난다.
 #
-# 전 구간 워크포워드도 다시 돌리지 않는다(아침에 이미 했고 하루 사이에 달라지지 않는다).
-# 대상 종목 시세만 받아 채점하고 보고서의 '어제 예측 vs 실제' 절만 바꿔 끼운다 — 1분이면 끝난다.
+# ── 실행 시각에 대해 ──
+# GitHub의 cron은 이 저장소에서 예정보다 4~5시간 늦게 실행을 만든다(2026-09-08~10 사흘 모두: 09:37 회차가
+# 14:10에, 16:10 회차가 21:06~21:18에 실행). 일일 보고서는 하루 23개 cron 중 11~13개만 실행됐다. 그래서
+#   1. 정시 호출은 Cloudflare Worker의 Cron Trigger가 workflow_dispatch API로 한다(counter/worker.js,
+#      counter/README.md "채점 워크플로 정시 호출"). 이 경로는 분 단위로 정확하다.
+#   2. 아래 GitHub cron은 백업이다. 밀려서 도착해도 해가 없게, 범위(시가만/종가까지/회고)는 cron 문자열이
+#      아니라 실행 시점의 KST 시각으로 정한다(tools/should_score_now.py).
+#   3. 그날 할 일이 이미 발행됐으면 게이트가 몇 초 만에 건너뛴다. 회차를 여러 개 걸어도 중복 커밋이 없다.
 on:
   schedule:
     - cron: "37 0 * * 1-5"   # 09:37 KST — 개장 직후. 시가가 확정되어 시초가 예측을 채점한다.
-    - cron: "10 7 * * 1-5"   # 16:10 KST — 마감 후. 종가로 나머지를 채점한다.
+    - cron: "10 7 * * 1-5"   # 16:10 KST — 마감 후. 종가로 나머지를 채점하고 회고를 붙인다.
+    - cron: "25 7 * * 1-5"   # 16:25 KST — 마감 후 백업 1
+    - cron: "52 8 * * 1-5"   # 17:52 KST — 마감 후 백업 2
+    - cron: "52 13 * * 1-5"  # 22:52 KST — 마감 후 백업 3. 자정을 넘겨 도착해도 전 거래일을 대상으로 한다.
   workflow_dispatch:
     inputs:
       scope:
-        description: "채점 범위"
+        description: "채점 범위 (auto: 지금 KST 시각으로 정함)"
         type: choice
-        default: "all"
+        default: "auto"
         options:
+          - "auto"
           - "all"
           - "open"
       targets:
@@ -31,6 +45,10 @@ on:
           - "samsung,sk_hynix"
           - "samsung"
           - "sk_hynix"
+      caller:
+        description: "누가 불렀는지(실행 이름에 표시). Cloudflare cron은 cloudflare-cron 을 넘긴다."
+        type: string
+        default: "수동"
 
 permissions:
   contents: write
@@ -57,39 +75,48 @@ jobs:
           python-version: "3.13"
           cache: pip
 
-      - name: 의존성 설치
-        run: pip install pandas==3.0.5 numpy==2.5.2 yfinance==1.7.0
+      # 게이트는 가볍게 끝나야 한다. 달력은 휴장일 판단용이고, 무거운 의존성은 게이트를 통과한 뒤에 설치한다.
+      - name: 거래일 달력 설치
+        run: pip install exchange_calendars==4.13.2
 
       # 수동 실행에서 종목을 고를 수 있게 한다. 예약 실행에는 입력이 없어 둘 다 대상이다.
-      - name: 이번 종목이 대상인지 확인
+      # 범위·회고 여부·대상 거래일은 지금 KST 시각으로 정한다(cron 문자열은 믿지 않는다).
+      - name: 이번 실행이 할 일 결정
         id: gate
         env:
           WANTED: ${{ inputs.targets }}
           THIS: ${{ matrix.target }}
+          EVENT: ${{ github.event_name }}
+          REQUESTED: ${{ inputs.scope }}
         run: |
           wanted="${WANTED:-samsung,sk_hynix}"
-          if printf ',%s,' "$wanted" | grep -q ",$THIS,"; then
-            echo "run=true" >> "$GITHUB_OUTPUT"
-          else
+          if ! printf ',%s,' "$wanted" | grep -q ",$THIS,"; then
             echo "run=false" >> "$GITHUB_OUTPUT"
             echo "$THIS 은(는) 이번 실행 대상이 아닙니다."
+            exit 0
           fi
+          python tools/should_score_now.py --target "$THIS" --event "$EVENT" --requested "${REQUESTED:-auto}"
+
+      - name: 의존성 설치
+        if: steps.gate.outputs.run == 'true'
+        run: pip install pandas==3.0.5 numpy==2.5.2 yfinance==1.7.0
 
       - name: 채점·보고서 절 갱신
-        if: steps.gate.outputs.run == 'true'
+        if: steps.gate.outputs.score == 'true'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          # 09:37 회차는 시가만, 16:10 회차와 수동 실행은 전체를 채점한다.
-          SCOPE: ${{ github.event.schedule == '37 0 * * 1-5' && 'open' || (inputs.scope || 'all') }}
+          SCOPE: ${{ steps.gate.outputs.scope }}
         run: python tools/build_afternoon_update.py --target ${{ matrix.target }} --out runs/afternoon --scope "$SCOPE" --publish
-      # 장 마감 회고: 16:10 회차(scope=all)에서만. 09:37 회차는 장중이라 회고할 것이 없다.
-      # 뉴스는 Google News RSS(키 불필요), 공시는 DART 키가 있을 때만. 실패해도 채점 결과는 이미 발행됐다.
+
+      # 장 마감 회고: 종가가 확정된 뒤(15:40 KST 이후)에만 게이트가 켠다. 뉴스는 Google News RSS(키 불필요),
+      # 공시는 DART 키가 있을 때만. 실패해도 채점 결과는 이미 발행됐고, 다음 백업 회차가 회고만 다시 시도한다.
       - name: 장 마감 회고
-        if: steps.gate.outputs.run == 'true' && (github.event.schedule != '37 0 * * 1-5') && (inputs.scope != 'open')
+        if: steps.gate.outputs.review == 'true'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DART_API_KEY: ${{ secrets.DART_API_KEY }}
-        run: python tools/build_session_review.py --target ${{ matrix.target }} --out runs/review --publish
+          SESSION: ${{ steps.gate.outputs.session }}
+        run: python tools/build_session_review.py --target ${{ matrix.target }} --date "$SESSION" --out runs/review --publish
 
       - name: Pages 재빌드 요청
         if: steps.gate.outputs.run == 'true'

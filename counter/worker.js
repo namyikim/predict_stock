@@ -13,11 +13,15 @@
 //
 // Cron Trigger(대시보드 Settings → Triggers → Cron Triggers, 예: `0 3 * * *`)를 걸면
 // 아래 scheduled()가 매일 오래된 조회 기록을 지운다(보관기간 관리).
+// `37 0 * * 1-5`·`10 7 * * 1-5`(UTC) 트리거를 더 걸고 GITHUB_DISPATCH_TOKEN 을 넣으면 같은
+// scheduled()가 그 시각에 GitHub의 채점 워크플로를 정시에 깨운다(README "채점 워크플로 정시 호출").
 //
 // 바인딩(대시보드 Settings에서 설정)
-//   DB            D1 데이터베이스
-//   VISITOR_SALT  방문자 해시용 비밀값(시크릿)
-//   STATS_TOKEN   /stats 접근 토큰(시크릿)
+//   DB                    D1 데이터베이스
+//   VISITOR_SALT          방문자 해시용 비밀값(시크릿)
+//   STATS_TOKEN           /stats 접근 토큰(시크릿)
+//   GITHUB_DISPATCH_TOKEN (선택) 채점 워크플로를 깨우는 fine-grained PAT(시크릿).
+//                         이 저장소 하나, Actions: Read and write 권한만. 없으면 깨우지 않는다.
 
 // 이 오리진에서 온 요청만 집계한다. 열어두면 아무 사이트나(혹은 curl 반복문이) 우리
 // 카운터를 올릴 수 있다. CORS 헤더는 브라우저의 *읽기*만 막을 뿐 요청 자체는 막지
@@ -37,6 +41,44 @@ const ALLOWED_PAGES = ["main", "samsung", "sk_hynix", "china", "metals", "trends
 // 크롤러는 사람의 조회가 아니므로 세지 않는다. 완벽한 판별은 불가능하고, 목적은
 // 검색엔진·모니터링 봇이 만드는 명백한 과다 집계를 걷어내는 것이다.
 const BOT_PATTERN = /bot|crawler|spider|crawling|slurp|facebookexternalhit|preview|monitor|curl|wget|python-requests|headless/i;
+
+// 채점 워크플로 정시 호출. GitHub의 cron은 이 저장소에서 예정보다 4~5시간 늦게 실행을 만들고
+// (09:37 회차가 14:10, 16:10 회차가 21:10 — 2026-09-08~10 사흘 모두) 하루 23개 중 절반은 아예
+// 만들어지지 않았다. Cloudflare의 Cron Trigger는 분 단위로 정확하므로, 아래 시각(UTC)의 트리거가
+// 오면 GitHub workflow_dispatch API로 채점 워크플로를 시작한다. 워크플로 쪽은 도착 시각으로 할 일을
+// 정하고 이미 한 일은 건너뛰므로(tools/should_score_now.py) GitHub cron과 겹쳐도 해가 없다.
+const DISPATCH_REPO = "namyikim/predict_stock";
+const DISPATCH_WORKFLOW = "afternoon-report.yml";
+const DISPATCH_TIMES_UTC = [[0, 37], [7, 10]];   // 09:37 KST 시가 채점 · 16:10 KST 마감 채점+회고
+const DISPATCH_TOLERANCE_MINUTES = 3;            // 트리거가 몇 분 밀려 와도 같은 회차로 본다
+
+// 이 트리거 시각이 채점 회차인가. 워크플로의 cron과 같이 월~금(UTC)만.
+export function dispatchDue(scheduledTime, times = DISPATCH_TIMES_UTC) {
+  const t = new Date(scheduledTime);
+  const weekday = t.getUTCDay();                 // 0=일 … 6=토
+  if (weekday === 0 || weekday === 6) return false;
+  const minuteOfDay = t.getUTCHours() * 60 + t.getUTCMinutes();
+  return times.some(([h, m]) => Math.abs(minuteOfDay - (h * 60 + m)) <= DISPATCH_TOLERANCE_MINUTES);
+}
+
+// GitHub에 workflow_dispatch 를 보낸다. 토큰이 없으면 아무것도 하지 않는다 — 조회수 카운터만 쓰는
+// 배포도 그대로 동작해야 한다. 응답 본문은 기록하지 않는다(오류 문구에 토큰 정보가 섞일 수 있다).
+async function dispatchScoring(env) {
+  if (!env.GITHUB_DISPATCH_TOKEN) return { status: "skipped", reason: "GITHUB_DISPATCH_TOKEN 없음" };
+  const url = `https://api.github.com/repos/${DISPATCH_REPO}/actions/workflows/${DISPATCH_WORKFLOW}/dispatches`;
+  const response = await fetch(url, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${env.GITHUB_DISPATCH_TOKEN}`,
+      Accept: "application/vnd.github+json",
+      "X-GitHub-Api-Version": "2022-11-28",
+      "Content-Type": "application/json",
+      "User-Agent": "predict-stock-counter",   // GitHub API는 User-Agent 없는 요청을 거절한다
+    },
+    body: JSON.stringify({ ref: "main", inputs: { caller: "cloudflare-cron" } }),
+  });
+  return { status: response.status === 204 ? "dispatched" : "failed", code: response.status };
+}
 
 function corsHeaders(origin) {
   const allowed = ALLOWED_ORIGINS.includes(origin) ? origin : ALLOWED_ORIGINS[0];
@@ -269,9 +311,14 @@ export default {
     }
   },
 
-  // Cron Trigger가 부른다. 누적 조회수(counters)는 그대로 두고, 일별 통계에 더는
-  // 쓰이지 않는 오래된 조회 기록만 지운다.
+  // Cron Trigger가 부른다. 채점 회차 시각이면 GitHub 워크플로를 깨우고, 그 밖의 트리거(보관기간 정리)는
+  // 누적 조회수(counters)는 그대로 두고 일별 통계에 더는 쓰이지 않는 오래된 조회 기록만 지운다.
   async scheduled(event, env) {
+    if (dispatchDue(event.scheduledTime)) {
+      const result = await dispatchScoring(env);
+      console.log(`workflow_dispatch ${JSON.stringify(result)}`);
+      return;
+    }
     const cutoff = new Date(Date.now() - RETENTION_DAYS * 86400000).toISOString().slice(0, 10);
     await env.DB.prepare("DELETE FROM hits WHERE day < ?").bind(cutoff).run();
   },

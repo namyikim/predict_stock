@@ -1,0 +1,153 @@
+{
+  "target": "samsung",
+  "name": "삼성전자",
+  "peer_name": "SK하이닉스",
+  "session_date": "2026-09-10",
+  "generated_at": "2026-09-10 18:56 KST",
+  "summary": {
+    "prev_close": 269500.0,
+    "open": 269000.0,
+    "high": 270500.0,
+    "low": 263500.0,
+    "close": 269000.0,
+    "gap": -0.0018552875695733162,
+    "session": 0.0,
+    "c2c": -0.0018552875695733162,
+    "high_vs_open": 0.005576208178438735,
+    "low_vs_open": -0.020446096654275103,
+    "volume": 31028990.0,
+    "volume_ratio": 1.4605547935339986,
+    "kospi_c2c": -0.0025129210368348698,
+    "peer_c2c": -0.001616379310344862,
+    "usdkrw_chg": 0.0017696964526223713,
+    "sox_ret": 0.003655002526455897,
+    "nasdaq_ret": -0.00636114088937989
+  },
+  "classification": {
+    "labels": [
+      "방향성 약함"
+    ],
+    "reasons": [
+      "종가→종가 -0.19%로 ±0.3% 이내"
+    ]
+  },
+  "events": [],
+  "turning_point": {
+    "high_time": "2026-09-10T09:00:00+09:00",
+    "high": 0.0037174721189590088,
+    "low_time": "2026-09-10T10:10:00+09:00",
+    "low": -0.01951672862453535,
+    "pattern": "고점 후 반락"
+  },
+  "closing_share": NaN,
+  "intraday_corr_kospi": 0.8540545379808538,
+  "intraday_note": "장중 봉은 09:00~14:55까지만 있어 마감 구간(14:55~15:30)은 일봉 종가로만 봅니다(그 구간 +0.00%).",
+  "intraday_coverage": "09:00~14:55",
+  "overnight_news": [
+    {
+      "time": "2026-09-09T20:24:28+09:00",
+      "title": "삼성전자 '성과급 투쟁' 조끼‥\"노조위원장 장인 업체서 샀다\"",
+      "source": "MBC 뉴스",
+      "link": "https://news.google.com/rss/articles/CBMieEFVX3lxTE5XdnhNNkd2MERWNWFkeEtLcUtSWndtNEhJczV3TlFUQTV6Qmprc0dRdThZYmNBWmVwQkVpTDV6WHJLa2x6emE0UFUxM1BFN1Fnekh0SmZTNlJ6U29TTDV6VEZycjl5ZW9PYmVKaWc5NlctaU5rSHpOQdIBeEFVX3lxTE9SZG40LWY4TnM5ejNLNDR1anNFWkFuRmtUaGpXM3FCQzQ0c3U3bkExZ2hmSHBGcEo2Z2JYMlNsTjB5OFdyRDZLQVZzai0tY3N3NXNvVkVibncxb3N4TkN6b3Z2d1RDQ1I5cW4yWmx5UEFScl8zNVFGTg?oc=5"
+    },
+    {
+      "time": "2026-09-10T06:00:00+09:00",
+      "title": "[단독]“일 시켜도 야근수당 없다”… 삼성전자 직원 절반이 대상 될 판",
+      "source": "경향신문",
+      "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE13aFNvN3hBdzgzYWZ0MkZ2cEZ0MWZIcnIxUUJpemV5WjBRa2dCa05hRlhLbnQ0VlJGRWFyOURCZFZvbnF2UzZ5YmpWWUZzNTJIeVV1MDlJdDFmUdIBX0FVX3lxTE9BU2FTOEI3bzhOZ0R4VGhHOWh2NnIxUjA1YmMtN1hBYXNnQ3ltcXZhby1UQmhVYjFvYVZoR1JtZTMyeFlRNXJ0S3lqdjhLTl8tZml3QlI4Z2JCa0ExVVNV?oc=5"
+    },
+    {
+      "time": "2026-09-10T08:48:00+09:00",
+      "title": "세계 1위 탈환한 삼성전자 스마트폰, 사상 첫 적자에 속앓이",
+      "source": "연합인포맥스",
+      "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE9Jck1leXBXNWlXRTltRTZNOGljZDBROE5JcVBRaDhNMGJrbmFnT2NaUlpaTmhDYXNxdXJOajJocVR2Q3AxVlo0SEM3QWtIbUY3N0t4WmtSckhwRW50Q1p3TW9jYW5XSlZjNXdSZFhiRm8?oc=5"
+    },
+    {
+      "time": "2026-09-10T08:32:22+09:00",
+      "title": "삼성전자서비스, 17일부터 ‘현금 없는 서비스센터’ 시범 운영",
+      "source": "g-enews.com",
+      "link": "https://news.google.com/rss/articles/CBMihAFBVV95cUxPMFlscTZEZE4zR05HYjhpTjJBR0FXUHBEWHphdm12TU5hR0tobmdRdmxkT1hYM3h4Zkw2eEJ2NzNLcE13c1haa1VJRy13dEZLcUIxNEpURUkwWTRHdHZrQWh2bHM3XzQ0and2bXBnVzBPOWZUUnFycXhWRGNFNlJ6bVQxNlg?oc=5"
+    },
+    {
+      "time": "2026-09-10T09:00:00+09:00",
+      "title": "삼성전자서비스, 현금 없는 서비스센터 시범 도입",
+      "source": "부산일보",
+      "link": "https://news.google.com/rss/articles/CBMifEFVX3lxTE1wS1hnTHBJOHhVbVlxbHpfRVNHSWlzcHg3YjllV0IyWUU0RUdfZE1STnp4QXh0ZXRRdUNyNlJQT1JXX3d1RDNZUThiZ01LTHNVamZ4N1I5aVgydU9CUXB1bndVNElzTUdPUGFtLURrQUJESjZGVm5MVXJnSnk?oc=5"
+    }
+  ],
+  "top_news": [
+    {
+      "time": "2026-09-10T14:32:00+09:00",
+      "title": "삼성SDI도 삼성전자 반도체 부문처럼…성과급 재원 ‘영업이익’ 기준으로 변경 - 조선비즈",
+      "source": "Chosunbiz",
+      "link": "https://news.google.com/rss/articles/CBMihAFBVV95cUxNaGFqU01yWVRFcUU1Z0JnTVVETWR3c0JJSWlnLS1tVFAtV3JlRDdaYUpma190LUs3WmVZMzEwRVlnNFQzUGxEMTR6NWNZVHUzNmZoS3lhWF94R1FWS2NoMUJsZV9aeWNBZTJjMFdLZU9HNm9SQTBYazljUzZvMkF2cEIwMUjSAZgBQVVfeXFMTkNaMzNwZVpSazNoZmstVHU3NFRfOXF6MmtLZl9wakJpV29yUEFRdzhyblExRS1zejRIeDJiTkNhR0JQQU8xT0FuNzVwaUwxMDA2VGg4T0NaanJlMzZJYzUxRzlGUWd5NldscXRuLW43VmZYcnlpVE1SZ19USUFKQjIzdnAtWjZSalVENjV4RTNVR1AyZDFuZ1E?oc=5"
+    },
+    {
+      "time": "2026-09-10T14:34:19+09:00",
+      "title": "대구대 윤재웅 총장, 삼성전자 평택캠퍼스 협력사와 AI·반도체 인재 취업 활성화 논의",
+      "source": "경북신문",
+      "link": "https://news.google.com/rss/articles/CBMiWEFVX3lxTE9acE5PNmNUUUZYMzFPMThaMUw3ZENDUlZNZzBMd2UwRDlCM2hvUTJxTWRxa0pjc2xDdk4zVXRmdk9jb2JadkZUbXFyOS1ZQlNTQlNXNlVYT3E?oc=5"
+    },
+    {
+      "time": "2026-09-10T16:04:27+09:00",
+      "title": "[거래소 외국인] SK하이닉스 삼성전자 한미반도체 대량 매도...삼성전자우 SK스퀘어 '러브콜'",
+      "source": "핀포인트뉴스",
+      "link": "https://news.google.com/rss/articles/CBMid0FVX3lxTE55Sm9nNnljcUR2Ui1zR1RsbnlObDFSSDByR05YODR6OGVzbTRnSktUR0h2SVZWZFdWYWNEZUlaZGtkQVRCZWt0eG1zSFBaVmk3Q2c3c2FlZXREUnBUVW54UzZ2eVoyZUhudDRSQS10ZHRIUWxkZUFj0gF3QVVfeXFMTnlKb2c2eWNxRHZSLXNHVGxueU5sMVJIMHJHTlg4NHo4ZXNtNGdKS1RHSHZJVlZkV1ZhY0RlSVpka2RBVEJla3R4bXNIUFpWaTdDZzdzYWVldERScFRVbnhTNnZ5WjJlSG50NFJBLXRkdEhRbGRlQWM?oc=5"
+    },
+    {
+      "time": "2026-09-10T18:21:23+09:00",
+      "title": "대구대, 삼성전자 협력사와 AI·반도체 인재 양성 맞손",
+      "source": "kyongbuk.co.kr",
+      "link": "https://news.google.com/rss/articles/CBMib0FVX3lxTE5IT1hOdGRwWWtiRDZSa0hxMFh5TVd6enB6SDE2eC1hdy1rVTNQcnBiSjdJcFVBbklDckc3ZFdMeDNMN2NRWlVmZ2VLcURENVdJWFBlajdYX0VDVXVqQnZDSlU3MkdPblZQYWNlWjBURQ?oc=5"
+    },
+    {
+      "time": "2026-09-10T16:20:56+09:00",
+      "title": "제주반도체, 5% 이상 급등하며 7만8천원 돌파…외국인 매수세 유입 (+080220, 반도체, 외국인매매, 주가상승, 2026년 9월 10일 목요일)",
+      "source": "minsimnews.com",
+      "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE95alE5UkRURGl1OFk2ZDFhTE1idmZpSFR5N0pPdmZ6MDgzSXdjckZKR29DZ200UTNFUnJqVldyVVhnY2xPTlZyLU5Zc3l5d2JiSUpSZkNfZjVwZFpUelRUOTRGMy1SRU1HQWQtNA?oc=5"
+    },
+    {
+      "time": "2026-09-10T16:49:32+09:00",
+      "title": "유가·금리상승 지속에도 9월 반도체 상승에 코스피 7000선 방어 - 머니투데이",
+      "source": "머니투데이",
+      "link": "https://news.google.com/rss/articles/CBMie0FVX3lxTE81b3NiS1I3Uy1FY2V4OXJZdFdrMHdPWHEwRUNrZFQtalhTeDUzSVl0WnZKX0Z0b0k5YXJDQTRUR1pCNjZHQlM2UHdOejJ5cjVYUlV3QVFZMElwR0dCX2dqc0Njd0VUYVMwWUZUN1ZwdUxrdjh0RzRNVFJjONIBe0FVX3lxTE81b3NiS1I3Uy1FY2V4OXJZdFdrMHdPWHEwRUNrZFQtalhTeDUzSVl0WnZKX0Z0b0k5YXJDQTRUR1pCNjZHQlM2UHdOejJ5cjVYUlV3QVFZMElwR0dCX2dqc0Njd0VUYVMwWUZUN1ZwdUxrdjh0RzRNVFJjOA?oc=5"
+    }
+  ],
+  "disclosures": [],
+  "disclosure_note": null,
+  "flows": "외국인 -5,769,453 / 기관 +4,266,985",
+  "forecasts": [
+    {
+      "model": "No macro ensemble",
+      "hit": true,
+      "verdict": "맞음 — 예측 보합 45%, 실제 보합(-0.19%)",
+      "legs": "갭 -0.19%(보합) · 세션 +0.00%(보합)",
+      "where": "결과는 주로 갭(밤사이)에서 정해졌습니다.",
+      "band": 0.0134891116036393,
+      "probs": [
+        0.2745588146672502,
+        0.4472414919037183,
+        0.2781996934290313
+      ],
+      "actual": "보합",
+      "predicted": "보합"
+    },
+    {
+      "model": "Mean ensemble",
+      "hit": true,
+      "verdict": "맞음 — 예측 보합 44%, 실제 보합(-0.19%)",
+      "legs": "갭 -0.19%(보합) · 세션 +0.00%(보합)",
+      "where": "결과는 주로 갭(밤사이)에서 정해졌습니다.",
+      "band": 0.0134891116036393,
+      "probs": [
+        0.2767276619509219,
+        0.4443821170763181,
+        0.27889022097276
+      ],
+      "actual": "보합",
+      "predicted": "보합"
+    }
+  ],
+  "price_check": "1거래일 예상 구간 254,620~285,222원 · 종가 269,000원 → 구간 안",
+  "disclaimer": "시간이 맞는 것이지 원인 확정이 아닙니다. 뉴스 없이 움직이는 날(수급·프로그램·옵션 만기)이 많고, 기사 발행 시각은 실제 정보 유통보다 늦거나 앞섭니다. 이 절은 설명 도구이며 다음날 예측에 자동 반영되지 않습니다."
+}

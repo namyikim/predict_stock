@@ -192,12 +192,68 @@ def probability_loss(y, p):
 SELECTION_METRICS = ("log_loss", "accuracy")
 
 
-def fit_direction_model(X, y, train_indices, family, seed=42, selection="log_loss"):
+def recency_weights(n, half_life=None):
+    """최근 관측에 더 큰 가중을 준다. w = 2 ** (-age / half_life), 평균 1로 정규화.
+
+    age는 학습 구간 안에서의 거래일 나이다(마지막 관측이 0). 평균을 1로 맞추므로
+    무가중과 정규화 상수가 같아져, 반감기만 바뀌고 전체 규제 강도는 그대로다.
+    half_life가 None이면 무가중(전부 1)이다.
+    """
+    n = int(n)
+    if n <= 0:
+        return np.ones(0, dtype=float)
+    if half_life is None:
+        return np.ones(n, dtype=float)
+    half_life = float(half_life)
+    if not np.isfinite(half_life) or half_life <= 0:
+        raise ValueError(f"half_life는 양의 유한값이어야 합니다: {half_life!r}")
+    age = np.arange(n - 1, -1, -1, dtype=float)      # 마지막 관측의 age가 0
+    weights = np.power(2.0, -age / half_life)
+    return weights / weights.mean()
+
+
+def _checked_weights(sample_weight, length):
+    """학습 행 가중치를 검사해 배열로 돌려준다. None이면 None."""
+    if sample_weight is None:
+        return None
+    weights = np.asarray(sample_weight, dtype=float)
+    if weights.shape != (length,):
+        raise ValueError(f"sample_weight 길이가 X와 다릅니다: {weights.shape} vs ({length},)")
+    if not np.isfinite(weights).all():
+        raise ValueError("sample_weight에 비유한 값이 있습니다")
+    if (weights < 0).any():
+        raise ValueError("sample_weight에 음수가 있습니다")
+    if weights.sum() <= 0:
+        raise ValueError("sample_weight의 합이 0입니다")
+    return weights
+
+
+def _fit_with_weights(estimator, X, y, weights):
+    """가중치를 지원하는 추정기에만 넘긴다. Pipeline은 마지막 단계 이름을 붙여야 한다."""
+    if weights is None:
+        return estimator.fit(X, y)
+    try:
+        from sklearn.pipeline import Pipeline
+    except Exception:
+        Pipeline = ()
+    if isinstance(estimator, Pipeline):
+        return estimator.fit(X, y, **{f"{estimator.steps[-1][0]}__sample_weight": weights})
+    return estimator.fit(X, y, sample_weight=weights)
+
+
+def fit_direction_model(X, y, train_indices, family, seed=42, selection="log_loss",
+                        sample_weight=None):
     """바깥 평가 구간을 보지 않고, 과거 내부 3개 구간의 성적으로 설정을 고른다.
 
     selection="log_loss": 내부 log loss가 가장 낮은 설정(동률이면 정확도가 높은 쪽).
     selection="accuracy": 내부 정확도가 가장 높은 설정(동률이면 log loss가 낮은 쪽) — 예전 기준.
     온도 보정은 argmax를 유지한다. 반환값은 표준 estimator와 dict뿐이어서 joblib로 다시 읽을 수 있다.
+
+    sample_weight는 X와 같은 길이의 학습 행 가중치다(전체 행 기준). train_indices와 내부
+    분할로 각각 잘라 쓴다. class_weight="balanced"와 함께 쓰면 둘이 곱해진다 — 클래스 균형과
+    최근성이 동시에 걸리므로 선택된 params와 half_life를 함께 기록해야 재현된다.
+    설정 선택과 온도 보정도 같은 가중치로 한다. 내부 검증 점수 자체는 가중하지 않는다 —
+    평가는 언제나 날짜별 동일 가중이다.
     """
     if selection not in SELECTION_METRICS:
         raise ValueError(f"selection은 {SELECTION_METRICS} 중 하나여야 합니다: {selection!r}")
@@ -206,7 +262,9 @@ def fit_direction_model(X, y, train_indices, family, seed=42, selection="log_los
     indices = np.asarray(train_indices, dtype=int)
     if len(indices) < 100 or np.any(np.diff(indices) <= 0):
         raise ValueError("At least 100 chronologically ordered training rows are required")
+    weights_all = _checked_weights(sample_weight, len(np.asarray(y)))
     xt, yt = np.asarray(X)[indices], np.asarray(y)[indices]
+    wt = None if weights_all is None else weights_all[indices]
     if family == "Logistic":
         candidates = [{"C": c, "class_weight": w} for c in (.003, .01, .03) for w in (None, "balanced")]
     elif family == "LightGBM":
@@ -221,7 +279,7 @@ def fit_direction_model(X, y, train_indices, family, seed=42, selection="log_los
         for tr, va in splits:
             estimator = (direction_estimator(family, params, seed) if len(np.unique(yt[tr])) > 1
                          else DummyClassifier(strategy="prior"))
-            estimator.fit(xt[tr], yt[tr])
+            _fit_with_weights(estimator, xt[tr], yt[tr], None if wt is None else wt[tr])
             predictions.append(aligned_probabilities(estimator, xt[va]))
         probs = np.vstack(predictions)
         accuracy = float(np.mean(probs.argmax(axis=1) == labels))
@@ -234,9 +292,10 @@ def fit_direction_model(X, y, train_indices, family, seed=42, selection="log_los
     temperature = min(temperatures, key=lambda t: probability_loss(labels, temperature_probabilities(best[3], t)))
     estimator = (direction_estimator(family, best[2], seed) if len(np.unique(yt)) > 1
                  else DummyClassifier(strategy="prior"))
-    estimator.fit(xt, yt)
+    _fit_with_weights(estimator, xt, yt, wt)
     return {"estimator": estimator, "temperature": temperature, "selection": {
         "family": family, "params": best[2], "temperature": temperature, "selection_metric": selection,
+        "weighted": wt is not None,
         "inner_accuracy": best[0], "inner_log_loss": probability_loss(labels, temperature_probabilities(best[3], temperature)),
         "last_validation_position": int(indices[splits[-1][1][-1]]), "training_rows": len(indices),
     }}

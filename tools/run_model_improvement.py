@@ -45,6 +45,8 @@ TASKS = {
     "P00": "현행 기준선과 평가 계약 고정",
     "P03": "기존 특징군의 추가 가치 비교",
     "P04": "학습 기간 비교",
+    "P05": "최근 표본 가중 학습",
+    "P06": "재학습 주기 비교",
 }
 
 # P03에서 비교하는 특징군. 노트북이 같은 폴드·같은 날짜로 이미 계산해 CSV로 남기므로
@@ -557,7 +559,254 @@ def run_p04(target, mode, storage, state, run_notebook_fn=None):
     return rows
 
 
-TASK_RUNNERS = {"P00": run_p00, "P03": run_p03, "P04": run_p04}
+# ---------------------------------------------------------------------------
+# P05 — 최근 표본 가중 학습
+# ---------------------------------------------------------------------------
+# 계획이 정한 네 후보만 쓴다. None은 무가중(기준선)이다.
+HALF_LIFE_CANDIDATES = (None, 126, 252, 504)
+
+
+def _weights_for(ns, dates, train_idx, half_life):
+    """학습 구간 안에서의 거래일 나이로 가중치를 만들어 전체 길이 배열에 채운다.
+
+    각 폴드의 마지막 학습 관측이 age 0이다. 학습 구간 밖은 1로 두지만
+    fit_direction_model이 train_indices로 자르므로 값 자체는 쓰이지 않는다.
+
+    노트북 네임스페이스의 recency_weights를 쓴다. 실험이 노트북과 같은 코드로 가중치를
+    만들어야 결과를 그대로 반영할 수 있다.
+    """
+    weights = np.ones(len(dates), dtype=float)
+    weights[train_idx] = ns["recency_weights"](len(train_idx), half_life)
+    return weights
+
+
+def _weighted_ensemble(ns, features, y, dates, train_idx, test_idx, half_life):
+    weights = None if half_life is None else _weights_for(ns, dates, train_idx, half_life)
+    probs = []
+    for family in ("Logistic", "LightGBM"):
+        fitted = ns["fit_direction_model"](features, y, train_idx, family,
+                                           seed=ns.get("SEED", 42),
+                                           selection=ns.get("SELECTION_METRIC", "log_loss"),
+                                           sample_weight=weights)
+        probs.append(ns["predict_direction_model"](fitted, features[test_idx]))
+    return np.mean(probs, axis=0)
+
+
+def _inner_half_life(ns, features, y, dates, train_idx, inner_months=6):
+    """외부 라벨을 보지 않고 반감기를 고른다. 내부 검증 점수는 동일 가중으로 잰다."""
+    train_dates = pd.DatetimeIndex(dates)[train_idx]
+    split = train_dates[-1] - pd.DateOffset(months=inner_months)
+    inner_test = train_idx[train_dates > split]
+    inner_train = train_idx[train_dates <= split]
+    if len(inner_test) < 20 or len(inner_train) < MIN_TRAIN_ROWS:
+        return None, {}
+    scores = {}
+    for half_life in HALF_LIFE_CANDIDATES:
+        probs = _weighted_ensemble(ns, features, y, dates, inner_train, inner_test, half_life)
+        scores["none" if half_life is None else str(half_life)] = ns["probability_loss"](y[inner_test], probs)
+    best = min(scores, key=scores.get)
+    return (None if best == "none" else int(best)), scores
+
+
+def run_p05(target, mode, storage, state, run_notebook_fn=None):
+    """반감기 후보별로 같은 외부 폴드에서 워크포워드를 다시 돌리고 무가중과 비교한다."""
+    import time
+
+    unit = f"{target}:half_life"
+    if state.is_done(unit):
+        print(f"  이미 완료된 단위 건너뜀: {unit} (metrics.csv 유지)")
+        return None
+    if run_notebook_fn is None:
+        sys.path.insert(0, str(ROOT / "tools"))
+        from run_notebook import run_notebook as run_notebook_fn
+
+    snapshot = snapshot_paths(storage, target)
+    ns = run_notebook_fn(Path(storage) / target, targets=target,
+                         quick=(mode == "quick"), use_cache=bool(snapshot))[target]
+    features, y, dates, folds = ns["market_X"], ns["y"], ns["dates"], ns["folds"]
+
+    frames, timing = [], {}
+    for half_life in HALF_LIFE_CANDIDATES:
+        label = "none" if half_life is None else str(half_life)
+        started = time.time()
+        for fold in folds:
+            probs = _weighted_ensemble(ns, features, y, dates,
+                                       fold["train_idx"], fold["test_idx"], half_life)
+            frames.append(ns["prediction_frame"](f"half_life {label}", dates[fold["test_idx"]],
+                                                 y[fold["test_idx"]], probs, fold["fold"]))
+        timing[label] = {"seconds": round(time.time() - started, 1), "folds": len(folds)}
+        print(f"  half_life={label}: {len(folds)}폴드 · {timing[label]['seconds']}초")
+
+    predictions = pd.concat(frames, ignore_index=True)
+    chosen, inner_scores = _inner_half_life(ns, features, y, dates, folds[-1]["train_idx"])
+    print(f"  내부 검증이 고른 반감기: {chosen}  {inner_scores}")
+
+    rows, comparisons = [], []
+    metrics = ns["summarize_predictions"](predictions, with_ci=False)
+    for model, row in metrics.iterrows():
+        label = model.replace("half_life ", "")
+        rows.append({"target": target, "model": model, "half_life": label,
+                     "target_mode": "close_to_close", "fold": "all",
+                     **{k: row.get(k, "") for k in ("n", "accuracy", "balanced_accuracy",
+                                                    "log_loss", "brier", "auc_gap", "auc_session")},
+                     "seconds": timing[label]["seconds"]})
+    for half_life in HALF_LIFE_CANDIDATES:
+        if half_life is None:
+            continue
+        for metric in ("balanced_accuracy", "log_loss"):
+            delta = ns["paired_delta_ci"](predictions, f"half_life {half_life}",
+                                          "half_life none", metric)
+            comparisons.append({
+                "target": target, "comparison": f"half_life {half_life} − 무가중", "metric": metric,
+                "delta": delta["delta"], "ci_low": delta["lo"], "ci_high": delta["hi"],
+                "common_n": delta["n"], "verdict": verdict_for(metric, delta["lo"], delta["hi"])})
+
+    write_json(state.run_dir / f"half_life_{target}.json",
+               {"timing": timing, "inner_selection": {"chosen": chosen, "scores": inner_scores},
+                "comparisons": comparisons,
+                "note": "class_weight='balanced'와 곱해진다. 선택된 params는 metrics의 모델별 기록 참조."})
+    write_metrics_named(state, comparisons, "comparisons.csv")
+    state.mark(unit, {"candidates": len(HALF_LIFE_CANDIDATES), "chosen_by_inner": chosen,
+                      "evaluation_days": int(metrics["n"].max())})
+    return rows
+
+
+# ---------------------------------------------------------------------------
+# P06 — 재학습 주기
+# ---------------------------------------------------------------------------
+# 기준선은 폴드 시작 1회 학습(= 약 126거래일 주기). 후보는 계획이 정한 셋뿐이다.
+RETRAIN_CANDIDATES = (1, 5, 21)
+
+
+def retrain_positions(n_days, every):
+    """시험 구간 안에서 재학습하는 위치(0부터). 달력이 아니라 거래일 인덱스로 센다.
+
+    휴일이 며칠 끼든 '5거래일마다'는 위치 0, 5, 10…이다. 결정적이라 재개해도 같다.
+    """
+    if every not in RETRAIN_CANDIDATES:
+        raise ValueError(f"등록되지 않은 재학습 주기입니다: {every}. 사용 가능: {RETRAIN_CANDIDATES}")
+    return list(range(0, int(n_days), int(every)))
+
+
+class ScheduledPredictor:
+    """폴드 시작에 설정(params·온도)을 한 번 고르고, 정해진 주기에만 추정기를 다시 적합한다.
+
+    재학습하지 않는 날은 직전 모델을 그대로 쓰고 그날의 새 특징으로만 예측한다. 하루 틀렸다고
+    그날 다시 학습하지 않는다 — 그러면 주기 비교가 아니라 오답 반응 비교가 된다.
+    재학습 시점의 학습 창은 그 예측일 직전까지의 지정 창(기본 5년)이다.
+    """
+
+    def __init__(self, X, y, dates, family, every, window="5y", seed=42, selection="log_loss", ns=None):
+        self.X, self.y, self.dates = np.asarray(X), np.asarray(y), pd.DatetimeIndex(dates)
+        self.family, self.every, self.window, self.seed, self.selection = family, every, window, seed, selection
+        # 노트북 네임스페이스가 있으면 그 함수를(같은 코드 보장), 없으면 forecast_utils를 쓴다.
+        if ns is None:
+            sys.path.insert(0, str(ROOT))
+            import forecast_utils as fu
+            self._fit, self._predict = fu.fit_direction_model, fu.predict_direction_model
+            self._estimator, self._aligned, self._temper = (
+                fu.direction_estimator, fu.aligned_probabilities, fu.temperature_probabilities)
+        else:
+            self._fit, self._predict = ns["fit_direction_model"], ns["predict_direction_model"]
+            self._estimator, self._aligned, self._temper = (
+                ns["direction_estimator"], ns["aligned_probabilities"], ns["temperature_probabilities"])
+
+    def predict_window(self, train_idx, test_idx):
+        train_idx, test_idx = np.asarray(train_idx), np.asarray(test_idx)
+        # 설정 선택은 폴드 시작에 한 번. 외부 구간 라벨은 보지 않는다.
+        first = self._fit(self.X, self.y, train_idx, self.family, seed=self.seed, selection=self.selection)
+        params, temperature = first["selection"]["params"], first["temperature"]
+        schedule = set(retrain_positions(len(test_idx), self.every))
+        probs = np.zeros((len(test_idx), 3), dtype=float)
+        log, estimator, version, trained_until = [], first["estimator"], 0, self.dates[train_idx[-1]]
+        for position, row in enumerate(test_idx):
+            retrained = False
+            if position in schedule and position > 0:
+                before = self.dates[row]
+                idx = window_train_indices(self.dates, before, self.window)
+                if len(idx) >= 100 and len(np.unique(self.y[idx])) > 1:
+                    estimator = self._estimator(self.family, params, self.seed).fit(self.X[idx], self.y[idx])
+                    version += 1
+                    trained_until = self.dates[idx[-1]]
+                    retrained = True
+            elif position == 0:
+                retrained = True
+            probs[position] = self._temper(self._aligned(estimator, self.X[[row]]), temperature)[0]
+            log.append({"position": position, "date": self.dates[row], "retrained": retrained,
+                        "model_version": version, "trained_until": trained_until,
+                        "params": params, "temperature": temperature})
+        return probs, log
+
+
+def run_p06(target, mode, storage, state, run_notebook_fn=None):
+    """주기별로 같은 외부 폴드·같은 날짜를 예측하고 기준선(폴드당 1회)과 비교한다."""
+    import time
+
+    unit = f"{target}:retrain"
+    if state.is_done(unit):
+        print(f"  이미 완료된 단위 건너뜀: {unit} (metrics.csv 유지)")
+        return None
+    if run_notebook_fn is None:
+        sys.path.insert(0, str(ROOT / "tools"))
+        from run_notebook import run_notebook as run_notebook_fn
+
+    snapshot = snapshot_paths(storage, target)
+    ns = run_notebook_fn(Path(storage) / target, targets=target,
+                         quick=(mode == "quick"), use_cache=bool(snapshot))[target]
+    features, y, dates, folds = ns["market_X"], ns["y"], ns["dates"], ns["folds"]
+    seed, selection = ns.get("SEED", 42), ns.get("SELECTION_METRIC", "log_loss")
+
+    frames, timing, train_counts = [], {}, {}
+    # 기준선: 폴드 시작 1회 학습 = 기존 방식 그대로.
+    started = time.time()
+    for fold in folds:
+        probs = _ensemble_probabilities(ns, features, y, fold["train_idx"], fold["test_idx"])
+        frames.append(ns["prediction_frame"]("retrain fold", dates[fold["test_idx"]],
+                                             y[fold["test_idx"]], probs, fold["fold"]))
+    timing["fold"] = round(time.time() - started, 1); train_counts["fold"] = len(folds)
+    print(f"  retrain=fold(기준): {len(folds)}폴드 · {timing['fold']}초")
+
+    for every in RETRAIN_CANDIDATES:
+        started, fits = time.time(), 0
+        for fold in folds:
+            member_probs = []
+            for family in ("Logistic", "LightGBM"):
+                predictor = ScheduledPredictor(features, y, dates, family, every=every,
+                                               window=BASELINE_WINDOW, seed=seed, selection=selection, ns=ns)
+                probs, log = predictor.predict_window(fold["train_idx"], fold["test_idx"])
+                member_probs.append(probs)
+                fits += sum(r["retrained"] for r in log)
+            frames.append(ns["prediction_frame"](f"retrain {every}", dates[fold["test_idx"]],
+                                                 y[fold["test_idx"]], np.mean(member_probs, axis=0), fold["fold"]))
+        timing[str(every)] = round(time.time() - started, 1); train_counts[str(every)] = fits
+        print(f"  retrain={every}: 실제 학습 {fits}회 · {timing[str(every)]}초")
+
+    predictions = pd.concat(frames, ignore_index=True)
+    metrics = ns["summarize_predictions"](predictions, with_ci=False)
+    rows, comparisons = [], []
+    for model, row in metrics.iterrows():
+        label = model.replace("retrain ", "")
+        rows.append({"target": target, "model": model, "retrain_every": label,
+                     "target_mode": "close_to_close", "fold": "all",
+                     **{k: row.get(k, "") for k in ("n", "accuracy", "balanced_accuracy",
+                                                    "log_loss", "brier", "auc_gap", "auc_session")},
+                     "seconds": timing[label], "actual_trainings": train_counts[label]})
+    for every in RETRAIN_CANDIDATES:
+        for metric in ("balanced_accuracy", "log_loss"):
+            delta = ns["paired_delta_ci"](predictions, f"retrain {every}", "retrain fold", metric)
+            comparisons.append({"target": target, "comparison": f"매 {every}거래일 − 폴드당 1회",
+                                "metric": metric, "delta": delta["delta"], "ci_low": delta["lo"],
+                                "ci_high": delta["hi"], "common_n": delta["n"],
+                                "verdict": verdict_for(metric, delta["lo"], delta["hi"])})
+    write_json(state.run_dir / f"retrain_{target}.json",
+               {"timing": timing, "actual_trainings": train_counts, "comparisons": comparisons,
+                "note": "설정(params·온도)은 폴드 시작에 고정. 재학습은 추정기 재적합만."})
+    write_metrics_named(state, comparisons, "comparisons.csv")
+    state.mark(unit, {"candidates": list(RETRAIN_CANDIDATES), "evaluation_days": int(metrics["n"].max())})
+    return rows
+
+
+TASK_RUNNERS = {"P00": run_p00, "P03": run_p03, "P04": run_p04, "P05": run_p05, "P06": run_p06}
 
 
 # ---------------------------------------------------------------------------
@@ -612,6 +861,13 @@ def execute(task, target, mode, storage, resume, run_notebook_fn=None):
     elif task == "P04":
         config = {"task": "P04", "mode": mode, "windows": list(WINDOW_CANDIDATES),
                   "baseline": BASELINE_WINDOW, "min_train_rows": MIN_TRAIN_ROWS}
+    elif task == "P05":
+        config = {"task": "P05", "mode": mode,
+                  "half_lives": ["none" if h is None else h for h in HALF_LIFE_CANDIDATES],
+                  "window": BASELINE_WINDOW}
+    elif task == "P06":
+        config = {"task": "P06", "mode": mode, "retrain_every": list(RETRAIN_CANDIDATES),
+                  "baseline": "fold", "window": BASELINE_WINDOW}
     else:
         config = {"mode": mode}
     identity = {

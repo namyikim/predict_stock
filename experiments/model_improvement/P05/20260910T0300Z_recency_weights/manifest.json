@@ -1,0 +1,43 @@
+{
+  "task_id": "P05",
+  "run_id": "20260910T0300Z_recency_weights",
+  "target": [
+    "samsung",
+    "sk_hynix"
+  ],
+  "code_commit": "295e0a387a4f0459ea5eef060d2e125c9e0a6ccb",
+  "data_hash": "P00 full 고정 스냅샷",
+  "config_hash": "83be3baada2d97f3ba54",
+  "seed": 42,
+  "mode": "full",
+  "target_mode": "close_to_close",
+  "classes": [
+    "down",
+    "flat",
+    "up"
+  ],
+  "status": "completed",
+  "completed_units": [
+    "samsung:half_life",
+    "sk_hynix:half_life"
+  ],
+  "failed_units": [],
+  "candidates": [
+    "none",
+    126,
+    252,
+    504
+  ],
+  "weight_formula": "w = 2^(-age_trading_days/half_life), 폴드 마지막 학습 관측이 age 0, 평균 1로 정규화",
+  "interaction": "class_weight='balanced'와 곱해진다(fit_direction_model 내부 선택이 balanced/None을 고름)",
+  "inner_selection": {
+    "samsung": 504,
+    "sk_hynix": 504
+  },
+  "baseline_run": "experiments/model_improvement/P00/20260910T0100Z_baseline_full",
+  "artifact_paths": {
+    "metrics": "experiments/model_improvement/P05/20260910T0300Z_recency_weights/metrics.csv",
+    "comparisons": "experiments/model_improvement/P05/20260910T0300Z_recency_weights/comparisons.csv"
+  },
+  "created_at_utc": "2026-09-10T02:33:47.248186+00:00"
+}

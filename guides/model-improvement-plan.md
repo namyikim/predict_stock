@@ -70,7 +70,7 @@
 | P02 | [x] | 정보 공개 시각·데이터 품질 점검 | P01 | CPU | 완료: 미래 날짜 봉 결함 1건 수정, `tests/test_release_timing.py` 15개 |
 | P03 | [x] | 기존 특징군의 추가 가치 비교 | P02 | CPU/Colab | 완료: 채택 없음. 월별 지표는 두 종목 모두 확률 품질 유의 열위 |
 | P04 | [x] | 학습 기간 비교 | P03 | CPU/Colab | 완료: 5년 유지. sk_hynix expanding이 외부에서 유의 우위지만 내부 선택이 못 고름 → P15 후보 |
-| P05 | [ ] | 최근 표본 가중 학습 | P04 | CPU/Colab | 미실행 |
+| P05 | [x] | 최근 표본 가중 학습 | P04 | CPU/Colab | 완료: 채택 없음. 반감기 짧을수록 유의 열위, 504도 동률 |
 | P06 | [ ] | 재학습 주기 비교 | P05 | CPU/Colab | 미실행 |
 | P07 | [ ] | 소수 모델 앙상블 비교 | P06 | CPU/Colab | 미실행 |
 | P08 | [ ] | 확률 신뢰도·예측 보류 평가 | P07 | CPU | 미실행 |
@@ -340,11 +340,11 @@ balanced_accuracy는 네 비교 모두 동률이다. 확률 품질 개선을 방
 **파일:** forecast_utils.py의 fit_direction_model, tests/test_forecast_improvements.py, 노트북 설정 및 헬퍼 동기화, 러너 P05 등록.
 **인터페이스 제안:** 기존 위치 인자는 보존하고 선택적 키워드 sample_weight=None을 추가한다. 배열은 X와 같은 길이이며 train_indices·내부 tr로 각각 자른다.
 
-- [ ] None과 모든 값 1인 가중치의 결과가 허용 오차 내 같고, 음수·비유한·길이 불일치 가중치는 거부하는 테스트를 추가한다.
-- [ ] 가중치 공식 w=2^(-age_trading_days/half_life)를 구현한다. 각 학습 폴드 마지막 관측을 기준으로 age를 계산하고 평균 1로 정규화한다.
-- [ ] Logistic 파이프라인과 LightGBM의 fit에 학습 행 가중치를 전달한다. 기존 class_weight와 곱해지는 효과를 설정에 기록한다.
-- [ ] 반감기 후보는 무가중·126·252·504 거래일로 제한한다. 내부 검증에서만 선택하고 평가 지표는 원래 날짜별 동일 가중으로 계산한다.
-- [ ] 외부 평가 라벨을 바꿔도 선택 설정·학습 가중치가 달라지지 않는지 검증한다.
+- [x] None과 모든 값 1인 가중치의 결과가 허용 오차 내 같고, 음수·비유한·길이 불일치 가중치는 거부하는 테스트를 추가한다. → `tests/test_recency_weighting.py` 18개(Logistic·LightGBM 양쪽 동일성, 4종 거부)
+- [x] 가중치 공식 w=2^(-age_trading_days/half_life)를 구현한다. → `forecast_utils.recency_weights`. 반감기만큼 오래된 관측이 정확히 절반이 되는 것을 테스트로 고정
+- [x] Logistic 파이프라인과 LightGBM의 fit에 학습 행 가중치를 전달한다. → `fit_direction_model(sample_weight=)`. Pipeline은 `model__sample_weight`로 전달. class_weight와의 곱 효과는 manifest·decision에 기록. 노트북 사본 동기화
+- [x] 반감기 후보는 무가중·126·252·504 거래일로 제한한다. → 러너 `HALF_LIFE_CANDIDATES`. 내부 검증 선택, 평가는 동일 가중
+- [x] 외부 평가 라벨을 바꿔도 선택 설정·학습 가중치가 달라지지 않는지 검증한다. → `test_outer_labels_do_not_change_selection_or_weights`, 학습 구간 밖 가중치 무시 테스트
 
 회귀 검증 핵심 예시(새 인터페이스 구현 후 SelectionTests에 추가):
 
@@ -359,6 +359,20 @@ np.testing.assert_allclose(
     rtol=1e-6, atol=1e-7,
 )
 ~~~
+
+#### 결과 (2026-09-10, `experiments/model_improvement/P05/20260910T0300Z_recency_weights/`)
+
+후보 − 무가중, log_loss는 음수가 개선.
+
+| 종목 | 126 | 252 | 504 |
+| --- | --- | --- | --- |
+| samsung | +0.01812 [+0.00638, +0.02945] **열위** | +0.00703 [−0.00097, +0.01465] 동률 | +0.00018 [−0.00512, +0.00568] 동률 |
+| sk_hynix | +0.02077 [+0.00839, +0.03418] **열위** | +0.01060 [+0.00294, +0.01844] **열위** | +0.00419 [−0.00083, +0.00923] 동률 |
+
+방향 정확도는 전부 동률. 내부 검증은 두 종목 모두 504를 골랐고 외부에서 504는 무가중과 동률이다.
+
+**채택 없음. 무가중 유지.** P04와 같은 방향 — 신호가 약해 자료를 줄이거나 최근에 몰아주면
+손해다. 단순 가중이 이미 손해이므로 P12(DoubleAdapt)를 정당화하기 어렵다는 근거로 남긴다.
 
 **완료 증거:** 가중치·누수 테스트, 무가중 대비 성능과 시간. 단순 가중 학습을 DoubleAdapt 재현이라고 부르지 않는다.
 
@@ -539,6 +553,7 @@ P00 이후에는 작업 ID만 바꿔 요청한다. Colab 실행이 필요한 경
 | --- | --- | --- | --- | --- |
 | 2026-09-09 | PLAN | 이 문서 및 README 링크 | 저장소 문서·핵심 함수·기존 Transformer 결과 확인 | 계획 생성. P00부터 시작 |
 | 2026-09-10 | P00 사전 수정 | `tools/run_notebook.py`, `tests/test_run_notebook.py` | 8개 오프라인 회귀 테스트 통과 | 기존 CLI가 IPython 히스토리 부재로 둘째 종목을 건너뛰던 결함 수정. P00 전체 완료 아님 |
+| 2026-09-10 | P05 | `experiments/model_improvement/P05/20260910T0300Z_recency_weights/`, `forecast_utils.recency_weights`, `fit_direction_model(sample_weight)` | `discover -p test_recency_weighting.py` 18개, 기존 forecast_improvements 21·notebook_structure 36 통과 | **완료.** 채택 없음. 반감기 짧을수록 유의 열위 |
 | 2026-09-10 | P04 | `experiments/model_improvement/P04/20260910T0200Z_training_windows/` | `discover -p test_training_window.py` 11개 통과, 두 종목 12폴드 재학습 | **완료.** 5년 유지. 3y는 두 종목 유의 열위, 2y는 표본 부족 제외, sk_hynix expanding은 유의 우위지만 내부 선택이 못 골라 P15 후보로 등록 |
 | 2026-09-10 | P03 | `experiments/model_improvement/P03/20260910T0100Z_feature_groups/` | 비교 30행, 평가일 1,362/1,357, 제외 0 | **완료.** 채택 없음. 월별 지표는 두 종목 모두 확률 품질 유의 열위, 나머지는 동률 또는 한 종목 열위 |
 | 2026-09-10 | P00 full | `experiments/model_improvement/P00/20260910T0100Z_baseline_full/` | 두 종목 12폴드 완주, 9개 모델 동일 날짜 확인 | **완료.** 공식 기준선 확정. samsung 1,362일 / sk_hynix 1,357일 |
@@ -546,9 +561,9 @@ P00 이후에는 작업 ID만 바꿔 요청한다. Colab 실행이 필요한 경
 | 2026-09-10 | P01 | `tools/run_model_improvement.py`, `tests/test_model_improvement_runner.py` | `discover -p test_model_improvement_runner.py` 15개 통과 | 완료. 재개·해시 격리·원자적 쓰기·발행 차단 검증. 구현 중 결함 2건(재개 시 반환형 불일치, 같은 초 run_id 충돌) 발견·수정 |
 | 2026-09-10 | P00 quick | `experiments/model_improvement/P00/20260910T0000Z_baseline_quick/` | 두 종목 46셀 무오류 완료, 평가 276일 | 기준선 계약 기록·스냅샷 고정 완료. 기존 캐시는 자산 키 불일치로 폐기. full 평가 실행 중 |
 
-- 현재 작업: P05 — 최근 표본 가중 학습
-- 완료한 신규 작업: 5/16 (P00, P01, P02, P03, P04)
-- 다음 작업: P05
+- 현재 작업: P06 — 재학습 주기 비교(코드·13개 테스트 완료, 실험 실행 중)
+- 완료한 신규 작업: 6/16 (P00~P05)
+- 다음 작업: P06 결과 기록 → P07
 - P15로 넘긴 후보: sk_hynix `expanding` 학습 창 (P04에서 외부 유의 우위, 내부 선택 미채택)
 - 고쳐야 할 절차: P04 내부 선택을 폴드 반복형으로 (현재 마지막 폴드 하나만 사용)
 - 보류 작업: 없음

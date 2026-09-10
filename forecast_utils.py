@@ -344,6 +344,52 @@ def calibrate_price_forecast(y, prediction, sigma, dates, horizon, ci_function, 
     }
 
 
+def make_price_model(alpha=1e4):
+    """강한 축소(Ridge alpha 큼) + 변동성 스케일 타깃. LightGBM 회귀는 OOF에서 우위가 없고
+    시드에 따라 라이브 값이 몇 %p씩 움직여 제거했다."""
+    from sklearn.linear_model import Ridge
+    from sklearn.pipeline import Pipeline
+    from sklearn.preprocessing import StandardScaler
+    return Pipeline([("scaler", StandardScaler()), ("model", Ridge(alpha=alpha))])
+
+
+def price_design_frame(feat, sam_index, feature_cols, raw_close, vol_20, horizon, har_fn=None):
+    """h거래일 가격 예측의 설계 행렬. (frame, HAR 라이브 sigma) 반환.
+
+    행 d의 특징은 d-1 종가까지만 포함한다. 목표값은 d-1 종가 대비 horizon번째 거래일(d+horizon-1)의
+    원본 종가 수익률이다. sigma_simple = 20일 변동성 × sqrt(h), sigma_har = HAR 예측. 두 변동성 방식을
+    같은 행에서 비교하도록 HAR 이 비어 있는 앞부분 행은 함께 제거한다(학습 행이 그만큼 줄어든다).
+    """
+    raw_close = pd.Series(raw_close).astype(float)
+    future_return = raw_close.shift(-(horizon - 1)) / raw_close.shift(1) - 1
+    har_series, har_live = (har_fn or har_sigma_forecast)(raw_close.pct_change(), horizon)
+    reg = feat.loc[sam_index, list(feature_cols)].copy()
+    reg["future_return"] = future_return.reindex(reg.index)
+    reg["sigma_simple"] = pd.Series(vol_20).reindex(reg.index) * np.sqrt(horizon)
+    reg["sigma_har"] = har_series.reindex(reg.index)
+    reg = reg.replace([np.inf, -np.inf], np.nan).dropna()
+    return reg, har_live
+
+
+def price_oof_predictions(X, y, sigma, horizon, template, n_splits):
+    """시간순 OOF(TimeSeriesSplit, gap=h-1). 타깃은 sigma 로 나눈 수익률, 예측은 다시 sigma 를 곱한다.
+
+    (oof, folds) 반환. folds 는 폴드별 학습·시험 위치 범위. OOF 가 없는 앞부분은 NaN 이다.
+    """
+    from sklearn.base import clone
+    from sklearn.model_selection import TimeSeriesSplit
+    X, y, sigma = np.asarray(X), np.asarray(y, dtype=float), np.asarray(sigma, dtype=float)
+    z = y / np.maximum(sigma, 1e-6)
+    oof = np.full(len(z), np.nan)
+    folds = []
+    for k, (train, valid) in enumerate(TimeSeriesSplit(n_splits=n_splits, gap=horizon - 1).split(X)):
+        model = clone(template).fit(X[train], z[train])
+        oof[valid] = model.predict(X[valid]) * sigma[valid]
+        folds.append({"fold": k, "train_rows": int(len(train)), "train_pos": (int(train[0]), int(train[-1])),
+                      "test_pos": (int(valid[0]), int(valid[-1]))})
+    return oof, folds
+
+
 def price_macro_ablation(X, y, sigma, dates, feature_names, horizon, estimator,
                          ci_function, n_splits=5, coverage=.8):
     """Paired macro-vs-market price evaluation; never choose deployment on the final test.

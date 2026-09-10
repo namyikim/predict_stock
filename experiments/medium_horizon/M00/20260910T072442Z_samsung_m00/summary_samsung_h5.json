@@ -64,6 +64,7 @@
     }
   },
   "equivalent": true,
+  "inputs_from_cache": true,
   "stats": {
     "zero_baseline_mae": 0.05446715514094003,
     "raw_model_mae": 0.05807046984500477,

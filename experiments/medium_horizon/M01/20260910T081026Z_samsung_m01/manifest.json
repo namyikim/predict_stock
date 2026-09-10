@@ -1,39 +1,40 @@
 {
-  "task_id": "M00",
-  "run_id": "20260910T072442Z_samsung_m00",
+  "task_id": "M01",
+  "run_id": "20260910T081026Z_samsung_m01",
   "target": "samsung",
-  "code_commit": "25ec20106c11ea2def4cca3dd57cea61a8e7de84",
+  "code_commit": "e34f96126c1d17d1101f9b6117d566f1b7a112cb",
   "seed": 42,
   "mode": "full",
   "status": "completed",
-  "started_at_utc": "2026-09-10T07:24:42.587048+00:00",
+  "started_at_utc": "2026-09-10T08:10:26.432337+00:00",
   "completed_units": [
     "samsung:h5",
     "samsung:h20"
   ],
   "failed_units": [],
   "artifact_paths": {
-    "metrics": "D:\\SourceCode\\predict_stock\\experiments\\medium_horizon\\M00\\20260910T072442Z_samsung_m00\\metrics.csv",
-    "comparisons": "D:\\SourceCode\\predict_stock\\experiments\\medium_horizon\\M00\\20260910T072442Z_samsung_m00\\comparisons.csv"
+    "metrics": "D:\\SourceCode\\predict_stock\\experiments\\medium_horizon\\M01\\20260910T081026Z_samsung_m01\\metrics.csv",
+    "comparisons": "D:\\SourceCode\\predict_stock\\experiments\\medium_horizon\\M01\\20260910T081026Z_samsung_m01\\comparisons.csv"
   },
   "config": {
-    "task": "M00",
+    "task": "M01",
     "mode": "full",
     "horizons": [
       5,
       20
     ],
-    "model": "StandardScaler+Ridge(alpha=1e4), target=future_return/sigma_simple",
-    "vol_model": "simple",
-    "coverage": 0.8,
-    "n_splits": 5,
-    "bootstrap_b": 2000,
-    "contiguous_block": "max(20, 2h)",
+    "first_test": "2021-01-01",
+    "test_months": 6,
+    "lock_months": 12,
+    "min_train_rows": 500,
+    "inner_blocks": 3,
+    "inner_months": 6,
+    "min_test_rows": 60,
     "seed": 42,
-    "calibration": "OOF 50% 보정 / 25% 신호 선택 / 25% 평가 (forecast_utils.calibrate_price_forecast)"
+    "purge": "학습 라벨 만기 종가 < 시험 시작일(날짜 기준), 폴드·내부 블록 모두"
   },
   "data_hash": "d8a92744da7a2ec2b7d0",
-  "config_hash": "2204e640f323afdaec80",
+  "config_hash": "94f6301251a450cc74d9",
   "storage": "D:\\SourceCode\\predict_stock\\runs\\medium_horizon",
   "snapshot_files": [
     "dxy.parquet",
@@ -93,6 +94,5 @@
     "inputs_from_cache": true,
     "notebook_commit": "e34f96126c1d17d1101f9b6117d566f1b7a112cb"
   },
-  "finished_at_utc": "2026-09-10T08:10:51.276496+00:00",
-  "resumed_at_utc": "2026-09-10T08:10:47.569349+00:00"
+  "finished_at_utc": "2026-09-10T08:10:41.615242+00:00"
 }

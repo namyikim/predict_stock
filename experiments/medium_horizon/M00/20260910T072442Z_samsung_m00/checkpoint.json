@@ -10,7 +10,8 @@
         "신호 부족(가설: raw 예측이 현재가 유지를 이기지 못함)"
       ],
       "beats_baseline": false,
-      "oof_sha256": "7462c08f3dbd250b8b66eae8ebf39fdd4064b1ea22096595c7af7cded8c1bedb"
+      "oof_sha256": "7462c08f3dbd250b8b66eae8ebf39fdd4064b1ea22096595c7af7cded8c1bedb",
+      "oof_file": "D:\\SourceCode\\predict_stock\\runs\\medium_horizon\\samsung\\M00_h5_full_oof.csv"
     },
     "samsung:h20": {
       "equivalent": true,
@@ -18,8 +19,9 @@
         "신호 부족(가설: raw 예측이 현재가 유지를 이기지 못함)"
       ],
       "beats_baseline": false,
-      "oof_sha256": "2d0d32fcc97d3aa5d03bd3a126b6be58ac4a34677569670ebd69773a0fef737a"
+      "oof_sha256": "2d0d32fcc97d3aa5d03bd3a126b6be58ac4a34677569670ebd69773a0fef737a",
+      "oof_file": "D:\\SourceCode\\predict_stock\\runs\\medium_horizon\\samsung\\M00_h20_full_oof.csv"
     }
   },
-  "updated_at_utc": "2026-09-10T07:32:45.629634+00:00"
+  "updated_at_utc": "2026-09-10T08:10:51.247343+00:00"
 }

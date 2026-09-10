@@ -2,7 +2,7 @@
 
 작성일: 2026-09-10
 검토 커밋: `545d3df813a719653951e31c621ce042080b9519`
-상태: M00 완료(2026-09-10). M01~M08 미실행.
+상태: M00·M01 완료(2026-09-10). M02~M08 미실행.
 
 ## 1. 목표와 실행 범위
 
@@ -44,7 +44,7 @@
 | ID | 완료 | 작업 | 선행 | 채택/결론 |
 | --- | --- | --- | --- | --- |
 | M00 | [x] | 4개 대상 조합의 기준선·실패 유형 진단 | 없음 | 현행 유지. 4조합 발행 0, raw가 유지를 이기는 조합은 sk_hynix/5뿐(평가 구간, 가설). 결함 없음 |
-| M01 | [ ] | 재개 가능한 중기 실험 러너와 평가 계약 | M00 | 러너 골격은 M00에서 생성(`tools/run_medium_horizon.py`). 고정 입력 로더·외부 6개월 폴드·잠금 구간 미구현 |
+| M01 | [x] | 재개 가능한 중기 실험 러너와 평가 계약 | M00 | 완료. 고정 입력 로더(pkl), 개발 9폴드 + 잠금 12개월 + 내부 3블록, purge 0, 개편 전후 수치 동등 |
 | M02 | [ ] | 지평별 특징군 비교 | M01 | 미실행 |
 | M03 | [ ] | Ridge 규제·학습 기간 내부 선택 | M02 | 미실행 |
 | M04 | [ ] | 5·20일 직접 방향 확률 모델 | M03 | 미실행 |
@@ -121,11 +121,11 @@ M06은 생략할 수 있으며 이유를 기록한다. M07은 과거 실험에�
 
 생성 후보: `tools/run_medium_horizon.py`, `medium_horizon_utils.py`, `tests/test_medium_horizon.py`. 기존 러너의 체크포인트·원자적 저장 기능을 재사용하며 범용 프레임워크로 확대하지 않는다. 실제 경로가 달라지면 이 문서도 갱신한다.
 
-- [ ] 노트북의 가격 모델/타깃 구성에서 필요한 함수를 추출하고 노트북에 동기화한다. 고정 입력에서 기존 예측과 수치 동등성을 확인한다.
-- [ ] CLI `--task --target --horizon --mode --storage --resume`를 제공한다. 미구현 작업을 거부한다.
-- [ ] 동일 입력 완료 단위는 건너뛰고 데이터·설정·코드 변경은 격리한다. 완료 표시가 있어도 산출물 유실·해시 불일치 시 재계산한다.
-- [ ] 누수 테스트: 미래 가격 변경에도 이전 특징·내부 선택·보정값 불변. 5·20일 각각 라벨 만기 경계와 휴장일 검사.
-- [ ] 중단·재개 결과와 단일 실행 결과가 같고 실패 실행이 공식 원장을 수정하지 않음을 검증한다.
+- [x] 노트북의 가격 모델/타깃 구성에서 필요한 함수를 추출하고 노트북에 동기화한다. 고정 입력에서 기존 예측과 수치 동등성을 확인한다. → forecast_utils `make_price_model`·`price_design_frame`·`price_oof_predictions`, 노트북 36셀 호출. 개편 전 M00 통계와 1e-9 이내 동등(4조합)
+- [x] CLI `--task --target --horizon --mode --storage --resume`를 제공한다. 미구현 작업을 거부한다. → `--results` 추가. 두 지평은 항상 함께 계산
+- [x] 동일 입력 완료 단위는 건너뛰고 데이터·설정·코드 변경은 격리한다. 완료 표시가 있어도 산출물 유실·해시 불일치 시 재계산한다. → `artifacts_intact`(요약·행·OOF 해시), 단위별 행 파일로 재개 metrics.csv = 단일 실행
+- [x] 누수 테스트: 미래 가격 변경에도 이전 특징·내부 선택·보정값 불변. 5·20일 각각 라벨 만기 경계와 휴장일 검사. → tests/test_medium_horizon.py (Design/Purge/EvaluationContract)
+- [x] 중단·재개 결과와 단일 실행 결과가 같고 실패 실행이 공식 원장을 수정하지 않음을 검증한다. → RunnerTests(중단 후 재개 = 단일 실행, 실패 시 원장 해시 불변, status=failed)
 
 완료 증거: quick 네 조합 무오류, 기존 기준선 동등성, 의미 있는 회귀 테스트 통과.
 
@@ -217,7 +217,7 @@ git diff --check
 
 헬퍼 변경 시 `python tools/sync_notebook_helpers.py` 후 구조·동등성 테스트를 수행한다. 실행 경로 변경 시 `test_notebook_smoke.py`, M08에서는 `python -m unittest discover -s tests -v`를 추가한다. 문서만 바꾸는 단계에서는 전체 모델 재학습이 필요 없다.
 
-M00에서 검증한 실제 명령(두 지평을 항상 함께 계산한다; `--storage` 기본 `runs/medium_horizon`, `--results` 기본 `experiments/medium_horizon`):
+M00·M01에서 검증한 실제 명령(두 지평을 항상 함께 계산한다; `--storage` 기본 `runs/medium_horizon`, `--results` 기본 `experiments/medium_horizon`):
 
 ```powershell
 $env:PREDICT_STOCK_PUBLISH = 'false'
@@ -225,9 +225,11 @@ python -m unittest discover -s tests -p test_medium_horizon.py -v
 python tools/run_medium_horizon.py --task M00 --target samsung --mode quick --resume
 python tools/run_medium_horizon.py --task M00 --target samsung --mode full --resume
 python tools/run_medium_horizon.py --task M00 --target sk_hynix --mode full --resume
+python tools/run_medium_horizon.py --task M01 --target samsung --mode full --resume
+python tools/run_medium_horizon.py --task M01 --target sk_hynix --mode full --resume
 ```
 
-고정 스냅샷은 `runs/medium_horizon/<target>/data_cache`(+ `macro_cache`, `macro_fallback`, `macro_snapshots`)에 있어야 하며, 없으면 러너가 거부한다. 2026-09-10 실행은 `runs/model_improvement/P00/<target>/`의 스냅샷(마지막 봉 2026-09-09)을 복사해 썼다. 러너는 노트북 전체를 캐시로 실행해 네임스페이스를 얻는다(종목당 full 약 8분). 후속 실험이 이를 매번 반복하지 않도록 M01에서 고정 입력 로더를 제공한다.
+고정 스냅샷은 `runs/medium_horizon/<target>/data_cache`(+ `macro_cache`, `macro_fallback`, `macro_snapshots`)에 있어야 하며, 없으면 러너가 거부한다. 2026-09-10 실행은 `runs/model_improvement/P00/<target>/`의 스냅샷(마지막 봉 2026-09-09)을 복사해 썼다. 러너는 처음 한 번 노트북 전체를 캐시로 실행해(종목당 full 약 8분) 필요한 입력을 `runs/medium_horizon/<target>/inputs_<mode>_<data_hash>.pkl` 에 저장하고, 같은 data_hash 면 그 파일을 읽는다(M01 고정 입력 로더; 종목당 약 1분). pkl 은 Git 에 넣지 않으며 없으면 자동으로 다시 만든다.
 
 ## 7. 완료 기록 규칙
 
@@ -246,12 +248,13 @@ quick는 동작 검증이며 성능 채택 근거로 사용하지 않는다. 구
 | --- | --- | --- | --- | --- |
 | 2026-09-10 | PLAN | 본 계획·README 링크 작성 | 문서 경로·체크리스트·diff 확인. 모델 실험 미실행 | M00 기준선 진단 |
 | 2026-09-10 | M00 | `tools/run_medium_horizon.py`·`tests/test_medium_horizon.py`. 4조합 full 재현(노트북 통계 동등), purge·경계 검사 통과, 실패 유형 분류. 결과 `experiments/medium_horizon/M00/20260910T072442Z_samsung_m00`(decision.md), `…T073254Z_sk_hynix_m00` | 테스트 16개 통과. 발행 0/4, sk_hynix/5만 평가 구간 raw 우위(가설) | M01: 고정 입력 로더, 외부 6개월 폴드·잠금 구간(마지막 12개월), 선택 구간 CI 기록 |
+| 2026-09-10 | M01 | 설계 행렬·OOF 함수를 forecast_utils 로 추출(노트북 동기화), 고정 입력 로더(pkl), 평가 계약 `evaluation_folds`(개발 6개월 폴드·잠금 12개월·내부 3블록·60행 미만 폴드 제외), 산출물 해시 재개, Windows 원자적 쓰기 재시도. 결과 `experiments/medium_horizon/M01/20260910T081026Z_samsung_m01`(decision.md), `…T081053Z_sk_hynix_m01` | 테스트 30개 통과(전체 521개 중 환경 오류 1). 개편 전후 수치 동등, purge 0, 9 개발 폴드 + 잠금 | M02: 특징군 비교(현행 전체 vs 시세만 vs 그룹 A/B/C) |
 
-- 현재 작업: 없음. 다음 실행은 M01.
-- 완료: 1/9. 보류: 없음. 실제 후보 채택: 없음.
-- 먼저 읽을 파일: 본 문서, `experiments/medium_horizon/M00/20260910T072442Z_samsung_m00/decision.md`, `tools/run_medium_horizon.py`(price_design·analyse_horizon), forecast_utils.py의 `calibrate_price_forecast`.
-- 미해결: (1) 원장에 발행 판정에 쓰인 선택 구간 CI가 없어 하이닉스 20일 발행이 2026-09-08부터 뒤집힌 이유를 원장만으로 볼 수 없다 — M01에서 결과 파일에 남긴다. (2) 러너가 매번 노트북 전체를 실행한다 — M01 고정 입력 로더. (3) 평가 구간이 2024-08 이후 고변동성 한 국면이라 M05 구간 보정을 우선한다.
-- 마지막 검증: `python -m unittest tests.test_medium_horizon`(16개 통과), M00 full 두 종목(exit 0, 노트북 동등성 True).
+- 현재 작업: 없음. 다음 실행은 M02.
+- 완료: 2/9. 보류: 없음. 실제 후보 채택: 없음.
+- 먼저 읽을 파일: 본 문서, `experiments/medium_horizon/M01/20260910T081026Z_samsung_m01/decision.md`, M00 decision.md, `tools/run_medium_horizon.py`(load_inputs·evaluation_folds·analyse_horizon), forecast_utils.py의 `price_design_frame`·`calibrate_price_forecast`.
+- 미해결: (1) 원장에 발행 판정에 쓰인 선택 구간 CI가 없어 하이닉스 20일 발행이 2026-09-08부터 뒤집힌 이유를 원장만으로 볼 수 없다 — M02 이후 결과 파일(comparisons.csv)에는 남기고, 원장 열 추가는 M07에서 정한다. (2) 평가 구간이 2024-08 이후 고변동성 한 국면이라 M05 구간 보정을 우선한다. (3) 입력 pkl 은 pandas 버전이 바뀌면 다시 만들어야 한다(data_hash 만 검사).
+- 마지막 검증: `python -m unittest tests.test_medium_horizon`(30개 통과), 전체 `discover -s tests` 521개 중 환경 오류 1(cp949, 코드 결함 아님). M01 full 두 종목(exit 0), M00 캐시 재계산 두 종목(동등성 True).
 
 중단 시 아래 양식을 채워 이어서 실행한다.
 

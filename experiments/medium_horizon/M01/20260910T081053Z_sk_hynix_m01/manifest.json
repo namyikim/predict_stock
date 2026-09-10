@@ -1,39 +1,40 @@
 {
-  "task_id": "M00",
-  "run_id": "20260910T073254Z_sk_hynix_m00",
+  "task_id": "M01",
+  "run_id": "20260910T081053Z_sk_hynix_m01",
   "target": "sk_hynix",
-  "code_commit": "0cc973d5a66bb1ab03354524e84b5754c5a33c34",
+  "code_commit": "e34f96126c1d17d1101f9b6117d566f1b7a112cb",
   "seed": 42,
   "mode": "full",
   "status": "completed",
-  "started_at_utc": "2026-09-10T07:32:54.065673+00:00",
+  "started_at_utc": "2026-09-10T08:10:53.301331+00:00",
   "completed_units": [
     "sk_hynix:h5",
     "sk_hynix:h20"
   ],
   "failed_units": [],
   "artifact_paths": {
-    "metrics": "D:\\SourceCode\\predict_stock\\experiments\\medium_horizon\\M00\\20260910T073254Z_sk_hynix_m00\\metrics.csv",
-    "comparisons": "D:\\SourceCode\\predict_stock\\experiments\\medium_horizon\\M00\\20260910T073254Z_sk_hynix_m00\\comparisons.csv"
+    "metrics": "D:\\SourceCode\\predict_stock\\experiments\\medium_horizon\\M01\\20260910T081053Z_sk_hynix_m01\\metrics.csv",
+    "comparisons": "D:\\SourceCode\\predict_stock\\experiments\\medium_horizon\\M01\\20260910T081053Z_sk_hynix_m01\\comparisons.csv"
   },
   "config": {
-    "task": "M00",
+    "task": "M01",
     "mode": "full",
     "horizons": [
       5,
       20
     ],
-    "model": "StandardScaler+Ridge(alpha=1e4), target=future_return/sigma_simple",
-    "vol_model": "simple",
-    "coverage": 0.8,
-    "n_splits": 5,
-    "bootstrap_b": 2000,
-    "contiguous_block": "max(20, 2h)",
+    "first_test": "2021-01-01",
+    "test_months": 6,
+    "lock_months": 12,
+    "min_train_rows": 500,
+    "inner_blocks": 3,
+    "inner_months": 6,
+    "min_test_rows": 60,
     "seed": 42,
-    "calibration": "OOF 50% 보정 / 25% 신호 선택 / 25% 평가 (forecast_utils.calibrate_price_forecast)"
+    "purge": "학습 라벨 만기 종가 < 시험 시작일(날짜 기준), 폴드·내부 블록 모두"
   },
   "data_hash": "8798bdb0703e0325a836",
-  "config_hash": "2204e640f323afdaec80",
+  "config_hash": "94f6301251a450cc74d9",
   "storage": "D:\\SourceCode\\predict_stock\\runs\\medium_horizon",
   "snapshot_files": [
     "dxy.parquet",
@@ -91,6 +92,5 @@
     "inputs_from_cache": true,
     "notebook_commit": "e34f96126c1d17d1101f9b6117d566f1b7a112cb"
   },
-  "finished_at_utc": "2026-09-10T08:11:02.870069+00:00",
-  "resumed_at_utc": "2026-09-10T08:10:58.916226+00:00"
+  "finished_at_utc": "2026-09-10T08:10:57.662896+00:00"
 }

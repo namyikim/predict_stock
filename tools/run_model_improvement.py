@@ -120,6 +120,20 @@ def data_hash(paths):
     return digest.hexdigest()[:20] if found else "nodata"
 
 
+def replace_with_retry(src, dst, attempts=20, wait=0.05):
+    """os.replace. Windows 에서는 방금 닫은 파일을 백신·인덱서가 잠깐 잡고 있어 PermissionError 가 나므로
+    짧게 기다렸다 다시 시도한다(테스트에서 실제로 간헐적으로 실패했다)."""
+    import time
+    for attempt in range(attempts):
+        try:
+            os.replace(src, dst)
+            return
+        except PermissionError:
+            if attempt == attempts - 1:
+                raise
+            time.sleep(wait * (attempt + 1))
+
+
 def write_atomic(path, text):
     """같은 디렉터리에 임시 파일로 쓴 뒤 교체한다. 중간에 끊겨도 반쪽 파일이 남지 않는다."""
     path = Path(path)
@@ -128,7 +142,7 @@ def write_atomic(path, text):
     try:
         with os.fdopen(fd, "w", encoding="utf-8", newline="\n") as stream:
             stream.write(text)
-        os.replace(tmp, path)
+        replace_with_retry(tmp, path)
     finally:
         if os.path.exists(tmp):
             os.unlink(tmp)

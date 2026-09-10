@@ -10,7 +10,8 @@
         "과도한 축소 의심(가설: 선택 구간은 기각했지만 평가 구간 raw 는 유의하게 우위)"
       ],
       "beats_baseline": false,
-      "oof_sha256": "67a717dc6edc67dcec36ec5672722554ef29572ee75fc24bae244c494af14bb0"
+      "oof_sha256": "67a717dc6edc67dcec36ec5672722554ef29572ee75fc24bae244c494af14bb0",
+      "oof_file": "D:\\SourceCode\\predict_stock\\runs\\medium_horizon\\sk_hynix\\M00_h5_full_oof.csv"
     },
     "sk_hynix:h20": {
       "equivalent": true,
@@ -19,8 +20,9 @@
         "구간 오차(실현 포함률 0.67 vs 목표 0.80)"
       ],
       "beats_baseline": false,
-      "oof_sha256": "5f6894756b6ed8ff95596623e3838a330c02107ffea3c92810aee1c9e2181072"
+      "oof_sha256": "5f6894756b6ed8ff95596623e3838a330c02107ffea3c92810aee1c9e2181072",
+      "oof_file": "D:\\SourceCode\\predict_stock\\runs\\medium_horizon\\sk_hynix\\M00_h20_full_oof.csv"
     }
   },
-  "updated_at_utc": "2026-09-10T07:40:55.388053+00:00"
+  "updated_at_utc": "2026-09-10T08:11:02.856244+00:00"
 }

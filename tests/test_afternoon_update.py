@@ -151,6 +151,22 @@ class OpenScoringTimeTests(unittest.TestCase):
         self.assertEqual(self.status_at("2026-09-07T23:50:00Z"),   # 08:50 KST
                          {"open": "pending", "direction": "pending"})
 
+    def test_a_scored_open_survives_a_rerun_that_drops_the_unfinished_bar(self):
+        # 14:12 시가 채점 뒤 장중 코드 반영 실행이 당일 봉을 통째로 버리면(scope=all 규칙) 시가 채점이
+        # missing_actual 로 되돌아가 보고서에서 사라졌다(2026-09-10). 실제 시가가 없어진 것이 아니므로 지킨다.
+        scored = fu.evaluate_forecasts(self.log(), self.bars(), now="2026-09-08T00:30:00Z")
+        self.assertEqual(dict(zip(scored["kind"], scored["status"]))["open"], "scored")
+        rerun = fu.evaluate_forecasts(scored, self.bars().iloc[:-1], now="2026-09-08T05:00:00Z")   # 14:00 KST, 당일 봉 없음
+        by_kind = rerun.set_index("kind")
+        self.assertEqual(by_kind.loc["open", "status"], "scored")
+        self.assertEqual(by_kind.loc["open", "actual_open"], 104.)
+        self.assertEqual(by_kind.loc["direction", "status"], "pending")   # 종가는 15:40 전이라 아직
+
+    def test_a_row_never_scored_is_not_fabricated_when_the_bar_is_missing(self):
+        rerun = fu.evaluate_forecasts(self.log(), self.bars().iloc[:-1], now="2026-09-08T07:00:00Z")  # 16:00 KST
+        self.assertEqual(dict(zip(rerun["kind"], rerun["status"])),
+                         {"open": "missing_actual", "direction": "missing_actual"})
+
 
 class WorkflowStepTests(unittest.TestCase):
     """`if: steps.X.outputs...` 가 있으면 그 X 스텝이 실제로 있어야 한다.

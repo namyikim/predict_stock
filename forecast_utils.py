@@ -498,6 +498,19 @@ def evaluate_forecasts(log, bars, now=None):
     numeric = ["actual_open", "actual_close", "actual_return", "actual_class", "direction_correct",
                "price_error", "absolute_price_error", "price_ape", "return_error", "interval_hit",
                "center_price_error", "log_loss", "brier"]
+    # 이번 시세에 봉이 없다고 이미 채점된 행을 지우지 않는다. 장중에 코드 반영 실행이 돌면 미완성 당일
+    # 봉을 통째로 버리는데, 그때 아침에 끝난 시초가 채점이 missing_actual 로 되돌아가 보고서에서
+    # 사라졌다(2026-09-10 14:12 채점 → 14:47 코드 반영 실행이 덮어씀). 실제 시가가 없어진 것이 아니다.
+    previous = log.reindex(columns=numeric + ["status", "actual_updated_at_utc"])
+
+    def keep_previous(i):
+        if str(previous.loc[i, "status"]) != "scored":
+            return False
+        result.loc[i, numeric] = previous.loc[i, numeric].values
+        result.loc[i, "status"] = "scored"
+        result.loc[i, "actual_updated_at_utc"] = previous.loc[i, "actual_updated_at_utc"]
+        return True
+
     for col in numeric:
         result[col] = np.nan
     result["status"] = "pending"
@@ -530,12 +543,14 @@ def evaluate_forecasts(log, bars, now=None):
                                                  and (market_now.hour, market_now.minute) < ready_at):
             continue
         if target not in bars.index:
-            result.loc[i, "status"] = "missing_actual"
+            if not keep_previous(i):
+                result.loc[i, "status"] = "missing_actual"
             continue
         bar = bars.loc[target]
         needed = "open" if kind == "open" else "close"
         if not np.isfinite(bar[needed]) or bar[needed] <= 0:
-            result.loc[i, "status"] = "missing_actual"
+            if not keep_previous(i):
+                result.loc[i, "status"] = "missing_actual"
             continue
         result.loc[i, ["actual_open", "actual_close"]] = [bar["open"], bar["close"]]
         if kind in ("price", "open"):

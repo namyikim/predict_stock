@@ -9,6 +9,52 @@ import numpy as np
 import pandas as pd
 
 
+def decision_inputs_html(*, name, cards, unknowns, caveat=""):
+    """판단 재료 요약 — 이미 계산된 값을 한곳에 모은다. 새 주장을 만들지 않는다.
+
+    매수·매도·보유 의견을 내지 않는 이유는 이 저장소가 스스로 측정한 결과 때문이다. 갭 AUC 0.80
+    vs 세션 AUC 0.50 — 예측력이 있는 구간은 09:00 시가까지이고, 의견은 09:00 이후에 실행된다.
+    그래서 '무엇을 아는가'와 '무엇을 모르는가'를 나란히 적고 판단은 사람에게 남긴다.
+
+    cards: [{"label", "value", "detail", "source", "tone"}] — tone 은 'up'/'down'/'' 중 하나.
+    unknowns: 이 보고서가 답하지 못하는 것들(문자열 목록).
+    """
+    from html import escape
+    if not cards:
+        return ""
+    colors = {"up": "#1e6b34", "down": "#a8322a", "": "#1a1a1a"}
+    rows = ""
+    for card in cards:
+        tone = colors.get(card.get("tone", ""), "#1a1a1a")
+        rows += (f'<tr><td style="padding:8px 11px;border-top:1px solid #eee;white-space:nowrap">'
+                 f'{escape(card["label"])}</td>'
+                 f'<td style="padding:8px 11px;border-top:1px solid #eee;text-align:right;'
+                 f'font-weight:600;color:{tone};white-space:nowrap">{escape(str(card["value"]))}</td>'
+                 f'<td style="padding:8px 11px;border-top:1px solid #eee;color:#6b7178;font-size:12px">'
+                 f'{escape(card.get("detail", ""))}</td>'
+                 f'<td style="padding:8px 11px;border-top:1px solid #eee;color:#8a9199;font-size:11px;'
+                 f'white-space:nowrap">{escape(card.get("source", ""))}</td></tr>')
+    unknown_html = ""
+    if unknowns:
+        unknown_html = ('<div style="margin-top:10px;padding:10px 14px;background:#fdf8ec;'
+                        'border-left:4px solid #c8952a;border-radius:0 5px 5px 0;font-size:12px">'
+                        '<b>이 보고서가 답하지 못하는 것</b><ul style="margin:6px 0 0;padding-left:18px">'
+                        + "".join(f"<li>{escape(u)}</li>" for u in unknowns) + "</ul></div>")
+    return ('<h3 style="font-size:15px;margin:24px 0 9px;padding-bottom:6px;border-bottom:1px solid #ddd">'
+            f'판단 재료 요약 <span style="font-weight:400;color:#8a9199;font-size:12px">'
+            f'&nbsp;{escape(name)} · 흩어진 값을 모은 것이며 매수·매도 의견이 아닙니다</span></h3>'
+            '<div style="overflow-x:auto"><table style="width:100%;min-width:560px;border-collapse:collapse;'
+            'font-size:13px;border:1px solid #e5e5e5">'
+            '<tr style="background:#fafafa;font-size:11px;color:#6b7178">'
+            '<th style="padding:8px 11px;text-align:left">항목</th>'
+            '<th style="padding:8px 11px;text-align:right">지금</th>'
+            '<th style="padding:8px 11px;text-align:left">읽는 법</th>'
+            '<th style="padding:8px 11px;text-align:left">출처</th></tr>'
+            f'{rows}</table></div>{unknown_html}'
+            + (f'<div style="font-size:11px;color:#8a9199;margin-top:6px">{escape(caveat)}</div>'
+               if caveat else ""))
+
+
 def easy_summary_html(*, name, prediction_date, data_date, summary, open_forecast,
                       price_forecasts, review=None, longterm=None, earnings=None,
                       target_mode="close_to_close", record_forecast=True,

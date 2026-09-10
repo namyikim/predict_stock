@@ -460,3 +460,45 @@ class RollingGaugeTests(unittest.TestCase):
         self.assertAlmostEqual(direction["prior_hit_rate"], 1.0)   # 실제가 모두 같은 클래스
         interval = roll[roll["kind"] == "open"].iloc[0]
         self.assertAlmostEqual(interval["nominal_coverage"], 0.9)
+
+
+class DecisionInputsTests(unittest.TestCase):
+    """판단 재료 요약: 값을 모으기만 하고 매수·매도 의견을 만들지 않는다."""
+
+    def cards(self):
+        return [{"label": "내일 시초가", "value": "+0.8%", "detail": "80% 구간", "source": "1절", "tone": "up"},
+                {"label": "외국인 20일 누적", "value": "-1,234주", "detail": "설명", "source": "수급 절", "tone": "down"}]
+
+    def test_renders_values_with_their_source(self):
+        html = fu.decision_inputs_html(name="삼성전자", cards=self.cards(), unknowns=[])
+        self.assertIn("판단 재료 요약", html)
+        self.assertIn("매수·매도 의견이 아닙니다", html)
+        self.assertIn("1절", html)
+        self.assertIn("수급 절", html)
+        self.assertEqual(html.count("<tr>"), 2)          # 자료 행 2개(머리글은 <tr style=...>)
+
+    def test_unknowns_are_listed(self):
+        html = fu.decision_inputs_html(name="t", cards=self.cards(),
+                                       unknowns=["오늘 사야 하는지 — 세션 AUC 0.50"])
+        self.assertIn("이 보고서가 답하지 못하는 것", html)
+        self.assertIn("세션 AUC 0.50", html)
+
+    def test_escapes_user_text(self):
+        html = fu.decision_inputs_html(name="t", unknowns=[],
+                                       cards=[{"label": "<script>", "value": "1", "detail": "&", "source": "x"}])
+        self.assertIn("&lt;script&gt;", html)
+        self.assertNotIn("<script>", html)
+
+    def test_empty_cards_render_nothing(self):
+        self.assertEqual(fu.decision_inputs_html(name="t", cards=[], unknowns=["x"]), "")
+
+    def test_notebook_never_emits_a_buy_or_sell_call(self):
+        import json
+        nb = json.loads((Path(__file__).resolve().parents[1] /
+                         "samsung_direction_model_colab.ipynb").read_text(encoding="utf-8"))
+        source = "\n".join("".join(c["source"]) for c in nb["cells"])
+        section = source[source.index("def _decision_cards():"):source.index("decision_html = decision_inputs_html")]
+        for word in ('"매수"', '"매도"', '"보유"', "'매수'", "'매도'", "'보유'"):
+            self.assertNotIn(word, section, f"판단 재료 요약이 {word} 의견을 만들고 있습니다")
+        # 예측력의 한계를 반드시 적는다.
+        self.assertIn("세션 AUC", source[source.index("_unknowns = ["):])

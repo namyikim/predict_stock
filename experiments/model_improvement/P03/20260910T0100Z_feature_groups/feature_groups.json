@@ -1,0 +1,219 @@
+{
+  "samsung": {
+    "run_dir": "D:\\SourceCode\\predict_stock\\runs\\model_improvement\\P00\\samsung\\runs\\20260910T005258_aa2f442866d5",
+    "total_features": 78,
+    "groups": {
+      "월별 지표(macro_)": {
+        "n": 9,
+        "features": [
+          "macro_leading_cycle",
+          "macro_leading_change_1m",
+          "macro_leading_change_3m",
+          "macro_semiconductor_log_usd",
+          "macro_semiconductor_yoy",
+          "macro_semiconductor_mom",
+          "macro_semiconductor_yoy_3m",
+          "macro_semiconductor_yoy_change_1m",
+          "macro_semiconductor_yoy_change_3m"
+        ]
+      },
+      "뉴스심리(nsi_)": {
+        "n": 4,
+        "features": [
+          "nsi_level",
+          "nsi_change_5d",
+          "nsi_change_20d",
+          "nsi_z60"
+        ]
+      },
+      "수급(flow_)": {
+        "n": 6,
+        "features": [
+          "flow_frgn_1",
+          "flow_frgn_5",
+          "flow_frgn_20",
+          "flow_frgn_streak",
+          "flow_inst_5",
+          "flow_frgn_ratio_chg_20"
+        ]
+      },
+      "거시 가격(wti_·usdjpy_·krwjpy_)": {
+        "n": 8,
+        "features": [
+          "wti_ret_1",
+          "wti_ret_5",
+          "wti_level_z60",
+          "usdjpy_ret_1",
+          "usdjpy_ret_5",
+          "krwjpy_ret_1",
+          "krwjpy_ret_20",
+          "krwjpy_level_z60"
+        ]
+      },
+      "시세만(나머지)": {
+        "n": 51,
+        "features": [
+          "sam_ret_1",
+          "sam_ret_2",
+          "sam_ret_5",
+          "sam_ret_20",
+          "sam_vol_5",
+          "sam_vol_20",
+          "sam_gap_1",
+          "sam_range_1",
+          "sam_volume_z20",
+          "sam_price_to_ma20",
+          "sam_price_to_ma60",
+          "sam_rsi14",
+          "kospi_ret_1",
+          "kospi_ret_5",
+          "kospi_vol_20",
+          "peer_ret_1",
+          "peer_ret_5",
+          "peer_vol_20",
+          "sox_ret_1",
+          "sox_ret_5",
+          "nasdaq_ret_1",
+          "nasdaq_ret_5",
+          "sp500_ret_1",
+          "sp500_ret_5",
+          "micron_ret_1",
+          "micron_ret_5",
+          "nvidia_ret_1",
+          "nvidia_ret_5",
+          "tsmc_adr_ret_1",
+          "tsmc_adr_ret_5",
+          "korea_etf_ret_1",
+          "korea_etf_ret_5",
+          "usdkrw_ret_1",
+          "usdkrw_ret_5",
+          "usdkrw_level_z60",
+          "dxy_ret_1",
+          "dxy_ret_5",
+          "dxy_level_z60",
+          "vix_ret_1",
+          "vix_ret_5",
+          "vix_level_z60",
+          "us10y_ret_1",
+          "us10y_ret_5",
+          "us10y_level_z60",
+          "target_gdr_ret_1",
+          "target_gdr_ret_5",
+          "gdr_overnight_signal",
+          "cal_dow",
+          "cal_is_monday",
+          "cal_is_friday",
+          "cal_month_end"
+        ]
+      }
+    },
+    "missing_comparisons": []
+  },
+  "sk_hynix": {
+    "run_dir": "D:\\SourceCode\\predict_stock\\runs\\model_improvement\\P00\\sk_hynix\\runs\\20260910T010041_109d732a1e8e",
+    "total_features": 75,
+    "groups": {
+      "월별 지표(macro_)": {
+        "n": 9,
+        "features": [
+          "macro_leading_cycle",
+          "macro_leading_change_1m",
+          "macro_leading_change_3m",
+          "macro_semiconductor_log_usd",
+          "macro_semiconductor_yoy",
+          "macro_semiconductor_mom",
+          "macro_semiconductor_yoy_3m",
+          "macro_semiconductor_yoy_change_1m",
+          "macro_semiconductor_yoy_change_3m"
+        ]
+      },
+      "뉴스심리(nsi_)": {
+        "n": 4,
+        "features": [
+          "nsi_level",
+          "nsi_change_5d",
+          "nsi_change_20d",
+          "nsi_z60"
+        ]
+      },
+      "수급(flow_)": {
+        "n": 6,
+        "features": [
+          "flow_frgn_1",
+          "flow_frgn_5",
+          "flow_frgn_20",
+          "flow_frgn_streak",
+          "flow_inst_5",
+          "flow_frgn_ratio_chg_20"
+        ]
+      },
+      "거시 가격(wti_·usdjpy_·krwjpy_)": {
+        "n": 8,
+        "features": [
+          "wti_ret_1",
+          "wti_ret_5",
+          "wti_level_z60",
+          "usdjpy_ret_1",
+          "usdjpy_ret_5",
+          "krwjpy_ret_1",
+          "krwjpy_ret_20",
+          "krwjpy_level_z60"
+        ]
+      },
+      "시세만(나머지)": {
+        "n": 48,
+        "features": [
+          "sam_ret_1",
+          "sam_ret_2",
+          "sam_ret_5",
+          "sam_ret_20",
+          "sam_vol_5",
+          "sam_vol_20",
+          "sam_gap_1",
+          "sam_range_1",
+          "sam_volume_z20",
+          "sam_price_to_ma20",
+          "sam_price_to_ma60",
+          "sam_rsi14",
+          "kospi_ret_1",
+          "kospi_ret_5",
+          "kospi_vol_20",
+          "peer_ret_1",
+          "peer_ret_5",
+          "peer_vol_20",
+          "sox_ret_1",
+          "sox_ret_5",
+          "nasdaq_ret_1",
+          "nasdaq_ret_5",
+          "sp500_ret_1",
+          "sp500_ret_5",
+          "micron_ret_1",
+          "micron_ret_5",
+          "nvidia_ret_1",
+          "nvidia_ret_5",
+          "tsmc_adr_ret_1",
+          "tsmc_adr_ret_5",
+          "korea_etf_ret_1",
+          "korea_etf_ret_5",
+          "usdkrw_ret_1",
+          "usdkrw_ret_5",
+          "usdkrw_level_z60",
+          "dxy_ret_1",
+          "dxy_ret_5",
+          "dxy_level_z60",
+          "vix_ret_1",
+          "vix_ret_5",
+          "vix_level_z60",
+          "us10y_ret_1",
+          "us10y_ret_5",
+          "us10y_level_z60",
+          "cal_dow",
+          "cal_is_monday",
+          "cal_is_friday",
+          "cal_month_end"
+        ]
+      }
+    },
+    "missing_comparisons": []
+  }
+}

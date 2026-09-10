@@ -68,7 +68,7 @@
 | P00 | [x] | 현행 기준선·평가 계약 고정 | 없음 | CPU, 전체 평가는 Colab | 완료: 두 종목 full 12폴드 (samsung 1,362일 / sk_hynix 1,357일) |
 | P01 | [x] | 한 작업씩 실행·재개하는 실험 러너 | P00 | CPU | 완료: `tools/run_model_improvement.py`, 15개 테스트 통과 |
 | P02 | [x] | 정보 공개 시각·데이터 품질 점검 | P01 | CPU | 완료: 미래 날짜 봉 결함 1건 수정, `tests/test_release_timing.py` 15개 |
-| P03 | [ ] | 기존 특징군의 추가 가치 비교 | P02 | CPU/Colab | 미실행 |
+| P03 | [x] | 기존 특징군의 추가 가치 비교 | P02 | CPU/Colab | 완료: 채택 없음. 월별 지표는 두 종목 모두 확률 품질 유의 열위 |
 | P04 | [ ] | 학습 기간 비교 | P03 | CPU/Colab | 미실행 |
 | P05 | [ ] | 최근 표본 가중 학습 | P04 | CPU/Colab | 미실행 |
 | P06 | [ ] | 재학습 주기 비교 | P05 | CPU/Colab | 미실행 |
@@ -266,11 +266,35 @@ python -m unittest discover -s tests -p 'test_model_improvement_runner.py' -v
 **파일:** tools/run_model_improvement.py에 P03 등록, 노트북 기존 ablation 설정·결과 출력, 필요 시 tests/test_macro_features.py·tests/test_price_macro.py 확장.
 **입출력:** P02에서 허용된 특징·공통 날짜 → 기존 특징군 포함/제외 비교.
 
-- [ ] 현재 No macro/No flow/No sentiment/No price macro 등 실제 모델 이름과 정확한 특징 목록을 출력한다.
-- [ ] 먼저 현행 대표 모델과 기존 ablation들을 비교한다. 이미 있는 해외 자산·수급을 새로 수집하는 작업으로 바꾸지 않는다.
-- [ ] 각 비교에서 동일한 평가 날짜, 학습 창, 튜닝 예산, 밴드를 사용한다.
-- [ ] log_loss·balanced_accuracy의 쌍체 차이와 CI, 결측으로 제외된 날짜 수를 종목별 저장한다.
-- [ ] 새 변수군 추가는 기존 입력에 명확한 공백이 있을 때 후속 작업으로 기록한다. 효과가 불명확하면 기존 대표 특징군을 유지한다.
+- [x] 현재 No macro/No flow/No sentiment/No price macro 등 실제 모델 이름과 정확한 특징 목록을 출력한다. → 총 78개를 다섯 군으로 나눠 `feature_groups.json`에 저장(시세만 51 / `macro_` 9 / 거시 가격 8 / `flow_` 6 / `nsi_` 4)
+- [x] 먼저 현행 대표 모델과 기존 ablation들을 비교한다. 이미 있는 해외 자산·수급을 새로 수집하는 작업으로 바꾸지 않는다. → 노트북이 이미 낸 비교표를 읽었다. 새 수집·재학습 없음
+- [x] 각 비교에서 동일한 평가 날짜, 학습 창, 튜닝 예산, 밴드를 사용한다. → 모두 같은 P00 full 실행의 같은 폴드 산출물
+- [x] log_loss·balanced_accuracy의 쌍체 차이와 CI, 결측으로 제외된 날짜 수를 종목별 저장한다. → `comparisons.csv` 30행. 평가일 samsung 1,362 / sk_hynix 1,357, 제외 0
+- [x] 새 변수군 추가는 기존 입력에 명확한 공백이 있을 때 후속 작업으로 기록한다. 효과가 불명확하면 기존 대표 특징군을 유지한다. → 이미 넣은 넷이 전부 효과가 없어 새 변수군을 P04보다 앞세울 근거가 없다. 대표 특징군 유지
+
+#### 결과 (2026-09-10, `experiments/model_improvement/P03/20260910T0100Z_feature_groups/`)
+
+delta는 **특징군을 넣은 모델 − 뺀 모델**. log_loss는 작을수록 좋으므로 양수는 나빠졌다는 뜻.
+
+| 특징군 | 종목 | log_loss delta [95% CI] | 판정 |
+| --- | --- | --- | --- |
+| 월별 지표 `macro_` | samsung | +0.00575 [+0.00061, +0.01080] | **열위** |
+| 월별 지표 `macro_` | sk_hynix | +0.01248 [+0.00572, +0.01968] | **열위** |
+| 뉴스심리 `nsi_` | samsung / sk_hynix | −0.00063 / +0.00067 (둘 다 0 포함) | 동률 |
+| 수급 `flow_` | samsung | +0.00362 [−0.00194, +0.00915] | 동률 |
+| 수급 `flow_` | sk_hynix | +0.00873 [+0.00362, +0.01499] | **열위** |
+| 거시 가격 | samsung | +0.00373 [+0.00004, +0.00740] | **열위**(경계) |
+| 거시 가격 | sk_hynix | +0.00300 [−0.00002, +0.00619] | 동률(경계) |
+| 설정 선택(참고) | 둘 다 | 0 포함 | 동률 |
+
+balanced_accuracy는 **모든 비교에서 동률**이다. 정확도에서 얻은 것 없이 확률만 나빠진 것이므로
+계획이 말하는 “상충”이 아니다.
+
+**채택 없음.** 월별 지표가 두 종목 모두 유의하게 열위인 것은 현행 `HEADLINE_MODEL =
+"No macro ensemble"` 선택을 뒷받침한다. 월+2 지연 정렬한 최신 수정치라 과거 시점 정보로서
+약하다는 점과도 맞는다.
+
+**P04에서 쓸 고정 특징 목록:** `No macro ensemble`의 입력(= `macro_`·`nsi_`·`flow_` 제외).
 
 **완료 증거:** 특징군별 동일 날짜 비교표와 P04에서 사용할 고정 특징 목록.
 
@@ -491,14 +515,15 @@ P00 이후에는 작업 ID만 바꿔 요청한다. Colab 실행이 필요한 경
 | --- | --- | --- | --- | --- |
 | 2026-09-09 | PLAN | 이 문서 및 README 링크 | 저장소 문서·핵심 함수·기존 Transformer 결과 확인 | 계획 생성. P00부터 시작 |
 | 2026-09-10 | P00 사전 수정 | `tools/run_notebook.py`, `tests/test_run_notebook.py` | 8개 오프라인 회귀 테스트 통과 | 기존 CLI가 IPython 히스토리 부재로 둘째 종목을 건너뛰던 결함 수정. P00 전체 완료 아님 |
+| 2026-09-10 | P03 | `experiments/model_improvement/P03/20260910T0100Z_feature_groups/` | 비교 30행, 평가일 1,362/1,357, 제외 0 | **완료.** 채택 없음. 월별 지표는 두 종목 모두 확률 품질 유의 열위, 나머지는 동률 또는 한 종목 열위 |
 | 2026-09-10 | P00 full | `experiments/model_improvement/P00/20260910T0100Z_baseline_full/` | 두 종목 12폴드 완주, 9개 모델 동일 날짜 확인 | **완료.** 공식 기준선 확정. samsung 1,362일 / sk_hynix 1,357일 |
 | 2026-09-10 | P02 | `tests/test_release_timing.py`, 노트북 `drop_unclosed_last_bar` | `discover -p test_release_timing.py` 15개 통과 | 완료. 미래 날짜 봉을 마감된 봉으로 취급하던 결함 수정(실제 스냅샷의 usdjpy·usdkrw에서 확인). 공통 평가 집합 276일 저장 |
 | 2026-09-10 | P01 | `tools/run_model_improvement.py`, `tests/test_model_improvement_runner.py` | `discover -p test_model_improvement_runner.py` 15개 통과 | 완료. 재개·해시 격리·원자적 쓰기·발행 차단 검증. 구현 중 결함 2건(재개 시 반환형 불일치, 같은 초 run_id 충돌) 발견·수정 |
 | 2026-09-10 | P00 quick | `experiments/model_improvement/P00/20260910T0000Z_baseline_quick/` | 두 종목 46셀 무오류 완료, 평가 276일 | 기준선 계약 기록·스냅샷 고정 완료. 기존 캐시는 자산 키 불일치로 폐기. full 평가 실행 중 |
 
-- 현재 작업: P03 — 기존 특징군의 추가 가치 비교
-- 완료한 신규 작업: 3/16 (P00, P01, P02)
-- 다음 작업: P03
+- 현재 작업: P04 — 학습 기간 비교
+- 완료한 신규 작업: 4/16 (P00, P01, P02, P03)
+- 다음 작업: P04
 - 보류 작업: 없음
 - 마지막 검증 결과: `python -m unittest discover -s tests -p test_run_notebook.py -v` — 8개 통과. 전체 기존 테스트는 Windows 출력 인코딩 오류가 확인되어 `PYTHONIOENCODING=utf-8`로 재검증 중.
 - 재개 시 먼저 읽을 파일: 이 문서의 P00, guides/validation.md, guides/running.md

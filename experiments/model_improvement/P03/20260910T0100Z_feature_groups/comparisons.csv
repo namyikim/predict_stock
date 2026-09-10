@@ -1,0 +1,31 @@
+target,group,comparison,metric,delta,ci_low,ci_high,common_n,verdict,note
+samsung,월별 지표(macro_),No NSI ensemble − No macro ensemble,accuracy,-0.0058737151248164365,-0.02141881276603183,0.009533084540396959,1362,동률(CI가 0 포함),선행지수·반도체 수출 등 월별 통계의 추가 효과
+samsung,월별 지표(macro_),No NSI ensemble − No macro ensemble,balanced_accuracy,-0.005882283917571007,-0.02066046667685929,0.009625690374419113,1362,동률(CI가 0 포함),선행지수·반도체 수출 등 월별 통계의 추가 효과
+samsung,월별 지표(macro_),No NSI ensemble − No macro ensemble,log_loss,0.00574624505617094,0.0006084625139543776,0.010804521755115919,1362,추가가 유의하게 열위,선행지수·반도체 수출 등 월별 통계의 추가 효과
+samsung,뉴스심리(nsi_),Mean ensemble − No NSI ensemble,accuracy,0.0058737151248164365,-0.009538134695529936,0.021947073562631477,1362,동률(CI가 0 포함),뉴스심리지수의 추가 효과
+samsung,뉴스심리(nsi_),Mean ensemble − No NSI ensemble,balanced_accuracy,0.005481759070275816,-0.010273027754769206,0.021306166507143925,1362,동률(CI가 0 포함),뉴스심리지수의 추가 효과
+samsung,뉴스심리(nsi_),Mean ensemble − No NSI ensemble,log_loss,-0.0006276956595490102,-0.004397795505192337,0.0030660156093288747,1362,동률(CI가 0 포함),뉴스심리지수의 추가 효과
+samsung,수급(flow_),Mean ensemble − No flow ensemble,accuracy,-0.008810572687224683,-0.023222468954202147,0.005170154062803771,1362,동률(CI가 0 포함),외국인·기관 순매수의 추가 효과
+samsung,수급(flow_),Mean ensemble − No flow ensemble,balanced_accuracy,-0.007863937962622192,-0.023504538340723274,0.006734104905886627,1362,동률(CI가 0 포함),외국인·기관 순매수의 추가 효과
+samsung,수급(flow_),Mean ensemble − No flow ensemble,log_loss,0.003622714931633908,-0.0019413160400665152,0.00915058675283487,1362,동률(CI가 0 포함),외국인·기관 순매수의 추가 효과
+samsung,거시 가격(wti_·usdjpy_·krwjpy_),Mean ensemble − No macro price ensemble,accuracy,-0.005139500734214375,-0.01691395211077779,0.0066619789640488284,1362,동률(CI가 0 포함),유가·엔화의 추가 효과
+samsung,거시 가격(wti_·usdjpy_·krwjpy_),Mean ensemble − No macro price ensemble,balanced_accuracy,-0.004364646185818444,-0.016699141087239664,0.007738470579169576,1362,동률(CI가 0 포함),유가·엔화의 추가 효과
+samsung,거시 가격(wti_·usdjpy_·krwjpy_),Mean ensemble − No macro price ensemble,log_loss,0.0037322431063102623,3.911696958934786e-05,0.0074025650204670055,1362,추가가 유의하게 열위,유가·엔화의 추가 효과
+samsung,설정 선택(참고),Mean ensemble − Previous ensemble,accuracy,0.0073421439060205596,-0.01580200399499812,0.03034791853165589,1362,동률(CI가 0 포함),특징군이 아니라 설정 변경 효과. 비교용으로만 둔다
+samsung,설정 선택(참고),Mean ensemble − Previous ensemble,balanced_accuracy,-0.008915381037091497,-0.02992425836529163,0.011204639827762729,1362,동률(CI가 0 포함),특징군이 아니라 설정 변경 효과. 비교용으로만 둔다
+samsung,설정 선택(참고),Mean ensemble − Previous ensemble,log_loss,0.0031713405636142333,-0.005748678675447599,0.011867214558143277,1362,동률(CI가 0 포함),특징군이 아니라 설정 변경 효과. 비교용으로만 둔다
+sk_hynix,월별 지표(macro_),No NSI ensemble − No macro ensemble,accuracy,0.0007369196757552876,-0.015011589330593036,0.01681317297449919,1357,동률(CI가 0 포함),선행지수·반도체 수출 등 월별 통계의 추가 효과
+sk_hynix,월별 지표(macro_),No NSI ensemble − No macro ensemble,balanced_accuracy,-0.0014777295180807282,-0.017094296677391718,0.014714088573236543,1357,동률(CI가 0 포함),선행지수·반도체 수출 등 월별 통계의 추가 효과
+sk_hynix,월별 지표(macro_),No NSI ensemble − No macro ensemble,log_loss,0.012477495458690147,0.005720536710136209,0.019680236512708855,1357,추가가 유의하게 열위,선행지수·반도체 수출 등 월별 통계의 추가 효과
+sk_hynix,뉴스심리(nsi_),Mean ensemble − No NSI ensemble,accuracy,-0.009579955784819405,-0.02040932282003713,0.0021723782388313154,1357,동률(CI가 0 포함),뉴스심리지수의 추가 효과
+sk_hynix,뉴스심리(nsi_),Mean ensemble − No NSI ensemble,balanced_accuracy,-0.008507124927823628,-0.019190602984677885,0.002696507436227841,1357,동률(CI가 0 포함),뉴스심리지수의 추가 효과
+sk_hynix,뉴스심리(nsi_),Mean ensemble − No NSI ensemble,log_loss,0.0006681078707344579,-0.0022397962764958146,0.0036581890222664943,1357,동률(CI가 0 포함),뉴스심리지수의 추가 효과
+sk_hynix,수급(flow_),Mean ensemble − No flow ensemble,accuracy,0.0029476787030213725,-0.009695165039049417,0.015648577868018924,1357,동률(CI가 0 포함),외국인·기관 순매수의 추가 효과
+sk_hynix,수급(flow_),Mean ensemble − No flow ensemble,balanced_accuracy,0.0029774746755878434,-0.009197931962038945,0.01519047965940565,1357,동률(CI가 0 포함),외국인·기관 순매수의 추가 효과
+sk_hynix,수급(flow_),Mean ensemble − No flow ensemble,log_loss,0.00873484651594958,0.0036205160053974115,0.014985973763838784,1357,추가가 유의하게 열위,외국인·기관 순매수의 추가 효과
+sk_hynix,거시 가격(wti_·usdjpy_·krwjpy_),Mean ensemble − No macro price ensemble,accuracy,-0.0022107590272660294,-0.012899860808938351,0.010388875522406686,1357,동률(CI가 0 포함),유가·엔화의 추가 효과
+sk_hynix,거시 가격(wti_·usdjpy_·krwjpy_),Mean ensemble − No macro price ensemble,balanced_accuracy,-0.0010265716598615304,-0.011578857522256849,0.011139378805899087,1357,동률(CI가 0 포함),유가·엔화의 추가 효과
+sk_hynix,거시 가격(wti_·usdjpy_·krwjpy_),Mean ensemble − No macro price ensemble,log_loss,0.003000571645820571,-1.6776285690212047e-05,0.006191255348611111,1357,동률(CI가 0 포함),유가·엔화의 추가 효과
+sk_hynix,설정 선택(참고),Mean ensemble − Previous ensemble,accuracy,0.01694915254237289,-0.005140451085681501,0.03908984890691226,1357,동률(CI가 0 포함),특징군이 아니라 설정 변경 효과. 비교용으로만 둔다
+sk_hynix,설정 선택(참고),Mean ensemble − Previous ensemble,balanced_accuracy,-0.006766136151527602,-0.027309050462533534,0.014450503018217023,1357,동률(CI가 0 포함),특징군이 아니라 설정 변경 효과. 비교용으로만 둔다
+sk_hynix,설정 선택(참고),Mean ensemble − Previous ensemble,log_loss,0.007018306927974782,-0.0030410785339131108,0.01664442260965391,1357,동률(CI가 0 포함),특징군이 아니라 설정 변경 효과. 비교용으로만 둔다

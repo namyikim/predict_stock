@@ -1,8 +1,8 @@
 # 논문 기반 개선 후보와 실험 계획
 
-작성일: 2026-09-10
+작성일: 2026-09-10 (R07·R08 추가: 2026-09-10)
 근거 커밋: `583b18e` (중기 계획 M00~M08 결과), `02ebb17` (다음 날 방향 계획 P00~P10 결과)
-상태: 계획 작성. R01~R06 미실행.
+상태: 계획 작성. R01~R08 미실행.
 
 ## 1. 왜 이 논문들인가 — 측정된 실패에 맞춘 선정
 
@@ -32,6 +32,8 @@
 | R04 | Wood, Roberts & Zohren (2022) *Slow Momentum with Fast Reversion*, J. Financial Data Science (온라인 변화점 탐지 모듈) | 추세 전환 직후 잘못된 베팅을 줄이기 위해 변화점 점수를 모델 입력·포지션 조절에 넣는다 | 변화점 점수를 발행 보류 정책과 R01 의 갱신 속도에 넣어 국면 전환 직후의 발행·과소 구간을 줄인다 | 없음 | 3 |
 | R05 | Bollerslev, Patton & Quaedvlieg (2016) *Exploiting the errors* (HARQ), J. Econometrics | 실현변동성의 측정오차(실현 사분위)에 따라 HAR 계수를 바꿔 반응성을 높인다 | HAR 구간(M05 후보)의 국면 반응을 개선. 다만 일중 자료가 없어 **범위(고가·저가) 기반 대용**으로만 가능 | 일중 자료 없음 → 일봉 고저 대용 | 4(조건부) |
 | R06 | Ke, Kelly & Xiu (2020) *Predicting Returns with Text Data* (SESTM) | 수익률 예측에 맞춰 단어를 선별·가중하는 지도 감성 점수 | 현행 뉴스심리지수(외부 지수) 대신 종목 맞춤 감성. 다만 기사 원문·시각이 있는 한국어 코퍼스가 필요 | 기사 코퍼스(미확보) | 보류 |
+| R07 | Campbell (1987) *Stock returns and the term structure*, J. Financial Economics; Rapach, Strauss & Zhou (2010) *Out-of-Sample Equity Premium Prediction: Combination Forecasts*, RFS | 단기 금리·커브 기울기가 월 단위 이상 지평에서 주식 수익률을 예측한다(결합 예측에서 안정적) | 현재 10년물만 쓰는 금리 입력을 2년물·30년물·기울기(10Y−2Y)로 넓혀 **5·20일 가격 모델에만** 시험. 1일 방향 모델에는 넣지 않는다(P03: 거시류 특징 유의 열위) | 없음(Yahoo ^IRX/^FVX/^TYX 또는 FRED DGS2/DGS30) | 3 |
+| R08 | Savor & Wilson (2013) *How Much Do Investors Care About Macroeconomic Risk?*, JFQA; Lucca & Moench (2015) *The Pre-FOMC Announcement Drift*, JF | 거시 발표일(고용·물가·FOMC)에 수익률 분포·변동성이 평일과 체계적으로 다르다 | 이벤트 일정을 NFP·PCE·ISM 제조업·FOMC 연간 전체로 넓혀 원장 표시를 확장하고, 이벤트일 구간 폭·보류 정책을 검증한다. 모델 입력이 아니라 **구간·보류 정책 재료** | 없음(BLS·BEA·ISM·연준 공표 일정) | 2(R01 과 함께) |
 
 **제외한 것과 이유.** Transformer·Kronos 등 시계열 기반 모델: 이미 측정해 열위(log loss 1.0849 vs 1.0321, 앙상블 편입 시 유의 악화). Deep Momentum Networks(Lim, Zohren & Roberts 2019): 샤프 최적화 포지션 학습이 목적이라 이 프로젝트의 예측 정확도·구간 목표와 다르다(변화점 아이디어만 R04 로). Gu, Kelly & Xiu(2020)의 횡단면 ML: 수천 종목 횡단면 전제라 2종목 시계열에는 맞지 않는다(M06 패널이 이미 그 방향의 축소판).
 
@@ -97,6 +99,26 @@
 - 필요 자료: 종목 관련 한국어 기사 원문 + 발행 시각(수년치). 현재 저장소에는 없다(회고 도구는 RSS 헤드라인만, 과거분 없음).
 - 확보되면: 학습 구간에서만 단어 선별·가중(누수 주의), 감성 점수를 특징으로 M02 방식 비교. 그 전까지 보류.
 
+### R07 — 금리 커브 특징군 (중기 지평 한정)
+
+**가설.** 2년물·커브 기울기는 정책 기대를 담아 5·20일 수익률에 10년물 하나보다 정보가 많다.
+
+- 그룹 E(기존 `us10y_*` 와 중복 없음): `us2y_ret_5`, `us2y_level_z60`, `curve_slope_10y2y`(수준), `curve_slope_chg_20`, `us30y_ret_5`. 미국 마감 자산 규칙(d−1 미국 마감까지, P02 의 미완성 봉 제거)을 그대로 쓴다.
+- 자료: Yahoo `^IRX`(13주)·`^FVX`(5년)·`^TYX`(30년) 또는 FRED `DGS2`·`DGS30`(API 키는 비밀로만). 2년물은 Yahoo 에 직접 티커가 없어 FRED 를 우선하고, 없으면 `^FVX` 로 대체하고 그 사실을 기록한다.
+- 실험: M02 방식(`full_plus_E`, 공통 행, 폴드별 내부 선택 경로) vs current_full. 5·20일만. 판정: 보정 후 MAE 후보−현행 CI 상한 < 0.
+- 예상: 동률로 끝날 가능성이 높다(M02 에서 시세·거시 특징 모두 우위 없음). 그래도 커브는 아직 시험하지 않은 유일한 금리 정보라 한 번은 측정한다.
+- 비용: 20분. 누수 검사: 미국 마감 시각 정렬(기존 테스트 재사용), 미래 변경 불변.
+
+### R08 — 미국 이벤트 일정 확장과 이벤트일 구간·보류 정책
+
+**가설.** 고용·물가·FOMC 발표 다음 한국 거래일은 갭 변동폭이 커서 같은 폭의 구간은 덜 맞고, 발행을 쉬는 편이 낫다.
+
+- 1단계(자료): `data_sources/us_calendar.py` 의 `US_RELEASES` 에 2026년 NFP(고용보고서)·PCE·ISM 제조업 PMI·FOMC 전 회차를 공표 일정대로 추가한다(규칙 계산 금지, 표에 없는 기간은 표시하지 않는다는 기존 원칙 유지). 원장 `event_flags` 는 자동으로 넓어진다.
+- 2단계(진단): 원장·백테스트에서 이벤트 다음 거래일과 평일의 |갭|·구간 포함률·방향 적중률을 나눠 저장한다(이벤트일 표본이 60일 이상 쌓일 때까지는 진단만).
+- 3단계(정책 후보, R01 과 같은 계약): `event_widen`(이벤트 다음 거래일 구간 반폭 × k, k 는 과거 이벤트일 잔차 분위로 학습 구간에서만 결정), `event_hold`(이벤트 다음 거래일은 점 예측 보류). 기준: 현행 구간·현행 판정. 판정: 포함률 편차와 interval score(R01 규칙), 발행 중심값 MAE(R04 규칙).
+- 컨센서스 서프라이즈(예상치 대비)는 안정적 무료 출처가 없어 넣지 않는다. 확보되면 별도 항목으로.
+- 비용: 자료 30분, 진단 20분, 정책 30분. 누수 검사: 일정은 미리 아는 정보(발표 결과 아님)이므로 누수 없음 — 결과값을 쓰지 않는다는 테스트를 둔다.
+
 ## 4. 체크리스트
 
 | ID | 완료 | 작업 | 선행 | 결론 |
@@ -107,12 +129,14 @@
 | R04 | [ ] | 변화점 점수 보류·갱신 정책 | R01 | 미실행 |
 | R05 | [ ] | 범위 기반 HARQ σ | R01 결과에 따라 | 조건부 |
 | R06 | [ ] | SESTM 감성 | 기사 코퍼스 확보 | 보류 |
+| R07 | [ ] | 금리 커브 특징군(2년물·기울기·30년물), 5·20일만 | 없음(M02 코드 재사용) | 미실행 |
+| R08 | [ ] | 미국 이벤트 일정 확장 → 이벤트일 구간·보류 정책 | 1·2단계는 없음, 3단계는 R01 | 미실행 |
 
 각 작업은 M-계획과 같은 완료 기록 규칙(코드·검증·결과·문서를 한 커밋, decision.md, 체크리스트·재개 지점 갱신)을 따른다. 통과한 후보는 M07 방식으로 원장에 `Candidate …` 행을 추가해 관찰한다. 잠금 평가는 후보당 1회다.
 
 ## 5. 재개 지점
 
-- 현재 작업: 없음. 다음 실행은 R01(가장 뚜렷한 실패를 겨냥하고 새 자료가 필요 없다).
+- 현재 작업: 없음. 다음 실행은 R01(가장 뚜렷한 실패를 겨냥하고 새 자료가 필요 없다). R08 1단계(일정 추가)는 언제든 먼저 해도 된다.
 - 먼저 읽을 파일: 본 문서, `experiments/medium_horizon/M05/…/decision.md`, `M07/decision.md`, `tools/run_medium_horizon.py`(run_m05·band_quantile·matured_residuals).
 - 재개 요청 예시: `guides/research-candidates-plan.md를 읽고 R01만 진행해주세요. 실제 완료한 항목만 체크하고 결과·검증·다음 재개 지점을 기록한 뒤 커밋·push해주세요.`
 
@@ -130,4 +154,8 @@
 - Lim, B., Zohren, S., & Roberts, S. (2019). Enhancing Time Series Momentum Strategies Using Deep Neural Networks. Journal of Financial Data Science. https://arxiv.org/pdf/1904.04912
 - Bollerslev, T., Patton, A. J., & Quaedvlieg, R. (2016). Exploiting the errors: A simple approach for improved volatility forecasting. Journal of Econometrics 192(1), 1–18. https://ideas.repec.org/a/eee/econom/v192y2016i1p1-18.html
 - Ke, Z. T., Kelly, B. T., & Xiu, D. (2020). Predicting Returns with Text Data. https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3389884
+- Campbell, J. Y. (1987). Stock returns and the term structure. Journal of Financial Economics 18(2), 373–399.
+- Rapach, D. E., Strauss, J. K., & Zhou, G. (2010). Out-of-Sample Equity Premium Prediction: Combination Forecasts and Links to the Real Economy. Review of Financial Studies 23(2), 821–862.
+- Savor, P., & Wilson, M. (2013). How Much Do Investors Care About Macroeconomic Risk? Evidence from Scheduled Economic Announcements. Journal of Financial and Quantitative Analysis 48(2), 343–375.
+- Lucca, D. O., & Moench, E. (2015). The Pre-FOMC Announcement Drift. Journal of Finance 70(1), 329–371.
 - Gu, S., Kelly, B., & Xiu, D. (2020). Empirical Asset Pricing via Machine Learning. Review of Financial Studies 33(5), 2223–2273. https://academic.oup.com/rfs/article/33/5/2223/5758276

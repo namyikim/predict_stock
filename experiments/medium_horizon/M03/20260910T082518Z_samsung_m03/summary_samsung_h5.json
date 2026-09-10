@@ -1,0 +1,502 @@
+{
+  "target": "samsung",
+  "horizon": 5,
+  "n_rows": 2281,
+  "n_features": 78,
+  "dev_folds": [
+    "dev_01",
+    "dev_02",
+    "dev_03",
+    "dev_04",
+    "dev_05",
+    "dev_06",
+    "dev_07",
+    "dev_08",
+    "dev_09"
+  ],
+  "lock_start": "2025-09-04",
+  "n_dev_rows": 1086,
+  "purge_violations": [],
+  "selections": [
+    {
+      "fold": "dev_01",
+      "selected": "a10000_expanding",
+      "inner_mae": {
+        "a100_5y": [
+          0.039022,
+          0.084681,
+          0.028444
+        ],
+        "a100_expanding": [
+          0.039022,
+          0.084681,
+          0.028444
+        ],
+        "a1000_5y": [
+          0.033483,
+          0.056064,
+          0.024465
+        ],
+        "a1000_expanding": [
+          0.033483,
+          0.056064,
+          0.024465
+        ],
+        "a10000_5y": [
+          0.031943,
+          0.043971,
+          0.025221
+        ],
+        "a10000_expanding": [
+          0.031943,
+          0.043971,
+          0.025221
+        ]
+      },
+      "train_rows": {
+        "a100_5y": 919,
+        "a100_expanding": 919,
+        "a1000_5y": 919,
+        "a1000_expanding": 919,
+        "a10000_5y": 919,
+        "a10000_expanding": 919
+      },
+      "issued": {
+        "a100_5y": true,
+        "a100_expanding": true,
+        "a1000_5y": true,
+        "a1000_expanding": true,
+        "a10000_5y": true,
+        "a10000_expanding": true
+      }
+    },
+    {
+      "fold": "dev_02",
+      "selected": "a10000_expanding",
+      "inner_mae": {
+        "a100_5y": [
+          0.021877,
+          0.039022,
+          0.084681
+        ],
+        "a100_expanding": [
+          0.021877,
+          0.039022,
+          0.084681
+        ],
+        "a1000_5y": [
+          0.021815,
+          0.033483,
+          0.056064
+        ],
+        "a1000_expanding": [
+          0.021815,
+          0.033483,
+          0.056064
+        ],
+        "a10000_5y": [
+          0.021321,
+          0.031943,
+          0.043971
+        ],
+        "a10000_expanding": [
+          0.021321,
+          0.031943,
+          0.043971
+        ]
+      },
+      "train_rows": {
+        "a100_5y": 1042,
+        "a100_expanding": 1042,
+        "a1000_5y": 1042,
+        "a1000_expanding": 1042,
+        "a10000_5y": 1042,
+        "a10000_expanding": 1042
+      },
+      "issued": {
+        "a100_5y": true,
+        "a100_expanding": true,
+        "a1000_5y": true,
+        "a1000_expanding": true,
+        "a10000_5y": false,
+        "a10000_expanding": false
+      }
+    },
+    {
+      "fold": "dev_03",
+      "selected": "a10000_expanding",
+      "inner_mae": {
+        "a100_5y": [
+          0.027108,
+          0.021877,
+          0.039022
+        ],
+        "a100_expanding": [
+          0.027108,
+          0.021877,
+          0.039022
+        ],
+        "a1000_5y": [
+          0.024226,
+          0.021815,
+          0.033483
+        ],
+        "a1000_expanding": [
+          0.024226,
+          0.021815,
+          0.033483
+        ],
+        "a10000_5y": [
+          0.023168,
+          0.021321,
+          0.031943
+        ],
+        "a10000_expanding": [
+          0.023168,
+          0.021321,
+          0.031943
+        ]
+      },
+      "train_rows": {
+        "a100_5y": 1167,
+        "a100_expanding": 1167,
+        "a1000_5y": 1167,
+        "a1000_expanding": 1167,
+        "a10000_5y": 1167,
+        "a10000_expanding": 1167
+      },
+      "issued": {
+        "a100_5y": false,
+        "a100_expanding": false,
+        "a1000_5y": true,
+        "a1000_expanding": true,
+        "a10000_5y": true,
+        "a10000_expanding": true
+      }
+    },
+    {
+      "fold": "dev_04",
+      "selected": "a10000_expanding",
+      "inner_mae": {
+        "a100_5y": [
+          0.027862,
+          0.027108,
+          0.021877
+        ],
+        "a100_expanding": [
+          0.027862,
+          0.027108,
+          0.021877
+        ],
+        "a1000_5y": [
+          0.02508,
+          0.024226,
+          0.021815
+        ],
+        "a1000_expanding": [
+          0.02508,
+          0.024226,
+          0.021815
+        ],
+        "a10000_5y": [
+          0.02474,
+          0.023168,
+          0.021321
+        ],
+        "a10000_expanding": [
+          0.02474,
+          0.023168,
+          0.021321
+        ]
+      },
+      "train_rows": {
+        "a100_5y": 1187,
+        "a100_expanding": 1275,
+        "a1000_5y": 1187,
+        "a1000_expanding": 1275,
+        "a10000_5y": 1187,
+        "a10000_expanding": 1275
+      },
+      "issued": {
+        "a100_5y": false,
+        "a100_expanding": false,
+        "a1000_5y": false,
+        "a1000_expanding": false,
+        "a10000_5y": false,
+        "a10000_expanding": false
+      }
+    },
+    {
+      "fold": "dev_05",
+      "selected": "a10000_5y",
+      "inner_mae": {
+        "a100_5y": [
+          0.024612,
+          0.027862,
+          0.027108
+        ],
+        "a100_expanding": [
+          0.025375,
+          0.027862,
+          0.027108
+        ],
+        "a1000_5y": [
+          0.023624,
+          0.02508,
+          0.024226
+        ],
+        "a1000_expanding": [
+          0.023815,
+          0.02508,
+          0.024226
+        ],
+        "a10000_5y": [
+          0.023186,
+          0.02474,
+          0.023168
+        ],
+        "a10000_expanding": [
+          0.023232,
+          0.02474,
+          0.023168
+        ]
+      },
+      "train_rows": {
+        "a100_5y": 1210,
+        "a100_expanding": 1400,
+        "a1000_5y": 1210,
+        "a1000_expanding": 1400,
+        "a10000_5y": 1210,
+        "a10000_expanding": 1400
+      },
+      "issued": {
+        "a100_5y": false,
+        "a100_expanding": false,
+        "a1000_5y": false,
+        "a1000_expanding": false,
+        "a10000_5y": false,
+        "a10000_expanding": false
+      }
+    },
+    {
+      "fold": "dev_06",
+      "selected": "a10000_5y",
+      "inner_mae": {
+        "a100_5y": [
+          0.036711,
+          0.024612,
+          0.027862
+        ],
+        "a100_expanding": [
+          0.03825,
+          0.025375,
+          0.027862
+        ],
+        "a1000_5y": [
+          0.029414,
+          0.023624,
+          0.02508
+        ],
+        "a1000_expanding": [
+          0.031188,
+          0.023815,
+          0.02508
+        ],
+        "a10000_5y": [
+          0.022379,
+          0.023186,
+          0.02474
+        ],
+        "a10000_expanding": [
+          0.022779,
+          0.023232,
+          0.02474
+        ]
+      },
+      "train_rows": {
+        "a100_5y": 1215,
+        "a100_expanding": 1523,
+        "a1000_5y": 1215,
+        "a1000_expanding": 1523,
+        "a10000_5y": 1215,
+        "a10000_expanding": 1523
+      },
+      "issued": {
+        "a100_5y": false,
+        "a100_expanding": true,
+        "a1000_5y": true,
+        "a1000_expanding": true,
+        "a10000_5y": true,
+        "a10000_expanding": true
+      }
+    },
+    {
+      "fold": "dev_07",
+      "selected": "a10000_5y",
+      "inner_mae": {
+        "a100_5y": [
+          0.023127,
+          0.036711,
+          0.024612
+        ],
+        "a100_expanding": [
+          0.022889,
+          0.03825,
+          0.025375
+        ],
+        "a1000_5y": [
+          0.022204,
+          0.029414,
+          0.023624
+        ],
+        "a1000_expanding": [
+          0.022168,
+          0.031188,
+          0.023815
+        ],
+        "a10000_5y": [
+          0.022243,
+          0.022379,
+          0.023186
+        ],
+        "a10000_expanding": [
+          0.022181,
+          0.022779,
+          0.023232
+        ]
+      },
+      "train_rows": {
+        "a100_5y": 1213,
+        "a100_expanding": 1644,
+        "a1000_5y": 1213,
+        "a1000_expanding": 1644,
+        "a10000_5y": 1213,
+        "a10000_expanding": 1644
+      },
+      "issued": {
+        "a100_5y": true,
+        "a100_expanding": true,
+        "a1000_5y": true,
+        "a1000_expanding": true,
+        "a10000_5y": true,
+        "a10000_expanding": true
+      }
+    },
+    {
+      "fold": "dev_08",
+      "selected": "a10000_5y",
+      "inner_mae": {
+        "a100_5y": [
+          0.025607,
+          0.023127,
+          0.036711
+        ],
+        "a100_expanding": [
+          0.025434,
+          0.022889,
+          0.03825
+        ],
+        "a1000_5y": [
+          0.025732,
+          0.022204,
+          0.029414
+        ],
+        "a1000_expanding": [
+          0.025255,
+          0.022168,
+          0.031188
+        ],
+        "a10000_5y": [
+          0.026242,
+          0.022243,
+          0.022379
+        ],
+        "a10000_expanding": [
+          0.025997,
+          0.022181,
+          0.022779
+        ]
+      },
+      "train_rows": {
+        "a100_5y": 1213,
+        "a100_expanding": 1765,
+        "a1000_5y": 1213,
+        "a1000_expanding": 1765,
+        "a10000_5y": 1213,
+        "a10000_expanding": 1765
+      },
+      "issued": {
+        "a100_5y": true,
+        "a100_expanding": true,
+        "a1000_5y": true,
+        "a1000_expanding": true,
+        "a10000_5y": true,
+        "a10000_expanding": true
+      }
+    },
+    {
+      "fold": "dev_09",
+      "selected": "a10000_expanding",
+      "inner_mae": {
+        "a100_5y": [
+          0.06129,
+          0.025607,
+          0.023127
+        ],
+        "a100_expanding": [
+          0.056574,
+          0.025434,
+          0.022889
+        ],
+        "a1000_5y": [
+          0.046504,
+          0.025732,
+          0.022204
+        ],
+        "a1000_expanding": [
+          0.047386,
+          0.025255,
+          0.022168
+        ],
+        "a10000_5y": [
+          0.043273,
+          0.026242,
+          0.022243
+        ],
+        "a10000_expanding": [
+          0.043123,
+          0.025997,
+          0.022181
+        ]
+      },
+      "train_rows": {
+        "a100_5y": 1211,
+        "a100_expanding": 1888,
+        "a1000_5y": 1211,
+        "a1000_expanding": 1888,
+        "a10000_5y": 1211,
+        "a10000_expanding": 1888
+      },
+      "issued": {
+        "a100_5y": false,
+        "a100_expanding": false,
+        "a1000_5y": true,
+        "a1000_expanding": true,
+        "a10000_5y": true,
+        "a10000_expanding": true
+      }
+    }
+  ],
+  "selection_counts": {
+    "a10000_expanding": 5,
+    "a10000_5y": 4
+  },
+  "window_rows_differ": true,
+  "inner_selected_vs_current_issued_month_ci": [
+    -4.7091764906607685e-06,
+    6.88078392689634e-05
+  ],
+  "verdict": "inner_selected 발행 중심값이 현행보다 유의하게 낫지 않음 → 현행(alpha=1e4, expanding) 유지",
+  "oof_file": "D:\\SourceCode\\predict_stock\\runs\\medium_horizon\\samsung\\M03_h5_full_oof.csv",
+  "oof_sha256": "a8a0227e0949a886bfa295a12d9b617208b86e03bd5e62d29dc86be37deba98a"
+}

@@ -46,7 +46,9 @@ HORIZONS = (5, 20)
 COVERAGE = 0.8
 TASKS = {"M00": "현행 5·20일 가격 모델 기준선과 실패 유형 진단",
          "M01": "평가 계약(외부 6개월 폴드·잠금 12개월·내부 3구간)과 고정 입력 로더 검증",
-         "M02": "지평별 특징군 비교(현행 전체 vs 시세만 vs 월별 제외 vs 그룹 A 추가)"}
+         "M02": "지평별 특징군 비교(현행 전체 vs 시세만 vs 월별 제외 vs 그룹 A 추가)",
+         "M03": "Ridge 규제 강도·학습 창 내부 선택(alpha {100,1000,10000} × {5년, expanding})",
+         "M04": "5·20일 직접 방향 확률 모델(규제 Logistic) vs 학습 구간 사전확률"}
 HORIZON_LABELS = {5: "1주일", 20: "1개월"}
 
 # 평가 계약(계획 4절). 점수를 보기 전에 고정한다.
@@ -874,8 +876,381 @@ def run_m02(target, mode, storage, results_dir, state, run_notebook_fn=None):
     return collect_rows(state, target)
 
 
-TASK_RUNNERS = {"M00": run_m00, "M01": run_m01, "M02": run_m02}
-TASK_CONFIGS = {"M00": m00_config, "M01": m01_config, "M02": m02_config}
+# ---------------------------------------------------------------------------
+# M03 — 규제 강도 × 학습 창
+# ---------------------------------------------------------------------------
+ALPHA_CANDIDATES = (100., 1000., 10000.)
+WINDOW_CANDIDATES = ("5y", "expanding")
+CURRENT_SETTING = (10000., "expanding")
+
+
+def setting_name(alpha, window):
+    return f"a{int(alpha)}_{window}"
+
+
+def window_rows(train, dates, anchor, window):
+    """학습 창. expanding 은 purge 된 전체 과거, 5y 는 anchor(시험 시작일) 앞 5년만."""
+    train = np.asarray(train)
+    if window == "expanding":
+        return train
+    if window == "5y":
+        start = pd.Timestamp(anchor) - pd.DateOffset(years=5)
+        return train[pd.DatetimeIndex(dates[train]) >= start]
+    raise ValueError(f"알 수 없는 학습 창: {window}")
+
+
+def select_setting(inner_mae_by_setting):
+    """내부 3구간 평균 raw MAE 최소. 동률(1e-12)이면 alpha 큰 쪽, 그다음 expanding."""
+    def key(item):
+        (alpha, window), maes = item
+        return (round(float(np.mean(maes)), 12), -alpha, 0 if window == "expanding" else 1)
+    return min(inner_mae_by_setting.items(), key=key)[0]
+
+
+def fold_gate(inner_pred, inner_y, slope):
+    """폴드 발행 판정: 내부 3구간 중 2구간 이상에서 보정 예측이 현재가 유지보다 MAE 가 낮아야 발행."""
+    wins = 0
+    for p, y in zip(inner_pred, inner_y):
+        if np.abs(y - slope * p).mean() < np.abs(y).mean():
+            wins += 1
+    return wins >= 2 and len(inner_pred) >= 2
+
+
+def m03_config(mode):
+    return {"task": "M03", "mode": mode, "horizons": list(HORIZONS), "features": "current_full",
+            "alphas": list(ALPHA_CANDIDATES), "windows": list(WINDOW_CANDIDATES), "current": list(CURRENT_SETTING),
+            "selection": "내부 3구간 평균 raw MAE 최소, 동률이면 alpha 큰 쪽 → expanding",
+            "gate": "내부 3구간 중 2구간 이상 보정 MAE < 유지 MAE 이면 발행",
+            "folds": {"first_test": FIRST_TEST, "test_months": TEST_MONTHS, "lock_months": LOCK_MONTHS,
+                      "min_train_rows": MIN_TRAIN_ROWS, "min_test_rows": MIN_TEST_ROWS, "inner_blocks": INNER_BLOCKS},
+            "bootstrap_b": 400 if mode == "quick" else 2000, "seed": SEED}
+
+
+def run_m03(target, mode, storage, results_dir, state, run_notebook_fn=None):
+    import time
+    inputs = None
+    for horizon in HORIZONS:
+        unit = f"{target}:h{horizon}"
+        if state.is_done(unit) and artifacts_intact(state, unit, target, horizon):
+            print(f"  이미 완료된 단위 건너뜀: {unit}")
+            continue
+        if inputs is None:
+            inputs = load_inputs(target, mode, storage, run_notebook_fn)
+            record_inputs(state, inputs)
+        reg, cols = price_design(inputs, horizon)
+        sam = inputs["sam"]
+        folds, lock_start = evaluation_folds(reg.index, sam.index, horizon)
+        dev = [f for f in folds if f["name"].startswith("dev") and not f.get("excluded")]
+        if not dev:
+            raise SystemExit(f"{unit}: 개발 폴드가 없습니다.")
+        violations = purge_check(reg.index, sam.index, horizon, [(f["train"], f["test"]) for f in dev]
+                                 + [(i["train"], i["test"]) for f in dev for i in f["inner"] if not i.get("excluded")])
+        X = reg[cols].to_numpy(dtype=np.float32)
+        y = reg["future_return"].to_numpy(dtype=float)
+        sigma = reg["sigma_simple"].to_numpy(dtype=float)
+        z = y / np.maximum(sigma, 1e-6)
+        settings = [(a, w) for a in ALPHA_CANDIDATES for w in WINDOW_CANDIDATES]
+        templates = {a: fu.make_price_model(alpha=a) for a in ALPHA_CANDIDATES}
+
+        records = []
+        for f in dev:
+            rec = {"fold": f["name"], "test": f["test"], "settings": {}, "seconds": {}}
+            for alpha, window in settings:
+                t0 = time.perf_counter()
+                train = window_rows(f["train"], reg.index, f["test_start"], window)
+                raw = fit_predict(templates[alpha], X, z, sigma, train, f["test"])
+                inner_pred, inner_y, inner_mae = [], [], []
+                for block in f["inner"]:
+                    if block.get("excluded"):
+                        continue
+                    btrain = window_rows(block["train"], reg.index, block["test_start"], window)
+                    if len(btrain) < MIN_TRAIN_ROWS:
+                        continue
+                    p_ = fit_predict(templates[alpha], X, z, sigma, btrain, block["test"])
+                    inner_pred.append(p_); inner_y.append(y[block["test"]]); inner_mae.append(float(np.abs(y[block["test"]] - p_).mean()))
+                slope = inner_slope(np.concatenate(inner_pred), np.concatenate(inner_y)) if inner_pred else 0.
+                issued = fold_gate(inner_pred, inner_y, slope)
+                rec["settings"][(alpha, window)] = {"raw": raw, "slope": slope, "inner_mae": inner_mae, "issued": issued,
+                                                     "train_rows": int(len(train)), "inner_blocks": len(inner_pred),
+                                                     "mean_abs_raw": float(np.abs(raw).mean())}
+                rec["seconds"][(alpha, window)] = time.perf_counter() - t0
+            usable = {s: v["inner_mae"] for s, v in rec["settings"].items() if v["inner_mae"]}
+            rec["selected"] = select_setting(usable) if usable else CURRENT_SETTING
+            records.append(rec)
+
+        test_idx = np.concatenate([r["test"] for r in records])
+        y_dev, dates_dev = y[test_idx], reg.index[test_idx]
+        zero = np.abs(y_dev)
+        b = 400 if mode == "quick" else 2000
+        block = max(20, 2 * horizon)
+
+        def path(name_fn):
+            raw = np.concatenate([r["settings"][name_fn(r)]["raw"] for r in records])
+            cal = np.concatenate([r["settings"][name_fn(r)]["slope"] * r["settings"][name_fn(r)]["raw"] for r in records])
+            iss = np.concatenate([(r["settings"][name_fn(r)]["slope"] * r["settings"][name_fn(r)]["raw"]) if r["settings"][name_fn(r)]["issued"]
+                                  else np.zeros(len(r["test"])) for r in records])
+            rate = float(np.mean([r["settings"][name_fn(r)]["issued"] for r in records]))
+            return {"raw": raw, "calibrated": cal, "issued": iss, "issuance_rate": rate}
+
+        paths = {setting_name(a, w): path(lambda r, s=(a, w): s) for a, w in settings}
+        paths["inner_selected"] = path(lambda r: r["selected"])
+        current = setting_name(*CURRENT_SETTING)
+
+        def ci_pair(diff, label, metric):
+            lo_m, hi_m = month_block_ci(dates_dev, lambda i: float(diff[i].mean()), b=b)
+            lo_c, hi_c = contiguous_block_ci(len(diff), lambda i: float(diff[i].mean()), block, b=b)
+            base = {"target": target, "horizon": horizon, "comparison": label, "metric": metric, "delta": float(diff.mean()),
+                    "common_n": int(len(diff)), "calibrated": "raw" not in metric}
+            return [dict(base, ci_lo=lo_m, ci_hi=hi_m, block="month"), dict(base, ci_lo=lo_c, ci_hi=hi_c, block=f"contiguous_{block}")]
+
+        metrics = [{"target": target, "horizon": horizon, "candidate": "hold_current", "fold": "dev_all", "evaluation_stage": "dev_common",
+                    "n": int(len(y_dev)), "mae": float(zero.mean()), "rmse": float(np.sqrt(np.mean(y_dev ** 2)))}]
+        comparisons = []
+        ref = paths[current]
+        for name, pth in paths.items():
+            err = {k: np.abs(y_dev - pth[k]) for k in ("raw", "calibrated", "issued")}
+            row = {"target": target, "horizon": horizon, "candidate": name, "fold": "dev_all", "evaluation_stage": "dev_common",
+                   "n": int(len(y_dev)), "mae": float(err["raw"].mean()), "rmse": float(np.sqrt(np.mean((y_dev - pth["raw"]) ** 2))),
+                   "mae_calibrated": float(err["calibrated"].mean()), "mae_issued": float(err["issued"].mean()),
+                   "issuance_rate": pth["issuance_rate"], "mean_abs_raw": float(np.abs(pth["raw"]).mean())}
+            if name != "inner_selected":
+                key = next(s for s in settings if setting_name(*s) == name)
+                row["mean_train_rows"] = float(np.mean([r["settings"][key]["train_rows"] for r in records]))
+                row["mean_slope"] = float(np.mean([r["settings"][key]["slope"] for r in records]))
+                row["seconds_per_fold"] = float(np.mean([r["seconds"][key] for r in records]))
+            metrics.append(row)
+            for r in records:
+                key = r["selected"] if name == "inner_selected" else next(s for s in settings if setting_name(*s) == name)
+                te = r["test"]; v = r["settings"][key]
+                metrics.append({"target": target, "horizon": horizon, "candidate": name, "fold": r["fold"], "evaluation_stage": "dev_fold",
+                                "n": int(len(te)), "mae": float(np.abs(y[te] - v["raw"]).mean()), "zero_mae": float(np.abs(y[te]).mean()),
+                                "train_rows": v["train_rows"], "slope": v["slope"], "issued": v["issued"],
+                                "setting": setting_name(*key)})
+            if name != current:
+                for k, metric in (("raw", "mae_return_raw"), ("calibrated", "mae_return_calibrated"), ("issued", "mae_return_issued")):
+                    comparisons += ci_pair(err[k] - np.abs(y_dev - ref[k]), f"{name} - {current}", metric)
+            for k, metric in (("calibrated", "mae_return_calibrated"), ("issued", "mae_return_issued")):
+                comparisons += ci_pair(err[k] - zero, f"{name} - hold_current", metric)
+
+        raw_dir = Path(storage) / target
+        raw_dir.mkdir(parents=True, exist_ok=True)
+        oof_frame = pd.DataFrame({"prediction_date": dates_dev, "y": y_dev, "sigma": sigma[test_idx],
+                                  **{f"raw_{n}": p_["raw"] for n, p_ in paths.items()},
+                                  **{f"issued_{n}": p_["issued"] for n, p_ in paths.items()}})
+        oof_path = raw_dir / f"M03_h{horizon}_{mode}_oof.csv"
+        oof_frame.to_csv(oof_path, index=False, lineterminator="\n")
+
+        sel_delta = next(c for c in comparisons if c["comparison"] == f"inner_selected - {current}"
+                         and c["metric"] == "mae_return_issued" and c["block"] == "month")
+        counts = pd.Series([setting_name(*r["selected"]) for r in records]).value_counts().to_dict()
+        summary = {
+            "target": target, "horizon": horizon, "n_rows": int(len(reg)), "n_features": len(cols),
+            "dev_folds": [r["fold"] for r in records], "lock_start": str(lock_start.date()), "n_dev_rows": int(len(y_dev)),
+            "purge_violations": violations,
+            "selections": [{"fold": r["fold"], "selected": setting_name(*r["selected"]),
+                            "inner_mae": {setting_name(*s): [round(v, 6) for v in d["inner_mae"]] for s, d in r["settings"].items()},
+                            "train_rows": {setting_name(*s): d["train_rows"] for s, d in r["settings"].items()},
+                            "issued": {setting_name(*s): d["issued"] for s, d in r["settings"].items()}} for r in records],
+            "selection_counts": counts,
+            "window_rows_differ": bool(all(r["settings"][(10000., "5y")]["train_rows"] < r["settings"][(10000., "expanding")]["train_rows"]
+                                           for r in records if r["settings"][(10000., "expanding")]["train_rows"] > 1300)),
+            "inner_selected_vs_current_issued_month_ci": [sel_delta["ci_lo"], sel_delta["ci_hi"]],
+            "verdict": ("inner_selected 발행 중심값이 현행보다 유의하게 낫지 않음 → 현행(alpha=1e4, expanding) 유지"
+                        if not (np.isfinite(sel_delta["ci_hi"]) and sel_delta["ci_hi"] < 0)
+                        else "inner_selected 발행 중심값 우위 → M07 후보 검토"),
+            "oof_file": str(oof_path), "oof_sha256": file_sha256(oof_path),
+        }
+        write_json(state.run_dir / f"summary_{target}_h{horizon}.json", summary)
+        save_unit_rows(state, target, horizon, metrics, comparisons)
+        state.mark(unit, {"oof_sha256": summary["oof_sha256"], "oof_file": summary["oof_file"], "selection_counts": counts,
+                          "purge_violations": len(violations), "verdict": summary["verdict"]})
+        print(f"  {unit}: 개발 {len(records)}폴드 · 선택 {counts} · inner_selected−현행(발행) {sel_delta['delta']:+.5f} "
+              f"[{sel_delta['ci_lo']:+.5f}, {sel_delta['ci_hi']:+.5f}] · 발행률 선택 {paths['inner_selected']['issuance_rate']:.2f} / 현행 {ref['issuance_rate']:.2f}")
+    return collect_rows(state, target)
+
+
+# ---------------------------------------------------------------------------
+# M04 — 직접 방향 확률 모델
+# ---------------------------------------------------------------------------
+DIRECTION_BAND_MULT = 0.3          # 밴드 = 과거 변동성 × sqrt(h) × 0.3 (초기 계약, 평가 결과로 바꾸지 않는다)
+DIRECTION_C = (0.003, 0.01, 0.03)
+DIRECTION_TEMPERATURES = (1., .75, 1.5, 2.)
+
+
+def direction_labels(future_return, sigma_h, mult=DIRECTION_BAND_MULT):
+    """3클래스 라벨: 0 하락(< -band), 1 보합, 2 상승(> band). band = sigma_h × mult."""
+    r, s = np.asarray(future_return, dtype=float), np.asarray(sigma_h, dtype=float)
+    if np.any(~np.isfinite(r)) or np.any(~np.isfinite(s)) or np.any(s <= 0):
+        raise ValueError("라벨에는 유한한 수익률과 양의 변동성이 필요하다")
+    band = s * mult
+    return np.where(r < -band, 0, np.where(r > band, 2, 1)).astype(int), band
+
+
+def class_prior_probabilities(y_train, n):
+    """학습 구간 클래스 사전확률(빈도)을 n행에 복제한다. 없는 클래스는 아주 작은 값."""
+    counts = np.bincount(np.asarray(y_train, dtype=int), minlength=3).astype(float)
+    prior = np.clip(counts / counts.sum(), 1e-7, 1.)
+    prior = prior / prior.sum()
+    return np.tile(prior, (n, 1))
+
+
+def fit_direction_probabilities(X, y, train, test, C, seed=SEED):
+    from sklearn.dummy import DummyClassifier
+    if len(np.unique(y[train])) > 1:
+        estimator = fu.direction_estimator("Logistic", {"C": C, "class_weight": None}, seed)
+    else:
+        estimator = DummyClassifier(strategy="prior")
+    estimator.fit(X[train], y[train])
+    return fu.aligned_probabilities(estimator, X[test])
+
+
+def brier_score(y, p):
+    onehot = np.eye(3)[np.asarray(y, dtype=int)]
+    return float(np.mean(np.sum((p - onehot) ** 2, axis=1)))
+
+
+def balanced_accuracy(y, p):
+    from sklearn.metrics import balanced_accuracy_score
+    return float(balanced_accuracy_score(np.asarray(y, dtype=int), p.argmax(axis=1)))
+
+
+def m04_config(mode):
+    return {"task": "M04", "mode": mode, "horizons": list(HORIZONS), "features": "current_full",
+            "band": f"sigma_simple(vol_20*sqrt(h)) * {DIRECTION_BAND_MULT}", "model": "StandardScaler+Logistic(multinomial), class_weight=None",
+            "C": list(DIRECTION_C), "temperatures": list(DIRECTION_TEMPERATURES),
+            "selection": "내부 3구간 합산 log loss 최소 C, 같은 예측으로 온도 선택",
+            "baseline": "학습 구간 클래스 사전확률",
+            "folds": {"first_test": FIRST_TEST, "test_months": TEST_MONTHS, "lock_months": LOCK_MONTHS,
+                      "min_train_rows": MIN_TRAIN_ROWS, "min_test_rows": MIN_TEST_ROWS, "inner_blocks": INNER_BLOCKS},
+            "bootstrap_b": 400 if mode == "quick" else 2000, "seed": SEED}
+
+
+def run_m04(target, mode, storage, results_dir, state, run_notebook_fn=None):
+    inputs = None
+    for horizon in HORIZONS:
+        unit = f"{target}:h{horizon}"
+        if state.is_done(unit) and artifacts_intact(state, unit, target, horizon):
+            print(f"  이미 완료된 단위 건너뜀: {unit}")
+            continue
+        if inputs is None:
+            inputs = load_inputs(target, mode, storage, run_notebook_fn)
+            record_inputs(state, inputs)
+        reg, cols = price_design(inputs, horizon)
+        sam = inputs["sam"]
+        folds, lock_start = evaluation_folds(reg.index, sam.index, horizon)
+        dev = [f for f in folds if f["name"].startswith("dev") and not f.get("excluded")]
+        if not dev:
+            raise SystemExit(f"{unit}: 개발 폴드가 없습니다.")
+        violations = purge_check(reg.index, sam.index, horizon, [(f["train"], f["test"]) for f in dev]
+                                 + [(i["train"], i["test"]) for f in dev for i in f["inner"] if not i.get("excluded")])
+        X = reg[cols].to_numpy(dtype=np.float32)
+        ret = reg["future_return"].to_numpy(dtype=float)
+        sigma = reg["sigma_simple"].to_numpy(dtype=float)
+        y, band = direction_labels(ret, sigma)
+
+        records = []
+        for f in dev:
+            inner = [b_ for b_ in f["inner"] if not b_.get("excluded")]
+            inner_y = np.concatenate([y[b_["test"]] for b_ in inner]) if inner else np.array([], dtype=int)
+            trials = {}
+            for C in DIRECTION_C:
+                probs = np.vstack([fit_direction_probabilities(X, y, b_["train"], b_["test"], C) for b_ in inner]) if inner else None
+                trials[C] = probs
+            if inner:
+                best_C = min(DIRECTION_C, key=lambda c: fu.probability_loss(inner_y, trials[c]))
+                temperature = min(DIRECTION_TEMPERATURES,
+                                  key=lambda tt: fu.probability_loss(inner_y, fu.temperature_probabilities(trials[best_C], tt)))
+                inner_loss = fu.probability_loss(inner_y, fu.temperature_probabilities(trials[best_C], temperature))
+                inner_prior_loss = fu.probability_loss(inner_y, np.vstack([class_prior_probabilities(y[b_["train"]], len(b_["test"])) for b_ in inner]))
+            else:
+                best_C, temperature, inner_loss, inner_prior_loss = DIRECTION_C[-1], 1., np.nan, np.nan
+            probs = fu.temperature_probabilities(fit_direction_probabilities(X, y, f["train"], f["test"], best_C), temperature)
+            prior = class_prior_probabilities(y[f["train"]], len(f["test"]))
+            records.append({"fold": f["name"], "test": f["test"], "C": best_C, "temperature": temperature,
+                            "inner_log_loss": inner_loss, "inner_prior_log_loss": inner_prior_loss,
+                            "probs": probs, "prior": prior, "train_rows": int(len(f["train"])),
+                            "train_class_share": (np.bincount(y[f["train"]], minlength=3) / len(f["train"])).round(4).tolist()})
+
+        test_idx = np.concatenate([r["test"] for r in records])
+        y_dev, dates_dev = y[test_idx], reg.index[test_idx]
+        P = {"logistic_direction": np.vstack([r["probs"] for r in records]), "class_prior": np.vstack([r["prior"] for r in records])}
+        for name, pr in P.items():
+            if not np.all(np.isfinite(pr)) or not np.allclose(pr.sum(axis=1), 1., atol=1e-6):
+                raise RuntimeError(f"{name}: 확률이 유한하지 않거나 합이 1이 아니다")
+        b = 400 if mode == "quick" else 2000
+        block = max(20, 2 * horizon)
+
+        def per_row_loss(pr):
+            return -np.log(np.clip(pr[np.arange(len(y_dev)), y_dev], 1e-7, 1.))
+
+        def per_row_brier(pr):
+            return np.sum((pr - np.eye(3)[y_dev]) ** 2, axis=1)
+
+        def ci_pair(stat_fn, label, metric, n):
+            lo_m, hi_m = month_block_ci(dates_dev, stat_fn, b=b)
+            lo_c, hi_c = contiguous_block_ci(n, stat_fn, block, b=b)
+            base = {"target": target, "horizon": horizon, "comparison": label, "metric": metric,
+                    "delta": float(stat_fn(np.arange(n))), "common_n": int(n), "calibrated": True}
+            return [dict(base, ci_lo=lo_m, ci_hi=hi_m, block="month"), dict(base, ci_lo=lo_c, ci_hi=hi_c, block=f"contiguous_{block}")]
+
+        metrics, comparisons = [], []
+        for name, pr in P.items():
+            metrics.append({"target": target, "horizon": horizon, "candidate": name, "fold": "dev_all", "evaluation_stage": "dev_common",
+                            "n": int(len(y_dev)), "log_loss": fu.probability_loss(y_dev, pr), "brier": brier_score(y_dev, pr),
+                            "balanced_accuracy": balanced_accuracy(y_dev, pr), "accuracy": float(np.mean(pr.argmax(axis=1) == y_dev)),
+                            "class_share_dev": (np.bincount(y_dev, minlength=3) / len(y_dev)).round(4).tolist(),
+                            "metric_note": "3클래스 확률 모델. 가격 회귀의 부호 적중률과 섞지 않는다"})
+            for r in records:
+                pr_f = r["probs"] if name == "logistic_direction" else r["prior"]
+                yy = y[r["test"]]
+                metrics.append({"target": target, "horizon": horizon, "candidate": name, "fold": r["fold"], "evaluation_stage": "dev_fold",
+                                "n": int(len(yy)), "log_loss": fu.probability_loss(yy, pr_f), "brier": brier_score(yy, pr_f),
+                                "balanced_accuracy": balanced_accuracy(yy, pr_f), "C": r["C"] if name == "logistic_direction" else "",
+                                "temperature": r["temperature"] if name == "logistic_direction" else "",
+                                "inner_log_loss": r["inner_log_loss"] if name == "logistic_direction" else r["inner_prior_log_loss"],
+                                "train_rows": r["train_rows"], "train_class_share": r["train_class_share"]})
+        d_loss = per_row_loss(P["logistic_direction"]) - per_row_loss(P["class_prior"])
+        d_brier = per_row_brier(P["logistic_direction"]) - per_row_brier(P["class_prior"])
+        n = len(y_dev)
+        comparisons += ci_pair(lambda i: float(d_loss[i].mean()), "logistic_direction - class_prior", "log_loss", n)
+        comparisons += ci_pair(lambda i: float(d_brier[i].mean()), "logistic_direction - class_prior", "brier", n)
+        comparisons += ci_pair(lambda i: balanced_accuracy(y_dev[i], P["logistic_direction"][i]) - balanced_accuracy(y_dev[i], P["class_prior"][i]),
+                               "logistic_direction - class_prior", "balanced_accuracy", n)
+
+        raw_dir = Path(storage) / target
+        raw_dir.mkdir(parents=True, exist_ok=True)
+        oof_frame = pd.DataFrame({"prediction_date": dates_dev, "y": y_dev, "band": band[test_idx],
+                                  "p_down": P["logistic_direction"][:, 0], "p_flat": P["logistic_direction"][:, 1], "p_up": P["logistic_direction"][:, 2],
+                                  "prior_down": P["class_prior"][:, 0], "prior_flat": P["class_prior"][:, 1], "prior_up": P["class_prior"][:, 2]})
+        oof_path = raw_dir / f"M04_h{horizon}_{mode}_oof.csv"
+        oof_frame.to_csv(oof_path, index=False, lineterminator="\n")
+
+        ll = next(c for c in comparisons if c["metric"] == "log_loss" and c["block"] == "month")
+        ba = next(c for c in comparisons if c["metric"] == "balanced_accuracy" and c["block"] == "month")
+        verdict = ("사전확률 대비 log loss 유의 우위" if np.isfinite(ll["ci_hi"]) and ll["ci_hi"] < 0 else
+                   "사전확률 대비 log loss 유의 열위" if np.isfinite(ll["ci_lo"]) and ll["ci_lo"] > 0 else "동률(CI가 0 포함)")
+        summary = {
+            "target": target, "horizon": horizon, "n_rows": int(len(reg)), "n_features": len(cols),
+            "band_mult": DIRECTION_BAND_MULT, "dev_folds": [r["fold"] for r in records], "lock_start": str(lock_start.date()),
+            "n_dev_rows": int(n), "purge_violations": violations,
+            "class_share_dev": (np.bincount(y_dev, minlength=3) / n).round(4).tolist(),
+            "selections": [{"fold": r["fold"], "C": r["C"], "temperature": r["temperature"], "inner_log_loss": r["inner_log_loss"],
+                            "inner_prior_log_loss": r["inner_prior_log_loss"], "train_rows": r["train_rows"]} for r in records],
+            "log_loss_delta_month_ci": [ll["delta"], ll["ci_lo"], ll["ci_hi"]],
+            "balanced_accuracy_delta_month_ci": [ba["delta"], ba["ci_lo"], ba["ci_hi"]],
+            "verdict": verdict, "oof_file": str(oof_path), "oof_sha256": file_sha256(oof_path),
+        }
+        write_json(state.run_dir / f"summary_{target}_h{horizon}.json", summary)
+        save_unit_rows(state, target, horizon, metrics, comparisons)
+        state.mark(unit, {"oof_sha256": summary["oof_sha256"], "oof_file": summary["oof_file"], "verdict": verdict,
+                          "purge_violations": len(violations)})
+        print(f"  {unit}: {len(records)}폴드 · log loss 로지스틱−사전확률 {ll['delta']:+.4f} [{ll['ci_lo']:+.4f}, {ll['ci_hi']:+.4f}] · "
+              f"균형정확도 {ba['delta']:+.4f} [{ba['ci_lo']:+.4f}, {ba['ci_hi']:+.4f}] · {verdict}")
+    return collect_rows(state, target)
+
+
+TASK_RUNNERS = {"M00": run_m00, "M01": run_m01, "M02": run_m02, "M03": run_m03, "M04": run_m04}
+TASK_CONFIGS = {"M00": m00_config, "M01": m01_config, "M02": m02_config, "M03": m03_config, "M04": m04_config}
 
 
 def execute(task, target, mode, storage, results_dir, resume, run_notebook_fn=None):

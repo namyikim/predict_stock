@@ -2,7 +2,7 @@
 
 작성일: 2026-09-10
 검토 커밋: `545d3df813a719653951e31c621ce042080b9519`
-상태: M00~M02 완료(2026-09-10). M03~M08 미실행.
+상태: M00~M03 완료(2026-09-10). M04~M08 미실행.
 
 ## 1. 목표와 실행 범위
 
@@ -46,7 +46,7 @@
 | M00 | [x] | 4개 대상 조합의 기준선·실패 유형 진단 | 없음 | 현행 유지. 4조합 발행 0, raw가 유지를 이기는 조합은 sk_hynix/5뿐(평가 구간, 가설). 결함 없음 |
 | M01 | [x] | 재개 가능한 중기 실험 러너와 평가 계약 | M00 | 완료. 고정 입력 로더(pkl), 개발 9폴드 + 잠금 12개월 + 내부 3블록, purge 0, 개편 전후 수치 동등 |
 | M02 | [x] | 지평별 특징군 비교 | M01 | current_full 유지(4조합). inner_selected 경로는 우위 없음(samsung/20 열위). full_plus_A 는 samsung/20 보정 후만 소폭 우위 → 관찰 대상 |
-| M03 | [ ] | Ridge 규제·학습 기간 내부 선택 | M02 | 미실행 |
+| M03 | [x] | Ridge 규제·학습 기간 내부 선택 | M02 | 현행(alpha=1e4, expanding) 유지. inner_selected 발행 중심값은 4조합 동률. 삼성 20일은 현행이 유지보다 유의하게 나쁨 → M05 보류 기준 근거 |
 | M04 | [ ] | 5·20일 직접 방향 확률 모델 | M03 | 미실행 |
 | M05 | [ ] | 예측 구간·보류 정책 검증 | M03 | 미실행 |
 | M06 | [ ] | 해외 입력 포함 공동 학습 | M03, 방향 비교 시 M04 | 선택, 미실행 |
@@ -145,11 +145,11 @@ M06은 생략할 수 있으며 이유를 기록한다. M07은 과거 실험에�
 
 ### M03 — 규제 강도·학습 창 선택
 
-- [ ] 후보를 Ridge alpha={100,1000,10000}, 학습 창={5년,expanding}의 최대 6개로 고정한다. M02에서 고정한 특징을 쓴다.
-- [ ] 각 외부 폴드마다 과거 내부 3개 검증 구간 평균 수익률 MAE로 선택한다. 동률이면 alpha가 큰 후보, 이후 현행 expanding을 우선한다.
-- [ ] expanding 내부 학습을 먼저 5년 자료로 잘라 버리지 않도록 전체 과거에서 창을 구성한다. 서로 다른 창이 실제 다른 행을 쓰는 테스트를 둔다.
-- [ ] 정규화·모델 선택·보정·보류를 외부 평가 이전에서 끝낸다. 외부 점수로 최종 alpha를 고르지 않는다.
-- [ ] raw 예측이 커졌다는 이유로 채택하지 않는다. 실제 발행 중심값의 오차와 발행률을 함께 비교한다.
+- [x] 후보를 Ridge alpha={100,1000,10000}, 학습 창={5년,expanding}의 최대 6개로 고정한다. M02에서 고정한 특징을 쓴다. → `ALPHA_CANDIDATES`·`WINDOW_CANDIDATES`, current_full
+- [x] 각 외부 폴드마다 과거 내부 3개 검증 구간 평균 수익률 MAE로 선택한다. 동률이면 alpha가 큰 후보, 이후 현행 expanding을 우선한다. → `select_setting`(테스트)
+- [x] expanding 내부 학습을 먼저 5년 자료로 잘라 버리지 않도록 전체 과거에서 창을 구성한다. 서로 다른 창이 실제 다른 행을 쓰는 테스트를 둔다. → `window_rows`(purge 된 전체 과거에서 창 적용), 5년 창 평균 1,153행 vs expanding 1,403행
+- [x] 정규화·모델 선택·보정·보류를 외부 평가 이전에서 끝낸다. 외부 점수로 최종 alpha를 고르지 않는다. → 선택·기울기·발행 판정 모두 내부 3구간에서(`fold_gate`)
+- [x] raw 예측이 커졌다는 이유로 채택하지 않는다. 실제 발행 중심값의 오차와 발행률을 함께 비교한다. → metrics `mean_abs_raw`·`mae_issued`·`issuance_rate`, 비교표 `mae_return_issued`
 
 완료 증거: 폴드별 선택값·학습 행 수·네 조합 성능·소요 시간. 개선이 없으면 현행 설정 유지.
 
@@ -229,6 +229,8 @@ python tools/run_medium_horizon.py --task M01 --target samsung --mode full --res
 python tools/run_medium_horizon.py --task M01 --target sk_hynix --mode full --resume
 python tools/run_medium_horizon.py --task M02 --target samsung --mode full --resume
 python tools/run_medium_horizon.py --task M02 --target sk_hynix --mode full --resume
+python tools/run_medium_horizon.py --task M03 --target samsung --mode full --resume
+python tools/run_medium_horizon.py --task M03 --target sk_hynix --mode full --resume
 ```
 
 고정 스냅샷은 `runs/medium_horizon/<target>/data_cache`(+ `macro_cache`, `macro_fallback`, `macro_snapshots`)에 있어야 하며, 없으면 러너가 거부한다. 2026-09-10 실행은 `runs/model_improvement/P00/<target>/`의 스냅샷(마지막 봉 2026-09-09)을 복사해 썼다. 러너는 처음 한 번 노트북 전체를 캐시로 실행해(종목당 full 약 8분) 필요한 입력을 `runs/medium_horizon/<target>/inputs_<mode>_<data_hash>.pkl` 에 저장하고, 같은 data_hash 면 그 파일을 읽는다(M01 고정 입력 로더; 종목당 약 1분). pkl 은 Git 에 넣지 않으며 없으면 자동으로 다시 만든다.
@@ -252,12 +254,13 @@ quick는 동작 검증이며 성능 채택 근거로 사용하지 않는다. 구
 | 2026-09-10 | M00 | `tools/run_medium_horizon.py`·`tests/test_medium_horizon.py`. 4조합 full 재현(노트북 통계 동등), purge·경계 검사 통과, 실패 유형 분류. 결과 `experiments/medium_horizon/M00/20260910T072442Z_samsung_m00`(decision.md), `…T073254Z_sk_hynix_m00` | 테스트 16개 통과. 발행 0/4, sk_hynix/5만 평가 구간 raw 우위(가설) | M01: 고정 입력 로더, 외부 6개월 폴드·잠금 구간(마지막 12개월), 선택 구간 CI 기록 |
 | 2026-09-10 | M01 | 설계 행렬·OOF 함수를 forecast_utils 로 추출(노트북 동기화), 고정 입력 로더(pkl), 평가 계약 `evaluation_folds`(개발 6개월 폴드·잠금 12개월·내부 3블록·60행 미만 폴드 제외), 산출물 해시 재개, Windows 원자적 쓰기 재시도. 결과 `experiments/medium_horizon/M01/20260910T081026Z_samsung_m01`(decision.md), `…T081053Z_sk_hynix_m01` | 테스트 30개 통과(전체 521개 중 환경 오류 1). 개편 전후 수치 동등, purge 0, 9 개발 폴드 + 잠금 | M02: 특징군 비교(현행 전체 vs 시세만 vs 그룹 A/B/C) |
 | 2026-09-10 | M02 | 후보 4(현행·시세만·월별 제외·그룹 A 26열) + 내부 선택 경로, 개발 9폴드 공통 행 비교. 결과 `experiments/medium_horizon/M02/20260910T082103Z_samsung_m02`(decision.md), `…T082115Z_sk_hynix_m02` | 테스트 36개 통과. 현행 유지(4조합), purge 0 | M03: 규제 alpha·학습 창 내부 선택(특징 = current_full) |
+| 2026-09-10 | M03 | 후보 6(alpha 3 × 창 2) 내부 선택 + 폴드 발행 판정, 개발 9폴드. 결과 `experiments/medium_horizon/M03/20260910T082518Z_samsung_m03`(decision.md), `…T082535Z_sk_hynix_m03` | 테스트 40개 통과. 4조합 동률 → 현행 유지 | M04: 방향 확률 모델 |
 
-- 현재 작업: 없음. 다음 실행은 M03(특징은 current_full 고정).
-- 완료: 3/9. 보류: 없음. 실제 후보 채택: 없음. 관찰 대상: full_plus_A(samsung/20, 보정 후 −0.045%p, 탐색 결과).
-- 먼저 읽을 파일: 본 문서, `experiments/medium_horizon/M02/20260910T082103Z_samsung_m02/decision.md`, M01·M00 decision.md, `tools/run_medium_horizon.py`(load_inputs·evaluation_folds·analyse_horizon), forecast_utils.py의 `price_design_frame`·`calibrate_price_forecast`.
+- 현재 작업: 없음. 다음 실행은 M04.
+- 완료: 4/9. 보류: 없음. 실제 후보 채택: 없음. 관찰 대상: full_plus_A(samsung/20, 보정 후 −0.045%p, 탐색 결과).
+- 먼저 읽을 파일: 본 문서, `experiments/medium_horizon/M03/20260910T082518Z_samsung_m03/decision.md`, M02·M01·M00 decision.md, `tools/run_medium_horizon.py`(load_inputs·evaluation_folds·analyse_horizon), forecast_utils.py의 `price_design_frame`·`calibrate_price_forecast`.
 - 미해결: (1) 원장에 발행 판정에 쓰인 선택 구간 CI가 없어 하이닉스 20일 발행이 2026-09-08부터 뒤집힌 이유를 원장만으로 볼 수 없다 — M02 이후 결과 파일(comparisons.csv)에는 남기고, 원장 열 추가는 M07에서 정한다. (2) 평가 구간이 2024-08 이후 고변동성 한 국면이라 M05 구간 보정을 우선한다. (3) 입력 pkl 은 pandas 버전이 바뀌면 다시 만들어야 한다(data_hash 만 검사).
-- 마지막 검증: `python -m unittest tests.test_medium_horizon`(36개 통과). M02 full 두 종목(exit 0, purge 0).
+- 마지막 검증: `python -m unittest tests.test_medium_horizon`(45개 통과, M04 코드 포함). M03 full 두 종목(exit 0, purge 0).
 
 중단 시 아래 양식을 채워 이어서 실행한다.
 

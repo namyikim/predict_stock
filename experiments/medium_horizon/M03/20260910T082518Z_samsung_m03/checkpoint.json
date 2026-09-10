@@ -1,0 +1,31 @@
+{
+  "completed_units": [
+    "samsung:h5",
+    "samsung:h20"
+  ],
+  "results": {
+    "samsung:h5": {
+      "oof_sha256": "a8a0227e0949a886bfa295a12d9b617208b86e03bd5e62d29dc86be37deba98a",
+      "oof_file": "D:\\SourceCode\\predict_stock\\runs\\medium_horizon\\samsung\\M03_h5_full_oof.csv",
+      "selection_counts": {
+        "a10000_expanding": 5,
+        "a10000_5y": 4
+      },
+      "purge_violations": 0,
+      "verdict": "inner_selected 발행 중심값이 현행보다 유의하게 낫지 않음 → 현행(alpha=1e4, expanding) 유지"
+    },
+    "samsung:h20": {
+      "oof_sha256": "f0047fbcdb117316addc6d78e98ba7c9339d07b9da829b3d975409a620258e95",
+      "oof_file": "D:\\SourceCode\\predict_stock\\runs\\medium_horizon\\samsung\\M03_h20_full_oof.csv",
+      "selection_counts": {
+        "a10000_5y": 4,
+        "a10000_expanding": 3,
+        "a1000_expanding": 1,
+        "a1000_5y": 1
+      },
+      "purge_violations": 0,
+      "verdict": "inner_selected 발행 중심값이 현행보다 유의하게 낫지 않음 → 현행(alpha=1e4, expanding) 유지"
+    }
+  },
+  "updated_at_utc": "2026-09-10T08:25:34.306821+00:00"
+}

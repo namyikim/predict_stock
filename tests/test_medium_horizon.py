@@ -346,6 +346,109 @@ class FeatureGroupTests(unittest.TestCase):
         self.assertIn("inner_selected - current_full", set(rows["comparison"]))
 
 
+class RegularisationWindowTests(unittest.TestCase):
+    """M03: 학습 창은 실제 다른 행을 쓰고, 선택 규칙과 발행 판정은 정해진 대로 동작한다."""
+
+    def test_five_year_window_uses_fewer_rows_than_expanding(self):
+        dates = pd.DatetimeIndex(pd.bdate_range("2015-01-01", periods=2200))
+        train = np.arange(2000)
+        five = mh.window_rows(train, dates, dates[2100], "5y")
+        expanding = mh.window_rows(train, dates, dates[2100], "expanding")
+        self.assertLess(len(five), len(expanding))
+        self.assertTrue((dates[five] >= dates[2100] - pd.DateOffset(years=5)).all())
+        self.assertEqual(len(expanding), 2000)
+        with self.assertRaises(ValueError):
+            mh.window_rows(train, dates, dates[2100], "7y")
+
+    def test_selection_prefers_lower_mae_then_larger_alpha_then_expanding(self):
+        maes = {(100., "5y"): [.03, .03, .03], (1000., "expanding"): [.02, .02, .02], (10000., "5y"): [.02, .02, .02],
+                (10000., "expanding"): [.02, .02, .02]}
+        self.assertEqual(mh.select_setting(maes), (10000., "expanding"))
+        maes[(1000., "5y")] = [.01, .03, .02]        # 평균 .02, 동률 → alpha 큰 쪽이 이긴다
+        self.assertEqual(mh.select_setting(maes), (10000., "expanding"))
+        maes[(100., "expanding")] = [.019, .019, .019]
+        self.assertEqual(mh.select_setting(maes), (100., "expanding"))
+
+    def test_fold_gate_needs_two_inner_wins(self):
+        y = [np.array([.01, -.02, .015]), np.array([.02, .01, -.01]), np.array([-.03, .01, .0])]
+        good = [yy * .9 for yy in y]                       # 보정 후 유지보다 낫다
+        self.assertTrue(mh.fold_gate(good, y, 1.0))
+        bad = [-yy for yy in y]
+        self.assertFalse(mh.fold_gate(bad, y, 1.0))
+        self.assertFalse(mh.fold_gate(good[:1], y[:1], 1.0), "구간이 하나뿐이면 발행하지 않는다")
+
+    def test_m03_runs_on_synthetic_inputs(self):
+        tmp = Path(tempfile.mkdtemp())
+        storage, results = tmp / "runs", tmp / "results"
+        cache = storage / "samsung" / "data_cache"; cache.mkdir(parents=True)
+        (cache / "target.parquet").write_bytes(b"snapshot-v1")
+        ns = synthetic_namespace(n=2000)
+        state = mh.execute("M03", "samsung", "quick", storage, results, False, run_notebook_fn=lambda *a, **k: {"samsung": ns})
+        summary = __import__("json").loads((state.run_dir / "summary_samsung_h5.json").read_text(encoding="utf-8"))
+        self.assertEqual(summary["purge_violations"], [])
+        self.assertIn("verdict", summary)
+        rows = pd.read_csv(state.run_dir / "metrics.csv")
+        self.assertIn("a10000_expanding", set(rows["candidate"]))
+        self.assertIn("issuance_rate", rows.columns)
+
+
+class DirectionModelTests(unittest.TestCase):
+    """M04: 라벨·확률·사전확률 계약."""
+
+    def test_labels_use_the_volatility_band(self):
+        y, band = mh.direction_labels(np.array([-.05, -.001, .0, .002, .05]), np.array([.1, .1, .1, .1, .1]))
+        self.assertEqual(y.tolist(), [0, 1, 1, 1, 2])
+        self.assertTrue(np.allclose(band, .03))
+        with self.assertRaises(ValueError):
+            mh.direction_labels(np.array([.01, np.nan]), np.array([.1, .1]))
+
+    def test_future_prices_do_not_change_past_labels(self):
+        inputs = synthetic_inputs()
+        reg, _ = mh.price_design(inputs, 20)
+        y1, _ = mh.direction_labels(reg["future_return"].to_numpy(), reg["sigma_simple"].to_numpy())
+        other = synthetic_inputs()
+        cut = other["sam"].index[-40]
+        other["sam"].loc[cut:, "close"] *= 1.3
+        other["sam_raw_close"] = other["sam"]["close"]
+        reg2, _ = mh.price_design(other, 20)
+        y2, _ = mh.direction_labels(reg2["future_return"].to_numpy(), reg2["sigma_simple"].to_numpy())
+        safe = reg.index < cut - pd.Timedelta(days=45)
+        np.testing.assert_array_equal(y1[safe], y2[: safe.sum()])
+
+    def test_prior_and_model_probabilities_are_valid_even_with_a_missing_class(self):
+        prior = mh.class_prior_probabilities(np.array([0, 0, 2, 2, 2]), 4)
+        self.assertEqual(prior.shape, (4, 3))
+        self.assertTrue(np.allclose(prior.sum(axis=1), 1.)); self.assertTrue((prior > 0).all())
+        rng = np.random.default_rng(0)
+        X = rng.normal(size=(300, 4)).astype(np.float32)
+        y = np.where(X[:, 0] > .5, 2, 0)                          # 보합 클래스 없음
+        probs = mh.fit_direction_probabilities(X, y, np.arange(200), np.arange(200, 300), .01)
+        self.assertEqual(probs.shape, (100, 3))
+        self.assertTrue(np.all(np.isfinite(probs))); self.assertTrue(np.allclose(probs.sum(axis=1), 1., atol=1e-6))
+        self.assertTrue((probs[:, 1] < 1e-3).all(), "없는 클래스의 확률은 0 근처여야 한다")
+
+    def test_brier_and_balanced_accuracy(self):
+        y = np.array([0, 1, 2, 2])
+        perfect = np.eye(3)[y]
+        self.assertEqual(mh.brier_score(y, perfect), 0.)
+        self.assertEqual(mh.balanced_accuracy(y, perfect), 1.)
+        self.assertAlmostEqual(mh.brier_score(np.array([2]), np.array([[1 / 3, 1 / 3, 1 / 3]])), 2 / 3, places=12)
+
+    def test_m04_runs_on_synthetic_inputs(self):
+        tmp = Path(tempfile.mkdtemp())
+        storage, results = tmp / "runs", tmp / "results"
+        cache = storage / "samsung" / "data_cache"; cache.mkdir(parents=True)
+        (cache / "target.parquet").write_bytes(b"snapshot-v1")
+        ns = synthetic_namespace(n=2000)
+        state = mh.execute("M04", "samsung", "quick", storage, results, False, run_notebook_fn=lambda *a, **k: {"samsung": ns})
+        summary = __import__("json").loads((state.run_dir / "summary_samsung_h20.json").read_text(encoding="utf-8"))
+        self.assertEqual(summary["purge_violations"], [])
+        self.assertIn(summary["verdict"], ("사전확률 대비 log loss 유의 우위", "사전확률 대비 log loss 유의 열위", "동률(CI가 0 포함)"))
+        rows = pd.read_csv(state.run_dir / "metrics.csv")
+        self.assertEqual(set(rows["candidate"]), {"logistic_direction", "class_prior"})
+        self.assertFalse(rows["log_loss"].isna().any())
+
+
 class FakeNotebook:
     def __init__(self, fail=False):
         self.calls = 0

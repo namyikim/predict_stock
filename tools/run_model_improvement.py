@@ -50,6 +50,7 @@ TASKS = {
     "P07": "소수 모델 앙상블 비교",
     "P08": "확률 신뢰도·예측 보류 평가",
     "P09": "갭·장중 별도 학습 비교",
+    "P10": "국내 관련 종목 공동 학습 기반",
 }
 
 # P03에서 비교하는 특징군. 노트북이 같은 폴드·같은 날짜로 이미 계산해 CSV로 남기므로
@@ -200,6 +201,14 @@ class RunState:
         write_json(self.checkpoint_path, payload)
         self.manifest["failed_units"] = failed
         self.manifest["status"] = "failed"
+        write_json(self.manifest_path, self.manifest)
+
+    def reset_units(self):
+        """완료 표시를 지운다. 완료 표시는 있는데 산출물이 없을 때만 쓴다."""
+        payload = read_json(self.checkpoint_path) or {}
+        payload["completed_units"], payload["results"] = [], {}
+        write_json(self.checkpoint_path, payload)
+        self.manifest["completed_units"] = []
         write_json(self.manifest_path, self.manifest)
 
     def finish(self, status="completed"):
@@ -1237,8 +1246,142 @@ def run_p09(target, mode, storage, state, run_notebook_fn=None):
     return rows
 
 
+# ---------------------------------------------------------------------------
+# P10 — 공동 학습용 국내 종목 패널 + pooled 기준선
+# ---------------------------------------------------------------------------
+def _load_panel_bars(cache_dir, tickers, start="2015-01-01"):
+    """yfinance로 패널 종목 봉을 받고 CSV로 캐시한다. 결측은 그대로 둔다(보간 없음)."""
+    import yfinance as yf
+    cache_dir = Path(cache_dir)
+    cache_dir.mkdir(parents=True, exist_ok=True)
+    out, first = {}, {}
+    for ticker in tickers:
+        path = cache_dir / f"{ticker.replace('.', '_')}.csv"
+        frame = None
+        if path.is_file():
+            frame = pd.read_csv(path, index_col=0, parse_dates=True)
+        else:
+            try:
+                h = yf.Ticker(ticker).history(start="2010-01-01", auto_adjust=True)
+                if not h.empty:
+                    h.index = pd.to_datetime(h.index).tz_localize(None).normalize()
+                    h.columns = [str(c).strip().lower() for c in h.columns]
+                    frame = h[["open", "close", "volume"]].dropna(subset=["close"])
+                    frame = frame[frame["volume"] > 0]          # 거래 없는 유령봉 제거
+                    frame.to_csv(path)
+            except Exception as exc:
+                print(f"  ⚠️ {ticker}: {type(exc).__name__}")
+        if frame is not None and len(frame):
+            first[ticker] = frame.index[0]
+            out[ticker] = frame[frame.index >= pd.Timestamp(start)]
+    return out, first
+
+
+def run_p10(target, mode, storage, state, run_notebook_fn=None):
+    """패널을 만들고 pooled LightGBM을 학습해 대상 종목 단독 학습과 같은 날짜에서 비교한다.
+
+    pooled 모델의 입력은 종목 간 비교 가능한 값(수익률·변동성·거래대금 비율)과 종목 식별값뿐이다.
+    대상 종목 단독 모델도 **같은 입력·같은 폴드**로 학습해 공정하게 비교한다(노트북 대표 모델과는
+    입력이 달라 직접 비교하지 않고 참고로만 적는다).
+    """
+    import time
+    sys.path.insert(0, str(ROOT / "experiments" / "model_improvement"))
+    import panel_data as pdm
+    from sklearn.dummy import DummyClassifier
+
+    unit = f"{target}:pooled"
+    if state.is_done(unit):
+        print(f"  이미 완료된 단위 건너뜀: {unit} (metrics.csv 유지)")
+        return None
+    if run_notebook_fn is None:
+        sys.path.insert(0, str(ROOT / "tools"))
+        from run_notebook import run_notebook as run_notebook_fn
+
+    # 대표 모델의 폴드 경계·평가 날짜를 그대로 쓴다.
+    snapshot = snapshot_paths(storage, target)
+    ns = run_notebook_fn(Path(storage) / target, targets=target,
+                         quick=(mode == "quick"), use_cache=bool(snapshot))[target]
+    folds, dates = ns["folds"], pd.DatetimeIndex(ns["dates"])
+    target_ticker = ns["TARGET_SPEC"]["ticker"]
+
+    bars, first = _load_panel_bars(Path(storage) / "panel_cache", [t for t, _, _ in pdm.PANEL_UNIVERSE])
+    kept, excluded = pdm.eligible_universe(first)
+    for reason in excluded.values():
+        print(f"  제외: {reason}")
+    bars = {t: bars[t] for t, _, _ in kept if t in bars}
+    panel = pdm.build_panel(bars)
+    fabricated = pdm.check_no_interpolation(panel, bars)
+    feature_cols = [c for c in panel.columns if c not in ("date", "instrument", "target_ret", "band", "y")]
+    instruments = sorted(bars)
+    panel["inst_id"] = panel["instrument"].map({t: i for i, t in enumerate(instruments)}).astype(float)
+    cols = feature_cols + ["inst_id"]
+    valid = panel[cols + ["y"]].notna().all(axis=1)
+    panel = panel[valid].reset_index(drop=True)
+    print(f"  패널: 종목 {len(instruments)} · 행 {len(panel):,} · 특징 {len(cols)} · 보간 위반 {fabricated}")
+
+    X = panel[cols].to_numpy(dtype=np.float32)
+    y = panel["y"].to_numpy(dtype=int)
+    pdates = pd.DatetimeIndex(panel["date"])
+    is_target = (panel["instrument"] == target_ticker).to_numpy()
+
+    def lgbm():
+        from lightgbm import LGBMClassifier
+        return LGBMClassifier(objective="multiclass", num_class=3, n_estimators=120, learning_rate=0.03,
+                              num_leaves=15, min_child_samples=100, colsample_bytree=0.85,
+                              reg_alpha=0.5, reg_lambda=2.0, class_weight="balanced",
+                              random_state=ns.get("SEED", 42), n_jobs=-1, verbosity=-1)
+
+    frames, timing = [], {"pooled": 0., "single": 0.}
+    for fold in folds:
+        t0, t1 = dates[fold["test_idx"][0]], dates[fold["test_idx"][-1]]
+        train_start = t0 - pd.DateOffset(years=5)
+        tr_all = np.flatnonzero((pdates >= train_start) & (pdates < t0))
+        te = np.flatnonzero((pdates >= t0) & (pdates <= t1) & is_target)
+        tr_single = tr_all[is_target[tr_all]]
+        if len(te) < 20 or len(tr_single) < MIN_TRAIN_ROWS:
+            continue
+        started = time.time()
+        pooled = lgbm().fit(X[tr_all], y[tr_all]) if len(np.unique(y[tr_all])) > 1 else DummyClassifier(strategy="prior").fit(X[tr_all], y[tr_all])
+        p_pool = ns["aligned_probabilities"](pooled, X[te])
+        timing["pooled"] += time.time() - started
+        started = time.time()
+        single = lgbm().fit(X[tr_single], y[tr_single]) if len(np.unique(y[tr_single])) > 1 else DummyClassifier(strategy="prior").fit(X[tr_single], y[tr_single])
+        p_single = ns["aligned_probabilities"](single, X[te])
+        timing["single"] += time.time() - started
+        prior = np.bincount(y[tr_single], minlength=3).astype(float) + 1
+        frames.append(ns["prediction_frame"]("panel pooled", pdates[te], y[te], p_pool, fold["fold"]))
+        frames.append(ns["prediction_frame"]("panel single", pdates[te], y[te], p_single, fold["fold"]))
+        frames.append(ns["prediction_frame"]("panel prior", pdates[te], y[te], np.tile(prior / prior.sum(), (len(te), 1)),
+                                             fold["fold"], y_pred=np.ones(len(te), dtype=int)))
+    predictions = pd.concat(frames, ignore_index=True)
+    metrics = ns["summarize_predictions"](predictions, with_ci=False)
+    rows = [{"target": target, "model": m, "target_mode": "close_to_close", "fold": "all",
+             **{k: r.get(k, "") for k in ("n", "accuracy", "balanced_accuracy", "log_loss", "brier", "auc_gap", "auc_session")},
+             "seconds": round(timing["pooled"] if "pooled" in m else timing["single"] if "single" in m else 0., 1)}
+            for m, r in metrics.iterrows()]
+    comparisons = []
+    for a, b, label in (("panel pooled", "panel single", "pooled − 단독(같은 입력)"),
+                        ("panel pooled", "panel prior", "pooled − 사전확률"),
+                        ("panel single", "panel prior", "단독 − 사전확률")):
+        for metric in ("balanced_accuracy", "log_loss"):
+            d = ns["paired_delta_ci"](predictions, a, b, metric)
+            comparisons.append({"target": target, "comparison": label, "metric": metric, "delta": d["delta"],
+                                "ci_low": d["lo"], "ci_high": d["hi"], "common_n": d["n"],
+                                "verdict": verdict_for(metric, d["lo"], d["hi"])})
+    write_json(state.run_dir / f"panel_{target}.json", {
+        "selection_date": pdm.SELECTION_DATE, "selection_rule": pdm.SELECTION_RULE,
+        "instruments": instruments, "excluded": excluded, "rows": int(len(panel)),
+        "features": cols, "fabricated_rows": fabricated, "timing_seconds": timing,
+        "survivorship_note": "목록은 2026-09-10 상장 종목이므로 과거로 적용하면 생존 편향이 있다. 종목 수 증가는 독립 날짜 표본 증가가 아니다.",
+        "comparisons": comparisons})
+    write_metrics_named(state, comparisons, "comparisons.csv")
+    state.mark(unit, {"instruments": len(instruments), "panel_rows": int(len(panel)),
+                      "evaluation_days": int(metrics["n"].max())})
+    return rows
+
+
 TASK_RUNNERS = {"P00": run_p00, "P03": run_p03, "P04": run_p04, "P05": run_p05,
-                "P06": run_p06, "P07": run_p07, "P08": run_p08, "P09": run_p09}
+                "P06": run_p06, "P07": run_p07, "P08": run_p08, "P09": run_p09, "P10": run_p10}
 
 
 # ---------------------------------------------------------------------------
@@ -1247,8 +1390,15 @@ def write_metrics(state, rows):
         return
     import csv
     import io
+    # 행마다 열이 다를 수 있다(예: 세션 타깃에만 있는 session_bp_*). 첫 행의 열만 쓰면
+    # 나머지 행이 거부되므로 열 합집합을 쓴다. 없는 값은 빈 칸으로 남긴다.
+    fieldnames = []
+    for row in rows:
+        for key in row:
+            if key not in fieldnames:
+                fieldnames.append(key)
     buffer = io.StringIO()
-    writer = csv.DictWriter(buffer, fieldnames=list(rows[0]), lineterminator="\n")
+    writer = csv.DictWriter(buffer, fieldnames=fieldnames, lineterminator="\n")
     writer.writeheader()
     writer.writerows(rows)
     path = state.run_dir / "metrics.csv"
@@ -1308,6 +1458,8 @@ def execute(task, target, mode, storage, resume, run_notebook_fn=None):
                   "thresholds": ["none" if t is None else t for t in ABSTAIN_THRESHOLDS]}
     elif task == "P09":
         config = {"task": "P09", "mode": mode, "legs": list(TARGET_LEGS)}
+    elif task == "P10":
+        config = {"task": "P10", "mode": mode, "selection_date": "2026-09-10", "window": BASELINE_WINDOW}
     else:
         config = {"mode": mode}
     identity = {
@@ -1325,6 +1477,12 @@ def execute(task, target, mode, storage, resume, run_notebook_fn=None):
 
     try:
         rows = TASK_RUNNERS[task](target, mode, storage, state, run_notebook_fn=run_notebook_fn)
+        # 단위는 계산 끝에 완료로 표시되고 metrics.csv는 그 뒤에 쓰인다. 그 사이에 죽으면
+        # "완료인데 산출물 없음"이 남고 재개가 그것을 건너뛴다. 산출물이 없으면 다시 돌린다.
+        if rows is None and not (state.run_dir / "metrics.csv").is_file():
+            print("  완료 표시는 있는데 metrics.csv가 없습니다. 단위를 다시 계산합니다.")
+            state.reset_units()
+            rows = TASK_RUNNERS[task](target, mode, storage, state, run_notebook_fn=run_notebook_fn)
     except Exception as exc:
         state.fail(f"{target}:{task.lower()}", f"{type(exc).__name__}: {exc}")
         raise

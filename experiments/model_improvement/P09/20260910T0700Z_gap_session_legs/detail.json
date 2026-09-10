@@ -1,0 +1,172 @@
+{
+  "samsung": {
+    "coverage": {
+      "close_to_close": {
+        "days": 1362,
+        "missing_labels": 0
+      },
+      "gap": {
+        "days": 1362,
+        "missing_labels": 20
+      },
+      "session": {
+        "days": 1362,
+        "missing_labels": 20
+      }
+    },
+    "timings": {
+      "close_to_close": 27.9,
+      "gap": 28.6,
+      "session": 27.2
+    },
+    "cost_bp": 20.0,
+    "comparisons": [
+      {
+        "target": "samsung",
+        "comparison": "close_to_close 모델 − 사전확률(보합)",
+        "metric": "balanced_accuracy",
+        "delta": 0.10067199297911023,
+        "ci_low": 0.07651006921127033,
+        "ci_high": 0.12378231055251945,
+        "common_n": 1362,
+        "verdict": "후보가 유의하게 우위"
+      },
+      {
+        "target": "samsung",
+        "comparison": "close_to_close 모델 − 사전확률(보합)",
+        "metric": "log_loss",
+        "delta": -0.05069524651699697,
+        "ci_low": -0.07026759227278406,
+        "ci_high": -0.030227551974509142,
+        "common_n": 1362,
+        "verdict": "후보가 유의하게 우위"
+      },
+      {
+        "target": "samsung",
+        "comparison": "gap 모델 − 사전확률(보합)",
+        "metric": "balanced_accuracy",
+        "delta": 0.22632632549921344,
+        "ci_low": 0.19900339721069094,
+        "ci_high": 0.2548159475338483,
+        "common_n": 1362,
+        "verdict": "후보가 유의하게 우위"
+      },
+      {
+        "target": "samsung",
+        "comparison": "gap 모델 − 사전확률(보합)",
+        "metric": "log_loss",
+        "delta": -0.18264661772612012,
+        "ci_low": -0.21919781905269412,
+        "ci_high": -0.14370044624609946,
+        "common_n": 1362,
+        "verdict": "후보가 유의하게 우위"
+      },
+      {
+        "target": "samsung",
+        "comparison": "session 모델 − 사전확률(보합)",
+        "metric": "balanced_accuracy",
+        "delta": 0.02163956211711565,
+        "ci_low": 0.0002660265175817593,
+        "ci_high": 0.042665503670049475,
+        "common_n": 1362,
+        "verdict": "후보가 유의하게 우위"
+      },
+      {
+        "target": "samsung",
+        "comparison": "session 모델 − 사전확률(보합)",
+        "metric": "log_loss",
+        "delta": 0.01942629538629803,
+        "ci_low": 0.00685907918478681,
+        "ci_high": 0.031030632220119116,
+        "common_n": 1362,
+        "verdict": "후보가 유의하게 열위"
+      }
+    ],
+    "note": "특징은 셋 다 전일까지의 시세만. 세션 정답에만 당일 시가·종가 사용. 갭·세션 확률을 합쳐 종가→종가를 만들지 않는다."
+  },
+  "sk_hynix": {
+    "coverage": {
+      "close_to_close": {
+        "days": 1357,
+        "missing_labels": 0
+      },
+      "gap": {
+        "days": 1357,
+        "missing_labels": 20
+      },
+      "session": {
+        "days": 1357,
+        "missing_labels": 20
+      }
+    },
+    "timings": {
+      "close_to_close": 30.0,
+      "gap": 27.5,
+      "session": 25.7
+    },
+    "cost_bp": 20.0,
+    "comparisons": [
+      {
+        "target": "sk_hynix",
+        "comparison": "close_to_close 모델 − 사전확률(보합)",
+        "metric": "balanced_accuracy",
+        "delta": 0.13233583104683422,
+        "ci_low": 0.1107405794609141,
+        "ci_high": 0.15293597936918824,
+        "common_n": 1357,
+        "verdict": "후보가 유의하게 우위"
+      },
+      {
+        "target": "sk_hynix",
+        "comparison": "close_to_close 모델 − 사전확률(보합)",
+        "metric": "log_loss",
+        "delta": -0.0672468090643994,
+        "ci_low": -0.08596208113599317,
+        "ci_high": -0.04842893802036338,
+        "common_n": 1357,
+        "verdict": "후보가 유의하게 우위"
+      },
+      {
+        "target": "sk_hynix",
+        "comparison": "gap 모델 − 사전확률(보합)",
+        "metric": "balanced_accuracy",
+        "delta": 0.24172791529385257,
+        "ci_low": 0.21795911597716763,
+        "ci_high": 0.26497916241936825,
+        "common_n": 1357,
+        "verdict": "후보가 유의하게 우위"
+      },
+      {
+        "target": "sk_hynix",
+        "comparison": "gap 모델 − 사전확률(보합)",
+        "metric": "log_loss",
+        "delta": -0.23854413390168838,
+        "ci_low": -0.26936997303548016,
+        "ci_high": -0.2067284476205113,
+        "common_n": 1357,
+        "verdict": "후보가 유의하게 우위"
+      },
+      {
+        "target": "sk_hynix",
+        "comparison": "session 모델 − 사전확률(보합)",
+        "metric": "balanced_accuracy",
+        "delta": 0.034185947844680764,
+        "ci_low": 0.013363380033159337,
+        "ci_high": 0.056611200944462946,
+        "common_n": 1357,
+        "verdict": "후보가 유의하게 우위"
+      },
+      {
+        "target": "sk_hynix",
+        "comparison": "session 모델 − 사전확률(보합)",
+        "metric": "log_loss",
+        "delta": 0.005008491327689102,
+        "ci_low": -0.010091913135567537,
+        "ci_high": 0.019251470853707906,
+        "common_n": 1357,
+        "verdict": "동률(CI가 0 포함)"
+      }
+    ],
+    "note": "특징은 셋 다 전일까지의 시세만. 세션 정답에만 당일 시가·종가 사용. 갭·세션 확률을 합쳐 종가→종가를 만들지 않는다."
+  }
+}

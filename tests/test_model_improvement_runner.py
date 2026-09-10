@@ -146,6 +146,21 @@ class RunnerTests(unittest.TestCase):
         self.assertEqual(len(fake.calls), 1)
         self.assertEqual(state.manifest["status"], "completed")
 
+    def test_completed_unit_without_metrics_is_recomputed(self):
+        """완료 표시 뒤·metrics.csv 쓰기 전에 죽은 실행을 재개하면 단위를 다시 계산해야 한다.
+
+        실제로 P09에서 났다: 계산은 끝나 단위가 완료로 남았는데 CSV 쓰기가 실패했고,
+        재개가 그 단위를 건너뛰어 metrics.csv가 영영 생기지 않았다.
+        """
+        self._snapshot("samsung")
+        fake = FakeNotebook()
+        state = self._run(fake)
+        (state.run_dir / "metrics.csv").unlink()
+        again = self._run(fake, resume=True)
+        self.assertEqual(len(fake.calls), 2, "산출물 없는 완료 단위를 다시 계산하지 않았다")
+        self.assertTrue((again.run_dir / "metrics.csv").is_file())
+        self.assertEqual(again.completed(), ["samsung:baseline"])
+
     def test_corrupt_checkpoint_is_treated_as_missing(self):
         """반쯤 쓰인 체크포인트를 완료로 착각하지 않는다."""
         self._snapshot("samsung")

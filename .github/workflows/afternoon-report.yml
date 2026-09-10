@@ -82,6 +82,14 @@ jobs:
           # 09:37 회차는 시가만, 16:10 회차와 수동 실행은 전체를 채점한다.
           SCOPE: ${{ github.event.schedule == '37 0 * * 1-5' && 'open' || (inputs.scope || 'all') }}
         run: python tools/build_afternoon_update.py --target ${{ matrix.target }} --out runs/afternoon --scope "$SCOPE" --publish
+      # 장 마감 회고: 16:10 회차(scope=all)에서만. 09:37 회차는 장중이라 회고할 것이 없다.
+      # 뉴스는 Google News RSS(키 불필요), 공시는 DART 키가 있을 때만. 실패해도 채점 결과는 이미 발행됐다.
+      - name: 장 마감 회고
+        if: steps.gate.outputs.run == 'true' && (github.event.schedule != '37 0 * * 1-5') && (inputs.scope != 'open')
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DART_API_KEY: ${{ secrets.DART_API_KEY }}
+        run: python tools/build_session_review.py --target ${{ matrix.target }} --out runs/review --publish
 
       - name: Pages 재빌드 요청
         if: steps.gate.outputs.run == 'true'

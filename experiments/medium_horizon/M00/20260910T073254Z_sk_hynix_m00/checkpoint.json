@@ -1,0 +1,26 @@
+{
+  "completed_units": [
+    "sk_hynix:h5",
+    "sk_hynix:h20"
+  ],
+  "results": {
+    "sk_hynix:h5": {
+      "equivalent": true,
+      "failure_types": [
+        "과도한 축소 의심(가설: 선택 구간은 기각했지만 평가 구간 raw 는 유의하게 우위)"
+      ],
+      "beats_baseline": false,
+      "oof_sha256": "67a717dc6edc67dcec36ec5672722554ef29572ee75fc24bae244c494af14bb0"
+    },
+    "sk_hynix:h20": {
+      "equivalent": true,
+      "failure_types": [
+        "신호 부족(가설: raw 예측이 현재가 유지를 이기지 못함)",
+        "구간 오차(실현 포함률 0.67 vs 목표 0.80)"
+      ],
+      "beats_baseline": false,
+      "oof_sha256": "5f6894756b6ed8ff95596623e3838a330c02107ffea3c92810aee1c9e2181072"
+    }
+  },
+  "updated_at_utc": "2026-09-10T07:40:55.388053+00:00"
+}

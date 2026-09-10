@@ -2,7 +2,7 @@
 
 작성일: 2026-09-10
 검토 커밋: `545d3df813a719653951e31c621ce042080b9519`
-상태: 계획 작성 완료. M00~M08 구현·실험 미실행.
+상태: M00 완료(2026-09-10). M01~M08 미실행.
 
 ## 1. 목표와 실행 범위
 
@@ -43,8 +43,8 @@
 
 | ID | 완료 | 작업 | 선행 | 채택/결론 |
 | --- | --- | --- | --- | --- |
-| M00 | [ ] | 4개 대상 조합의 기준선·실패 유형 진단 | 없음 | 미실행 |
-| M01 | [ ] | 재개 가능한 중기 실험 러너와 평가 계약 | M00 | 미실행 |
+| M00 | [x] | 4개 대상 조합의 기준선·실패 유형 진단 | 없음 | 현행 유지. 4조합 발행 0, raw가 유지를 이기는 조합은 sk_hynix/5뿐(평가 구간, 가설). 결함 없음 |
+| M01 | [ ] | 재개 가능한 중기 실험 러너와 평가 계약 | M00 | 러너 골격은 M00에서 생성(`tools/run_medium_horizon.py`). 고정 입력 로더·외부 6개월 폴드·잠금 구간 미구현 |
 | M02 | [ ] | 지평별 특징군 비교 | M01 | 미실행 |
 | M03 | [ ] | Ridge 규제·학습 기간 내부 선택 | M02 | 미실행 |
 | M04 | [ ] | 5·20일 직접 방향 확률 모델 | M03 | 미실행 |
@@ -108,12 +108,12 @@ M06은 생략할 수 있으며 이유를 기록한다. M07은 과거 실험에�
 
 읽기: 노트북 가격 예측 셀, forecast_utils.py, guides/validation.md, tests/test_price_macro.py, 기존 중기 원장·가격 결과.
 
-- [ ] 네 조합의 실제 특징·날짜·학습 행·버전·고정 스냅샷과 정보 마감을 저장한다.
-- [ ] 현행 5·20일 가격 모델을 quick 동작 확인 후 full 재현한다. 기존 실행을 재사용하면 코드·입력 동일성을 확인한다.
-- [ ] 현재가 유지 대비 raw/보정/발행 중심값 MAE, 보정 기울기, 발행률, 구간 포함률·폭을 저장한다.
-- [ ] 원장의 만기 도래 예측만 채점하고 보류·미도래·결측을 구분한다. 주가 급등락 시기와 평상시 오차는 사전 고정한 변동성 구간으로 진단한다.
-- [ ] 타깃 날짜, 미래 라벨, 분할·배당 경계 이상을 검사한다. 오류 발견 시 결함 수정과 기준선 재생성을 먼저 기록한다.
-- [ ] 실패 원인을 신호 부족 / 과도한 축소 의심 / 구간 오차 / 데이터·채점 결함으로 나누되 원인 미확인은 가설로 표시한다.
+- [x] 네 조합의 실제 특징·날짜·학습 행·버전·고정 스냅샷과 정보 마감을 저장한다. → `experiments/medium_horizon/M00/<run>/summary_<t>_h<h>.json`, manifest `snapshot_sha256`
+- [x] 현행 5·20일 가격 모델을 quick 동작 확인 후 full 재현한다. 기존 실행을 재사용하면 코드·입력 동일성을 확인한다. → 노트북 통계 9개 값과 동등(4조합)
+- [x] 현재가 유지 대비 raw/보정/발행 중심값 MAE, 보정 기울기, 발행률, 구간 포함률·폭을 저장한다. → metrics.csv·comparisons.csv(월 블록 + 연속 블록 max(20,2h))
+- [x] 원장의 만기 도래 예측만 채점하고 보류·미도래·결측을 구분한다. 주가 급등락 시기와 평상시 오차는 사전 고정한 변동성 구간으로 진단한다. → 만기 도래 0건(첫 만기 09-11/10-07). 보정 구간 sigma 3분위 기준 평가 구간의 ~94%가 high
+- [x] 타깃 날짜, 미래 라벨, 분할·배당 경계 이상을 검사한다. 오류 발견 시 결함 수정과 기준선 재생성을 먼저 기록한다. → purge 위반 0, 경계 이상 0(2026-07-31 급등은 두 종목 동일 날짜의 실제 사건)
+- [x] 실패 원인을 신호 부족 / 과도한 축소 의심 / 구간 오차 / 데이터·채점 결함으로 나누되 원인 미확인은 가설로 표시한다. → samsung 5·20 신호 부족, sk_hynix/5 과도한 축소 의심(가설), sk_hynix/20 신호 부족+구간 오차(포함률 0.67)
 
 완료 증거: 네 조합 기준선 파일, 검증 기간 계약, 다음 단계에서 우선 비교할 특징과 이유. 성능 개선 주장은 아직 하지 않는다.
 
@@ -217,15 +217,17 @@ git diff --check
 
 헬퍼 변경 시 `python tools/sync_notebook_helpers.py` 후 구조·동등성 테스트를 수행한다. 실행 경로 변경 시 `test_notebook_smoke.py`, M08에서는 `python -m unittest discover -s tests -v`를 추가한다. 문서만 바꾸는 단계에서는 전체 모델 재학습이 필요 없다.
 
-아래는 **M01에서 구현할 인터페이스**이며 지금 실행 가능한 명령이 아니다. 실제 구현 후 검증한 명령으로 갱신한다.
+M00에서 검증한 실제 명령(두 지평을 항상 함께 계산한다; `--storage` 기본 `runs/medium_horizon`, `--results` 기본 `experiments/medium_horizon`):
 
 ```powershell
 $env:PREDICT_STOCK_PUBLISH = 'false'
-python tools/run_medium_horizon.py --task M00 --target samsung --horizon 5 --mode quick --storage runs/medium_horizon --resume
-python tools/run_medium_horizon.py --task M00 --target samsung --horizon 5 --mode full --storage runs/medium_horizon --resume
+python -m unittest discover -s tests -p test_medium_horizon.py -v
+python tools/run_medium_horizon.py --task M00 --target samsung --mode quick --resume
+python tools/run_medium_horizon.py --task M00 --target samsung --mode full --resume
+python tools/run_medium_horizon.py --task M00 --target sk_hynix --mode full --resume
 ```
 
-M00 초기 실행은 기존 `tools/run_notebook.py --help`와 현재 캐시 구조를 확인해 수행하고, 정확한 실제 명령을 결과에 저장한다. 최초 full 기준선 이후 후속 실험이 데이터 수집과 전체 노트북 실행을 매번 반복하지 않도록 M01에서 고정 입력 로더를 제공한다.
+고정 스냅샷은 `runs/medium_horizon/<target>/data_cache`(+ `macro_cache`, `macro_fallback`, `macro_snapshots`)에 있어야 하며, 없으면 러너가 거부한다. 2026-09-10 실행은 `runs/model_improvement/P00/<target>/`의 스냅샷(마지막 봉 2026-09-09)을 복사해 썼다. 러너는 노트북 전체를 캐시로 실행해 네임스페이스를 얻는다(종목당 full 약 8분). 후속 실험이 이를 매번 반복하지 않도록 M01에서 고정 입력 로더를 제공한다.
 
 ## 7. 완료 기록 규칙
 
@@ -243,13 +245,13 @@ quick는 동작 검증이며 성능 채택 근거로 사용하지 않는다. 구
 | 날짜 | ID | 변경/결과 | 검증 | 다음 행동 |
 | --- | --- | --- | --- | --- |
 | 2026-09-10 | PLAN | 본 계획·README 링크 작성 | 문서 경로·체크리스트·diff 확인. 모델 실험 미실행 | M00 기준선 진단 |
-| 2026-09-10 | M00 (진행 중) | `tools/run_medium_horizon.py`·`tests/test_medium_horizon.py` 작성. samsung quick 실행: 노트북 통계와 9개 값 동등(raw/zero/shrunk MAE, slope, band_q, 포함률, n) | 테스트 16개 통과. quick 결과 `experiments/medium_horizon/M00/20260910T072100Z_samsung_m00` | full 실행(samsung→sk_hynix) 완료 후 decision.md·체크리스트 |
+| 2026-09-10 | M00 | `tools/run_medium_horizon.py`·`tests/test_medium_horizon.py`. 4조합 full 재현(노트북 통계 동등), purge·경계 검사 통과, 실패 유형 분류. 결과 `experiments/medium_horizon/M00/20260910T072442Z_samsung_m00`(decision.md), `…T073254Z_sk_hynix_m00` | 테스트 16개 통과. 발행 0/4, sk_hynix/5만 평가 구간 raw 우위(가설) | M01: 고정 입력 로더, 외부 6개월 폴드·잠금 구간(마지막 12개월), 선택 구간 CI 기록 |
 
-- 현재 작업: M00 full 실행 중(`python tools/run_medium_horizon.py --task M00 --target <t> --mode full --resume`, 로그 `runs/medium_horizon/M00_<t>_full.log`). 고정 스냅샷은 `runs/model_improvement/P00/<t>/{data_cache,macro_cache,macro_fallback,macro_snapshots}` 를 `runs/medium_horizon/<t>/` 로 복사한 것(2026-09-09 마지막 봉). 중단됐다면 같은 명령을 다시 실행하면 완료 단위를 재사용한다.
-- 완료: 0/9. 보류: 없음. 실제 후보 채택: 없음.
-- 먼저 읽을 파일: 본 문서, 노트북 `make_price_model`/`price_forecast_variants` 셀, forecast_utils.py의 가격 보정·원장 함수.
-- 미해결: 네 조합의 최신 full 지표·원장 표본 수·고정 스냅샷 위치를 M00에서 확인해야 한다.
-- 마지막 검증: 계획 문서 검토만 수행. 코드 테스트·학습은 아직 실행하지 않았다.
+- 현재 작업: 없음. 다음 실행은 M01.
+- 완료: 1/9. 보류: 없음. 실제 후보 채택: 없음.
+- 먼저 읽을 파일: 본 문서, `experiments/medium_horizon/M00/20260910T072442Z_samsung_m00/decision.md`, `tools/run_medium_horizon.py`(price_design·analyse_horizon), forecast_utils.py의 `calibrate_price_forecast`.
+- 미해결: (1) 원장에 발행 판정에 쓰인 선택 구간 CI가 없어 하이닉스 20일 발행이 2026-09-08부터 뒤집힌 이유를 원장만으로 볼 수 없다 — M01에서 결과 파일에 남긴다. (2) 러너가 매번 노트북 전체를 실행한다 — M01 고정 입력 로더. (3) 평가 구간이 2024-08 이후 고변동성 한 국면이라 M05 구간 보정을 우선한다.
+- 마지막 검증: `python -m unittest tests.test_medium_horizon`(16개 통과), M00 full 두 종목(exit 0, 노트북 동등성 True).
 
 중단 시 아래 양식을 채워 이어서 실행한다.
 

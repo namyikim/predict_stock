@@ -1,0 +1,9 @@
+target,horizon,comparison,metric,delta,ci_lo,ci_hi,common_n,block,calibrated
+sk_hynix,5,current_ridge_raw - hold_current,mae_return,-0.0026424720314002,-0.004267859869661022,-0.0010663817296613619,475,month,False
+sk_hynix,5,current_ridge_raw - hold_current,mae_return,-0.0026424720314002,-0.004690897074400321,-0.0015753266387721519,475,contiguous_20,False
+sk_hynix,5,current_ridge_calibrated - hold_current,mae_return,0.0,0.0,0.0,475,month,True
+sk_hynix,5,current_ridge_calibrated - hold_current,mae_return,0.0,0.0,0.0,475,contiguous_20,True
+sk_hynix,20,current_ridge_raw - hold_current,mae_return,-0.0012163822839173519,-0.012766532477840526,0.011138111672875723,469,month,False
+sk_hynix,20,current_ridge_raw - hold_current,mae_return,-0.0012163822839173519,-0.013224250487868586,0.006341896332143364,469,contiguous_40,False
+sk_hynix,20,current_ridge_calibrated - hold_current,mae_return,0.0,0.0,0.0,469,month,True
+sk_hynix,20,current_ridge_calibrated - hold_current,mae_return,0.0,0.0,0.0,469,contiguous_40,True

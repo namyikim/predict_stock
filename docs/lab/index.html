@@ -1,0 +1,287 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>가상 매매 시뮬레이션 (실험) · predict_stock</title>
+<style>
+  :root{color-scheme:light}
+  body{font-family:-apple-system,BlinkMacSystemFont,'Malgun Gothic',sans-serif;line-height:1.6;
+       color:#1a1a1a;background:#fff;margin:0;padding:24px 18px 48px}
+  .wrap{max-width:980px;margin:0 auto}
+  h1{font-size:20px;margin:0 0 4px}
+  h2{font-size:15px;margin:26px 0 8px;padding-bottom:6px;border-bottom:1px solid #ddd}
+  a{color:#1a5490}
+  .warn{background:#fdf8ec;border-left:4px solid #c8952a;padding:12px 16px;border-radius:0 5px 5px 0;
+        font-size:13px;margin:14px 0 18px}
+  .controls{display:flex;gap:14px;flex-wrap:wrap;align-items:flex-end;margin:10px 0 4px}
+  .field{display:flex;flex-direction:column;font-size:12px;color:#6b7178}
+  .field select,.field input{margin-top:3px;padding:5px 8px;font-size:13px;border:1px solid #ccd2d9;
+       border-radius:4px;min-width:120px}
+  table{width:100%;border-collapse:collapse;font-size:13px;border:1px solid #e5e5e5}
+  th{background:#fafafa;font-size:11px;color:#6b7178;padding:8px 10px;text-align:left}
+  td{padding:7px 10px;border-top:1px solid #eee}
+  .num{text-align:right;white-space:nowrap}
+  .tiles{display:flex;gap:12px;flex-wrap:wrap;margin:10px 0}
+  .tile{border:1px solid #e5e5e5;border-radius:6px;padding:10px 14px;min-width:132px}
+  .tile b{display:block;font-size:19px;margin-top:2px}
+  .muted{color:#8a9199;font-size:11px}
+  .empty{border:1px solid #e5e5e5;border-radius:6px;padding:16px;color:#6b7178;font-size:13px}
+  .up{color:#1e6b34}.down{color:#a8322a}
+  details{margin-top:10px}
+  summary{font-size:12px;color:#6b7178;cursor:pointer}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>가상 매매 시뮬레이션 <span class="muted">실험용</span></h1>
+  <div class="muted">predict_stock · <a href="../">보고서로 돌아가기</a></div>
+
+  <div class="warn">
+    <b>실제 거래는 하지 않았습니다.</b> 원장(<code>forecast_history/…/forecast_log.csv</code>)에
+    <b>실제로 미리 기록한 예측</b>만으로 가상 매매를 돌린 결과입니다. 백테스트가 아닙니다.
+    <br>매수·매도는 <b>09:00 시가</b>에 실행합니다 — 예측을 볼 수 있는 가장 이른 시점이고, 그 전에
+    이미 밤사이 갭이 지나갔습니다. 이 저장소의 측정으로 예측력은 갭 구간(AUC 0.80)에 있고
+    시가 이후 장중은 무작위에 가깝습니다(AUC 0.50). 그래서 <b>이 시뮬레이션이 보유 전략을 이기지
+    못하는 것이 정상</b>이며, 이 페이지는 그 사실을 금액으로 확인하려는 것입니다.
+    <br>결과는 <b>보유 전략과 비교해서만</b> 읽으세요. 거래비용은 끌 수 없습니다.
+  </div>
+
+  <div class="controls">
+    <label class="field">종목
+      <select id="target">
+        <option value="samsung">삼성전자</option>
+        <option value="sk_hynix">SK하이닉스</option>
+      </select>
+    </label>
+    <label class="field">모델
+      <select id="model"></select>
+    </label>
+    <label class="field">규칙
+      <select id="rule">
+        <option value="up_over_flat">상승 확률이 하락보다 높으면 보유</option>
+        <option value="up_over_third">상승 확률 &gt; 1/3 이면 보유</option>
+        <option value="predicted_up">예측이 '상승'일 때만 보유</option>
+        <option value="always">항상 보유(=보유 전략)</option>
+      </select>
+    </label>
+    <label class="field">초기 자금(원)
+      <input id="capital" type="number" value="10000000" step="1000000" min="100000">
+    </label>
+    <label class="field">수수료(%)
+      <input id="fee" type="number" value="0.015" step="0.005" min="0">
+    </label>
+    <label class="field">거래세(매도, %)
+      <input id="tax" type="number" value="0.18" step="0.01" min="0">
+    </label>
+    <label class="field">슬리피지(%)
+      <input id="slip" type="number" value="0.05" step="0.01" min="0">
+    </label>
+  </div>
+
+  <div id="status" class="muted">원장을 불러오는 중…</div>
+  <div id="result"></div>
+
+  <h2>거래 내역</h2>
+  <div id="trades"></div>
+
+  <div class="muted" style="margin-top:18px">
+    이 페이지는 원장 CSV를 브라우저에서 직접 읽어 계산합니다. 서버도 저장도 없습니다.
+    같은 날짜·모델의 예측이 여러 건이면 <b>가장 먼저 기록된 것</b>만 씁니다(원장의 집계 규칙과 같습니다).
+    연구·교육용이며 투자 자문이 아닙니다.
+  </div>
+</div>
+
+<script>
+(function () {
+  "use strict";
+  var BASE = "https://raw.githubusercontent.com/namyikim/predict_stock/main/forecast_history/";
+  var $ = function (id) { return document.getElementById(id); };
+  var nf = new Intl.NumberFormat("ko-KR");
+  var rows = [];
+
+  function parseCsv(text) {
+    // 원장은 따옴표 안에 쉼표가 들어갈 수 있다. 최소한의 파서를 직접 둔다.
+    var out = [], row = [], field = "", quoted = false, i;
+    for (i = 0; i < text.length; i++) {
+      var c = text[i];
+      if (quoted) {
+        if (c === '"') { if (text[i + 1] === '"') { field += '"'; i++; } else { quoted = false; } }
+        else { field += c; }
+      } else if (c === '"') { quoted = true; }
+      else if (c === ",") { row.push(field); field = ""; }
+      else if (c === "\n") { row.push(field); out.push(row); row = []; field = ""; }
+      else if (c !== "\r") { field += c; }
+    }
+    if (field.length || row.length) { row.push(field); out.push(row); }
+    if (!out.length) return [];
+    var head = out[0].map(function (h) { return h.replace(/^\uFEFF/, "").trim(); });
+    return out.slice(1).filter(function (r) { return r.length === head.length; }).map(function (r) {
+      var obj = {};
+      head.forEach(function (h, k) { obj[h] = r[k]; });
+      return obj;
+    });
+  }
+
+  function num(v) { var x = parseFloat(v); return isFinite(x) ? x : null; }
+
+  function load() {
+    var target = $("target").value;
+    $("status").textContent = "원장을 불러오는 중…";
+    $("result").innerHTML = ""; $("trades").innerHTML = "";
+    fetch(BASE + target + "/forecast_log.csv", { cache: "no-store" })
+      .then(function (r) { if (!r.ok) throw new Error("HTTP " + r.status); return r.text(); })
+      .then(function (text) {
+        var all = parseCsv(text);
+        rows = all.filter(function (r) {
+          return r.kind === "direction" && String(r.is_prospective).toLowerCase() === "true" &&
+                 r.status === "scored" && num(r.actual_open) && num(r.actual_close);
+        });
+        // 같은 (날짜, 모델)은 가장 먼저 기록된 것만.
+        var seen = {}, unique = [];
+        rows.sort(function (a, b) { return String(a.created_at_utc).localeCompare(String(b.created_at_utc)); });
+        rows.forEach(function (r) {
+          var key = r.target_date + "|" + r.model;
+          if (!seen[key]) { seen[key] = true; unique.push(r); }
+        });
+        rows = unique;
+        var models = Object.keys(rows.reduce(function (acc, r) { acc[r.model] = 1; return acc; }, {})).sort();
+        // 기본 모델은 보고서 대표와 같게 둔다. 이전 선택이 유효하면 유지한다.
+        var pick = models.indexOf($("model").value) >= 0 ? $("model").value
+                 : (models.indexOf("No macro ensemble") >= 0 ? "No macro ensemble" : models[0]);
+        $("model").innerHTML = models.map(function (m) {
+          return '<option value="' + m + '"' + (m === pick ? " selected" : "") + ">" + m + "</option>";
+        }).join("");
+        $("model").value = pick;
+        if (!models.length) {
+          $("status").textContent = "";
+          $("result").innerHTML = '<div class="empty">채점된 사전 예측이 아직 없습니다. ' +
+            '예측이 실제 시가·종가와 대조된 뒤에 이 페이지가 채워집니다.</div>';
+          return;
+        }
+        run();
+      })
+      .catch(function (e) {
+        $("status").textContent = "";
+        $("result").innerHTML = '<div class="empty">원장을 불러오지 못했습니다 (' + e.message + ').</div>';
+      });
+  }
+
+  function decide(rule, r) {
+    var up = num(r.p_up), down = num(r.p_down);
+    if (rule === "always") return true;
+    if (rule === "predicted_up") return r.prediction === "상승";
+    if (rule === "up_over_third") return up !== null && up > 1 / 3;
+    return up !== null && down !== null && up > down;   // up_over_flat
+  }
+
+  function simulate(picked, rule, cost) {
+    // 09:00 시가 매수 → 15:30 종가 청산. 보유하지 않는 날은 현금.
+    var cash = 1, position = false, curve = [], trades = [], fees = 0;
+    picked.forEach(function (r) {
+      var open = num(r.actual_open), close = num(r.actual_close);
+      var want = decide(rule, r);
+      var ret = 0, paid = 0;
+      if (want) {
+        var buy = open * (1 + cost.slip), sell = close * (1 - cost.slip);
+        var gross = sell / buy - 1;
+        paid = cost.fee * 2 + cost.tax;          // 매수·매도 수수료 + 매도 거래세
+        ret = gross - paid;
+        fees += paid;
+        trades.push({ date: r.target_date, open: open, close: close, gross: gross, net: ret,
+                      p_up: num(r.p_up), p_down: num(r.p_down), prediction: r.prediction });
+      }
+      cash *= (1 + ret);
+      curve.push({ date: r.target_date, value: cash, held: want });
+      position = want;
+    });
+    var peak = 1, mdd = 0;
+    curve.forEach(function (p) { peak = Math.max(peak, p.value); mdd = Math.min(mdd, p.value / peak - 1); });
+    return { curve: curve, trades: trades, total: cash - 1, mdd: mdd, fees: fees, days: picked.length };
+  }
+
+  function sparkline(curve, hold) {
+    if (curve.length < 2) return "";
+    var W = 620, H = 130, L = 8, R = 8, T = 10, B = 18;
+    var all = curve.map(function (p) { return p.value; }).concat(hold.map(function (p) { return p.value; }));
+    var lo = Math.min.apply(null, all), hi = Math.max.apply(null, all);
+    if (hi - lo < 1e-9) { lo -= 0.01; hi += 0.01; }
+    var x = function (i) { return L + (W - L - R) * (curve.length === 1 ? 0 : i / (curve.length - 1)); };
+    var y = function (v) { return T + (H - T - B) * (1 - (v - lo) / (hi - lo)); };
+    var line = function (pts, color, width) {
+      return '<polyline fill="none" stroke="' + color + '" stroke-width="' + width + '" points="' +
+        pts.map(function (p, i) { return x(i).toFixed(1) + "," + y(p.value).toFixed(1); }).join(" ") + '"/>';
+    };
+    return '<svg viewBox="0 0 ' + W + " " + H + '" width="100%" style="max-width:' + W + 'px">' +
+      '<line x1="' + L + '" x2="' + (W - R) + '" y1="' + y(1).toFixed(1) + '" y2="' + y(1).toFixed(1) +
+      '" stroke="#ccd2d9" stroke-dasharray="3,3"/>' +
+      line(hold, "#8a9199", 1.6) + line(curve, "#1a5490", 2) +
+      '<text x="' + L + '" y="' + (H - 4) + '" font-size="10" fill="#8a9199">' + curve[0].date + "</text>" +
+      '<text x="' + (W - R) + '" y="' + (H - 4) + '" font-size="10" fill="#8a9199" text-anchor="end">' +
+      curve[curve.length - 1].date + "</text></svg>" +
+      '<div class="muted">파랑 = 규칙대로 매매 · 회색 = 보유 전략 · 점선 = 원금</div>';
+  }
+
+  function pct(v) { return (v * 100).toFixed(2) + "%"; }
+
+  function run() {
+    var model = $("model").value, rule = $("rule").value;
+    var capital = Math.max(0, num($("capital").value) || 0);
+    var cost = { fee: (num($("fee").value) || 0) / 100, tax: (num($("tax").value) || 0) / 100,
+                 slip: (num($("slip").value) || 0) / 100 };
+    var picked = rows.filter(function (r) { return r.model === model; })
+                     .sort(function (a, b) { return a.target_date.localeCompare(b.target_date); });
+    $("status").textContent = "";
+    if (!picked.length) {
+      $("result").innerHTML = '<div class="empty">이 모델의 채점된 사전 예측이 없습니다.</div>';
+      $("trades").innerHTML = ""; return;
+    }
+    var sim = simulate(picked, rule, cost);
+    var hold = simulate(picked, "always", cost);
+    var diff = sim.total - hold.total;
+    var few = picked.length < 60;
+    var tone = function (v) { return v > 0 ? "up" : (v < 0 ? "down" : ""); };
+    $("result").innerHTML =
+      (few ? '<div class="warn">채점된 예측이 <b>' + picked.length + '일</b>뿐입니다. 하루 등락이 2~3%인 것에 비해 ' +
+             '표본이 턱없이 적어 <b>이 결과는 잡음입니다.</b> 60일이 쌓인 뒤에 보세요.</div>' : "") +
+      '<div class="tiles">' +
+        '<div class="tile">규칙대로 매매<b class="' + tone(sim.total) + '">' + pct(sim.total) + "</b>" +
+          '<span class="muted">' + nf.format(Math.round(capital * (1 + sim.total))) + "원</span></div>" +
+        '<div class="tile">보유 전략<b class="' + tone(hold.total) + '">' + pct(hold.total) + "</b>" +
+          '<span class="muted">' + nf.format(Math.round(capital * (1 + hold.total))) + "원</span></div>" +
+        '<div class="tile">보유 대비<b class="' + tone(diff) + '">' + pct(diff) + "</b>" +
+          '<span class="muted">이 값이 핵심입니다</span></div>' +
+        '<div class="tile">최대 낙폭<b class="down">' + pct(sim.mdd) + "</b>" +
+          '<span class="muted">규칙대로 매매</span></div>' +
+        '<div class="tile">거래 일수<b>' + sim.trades.length + " / " + sim.days + "</b>" +
+          '<span class="muted">보유한 날 / 전체</span></div>' +
+        '<div class="tile">누적 비용<b class="down">-' + pct(sim.fees) + "</b>" +
+          '<span class="muted">' + nf.format(Math.round(capital * sim.fees)) + "원</span></div>" +
+      "</div>" + sparkline(sim.curve, hold.curve);
+
+    var body = sim.trades.map(function (t) {
+      return "<tr><td>" + t.date + "</td>" +
+        '<td class="num">' + nf.format(t.open) + "</td>" +
+        '<td class="num">' + nf.format(t.close) + "</td>" +
+        '<td class="num ' + tone(t.gross) + '">' + pct(t.gross) + "</td>" +
+        '<td class="num ' + tone(t.net) + '">' + pct(t.net) + "</td>" +
+        '<td class="num">' + (t.p_up === null ? "—" : (t.p_up * 100).toFixed(0) + "%") + "</td>" +
+        "<td>" + (t.prediction || "") + "</td></tr>";
+    }).join("");
+    $("trades").innerHTML = sim.trades.length
+      ? '<table><tr><th>날짜</th><th class="num">시가</th><th class="num">종가</th>' +
+        '<th class="num">총수익</th><th class="num">비용 차감</th><th class="num">상승확률</th>' +
+        "<th>예측</th></tr>" + body + "</table>"
+      : '<div class="empty">이 규칙으로는 매수한 날이 없습니다.</div>';
+  }
+
+  ["model", "rule", "capital", "fee", "tax", "slip"].forEach(function (id) {
+    $(id).addEventListener("change", run);
+  });
+  $("target").addEventListener("change", load);
+  load();
+})();
+</script>
+</body>
+</html>

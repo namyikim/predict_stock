@@ -1,0 +1,19 @@
+{
+  "completed_units": [
+    "sk_hynix:h5",
+    "sk_hynix:h20"
+  ],
+  "results": {
+    "sk_hynix:h5": {
+      "oof_sha256": "1fd67578b1507271298869126a8c9215f449878bafa33581259d4b248502ad66",
+      "oof_file": "D:\\SourceCode\\predict_stock\\runs\\medium_horizon\\sk_hynix\\M06_h5_full_oof.csv",
+      "verdict": "pooled 우위 미확인 → 현행 유지"
+    },
+    "sk_hynix:h20": {
+      "oof_sha256": "c3cfe7f6e510988da450e09b61794296f0236051f5bc7ec5850c3e441dab54e9",
+      "oof_file": "D:\\SourceCode\\predict_stock\\runs\\medium_horizon\\sk_hynix\\M06_h20_full_oof.csv",
+      "verdict": "pooled 우위 미확인 → 현행 유지"
+    }
+  },
+  "updated_at_utc": "2026-09-10T10:35:49.412700+00:00"
+}

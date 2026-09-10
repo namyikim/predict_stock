@@ -1,0 +1,68 @@
+{
+  "target": "samsung",
+  "horizon": 5,
+  "panel_instruments": [
+    "005930.KS",
+    "000660.KS",
+    "042700.KS",
+    "058470.KQ",
+    "036930.KQ",
+    "000990.KS",
+    "005290.KQ",
+    "039030.KQ",
+    "095340.KQ"
+  ],
+  "excluded_instruments": {
+    "403870.KS": "HPSP: 첫 거래일 2022-07-15 > 2015-01-01",
+    "240810.KQ": "원익IPS: 첫 거래일 2016-05-02 > 2015-01-01",
+    "357780.KQ": "솔브레인: 첫 거래일 2020-08-06 > 2015-01-01"
+  },
+  "survivorship_note": "종목 목록은 2026-09-10 시점 상장 종목이라 과거로 적용하면 생존 편향이 있다(panel_data.py). 종목 수 증가를 독립 날짜 표본 증가로 보지 않는다.",
+  "panel_rows": 24988,
+  "panel_features": [
+    "inst_ret_1",
+    "inst_ret_2",
+    "inst_ret_3",
+    "inst_mom_5",
+    "inst_mom_10",
+    "inst_mom_20",
+    "inst_vol_20",
+    "inst_vol_ratio",
+    "inst_ma50_gap",
+    "inst_turnover_ratio_20",
+    "kospi_cum_20",
+    "kospi_cum_60",
+    "sox_cum_20",
+    "sox_cum_60",
+    "rel_kospi_20"
+  ],
+  "n_dev_rows": 1086,
+  "dev_folds": [
+    "dev_01",
+    "dev_02",
+    "dev_03",
+    "dev_04",
+    "dev_05",
+    "dev_06",
+    "dev_07",
+    "dev_08",
+    "dev_09"
+  ],
+  "lock_start": "2025-09-04",
+  "no_interpolation_violations": 0,
+  "mean_pooled_train_rows": 16958.333333333332,
+  "mean_single_train_rows": 1884.5555555555557,
+  "pooled_vs_single_calibrated_month_ci": [
+    -3.3681084365234354e-05,
+    -0.00030982823527090123,
+    0.0002752880969527942
+  ],
+  "pooled_vs_current_calibrated_month_ci": [
+    0.00023986316277835296,
+    -0.0001041773534543623,
+    0.0005968664823408397
+  ],
+  "verdict": "pooled 우위 미확인 → 현행 유지",
+  "oof_file": "D:\\SourceCode\\predict_stock\\runs\\medium_horizon\\samsung\\M06_h5_full_oof.csv",
+  "oof_sha256": "9f0314de4915bc2dfeb970f98f8131e0b96a073fd14c14243e01c302a2f82391"
+}

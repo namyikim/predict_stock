@@ -536,6 +536,44 @@ class IssuanceRateTests(unittest.TestCase):
         self.assertIn("예측이 아니라", code)
 
 
+class PooledPanelTests(unittest.TestCase):
+    """M06: 패널 행의 시점(특징 d-1 종가까지, 라벨 d-1→d+h-1), 만기 purge, 보간 없음."""
+
+    def bars(self, start, n, seed):
+        rng = np.random.default_rng(seed)
+        idx = pd.DatetimeIndex(pd.bdate_range(start, periods=n))
+        close = 100 * np.cumprod(1 + rng.normal(0, .015, n))
+        return pd.DataFrame({"open": close, "close": close, "volume": rng.integers(1e5, 1e6, n)}, index=idx)
+
+    def test_instrument_frame_uses_previous_close_features_and_h_day_labels(self):
+        b = self.bars("2020-01-01", 300, 1)
+        f = mh.panel_instrument_frame(b, 5)
+        i = 100
+        d = b.index[i]
+        self.assertAlmostEqual(f.loc[d, "inst_ret_1"], b["close"].iloc[i - 1] / b["close"].iloc[i - 2] - 1, places=12)
+        self.assertAlmostEqual(f.loc[d, "future_return"], b["close"].iloc[i + 4] / b["close"].iloc[i - 1] - 1, places=12)
+        self.assertEqual(pd.Timestamp(f.loc[d, "target_date"]), b.index[i + 4])
+        self.assertTrue(pd.isna(f["target_date"].iloc[-1]))
+
+    def test_pooled_training_rows_are_purged_per_instrument(self):
+        panel, cols = mh.build_medium_panel({"A": self.bars("2020-01-01", 400, 1), "B": self.bars("2020-03-01", 360, 2)}, 20)
+        before = pd.Timestamp("2021-01-04")
+        rows = mh.panel_train_rows(panel, before)
+        self.assertTrue((pd.to_datetime(panel.loc[rows, "target_date"]) < before).all())
+        self.assertEqual(set(panel.loc[rows, "instrument"]), {"A", "B"})
+        single = mh.panel_train_rows(panel, before, ["A"])
+        self.assertEqual(set(panel.loc[single, "instrument"]), {"A"})
+        self.assertLess(len(single), len(rows))
+
+    def test_late_listing_is_not_backfilled(self):
+        bars = {"A": self.bars("2020-01-01", 400, 1), "B": self.bars("2020-09-01", 200, 2)}
+        panel, _ = mh.build_medium_panel(bars, 5)
+        sys.path.insert(0, str(ROOT / "experiments" / "model_improvement"))
+        import panel_data as pdm
+        self.assertEqual(pdm.check_no_interpolation(panel, bars), 0)
+        self.assertGreaterEqual(pd.to_datetime(panel[panel.instrument == "B"]["date"]).min(), pd.Timestamp("2020-09-01"))
+
+
 class FakeNotebook:
     def __init__(self, fail=False):
         self.calls = 0

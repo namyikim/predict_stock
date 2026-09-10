@@ -49,7 +49,8 @@ TASKS = {"M00": "현행 5·20일 가격 모델 기준선과 실패 유형 진단
          "M02": "지평별 특징군 비교(현행 전체 vs 시세만 vs 월별 제외 vs 그룹 A 추가)",
          "M03": "Ridge 규제 강도·학습 창 내부 선택(alpha {100,1000,10000} × {5년, expanding})",
          "M04": "5·20일 직접 방향 확률 모델(규제 Logistic) vs 학습 구간 사전확률",
-         "M05": "예측 구간(simple 내부 q / HAR / 최근 확정 잔차 252개)과 보류 정책 비교"}
+         "M05": "예측 구간(simple 내부 q / HAR / 최근 확정 잔차 252개)과 보류 정책 비교",
+         "M06": "국내 반도체 패널 공동 학습(pooled Ridge) vs 같은 입력 단독 모델 vs 현행"}
 HORIZON_LABELS = {5: "1주일", 20: "1개월"}
 
 # 평가 계약(계획 4절). 점수를 보기 전에 고정한다.
@@ -1456,8 +1457,245 @@ def run_m05(target, mode, storage, results_dir, state, run_notebook_fn=None):
     return collect_rows(state, target)
 
 
-TASK_RUNNERS = {"M00": run_m00, "M01": run_m01, "M02": run_m02, "M03": run_m03, "M04": run_m04, "M05": run_m05}
-TASK_CONFIGS = {"M00": m00_config, "M01": m01_config, "M02": m02_config, "M03": m03_config, "M04": m04_config, "M05": m05_config}
+# ---------------------------------------------------------------------------
+# M06 — 공동 학습(선택 작업)
+# ---------------------------------------------------------------------------
+PANEL_CACHE = "panel_cache"                 # <storage>/panel_cache/<ticker>.csv — P10 스냅샷을 복사해 쓴다
+PANEL_MARKET_ASSETS = ("kospi", "sox")      # 모든 종목이 공유하는 시장·해외 입력(그룹 A 방식으로 d 전 마지막 관측)
+PANEL_TARGET_TICKER = {"samsung": "005930.KS", "sk_hynix": "000660.KS"}
+
+
+def load_panel_cache(storage):
+    """{ticker: bars} 와 첫 거래일. 파일이 없는 종목은 건너뛴다(보간·대체 없음)."""
+    cache = Path(storage) / PANEL_CACHE
+    bars, first = {}, {}
+    for path in sorted(cache.glob("*.csv")):
+        ticker = path.stem.replace("_", ".", 1)
+        frame = pd.read_csv(path, index_col=0, parse_dates=True)
+        frame.index = pd.DatetimeIndex(frame.index).tz_localize(None).normalize()
+        frame = frame.dropna(subset=["close"])
+        if len(frame):
+            bars[ticker] = frame
+            first[ticker] = frame.index[0]
+    return bars, first
+
+
+def panel_instrument_frame(bars, horizon, market_features=None):
+    """한 종목의 (특징 through d-1, 라벨 d-1 종가 대비 d+h-1 종가, sigma, 만기 날짜). 중기 계약과 같은 시점 규칙."""
+    sys.path.insert(0, str(ROOT / "experiments" / "model_improvement"))
+    import panel_data as pdm
+    bars = bars.sort_index()
+    close = bars["close"].astype(float)
+    f = pdm.instrument_features(close, bars.get("volume")).shift(1)      # d행에는 d-1 종가까지의 값
+    f.columns = [f"inst_{c}" for c in f.columns]
+    f["future_return"] = close.shift(-(horizon - 1)) / close.shift(1) - 1
+    f["sigma_simple"] = close.pct_change().rolling(20).std().shift(1) * np.sqrt(horizon)
+    pos = np.arange(len(f))
+    mature = pos + horizon - 1
+    f["target_date"] = pd.NaT
+    ok = mature < len(f)
+    f.loc[ok, "target_date"] = bars.index[mature[ok]]
+    if market_features is not None:
+        for col in market_features.columns:
+            f[col] = market_features[col].reindex(f.index)
+        f["rel_kospi_20"] = f["inst_mom_20"] - f["kospi_cum_20"] if "kospi_cum_20" in f else np.nan
+    return f.replace([np.inf, -np.inf], np.nan)
+
+
+def build_medium_panel(bars_by_ticker, horizon, market_features=None):
+    frames = []
+    for ticker, bars in bars_by_ticker.items():
+        f = panel_instrument_frame(bars, horizon, market_features)
+        f["instrument"] = ticker
+        f.index.name = "date"
+        frames.append(f.reset_index())
+    panel = pd.concat(frames, ignore_index=True)
+    feature_cols = [c for c in panel.columns if c.startswith(("inst_", "kospi_", "sox_", "rel_"))]
+    return panel.dropna(subset=feature_cols + ["future_return", "sigma_simple", "target_date"]).reset_index(drop=True), feature_cols
+
+
+def panel_train_rows(panel, before, instruments=None):
+    """라벨 만기 종가가 before(시험 시작일) 앞인 행. instruments 를 주면 그 종목만(단독 모델)."""
+    mask = pd.to_datetime(panel["target_date"]) < pd.Timestamp(before)
+    if instruments is not None:
+        mask &= panel["instrument"].isin(list(instruments))
+    return np.flatnonzero(mask.to_numpy())
+
+
+def m06_config(mode):
+    return {"task": "M06", "mode": mode, "horizons": list(HORIZONS), "panel_selection_date": "2026-09-10",
+            "panel_rule": "experiments/model_improvement/panel_data.py (KRX 반도체, 2015-01-01 이전 상장)", "market_assets": list(PANEL_MARKET_ASSETS),
+            "model": "StandardScaler+Ridge(alpha=1e4) on panel features, target=future_return/sigma_simple", "instrument_id": "미사용",
+            "folds": {"first_test": FIRST_TEST, "test_months": TEST_MONTHS, "lock_months": LOCK_MONTHS,
+                      "min_train_rows": MIN_TRAIN_ROWS, "min_test_rows": MIN_TEST_ROWS, "inner_blocks": INNER_BLOCKS},
+            "bootstrap_b": 400 if mode == "quick" else 2000, "seed": SEED}
+
+
+def run_m06(target, mode, storage, results_dir, state, run_notebook_fn=None):
+    sys.path.insert(0, str(ROOT / "experiments" / "model_improvement"))
+    import panel_data as pdm
+    inputs = None
+    bars, first = load_panel_cache(storage)
+    if not bars:
+        raise SystemExit(f"{storage}/{PANEL_CACHE} 에 패널 종목 CSV 가 없습니다(runs/model_improvement/P00/panel_cache 를 복사하세요).")
+    kept, excluded = pdm.eligible_universe(first)
+    kept_tickers = [tk for tk, _, _ in kept if tk in bars]
+    ticker = PANEL_TARGET_TICKER[target]
+    if ticker not in kept_tickers:
+        raise SystemExit(f"{target}({ticker}) 이 패널 선정 기준을 통과하지 못했습니다.")
+    for horizon in HORIZONS:
+        unit = f"{target}:h{horizon}"
+        if state.is_done(unit) and artifacts_intact(state, unit, target, horizon):
+            print(f"  이미 완료된 단위 건너뜀: {unit}")
+            continue
+        if inputs is None:
+            inputs = load_inputs(target, mode, storage, run_notebook_fn)
+            record_inputs(state, inputs)
+        closes = {name: load_asset_close(storage, target, name) for name in PANEL_MARKET_ASSETS}
+        all_dates = pd.DatetimeIndex(sorted(set().union(*[set(b.index) for b in bars.values()])))
+        market = group_a_features(inputs["sam"]["adj_close"], closes, all_dates, windows=(20, 60), relative=())
+        market = market[[c for c in market.columns if c.startswith(("kospi_cum", "sox_cum"))]]
+        panel, pcols = build_medium_panel({tk: bars[tk] for tk in kept_tickers}, horizon, market)
+        bad = pdm.check_no_interpolation(panel.rename(columns={}).assign(date=pd.to_datetime(panel["date"])), {tk: bars[tk] for tk in kept_tickers})
+        if bad:
+            raise RuntimeError(f"패널에 원본에 없는 날짜가 {bad}행 있다(보간 금지)")
+
+        # 현행 모델(M00 계약)의 같은 종목 행과 날짜를 맞춘다
+        reg, cols = price_design(inputs, horizon)
+        sam = inputs["sam"]
+        folds, lock_start = evaluation_folds(reg.index, sam.index, horizon)
+        dev = [f for f in folds if f["name"].startswith("dev") and not f.get("excluded")]
+        if not dev:
+            raise SystemExit(f"{unit}: 개발 폴드가 없습니다.")
+        X_cur = reg[cols].to_numpy(dtype=np.float32)
+        y_cur = reg["future_return"].to_numpy(dtype=float)
+        s_cur = reg["sigma_simple"].to_numpy(dtype=float)
+        z_cur = y_cur / np.maximum(s_cur, 1e-6)
+        own = panel[panel["instrument"] == ticker].set_index(pd.to_datetime(panel.loc[panel["instrument"] == ticker, "date"]))
+        Xp = panel[pcols].to_numpy(dtype=np.float32)
+        yp = panel["future_return"].to_numpy(dtype=float)
+        sp = panel["sigma_simple"].to_numpy(dtype=float)
+        zp = yp / np.maximum(sp, 1e-6)
+        template = fu.make_price_model()
+
+        records = []
+        for f in dev:
+            test_dates = reg.index[f["test"]]
+            common = test_dates[test_dates.isin(own.index)]
+            if len(common) == 0:
+                continue
+            cur_pos = np.asarray(reg.index.get_indexer(common))
+            own_rows = np.flatnonzero((panel["instrument"] == ticker).to_numpy() & pd.to_datetime(panel["date"]).isin(common).to_numpy())
+            own_rows = own_rows[np.argsort(pd.to_datetime(panel["date"].iloc[own_rows]).to_numpy())]
+            pooled_train = panel_train_rows(panel, f["test_start"])
+            single_train = panel_train_rows(panel, f["test_start"], [ticker])
+            rec = {"fold": f["name"], "dates": common, "cur_pos": cur_pos, "y": yp[own_rows],
+                   "n_pooled_train": int(len(pooled_train)), "n_single_train": int(len(single_train)),
+                   "raw": {}, "slope": {}}
+            rec["raw"]["current"] = fit_predict(template, X_cur, z_cur, s_cur, f["train"], cur_pos)
+            rec["raw"]["single"] = fit_predict(template, Xp, zp, sp, single_train, own_rows) if len(single_train) >= MIN_TRAIN_ROWS else np.full(len(own_rows), np.nan)
+            rec["raw"]["pooled"] = fit_predict(template, Xp, zp, sp, pooled_train, own_rows)
+            # 내부 기울기(각 모델의 내부 3구간 예측으로)
+            for name in ("current", "single", "pooled"):
+                ip, iy = [], []
+                for block in f["inner"]:
+                    if block.get("excluded"):
+                        continue
+                    b_dates = reg.index[block["test"]]
+                    b_common = b_dates[b_dates.isin(own.index)]
+                    if len(b_common) == 0:
+                        continue
+                    if name == "current":
+                        p_ = fit_predict(template, X_cur, z_cur, s_cur, block["train"], np.asarray(reg.index.get_indexer(b_common)))
+                        yy = y_cur[np.asarray(reg.index.get_indexer(b_common))]
+                    else:
+                        rows = np.flatnonzero((panel["instrument"] == ticker).to_numpy() & pd.to_datetime(panel["date"]).isin(b_common).to_numpy())
+                        tr = panel_train_rows(panel, block["test_start"], None if name == "pooled" else [ticker])
+                        if len(tr) < MIN_TRAIN_ROWS:
+                            continue
+                        p_ = fit_predict(template, Xp, zp, sp, tr, rows); yy = yp[rows]
+                    ip.append(p_); iy.append(yy)
+                rec["slope"][name] = inner_slope(np.concatenate(ip), np.concatenate(iy)) if ip else 0.
+            records.append(rec)
+        if not records:
+            raise SystemExit(f"{unit}: 패널과 겹치는 시험 날짜가 없습니다.")
+
+        y_dev = np.concatenate([r["y"] for r in records])
+        y_cur_dev = np.concatenate([y_cur[r["cur_pos"]] for r in records])
+        dates_dev = pd.DatetimeIndex(np.concatenate([r["dates"] for r in records]))
+        preds = {name: {"raw": np.concatenate([r["raw"][name] for r in records]),
+                        "calibrated": np.concatenate([r["slope"][name] * r["raw"][name] for r in records])}
+                 for name in ("current", "single", "pooled")}
+        b = 400 if mode == "quick" else 2000
+        block = max(20, 2 * horizon)
+        valid = ~np.isnan(preds["single"]["raw"])
+
+        def ci_pair(diff, label, metric):
+            lo_m, hi_m = month_block_ci(dates_dev[valid], lambda i: float(diff[i].mean()), b=b)
+            lo_c, hi_c = contiguous_block_ci(int(valid.sum()), lambda i: float(diff[i].mean()), block, b=b)
+            base = {"target": target, "horizon": horizon, "comparison": label, "metric": metric, "delta": float(diff.mean()),
+                    "common_n": int(valid.sum()), "calibrated": "calibrated" in metric}
+            return [dict(base, ci_lo=lo_m, ci_hi=hi_m, block="month"), dict(base, ci_lo=lo_c, ci_hi=hi_c, block=f"contiguous_{block}")]
+
+        metrics, comparisons = [], []
+        metrics.append({"target": target, "horizon": horizon, "candidate": "hold_current", "fold": "dev_all", "evaluation_stage": "dev_common",
+                        "n": int(valid.sum()), "mae": float(np.abs(y_dev[valid]).mean()), "note": "패널 라벨(수정 종가)",
+                        "mae_current_label": float(np.abs(y_cur_dev[valid]).mean())})
+        err = {}
+        for name, pth in preds.items():
+            yy = y_cur_dev if name == "current" else y_dev
+            err[name] = {k: np.abs(yy - pth[k])[valid] for k in ("raw", "calibrated")}
+            metrics.append({"target": target, "horizon": horizon, "candidate": name, "fold": "dev_all", "evaluation_stage": "dev_common",
+                            "n": int(valid.sum()), "mae": float(err[name]["raw"].mean()), "mae_calibrated": float(err[name]["calibrated"].mean()),
+                            "n_features": len(cols) if name == "current" else len(pcols),
+                            "mean_train_rows": float(np.mean([r["n_pooled_train"] if name == "pooled" else r["n_single_train"] for r in records])) if name != "current" else "",
+                            "mean_slope": float(np.mean([r["slope"][name] for r in records]))})
+            for r in records:
+                yy = y_cur[r["cur_pos"]] if name == "current" else r["y"]
+                metrics.append({"target": target, "horizon": horizon, "candidate": name, "fold": r["fold"], "evaluation_stage": "dev_fold",
+                                "n": int(len(yy)), "mae": float(np.nanmean(np.abs(yy - r["raw"][name]))), "zero_mae": float(np.abs(yy).mean()),
+                                "train_rows": r["n_pooled_train"] if name == "pooled" else (r["n_single_train"] if name == "single" else ""),
+                                "slope": r["slope"][name]})
+        for a_, b_ in (("pooled", "single"), ("pooled", "current"), ("single", "current")):
+            for k in ("raw", "calibrated"):
+                comparisons += ci_pair(err[a_][k] - err[b_][k], f"{a_} - {b_}", f"mae_return_{k}")
+        zero = np.abs(y_dev)[valid]
+        for name in preds:
+            comparisons += ci_pair(err[name]["calibrated"] - zero, f"{name} - hold_current", "mae_return_calibrated")
+
+        raw_dir = Path(storage) / target
+        raw_dir.mkdir(parents=True, exist_ok=True)
+        oof_frame = pd.DataFrame({"prediction_date": dates_dev, "y_panel": y_dev, "y_current_label": y_cur_dev,
+                                  **{f"raw_{n}": p_["raw"] for n, p_ in preds.items()}, **{f"cal_{n}": p_["calibrated"] for n, p_ in preds.items()}})
+        oof_path = raw_dir / f"M06_h{horizon}_{mode}_oof.csv"
+        oof_frame.to_csv(oof_path, index=False, lineterminator="\n")
+
+        def month(label, metric):
+            return next(c for c in comparisons if c["comparison"] == label and c["metric"] == metric and c["block"] == "month")
+        ps = month("pooled - single", "mae_return_calibrated"); pc = month("pooled - current", "mae_return_calibrated")
+        summary = {
+            "target": target, "horizon": horizon, "panel_instruments": kept_tickers, "excluded_instruments": excluded,
+            "survivorship_note": "종목 목록은 2026-09-10 시점 상장 종목이라 과거로 적용하면 생존 편향이 있다(panel_data.py). 종목 수 증가를 독립 날짜 표본 증가로 보지 않는다.",
+            "panel_rows": int(len(panel)), "panel_features": pcols, "n_dev_rows": int(valid.sum()), "dev_folds": [r["fold"] for r in records],
+            "lock_start": str(lock_start.date()), "no_interpolation_violations": int(bad),
+            "mean_pooled_train_rows": float(np.mean([r["n_pooled_train"] for r in records])),
+            "mean_single_train_rows": float(np.mean([r["n_single_train"] for r in records])),
+            "pooled_vs_single_calibrated_month_ci": [ps["delta"], ps["ci_lo"], ps["ci_hi"]],
+            "pooled_vs_current_calibrated_month_ci": [pc["delta"], pc["ci_lo"], pc["ci_hi"]],
+            "verdict": ("pooled 가 현행보다 유의하게 낫다" if np.isfinite(pc["ci_hi"]) and pc["ci_hi"] < 0 else
+                        "pooled 우위 미확인 → 현행 유지"),
+            "oof_file": str(oof_path), "oof_sha256": file_sha256(oof_path),
+        }
+        write_json(state.run_dir / f"summary_{target}_h{horizon}.json", summary)
+        save_unit_rows(state, target, horizon, metrics, comparisons)
+        state.mark(unit, {"oof_sha256": summary["oof_sha256"], "oof_file": summary["oof_file"], "verdict": summary["verdict"]})
+        print(f"  {unit}: 패널 {len(kept_tickers)}종목 {len(panel)}행 · 공통 {int(valid.sum())}행 · pooled−single(보정) {ps['delta']:+.5f} "
+              f"[{ps['ci_lo']:+.5f}, {ps['ci_hi']:+.5f}] · pooled−현행(보정) {pc['delta']:+.5f} [{pc['ci_lo']:+.5f}, {pc['ci_hi']:+.5f}] · {summary['verdict']}")
+    return collect_rows(state, target)
+
+
+TASK_RUNNERS = {"M00": run_m00, "M01": run_m01, "M02": run_m02, "M03": run_m03, "M04": run_m04, "M05": run_m05, "M06": run_m06}
+TASK_CONFIGS = {"M00": m00_config, "M01": m01_config, "M02": m02_config, "M03": m03_config, "M04": m04_config, "M05": m05_config, "M06": m06_config}
 
 
 def execute(task, target, mode, storage, results_dir, resume, run_notebook_fn=None):

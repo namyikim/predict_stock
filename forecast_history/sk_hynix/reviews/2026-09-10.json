@@ -1,0 +1,174 @@
+{
+  "target": "sk_hynix",
+  "name": "SK하이닉스",
+  "peer_name": "삼성전자",
+  "session_date": "2026-09-10",
+  "generated_at": "2026-09-10 18:57 KST",
+  "summary": {
+    "prev_close": 1856000.0,
+    "open": 1879000.0,
+    "high": 1890000.0,
+    "low": 1811000.0,
+    "close": 1853000.0,
+    "gap": 0.012392241379310276,
+    "session": -0.01383714741883979,
+    "c2c": -0.001616379310344862,
+    "high_vs_open": 0.0058541777541245565,
+    "low_vs_open": -0.03618946248004262,
+    "volume": 5903367.0,
+    "volume_ratio": 1.5431611522104312,
+    "kospi_c2c": -0.0025129210368348698,
+    "peer_c2c": -0.0018552875695733162,
+    "usdkrw_chg": 0.001971322440425638,
+    "sox_ret": 0.003655002526455897,
+    "nasdaq_ret": -0.00636114088937989
+  },
+  "classification": {
+    "labels": [
+      "방향성 약함",
+      "장중 급변 09:00 주도"
+    ],
+    "reasons": [
+      "종가→종가 -0.16%로 ±0.3% 이내",
+      "09:00 봉 +1.72%(σ의 5.38배, 거래량 5.91배)가 세션 -1.38%의 162%"
+    ]
+  },
+  "events": [
+    {
+      "time": "2026-09-10T09:00:00+09:00",
+      "ret": 0.01724137931034475,
+      "z": 5.38,
+      "volume_ratio": 5.91,
+      "cum_before": 0.0,
+      "cum_after": 0.0047897817988291624,
+      "session_share": -1.6198275862068863,
+      "score": 7.375573489161417,
+      "news": [
+        {
+          "time": "2026-09-10T09:02:00+09:00",
+          "title": "SK하이닉스 ADR, 최고가 기록…메모리 공급 부족 영향",
+          "source": "yonhapnewstv.co.kr",
+          "link": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE5pZmFaYVc5RVF3N3VCOWJvSTU0Sm9ab0lROHhnaEZGOUF6VHBBVW9XVTExRTBoeHpWVDI1Q1I5SmY0eWtSQzkzYW4zS0pmSjJUTlg5RnlhVXRyaWJCdFVjWTJHVmFiOTQ?oc=5"
+        },
+        {
+          "time": "2026-09-10T09:00:33+09:00",
+          "title": "[단독] 현금 더 늘렸다…SK하이닉스 '현금 50%·주식 50%' 공개",
+          "source": "v.daum.net",
+          "link": "https://news.google.com/rss/articles/CBMiT0FVX3lxTFBVcnFvTS1wWUZWeThUWEZKOVpTRTcwY0lSRGZTaE5mRld2RkxpS2lHRzZlaWhkRm53ZVNMNVlOeWVBLUs2cVM5ZDZob1hpdTQ?oc=5"
+        },
+        {
+          "time": "2026-09-10T09:03:31+09:00",
+          "title": "상장 후 최고가 찍었다…SK하이닉스 ADR 7% 급등, 장중 199.87달러",
+          "source": "매일경제",
+          "link": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE1mdFJNamZfRUl6WlpDaHdxdVB5YVI5YlhSd1lvcHJGbUNxTG95cFFmeXJGOFV1TE9TMVBteTF0c3FhMEI0bVVrRHByR2xUMWNYdVE?oc=5"
+        },
+        {
+          "time": "2026-09-10T09:07:15+09:00",
+          "title": "SK하이닉스 ADR 7% 급등…상장 후 최고가",
+          "source": "전자신문",
+          "link": "https://news.google.com/rss/articles/CBMiTkFVX3lxTE0zaFRKdDZkUjdQanl5RVlmN0NEM3pFZHVlVDBpUWhUODFHcmFldXM1Y2pzbjJsdU56ZlhvSHR1a3JnZzdJdUlvSElQdWt4UQ?oc=5"
+        },
+        {
+          "time": "2026-09-10T09:09:00+09:00",
+          "title": "SK하이닉스 미국 ADR 7% 폭등하며 최고가 경신",
+          "source": "YTN",
+          "link": "https://news.google.com/rss/articles/CBMiXkFVX3lxTE9nU1JHdkFLZ3lEd19ZS0JoQVA0MWEtZG5kMzJ4cGVQNFR5YWl5YUUyUnpoVUwzREdQZFBYdkUwZmRHQ2U4ZThRSUlNbFlqRWphbzNzbGhMa2VQY0lXQ1E?oc=5"
+        }
+      ]
+    }
+  ],
+  "turning_point": {
+    "high_time": "2026-09-10T09:00:00+09:00",
+    "high": 0.0047897817988291624,
+    "low_time": "2026-09-10T10:25:00+09:00",
+    "low": -0.035657264502394925,
+    "pattern": "고점 후 반락"
+  },
+  "closing_share": 0.23325195514544486,
+  "intraday_corr_kospi": 0.9135232099305819,
+  "intraday_note": "장중 봉은 09:00~14:55까지만 있어 마감 구간(14:55~15:30)은 일봉 종가로만 봅니다(그 구간 -0.32%).",
+  "intraday_coverage": "09:00~14:55",
+  "overnight_news": [
+    {
+      "time": "2026-09-10T06:07:51+09:00",
+      "title": "월가 \"마이크론 좋지만 SK하이닉스는 더 강력… AI 메모리 승자 하이닉스\"",
+      "source": "글로벌이코노믹",
+      "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxOOGNNaWF0a2tza1JDNGdwYWVVNmt2cTVuNlNaeXRRekxxOThqOEpoekVxT2huOGlhdC1CLUlueFY0dTQ1RXdXVUg1YWs2NDUtcUxCQVJ0Y3d0SjZWdXBBb1pleWVLMWdDZVhJa21QWE5VZWxkeDNQT1lmdWR0eU5vclNkYkhqWVhu?oc=5"
+    }
+  ],
+  "top_news": [
+    {
+      "time": "2026-09-10T06:07:51+09:00",
+      "title": "월가 \"마이크론 좋지만 SK하이닉스는 더 강력… AI 메모리 승자 하이닉스\"",
+      "source": "글로벌이코노믹",
+      "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxOOGNNaWF0a2tza1JDNGdwYWVVNmt2cTVuNlNaeXRRekxxOThqOEpoekVxT2huOGlhdC1CLUlueFY0dTQ1RXdXVUg1YWs2NDUtcUxCQVJ0Y3d0SjZWdXBBb1pleWVLMWdDZVhJa21QWE5VZWxkeDNQT1lmdWR0eU5vclNkYkhqWVhu?oc=5"
+    },
+    {
+      "time": "2026-09-10T16:04:27+09:00",
+      "title": "[거래소 외국인] SK하이닉스 삼성전자 한미반도체 대량 매도...삼성전자우 SK스퀘어 '러브콜'",
+      "source": "핀포인트뉴스",
+      "link": "https://news.google.com/rss/articles/CBMid0FVX3lxTE55Sm9nNnljcUR2Ui1zR1RsbnlObDFSSDByR05YODR6OGVzbTRnSktUR0h2SVZWZFdWYWNEZUlaZGtkQVRCZWt0eG1zSFBaVmk3Q2c3c2FlZXREUnBUVW54UzZ2eVoyZUhudDRSQS10ZHRIUWxkZUFj0gF3QVVfeXFMTnlKb2c2eWNxRHZSLXNHVGxueU5sMVJIMHJHTlg4NHo4ZXNtNGdKS1RHSHZJVlZkV1ZhY0RlSVpka2RBVEJla3R4bXNIUFpWaTdDZzdzYWVldERScFRVbnhTNnZ5WjJlSG50NFJBLXRkdEhRbGRlQWM?oc=5"
+    },
+    {
+      "time": "2026-09-10T16:20:56+09:00",
+      "title": "제주반도체, 5% 이상 급등하며 7만8천원 돌파…외국인 매수세 유입 (+080220, 반도체, 외국인매매, 주가상승, 2026년 9월 10일 목요일)",
+      "source": "민심뉴스",
+      "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE95alE5UkRURGl1OFk2ZDFhTE1idmZpSFR5N0pPdmZ6MDgzSXdjckZKR29DZ200UTNFUnJqVldyVVhnY2xPTlZyLU5Zc3l5d2JiSUpSZkNfZjVwZFpUelRUOTRGMy1SRU1HQWQtNA?oc=5"
+    },
+    {
+      "time": "2026-09-10T09:02:00+09:00",
+      "title": "SK하이닉스 ADR, 최고가 기록…메모리 공급 부족 영향",
+      "source": "yonhapnewstv.co.kr",
+      "link": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE5pZmFaYVc5RVF3N3VCOWJvSTU0Sm9ab0lROHhnaEZGOUF6VHBBVW9XVTExRTBoeHpWVDI1Q1I5SmY0eWtSQzkzYW4zS0pmSjJUTlg5RnlhVXRyaWJCdFVjWTJHVmFiOTQ?oc=5"
+    },
+    {
+      "time": "2026-09-10T10:10:33+09:00",
+      "title": "SK하이닉스, 3조 채권 투자 재개하나…신탁 대신 운용사 위탁",
+      "source": "연합뉴스",
+      "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE9tS1FZVGs4NnlYYmpBZkp2NU9IWEFnTWtyVVBtaXpKWnFWenV0YnJXODd0MzBkQl9xbzZpdmtXOHFKTWV4dDhtODJ5YjZzZXdSUDcweEUxbDgyMFJLYUpKS9IBYEFVX3lxTE9tS1FZVGs4NnlYYmpBZkp2NU9IWEFnTWtyVVBtaXpKWnFWenV0YnJXODd0MzBkQl9xbzZpdmtXOHFKTWV4dDhtODJ5YjZzZXdSUDcweEUxbDgyMFJLYUpKSw?oc=5"
+    },
+    {
+      "time": "2026-09-10T10:49:00+09:00",
+      "title": "SK하이닉스, 성과급 자사주 지급 비율 수정…노조 재투표",
+      "source": "yonhapnewstv.co.kr",
+      "link": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE45UUlzcEFNSUh5bDFVN2lpR3FqVFNlcVp3NFc2MlNOLTk4VTJlT2dLX1F4Y1RqdVFFdnc1U3pwYzl4cldoMDhmaGV5N18yOC1kc21oY1FqYVljalZuTFNQLUQ0YmU3XzQ?oc=5"
+    }
+  ],
+  "disclosures": [],
+  "disclosure_note": null,
+  "flows": "외국인 -956,724 / 기관 +287,228",
+  "forecasts": [
+    {
+      "model": "No macro ensemble",
+      "hit": false,
+      "verdict": "틀림 — 예측 하락 42%, 실제 보합(-0.16%)",
+      "legs": "갭 +1.24%(보합) · 세션 -1.38%(보합)",
+      "where": "결과는 주로 장중에서 정해졌습니다.",
+      "band": 0.0146590562815621,
+      "probs": [
+        0.4161283819261587,
+        0.3134017854837042,
+        0.270469832590137
+      ],
+      "actual": "보합",
+      "predicted": "하락"
+    },
+    {
+      "model": "Mean ensemble",
+      "hit": false,
+      "verdict": "틀림 — 예측 하락 43%, 실제 보합(-0.16%)",
+      "legs": "갭 +1.24%(보합) · 세션 -1.38%(보합)",
+      "where": "결과는 주로 장중에서 정해졌습니다.",
+      "band": 0.0146590562815621,
+      "probs": [
+        0.4275030907229863,
+        0.2939005968717199,
+        0.2785963124052938
+      ],
+      "actual": "보합",
+      "predicted": "하락"
+    }
+  ],
+  "price_check": "1거래일 예상 구간 1,741,264~1,968,880원 · 종가 1,853,000원 → 구간 안",
+  "disclaimer": "시간이 맞는 것이지 원인 확정이 아닙니다. 뉴스 없이 움직이는 날(수급·프로그램·옵션 만기)이 많고, 기사 발행 시각은 실제 정보 유통보다 늦거나 앞섭니다. 이 절은 설명 도구이며 다음날 예측에 자동 반영되지 않습니다."
+}

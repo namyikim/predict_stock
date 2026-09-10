@@ -114,3 +114,28 @@ python tools/run_notebook.py --targets samsung,sk_hynix --storage ./outputs --qu
 두 종목을 순서대로 실행하고 `outputs/samsung`, `outputs/sk_hynix`로 분리한다. 단일 종목 `--targets samsung`은 지정한 저장 폴더를 그대로 사용한다. 둘째 종목의 실패도 CLI 오류로 표시한다. `--use-cache`는 누락 시세 다운로드와 첫 셀의 보관본 조회까지 차단하는 완전 오프라인 옵션은 아니다. 고정 데이터 실험에서는 별도 재현 절차를 사용한다.
 
 Windows에서 직접 unittest를 실행할 때는 `$env:PYTHONIOENCODING='utf-8'`을 설정한다. 로컬 CLI 자체는 UTF-8 출력을 설정한다.
+
+## 모델 개선 실험 러너
+
+`guides/model-improvement-plan.md`의 작업(P00~)을 한 번에 하나씩 돌리고, 중단해도 완료한
+단위부터 이어서 실행한다.
+
+```bash
+python tools/run_model_improvement.py --task P00 --target samsung --mode quick \
+    --storage ./outputs/model_improvement
+python tools/run_model_improvement.py --task P00 --target samsung --mode full \
+    --storage ./outputs/model_improvement --resume
+```
+
+결과는 `<storage>/<task_id>/<run_id>/`에 `manifest.json`·`metrics.csv`·`checkpoint.json`으로
+남는다. 재개는 **task·target·mode·데이터 해시·설정 해시가 모두 같을 때만** 성립한다.
+스냅샷이나 설정이 바뀌면 옛 체크포인트를 쓰지 않고 새 `run_id`로 시작한다 — 다른 자료로 얻은
+결과가 같은 실험인 척 섞이면 비교가 무의미해지기 때문이다.
+
+등록되지 않은 작업 ID는 실행하지 않고 거절한다. 각 작업을 구현할 때 `TASKS`에 등록한다.
+러너는 `PREDICT_STOCK_PUBLISH=false`를 직접 설정하므로 `forecast_history/`와 `docs/`를
+건드리지 않는다.
+
+```bash
+python -m unittest discover -s tests -p 'test_model_improvement_runner.py' -v
+```

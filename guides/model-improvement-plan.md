@@ -66,7 +66,7 @@
 | ID | 완료 | 작업 | 선행 | 실행 부담 | 채택/결론 |
 | --- | --- | --- | --- | --- | --- |
 | P00 | [ ] | 현행 기준선·평가 계약 고정 | 없음 | CPU, 전체 평가는 Colab | 진행 중: 로컬 러너 수정, 고정 데이터 평가 |
-| P01 | [ ] | 한 작업씩 실행·재개하는 실험 러너 | P00 | CPU | 미실행 |
+| P01 | [x] | 한 작업씩 실행·재개하는 실험 러너 | P00 | CPU | 완료: `tools/run_model_improvement.py`, 15개 테스트 통과 |
 | P02 | [ ] | 정보 공개 시각·데이터 품질 점검 | P01 | CPU | 미실행 |
 | P03 | [ ] | 기존 특징군의 추가 가치 비교 | P02 | CPU/Colab | 미실행 |
 | P04 | [ ] | 학습 기간 비교 | P03 | CPU/Colab | 미실행 |
@@ -197,11 +197,11 @@ PREDICT_STOCK_PUBLISH=false PREDICT_STOCK_TARGETS=samsung,sk_hynix python tools/
 **파일:** 생성 tools/run_model_improvement.py, tests/test_model_improvement_runner.py. 필요 시 tools/run_notebook.py의 실행 인터페이스 재사용. 결과는 4절 계약 준수.
 **인터페이스:** CLI --task, --target, --mode quick|full, --storage, --resume. 첫 구현은 P00 기준선 작업만 지원하고, 각 후속 작업에서 해당 task를 등록한다. 미지원 ID는 명확한 오류로 종료한다.
 
-- [ ] 동일 task·target·데이터·설정 해시의 완료 실행을 재개하면 재학습하지 않는 테스트를 작성한다.
-- [ ] 데이터/설정 해시 변경 시 이전 체크포인트를 재사용하지 않는 테스트와 미지원 ID 거부 테스트를 작성한다.
-- [ ] 실행 단위를 (target, candidate, fold, seed)로 저장한다. 처음에는 종목 단위 재개를 허용하고 폴드 지원 여부를 manifest에 명시한다.
-- [ ] 중단 시 완료 단위만 저장하고, 원자적 쓰기로 손상된 완료 상태를 만들지 않는다. 공식 발행은 항상 비활성화한다.
-- [ ] 같은 실행을 두 번 재개해 완료 단위가 중복 실행되지 않는지 확인하고 사용 예시를 guides/running.md에 추가한다.
+- [x] 동일 task·target·데이터·설정 해시의 완료 실행을 재개하면 재학습하지 않는 테스트를 작성한다. → `test_resume_with_same_inputs_does_not_retrain`
+- [x] 데이터/설정 해시 변경 시 이전 체크포인트를 재사용하지 않는 테스트와 미지원 ID 거부 테스트를 작성한다. → `test_changed_data_starts_a_new_run`, `test_changed_config_starts_a_new_run`, `test_unregistered_task_is_rejected`, `test_unsupported_target_is_rejected`
+- [x] 실행 단위를 (target, candidate, fold, seed)로 저장한다. 처음에는 종목 단위 재개를 허용하고 폴드 지원 여부를 manifest에 명시한다. → 현재 단위는 `<target>:baseline` 하나. 폴드 단위 재개는 미지원이며 manifest의 `completed_units`로 확인한다
+- [x] 중단 시 완료 단위만 저장하고, 원자적 쓰기로 손상된 완료 상태를 만들지 않는다. 공식 발행은 항상 비활성화한다. → `test_failure_is_recorded_and_unit_stays_incomplete`, `test_corrupt_checkpoint_is_treated_as_missing`, `test_atomic_write_leaves_no_partial_file`, `test_publishing_is_always_disabled`
+- [x] 같은 실행을 두 번 재개해 완료 단위가 중복 실행되지 않는지 확인하고 사용 예시를 guides/running.md에 추가한다. → `test_resuming_twice_does_not_duplicate_units`, guides/running.md “모델 개선 실험 러너”
 
 구현 후 사용할 고정 CLI:
 
@@ -456,11 +456,12 @@ P00 이후에는 작업 ID만 바꿔 요청한다. Colab 실행이 필요한 경
 | --- | --- | --- | --- | --- |
 | 2026-09-09 | PLAN | 이 문서 및 README 링크 | 저장소 문서·핵심 함수·기존 Transformer 결과 확인 | 계획 생성. P00부터 시작 |
 | 2026-09-10 | P00 사전 수정 | `tools/run_notebook.py`, `tests/test_run_notebook.py` | 8개 오프라인 회귀 테스트 통과 | 기존 CLI가 IPython 히스토리 부재로 둘째 종목을 건너뛰던 결함 수정. P00 전체 완료 아님 |
+| 2026-09-10 | P01 | `tools/run_model_improvement.py`, `tests/test_model_improvement_runner.py` | `discover -p test_model_improvement_runner.py` 15개 통과 | 완료. 재개·해시 격리·원자적 쓰기·발행 차단 검증. 구현 중 결함 2건(재개 시 반환형 불일치, 같은 초 run_id 충돌) 발견·수정 |
 | 2026-09-10 | P00 quick | `experiments/model_improvement/P00/20260910T0000Z_baseline_quick/` | 두 종목 46셀 무오류 완료, 평가 276일 | 기준선 계약 기록·스냅샷 고정 완료. 기존 캐시는 자산 키 불일치로 폐기. full 평가 실행 중 |
 
-- 현재 작업: P00 — full 평가 실행 중(quick·계약 기록 완료)
-- 완료한 신규 작업: 0/16
-- 다음 작업: P00 full 결과 기록 → P01
+- 현재 작업: P00 full 평가 실행 중(quick·계약 기록 완료), P01 완료
+- 완료한 신규 작업: 1/16 (P01)
+- 다음 작업: P00 full 결과 기록 → P02
 - 보류 작업: 없음
 - 마지막 검증 결과: `python -m unittest discover -s tests -p test_run_notebook.py -v` — 8개 통과. 전체 기존 테스트는 Windows 출력 인코딩 오류가 확인되어 `PYTHONIOENCODING=utf-8`로 재검증 중.
 - 재개 시 먼저 읽을 파일: 이 문서의 P00, guides/validation.md, guides/running.md

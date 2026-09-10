@@ -1,18 +1,26 @@
 ﻿model,kind,horizon_days,target_mode,config_hash,n,accuracy,mean_log_loss,mean_brier,point_forecasts,price_mae,price_mape,interval_coverage
 LightGBM,direction,1,close_to_close,0464a8f5fe0430d37f44,1,1.0,0.569929491312034,0.2872606937071314,0,,,
+LightGBM,direction,1,close_to_close,15c2fee718d49a56adee,1,1.0,0.6520208785168105,0.3525353059206737,0,,,
 LightGBM,direction,1,close_to_close,a5cc2a709bb33ff3d7f7,1,0.0,1.4239656993164709,0.9726436093401765,0,,,
 LightGBM,direction,1,close_to_close,cb6a70d1f50a0681a9bb,1,1.0,0.5575263853250767,0.28005260908871243,0,,,
 Logistic,direction,1,close_to_close,0464a8f5fe0430d37f44,1,1.0,0.8804847075905436,0.5232890831566366,0,,,
+Logistic,direction,1,close_to_close,15c2fee718d49a56adee,1,1.0,0.8095677927347764,0.463877986963484,0,,,
 Logistic,direction,1,close_to_close,a5cc2a709bb33ff3d7f7,1,1.0,1.0007912861125323,0.5999698198019566,0,,,
 Logistic,direction,1,close_to_close,cb6a70d1f50a0681a9bb,1,1.0,0.8821796941494422,0.5232979235149452,0,,,
 Mean ensemble,direction,1,close_to_close,0464a8f5fe0430d37f44,1,1.0,0.7131996680030237,0.3964782255585216,0,,,
+Mean ensemble,direction,1,close_to_close,15c2fee718d49a56adee,1,1.0,0.7276949103220957,0.40547809027631554,0,,,
 Mean ensemble,direction,1,close_to_close,a5cc2a709bb33ff3d7f7,1,0.0,1.1901589754696795,0.7544679816609828,0,,,
 Mean ensemble,direction,1,close_to_close,cb6a70d1f50a0681a9bb,1,1.0,0.7067355249906102,0.39219264281396615,0,,,
+No NSI ensemble,direction,1,close_to_close,15c2fee718d49a56adee,1,1.0,0.7347401059473944,0.4129141876076859,0,,,
 No NSI ensemble,direction,1,close_to_close,a5cc2a709bb33ff3d7f7,1,0.0,0.9976733792327755,0.6110215411833876,0,,,
+No flow ensemble,direction,1,close_to_close,15c2fee718d49a56adee,1,1.0,0.7286065141008364,0.4070433056943061,0,,,
 No macro ensemble,direction,1,close_to_close,0464a8f5fe0430d37f44,1,1.0,0.6323426541750596,0.33745416562833075,0,,,
+No macro ensemble,direction,1,close_to_close,15c2fee718d49a56adee,1,1.0,0.7567141421581896,0.4347032533107933,0,,,
 No macro ensemble,direction,1,close_to_close,a5cc2a709bb33ff3d7f7,1,0.0,0.9908812047120011,0.6123847651574144,0,,,
 No macro ensemble,direction,1,close_to_close,cb6a70d1f50a0681a9bb,1,1.0,0.7559273956225349,0.4337455691862534,0,,,
+Ridge,open,1,close_to_close,15c2fee718d49a56adee,1,,,,1,33570.07118687034,0.01870198951914782,1.0
 Ridge,open,1,close_to_close,a5cc2a709bb33ff3d7f7,1,,,,1,16189.68272395432,0.008999267773181946,1.0
 Ridge,price,1,close_to_close,0464a8f5fe0430d37f44,1,,,,1,113652.03734758496,0.06374202879842118,0.0
+Ridge,price,1,close_to_close,15c2fee718d49a56adee,1,,,,1,42528.34303031163,0.02291397792581446,1.0
 Ridge,price,1,close_to_close,a5cc2a709bb33ff3d7f7,1,,,,1,6242.116132609779,0.003481380999782364,1.0
 Ridge,price,1,close_to_close,cb6a70d1f50a0681a9bb,1,,,,1,114774.52523774072,0.06437157893311313,0.0

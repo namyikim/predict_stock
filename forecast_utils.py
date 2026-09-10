@@ -390,6 +390,30 @@ def price_oof_predictions(X, y, sigma, horizon, template, n_splits):
     return oof, folds
 
 
+def price_issuance_summary(log, horizon_days, last_n=60):
+    """최근 last_n 개 예측일의 h일 가격 예측 중 신호를 낸('있음') 비율. 보고서에 발행률을 병기하는 데 쓴다.
+
+    예측일마다 가장 먼저 기록된 행(사전 예측)만 센다. 원장이 없거나 해당 행이 없으면 n=0, rate=NaN.
+    """
+    empty = {"n": 0, "issued": 0, "rate": float("nan"), "horizon_days": int(horizon_days)}
+    if log is None or len(log) == 0:
+        return empty
+    frame = pd.DataFrame(log)
+    needed = {"kind", "horizon_days", "prediction_date", "signal"}
+    if not needed.issubset(frame.columns):
+        return empty
+    rows = frame[(frame["kind"] == "price") & (pd.to_numeric(frame["horizon_days"], errors="coerce") == horizon_days)]
+    if "is_prospective" in rows.columns:
+        prospective = rows["is_prospective"].astype(str).str.lower().isin(("true", "1", "yes"))
+        rows = rows[prospective] if prospective.any() else rows
+    if rows.empty:
+        return empty
+    order = "created_at_utc" if "created_at_utc" in rows.columns else "prediction_date"
+    first = rows.sort_values(order).groupby("prediction_date", sort=True).head(1).sort_values("prediction_date").tail(last_n)
+    issued = int((first["signal"].astype(str) == "있음").sum())
+    return {"n": int(len(first)), "issued": issued, "rate": issued / len(first), "horizon_days": int(horizon_days)}
+
+
 def price_macro_ablation(X, y, sigma, dates, feature_names, horizon, estimator,
                          ci_function, n_splits=5, coverage=.8):
     """Paired macro-vs-market price evaluation; never choose deployment on the final test.

@@ -1,0 +1,23 @@
+{
+  "completed_units": [
+    "sk_hynix:h5",
+    "sk_hynix:h20"
+  ],
+  "results": {
+    "sk_hynix:h5": {
+      "oof_sha256": "be1fc528c7bae9b908605a1c534af0a459a2a47e8b92a1b2bb59ffccd034efa1",
+      "oof_file": "D:\\SourceCode\\predict_stock\\runs\\medium_horizon\\sk_hynix\\M05_h5_full_oof.csv",
+      "purge_violations": 0,
+      "verdict_interval": "잔차 보정 구간 우위 미확인 → 현행 구간 유지",
+      "verdict_har": "HAR 구간이 유의하게 낫다(구간 점수)"
+    },
+    "sk_hynix:h20": {
+      "oof_sha256": "822aa1af9aaf259661afd1f909a96f3e474fb2bc06b51b5b1b8c53233faa863d",
+      "oof_file": "D:\\SourceCode\\predict_stock\\runs\\medium_horizon\\sk_hynix\\M05_h20_full_oof.csv",
+      "purge_violations": 0,
+      "verdict_interval": "잔차 보정 구간 우위 미확인 → 현행 구간 유지",
+      "verdict_har": "HAR 구간이 유의하게 낫다(구간 점수)"
+    }
+  },
+  "updated_at_utc": "2026-09-10T08:33:47.823443+00:00"
+}

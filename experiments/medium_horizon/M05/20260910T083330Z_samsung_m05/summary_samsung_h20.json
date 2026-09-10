@@ -1,0 +1,150 @@
+{
+  "target": "samsung",
+  "horizon": 20,
+  "n_dev_rows": 1086,
+  "dev_folds": [
+    "dev_01",
+    "dev_02",
+    "dev_03",
+    "dev_04",
+    "dev_05",
+    "dev_06",
+    "dev_07",
+    "dev_08",
+    "dev_09"
+  ],
+  "lock_start": "2025-08-13",
+  "purge_violations": [],
+  "coverage": {
+    "simple_inner_q": 0.8158379373848987,
+    "har_inner_q": 0.8149171270718232,
+    "simple_resid252": 0.7762430939226519
+  },
+  "interval_score": {
+    "simple_inner_q": 0.2420566688975068,
+    "har_inner_q": 0.23748756680101527,
+    "simple_resid252": 0.2560350753546954
+  },
+  "mean_width": {
+    "simple_inner_q": 0.19176003336109615,
+    "har_inner_q": 0.17458048538973853,
+    "simple_resid252": 0.18035163112113692
+  },
+  "regime_cuts_sigma": [
+    0.05850557012222944,
+    0.0760529346146164
+  ],
+  "residual_window": [
+    {
+      "fold": "dev_01",
+      "source": "fallback_inner_q",
+      "n": 0,
+      "q": 1.6133329088269128,
+      "q_inner": 1.6133329088269128
+    },
+    {
+      "fold": "dev_02",
+      "source": "resid252",
+      "n": 104,
+      "q": 0.6851768560400308,
+      "q_inner": 1.3034711028278512
+    },
+    {
+      "fold": "dev_03",
+      "source": "resid252",
+      "n": 229,
+      "q": 1.2096877664230994,
+      "q_inner": 1.532969244256804
+    },
+    {
+      "fold": "dev_04",
+      "source": "resid252",
+      "n": 252,
+      "q": 1.4318162307041526,
+      "q_inner": 1.3023982348238252
+    },
+    {
+      "fold": "dev_05",
+      "source": "resid252",
+      "n": 252,
+      "q": 1.6429986092466684,
+      "q_inner": 1.5461024348876766
+    },
+    {
+      "fold": "dev_06",
+      "source": "resid252",
+      "n": 252,
+      "q": 1.5741986845418683,
+      "q_inner": 1.4634893594277456
+    },
+    {
+      "fold": "dev_07",
+      "source": "resid252",
+      "n": 252,
+      "q": 1.1346789450785049,
+      "q_inner": 1.3037376238677607
+    },
+    {
+      "fold": "dev_08",
+      "source": "resid252",
+      "n": 252,
+      "q": 1.078579203808133,
+      "q_inner": 1.2665583620190757
+    },
+    {
+      "fold": "dev_09",
+      "source": "resid252",
+      "n": 252,
+      "q": 1.4075932259636696,
+      "q_inner": 1.2823645041157066
+    }
+  ],
+  "resid252_vs_inner_score_month_ci": [
+    0.013978406457188525,
+    0.0038661372615366027,
+    0.026706161186442093
+  ],
+  "har_vs_inner_score_month_ci": [
+    -0.0045691020964915095,
+    -0.019176338051347674,
+    0.01387290801007521
+  ],
+  "abstention": {
+    "gate_2of3": {
+      "issuance_rate": 0.3416206261510129,
+      "delta_vs_hold_month": [
+        0.0003848879017922045,
+        3.134207804846188e-05,
+        0.0008067639304262099
+      ]
+    },
+    "gate_3of3": {
+      "issuance_rate": 0.1132596685082873,
+      "delta_vs_hold_month": [
+        0.00025607903708399705,
+        -7.675239355599526e-05,
+        0.0006763719276771836
+      ]
+    },
+    "always_issue": {
+      "issuance_rate": 1.0,
+      "delta_vs_hold_month": [
+        0.0007441179349399166,
+        0.000269742066024841,
+        0.0013123536488540257
+      ]
+    },
+    "never_issue": {
+      "issuance_rate": 0.0,
+      "delta_vs_hold_month": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    }
+  },
+  "verdict_interval": "잔차 보정 구간 우위 미확인 → 현행 구간 유지",
+  "verdict_har": "HAR 우위 미확인(자동 채택 없음)",
+  "oof_file": "D:\\SourceCode\\predict_stock\\runs\\medium_horizon\\samsung\\M05_h20_full_oof.csv",
+  "oof_sha256": "2be8908cf20c37fd22c79eec0f436bcf8e4d3e0c391da5fa1242bc7da2b7d0a0"
+}

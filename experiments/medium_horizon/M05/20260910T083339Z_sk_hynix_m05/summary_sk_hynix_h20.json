@@ -1,0 +1,150 @@
+{
+  "target": "sk_hynix",
+  "horizon": 20,
+  "n_dev_rows": 1081,
+  "dev_folds": [
+    "dev_01",
+    "dev_02",
+    "dev_03",
+    "dev_04",
+    "dev_05",
+    "dev_06",
+    "dev_07",
+    "dev_08",
+    "dev_09"
+  ],
+  "lock_start": "2025-08-13",
+  "purge_violations": [],
+  "coverage": {
+    "simple_inner_q": 0.7715078630897317,
+    "har_inner_q": 0.7548566142460684,
+    "simple_resid252": 0.7567067530064755
+  },
+  "interval_score": {
+    "simple_inner_q": 0.4143194279331091,
+    "har_inner_q": 0.3919999711054804,
+    "simple_resid252": 0.42191593483780127
+  },
+  "mean_width": {
+    "simple_inner_q": 0.2721855821882575,
+    "har_inner_q": 0.24257160615522794,
+    "simple_resid252": 0.26730820487954843
+  },
+  "regime_cuts_sigma": [
+    0.09402687804741185,
+    0.11839158083443553
+  ],
+  "residual_window": [
+    {
+      "fold": "dev_01",
+      "source": "fallback_inner_q",
+      "n": 0,
+      "q": 1.4388079043246627,
+      "q_inner": 1.4388079043246627
+    },
+    {
+      "fold": "dev_02",
+      "source": "resid252",
+      "n": 104,
+      "q": 0.8912901186041647,
+      "q_inner": 1.1946322883191094
+    },
+    {
+      "fold": "dev_03",
+      "source": "resid252",
+      "n": 229,
+      "q": 1.2882443645823272,
+      "q_inner": 1.4482627123224519
+    },
+    {
+      "fold": "dev_04",
+      "source": "resid252",
+      "n": 252,
+      "q": 1.2646972697653374,
+      "q_inner": 1.1545992670473568
+    },
+    {
+      "fold": "dev_05",
+      "source": "resid252",
+      "n": 252,
+      "q": 1.041222087680013,
+      "q_inner": 1.228526572030145
+    },
+    {
+      "fold": "dev_06",
+      "source": "resid252",
+      "n": 252,
+      "q": 1.2430652961312665,
+      "q_inner": 1.126355499695808
+    },
+    {
+      "fold": "dev_07",
+      "source": "resid252",
+      "n": 252,
+      "q": 1.0836772301707458,
+      "q_inner": 1.0525143898037304
+    },
+    {
+      "fold": "dev_08",
+      "source": "resid252",
+      "n": 252,
+      "q": 1.1775908375530288,
+      "q_inner": 1.2626284682086346
+    },
+    {
+      "fold": "dev_09",
+      "source": "resid252",
+      "n": 252,
+      "q": 1.3539648620348548,
+      "q_inner": 1.153050294341255
+    }
+  ],
+  "resid252_vs_inner_score_month_ci": [
+    0.007596506904692075,
+    -0.0036793288493779824,
+    0.019088259911840592
+  ],
+  "har_vs_inner_score_month_ci": [
+    -0.022319456827628707,
+    -0.04140264712305855,
+    -0.003670013429329127
+  ],
+  "abstention": {
+    "gate_2of3": {
+      "issuance_rate": 0.4477335800185014,
+      "delta_vs_hold_month": [
+        -9.265258098008072e-05,
+        -0.0024094527307114387,
+        0.00234614150809515
+      ]
+    },
+    "gate_3of3": {
+      "issuance_rate": 0.0,
+      "delta_vs_hold_month": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "always_issue": {
+      "issuance_rate": 1.0,
+      "delta_vs_hold_month": [
+        0.0004577381056221479,
+        -0.001917081123665999,
+        0.003004176192396752
+      ]
+    },
+    "never_issue": {
+      "issuance_rate": 0.0,
+      "delta_vs_hold_month": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    }
+  },
+  "verdict_interval": "잔차 보정 구간 우위 미확인 → 현행 구간 유지",
+  "verdict_har": "HAR 구간이 유의하게 낫다(구간 점수)",
+  "oof_file": "D:\\SourceCode\\predict_stock\\runs\\medium_horizon\\sk_hynix\\M05_h20_full_oof.csv",
+  "oof_sha256": "822aa1af9aaf259661afd1f909a96f3e474fb2bc06b51b5b1b8c53233faa863d"
+}

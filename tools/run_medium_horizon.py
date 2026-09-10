@@ -48,7 +48,8 @@ TASKS = {"M00": "현행 5·20일 가격 모델 기준선과 실패 유형 진단
          "M01": "평가 계약(외부 6개월 폴드·잠금 12개월·내부 3구간)과 고정 입력 로더 검증",
          "M02": "지평별 특징군 비교(현행 전체 vs 시세만 vs 월별 제외 vs 그룹 A 추가)",
          "M03": "Ridge 규제 강도·학습 창 내부 선택(alpha {100,1000,10000} × {5년, expanding})",
-         "M04": "5·20일 직접 방향 확률 모델(규제 Logistic) vs 학습 구간 사전확률"}
+         "M04": "5·20일 직접 방향 확률 모델(규제 Logistic) vs 학습 구간 사전확률",
+         "M05": "예측 구간(simple 내부 q / HAR / 최근 확정 잔차 252개)과 보류 정책 비교"}
 HORIZON_LABELS = {5: "1주일", 20: "1개월"}
 
 # 평가 계약(계획 4절). 점수를 보기 전에 고정한다.
@@ -1249,8 +1250,214 @@ def run_m04(target, mode, storage, results_dir, state, run_notebook_fn=None):
     return collect_rows(state, target)
 
 
-TASK_RUNNERS = {"M00": run_m00, "M01": run_m01, "M02": run_m02, "M03": run_m03, "M04": run_m04}
-TASK_CONFIGS = {"M00": m00_config, "M01": m01_config, "M02": m02_config, "M03": m03_config, "M04": m04_config}
+# ---------------------------------------------------------------------------
+# M05 — 구간과 보류
+# ---------------------------------------------------------------------------
+RESIDUAL_WINDOW = 252          # 최근 확정 잔차 개수
+RESIDUAL_MIN = 100             # 이보다 적으면 현행(내부 q) 방식으로 물러난다
+INTERVAL_VARIANTS = ("simple_inner_q", "har_inner_q", "simple_resid252")
+ABSTAIN_POLICIES = ("gate_2of3", "gate_3of3", "always_issue", "never_issue")
+
+
+def band_quantile(residuals, sigma, coverage=COVERAGE):
+    """|잔차|/sigma 의 coverage 분위수. 구간 반폭 = q × sigma."""
+    r, s = np.asarray(residuals, dtype=float), np.asarray(sigma, dtype=float)
+    return float(np.quantile(np.abs(r) / np.maximum(s, 1e-6), coverage))
+
+
+def matured_residuals(history, before, window=RESIDUAL_WINDOW):
+    """before(시험 시작일) 전에 만기가 도래한 사전 예측의 잔차 중 최근 window 개.
+
+    history: (target_date, residual, sigma) 행의 DataFrame — 앞선 외부 폴드의 예측만 들어 있다.
+    """
+    if history is None or len(history) == 0:
+        return history
+    done = history[pd.to_datetime(history["target_date"]) < pd.Timestamp(before)].sort_values("target_date")
+    return done.tail(window)
+
+
+def coverage_and_score(y, center, halfwidth, coverage=COVERAGE):
+    lower, upper = center - halfwidth, center + halfwidth
+    hit = (y >= lower) & (y <= upper)
+    return hit, interval_score(y, lower, upper, coverage), (upper - lower)
+
+
+def gate_wins(inner_pred, inner_y, slope):
+    return sum(np.abs(y - slope * p).mean() < np.abs(y).mean() for p, y in zip(inner_pred, inner_y)), len(inner_pred)
+
+
+def m05_config(mode):
+    return {"task": "M05", "mode": mode, "horizons": list(HORIZONS), "features": "current_full", "model": "alpha=1e4, expanding",
+            "coverage": COVERAGE, "intervals": list(INTERVAL_VARIANTS), "residual_window": RESIDUAL_WINDOW, "residual_min": RESIDUAL_MIN,
+            "abstain_policies": list(ABSTAIN_POLICIES),
+            "folds": {"first_test": FIRST_TEST, "test_months": TEST_MONTHS, "lock_months": LOCK_MONTHS,
+                      "min_train_rows": MIN_TRAIN_ROWS, "min_test_rows": MIN_TEST_ROWS, "inner_blocks": INNER_BLOCKS},
+            "bootstrap_b": 400 if mode == "quick" else 2000, "seed": SEED}
+
+
+def run_m05(target, mode, storage, results_dir, state, run_notebook_fn=None):
+    inputs = None
+    for horizon in HORIZONS:
+        unit = f"{target}:h{horizon}"
+        if state.is_done(unit) and artifacts_intact(state, unit, target, horizon):
+            print(f"  이미 완료된 단위 건너뜀: {unit}")
+            continue
+        if inputs is None:
+            inputs = load_inputs(target, mode, storage, run_notebook_fn)
+            record_inputs(state, inputs)
+        reg, cols = price_design(inputs, horizon)
+        sam = inputs["sam"]
+        folds, lock_start = evaluation_folds(reg.index, sam.index, horizon)
+        dev = [f for f in folds if f["name"].startswith("dev") and not f.get("excluded")]
+        if not dev:
+            raise SystemExit(f"{unit}: 개발 폴드가 없습니다.")
+        violations = purge_check(reg.index, sam.index, horizon, [(f["train"], f["test"]) for f in dev]
+                                 + [(i["train"], i["test"]) for f in dev for i in f["inner"] if not i.get("excluded")])
+        X = reg[cols].to_numpy(dtype=np.float32)
+        y = reg["future_return"].to_numpy(dtype=float)
+        sigma = reg["sigma_simple"].to_numpy(dtype=float)
+        sigma_har = reg["sigma_har"].to_numpy(dtype=float)
+        z = y / np.maximum(sigma, 1e-6)
+        template = fu.make_price_model()
+        pos, mature = maturity_positions(reg.index, sam.index, horizon)
+        target_dates = pd.DatetimeIndex(sam.index[mature])
+
+        history = pd.DataFrame(columns=["target_date", "residual", "sigma"])
+        records = []
+        for f in dev:
+            raw = fit_predict(template, X, z, sigma, f["train"], f["test"])
+            inner_pred, inner_y, inner_idx = [], [], []
+            for block in f["inner"]:
+                if block.get("excluded"):
+                    continue
+                p_ = fit_predict(template, X, z, sigma, block["train"], block["test"])
+                inner_pred.append(p_); inner_y.append(y[block["test"]]); inner_idx.append(block["test"])
+            slope = inner_slope(np.concatenate(inner_pred), np.concatenate(inner_y)) if inner_pred else 0.
+            wins, n_inner = gate_wins(inner_pred, inner_y, slope)
+            center = slope * raw
+            inner_all = np.concatenate(inner_idx) if inner_idx else np.array([], dtype=int)
+            inner_resid = np.concatenate(inner_y) - slope * np.concatenate(inner_pred) if inner_pred else np.array([])
+            q_simple = band_quantile(inner_resid, sigma[inner_all]) if len(inner_resid) else np.nan
+            q_har = band_quantile(inner_resid, sigma_har[inner_all]) if len(inner_resid) else np.nan
+            recent = matured_residuals(history, f["test_start"])
+            if recent is not None and len(recent) >= RESIDUAL_MIN:
+                q_resid, resid_source, n_resid = band_quantile(recent["residual"], recent["sigma"]), "resid252", int(len(recent))
+            else:
+                q_resid, resid_source, n_resid = q_simple, "fallback_inner_q", int(0 if recent is None else len(recent))
+            records.append({"fold": f["name"], "test": f["test"], "raw": raw, "center": center, "slope": slope,
+                            "wins": wins, "n_inner": n_inner, "q_simple": q_simple, "q_har": q_har, "q_resid": q_resid,
+                            "resid_source": resid_source, "n_resid": n_resid, "test_start": f["test_start"]})
+            # 이 폴드의 예측은 만기가 도래한 뒤에만 다음 폴드의 잔차 창에 들어간다(matured_residuals 가 날짜로 거른다)
+            history = pd.concat([history, pd.DataFrame({"target_date": target_dates[f["test"]], "residual": y[f["test"]] - center,
+                                                        "sigma": sigma[f["test"]]})], ignore_index=True)
+
+        test_idx = np.concatenate([r["test"] for r in records])
+        y_dev, dates_dev = y[test_idx], reg.index[test_idx]
+        center_dev = np.concatenate([r["center"] for r in records])
+        s_dev, sh_dev = sigma[test_idx], sigma_har[test_idx]
+        halfwidths = {
+            "simple_inner_q": np.concatenate([r["q_simple"] * sigma[r["test"]] for r in records]),
+            "har_inner_q": np.concatenate([r["q_har"] * sigma_har[r["test"]] for r in records]),
+            "simple_resid252": np.concatenate([r["q_resid"] * sigma[r["test"]] for r in records]),
+        }
+        b = 400 if mode == "quick" else 2000
+        block = max(20, 2 * horizon)
+        regime_cut = np.quantile(s_dev, [1 / 3, 2 / 3])
+        regime = np.where(s_dev <= regime_cut[0], "low", np.where(s_dev <= regime_cut[1], "mid", "high"))
+
+        def ci_pair(diff_fn, label, metric):
+            lo_m, hi_m = month_block_ci(dates_dev, diff_fn, b=b)
+            lo_c, hi_c = contiguous_block_ci(len(y_dev), diff_fn, block, b=b)
+            base = {"target": target, "horizon": horizon, "comparison": label, "metric": metric,
+                    "delta": float(diff_fn(np.arange(len(y_dev)))), "common_n": int(len(y_dev)), "calibrated": True}
+            return [dict(base, ci_lo=lo_m, ci_hi=hi_m, block="month"), dict(base, ci_lo=lo_c, ci_hi=hi_c, block=f"contiguous_{block}")]
+
+        metrics, comparisons = [], []
+        results = {}
+        for name, hw in halfwidths.items():
+            hit, score, width = coverage_and_score(y_dev, center_dev, hw)
+            results[name] = (hit, score, width)
+            row = {"target": target, "horizon": horizon, "candidate": name, "fold": "dev_all", "evaluation_stage": "dev_common",
+                   "n": int(len(y_dev)), "interval_score": float(score.mean()), "interval_coverage": float(hit.mean()),
+                   "mean_width": float(width.mean()), "mean_width_over_sigma": float((width / s_dev).mean())}
+            for rg in ("low", "mid", "high"):
+                mk = regime == rg
+                row[f"coverage_{rg}"] = float(hit[mk].mean()) if mk.any() else ""
+                row[f"width_{rg}"] = float(width[mk].mean()) if mk.any() else ""
+            metrics.append(row)
+            for r in records:
+                te = r["test"]; q = {"simple_inner_q": r["q_simple"], "har_inner_q": r["q_har"], "simple_resid252": r["q_resid"]}[name]
+                sg = sigma_har[te] if name == "har_inner_q" else sigma[te]
+                h_, sc_, w_ = coverage_and_score(y[te], r["center"], q * sg)
+                metrics.append({"target": target, "horizon": horizon, "candidate": name, "fold": r["fold"], "evaluation_stage": "dev_fold",
+                                "n": int(len(te)), "interval_score": float(sc_.mean()), "interval_coverage": float(h_.mean()),
+                                "mean_width": float(w_.mean()), "q": q, "resid_source": r["resid_source"] if name == "simple_resid252" else "",
+                                "n_resid": r["n_resid"] if name == "simple_resid252" else ""})
+            if name != "simple_inner_q":
+                ref_hit, ref_score, ref_width = results["simple_inner_q"]
+                comparisons += ci_pair(lambda i, s_=score, rs=ref_score: float((s_[i] - rs[i]).mean()), f"{name} - simple_inner_q", "interval_score")
+                comparisons += ci_pair(lambda i, h_=hit, rh=ref_hit: float(h_[i].mean() - rh[i].mean()), f"{name} - simple_inner_q", "interval_coverage")
+                comparisons += ci_pair(lambda i, w_=width, rw=ref_width: float((w_[i] - rw[i]).mean()), f"{name} - simple_inner_q", "mean_width")
+        for name, (hit, score, width) in results.items():
+            comparisons += ci_pair(lambda i, h_=hit: float(h_[i].mean() - COVERAGE), f"{name} - target_coverage", "interval_coverage")
+
+        # 보류 정책(가격 중심값). 방향 확률과는 별개다.
+        zero = np.abs(y_dev)
+        policies = {}
+        for pol in ABSTAIN_POLICIES:
+            issued = np.concatenate([np.full(len(r["test"]),
+                                             {"gate_2of3": r["wins"] >= 2 and r["n_inner"] >= 2, "gate_3of3": r["wins"] == r["n_inner"] and r["n_inner"] >= 2,
+                                              "always_issue": True, "never_issue": False}[pol]) for r in records])
+            centre = np.where(issued, center_dev, 0.)
+            policies[pol] = (issued, centre)
+            err = np.abs(y_dev - centre)
+            metrics.append({"target": target, "horizon": horizon, "candidate": pol, "fold": "dev_all", "evaluation_stage": "abstention",
+                            "n": int(len(y_dev)), "mae_issued_center": float(err.mean()), "mae_hold": float(zero.mean()),
+                            "issuance_rate": float(issued.mean()), "n_issued": int(issued.sum()), "n_held": int((~issued).sum()),
+                            "mae_on_issued_days": float(err[issued].mean()) if issued.any() else "",
+                            "hold_mae_on_issued_days": float(zero[issued].mean()) if issued.any() else ""})
+            comparisons += ci_pair(lambda i, e=err: float((e[i] - zero[i]).mean()), f"{pol} - hold_current", "mae_return_issued")
+
+        raw_dir = Path(storage) / target
+        raw_dir.mkdir(parents=True, exist_ok=True)
+        oof_frame = pd.DataFrame({"prediction_date": dates_dev, "target_date": target_dates[test_idx], "y": y_dev, "center": center_dev,
+                                  "sigma": s_dev, "sigma_har": sh_dev, **{f"halfwidth_{n}": hw for n, hw in halfwidths.items()},
+                                  **{f"issued_{p_}": v[0] for p_, v in policies.items()}})
+        oof_path = raw_dir / f"M05_h{horizon}_{mode}_oof.csv"
+        oof_frame.to_csv(oof_path, index=False, lineterminator="\n")
+
+        def month(label, metric):
+            return next(c for c in comparisons if c["comparison"] == label and c["metric"] == metric and c["block"] == "month")
+        resid = month("simple_resid252 - simple_inner_q", "interval_score")
+        har = month("har_inner_q - simple_inner_q", "interval_score")
+        summary = {
+            "target": target, "horizon": horizon, "n_dev_rows": int(len(y_dev)), "dev_folds": [r["fold"] for r in records],
+            "lock_start": str(lock_start.date()), "purge_violations": violations,
+            "coverage": {n: float(v[0].mean()) for n, v in results.items()}, "interval_score": {n: float(v[1].mean()) for n, v in results.items()},
+            "mean_width": {n: float(v[2].mean()) for n, v in results.items()},
+            "regime_cuts_sigma": [float(regime_cut[0]), float(regime_cut[1])],
+            "residual_window": [{"fold": r["fold"], "source": r["resid_source"], "n": r["n_resid"], "q": r["q_resid"], "q_inner": r["q_simple"]} for r in records],
+            "resid252_vs_inner_score_month_ci": [resid["delta"], resid["ci_lo"], resid["ci_hi"]],
+            "har_vs_inner_score_month_ci": [har["delta"], har["ci_lo"], har["ci_hi"]],
+            "abstention": {p_: {"issuance_rate": float(v[0].mean()), "delta_vs_hold_month": [month(f"{p_} - hold_current", "mae_return_issued")[k] for k in ("delta", "ci_lo", "ci_hi")]}
+                           for p_, v in policies.items()},
+            "verdict_interval": ("잔차 보정 구간이 유의하게 낫다(구간 점수)" if np.isfinite(resid["ci_hi"]) and resid["ci_hi"] < 0 else
+                                 "잔차 보정 구간 우위 미확인 → 현행 구간 유지"),
+            "verdict_har": ("HAR 구간이 유의하게 낫다(구간 점수)" if np.isfinite(har["ci_hi"]) and har["ci_hi"] < 0 else "HAR 우위 미확인(자동 채택 없음)"),
+            "oof_file": str(oof_path), "oof_sha256": file_sha256(oof_path),
+        }
+        write_json(state.run_dir / f"summary_{target}_h{horizon}.json", summary)
+        save_unit_rows(state, target, horizon, metrics, comparisons)
+        state.mark(unit, {"oof_sha256": summary["oof_sha256"], "oof_file": summary["oof_file"], "purge_violations": len(violations),
+                          "verdict_interval": summary["verdict_interval"], "verdict_har": summary["verdict_har"]})
+        print(f"  {unit}: 포함률 {{{', '.join(f'{k} {v:.2f}' for k, v in summary['coverage'].items())}}} · "
+              f"잔차252−내부q 점수 {resid['delta']:+.5f} [{resid['ci_lo']:+.5f}, {resid['ci_hi']:+.5f}] · HAR−내부q {har['delta']:+.5f} · "
+              f"보류 {{{', '.join(f'{k} {v['issuance_rate']:.2f}' for k, v in summary['abstention'].items())}}}")
+    return collect_rows(state, target)
+
+
+TASK_RUNNERS = {"M00": run_m00, "M01": run_m01, "M02": run_m02, "M03": run_m03, "M04": run_m04, "M05": run_m05}
+TASK_CONFIGS = {"M00": m00_config, "M01": m01_config, "M02": m02_config, "M03": m03_config, "M04": m04_config, "M05": m05_config}
 
 
 def execute(task, target, mode, storage, results_dir, resume, run_notebook_fn=None):

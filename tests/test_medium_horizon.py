@@ -449,6 +449,93 @@ class DirectionModelTests(unittest.TestCase):
         self.assertFalse(rows["log_loss"].isna().any())
 
 
+class IntervalAndAbstentionTests(unittest.TestCase):
+    """M05: 잔차 창은 만기 도래분만·과거만, 표본 부족 시 fallback, 포함률·구간 점수·보류 정책."""
+
+    def test_residual_window_uses_only_matured_forecasts_before_the_fold(self):
+        hist = pd.DataFrame({"target_date": pd.to_datetime(["2022-01-03", "2022-06-30", "2022-07-01", "2022-07-15"]),
+                             "residual": [.01, .02, .03, .04], "sigma": [.1, .1, .1, .1]})
+        got = mh.matured_residuals(hist, "2022-07-01", window=252)
+        self.assertEqual(got["residual"].tolist(), [.01, .02])
+        self.assertEqual(mh.matured_residuals(hist, "2022-07-01", window=1)["residual"].tolist(), [.02])
+        # 미래 잔차를 바꿔도 과거 구간의 q 는 그대로
+        hist2 = hist.copy(); hist2.loc[2:, "residual"] = 9.
+        self.assertEqual(mh.band_quantile(mh.matured_residuals(hist, "2022-07-01")["residual"], [.1, .1]),
+                         mh.band_quantile(mh.matured_residuals(hist2, "2022-07-01")["residual"], [.1, .1]))
+
+    def test_band_quantile_scales_by_sigma(self):
+        q = mh.band_quantile(np.array([.01, .02, .03, .04, .05]), np.array([.1] * 5), coverage=.8)
+        self.assertAlmostEqual(q, np.quantile([.1, .2, .3, .4, .5], .8))
+
+    def test_coverage_and_score(self):
+        y = np.array([0., .05, -.05])
+        hit, score, width = mh.coverage_and_score(y, np.zeros(3), np.array([.01, .1, .01]))
+        self.assertEqual(hit.tolist(), [True, True, False])
+        self.assertTrue(np.allclose(width, [.02, .2, .02]))
+        self.assertAlmostEqual(float(score[2]), .02 + (2 / .2) * .04)
+
+    def test_gate_wins_counts_blocks(self):
+        y = [np.array([.01, -.02]), np.array([.02, .01]), np.array([-.03, .01])]
+        self.assertEqual(mh.gate_wins([yy * .5 for yy in y], y, 1.0), (3, 3))
+        self.assertEqual(mh.gate_wins([-yy for yy in y], y, 1.0), (0, 3))
+
+    def test_m05_runs_on_synthetic_inputs_and_falls_back_when_residuals_are_few(self):
+        tmp = Path(tempfile.mkdtemp())
+        storage, results = tmp / "runs", tmp / "results"
+        cache = storage / "samsung" / "data_cache"; cache.mkdir(parents=True)
+        (cache / "target.parquet").write_bytes(b"snapshot-v1")
+        ns = synthetic_namespace(n=2000)
+        state = mh.execute("M05", "samsung", "quick", storage, results, False, run_notebook_fn=lambda *a, **k: {"samsung": ns})
+        summary = __import__("json").loads((state.run_dir / "summary_samsung_h5.json").read_text(encoding="utf-8"))
+        self.assertEqual(summary["purge_violations"], [])
+        sources = [r["source"] for r in summary["residual_window"]]
+        self.assertEqual(sources[0], "fallback_inner_q", "첫 폴드는 확정 잔차가 없어 내부 q 로 물러나야 한다")
+        self.assertIn("resid252", sources, "뒤 폴드는 확정 잔차 252개를 써야 한다")
+        self.assertEqual(set(summary["abstention"]), set(mh.ABSTAIN_POLICIES))
+        self.assertEqual(summary["abstention"]["never_issue"]["issuance_rate"], 0.)
+        self.assertEqual(summary["abstention"]["always_issue"]["issuance_rate"], 1.)
+        rows = pd.read_csv(state.run_dir / "metrics.csv")
+        self.assertTrue((rows[rows.evaluation_stage == "dev_common"]["interval_coverage"].between(0, 1)).all())
+
+
+class IssuanceRateTests(unittest.TestCase):
+    """보고서에 병기하는 발행률: 예측일당 첫 사전 예측 행만, 최근 N 개."""
+
+    def ledger(self):
+        rows = []
+        for i, day in enumerate(pd.bdate_range("2026-06-01", periods=70)):
+            d = day.date().isoformat()
+            rows.append({"kind": "price", "horizon_days": 5, "prediction_date": d, "signal": "있음" if i % 4 == 0 else "없음",
+                         "is_prospective": True, "created_at_utc": f"{d}T21:30:00"})
+            rows.append({"kind": "price", "horizon_days": 5, "prediction_date": d, "signal": "있음",
+                         "is_prospective": False, "created_at_utc": f"{d}T23:30:00"})       # 늦은 재실행 — 세지 않는다
+            rows.append({"kind": "price", "horizon_days": 20, "prediction_date": d, "signal": "없음",
+                         "is_prospective": True, "created_at_utc": f"{d}T21:30:00"})
+            rows.append({"kind": "direction", "horizon_days": 1, "prediction_date": d, "signal": "", "is_prospective": True,
+                         "created_at_utc": f"{d}T21:30:00"})
+        return pd.DataFrame(rows)
+
+    def test_counts_first_prospective_row_per_day_over_the_last_n(self):
+        s = fu.price_issuance_summary(self.ledger(), 5, last_n=60)
+        self.assertEqual(s["n"], 60)
+        self.assertEqual(s["issued"], sum(1 for i in range(10, 70) if i % 4 == 0))
+        self.assertAlmostEqual(s["rate"], s["issued"] / 60)
+        self.assertEqual(fu.price_issuance_summary(self.ledger(), 20)["issued"], 0)
+
+    def test_missing_ledger_or_columns_gives_zero_rows(self):
+        self.assertEqual(fu.price_issuance_summary(None, 5)["n"], 0)
+        self.assertEqual(fu.price_issuance_summary(pd.DataFrame({"x": [1]}), 5)["n"], 0)
+        self.assertTrue(np.isnan(fu.price_issuance_summary(pd.DataFrame(), 5)["rate"]))
+
+    def test_notebook_report_shows_the_issuance_rate(self):
+        import json
+        nb = json.loads((ROOT / "samsung_direction_model_colab.ipynb").read_text(encoding="utf-8"))
+        code = "\n".join("".join(c["source"]) for c in nb["cells"] if c["cell_type"] == "code")
+        self.assertIn("price_issuance_summary(_ledger_for_rate", code)
+        self.assertIn("최근 사전 예측 발행률", code)
+        self.assertIn("예측이 아니라", code)
+
+
 class FakeNotebook:
     def __init__(self, fail=False):
         self.calls = 0

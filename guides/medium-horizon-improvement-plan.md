@@ -243,8 +243,9 @@ quick는 동작 검증이며 성능 채택 근거로 사용하지 않는다. 구
 | 날짜 | ID | 변경/결과 | 검증 | 다음 행동 |
 | --- | --- | --- | --- | --- |
 | 2026-09-10 | PLAN | 본 계획·README 링크 작성 | 문서 경로·체크리스트·diff 확인. 모델 실험 미실행 | M00 기준선 진단 |
+| 2026-09-10 | M00 (진행 중) | `tools/run_medium_horizon.py`·`tests/test_medium_horizon.py` 작성. samsung quick 실행: 노트북 통계와 9개 값 동등(raw/zero/shrunk MAE, slope, band_q, 포함률, n) | 테스트 16개 통과. quick 결과 `experiments/medium_horizon/M00/20260910T072100Z_samsung_m00` | full 실행(samsung→sk_hynix) 완료 후 decision.md·체크리스트 |
 
-- 현재 작업: 없음. 다음 실행은 M00.
+- 현재 작업: M00 full 실행 중(`python tools/run_medium_horizon.py --task M00 --target <t> --mode full --resume`, 로그 `runs/medium_horizon/M00_<t>_full.log`). 고정 스냅샷은 `runs/model_improvement/P00/<t>/{data_cache,macro_cache,macro_fallback,macro_snapshots}` 를 `runs/medium_horizon/<t>/` 로 복사한 것(2026-09-09 마지막 봉). 중단됐다면 같은 명령을 다시 실행하면 완료 단위를 재사용한다.
 - 완료: 0/9. 보류: 없음. 실제 후보 채택: 없음.
 - 먼저 읽을 파일: 본 문서, 노트북 `make_price_model`/`price_forecast_variants` 셀, forecast_utils.py의 가격 보정·원장 함수.
 - 미해결: 네 조합의 최신 full 지표·원장 표본 수·고정 스냅샷 위치를 M00에서 확인해야 한다.

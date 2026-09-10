@@ -1,0 +1,9 @@
+target,horizon,comparison,metric,delta,ci_lo,ci_hi,common_n,block,calibrated
+samsung,5,current_ridge_raw - hold_current,mae_return,0.0006727698701404269,-0.0009311095606796564,0.002740575145109494,428,month,False
+samsung,5,current_ridge_raw - hold_current,mae_return,0.0006727698701404269,-0.0018593402265160682,0.0022717509024417983,428,contiguous_20,False
+samsung,5,current_ridge_calibrated - hold_current,mae_return,0.0,0.0,0.0,428,month,True
+samsung,5,current_ridge_calibrated - hold_current,mae_return,0.0,0.0,0.0,428,contiguous_20,True
+samsung,20,current_ridge_raw - hold_current,mae_return,0.004680769492781639,-0.00426967355465651,0.0160656510805379,422,month,False
+samsung,20,current_ridge_raw - hold_current,mae_return,0.004680769492781639,-0.007349601143610618,0.012855732487585599,422,contiguous_40,False
+samsung,20,current_ridge_calibrated - hold_current,mae_return,0.0,0.0,0.0,422,month,True
+samsung,20,current_ridge_calibrated - hold_current,mae_return,0.0,0.0,0.0,422,contiguous_40,True

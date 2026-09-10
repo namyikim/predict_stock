@@ -1,0 +1,25 @@
+{
+  "completed_units": [
+    "samsung:h5",
+    "samsung:h20"
+  ],
+  "results": {
+    "samsung:h5": {
+      "equivalent": true,
+      "failure_types": [
+        "신호 부족(가설: raw 예측이 현재가 유지를 이기지 못함)"
+      ],
+      "beats_baseline": false,
+      "oof_sha256": "cc0473fb7d07e791a7f7956505ea081cc12c13ce161fc9301c5e7e1c4567d4ca"
+    },
+    "samsung:h20": {
+      "equivalent": true,
+      "failure_types": [
+        "신호 부족(가설: raw 예측이 현재가 유지를 이기지 못함)"
+      ],
+      "beats_baseline": false,
+      "oof_sha256": "e5bf2600396b35cc582a647a78f3b3b07c3cab6bb8ddbaa9193db8157e9b95ac"
+    }
+  },
+  "updated_at_utc": "2026-09-10T07:24:09.952781+00:00"
+}

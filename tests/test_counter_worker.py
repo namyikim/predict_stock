@@ -72,11 +72,12 @@ const closeTime = Date.parse('2026-09-10T07:10:00Z');
 await worker.default.scheduled({ scheduledTime: closeTime, cron: '10 7 * * 1-5' }, { DB });
 const withoutToken = fetches.length;
 await worker.default.scheduled({ scheduledTime: closeTime, cron: '10 7 * * 1-5' }, { DB, GH_DISPATCH_TOKEN: 'tok-secret' });
+await worker.default.scheduled({ scheduledTime: closeTime, cron: '10 7 * * 1-5' }, { DB, GITHUB_DISPATCH_TOKEN: 'tok-secret' });
 await worker.default.scheduled({ scheduledTime: Date.parse('2026-09-10T03:00:00Z'), cron: '0 3 * * *' }, { DB, GH_DISPATCH_TOKEN: 'tok-secret' });
 process.stdout.write(JSON.stringify({ withoutToken, fetches, deletes, logs }));
 """)
         self.assertEqual(result["withoutToken"], 0, "토큰이 없으면 GitHub를 부르지 않는다")
-        self.assertEqual(len(result["fetches"]), 1)
+        self.assertEqual(len(result["fetches"]), 2, "GH_ / GITHUB_ 어느 이름이든 읽는다")
         call = result["fetches"][0]
         self.assertTrue(call["url"].endswith("/repos/namyikim/predict_stock/actions/workflows/afternoon-report.yml/dispatches"))
         self.assertEqual(call["method"], "POST")

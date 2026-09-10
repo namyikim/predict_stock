@@ -1,0 +1,156 @@
+{
+  "samsung": {
+    "timing": {
+      "fold": 26.7,
+      "1": 245.4,
+      "5": 78.3,
+      "21": 41.3
+    },
+    "actual_trainings": {
+      "fold": 12,
+      "1": 2724,
+      "5": 554,
+      "21": 138
+    },
+    "comparisons": [
+      {
+        "target": "samsung",
+        "comparison": "매 1거래일 − 폴드당 1회",
+        "metric": "balanced_accuracy",
+        "delta": -0.0036933967481216357,
+        "ci_low": -0.016402592715284926,
+        "ci_high": 0.009416194239010758,
+        "common_n": 1362,
+        "verdict": "동률(CI가 0 포함)"
+      },
+      {
+        "target": "samsung",
+        "comparison": "매 1거래일 − 폴드당 1회",
+        "metric": "log_loss",
+        "delta": -0.0030393895069129595,
+        "ci_low": -0.008277950458525817,
+        "ci_high": 0.0015036839058338227,
+        "common_n": 1362,
+        "verdict": "동률(CI가 0 포함)"
+      },
+      {
+        "target": "samsung",
+        "comparison": "매 5거래일 − 폴드당 1회",
+        "metric": "balanced_accuracy",
+        "delta": -0.006792976926051075,
+        "ci_low": -0.020277290771700155,
+        "ci_high": 0.007374990700886418,
+        "common_n": 1362,
+        "verdict": "동률(CI가 0 포함)"
+      },
+      {
+        "target": "samsung",
+        "comparison": "매 5거래일 − 폴드당 1회",
+        "metric": "log_loss",
+        "delta": -0.003689578331215193,
+        "ci_low": -0.008218861147046392,
+        "ci_high": 0.0003491491492645331,
+        "common_n": 1362,
+        "verdict": "동률(CI가 0 포함)"
+      },
+      {
+        "target": "samsung",
+        "comparison": "매 21거래일 − 폴드당 1회",
+        "metric": "balanced_accuracy",
+        "delta": -0.0063932653271768225,
+        "ci_low": -0.018047565886007887,
+        "ci_high": 0.004895604546772367,
+        "common_n": 1362,
+        "verdict": "동률(CI가 0 포함)"
+      },
+      {
+        "target": "samsung",
+        "comparison": "매 21거래일 − 폴드당 1회",
+        "metric": "log_loss",
+        "delta": -0.0015749079556959256,
+        "ci_low": -0.00529988822988024,
+        "ci_high": 0.0018991257948535768,
+        "common_n": 1362,
+        "verdict": "동률(CI가 0 포함)"
+      }
+    ],
+    "note": "설정(params·온도)은 폴드 시작에 고정. 재학습은 추정기 재적합만."
+  },
+  "sk_hynix": {
+    "timing": {
+      "fold": 26.0,
+      "1": 207.9,
+      "5": 62.5,
+      "21": 34.9
+    },
+    "actual_trainings": {
+      "fold": 12,
+      "1": 2714,
+      "5": 552,
+      "21": 136
+    },
+    "comparisons": [
+      {
+        "target": "sk_hynix",
+        "comparison": "매 1거래일 − 폴드당 1회",
+        "metric": "balanced_accuracy",
+        "delta": 0.004744337006619859,
+        "ci_low": -0.010631935210419063,
+        "ci_high": 0.020307750712121365,
+        "common_n": 1357,
+        "verdict": "동률(CI가 0 포함)"
+      },
+      {
+        "target": "sk_hynix",
+        "comparison": "매 1거래일 − 폴드당 1회",
+        "metric": "log_loss",
+        "delta": 0.0014628085711065886,
+        "ci_low": -0.003066988301471113,
+        "ci_high": 0.005490459810252212,
+        "common_n": 1357,
+        "verdict": "동률(CI가 0 포함)"
+      },
+      {
+        "target": "sk_hynix",
+        "comparison": "매 5거래일 − 폴드당 1회",
+        "metric": "balanced_accuracy",
+        "delta": -0.00026848945212476494,
+        "ci_low": -0.0137713198330534,
+        "ci_high": 0.013644181924151575,
+        "common_n": 1357,
+        "verdict": "동률(CI가 0 포함)"
+      },
+      {
+        "target": "sk_hynix",
+        "comparison": "매 5거래일 − 폴드당 1회",
+        "metric": "log_loss",
+        "delta": 0.0007163808761156965,
+        "ci_low": -0.003550910787472611,
+        "ci_high": 0.004420371875747486,
+        "common_n": 1357,
+        "verdict": "동률(CI가 0 포함)"
+      },
+      {
+        "target": "sk_hynix",
+        "comparison": "매 21거래일 − 폴드당 1회",
+        "metric": "balanced_accuracy",
+        "delta": -0.002802085634142415,
+        "ci_low": -0.016878678295743237,
+        "ci_high": 0.011678538419701932,
+        "common_n": 1357,
+        "verdict": "동률(CI가 0 포함)"
+      },
+      {
+        "target": "sk_hynix",
+        "comparison": "매 21거래일 − 폴드당 1회",
+        "metric": "log_loss",
+        "delta": 0.004310212217384368,
+        "ci_low": 0.00039077798271880133,
+        "ci_high": 0.007798170272572326,
+        "common_n": 1357,
+        "verdict": "후보가 유의하게 열위"
+      }
+    ],
+    "note": "설정(params·온도)은 폴드 시작에 고정. 재학습은 추정기 재적합만."
+  }
+}

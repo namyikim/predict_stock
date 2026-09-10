@@ -71,7 +71,7 @@
 | P03 | [x] | 기존 특징군의 추가 가치 비교 | P02 | CPU/Colab | 완료: 채택 없음. 월별 지표는 두 종목 모두 확률 품질 유의 열위 |
 | P04 | [x] | 학습 기간 비교 | P03 | CPU/Colab | 완료: 5년 유지. sk_hynix expanding이 외부에서 유의 우위지만 내부 선택이 못 고름 → P15 후보 |
 | P05 | [x] | 최근 표본 가중 학습 | P04 | CPU/Colab | 완료: 채택 없음. 반감기 짧을수록 유의 열위, 504도 동률 |
-| P06 | [ ] | 재학습 주기 비교 | P05 | CPU/Colab | 미실행 |
+| P06 | [x] | 재학습 주기 비교 | P05 | CPU/Colab | 완료: 채택 없음. 전부 동률, sk_hynix 21일은 유의 열위 |
 | P07 | [ ] | 소수 모델 앙상블 비교 | P06 | CPU/Colab | 미실행 |
 | P08 | [ ] | 확률 신뢰도·예측 보류 평가 | P07 | CPU | 미실행 |
 | P09 | [ ] | 갭·장중 별도 학습 비교 | P08 | CPU/Colab | 미실행 |
@@ -381,11 +381,25 @@ np.testing.assert_allclose(
 **파일:** 러너 P06 등록, 노트북/러너의 학습 호출 경계, 생성 tests/test_retraining_schedule.py.
 **입출력:** P05 후보 → 1·5·21 거래일 재학습 주기 비교.
 
-- [ ] 달력일 대신 실제 입력 거래일 인덱스로 재학습 시점을 정하는 테스트를 작성한다.
-- [ ] 재학습하지 않는 날에는 기존 모델·스케일러·온도 값을 고정하고 새로 가용한 특징으로만 예측한다.
-- [ ] 모델 버전·trained_until·실제 학습 횟수를 날짜별 기록한다.
-- [ ] 같은 날짜를 평가하면서 주기별 성능과 총 실행 시간을 비교한다. 주기는 내부 검증에서 선택한다.
-- [ ] 하루 오답을 이유로 즉시 자동 튜닝하지 않는 동작과 재개 후 주기 유지 여부를 검증한다.
+- [x] 달력일 대신 실제 입력 거래일 인덱스로 재학습 시점을 정하는 테스트를 작성한다. → `retrain_positions`, `test_positions_count_trading_days_not_calendar_days`
+- [x] 재학습하지 않는 날에는 기존 모델·스케일러·온도 값을 고정하고 새로 가용한 특징으로만 예측한다. → `ScheduledPredictor`: 설정은 폴드 시작 1회, 주기에는 추정기 재적합만. `test_hyperparameters_are_frozen_at_fold_start`, `test_no_retrain_day_reuses_the_model`
+- [x] 모델 버전·trained_until·실제 학습 횟수를 날짜별 기록한다. → 예측 로그에 position/date/retrained/model_version/trained_until. `test_trained_until_never_reaches_the_prediction_day`
+- [x] 같은 날짜를 평가하면서 주기별 성능과 총 실행 시간을 비교한다. → `metrics.csv`에 주기별 실제 학습 횟수·초. 주기 선택은 결과가 전부 동률/열위라 선택 자체가 성립하지 않음(내부 검증으로 골라도 기준선을 이기지 못함)
+- [x] 하루 오답을 이유로 즉시 자동 튜닝하지 않는 동작과 재개 후 주기 유지 여부를 검증한다. → `test_a_wrong_day_does_not_trigger_retraining`, `test_resume_reproduces_the_same_predictions`
+
+#### 결과 (2026-09-10, `experiments/model_improvement/P06/20260910T0400Z_retrain_schedule/`)
+
+후보 − 폴드당 1회, log_loss는 음수가 개선.
+
+| 종목 | 매 1거래일 | 매 5거래일 | 매 21거래일 |
+| --- | --- | --- | --- |
+| samsung | -0.00304 [-0.00828, +0.00150] 동률 | -0.00369 [-0.00822, +0.00035] 동률 | -0.00157 [-0.00530, +0.00190] 동률 |
+| sk_hynix | +0.00146 [-0.00307, +0.00549] 동률 | +0.00072 [-0.00355, +0.00442] 동률 | +0.00431 [+0.00039, +0.00780] **열위** |
+
+balanced_accuracy는 전부 동률. 비용은 일별 재학습이 2,724회·245초로 기준선(12회·27초)의 9배.
+
+**채택 없음. 폴드당 1회 유지.** 두 종목 방향이 다르고 어느 쪽도 개선이 없다. P04·P05와 일관되게
+최근성에 투자한 계산이 돌아오지 않는다.
 
 **완료 증거:** 휴일·재개 일정 테스트, 주기별 성능/시간 표.
 
@@ -553,6 +567,7 @@ P00 이후에는 작업 ID만 바꿔 요청한다. Colab 실행이 필요한 경
 | --- | --- | --- | --- | --- |
 | 2026-09-09 | PLAN | 이 문서 및 README 링크 | 저장소 문서·핵심 함수·기존 Transformer 결과 확인 | 계획 생성. P00부터 시작 |
 | 2026-09-10 | P00 사전 수정 | `tools/run_notebook.py`, `tests/test_run_notebook.py` | 8개 오프라인 회귀 테스트 통과 | 기존 CLI가 IPython 히스토리 부재로 둘째 종목을 건너뛰던 결함 수정. P00 전체 완료 아님 |
+| 2026-09-10 | P06 | `experiments/model_improvement/P06/20260910T0400Z_retrain_schedule/`, `tests/test_retraining_schedule.py` | 13개 통과, 두 종목 주기 3종 재학습(일별 2,724회 포함) | **완료.** 채택 없음. 전부 동률, sk_hynix 21일 유의 열위 |
 | 2026-09-10 | P05 | `experiments/model_improvement/P05/20260910T0300Z_recency_weights/`, `forecast_utils.recency_weights`, `fit_direction_model(sample_weight)` | `discover -p test_recency_weighting.py` 18개, 기존 forecast_improvements 21·notebook_structure 36 통과 | **완료.** 채택 없음. 반감기 짧을수록 유의 열위 |
 | 2026-09-10 | P04 | `experiments/model_improvement/P04/20260910T0200Z_training_windows/` | `discover -p test_training_window.py` 11개 통과, 두 종목 12폴드 재학습 | **완료.** 5년 유지. 3y는 두 종목 유의 열위, 2y는 표본 부족 제외, sk_hynix expanding은 유의 우위지만 내부 선택이 못 골라 P15 후보로 등록 |
 | 2026-09-10 | P03 | `experiments/model_improvement/P03/20260910T0100Z_feature_groups/` | 비교 30행, 평가일 1,362/1,357, 제외 0 | **완료.** 채택 없음. 월별 지표는 두 종목 모두 확률 품질 유의 열위, 나머지는 동률 또는 한 종목 열위 |
@@ -561,9 +576,9 @@ P00 이후에는 작업 ID만 바꿔 요청한다. Colab 실행이 필요한 경
 | 2026-09-10 | P01 | `tools/run_model_improvement.py`, `tests/test_model_improvement_runner.py` | `discover -p test_model_improvement_runner.py` 15개 통과 | 완료. 재개·해시 격리·원자적 쓰기·발행 차단 검증. 구현 중 결함 2건(재개 시 반환형 불일치, 같은 초 run_id 충돌) 발견·수정 |
 | 2026-09-10 | P00 quick | `experiments/model_improvement/P00/20260910T0000Z_baseline_quick/` | 두 종목 46셀 무오류 완료, 평가 276일 | 기준선 계약 기록·스냅샷 고정 완료. 기존 캐시는 자산 키 불일치로 폐기. full 평가 실행 중 |
 
-- 현재 작업: P06 — 재학습 주기 비교(코드·13개 테스트 완료, 실험 실행 중)
-- 완료한 신규 작업: 6/16 (P00~P05)
-- 다음 작업: P06 결과 기록 → P07
+- 현재 작업: P07 — 소수 모델 앙상블(코드·13개 테스트 완료, 실험 실행 중)
+- 완료한 신규 작업: 7/16 (P00~P06)
+- 다음 작업: P07 결과 기록 → P08 → P09
 - P15로 넘긴 후보: sk_hynix `expanding` 학습 창 (P04에서 외부 유의 우위, 내부 선택 미채택)
 - 고쳐야 할 절차: P04 내부 선택을 폴드 반복형으로 (현재 마지막 폴드 하나만 사용)
 - 보류 작업: 없음

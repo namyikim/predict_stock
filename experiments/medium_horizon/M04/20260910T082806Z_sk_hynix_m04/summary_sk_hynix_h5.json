@@ -1,0 +1,113 @@
+{
+  "target": "sk_hynix",
+  "horizon": 5,
+  "n_rows": 2280,
+  "n_features": 75,
+  "band_mult": 0.3,
+  "dev_folds": [
+    "dev_01",
+    "dev_02",
+    "dev_03",
+    "dev_04",
+    "dev_05",
+    "dev_06",
+    "dev_07",
+    "dev_08",
+    "dev_09"
+  ],
+  "lock_start": "2025-09-04",
+  "n_dev_rows": 1081,
+  "purge_violations": [],
+  "class_share_dev": [
+    0.3608,
+    0.234,
+    0.4052
+  ],
+  "selections": [
+    {
+      "fold": "dev_01",
+      "C": 0.003,
+      "temperature": 2.0,
+      "inner_log_loss": 1.0748891692964695,
+      "inner_prior_log_loss": 1.0893920016289618,
+      "train_rows": 923
+    },
+    {
+      "fold": "dev_02",
+      "C": 0.003,
+      "temperature": 2.0,
+      "inner_log_loss": 1.0873659280742398,
+      "inner_prior_log_loss": 1.1005647081973884,
+      "train_rows": 1046
+    },
+    {
+      "fold": "dev_03",
+      "C": 0.003,
+      "temperature": 2.0,
+      "inner_log_loss": 1.1006080277338435,
+      "inner_prior_log_loss": 1.0826678851297258,
+      "train_rows": 1171
+    },
+    {
+      "fold": "dev_04",
+      "C": 0.003,
+      "temperature": 2.0,
+      "inner_log_loss": 1.0989266737712962,
+      "inner_prior_log_loss": 1.092726128338155,
+      "train_rows": 1274
+    },
+    {
+      "fold": "dev_05",
+      "C": 0.003,
+      "temperature": 2.0,
+      "inner_log_loss": 1.085300195796036,
+      "inner_prior_log_loss": 1.085723918149793,
+      "train_rows": 1399
+    },
+    {
+      "fold": "dev_06",
+      "C": 0.003,
+      "temperature": 2.0,
+      "inner_log_loss": 1.0841176025462864,
+      "inner_prior_log_loss": 1.0887988355831133,
+      "train_rows": 1522
+    },
+    {
+      "fold": "dev_07",
+      "C": 0.003,
+      "temperature": 2.0,
+      "inner_log_loss": 1.078246452243127,
+      "inner_prior_log_loss": 1.0823578386840456,
+      "train_rows": 1643
+    },
+    {
+      "fold": "dev_08",
+      "C": 0.003,
+      "temperature": 2.0,
+      "inner_log_loss": 1.0899184059770413,
+      "inner_prior_log_loss": 1.0779045188376508,
+      "train_rows": 1764
+    },
+    {
+      "fold": "dev_09",
+      "C": 0.003,
+      "temperature": 1.5,
+      "inner_log_loss": 1.0787793451721226,
+      "inner_prior_log_loss": 1.0814364125879383,
+      "train_rows": 1887
+    }
+  ],
+  "log_loss_delta_month_ci": [
+    0.007022719373431395,
+    -0.010237712187146523,
+    0.024335658403204563
+  ],
+  "balanced_accuracy_delta_month_ci": [
+    0.013684237805738686,
+    -0.02034501254775941,
+    0.049590218490601266
+  ],
+  "verdict": "동률(CI가 0 포함)",
+  "oof_file": "D:\\SourceCode\\predict_stock\\runs\\medium_horizon\\sk_hynix\\M04_h5_full_oof.csv",
+  "oof_sha256": "31004bc893366b714c42a0bc00416ed421596289e5658e9f8ec3a91e72c22212"
+}

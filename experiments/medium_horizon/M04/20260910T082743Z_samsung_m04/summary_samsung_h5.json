@@ -1,0 +1,113 @@
+{
+  "target": "samsung",
+  "horizon": 5,
+  "n_rows": 2281,
+  "n_features": 78,
+  "band_mult": 0.3,
+  "dev_folds": [
+    "dev_01",
+    "dev_02",
+    "dev_03",
+    "dev_04",
+    "dev_05",
+    "dev_06",
+    "dev_07",
+    "dev_08",
+    "dev_09"
+  ],
+  "lock_start": "2025-09-04",
+  "n_dev_rows": 1086,
+  "purge_violations": [],
+  "class_share_dev": [
+    0.3941,
+    0.2578,
+    0.3481
+  ],
+  "selections": [
+    {
+      "fold": "dev_01",
+      "C": 0.003,
+      "temperature": 2.0,
+      "inner_log_loss": 1.0819613898696856,
+      "inner_prior_log_loss": 1.0906353860849587,
+      "train_rows": 919
+    },
+    {
+      "fold": "dev_02",
+      "C": 0.003,
+      "temperature": 2.0,
+      "inner_log_loss": 1.0965232600249881,
+      "inner_prior_log_loss": 1.1037795123477685,
+      "train_rows": 1042
+    },
+    {
+      "fold": "dev_03",
+      "C": 0.003,
+      "temperature": 2.0,
+      "inner_log_loss": 1.0835939113793338,
+      "inner_prior_log_loss": 1.0906421931596553,
+      "train_rows": 1167
+    },
+    {
+      "fold": "dev_04",
+      "C": 0.003,
+      "temperature": 2.0,
+      "inner_log_loss": 1.0832506558294401,
+      "inner_prior_log_loss": 1.108827526029664,
+      "train_rows": 1275
+    },
+    {
+      "fold": "dev_05",
+      "C": 0.003,
+      "temperature": 1.5,
+      "inner_log_loss": 1.0785236147376924,
+      "inner_prior_log_loss": 1.0997175010635545,
+      "train_rows": 1400
+    },
+    {
+      "fold": "dev_06",
+      "C": 0.003,
+      "temperature": 2.0,
+      "inner_log_loss": 1.1028895659259925,
+      "inner_prior_log_loss": 1.1072426134442512,
+      "train_rows": 1523
+    },
+    {
+      "fold": "dev_07",
+      "C": 0.003,
+      "temperature": 2.0,
+      "inner_log_loss": 1.090624519986904,
+      "inner_prior_log_loss": 1.0916582449240408,
+      "train_rows": 1644
+    },
+    {
+      "fold": "dev_08",
+      "C": 0.003,
+      "temperature": 2.0,
+      "inner_log_loss": 1.0871893742220449,
+      "inner_prior_log_loss": 1.088774445284513,
+      "train_rows": 1765
+    },
+    {
+      "fold": "dev_09",
+      "C": 0.003,
+      "temperature": 2.0,
+      "inner_log_loss": 1.0952953408387407,
+      "inner_prior_log_loss": 1.0828880043697338,
+      "train_rows": 1888
+    }
+  ],
+  "log_loss_delta_month_ci": [
+    0.0020531578893726635,
+    -0.02557974723607183,
+    0.03494402309303904
+  ],
+  "balanced_accuracy_delta_month_ci": [
+    0.06816949348101997,
+    0.030876749229372443,
+    0.1084961919879294
+  ],
+  "verdict": "동률(CI가 0 포함)",
+  "oof_file": "D:\\SourceCode\\predict_stock\\runs\\medium_horizon\\samsung\\M04_h5_full_oof.csv",
+  "oof_sha256": "e5e2c742e2bf2a5c8bf9d8f63cea02ca715cf86012307802c50a2dc5a5eda590"
+}

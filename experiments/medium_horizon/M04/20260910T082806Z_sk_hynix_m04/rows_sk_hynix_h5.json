@@ -1,0 +1,474 @@
+{
+  "metrics": [
+    {
+      "target": "sk_hynix",
+      "horizon": 5,
+      "candidate": "logistic_direction",
+      "fold": "dev_all",
+      "evaluation_stage": "dev_common",
+      "n": 1081,
+      "log_loss": 1.0848560039357011,
+      "brier": 0.6567310703609252,
+      "balanced_accuracy": 0.347017571139072,
+      "accuracy": 0.3876040703052729,
+      "class_share_dev": [
+        0.3608,
+        0.234,
+        0.4052
+      ],
+      "metric_note": "3클래스 확률 모델. 가격 회귀의 부호 적중률과 섞지 않는다"
+    },
+    {
+      "target": "sk_hynix",
+      "horizon": 5,
+      "candidate": "logistic_direction",
+      "fold": "dev_01",
+      "evaluation_stage": "dev_fold",
+      "n": 123,
+      "log_loss": 1.0907394425530546,
+      "brier": 0.6611641645805943,
+      "balanced_accuracy": 0.3369317393286941,
+      "C": 0.003,
+      "temperature": 2.0,
+      "inner_log_loss": 1.0748891692964695,
+      "train_rows": 923,
+      "train_class_share": [
+        0.3294,
+        0.2687,
+        0.402
+      ]
+    },
+    {
+      "target": "sk_hynix",
+      "horizon": 5,
+      "candidate": "logistic_direction",
+      "fold": "dev_02",
+      "evaluation_stage": "dev_fold",
+      "n": 125,
+      "log_loss": 1.12223046138592,
+      "brier": 0.6843989009245712,
+      "balanced_accuracy": 0.20587710579300147,
+      "C": 0.003,
+      "temperature": 2.0,
+      "inner_log_loss": 1.0873659280742398,
+      "train_rows": 1046,
+      "train_class_share": [
+        0.3327,
+        0.2677,
+        0.3996
+      ]
+    },
+    {
+      "target": "sk_hynix",
+      "horizon": 5,
+      "candidate": "logistic_direction",
+      "fold": "dev_03",
+      "evaluation_stage": "dev_fold",
+      "n": 103,
+      "log_loss": 1.080422362975332,
+      "brier": 0.6545340562858537,
+      "balanced_accuracy": 0.43462599854756717,
+      "C": 0.003,
+      "temperature": 2.0,
+      "inner_log_loss": 1.1006080277338435,
+      "train_rows": 1171,
+      "train_class_share": [
+        0.333,
+        0.263,
+        0.4039
+      ]
+    },
+    {
+      "target": "sk_hynix",
+      "horizon": 5,
+      "candidate": "logistic_direction",
+      "fold": "dev_04",
+      "evaluation_stage": "dev_fold",
+      "n": 125,
+      "log_loss": 1.052389264450412,
+      "brier": 0.6361302505402827,
+      "balanced_accuracy": 0.35618279569892475,
+      "C": 0.003,
+      "temperature": 2.0,
+      "inner_log_loss": 1.0989266737712962,
+      "train_rows": 1274,
+      "train_class_share": [
+        0.3438,
+        0.2653,
+        0.3909
+      ]
+    },
+    {
+      "target": "sk_hynix",
+      "horizon": 5,
+      "candidate": "logistic_direction",
+      "fold": "dev_05",
+      "evaluation_stage": "dev_fold",
+      "n": 123,
+      "log_loss": 1.1194562361868765,
+      "brier": 0.6726387394738933,
+      "balanced_accuracy": 0.3535758632532826,
+      "C": 0.003,
+      "temperature": 2.0,
+      "inner_log_loss": 1.085300195796036,
+      "train_rows": 1399,
+      "train_class_share": [
+        0.3588,
+        0.2588,
+        0.3824
+      ]
+    },
+    {
+      "target": "sk_hynix",
+      "horizon": 5,
+      "candidate": "logistic_direction",
+      "fold": "dev_06",
+      "evaluation_stage": "dev_fold",
+      "n": 121,
+      "log_loss": 1.0630674857060045,
+      "brier": 0.6418877487661662,
+      "balanced_accuracy": 0.4035005027652086,
+      "C": 0.003,
+      "temperature": 2.0,
+      "inner_log_loss": 1.0841176025462864,
+      "train_rows": 1522,
+      "train_class_share": [
+        0.3548,
+        0.2582,
+        0.387
+      ]
+    },
+    {
+      "target": "sk_hynix",
+      "horizon": 5,
+      "candidate": "logistic_direction",
+      "fold": "dev_07",
+      "evaluation_stage": "dev_fold",
+      "n": 121,
+      "log_loss": 1.0867432674397328,
+      "brier": 0.6589772292653139,
+      "balanced_accuracy": 0.3671274961597542,
+      "C": 0.003,
+      "temperature": 2.0,
+      "inner_log_loss": 1.078246452243127,
+      "train_rows": 1643,
+      "train_class_share": [
+        0.3512,
+        0.2599,
+        0.3889
+      ]
+    },
+    {
+      "target": "sk_hynix",
+      "horizon": 5,
+      "candidate": "logistic_direction",
+      "fold": "dev_08",
+      "evaluation_stage": "dev_fold",
+      "n": 123,
+      "log_loss": 1.0899865318655892,
+      "brier": 0.6616318409753998,
+      "balanced_accuracy": 0.3523297491039427,
+      "C": 0.003,
+      "temperature": 2.0,
+      "inner_log_loss": 1.0899184059770413,
+      "train_rows": 1764,
+      "train_class_share": [
+        0.3458,
+        0.2574,
+        0.3968
+      ]
+    },
+    {
+      "target": "sk_hynix",
+      "horizon": 5,
+      "candidate": "logistic_direction",
+      "fold": "dev_09",
+      "evaluation_stage": "dev_fold",
+      "n": 117,
+      "log_loss": 1.0561440863536655,
+      "brier": 0.6376068320438061,
+      "balanced_accuracy": 0.33069828722002637,
+      "C": 0.003,
+      "temperature": 1.5,
+      "inner_log_loss": 1.0787793451721226,
+      "train_rows": 1887,
+      "train_class_share": [
+        0.3503,
+        0.257,
+        0.3927
+      ]
+    },
+    {
+      "target": "sk_hynix",
+      "horizon": 5,
+      "candidate": "class_prior",
+      "fold": "dev_all",
+      "evaluation_stage": "dev_common",
+      "n": 1081,
+      "log_loss": 1.0778332845622696,
+      "brier": 0.6535502585302768,
+      "balanced_accuracy": 0.3333333333333333,
+      "accuracy": 0.4051803885291397,
+      "class_share_dev": [
+        0.3608,
+        0.234,
+        0.4052
+      ],
+      "metric_note": "3클래스 확률 모델. 가격 회귀의 부호 적중률과 섞지 않는다"
+    },
+    {
+      "target": "sk_hynix",
+      "horizon": 5,
+      "candidate": "class_prior",
+      "fold": "dev_01",
+      "evaluation_stage": "dev_fold",
+      "n": 123,
+      "log_loss": 1.097250857865329,
+      "brier": 0.6663032446489897,
+      "balanced_accuracy": 0.3333333333333333,
+      "C": "",
+      "temperature": "",
+      "inner_log_loss": 1.0893920016289618,
+      "train_rows": 923,
+      "train_class_share": [
+        0.3294,
+        0.2687,
+        0.402
+      ]
+    },
+    {
+      "target": "sk_hynix",
+      "horizon": 5,
+      "candidate": "class_prior",
+      "fold": "dev_02",
+      "evaluation_stage": "dev_fold",
+      "n": 125,
+      "log_loss": 1.0703232130126819,
+      "brier": 0.6479183121350935,
+      "balanced_accuracy": 0.3333333333333333,
+      "C": "",
+      "temperature": "",
+      "inner_log_loss": 1.1005647081973884,
+      "train_rows": 1046,
+      "train_class_share": [
+        0.3327,
+        0.2677,
+        0.3996
+      ]
+    },
+    {
+      "target": "sk_hynix",
+      "horizon": 5,
+      "candidate": "class_prior",
+      "fold": "dev_03",
+      "evaluation_stage": "dev_fold",
+      "n": 103,
+      "log_loss": 1.1145108145890459,
+      "brier": 0.6794681336882401,
+      "balanced_accuracy": 0.3333333333333333,
+      "C": "",
+      "temperature": "",
+      "inner_log_loss": 1.0826678851297258,
+      "train_rows": 1171,
+      "train_class_share": [
+        0.333,
+        0.263,
+        0.4039
+      ]
+    },
+    {
+      "target": "sk_hynix",
+      "horizon": 5,
+      "candidate": "class_prior",
+      "fold": "dev_04",
+      "evaluation_stage": "dev_fold",
+      "n": 125,
+      "log_loss": 1.0774042206209598,
+      "brier": 0.6545393068469991,
+      "balanced_accuracy": 0.3333333333333333,
+      "C": "",
+      "temperature": "",
+      "inner_log_loss": 1.092726128338155,
+      "train_rows": 1274,
+      "train_class_share": [
+        0.3438,
+        0.2653,
+        0.3909
+      ]
+    },
+    {
+      "target": "sk_hynix",
+      "horizon": 5,
+      "candidate": "class_prior",
+      "fold": "dev_05",
+      "evaluation_stage": "dev_fold",
+      "n": 123,
+      "log_loss": 1.0788475594258615,
+      "brier": 0.653646006662667,
+      "balanced_accuracy": 0.3333333333333333,
+      "C": "",
+      "temperature": "",
+      "inner_log_loss": 1.085723918149793,
+      "train_rows": 1399,
+      "train_class_share": [
+        0.3588,
+        0.2588,
+        0.3824
+      ]
+    },
+    {
+      "target": "sk_hynix",
+      "horizon": 5,
+      "candidate": "class_prior",
+      "fold": "dev_06",
+      "evaluation_stage": "dev_fold",
+      "n": 121,
+      "log_loss": 1.091043513119106,
+      "brier": 0.6614591284046452,
+      "balanced_accuracy": 0.3333333333333333,
+      "C": "",
+      "temperature": "",
+      "inner_log_loss": 1.0887988355831133,
+      "train_rows": 1522,
+      "train_class_share": [
+        0.3548,
+        0.2582,
+        0.387
+      ]
+    },
+    {
+      "target": "sk_hynix",
+      "horizon": 5,
+      "candidate": "class_prior",
+      "fold": "dev_07",
+      "evaluation_stage": "dev_fold",
+      "n": 121,
+      "log_loss": 1.0638068965202454,
+      "brier": 0.6433438456612615,
+      "balanced_accuracy": 0.3333333333333333,
+      "C": "",
+      "temperature": "",
+      "inner_log_loss": 1.0823578386840456,
+      "train_rows": 1643,
+      "train_class_share": [
+        0.3512,
+        0.2599,
+        0.3889
+      ]
+    },
+    {
+      "target": "sk_hynix",
+      "horizon": 5,
+      "candidate": "class_prior",
+      "fold": "dev_08",
+      "evaluation_stage": "dev_fold",
+      "n": 123,
+      "log_loss": 1.0893283823433821,
+      "brier": 0.6614146017900551,
+      "balanced_accuracy": 0.3333333333333333,
+      "C": "",
+      "temperature": "",
+      "inner_log_loss": 1.0779045188376508,
+      "train_rows": 1764,
+      "train_class_share": [
+        0.3458,
+        0.2574,
+        0.3968
+      ]
+    },
+    {
+      "target": "sk_hynix",
+      "horizon": 5,
+      "candidate": "class_prior",
+      "fold": "dev_09",
+      "evaluation_stage": "dev_fold",
+      "n": 117,
+      "log_loss": 1.0213063383207046,
+      "brier": 0.6162948336332795,
+      "balanced_accuracy": 0.3333333333333333,
+      "C": "",
+      "temperature": "",
+      "inner_log_loss": 1.0814364125879383,
+      "train_rows": 1887,
+      "train_class_share": [
+        0.3503,
+        0.257,
+        0.3927
+      ]
+    }
+  ],
+  "comparisons": [
+    {
+      "target": "sk_hynix",
+      "horizon": 5,
+      "comparison": "logistic_direction - class_prior",
+      "metric": "log_loss",
+      "delta": 0.007022719373431395,
+      "common_n": 1081,
+      "calibrated": true,
+      "ci_lo": -0.010237712187146523,
+      "ci_hi": 0.024335658403204563,
+      "block": "month"
+    },
+    {
+      "target": "sk_hynix",
+      "horizon": 5,
+      "comparison": "logistic_direction - class_prior",
+      "metric": "log_loss",
+      "delta": 0.007022719373431395,
+      "common_n": 1081,
+      "calibrated": true,
+      "ci_lo": -0.00971104147336774,
+      "ci_hi": 0.02282341497816691,
+      "block": "contiguous_20"
+    },
+    {
+      "target": "sk_hynix",
+      "horizon": 5,
+      "comparison": "logistic_direction - class_prior",
+      "metric": "brier",
+      "delta": 0.0031808118306484692,
+      "common_n": 1081,
+      "calibrated": true,
+      "ci_lo": -0.007893685585355097,
+      "ci_hi": 0.014241068177552024,
+      "block": "month"
+    },
+    {
+      "target": "sk_hynix",
+      "horizon": 5,
+      "comparison": "logistic_direction - class_prior",
+      "metric": "brier",
+      "delta": 0.0031808118306484692,
+      "common_n": 1081,
+      "calibrated": true,
+      "ci_lo": -0.007619216654190593,
+      "ci_hi": 0.01310883197203067,
+      "block": "contiguous_20"
+    },
+    {
+      "target": "sk_hynix",
+      "horizon": 5,
+      "comparison": "logistic_direction - class_prior",
+      "metric": "balanced_accuracy",
+      "delta": 0.013684237805738686,
+      "common_n": 1081,
+      "calibrated": true,
+      "ci_lo": -0.02034501254775941,
+      "ci_hi": 0.049590218490601266,
+      "block": "month"
+    },
+    {
+      "target": "sk_hynix",
+      "horizon": 5,
+      "comparison": "logistic_direction - class_prior",
+      "metric": "balanced_accuracy",
+      "delta": 0.013684237805738686,
+      "common_n": 1081,
+      "calibrated": true,
+      "ci_lo": -0.01680121957265129,
+      "ci_hi": 0.05190472737817225,
+      "block": "contiguous_20"
+    }
+  ]
+}

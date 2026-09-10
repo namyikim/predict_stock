@@ -2,7 +2,7 @@
 
 작성일: 2026-09-10
 검토 커밋: `545d3df813a719653951e31c621ce042080b9519`
-상태: M00~M03 완료(2026-09-10). M04~M08 미실행.
+상태: M00~M04 완료(2026-09-10). M05~M08 미실행.
 
 ## 1. 목표와 실행 범위
 
@@ -47,7 +47,7 @@
 | M01 | [x] | 재개 가능한 중기 실험 러너와 평가 계약 | M00 | 완료. 고정 입력 로더(pkl), 개발 9폴드 + 잠금 12개월 + 내부 3블록, purge 0, 개편 전후 수치 동등 |
 | M02 | [x] | 지평별 특징군 비교 | M01 | current_full 유지(4조합). inner_selected 경로는 우위 없음(samsung/20 열위). full_plus_A 는 samsung/20 보정 후만 소폭 우위 → 관찰 대상 |
 | M03 | [x] | Ridge 규제·학습 기간 내부 선택 | M02 | 현행(alpha=1e4, expanding) 유지. inner_selected 발행 중심값은 4조합 동률. 삼성 20일은 현행이 유지보다 유의하게 나쁨 → M05 보류 기준 근거 |
-| M04 | [ ] | 5·20일 직접 방향 확률 모델 | M03 | 미실행 |
+| M04 | [x] | 5·20일 직접 방향 확률 모델 | M03 | 채택 없음. log loss 는 4조합 모두 사전확률과 동률(delta > 0). samsung/5 만 balanced accuracy 우위이나 확률 품질 개선 아님 |
 | M05 | [ ] | 예측 구간·보류 정책 검증 | M03 | 미실행 |
 | M06 | [ ] | 해외 입력 포함 공동 학습 | M03, 방향 비교 시 M04 | 선택, 미실행 |
 | M07 | [ ] | 고정 후보 사전 예측 관찰 | M04·M05, M06은 선택 | 미실행 |
@@ -155,11 +155,11 @@ M06은 생략할 수 있으며 이유를 기록한다. M07은 과거 실험에�
 
 ### M04 — 직접 방향 확률 모델
 
-- [ ] 5·20일 누적 수익률을 하락·보합·상승으로 분류한다. 과거 변동성×sqrt(h)×0.3 밴드를 초기 계약으로 고정하고 평가 결과로 조정하지 않는다.
-- [ ] 첫 모델은 규제 Logistic, C={0.003,0.01,0.03}, class_weight=None이다. 내부 시간순 log loss로 선택하고 학습 구간 클래스 사전확률과 비교한다.
-- [ ] 기존 `fit_direction_model`은 1일 계약을 가정하므로 그대로 호출하지 않는다. horizon/label_end를 지원하도록 확장하거나 중기 전용 경로를 만들고 내부 purge를 검증한다.
-- [ ] 결측 클래스·확률 합=1·유한값·미래 라벨 불변성·기간별 라벨 경계를 테스트한다.
-- [ ] 가격 회귀 부호의 2클래스 적중률과 3클래스 정확도를 혼합하지 않는다. 확률 모델 결과는 별도 표로 저장한다.
+- [x] 5·20일 누적 수익률을 하락·보합·상승으로 분류한다. 과거 변동성×sqrt(h)×0.3 밴드를 초기 계약으로 고정하고 평가 결과로 조정하지 않는다. → `direction_labels`(DIRECTION_BAND_MULT=0.3)
+- [x] 첫 모델은 규제 Logistic, C={0.003,0.01,0.03}, class_weight=None이다. 내부 시간순 log loss로 선택하고 학습 구간 클래스 사전확률과 비교한다. → 36폴드 모두 C=0.003·온도 2.0 선택
+- [x] 기존 `fit_direction_model`은 1일 계약을 가정하므로 그대로 호출하지 않는다. horizon/label_end를 지원하도록 확장하거나 중기 전용 경로를 만들고 내부 purge를 검증한다. → 중기 전용 `fit_direction_probabilities` + M01 폴드(날짜 purge 0)
+- [x] 결측 클래스·확률 합=1·유한값·미래 라벨 불변성·기간별 라벨 경계를 테스트한다. → DirectionModelTests + 실행 중 검사
+- [x] 가격 회귀 부호의 2클래스 적중률과 3클래스 정확도를 혼합하지 않는다. 확률 모델 결과는 별도 표로 저장한다. → M04 metrics.csv 는 확률 지표만
 
 완료 증거: 네 조합 log loss·Brier·balanced accuracy와 사전확률 쌍체 비교. 목표가 정확도 개선으로 표현하지 않는다.
 
@@ -231,6 +231,8 @@ python tools/run_medium_horizon.py --task M02 --target samsung --mode full --res
 python tools/run_medium_horizon.py --task M02 --target sk_hynix --mode full --resume
 python tools/run_medium_horizon.py --task M03 --target samsung --mode full --resume
 python tools/run_medium_horizon.py --task M03 --target sk_hynix --mode full --resume
+python tools/run_medium_horizon.py --task M04 --target samsung --mode full --resume
+python tools/run_medium_horizon.py --task M04 --target sk_hynix --mode full --resume
 ```
 
 고정 스냅샷은 `runs/medium_horizon/<target>/data_cache`(+ `macro_cache`, `macro_fallback`, `macro_snapshots`)에 있어야 하며, 없으면 러너가 거부한다. 2026-09-10 실행은 `runs/model_improvement/P00/<target>/`의 스냅샷(마지막 봉 2026-09-09)을 복사해 썼다. 러너는 처음 한 번 노트북 전체를 캐시로 실행해(종목당 full 약 8분) 필요한 입력을 `runs/medium_horizon/<target>/inputs_<mode>_<data_hash>.pkl` 에 저장하고, 같은 data_hash 면 그 파일을 읽는다(M01 고정 입력 로더; 종목당 약 1분). pkl 은 Git 에 넣지 않으며 없으면 자동으로 다시 만든다.
@@ -255,12 +257,13 @@ quick는 동작 검증이며 성능 채택 근거로 사용하지 않는다. 구
 | 2026-09-10 | M01 | 설계 행렬·OOF 함수를 forecast_utils 로 추출(노트북 동기화), 고정 입력 로더(pkl), 평가 계약 `evaluation_folds`(개발 6개월 폴드·잠금 12개월·내부 3블록·60행 미만 폴드 제외), 산출물 해시 재개, Windows 원자적 쓰기 재시도. 결과 `experiments/medium_horizon/M01/20260910T081026Z_samsung_m01`(decision.md), `…T081053Z_sk_hynix_m01` | 테스트 30개 통과(전체 521개 중 환경 오류 1). 개편 전후 수치 동등, purge 0, 9 개발 폴드 + 잠금 | M02: 특징군 비교(현행 전체 vs 시세만 vs 그룹 A/B/C) |
 | 2026-09-10 | M02 | 후보 4(현행·시세만·월별 제외·그룹 A 26열) + 내부 선택 경로, 개발 9폴드 공통 행 비교. 결과 `experiments/medium_horizon/M02/20260910T082103Z_samsung_m02`(decision.md), `…T082115Z_sk_hynix_m02` | 테스트 36개 통과. 현행 유지(4조합), purge 0 | M03: 규제 alpha·학습 창 내부 선택(특징 = current_full) |
 | 2026-09-10 | M03 | 후보 6(alpha 3 × 창 2) 내부 선택 + 폴드 발행 판정, 개발 9폴드. 결과 `experiments/medium_horizon/M03/20260910T082518Z_samsung_m03`(decision.md), `…T082535Z_sk_hynix_m03` | 테스트 40개 통과. 4조합 동률 → 현행 유지 | M04: 방향 확률 모델 |
+| 2026-09-10 | M04 | 규제 Logistic 3클래스(밴드 0.3) vs 사전확률, 개발 9폴드. 결과 `experiments/medium_horizon/M04/20260910T082743Z_samsung_m04`(decision.md), `…T082806Z_sk_hynix_m04` | 테스트 45개 통과. log loss 4조합 동률 → 채택 없음 | M05: 구간·보류 정책 |
 
-- 현재 작업: 없음. 다음 실행은 M04.
-- 완료: 4/9. 보류: 없음. 실제 후보 채택: 없음. 관찰 대상: full_plus_A(samsung/20, 보정 후 −0.045%p, 탐색 결과).
-- 먼저 읽을 파일: 본 문서, `experiments/medium_horizon/M03/20260910T082518Z_samsung_m03/decision.md`, M02·M01·M00 decision.md, `tools/run_medium_horizon.py`(load_inputs·evaluation_folds·analyse_horizon), forecast_utils.py의 `price_design_frame`·`calibrate_price_forecast`.
+- 현재 작업: 없음. 다음 실행은 M05.
+- 완료: 5/9. 보류: 없음. 실제 후보 채택: 없음. 관찰 대상: full_plus_A(samsung/20, 보정 후 −0.045%p, 탐색 결과).
+- 먼저 읽을 파일: 본 문서, `experiments/medium_horizon/M04/20260910T082743Z_samsung_m04/decision.md`, M03·M02·M01·M00 decision.md, `tools/run_medium_horizon.py`(load_inputs·evaluation_folds·analyse_horizon), forecast_utils.py의 `price_design_frame`·`calibrate_price_forecast`.
 - 미해결: (1) 원장에 발행 판정에 쓰인 선택 구간 CI가 없어 하이닉스 20일 발행이 2026-09-08부터 뒤집힌 이유를 원장만으로 볼 수 없다 — M02 이후 결과 파일(comparisons.csv)에는 남기고, 원장 열 추가는 M07에서 정한다. (2) 평가 구간이 2024-08 이후 고변동성 한 국면이라 M05 구간 보정을 우선한다. (3) 입력 pkl 은 pandas 버전이 바뀌면 다시 만들어야 한다(data_hash 만 검사).
-- 마지막 검증: `python -m unittest tests.test_medium_horizon`(45개 통과, M04 코드 포함). M03 full 두 종목(exit 0, purge 0).
+- 마지막 검증: `python -m unittest tests.test_medium_horizon`(45개 통과). M04 full 두 종목(exit 0, purge 0).
 
 중단 시 아래 양식을 채워 이어서 실행한다.
 

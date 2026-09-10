@@ -1,0 +1,474 @@
+{
+  "metrics": [
+    {
+      "target": "samsung",
+      "horizon": 20,
+      "candidate": "logistic_direction",
+      "fold": "dev_all",
+      "evaluation_stage": "dev_common",
+      "n": 1086,
+      "log_loss": 1.1460307212766936,
+      "brier": 0.6746049231379372,
+      "balanced_accuracy": 0.36714542911586073,
+      "accuracy": 0.3848987108655617,
+      "class_share_dev": [
+        0.4098,
+        0.2449,
+        0.3453
+      ],
+      "metric_note": "3클래스 확률 모델. 가격 회귀의 부호 적중률과 섞지 않는다"
+    },
+    {
+      "target": "samsung",
+      "horizon": 20,
+      "candidate": "logistic_direction",
+      "fold": "dev_01",
+      "evaluation_stage": "dev_fold",
+      "n": 123,
+      "log_loss": 1.0913353707919056,
+      "brier": 0.6645573184933082,
+      "balanced_accuracy": 0.3572426121445729,
+      "C": 0.003,
+      "temperature": 2.0,
+      "inner_log_loss": 1.1285636947231403,
+      "train_rows": 889,
+      "train_class_share": [
+        0.3003,
+        0.2418,
+        0.4578
+      ]
+    },
+    {
+      "target": "samsung",
+      "horizon": 20,
+      "candidate": "logistic_direction",
+      "fold": "dev_02",
+      "evaluation_stage": "dev_fold",
+      "n": 125,
+      "log_loss": 1.1291502790415167,
+      "brier": 0.6878011822082121,
+      "balanced_accuracy": 0.3257921156857327,
+      "C": 0.003,
+      "temperature": 2.0,
+      "inner_log_loss": 1.1497882975053852,
+      "train_rows": 1012,
+      "train_class_share": [
+        0.3024,
+        0.2599,
+        0.4377
+      ]
+    },
+    {
+      "target": "samsung",
+      "horizon": 20,
+      "candidate": "logistic_direction",
+      "fold": "dev_03",
+      "evaluation_stage": "dev_fold",
+      "n": 108,
+      "log_loss": 1.0754979530549968,
+      "brier": 0.6502427663108621,
+      "balanced_accuracy": 0.41250000000000003,
+      "C": 0.003,
+      "temperature": 2.0,
+      "inner_log_loss": 1.1068972553257255,
+      "train_rows": 1137,
+      "train_class_share": [
+        0.3254,
+        0.2463,
+        0.4283
+      ]
+    },
+    {
+      "target": "samsung",
+      "horizon": 20,
+      "candidate": "logistic_direction",
+      "fold": "dev_04",
+      "evaluation_stage": "dev_fold",
+      "n": 125,
+      "log_loss": 1.0290197979381692,
+      "brier": 0.6189951461290826,
+      "balanced_accuracy": 0.4279176087162671,
+      "C": 0.003,
+      "temperature": 2.0,
+      "inner_log_loss": 1.0998084674649817,
+      "train_rows": 1245,
+      "train_class_share": [
+        0.359,
+        0.2442,
+        0.3968
+      ]
+    },
+    {
+      "target": "samsung",
+      "horizon": 20,
+      "candidate": "logistic_direction",
+      "fold": "dev_05",
+      "evaluation_stage": "dev_fold",
+      "n": 123,
+      "log_loss": 1.4006933542739333,
+      "brier": 0.6846522620130601,
+      "balanced_accuracy": 0.44285714285714284,
+      "C": 0.003,
+      "temperature": 2.0,
+      "inner_log_loss": 1.0780029009843586,
+      "train_rows": 1370,
+      "train_class_share": [
+        0.3679,
+        0.2387,
+        0.3934
+      ]
+    },
+    {
+      "target": "samsung",
+      "horizon": 20,
+      "candidate": "logistic_direction",
+      "fold": "dev_06",
+      "evaluation_stage": "dev_fold",
+      "n": 121,
+      "log_loss": 1.0542399085492282,
+      "brier": 0.6379414294826814,
+      "balanced_accuracy": 0.33217054263565887,
+      "C": 0.003,
+      "temperature": 2.0,
+      "inner_log_loss": 1.1715352141795072,
+      "train_rows": 1493,
+      "train_class_share": [
+        0.3516,
+        0.2358,
+        0.4126
+      ]
+    },
+    {
+      "target": "samsung",
+      "horizon": 20,
+      "candidate": "logistic_direction",
+      "fold": "dev_07",
+      "evaluation_stage": "dev_fold",
+      "n": 121,
+      "log_loss": 1.0577777375747577,
+      "brier": 0.6380792737435225,
+      "balanced_accuracy": 0.43118580765639586,
+      "C": 0.003,
+      "temperature": 2.0,
+      "inner_log_loss": 1.161180992553988,
+      "train_rows": 1614,
+      "train_class_share": [
+        0.3525,
+        0.2323,
+        0.4151
+      ]
+    },
+    {
+      "target": "samsung",
+      "horizon": 20,
+      "candidate": "logistic_direction",
+      "fold": "dev_08",
+      "evaluation_stage": "dev_fold",
+      "n": 123,
+      "log_loss": 1.3133301785737166,
+      "brier": 0.7786408166283889,
+      "balanced_accuracy": 0.45484400656814444,
+      "C": 0.003,
+      "temperature": 2.0,
+      "inner_log_loss": 1.1721627883745098,
+      "train_rows": 1735,
+      "train_class_share": [
+        0.351,
+        0.238,
+        0.411
+      ]
+    },
+    {
+      "target": "samsung",
+      "horizon": 20,
+      "candidate": "logistic_direction",
+      "fold": "dev_09",
+      "evaluation_stage": "dev_fold",
+      "n": 117,
+      "log_loss": 1.154282430986507,
+      "brier": 0.7087272033001634,
+      "balanced_accuracy": 0.25999436936936937,
+      "C": 0.003,
+      "temperature": 2.0,
+      "inner_log_loss": 1.1427225949193682,
+      "train_rows": 1858,
+      "train_class_share": [
+        0.3724,
+        0.2325,
+        0.395
+      ]
+    },
+    {
+      "target": "samsung",
+      "horizon": 20,
+      "candidate": "class_prior",
+      "fold": "dev_all",
+      "evaluation_stage": "dev_common",
+      "n": 1086,
+      "log_loss": 1.1044924404095693,
+      "brier": 0.6730062785427998,
+      "balanced_accuracy": 0.3333333333333333,
+      "accuracy": 0.3453038674033149,
+      "class_share_dev": [
+        0.4098,
+        0.2449,
+        0.3453
+      ],
+      "metric_note": "3클래스 확률 모델. 가격 회귀의 부호 적중률과 섞지 않는다"
+    },
+    {
+      "target": "samsung",
+      "horizon": 20,
+      "candidate": "class_prior",
+      "fold": "dev_01",
+      "evaluation_stage": "dev_fold",
+      "n": 123,
+      "log_loss": 1.2361587869872703,
+      "brier": 0.7635397669998922,
+      "balanced_accuracy": 0.3333333333333333,
+      "C": "",
+      "temperature": "",
+      "inner_log_loss": 1.043749965462127,
+      "train_rows": 889,
+      "train_class_share": [
+        0.3003,
+        0.2418,
+        0.4578
+      ]
+    },
+    {
+      "target": "samsung",
+      "horizon": 20,
+      "candidate": "class_prior",
+      "fold": "dev_02",
+      "evaluation_stage": "dev_fold",
+      "n": 125,
+      "log_loss": 1.083636380972487,
+      "brier": 0.6590004374384851,
+      "balanced_accuracy": 0.3333333333333333,
+      "C": "",
+      "temperature": "",
+      "inner_log_loss": 1.114073466180699,
+      "train_rows": 1012,
+      "train_class_share": [
+        0.3024,
+        0.2599,
+        0.4377
+      ]
+    },
+    {
+      "target": "samsung",
+      "horizon": 20,
+      "candidate": "class_prior",
+      "fold": "dev_03",
+      "evaluation_stage": "dev_fold",
+      "n": 108,
+      "log_loss": 1.133407349502752,
+      "brier": 0.6997506901851764,
+      "balanced_accuracy": 0.3333333333333333,
+      "C": "",
+      "temperature": "",
+      "inner_log_loss": 1.0996045078935515,
+      "train_rows": 1137,
+      "train_class_share": [
+        0.3254,
+        0.2463,
+        0.4283
+      ]
+    },
+    {
+      "target": "samsung",
+      "horizon": 20,
+      "candidate": "class_prior",
+      "fold": "dev_04",
+      "evaluation_stage": "dev_fold",
+      "n": 125,
+      "log_loss": 1.0761840586213873,
+      "brier": 0.6528029935001047,
+      "balanced_accuracy": 0.3333333333333333,
+      "C": "",
+      "temperature": "",
+      "inner_log_loss": 1.1514327869867762,
+      "train_rows": 1245,
+      "train_class_share": [
+        0.359,
+        0.2442,
+        0.3968
+      ]
+    },
+    {
+      "target": "samsung",
+      "horizon": 20,
+      "candidate": "class_prior",
+      "fold": "dev_05",
+      "evaluation_stage": "dev_fold",
+      "n": 123,
+      "log_loss": 1.0602621045901617,
+      "brier": 0.6410734271656214,
+      "balanced_accuracy": 0.3333333333333333,
+      "C": "",
+      "temperature": "",
+      "inner_log_loss": 1.0960490187026017,
+      "train_rows": 1370,
+      "train_class_share": [
+        0.3679,
+        0.2387,
+        0.3934
+      ]
+    },
+    {
+      "target": "samsung",
+      "horizon": 20,
+      "candidate": "class_prior",
+      "fold": "dev_06",
+      "evaluation_stage": "dev_fold",
+      "n": 121,
+      "log_loss": 1.0253502003142587,
+      "brier": 0.6202152347302956,
+      "balanced_accuracy": 0.3333333333333333,
+      "C": "",
+      "temperature": "",
+      "inner_log_loss": 1.0880428088161809,
+      "train_rows": 1493,
+      "train_class_share": [
+        0.3516,
+        0.2358,
+        0.4126
+      ]
+    },
+    {
+      "target": "samsung",
+      "horizon": 20,
+      "candidate": "class_prior",
+      "fold": "dev_07",
+      "evaluation_stage": "dev_fold",
+      "n": 121,
+      "log_loss": 1.0943271344908727,
+      "brier": 0.6622945782921462,
+      "balanced_accuracy": 0.3333333333333333,
+      "C": "",
+      "temperature": "",
+      "inner_log_loss": 1.0542076434425163,
+      "train_rows": 1614,
+      "train_class_share": [
+        0.3525,
+        0.2323,
+        0.4151
+      ]
+    },
+    {
+      "target": "samsung",
+      "horizon": 20,
+      "candidate": "class_prior",
+      "fold": "dev_08",
+      "evaluation_stage": "dev_fold",
+      "n": 123,
+      "log_loss": 1.1295387945798943,
+      "brier": 0.6931806126638697,
+      "balanced_accuracy": 0.3333333333333333,
+      "C": "",
+      "temperature": "",
+      "inner_log_loss": 1.059981359934276,
+      "train_rows": 1735,
+      "train_class_share": [
+        0.351,
+        0.238,
+        0.411
+      ]
+    },
+    {
+      "target": "samsung",
+      "horizon": 20,
+      "candidate": "class_prior",
+      "fold": "dev_09",
+      "evaluation_stage": "dev_fold",
+      "n": 117,
+      "log_loss": 1.1044379716281103,
+      "brier": 0.667726405764344,
+      "balanced_accuracy": 0.3333333333333333,
+      "C": "",
+      "temperature": "",
+      "inner_log_loss": 1.0833266554650627,
+      "train_rows": 1858,
+      "train_class_share": [
+        0.3724,
+        0.2325,
+        0.395
+      ]
+    }
+  ],
+  "comparisons": [
+    {
+      "target": "samsung",
+      "horizon": 20,
+      "comparison": "logistic_direction - class_prior",
+      "metric": "log_loss",
+      "delta": 0.04153828086712416,
+      "common_n": 1086,
+      "calibrated": true,
+      "ci_lo": -0.025044341522662068,
+      "ci_hi": 0.11897163898524726,
+      "block": "month"
+    },
+    {
+      "target": "samsung",
+      "horizon": 20,
+      "comparison": "logistic_direction - class_prior",
+      "metric": "log_loss",
+      "delta": 0.04153828086712416,
+      "common_n": 1086,
+      "calibrated": true,
+      "ci_lo": -0.038231493087668766,
+      "ci_hi": 0.14676570076121598,
+      "block": "contiguous_40"
+    },
+    {
+      "target": "samsung",
+      "horizon": 20,
+      "comparison": "logistic_direction - class_prior",
+      "metric": "brier",
+      "delta": 0.0015986445951373836,
+      "common_n": 1086,
+      "calibrated": true,
+      "ci_lo": -0.029090784815600065,
+      "ci_hi": 0.03386444448149897,
+      "block": "month"
+    },
+    {
+      "target": "samsung",
+      "horizon": 20,
+      "comparison": "logistic_direction - class_prior",
+      "metric": "brier",
+      "delta": 0.0015986445951373836,
+      "common_n": 1086,
+      "calibrated": true,
+      "ci_lo": -0.03302015415066117,
+      "ci_hi": 0.04128883934018179,
+      "block": "contiguous_40"
+    },
+    {
+      "target": "samsung",
+      "horizon": 20,
+      "comparison": "logistic_direction - class_prior",
+      "metric": "balanced_accuracy",
+      "delta": 0.03381209578252742,
+      "common_n": 1086,
+      "calibrated": true,
+      "ci_lo": -0.026132085406619703,
+      "ci_hi": 0.09469892516841232,
+      "block": "month"
+    },
+    {
+      "target": "samsung",
+      "horizon": 20,
+      "comparison": "logistic_direction - class_prior",
+      "metric": "balanced_accuracy",
+      "delta": 0.03381209578252742,
+      "common_n": 1086,
+      "calibrated": true,
+      "ci_lo": -0.013716370563225038,
+      "ci_hi": 0.10092732900377255,
+      "block": "contiguous_40"
+    }
+  ]
+}

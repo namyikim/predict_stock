@@ -1,0 +1,13 @@
+target,horizon,comparison,metric,delta,common_n,calibrated,ci_lo,ci_hi,block
+samsung,5,logistic_direction - class_prior,log_loss,0.0020531578893726635,1086,True,-0.02557974723607183,0.03494402309303904,month
+samsung,5,logistic_direction - class_prior,log_loss,0.0020531578893726635,1086,True,-0.028372428419917356,0.03872098570278567,contiguous_20
+samsung,5,logistic_direction - class_prior,brier,-0.0075142596636932225,1086,True,-0.021080345294763263,0.007110174715107418,month
+samsung,5,logistic_direction - class_prior,brier,-0.0075142596636932225,1086,True,-0.022280522210028377,0.007800366916348344,contiguous_20
+samsung,5,logistic_direction - class_prior,balanced_accuracy,0.06816949348101997,1086,True,0.030876749229372443,0.1084961919879294,month
+samsung,5,logistic_direction - class_prior,balanced_accuracy,0.06816949348101997,1086,True,0.03173032924930996,0.11026722070376793,contiguous_20
+samsung,20,logistic_direction - class_prior,log_loss,0.04153828086712416,1086,True,-0.025044341522662068,0.11897163898524726,month
+samsung,20,logistic_direction - class_prior,log_loss,0.04153828086712416,1086,True,-0.038231493087668766,0.14676570076121598,contiguous_40
+samsung,20,logistic_direction - class_prior,brier,0.0015986445951373836,1086,True,-0.029090784815600065,0.03386444448149897,month
+samsung,20,logistic_direction - class_prior,brier,0.0015986445951373836,1086,True,-0.03302015415066117,0.04128883934018179,contiguous_40
+samsung,20,logistic_direction - class_prior,balanced_accuracy,0.03381209578252742,1086,True,-0.026132085406619703,0.09469892516841232,month
+samsung,20,logistic_direction - class_prior,balanced_accuracy,0.03381209578252742,1086,True,-0.013716370563225038,0.10092732900377255,contiguous_40

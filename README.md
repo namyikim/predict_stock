@@ -73,6 +73,7 @@ Colab·로컬 실행 결과는 기본적으로 해당 실행 환경에만 저장
 | [검증 방법](guides/validation.md) | 워크포워드, 누수 방지, 기준선과 성능 판정 |
 | [모델 성능 개선 계획](guides/model-improvement-plan.md) | 단계별 실험, 완료 체크리스트와 재개 방법 |
 | [5·20거래일 예측 개선 계획](guides/medium-horizon-improvement-plan.md) | 주간·월간 가격·방향·구간 예측의 구현, 검증과 재개 체크리스트 |
+| [논문 기반 개선 후보와 실험 계획](guides/research-candidates-plan.md) | 측정된 실패(구간 붕괴·약한 신호·갭 편중·판정 불안정)에 맞춘 논문 6편과 R01~R06 실험 계약 |
 | [기타 보고서](guides/other-reports.md) | 금·은, 중국, 검색어와 관심도 보고서 |
 | [개발자 안내](guides/development.md) | 코드 구조, 테스트와 노트북 동기화 |
 | [조회수 카운터](counter/README.md) | Cloudflare Worker와 통계 대시보드 운영 |

@@ -47,6 +47,9 @@ TASKS = {
     "P04": "학습 기간 비교",
     "P05": "최근 표본 가중 학습",
     "P06": "재학습 주기 비교",
+    "P07": "소수 모델 앙상블 비교",
+    "P08": "확률 신뢰도·예측 보류 평가",
+    "P09": "갭·장중 별도 학습 비교",
 }
 
 # P03에서 비교하는 특징군. 노트북이 같은 폴드·같은 날짜로 이미 계산해 CSV로 남기므로
@@ -806,7 +809,436 @@ def run_p06(target, mode, storage, state, run_notebook_fn=None):
     return rows
 
 
-TASK_RUNNERS = {"P00": run_p00, "P03": run_p03, "P04": run_p04, "P05": run_p05, "P06": run_p06}
+# ---------------------------------------------------------------------------
+# P07 — 소수 모델 앙상블
+# ---------------------------------------------------------------------------
+# 두 모델 결합 가중치는 이 다섯 점에서만 고른다. 연속 최적화는 외부 구간에 맞춰 조정할 여지를 준다.
+ENSEMBLE_WEIGHT_GRID = (0., .25, .5, .75, 1.)
+# 결합할 후보. 계획대로 셋을 넘지 않는다: 현행 대표(5년·무가중) / 최근 창(P04) / 최근 가중(P05).
+ENSEMBLE_CANDIDATES = ("headline_5y", "expanding", "half_life_504")
+
+
+def _check_probs(name, probs, n=None):
+    probs = np.asarray(probs, dtype=float)
+    if probs.ndim != 2 or probs.shape[1] != 3:
+        raise ValueError(f"{name}: 확률은 (n, 3) 이어야 합니다: {probs.shape}")
+    if n is not None and probs.shape[0] != n:
+        raise ValueError(f"{name}: 행 수가 다릅니다 {probs.shape[0]} vs {n}")
+    if not np.isfinite(probs).all():
+        raise ValueError(f"{name}: 비유한 확률이 있습니다")
+    return probs
+
+
+def combine_probabilities(candidates, weights=None):
+    """후보 확률을 결합한다. 클래스 순서 [하락, 보합, 상승]은 그대로, 합은 1로 맞춘다.
+
+    None인 후보는 빠진 것으로 보고 나머지로만 결합한다(fallback). 전부 빠지면 실패한다.
+    weights가 없으면 단순 평균. 있으면 이름별 가중을 쓰고 합이 1이 아니어도 정규화한다.
+    """
+    present = {k: v for k, v in candidates.items() if v is not None}
+    if not present:
+        raise ValueError("결합할 후보가 하나도 없습니다")
+    n = None
+    arrays = {}
+    for name, probs in present.items():
+        arrays[name] = _check_probs(name, probs, n)
+        n = arrays[name].shape[0]
+    if weights is None:
+        weights = {name: 1.0 for name in arrays}
+    total = sum(float(weights.get(name, 0.)) for name in arrays)
+    if total <= 0:
+        raise ValueError("가중치 합이 0입니다")
+    out = sum(float(weights.get(name, 0.)) / total * arrays[name] for name in arrays)
+    out = np.clip(out, 1e-9, 1.)
+    return out / out.sum(axis=1, keepdims=True)
+
+
+def dedupe_candidates(candidates, atol=1e-9):
+    """같은 예측을 내는 후보는 하나만 남긴다. 이름만 다른 중복이 평균을 왜곡하지 않게."""
+    kept = {}
+    for name, probs in candidates.items():
+        if probs is None:
+            continue
+        probs = np.asarray(probs, dtype=float)
+        if any(probs.shape == k.shape and np.allclose(probs, k, atol=atol) for k in kept.values()):
+            continue
+        kept[name] = probs
+    return kept
+
+
+def select_pair_weight(probs_a, probs_b, y, inner_idx):
+    """a에 줄 가중치를 격자에서 고른다. inner_idx 행의 log loss만 본다(외부 라벨 불가).
+
+    내부 행이 20개 미만이면 고르지 않고 단순 평균(0.5)을 돌려준다.
+    """
+    inner_idx = np.asarray(inner_idx, dtype=int)
+    if len(inner_idx) < 20:
+        return .5
+    a, b, yy = np.asarray(probs_a)[inner_idx], np.asarray(probs_b)[inner_idx], np.asarray(y)[inner_idx]
+    best, best_loss = .5, np.inf
+    for w in ENSEMBLE_WEIGHT_GRID:
+        mixed = np.clip(w * a + (1 - w) * b, 1e-9, 1.)
+        mixed /= mixed.sum(axis=1, keepdims=True)
+        loss = float(-np.log(mixed[np.arange(len(yy)), yy]).mean())
+        if loss < best_loss - 1e-12:
+            best, best_loss = w, loss
+    return best
+
+
+def run_p07(target, mode, storage, state, run_notebook_fn=None):
+    """세 후보(대표·expanding·504 가중)의 OOF 확률을 만들고 단순 평균·격자 가중 결합을 비교한다.
+
+    결합 가중치는 각 폴드의 학습 구간 끝 6개월(내부)에서만 고른다. 그 구간의 후보 확률은
+    그 앞 자료로만 학습해 만든다. 외부 시험 구간 라벨은 어디에도 쓰지 않는다.
+    """
+    import time
+
+    unit = f"{target}:ensemble"
+    if state.is_done(unit):
+        print(f"  이미 완료된 단위 건너뜀: {unit} (metrics.csv 유지)")
+        return None
+    if run_notebook_fn is None:
+        sys.path.insert(0, str(ROOT / "tools"))
+        from run_notebook import run_notebook as run_notebook_fn
+
+    snapshot = snapshot_paths(storage, target)
+    ns = run_notebook_fn(Path(storage) / target, targets=target,
+                         quick=(mode == "quick"), use_cache=bool(snapshot))[target]
+    features, y, dates, folds = ns["market_X"], ns["y"], ns["dates"], ns["folds"]
+
+    def candidate_probs(name, train_idx, test_idx):
+        if name == "headline_5y":
+            return _ensemble_probabilities(ns, features, y, train_idx, test_idx)
+        if name == "expanding":
+            idx = window_train_indices(dates, dates[test_idx[0]], "expanding")
+            return _ensemble_probabilities(ns, features, y, idx, test_idx)
+        if name == "half_life_504":
+            return _weighted_ensemble(ns, features, y, dates, train_idx, test_idx, 504)
+        raise ValueError(name)
+
+    frames, chosen_weights, timing = [], [], {}
+    started = time.time()
+    for fold in folds:
+        tr, te = fold["train_idx"], fold["test_idx"]
+        # 외부 예측
+        outer = {name: candidate_probs(name, tr, te) for name in ENSEMBLE_CANDIDATES}
+        outer = dedupe_candidates(outer)
+        for name, probs in outer.items():
+            frames.append(ns["prediction_frame"](f"cand {name}", dates[te], y[te], probs, fold["fold"]))
+        frames.append(ns["prediction_frame"]("ens mean", dates[te], y[te],
+                                             combine_probabilities(outer), fold["fold"]))
+        # 내부 구간: 학습 구간 끝 6개월. 후보는 그 앞 자료로만 학습.
+        train_dates = pd.DatetimeIndex(dates)[tr]
+        split = train_dates[-1] - pd.DateOffset(months=6)
+        inner_te, inner_tr = tr[train_dates > split], tr[train_dates <= split]
+        pair_weights = {}
+        if len(inner_te) >= 20 and len(inner_tr) >= MIN_TRAIN_ROWS:
+            inner = {name: candidate_probs(name, inner_tr, inner_te) for name in outer}
+            names = list(outer)
+            for i in range(len(names)):
+                for j in range(i + 1, len(names)):
+                    a, b = names[i], names[j]
+                    w = _select_on(inner[a], inner[b], y[inner_te])
+                    pair_weights[f"{a}|{b}"] = w
+                    frames.append(ns["prediction_frame"](
+                        f"ens {a}|{b}", dates[te], y[te],
+                        combine_probabilities({a: outer[a], b: outer[b]}, {a: w, b: 1 - w}), fold["fold"]))
+        chosen_weights.append({"fold": fold["fold"], "pairs": pair_weights, "candidates": list(outer)})
+    timing["seconds"] = round(time.time() - started, 1)
+
+    predictions = pd.concat(frames, ignore_index=True)
+    metrics = ns["summarize_predictions"](predictions, with_ci=False)
+    rows, comparisons = [], []
+    for model, row in metrics.iterrows():
+        rows.append({"target": target, "model": model, "target_mode": "close_to_close", "fold": "all",
+                     **{k: row.get(k, "") for k in ("n", "accuracy", "balanced_accuracy",
+                                                    "log_loss", "brier", "auc_gap", "auc_session")}})
+    baseline = "cand headline_5y"
+    best_single = min((m for m in metrics.index if m.startswith("cand ")), key=lambda m: metrics.loc[m, "log_loss"])
+    for model in metrics.index:
+        if not model.startswith("ens "):
+            continue
+        for ref, label in ((baseline, "현행 대표"), (best_single, "최선 단일")):
+            for metric in ("balanced_accuracy", "log_loss"):
+                d = ns["paired_delta_ci"](predictions, model, ref, metric)
+                comparisons.append({"target": target, "comparison": f"{model} − {ref} ({label})",
+                                    "metric": metric, "delta": d["delta"], "ci_low": d["lo"],
+                                    "ci_high": d["hi"], "common_n": d["n"],
+                                    "verdict": verdict_for(metric, d["lo"], d["hi"])})
+    write_json(state.run_dir / f"ensemble_{target}.json",
+               {"timing": timing, "weights_by_fold": chosen_weights, "best_single": best_single,
+                "grid": list(ENSEMBLE_WEIGHT_GRID), "comparisons": comparisons})
+    write_metrics_named(state, comparisons, "comparisons.csv")
+    state.mark(unit, {"candidates": list(ENSEMBLE_CANDIDATES), "best_single": best_single,
+                      "evaluation_days": int(metrics["n"].max())})
+    return rows
+
+
+def _select_on(probs_a, probs_b, y_inner):
+    """내부 구간 배열이 이미 잘려 있을 때의 격자 선택."""
+    return select_pair_weight(probs_a, probs_b, y_inner, np.arange(len(y_inner)))
+
+
+# ---------------------------------------------------------------------------
+# P08 — 확률 보정과 예측 보류
+# ---------------------------------------------------------------------------
+ABSTAIN_THRESHOLDS = (None, .5, .6, .7)
+
+
+def abstention_table(probs, y):
+    """최대 확률이 임계치 이상인 날만 고른 정확도와 coverage. 0건이면 정확도는 NaN."""
+    probs, y = np.asarray(probs, dtype=float), np.asarray(y, dtype=int)
+    conf, pred = probs.max(axis=1), probs.argmax(axis=1)
+    overall = float(np.mean(pred == y)) if len(y) else float("nan")
+    rows = []
+    for threshold in ABSTAIN_THRESHOLDS:
+        mask = np.ones(len(y), dtype=bool) if threshold is None else conf >= threshold
+        selected = int(mask.sum())
+        rows.append({"threshold": "none" if threshold is None else str(threshold),
+                     "selected": selected, "total": int(len(y)),
+                     "coverage": selected / len(y) if len(y) else float("nan"),
+                     "selected_accuracy": float(np.mean(pred[mask] == y[mask])) if selected else float("nan"),
+                     "overall_accuracy": overall})
+    return rows
+
+
+def reliability_bins(probs, y, n_bins=5):
+    """최대 확률을 구간으로 나눠 구간별 평균 확률과 실제 적중률을 낸다."""
+    probs, y = np.asarray(probs, dtype=float), np.asarray(y, dtype=int)
+    conf, hit = probs.max(axis=1), (probs.argmax(axis=1) == y)
+    edges = np.linspace(1 / 3, 1.0, n_bins + 1)
+    out = []
+    for lo, hi in zip(edges[:-1], edges[1:]):
+        mask = (conf >= lo) & (conf < hi if hi < 1.0 else conf <= hi)
+        out.append({"bin": f"[{lo:.2f}, {hi:.2f})", "count": int(mask.sum()),
+                    "mean_confidence": float(conf[mask].mean()) if mask.any() else float("nan"),
+                    "hit_rate": float(hit[mask].mean()) if mask.any() else float("nan")})
+    return out
+
+
+def run_p08(target, mode, storage, state, run_notebook_fn=None):
+    """대표 모델의 외부 OOF 확률로 온도 보정 전후·신뢰도 구간·보류 임계치를 진단한다.
+
+    새 보정을 만들지 않는다. 노트북의 fit_direction_model이 이미 고른 온도(temperature)를
+    '전'(온도 1)과 '후'로 나눠 같은 날짜에서 비교한다. 임계치 선택은 각 폴드 학습 구간 끝
+    6개월(내부)에서 하고, 외부 구간에서 다시 고르지 않는다.
+    """
+    unit = f"{target}:calibration"
+    if state.is_done(unit):
+        print(f"  이미 완료된 단위 건너뜀: {unit} (metrics.csv 유지)")
+        return None
+    if run_notebook_fn is None:
+        sys.path.insert(0, str(ROOT / "tools"))
+        from run_notebook import run_notebook as run_notebook_fn
+
+    snapshot = snapshot_paths(storage, target)
+    ns = run_notebook_fn(Path(storage) / target, targets=target,
+                         quick=(mode == "quick"), use_cache=bool(snapshot))[target]
+    features, y, dates, folds = ns["market_X"], ns["y"], ns["dates"], ns["folds"]
+    seed, selection = ns.get("SEED", 42), ns.get("SELECTION_METRIC", "log_loss")
+
+    frames, inner_choice, temps = [], [], []
+    for fold in folds:
+        tr, te = fold["train_idx"], fold["test_idx"]
+        raw, cal = [], []
+        for family in ("Logistic", "LightGBM"):
+            fitted = ns["fit_direction_model"](features, y, tr, family, seed=seed, selection=selection)
+            base = ns["aligned_probabilities"](fitted["estimator"], features[te])
+            raw.append(base)
+            cal.append(ns["temperature_probabilities"](base, fitted["temperature"]))
+            temps.append({"fold": fold["fold"], "family": family, "temperature": fitted["temperature"]})
+        raw_p, cal_p = np.mean(raw, axis=0), np.mean(cal, axis=0)
+        frames.append(ns["prediction_frame"]("calib before", dates[te], y[te], raw_p, fold["fold"]))
+        frames.append(ns["prediction_frame"]("calib after", dates[te], y[te], cal_p, fold["fold"]))
+        # 임계치 선택: 내부 구간(학습 끝 6개월)에서 정확도가 가장 높은 임계치.
+        train_dates = pd.DatetimeIndex(dates)[tr]
+        split = train_dates[-1] - pd.DateOffset(months=6)
+        inner_te, inner_tr = tr[train_dates > split], tr[train_dates <= split]
+        chosen = "none"
+        if len(inner_te) >= 20 and len(inner_tr) >= MIN_TRAIN_ROWS:
+            inner_p = _ensemble_probabilities(ns, features, y, inner_tr, inner_te)
+            table = abstention_table(inner_p, y[inner_te])
+            valid = [r for r in table if r["selected"] >= 10]
+            chosen = max(valid, key=lambda r: r["selected_accuracy"])["threshold"] if valid else "none"
+        inner_choice.append({"fold": fold["fold"], "chosen_threshold": chosen})
+
+    predictions = pd.concat(frames, ignore_index=True)
+    metrics = ns["summarize_predictions"](predictions, with_ci=False)
+    after = predictions[predictions["model"] == "calib after"].sort_values("date")
+    probs_after = after[["p_down", "p_flat", "p_up"]].to_numpy()
+    y_after = after["y_true"].to_numpy()
+
+    rows = []
+    for model, row in metrics.iterrows():
+        rows.append({"target": target, "model": model, "target_mode": "close_to_close", "fold": "all",
+                     **{k: row.get(k, "") for k in ("n", "accuracy", "balanced_accuracy",
+                                                    "log_loss", "brier", "auc_gap", "auc_session")}})
+    comparisons = []
+    for metric in ("balanced_accuracy", "log_loss", "accuracy"):
+        d = ns["paired_delta_ci"](predictions, "calib after", "calib before", metric)
+        comparisons.append({"target": target, "comparison": "온도 보정 후 − 전", "metric": metric,
+                            "delta": d["delta"], "ci_low": d["lo"], "ci_high": d["hi"], "common_n": d["n"],
+                            "verdict": verdict_for(metric, d["lo"], d["hi"])})
+    argmax_same = bool((probs_after.argmax(axis=1) ==
+                        predictions[predictions["model"] == "calib before"].sort_values("date")
+                        [["p_down", "p_flat", "p_up"]].to_numpy().argmax(axis=1)).all())
+    write_json(state.run_dir / f"calibration_{target}.json", {
+        "temperatures": temps, "argmax_unchanged_by_temperature": argmax_same,
+        "reliability_after": reliability_bins(probs_after, y_after),
+        "reliability_before": reliability_bins(
+            predictions[predictions["model"] == "calib before"].sort_values("date")[["p_down", "p_flat", "p_up"]].to_numpy(),
+            y_after),
+        "abstention_outer_after": abstention_table(probs_after, y_after),
+        "inner_threshold_choice_by_fold": inner_choice,
+        "comparisons": comparisons,
+        "note": "보류 임계치는 내부 구간에서 골랐다. 외부 표는 모든 임계치를 나란히 보여 줄 뿐 선택 근거가 아니다.",
+    })
+    write_metrics_named(state, comparisons, "comparisons.csv")
+    state.mark(unit, {"argmax_unchanged": argmax_same, "evaluation_days": int(metrics["n"].max())})
+    return rows
+
+
+# ---------------------------------------------------------------------------
+# P09 — 갭과 장중의 별도 학습
+# ---------------------------------------------------------------------------
+TARGET_LEGS = ("close_to_close", "gap", "session")
+
+
+def decompose_returns(bars):
+    """종가→종가를 갭(전일 종가→시가)과 세션(시가→종가)으로 나눈다.
+
+    같은 봉의 open·close만 쓰므로 분할·배당 조정이 두 값에 같은 비율로 걸리면 그대로 성립한다.
+    항등식 (1+gap)(1+session)-1 = close_to_close 를 테스트로 고정한다.
+    """
+    close, open_ = bars["close"].astype(float), bars["open"].astype(float)
+    prev_close = close.shift(1)
+    return pd.DataFrame({
+        "close_to_close": close / prev_close - 1,
+        "gap": open_ / prev_close - 1,
+        "session": close / open_ - 1,
+    }, index=bars.index)
+
+
+def leg_labels(returns, band):
+    """하락 0 / 보합 1 / 상승 2. 수익률이 NaN이면 NaN."""
+    r, b = np.asarray(returns, dtype=float), np.asarray(band, dtype=float)
+    out = np.where(r < -b, 0., np.where(r > b, 2., 1.))
+    out[~np.isfinite(r) | ~np.isfinite(b)] = np.nan
+    return out
+
+
+def session_pnl_bp(session_returns, predictions, cost_bp=20.):
+    """장중 방향 예측대로 시가 진입·종가 청산했을 때의 일평균 손익(bp). 보합은 미거래.
+
+    상승 예측은 롱, 하락 예측은 숏. 비용은 거래일마다 왕복 cost_bp를 뺀다.
+    거래일이 없으면 NaN.
+    """
+    session, pred = np.asarray(session_returns, dtype=float), np.asarray(predictions, dtype=int)
+    side = np.where(pred == 2, 1., np.where(pred == 0, -1., 0.))
+    traded = side != 0
+    if not traded.any():
+        return float("nan"), float("nan")
+    gross = float((side[traded] * session[traded]).mean() * 1e4)
+    return gross, gross - float(cost_bp)
+
+
+def run_p09(target, mode, storage, state, run_notebook_fn=None):
+    """세 타깃(종가→종가·갭·세션)을 각각 학습해 나란히 비교한다.
+
+    특징은 P03에서 고정한 시세만 입력(전일까지의 정보)으로 셋 다 동일하다. 세션 타깃의
+    정답에는 그날 시가·종가가 들어가지만 특징에는 시가가 없다 — 07:00 예측 시점의 정보다.
+    갭·세션 확률을 합쳐 종가→종가 확률을 만들지 않는다.
+    """
+    unit = f"{target}:legs"
+    if state.is_done(unit):
+        print(f"  이미 완료된 단위 건너뜀: {unit} (metrics.csv 유지)")
+        return None
+    if run_notebook_fn is None:
+        sys.path.insert(0, str(ROOT / "tools"))
+        from run_notebook import run_notebook as run_notebook_fn
+
+    snapshot = snapshot_paths(storage, target)
+    ns = run_notebook_fn(Path(storage) / target, targets=target,
+                         quick=(mode == "quick"), use_cache=bool(snapshot))[target]
+    features, dates, folds = ns["market_X"], pd.DatetimeIndex(ns["dates"]), ns["folds"]
+    cost_bp = float(ns.get("COST_BP", 20.))
+    vol_mult = float(ns.get("VOL_BAND_MULT", .3))
+
+    bars = ns["raw"]["target"].copy()
+    bars.index = pd.DatetimeIndex(bars.index).tz_localize(None).normalize()
+    legs = decompose_returns(bars).reindex(dates)
+    # 시가가 없는 봉(유령봉 제거 등)은 갭·세션 라벨을 만들 수 없다. 그 날짜는 두 타깃에서 빠진다.
+    labels = {}
+    for leg in TARGET_LEGS:
+        band = legs[leg].rolling(20).std().shift(1) * vol_mult
+        labels[leg] = leg_labels(legs[leg], band)
+    # 원래 종가→종가 라벨은 노트북 y와 같은 밴드 규칙이지만, 정합성 확인을 위해 노트북 y를 쓴다.
+    labels["close_to_close"] = ns["y"].astype(float)
+
+    frames, coverage, timings = [], {}, {}
+    import time
+    for leg in TARGET_LEGS:
+        started = time.time()
+        y_leg = labels[leg]
+        valid = np.isfinite(y_leg)
+        y_int = np.where(valid, y_leg, 1).astype(int)
+        kept = 0
+        for fold in folds:
+            tr = fold["train_idx"][valid[fold["train_idx"]]]
+            te = fold["test_idx"][valid[fold["test_idx"]]]
+            if len(tr) < MIN_TRAIN_ROWS or len(te) < 20 or len(np.unique(y_int[tr])) < 3:
+                continue
+            probs = _ensemble_probabilities(ns, features, y_int, tr, te)
+            frames.append(ns["prediction_frame"](f"leg {leg}", dates[te], y_int[te], probs, fold["fold"],
+                                                 extra={"session_ret": legs["session"].to_numpy()[te]}))
+            kept += len(te)
+        coverage[leg] = {"days": kept, "missing_labels": int((~valid).sum())}
+        timings[leg] = round(time.time() - started, 1)
+        print(f"  {leg}: 평가 {kept}일 · 라벨 결측 {coverage[leg]['missing_labels']} · {timings[leg]}초")
+
+    predictions = pd.concat(frames, ignore_index=True)
+    metrics = ns["summarize_predictions"](predictions, with_ci=False)
+    rows = []
+    for model, row in metrics.iterrows():
+        leg = model.replace("leg ", "")
+        rec = {"target": target, "model": model, "leg": leg, "target_mode": leg, "fold": "all",
+               **{k: row.get(k, "") for k in ("n", "accuracy", "balanced_accuracy",
+                                              "log_loss", "brier", "auc_gap", "auc_session")}}
+        sub = predictions[predictions["model"] == model]
+        if leg == "session":
+            gross, net = session_pnl_bp(sub["session_ret"].to_numpy(), sub["y_pred"].to_numpy(), cost_bp)
+            rec["session_bp_gross"], rec["session_bp_net"] = gross, net
+        rows.append(rec)
+    # 각 타깃을 그 타깃의 '항상 보합'과 비교(타깃마다 사전확률이 다르므로 서로 비교하지 않는다)
+    comparisons = []
+    for leg in TARGET_LEGS:
+        model = f"leg {leg}"
+        if model not in metrics.index:
+            continue
+        sub = predictions[predictions["model"] == model]
+        prior_frames = []
+        for fold_id, g in sub.groupby("fold"):
+            counts = np.bincount(g["y_true"].to_numpy(), minlength=3).astype(float) + 1
+            prior = counts / counts.sum()
+            prior_frames.append(ns["prediction_frame"](f"prior {leg}", g["date"], g["y_true"],
+                                                       np.tile(prior, (len(g), 1)), fold_id,
+                                                       y_pred=np.ones(len(g), dtype=int)))
+        both = pd.concat([sub, pd.concat(prior_frames, ignore_index=True)], ignore_index=True)
+        for metric in ("balanced_accuracy", "log_loss"):
+            d = ns["paired_delta_ci"](both, model, f"prior {leg}", metric)
+            comparisons.append({"target": target, "comparison": f"{leg} 모델 − 사전확률(보합)", "metric": metric,
+                                "delta": d["delta"], "ci_low": d["lo"], "ci_high": d["hi"],
+                                "common_n": d["n"], "verdict": verdict_for(metric, d["lo"], d["hi"])})
+    write_json(state.run_dir / f"legs_{target}.json",
+               {"coverage": coverage, "timings": timings, "cost_bp": cost_bp, "comparisons": comparisons,
+                "note": "특징은 셋 다 전일까지의 시세만. 세션 정답에만 당일 시가·종가 사용. 갭·세션 확률을 합쳐 종가→종가를 만들지 않는다."})
+    write_metrics_named(state, comparisons, "comparisons.csv")
+    state.mark(unit, {"legs": list(TARGET_LEGS), "coverage": coverage})
+    return rows
+
+
+TASK_RUNNERS = {"P00": run_p00, "P03": run_p03, "P04": run_p04, "P05": run_p05,
+                "P06": run_p06, "P07": run_p07, "P08": run_p08, "P09": run_p09}
 
 
 # ---------------------------------------------------------------------------
@@ -868,6 +1300,14 @@ def execute(task, target, mode, storage, resume, run_notebook_fn=None):
     elif task == "P06":
         config = {"task": "P06", "mode": mode, "retrain_every": list(RETRAIN_CANDIDATES),
                   "baseline": "fold", "window": BASELINE_WINDOW}
+    elif task == "P07":
+        config = {"task": "P07", "mode": mode, "candidates": list(ENSEMBLE_CANDIDATES),
+                  "grid": list(ENSEMBLE_WEIGHT_GRID)}
+    elif task == "P08":
+        config = {"task": "P08", "mode": mode,
+                  "thresholds": ["none" if t is None else t for t in ABSTAIN_THRESHOLDS]}
+    elif task == "P09":
+        config = {"task": "P09", "mode": mode, "legs": list(TARGET_LEGS)}
     else:
         config = {"mode": mode}
     identity = {

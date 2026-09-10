@@ -752,7 +752,8 @@ def _pending_status(daily, ensemble_model, last_scored_date):
     return {"date": pd.Timestamp(newest), "items": items} if items else None
 
 
-def review_ledger(daily, bars, ensemble_model="Mean ensemble", windows=(20, 60), min_alert_n=20):
+def review_ledger(daily, bars, ensemble_model="Mean ensemble", windows=(20, 60), min_alert_n=20,
+                  nominal_coverage=0.80):
     """실제 사전 예측(daily_comparison)만으로 최근 성능을 계산하고 경고를 만든다.
 
     백테스트 숫자와 섞지 않는다. 반환:
@@ -804,6 +805,8 @@ def review_ledger(daily, bars, ensemble_model="Mean ensemble", windows=(20, 60),
             prior_ll = float(-np.sum(freq * np.log(np.clip(freq, 1e-7, 1.))))
             rows.append({"window": w, "kind": "direction", "horizon_days": 1, "n": len(d),
                          "hit_rate": float(d["direction_correct"].mean()),
+                         # 비교 기준: 항상 최빈 클래스를 찍었을 때의 적중률. 도넛 눈금에 쓴다.
+                         "prior_hit_rate": float(freq.max()),
                          "flat_share": float(freq.loc[1]),
                          "mean_log_loss": float(d["log_loss"].mean()), "prior_log_loss": prior_ll})
         for kind in ("open", "price"):
@@ -823,6 +826,8 @@ def review_ledger(daily, bars, ensemble_model="Mean ensemble", windows=(20, 60),
                     slope = float(np.sum(raw[ok] * actual[ok]) / np.sum(raw[ok] ** 2))
                 rows.append({"window": w, "kind": kind, "horizon_days": int(h), "n": len(g),
                              "interval_coverage": float(g["interval_hit"].mean()) if g["interval_hit"].notna().any() else np.nan,
+                             # 명목 커버리지(구간을 만들 때 목표로 삼은 확률). 도넛 눈금에 쓴다.
+                             "nominal_coverage": nominal_coverage,
                              "mae_return": float(np.mean(np.abs(actual - point))),
                              "zero_mae_return": float(np.mean(np.abs(actual))),
                              "signal_days": int(g["predicted_return"].notna().sum()),
@@ -874,6 +879,57 @@ def _fmt_num(x, kind="num"):
     if kind == "bp":
         return f"{x:+.1f}bp"
     return f"{x:.4f}"
+
+
+def donut(value, baseline=None, size=96, color="#1a5490", muted=False):
+    """도넛 게이지 하나. value·baseline 은 0~1 비율.
+
+    baseline 이 있으면 그 위치에 눈금을 그린다 — '60%'라는 숫자만으로는 잘한 것인지 알 수 없고,
+    방향 예측은 기준선(클래스 빈도)을, 구간은 명목 커버리지를 넘겨야 의미가 있기 때문이다.
+    """
+    r, stroke = size / 2 - 9, 9
+    circumference = 2 * np.pi * r
+    ratio = 0.0 if value is None or not np.isfinite(value) else max(0.0, min(1.0, float(value)))
+    ring = "#c9ced6" if muted else color
+    parts = [f'<svg viewBox="0 0 {size} {size}" width="{size}" height="{size}" role="img">',
+             f'<circle cx="{size/2}" cy="{size/2}" r="{r}" fill="none" stroke="#eceef1" stroke-width="{stroke}"/>',
+             f'<circle cx="{size/2}" cy="{size/2}" r="{r}" fill="none" stroke="{ring}" stroke-width="{stroke}" '
+             f'stroke-linecap="round" stroke-dasharray="{circumference * ratio:.2f} {circumference:.2f}" '
+             f'transform="rotate(-90 {size/2} {size/2})"/>']
+    if baseline is not None and np.isfinite(baseline):
+        angle = -np.pi / 2 + 2 * np.pi * max(0.0, min(1.0, float(baseline)))
+        x1, y1 = size/2 + (r - stroke/2 - 1) * np.cos(angle), size/2 + (r - stroke/2 - 1) * np.sin(angle)
+        x2, y2 = size/2 + (r + stroke/2 + 1) * np.cos(angle), size/2 + (r + stroke/2 + 1) * np.sin(angle)
+        parts.append(f'<line x1="{x1:.1f}" y1="{y1:.1f}" x2="{x2:.1f}" y2="{y2:.1f}" '
+                     f'stroke="#6b7178" stroke-width="2"/>')
+    text = "—" if value is None or not np.isfinite(value) else f"{ratio * 100:.0f}%"
+    parts.append(f'<text x="{size/2}" y="{size/2 + 6}" text-anchor="middle" font-size="19" '
+                 f'font-weight="700" fill="{"#8a9199" if muted else "#1a1a1a"}">{text}</text></svg>')
+    return "".join(parts)
+
+
+def rolling_gauges_html(cards, min_samples=10):
+    """누적 성능을 도넛으로. 표본이 적으면 흐리게 하고 그 사실을 적는다.
+
+    표가 정확하지만 숫자가 많아 읽기 어렵고, 특히 초기에는 n 이 작아 비교가 안 된다. 도넛으로
+    한눈에 보이게 하되, 큰 숫자가 정확해 보이는 착시를 막으려고 표본이 적으면 회색으로 낮춘다.
+    """
+    if not cards:
+        return ""
+    items = ""
+    for card in cards:
+        muted = card["n"] < min_samples
+        note = (f'표본 {card["n"]}개 — 판단 이르다' if muted
+                else f'n={card["n"]}' + (f' · 기준선 {card["baseline"]:.0%}' if card.get("baseline") is not None else ""))
+        items += ('<div style="flex:0 0 auto;text-align:center;min-width:118px">'
+                  + donut(card["value"], card.get("baseline"), muted=muted,
+                          color=card.get("color", "#1a5490"))
+                  + f'<div style="font-size:12px;font-weight:600;margin-top:4px;color:'
+                    f'{"#8a9199" if muted else "#1a1a1a"}">{card["label"]}</div>'
+                  + f'<div style="font-size:11px;color:#8a9199">{card["metric"]}</div>'
+                  + f'<div style="font-size:11px;color:#8a9199">{note}</div></div>')
+    return ('<div style="display:flex;gap:14px;flex-wrap:wrap;justify-content:flex-start;'
+            'margin:10px 0 2px">' + items + '</div>')
 
 
 def ledger_section_html(review, ensemble_name, updated_note=""):
@@ -1000,11 +1056,31 @@ def ledger_section_html(review, ensemble_name, updated_note=""):
         rrows += (f'<tr><td style="padding:7px 11px;border-top:1px solid #eee">최근 {int(r["window"])}일 · {label}</td>'
                   f'<td style="padding:7px 11px;border-top:1px solid #eee;text-align:right">{int(r["n"])}</td>'
                   f'<td style="padding:7px 11px;border-top:1px solid #eee">{detail}</td></tr>')
-    rtable = ('<div style="overflow-x:auto;margin-top:10px"><table style="width:100%;min-width:520px;border-collapse:collapse;'
+    # 표는 정확하지만 숫자가 많아 읽기 어렵다. 창별로 핵심 비율만 도넛으로 먼저 보여 주고
+    # 자세한 수치는 접어 둔다. 표본이 적으면 도넛을 흐리게 해 큰 숫자가 정확해 보이지 않게 한다.
+    gauges = ""
+    for window in sorted({int(w) for w in roll["window"]}) if len(roll) else []:
+        cards = []
+        for _, r in roll[roll["window"] == window].iterrows():
+            if r["kind"] == "direction":
+                cards.append({"label": "종가 방향", "metric": "적중률", "value": r["hit_rate"],
+                              "baseline": r.get("prior_hit_rate"), "n": int(r["n"])})
+            else:
+                label = "시초가(갭)" if r["kind"] == "open" else f'{int(r["horizon_days"])}거래일 종가'
+                cards.append({"label": label, "metric": "구간 적중", "value": r["interval_coverage"],
+                              "baseline": r.get("nominal_coverage"), "n": int(r["signal_days"]),
+                              "color": "#1e6b34"})
+        if cards:
+            gauges += (f'<div style="font-size:12px;color:#6b7178;margin-top:10px">최근 {window}일 '
+                       '<span style="color:#8a9199">· 사전 예측만 · 눈금은 기준선</span></div>'
+                       + rolling_gauges_html(cards))
+    rtable = (gauges + '<details style="margin-top:6px"><summary style="font-size:12px;color:#6b7178;cursor:pointer">'
+              '자세한 수치 보기</summary>'
+              '<div style="overflow-x:auto;margin-top:6px"><table style="width:100%;min-width:520px;border-collapse:collapse;'
               'font-size:12px;border:1px solid #e5e5e5"><tr style="background:#fafafa;font-size:11px;color:#6b7178">'
               '<th style="padding:8px 11px;text-align:left">창</th><th style="padding:8px 11px;text-align:right">n</th>'
               '<th style="padding:8px 11px;text-align:left">누적 성능 (사전 예측만)</th></tr>'
-              f'{rrows}</table></div>')
+              f'{rrows}</table></div></details>')
     alerts = ""
     if review["alerts"]:
         alerts = ('<div style="background:#fdf3f2;border-left:4px solid #b5453c;padding:10px 14px;margin-top:10px;font-size:13px">'

@@ -380,3 +380,83 @@ class FlowChartLayoutTests(unittest.TestCase):
             r'<rect x="[\d.]+" y="([\d.]+)" width="[\d.]+" height="[\d.]+" fill="#(?:4c78a8|b5453c)"', svg)]
         self.assertGreaterEqual(min(tops), 40, "막대가 그림 영역(TOP=40) 위로 올라갔습니다")
         self.assertIn('clip-path="url(#flowplot)"', svg)
+
+
+class RollingGaugeTests(unittest.TestCase):
+    """누적 성능을 도넛으로 보여 주되, 표본이 적을 때 큰 숫자가 정확해 보이면 안 된다."""
+
+    def test_donut_arc_matches_the_ratio(self):
+        import re
+        svg = fu.donut(0.75)
+        dash = re.search(r'stroke-dasharray="([\d.]+) ([\d.]+)"', svg)
+        filled, total = float(dash.group(1)), float(dash.group(2))
+        self.assertAlmostEqual(filled / total, 0.75, places=3)
+        self.assertIn(">75%<", svg)
+
+    def test_baseline_tick_is_drawn_only_when_given(self):
+        self.assertIn('stroke="#6b7178"', fu.donut(0.6, baseline=0.4))
+        self.assertNotIn('stroke="#6b7178"', fu.donut(0.6))
+
+    def test_missing_value_shows_a_dash(self):
+        self.assertIn(">—<", fu.donut(float("nan")))
+
+    def test_small_sample_is_muted_and_labelled(self):
+        cards = [{"label": "종가 방향", "metric": "적중률", "value": .6, "baseline": .4, "n": 3}]
+        html = fu.rolling_gauges_html(cards, min_samples=10)
+        self.assertIn("표본 3개 — 판단 이르다", html)
+        self.assertIn("#c9ced6", html)          # 회색 링
+        big = fu.rolling_gauges_html([dict(cards[0], n=25)], min_samples=10)
+        self.assertIn("n=25 · 기준선 40%", big)
+        self.assertNotIn("#c9ced6", big)
+
+    def test_section_shows_gauges_and_keeps_the_table_collapsed(self):
+        days = pd.bdate_range("2026-06-01", "2026-09-08")
+        rng = np.random.default_rng(0)
+        bars = pd.DataFrame({"open": 100 + rng.normal(0, 1, len(days)),
+                             "close": 100 + rng.normal(0, 1, len(days))}, index=days)
+        bars["adj_close"] = bars["close"]
+        rows = []
+        for i, day in enumerate(days[-25:]):
+            common = dict(run_id="r", target_date=day, status="scored", is_prospective=True,
+                          horizon_days=1, current_close=100.)
+            rows += [
+                dict(common, record_id=f"d{i}", kind="direction", model="Mean ensemble",
+                     prediction="상승", p_down=.2, p_flat=.3, p_up=.5, band=.01,
+                     actual_class=int(rng.integers(0, 3)),
+                     direction_correct=float(rng.random() < .55), log_loss=1.1, actual_return=.001),
+                dict(common, record_id=f"o{i}", kind="open", model="Ridge", predicted_open=101.,
+                     center_open=101., low_open=99., high_open=103., predicted_return=.01,
+                     raw_predicted_return=.01, actual_open=101.,
+                     interval_hit=float(rng.random() < .83), return_error=-.002,
+                     actual_return=.01, oof_slope=.5),
+            ]
+        review = fu.review_ledger(pd.DataFrame(rows), bars, ensemble_model="Mean ensemble")
+        html = fu.ledger_section_html(review, "Mean ensemble")
+        self.assertGreaterEqual(html.count("<svg"), 4)        # 창 2개 × 항목 2개
+        self.assertIn("자세한 수치 보기", html)                 # 표는 접어서 유지
+        self.assertIn("기준선 80%", html)                      # 구간은 명목 커버리지가 기준
+        self.assertIn("눈금은 기준선", html)
+
+    def test_rolling_rows_carry_the_baselines(self):
+        days = pd.bdate_range("2026-08-01", "2026-09-08")
+        bars = pd.DataFrame({"open": 100., "close": 100., "adj_close": 100.}, index=days)
+        rows = []
+        for i, day in enumerate(days):
+            common = dict(run_id="r", target_date=day, status="scored", is_prospective=True,
+                          horizon_days=1, current_close=100.)
+            rows += [
+                dict(common, record_id=f"d{i}", kind="direction", model="Mean ensemble",
+                     prediction="상승", p_down=.2, p_flat=.3, p_up=.5, band=.01, actual_class=2,
+                     direction_correct=1., log_loss=.9, actual_return=.01),
+                dict(common, record_id=f"o{i}", kind="open", model="Ridge", predicted_open=101.,
+                     center_open=101., low_open=99., high_open=103., predicted_return=.01,
+                     raw_predicted_return=.01, actual_open=101., interval_hit=1.,
+                     return_error=0., actual_return=.01, oof_slope=.5),
+            ]
+        review = fu.review_ledger(pd.DataFrame(rows), bars, ensemble_model="Mean ensemble",
+                                  nominal_coverage=0.9)
+        roll = review["rolling"]
+        direction = roll[roll["kind"] == "direction"].iloc[0]
+        self.assertAlmostEqual(direction["prior_hit_rate"], 1.0)   # 실제가 모두 같은 클래스
+        interval = roll[roll["kind"] == "open"].iloc[0]
+        self.assertAlmostEqual(interval["nominal_coverage"], 0.9)

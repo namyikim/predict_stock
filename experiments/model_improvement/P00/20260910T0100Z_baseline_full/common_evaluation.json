@@ -1,0 +1,38 @@
+{
+  "samsung": {
+    "models": [
+      "Always flat",
+      "LightGBM",
+      "Logistic",
+      "Mean ensemble",
+      "No NSI ensemble",
+      "No flow ensemble",
+      "No macro ensemble",
+      "No macro price ensemble",
+      "Previous ensemble"
+    ],
+    "common_n": 1362,
+    "union_n": 1362,
+    "identical": true,
+    "first": "2021-01-04",
+    "last": "2026-09-09"
+  },
+  "sk_hynix": {
+    "models": [
+      "Always flat",
+      "LightGBM",
+      "Logistic",
+      "Mean ensemble",
+      "No NSI ensemble",
+      "No flow ensemble",
+      "No macro ensemble",
+      "No macro price ensemble",
+      "Previous ensemble"
+    ],
+    "common_n": 1357,
+    "union_n": 1357,
+    "identical": true,
+    "first": "2021-01-04",
+    "last": "2026-09-09"
+  }
+}

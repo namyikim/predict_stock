@@ -1,0 +1,127 @@
+{
+  "task_id": "P00",
+  "run_id": "20260910T0100Z_baseline_full",
+  "target": [
+    "samsung",
+    "sk_hynix"
+  ],
+  "code_commit": "53fff3ba8ccde258e4a1e7e6e2f448504a13d80f",
+  "data_hash": "93656a4827bf38daa78a",
+  "config_hash": "43881d1e03200a302b3e",
+  "seed": 42,
+  "mode": "full",
+  "target_mode": "close_to_close",
+  "classes": [
+    "down",
+    "flat",
+    "up"
+  ],
+  "status": "completed",
+  "completed_units": [
+    "samsung:baseline",
+    "sk_hynix:baseline"
+  ],
+  "failed_units": [],
+  "config": {
+    "headline_model": "No macro ensemble",
+    "ensemble_models": [
+      "Logistic",
+      "LightGBM"
+    ],
+    "target_mode": "close_to_close",
+    "band_mode": "vol_scaled",
+    "vol_band_mult": 0.3,
+    "start_date": "2015-01-01",
+    "first_test_date": "2021-01-01",
+    "test_months": 6,
+    "rolling_train_years": 5,
+    "cost_bp": 20.0,
+    "seed": 42,
+    "mode": "full",
+    "classes": [
+      "down",
+      "flat",
+      "up"
+    ]
+  },
+  "per_target": {
+    "samsung": {
+      "run_dir": "20260910T005258_aa2f442866d5",
+      "data_snapshot_hash": "855fdf4d8d46b020355d",
+      "config_hash": "92f57958414c79f097af",
+      "versions_hash": null,
+      "runtime": null,
+      "model_rows": 2753,
+      "backtest_range": [
+        "2015-04-01",
+        "2026-09-09"
+      ],
+      "n_folds": 12,
+      "last_samsung_date": "2026-09-09",
+      "prediction_date": "2026-09-10",
+      "quick_mode": false
+    },
+    "sk_hynix": {
+      "run_dir": "20260910T010041_109d732a1e8e",
+      "data_snapshot_hash": "42c2c9c24546d5c593e1",
+      "config_hash": "4f89248afed926b75d78",
+      "versions_hash": null,
+      "runtime": null,
+      "model_rows": 2752,
+      "backtest_range": [
+        "2015-04-01",
+        "2026-09-09"
+      ],
+      "n_folds": 12,
+      "last_samsung_date": "2026-09-09",
+      "prediction_date": "2026-09-10",
+      "quick_mode": false
+    }
+  },
+  "common_evaluation": {
+    "samsung": {
+      "models": [
+        "Always flat",
+        "LightGBM",
+        "Logistic",
+        "Mean ensemble",
+        "No NSI ensemble",
+        "No flow ensemble",
+        "No macro ensemble",
+        "No macro price ensemble",
+        "Previous ensemble"
+      ],
+      "common_n": 1362,
+      "union_n": 1362,
+      "identical": true,
+      "first": "2021-01-04",
+      "last": "2026-09-09"
+    },
+    "sk_hynix": {
+      "models": [
+        "Always flat",
+        "LightGBM",
+        "Logistic",
+        "Mean ensemble",
+        "No NSI ensemble",
+        "No flow ensemble",
+        "No macro ensemble",
+        "No macro price ensemble",
+        "Previous ensemble"
+      ],
+      "common_n": 1357,
+      "union_n": 1357,
+      "identical": true,
+      "first": "2021-01-04",
+      "last": "2026-09-09"
+    }
+  },
+  "artifact_paths": {
+    "metrics": "experiments/model_improvement/P00/20260910T0100Z_baseline_full/metrics.csv",
+    "common_evaluation": "experiments/model_improvement/P00/20260910T0100Z_baseline_full/common_evaluation.json",
+    "raw_outputs": "runs/model_improvement/P00/<target>/runs/<run>/ (Git 미포함)",
+    "snapshot": "runs/model_improvement/P00/<target>/data_cache/ (Git 미포함)"
+  },
+  "note": "P02 수정 전 코드로 실행했다. 백테스트 폴드의 봉은 미래 날짜가 될 수 없어 지표에는 영향이 없다고 보지만, 라이브 예측 행은 다를 수 있다.",
+  "created_at_utc": "2026-09-10T01:04:56.357401+00:00"
+}

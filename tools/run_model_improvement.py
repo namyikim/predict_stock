@@ -40,6 +40,37 @@ MODES = ("quick", "full")
 # 각 작업을 구현할 때 이 표에 한 줄씩 추가한다.
 TASKS = {
     "P00": "현행 기준선과 평가 계약 고정",
+    "P03": "기존 특징군의 추가 가치 비교",
+}
+
+# P03에서 비교하는 특징군. 노트북이 같은 폴드·같은 날짜로 이미 계산해 CSV로 남기므로
+# 여기서 다시 학습하지 않는다(계획 P03: "이미 있는 것을 새로 수집하는 작업으로 바꾸지 않는다").
+FEATURE_GROUPS = {
+    "macro_comparison": {
+        "group": "월별 지표(macro_)",
+        "comparison": "No NSI ensemble − No macro ensemble",
+        "note": "선행지수·반도체 수출 등 월별 통계의 추가 효과",
+    },
+    "nsi_comparison": {
+        "group": "뉴스심리(nsi_)",
+        "comparison": "Mean ensemble − No NSI ensemble",
+        "note": "뉴스심리지수의 추가 효과",
+    },
+    "flow_comparison": {
+        "group": "수급(flow_)",
+        "comparison": "Mean ensemble − No flow ensemble",
+        "note": "외국인·기관 순매수의 추가 효과",
+    },
+    "macro_price_comparison": {
+        "group": "거시 가격(wti_·usdjpy_·krwjpy_)",
+        "comparison": "Mean ensemble − No macro price ensemble",
+        "note": "유가·엔화의 추가 효과",
+    },
+    "improvement_vs_previous": {
+        "group": "설정 선택(참고)",
+        "comparison": "Mean ensemble − Previous ensemble",
+        "note": "특징군이 아니라 설정 변경 효과. 비교용으로만 둔다",
+    },
 }
 
 
@@ -292,7 +323,93 @@ def run_p00(target, mode, storage, state, run_notebook_fn=None):
     return rows
 
 
-TASK_RUNNERS = {"P00": run_p00}
+# ---------------------------------------------------------------------------
+# P03 — 기존 특징군의 추가 가치
+# ---------------------------------------------------------------------------
+def latest_notebook_run(storage, target):
+    """그 종목의 가장 최근 노트북 실행 디렉터리. 없으면 None."""
+    runs = Path(storage) / target / "runs"
+    dirs = [d for d in sorted(runs.iterdir()) if d.is_dir()] if runs.is_dir() else []
+    return dirs[-1] if dirs else None
+
+
+def verdict_for(metric, lo, hi):
+    """계획 4절 판정 규칙. log_loss는 작을수록, 정확도는 클수록 좋다."""
+    if lo is None or hi is None or any(v != v for v in (lo, hi)):
+        return "판단 보류(구간 없음)"
+    if lo <= 0 <= hi:
+        return "동률(CI가 0 포함)"
+    better = hi < 0 if metric == "log_loss" else lo > 0
+    return "추가가 유의하게 우위" if better else "추가가 유의하게 열위"
+
+
+def run_p03(target, mode, storage, state, run_notebook_fn=None):
+    """노트북이 이미 낸 특징군 비교표를 읽어 판정과 함께 계약 형식으로 모은다.
+
+    다시 학습하지 않는다. 같은 폴드·같은 날짜에서 계산된 값이라야 비교가 성립하는데,
+    노트북 실행이 그 조건을 이미 만족하기 때문이다.
+    """
+    import csv
+
+    unit = f"{target}:feature_groups"
+    if state.is_done(unit):
+        print(f"  이미 완료된 단위 건너뜀: {unit} (metrics.csv 유지)")
+        return None
+
+    run_dir = latest_notebook_run(storage, target)
+    if run_dir is None:
+        raise SystemExit(
+            f"{target}의 노트북 실행 결과가 없습니다: {Path(storage) / target / 'runs'}\n"
+            "  먼저 P00을 실행하세요: python tools/run_notebook.py --storage <storage> "
+            f"--targets {target} --use-cache")
+
+    features = []
+    feature_file = run_dir / "feature_list.csv"
+    if feature_file.is_file():
+        with open(feature_file, encoding="utf-8-sig") as stream:
+            features = [row["feature"] for row in csv.DictReader(stream)]
+
+    rows, missing = [], []
+    for name, spec in FEATURE_GROUPS.items():
+        path = run_dir / f"{name}.csv"
+        if not path.is_file():
+            missing.append(name)
+            continue
+        with open(path, encoding="utf-8-sig") as stream:
+            for record in csv.DictReader(stream):
+                lo, hi = float(record["lo"]), float(record["hi"])
+                rows.append({
+                    "target": target, "group": spec["group"],
+                    "comparison": spec["comparison"], "metric": record["metric"],
+                    "delta": record["delta"], "ci_low": record["lo"], "ci_high": record["hi"],
+                    "common_n": record["n"],
+                    "verdict": verdict_for(record["metric"], lo, hi),
+                    "note": spec["note"],
+                })
+    if missing:
+        print(f"  ⚠️ 비교표 없음(그 지표를 못 받은 실행일 수 있다): {', '.join(missing)}")
+
+    # 특징군별 실제 특징 목록. 접두어로 나눈다 — 노트북의 ablation도 접두어로 뺀다.
+    groups = {
+        "월별 지표(macro_)": [f for f in features if f.startswith("macro_")],
+        "뉴스심리(nsi_)": [f for f in features if f.startswith("nsi_")],
+        "수급(flow_)": [f for f in features if f.startswith("flow_")],
+        "거시 가격(wti_·usdjpy_·krwjpy_)": [f for f in features
+                                        if f.startswith(("wti_", "usdjpy_", "krwjpy_"))],
+    }
+    known = {f for names in groups.values() for f in names}
+    groups["시세만(나머지)"] = [f for f in features if f not in known]
+
+    write_json(state.run_dir / f"feature_groups_{target}.json",
+               {"run_dir": str(run_dir), "total_features": len(features),
+                "groups": {k: {"n": len(v), "features": v} for k, v in groups.items()},
+                "missing_comparisons": missing})
+    state.mark(unit, {"comparisons": len(rows), "features": len(features),
+                      "notebook_run": run_dir.name})
+    return rows
+
+
+TASK_RUNNERS = {"P00": run_p00, "P03": run_p03}
 
 
 # ---------------------------------------------------------------------------
@@ -323,7 +440,13 @@ def execute(task, target, mode, storage, resume, run_notebook_fn=None):
     os.environ["PREDICT_STOCK_PUBLISH"] = "false"
 
     storage = Path(storage).resolve()
-    config = p00_config(mode) if task == "P00" else {"mode": mode}
+    if task == "P00":
+        config = p00_config(mode)
+    elif task == "P03":
+        # 비교 대상 목록이 곧 이 작업의 설정이다. 목록이 바뀌면 다른 실험이다.
+        config = {"task": "P03", "mode": mode, "groups": sorted(FEATURE_GROUPS)}
+    else:
+        config = {"mode": mode}
     identity = {
         "task_id": task, "target": target, "mode": mode,
         "data_hash": data_hash(snapshot_paths(storage, target)),

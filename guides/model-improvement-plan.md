@@ -65,7 +65,7 @@
 
 | ID | 완료 | 작업 | 선행 | 실행 부담 | 채택/결론 |
 | --- | --- | --- | --- | --- | --- |
-| P00 | [ ] | 현행 기준선·평가 계약 고정 | 없음 | CPU, 전체 평가는 Colab | 진행 중: 로컬 러너 수정, 고정 데이터 평가 |
+| P00 | [x] | 현행 기준선·평가 계약 고정 | 없음 | CPU, 전체 평가는 Colab | 완료: 두 종목 full 12폴드 (samsung 1,362일 / sk_hynix 1,357일) |
 | P01 | [x] | 한 작업씩 실행·재개하는 실험 러너 | P00 | CPU | 완료: `tools/run_model_improvement.py`, 15개 테스트 통과 |
 | P02 | [x] | 정보 공개 시각·데이터 품질 점검 | P01 | CPU | 완료: 미래 날짜 봉 결함 1건 수정, `tests/test_release_timing.py` 15개 |
 | P03 | [ ] | 기존 특징군의 추가 가치 비교 | P02 | CPU/Colab | 미실행 |
@@ -156,9 +156,9 @@ metrics.csv는 target, model, target_mode, fold, n, accuracy, balanced_accuracy,
 
 - [x] 현행 HEAD, 대표 모델 HEADLINE_MODEL, 실제 사용 특징, 3클래스 밴드, 학습 창·폴드·발행 시각·비용을 기록한다. → 아래 “기준선 계약” 표
 - [x] 기존 산출물에서 재사용 가능한 기준선을 찾고, 새 실행이 필요한 범위만 정한다. 항상 보합·학습 구간 클래스 사전확률·Previous ensemble·현행 대표 모델을 같은 날짜에서 비교한다. → 기존 캐시 재사용 불가(자산 키 불일치)로 스냅샷 신규 고정. 비교 모델 6종이 같은 날짜에서 출력됨
-- [x] 같은 고정 스냅샷으로 quick 동작 확인 후 full 평가를 실행한다. → quick 완료(`experiments/model_improvement/P00/20260910T0000Z_baseline_quick/`), full 실행 중
-- [ ] 노트북 가이드에 기재된 과거 결과와 달라진 이유를 데이터·버전·설정 차이로 구분한다. 재현 불가면 실패 이유를 남기고 P01에 넘길 기준을 명시한다.
-- [ ] 기준선 파일 경로·실제 커밋·다음 작업 P01을 실행 이력에 기록하고 완료 체크한다.
+- [x] 같은 고정 스냅샷으로 quick 동작 확인 후 full 평가를 실행한다. → quick·full 모두 완료. full은 `experiments/model_improvement/P00/20260910T0100Z_baseline_full/`
+- [x] 노트북 가이드에 기재된 과거 결과와 달라진 이유를 데이터·버전·설정 차이로 구분한다. → 재현 불가가 아니라 입력이 달라졌다. ① 스냅샷 2026-09-04→2026-09-09 ② 특징 54→78개(월별·뉴스심리·수급·거시 가격이 이후 추가) ③ 라이브러리 버전 해시는 각 config.json에 기록. 상세는 full 실행의 decision.md
+- [x] 기준선 파일 경로·실제 커밋·다음 작업 P01을 실행 이력에 기록하고 완료 체크한다.
 
 실행 예시(기존 명령, 저장 경로는 종목별 실제 산출 위치를 manifest에 기록):
 
@@ -190,7 +190,24 @@ PREDICT_STOCK_PUBLISH=false PREDICT_STOCK_TARGETS=samsung,sk_hynix python tools/
 스냅샷: samsung `1b535c11f8be69aaea37`, sk_hynix `c12bc46b6e199a08b37a`, 통합 `93656a4827bf38daa78a`.
 학습 행 samsung 2,753 / sk_hynix 2,752, 백테스트 범위 2015-04-01~2026-09-09, 예측일 2026-09-10.
 
-**완료 증거:** 두 종목의 동일 조건 기준선과 실제 평가 날짜 수. quick 완료, full 실행 중.
+**완료 증거:** 두 종목의 동일 조건 기준선과 실제 평가 날짜 수.
+
+full 결과(공식 기준선, `experiments/model_improvement/P00/20260910T0100Z_baseline_full/`):
+
+| | samsung | sk_hynix |
+| --- | ---: | ---: |
+| 학습 행 / 폴드 | 2,753 / 12 | 2,752 / 12 |
+| 평가일 | 1,362 | 1,357 |
+| 평가 구간 | 2021-01-04 ~ 2026-09-09 | 2021-01-04 ~ 2026-09-09 |
+| 스냅샷 해시 | `855fdf4d8d46b020355d` | `42c2c9c24546d5c593e1` |
+| 대표 `No macro ensemble` acc / bal / logloss | 0.4559 / 0.4340 / 1.0283 | 0.5004 / 0.4657 / 1.0136 |
+| `Always flat` logloss | 1.0965 | 1.0923 |
+| `Previous ensemble` logloss | 1.0302 | 1.0197 |
+
+두 종목 모두 9개 모델이 동일한 날짜 집합에서 평가됐다(공통=합집합).
+
+이 실행은 P02 수정 전 코드로 돌았다. 과거 폴드의 봉은 미래 날짜가 될 수 없어 지표에는 영향이
+없다고 보지만 라이브 예측 행은 다를 수 있다.
 
 ### P01 — 최소 실험 러너와 재개 기능
 
@@ -474,13 +491,14 @@ P00 이후에는 작업 ID만 바꿔 요청한다. Colab 실행이 필요한 경
 | --- | --- | --- | --- | --- |
 | 2026-09-09 | PLAN | 이 문서 및 README 링크 | 저장소 문서·핵심 함수·기존 Transformer 결과 확인 | 계획 생성. P00부터 시작 |
 | 2026-09-10 | P00 사전 수정 | `tools/run_notebook.py`, `tests/test_run_notebook.py` | 8개 오프라인 회귀 테스트 통과 | 기존 CLI가 IPython 히스토리 부재로 둘째 종목을 건너뛰던 결함 수정. P00 전체 완료 아님 |
+| 2026-09-10 | P00 full | `experiments/model_improvement/P00/20260910T0100Z_baseline_full/` | 두 종목 12폴드 완주, 9개 모델 동일 날짜 확인 | **완료.** 공식 기준선 확정. samsung 1,362일 / sk_hynix 1,357일 |
 | 2026-09-10 | P02 | `tests/test_release_timing.py`, 노트북 `drop_unclosed_last_bar` | `discover -p test_release_timing.py` 15개 통과 | 완료. 미래 날짜 봉을 마감된 봉으로 취급하던 결함 수정(실제 스냅샷의 usdjpy·usdkrw에서 확인). 공통 평가 집합 276일 저장 |
 | 2026-09-10 | P01 | `tools/run_model_improvement.py`, `tests/test_model_improvement_runner.py` | `discover -p test_model_improvement_runner.py` 15개 통과 | 완료. 재개·해시 격리·원자적 쓰기·발행 차단 검증. 구현 중 결함 2건(재개 시 반환형 불일치, 같은 초 run_id 충돌) 발견·수정 |
 | 2026-09-10 | P00 quick | `experiments/model_improvement/P00/20260910T0000Z_baseline_quick/` | 두 종목 46셀 무오류 완료, 평가 276일 | 기준선 계약 기록·스냅샷 고정 완료. 기존 캐시는 자산 키 불일치로 폐기. full 평가 실행 중 |
 
-- 현재 작업: P00 full 평가 실행 중(quick·계약 기록 완료). P01·P02 완료
-- 완료한 신규 작업: 2/16 (P01, P02)
-- 다음 작업: P00 full 결과 기록 → P03
+- 현재 작업: P03 — 기존 특징군의 추가 가치 비교
+- 완료한 신규 작업: 3/16 (P00, P01, P02)
+- 다음 작업: P03
 - 보류 작업: 없음
 - 마지막 검증 결과: `python -m unittest discover -s tests -p test_run_notebook.py -v` — 8개 통과. 전체 기존 테스트는 Windows 출력 인코딩 오류가 확인되어 `PYTHONIOENCODING=utf-8`로 재검증 중.
 - 재개 시 먼저 읽을 파일: 이 문서의 P00, guides/validation.md, guides/running.md

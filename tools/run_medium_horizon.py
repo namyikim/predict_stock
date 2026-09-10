@@ -21,6 +21,7 @@ M01 — 평가 계약(개발 6개월 외부 폴드 + 마지막 12개월 잠금 +
 """
 import argparse
 import hashlib
+import json
 import os
 import pickle
 import sys
@@ -50,7 +51,8 @@ TASKS = {"M00": "현행 5·20일 가격 모델 기준선과 실패 유형 진단
          "M03": "Ridge 규제 강도·학습 창 내부 선택(alpha {100,1000,10000} × {5년, expanding})",
          "M04": "5·20일 직접 방향 확률 모델(규제 Logistic) vs 학습 구간 사전확률",
          "M05": "예측 구간(simple 내부 q / HAR / 최근 확정 잔차 252개)과 보류 정책 비교",
-         "M06": "국내 반도체 패널 공동 학습(pooled Ridge) vs 같은 입력 단독 모델 vs 현행"}
+         "M06": "국내 반도체 패널 공동 학습(pooled Ridge) vs 같은 입력 단독 모델 vs 현행",
+         "M07": "고정 후보의 잠금 평가 1회와 사전 예측 관찰 현황"}
 HORIZON_LABELS = {5: "1주일", 20: "1개월"}
 
 # 평가 계약(계획 4절). 점수를 보기 전에 고정한다.
@@ -1694,8 +1696,214 @@ def run_m06(target, mode, storage, results_dir, state, run_notebook_fn=None):
     return collect_rows(state, target)
 
 
-TASK_RUNNERS = {"M00": run_m00, "M01": run_m01, "M02": run_m02, "M03": run_m03, "M04": run_m04, "M05": run_m05, "M06": run_m06}
-TASK_CONFIGS = {"M00": m00_config, "M01": m01_config, "M02": m02_config, "M03": m03_config, "M04": m04_config, "M05": m05_config, "M06": m06_config}
+# ---------------------------------------------------------------------------
+# M07 — 고정 후보, 잠금 평가 1회, 관찰 현황
+# ---------------------------------------------------------------------------
+# 개발 폴드(M05)에서 기준을 통과한 후보만. 2026-09-10 에 고정했고 잠금 점수를 본 뒤 바꾸지 않는다.
+LOCKED_CANDIDATES = {
+    ("sk_hynix", 5): [{"name": "har_interval", "purpose": "interval", "ledger_model": "Candidate HAR interval"},
+                      {"name": "strict_gate", "purpose": "price", "ledger_model": "Candidate strict gate"}],
+    ("sk_hynix", 20): [{"name": "har_interval", "purpose": "interval", "ledger_model": "Candidate HAR interval"}],
+}
+FIRST_CHECK = {5: {"matured": 60, "nonoverlap": 12}, 20: {"matured": 120, "nonoverlap": 6}}
+
+
+def month_block_draws(date_index, stat_fn, b=2000, seed=SEED):
+    """month_block_ci 와 같은 추출의 통계량 표본(부트스트랩 p 값용)."""
+    blocks = month_blocks(date_index)
+    if not blocks:
+        return np.array([])
+    rng = np.random.default_rng(seed)
+    draws = []
+    for _ in range(b):
+        pick = rng.integers(0, len(blocks), len(blocks))
+        idx = np.concatenate([blocks[i] for i in pick])
+        try:
+            draws.append(stat_fn(idx))
+        except Exception:
+            continue
+    return np.asarray(draws, dtype=float)
+
+
+def bootstrap_pvalue(draws):
+    """H0: delta = 0 에 대한 양측 부트스트랩 p 값(백분위 방식)."""
+    draws = np.asarray(draws, dtype=float)
+    if len(draws) == 0:
+        return np.nan
+    return float(min(1., 2 * min(np.mean(draws >= 0), np.mean(draws <= 0))))
+
+
+def holm_adjust(pvalues):
+    """Holm 단계적 보정. 입력 순서대로 보정 p 값을 돌려준다."""
+    p = np.asarray(pvalues, dtype=float)
+    m = len(p)
+    order = np.argsort(p)
+    adjusted = np.empty(m)
+    running = 0.
+    for rank, i in enumerate(order):
+        running = max(running, (m - rank) * p[i])
+        adjusted[i] = min(1., running)
+    return adjusted.tolist()
+
+
+def candidate_ledger_status(target, ledger_model, horizon, last_bar, ledger_root=ROOT / "forecast_history"):
+    """공식 원장의 후보 행 현황(읽기만): 관찰일·발행일·만기 도래·비중첩 수."""
+    path = Path(ledger_root) / target / "forecast_log.csv"
+    if not path.is_file():
+        return {"observed": 0, "issued": 0, "matured": 0, "nonoverlap": 0}
+    log = pd.read_csv(path)
+    rows = log[(log.get("model", "") == ledger_model) & (log.get("kind", "") == "price") & (log["horizon_days"] == horizon)]
+    if rows.empty:
+        return {"observed": 0, "issued": 0, "matured": 0, "nonoverlap": 0}
+    first = rows.sort_values("created_at_utc").groupby("prediction_date").head(1)
+    matured = first[pd.to_datetime(first["target_date"]) <= pd.Timestamp(last_bar)]
+    dates = pd.to_datetime(matured["prediction_date"]).sort_values()
+    nonoverlap, last = 0, None
+    for d in dates:
+        if last is None or (d - last).days >= 7 * (horizon / 5):
+            nonoverlap += 1; last = d
+    return {"observed": int(len(first)), "issued": int((first["signal"] == "있음").sum()), "matured": int(len(matured)), "nonoverlap": int(nonoverlap)}
+
+
+def m07_config(mode):
+    return {"task": "M07", "mode": mode, "horizons": list(HORIZONS), "candidates": {f"{k[0]}:{k[1]}": [c["name"] for c in v] for k, v in LOCKED_CANDIDATES.items()},
+            "fixed_on": "2026-09-10", "lock": "라벨이 있는 마지막 12개월(M01 계약)", "first_check": FIRST_CHECK,
+            "bootstrap_b": 400 if mode == "quick" else 2000, "seed": SEED}
+
+
+def run_m07(target, mode, storage, results_dir, state, run_notebook_fn=None):
+    inputs = None
+    for horizon in HORIZONS:
+        unit = f"{target}:h{horizon}"
+        if state.is_done(unit) and artifacts_intact(state, unit, target, horizon):
+            print(f"  이미 완료된 단위 건너뜀: {unit}")
+            continue
+        if inputs is None:
+            inputs = load_inputs(target, mode, storage, run_notebook_fn)
+            record_inputs(state, inputs)
+        candidates = LOCKED_CANDIDATES.get((target, horizon), [])
+        reg, cols = price_design(inputs, horizon)
+        sam = inputs["sam"]
+        folds, lock_start = evaluation_folds(reg.index, sam.index, horizon)
+        lock = folds[-1]
+        assert lock["name"] == "lock"
+        # 잠금 폴드의 내부 블록: 잠금 시작 전 6개월 × 3(개발 폴드와 같은 규칙)
+        t0 = pd.Timestamp(lock["test_start"])
+        pos, mature = maturity_positions(reg.index, sam.index, horizon)
+        mature_dates = pd.DatetimeIndex(sam.index[mature])
+        inner = []
+        for k in range(1, INNER_BLOCKS + 1):
+            v1, v0 = t0 - pd.DateOffset(months=INNER_MONTHS * (k - 1)), t0 - pd.DateOffset(months=INNER_MONTHS * k)
+            test = np.flatnonzero((reg.index >= v0) & (reg.index < v1))
+            train = np.flatnonzero(mature_dates < v0)
+            if len(test) and len(train) >= MIN_TRAIN_ROWS:
+                inner.append({"train": train, "test": test, "test_start": str(v0.date())})
+        violations = purge_check(reg.index, sam.index, horizon, [(lock["train"], lock["test"])] + [(i["train"], i["test"]) for i in inner])
+        X = reg[cols].to_numpy(dtype=np.float32)
+        y = reg["future_return"].to_numpy(dtype=float)
+        sigma = reg["sigma_simple"].to_numpy(dtype=float)
+        sigma_har = reg["sigma_har"].to_numpy(dtype=float)
+        z = y / np.maximum(sigma, 1e-6)
+        template = fu.make_price_model()
+        raw = fit_predict(template, X, z, sigma, lock["train"], lock["test"])
+        ip, iy, ii = [], [], []
+        for blk in inner:
+            p_ = fit_predict(template, X, z, sigma, blk["train"], blk["test"])
+            ip.append(p_); iy.append(y[blk["test"]]); ii.append(blk["test"])
+        slope = inner_slope(np.concatenate(ip), np.concatenate(iy)) if ip else 0.
+        wins, n_inner = gate_wins(ip, iy, slope)
+        centre = slope * raw
+        iall = np.concatenate(ii) if ii else np.array([], dtype=int)
+        iresid = np.concatenate(iy) - slope * np.concatenate(ip) if ip else np.array([])
+        q_simple = band_quantile(iresid, sigma[iall]) if len(iresid) else np.nan
+        q_har = band_quantile(iresid, sigma_har[iall]) if len(iresid) else np.nan
+        te = lock["test"]
+        y_lock, dates_lock = y[te], reg.index[te]
+        zero = np.abs(y_lock)
+        b = 400 if mode == "quick" else 2000
+        block = max(20, 2 * horizon)
+
+        hit_s, score_s, width_s = coverage_and_score(y_lock, centre, q_simple * sigma[te])
+        hit_h, score_h, width_h = coverage_and_score(y_lock, centre, q_har * sigma_har[te])
+        issued_2 = wins >= 2 and n_inner >= 2
+        issued_3 = wins == n_inner and n_inner >= 2
+        err_2 = np.abs(y_lock - (centre if issued_2 else 0.))
+        err_3 = np.abs(y_lock - (centre if issued_3 else 0.))
+
+        tests, metrics, comparisons = [], [], []
+        metrics.append({"target": target, "horizon": horizon, "candidate": "current_context", "fold": "lock", "evaluation_stage": "lock",
+                        "n": int(len(y_lock)), "lock_start": str(t0.date()), "lock_end": str(dates_lock[-1].date()), "train_rows": int(len(lock["train"])),
+                        "zero_mae": float(zero.mean()), "raw_mae": float(np.abs(y_lock - raw).mean()), "calibrated_mae": float(np.abs(y_lock - centre).mean()),
+                        "slope": slope, "gate_wins": f"{wins}/{n_inner}", "interval_coverage_simple": float(hit_s.mean()),
+                        "interval_score_simple": float(score_s.mean()), "mean_width_simple": float(width_s.mean()),
+                        "note": "잠금 구간은 M00 평가 구간(2024-08~)과 겹쳐 이미 본 점수다. 독립 검증이 아니다."})
+
+        def add_test(label, metric, diff_fn, n):
+            lo_m, hi_m = month_block_ci(dates_lock, diff_fn, b=b)
+            lo_c, hi_c = contiguous_block_ci(n, diff_fn, block, b=b)
+            draws = month_block_draws(dates_lock, diff_fn, b=b)
+            delta = float(diff_fn(np.arange(n)))
+            comparisons.append({"target": target, "horizon": horizon, "comparison": label, "metric": metric, "delta": delta,
+                                "ci_lo": lo_m, "ci_hi": hi_m, "common_n": int(n), "block": "month", "calibrated": True})
+            comparisons.append({"target": target, "horizon": horizon, "comparison": label, "metric": metric, "delta": delta,
+                                "ci_lo": lo_c, "ci_hi": hi_c, "common_n": int(n), "block": f"contiguous_{block}", "calibrated": True})
+            tests.append({"label": label, "metric": metric, "delta": delta, "ci_lo": lo_m, "ci_hi": hi_m, "p_boot": bootstrap_pvalue(draws)})
+
+        cand_rows = []
+        for cand in candidates:
+            if cand["name"] == "har_interval":
+                add_test("har_interval - simple_inner_q", "interval_score", lambda i: float((score_h[i] - score_s[i]).mean()), len(y_lock))
+                add_test("har_interval - simple_inner_q", "interval_coverage", lambda i: float(hit_h[i].mean() - hit_s[i].mean()), len(y_lock))
+                cand_rows.append({"target": target, "horizon": horizon, "candidate": cand["name"], "fold": "lock", "evaluation_stage": "lock",
+                                  "n": int(len(y_lock)), "interval_score": float(score_h.mean()), "interval_coverage": float(hit_h.mean()),
+                                  "mean_width": float(width_h.mean()), "reference_interval_score": float(score_s.mean()),
+                                  "reference_interval_coverage": float(hit_s.mean()), "reference_mean_width": float(width_s.mean())})
+            elif cand["name"] == "strict_gate":
+                add_test("strict_gate - hold_current", "mae_return_issued", lambda i: float((err_3[i] - zero[i]).mean()), len(y_lock))
+                add_test("strict_gate - gate_2of3", "mae_return_issued", lambda i: float((err_3[i] - err_2[i]).mean()), len(y_lock))
+                cand_rows.append({"target": target, "horizon": horizon, "candidate": cand["name"], "fold": "lock", "evaluation_stage": "lock",
+                                  "n": int(len(y_lock)), "mae_issued_center": float(err_3.mean()), "issued": bool(issued_3), "gate_wins": f"{wins}/{n_inner}",
+                                  "mae_hold": float(zero.mean()), "mae_gate_2of3": float(err_2.mean()), "issued_2of3": bool(issued_2)})
+            cand_rows[-1]["ledger"] = candidate_ledger_status(target, cand["ledger_model"], horizon, sam.index[-1])
+            cand_rows[-1]["first_check"] = FIRST_CHECK[horizon]
+        metrics += [{k: (json.dumps(v, ensure_ascii=False) if isinstance(v, dict) else v) for k, v in r.items()} for r in cand_rows]
+        # 같은 목적의 잠금 검정에 Holm 보정(주 지표만: 구간 점수·발행 중심값)
+        primary = [tt for tt in tests if tt["metric"] in ("interval_score", "mae_return_issued") and "gate_2of3" not in tt["label"]]
+        for tt, adj in zip(primary, holm_adjust([tt["p_boot"] for tt in primary]) if primary else []):
+            tt["p_holm_within_unit"] = adj
+
+        raw_dir = Path(storage) / target
+        raw_dir.mkdir(parents=True, exist_ok=True)
+        oof_frame = pd.DataFrame({"prediction_date": dates_lock, "y": y_lock, "raw": raw, "center": centre, "sigma": sigma[te], "sigma_har": sigma_har[te],
+                                  "halfwidth_simple": q_simple * sigma[te], "halfwidth_har": q_har * sigma_har[te],
+                                  "issued_2of3": issued_2, "issued_3of3": issued_3})
+        oof_path = raw_dir / f"M07_h{horizon}_{mode}_lock.csv"
+        oof_frame.to_csv(oof_path, index=False, lineterminator="\n")
+
+        summary = {
+            "target": target, "horizon": horizon, "candidates": [c["name"] for c in candidates], "fixed_on": "2026-09-10",
+            "lock": {"start": str(t0.date()), "end": str(dates_lock[-1].date()), "n": int(len(y_lock)), "train_rows": int(len(lock["train"])),
+                     "inner_blocks": len(inner), "purge_violations": violations},
+            "context": {"zero_mae": float(zero.mean()), "raw_mae": float(np.abs(y_lock - raw).mean()), "calibrated_mae": float(np.abs(y_lock - centre).mean()),
+                        "slope": slope, "gate_wins": f"{wins}/{n_inner}", "coverage_simple": float(hit_s.mean()), "coverage_har": float(hit_h.mean())},
+            "tests": tests, "candidate_rows": cand_rows,
+            "note": "잠금 구간은 M00 평가 구간과 겹쳐 새로운 독립 검증이 아니다. 최종 확인은 원장의 사전 예측(관찰)이다. 통과 못한 후보를 같은 잠금 기간에 재조정하지 않는다.",
+            "oof_file": str(oof_path), "oof_sha256": file_sha256(oof_path),
+        }
+        write_json(state.run_dir / f"summary_{target}_h{horizon}.json", summary)
+        save_unit_rows(state, target, horizon, metrics, comparisons)
+        state.mark(unit, {"oof_sha256": summary["oof_sha256"], "oof_file": summary["oof_file"], "candidates": [c["name"] for c in candidates],
+                          "purge_violations": len(violations)})
+        if candidates:
+            print(f"  {unit}: 잠금 {t0.date()}~{dates_lock[-1].date()} ({len(y_lock)}행) · " + " · ".join(
+                f"{tt['label']}[{tt['metric']}] {tt['delta']:+.5f} [{tt['ci_lo']:+.5f}, {tt['ci_hi']:+.5f}] p={tt['p_boot']:.3f}" for tt in tests))
+        else:
+            print(f"  {unit}: 고정 후보 없음(미채택으로 종료). 잠금 구간 참고치만 저장.")
+    return collect_rows(state, target)
+
+
+TASK_RUNNERS = {"M00": run_m00, "M01": run_m01, "M02": run_m02, "M03": run_m03, "M04": run_m04, "M05": run_m05, "M06": run_m06, "M07": run_m07}
+TASK_CONFIGS = {"M00": m00_config, "M01": m01_config, "M02": m02_config, "M03": m03_config, "M04": m04_config, "M05": m05_config, "M06": m06_config, "M07": m07_config}
 
 
 def execute(task, target, mode, storage, results_dir, resume, run_notebook_fn=None):

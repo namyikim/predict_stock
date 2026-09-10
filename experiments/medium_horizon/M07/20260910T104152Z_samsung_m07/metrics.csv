@@ -1,0 +1,3 @@
+target,horizon,candidate,fold,evaluation_stage,n,lock_start,lock_end,train_rows,zero_mae,raw_mae,calibrated_mae,slope,gate_wins,interval_coverage_simple,interval_score_simple,mean_width_simple,note
+samsung,5,current_context,lock,lock,226,2025-09-04,2026-09-03,2051,0.07463739707655355,0.07925120275185564,0.07483504142131253,0.4746799951489487,2/3,0.7610619469026548,0.3782890756341683,0.26262291782415054,잠금 구간은 M00 평가 구간(2024-08~)과 겹쳐 이미 본 점수다. 독립 검증이 아니다.
+samsung,20,current_context,lock,lock,226,2025-08-13,2026-08-12,2006,0.19737285168719457,0.21462930097252925,0.19737285168719457,0.0,0/3,0.5796460176991151,1.0326674136178047,0.47067362776094646,잠금 구간은 M00 평가 구간(2024-08~)과 겹쳐 이미 본 점수다. 독립 검증이 아니다.

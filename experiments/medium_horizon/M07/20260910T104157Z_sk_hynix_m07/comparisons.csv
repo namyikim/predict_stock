@@ -1,0 +1,13 @@
+target,horizon,comparison,metric,delta,ci_lo,ci_hi,common_n,block,calibrated
+sk_hynix,5,har_interval - simple_inner_q,interval_score,-0.02791621795610891,-0.0588847865983751,0.0010961766612654776,226,month,True
+sk_hynix,5,har_interval - simple_inner_q,interval_score,-0.02791621795610891,-0.05204441224783514,0.001701099783438234,226,contiguous_20,True
+sk_hynix,5,har_interval - simple_inner_q,interval_coverage,-0.04424778761061943,-0.09163429614873841,-0.00423684116427089,226,month,True
+sk_hynix,5,har_interval - simple_inner_q,interval_coverage,-0.04424778761061943,-0.09292035398230092,-0.008849557522123908,226,contiguous_20,True
+sk_hynix,5,strict_gate - hold_current,mae_return_issued,-0.004536971418445103,-0.0071827594152226336,-0.0018529048664823352,226,month,True
+sk_hynix,5,strict_gate - hold_current,mae_return_issued,-0.004536971418445103,-0.007313944625678221,-0.002694691924593228,226,contiguous_20,True
+sk_hynix,5,strict_gate - gate_2of3,mae_return_issued,0.0,0.0,0.0,226,month,True
+sk_hynix,5,strict_gate - gate_2of3,mae_return_issued,0.0,0.0,0.0,226,contiguous_20,True
+sk_hynix,20,har_interval - simple_inner_q,interval_score,0.029249630767822242,-0.11589403131816177,0.23016019563561993,226,month,True
+sk_hynix,20,har_interval - simple_inner_q,interval_score,0.029249630767822242,-0.06888853538338675,0.26697179870268223,226,contiguous_40,True
+sk_hynix,20,har_interval - simple_inner_q,interval_coverage,-0.03539823008849552,-0.08907614781634934,0.021556409295352314,226,month,True
+sk_hynix,20,har_interval - simple_inner_q,interval_coverage,-0.03539823008849552,-0.11061946902654862,0.02212389380530977,226,contiguous_40,True

@@ -1,0 +1,28 @@
+{
+  "target": "samsung",
+  "horizon": 5,
+  "candidates": [],
+  "fixed_on": "2026-09-10",
+  "lock": {
+    "start": "2025-09-04",
+    "end": "2026-09-03",
+    "n": 226,
+    "train_rows": 2051,
+    "inner_blocks": 3,
+    "purge_violations": []
+  },
+  "context": {
+    "zero_mae": 0.07463739707655355,
+    "raw_mae": 0.07925120275185564,
+    "calibrated_mae": 0.07483504142131253,
+    "slope": 0.4746799951489487,
+    "gate_wins": "2/3",
+    "coverage_simple": 0.7610619469026548,
+    "coverage_har": 0.6592920353982301
+  },
+  "tests": [],
+  "candidate_rows": [],
+  "note": "잠금 구간은 M00 평가 구간과 겹쳐 새로운 독립 검증이 아니다. 최종 확인은 원장의 사전 예측(관찰)이다. 통과 못한 후보를 같은 잠금 기간에 재조정하지 않는다.",
+  "oof_file": "D:\\SourceCode\\predict_stock\\runs\\medium_horizon\\samsung\\M07_h5_full_lock.csv",
+  "oof_sha256": "29a872e9c82134d81a206796e52cc9094b09f11ded48889b43e4368dd04acce2"
+}

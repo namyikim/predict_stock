@@ -1,0 +1,21 @@
+{
+  "completed_units": [
+    "samsung:h5",
+    "samsung:h20"
+  ],
+  "results": {
+    "samsung:h5": {
+      "oof_sha256": "29a872e9c82134d81a206796e52cc9094b09f11ded48889b43e4368dd04acce2",
+      "oof_file": "D:\\SourceCode\\predict_stock\\runs\\medium_horizon\\samsung\\M07_h5_full_lock.csv",
+      "candidates": [],
+      "purge_violations": 0
+    },
+    "samsung:h20": {
+      "oof_sha256": "efca8af09cb3289107c7297d3e702a9067676ee2520bb3382f0b3b3039710379",
+      "oof_file": "D:\\SourceCode\\predict_stock\\runs\\medium_horizon\\samsung\\M07_h20_full_lock.csv",
+      "candidates": [],
+      "purge_violations": 0
+    }
+  },
+  "updated_at_utc": "2026-09-10T10:41:56.178087+00:00"
+}

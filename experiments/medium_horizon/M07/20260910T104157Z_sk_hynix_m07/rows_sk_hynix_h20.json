@@ -1,0 +1,90 @@
+{
+  "metrics": [
+    {
+      "target": "sk_hynix",
+      "horizon": 20,
+      "candidate": "current_context",
+      "fold": "lock",
+      "evaluation_stage": "lock",
+      "n": 226,
+      "lock_start": "2025-08-13",
+      "lock_end": "2026-08-12",
+      "train_rows": 2005,
+      "zero_mae": 0.29146877780020986,
+      "raw_mae": 0.2799790414529238,
+      "calibrated_mae": 0.2799790414529238,
+      "slope": 1.0,
+      "gate_wins": "3/3",
+      "interval_coverage_simple": 0.5442477876106194,
+      "interval_score_simple": 1.5482877878090127,
+      "mean_width_simple": 0.6065003073764124,
+      "note": "잠금 구간은 M00 평가 구간(2024-08~)과 겹쳐 이미 본 점수다. 독립 검증이 아니다."
+    },
+    {
+      "target": "sk_hynix",
+      "horizon": 20,
+      "candidate": "har_interval",
+      "fold": "lock",
+      "evaluation_stage": "lock",
+      "n": 226,
+      "interval_score": 1.5775374185768345,
+      "interval_coverage": 0.5088495575221239,
+      "mean_width": 0.4768280556852304,
+      "reference_interval_score": 1.5482877878090127,
+      "reference_interval_coverage": 0.5442477876106194,
+      "reference_mean_width": 0.6065003073764124,
+      "ledger": "{\"observed\": 0, \"issued\": 0, \"matured\": 0, \"nonoverlap\": 0}",
+      "first_check": "{\"matured\": 120, \"nonoverlap\": 6}"
+    }
+  ],
+  "comparisons": [
+    {
+      "target": "sk_hynix",
+      "horizon": 20,
+      "comparison": "har_interval - simple_inner_q",
+      "metric": "interval_score",
+      "delta": 0.029249630767822242,
+      "ci_lo": -0.11589403131816177,
+      "ci_hi": 0.23016019563561993,
+      "common_n": 226,
+      "block": "month",
+      "calibrated": true
+    },
+    {
+      "target": "sk_hynix",
+      "horizon": 20,
+      "comparison": "har_interval - simple_inner_q",
+      "metric": "interval_score",
+      "delta": 0.029249630767822242,
+      "ci_lo": -0.06888853538338675,
+      "ci_hi": 0.26697179870268223,
+      "common_n": 226,
+      "block": "contiguous_40",
+      "calibrated": true
+    },
+    {
+      "target": "sk_hynix",
+      "horizon": 20,
+      "comparison": "har_interval - simple_inner_q",
+      "metric": "interval_coverage",
+      "delta": -0.03539823008849552,
+      "ci_lo": -0.08907614781634934,
+      "ci_hi": 0.021556409295352314,
+      "common_n": 226,
+      "block": "month",
+      "calibrated": true
+    },
+    {
+      "target": "sk_hynix",
+      "horizon": 20,
+      "comparison": "har_interval - simple_inner_q",
+      "metric": "interval_coverage",
+      "delta": -0.03539823008849552,
+      "ci_lo": -0.11061946902654862,
+      "ci_hi": 0.02212389380530977,
+      "common_n": 226,
+      "block": "contiguous_40",
+      "calibrated": true
+    }
+  ]
+}

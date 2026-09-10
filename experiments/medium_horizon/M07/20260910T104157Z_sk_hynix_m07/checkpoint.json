@@ -1,0 +1,26 @@
+{
+  "completed_units": [
+    "sk_hynix:h5",
+    "sk_hynix:h20"
+  ],
+  "results": {
+    "sk_hynix:h5": {
+      "oof_sha256": "89be0d8359b76899badac37a623dca8f16d273bd9803a5803beca31ecf9222a1",
+      "oof_file": "D:\\SourceCode\\predict_stock\\runs\\medium_horizon\\sk_hynix\\M07_h5_full_lock.csv",
+      "candidates": [
+        "har_interval",
+        "strict_gate"
+      ],
+      "purge_violations": 0
+    },
+    "sk_hynix:h20": {
+      "oof_sha256": "2997c23ae17ddf32f0902a846edd7a5f7a0b38e1006a6a54999e3be7fb4eecc8",
+      "oof_file": "D:\\SourceCode\\predict_stock\\runs\\medium_horizon\\sk_hynix\\M07_h20_full_lock.csv",
+      "candidates": [
+        "har_interval"
+      ],
+      "purge_violations": 0
+    }
+  },
+  "updated_at_utc": "2026-09-10T10:42:01.671492+00:00"
+}

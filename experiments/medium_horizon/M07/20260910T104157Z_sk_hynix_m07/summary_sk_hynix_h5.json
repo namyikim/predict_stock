@@ -1,0 +1,115 @@
+{
+  "target": "sk_hynix",
+  "horizon": 5,
+  "candidates": [
+    "har_interval",
+    "strict_gate"
+  ],
+  "fixed_on": "2026-09-10",
+  "lock": {
+    "start": "2025-09-04",
+    "end": "2026-09-03",
+    "n": 226,
+    "train_rows": 2050,
+    "inner_blocks": 3,
+    "purge_violations": []
+  },
+  "context": {
+    "zero_mae": 0.10336996966958345,
+    "raw_mae": 0.09883299825113834,
+    "calibrated_mae": 0.09883299825113834,
+    "slope": 1.0,
+    "gate_wins": "3/3",
+    "coverage_simple": 0.7743362831858407,
+    "coverage_har": 0.7300884955752213
+  },
+  "tests": [
+    {
+      "label": "har_interval - simple_inner_q",
+      "metric": "interval_score",
+      "delta": -0.02791621795610891,
+      "ci_lo": -0.0588847865983751,
+      "ci_hi": 0.0010961766612654776,
+      "p_boot": 0.066,
+      "p_holm_within_unit": 0.066
+    },
+    {
+      "label": "har_interval - simple_inner_q",
+      "metric": "interval_coverage",
+      "delta": -0.04424778761061943,
+      "ci_lo": -0.09163429614873841,
+      "ci_hi": -0.00423684116427089,
+      "p_boot": 0.039
+    },
+    {
+      "label": "strict_gate - hold_current",
+      "metric": "mae_return_issued",
+      "delta": -0.004536971418445103,
+      "ci_lo": -0.0071827594152226336,
+      "ci_hi": -0.0018529048664823352,
+      "p_boot": 0.0,
+      "p_holm_within_unit": 0.0
+    },
+    {
+      "label": "strict_gate - gate_2of3",
+      "metric": "mae_return_issued",
+      "delta": 0.0,
+      "ci_lo": 0.0,
+      "ci_hi": 0.0,
+      "p_boot": 1.0
+    }
+  ],
+  "candidate_rows": [
+    {
+      "target": "sk_hynix",
+      "horizon": 5,
+      "candidate": "har_interval",
+      "fold": "lock",
+      "evaluation_stage": "lock",
+      "n": 226,
+      "interval_score": 0.46867125486416594,
+      "interval_coverage": 0.7300884955752213,
+      "mean_width": 0.2799822200362825,
+      "reference_interval_score": 0.4965874728202749,
+      "reference_interval_coverage": 0.7743362831858407,
+      "reference_mean_width": 0.33531146037955495,
+      "ledger": {
+        "observed": 0,
+        "issued": 0,
+        "matured": 0,
+        "nonoverlap": 0
+      },
+      "first_check": {
+        "matured": 60,
+        "nonoverlap": 12
+      }
+    },
+    {
+      "target": "sk_hynix",
+      "horizon": 5,
+      "candidate": "strict_gate",
+      "fold": "lock",
+      "evaluation_stage": "lock",
+      "n": 226,
+      "mae_issued_center": 0.09883299825113834,
+      "issued": true,
+      "gate_wins": "3/3",
+      "mae_hold": 0.10336996966958345,
+      "mae_gate_2of3": 0.09883299825113834,
+      "issued_2of3": true,
+      "ledger": {
+        "observed": 0,
+        "issued": 0,
+        "matured": 0,
+        "nonoverlap": 0
+      },
+      "first_check": {
+        "matured": 60,
+        "nonoverlap": 12
+      }
+    }
+  ],
+  "note": "잠금 구간은 M00 평가 구간과 겹쳐 새로운 독립 검증이 아니다. 최종 확인은 원장의 사전 예측(관찰)이다. 통과 못한 후보를 같은 잠금 기간에 재조정하지 않는다.",
+  "oof_file": "D:\\SourceCode\\predict_stock\\runs\\medium_horizon\\sk_hynix\\M07_h5_full_lock.csv",
+  "oof_sha256": "89be0d8359b76899badac37a623dca8f16d273bd9803a5803beca31ecf9222a1"
+}

@@ -807,7 +807,9 @@ def review_ledger(daily, bars, ensemble_model="Mean ensemble", windows=(20, 60),
                          "flat_share": float(freq.loc[1]),
                          "mean_log_loss": float(d["log_loss"].mean()), "prior_log_loss": prior_ll})
         for kind in ("open", "price"):
-            for h, g in recent[recent["kind"] == kind].groupby("horizon_days"):
+            # 관찰용 후보(모델명 "Candidate …")는 원장에만 있고 헤드라인 성적에 섞지 않는다(M07).
+            headline = recent[(recent["kind"] == kind) & ~recent["model"].astype(str).str.startswith("Candidate")]
+            for h, g in headline.groupby("horizon_days"):
                 g = g.dropna(subset=["actual_return"])
                 if not len(g):
                     continue

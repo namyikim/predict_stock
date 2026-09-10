@@ -1,0 +1,73 @@
+{
+  "target": "sk_hynix",
+  "horizon": 20,
+  "candidates": [
+    "har_interval"
+  ],
+  "fixed_on": "2026-09-10",
+  "lock": {
+    "start": "2025-08-13",
+    "end": "2026-08-12",
+    "n": 226,
+    "train_rows": 2005,
+    "inner_blocks": 3,
+    "purge_violations": []
+  },
+  "context": {
+    "zero_mae": 0.29146877780020986,
+    "raw_mae": 0.2799790414529238,
+    "calibrated_mae": 0.2799790414529238,
+    "slope": 1.0,
+    "gate_wins": "3/3",
+    "coverage_simple": 0.5442477876106194,
+    "coverage_har": 0.5088495575221239
+  },
+  "tests": [
+    {
+      "label": "har_interval - simple_inner_q",
+      "metric": "interval_score",
+      "delta": 0.029249630767822242,
+      "ci_lo": -0.11589403131816177,
+      "ci_hi": 0.23016019563561993,
+      "p_boot": 0.833,
+      "p_holm_within_unit": 0.833
+    },
+    {
+      "label": "har_interval - simple_inner_q",
+      "metric": "interval_coverage",
+      "delta": -0.03539823008849552,
+      "ci_lo": -0.08907614781634934,
+      "ci_hi": 0.021556409295352314,
+      "p_boot": 0.26
+    }
+  ],
+  "candidate_rows": [
+    {
+      "target": "sk_hynix",
+      "horizon": 20,
+      "candidate": "har_interval",
+      "fold": "lock",
+      "evaluation_stage": "lock",
+      "n": 226,
+      "interval_score": 1.5775374185768345,
+      "interval_coverage": 0.5088495575221239,
+      "mean_width": 0.4768280556852304,
+      "reference_interval_score": 1.5482877878090127,
+      "reference_interval_coverage": 0.5442477876106194,
+      "reference_mean_width": 0.6065003073764124,
+      "ledger": {
+        "observed": 0,
+        "issued": 0,
+        "matured": 0,
+        "nonoverlap": 0
+      },
+      "first_check": {
+        "matured": 120,
+        "nonoverlap": 6
+      }
+    }
+  ],
+  "note": "잠금 구간은 M00 평가 구간과 겹쳐 새로운 독립 검증이 아니다. 최종 확인은 원장의 사전 예측(관찰)이다. 통과 못한 후보를 같은 잠금 기간에 재조정하지 않는다.",
+  "oof_file": "D:\\SourceCode\\predict_stock\\runs\\medium_horizon\\sk_hynix\\M07_h20_full_lock.csv",
+  "oof_sha256": "2997c23ae17ddf32f0902a846edd7a5f7a0b38e1006a6a54999e3be7fb4eecc8"
+}

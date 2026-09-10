@@ -1,0 +1,25 @@
+{
+  "metrics": [
+    {
+      "target": "samsung",
+      "horizon": 20,
+      "candidate": "current_context",
+      "fold": "lock",
+      "evaluation_stage": "lock",
+      "n": 226,
+      "lock_start": "2025-08-13",
+      "lock_end": "2026-08-12",
+      "train_rows": 2006,
+      "zero_mae": 0.19737285168719457,
+      "raw_mae": 0.21462930097252925,
+      "calibrated_mae": 0.19737285168719457,
+      "slope": 0.0,
+      "gate_wins": "0/3",
+      "interval_coverage_simple": 0.5796460176991151,
+      "interval_score_simple": 1.0326674136178047,
+      "mean_width_simple": 0.47067362776094646,
+      "note": "잠금 구간은 M00 평가 구간(2024-08~)과 겹쳐 이미 본 점수다. 독립 검증이 아니다."
+    }
+  ],
+  "comparisons": []
+}

@@ -574,6 +574,77 @@ class PooledPanelTests(unittest.TestCase):
         self.assertGreaterEqual(pd.to_datetime(panel[panel.instrument == "B"]["date"]).min(), pd.Timestamp("2020-09-01"))
 
 
+class LockedCandidateTests(unittest.TestCase):
+    """M07: 후보 고정, 잠금 평가, 원장 기록이 헤드라인 집계를 오염시키지 않음."""
+
+    def test_candidates_are_fixed_to_those_that_passed_m05(self):
+        self.assertEqual(sorted(mh.LOCKED_CANDIDATES), [("sk_hynix", 5), ("sk_hynix", 20)])
+        self.assertEqual([c["name"] for c in mh.LOCKED_CANDIDATES[("sk_hynix", 5)]], ["har_interval", "strict_gate"])
+        self.assertEqual([c["name"] for c in mh.LOCKED_CANDIDATES[("sk_hynix", 20)]], ["har_interval"])
+
+    def test_bootstrap_pvalue_and_holm(self):
+        self.assertAlmostEqual(mh.bootstrap_pvalue(np.array([-1., -2., -3., 1.])), .5)
+        self.assertEqual(mh.bootstrap_pvalue(np.array([])) != mh.bootstrap_pvalue(np.array([])), True)   # NaN
+        self.assertEqual([round(v, 6) for v in mh.holm_adjust([.01, .04, .03])], [.03, .06, .06])   # 단조 보정
+        self.assertEqual(mh.holm_adjust([.5]), [.5])
+
+    def test_review_ledger_ignores_candidate_price_rows(self):
+        dates = pd.bdate_range("2026-06-01", periods=30)
+        rows = []
+        for d in dates:
+            base = {"target_date": d, "prediction_date": d, "kind": "price", "horizon_days": 5, "current_close": 100., "actual_return": .01,
+                    "status": "scored",
+                    "predicted_return": .0, "raw_predicted_return": .0, "interval_hit": 1., "oof_slope": .0, "actual_class": np.nan,
+                    "direction_correct": np.nan, "log_loss": np.nan, "run_id": "r", "record_id": f"r:{d}", "target_mode": "close_to_close",
+                    "config_hash": "c", "band": .01, "p_down": np.nan, "p_flat": np.nan, "p_up": np.nan, "prediction": ""}
+            rows.append({**base, "model": "Ridge"})
+            rows.append({**base, "model": "Candidate HAR interval", "interval_hit": 0., "record_id": f"c:{d}"})   # 후보는 전부 빗나감
+        daily = pd.DataFrame(rows)
+        bars = pd.DataFrame({"open": 100., "close": 100.}, index=dates)
+        review = fu.review_ledger(daily, bars, ensemble_model="Mean ensemble", windows=(20,), min_alert_n=1)
+        price = review["rolling"][(review["rolling"]["kind"] == "price")]
+        self.assertEqual(len(price), 1)
+        self.assertEqual(float(price["interval_coverage"].iloc[0]), 1., "후보 행의 빗나감이 헤드라인 포함률에 섞였다")
+        self.assertEqual(int(price["n"].iloc[0]), 20)      # 창 20일 = 헤드라인 행만 20개(후보 행이 섞이면 40)
+
+    def test_notebook_records_candidates_separately(self):
+        import json
+        nb = json.loads((ROOT / "samsung_direction_model_colab.ipynb").read_text(encoding="utf-8"))
+        code = "\n".join("".join(c["source"]) for c in nb["cells"] if c["cell_type"] == "code")
+        self.assertIn('PRICE_CANDIDATES = {"sk_hynix": {5: ("har_interval", "strict_gate"), 20: ("har_interval",)}}', code)
+        self.assertIn('"record_id": f"{RUN_ID}:price_candidate:{row[\'candidate\']}:{row[\'trading_days\']}"', code)
+        self.assertIn('"price_candidates": {str(h): list(v)', code)
+        self.assertIn('model="Candidate HAR interval"', code)
+        self.assertIn('model="Candidate strict gate"', code)
+
+    def test_m07_lock_evaluation_runs_and_reports_no_candidates_for_samsung(self):
+        tmp = Path(tempfile.mkdtemp())
+        storage, results = tmp / "runs", tmp / "results"
+        cache = storage / "samsung" / "data_cache"; cache.mkdir(parents=True)
+        (cache / "target.parquet").write_bytes(b"snapshot-v1")
+        ns = synthetic_namespace(n=2000)
+        state = mh.execute("M07", "samsung", "quick", storage, results, False, run_notebook_fn=lambda *a, **k: {"samsung": ns})
+        summary = __import__("json").loads((state.run_dir / "summary_samsung_h5.json").read_text(encoding="utf-8"))
+        self.assertEqual(summary["candidates"], [])
+        self.assertEqual(summary["lock"]["purge_violations"], [])
+        self.assertIn("zero_mae", summary["context"])
+
+    def test_m07_lock_evaluation_with_candidates(self):
+        tmp = Path(tempfile.mkdtemp())
+        storage, results = tmp / "runs", tmp / "results"
+        cache = storage / "sk_hynix" / "data_cache"; cache.mkdir(parents=True)
+        (cache / "target.parquet").write_bytes(b"snapshot-v1")
+        ns = synthetic_namespace(n=2000)
+        state = mh.execute("M07", "sk_hynix", "quick", storage, results, False, run_notebook_fn=lambda *a, **k: {"sk_hynix": ns})
+        summary = __import__("json").loads((state.run_dir / "summary_sk_hynix_h5.json").read_text(encoding="utf-8"))
+        self.assertEqual(summary["candidates"], ["har_interval", "strict_gate"])
+        labels = {t["label"] for t in summary["tests"]}
+        self.assertIn("har_interval - simple_inner_q", labels); self.assertIn("strict_gate - hold_current", labels)
+        self.assertTrue(all("p_holm_within_unit" in t for t in summary["tests"] if t["metric"] in ("interval_score",)))
+        rows = pd.read_csv(state.run_dir / "comparisons.csv")
+        self.assertIn("strict_gate - gate_2of3", set(rows["comparison"]))
+
+
 class FakeNotebook:
     def __init__(self, fail=False):
         self.calls = 0

@@ -1,0 +1,206 @@
+{
+  "samsung": {
+    "selection_date": "2026-09-10",
+    "selection_rule": "KRX 상장 반도체·반도체 장비·소재 대형주. 삼성전자·SK하이닉스와 같은 수요(메모리·파운드리) 또는 공급망(장비·소재)에 묶인 종목. 2015-01-01 이전 상장, 일평균 거래대금 상위.",
+    "instruments": [
+      "000660.KS",
+      "000990.KS",
+      "005290.KQ",
+      "005930.KS",
+      "036930.KQ",
+      "039030.KQ",
+      "042700.KS",
+      "058470.KQ",
+      "095340.KQ"
+    ],
+    "excluded": {
+      "403870.KS": "HPSP: 첫 거래일 2022-07-15 > 2015-01-01",
+      "240810.KQ": "원익IPS: 첫 거래일 2016-05-02 > 2015-01-01",
+      "357780.KQ": "솔브레인: 첫 거래일 2020-08-06 > 2015-01-01"
+    },
+    "rows": 25159,
+    "features": [
+      "ret_1",
+      "ret_2",
+      "ret_3",
+      "mom_5",
+      "mom_10",
+      "mom_20",
+      "vol_20",
+      "vol_ratio",
+      "ma50_gap",
+      "turnover_ratio_20",
+      "inst_id"
+    ],
+    "fabricated_rows": 0,
+    "timing_seconds": {
+      "pooled": 2.4933483600616455,
+      "single": 0.9822256565093994
+    },
+    "survivorship_note": "목록은 2026-09-10 상장 종목이므로 과거로 적용하면 생존 편향이 있다. 종목 수 증가는 독립 날짜 표본 증가가 아니다.",
+    "comparisons": [
+      {
+        "target": "samsung",
+        "comparison": "pooled − 단독(같은 입력)",
+        "metric": "balanced_accuracy",
+        "delta": -0.0164760053865593,
+        "ci_low": -0.0475488131066846,
+        "ci_high": 0.01542864597935928,
+        "common_n": 1380,
+        "verdict": "동률(CI가 0 포함)"
+      },
+      {
+        "target": "samsung",
+        "comparison": "pooled − 단독(같은 입력)",
+        "metric": "log_loss",
+        "delta": -0.022193750721407612,
+        "ci_low": -0.03462458720925869,
+        "ci_high": -0.009975742733976166,
+        "common_n": 1380,
+        "verdict": "후보가 유의하게 우위"
+      },
+      {
+        "target": "samsung",
+        "comparison": "pooled − 사전확률",
+        "metric": "balanced_accuracy",
+        "delta": 0.008444128096150472,
+        "ci_low": -0.02057986776475194,
+        "ci_high": 0.03776582744725104,
+        "common_n": 1380,
+        "verdict": "동률(CI가 0 포함)"
+      },
+      {
+        "target": "samsung",
+        "comparison": "pooled − 사전확률",
+        "metric": "log_loss",
+        "delta": 0.00030068944386907326,
+        "ci_low": -0.008763815972233219,
+        "ci_high": 0.008637074769275558,
+        "common_n": 1380,
+        "verdict": "동률(CI가 0 포함)"
+      },
+      {
+        "target": "samsung",
+        "comparison": "단독 − 사전확률",
+        "metric": "balanced_accuracy",
+        "delta": 0.024920133482709772,
+        "ci_low": -0.0008410675065026268,
+        "ci_high": 0.04990414996004797,
+        "common_n": 1380,
+        "verdict": "동률(CI가 0 포함)"
+      },
+      {
+        "target": "samsung",
+        "comparison": "단독 − 사전확률",
+        "metric": "log_loss",
+        "delta": 0.022494440165276686,
+        "ci_low": 0.007468879214807244,
+        "ci_high": 0.03849468305140482,
+        "common_n": 1380,
+        "verdict": "후보가 유의하게 열위"
+      }
+    ]
+  },
+  "sk_hynix": {
+    "selection_date": "2026-09-10",
+    "selection_rule": "KRX 상장 반도체·반도체 장비·소재 대형주. 삼성전자·SK하이닉스와 같은 수요(메모리·파운드리) 또는 공급망(장비·소재)에 묶인 종목. 2015-01-01 이전 상장, 일평균 거래대금 상위.",
+    "instruments": [
+      "000660.KS",
+      "000990.KS",
+      "005290.KQ",
+      "005930.KS",
+      "036930.KQ",
+      "039030.KQ",
+      "042700.KS",
+      "058470.KQ",
+      "095340.KQ"
+    ],
+    "excluded": {
+      "403870.KS": "HPSP: 첫 거래일 2022-07-15 > 2015-01-01",
+      "240810.KQ": "원익IPS: 첫 거래일 2016-05-02 > 2015-01-01",
+      "357780.KQ": "솔브레인: 첫 거래일 2020-08-06 > 2015-01-01"
+    },
+    "rows": 25159,
+    "features": [
+      "ret_1",
+      "ret_2",
+      "ret_3",
+      "mom_5",
+      "mom_10",
+      "mom_20",
+      "vol_20",
+      "vol_ratio",
+      "ma50_gap",
+      "turnover_ratio_20",
+      "inst_id"
+    ],
+    "fabricated_rows": 0,
+    "timing_seconds": {
+      "pooled": 2.344109535217285,
+      "single": 1.05747389793396
+    },
+    "survivorship_note": "목록은 2026-09-10 상장 종목이므로 과거로 적용하면 생존 편향이 있다. 종목 수 증가는 독립 날짜 표본 증가가 아니다.",
+    "comparisons": [
+      {
+        "target": "sk_hynix",
+        "comparison": "pooled − 단독(같은 입력)",
+        "metric": "balanced_accuracy",
+        "delta": -0.0017327469337442003,
+        "ci_low": -0.03558593990253688,
+        "ci_high": 0.030566392750726944,
+        "common_n": 1377,
+        "verdict": "동률(CI가 0 포함)"
+      },
+      {
+        "target": "sk_hynix",
+        "comparison": "pooled − 단독(같은 입력)",
+        "metric": "log_loss",
+        "delta": -0.019446395162448837,
+        "ci_low": -0.0333291395914662,
+        "ci_high": -0.00578604930743363,
+        "common_n": 1377,
+        "verdict": "후보가 유의하게 우위"
+      },
+      {
+        "target": "sk_hynix",
+        "comparison": "pooled − 사전확률",
+        "metric": "balanced_accuracy",
+        "delta": 0.014684996907600112,
+        "ci_low": -0.008587809837324075,
+        "ci_high": 0.03711800478338903,
+        "common_n": 1377,
+        "verdict": "동률(CI가 0 포함)"
+      },
+      {
+        "target": "sk_hynix",
+        "comparison": "pooled − 사전확률",
+        "metric": "log_loss",
+        "delta": 0.007701246951054008,
+        "ci_low": -0.00469668056106004,
+        "ci_high": 0.019602332263363897,
+        "common_n": 1377,
+        "verdict": "동률(CI가 0 포함)"
+      },
+      {
+        "target": "sk_hynix",
+        "comparison": "단독 − 사전확률",
+        "metric": "balanced_accuracy",
+        "delta": 0.016417743841344312,
+        "ci_low": -0.008096180279576653,
+        "ci_high": 0.04017073711850741,
+        "common_n": 1377,
+        "verdict": "동률(CI가 0 포함)"
+      },
+      {
+        "target": "sk_hynix",
+        "comparison": "단독 − 사전확률",
+        "metric": "log_loss",
+        "delta": 0.027147642113502846,
+        "ci_low": 0.011493320397643126,
+        "ci_high": 0.04428413095889161,
+        "common_n": 1377,
+        "verdict": "후보가 유의하게 열위"
+      }
+    ]
+  }
+}

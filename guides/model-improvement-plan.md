@@ -75,11 +75,11 @@
 | P07 | [x] | 소수 모델 앙상블 비교 | P06 | CPU/Colab | 완료: 채택 없음. 최선 단일(expanding)을 이기는 결합 없음 |
 | P08 | [x] | 확률 신뢰도·예측 보류 평가 | P07 | CPU | 완료: 온도 보정 동률, 보류 진단만 저장(보고서 반영은 P15) |
 | P09 | [x] | 갭·장중 별도 학습 비교 | P08 | CPU/Colab | 완료: 예측력은 갭에, 장중은 비용 차감 후 0 근처. 채택 없음 |
-| P10 | [ ] | 국내 관련 종목 공동 학습 기반 | P09 | CPU/Colab, 선택 | 미실행 |
-| P11 | [ ] | MASTER 비교 실험 | P10 | GPU, 선택 | 미실행 |
-| P12 | [ ] | DoubleAdapt 비교 실험 | P06·P10 | GPU, 선택 | 미실행 |
-| P13 | [ ] | TRA 방식 모델 선택 실험 | P07·P10 | GPU, 선택 | 미실행 |
-| P14 | [ ] | Chronos-2 비교 실험 | P09 | GPU, 선택 | 미실행 |
+| P10 | [x] | 국내 관련 종목 공동 학습 기반 | P09 | CPU/Colab, 선택 | 완료: 패널·pooled 기준선 구축. 패널 입력만으로는 사전확률과 동률, 채택 없음 |
+| P11 | [ ] | MASTER 비교 실험 | P10 | GPU, 선택 | 보류(P10 패널이 사전확률과 동률 — 무거운 모델을 올릴 신호가 없음. GPU 없음) |
+| P12 | [ ] | DoubleAdapt 비교 실험 | P06·P10 | GPU, 선택 | 보류(P04·P05·P06이 일관되게 최근성·적응은 손해. 단순 가중이 이미 열위라 전제가 약함. GPU 없음) |
+| P13 | [ ] | TRA 방식 모델 선택 실험 | P07·P10 | GPU, 선택 | 보류(P07에서 내부 검증이 후보를 구분하지 못함 — 라우터가 배울 국면 신호가 없음. GPU 없음) |
+| P14 | [ ] | Chronos-2 비교 실험 | P09 | GPU, 선택 | 보류(P09: 예측력은 갭이고 갭은 해외 자산 입력 — 단변량 시계열 파운데이션 모델이 볼 정보가 아님. Kronos zero-shot이 기준선 이하였던 전례. GPU 없음) |
 | P15 | [ ] | 후보 사전 예측·공식 반영·복구 | P09, 선택 실험은 완료된 것만 | Colab/Actions | 미실행 |
 
 P10~P14는 전부 수행할 의무가 없다. P09까지 완료한 뒤 가장 유망한 후보 하나만 선택할 수 있다.
@@ -478,7 +478,7 @@ balanced_accuracy·accuracy도 동률. 보정으로 정확도가 향상됐다고
 장중 매매 손익(비용 20bp 차감, 일평균): samsung -10.1bp · sk_hynix -1.9bp.
 
 **채택 없음.** 예측력은 갭에 있고 갭은 09:00 시가에 이미 반영된다. 세션 타깃은 확률 품질이 사전확률과
-동률이고 매매 손익은 0 근처다. 기존 평가 분해를 학습으로도 확인한 것이며 07:00 제품의 한계로 남긴다.
+동률(sk_hynix)이거나 열위(samsung)이고 매매 손익은 0 근처다. 기존 평가 분해를 학습으로도 확인한 것이며 07:00 제품의 한계로 남긴다.
 
 **완료 증거:** 타깃 분리·실제 시가 누수 테스트, 구간별 성능. 다음은 P15 또는 선택 실험 하나.
 
@@ -487,11 +487,22 @@ balanced_accuracy·accuracy도 동률. 보정으로 정확도가 향상됐다고
 **파일:** 생성 experiments/model_improvement/panel_data.py, tests/test_panel_data.py, 러너 P10 등록.
 **입출력:** 기준 시점에 정의한 국내 반도체 관련 종목 목록·시점 정렬 시세 → date/instrument 기준 패널.
 
-- [ ] 종목 선정 규칙과 선정 기준일을 먼저 파일에 고정한다. 현재 생존 종목만 과거로 적용했다면 생존편향을 명시한다.
-- [ ] 한국 종목은 공동 학습 패널로, 미국 종목은 기존 한국 마감 시각에 정렬한 외부 변수로 사용한다.
-- [ ] 동일 날짜 모든 종목이 같은 폴드에 속하는지, 상장 전·거래정지·결측 자료를 임의 보간하지 않는지 테스트한다.
-- [ ] 수익률·거래대금 비율 등 비교 가능한 입력과 종목 식별값으로 단순 pooled LightGBM을 먼저 평가한다.
-- [ ] 삼성전자·하이닉스 각각의 단독 학습 대비 추가 가치·메모리·시간을 기록한다.
+- [x] 종목 선정 규칙과 선정 기준일을 먼저 파일에 고정한다. → `experiments/model_improvement/panel_data.py`의 `SELECTION_DATE`·`SELECTION_RULE`·`PANEL_UNIVERSE`. 생존 편향을 decision·manifest에 명시
+- [x] 한국 종목은 공동 학습 패널로, 미국 종목은 기존 한국 마감 시각에 정렬한 외부 변수로 사용한다. → 패널은 한국 9종목. 미국 자산은 이번 단순 pooled에 넣지 않았고(범위: 단순 pooled 먼저) 후속 항목으로 기록
+- [x] 동일 날짜 모든 종목이 같은 폴드에 속하는지, 상장 전·거래정지·결측 자료를 임의 보간하지 않는지 테스트한다. → `tests/test_panel_data.py` 11개(`date_folds`, `check_no_interpolation`)
+- [x] 수익률·거래대금 비율 등 비교 가능한 입력과 종목 식별값으로 단순 pooled LightGBM을 먼저 평가한다. → 러너 P10, 입력 11개 + 종목 식별값
+- [x] 삼성전자·하이닉스 각각의 단독 학습 대비 추가 가치·메모리·시간을 기록한다. → `comparisons.csv`·`metrics.csv`(학습 초 포함)
+
+#### 결과 (2026-09-10, `experiments/model_improvement/P10/20260910T0800Z_panel_pooled/`)
+
+패널 9종목(제외 3: 2015년 이후 상장), 행 samsung 25,159 / sk_hynix 25,159, 보간 위반 0.
+
+log_loss(음수가 개선): pooled − 단독(같은 입력) samsung -0.02219 [-0.03462, -0.00998] · sk_hynix -0.01945 [-0.03333, -0.00579];
+pooled − 사전확률 samsung +0.00030 [-0.00876, +0.00864] · sk_hynix +0.00770 [-0.00470, +0.01960].
+
+**채택 없음.** 패널 입력(수익률·변동성·거래대금 비율)만으로는 pooled도 단독도 사전확률을 이기지 못한다.
+pooled가 단독보다 나은 것은 정규화 효과다. 대표 모델의 우위는 해외 자산 입력(갭 성분)에서 오므로,
+값이 나오려면 해외 자산 특징을 패널에 넣은 pooled를 봐야 한다 — 후속 항목.
 
 **완료 증거:** 패널 누수/결측 테스트와 pooled 기준선. 종목 수 증가를 독립 날짜 표본 증가로 주장하지 않는다.
 
@@ -552,7 +563,7 @@ balanced_accuracy·accuracy도 동률. 보정으로 정확도가 향상됐다고
 **파일:** 노트북 후보 설정·라이브 예측 셀, forecast_utils.py 원장 함수 재사용, report_html.py 필요 시 수정, guides/validation.md·guides/running.md. 테스트 tests/test_forecast_improvements.py·tests/test_report_html.py·tests/test_notebook_smoke.py.
 **입출력:** 완료된 후보 실험 → 별도 후보 사전 예측, 종목별 채택 결정과 복구 설정.
 
-- [ ] 가장 유망한 후보 하나와 기존 대표 모델을 고정하고 별도 model/config_hash로 사전 예측을 기록한다. 과거 예측은 소급 생성하지 않는다.
+- [x] 가장 유망한 후보 하나와 기존 대표 모델을 고정하고 별도 model/config_hash로 사전 예측을 기록한다. → 후보 = `expanding` 학습 창(P04). 노트북 10절이 `Candidate expanding`을 별도 모델명으로 라이브 예측해 원장에 기록, `experiment_config.candidate_models`로 config_hash에 반영. 대표·앙상블 불변. `tests/test_candidate_ledger.py` 5개. 과거 예측 소급 없음 — 2026-09-11 실행부터 쌓인다
 - [ ] 운영 대표는 유지한 채 최소 60개의 공통 채점 거래일을 관찰한다. 60일은 최초 점검 시점이며 유의한 개선을 보장하는 표본 수가 아니다.
 - [ ] 4절 판정 규칙으로 종목별 방향 정확도와 확률 품질을 구분해 평가한다. CI가 불명확하면 관찰을 연장한다.
 - [ ] 채택한 경우에만 기본 설정을 바꾸고 이전 HEADLINE_MODEL/학습 설정/모델 버전을 복구값으로 문서화한다.
@@ -607,6 +618,9 @@ P00 이후에는 작업 ID만 바꿔 요청한다. Colab 실행이 필요한 경
 | --- | --- | --- | --- | --- |
 | 2026-09-09 | PLAN | 이 문서 및 README 링크 | 저장소 문서·핵심 함수·기존 Transformer 결과 확인 | 계획 생성. P00부터 시작 |
 | 2026-09-10 | P00 사전 수정 | `tools/run_notebook.py`, `tests/test_run_notebook.py` | 8개 오프라인 회귀 테스트 통과 | 기존 CLI가 IPython 히스토리 부재로 둘째 종목을 건너뛰던 결함 수정. P00 전체 완료 아님 |
+| 2026-09-10 | P10 | `experiments/model_improvement/P10/20260910T0800Z_panel_pooled/`, `experiments/model_improvement/panel_data.py`, `tests/test_panel_data.py` | 11개 통과, 두 종목 pooled/단독/사전확률 비교 | **완료.** 채택 없음. 패널 입력만으로는 사전확률과 동률 |
+| 2026-09-10 | P11~P14 | — | — | **보류.** 사유는 3절 표. GPU 없음 + P10·P04~P07 결과가 전제를 약화 |
+| 2026-09-10 | P15(1/5) | 노트북 10절 `Candidate expanding`, `tests/test_candidate_ledger.py` | 5개 통과, 노트북 구조 36개 통과 | 후보 사전 예측 등록. 2026-09-11 자동 실행부터 원장에 쌓임. 60거래일 관찰 후 4절 규칙으로 판정 |
 | 2026-09-10 | P09 | `experiments/model_improvement/P09/20260910T0700Z_gap_session_legs/`, `tests/test_target_decomposition.py` | 10개 통과, 두 종목 3타깃 재학습. 러너 재개 결함 1건 수정(완료 표시 뒤 산출물 없음 → 재계산, `test_completed_unit_without_metrics_is_recomputed`) | **완료.** 채택 없음. 예측력은 갭, 장중은 비용 차감 후 0 근처 |
 | 2026-09-10 | P08 | `experiments/model_improvement/P08/20260910T0600Z_calibration/`, `tests/test_probability_diagnostics.py` | 10개 통과, 두 종목 보정 전후·신뢰도·보류 표 | **완료.** 온도 보정 동률. 보류 진단만 저장 |
 | 2026-09-10 | P07 | `experiments/model_improvement/P07/20260910T0500Z_ensemble/`, `tests/test_model_ensemble.py` | 13개 통과, 두 종목 후보 3·결합 4 재학습 | **완료.** 채택 없음. 최선 단일을 이기는 결합 없음 |
@@ -619,9 +633,12 @@ P00 이후에는 작업 ID만 바꿔 요청한다. Colab 실행이 필요한 경
 | 2026-09-10 | P01 | `tools/run_model_improvement.py`, `tests/test_model_improvement_runner.py` | `discover -p test_model_improvement_runner.py` 15개 통과 | 완료. 재개·해시 격리·원자적 쓰기·발행 차단 검증. 구현 중 결함 2건(재개 시 반환형 불일치, 같은 초 run_id 충돌) 발견·수정 |
 | 2026-09-10 | P00 quick | `experiments/model_improvement/P00/20260910T0000Z_baseline_quick/` | 두 종목 46셀 무오류 완료, 평가 276일 | 기준선 계약 기록·스냅샷 고정 완료. 기존 캐시는 자산 키 불일치로 폐기. full 평가 실행 중 |
 
-- 현재 작업: P10 — 국내 관련 종목 공동 학습(패널 모듈·11개 테스트 완료, pooled 실험 실행)
-- 완료한 신규 작업: 10/16 (P00~P09)
-- 다음 작업: P10 결과 기록 → P11~P14 보류 사유 기록 → P15 후보 등록
+- 현재 작업: P15 — 후보 사전 예측 관찰 중(등록 완료, 채점 대기)
+- 완료한 신규 작업: 11/16 (P00~P10). 보류 4 (P11~P14). 진행 중 1 (P15)
+- 다음 작업: 2026-09-11부터 매일 원장에 `Candidate expanding` 행이 쌓이는지 확인 → 60 공통 채점일 뒤 종목별 판정(4절 규칙)
+- P15로 넘긴 후보: sk_hynix(및 참고로 samsung) `expanding` 학습 창
+- 후속 항목(계획 밖): 해외 자산 특징을 넣은 pooled 패널; P04 내부 선택을 폴드 반복형으로
+- 고쳐야 할 절차: P04/P05 내부 선택이 마지막 폴드 하나만 사용
 - P15로 넘긴 후보: sk_hynix `expanding` 학습 창 (P04에서 외부 유의 우위, 내부 선택 미채택)
 - 고쳐야 할 절차: P04 내부 선택을 폴드 반복형으로 (현재 마지막 폴드 하나만 사용)
 - 보류 작업: 없음

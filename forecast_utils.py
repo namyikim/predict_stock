@@ -347,6 +347,76 @@ def fit_direction_model(X, y, train_indices, family, seed=42, selection="log_los
     }}
 
 
+def feature_contributions(fitted, X, feature_names, top_k=5):
+    """이 예측을 상승 쪽으로 민 특징과 하락 쪽으로 민 특징. [{feature, value, contribution}]
+
+    SHAP 패키지를 새로 들이지 않는다. 두 모델 계열 모두 정확한 기여도를 자체로 낼 수 있다.
+      LightGBM: predict(pred_contrib=True) — 트리 SHAP 값을 그대로 준다.
+      Logistic: 표준화된 특징값 × 계수 — 선형 모형에서는 이것이 정의상 기여도다.
+    상승 확률(클래스 2)에서 하락 확률(클래스 0)을 뺀 쪽으로 부호를 맞춰, 양수면 상승 쪽이다.
+
+    주의: 기여도가 큰 특징이 '도움이 된 특징'은 아니다. 모델이 크게 반응했는데 계속 틀렸다면
+    오히려 해로운 특징이다. 그 구분은 채점 표본이 쌓인 뒤에야 가능하므로 여기서는 기록만 한다.
+    """
+    estimator = fitted["estimator"]
+    X = np.asarray(X, dtype=np.float64)
+    if X.ndim == 1:
+        X = X.reshape(1, -1)
+    names = list(feature_names)
+    model = estimator
+    scaler = None
+    if hasattr(estimator, "named_steps"):
+        scaler = estimator.named_steps.get("scaler")
+        model = list(estimator.named_steps.values())[-1]
+    classes = list(getattr(model, "classes_", []))
+    try:
+        up = classes.index(2) if 2 in classes else len(classes) - 1
+        down = classes.index(0) if 0 in classes else 0
+    except (ValueError, AttributeError):
+        up, down = -1, 0
+
+    scores = None
+    if hasattr(model, "booster_"):                      # LightGBM
+        raw = model.booster_.predict(X, pred_contrib=True)
+        raw = np.asarray(raw)
+        n_features = len(names)
+        if raw.shape[1] == (n_features + 1) * max(len(classes), 1):
+            per_class = raw.reshape(raw.shape[0], max(len(classes), 1), n_features + 1)
+            scores = per_class[0, up, :n_features] - per_class[0, down, :n_features]
+        elif raw.shape[1] == n_features + 1:            # 이진 모형
+            scores = raw[0, :n_features]
+    elif hasattr(model, "coef_"):                       # Logistic
+        values = scaler.transform(X) if scaler is not None else X
+        coef = np.asarray(model.coef_, dtype=float)
+        if coef.ndim == 2 and coef.shape[0] > 1:
+            scores = (coef[up] - coef[down]) * values[0]
+        else:
+            scores = coef.reshape(-1) * values[0]
+    if scores is None or len(scores) != len(names):
+        return []
+    order = np.argsort(-np.abs(scores))[:top_k]
+    return [{"feature": names[i], "value": float(X[0, i]), "contribution": float(scores[i])}
+            for i in order]
+
+
+def blend_contributions(per_model, top_k=5):
+    """여러 모델의 기여도를 특징별로 평균한다(앙상블은 확률을 평균하므로 기여도도 평균한다)."""
+    totals, counts = {}, {}
+    values = {}
+    for items in per_model:
+        for item in items or []:
+            key = item["feature"]
+            totals[key] = totals.get(key, 0.0) + item["contribution"]
+            counts[key] = counts.get(key, 0) + 1
+            values[key] = item["value"]
+    if not totals:
+        return []
+    merged = [{"feature": k, "value": values[k], "contribution": totals[k] / len(per_model)}
+              for k in totals]
+    merged.sort(key=lambda d: -abs(d["contribution"]))
+    return merged[:top_k]
+
+
 def predict_direction_model(fitted, X):
     return temperature_probabilities(aligned_probabilities(fitted["estimator"], X), fitted["temperature"])
 

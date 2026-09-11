@@ -13,11 +13,17 @@ ROOT = Path(__file__).resolve().parents[1]
 PAGE = ROOT / "docs" / "lab" / "index.html"
 
 
-class LabPageTests(unittest.TestCase):
+class PageSource(unittest.TestCase):
+    """페이지 원문을 읽는 공통 베이스."""
+
     @classmethod
     def setUpClass(cls):
         cls.html = PAGE.read_text(encoding="utf-8")
         cls.script = re.search(r"<script>(.*?)</script>", cls.html, re.S).group(1)
+
+
+class LabPageTests(PageSource):
+    pass
 
     def test_javascript_parses(self):
         tmp = Path("/tmp/_lab_check.js")
@@ -87,3 +93,67 @@ class LabPageTests(unittest.TestCase):
     def test_comparison_shows_relative_to_buy_and_hold(self):
         self.assertIn("보유 대비", self.script)
         self.assertIn('simulate(picked, "always", cost)', self.script)
+
+
+class AttributionTabTests(PageSource):
+    """무엇이 예측을 밀었는지 — 기록은 남기되 검증 전 해석을 강요하지 않는다."""
+
+    def test_tab_exists_and_is_not_the_default(self):
+        self.assertIn('id="tab-attr"', self.html)
+        self.assertIn('id="panel-attr" hidden', self.html)   # 가상 매매가 기본
+
+    def test_reads_attribution_and_ledger(self):
+        self.assertIn("attribution.csv", self.script)
+        self.assertIn("forecast_log.csv", self.script)
+        self.assertIn("function outcomeByDate()", self.script)
+
+    def test_only_scored_prospective_rows_decide_hit_or_miss(self):
+        self.assertIn('r.kind !== "direction" || r.status !== "scored"', self.script)
+        self.assertIn('String(r.is_prospective).toLowerCase() !== "true"', self.script)
+
+    def test_warns_that_large_contribution_is_not_usefulness(self):
+        self.assertIn("기여도가 큰 특징이 도움이 된 특징은 아닙니다", self.html)
+        self.assertIn("틀린 날에 더 크게 반응한 특징은 해로울 수 있습니다", self.script)
+
+    def test_small_sample_warning_on_the_split_view(self):
+        self.assertIn("total < 60", self.script)
+        self.assertIn("이 표는 아직 잡음입니다", self.script)
+
+    def test_public_report_does_not_show_attribution(self):
+        import json
+        nb = json.loads((ROOT / "samsung_direction_model_colab.ipynb").read_text(encoding="utf-8"))
+        report = next("".join(c["source"]) for c in nb["cells"]
+                      if "def build_summary():" in "".join(c.get("source", [])))
+        self.assertNotIn("live_contributions", report)
+        self.assertNotIn("attribution", report)
+
+
+class AttributionRecordingTests(unittest.TestCase):
+    """기여도는 대표 모델과 같은 특징 집합에서 뽑아야 한다."""
+
+    @classmethod
+    def setUpClass(cls):
+        import json
+        nb = json.loads((ROOT / "samsung_direction_model_colab.ipynb").read_text(encoding="utf-8"))
+        cls.source = "\n".join("".join(c["source"]) for c in nb["cells"])
+
+    def test_uses_the_headline_models_feature_set(self):
+        # 전체 특징 모델에서 뽑으면 대표가 쓰지도 않는 macro_*·nsi_* 가 1위로 찍힌다.
+        self.assertIn('if HEADLINE_MODEL == "No macro ensemble" and market_live_models:', self.source)
+        self.assertIn("live_X[:, market_feature_idx]", self.source)
+
+    def test_only_recorded_for_prospective_runs(self):
+        self.assertIn("if RECORD_FORECAST and live_contributions:", self.source)
+
+    def test_first_record_per_day_wins(self):
+        self.assertIn('drop_duplicates(["prediction_date", "model", "rank"], keep="first")', self.source)
+
+    def test_file_is_synced_with_the_ledger(self):
+        self.assertIn('"attribution.csv"', self.source)
+
+    def test_no_new_dependency_for_contributions(self):
+        requirements = (ROOT / "requirements.txt").read_text(encoding="utf-8")
+        self.assertNotIn("shap", requirements.lower())
+        forecast = (ROOT / "forecast_utils.py").read_text(encoding="utf-8")
+        self.assertIn("pred_contrib=True", forecast)     # LightGBM 내장
+        self.assertIn('hasattr(model, "coef_")', forecast)   # 로지스틱은 계수×표준화값

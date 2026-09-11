@@ -29,14 +29,23 @@
   .muted{color:#8a9199;font-size:11px}
   .empty{border:1px solid #e5e5e5;border-radius:6px;padding:16px;color:#6b7178;font-size:13px}
   .up{color:#1e6b34}.down{color:#a8322a}
+  .tabs{display:flex;gap:8px;margin:14px 0 6px;border-bottom:1px solid #e5e5e5}
+  .tab{border:0;background:none;padding:8px 14px;font-size:13px;color:#6b7178;cursor:pointer;
+       border-bottom:2px solid transparent;font-family:inherit}
+  .tab.active{color:#1a1a1a;font-weight:600;border-bottom-color:#1a5490}
+  .bar{display:inline-block;height:9px;border-radius:2px;vertical-align:middle}
   details{margin-top:10px}
   summary{font-size:12px;color:#6b7178;cursor:pointer}
 </style>
 </head>
 <body>
 <div class="wrap">
-  <h1>가상 매매 시뮬레이션 <span class="muted">실험용</span></h1>
+  <h1>실험실 <span class="muted">검증 전 분석 · 공개 보고서에 띄우지 않습니다</span></h1>
   <div class="muted">predict_stock · <a href="../">보고서로 돌아가기</a></div>
+  <div class="tabs">
+    <button id="tab-sim" class="tab active">가상 매매</button>
+    <button id="tab-attr" class="tab">무엇이 예측을 밀었나</button>
+  </div>
 
   <div class="warn">
     <b>실제 거래는 하지 않았습니다.</b> 원장(<code>forecast_history/…/forecast_log.csv</code>)에
@@ -48,6 +57,7 @@
     <br>결과는 <b>보유 전략과 비교해서만</b> 읽으세요. 거래비용은 끌 수 없습니다.
   </div>
 
+  <div id="panel-sim">
   <div class="controls">
     <label class="field">종목
       <select id="target">
@@ -88,6 +98,27 @@
 
   <h2>거래 내역 <span class="muted" id="trades-rule"></span></h2>
   <div id="trades"></div>
+
+  </div>
+
+  <div id="panel-attr" hidden>
+    <div class="warn">
+      <b>무엇이 예측을 밀었는지</b>를 그날 모델에서 뽑아 기록한 것입니다(LightGBM 트리 기여도,
+      로지스틱 계수×표준화값). <b>기여도가 큰 특징이 도움이 된 특징은 아닙니다</b> — 모델이 크게
+      반응했는데 계속 틀렸다면 오히려 해로운 특징입니다. 그 구분은 채점이 쌓여야 가능하므로
+      지금은 기록만 보고 결론을 내지 마세요.
+    </div>
+    <div class="controls">
+      <label class="field">보기
+        <select id="attr-view">
+          <option value="recent">날짜별 기여도</option>
+          <option value="hit">맞힌 날 vs 틀린 날</option>
+        </select>
+      </label>
+    </div>
+    <div id="attr-status" class="muted">기여도 기록을 불러오는 중…</div>
+    <div id="attr-result"></div>
+  </div>
 
   <div class="muted" style="margin-top:18px">
     이 페이지는 원장 CSV를 브라우저에서 직접 읽어 계산합니다. 서버도 저장도 없습니다.
@@ -317,8 +348,131 @@
   ["model", "rule", "capital", "fee", "tax", "slip"].forEach(function (id) {
     $(id).addEventListener("change", run);
   });
-  $("target").addEventListener("change", load);
+  $("target").addEventListener("change", function () { load(); loadAttribution(); });
   load();
+
+  // ---- 무엇이 예측을 밀었나 ------------------------------------------------
+  var attrRows = [], ledgerRows = [];
+
+  function loadAttribution() {
+    var target = $("target").value;
+    $("attr-status").textContent = "기여도 기록을 불러오는 중…";
+    $("attr-result").innerHTML = "";
+    var base = "https://raw.githubusercontent.com/namyikim/predict_stock/main/forecast_history/" + target + "/";
+    Promise.all([
+      fetch(base + "attribution.csv", { cache: "no-store" }).then(function (r) {
+        return r.ok ? r.text() : ""; }).catch(function () { return ""; }),
+      fetch(base + "forecast_log.csv", { cache: "no-store" }).then(function (r) {
+        return r.ok ? r.text() : ""; }).catch(function () { return ""; })
+    ]).then(function (texts) {
+      attrRows = texts[0] ? parseCsv(texts[0]) : [];
+      ledgerRows = texts[1] ? parseCsv(texts[1]) : [];
+      $("attr-status").textContent = "";
+      if (!attrRows.length) {
+        $("attr-result").innerHTML = '<div class="empty">기여도 기록이 아직 없습니다. ' +
+          '아침 실행이 하루에 한 줄씩 남깁니다(2026-09-11부터).</div>';
+        return;
+      }
+      renderAttribution();
+    });
+  }
+
+  function outcomeByDate() {
+    // 방향 예측의 적중 여부를 예측일별로. 채점된 사전 예측만 본다.
+    var out = {};
+    ledgerRows.forEach(function (r) {
+      if (r.kind !== "direction" || r.status !== "scored") return;
+      if (String(r.is_prospective).toLowerCase() !== "true") return;
+      if (out[r.target_date] === undefined) out[r.target_date] = r.direction_correct;
+    });
+    return out;
+  }
+
+  function bar(value, scale) {
+    var width = Math.min(100, Math.abs(value) / scale * 100);
+    var color = value > 0 ? "#4c78a8" : "#b5453c";
+    return '<span class="bar" style="width:' + width.toFixed(0) + 'px;background:' + color + '"></span>';
+  }
+
+  function renderAttribution() {
+    var view = $("attr-view").value;
+    var outcome = outcomeByDate();
+    if (view === "recent") {
+      var byDate = {};
+      attrRows.forEach(function (r) {
+        (byDate[r.prediction_date] = byDate[r.prediction_date] || []).push(r);
+      });
+      var dates = Object.keys(byDate).sort().reverse().slice(0, 20);
+      var scale = 0;
+      attrRows.forEach(function (r) { scale = Math.max(scale, Math.abs(parseFloat(r.contribution) || 0)); });
+      scale = scale || 1;
+      var html = dates.map(function (d) {
+        var hit = outcome[d];
+        var mark = hit === undefined ? '<span class="muted">채점 전</span>'
+          : (parseFloat(hit) === 1 ? '<span class="up">적중</span>' : '<span class="down">미적중</span>');
+        var items = byDate[d].sort(function (a, b) { return a.rank - b.rank; }).map(function (r) {
+          var c = parseFloat(r.contribution) || 0;
+          return "<tr><td>" + r.feature + "</td>" +
+            '<td class="num">' + (parseFloat(r.value) || 0).toFixed(3) + "</td>" +
+            '<td class="num ' + (c > 0 ? "up" : "down") + '">' + (c > 0 ? "+" : "") + c.toFixed(3) + "</td>" +
+            "<td>" + bar(c, scale) + "</td></tr>";
+        }).join("");
+        return '<div style="margin-top:14px"><b>' + d + "</b> · " + mark +
+          ' <span class="muted">상승확률 ' + (parseFloat(byDate[d][0].p_up) * 100).toFixed(0) + "%</span>" +
+          '<table style="margin-top:4px"><tr><th>특징</th><th class="num">값</th>' +
+          '<th class="num">기여도</th><th>방향</th></tr>' + items + "</table></div>";
+      }).join("");
+      $("attr-result").innerHTML = html +
+        '<div class="muted" style="margin-top:10px">기여도 부호는 상승 쪽(+) / 하락 쪽(−)입니다. ' +
+        '막대 길이는 절댓값 기준이며 날짜 간 비교용입니다.</div>';
+      return;
+    }
+    // 맞힌 날 vs 틀린 날: 특징별 평균 기여도와 등장 횟수
+    var stats = {};
+    attrRows.forEach(function (r) {
+      var hit = outcome[r.prediction_date];
+      if (hit === undefined) return;
+      var key = r.feature, bucket = parseFloat(hit) === 1 ? "hit" : "miss";
+      stats[key] = stats[key] || { hit: [], miss: [] };
+      stats[key][bucket].push(Math.abs(parseFloat(r.contribution) || 0));
+    });
+    var keys = Object.keys(stats);
+    if (!keys.length) {
+      $("attr-result").innerHTML = '<div class="empty">채점된 날이 아직 없습니다. ' +
+        '예측이 실제 결과와 대조된 뒤에 이 표가 채워집니다.</div>';
+      return;
+    }
+    var mean = function (a) { return a.length ? a.reduce(function (x, y) { return x + y; }, 0) / a.length : null; };
+    var body = keys.map(function (k) {
+      return { feature: k, hitN: stats[k].hit.length, missN: stats[k].miss.length,
+               hitMean: mean(stats[k].hit), missMean: mean(stats[k].miss) };
+    }).sort(function (a, b) { return (b.hitN + b.missN) - (a.hitN + a.missN); })
+      .map(function (r) {
+        var fmt = function (v, n) { return v === null ? "—" : v.toFixed(3) + ' <span class="muted">(' + n + "회)</span>"; };
+        return "<tr><td>" + r.feature + "</td>" +
+          '<td class="num">' + fmt(r.hitMean, r.hitN) + "</td>" +
+          '<td class="num">' + fmt(r.missMean, r.missN) + "</td></tr>";
+      }).join("");
+    var total = Object.keys(outcome).length;
+    $("attr-result").innerHTML =
+      (total < 60 ? '<div class="warn">채점된 날이 <b>' + total + "일</b>뿐입니다. 특징별로 나누면 " +
+        "표본이 더 적어져 <b>이 표는 아직 잡음입니다.</b></div>" : "") +
+      '<table><tr><th>특징</th><th class="num">맞힌 날 평균 |기여도|</th>' +
+      '<th class="num">틀린 날 평균 |기여도|</th></tr>' + body + "</table>" +
+      '<div class="muted" style="margin-top:8px">틀린 날에 더 크게 반응한 특징은 해로울 수 있습니다. ' +
+      "다만 표본이 충분해지기 전에는 어느 쪽도 말할 수 없습니다.</div>";
+  }
+
+  $("attr-view").addEventListener("change", renderAttribution);
+  ["sim", "attr"].forEach(function (name) {
+    $("tab-" + name).addEventListener("click", function () {
+      ["sim", "attr"].forEach(function (other) {
+        $("tab-" + other).className = "tab" + (other === name ? " active" : "");
+        $("panel-" + other).hidden = other !== name;
+      });
+      if (name === "attr" && !attrRows.length) loadAttribution();
+    });
+  });
 })();
 </script>
 </body>

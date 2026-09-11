@@ -141,8 +141,8 @@ class ErrorDetailTests(unittest.TestCase):
 
     def test_customs_message_explains_the_likely_cause(self):
         source = (Path(mu.__file__).resolve().parent / "data_sources" / "exports.py").read_text(encoding="utf-8")
-        self.assertIn("SERVICE_KEY_IS_NOT_REGISTERED 가 모든 형태에서 나오면", source)
-        self.assertIn("활용신청이 승인됐는지", source)
+        self.assertIn("해외 IP 에서 SERVICE_KEY_IS_NOT_REGISTERED", source)
+        self.assertIn("이 실패는 정상이며", source)
 
 
 class CustomsKeyVariantTests(unittest.TestCase):
@@ -247,10 +247,40 @@ class KeyFingerprintTests(unittest.TestCase):
     def test_customs_failure_includes_the_fingerprint(self):
         source = (Path(mu.__file__).resolve().parent / "data_sources" / "exports.py").read_text(encoding="utf-8")
         self.assertIn("key_fingerprint(key)", source)
-        self.assertIn("위 지문으로 대조", source)
+        self.assertIn("지문이 포털의 키와 다르면", source)
 
     def test_report_keeps_enough_of_the_reason_to_diagnose(self):
         import report_html as rh
         long_reason = "관세청 조회 실패(HS 8541, key=encoded len=102 Zr1k…D%3D) — " + "x" * 200
         html = rh.fragment_sources_html({}, {"customs_info": {"enabled": False, "reason": long_reason}})
         self.assertIn("key=encoded len=102", html)        # 80자에서 잘리면 안 된다
+
+
+class CustomsCacheRouteTests(unittest.TestCase):
+    """관세청은 해외 IP 에서 막힌다(2026-09-11 확인: 같은 키가 한국에서는 resultCode 00,
+    Actions 에서는 SERVICE_KEY_IS_NOT_REGISTERED). 그래서 한국에서 도는 Colab 실행이 보관본을
+    갱신하고 Actions 는 그것을 쓴다 — KOSIS 와 같은 구조다."""
+
+    @classmethod
+    def setUpClass(cls):
+        import json
+        nb = json.loads((Path(mu.__file__).resolve().parent /
+                         "samsung_direction_model_colab.ipynb").read_text(encoding="utf-8"))
+        cls.source = "\n".join("".join(c["source"]) for c in nb["cells"])
+
+    def test_colab_run_fetches_customs_for_the_cache(self):
+        self.assertIn("_customs_key = data_go_kr_key()", self.source)
+        self.assertIn("fetch_customs_exports(pd.Timestamp(START_DATE)", self.source)
+        self.assertIn('_candidates.append(("customs_exports.csv"', self.source)
+
+    def test_failure_leaves_the_cache_alone(self):
+        # 받지 못하면 보관본을 덮어쓰지 않는다(보관본을 보관본으로 덮으면 이력이 굳는다).
+        self.assertIn("관세청을 받지 못해 보관본을 그대로 둡니다", self.source)
+
+    def test_missing_key_is_stated_not_silent(self):
+        self.assertIn("DATA_GO_KR_KEY 가 없어 관세청 보관본을 갱신하지 않습니다", self.source)
+
+    def test_error_message_names_the_real_cause(self):
+        source = (Path(mu.__file__).resolve().parent / "data_sources" / "exports.py").read_text(encoding="utf-8")
+        self.assertIn("해외 IP 에서 SERVICE_KEY_IS_NOT_REGISTERED", source)
+        self.assertIn("macro_history/customs_exports.csv", source)

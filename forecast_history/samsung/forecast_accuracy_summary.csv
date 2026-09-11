@@ -1,4 +1,5 @@
 ﻿model,kind,horizon_days,target_mode,config_hash,n,accuracy,mean_log_loss,mean_brier,point_forecasts,price_mae,price_mape,interval_coverage
+Candidate expanding,direction,1,close_to_close,fcf9a52b1a6a87f3bd29,1,0.0,1.1978514022617497,0.7366310234911683,0,,,
 LightGBM,direction,1,close_to_close,2c241a78cab914136594,1,1.0,0.7786987043798637,0.44577261093415765,0,,,
 LightGBM,direction,1,close_to_close,2df6c98b48a745b2967f,1,1.0,0.8573317032826798,0.5087794331852985,0,,,
 LightGBM,direction,1,close_to_close,2eb5adc74ae8d1ff1953,1,0.0,1.103976306531693,0.6860271561102133,0,,,
@@ -6,6 +7,7 @@ LightGBM,direction,1,close_to_close,7cfdc5ba38f87fc3691f,1,0.0,1.110867550248448
 LightGBM,direction,1,close_to_close,92f57958414c79f097af,1,1.0,0.6225616855843691,0.3224706089610849,0,,,
 LightGBM,direction,1,close_to_close,b7e83cece61c5faf1d06,1,1.0,0.7891696697429189,0.45483175942488424,0,,,
 LightGBM,direction,1,close_to_close,cee1232d50d58d70f18f,1,0.0,0.9339380999710081,0.5794971861333862,0,,,
+LightGBM,direction,1,close_to_close,fcf9a52b1a6a87f3bd29,1,0.0,1.4884506134003221,0.9258238534054731,0,,,
 Logistic,direction,1,close_to_close,2c241a78cab914136594,1,1.0,0.8456061222164145,0.4934775202357986,0,,,
 Logistic,direction,1,close_to_close,2df6c98b48a745b2967f,1,1.0,0.8456062625667203,0.49347764107071845,0,,,
 Logistic,direction,1,close_to_close,2eb5adc74ae8d1ff1953,1,1.0,1.0190073209017911,0.6142316272302334,0,,,
@@ -13,6 +15,7 @@ Logistic,direction,1,close_to_close,7cfdc5ba38f87fc3691f,1,1.0,1.027120500061384
 Logistic,direction,1,close_to_close,92f57958414c79f097af,1,1.0,1.0435672200724229,0.6296923316125764,0,,,
 Logistic,direction,1,close_to_close,b7e83cece61c5faf1d06,1,1.0,0.8456068971154683,0.4934781148613754,0,,,
 Logistic,direction,1,close_to_close,cee1232d50d58d70f18f,1,0.0,1.0364730166101794,0.6294338151857258,0,,,
+Logistic,direction,1,close_to_close,fcf9a52b1a6a87f3bd29,1,0.0,1.103169020802867,0.6749254427671458,0,,,
 Mean ensemble,direction,1,close_to_close,2c241a78cab914136594,1,1.0,0.8115929423216521,0.4692580479119815,0,,,
 Mean ensemble,direction,1,close_to_close,2df6c98b48a745b2967f,1,1.0,0.8514517972781512,0.5007652471231342,0,,,
 Mean ensemble,direction,1,close_to_close,2eb5adc74ae8d1ff1953,1,0.0,1.0605896190029398,0.6480027521784925,0,,,
@@ -20,11 +23,14 @@ Mean ensemble,direction,1,close_to_close,7cfdc5ba38f87fc3691f,1,0.0,1.0681175851
 Mean ensemble,direction,1,close_to_close,92f57958414c79f097af,1,1.0,0.8110704626286814,0.463069186067653,0,,,
 Mean ensemble,direction,1,close_to_close,b7e83cece61c5faf1d06,1,1.0,0.8169901911786231,0.47382803986641625,0,,,
 Mean ensemble,direction,1,close_to_close,cee1232d50d58d70f18f,1,0.0,0.9838919574324554,0.6016898646270203,0,,,
+Mean ensemble,direction,1,close_to_close,fcf9a52b1a6a87f3bd29,1,0.0,1.2773682214314692,0.7940966363951503,0,,,
 No NSI ensemble,direction,1,close_to_close,2eb5adc74ae8d1ff1953,1,0.0,1.0547765393541515,0.6442281227306459,0,,,
 No NSI ensemble,direction,1,close_to_close,92f57958414c79f097af,1,1.0,0.7507176011176976,0.4181325489720887,0,,,
 No NSI ensemble,direction,1,close_to_close,cee1232d50d58d70f18f,1,0.0,0.9821905636800616,0.5979304119140978,0,,,
+No NSI ensemble,direction,1,close_to_close,fcf9a52b1a6a87f3bd29,1,0.0,1.2867380260811336,0.8005728730547684,0,,,
 No flow ensemble,direction,1,close_to_close,92f57958414c79f097af,1,1.0,0.7962837862656429,0.45219357927497783,0,,,
 No flow ensemble,direction,1,close_to_close,cee1232d50d58d70f18f,1,0.0,0.9371848865138385,0.5740932099792064,0,,,
+No flow ensemble,direction,1,close_to_close,fcf9a52b1a6a87f3bd29,1,0.0,1.3108389224006634,0.8203606570982861,0,,,
 No macro ensemble,direction,1,close_to_close,2c241a78cab914136594,1,1.0,0.8368488940682887,0.48780980014753417,0,,,
 No macro ensemble,direction,1,close_to_close,2df6c98b48a745b2967f,1,1.0,0.8350064595118173,0.4865733533761327,0,,,
 No macro ensemble,direction,1,close_to_close,2eb5adc74ae8d1ff1953,1,0.0,1.0992240416759724,0.6741383382892188,0,,,
@@ -32,11 +38,14 @@ No macro ensemble,direction,1,close_to_close,7cfdc5ba38f87fc3691f,1,0.0,1.132715
 No macro ensemble,direction,1,close_to_close,92f57958414c79f097af,1,1.0,0.8046565799073564,0.4583195804083195,0,,,
 No macro ensemble,direction,1,close_to_close,b7e83cece61c5faf1d06,1,1.0,0.8280434186416669,0.4809599532024773,0,,,
 No macro ensemble,direction,1,close_to_close,cee1232d50d58d70f18f,1,0.0,0.9704162983232595,0.5900905098149145,0,,,
+No macro ensemble,direction,1,close_to_close,fcf9a52b1a6a87f3bd29,1,0.0,1.2297449961754618,0.7617291048248621,0,,,
 No macro price ensemble,direction,1,close_to_close,92f57958414c79f097af,1,1.0,0.7556341597018115,0.42180703159463995,0,,,
+No macro price ensemble,direction,1,close_to_close,fcf9a52b1a6a87f3bd29,1,0.0,1.2569918371377933,0.7812547543185786,0,,,
 Ridge,open,1,close_to_close,2eb5adc74ae8d1ff1953,1,,,,1,2009.8444744944572,0.007389134097406093,1.0
 Ridge,open,1,close_to_close,7cfdc5ba38f87fc3691f,1,,,,1,1960.9529171139002,0.007209385724683457,1.0
 Ridge,open,1,close_to_close,92f57958414c79f097af,1,,,,1,1637.2739251962048,0.006086520168015632,1.0
 Ridge,open,1,close_to_close,cee1232d50d58d70f18f,1,,,,1,4058.4767693653703,0.015059283003211021,1.0
+Ridge,open,1,close_to_close,fcf9a52b1a6a87f3bd29,1,,,,1,10963.715381571092,0.04249502085880268,0.0
 Ridge,price,1,close_to_close,2c241a78cab914136594,1,,,,1,10563.289426332049,0.03912329417160018,1.0
 Ridge,price,1,close_to_close,2df6c98b48a745b2967f,1,,,,1,10563.293801831838,0.039123310377154955,1.0
 Ridge,price,1,close_to_close,2eb5adc74ae8d1ff1953,1,,,,1,3335.275268242345,0.012375789492550446,1.0
@@ -44,4 +53,8 @@ Ridge,price,1,close_to_close,7cfdc5ba38f87fc3691f,1,,,,1,2959.2695630512317,0.01
 Ridge,price,1,close_to_close,92f57958414c79f097af,1,,,,1,921.1062455445062,0.0034241867864108037,1.0
 Ridge,price,1,close_to_close,b7e83cece61c5faf1d06,1,,,,1,10708.918514125602,0.039662661163428155,1.0
 Ridge,price,1,close_to_close,cee1232d50d58d70f18f,1,,,,1,2847.2468910239986,0.010564923528846006,1.0
+Ridge,price,1,close_to_close,fcf9a52b1a6a87f3bd29,1,,,,1,9224.901537995727,0.035548753518287964,1.0
+Ridge,price,5,close_to_close,2c241a78cab914136594,1,,,,0,,,1.0
+Ridge,price,5,close_to_close,2df6c98b48a745b2967f,1,,,,0,,,1.0
+Ridge,price,5,close_to_close,b7e83cece61c5faf1d06,1,,,,0,,,1.0
 Transformer,direction,1,close_to_close,2c241a78cab914136594,1,0.0,1.2667060758974118,0.8844179324428342,0,,,

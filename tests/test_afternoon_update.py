@@ -643,3 +643,34 @@ class PricePositionTests(unittest.TestCase):
         self.assertIn("지금 가격은 어디쯤인가", report)
         self.assertIn('"label": "단기 위치"', report)
         self.assertIn("저점·고점 판단이 아니라", report)
+
+
+class DecisionTableLayoutTests(unittest.TestCase):
+    """판단 재료 표는 모바일에서 가로 스크롤이 생기지 않아야 한다(2026-09-11 지적).
+
+    원인은 '값' 칸의 white-space:nowrap 이었다. 긴 값이 줄바꿈되지 않아 표가 넘쳤다.
+    """
+
+    def test_value_cell_can_wrap(self):
+        html = fu.decision_inputs_html(name="t", unknowns=[], cards=[
+            {"label": "단기 위치", "value": "석 달 범위 8% 지점 · 거의 바닥 근처",
+             "detail": "설명", "source": "1절"}])
+        # nowrap 은 항목·출처 칸에만 남는다(짧고 줄바꿈되면 오히려 읽기 나쁘다).
+        self.assertEqual(html.count("white-space:nowrap"), 2)
+
+    def test_table_min_width_fits_a_phone(self):
+        import re
+        html = fu.decision_inputs_html(name="t", unknowns=[], cards=[
+            {"label": "a", "value": "b", "detail": "c", "source": "d"}])
+        width = int(re.search(r"min-width:(\d+)px", html).group(1))
+        self.assertLessEqual(width, 460)
+
+    def test_long_explanation_goes_to_the_detail_column(self):
+        import json
+        nb = json.loads((Path(__file__).resolve().parents[1] /
+                         "samsung_direction_model_colab.ipynb").read_text(encoding="utf-8"))
+        report = next("".join(c["source"]) for c in nb["cells"]
+                      if "def build_summary():" in "".join(c.get("source", [])))
+        # 값 칸은 짧게 유지한다.
+        self.assertIn('"value": f"{_p:.0%} 지점"', report)
+        self.assertIn('"detail": f"석 달 범위에서 {_where}. "', report)

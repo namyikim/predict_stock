@@ -1,0 +1,277 @@
+{
+  "target": "samsung",
+  "name": "삼성전자",
+  "peer_name": "SK하이닉스",
+  "session_date": "2026-09-11",
+  "generated_at": "2026-09-11 18:20 KST",
+  "summary": {
+    "prev_close": 269000.0,
+    "open": 258000.0,
+    "high": 261500.0,
+    "low": 256500.0,
+    "close": 259500.0,
+    "gap": -0.040892193308550207,
+    "session": 0.005813953488372103,
+    "c2c": -0.03531598513011147,
+    "high_vs_open": 0.013565891472868241,
+    "low_vs_open": -0.005813953488372103,
+    "volume": 15533611.0,
+    "volume_ratio": 0.7391540746010812,
+    "kospi_c2c": -0.017630249846794288,
+    "peer_c2c": -0.0221262817053427,
+    "usdkrw_chg": 0.002695688548205011,
+    "sox_ret": -0.026581332352022535,
+    "nasdaq_ret": -0.0065370403021639545
+  },
+  "classification": {
+    "labels": [
+      "갭 주도",
+      "장중 급변 09:00 주도",
+      "지수 동조",
+      "마감 구간 쏠림(14:55~종가)"
+    ],
+    "reasons": [
+      "갭 -4.09%가 종가→종가 -3.53%의 116%",
+      "09:00 봉 -3.62%(σ의 25.21배, 거래량 5.56배)가 세션 +0.58%의 374%",
+      "KOSPI -1.76% vs 종목 -3.53%, 5분 수익률 상관 0.87 — 종목 고유 요인이 약함",
+      "14:55~종가 구간이 세션 +0.58%의 66% (5분봉이 없는 구간, 일봉 종가 기준)"
+    ]
+  },
+  "events": [
+    {
+      "time": "2026-09-11T09:00:00+09:00",
+      "ret": -0.036245353159851335,
+      "z": 25.21,
+      "volume_ratio": 5.56,
+      "cum_before": 0.0,
+      "cum_after": 0.004844961240310086,
+      "session_share": -3.7405204460966512,
+      "score": 27.205017609473195,
+      "news": [
+        {
+          "time": "2026-09-11T08:06:15+09:00",
+          "title": "'삼성전자, 드디어 터지나' 들썩…증권가서 '파격 전망' 나왔다 [분석+]",
+          "source": "한국경제",
+          "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE5oSEdMT3BzNnBVSUxfcTU1U1d1ZUZ1WlJCSHFWNmdvbGRZWFhZd29zaHVsQ1B4a0piYTdfRzdMQjB1eDE0cVlaUEpHQU1NVVFkTWF1bV9JTkdwUQ?oc=5"
+        },
+        {
+          "time": "2026-09-11T08:31:00+09:00",
+          "title": "삼성전자·SK하이닉스 프리마켓 3%대↓…美 반도체 약세 부담[특징주]",
+          "source": "v.daum.net",
+          "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE4xbkJ1Y2ZpR205amh4Umw2MEFlaWt3UGo0MEp6LXU3di1mOTJhLTNwTmx3OHhvVXdDaUhuYVBmM1V0R181eWlGZkRwaHY0NjU3NXZMSkR1QnNZc2JH?oc=5"
+        },
+        {
+          "time": "2026-09-11T09:14:26+09:00",
+          "title": "삼성전자, 반도체 '물 관리' 강화...하수처리수 재이용 확대",
+          "source": "ebn.co.kr",
+          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE5ISWhELWx5WDFob2tmQ0xhSmVXaTUtXzBFS0ZHTF9vUUhONUNVUElKS29Xd1kxQy0xcG0yRzZUM0JjUG5QeFR0YjhXT1JkeTQ0eXNOS29zVXk0aktERFJVN2hfSG9wRm9S?oc=5"
+        }
+      ]
+    },
+    {
+      "time": "2026-09-11T14:50:00+09:00",
+      "ret": 0.007722007722007707,
+      "z": 5.37,
+      "volume_ratio": 1.94,
+      "cum_before": 0.003875968992248069,
+      "cum_after": 0.011627906976744207,
+      "session_share": 0.7969111969111939,
+      "score": 5.7583327040754675,
+      "news": [
+        {
+          "time": "2026-09-11T13:59:16+09:00",
+          "title": "삼성전자 손 잡은 오픈AI, TSMC 의존도 낮출 대안 될까",
+          "source": "녹색경제신문",
+          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE9KWkRvNWtzcVhBN0xFb2JNQzJsell4cWVaSE9YbVQ0Z0NaRFFXeWNfbEN6MmJjQnRNbjhQck95TC1hc1NWR1dYd3JvTGhwSHhwWVhzM3k2WDBfZkwtbFVJY0VEZVVsWWts?oc=5"
+        },
+        {
+          "time": "2026-09-11T14:23:56+09:00",
+          "title": "“연말 HBM 점유율 40% 간다”…KB증권, 삼성전자 목표가 60만원 유지",
+          "source": "디지털데일리",
+          "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTFB2Nm5aTmtaMzI5Tm94WDc5RVFDWkZyU3QxRWlxUF8tWUJ6d2dJbERTQ3RYMlB2VW1yU0pzVU0xRkRNNlF0dC1UUFZXUGY4N001cnZjLUNTV193c2habHdHM3NJQ04?oc=5"
+        },
+        {
+          "time": "2026-09-11T13:26:00+09:00",
+          "title": "삼성전자, 반도체 물 사용 줄인다…하루 33만톤 재이용 추진",
+          "source": "브릿지경제",
+          "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE55MXJMVkhaZm53TDdDVkNPRHROckNMM1Jrbm5ydG10UUpjY3BBZlhuMTBseU56VXJ1V1poMVBnUVllNTBEMWJrTUhmRV9HSHZRZ3VBZlhkVE1Qdw?oc=5"
+        },
+        {
+          "time": "2026-09-11T13:27:24+09:00",
+          "title": "“삼성전자, 성장판 더 커진다…HBM 점유율 40% 눈앞”",
+          "source": "edaily.co.kr",
+          "link": "https://news.google.com/rss/articles/CBMigAFBVV95cUxQckNzeXVRalRyWjBpQm1lNzAxYlFtLUlxTldfNFNEU1k3Wmo3aEdNUzVHSjI5bUtRQndDcTIwNHQ2Nzd0Qll6bUVqU1RnOVF2eTFMdFNRcHRfODRVSUd5bVpsc2J5X3FQdlhQZF9QTHNPN0ZBQzYzaUp3aThTOVh0VA?oc=5"
+        },
+        {
+          "time": "2026-09-11T13:30:00+09:00",
+          "title": "반도체 ‘키다리 아저씨’ 삼성전자…공공 팹 기술력 끌어올렸다",
+          "source": "문화일보",
+          "link": "https://news.google.com/rss/articles/CBMiUEFVX3lxTE1LSFZ2V09mZzZOLXRJLUNON1ozS0lfWGVuQzJNR2gxSmhuYW9Kb2p5QldUNEItTmFfVURoTXQ1WnpQay1OZEt2a0cyVHZnYTRR?oc=5"
+        }
+      ]
+    },
+    {
+      "time": "2026-09-11T09:20:00+09:00",
+      "ret": 0.005802707930367523,
+      "z": 4.04,
+      "volume_ratio": 1.34,
+      "cum_before": 0.0019379844961240345,
+      "cum_after": 0.007751937984496138,
+      "session_share": 0.5988394584139274,
+      "score": 4.303897254225627,
+      "news": [
+        {
+          "time": "2026-09-11T08:06:15+09:00",
+          "title": "'삼성전자, 드디어 터지나' 들썩…증권가서 '파격 전망' 나왔다 [분석+]",
+          "source": "한국경제",
+          "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE5oSEdMT3BzNnBVSUxfcTU1U1d1ZUZ1WlJCSHFWNmdvbGRZWFhZd29zaHVsQ1B4a0piYTdfRzdMQjB1eDE0cVlaUEpHQU1NVVFkTWF1bV9JTkdwUQ?oc=5"
+        },
+        {
+          "time": "2026-09-11T08:31:00+09:00",
+          "title": "삼성전자·SK하이닉스 프리마켓 3%대↓…美 반도체 약세 부담[특징주]",
+          "source": "v.daum.net",
+          "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE4xbkJ1Y2ZpR205amh4Umw2MEFlaWt3UGo0MEp6LXU3di1mOTJhLTNwTmx3OHhvVXdDaUhuYVBmM1V0R181eWlGZkRwaHY0NjU3NXZMSkR1QnNZc2JH?oc=5"
+        },
+        {
+          "time": "2026-09-11T09:14:26+09:00",
+          "title": "삼성전자, 반도체 '물 관리' 강화...하수처리수 재이용 확대",
+          "source": "ebn.co.kr",
+          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE5ISWhELWx5WDFob2tmQ0xhSmVXaTUtXzBFS0ZHTF9vUUhONUNVUElKS29Xd1kxQy0xcG0yRzZUM0JjUG5QeFR0YjhXT1JkeTQ0eXNOS29zVXk0aktERFJVN2hfSG9wRm9S?oc=5"
+        },
+        {
+          "time": "2026-09-11T09:21:40+09:00",
+          "title": "[특징주] 삼성전자 3%·SK하이닉스 4%↓⋯유가·美 금리 쇼크",
+          "source": "아이뉴스24",
+          "link": "https://news.google.com/rss/articles/CBMiS0FVX3lxTFBLS3lDbnNYSGJMVlJic0thTTVmbVF5R29IYThNbDFVYWlSRkMyRUo5MndYSHdjV1V5SkxCSnVqTVYwdUZ6Q0pacnBySQ?oc=5"
+        },
+        {
+          "time": "2026-09-11T09:26:00+09:00",
+          "title": "[특징주] 삼성전자·SK하이닉스, 美 반도체주 약세에 동반 하락",
+          "source": "뉴스핌",
+          "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE1Ya0p4MlNrNnFUdFlUQS0xMnV4NDNlN1JoLVlfQVlpYllzT2wxcG95ZVdHb2tXdV9pb1JyNXNpeDZHNmgwcmhHS0ZFaWhDaEJvM2RTUDJNTDNRSkpO?oc=5"
+        }
+      ]
+    }
+  ],
+  "turning_point": {
+    "high_time": "2026-09-11T14:50:00+09:00",
+    "high": 0.011627906976744207,
+    "low_time": "2026-09-11T12:20:00+09:00",
+    "low": -0.003875968992248069,
+    "pattern": "저점 후 반등"
+  },
+  "closing_share": -0.6602687140115143,
+  "intraday_corr_kospi": 0.8748791555552488,
+  "intraday_note": "장중 봉은 09:00~14:55까지만 있어 마감 구간(14:55~15:30)은 일봉 종가로만 봅니다(그 구간 -0.38%).",
+  "intraday_coverage": "09:00~14:55",
+  "overnight_news": [
+    {
+      "time": "2026-09-11T08:06:15+09:00",
+      "title": "'삼성전자, 드디어 터지나' 들썩…증권가서 '파격 전망' 나왔다 [분석+]",
+      "source": "한국경제",
+      "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE5oSEdMT3BzNnBVSUxfcTU1U1d1ZUZ1WlJCSHFWNmdvbGRZWFhZd29zaHVsQ1B4a0piYTdfRzdMQjB1eDE0cVlaUEpHQU1NVVFkTWF1bV9JTkdwUQ?oc=5"
+    },
+    {
+      "time": "2026-09-11T08:31:00+09:00",
+      "title": "삼성전자·SK하이닉스 프리마켓 3%대↓…美 반도체 약세 부담[특징주]",
+      "source": "v.daum.net",
+      "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE4xbkJ1Y2ZpR205amh4Umw2MEFlaWt3UGo0MEp6LXU3di1mOTJhLTNwTmx3OHhvVXdDaUhuYVBmM1V0R181eWlGZkRwaHY0NjU3NXZMSkR1QnNZc2JH?oc=5"
+    },
+    {
+      "time": "2026-09-11T06:00:00+09:00",
+      "title": "'월세 70만원' 핑계로 직원 자르겠다는 삼성전자…변호사들 “절대 자진퇴사 말라”",
+      "source": "땅집고",
+      "link": "https://news.google.com/rss/articles/CBMif0FVX3lxTE80SlRMdGFrSTY0blo0UU1JbnY1bElIREVkbGhfTlNBSEtkS2NQeHVTaUIwYmlDOFpjTEM2SWM5WGNzd0Fvdi1CaUt4ZHZHU251b2FtZkgwcmg0UzRvM0p1OFpGRUpVUXV4QXNsN2xaRG83cWRlNTJLZzBvUThPMWfSAXNBVV95cUxOd0xieTdVU05BZDluM0tuRDV5T1lwUk9ldm45YzhfZmVxTGNLbkkwbC0tSERPeFM5X2lXYVBOQ0Q3QkFOaU9SWWQwejlzZm1hNkRhTjZPXzUyV2xUcXdONzNxc0NwZ2wxOVA5NGZZakY1UklN?oc=5"
+    }
+  ],
+  "top_news": [
+    {
+      "time": "2026-09-11T15:37:58+09:00",
+      "title": "\"HBM4 양산·2나노 수율 개선\"…삼성전자, 메모리·파운드리 '동반 부활' 전망",
+      "source": "위키리크스한국",
+      "link": "https://news.google.com/rss/articles/CBMib0FVX3lxTE9yQmVzUXRON014RjdOSXpRSFVuTDhkb21GeGJsbTl6bGJjSDdvVU5KT3RNYi1CZm1BZ0IyWVhIZThhUTRReHh6QXFGdGE2UVUtc1gzSGU3d2luenNpV08xUVlMZklHU2w0c3ZDRFdKTQ?oc=5"
+    },
+    {
+      "time": "2026-09-11T09:36:10+09:00",
+      "title": "“삼성전자 HBM4 매출, 3배 이상 늘어난다”…파운드리까지 ‘청신호’",
+      "source": "매일경제",
+      "link": "https://news.google.com/rss/articles/CBMiUkFVX3lxTFBtUXBEVTU2Um1QYVUwY09OUVlnQVVYQzhtM2lidV9jZmZrZHJfa3JRMjJLUExLNXUyTmxiX0RVRFpPZ3cxd0lBZkVYdHJuNUVCZFE?oc=5"
+    },
+    {
+      "time": "2026-09-11T10:12:36+09:00",
+      "title": "D램 가격 상승은 삼성전자와 SK하이닉스에 딜레마, HBM 생산 늘리면 중국 CXMT에 '기회'",
+      "source": "비즈니스포스트",
+      "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTE9vR1ZueVpUSnVzSnROelpZQ1BtcHdPR0RoZGpkd3B0NnFldnZMRDdKVkFOQTRwTzAxSW5ZV3lwZ3JWZWJud0NaSDlUcFprMzdkOFBWRWpQZmZfR1BTaTR3WkFUYnMzdmxHZDlsSWpzZkFCbzQ?oc=5"
+    },
+    {
+      "time": "2026-09-11T10:19:13+09:00",
+      "title": "삼성전자 주가 장중 3%대 내려, 국제유가·채권금리 상승에 SK하이닉스도 하락",
+      "source": "비즈니스포스트",
+      "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTE5ZWXJzVkJpcnFtd0xseXN5eDl0Wk95SXNpellSVmtKMzdCbzBFMjFnbklpM3EyaGNGX3BaS1dpdllDelppQXdvbnptUW5lczdnYUU2SlhFYTdWbWxzSndmTUgxY1JYV0VaTFd0SV8yXzdGdk0?oc=5"
+    },
+    {
+      "time": "2026-09-11T10:57:00+09:00",
+      "title": "삼성전자, 하반기 증시 추격할까…증권가 '파격 전망' 반도체 호재도",
+      "source": "economist.co.kr",
+      "link": "https://news.google.com/rss/articles/CBMiYkFVX3lxTE5CZ3E1U19KSWJSTG5Ua3hjcmtvLWpIMU5FZVgyaFg0UEtxdmY4aU5lOFpKMGdWTTBYTlhaVm1qeEZneTdzeWZ5VXJfQ0ZRMFZSNlBiLW55bURxVGNGeUlGSHJ3?oc=5"
+    },
+    {
+      "time": "2026-09-11T13:02:15+09:00",
+      "title": "대구대, 삼성전자 평택캠퍼스 협력사와 AI·반도체 인재 취업 확대 협력",
+      "source": "매일신문",
+      "link": "https://news.google.com/rss/articles/CBMiYkFVX3lxTE1FZEVlYUtEVWJOQXFoa0pXdFBqM2pCMmpxZTJGSkV1OHFGNm4ybUZSSXA4SlozMHlESmt5LV9vLVlxTFVsZzVjajk4NHFtVG56M1FXUUxRN3BlS3JXSGNtcjF3?oc=5"
+    }
+  ],
+  "disclosures": [],
+  "disclosure_note": null,
+  "flows": null,
+  "forecasts": [
+    {
+      "model": "No macro ensemble",
+      "hit": false,
+      "verdict": "틀림 — 예측 보합 43%, 실제 하락(-3.53%)",
+      "legs": "갭 -4.09%(하락) · 세션 +0.58%(보합)",
+      "where": "결과는 주로 갭(밤사이)에서 정해졌습니다.",
+      "band": 0.0128137490661109,
+      "probs": [
+        0.2923671229103075,
+        0.4266610392970928,
+        0.2809718377925997
+      ],
+      "actual": "하락",
+      "predicted": "보합"
+    },
+    {
+      "model": "Mean ensemble",
+      "hit": false,
+      "verdict": "틀림 — 예측 보합 44%, 실제 하락(-3.53%)",
+      "legs": "갭 -4.09%(하락) · 세션 +0.58%(보합)",
+      "where": "결과는 주로 갭(밤사이)에서 정해졌습니다.",
+      "band": 0.0128137490661109,
+      "probs": [
+        0.2787699967861285,
+        0.4437942060132315,
+        0.27743579720064
+      ],
+      "actual": "하락",
+      "predicted": "보합"
+    },
+    {
+      "model": "Candidate expanding",
+      "hit": false,
+      "verdict": "틀림 — 예측 보합 40%, 실제 하락(-3.53%)",
+      "legs": "갭 -4.09%(하락) · 세션 +0.58%(보합)",
+      "where": "결과는 주로 갭(밤사이)에서 정해졌습니다.",
+      "band": 0.0128137490661109,
+      "probs": [
+        0.3018420528402388,
+        0.4014919715749888,
+        0.2966659755847724
+      ],
+      "actual": "하락",
+      "predicted": "보합"
+    }
+  ],
+  "price_check": "1거래일 예상 구간 254,218~283,232원 · 종가 259,500원 → 구간 안",
+  "disclaimer": "시간이 맞는 것이지 원인 확정이 아닙니다. 뉴스 없이 움직이는 날(수급·프로그램·옵션 만기)이 많고, 기사 발행 시각은 실제 정보 유통보다 늦거나 앞섭니다. 이 절은 설명 도구이며 다음날 예측에 자동 반영되지 않습니다."
+}

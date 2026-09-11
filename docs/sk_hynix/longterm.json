@@ -707,7 +707,7 @@
     "corr": 0.326337852828544
   },
   "chart_first": "2000-01-31",
-  "generated_at": "2026-09-11 18:24 KST",
+  "generated_at": "2026-09-11 19:40 KST",
   "macro_snapshot_hash": "1abe4ee24936b404d6a2",
   "macro_sources": {
     "leading_cycle": "KOSIS_API",

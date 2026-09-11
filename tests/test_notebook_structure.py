@@ -380,8 +380,48 @@ class DataSectionTableTests(unittest.TestCase):
         self.assertNotIn("<b>뉴스심리지수</b>", self.source)
 
     def test_missing_indicator_spans_the_row_instead_of_a_bare_message(self):
-        self.assertIn('colspan="4"', self.source)
+        # 열 수가 바뀌면 함께 바뀌어야 한다(값·직전 대비 추가로 4 → 6).
+        self.assertIn('colspan="6"', self.source)
+        self.assertNotIn('colspan="4"', self.source)
 
     def test_html_module_is_available_in_this_cell(self):
         # 다른 로컬 render 함수들과 같은 관례(import html as _html)를 따라야 노트북 단독 실행이 된다.
         self.assertIn("import html as _html", self.source)
+
+
+class DataTableValueTests(unittest.TestCase):
+    """6절 표는 목록만이 아니라 그날의 실제 값도 보여 줘야 한다(2026-09-11 지적)."""
+
+    @classmethod
+    def setUpClass(cls):
+        import json
+        nb = json.loads((Path(__file__).resolve().parents[1] /
+                         "samsung_direction_model_colab.ipynb").read_text(encoding="utf-8"))
+        cls.source = "\n".join("".join(c["source"]) for c in nb["cells"])
+
+    def test_quality_records_carry_the_last_value_and_change(self):
+        self.assertIn('"last_value": _last_value, "change_1d": _prev_change', self.source)
+
+    def test_asset_table_shows_value_and_change_columns(self):
+        self.assertIn('>마지막 값</th>', self.source)
+        self.assertIn('>전일 대비</th>', self.source)
+        self.assertIn("_fmt_asset_value(_q)", self.source)
+        self.assertIn("_fmt_asset_change(_q)", self.source)
+
+    def test_indicator_table_shows_value_and_change_columns(self):
+        self.assertIn('>최신값</th>', self.source)
+        self.assertIn('>직전 대비</th>', self.source)
+        self.assertIn("def _series_last(", self.source)
+
+    def test_every_asset_has_a_korean_label(self):
+        import re
+        assets = set(re.findall(r'^\s*"(\w+)": "[^"]+",\s*$', 
+                                self.source[self.source.index("ASSETS = {"):
+                                            self.source.index("ASSETS = {") + 1200], re.M))
+        labels = self.source[self.source.index("_ASSET_LABEL = {"):
+                             self.source.index("_ASSET_LABEL = {") + 900]
+        for asset in assets - {"target"}:
+            self.assertIn(f'"{asset}"', labels, f"{asset} 의 한글 이름이 없습니다")
+
+    def test_missing_values_render_a_dash_not_an_error(self):
+        self.assertIn('return "—"', self.source)

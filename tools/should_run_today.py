@@ -76,6 +76,25 @@ def published_ledger(path, ref="origin/main"):
     return local.read_text(encoding="utf-8-sig", errors="replace") if local.exists() else None
 
 
+# 사전 예측을 만들 수 있는 시간대(KST). 노트북의 RECORD_WINDOW_KST 와 같아야 한다.
+# 미국 정규장 마감(06:00 KST) 이후여야 밤사이 정보가 들어가고, 한국 개장(09:00) 전이어야 사전
+# 예측이다. 이 밖의 실행은 원장에 기록하지 않으므로 종목 모델을 돌릴 이유가 없다 — 채점과 보고서
+# 갱신은 afternoon-report 워크플로가 09:37·16:10 에 따로 한다.
+RECORD_WINDOW_KST = (6, 9)
+# 저녁 창: 한국 장 마감 후 ~ 미국 장 시작 전. 이때 만든 예측은 밤사이 정보가 없으므로 대표
+# 모델로 기록하지 않고 'Candidate evening forecast' 로만 남긴다(갭 정보의 기여를 재기 위해).
+EVENING_WINDOW_KST = (17, 23)
+EVENING_MODEL = "Candidate evening forecast"
+
+
+def in_record_window(now):
+    return RECORD_WINDOW_KST[0] <= now.hour < RECORD_WINDOW_KST[1]
+
+
+def in_evening_window(now):
+    return EVENING_WINDOW_KST[0] <= now.hour < EVENING_WINDOW_KST[1]
+
+
 def already_recorded(path, today, now=None, ref=None):
     """다시 돌 필요가 없으면 True.
 
@@ -83,6 +102,13 @@ def already_recorded(path, today, now=None, ref=None):
     모델이 다음 거래일을 예측하므로 그 날짜의 기록이 하나라도 있으면 넘어간다.
     """
     now = now or datetime.now(KST)
+    evening = in_evening_window(now)
+    if not in_record_window(now) and not evening:
+        # 두 창 밖에서는 원장에 남을 것이 없다. 전체 재계산(종목당 15~20분)을 돌려도 보고서는
+        # 다음 아침이나 채점 회차가 다시 만든다. 그래서 건너뛴다.
+        return True, (f"{now:%H:%M} KST — 기록 시간대가 아닙니다"
+                      f"(아침 {RECORD_WINDOW_KST[0]:02d}:00~{RECORD_WINDOW_KST[1]:02d}:00, "
+                      f"저녁 {EVENING_WINDOW_KST[0]:02d}:00~{EVENING_WINDOW_KST[1]:02d}:00 KST)")
     before_close = (now.hour, now.minute) < (15, 40)
     today = str(next_trading_day(now))          # 오늘이 아니라 '예측 대상 거래일'로 비교한다
     text = published_ledger(path, ref)
@@ -99,7 +125,17 @@ def already_recorded(path, today, now=None, ref=None):
         same_day = str(row.get("prediction_date", ""))[:10] == today
         prospective = str(row.get("is_prospective", "")).strip().lower() in ("true", "1", "yes")
         is_direction = "kind" not in columns or str(row.get("kind", "")) == "direction"
-        if same_day and is_direction and (prospective or not before_close):
+        model = str(row.get("model", ""))
+        # 저녁 회차는 저녁 후보 기록이 있는지만 본다(아침 기록이 있어도 저녁 후보는 따로 남긴다).
+        # 아침 회차는 반대로 저녁 후보를 무시해야 한다 — 그것이 있다고 아침을 건너뛰면 정작
+        # 대표 예측이 기록되지 않는다(2026-09 실제로 그랬다).
+        if evening and model != EVENING_MODEL:
+            continue
+        if not evening and model == EVENING_MODEL:
+            continue
+        # 저녁 회차의 대상은 다음 거래일이고 그 기록은 사전 예측으로 남는다. before_close 가
+        # False 라는 이유로 아무 기록이나 인정하면 안 된다 — 저녁 후보 자체가 있는지를 본다.
+        if same_day and is_direction and (prospective or (not before_close and not evening)):
             hit.append(row)
     if not hit:
         return False, (f"{today} 사전 예측이 원장에 없습니다" if before_close

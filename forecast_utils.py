@@ -915,6 +915,54 @@ def interval_coverage_by_event(daily, models, min_n=10):
     return pd.DataFrame(rows)
 
 
+def overnight_value_html(daily, headline_model, evening_model="Candidate evening forecast",
+                         min_n=10):
+    """아침 예측 vs 저녁 예측 — 밤사이 미국 시장 정보가 실제로 얼마나 기여하나.
+
+    같은 예측일을 두 시점에서 예측한다. 아침(06:22 KST)은 미국 장 마감 후라 갭 정보가 있고,
+    저녁(18:22 KST)은 미국 장이 열리기도 전이라 없다. 두 적중률의 차이가 그 정보의 값이다.
+    이 저장소가 말해 온 '갭 AUC 0.80, 세션 AUC 0.50'의 직접 검증이다.
+    """
+    if daily is None or len(daily) == 0 or "model" not in daily:
+        return ""
+    frame = daily[(daily["kind"] == "direction") & (daily["status"] == "scored")].copy()
+    if "is_prospective" in frame:
+        frame = frame[frame["is_prospective"].astype(str).str.lower().isin(("true", "1", "yes"))]
+    if frame.empty:
+        return ""
+    pairs = []
+    for label, model in (("아침 (갭 정보 있음)", headline_model), ("저녁 (갭 정보 없음)", evening_model)):
+        sub = frame[frame["model"] == model]
+        if sub.empty:
+            continue
+        common = set(frame[frame["model"] == evening_model]["target_date"]) & \
+                 set(frame[frame["model"] == headline_model]["target_date"])
+        matched = sub[sub["target_date"].isin(common)] if common else sub.iloc[0:0]
+        pairs.append({"label": label, "n": len(matched),
+                      "hit": float(matched["direction_correct"].mean()) if len(matched) else None})
+    if len(pairs) < 2 or not any(p["n"] for p in pairs):
+        return ""
+    rows = ""
+    for pair in pairs:
+        value = "—" if pair["hit"] is None or pair["n"] < min_n else f'{pair["hit"]:.0%}'
+        rows += (f'<tr><td style="padding:7px 11px;border-top:1px solid #eee">{pair["label"]}</td>'
+                 f'<td style="padding:7px 11px;border-top:1px solid #eee;text-align:right">{value}</td>'
+                 f'<td style="padding:7px 11px;border-top:1px solid #eee;text-align:right;color:#8a9199">'
+                 f'n={pair["n"]}</td></tr>')
+    note = ("같은 예측일만 짝지어 비교합니다. 표본 10일 미만은 — 로 둡니다."
+            if min(p["n"] for p in pairs) < min_n else
+            "아침이 높으면 밤사이 미국 시장 정보가 실제로 기여한다는 뜻입니다.")
+    return ('<div style="font-size:12px;color:#6b7178;margin:14px 0 4px">밤사이 정보의 값 — '
+            '같은 날을 아침·저녁 두 시점에서 예측해 각각 채점한 결과</div>'
+            '<div style="overflow-x:auto"><table style="width:100%;min-width:380px;border-collapse:collapse;'
+            'font-size:12px;border:1px solid #e5e5e5"><tr style="background:#fafafa;font-size:11px;color:#6b7178">'
+            '<th style="padding:8px 11px;text-align:left">예측 시점</th>'
+            '<th style="padding:8px 11px;text-align:right">방향 적중률</th>'
+            '<th style="padding:8px 11px;text-align:right">표본</th></tr>'
+            f'{rows}</table></div>'
+            f'<div style="font-size:11px;color:#8a9199;margin-top:4px">{note}</div>')
+
+
 def review_ledger(daily, bars, ensemble_model="Mean ensemble", windows=(20, 60), min_alert_n=20,
                   nominal_coverage=0.80):
     """실제 사전 예측(daily_comparison)만으로 최근 성능을 계산하고 경고를 만든다.
@@ -926,7 +974,8 @@ def review_ledger(daily, bars, ensemble_model="Mean ensemble", windows=(20, 60),
       alerts   — 가장 긴 창(표본 min_alert_n 이상)에서 나온 경고 문구
     """
     empty = {"latest": pd.DataFrame(), "rolling": pd.DataFrame(), "alerts": [], "n_scored_days": 0,
-             "latest_date": None, "pending": _pending_status(daily, ensemble_model, None)}
+             "latest_date": None, "pending": _pending_status(daily, ensemble_model, None),
+             "overnight_html": overnight_value_html(daily, ensemble_model)}
     if daily is None or daily.empty or "status" not in daily:
         return empty
     scored = daily.loc[daily["status"] == "scored"].copy()
@@ -1024,7 +1073,10 @@ def review_ledger(daily, bars, ensemble_model="Mean ensemble", windows=(20, 60),
           "pending": _pending_status(daily, ensemble_model, latest_date),
           # 구간 후보의 이벤트일/평일 적중률. 내재변동성 구간이 존재 이유(이벤트일)를 실제로 푸는지.
           "event_coverage": interval_coverage_by_event(
-              daily, ["Ridge", "Candidate HAR interval", "Candidate IV interval"])}
+              daily, ["Ridge", "Candidate HAR interval", "Candidate IV interval"]),
+          # 아침 vs 저녁 예측 — 밤사이 미국 시장 정보의 값. 렌더러는 daily 를 받지 않으므로
+          # 여기서 만들어 넘긴다.
+          "overnight_html": overnight_value_html(daily, ensemble_model)}
 
 
 # ---------------------------------------------------------------------------
@@ -1260,7 +1312,8 @@ def ledger_section_html(review, ensemble_name, updated_note=""):
                       'font-size:12px;border:1px solid #e5e5e5"><tr style="background:#fafafa;font-size:11px;color:#6b7178">'
                       '<th style="padding:8px 11px;text-align:left">구간</th><th style="padding:8px 11px;text-align:right">이벤트일</th>'
                       '<th style="padding:8px 11px;text-align:right">평일</th></tr>' + rows_e + '</table></div>')
-    rtable = (gauges + event_html + '<details style="margin-top:6px"><summary style="font-size:12px;color:#6b7178;cursor:pointer">'
+    rtable = (gauges + event_html + (review.get("overnight_html") or "")
+              + '<details style="margin-top:6px"><summary style="font-size:12px;color:#6b7178;cursor:pointer">'
               '자세한 수치 보기</summary>'
               '<div style="overflow-x:auto;margin-top:6px"><table style="width:100%;min-width:520px;border-collapse:collapse;'
               'font-size:12px;border:1px solid #e5e5e5"><tr style="background:#fafafa;font-size:11px;color:#6b7178">'

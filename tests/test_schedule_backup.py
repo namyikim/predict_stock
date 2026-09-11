@@ -505,3 +505,87 @@ class GateFetchSafetyTests(unittest.TestCase):
             for call in fetch_calls:
                 self.assertFalse(any(str(a).startswith("--depth") for a in call),
                                  f"{name}: {call} — --depth 는 전체 복제본을 얕게 만듭니다")
+
+
+class RecordWindowTests(unittest.TestCase):
+    """사전 예측은 밤사이 미국 시장 정보를 포함해야 한다.
+
+    2026-09 실제 사고: 3시간 회차 중 한국 저녁 회차가 다음 거래일 예측을 대표 모델로 먼저 기록해
+    버려, 정보가 많은 아침 06:22 회차가 게이트에 걸려 건너뛰어졌다. 예측일 4건이 모두 저녁에
+    기록됐다 — 갭 AUC 0.80 인 모델에서 갭 정보를 뺀 예측이 원장에 박힌 것이다.
+    """
+
+    def setUp(self):
+        import csv
+        self.dir = Path(tempfile.mkdtemp())
+        (self.dir / "s").mkdir()
+        self.path = self.dir / "s" / "forecast_log.csv"
+        self.csv = csv
+        self.write([])
+
+    def write(self, rows):
+        with open(self.path, "w", newline="", encoding="utf-8") as handle:
+            writer = self.csv.DictWriter(handle, fieldnames=["prediction_date", "is_prospective",
+                                                             "kind", "model", "run_id"])
+            writer.writeheader()
+            for row in rows:
+                writer.writerow(row)
+
+    def at(self, hour, minute=22):
+        return datetime(2026, 9, 14, hour, minute, tzinfo=timezone(timedelta(hours=9)))
+
+    def evening_row(self, date="2026-09-15"):
+        return {"prediction_date": date, "is_prospective": "True", "kind": "direction",
+                "model": srt.EVENING_MODEL, "run_id": "e"}
+
+    def morning_row(self, date="2026-09-14"):
+        return {"prediction_date": date, "is_prospective": "True", "kind": "direction",
+                "model": "No macro ensemble", "run_id": "m"}
+
+    def test_runs_in_the_morning_window(self):
+        for hour in (6, 7, 8):
+            self.assertFalse(srt.already_recorded(self.path, "x", now=self.at(hour), ref=None)[0], hour)
+
+    def test_skips_outside_both_windows(self):
+        for hour in (3, 9, 12, 15):
+            skip, why = srt.already_recorded(self.path, "x", now=self.at(hour), ref=None)
+            self.assertTrue(skip, hour)
+            self.assertIn("기록 시간대가 아닙니다", why)
+
+    def test_evening_candidate_does_not_block_the_morning_run(self):
+        # 이것이 실제 사고의 핵심이다. 저녁 기록이 있어도 아침은 반드시 돌아야 한다.
+        self.write([self.evening_row("2026-09-14")])
+        self.assertFalse(srt.already_recorded(self.path, "x", now=self.at(6), ref=None)[0])
+
+    def test_morning_record_blocks_the_morning_rerun(self):
+        self.write([self.morning_row()])
+        skip, why = srt.already_recorded(self.path, "x", now=self.at(6), ref=None)
+        self.assertTrue(skip)
+        self.assertIn("사전 예측이 이미 있습니다", why)
+
+    def test_second_evening_slot_skips_once_the_candidate_exists(self):
+        self.write([self.evening_row()])
+        self.assertTrue(srt.already_recorded(self.path, "x", now=self.at(18), ref=None)[0])
+        self.assertTrue(srt.already_recorded(self.path, "x", now=self.at(21), ref=None)[0])
+
+    def test_morning_record_does_not_block_the_evening_run(self):
+        self.write([self.morning_row()])
+        self.assertFalse(srt.already_recorded(self.path, "x", now=self.at(18), ref=None)[0])
+
+    def test_notebook_windows_match_the_gate(self):
+        import json
+        nb = json.loads((ROOT / "samsung_direction_model_colab.ipynb").read_text(encoding="utf-8"))
+        source = "\n".join("".join(c["source"]) for c in nb["cells"])
+        self.assertIn(f"RECORD_WINDOW_KST = {srt.RECORD_WINDOW_KST}", source)
+        self.assertIn(f"EVENING_WINDOW_KST = {srt.EVENING_WINDOW_KST}", source)
+        self.assertIn(f'EVENING_MODEL = "{srt.EVENING_MODEL}"', source)
+
+    def test_evening_run_records_only_the_candidate(self):
+        import json
+        nb = json.loads((ROOT / "samsung_direction_model_colab.ipynb").read_text(encoding="utf-8"))
+        source = "\n".join("".join(c["source"]) for c in nb["cells"])
+        self.assertIn("if RECORD_EVENING_ONLY:", source)
+        self.assertIn('"model": EVENING_MODEL', source)
+        # 저녁 실행은 가격·시초가·후보 구간을 기록하지 않는다(대표 경로와 섞이면 집계가 흐려진다).
+        self.assertIn("if not RECORD_EVENING_ONLY else []", source)
+        self.assertIn("if not RECORD_EVENING_ONLY:\n    log_records.append", source)

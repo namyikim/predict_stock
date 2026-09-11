@@ -471,7 +471,7 @@ class DecisionInputsTests(unittest.TestCase):
 
     def test_renders_values_with_their_source(self):
         html = fu.decision_inputs_html(name="삼성전자", cards=self.cards(), unknowns=[])
-        self.assertIn("판단 재료 요약", html)
+        self.assertIn("그 밖에 지금 알 수 있는 것", html)
         self.assertIn("매수·매도 의견이 아닙니다", html)
         self.assertIn("1절", html)
         self.assertIn("수급 절", html)
@@ -567,11 +567,17 @@ class DecisionCardDateTests(unittest.TestCase):
         cls.report = next("".join(c["source"]) for c in nb["cells"]
                           if "def build_summary():" in "".join(c.get("source", [])))
 
-    def test_cards_carry_the_prediction_date(self):
-        self.assertIn('f"{_when} 시초가"', self.report)
-        self.assertIn('f"{_when} 방향 확률"', self.report)
+    def test_overlapping_cards_were_removed(self):
+        """방향·시초가·종가·영업이익은 '쉬운 요약'이 다룬다. 같은 값을 두 번 보여 주지 않는다."""
+        self.assertNotIn('f"{_when} 시초가"', self.report)
+        self.assertNotIn('f"{_when} 방향 확률"', self.report)
         self.assertNotIn('"label": "내일 시초가"', self.report)
-        self.assertNotIn('"label": "내일 방향 확률"', self.report)
+        self.assertIn("위 '쉬운 요약'이 이미 다룬다", self.report)
+
+    def test_remaining_cards_are_the_non_overlapping_ones(self):
+        for label in ('"label": "단기 위치"', '"label": "반도체 사이클"',
+                      '"label": "외국인 20일 누적"', '"label": "다가오는 이벤트"'):
+            self.assertIn(label, self.report, label)
 
     def test_cards_reuse_the_section_one_label(self):
         # 한 보고서에 두 가지 날짜 표기가 섞이지 않게 라벨을 한 곳에서 만든다.
@@ -582,9 +588,13 @@ class DecisionCardDateTests(unittest.TestCase):
         self.assertLess(self.report.index("_prediction_date_label ="),
                         self.report.index("_when = _prediction_date_label"))
 
-    def test_direction_card_names_the_base_close_date(self):
-        # 확률이 어느 종가 기준인지도 적는다.
-        self.assertIn("{last_samsung_date.date()} 종가 기준", self.report)
+    def test_section_explains_its_relationship_to_the_easy_summary(self):
+        # 두 절의 관계가 제목과 설명에 드러나야 한다.
+        self.assertIn("그 밖에 지금 알 수 있는 것", self.report_module_source())
+        self.assertIn("위 '쉬운 요약'이 다루는", self.report)
+
+    def report_module_source(self):
+        return (Path(__file__).resolve().parents[1] / "forecast_utils.py").read_text(encoding="utf-8")
 
 
 class PricePositionTests(unittest.TestCase):

@@ -41,7 +41,7 @@ def decision_inputs_html(*, name, cards, unknowns, caveat=""):
                         '<b>이 보고서가 답하지 못하는 것</b><ul style="margin:6px 0 0;padding-left:18px">'
                         + "".join(f"<li>{escape(u)}</li>" for u in unknowns) + "</ul></div>")
     return ('<h3 style="font-size:15px;margin:24px 0 9px;padding-bottom:6px;border-bottom:1px solid #ddd">'
-            f'판단 재료 요약 <span style="font-weight:400;color:#8a9199;font-size:12px">'
+            f'그 밖에 지금 알 수 있는 것 <span style="font-weight:400;color:#8a9199;font-size:12px">'
             f'&nbsp;{escape(name)} · 흩어진 값을 모은 것이며 매수·매도 의견이 아닙니다</span></h3>'
             '<div style="overflow-x:auto"><table style="width:100%;min-width:420px;border-collapse:collapse;'
             'font-size:13px;border:1px solid #e5e5e5">'

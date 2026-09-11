@@ -11,11 +11,11 @@
     "enabled": false,
     "reason": "RuntimeError: 관세청 조회 실패(HS 8541) — as_is 키: RuntimeError. SERVICE_KEY_IS_NOT_REGISTERED 가 두 형태 모두에서 나오면 활용신청 승인 상태와 인증키 재발급을 확인하세요. URLError 면 해외 IP 차단일 수 있습니다."
   },
-  "point": 122192222894012.98,
-  "raw_point": 122192222894012.98,
-  "low": 118865844460373.38,
-  "high": 128774159921350.72,
-  "change_vs_last": 0.36539199428453206,
+  "point": 122192222894012.97,
+  "raw_point": 122192222894012.97,
+  "low": 118865844460373.36,
+  "high": 128774159921350.7,
+  "change_vs_last": 0.36539199428453184,
   "no_point_reason": "",
   "last_actual": 89492412000000.0,
   "last_actual_quarter": "2026Q2",
@@ -23,14 +23,14 @@
     "n": 22,
     "first": "2021Q1",
     "last": "2026Q2",
-    "mae_model": 4306887197339.7793,
+    "mae_model": 4306887197339.78,
     "mae_random_walk": 5601376863636.363,
     "mae_seasonal_naive": 11689915409090.908,
     "corr": 0.9234936747538612,
     "beats_baselines": true,
     "residual_q10": -3326378433639.603,
     "residual_q90": 6581937027337.73,
-    "mape_model": 0.767290757693511
+    "mape_model": 0.7672907576935107
   },
   "n_train": 38,
   "profit_source": "DART_API",
@@ -114,11 +114,11 @@
       "mae_model": 15283278193840.494,
       "mae_random_walk": 14559542545454.545,
       "mae_seasonal_naive": 16855910090909.092,
-      "corr": 0.3168532545701047,
+      "corr": 0.3168532545701044,
       "beats_baselines": false,
       "residual_q10": -3563743914089.2715,
       "residual_q90": 53003219637164.11,
-      "mape_model": 0.5535875089974824
+      "mape_model": 0.5535875089974823
     },
     "selection": {
       "n": 10,
@@ -127,7 +127,7 @@
       "mae_model": 3912575686234.509,
       "mae_random_walk": 4188391400000.0,
       "mae_seasonal_naive": 6882760500000.0,
-      "corr": 0.7900205059344687,
+      "corr": 0.7900205059344686,
       "beats_baselines": true,
       "residual_q10": -6919199391176.985,
       "residual_q90": 3452772973206.1265,
@@ -140,7 +140,7 @@
       "mae_model": 3912575686234.509,
       "mae_random_walk": 4188391400000.0,
       "mae_seasonal_naive": 6882760500000.0,
-      "corr": 0.7900205059344687,
+      "corr": 0.7900205059344686,
       "beats_baselines": true,
       "residual_q10": -6919199391176.985,
       "residual_q90": 3452772973206.1265,
@@ -150,14 +150,14 @@
       "n": 10,
       "first": "2021Q1",
       "last": "2023Q2",
-      "mae_model": 3976317420719.6016,
+      "mae_model": 3976317420719.6006,
       "mae_random_walk": 4188391400000.0,
       "mae_seasonal_naive": 6882760500000.0,
       "corr": 0.7757615978192641,
       "beats_baselines": true,
-      "residual_q10": -6252249109483.605,
+      "residual_q10": -6252249109483.6045,
       "residual_q90": 3150569853639.311,
-      "mape_model": 2.5806193324611453
+      "mape_model": 2.5806193324611444
     },
     "evaluation_without_cli": {
       "n": 11,
@@ -166,11 +166,11 @@
       "mae_model": 15283278193840.494,
       "mae_random_walk": 14559542545454.545,
       "mae_seasonal_naive": 16855910090909.092,
-      "corr": 0.3168532545701047,
+      "corr": 0.3168532545701044,
       "beats_baselines": false,
       "residual_q10": -3563743914089.2715,
       "residual_q90": 53003219637164.11,
-      "mape_model": 0.5535875089974824
+      "mape_model": 0.5535875089974823
     },
     "evaluation_with_cli": {
       "n": 11,
@@ -179,11 +179,11 @@
       "mae_model": 15524708870396.63,
       "mae_random_walk": 14559542545454.545,
       "mae_seasonal_naive": 16855910090909.092,
-      "corr": 0.27865649955135774,
+      "corr": 0.27865649955135763,
       "beats_baselines": false,
-      "residual_q10": -3555683985661.1045,
+      "residual_q10": -3555683985661.1035,
       "residual_q90": 53384570284913.38,
-      "mape_model": 0.5914684731322221
+      "mape_model": 0.5914684731322218
     },
     "no_point_reason": "워크포워드에서 '마지막으로 아는 영업이익 그대로'·'4분기 전 그대로'보다 오차가 작다는 것을 보이지 못했습니다."
   },

@@ -148,12 +148,22 @@ def _customs_request(hs, start_text, end_text, key, retries=3):
                     failures.append(f'{label} 키: {detail}')
                     break            # 키 형태 문제면 재시도해도 같다. 다음 형태로 넘어간다.
                 time.sleep(3 * (2 ** attempt) + random.uniform(0, 3))
+    # 실패 종류에 맞는 설명을 붙인다. 같은 차단이 타임아웃으로도, 인증 오류로도 나타나므로
+    # 한 가지 설명을 고정해 두면 엉뚱한 안내가 된다(2026-09-11 실제로 그랬다).
+    joined = ' / '.join(failures)
+    if 'NOT_REGISTERED' in joined or 'SERVICE_KEY' in joined:
+        cause = ('data.go.kr 이 해외 IP 를 SERVICE_KEY_IS_NOT_REGISTERED 로 거부한 것으로 보인다 '
+                 '(2026-09-11 확인: 같은 키가 한국에서는 resultCode 00). 지문이 포털의 키와 다르면 '
+                 'Secrets 를 확인하라.')
+    elif 'Timeout' in joined or 'timed out' in joined or 'URLError' in joined:
+        cause = '연결이 되지 않았다(해외 IP 차단이나 일시적 장애).'
+    else:
+        cause = '응답을 해석할 수 없었다.'
     raise RuntimeError(
-        f'관세청 조회 실패(HS {hs}, {key_fingerprint(key)}) — ' + ' / '.join(failures) + '. '
-        'data.go.kr 은 해외 IP 에서 SERVICE_KEY_IS_NOT_REGISTERED 라는 엉뚱한 오류로 거부한다 '
-        '(2026-09-11 확인: 같은 키가 한국에서는 resultCode 00). GitHub Actions 는 미국에서 도므로 '
-        '이 실패는 정상이며, 보관본(macro_history/customs_exports.csv)을 쓴다. 보관본 갱신은 '
-        '한국에서 Colab 전체 실행으로 한다. 지문이 포털의 키와 다르면 Secrets 를 확인하라.')
+        f'관세청 조회 실패(HS {hs}, {key_fingerprint(key)}) — {joined}. {cause} '
+        'GitHub Actions 는 미국에서 돌고 한국 정부 API 는 해외 IP 에서 막히므로 이 실패는 예상된 '
+        '것이며, 보관본(macro_history/customs_exports.csv)을 쓴다. 보관본 갱신은 한국에서 Colab '
+        '전체 실행으로 한다.')
 
 
 def fetch_customs_exports(start, end, key, hs_codes=CUSTOMS_HS, retries=3):

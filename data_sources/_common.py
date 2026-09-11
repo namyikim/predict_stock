@@ -145,7 +145,39 @@ def error_detail(exc):
         if not isinstance(reason, str):
             text = f'{type(reason).__name__}: {reason}'
         parts.append(text[:120])
+    elif str(exc):
+        # reason 이 없는 예외(우리가 만든 RuntimeError 등)는 메시지 자체가 원인이다.
+        # 이것을 버리면 'SERVICE_KEY_IS_NOT_REGISTERED' 같은 결정적 단서가 사라진다.
+        # 다만 예외 메시지에 URL 이 담기는 경우가 있고 URL 에는 인증키가 들어간다. 그래서
+        # URL 처럼 보이는 토큰과 key 류 파라미터는 지운다(기존 테스트가 이 누출을 잡았다).
+        parts.append(_scrub_secrets(str(exc))[:160])
     return ' '.join(parts)
+
+
+_URLISH = re.compile(r'\b(?:https?://|www\.)\S+', re.I)
+_PARAMISH = re.compile(r'(?i)\b(service_?key|api_?key|crtfc_?key|auth_?key|token|secret|password)'
+                       r'\s*[=:]\s*\S+')
+
+
+# 메시지에 이 낱말이 있으면 그 안에 인증 정보가 들어 있을 수 있다고 보고 통째로 버린다.
+# '지우고 남기기'보다 '의심되면 남기지 않기'가 안전하다 — 값 하나라도 새면 키가 로그에 박힌다.
+_SECRET_HINT = re.compile(r'(?i)key|token|secret|password|인증|url|http')
+
+
+def _scrub_secrets(text):
+    """예외 메시지에서 인증 정보가 새지 않게 한다.
+
+    URL·키 파라미터 형태는 가리고, 그래도 키·토큰 같은 낱말이 남아 있으면 메시지를 버린다.
+    진단 가치보다 유출 방지가 우선이다. 예외 종류(OSError 등)는 이미 따로 남는다.
+    """
+    cleaned = _URLISH.sub('<url>', text)
+    cleaned = _PARAMISH.sub(lambda m: f'{m.group(1)}=<가림>', cleaned)
+    if _SECRET_HINT.search(cleaned.replace('<url>', '').replace('<가림>', '')):
+        # 우리가 직접 만든 API 오류 메시지는 진단에 꼭 필요하므로 예외로 통과시킨다.
+        if 'SERVICE_KEY_IS_NOT_REGISTERED' in cleaned or 'API 오류' in cleaned:
+            return cleaned
+        return '<메시지 가림: 인증 정보가 포함될 수 있음>'
+    return cleaned
 
 
 def key_fingerprint(key):

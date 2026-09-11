@@ -141,8 +141,8 @@ class ErrorDetailTests(unittest.TestCase):
 
     def test_customs_message_explains_the_likely_cause(self):
         source = (Path(mu.__file__).resolve().parent / "data_sources" / "exports.py").read_text(encoding="utf-8")
-        self.assertIn("해외 IP 에서 SERVICE_KEY_IS_NOT_REGISTERED", source)
-        self.assertIn("이 실패는 정상이며", source)
+        self.assertIn("한국 정부 API 는 해외 IP 에서 막히므로", source)
+        self.assertIn("이 실패는 예상된", source)
 
 
 class CustomsKeyVariantTests(unittest.TestCase):
@@ -282,5 +282,77 @@ class CustomsCacheRouteTests(unittest.TestCase):
 
     def test_error_message_names_the_real_cause(self):
         source = (Path(mu.__file__).resolve().parent / "data_sources" / "exports.py").read_text(encoding="utf-8")
-        self.assertIn("해외 IP 에서 SERVICE_KEY_IS_NOT_REGISTERED", source)
+        self.assertIn("한국 정부 API 는 해외 IP 에서 막히므로", source)
         self.assertIn("macro_history/customs_exports.csv", source)
+
+
+class CustomsFailureMessageTests(unittest.TestCase):
+    """같은 차단이 타임아웃으로도, 인증 오류로도 나타난다. 설명을 하나로 고정하면 엉뚱해진다.
+
+    2026-09-11: 실제 실패가 TimeoutError 인데 'SERVICE_KEY_IS_NOT_REGISTERED 로 거부한다'는
+    설명이 붙어 혼란스러웠다.
+    """
+
+    def message_for(self, exc):
+        from data_sources import exports as ex
+        saved = ex.open_url
+
+        def boom(*a, **k):
+            raise exc
+        ex.open_url = boom
+        try:
+            ex.fetch_customs_exports("2026-01-01", "2026-08-01", "AbC%2Bd%3D%3D", retries=1)
+        except RuntimeError as error:
+            return str(error)
+        finally:
+            ex.open_url = saved
+        self.fail("실패해야 한다")
+
+    def test_timeout_says_connection_failed(self):
+        text = self.message_for(TimeoutError("timed out"))
+        self.assertIn("연결이 되지 않았다", text)
+        self.assertNotIn("지문이 포털의 키와 다르면", text)
+
+    def test_auth_rejection_says_key_rejected(self):
+        text = self.message_for(RuntimeError("관세청 API 오류 30: SERVICE_KEY_IS_NOT_REGISTERED_ERROR"))
+        self.assertIn("SERVICE_KEY_IS_NOT_REGISTERED 로 거부한 것으로 보인다", text)
+        self.assertIn("Secrets 를 확인하라", text)
+
+    def test_both_point_to_the_cache(self):
+        for exc in (TimeoutError("timed out"),
+                    RuntimeError("관세청 API 오류 30: SERVICE_KEY_IS_NOT_REGISTERED_ERROR")):
+            text = self.message_for(exc)
+            self.assertIn("macro_history/customs_exports.csv", text)
+            self.assertIn("Colab 전체 실행", text)
+
+    def test_error_detail_keeps_the_message_when_there_is_no_reason(self):
+        # RuntimeError 는 reason 이 없다. 메시지를 버리면 결정적 단서가 사라진다.
+        text = mu.error_detail(RuntimeError("SERVICE_KEY_IS_NOT_REGISTERED_ERROR"))
+        self.assertIn("SERVICE_KEY_IS_NOT_REGISTERED", text)
+
+
+class SecretScrubTests(unittest.TestCase):
+    """예외 메시지에 URL 이 담기면 인증키가 로그에 남는다. 기존 테스트가 이 누출을 잡았다."""
+
+    def test_url_in_message_is_masked(self):
+        text = mu.error_detail(OSError("failed to open https://apis.data.go.kr/x?serviceKey=SECRET123"))
+        self.assertNotIn("SECRET123", text)
+        self.assertNotIn("serviceKey", text)
+
+    def test_suspicious_message_is_dropped_entirely(self):
+        # 'URL with private-api-key' 처럼 형태가 URL 이 아니어도 낱말이 의심스러우면 버린다.
+        text = mu.error_detail(OSError("URL with private-api-key"))
+        self.assertNotIn("private-api-key", text)
+        self.assertIn("OSError", text)                 # 예외 종류는 남는다
+        self.assertIn("가림", text)
+
+    def test_key_parameters_are_masked(self):
+        self.assertNotIn("ABCDEF", mu.error_detail(OSError("crtfc_key=ABCDEF 실패")))
+
+    def test_our_own_api_error_survives_because_it_is_the_diagnosis(self):
+        text = mu.error_detail(RuntimeError("관세청 API 오류 30: SERVICE_KEY_IS_NOT_REGISTERED_ERROR"))
+        self.assertIn("SERVICE_KEY_IS_NOT_REGISTERED", text)
+
+    def test_harmless_messages_pass_through(self):
+        self.assertIn("timed out", mu.error_detail(TimeoutError("timed out")))
+        self.assertIn("Connection reset", mu.error_detail(ConnectionResetError("Connection reset by peer")))

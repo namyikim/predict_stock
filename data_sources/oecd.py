@@ -72,7 +72,7 @@ def _fred_request(key, path, params, retries=3):
             with open_url(url, accept='application/json') as response:
                 return json.loads(response.read().decode('utf-8'))
         except Exception as exc:
-            detail = f'{type(exc).__name__} {getattr(exc, "code", "")}'.strip()
+            detail = error_detail(exc)
             if attempt == retries - 1:
                 raise RuntimeError(f'FRED API 조회 실패({detail}). 키·시리즈 코드를 확인하거나 '
                                    'macro_inputs/cli_g20.csv를 사용하세요.') from None
@@ -133,7 +133,7 @@ def fetch_oecd_cli(ref_area, start, retries=2):
                               accept='application/vnd.sdmx.data+csv; charset=utf-8, text/csv, */*') as response:
                     return parse_oecd_csv(response.read().decode('utf-8-sig'), ref_area)
             except Exception as exc:
-                last = f'{type(exc).__name__} {getattr(exc, "code", "")}'.strip()
+                last = error_detail(exc)
                 time.sleep(2 + random.uniform(0, 2))
     raise RuntimeError(f'OECD CLI 조회 실패({last}). 연결을 확인하거나 macro_inputs/cli_g20.csv를 사용하세요.')
 

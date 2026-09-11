@@ -126,3 +126,23 @@ def urllib_request_with_agent(url, accept=None):
 
 def open_url(url, timeout=60, accept=None):
     return urlopen(urllib_request_with_agent(url, accept), timeout=timeout)
+
+
+def error_detail(exc):
+    """예외를 한 줄로. URL 에 인증키가 들어가므로 URL 은 절대 넣지 않는다.
+
+    URLError 는 종류만으로는 원인을 알 수 없다(DNS 실패·타임아웃·연결 거부·SSL 오류가 모두
+    URLError 다). reason 까지 적어야 '해외 IP 차단'과 '키 문제'를 구분할 수 있다.
+    """
+    parts = [type(exc).__name__]
+    code = getattr(exc, 'code', None)
+    if code:
+        parts.append(str(code))
+    reason = getattr(exc, 'reason', None)
+    if reason is not None and str(reason):
+        text = str(reason)
+        # reason 이 다른 예외를 품고 있으면 그 종류까지 남긴다.
+        if not isinstance(reason, str):
+            text = f'{type(reason).__name__}: {reason}'
+        parts.append(text[:120])
+    return ' '.join(parts)

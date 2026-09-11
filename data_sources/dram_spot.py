@@ -71,7 +71,7 @@ def fetch_dram_spot(retries=3):
             today = datetime.now(KST).date()
             return pd.DataFrame([{'date': pd.Timestamp(today), **values}])
         except Exception as exc:
-            detail = f'{type(exc).__name__} {getattr(exc, "code", "")}'.strip()
+            detail = error_detail(exc)
             if attempt == retries - 1:
                 raise RuntimeError(f'DRAMeXchange 조회 실패({detail}).') from None
             time.sleep(3 * (2 ** attempt) + random.uniform(0, 3))

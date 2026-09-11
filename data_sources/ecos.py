@@ -66,7 +66,7 @@ def _ecos_request(key, path, retries=3):
                 result = json.loads(response.read().decode('utf-8-sig'))
             break
         except Exception as exc:
-            detail = f'{type(exc).__name__} {getattr(exc, "code", "")}'.strip()
+            detail = error_detail(exc)
             if attempt == retries - 1:
                 raise RuntimeError(f'ECOS API 조회 실패({detail}). 키·연결을 확인하거나 '
                                    'macro_inputs/news_sentiment.csv를 사용하세요.') from None

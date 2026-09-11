@@ -38,8 +38,8 @@ sys.path.insert(0, str(ROOT / "tools"))
 import github_pages  # noqa: E402
 from macro_utils import (  # noqa: E402
     cli_features, data_go_kr_key, fetch_customs_exports, load_cli, load_macro_data,
-    dram_spot_summary, load_dram_spot, load_tsmc_revenue, merge_customs_exports, reconcile_customs,
-    tsmc_features,
+    dram_spot_summary, error_detail, load_dram_spot, load_tsmc_revenue, merge_customs_exports,
+    reconcile_customs, tsmc_features,
 )
 
 KST = timezone(timedelta(hours=9))
@@ -102,7 +102,7 @@ def _dart_request(key, params, retries=3):
                 payload = json.loads(response.read().decode("utf-8"))
             break
         except Exception as exc:
-            detail = f'{type(exc).__name__} {getattr(exc, "code", "")}'.strip()
+            detail = error_detail(exc)
             if attempt == retries - 1:
                 raise RuntimeError(f"DART 조회 실패({detail}). 키·연결을 확인하거나 "
                                    "macro_inputs/operating_profit_<종목>.csv를 사용하세요.") from None

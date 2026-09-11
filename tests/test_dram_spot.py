@@ -106,3 +106,39 @@ class ReportGuardTests(unittest.TestCase):
         self.assertIn("특징으로 넣지 않습니다", source)
         # FEATURES 목록에 들어가면 안 된다(이력이 검증에 충분해지기 전까지).
         self.assertNotIn("dram", source[source.index("FEATURES = ["):source.index("FEATURES = [") + 200].lower())
+
+
+class ErrorDetailTests(unittest.TestCase):
+    """URLError 는 종류만으로 원인을 알 수 없다. '해외 IP 차단'과 '키 문제'를 구분하려면
+    reason 까지 남겨야 한다(2026-09-11: 관세청 실패가 URLError 로만 찍혀 원인을 알 수 없었다)."""
+
+    def test_url_error_carries_the_underlying_reason(self):
+        import socket
+        from urllib.error import URLError
+        text = mu.error_detail(URLError(socket.gaierror(-2, "Name or service not known")))
+        self.assertIn("URLError", text)
+        self.assertIn("gaierror", text)
+        self.assertIn("Name or service not known", text)
+
+    def test_http_error_keeps_the_status_code(self):
+        from urllib.error import HTTPError
+        text = mu.error_detail(HTTPError("http://example.com", 403, "Forbidden", {}, None))
+        self.assertIn("403", text)
+
+    def test_never_includes_a_url_because_keys_live_there(self):
+        from urllib.error import HTTPError
+        text = mu.error_detail(HTTPError("https://api.example.com?serviceKey=SECRET", 500, "err", {}, None))
+        self.assertNotIn("serviceKey", text)
+        self.assertNotIn("SECRET", text)
+
+    def test_every_fetcher_uses_it(self):
+        root = Path(mu.__file__).resolve().parent
+        for name in ("dram_spot.py", "ecos.py", "exports.py", "kosis.py", "oecd.py"):
+            source = (root / "data_sources" / name).read_text(encoding="utf-8")
+            if "detail =" in source:
+                self.assertIn("detail = error_detail(exc)", source, name)
+                self.assertNotIn('getattr(exc, "code", "")}\'.strip()', source, name)
+
+    def test_customs_message_explains_the_likely_cause(self):
+        source = (Path(mu.__file__).resolve().parent / "data_sources" / "exports.py").read_text(encoding="utf-8")
+        self.assertIn("URLError 는 대개 해외 IP 차단입니다", source)

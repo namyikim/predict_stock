@@ -117,9 +117,12 @@ def fetch_customs_exports(start, end, key, hs_codes=CUSTOMS_HS, retries=3):
                     frame = parse_customs_xml(response.read().decode('utf-8'))
                 break
             except Exception as exc:
-                detail = f'{type(exc).__name__} {getattr(exc, "code", "")}'.strip()
+                detail = error_detail(exc)
                 if attempt == retries - 1:
-                    raise RuntimeError(f'관세청 조회 실패({detail}, HS {hs}). 키·활용신청 상태를 확인하세요.') from None
+                    raise RuntimeError(
+                        f'관세청 조회 실패({detail}, HS {hs}). '
+                        'URLError 는 대개 해외 IP 차단입니다(GitHub Actions 는 미국에서 돕니다). '
+                        'HTTP 30x·40x 면 키·활용신청 상태를 확인하세요.') from None
                 time.sleep(3 * (2 ** attempt) + random.uniform(0, 3))
         series = frame.set_index('month')['value']
         total = series if total is None else total.add(series, fill_value=0)
@@ -227,7 +230,7 @@ def fetch_tsmc_revenue(stock_code=TSMC_STOCK_CODE, retries=3):
                 payload = json.loads(response.read().decode('utf-8-sig'))
             return parse_twse_revenue(payload, stock_code)
         except Exception as exc:
-            detail = f'{type(exc).__name__} {getattr(exc, "code", "")}'.strip()
+            detail = error_detail(exc)
             if attempt == retries - 1:
                 raise RuntimeError(f'TWSE 월매출 조회 실패({detail}). '
                                    'macro_inputs/tsmc_revenue.csv 로 대신할 수 있습니다.') from None

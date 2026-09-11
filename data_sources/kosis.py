@@ -66,7 +66,7 @@ def _kosis_request(key, params, retries=4):
                 result = json.loads(response.read().decode('utf-8-sig'))
             break
         except Exception as exc:
-            detail = f'{type(exc).__name__} {getattr(exc, "code", "")}'.strip()
+            detail = error_detail(exc)
             if attempt == retries - 1:
                 raise RuntimeError(f'KOSIS API 조회 실패({detail}). 키 권한·호출 한도·연결을 확인하거나 '
                                    'macro_inputs CSV를 사용하세요.') from None

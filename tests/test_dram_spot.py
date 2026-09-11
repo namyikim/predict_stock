@@ -141,4 +141,79 @@ class ErrorDetailTests(unittest.TestCase):
 
     def test_customs_message_explains_the_likely_cause(self):
         source = (Path(mu.__file__).resolve().parent / "data_sources" / "exports.py").read_text(encoding="utf-8")
-        self.assertIn("URLError 는 대개 해외 IP 차단입니다", source)
+        self.assertIn("URLError 면 해외 IP 차단일 수 있습니다", source)
+        self.assertIn("활용신청 승인 상태와", source)
+
+
+class CustomsKeyVariantTests(unittest.TestCase):
+    """data.go.kr 인증키는 API 마다 적용 방식이 다르다.
+
+    포털 안내: "API 환경 또는 호출 조건에 따라 인증키가 적용되는 방식이 다를 수 있습니다."
+    2026-09-11 실제 호출로 확인: 관세청 품목별 수출입실적은 포털의 인코딩 키를 그대로 붙여야
+    resultCode 00 이 온다. 디코딩 후 재인코딩하면 SERVICE_KEY_IS_NOT_REGISTERED 가 난다.
+    """
+
+    ENCODED = "AbC%2Bd%2Fe%3D%3D"
+    DECODED = "AbC+d/e=="
+
+    def test_encoded_key_is_sent_as_is_first(self):
+        from data_sources import exports as ex
+        variants = ex.key_variants(self.ENCODED)
+        self.assertEqual(variants[0], ("as_is", self.ENCODED))
+
+    def test_decoded_key_tries_both_forms(self):
+        from data_sources import exports as ex
+        labels = [label for label, _ in ex.key_variants(self.DECODED)]
+        self.assertEqual(labels, ["as_is", "once"])
+        self.assertIn("%2B", dict(ex.key_variants(self.DECODED))["once"])
+
+    def test_no_duplicate_requests(self):
+        from data_sources import exports as ex
+        texts = [text for _, text in ex.key_variants(self.ENCODED)]
+        self.assertEqual(len(texts), len(set(texts)))
+        self.assertEqual(len(texts), 1)          # 인코딩 키는 한 형태뿐
+
+    def test_empty_key_yields_nothing(self):
+        from data_sources import exports as ex
+        self.assertEqual(ex.key_variants(""), [])
+        self.assertEqual(ex.key_variants(None), [])
+
+    def test_key_is_not_mangled_by_the_loader(self):
+        # 예전에는 data_go_kr_key() 가 %를 보고 디코딩해 버려 이 API 에서 실패했다.
+        import os
+        from data_sources import exports as ex
+        saved = os.environ.get("DATA_GO_KR_KEY")
+        os.environ["DATA_GO_KR_KEY"] = self.ENCODED
+        try:
+            self.assertEqual(ex.data_go_kr_key(), self.ENCODED)
+        finally:
+            if saved is None:
+                os.environ.pop("DATA_GO_KR_KEY", None)
+            else:
+                os.environ["DATA_GO_KR_KEY"] = saved
+
+
+class CustomsResponseTests(unittest.TestCase):
+    """2026-09-11 실제 응답 구조로 파서를 고정한다."""
+
+    XML = ('<?xml version="1.0" encoding="UTF-8" standalone="yes"?><response>'
+           '<header><resultCode>00</resultCode><resultMsg>정상서비스.</resultMsg></header><body><items>'
+           '<item><expDlr>5170747</expDlr><hsCode>8541101000</hsCode><impDlr>3959009</impDlr>'
+           '<statKor>칩</statKor><year>2026.01</year></item>'
+           '<item><expDlr>2000000</expDlr><hsCode>8541210000</hsCode><impDlr>3552433</impDlr>'
+           '<statKor>트랜지스터</statKor><year>2026.01</year></item>'
+           '<item><expDlr>9000000</expDlr><hsCode>8541</hsCode><impDlr>0</impDlr>'
+           '<statKor>총계</statKor><year>2026</year></item>'
+           '</items></body></response>')
+
+    def test_sums_月_and_drops_the_yearly_total_row(self):
+        from data_sources import exports as ex
+        frame = ex.parse_customs_xml(self.XML)
+        self.assertEqual(len(frame), 1)                       # 2026-01 한 달만
+        self.assertEqual(frame["month"].iloc[0], pd.Timestamp("2026-01-01"))
+        self.assertEqual(frame["value"].iloc[0], 5170747 + 2000000)   # expDlr 합산
+
+    def test_uses_export_dollars_not_imports(self):
+        from data_sources import exports as ex
+        frame = ex.parse_customs_xml(self.XML)
+        self.assertNotEqual(frame["value"].iloc[0], 3959009 + 3552433)

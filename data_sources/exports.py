@@ -7,7 +7,7 @@ import re
 from pathlib import Path
 import random
 import time
-from urllib.parse import urlencode
+from urllib.parse import quote, urlencode
 from urllib.request import urlopen
 
 import numpy as np
@@ -60,6 +60,7 @@ CUSTOMS_HS = ('8541', '8542')       # 반도체: 개별소자 + 집적회로
 
 
 def data_go_kr_key():
+    """저장된 키를 그대로 돌려준다. 인코딩/디코딩 변환은 key_variants 가 맡는다."""
     key = os.environ.get('DATA_GO_KR_KEY')
     if not key:
         try:
@@ -67,10 +68,31 @@ def data_go_kr_key():
             key = userdata.get('DATA_GO_KR_KEY')
         except Exception:
             pass
-    if key and '%' in key:
-        from urllib.parse import unquote
-        key = unquote(key)          # Encoding용 키를 넣어도 동작하게 한다
-    return key
+    return key.strip() if key else key
+
+
+def key_variants(key):
+    """시도할 serviceKey 문자열들. 이미 URL 에 넣을 최종 형태이고, 중복은 뺀다.
+
+    data.go.kr 안내: "API 환경 또는 호출 조건에 따라 인증키가 적용되는 방식이 다를 수 있습니다.
+    포털에서 제공되는 Encoding/Decoding 된 인증키를 적용하면서 구동되는 키를 사용하시기 바랍니다."
+    어느 쪽이 맞는지는 호출해 봐야 안다.
+
+    두 형태는 실제로 서버에 다르게 도착한다.
+      as_is: 포털의 인코딩 키를 그대로 붙인다(%2B 를 %2B 로). 2026-09-11 실제 호출로 확인한 결과
+             관세청 품목별 수출입실적은 이쪽이 맞다(resultCode 00). 그래서 먼저 시도한다.
+      once : 디코딩한 뒤 한 번 인코딩. 대부분의 data.go.kr API 가 이쪽이고, 디코딩 키를 저장한
+             경우에는 이것만 생긴다.
+    """
+    from urllib.parse import quote, unquote
+    if not key:
+        return []
+    out, seen = [], set()
+    for label, text in (('as_is', key), ('once', quote(unquote(key), safe=''))):
+        if text and text not in seen:
+            seen.add(text)
+            out.append((label, text))
+    return out
 
 
 
@@ -104,26 +126,41 @@ def parse_customs_xml(text):
 
 
 
+def _customs_request(hs, start_text, end_text, key, retries=3):
+    """HS 한 건 조회. 인증키 형태를 바꿔 가며 시도한다(어느 쪽이 맞는지는 호출해 봐야 안다)."""
+    variants = key_variants(key)
+    if not variants:
+        raise RuntimeError('DATA_GO_KR_KEY 가 비어 있습니다.')
+    failures = []
+    rest = urlencode({'strtYymm': start_text, 'endYymm': end_text, 'hsSgn': hs})
+    for label, service_key in variants:
+        query = f'serviceKey={service_key}&{rest}'
+        for attempt in range(retries):
+            try:
+                with open_url(f'{CUSTOMS_URL}?{query}', timeout=90,
+                              accept='application/xml, text/xml, */*') as response:
+                    return parse_customs_xml(response.read().decode('utf-8'))
+            except Exception as exc:
+                detail = error_detail(exc)
+                registered = 'NOT_REGISTERED' in str(exc) or 'SERVICE_KEY' in str(exc)
+                last = attempt == retries - 1
+                if registered or last:
+                    failures.append(f'{label} 키: {detail}')
+                    break            # 키 형태 문제면 재시도해도 같다. 다음 형태로 넘어간다.
+                time.sleep(3 * (2 ** attempt) + random.uniform(0, 3))
+    raise RuntimeError(
+        f'관세청 조회 실패(HS {hs}) — ' + ' / '.join(failures) + '. '
+        'SERVICE_KEY_IS_NOT_REGISTERED 가 두 형태 모두에서 나오면 활용신청 승인 상태와 '
+        '인증키 재발급을 확인하세요. URLError 면 해외 IP 차단일 수 있습니다.')
+
+
 def fetch_customs_exports(start, end, key, hs_codes=CUSTOMS_HS, retries=3):
     """반도체 월별 수출액(달러). HS 대분류별로 조회해 합산한다."""
     start_text = pd.Timestamp(start).strftime('%Y%m')
     end_text = pd.Timestamp(end).strftime('%Y%m')
     total = None
     for hs in hs_codes:
-        query = urlencode({'serviceKey': key, 'strtYymm': start_text, 'endYymm': end_text, 'hsSgn': hs})
-        for attempt in range(retries):
-            try:
-                with open_url(f'{CUSTOMS_URL}?{query}', timeout=90, accept='application/xml, text/xml, */*') as response:
-                    frame = parse_customs_xml(response.read().decode('utf-8'))
-                break
-            except Exception as exc:
-                detail = error_detail(exc)
-                if attempt == retries - 1:
-                    raise RuntimeError(
-                        f'관세청 조회 실패({detail}, HS {hs}). '
-                        'URLError 는 대개 해외 IP 차단입니다(GitHub Actions 는 미국에서 돕니다). '
-                        'HTTP 30x·40x 면 키·활용신청 상태를 확인하세요.') from None
-                time.sleep(3 * (2 ** attempt) + random.uniform(0, 3))
+        frame = _customs_request(hs, start_text, end_text, key, retries)
         series = frame.set_index('month')['value']
         total = series if total is None else total.add(series, fill_value=0)
     return pd.DataFrame({'month': total.index, 'value': total.to_numpy()})

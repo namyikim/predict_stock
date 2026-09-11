@@ -352,17 +352,23 @@ class CustomsSourceTests(unittest.TestCase):
         self.assertEqual(float(values.loc[pd.Timestamp("2026-07-01")]), 3.9e10)
         self.assertEqual(added, ["2026-07"])
 
-    def test_encoded_key_is_decoded(self):
+    def test_encoded_key_is_kept_as_is(self):
+        """포털의 인코딩 키를 디코딩해 버리면 관세청 API 가 거부한다(2026-09-11 실제 호출로 확인).
+
+        변환은 key_variants 가 맡고, 로더는 저장된 문자열을 그대로 돌려줘야 한다.
+        """
         import os
+        from data_sources import exports as ex
         saved = os.environ.get("DATA_GO_KR_KEY")
         os.environ["DATA_GO_KR_KEY"] = "abc%2Bdef%3D"
         try:
-            self.assertEqual(mu.data_go_kr_key(), "abc+def=")
+            self.assertEqual(ex.data_go_kr_key(), "abc%2Bdef%3D")
         finally:
             if saved is None:
                 os.environ.pop("DATA_GO_KR_KEY", None)
             else:
                 os.environ["DATA_GO_KR_KEY"] = saved
+
 
 
 class EarningsLedgerTests(unittest.TestCase):

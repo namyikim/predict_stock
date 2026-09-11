@@ -1,0 +1,257 @@
+{
+  "target": "sk_hynix",
+  "name": "SK하이닉스",
+  "peer_name": "삼성전자",
+  "session_date": "2026-09-11",
+  "generated_at": "2026-09-11 18:20 KST",
+  "summary": {
+    "prev_close": 1853000.0,
+    "open": 1773000.0,
+    "high": 1827000.0,
+    "low": 1768000.0,
+    "close": 1812000.0,
+    "gap": -0.043173232595790645,
+    "session": 0.021996615905245376,
+    "c2c": -0.0221262817053427,
+    "high_vs_open": 0.030456852791878264,
+    "low_vs_open": -0.0028200789622109257,
+    "volume": 2620493.0,
+    "volume_ratio": 0.6857508995679732,
+    "kospi_c2c": -0.017630249846794288,
+    "peer_c2c": -0.03531598513011147,
+    "usdkrw_chg": 0.002830049110882138,
+    "sox_ret": -0.026581332352022535,
+    "nasdaq_ret": -0.0065370403021639545
+  },
+  "classification": {
+    "labels": [
+      "갭 주도",
+      "장중 급변 09:00 주도",
+      "지수 동조"
+    ],
+    "reasons": [
+      "갭 -4.32%가 종가→종가 -2.21%의 195%",
+      "09:00 봉 -4.10%(σ의 14.22배, 거래량 7.29배)가 세션 +2.20%의 173%",
+      "KOSPI -1.76% vs 종목 -2.21%, 5분 수익률 상관 0.92 — 종목 고유 요인이 약함"
+    ]
+  },
+  "events": [
+    {
+      "time": "2026-09-11T09:00:00+09:00",
+      "ret": -0.04101457096600103,
+      "z": 14.22,
+      "volume_ratio": 7.29,
+      "cum_before": 0.0,
+      "cum_after": 0.002256063169768785,
+      "session_share": -1.7314008172076152,
+      "score": 16.219617987892363,
+      "news": [
+        {
+          "time": "2026-09-11T08:15:40+09:00",
+          "title": "\"SK하이닉스·마이크론 제쳤다\"… 中 CXMT, 2분기 영업이익률 82%로 '수익성 1위' 등극",
+          "source": "글로벌이코노믹",
+          "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxPTU1xQnVlTmJOSDgzNl9GNGZiLXFGSGNiMnZHR21pbC1VTDMtZjJYYXMxV1RsWGxZOVNrbmEybjdYR0dWTFpDUEpKci1mZ1R4RTFGOFNXZEJrTHlmR0lIVjlNYl9uSXBNVUpqaWJUZnVBNU8tQnJZczJ0V1lMY05Geml1Vng5UHFQ?oc=5"
+        },
+        {
+          "time": "2026-09-11T08:30:11+09:00",
+          "title": "삼성전자·SK하이닉스 프리마켓 3%대↓···美 반도체 약세 부담",
+          "source": "뉴스웨이",
+          "link": "https://news.google.com/rss/articles/CBMiakFVX3lxTE52R2VRbi1EZy14NGNLZWNtbWxDdEFfa1l5blJqUUFLbld3bXhXa1RHS1hjMV9GTFlDZHpxRzRydWQ0UEtIZmY4NExxcTJGamdKN2ZXR1RBTkdjNkFuQ1BGNjZiNWZJeUx1dUE?oc=5"
+        },
+        {
+          "time": "2026-09-11T08:31:00+09:00",
+          "title": "삼성전자·SK하이닉스 프리마켓 3%대↓…美 반도체 약세 부담[특징주]",
+          "source": "v.daum.net",
+          "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE4xbkJ1Y2ZpR205amh4Umw2MEFlaWt3UGo0MEp6LXU3di1mOTJhLTNwTmx3OHhvVXdDaUhuYVBmM1V0R181eWlGZkRwaHY0NjU3NXZMSkR1QnNZc2JH?oc=5"
+        },
+        {
+          "time": "2026-09-11T09:05:08+09:00",
+          "title": "[속보] 삼성전자·SK하이닉스 4%대 급락… 코스피 파란불",
+          "source": "gukjenews.com",
+          "link": "https://news.google.com/rss/articles/CBMibkFVX3lxTE1jd2JVY1dydzlsUzVHMzRfODhJY1dUMXUyUUlsaW5TTW9GeTBiTEhZNXJwU1N1Y0Nna2luR0MyekxwU0dTMDdTZWpzQk1xbzNPLVAyQ25NTVVHUm1nRFg3aFJZRE05RXhwa1Bac21n?oc=5"
+        },
+        {
+          "time": "2026-09-11T07:45:00+09:00",
+          "title": "이천시·청주시·SK하이닉스, 고향사랑기부 상생 협약",
+          "source": "KBS 뉴스",
+          "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE1ZZ1FXUm9Gajg4bThZS3pNQUZEcEt5WkVVTGxndWNSQU9rVWxqWk9LY25WY3Z1ZkZEV2xjZ3JQSDNLOFBnTVFLLTlBUUQ4aGVMbnFHcXBwSWxLZzA?oc=5"
+        }
+      ]
+    },
+    {
+      "time": "2026-09-11T09:20:00+09:00",
+      "ret": 0.009039548022598876,
+      "z": 3.13,
+      "volume_ratio": 2.99,
+      "cum_before": -0.0016920473773265332,
+      "cum_after": 0.007332205301748385,
+      "session_share": 0.38159806295399545,
+      "score": 3.7315460705703822,
+      "news": [
+        {
+          "time": "2026-09-11T08:15:40+09:00",
+          "title": "\"SK하이닉스·마이크론 제쳤다\"… 中 CXMT, 2분기 영업이익률 82%로 '수익성 1위' 등극",
+          "source": "글로벌이코노믹",
+          "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxPTU1xQnVlTmJOSDgzNl9GNGZiLXFGSGNiMnZHR21pbC1VTDMtZjJYYXMxV1RsWGxZOVNrbmEybjdYR0dWTFpDUEpKci1mZ1R4RTFGOFNXZEJrTHlmR0lIVjlNYl9uSXBNVUpqaWJUZnVBNU8tQnJZczJ0V1lMY05Geml1Vng5UHFQ?oc=5"
+        },
+        {
+          "time": "2026-09-11T08:30:11+09:00",
+          "title": "삼성전자·SK하이닉스 프리마켓 3%대↓···美 반도체 약세 부담",
+          "source": "뉴스웨이",
+          "link": "https://news.google.com/rss/articles/CBMiakFVX3lxTE52R2VRbi1EZy14NGNLZWNtbWxDdEFfa1l5blJqUUFLbld3bXhXa1RHS1hjMV9GTFlDZHpxRzRydWQ0UEtIZmY4NExxcTJGamdKN2ZXR1RBTkdjNkFuQ1BGNjZiNWZJeUx1dUE?oc=5"
+        },
+        {
+          "time": "2026-09-11T08:31:00+09:00",
+          "title": "삼성전자·SK하이닉스 프리마켓 3%대↓…美 반도체 약세 부담[특징주]",
+          "source": "v.daum.net",
+          "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE4xbkJ1Y2ZpR205amh4Umw2MEFlaWt3UGo0MEp6LXU3di1mOTJhLTNwTmx3OHhvVXdDaUhuYVBmM1V0R181eWlGZkRwaHY0NjU3NXZMSkR1QnNZc2JH?oc=5"
+        },
+        {
+          "time": "2026-09-11T09:05:08+09:00",
+          "title": "[속보] 삼성전자·SK하이닉스 4%대 급락… 코스피 파란불",
+          "source": "gukjenews.com",
+          "link": "https://news.google.com/rss/articles/CBMibkFVX3lxTE1jd2JVY1dydzlsUzVHMzRfODhJY1dUMXUyUUlsaW5TTW9GeTBiTEhZNXJwU1N1Y0Nna2luR0MyekxwU0dTMDdTZWpzQk1xbzNPLVAyQ25NTVVHUm1nRFg3aFJZRE05RXhwa1Bac21n?oc=5"
+        },
+        {
+          "time": "2026-09-11T09:21:40+09:00",
+          "title": "[특징주] 삼성전자 3%·SK하이닉스 4%↓⋯유가·美 금리 쇼크",
+          "source": "아이뉴스24",
+          "link": "https://news.google.com/rss/articles/CBMiS0FVX3lxTFBLS3lDbnNYSGJMVlJic0thTTVmbVF5R29IYThNbDFVYWlSRkMyRUo5MndYSHdjV1V5SkxCSnVqTVYwdUZ6Q0pacnBySQ?oc=5"
+        }
+      ]
+    }
+  ],
+  "turning_point": {
+    "high_time": "2026-09-11T14:50:00+09:00",
+    "high": 0.025662718556119568,
+    "low_time": "2026-09-11T09:15:00+09:00",
+    "low": -0.0016920473773265332,
+    "pattern": "저점 후 반등"
+  },
+  "closing_share": -0.07514303877940005,
+  "intraday_corr_kospi": 0.9206377574691624,
+  "intraday_note": "장중 봉은 09:00~14:55까지만 있어 마감 구간(14:55~15:30)은 일봉 종가로만 봅니다(그 구간 -0.17%).",
+  "intraday_coverage": "09:00~14:55",
+  "overnight_news": [
+    {
+      "time": "2026-09-11T07:00:01+09:00",
+      "title": "“반도체 투자 정점은 2028년으로 전망… 하반기는 SK하이닉스에 기대”",
+      "source": "주간동아",
+      "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTFBpc1N0ay14aFRQbEhGSUpTbXQ4QzFCNi1iS19tOGN1WGxHZ19MQjFBVWNSMHFTTkxMdDR2RlU2aVZ0OUhXTXhWVUxjS21IVExnN1BPWE5kLWtOUnNsbjJ0U200TEFjMEtE?oc=5"
+    },
+    {
+      "time": "2026-09-11T08:15:40+09:00",
+      "title": "\"SK하이닉스·마이크론 제쳤다\"… 中 CXMT, 2분기 영업이익률 82%로 '수익성 1위' 등극",
+      "source": "글로벌이코노믹",
+      "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxPTU1xQnVlTmJOSDgzNl9GNGZiLXFGSGNiMnZHR21pbC1VTDMtZjJYYXMxV1RsWGxZOVNrbmEybjdYR0dWTFpDUEpKci1mZ1R4RTFGOFNXZEJrTHlmR0lIVjlNYl9uSXBNVUpqaWJUZnVBNU8tQnJZczJ0V1lMY05Geml1Vng5UHFQ?oc=5"
+    },
+    {
+      "time": "2026-09-11T04:07:00+09:00",
+      "title": "'현금 50%·자사주 50%' SK하이닉스, 성과급 수정안 마련 - 머니투데이",
+      "source": "머니투데이",
+      "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTFBBNmNlcUJhdEFHaFgtZkNuU3dWT0ZzdGo5Tjd1anRCX19mdGFfTVdfS1RmZXMyMDM3U0hxTFR2SGlKMGdLY2JxczROYkJWZGR4b25wM2FUcGF2dXlpVURnT0U1V1hfYzhDY0RqctIBckFVX3lxTFBqdWJxWXJjQ2paMHNvdEhtenExTmMxR3A1YWk0WXlmMEZKNS0xQU9RbWxZTmxWWWowY28xSVBLSG1RZ3djM1pJOWVsRGJrNGF2SElTelVCa0p3cUVjZy03RVRRTWsxdTdETnpETjdjUHR6QQ?oc=5"
+    },
+    {
+      "time": "2026-09-11T08:30:11+09:00",
+      "title": "삼성전자·SK하이닉스 프리마켓 3%대↓···美 반도체 약세 부담",
+      "source": "뉴스웨이",
+      "link": "https://news.google.com/rss/articles/CBMiakFVX3lxTE52R2VRbi1EZy14NGNLZWNtbWxDdEFfa1l5blJqUUFLbld3bXhXa1RHS1hjMV9GTFlDZHpxRzRydWQ0UEtIZmY4NExxcTJGamdKN2ZXR1RBTkdjNkFuQ1BGNjZiNWZJeUx1dUE?oc=5"
+    },
+    {
+      "time": "2026-09-11T08:31:00+09:00",
+      "title": "삼성전자·SK하이닉스 프리마켓 3%대↓…美 반도체 약세 부담[특징주]",
+      "source": "v.daum.net",
+      "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE4xbkJ1Y2ZpR205amh4Umw2MEFlaWt3UGo0MEp6LXU3di1mOTJhLTNwTmx3OHhvVXdDaUhuYVBmM1V0R181eWlGZkRwaHY0NjU3NXZMSkR1QnNZc2JH?oc=5"
+    }
+  ],
+  "top_news": [
+    {
+      "time": "2026-09-11T10:57:20+09:00",
+      "title": "[산업분석] 메모리 반도체 삼성전자·SK하이닉스, AI에 2027 공급부족",
+      "source": "톱스타뉴스",
+      "link": "https://news.google.com/rss/articles/CBMickFVX3lxTE5zWm5WOVJDQ2FLWWx4Nk1JcW1vbjduX3NPbEZfOHZHcDl6MTZYcWF6cFJvbWJDU3FpaUx1MHFRVjFfUFp4SlBHUjd6VFlXVjA2emJUV2FrME8zR0F5TzF5X2tzZk13QzQ2Sm05VEJGYXNHdw?oc=5"
+    },
+    {
+      "time": "2026-09-11T13:20:08+09:00",
+      "title": "“고맙다, 반도체”…삼성전자‧SK하이닉스 자사주 매입에 코스피 7000선 ‘방어’ 안간힘",
+      "source": "더퍼블릭",
+      "link": "https://news.google.com/rss/articles/CBMia0FVX3lxTE1nRGNKU0h3STlfc2s3OW1NVy1hRjVjb0lfNW5PZkRKc3lOUWxwb0Jma3FkdDZKbEV6Z1hHQjEzVkFlMTNlWmkxUVB0VEVvTElIT1JpZC1KTGdnSEg2LVpidGtWUlZUNG1WREhV0gFvQVVfeXFMTnZzaHFadnNVb19RTHBhZWhNcGJyNnpXSUZnZGJVU1U2SVpqbldHeUh0aWkya3haYlo0ZXVVYWhlc3N1QVg5c29pd0RmOHZ5ZkFpeVdBMzRYR3BGS2lvZHFwX0U3UkxiTjdFNUh4VlpN?oc=5"
+    },
+    {
+      "time": "2026-09-11T13:42:03+09:00",
+      "title": "[이슈] 외국인 2.5조원 팔아도 코스피 7000 지켰다…삼성·SK하이닉스 자사주 '방파제'",
+      "source": "폴리뉴스 Polinews",
+      "link": "https://news.google.com/rss/articles/CBMickFVX3lxTE44cEQ1REo0Y1gtOXFnTVJQc2QxV2JzdWI1MFM2YW1GVzZRcmhQT09JZk1CUzhkdC1YWXZjOERUOGgzVWp4X01ZdkpRWjh0UFBiMGxSV3hTcXZzdzdDY05sQzR2QUNIQ1E3dFNLSlRfMy1uZ9IBckFVX3lxTE44cEQ1REo0Y1gtOXFnTVJQc2QxV2JzdWI1MFM2YW1GVzZRcmhQT09JZk1CUzhkdC1YWXZjOERUOGgzVWp4X01ZdkpRWjh0UFBiMGxSV3hTcXZzdzdDY05sQzR2QUNIQ1E3dFNLSlRfMy1uZw?oc=5"
+    },
+    {
+      "time": "2026-09-11T07:00:01+09:00",
+      "title": "“반도체 투자 정점은 2028년으로 전망… 하반기는 SK하이닉스에 기대”",
+      "source": "주간동아",
+      "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTFBpc1N0ay14aFRQbEhGSUpTbXQ4QzFCNi1iS19tOGN1WGxHZ19MQjFBVWNSMHFTTkxMdDR2RlU2aVZ0OUhXTXhWVUxjS21IVExnN1BPWE5kLWtOUnNsbjJ0U200TEFjMEtE?oc=5"
+    },
+    {
+      "time": "2026-09-11T08:15:40+09:00",
+      "title": "\"SK하이닉스·마이크론 제쳤다\"… 中 CXMT, 2분기 영업이익률 82%로 '수익성 1위' 등극",
+      "source": "글로벌이코노믹",
+      "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxPTU1xQnVlTmJOSDgzNl9GNGZiLXFGSGNiMnZHR21pbC1VTDMtZjJYYXMxV1RsWGxZOVNrbmEybjdYR0dWTFpDUEpKci1mZ1R4RTFGOFNXZEJrTHlmR0lIVjlNYl9uSXBNVUpqaWJUZnVBNU8tQnJZczJ0V1lMY05Geml1Vng5UHFQ?oc=5"
+    },
+    {
+      "time": "2026-09-11T09:39:44+09:00",
+      "title": "주성엔지니어링 3.17% 도약…SK하이닉스 M15X·선단 D램 투자 기대 주목",
+      "source": "CBC뉴스",
+      "link": "https://news.google.com/rss/articles/CBMiY0FVX3lxTE1UMXAyaUxXejRTZ196ZUFtaHNuNUpEZmJFbW9HcEI2cGxuazYzTlV1WGJzMUphdlJCLW9oVU9WUmd6aEgtOFdNXzE2YkEwNjc0Qmw2SGhtejhnTjNub3JHU2hJZw?oc=5"
+    }
+  ],
+  "disclosures": [],
+  "disclosure_note": null,
+  "flows": null,
+  "forecasts": [
+    {
+      "model": "No macro ensemble",
+      "hit": false,
+      "verdict": "틀림 — 예측 상승 38%, 실제 하락(-2.21%)",
+      "legs": "갭 -4.32%(하락) · 세션 +2.20%(상승)",
+      "where": "결과는 주로 갭(밤사이)에서 정해졌습니다.",
+      "band": 0.0144004404487031,
+      "probs": [
+        0.2810184145372765,
+        0.334598177311193,
+        0.3843834081515304
+      ],
+      "actual": "하락",
+      "predicted": "상승"
+    },
+    {
+      "model": "Mean ensemble",
+      "hit": false,
+      "verdict": "틀림 — 예측 상승 41%, 실제 하락(-2.21%)",
+      "legs": "갭 -4.32%(하락) · 세션 +2.20%(상승)",
+      "where": "결과는 주로 갭(밤사이)에서 정해졌습니다.",
+      "band": 0.0144004404487031,
+      "probs": [
+        0.290371890200775,
+        0.2964503439966577,
+        0.4131777658025672
+      ],
+      "actual": "하락",
+      "predicted": "상승"
+    },
+    {
+      "model": "Candidate expanding",
+      "hit": false,
+      "verdict": "틀림 — 예측 상승 46%, 실제 하락(-2.21%)",
+      "legs": "갭 -4.32%(하락) · 세션 +2.20%(상승)",
+      "where": "결과는 주로 갭(밤사이)에서 정해졌습니다.",
+      "band": 0.0144004404487031,
+      "probs": [
+        0.2392902945461277,
+        0.2960792361722106,
+        0.4646304692816616
+      ],
+      "actual": "하락",
+      "predicted": "상승"
+    }
+  ],
+  "price_check": "1거래일 예상 구간 1,748,668~1,970,510원 · 종가 1,812,000원 → 구간 안",
+  "disclaimer": "시간이 맞는 것이지 원인 확정이 아닙니다. 뉴스 없이 움직이는 날(수급·프로그램·옵션 만기)이 많고, 기사 발행 시각은 실제 정보 유통보다 늦거나 앞섭니다. 이 절은 설명 도구이며 다음날 예측에 자동 반영되지 않습니다."
+}

@@ -4,10 +4,10 @@
 재시도·대체 경로를 검사하기 때문이다. 바꿔칠 때는 이름이 정의된 모듈(data_sources.kosis 등)을
 대상으로 해야 한다 — 함수는 자기 모듈의 전역을 본다.
 """
-from data_sources import _common, kosis, ecos, oecd, exports, flows, dart, us_calendar  # noqa: F401
+from data_sources import _common, kosis, ecos, oecd, exports, flows, dart, us_calendar, dram_spot  # noqa: F401
 
 __all__ = []
-for _module in (_common, kosis, ecos, oecd, exports, flows, dart, us_calendar):
+for _module in (_common, kosis, ecos, oecd, exports, flows, dart, us_calendar, dram_spot):
     for _name in dir(_module):
         if _name.startswith("__"):
             continue

@@ -11,7 +11,7 @@ oecd, exports(관세청·일평균), flows(수급), dart(공시). 기존 `import
 해야 한다 — 함수는 자기 모듈의 전역을 본다.
 """
 from data_sources import *  # noqa: F401,F403
-from data_sources import _common, kosis, ecos, oecd, exports, flows, dart  # noqa: F401
+from data_sources import _common, kosis, ecos, oecd, exports, flows, dart, us_calendar, dram_spot  # noqa: F401
 
 # 테스트가 mu.urlopen / mu.time 을 참조하는 경우를 위해 공용 모듈의 것을 그대로 내보낸다.
 from data_sources._common import urlopen, time, random  # noqa: F401,E402

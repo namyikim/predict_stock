@@ -38,7 +38,8 @@ sys.path.insert(0, str(ROOT / "tools"))
 import github_pages  # noqa: E402
 from macro_utils import (  # noqa: E402
     cli_features, data_go_kr_key, fetch_customs_exports, load_cli, load_macro_data,
-    load_tsmc_revenue, merge_customs_exports, reconcile_customs, tsmc_features,
+    dram_spot_summary, load_dram_spot, load_tsmc_revenue, merge_customs_exports, reconcile_customs,
+    tsmc_features,
 )
 
 KST = timezone(timedelta(hours=9))
@@ -737,6 +738,24 @@ def render_fragment(result):
                          f'{"TSMC 를 넣은 쪽이 오차가 작습니다" if better else "넣어도 오차가 줄지 않습니다"} '
                          f'(분기 {ab.get("n")}개). 차이가 작으면 동률로 읽으세요. 발표 결과가 아니라 '
                          '월매출 자체를 쓰며, 다음 날 주가가 아니라 분기 이익을 맞히는지로만 판단합니다.</div>')
+    # D램 현물가 — 표시만. 이력이 검증에 충분해지면(1년 남짓) 특징으로 넣고 쌍체 비교한다.
+    ds = r.get("dram_summary")
+    if ds:
+        def _chg(v):
+            return "—" if v is None else f'{v:+.1%}'
+        parts.append('<h4 style="font-size:14px;margin:18px 0 6px">D램 현물 가격 '
+                     '<span style="font-size:11px;color:#8a9199;font-weight:400">DRAMeXchange 세션 평균 · 매일 누적 중</span></h4>')
+        parts.append(f'<div style="font-size:13px">DDR5 16Gb <b>${ds["value"]:.2f}</b> ({e(ds["date"])}) · '
+                     f'1주 {_chg(ds["change_7d"])} · 1개월 {_chg(ds["change_30d"])} · 누적 {ds["days"]}일</div>')
+        parts.append('<div style="font-size:11px;color:#8a9199;margin-top:4px">'
+                     '삼성전자·SK하이닉스 이익은 D램 가격에 가장 직접 좌우되고 현물가는 수출 통계보다 빠릅니다. '
+                     '다만 첫 페이지는 당일 값만 주어 이력을 매일 쌓고 있으며, 검증에 쓸 만큼(1년 남짓) 모이기 '
+                     '전에는 특징으로 넣지 않습니다. 현물가와 삼성·하이닉스의 고정거래가는 다르며(고정가가 1~2개월 '
+                     '뒤따르는 경향), 그 관계도 측정 대상입니다.</div>')
+    elif not (r.get("dram_info") or {}).get("enabled"):
+        parts.append('<div style="font-size:11px;color:#8a9199;margin-top:8px">D램 현물가 미수집 — '
+                     f'{html.escape(str((r.get("dram_info") or {}).get("reason", "")))}</div>')
+
     elif not (r.get("tsmc_info") or {}).get("enabled"):
         parts.append('<div style="font-size:11px;color:#8a9199;margin-top:8px">TSMC 월매출 미포함 — '
                      f'{html.escape(str((r.get("tsmc_info") or {}).get("reason", "")))}. '
@@ -805,7 +824,7 @@ def analyse(target, out_dir, fetch=True):
         pass
     loaded = []
     for _name in ("semiconductor_exports.csv", "leading_cycle.csv", "customs_exports.csv",
-                  "cli_g20.csv", "tsmc_revenue.csv"):
+                  "cli_g20.csv", "tsmc_revenue.csv", "dram_spot.csv"):
         try:
             text = github_pages.fetch(f"macro_history/{_name}", _token)
             if text:
@@ -891,6 +910,18 @@ def analyse(target, out_dir, fetch=True):
               f"({tsmc_info['rows']}개월)", flush=True)
     except Exception as exc:
         tsmc_info = {"enabled": False, "reason": f"{type(exc).__name__}: {exc}"}
+
+    # D램 현물가: 매일 받아 누적한다. 이력이 짧은 동안은 보고서에 표시만 하고 특징으로 쓰지 않는다.
+    dram, dram_info = None, {"enabled": False, "reason": "자료 없음"}
+    try:
+        dram, dram_info = load_dram_spot(out_dir, fallback_dir=fallback_dir, fetch=fetch)
+        dram_info["enabled"] = True
+        (out_dir / "dram_spot.csv").write_text(dram.to_csv(index=False), encoding="utf-8")
+        print(f"  D램 현물가: {dram_info['source']} · {dram_info['first']}~{dram_info['last']} "
+              f"({dram_info['rows']}일)", flush=True)
+    except Exception as exc:
+        dram_info = {"enabled": False, "reason": f"{type(exc).__name__}: {exc}"}
+        print("  ⚠️ D램 현물가를 받지 못했습니다(무시):", exc, flush=True)
 
     f = build_frame(profit, exports, usdkrw, months_used, cli, tsmc)
     oof = walk_forward(f)
@@ -994,6 +1025,7 @@ def analyse(target, out_dir, fetch=True):
         "macro_sources": macro_info.get("sources", {}),
         "cli_info": cli_info, "cli_active": cli_active,
         "tsmc_info": tsmc_info, "tsmc_active": tsmc_active, "tsmc_ablation": tsmc_ablation,
+        "dram_info": dram_info, "dram_summary": dram_spot_summary(dram) if dram is not None else None,
         "provisional": provisional, "provisional_info": provisional_info,
         "next_quarter": next_block,
         "generated_at": datetime.now(KST).strftime("%Y-%m-%d %H:%M KST"),
@@ -1052,6 +1084,15 @@ def main():
         print(oof.tail(8).to_string())
     if args.publish:
         token = github_pages.token()
+        # D램 현물가는 첫 페이지가 당일 값만 주므로 매일 누적한다.
+        if (result.get("dram_info") or {}).get("fresh") and (out_dir / "dram_spot.csv").exists():
+            try:
+                github_pages.publish("macro_history/dram_spot.csv",
+                                     (out_dir / "dram_spot.csv").read_text(encoding="utf-8"),
+                                     token, f"macro: dram_spot ({result['dram_info'].get('last')})")
+            except Exception as exc:
+                print("  D램 현물가 사본 업로드 실패:", exc, flush=True)
+
         # TSMC 는 API 가 최근 공시월만 주므로, 받은 것을 보관본과 합쳐 매달 누적한다.
         if (result.get("tsmc_info") or {}).get("fresh") and (out_dir / "tsmc_revenue.csv").exists():
             try:

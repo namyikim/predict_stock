@@ -141,8 +141,8 @@ class ErrorDetailTests(unittest.TestCase):
 
     def test_customs_message_explains_the_likely_cause(self):
         source = (Path(mu.__file__).resolve().parent / "data_sources" / "exports.py").read_text(encoding="utf-8")
-        self.assertIn("URLError 면 해외 IP 차단일 수 있습니다", source)
-        self.assertIn("활용신청 승인 상태와", source)
+        self.assertIn("SERVICE_KEY_IS_NOT_REGISTERED 가 모든 형태에서 나오면", source)
+        self.assertIn("활용신청이 승인됐는지", source)
 
 
 class CustomsKeyVariantTests(unittest.TestCase):
@@ -217,3 +217,40 @@ class CustomsResponseTests(unittest.TestCase):
         from data_sources import exports as ex
         frame = ex.parse_customs_xml(self.XML)
         self.assertNotEqual(frame["value"].iloc[0], 3959009 + 3552433)
+
+
+class KeyFingerprintTests(unittest.TestCase):
+    """'Colab 에서는 되는데 Actions 에서는 안 된다'를 판정하려면 두 곳의 키가 같은지 알아야 한다.
+    값은 로그에 남길 수 없으므로 지문만 남긴다."""
+
+    ENCODED = "Zr1kTIs7wafCu" + "X" * 80 + "%3D%3D"
+    DECODED = "Zr1kTIs7wafCu" + "X" * 80 + "=="
+
+    def test_shape_distinguishes_encoded_from_decoded(self):
+        self.assertIn("encoded", mu.key_fingerprint(self.ENCODED))
+        self.assertIn("decoded", mu.key_fingerprint(self.DECODED))
+        self.assertIn("plain", mu.key_fingerprint("abc123"))
+
+    def test_length_is_reported(self):
+        self.assertIn(f"len={len(self.ENCODED)}", mu.key_fingerprint(self.ENCODED))
+
+    def test_does_not_reveal_the_key(self):
+        text = mu.key_fingerprint(self.ENCODED)
+        self.assertNotIn(self.ENCODED, text)
+        self.assertLess(len(text), 40)                    # 앞뒤 4자만
+        self.assertIn("…", text)
+
+    def test_missing_key_is_stated(self):
+        self.assertEqual(mu.key_fingerprint(""), "key=없음")
+        self.assertEqual(mu.key_fingerprint(None), "key=없음")
+
+    def test_customs_failure_includes_the_fingerprint(self):
+        source = (Path(mu.__file__).resolve().parent / "data_sources" / "exports.py").read_text(encoding="utf-8")
+        self.assertIn("key_fingerprint(key)", source)
+        self.assertIn("위 지문으로 대조", source)
+
+    def test_report_keeps_enough_of_the_reason_to_diagnose(self):
+        import report_html as rh
+        long_reason = "관세청 조회 실패(HS 8541, key=encoded len=102 Zr1k…D%3D) — " + "x" * 200
+        html = rh.fragment_sources_html({}, {"customs_info": {"enabled": False, "reason": long_reason}})
+        self.assertIn("key=encoded len=102", html)        # 80자에서 잘리면 안 된다

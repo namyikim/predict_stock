@@ -146,3 +146,18 @@ def error_detail(exc):
             text = f'{type(reason).__name__}: {reason}'
         parts.append(text[:120])
     return ' '.join(parts)
+
+
+def key_fingerprint(key):
+    """인증키를 노출하지 않고 대조할 수 있는 지문.
+
+    "Colab 에서는 되는데 Actions 에서는 안 된다"를 판정하려면 두 곳의 키가 같은지 알아야 한다.
+    값을 로그에 남길 수는 없으므로 길이·앞뒤 4자·인코딩 여부만 적는다. 이 정도로는 키를 복원할
+    수 없지만 '다른 키가 들어가 있다'는 것은 확실히 드러난다.
+    """
+    if not key:
+        return 'key=없음'
+    text = str(key)
+    shape = 'encoded' if '%' in text else ('decoded' if any(c in text for c in '+/=') else 'plain')
+    head, tail = text[:4], text[-4:]
+    return f'key={shape} len={len(text)} {head}…{tail}'

@@ -149,9 +149,9 @@ def _customs_request(hs, start_text, end_text, key, retries=3):
                     break            # 키 형태 문제면 재시도해도 같다. 다음 형태로 넘어간다.
                 time.sleep(3 * (2 ** attempt) + random.uniform(0, 3))
     raise RuntimeError(
-        f'관세청 조회 실패(HS {hs}) — ' + ' / '.join(failures) + '. '
-        'SERVICE_KEY_IS_NOT_REGISTERED 가 두 형태 모두에서 나오면 활용신청 승인 상태와 '
-        '인증키 재발급을 확인하세요. URLError 면 해외 IP 차단일 수 있습니다.')
+        f'관세청 조회 실패(HS {hs}, {key_fingerprint(key)}) — ' + ' / '.join(failures) + '. '
+        'SERVICE_KEY_IS_NOT_REGISTERED 가 모든 형태에서 나오면 Secrets 의 키가 포털에서 확인한 '
+        '것과 같은지(위 지문으로 대조), 활용신청이 승인됐는지 확인하세요.')
 
 
 def fetch_customs_exports(start, end, key, hs_codes=CUSTOMS_HS, retries=3):

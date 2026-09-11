@@ -69,7 +69,9 @@ def fragment_sources_html(longterm, earnings):
             return
         enabled = info.get("enabled", True) and info.get("source")
         if not enabled:
-            rows.append((label, "—", "미포함", str(info.get("reason", ""))[:80], True))
+            # 예전에는 80자에서 잘라 실패 사유의 뒷부분(어느 키 형태가 어떻게 실패했는지)이
+            # 보이지 않았다. 진단이 목적인 칸이므로 넉넉히 남긴다.
+            rows.append((label, "—", "미포함", str(info.get("reason", ""))[:300], True))
             return
         source = str(info.get("source", ""))
         stale = source in ("last_successful_fetch", "explicit_cache_replay")

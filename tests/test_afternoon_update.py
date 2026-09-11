@@ -674,3 +674,28 @@ class DecisionTableLayoutTests(unittest.TestCase):
         # 값 칸은 짧게 유지한다.
         self.assertIn('"value": f"{_p:.0%} 지점"', report)
         self.assertIn('"detail": f"석 달 범위에서 {_where}. "', report)
+
+
+class EmptyLedgerTests(unittest.TestCase):
+    """기록하지 않는 실행(기록 창 밖·push)에서는 원장이 비어 있다. 그래도 보고서는 만들어져야 한다.
+
+    2026-09-11: 기록 창을 도입하자 이 경로를 처음 타면서 summarize_daily 가 KeyError('model') 로
+    죽어 보고서가 통째로 실패했다. 잠재해 있던 결함이 드러난 것이다.
+    """
+
+    def test_summarize_daily_survives_an_empty_frame(self):
+        for frame in (pd.DataFrame(), None, pd.DataFrame({"status": ["pending"]})):
+            out = fu.summarize_daily(frame)
+            self.assertEqual(len(out), 0)
+            self.assertIn("model", out.columns)
+            self.assertIn("interval_coverage", out.columns)
+
+    def test_columns_match_the_normal_output(self):
+        rows = pd.DataFrame([{
+            "record_id": "r", "status": "scored", "model": "M", "kind": "direction",
+            "horizon_days": 1, "target_mode": "close_to_close", "config_hash": "h",
+            "direction_correct": 1.0, "log_loss": .9, "brier": .2,
+            "absolute_price_error": np.nan, "price_ape": np.nan, "interval_hit": np.nan}])
+        filled = fu.summarize_daily(rows)
+        empty = fu.summarize_daily(pd.DataFrame())
+        self.assertEqual(list(filled.columns), list(empty.columns))

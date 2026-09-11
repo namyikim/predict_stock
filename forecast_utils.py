@@ -840,8 +840,22 @@ def daily_comparison(evaluated):
     return eligible.sort_values("created_at_utc").drop_duplicates(keys, keep="first")
 
 
+SUMMARY_COLUMNS = ["model", "kind", "horizon_days", "target_mode", "config_hash", "n", "accuracy",
+                   "mean_log_loss", "mean_brier", "point_forecasts", "price_mae", "price_mape",
+                   "interval_coverage"]
+
+
 def summarize_daily(daily):
+    """모델·종류별 누적 성적. 원장이 비어 있어도 깨지지 않아야 한다.
+
+    기록하지 않는 실행(기록 창 밖, push 실행)에서는 원장이 없을 수 있고, 그때 daily 는 열조차
+    없는 빈 프레임이다. 예전에는 groupby 가 KeyError('model') 로 죽어 보고서가 통째로 실패했다.
+    """
+    if daily is None or len(daily) == 0 or "status" not in daily.columns:
+        return pd.DataFrame(columns=SUMMARY_COLUMNS)
     scored = daily.loc[daily.status == "scored"]
+    if scored.empty:
+        return pd.DataFrame(columns=SUMMARY_COLUMNS)
     return scored.groupby(["model", "kind", "horizon_days", "target_mode", "config_hash"], dropna=False).agg(
         n=("record_id", "size"), accuracy=("direction_correct", "mean"),
         mean_log_loss=("log_loss", "mean"), mean_brier=("brier", "mean"),

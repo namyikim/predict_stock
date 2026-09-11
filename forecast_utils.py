@@ -963,6 +963,90 @@ def overnight_value_html(daily, headline_model, evening_model="Candidate evening
             f'<div style="font-size:11px;color:#8a9199;margin-top:4px">{note}</div>')
 
 
+def price_position(close, windows=(20, 60, 120), lookahead=20, band=0.10, min_samples=20):
+    """지금 가격이 최근 범위의 어디쯤인지, 그리고 과거에 같은 자리였을 때 뒤에 어땠는지.
+
+    '저점인가'에는 답하지 않는다 — 저점은 지나야 알 수 있고, 그것을 말하는 순간 매수 의견이 된다.
+    대신 (1) 최근 범위 안의 위치, (2) 이동평균·고점 대비 거리, (3) 과거에 같은 위치였던 날들의
+    lookahead 거래일 뒤 수익률 분포를 '전체 기간 분포'와 나란히 돌려준다. 같은 위치라고 반등이
+    더 잦았는지는 그 비교로만 말할 수 있다. 표본이 min_samples 미만이면 분포를 비우고 사유를 적는다.
+    """
+    close = pd.Series(close).astype(float).dropna()
+    if len(close) < max(windows) + lookahead + 5:
+        return None
+    last = float(close.iloc[-1])
+    out = {"last": last, "date": close.index[-1], "ranges": {}, "moving_averages": {}}
+    for w in windows:
+        window = close.iloc[-w:]
+        lo, hi = float(window.min()), float(window.max())
+        out["ranges"][w] = {"low": lo, "high": hi,
+                            "position": (last - lo) / (hi - lo) if hi > lo else 0.5}
+        out["moving_averages"][w] = {"level": float(window.mean()), "gap": last / float(window.mean()) - 1}
+    # 3년 고점 대비 낙폭
+    peak = float(close.iloc[-756:].max()) if len(close) >= 756 else float(close.max())
+    out["drawdown_3y"] = last / peak - 1
+
+    # 과거에 지금과 같은 위치(60일 범위 내 ±band)였던 날들의 lookahead 뒤 수익률
+    w = 60
+    rolling_lo = close.rolling(w).min()
+    rolling_hi = close.rolling(w).max()
+    rank = ((close - rolling_lo) / (rolling_hi - rolling_lo)).replace([np.inf, -np.inf], np.nan)
+    future = close.shift(-lookahead) / close - 1
+    valid = rank.notna() & future.notna()
+    # 마지막 lookahead 일은 미래를 모르므로 제외된다(future 가 NaN)
+    now_rank = float(rank.iloc[-1])
+    similar = valid & (rank - now_rank).abs().le(band)
+    baseline = future[valid]
+    sample = future[similar]
+    def describe(series):
+        if len(series) == 0:
+            return None
+        return {"n": int(len(series)), "median": float(series.median()),
+                "q25": float(series.quantile(.25)), "q75": float(series.quantile(.75)),
+                "up_share": float((series > 0).mean())}
+    out["position_60"] = now_rank
+    out["lookahead"] = lookahead
+    out["similar"] = describe(sample) if len(sample) >= min_samples else None
+    out["similar_n"] = int(len(sample))
+    out["baseline"] = describe(baseline)
+    out["min_samples"] = min_samples
+    return out
+
+
+def price_position_text(pos, name):
+    """일반인용 설명. 숫자를 일상어로 풀되, 의견은 만들지 않는다."""
+    if not pos:
+        return ""
+    p60 = pos["position_60"]
+    where = ("거의 바닥 근처" if p60 < 0.15 else "아래쪽" if p60 < 0.35 else
+             "가운데" if p60 <= 0.65 else "위쪽" if p60 <= 0.85 else "거의 꼭대기 근처")
+    ma60 = pos["moving_averages"][60]["gap"]
+    dd = pos["drawdown_3y"]
+    first = (f"<b>최근 60거래일(약 석 달) 범위에서 {'아래' if p60 < .5 else '위'}쪽 "
+             f"{p60:.0%} 지점입니다.</b> 석 달 중 {where}에 있다는 뜻입니다. "
+             f"60일 평균보다 {abs(ma60):.1%} {'낮고' if ma60 < 0 else '높고'}, "
+             f"최근 3년 고점에서는 {abs(dd):.0%} {'내려와' if dd < 0 else '위에'} 있습니다.")
+    sim, base, k = pos["similar"], pos["baseline"], pos["lookahead"]
+    if sim is None or base is None:
+        second = (f"과거에 지금과 같은 자리였던 날이 {pos['similar_n']}번뿐이라(판단에 {pos['min_samples']}번 필요) "
+                  "그 뒤 어땠는지는 말하지 않습니다.")
+    else:
+        ups = round(sim["up_share"] * sim["n"])
+        diff = sim["up_share"] - base["up_share"]
+        verdict = ("거의 차이가 없습니다" if abs(diff) < 0.05 else
+                   f"조금 {'높습니다' if diff > 0 else '낮습니다'}" if abs(diff) < 0.12 else
+                   f"꽤 {'높습니다' if diff > 0 else '낮습니다'}")
+        second = (f"과거에 이만큼 {'낮은' if p60 < .5 else '높은'} 자리에 있던 날이 {sim['n']}번 있었는데, "
+                  f"그중 {k}거래일(약 한 달) 뒤에 올랐던 날은 {ups}번({sim['up_share']:.0%})이었습니다. "
+                  f"평소의 한 달 뒤 상승 비율이 {base['up_share']:.0%}이니 <b>{verdict}.</b> "
+                  f"그때의 한 달 뒤 수익률은 절반이 {sim['q25']:+.1%}에서 {sim['q75']:+.1%} 사이였습니다.")
+    third = ("이것은 지금까지의 위치를 설명하는 것이지, 여기가 저점이나 고점이라는 뜻이 아닙니다. "
+             "저점인지 고점인지는 지나 봐야 압니다.")
+    return (f'<div style="font-size:13px;line-height:1.7">{first}</div>'
+            f'<div style="font-size:13px;line-height:1.7;margin-top:8px">{second}</div>'
+            f'<div style="font-size:11px;color:#8a9199;margin-top:8px">{third}</div>')
+
+
 def review_ledger(daily, bars, ensemble_model="Mean ensemble", windows=(20, 60), min_alert_n=20,
                   nominal_coverage=0.80):
     """실제 사전 예측(daily_comparison)만으로 최근 성능을 계산하고 경고를 만든다.

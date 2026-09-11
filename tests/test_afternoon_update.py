@@ -585,3 +585,61 @@ class DecisionCardDateTests(unittest.TestCase):
     def test_direction_card_names_the_base_close_date(self):
         # 확률이 어느 종가 기준인지도 적는다.
         self.assertIn("{last_samsung_date.date()} 종가 기준", self.report)
+
+
+class PricePositionTests(unittest.TestCase):
+    """'저점인가'에는 답하지 않고 '어디쯤인가'와 과거 분포만 말한다. 일반인용 문장으로 푼다."""
+
+    def series(self, n=2000, seed=3):
+        days = pd.bdate_range("2018-01-01", periods=n)
+        rng = np.random.default_rng(seed)
+        return pd.Series(60000 * np.exp(np.cumsum(rng.normal(0, .018, n))), index=days)
+
+    def test_position_is_within_the_range(self):
+        pos = fu.price_position(self.series())
+        self.assertIsNotNone(pos)
+        for w in (20, 60, 120):
+            self.assertGreaterEqual(pos["ranges"][w]["position"], 0.0)
+            self.assertLessEqual(pos["ranges"][w]["position"], 1.0)
+        self.assertLessEqual(pos["drawdown_3y"], 0.0)
+
+    def test_similar_days_exclude_the_unknown_future(self):
+        # 마지막 lookahead 일은 앞이 없으므로 표본에 들어가면 안 된다.
+        close = self.series()
+        pos = fu.price_position(close, lookahead=20)
+        self.assertLessEqual(pos["baseline"]["n"], len(close) - 20)
+
+    def test_small_sample_withholds_the_distribution(self):
+        close = self.series(n=200)
+        pos = fu.price_position(close, min_samples=10_000)
+        self.assertIsNone(pos["similar"])
+        text = fu.price_position_text(pos, "t")
+        self.assertIn("그 뒤 어땠는지는 말하지 않습니다", text)
+
+    def test_text_is_plain_language_and_never_a_call(self):
+        pos = fu.price_position(self.series())
+        text = fu.price_position_text(pos, "삼성전자")
+        for phrase in ("석 달", "번 있었는데", "평소의 한 달 뒤 상승 비율", "저점인지 고점인지는 지나 봐야"):
+            self.assertIn(phrase, text)
+        for banned in ("매수", "매도", "사세요", "파세요", "저점입니다", "고점입니다"):
+            self.assertNotIn(banned, text)
+
+    def test_verdict_compares_to_the_baseline(self):
+        pos = fu.price_position(self.series())
+        text = fu.price_position_text(pos, "t")
+        self.assertTrue(any(v in text for v in ("거의 차이가 없습니다", "조금 높습니다", "조금 낮습니다",
+                                                 "꽤 높습니다", "꽤 낮습니다")))
+
+    def test_too_short_history_returns_none(self):
+        self.assertIsNone(fu.price_position(self.series(n=100)))
+
+    def test_notebook_shows_the_block_and_the_card(self):
+        import json
+        nb = json.loads((Path(__file__).resolve().parents[1] /
+                         "samsung_direction_model_colab.ipynb").read_text(encoding="utf-8"))
+        report = next("".join(c["source"]) for c in nb["cells"]
+                      if "def build_summary():" in "".join(c.get("source", [])))
+        self.assertIn('price_pos = price_position(sam["close"])', report)
+        self.assertIn("지금 가격은 어디쯤인가", report)
+        self.assertIn('"label": "단기 위치"', report)
+        self.assertIn("저점·고점 판단이 아니라", report)

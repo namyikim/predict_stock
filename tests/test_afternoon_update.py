@@ -554,3 +554,34 @@ class ImpliedVolIntervalTests(unittest.TestCase):
         self.assertIn("IV_INTERVAL_ACTIVE = True", source)
         self.assertIn('model="Candidate IV interval"', source)
         self.assertIn('+ ("iv_interval",)', source)
+
+
+class DecisionCardDateTests(unittest.TestCase):
+    """'내일'만으로는 어느 날인지 알 수 없다. 금요일·연휴 앞에서는 이틀 이상 뒤다."""
+
+    @classmethod
+    def setUpClass(cls):
+        import json
+        nb = json.loads((Path(__file__).resolve().parents[1] /
+                         "samsung_direction_model_colab.ipynb").read_text(encoding="utf-8"))
+        cls.report = next("".join(c["source"]) for c in nb["cells"]
+                          if "def build_summary():" in "".join(c.get("source", [])))
+
+    def test_cards_carry_the_prediction_date(self):
+        self.assertIn('f"{_when} 시초가"', self.report)
+        self.assertIn('f"{_when} 방향 확률"', self.report)
+        self.assertNotIn('"label": "내일 시초가"', self.report)
+        self.assertNotIn('"label": "내일 방향 확률"', self.report)
+
+    def test_cards_reuse_the_section_one_label(self):
+        # 한 보고서에 두 가지 날짜 표기가 섞이지 않게 라벨을 한 곳에서 만든다.
+        self.assertIn("_when = _prediction_date_label", self.report)
+        self.assertIn("f'1. 다음 거래일 방향 ({_prediction_date_label})", self.report)
+
+    def test_label_is_defined_before_first_use(self):
+        self.assertLess(self.report.index("_prediction_date_label ="),
+                        self.report.index("_when = _prediction_date_label"))
+
+    def test_direction_card_names_the_base_close_date(self):
+        # 확률이 어느 종가 기준인지도 적는다.
+        self.assertIn("{last_samsung_date.date()} 종가 기준", self.report)

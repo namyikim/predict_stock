@@ -399,12 +399,26 @@ def make_price_model(alpha=1e4):
     return Pipeline([("scaler", StandardScaler()), ("model", Ridge(alpha=alpha))])
 
 
-def price_design_frame(feat, sam_index, feature_cols, raw_close, vol_20, horizon, har_fn=None):
+def implied_vol_scale(iv_level, window=250):
+    """내재변동성 배율: 오늘 IV ÷ 지난 1년 중앙값(전일까지). 1보다 크면 시장이 평소보다 큰 변동을 본다.
+
+    실현 변동성(20일 표준편차)은 과거를 본다. 실적·FOMC 같은 예정된 이벤트 앞에서는 과거 20일이
+    조용했어도 시장은 큰 움직임을 예상하고 옵션 가격에 반영한다. 그 배율만큼 구간을 넓히는 것이
+    sigma_iv 다. 배율은 [0.5, 3] 으로 잘라 옵션 시장의 이상값이 구간을 망가뜨리지 않게 한다.
+    """
+    level = pd.Series(iv_level).astype(float)
+    median = level.shift(1).rolling(window, min_periods=window // 2).median()
+    return (level / median).clip(0.5, 3.0)
+
+
+def price_design_frame(feat, sam_index, feature_cols, raw_close, vol_20, horizon, har_fn=None,
+                       iv_scale=None):
     """h거래일 가격 예측의 설계 행렬. (frame, HAR 라이브 sigma) 반환.
 
     행 d의 특징은 d-1 종가까지만 포함한다. 목표값은 d-1 종가 대비 horizon번째 거래일(d+horizon-1)의
-    원본 종가 수익률이다. sigma_simple = 20일 변동성 × sqrt(h), sigma_har = HAR 예측. 두 변동성 방식을
-    같은 행에서 비교하도록 HAR 이 비어 있는 앞부분 행은 함께 제거한다(학습 행이 그만큼 줄어든다).
+    원본 종가 수익률이다. sigma_simple = 20일 변동성 × sqrt(h), sigma_har = HAR 예측,
+    sigma_iv = sigma_simple × 내재변동성 배율(있을 때만). 변동성 방식들을 같은 행에서 비교하도록
+    비어 있는 앞부분 행은 함께 제거한다(학습 행이 그만큼 줄어든다).
     """
     raw_close = pd.Series(raw_close).astype(float)
     future_return = raw_close.shift(-(horizon - 1)) / raw_close.shift(1) - 1
@@ -413,6 +427,8 @@ def price_design_frame(feat, sam_index, feature_cols, raw_close, vol_20, horizon
     reg["future_return"] = future_return.reindex(reg.index)
     reg["sigma_simple"] = pd.Series(vol_20).reindex(reg.index) * np.sqrt(horizon)
     reg["sigma_har"] = har_series.reindex(reg.index)
+    if iv_scale is not None:
+        reg["sigma_iv"] = reg["sigma_simple"] * pd.Series(iv_scale).reindex(reg.index)
     reg = reg.replace([np.inf, -np.inf], np.nan).dropna()
     return reg, har_live
 
@@ -798,6 +814,37 @@ def _pending_status(daily, ensemble_model, last_scored_date):
     return {"date": pd.Timestamp(newest), "items": items} if items else None
 
 
+def interval_coverage_by_event(daily, models, min_n=10):
+    """구간 적중률을 이벤트일/평일로 나눠 모델별로 비교한다.
+
+    내재변동성 구간(Candidate IV interval)의 존재 이유는 '이벤트일에 구간이 좁다'는 문제다.
+    전체 적중률로는 그 차이가 묻히므로 원장의 event_flags 로 나눠 본다. 표본이 min_n 미만인 칸은
+    None 으로 두어 숫자가 정확해 보이지 않게 한다.
+    """
+    if daily is None or len(daily) == 0 or "interval_hit" not in daily:
+        return pd.DataFrame()
+    frame = daily.copy()
+    frame = frame[(frame["status"] == "scored") & frame["interval_hit"].notna()]
+    if "is_prospective" in frame:
+        frame = frame[frame["is_prospective"].astype(str).str.lower().isin(("true", "1", "yes"))]
+    flags = frame.get("event_flags", pd.Series("", index=frame.index)).fillna("").astype(str)
+    frame = frame.assign(_event=flags.str.len().gt(0))
+    rows = []
+    for model in models:
+        sub = frame[frame["model"] == model]
+        for kind in sorted(sub["kind"].dropna().unique()):
+            for horizon in sorted(pd.to_numeric(sub["horizon_days"], errors="coerce").dropna().unique()):
+                cell = sub[(sub["kind"] == kind) & (pd.to_numeric(sub["horizon_days"], errors="coerce") == horizon)]
+                ev, normal = cell[cell["_event"]], cell[~cell["_event"]]
+                rows.append({
+                    "model": model, "kind": kind, "horizon_days": int(horizon),
+                    "n_event": int(len(ev)), "n_normal": int(len(normal)),
+                    "coverage_event": float(ev["interval_hit"].mean()) if len(ev) >= min_n else None,
+                    "coverage_normal": float(normal["interval_hit"].mean()) if len(normal) >= min_n else None,
+                })
+    return pd.DataFrame(rows)
+
+
 def review_ledger(daily, bars, ensemble_model="Mean ensemble", windows=(20, 60), min_alert_n=20,
                   nominal_coverage=0.80):
     """실제 사전 예측(daily_comparison)만으로 최근 성능을 계산하고 경고를 만든다.
@@ -904,7 +951,10 @@ def review_ledger(daily, bars, ensemble_model="Mean ensemble", windows=(20, 60),
                 alerts.append(f"{label} 점 예측이 '변화 없음'보다 나쁨: MAE {r['mae_return']:.2%} vs {r['zero_mae_return']:.2%}")
     return {"latest": latest, "rolling": rolling, "alerts": alerts, "n_scored_days": int(len(dates)),
             "latest_date": pd.Timestamp(latest_date),
-          "pending": _pending_status(daily, ensemble_model, latest_date)}
+          "pending": _pending_status(daily, ensemble_model, latest_date),
+          # 구간 후보의 이벤트일/평일 적중률. 내재변동성 구간이 존재 이유(이벤트일)를 실제로 푸는지.
+          "event_coverage": interval_coverage_by_event(
+              daily, ["Ridge", "Candidate HAR interval", "Candidate IV interval"])}
 
 
 # ---------------------------------------------------------------------------
@@ -1120,7 +1170,27 @@ def ledger_section_html(review, ensemble_name, updated_note=""):
             gauges += (f'<div style="font-size:12px;color:#6b7178;margin-top:10px">최근 {window}일 '
                        '<span style="color:#8a9199">· 사전 예측만 · 눈금은 기준선</span></div>'
                        + rolling_gauges_html(cards))
-    rtable = (gauges + '<details style="margin-top:6px"><summary style="font-size:12px;color:#6b7178;cursor:pointer">'
+    # 이벤트일 vs 평일 구간 적중률 — 내재변동성 구간 후보의 판정표
+    event_html = ""
+    ec = review.get("event_coverage")
+    if ec is not None and len(ec) and (ec["n_event"].sum() > 0):
+        labels = {"Ridge": "대표 구간(실현 변동성)", "Candidate HAR interval": "HAR 구간",
+                  "Candidate IV interval": "내재변동성 구간"}
+        rows_e = ""
+        for _, r in ec.iterrows():
+            fmt = lambda v, n: ("—" if v is None else f"{v:.0%}") + f' <span style="color:#8a9199">(n={n})</span>'
+            rows_e += (f'<tr><td style="padding:7px 11px;border-top:1px solid #eee">{labels.get(r["model"], r["model"])}'
+                       f' · {int(r["horizon_days"])}일</td>'
+                       f'<td {cell}>{fmt(r["coverage_event"], r["n_event"])}</td>'
+                       f'<td {cell}>{fmt(r["coverage_normal"], r["n_normal"])}</td></tr>')
+        event_html = ('<div style="font-size:12px;color:#6b7178;margin:14px 0 4px">이벤트일(실적·FOMC·CPI 다음 거래일) vs 평일 '
+                      '구간 적중률 — 내재변동성 구간은 이벤트일에 넓어지도록 만든 것이라, 이 표에서 '
+                      '이벤트일 적중률이 대표 구간보다 높은지가 판단 기준입니다. 표본 10개 미만은 —.</div>'
+                      '<div style="overflow-x:auto"><table style="width:100%;min-width:420px;border-collapse:collapse;'
+                      'font-size:12px;border:1px solid #e5e5e5"><tr style="background:#fafafa;font-size:11px;color:#6b7178">'
+                      '<th style="padding:8px 11px;text-align:left">구간</th><th style="padding:8px 11px;text-align:right">이벤트일</th>'
+                      '<th style="padding:8px 11px;text-align:right">평일</th></tr>' + rows_e + '</table></div>')
+    rtable = (gauges + event_html + '<details style="margin-top:6px"><summary style="font-size:12px;color:#6b7178;cursor:pointer">'
               '자세한 수치 보기</summary>'
               '<div style="overflow-x:auto;margin-top:6px"><table style="width:100%;min-width:520px;border-collapse:collapse;'
               'font-size:12px;border:1px solid #e5e5e5"><tr style="background:#fafafa;font-size:11px;color:#6b7178">'

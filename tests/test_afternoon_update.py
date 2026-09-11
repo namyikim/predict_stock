@@ -502,3 +502,55 @@ class DecisionInputsTests(unittest.TestCase):
             self.assertNotIn(word, section, f"판단 재료 요약이 {word} 의견을 만들고 있습니다")
         # 예측력의 한계를 반드시 적는다.
         self.assertIn("세션 AUC", source[source.index("_unknowns = ["):])
+
+
+class ImpliedVolIntervalTests(unittest.TestCase):
+    """내재변동성 구간: 실현 변동성이 조용해도 옵션 시장이 큰 움직임을 예상하면 구간을 넓힌다."""
+
+    def test_scale_is_one_normally_and_rises_with_iv(self):
+        iv = pd.Series(np.r_[np.full(300, 20.0), [40.0]], index=pd.bdate_range("2025-01-01", periods=301))
+        scale = fu.implied_vol_scale(iv)
+        self.assertAlmostEqual(float(scale.iloc[-2]), 1.0, places=6)
+        self.assertAlmostEqual(float(scale.iloc[-1]), 2.0, places=6)
+
+    def test_scale_uses_only_the_past_and_is_clipped(self):
+        iv = pd.Series(np.r_[np.full(300, 20.0), [500.0]], index=pd.bdate_range("2025-01-01", periods=301))
+        scale = fu.implied_vol_scale(iv)
+        self.assertLessEqual(float(scale.iloc[-1]), 3.0)              # 이상값이 구간을 망가뜨리지 않게
+        # 미래 급등이 과거 배율을 바꾸면 안 된다.
+        calm = fu.implied_vol_scale(iv.iloc[:-1])
+        pd.testing.assert_series_equal(scale.iloc[:-1], calm, check_names=False)
+
+    def test_design_frame_adds_sigma_iv_only_when_given(self):
+        days = pd.bdate_range("2024-01-01", periods=400)
+        feat = pd.DataFrame({"x": np.arange(400, dtype=float)}, index=days)
+        close = pd.Series(100 + np.arange(400, dtype=float), index=days)
+        vol = pd.Series(0.02, index=days)
+        reg, _ = fu.price_design_frame(feat, days, ["x"], close, vol, 1,
+                                       har_fn=lambda r, h: (pd.Series(0.02, index=days), 0.02))
+        self.assertNotIn("sigma_iv", reg.columns)
+        reg2, _ = fu.price_design_frame(feat, days, ["x"], close, vol, 1,
+                                        har_fn=lambda r, h: (pd.Series(0.02, index=days), 0.02),
+                                        iv_scale=pd.Series(1.5, index=days))
+        self.assertIn("sigma_iv", reg2.columns)
+        self.assertAlmostEqual(float((reg2["sigma_iv"] / reg2["sigma_simple"]).iloc[0]), 1.5)
+
+    def test_event_split_reports_none_when_sample_is_small(self):
+        rows = [dict(model="Candidate IV interval", kind="price", horizon_days=1, status="scored",
+                     is_prospective=True, event_flags="미국지표:FOMC 금리 결정", interval_hit=1.0)] * 3
+        rows += [dict(model="Candidate IV interval", kind="price", horizon_days=1, status="scored",
+                      is_prospective=True, event_flags="", interval_hit=1.0)] * 20
+        out = fu.interval_coverage_by_event(pd.DataFrame(rows), ["Candidate IV interval"])
+        self.assertEqual((out["n_event"].iloc[0], out["n_normal"].iloc[0]), (3, 20))
+        self.assertIsNone(out["coverage_event"].iloc[0])
+        self.assertAlmostEqual(out["coverage_normal"].iloc[0], 1.0)
+
+    def test_notebook_registers_the_iv_candidate_for_every_horizon(self):
+        import json
+        nb = json.loads((Path(__file__).resolve().parents[1] /
+                         "samsung_direction_model_colab.ipynb").read_text(encoding="utf-8"))
+        source = "\n".join("".join(c["source"]) for c in nb["cells"])
+        self.assertIn('"vxn": "^VXN"', source)
+        self.assertIn("IV_INTERVAL_ACTIVE = True", source)
+        self.assertIn('model="Candidate IV interval"', source)
+        self.assertIn('+ ("iv_interval",)', source)

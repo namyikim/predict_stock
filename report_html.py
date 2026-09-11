@@ -62,6 +62,10 @@ def event_notice_html(flags):
              "미국지표:미국 소비자물가(CPI)": "미국 CPI 발표 다음 거래일",
              "미국지표:미국 생산자물가(PPI)": "미국 PPI 발표 다음 거래일",
              "미국지표:FOMC 금리 결정": "FOMC 금리 결정 다음 거래일",
+             "미국지표:마이크론 실적": "마이크론 실적 발표 다음 거래일(같은 메모리 업종)",
+             "미국지표:엔비디아 실적": "엔비디아 실적 발표 다음 거래일",
+             "미국지표:TSMC 실적": "TSMC 실적 발표 다음 거래일",
+             "미국지표:AMD 실적": "AMD 실적 발표 다음 거래일",
              "공시:배당": "배당 관련 공시 직후", "공시:자사주": "자사주 공시 직후",
              "공시:공급계약": "공급계약 공시 직후", "공시:자본변동": "자본 변동 공시 직후",
              "공시:정기보고서": "정기보고서 제출 직후"}
@@ -72,15 +76,24 @@ def event_notice_html(flags):
             '구간이 실제보다 좁을 수 있습니다. 원장에 표시가 남으므로 나중에 평일과 나눠 채점됩니다.</div>')
 
 
-def upcoming_events_html(events):
-    """다가오는 미국 지표 일정. 예측에 쓰지 않고, 며칠 안에 변동성이 커질 날을 미리 알린다."""
-    if not events:
+def upcoming_events_html(events, pending=None):
+    """다가오는 미국 지표·실적 일정. 예측에 쓰지 않고, 며칠 안에 변동성이 커질 날을 미리 알린다.
+
+    pending 은 아직 회사가 공지하지 않은 실적(추정 날짜를 넣지 않는 이유를 함께 적는다).
+    """
+    if not events and not pending:
         return ""
-    items = " · ".join(f'<b>{e["date"]}</b> {e["label"]}' for e in events[:5])
+    parts = []
+    if events:
+        items = " · ".join(f'<b>{e["date"]}</b> {e["label"]}' for e in events[:6])
+        parts.append(f'다가오는 발표 — {items}. 발표 자체는 예측에 쓰지 않지만, 그 다음 거래일은 '
+                     '방향과 무관하게 변동폭이 커지는 경향이 있습니다.')
+    if pending:
+        parts.append('날짜 미확정 — ' + " · ".join(pending.values())
+                     + '. 회사가 공지하면 <code>macro_inputs/us_calendar.csv</code>에 적어 주세요. '
+                       '제3자 캘린더의 추정 날짜는 서로 어긋나 넣지 않습니다.')
     return ('<div style="font-size:12px;color:#6b7178;margin:8px 0 0;padding:8px 12px;'
-            f'background:#f7f8fa;border-radius:5px">다가오는 발표 — {items}. '
-            '발표 자체는 예측에 쓰지 않지만, 그 다음 거래일은 방향과 무관하게 변동폭이 커지는 '
-            '경향이 있습니다.</div>')
+            'background:#f7f8fa;border-radius:5px">' + "<br>".join(parts) + '</div>')
 
 
 def disclosure_section_html(disclosures, disclosure_info, classify):

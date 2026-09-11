@@ -30,6 +30,16 @@ US_RELEASES = {
     "2026-08-13": "PPI", "2026-09-10": "PPI", "2026-10-15": "PPI",
     # FOMC 금리 결정(성명 발표일, 14:00 ET)
     "2026-09-16": "FOMC",
+    # 미국 반도체 실적 발표(장 마감 후). 마이크론은 같은 메모리 업종이라 삼성·하이닉스에 가장 직접적이다.
+    # 회사가 공식 공지한 날짜만 적는다. 제3자 캘린더의 '추정'은 출처끼리도 어긋난다(2026-09 엔비디아
+    # 11/17 vs 11/25). 추정을 넣으면 엉뚱한 날에 이벤트가 붙고 진짜 날은 놓친다.
+    "2026-09-30": "MU",          # 마이크론 FQ4 — 2026-08-26 회사 보도자료로 확정
+}
+# 아직 공식 공지가 없는 실적. 보고서에 '미확정'으로 보여 주어 CSV 로 채우도록 한다.
+PENDING_EARNINGS = {
+    "NVDA": "엔비디아 3분기(11월 중하순 예상, 회사 공지 대기)",
+    "TSM": "TSMC 3분기(10월 중순 예상, 재무 캘린더 미게시)",
+    "AMD": "AMD 3분기(11월 초 예상, 미공지)",
 }
 # 같은 날 둘 이상이면 리스트가 된다.
 _BY_DAY = {}
@@ -40,6 +50,10 @@ EVENT_LABELS = {
     "CPI": "미국 소비자물가(CPI)",
     "PPI": "미국 생산자물가(PPI)",
     "FOMC": "FOMC 금리 결정",
+    "MU": "마이크론 실적",
+    "NVDA": "엔비디아 실적",
+    "TSM": "TSMC 실적",
+    "AMD": "AMD 실적",
 }
 # 표에 실제로 담긴 기간. 이 밖의 날짜는 '모른다'고 다뤄야 한다.
 COVERAGE = (min(US_RELEASES), max(US_RELEASES))
@@ -99,6 +113,13 @@ def korea_event_flags(prediction_date, storage=None, lookback_days=4):
             if label not in flags:
                 flags.append(label)
     return flags
+
+
+def pending_earnings_note(storage=None):
+    """공식 공지가 없는 실적 목록. CSV 로 확정 날짜가 들어오면 목록에서 빠진다."""
+    override = read_us_calendar(storage)
+    confirmed = {e for events in override.values() for e in events}
+    return {k: v for k, v in PENDING_EARNINGS.items() if k not in confirmed}
 
 
 def upcoming_us_events(today, storage=None, days=10):

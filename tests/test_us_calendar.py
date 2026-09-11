@@ -140,3 +140,29 @@ class TwseApiTests(unittest.TestCase):
             mu.exports.fetch_tsmc_revenue = saved
         self.assertEqual(info["source"], "last_successful_fetch")
         self.assertFalse(info["fresh"])
+
+
+class SemiconductorEarningsTests(unittest.TestCase):
+    """실적 발표일은 회사 공식 공지만 넣는다. 제3자 추정은 출처끼리도 어긋난다."""
+
+    def test_only_confirmed_dates_are_in_the_table(self):
+        self.assertEqual(uc.us_events_on("2026-09-30"), ["MU"])          # 회사 보도자료로 확정
+        semis = {"MU", "NVDA", "TSM", "AMD"}
+        for guess in ("2026-10-15", "2026-11-17", "2026-11-25"):        # 추정치들 — 넣지 않는다
+            self.assertFalse(semis & set(uc.us_events_on(guess)), guess)
+
+    def test_pending_list_names_the_unconfirmed_companies(self):
+        pending = uc.pending_earnings_note()
+        self.assertEqual(set(pending), {"NVDA", "TSM", "AMD"})
+        self.assertIn("공지", pending["NVDA"])
+
+    def test_csv_confirmation_removes_from_pending_and_flags_the_next_session(self):
+        root = Path(tempfile.mkdtemp())
+        (root / "macro_inputs").mkdir()
+        (root / "macro_inputs" / "us_calendar.csv").write_text("date,event\n2026-11-17,NVDA\n", encoding="utf-8")
+        self.assertNotIn("NVDA", uc.pending_earnings_note(root))
+        self.assertIn("미국지표:엔비디아 실적", uc.korea_event_flags("2026-11-18", root))
+
+    def test_micron_flags_the_following_korean_session(self):
+        self.assertIn("미국지표:마이크론 실적", uc.korea_event_flags("2026-10-01"))
+        self.assertNotIn("미국지표:마이크론 실적", uc.korea_event_flags("2026-09-30"))

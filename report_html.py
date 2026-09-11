@@ -54,6 +54,69 @@ def range_bar(low, center, high, current):
         '</div>')
 
 
+def fragment_sources_html(longterm, earnings):
+    """장기 전망(7절)·영업이익 추정(8절)이 쓴 자료원 표.
+
+    6절의 표는 노트북이 직접 받은 자료만 적는다. 7·8절은 별도 도구가 만들어 조각으로 끼워지므로
+    G20 CLI·TSMC 월매출·D램 현물가 같은 자료가 '이 보고서의 데이터'에서 빠져 보였다. 읽는 사람은
+    제목을 보고 보고서 전체의 자료원이라고 생각하므로, 조각이 남긴 출처를 읽어 함께 적는다.
+    """
+    from html import escape
+    rows = []
+
+    def add(label, info, extra=""):
+        if not info:
+            return
+        enabled = info.get("enabled", True) and info.get("source")
+        if not enabled:
+            rows.append((label, "—", "미포함", str(info.get("reason", ""))[:80], True))
+            return
+        source = str(info.get("source", ""))
+        stale = source in ("last_successful_fetch", "explicit_cache_replay")
+        period = info.get("last", "") or ""
+        if info.get("first") and info.get("first") != period:
+            period = f'{info["first"]} ~ {period}'
+        note = extra or ("저장소 보관본 사용" if stale else "")
+        if stale and info.get("fetch_error"):
+            note = f'{note} — {str(info["fetch_error"])[:60]}'
+        rows.append((label, source, period, note, stale))
+
+    longterm, earnings = longterm or {}, earnings or {}
+    add("G20 경기선행지수", longterm.get("cli_info") or earnings.get("cli_info"))
+    add("뉴스심리지수(장기)", (longterm.get("extra_info") or {}).get("nsi"))
+    add("장단기 금리차", (longterm.get("extra_info") or {}).get("term_spread"))
+    add("TSMC 월매출", earnings.get("tsmc_info"))
+    add("D램 현물가", earnings.get("dram_info"))
+    add("관세청 수출입실적", earnings.get("customs_info"))
+    if earnings.get("profit_source"):
+        rows.append(("분기 영업이익(DART)", str(earnings["profit_source"]),
+                     f'{earnings.get("profit_first", "")} ~ {earnings.get("profit_last", "")}',
+                     f'{earnings.get("profit_n", "")}개 분기', False))
+    if not rows:
+        return ""
+    body = ""
+    for label, source, period, note, stale in rows:
+        warn = "color:#a8322a;font-weight:600" if stale else ""
+        body += (f'<tr><td style="padding:6px 10px;border-top:1px solid #eee">{escape(label)}</td>'
+                 f'<td style="padding:6px 10px;border-top:1px solid #eee;font-family:ui-monospace,monospace;'
+                 f'font-size:12px;color:#6b7178;{warn}">{escape(source)}</td>'
+                 f'<td style="padding:6px 10px;border-top:1px solid #eee;text-align:right;{warn}">{escape(period)}</td>'
+                 f'<td style="padding:6px 10px;border-top:1px solid #eee;color:#8a9199;font-size:11px">'
+                 f'{escape(note)}</td></tr>')
+    return ('<div style="overflow-x:auto;-webkit-overflow-scrolling:touch;margin-top:12px">'
+            '<table style="width:100%;min-width:560px;border-collapse:collapse;font-size:13px;'
+            'border:1px solid #e5e5e5">'
+            '<tr style="background:#fafafa;font-size:11px;color:#6b7178;letter-spacing:.5px">'
+            '<th style="padding:8px 10px;text-align:left">장기 전망·영업이익 추정 자료</th>'
+            '<th style="padding:8px 10px;text-align:left">출처</th>'
+            '<th style="padding:8px 10px;text-align:right">기간</th>'
+            '<th style="padding:8px 10px;text-align:left">비고</th></tr>'
+            f'{body}</table></div>'
+            '<div style="font-size:11px;color:#8a9199;margin-top:4px">7·8절은 별도 도구가 만들어 이 보고서에 '
+            '끼워집니다. 위 두 표(시세·월별 지표)는 이 보고서가 직접 받은 자료이고, 이 표는 그 두 절이 쓴 '
+            '자료입니다. 빨간 글씨는 조회에 실패해 저장소 보관본을 쓴 것입니다.</div>')
+
+
 def event_notice_html(flags):
     flags = list(flags or [])
     if not flags:

@@ -137,3 +137,55 @@ class NotebookWiringTests(unittest.TestCase):
         self.assertEqual(len(cells), 1)
         self.assertEqual("".join(cells[0]["source"]),
                          (ROOT / "report_html.py").read_text(encoding="utf-8"))
+
+
+class FragmentSourcesTests(unittest.TestCase):
+    """7·8절이 쓴 자료원도 6절에 적는다.
+
+    6절 표는 노트북이 직접 받은 자료만 적어서 G20 CLI·TSMC·D램 현물가가 '이 보고서의 데이터'에서
+    빠져 보였다(2026-09-11 지적). 조각 JSON 이 남긴 출처를 읽어 표로 붙인다.
+    """
+
+    LONGTERM = {"cli_info": {"source": "OECD_API(G20)", "fresh": True, "first": "1998-01", "last": "2026-08"},
+                "extra_info": {"nsi": {"source": "ECOS_API", "enabled": True, "first": "2005-01-01",
+                                       "last": "2026-09-06"},
+                               "term_spread": {"source": "ECOS_API", "enabled": True, "last": "2026-09-10"}}}
+    EARNINGS = {"tsmc_info": {"source": "last_successful_fetch", "enabled": True, "fresh": False,
+                              "fetch_error": "TWSE 조회 실패", "first": "2025-07", "last": "2026-07"},
+                "dram_info": {"source": "DRAMEXCHANGE+cache", "enabled": True, "fresh": True,
+                              "first": "2026-09-11", "last": "2026-09-11"},
+                "customs_info": {"enabled": False, "reason": "관세청 조회 실패(URLError)"},
+                "profit_source": "DART_API", "profit_first": "2016Q1", "profit_last": "2026Q2",
+                "profit_n": 42}
+
+    def test_every_fragment_source_is_listed(self):
+        html = rh.fragment_sources_html(self.LONGTERM, self.EARNINGS)
+        for label in ("G20 경기선행지수", "뉴스심리지수(장기)", "장단기 금리차", "TSMC 월매출",
+                      "D램 현물가", "관세청 수출입실적", "분기 영업이익(DART)"):
+            self.assertIn(label, html, label)
+
+    def test_cache_use_and_failure_are_visible(self):
+        html = rh.fragment_sources_html(self.LONGTERM, self.EARNINGS)
+        self.assertIn("저장소 보관본 사용", html)
+        self.assertIn("TWSE 조회 실패", html)
+        self.assertIn("미포함", html)
+        self.assertIn("관세청 조회 실패(URLError)", html)
+        self.assertIn("color:#a8322a", html)          # 보관본·실패는 빨간 글씨
+
+    def test_empty_inputs_render_nothing(self):
+        self.assertEqual(rh.fragment_sources_html(None, None), "")
+        self.assertEqual(rh.fragment_sources_html({}, {}), "")
+
+    def test_escapes_source_text(self):
+        html = rh.fragment_sources_html({"cli_info": {"source": "<script>", "last": "x"}}, {})
+        self.assertIn("&lt;script&gt;", html)
+        self.assertNotIn("<script>", html)
+
+    def test_notebook_attaches_it_to_section_six(self):
+        import json
+        nb = json.loads((ROOT / "samsung_direction_model_colab.ipynb").read_text(encoding="utf-8"))
+        report = next("".join(c["source"]) for c in nb["cells"]
+                      if "def build_summary():" in "".join(c.get("source", [])))
+        self.assertIn('fragment_sources_html(_load_summary_data("longterm.json")', report)
+        # 6절 안에 있어야 한다(월별 지표 표 바로 뒤).
+        self.assertLess(report.index("_macro_rows}{_nsi_row}"), report.index("fragment_sources_html"))

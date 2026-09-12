@@ -11,7 +11,6 @@
     python tools/build_interest_report.py --out runs/interest --publish
 """
 import argparse
-import base64
 import html
 import http.cookiejar
 import json
@@ -331,32 +330,12 @@ def build_html(rows, span, now):
         f'{counter}</div></div></body></html>')
 
 
-def _api(path, token, method="GET", body=None):
-    url = f"https://api.github.com/repos/{GITHUB_REPO}/contents/{path}"
-    if method == "GET":
-        url += f"?ref={GITHUB_BRANCH}"
-    request = urllib.request.Request(
-        url, method=method, data=json.dumps(body).encode() if body else None,
-        headers={"Authorization": f"Bearer {token}",
-                 "Accept": "application/vnd.github+json",
-                 "X-GitHub-Api-Version": "2022-11-28"})
-    with urllib.request.urlopen(request, timeout=60) as response:
-        return json.loads(response.read().decode())
-
-
 def publish(path, text, token, message):
-    sha = None
-    try:
-        sha = _api(path, token)["sha"]
-    except Exception as exc:
-        if getattr(exc, "code", None) != 404:
-            raise RuntimeError(f"조회 실패({type(exc).__name__} "
-                               f"{getattr(exc, 'code', '')})") from None
-    body = {"message": message, "branch": GITHUB_BRANCH,
-            "content": base64.b64encode(text.encode("utf-8")).decode()}
-    if sha:
-        body["sha"] = sha
-    return _api(path, token, "PUT", body)["content"]["sha"][:7]
+    """공용 발행기에 맡긴다. sha 를 읽고 쓰는 사이에 다른 잡이 같은 파일을 커밋하면 409 가 오는데,
+    자기 사본에는 재시도가 없어 2026-09-12 이 잡이 그대로 죽었다. 공용 쪽은 sha 를 다시 읽어 재시도한다.
+    """
+    import github_pages
+    return github_pages.publish(path, text, token, message)
 
 
 def main():

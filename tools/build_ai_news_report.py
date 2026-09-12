@@ -14,7 +14,6 @@
 import argparse
 import email.utils
 import html
-import json
 import os
 import re
 import urllib.parse
@@ -243,31 +242,10 @@ def build_html(groups, terms, now, total, failed):
 
 
 # ---- GitHub 발행 -------------------------------------------------------------
-def _api(path, token, method="GET", body=None):
-    url = f"https://api.github.com/repos/{GITHUB_REPO}/contents/{path}"
-    if method == "GET":
-        url += f"?ref={GITHUB_BRANCH}"
-    request = urllib.request.Request(
-        url, method=method, data=json.dumps(body).encode() if body else None,
-        headers={"Authorization": f"Bearer {token}", "Accept": "application/vnd.github+json",
-                 "X-GitHub-Api-Version": "2022-11-28"})
-    with urllib.request.urlopen(request, timeout=60) as response:
-        return json.loads(response.read().decode())
-
-
 def publish(path, text, token, message):
-    import base64
-    sha = None
-    try:
-        sha = _api(path, token)["sha"]
-    except Exception as exc:
-        if getattr(exc, "code", None) != 404:
-            raise RuntimeError(f"조회 실패({type(exc).__name__} {getattr(exc, 'code', '')})") from None
-    body = {"message": message, "branch": GITHUB_BRANCH,
-            "content": base64.b64encode(text.encode("utf-8")).decode()}
-    if sha:
-        body["sha"] = sha
-    return _api(path, token, "PUT", body)["content"]["sha"][:7]
+    """공용 발행기에 맡긴다 — 동시 커밋으로 sha 가 어긋나면 다시 읽어 재시도한다."""
+    import github_pages
+    return github_pages.publish(path, text, token, message)
 
 
 def main():

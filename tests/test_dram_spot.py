@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 """D램 현물가: DRAMeXchange 첫 페이지 스냅샷을 매일 누적한다."""
+import contextlib
+import io
 import sys
 import tempfile
 import unittest
@@ -407,6 +409,98 @@ class CustomsYearLimitTests(unittest.TestCase):
         self.assertIn("month_windows(start, end, span)", source)
         earnings = (Path(mu.__file__).resolve().parent / "tools" / "build_earnings_forecast.py").read_text(encoding="utf-8")
         self.assertIn("fetch_customs_exports(", earnings)
+
+
+class RefreshCustomsToolTests(unittest.TestCase):
+    """tools/refresh_customs_cache.py — Colab/로컬에서 관세청만 따로 받아 보관본을 갱신한다.
+
+    실제 API 를 부르지 않는다. 도구가 키·토큰이 없을 때 무엇을 하는지, 받은 값을 올리는지만 본다.
+    """
+
+    def setUp(self):
+        sys.path.insert(0, str(ROOT / "tools"))
+        import refresh_customs_cache as rc
+        self.rc = rc
+        self.saved = (rc.data_go_kr_key, rc.fetch_customs_exports, rc.github_token,
+                      rc.read_public, rc.github_pages.publish)
+        rc.read_public = lambda path: None          # 저장소 조회는 하지 않는다
+        self.published = []
+        rc.github_pages.publish = lambda path, text, tok, msg: self.published.append((path, text, msg)) or "abc1234"
+
+    def tearDown(self):
+        (self.rc.data_go_kr_key, self.rc.fetch_customs_exports, self.rc.github_token,
+         self.rc.read_public, self.rc.github_pages.publish) = self.saved
+
+    long_key = "Zr1k" + "aB3%2Bx9" * 12 + "D%3D"      # 실제 키와 비슷한 길이
+
+    def fake_fetch(self, start, end, key, **kw):
+        months = pd.period_range(pd.Timestamp(start), pd.Timestamp(end), freq="M")
+        return pd.DataFrame({"month": [m.to_timestamp() for m in months],
+                             "value": [1.1e10] * len(months)})
+
+    def test_missing_key_explains_instead_of_crashing(self):
+        self.rc.data_go_kr_key = lambda: None
+        with contextlib.redirect_stdout(io.StringIO()) as out:
+            code = self.rc.main([])
+        self.assertEqual(code, 1)
+        self.assertIn("DATA_GO_KR_KEY 가 없습니다", out.getvalue())
+        self.assertEqual(self.published, [], "키도 없는데 무언가 올렸다")
+
+    def test_plain_run_fetches_but_never_publishes(self):
+        self.rc.data_go_kr_key = lambda: self.long_key
+        self.rc.fetch_customs_exports = self.fake_fetch
+        with contextlib.redirect_stdout(io.StringIO()) as out:
+            code = self.rc.main(["--months", "24"])
+        self.assertEqual(code, 0)
+        self.assertEqual(self.published, [], "--publish 없이 보관본을 덮어썼다")
+        text = out.getvalue()
+        self.assertIn("수신 성공", text)
+        self.assertIn("억 달러", text)
+        # 지문은 앞뒤 4자만 보여 준다(의도된 동작). 키 전체가 찍히면 안 된다.
+        self.assertNotIn(self.long_key, text, "인증키가 통째로 화면에 찍혔다")
+        self.assertIn("len=", text, "어느 키가 쓰였는지 지문이 없다")
+
+    def test_publish_without_a_token_stops_and_says_why(self):
+        self.rc.data_go_kr_key = lambda: self.long_key
+        self.rc.fetch_customs_exports = self.fake_fetch
+        self.rc.github_token = lambda: None
+        with contextlib.redirect_stdout(io.StringIO()) as out:
+            code = self.rc.main(["--publish"])
+        self.assertEqual(code, 1)
+        self.assertIn("GITHUB_TOKEN", out.getvalue())
+        self.assertEqual(self.published, [])
+
+    def test_publish_writes_the_cache_path(self):
+        self.rc.data_go_kr_key = lambda: self.long_key
+        self.rc.fetch_customs_exports = self.fake_fetch
+        self.rc.github_token = lambda: "tok"
+        with contextlib.redirect_stdout(io.StringIO()):
+            code = self.rc.main(["--publish", "--start", "2025-01"])
+        self.assertEqual(code, 0)
+        self.assertEqual(len(self.published), 1)
+        path, text, _ = self.published[0]
+        self.assertEqual(path, "macro_history/customs_exports.csv")
+        self.assertIn("month,value", text.splitlines()[0])
+
+    def test_failure_returns_nonzero_and_points_at_the_real_cause(self):
+        self.rc.data_go_kr_key = lambda: self.long_key
+
+        def boom(*a, **k):
+            raise RuntimeError("관세청 조회 실패(HS 8541, 202501~202512, key=encoded len=102 ab…cd) — "
+                               "as_is 키: CustomsRejected 관세청 API 오류 99: ...")
+        self.rc.fetch_customs_exports = boom
+        with contextlib.redirect_stdout(io.StringIO()) as out:
+            code = self.rc.main([])
+        self.assertEqual(code, 1)
+        text = out.getvalue()
+        self.assertIn("실패", text)
+        self.assertIn("연결·인증키 문제가 아닙니다", text)
+
+    def test_colab_note_warns_against_a_subprocess(self):
+        source = (ROOT / "tools" / "refresh_customs_cache.py").read_text(encoding="utf-8")
+        # userdata 는 하위 프로세스에서 읽히지 않는다. 이것을 모르면 "키가 없다"만 보고 헤맨다.
+        self.assertIn("하위 프로세스로 돌리면", source)
+        self.assertIn("rc.main(", source)
 
 
 class CustomsFailureMessageTests(unittest.TestCase):

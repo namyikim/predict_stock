@@ -33,9 +33,34 @@ Yahoo Finance는 연구·교육용 편의 데이터입니다. 원본 응답은 �
 
 공공데이터포털의 관세청 품목별 수출입실적에서 HS 8541·8542 수출액을 받아 KOSIS에 아직 없는 월만 채웁니다. 겹치는 달의 금액 배율 중앙값이 1에서 ±15%를 벗어나면 품목 정의나 단위가 다른 것으로 보고 사용하지 않습니다. 키 이름은 `DATA_GO_KR_KEY`입니다.
 
-**해외 IP에서는 받을 수 없습니다.** data.go.kr은 연결을 끊는 대신 `SERVICE_KEY_IS_NOT_REGISTERED`("등록되지 않은 서비스키")로 응답합니다. 2026-09-11에 같은 인증키로 한국에서 호출하니 `resultCode 00`이 나와 확인했습니다 — 키나 활용신청 문제가 아니라 IP 문제입니다. GitHub Actions는 미국에서 돌기 때문에 이 실패는 정상이며, 보관본(`macro_history/customs_exports.csv`)을 사용합니다.
+**조회 기간은 한 번에 1년 이내입니다.** 넘기면 서버가 `resultCode 99`("시작과 종료의 조회기간은 1년이내 기간만 가능합니다")로 거부합니다. `fetch_customs_exports`가 기간을 12개월 창으로 나눠 여러 번 부르고 이어 붙입니다. 2026-09-12에 30개월을 한 번에 요청해 관세청 계열이 통째로 꺼져 있었고, 그 실패가 "해외 IP 차단"으로 잘못 기록돼 있었습니다.
 
-보관본 갱신은 **한국에서 Colab 전체 실행**이 맡습니다. 그 실행이 관세청을 직접 받아 저장소에 올리고, 받지 못하면 기존 보관본을 덮어쓰지 않습니다. 실패 메시지에는 키 지문(인코딩 여부·길이·앞뒤 4자)을 함께 남겨, Secrets의 키가 포털의 것과 같은지 값 노출 없이 대조할 수 있습니다.
+**실패 메시지를 먼저 읽으세요.** `관세청 API 오류 <코드>`가 보이면 서버가 XML로 답한 것이므로 연결도 인증키도 통과한 것입니다 — IP 차단이 아니라 요청 조건 문제입니다. 반면 `SERVICE_KEY_IS_NOT_REGISTERED`나 타임아웃은 해외 IP 차단일 수 있습니다(2026-09-11 Actions에서 확인. 다만 2026-09-12에는 같은 Actions에서 키가 받아들여졌으므로 항상 막히는 것은 아닙니다). 실패 메시지에는 키 지문(인코딩 여부·길이·앞뒤 4자)과 실패한 창(`202403~202502`)을 함께 남겨, 값 노출 없이 원인을 좁힐 수 있습니다.
+
+보관본(`macro_history/customs_exports.csv`) 갱신은 **한국에서 Colab 전체 실행**이 맡습니다. 그 실행이 관세청을 직접 받아 저장소에 올리고, 받지 못하면 기존 보관본을 덮어쓰지 않습니다.
+
+### 관세청만 따로 받기
+
+노트북 전체 실행(수십 분) 없이 이 자료만 확인하거나 보관본을 갱신할 때는 [`tools/refresh_customs_cache.py`](../tools/refresh_customs_cache.py)를 씁니다.
+
+Colab에서는 **한 셀**로 끝납니다. 보안 비밀에 `DATA_GO_KR_KEY`(그리고 갱신하려면 `GITHUB_TOKEN`)를 넣고 노트북 접근을 켠 뒤:
+
+```python
+!git clone -q https://github.com/namyikim/predict_stock.git /content/predict_stock 2>/dev/null || git -C /content/predict_stock pull -q
+import sys; sys.path.insert(0, '/content/predict_stock/tools')
+import refresh_customs_cache as rc
+rc.main(['--publish'])          # 확인만 하려면 rc.main([])
+```
+
+`!python tools/refresh_customs_cache.py`처럼 **하위 프로세스로 돌리면 안 됩니다** — `google.colab.userdata`는 같은 프로세스에서만 읽히므로 인증키를 찾지 못합니다.
+
+로컬(한국)에서도 같은 도구를 쓸 수 있습니다.
+
+```bash
+DATA_GO_KR_KEY='<포털의 인코딩 인증키>' python tools/refresh_customs_cache.py
+```
+
+받은 값은 KOSIS 확정치와 배율을 대조해 같은 계열인지 확인한 뒤 보여 주고, `--publish`를 붙였을 때만 보관본을 덮어씁니다.
 
 `macro_inputs/exports_flash.csv`에 `month,days,semiconductor_yoy`를 넣으면 1~10일 또는 1~20일 속보로 해당 월을 잠정 추정할 수 있습니다. 월 확정치가 들어오면 속보 값은 자동으로 무시됩니다.
 

@@ -43,6 +43,27 @@ class ScheduleTests(unittest.TestCase):
         # 덮어쓰지 않은 날짜는 표 그대로다.
         self.assertEqual(uc.us_events_on("2026-09-10", root), ["PPI"])
 
+    def test_two_releases_on_one_day_both_survive(self):
+        """dict 로 두면 뒤에 적은 것이 앞의 것을 덮어쓴다. 실제로 겹치는 날이 있다."""
+        self.assertEqual(set(uc.us_events_on("2026-03-18")), {"PPI", "FOMC"})
+        self.assertEqual(set(uc.us_events_on("2026-09-30")), {"MU", "PCE"})
+        flags = uc.korea_event_flags("2026-03-19")
+        self.assertIn("미국지표:미국 생산자물가(PPI)", flags)
+        self.assertIn("미국지표:FOMC 금리 결정", flags)
+
+    def test_fomc_covers_the_whole_year_not_just_one_meeting(self):
+        """연중 8회다. 한 회차만 넣어 두면 나머지 이벤트일이 평일로 채점된다."""
+        fomc = [d for d, e in uc.US_RELEASES if e == "FOMC"]
+        self.assertEqual(len(fomc), 8)
+        self.assertEqual(fomc, sorted(fomc))
+        for day in ("2026-01-28", "2026-06-17", "2026-12-09"):
+            self.assertIn("FOMC", uc.us_events_on(day))
+
+    def test_payrolls_and_pce_are_flagged(self):
+        self.assertEqual(uc.us_events_on("2026-09-04"), ["NFP"])
+        self.assertIn("미국지표:미국 고용보고서(비농업)", uc.korea_event_flags("2026-09-07"))  # 금요일 → 월요일
+        self.assertIn("PCE", uc.us_events_on("2026-10-29"))
+
     def test_upcoming_lists_the_next_releases(self):
         upcoming = uc.upcoming_us_events("2026-09-09", days=10)
         self.assertEqual([e["event"] for e in upcoming], ["PPI", "CPI", "FOMC"])
@@ -146,7 +167,8 @@ class SemiconductorEarningsTests(unittest.TestCase):
     """실적 발표일은 회사 공식 공지만 넣는다. 제3자 추정은 출처끼리도 어긋난다."""
 
     def test_only_confirmed_dates_are_in_the_table(self):
-        self.assertEqual(uc.us_events_on("2026-09-30"), ["MU"])          # 회사 보도자료로 확정
+        # 09-30 은 마이크론 실적과 PCE 가 같은 날이다. 둘 다 남아야 한다.
+        self.assertEqual(set(uc.us_events_on("2026-09-30")), {"MU", "PCE"})
         semis = {"MU", "NVDA", "TSM", "AMD"}
         for guess in ("2026-10-15", "2026-11-17", "2026-11-25"):        # 추정치들 — 넣지 않는다
             self.assertFalse(semis & set(uc.us_events_on(guess)), guess)

@@ -39,48 +39,7 @@ Yahoo Finance는 연구·교육용 편의 데이터입니다. 원본 응답은 �
 
 보관본(`macro_history/customs_exports.csv`) 갱신은 **한국에서 Colab 전체 실행**이 맡습니다. 그 실행이 관세청을 직접 받아 저장소에 올리고, 받지 못하면 기존 보관본을 덮어쓰지 않습니다.
 
-### 관세청만 따로 받기
-
-노트북 전체 실행(수십 분) 없이 이 자료만 확인하거나 보관본을 갱신할 때는 노트북의 **0.5절 점검 셀**을 씁니다.
-
-1. Colab에서 노트북을 엽니다.
-2. 보안 비밀(왼쪽 열쇠 아이콘)에 `DATA_GO_KR_KEY`를 넣고 **노트북 액세스**를 켭니다. 보관본까지 갱신하려면 `GITHUB_TOKEN`도 같이 켭니다.
-3. 맨 위부터 **0.5절 바로 앞까지**(설정·설치·헬퍼 8개 셀)를 실행합니다.
-4. 0.5절 셀을 실행합니다.
-
-기본값은 최근 13개월을 받아 확인만 합니다(호출 4건, 몇 초). 보관본을 갱신하려면 셀 맨 위 두 줄을 바꿉니다.
-
-```python
-CUSTOMS_CHECK_MONTHS = 36       # 보관본 용도
-CUSTOMS_CHECK_PUBLISH = True    # macro_history/customs_exports.csv 덮어쓰기
-```
-
-받은 값은 KOSIS 확정치와 배율을 대조해 같은 계열인지 확인한 뒤 보여 주고, 인증키는 지문(길이·앞뒤 4자)으로만 찍습니다. 실패하면 `관세청 API 오류`인지 `SERVICE_KEY_IS_NOT_REGISTERED`·타임아웃인지에 따라 원인을 나눠 알려 줍니다.
-
-전체 실행을 하면 11절이 같은 자료를 받아 보관본을 갱신하므로, 월 1회 전체 실행을 하는 경우에는 이 셀을 따로 쓸 필요가 없습니다.
-
-## 관세청만 따로 받기
-
-노트북 전체 실행(수십 분) 없이 이 자료만 확인하거나 보관본을 갱신할 때는 [`tools/refresh_customs_cache.py`](../tools/refresh_customs_cache.py)를 씁니다.
-
-Colab에서는 **한 셀**로 끝납니다. 보안 비밀에 `DATA_GO_KR_KEY`(그리고 갱신하려면 `GITHUB_TOKEN`)를 넣고 노트북 접근을 켠 뒤:
-
-```python
-!git clone -q https://github.com/namyikim/predict_stock.git /content/predict_stock 2>/dev/null || git -C /content/predict_stock pull -q
-import sys; sys.path.insert(0, '/content/predict_stock/tools')
-import refresh_customs_cache as rc
-rc.main(['--publish'])          # 확인만 하려면 rc.main([])
-```
-
-`!python tools/refresh_customs_cache.py`처럼 **하위 프로세스로 돌리면 안 됩니다** — `google.colab.userdata`는 같은 프로세스에서만 읽히므로 인증키를 찾지 못합니다.
-
-로컬(한국)에서도 같은 도구를 쓸 수 있습니다.
-
-```bash
-DATA_GO_KR_KEY='<포털의 인코딩 인증키>' python tools/refresh_customs_cache.py
-```
-
-받은 값은 KOSIS 확정치와 배율을 대조해 같은 계열인지 확인한 뒤 보여 주고, `--publish`를 붙였을 때만 보관본을 덮어씁니다.
+**현재 이 계열은 쓰이지 않습니다.** 2026-09-12 한국에서 직접 받아 대조한 결과, HS 8541+8542 합계가 KOSIS 반도체 수출의 **0.76~0.86배**(겹치는 11개월, 중앙값 0.807)로 나왔습니다. 검증 기준(±15%)을 벗어나므로 `reconcile_customs`가 거부합니다. 두 계열이 같이 움직이기는 하지만 품목 범위가 다릅니다 — KOSIS의 "반도체"가 HS 8541·8542보다 넓습니다. 그대로 쓰면 KOSIS가 아직 없는 달에 20% 낮은 값이 들어가 계열에 단차가 생기므로, 거부가 맞는 동작입니다. 쓰려면 빠진 HS 코드를 찾아 범위를 맞추거나, 과거 배율로 KOSIS 기준으로 환산한 뒤 합쳐야 합니다.
 
 `macro_inputs/exports_flash.csv`에 `month,days,semiconductor_yoy`를 넣으면 1~10일 또는 1~20일 속보로 해당 월을 잠정 추정할 수 있습니다. 월 확정치가 들어오면 속보 값은 자동으로 무시됩니다.
 

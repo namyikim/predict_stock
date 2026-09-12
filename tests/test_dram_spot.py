@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 """D램 현물가: DRAMeXchange 첫 페이지 스냅샷을 매일 누적한다."""
-import contextlib
-import io
 import sys
 import tempfile
 import unittest
@@ -409,102 +407,6 @@ class CustomsYearLimitTests(unittest.TestCase):
         self.assertIn("month_windows(start, end, span)", source)
         earnings = (Path(mu.__file__).resolve().parent / "tools" / "build_earnings_forecast.py").read_text(encoding="utf-8")
         self.assertIn("fetch_customs_exports(", earnings)
-
-
-class CustomsCheckCellTests(unittest.TestCase):
-    """노트북 0.5절 점검 셀 — 전체 실행 없이 관세청만 받아 본다.
-
-    실제 API 는 부르지 않는다. 셀이 준비된 이름만으로 돌아가는지, 키가 없을 때 무엇을 알려 주는지,
-    허락 없이 보관본을 덮어쓰지 않는지를 본다. Colab 에서 처음 눌렀을 때 NameError 로 죽지 않게
-    하는 것이 이 테스트의 목적이다.
-    """
-
-    long_key = "Zr1k" + "aB3%2Bx9" * 12 + "D%3D"      # 실제 키와 비슷한 길이. 값은 출력되면 안 된다.
-
-    @classmethod
-    def setUpClass(cls):
-        import json as _json
-        nb = _json.loads((ROOT / "samsung_direction_model_colab.ipynb").read_text(encoding="utf-8"))
-        cells = [c for c in nb["cells"] if "customs_check" in (c.get("metadata", {}).get("tags") or [])]
-        assert len(cells) == 1, f"customs_check 셀이 {len(cells)}개"
-        cls.code = "".join(cells[0]["source"])
-        cls.position = nb["cells"].index(cells[0])
-        cls.tail = [c for c in nb["cells"][cls.position + 1:]
-                    if "== transformer-experiment ==" in "".join(c["source"])]
-
-    def namespace(self, key=None, fetch=None, token=None, target="samsung"):
-        """셀이 기대하는 이름만 담은 네임스페이스. 실제 노트북이 이 시점에 갖는 것과 같다."""
-        import json as _json
-        from data_sources import exports as ex
-
-        def fake_fetch(start, end, k, **kw):
-            months = pd.period_range(pd.Timestamp(start), pd.Timestamp(end), freq="M")
-            return pd.DataFrame({"month": [m.to_timestamp() for m in months],
-                                 "value": [1.1e10] * len(months)})
-        self.published = []
-
-        def github_get(path, tok):
-            return None, None
-        return {
-            "TARGET": target, "RUN_TARGETS": ["samsung", "sk_hynix"], "pd": pd, "json": _json,
-            "data_go_kr_key": (lambda: key), "fetch_customs_exports": fetch or fake_fetch,
-            "month_windows": ex.month_windows, "CUSTOMS_HS": ex.CUSTOMS_HS,
-            "key_fingerprint": ex.key_fingerprint, "reconcile_customs": ex.reconcile_customs,
-            "github_token": (lambda: token), "github_get": github_get,
-            "GITHUB_REPO": "namyikim/predict_stock", "GITHUB_BRANCH": "main",
-            "GITHUB_MACRO_DIR": "macro_history",
-        }
-
-    def run_cell(self, **kw):
-        ns = self.namespace(**kw)
-        with contextlib.redirect_stdout(io.StringIO()) as out:
-            exec(compile(self.code, "<customs_check>", "exec"), ns)
-        return out.getvalue(), ns
-
-    def test_cell_runs_with_only_the_names_available_at_that_point(self):
-        """셀 위치(헬퍼 직후)에서 정의돼 있는 이름만으로 끝까지 돈다 — NameError 가 나면 안 된다."""
-        text, ns = self.run_cell(key=self.long_key)
-        self.assertIn("수신 성공", text)
-        self.assertIn("억 달러", text)
-        self.assertIn("12개월 창", text, "1년 한도 분할을 보여 주지 않는다")
-
-    def test_missing_key_tells_the_user_where_to_put_it(self):
-        text, _ = self.run_cell(key=None)
-        self.assertIn("DATA_GO_KR_KEY 가 없습니다", text)
-        self.assertIn("노트북 액세스", text)
-
-    def test_key_is_never_printed_in_full(self):
-        text, _ = self.run_cell(key=self.long_key)
-        self.assertNotIn(self.long_key, text, "인증키가 통째로 찍혔다")
-        self.assertIn("len=", text, "어느 키를 썼는지 지문이 없다")
-
-    def test_nothing_is_published_without_the_switch(self):
-        text, _ = self.run_cell(key=self.long_key, token="tok")
-        self.assertIn("보관본은 그대로", text)
-        self.assertNotIn("보관본 갱신 macro_history", text)
-
-    def test_second_target_skips_so_the_replay_does_not_refetch(self):
-        """셀 45 의 재실행은 TARGET 만 바꿔 같은 셀들을 다시 돌린다. 두 번 받을 이유가 없다."""
-        text, _ = self.run_cell(key=self.long_key, target="sk_hynix")
-        self.assertIn("첫 종목에서만", text)
-        self.assertNotIn("수신 성공", text)
-
-    def test_failure_separates_a_server_answer_from_a_blocked_ip(self):
-        def rejected(*a, **k):
-            raise RuntimeError("관세청 조회 실패(HS 8541, 202509~202609, key=encoded len=102 ab…cd) — "
-                               "as_is 키: CustomsRejected 관세청 API 오류 99: 조회기간은 1년이내")
-        text, _ = self.run_cell(key=self.long_key, fetch=rejected)
-        self.assertIn("실패", text)
-        self.assertIn("IP 차단이 아니라", text)
-        self.assertIn("SERVICE_KEY_IS_NOT_REGISTERED", text, "차단일 때의 판별법도 함께 적어야 한다")
-
-    def test_cell_sits_before_the_pipeline_and_after_the_helpers(self):
-        import json as _json
-        nb = _json.loads((ROOT / "samsung_direction_model_colab.ipynb").read_text(encoding="utf-8"))
-        helper = max(i for i, c in enumerate(nb["cells"])
-                     if set(c.get("metadata", {}).get("tags") or []) & {"macro_utils", "forecast_utils", "report_html"})
-        self.assertGreater(self.position, helper, "헬퍼보다 앞에 있으면 함수가 없어 죽는다")
-        self.assertTrue(self.tail, "셀 45 재실행 구간(transformer 표식)보다 뒤에 있으면 안 된다")
 
 
 class CustomsFailureMessageTests(unittest.TestCase):

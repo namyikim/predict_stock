@@ -140,10 +140,20 @@ class ChoiceTests(unittest.TestCase):
         self.assertEqual(model, "ar")
         self.assertIn("var", reason)
 
-    def test_the_ladder_does_not_skip_a_rung_that_loses(self):
-        """drift 가 rw 를 못 이기면 ar 이 아무리 좋아도 올라가지 않는다 — 순위가 아니라 사다리다."""
+    def test_a_losing_rung_does_not_block_the_ones_above_it(self):
+        """drift 와 ar 은 복잡도 사슬이 아니라 모양이 다른 모형이다.
+
+        증가율처럼 정상인 계열에서는 drift 가 크게 지는 것이 정상인데, 그것이 ar 을 막으면
+        아무것도 못 쓰게 된다. 대신 올라가려면 '지금 쓰는 것'을 이겨야 한다.
+        """
         rows = [{"horizon": 1, "model": "drift", "vs_rw_hi": +0.02},
                 {"horizon": 1, "model": "ar", "vs_rw_hi": -0.09, "vs_drift_hi": -0.08}]
+        self.assertEqual(cf.choose_model(pd.DataFrame(rows), 1)[0], "ar")
+
+    def test_a_candidate_must_beat_what_is_currently_chosen(self):
+        """순위로 고르지 않는다. ar 이 rw 보다 조금 나아도 유의하지 않으면 올리지 않는다."""
+        rows = [{"horizon": 1, "model": "drift", "vs_rw_hi": +0.02},
+                {"horizon": 1, "model": "ar", "vs_rw_hi": +0.001, "vs_drift_hi": -0.08}]
         self.assertEqual(cf.choose_model(pd.DataFrame(rows), 1)[0], "rw")
 
 
@@ -188,6 +198,34 @@ class ForecastNowTests(unittest.TestCase):
         self.assertIn("var", ahead.columns)
 
 
+class LeadLagTests(unittest.TestCase):
+    """수준끼리 견주면 둘 다 우상향이라 상관이 높게 나온다 — 그것은 예측력의 근거가 아니다."""
+
+    def test_a_known_lead_is_recovered(self):
+        rng = np.random.default_rng(5)
+        cycle = np.sin(np.arange(300) / 9.0) + rng.normal(0, 0.05, 300)
+        index = pd.date_range("2000-01-01", periods=300, freq="MS")
+        # 지수의 3개월 변화가 상대보다 6개월 앞서도록 만든다.
+        level = pd.Series(np.cumsum(cycle) / 3 + 100, index=index)
+        other = pd.Series(np.roll(level.diff(3).to_numpy(), 6), index=index)
+        lag, corr = cf.lead_lag(level, other)
+        self.assertEqual(lag, 6)
+        self.assertGreater(corr, 0.9)
+
+    def test_unrelated_series_give_a_small_correlation(self):
+        rng = np.random.default_rng(6)
+        index = pd.date_range("2000-01-01", periods=300, freq="MS")
+        a = pd.Series(100 + np.cumsum(rng.normal(0, 0.3, 300)), index=index)
+        b = pd.Series(rng.normal(0, 1, 300), index=index)
+        lag, corr = cf.lead_lag(a, b)
+        self.assertLess(abs(corr), 0.35)
+
+    def test_too_little_overlap_returns_nothing(self):
+        index = pd.date_range("2024-01-01", periods=20, freq="MS")
+        a = pd.Series(np.arange(20.0), index=index)
+        self.assertIsNone(cf.lead_lag(a, a))
+
+
 class ChartTests(unittest.TestCase):
     def test_the_chart_separates_confirmed_from_forecast(self):
         series = monthly(np.linspace(100.0, 100.5, 60))
@@ -213,6 +251,27 @@ class ChartTests(unittest.TestCase):
         svg = cf.forecast_svg(series, ahead)
         self.assertEqual(svg.count("font-weight=\"600\" fill=\"#c8952a\""), len(cf.LABEL_HORIZONS))
         self.assertEqual(svg.count("<circle"), len(ahead))
+
+    def test_the_hundred_baseline_is_drawn_and_labelled(self):
+        """이 지수는 100 이 기준이다. 위는 확장, 아래는 수축이라 눈금 하나로 묻히면 안 된다."""
+        series = monthly(100 + 2.5 * np.sin(np.arange(200) / 11.0))
+        table = cf.walk_forward(series, [], min_train=150, lags=2)
+        svg = cf.forecast_svg(series, cf.forecast_now(series, table, cf.evaluate(table)))
+        self.assertIn('font-weight="700"', svg, "100 은 다른 눈금보다 굵게 적어야 한다")
+        self.assertIn(">100</text>", svg)
+
+    def test_the_baseline_is_skipped_when_it_is_off_the_chart(self):
+        series = monthly(np.linspace(120.0, 125.0, 200))
+        table = cf.walk_forward(series, [], min_train=150, lags=2)
+        svg = cf.forecast_svg(series, cf.forecast_now(series, table, cf.evaluate(table)))
+        self.assertNotIn(">100</text>", svg, "범위 밖 기준선을 그리면 축이 거짓이 된다")
+
+    def test_the_overlay_note_is_shown_when_given(self):
+        series = monthly(100 + 2.5 * np.sin(np.arange(200) / 11.0))
+        table = cf.walk_forward(series, [], min_train=150, lags=2)
+        ahead = cf.forecast_now(series, table, cf.evaluate(table))
+        svg = cf.forecast_svg(series, ahead, overlay_note="둘의 상관 +0.43")
+        self.assertIn("둘의 상관 +0.43", svg)
 
     def test_the_chart_is_valid_xml(self):
         import xml.etree.ElementTree as ET

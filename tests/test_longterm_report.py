@@ -282,6 +282,48 @@ class FallbackFetchTests(unittest.TestCase):
         self.assertIn("except Exception:\n            continue", source)
 
 
+class RejectedSectionTests(unittest.TestCase):
+    """낫지 않다고 판정한 것은 표 대신 한 줄로 줄인다.
+
+    지우지는 않는다 — 지우면 '해 보지도 않았다'와 구별되지 않고 같은 것을 다시 제안하게 된다.
+    """
+
+    def result(self, cli_better, cycle_better):
+        def block(better):
+            return {str(h): {"mae_with": 0.10 - (0.01 if better else -0.01), "mae_without": 0.10}
+                    for h in lt.HORIZONS.values()}
+        return {"cli_active": True, "cycle_active": True,
+                "cli_ablation": block(cli_better), "cycle_ablation": block(cycle_better),
+                "cycle_components": ["exports_daily_yoy"]}
+
+    def test_a_losing_ablation_is_one_line_not_a_table(self):
+        html = "".join(lt.render_rejected(self.result(False, False)))
+        self.assertIn("재 보고 쓰지 않기로 한 것", html)
+        self.assertIn("낫지 않았습니다", html)
+        self.assertNotIn("<table", html, "판정이 '낫지 않다'인데 표를 그리면 안 된다")
+
+    def test_the_numbers_are_still_reachable(self):
+        html = "".join(lt.render_rejected(self.result(False, False)))
+        self.assertIn("cli_ablation", html)
+        self.assertIn("cycle_ablation", html)
+
+    def test_the_verdict_counts_how_many_horizons_improved(self):
+        verdict = lt.ablation_verdict(self.result(True, True)["cli_ablation"], lt.HORIZONS)
+        self.assertEqual(verdict["better"], verdict["n"])
+        self.assertIn("나았습니다", verdict["summary"])
+        verdict = lt.ablation_verdict(self.result(False, False)["cli_ablation"], lt.HORIZONS)
+        self.assertEqual(verdict["better"], 0)
+
+    def test_nothing_is_drawn_when_there_is_nothing_to_say(self):
+        self.assertEqual(lt.render_rejected({"cli_active": False, "cycle_active": False}), [])
+
+    def test_a_missing_source_is_named_rather_than_hidden(self):
+        html = "".join(lt.render_rejected(
+            {"cli_active": False, "cycle_active": False,
+             "cli_info": {"reason": "OECD 조회 실패"}}))
+        self.assertIn("OECD 조회 실패", html)
+
+
 class CliOutlookSectionTests(unittest.TestCase):
     """선행지수 전망 절(R09). 보고서를 멈추지 않는 것과, 숫자를 한계와 함께 내는 것이 요점이다."""
 

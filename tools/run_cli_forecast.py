@@ -101,8 +101,24 @@ def _ols(design, target):
     return beta
 
 
-def forecast_ar(history, horizon, lags):
-    """ARIMA(lags,1,0). 차분에 AR 을 얹고 재귀로 horizon 개월 앞까지 민다."""
+def forecast_ar(history, horizon, lags, difference=True):
+    """ARIMA(lags,1,0). 차분에 AR 을 얹고 재귀로 horizon 개월 앞까지 민다.
+
+    difference=False 면 **수준에 직접** AR 을 얹는다(AR(lags)). 증가율처럼 이미 정상인 계열을
+    또 차분하면 과차분이 되어 전망이 마지막 값에 붙어 버린다 — 선행지수와 증가율은 성질이 다르다.
+    """
+    if not difference:
+        x = np.asarray(history, dtype=float)
+        if len(x) < lags + 24:
+            return None
+        rows = np.column_stack([x[lags - 1 - i:len(x) - 1 - i] for i in range(lags)])
+        beta = _ols(rows, x[lags:])
+        if beta is None:
+            return None
+        recent = list(x[-lags:])
+        for _ in range(horizon):
+            recent.append(beta[0] + sum(beta[1 + i] * recent[-1 - i] for i in range(lags)))
+        return float(recent[-1])
     d = np.diff(np.asarray(history, dtype=float))
     if len(d) < lags + 12:
         return None
@@ -145,7 +161,8 @@ def forecast_var(histories, horizon, lags):
     return level
 
 
-def walk_forward(series, partners, horizons=HORIZONS, min_train=MIN_TRAIN, lags=2):
+def walk_forward(series, partners, horizons=HORIZONS, min_train=MIN_TRAIN, lags=2,
+                 difference=True):
     """확장 창. 시점 t 까지만 보고 t+h 를 맞힌다. 기준선 둘을 같은 자리에서 함께 낸다."""
     values = series.to_numpy(dtype=float)
     rows = []
@@ -157,7 +174,7 @@ def walk_forward(series, partners, horizons=HORIZONS, min_train=MIN_TRAIN, lags=
             truth = float(values[end - 1 + horizon])
             rw = float(history[-1])
             drift = float(history[-1] + (history[-1] - history[-2]) * horizon)
-            ar = forecast_ar(history, horizon, lags)
+            ar = forecast_ar(history, horizon, lags, difference)
             var = forecast_var([series.iloc[:end]] + [p.iloc[:end] for p in partners],
                                horizon, lags) if partners else None
             rows.append({"asof": series.index[end - 1], "horizon": horizon, "actual": truth,
@@ -222,15 +239,18 @@ def choose_model(scores, horizon, ladder=LADDER):
         part = scores[(scores["horizon"] == horizon) & (scores["model"] == nxt)]
         key = f"vs_{current}_hi"
         if part.empty or key not in part.columns or pd.isna(part.iloc[0][key]):
-            break                       # 견줄 수 없으면 올리지 않는다
+            continue                    # 견줄 수 없는 칸은 건너뛴다(멈추지는 않는다)
         if part.iloc[0][key] >= 0:
+            # 한 칸이 졌다고 멈추면 안 된다. drift 와 ar 은 복잡도 사슬이 아니라 모양이 다른
+            # 모형이라, 정상 계열에서 drift 가 크게 지는 것이 ar 을 막을 이유가 없다.
+            # 대신 올라가려면 **지금 쓰는 것**을 유의하게 이겨야 한다 — 순위로 고르는 것이 아니다.
             reason = f"{nxt} 가 {current} 를 이기지 못했다"
-            break
+            continue
         current, reason = nxt, f"{nxt} 가 {current} 를 유의하게 이겼다"
     return current, reason
 
 
-def forecast_now(series, table, scores, horizons=HORIZONS, partners=(), lags=2):
+def forecast_now(series, table, scores, horizons=HORIZONS, partners=(), lags=2, difference=True):
     """마지막 값 기준으로 앞으로 몇 달을 낸다. 구간은 워크포워드 오차의 실제 분위다.
 
     이론 분포를 가정하지 않는다. 그 지평에서 그 모형이 실제로 얼마나 빗나갔는지를 그대로 쓴다.
@@ -242,7 +262,7 @@ def forecast_now(series, table, scores, horizons=HORIZONS, partners=(), lags=2):
         if model == "drift":
             point = float(values[-1] + (values[-1] - values[-2]) * horizon)
         elif model == "ar":
-            point = forecast_ar(values, horizon, lags)
+            point = forecast_ar(values, horizon, lags, difference)
         elif model == "var":
             point = forecast_var([series] + list(partners), horizon, lags)
         else:
@@ -253,7 +273,7 @@ def forecast_now(series, table, scores, horizons=HORIZONS, partners=(), lags=2):
         errors = (part[model] - part["actual"]).dropna().to_numpy(dtype=float)
         lo, hi = (np.quantile(errors, [0.10, 0.90]) if len(errors) >= 20 else (np.nan, np.nan))
         alternatives = {}
-        for name, fn in (("ar", lambda: forecast_ar(values, horizon, lags)),
+        for name, fn in (("ar", lambda: forecast_ar(values, horizon, lags, difference)),
                          ("var", lambda: forecast_var([series] + list(partners), horizon, lags))):
             try:
                 alternatives[name] = fn()
@@ -268,8 +288,31 @@ def forecast_now(series, table, scores, horizons=HORIZONS, partners=(), lags=2):
     return pd.DataFrame(rows)
 
 
+def lead_lag(series, other, max_lag=12, change=3, min_overlap=60):
+    """선행지수의 change 개월 변화가 상대 계열을 몇 달 앞서는지. (시차, 상관) 또는 None.
+
+    수준끼리 견주면 둘 다 우상향이라 상관이 높게 나오고 그것은 예측력의 근거가 아니다.
+    그래서 지수는 변화로, 상대는 이미 증가율로 들어온 것을 쓴다.
+    """
+    a_all = series.diff(change).dropna()
+    best = None
+    for lag in range(-max_lag, max_lag + 1):
+        b_all = other.shift(-lag)
+        index = a_all.index.intersection(b_all.index)
+        a, b = a_all.loc[index], b_all.loc[index]
+        ok = a.notna() & b.notna()
+        if int(ok.sum()) < min_overlap:
+            continue
+        corr = float(np.corrcoef(a[ok], b[ok])[0, 1])
+        if best is None or abs(corr) > abs(best[1]):
+            best = (lag, corr)
+    return best
+
+
 def forecast_svg(series, ahead, months=48, width=900, height=340, overlay=None,
-                 title="경기선행지수", overlay_name="코스피", start=None):
+                 title="경기선행지수", overlay_name="코스피", start=None,
+                 overlay_fmt=lambda v: f"{v:,.0f}", overlay_note="", baseline=100.0,
+                 overlay_ahead=None, y_min=None, y_max=None):
     """최근 실적과 앞으로 몇 달을 한 그림에. 확정과 전망을 선 모양으로 구분한다.
 
     구간은 워크포워드 오차의 10~90% 분위다. 점 하나만 보여 주면 '이만큼은 맞다'로 읽히므로
@@ -290,6 +333,13 @@ def forecast_svg(series, ahead, months=48, width=900, height=340, overlay=None,
     low, high = min(values), max(values)
     pad = (high - low) * 0.18 or 0.5
     low, high = low - pad, high + pad
+    # 축을 고정하면 여러 그림을 나란히 놓고 견줄 수 있다. 자료가 축 밖으로 나가면 잘려 보이므로
+    # 넘는 쪽만 넓힌다 — 자르는 것보다 축을 어기는 편이 덜 나쁘다.
+    if y_min is not None:
+        low = min(float(y_min), min(values))
+    if y_max is not None:
+        high = max(float(y_max), max(values))
+    pad = (high - low) * 0.18 or 0.5
     left, right, top, bottom = 58, 62, 46, 52
     # 가로축이 월 단위라 15년치 옆에 6개월을 같은 축으로 두면 전망이 수십 픽셀에 몰려 글자가
     # 겹친다. **전망 구간만 가로로 확대해서** 그린다. 그림 안에 그 사실을 적는다.
@@ -322,7 +372,15 @@ def forecast_svg(series, ahead, months=48, width=900, height=340, overlay=None,
         f'<line x1="{left}" x2="{width - right}" y1="{y_of(v):.1f}" y2="{y_of(v):.1f}" '
         f'stroke="#eee"/><text x="{left - 8}" y="{y_of(v) + 4:.1f}" text-anchor="end" '
         f'font-size="11" fill="#8a9199">{v:.1f}</text>'
-        for v in np.linspace(low + pad / 2, high - pad / 2, 4))
+        for v in np.linspace(low + pad / 2, high - pad / 2, 4)
+        if baseline is None or abs(v - baseline) > (high - low) * 0.06)
+    # 이 지수는 100 이 기준이다. 100 위는 확장, 아래는 수축이므로 눈금 하나로 묻히면 안 된다.
+    if baseline is not None and low < baseline < high:
+        ticks += (f'<line x1="{left}" x2="{width - right}" y1="{y_of(baseline):.1f}" '
+                  f'y2="{y_of(baseline):.1f}" stroke="#8a9199" stroke-width="1.2" '
+                  f'stroke-dasharray="6 3"/>'
+                  f'<text x="{left - 8}" y="{y_of(baseline) + 4:.1f}" text-anchor="end" '
+                  f'font-size="11" font-weight="700" fill="#6b7178">{baseline:g}</text>')
     labels = ""
     step = max(len(points) // 6, 1)
     for i, (month, _) in enumerate(points):
@@ -344,11 +402,14 @@ def forecast_svg(series, ahead, months=48, width=900, height=340, overlay=None,
     second = ""
     if overlay is not None and len(overlay):
         months_index = {month: i for i, (month, _) in enumerate(points)}
+        future_index = {month: len(points) + i for i, (month, _, _, _) in enumerate(future)}
         pairs = [(months_index[f"{m:%Y-%m}"], float(v)) for m, v in overlay.items()
                  if f"{m:%Y-%m}" in months_index]
+        ahead_pairs = [(future_index[str(row["month"])], float(row["point"]))
+                       for row in (overlay_ahead or []) if str(row["month"]) in future_index]
         if len(pairs) > 2:
-            o_low = min(v for _, v in pairs)
-            o_high = max(v for _, v in pairs)
+            everything = [v for _, v in pairs] + [v for _, v in ahead_pairs]
+            o_low, o_high = min(everything), max(everything)
             o_pad = (o_high - o_low) * 0.18 or 1.0
             o_low, o_high = o_low - o_pad, o_high + o_pad
 
@@ -356,12 +417,27 @@ def forecast_svg(series, ahead, months=48, width=900, height=340, overlay=None,
                 return top + (height - top - bottom) * (o_high - v) / (o_high - o_low)
 
             line = " ".join(f"{x_of(i):.1f},{oy(v):.1f}" for i, v in pairs)
+            if ahead_pairs:
+                bridge = f"{x_of(pairs[-1][0]):.1f},{oy(pairs[-1][1]):.1f}"
+                line_ahead = bridge + " " + " ".join(
+                    f"{x_of(i):.1f},{oy(v):.1f}" for i, v in ahead_pairs)
+                second_future = (f'<polyline points="{line_ahead}" fill="none" stroke="#2e7d32" '
+                                 f'stroke-width="1.5" stroke-dasharray="5 4" opacity="0.9"/>')
+                for order, (i, v) in enumerate(ahead_pairs, 1):
+                    second_future += (f'<circle cx="{x_of(i):.1f}" cy="{oy(v):.1f}" r="3" '
+                                      f'fill="none" stroke="#2e7d32" stroke-width="1.4"/>')
+                    if order in LABEL_HORIZONS:
+                        second_future += (f'<text x="{x_of(i):.1f}" y="{oy(v) + 15:.1f}" '
+                                          f'text-anchor="middle" font-size="11" font-weight="600" '
+                                          f'fill="#2e7d32">{overlay_fmt(v)}</text>')
+            else:
+                second_future = ""
             right_ticks = "".join(
                 f'<text x="{width - right + 8}" y="{oy(v) + 4:.1f}" font-size="11" '
-                f'fill="#2e7d32">{v:,.0f}</text>'
+                f'fill="#2e7d32">{overlay_fmt(v)}</text>'
                 for v in np.linspace(o_low + o_pad / 2, o_high - o_pad / 2, 4))
             second = (f'<polyline points="{line}" fill="none" stroke="#2e7d32" '
-                      f'stroke-width="1.5" opacity="0.85"/>{right_ticks}')
+                      f'stroke-width="1.5" opacity="0.85"/>{second_future}{right_ticks}')
     # 범례는 한 줄 안에서 tspan 으로 이어 붙인다. x 좌표를 손으로 띄우면 글자 길이가 바뀌는 순간
     # 겹친다(2026-09-12 실제로 겹쳤다). 흐름 배치에 맡기면 겹칠 수가 없다.
     legend = (f'<text x="{left}" y="{top - 10}" font-size="11">'
@@ -382,7 +458,9 @@ def forecast_svg(series, ahead, months=48, width=900, height=340, overlay=None,
         f'<rect width="{width}" height="{height}" fill="#fff"/>'
         f'<text x="{left}" y="20" font-size="13" font-weight="600" fill="#1a1a1a">'
         f'{title} — 확정 {points[0][0]}~{points[-1][0]}, 전망 {future[0][0]}~{future[-1][0]}</text>'
-        f'{ticks}{second}{band}'
+        + (f'<text x="{width - right}" y="20" text-anchor="end" font-size="11" fill="#6b7178">'
+           f'{overlay_note}</text>' if overlay_note else "")
+        + f'{ticks}{second}{band}'
         f'<polyline points="{history}" fill="none" stroke="#4c78a8" stroke-width="1.8"/>'
         f'<polyline points="{forward}" fill="none" stroke="#c8952a" stroke-width="1.8" '
         f'stroke-dasharray="5 4"/>'
@@ -401,6 +479,11 @@ def main():
                         help="OECD 한국(기본) 또는 G20 선행지수")
     parser.add_argument("--chart-start", default="2011-01",
                         help="그림의 시작 달. 비우면 최근 48개월만 그린다")
+    parser.add_argument("--overlay", default="kospi",
+                        choices=("kospi", "exports", "exports_yoy", "none"),
+                        help="오른쪽 축에 겹칠 계열")
+    parser.add_argument("--y-min", type=float, default=None, help="왼쪽 축 아래 끝 고정")
+    parser.add_argument("--y-max", type=float, default=None, help="왼쪽 축 위 끝 고정")
     args = parser.parse_args()
     args.out.mkdir(parents=True, exist_ok=True)
 
@@ -410,8 +493,21 @@ def main():
     partners = [load_series("leading_cycle", ROOT / "macro_history" / "leading_cycle.csv"),
                 load_series("semiconductor_exports",
                             ROOT / "macro_history" / "semiconductor_exports.csv").pipe(np.log)]
-    kospi_path = ROOT / "macro_history" / "kospi_monthly.csv"
-    kospi = load_series("kospi", kospi_path) if kospi_path.exists() else None
+    overlay, overlay_name, overlay_fmt = None, "", (lambda v: f"{v:,.0f}")
+    if args.overlay == "kospi":
+        path = ROOT / "macro_history" / "kospi_monthly.csv"
+        overlay_name = "코스피"
+        overlay = load_series("kospi", path) if path.exists() else None
+    elif args.overlay in ("exports", "exports_yoy"):
+        path = ROOT / "macro_history" / "korea_exports.csv"
+        raw = load_series("korea_exports", path) if path.exists() else None
+        if args.overlay == "exports":
+            overlay_name, overlay = "한국 수출(월, 십억 달러)", raw
+            overlay_fmt = lambda v: f"{v / 1e9:,.0f}"      # noqa: E731
+        else:
+            overlay_name = "한국 수출 증가율(전년 동월 대비)"
+            overlay = (raw / raw.shift(12) - 1).dropna() if raw is not None else None
+            overlay_fmt = lambda v: f"{v * 100:+.0f}%"     # noqa: E731
 
     report = diagnose(cli)
     print(f"=== 1단계 진단 · {title} {report['first']}~{report['last']} ({report['n']}개월) ===")
@@ -454,8 +550,38 @@ def main():
         if others:
             print(f"      참고(채택 안 함): {others}")
 
+    note, overlay_ahead = "", None
+    if overlay is not None and len(overlay):
+        found = lead_lag(cli, overlay)
+        if found:
+            lag, corr = found
+            where = (f"지수가 {lag}개월 선행" if lag > 0
+                     else (f"지수가 {-lag}개월 후행" if lag < 0 else "같은 달"))
+            note = f"둘의 상관 {corr:+.2f} ({where}, 지수 3개월 변화 기준)"
+            print(f"\n{overlay_name} 와의 관계: {note}")
+        # 겹친 계열도 같은 방법으로 앞을 낸다. 하나만 미래가 있으면 비교할 수가 없다.
+        # 계열이 지수보다 늦게 끝나므로(수출은 두 달쯤 뒤처진다) 지평을 그만큼 밀어
+        # **같은 달**을 맞힌다. 밀지 않으면 두 전망이 다른 달을 가리켜 그림이 거짓말을 한다.
+        offset = ((cli.index[-1].year - overlay.index[-1].year) * 12
+                  + cli.index[-1].month - overlay.index[-1].month)
+        horizons = tuple(offset + h for h in HORIZONS)
+        # 증가율은 이미 정상 계열이다. 또 차분하면 전망이 마지막 값에 붙는다.
+        flat = args.overlay.endswith("_yoy")
+        try:
+            o_table = walk_forward(overlay, [], horizons=horizons, min_train=args.min_train,
+                                   lags=args.lags, difference=not flat)
+            o_ahead = forecast_now(overlay, o_table, evaluate(o_table), horizons=horizons,
+                                   lags=args.lags, difference=not flat)
+            overlay_ahead = o_ahead.to_dict("records")
+            print(f"{overlay_name} 전망: " + " · ".join(
+                f"{r['month']} {overlay_fmt(r['point'])}" for r in overlay_ahead))
+        except Exception as exc:
+            print(f"  {overlay_name} 전망을 내지 못했습니다(무시): {exc}")
     (args.out / "forecast.svg").write_text(
-        forecast_svg(cli, ahead, overlay=kospi, title=title, start=args.chart_start or None),
+        forecast_svg(cli, ahead, overlay=overlay, overlay_name=overlay_name,
+                     overlay_fmt=overlay_fmt, title=title, start=args.chart_start or None,
+                     overlay_note=note, overlay_ahead=overlay_ahead,
+                     y_min=args.y_min, y_max=args.y_max),
         encoding="utf-8")
     ahead.to_csv(args.out / "forecast.csv", index=False)
     table.to_csv(args.out / "walk_forward.csv", index=False)

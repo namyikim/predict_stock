@@ -752,6 +752,56 @@ def render_cli_outlook(outlook):
     return parts
 
 
+def ablation_verdict(ablation, horizons):
+    """지평별 비교를 한 문장으로 줄인다. (요약, 나아진 지평 수, 가장 큰 차이 %p)"""
+    rows = [ablation.get(str(h)) for _, h in horizons.items()]
+    rows = [a for a in rows if a and a.get("mae_with") is not None and a.get("mae_without") is not None]
+    if not rows:
+        return None
+    diffs = [(a["mae_with"] - a["mae_without"]) * 100 for a in rows]
+    better = sum(1 for d in diffs if d < 0)
+    worst = max(diffs, key=abs)
+    if better == 0:
+        summary = f"세 지평 모두 낫지 않았습니다(최대 {worst:+.2f}%p)"
+    elif better == len(rows):
+        summary = f"세 지평 모두 조금 나았습니다(최대 {worst:+.2f}%p)"
+    else:
+        summary = f"{len(rows)}개 지평 중 {better}개만 조금 나았습니다(최대 차이 {worst:+.2f}%p)"
+    return {"summary": summary, "better": better, "n": len(rows), "worst": worst}
+
+
+def render_rejected(r):
+    """재 보고 쓰지 않기로 한 것들. 표 대신 한 줄씩만 남긴다.
+
+    측정했다는 사실은 남겨야 한다 — 지우면 "해 보지도 않았다"와 구별되지 않고, 나중에 같은 것을
+    다시 제안하게 된다. 그러나 낫지 않다고 판정한 것에 표를 두 개나 두면 읽는 사람의 눈이
+    정작 쓰는 지표에서 멀어진다. 그래서 판정만 한 줄로 적고 수치는 longterm.json 에 남긴다.
+    """
+    e = html.escape
+    lines = []
+    if r.get("cli_active"):
+        verdict = ablation_verdict(r.get("cli_ablation") or {}, HORIZONS)
+        if verdict:
+            lines.append(f'<b>G20 경기선행지수(OECD CLI)</b> — {e(verdict["summary"])}. '
+                         'CLI 는 매달 소급 수정되므로 이 비교조차 낙관적입니다.')
+    elif r.get("cli_info", {}).get("reason"):
+        lines.append(f'<b>G20 경기선행지수</b> — 자료를 쓰지 못했습니다: '
+                     f'{e(str(r["cli_info"]["reason"]))}')
+    if r.get("cycle_active"):
+        verdict = ablation_verdict(r.get("cycle_ablation") or {}, HORIZONS)
+        if verdict:
+            lines.append(f'<b>합성 사이클 점수</b>(일평균 수출·선행지수·뉴스심리·금리차를 표준화해 '
+                         f'가중치 없이 평균) — {e(verdict["summary"])}.')
+    if not lines:
+        return []
+    return ['<h4 style="font-size:14px;margin:18px 0 6px">재 보고 쓰지 않기로 한 것</h4>',
+            '<ul style="font-size:13px;color:#6b7178;margin:0;padding-left:18px;line-height:1.7">'
+            + "".join(f"<li>{line}</li>" for line in lines) + "</ul>",
+            '<div style="font-size:11px;color:#8a9199;margin-top:4px">'
+            '차이가 1%p 안팎이면 동률로 읽으세요. 지평별 수치는 longterm.json 의 '
+            '<code>cli_ablation</code>·<code>cycle_ablation</code> 에 그대로 있습니다.</div>']
+
+
 def render_fragment(result):
     e = html.escape
     r = result
@@ -875,64 +925,7 @@ def render_fragment(result):
     parts.append('<div style="font-size:12px;color:#6b7178;margin:10px 0 4px">지표별 12개월 수익률과의 순위상관(IC). CI가 0을 포함하면 동률.</div>')
     parts.append(table(f'<th {TH}>지표</th><th {THR}>IC</th><th {THR}>95% CI</th><th {THR}>판정</th>', body, 420))
 
-    # G20 CLI 효과
-    parts.append('<h4 style="font-size:14px;margin:18px 0 6px">G20 경기선행지수(OECD CLI)를 넣으면 나아지는가</h4>')
-    if r.get("cli_active"):
-        body = ""
-        for label, h in HORIZONS.items():
-            ab = r["cli_ablation"].get(str(h))
-            if not ab or ab["mae_with"] is None or ab["mae_without"] is None:
-                continue
-            better = ab["mae_with"] < ab["mae_without"]
-            body += (f'<tr><td {TD}>{label}</td>'
-                     f'<td {TDR}>{ab["mae_with"] * 100:.1f}%</td><td {TDR}>{ab["mae_without"] * 100:.1f}%</td>'
-                     f'<td {TDR}>{(ab["mae_with"] - ab["mae_without"]) * 100:+.2f}%p</td>'
-                     f'<td {TDR}>{"조금 낫다" if better else "낫지 않다"}</td></tr>')
-        parts.append(table(f'<th {TH}>지평</th><th {THR}>MAE (CLI 포함)</th><th {THR}>MAE (CLI 제외)</th>'
-                           f'<th {THR}>차이</th><th {THR}>판정</th>', body, 520))
-        cll = r.get("cli_lead_lag")
-        lead_text = ""
-        if cll:
-            lead_text = (f' CLI 3개월 변화는 수출 YoY를 <b>{cll["lead_months"]}개월</b> '
-                         f'{"앞섰습니다" if cll["lead_months"] > 0 else "뒤따랐습니다" if cll["lead_months"] < 0 else "같이 움직였습니다"}'
-                         f'(상관 {cll["corr"]:+.2f}).')
-        parts.append('<div style="font-size:11px;color:#8a9199;margin-top:4px">'
-                     '"G20 CLI가 한국 수출을 2개월 앞선다"는 차트는 최종 수정치로 사후에 그린 것입니다. CLI는 추세제거·평활 '
-                     '필터를 전체 시계열에 걸어 계산하므로 매달 소급 수정되고, 발표는 참조월로부터 5~6주 뒤입니다. 여기서는 '
-                     '참조월+1개월 20일 이후에만 썼지만 개정 문제는 남아 있어 <b>이 표도 낙관적</b>입니다. 수출을 앞서는 것과 '
-                     f'주가를 앞서는 것은 다른 문제이고, 주가는 수출을 앞섭니다(위 시차 상관).{lead_text}</div>')
-    else:
-        parts.append(f'<div style="font-size:13px;color:#6b7178">미포함 — {e(str(r.get("cli_info", {}).get("reason", "")))}</div>')
-
-    # 합성 사이클 점수 효과
-    parts.append('<h4 style="font-size:14px;margin:18px 0 6px">합성 사이클 점수를 넣으면 나아지는가</h4>')
-    if r.get("cycle_active"):
-        names = {"exports_daily_yoy": "일평균 수출 YoY", "macro_leading_change_3m": "선행지수 3개월 변화",
-                 "nsi_change_20d": "뉴스심리 20일 변화", "term_spread": "장단기 금리차(10년-3년)"}
-        parts.append('<div style="font-size:12px;color:#6b7178;margin-bottom:6px">'
-                     + " · ".join(names.get(c, c) for c in r["cycle_components"])
-                     + '를 각각 확장 창 z-score로 표준화해 <b>가중치 없이 평균</b>한 지표 하나입니다. '
-                     '지표를 하나씩 더하면 표본(12개월 지평 독립 표본 약 13개)에 비해 계수가 너무 많아지므로, '
-                     '학습되는 계수가 하나뿐인 합성 점수로 묶었습니다. 같은 날짜에서 점수를 뺀 모델과 비교합니다.</div>')
-        body = ""
-        for label, h in HORIZONS.items():
-            ab = r["cycle_ablation"].get(str(h))
-            if not ab or ab["mae_with"] is None or ab["mae_without"] is None:
-                continue
-            better = ab["mae_with"] < ab["mae_without"]
-            body += (f'<tr><td {TD}>{label}</td>'
-                     f'<td {TDR}>{ab["mae_with"] * 100:.1f}%</td><td {TDR}>{ab["mae_without"] * 100:.1f}%</td>'
-                     f'<td {TDR}>{(ab["mae_with"] - ab["mae_without"]) * 100:+.2f}%p</td>'
-                     f'<td {TDR}>{"조금 낫다" if better else "낫지 않다"}</td></tr>')
-        parts.append(table(f'<th {TH}>지평</th><th {THR}>MAE (점수 포함)</th><th {THR}>MAE (점수 제외)</th>'
-                           f'<th {THR}>차이</th><th {THR}>판정</th>', body, 520))
-        parts.append('<div style="font-size:11px;color:#8a9199;margin-top:4px">차이가 1%p 안팎이면 동률로 읽으세요. '
-                     '일평균 수출은 월+2, 뉴스심리는 지수 날짜+14일 지연을 반영했고 금리차는 지연이 없습니다. '
-                     '선행지수·뉴스심리는 소급 수정되므로 이 표도 낙관적입니다.</div>')
-    else:
-        missing = [k for k, v in r.get("extra_info", {}).items() if not v.get("enabled")]
-        parts.append(f'<div style="font-size:13px;color:#6b7178">구성 요소가 부족해 만들지 않았습니다'
-                     f'{" — 빠진 자료: " + ", ".join(missing) if missing else ""}.</div>')
+    parts.extend(render_rejected(r))
 
     # 금리차 조건부 잔여 기간
     ds = r.get("duration_by_spread")

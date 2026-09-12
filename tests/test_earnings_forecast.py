@@ -570,6 +570,28 @@ class CustomsFlashTests(unittest.TestCase):
         self.assertEqual(applied, [])
         self.assertEqual(float(merged.loc[pd.Timestamp("2026-09-01")]), 61.0)
 
+    def test_403_says_the_api_needs_its_own_application(self):
+        """403 을 '키가 틀렸다'로 읽으면 엉뚱한 데를 고치게 된다.
+
+        공공데이터포털은 API 마다 따로 활용신청을 받는다. 월별 자료가 되는 키라도 이 API 에
+        신청하지 않았으면 403 이다 — 2026-09-12 실제로 그랬다.
+        """
+        class Forbidden(Exception):
+            code = 403
+
+            def __str__(self):
+                return "HTTPError 403 Forbidden"
+
+        secret = "SECRETKEY1234567890ABCDEFGH"
+        with patch.object(mu.exports, "open_url", side_effect=Forbidden()):
+            with self.assertRaises(RuntimeError) as caught:
+                mu.fetch_customs_flash("2026-08-01", "2026-09-12", secret, retries=1)
+        message = str(caught.exception)
+        self.assertIn("활용신청", message)
+        self.assertIn("15157908", message)
+        # 지문(길이·앞뒤 4자)은 남기되 키 자체는 절대 나오면 안 된다.
+        self.assertNotIn(secret, message)
+
     def test_the_archive_copy_is_written_and_read_back(self):
         """Actions 는 미국에서 돌아 관세청이 자주 막힌다. 보관본이 없으면 이 기능은 대부분 죽는다."""
         flash = pd.DataFrame({

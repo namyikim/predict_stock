@@ -367,8 +367,21 @@ def fetch_customs_flash(start, end, key, retries=3, span=CUSTOMS_MAX_MONTHS):
         if got is not None and len(got):
             parts.append(got)
     if not parts:
+        joined = ' / '.join(failures) or '응답 없음'
+        # 공공데이터포털은 API 마다 따로 활용신청을 받는다. 월별 자료가 되는 키라도 이 API 에
+        # 신청하지 않았으면 403 이다. 키가 잘못된 것으로 읽으면 엉뚱한 데를 고치게 된다
+        # (2026-09-12 실제로 403 이 났다 — 같은 키가 월별 Itemtrade 에서는 잘 됐다).
+        if '403' in joined:
+            hint = ('공공데이터포털에서 이 API 에 활용신청을 하지 않은 것으로 보인다. '
+                    '키는 API 마다 따로 승인된다 — 월별 자료가 되는 키라도 여기서는 403 이 난다. '
+                    'data.go.kr 데이터 15157908(관세청_수출 주요품목별 10일 단위 잠정치 통계)에서 '
+                    '같은 계정으로 활용신청하면 된다. ')
+        elif 'NOT_REGISTERED' in joined or 'SERVICE_KEY' in joined:
+            hint = ('포털이 키를 거부했다. 해외 IP 거부일 수도 있고 지문이 포털의 키와 다를 수도 있다. ')
+        else:
+            hint = ''
         raise RuntimeError(f'관세청 10일 잠정치를 받지 못했습니다({key_fingerprint(key)}) — '
-                           f'{" / ".join(failures) or "응답 없음"}') from None
+                           f'{hint}{joined}') from None
     frame = pd.concat(parts).drop_duplicates(['month', 'days'], keep='last')
     return frame.sort_values(['month', 'days']).reset_index(drop=True)
 

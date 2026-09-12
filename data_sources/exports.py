@@ -56,6 +56,39 @@ CUSTOMS_URL = 'https://apis.data.go.kr/1220000/Itemtrade/getItemtradeList'
 
 CUSTOMS_HS = ('8541', '8542')       # 반도체: 개별소자 + 집적회로
 
+# 관세청은 한 번에 1년 이내만 조회할 수 있다. 넘기면 서버가 resultCode 99 로 거부한다
+# ("시작과 종료의 조회기간은 1년이내 기간만 가능합니다"). 2026-09-12 Actions 실행이 30개월을
+# 한 번에 요청해 이 오류로 관세청 계열이 통째로 꺼져 있었다. 그래서 기간을 창으로 나눠 부른다.
+# 창 하나는 12개월(시작~종료 11개월 차이)이라 한도 해석이 어느 쪽이든 안전하다.
+CUSTOMS_MAX_MONTHS = 12
+
+
+class CustomsRejected(RuntimeError):
+    """서버가 정상 응답했지만 요청을 거부했다(resultCode != 00). 재시도해도 결과가 같다."""
+
+
+class CustomsEmpty(ValueError):
+    """서버가 응답했지만 그 기간에 월별 수출액이 없다(집계 이전이거나 보존 기간 밖)."""
+
+
+def month_windows(start, end, span=CUSTOMS_MAX_MONTHS):
+    """[start, end] 를 span 개월 이하의 겹치지 않는 창으로 나눈다 → [(strtYymm, endYymm)].
+
+    관세청의 1년 한도 때문이다. 창은 월 단위이고 마지막 창만 짧을 수 있다.
+    """
+    if span < 1:
+        raise ValueError(f'창 길이는 1개월 이상이어야 합니다: {span}')
+    first = pd.Timestamp(start).to_period('M')
+    last = pd.Timestamp(end).to_period('M')
+    if last < first:
+        raise ValueError(f'종료가 시작보다 빠릅니다: {first} > {last}')
+    windows, cursor = [], first
+    while cursor <= last:
+        stop = min(cursor + (span - 1), last)
+        windows.append((cursor.strftime('%Y%m'), stop.strftime('%Y%m')))
+        cursor = stop + 1
+    return windows
+
 
 
 
@@ -104,7 +137,7 @@ def parse_customs_xml(text):
     message = root.findtext('.//resultMsg') or ''
     code = root.findtext('.//resultCode')
     if code not in (None, '00', '0'):
-        raise RuntimeError(f'관세청 API 오류 {code}: {message}')
+        raise CustomsRejected(f'관세청 API 오류 {code}: {message}')
     rows = []
     for item in root.iter('item'):
         period = (item.findtext('year') or '').strip()
@@ -119,7 +152,7 @@ def parse_customs_xml(text):
         except ValueError:
             continue
     if not rows:
-        raise ValueError('관세청 응답에 월별 수출액이 없습니다.')
+        raise CustomsEmpty('관세청 응답에 월별 수출액이 없습니다.')
     frame = pd.DataFrame(rows).groupby('month', as_index=False)['value'].sum()
     return normalize_monthly(frame)
 
@@ -143,38 +176,70 @@ def _customs_request(hs, start_text, end_text, key, retries=3):
             except Exception as exc:
                 detail = error_detail(exc)
                 registered = 'NOT_REGISTERED' in str(exc) or 'SERVICE_KEY' in str(exc)
+                # 서버가 응답해 거부했거나 자료가 없다고 답한 것은 재시도해도 같다. 기다리지 않는다.
+                settled = isinstance(exc, (CustomsRejected, CustomsEmpty))
                 last = attempt == retries - 1
-                if registered or last:
+                if registered or settled or last:
                     failures.append(f'{label} 키: {detail}')
                     break            # 키 형태 문제면 재시도해도 같다. 다음 형태로 넘어간다.
                 time.sleep(3 * (2 ** attempt) + random.uniform(0, 3))
     # 실패 종류에 맞는 설명을 붙인다. 같은 차단이 타임아웃으로도, 인증 오류로도 나타나므로
     # 한 가지 설명을 고정해 두면 엉뚱한 안내가 된다(2026-09-11 실제로 그랬다).
     joined = ' / '.join(failures)
+    if all('월별 수출액이 없' in f for f in failures):
+        raise CustomsEmpty(f'관세청에 {start_text}~{end_text} HS {hs} 자료가 없습니다.')
+    location = f'HS {hs}, {start_text}~{end_text}, {key_fingerprint(key)}'
+    cache_note = ('보관본(macro_history/customs_exports.csv)이 있으면 그것을 쓰고, 보관본 갱신은 '
+                  '한국에서 Colab 전체 실행으로 한다.')
     if 'NOT_REGISTERED' in joined or 'SERVICE_KEY' in joined:
         cause = ('data.go.kr 이 해외 IP 를 SERVICE_KEY_IS_NOT_REGISTERED 로 거부한 것으로 보인다 '
                  '(2026-09-11 확인: 같은 키가 한국에서는 resultCode 00). 지문이 포털의 키와 다르면 '
-                 'Secrets 를 확인하라.')
+                 'Secrets 를 확인하라. '
+                 'GitHub Actions 는 미국에서 돌고 한국 정부 API 는 해외 IP 에서 막히므로 '
+                 '이 실패는 예상된 것이며, ') + cache_note
     elif 'Timeout' in joined or 'timed out' in joined or 'URLError' in joined:
-        cause = '연결이 되지 않았다(해외 IP 차단이나 일시적 장애).'
+        cause = ('연결이 되지 않았다(해외 IP 차단이나 일시적 장애). '
+                 'GitHub Actions 는 미국에서 돌고 한국 정부 API 는 해외 IP 에서 막히므로 '
+                 '이 실패는 예상된 것이며, ') + cache_note
+    elif '관세청 API 오류' in joined:
+        # 서버가 XML 로 답했다 = 연결도 키도 통과했다. IP 차단이 아니라 요청 자체가 잘못된 것이다.
+        # 이때 '해외 IP 차단'이라고 적으면 진짜 원인을 덮는다(2026-09-12 실제로 그랬다: 30개월을
+        # 한 번에 요청해 resultCode 99 가 났는데 차단으로 기록됐다).
+        cause = ('관세청이 요청을 거부했다 — 서버가 정상 응답했으므로 연결과 인증키에는 문제가 없다. '
+                 '위 메시지가 가리키는 요청 조건을 고쳐야 한다(조회 기간은 1년 이내여야 하며 '
+                 f'이 호출은 {CUSTOMS_MAX_MONTHS}개월 창으로 나눠 보낸다). ') + cache_note
     else:
-        cause = '응답을 해석할 수 없었다.'
-    raise RuntimeError(
-        f'관세청 조회 실패(HS {hs}, {key_fingerprint(key)}) — {joined}. {cause} '
-        'GitHub Actions 는 미국에서 돌고 한국 정부 API 는 해외 IP 에서 막히므로 이 실패는 예상된 '
-        '것이며, 보관본(macro_history/customs_exports.csv)을 쓴다. 보관본 갱신은 한국에서 Colab '
-        '전체 실행으로 한다.')
+        cause = '응답을 해석할 수 없었다. ' + cache_note
+    raise RuntimeError(f'관세청 조회 실패({location}) — {joined}. {cause}')
 
 
-def fetch_customs_exports(start, end, key, hs_codes=CUSTOMS_HS, retries=3):
-    """반도체 월별 수출액(달러). HS 대분류별로 조회해 합산한다."""
-    start_text = pd.Timestamp(start).strftime('%Y%m')
-    end_text = pd.Timestamp(end).strftime('%Y%m')
-    total = None
+def fetch_customs_exports(start, end, key, hs_codes=CUSTOMS_HS, retries=3,
+                          span=CUSTOMS_MAX_MONTHS):
+    """반도체 월별 수출액(달러). HS 대분류별로 조회해 합산한다.
+
+    관세청의 1년 한도 때문에 기간을 span 개월 창으로 나눠 여러 번 부르고 이어 붙인다. 자료가 없다고
+    답한 창(옛 기간)은 건너뛰되, 한 HS 의 모든 창이 비면 그 사실을 그대로 알린다 — 조용히 빈 계열을
+    돌려주면 아래 reconcile 이 '겹치는 달이 없다'는 엉뚱한 이유로 넘어간다.
+    """
+    windows = month_windows(start, end, span)
+    total, skipped = None, []
     for hs in hs_codes:
-        frame = _customs_request(hs, start_text, end_text, key, retries)
-        series = frame.set_index('month')['value']
+        parts = []
+        for start_text, end_text in windows:
+            try:
+                parts.append(_customs_request(hs, start_text, end_text, key, retries)
+                             .set_index('month')['value'])
+            except CustomsEmpty:
+                skipped.append(f'{hs} {start_text}~{end_text}')
+        if not parts:
+            raise RuntimeError(f'관세청에 HS {hs} 자료가 없습니다'
+                               f'({windows[0][0]}~{windows[-1][1]}, 창 {len(windows)}개 모두 빔).')
+        series = pd.concat(parts)
+        # 창은 겹치지 않으므로 중복이 있으면 안 된다. 그래도 생기면 더하지 말고 하나만 남긴다.
+        series = series[~series.index.duplicated(keep='last')].sort_index()
         total = series if total is None else total.add(series, fill_value=0)
+    if skipped:
+        print(f'  관세청: 자료가 없는 구간은 건너뜁니다 — {", ".join(skipped)}', flush=True)
     return pd.DataFrame({'month': total.index, 'value': total.to_numpy()})
 
 

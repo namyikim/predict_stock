@@ -257,9 +257,13 @@ class KeyFingerprintTests(unittest.TestCase):
 
 
 class CustomsCacheRouteTests(unittest.TestCase):
-    """관세청은 해외 IP 에서 막힌다(2026-09-11 확인: 같은 키가 한국에서는 resultCode 00,
+    """관세청은 해외 IP 에서 막힐 수 있다(2026-09-11 확인: 같은 키가 한국에서는 resultCode 00,
     Actions 에서는 SERVICE_KEY_IS_NOT_REGISTERED). 그래서 한국에서 도는 Colab 실행이 보관본을
-    갱신하고 Actions 는 그것을 쓴다 — KOSIS 와 같은 구조다."""
+    갱신하고 Actions 는 그것을 쓴다 — KOSIS 와 같은 구조다.
+
+    다만 항상 막히는 것은 아니다: 2026-09-12 Actions 는 키가 받아들여진 상태에서 resultCode 99
+    ('조회기간은 1년이내')를 받았다. 서버가 XML 로 답했다는 것은 연결도 인증도 통과했다는 뜻이다.
+    그러니 실패를 보면 IP 차단이라고 단정하지 말고 응답 내용을 먼저 읽어야 한다."""
 
     @classmethod
     def setUpClass(cls):
@@ -284,6 +288,125 @@ class CustomsCacheRouteTests(unittest.TestCase):
         source = (Path(mu.__file__).resolve().parent / "data_sources" / "exports.py").read_text(encoding="utf-8")
         self.assertIn("한국 정부 API 는 해외 IP 에서 막히므로", source)
         self.assertIn("macro_history/customs_exports.csv", source)
+
+
+class CustomsYearLimitTests(unittest.TestCase):
+    """관세청은 한 번에 1년 이내만 조회할 수 있다(초과하면 resultCode 99).
+
+    2026-09-12: Actions 가 30개월을 한 번에 요청해 관세청 계열이 통째로 꺼져 있었다. 노트북은
+    2015년부터 요청하고 있었으니 Colab 에서 돌려도 같은 오류였다. 그래서 창으로 나눠 부른다.
+    """
+
+    def setUp(self):
+        from data_sources import exports as ex
+        self.ex = ex
+
+    # ---- 창 나누기 ----------------------------------------------------------
+    def test_windows_never_exceed_one_year_and_cover_everything(self):
+        for start, end in (("2015-01-01", "2026-09-12"), ("2024-03-01", "2026-09-12"),
+                           ("2026-01-01", "2026-08-01"), ("2026-09-01", "2026-09-30")):
+            windows = self.ex.month_windows(start, end)
+            first = pd.Timestamp(start).to_period("M")
+            last = pd.Timestamp(end).to_period("M")
+            self.assertEqual(windows[0][0], first.strftime("%Y%m"))
+            self.assertEqual(windows[-1][1], last.strftime("%Y%m"))
+            previous_end = None
+            for strt, stop in windows:
+                a, b = pd.Period(strt, "M"), pd.Period(stop, "M")
+                self.assertLessEqual((b - a).n, 11, f"{strt}~{stop} 이 1년을 넘는다")
+                self.assertLessEqual(a, b)
+                if previous_end is not None:
+                    self.assertEqual((a - previous_end).n, 1, "창 사이에 구멍이나 겹침이 있다")
+                previous_end = b
+
+    def test_reversed_range_is_refused(self):
+        with self.assertRaises(ValueError):
+            self.ex.month_windows("2026-09-01", "2026-01-01")
+
+    # ---- 여러 창을 이어 붙인다 ----------------------------------------------
+    def test_fetch_splits_the_request_and_concatenates(self):
+        calls = []
+
+        def fake_request(hs, start_text, end_text, key, retries=3):
+            calls.append((hs, start_text, end_text))
+            months = pd.period_range(start_text, end_text, freq="M")
+            return pd.DataFrame({"month": [m.to_timestamp() for m in months],
+                                 "value": [1.0] * len(months)})
+        saved = self.ex._customs_request
+        self.ex._customs_request = fake_request
+        try:
+            frame = self.ex.fetch_customs_exports("2024-03-01", "2026-09-12", "k", hs_codes=("8541", "8542"))
+        finally:
+            self.ex._customs_request = saved
+        self.assertEqual(len(calls), 6, "HS 2개 × 창 3개여야 한다")
+        for _, strt, stop in calls:
+            self.assertLessEqual((pd.Period(stop, "M") - pd.Period(strt, "M")).n, 11)
+        self.assertEqual(len(frame), 31, "2024-03~2026-09 는 31개월")
+        # HS 두 개를 합쳤으니 달마다 2.0, 창이 겹쳐 두 번 더해지지 않았다는 뜻이기도 하다.
+        self.assertTrue((frame["value"] == 2.0).all(), "창이 겹쳐 중복 합산됐다")
+
+    def test_empty_windows_are_skipped_but_an_all_empty_code_fails(self):
+        def only_recent(hs, start_text, end_text, key, retries=3):
+            if start_text < "202501":
+                raise self.ex.CustomsEmpty("관세청 응답에 월별 수출액이 없습니다.")
+            months = pd.period_range(start_text, end_text, freq="M")
+            return pd.DataFrame({"month": [m.to_timestamp() for m in months], "value": [1.0] * len(months)})
+
+        saved = self.ex._customs_request
+        self.ex._customs_request = only_recent
+        try:
+            frame = self.ex.fetch_customs_exports("2023-01-01", "2026-09-12", "k", hs_codes=("8541",))
+            self.assertGreater(len(frame), 0)
+            self.assertGreaterEqual(frame["month"].min(), pd.Timestamp("2025-01-01"))
+
+            def always_empty(hs, start_text, end_text, key, retries=3):
+                raise self.ex.CustomsEmpty("관세청 응답에 월별 수출액이 없습니다.")
+            self.ex._customs_request = always_empty
+            with self.assertRaises(RuntimeError) as caught:
+                self.ex.fetch_customs_exports("2023-01-01", "2026-09-12", "k", hs_codes=("8541",))
+            self.assertIn("자료가 없습니다", str(caught.exception))
+        finally:
+            self.ex._customs_request = saved
+
+    # ---- 서버가 거부한 요청 --------------------------------------------------
+    def test_rejected_request_is_not_retried_and_does_not_blame_the_ip(self):
+        """resultCode 99 는 서버가 정상 응답한 것이다. 재시도해도 같고, IP 차단도 아니다."""
+        attempts = []
+
+        class Response:
+            def __enter__(self_inner):
+                return self_inner
+
+            def __exit__(self_inner, *a):
+                return False
+
+            def read(self_inner):
+                attempts.append(1)
+                return ('<response><header><resultCode>99</resultCode>'
+                        '<resultMsg>시작과 종료의 조회기간은 1년이내 기간만 가능합니다.</resultMsg>'
+                        '</header></response>').encode("utf-8")
+
+        saved = self.ex.open_url
+        self.ex.open_url = lambda *a, **k: Response()
+        try:
+            with self.assertRaises(RuntimeError) as caught:
+                self.ex.fetch_customs_exports("2026-01-01", "2026-08-01", "AbC%2Bd%3D%3D", retries=3)
+        finally:
+            self.ex.open_url = saved
+        text = str(caught.exception)
+        self.assertEqual(len(attempts), 1, "서버가 거부한 요청을 다시 보냈다(기다리기만 하고 결과는 같다)")
+        self.assertIn("1년이내", text, "서버가 말한 진짜 이유가 사라졌다")
+        self.assertIn("연결과 인증키에는 문제가 없다", text)
+        self.assertNotIn("해외 IP 에서 막히므로", text, "IP 차단이 아닌데 그렇게 적었다")
+        self.assertIn("2026-01~2026-08".replace("-", ""), text.replace("-", ""))
+
+    def test_call_sites_no_longer_ask_for_more_than_a_year_at_once(self):
+        """호출부가 긴 기간을 줘도 fetch 가 나눈다 — 나누는 책임이 fetch 에 있어야 한다."""
+        import inspect
+        source = inspect.getsource(self.ex.fetch_customs_exports)
+        self.assertIn("month_windows(start, end, span)", source)
+        earnings = (Path(mu.__file__).resolve().parent / "tools" / "build_earnings_forecast.py").read_text(encoding="utf-8")
+        self.assertIn("fetch_customs_exports(", earnings)
 
 
 class CustomsFailureMessageTests(unittest.TestCase):

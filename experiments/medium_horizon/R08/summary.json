@@ -1,0 +1,62 @@
+{
+  "summaries": [
+    {
+      "target": "samsung",
+      "window": [
+        "2026-01-09",
+        "2026-09-04"
+      ],
+      "trading_days": 161,
+      "event_days_next": 29,
+      "event_days_flagged": 48,
+      "by_event_type": {
+        "CPI": {
+          "n": 8,
+          "mean_abs_gap": 0.039499154469270686
+        },
+        "FOMC": {
+          "n": 5,
+          "mean_abs_gap": 0.021725650934218167
+        },
+        "NFP": {
+          "n": 8,
+          "mean_abs_gap": 0.04217498330454193
+        },
+        "PPI": {
+          "n": 9,
+          "mean_abs_gap": 0.03678267969572976
+        }
+      }
+    },
+    {
+      "target": "sk_hynix",
+      "window": [
+        "2026-01-09",
+        "2026-09-04"
+      ],
+      "trading_days": 161,
+      "event_days_next": 29,
+      "event_days_flagged": 48,
+      "by_event_type": {
+        "CPI": {
+          "n": 8,
+          "mean_abs_gap": 0.03817376401789645
+        },
+        "FOMC": {
+          "n": 5,
+          "mean_abs_gap": 0.02955355466687959
+        },
+        "NFP": {
+          "n": 8,
+          "mean_abs_gap": 0.041302860488823756
+        },
+        "PPI": {
+          "n": 9,
+          "mean_abs_gap": 0.047884776446462746
+        }
+      }
+    }
+  ],
+  "bootstrap_b": 4000,
+  "seed": 20260912
+}

@@ -511,6 +511,23 @@ class CustomsFlashTests(unittest.TestCase):
         self.assertEqual(len(frame), 1)
         self.assertEqual(frame.loc[0, "value"], 2.0)
 
+    def test_an_exact_item_name_wins_over_a_longer_one_that_contains_it(self):
+        """'반도체제조장비' 가 섞이면 합이 부푼다. 정확히 맞는 이름이 있으면 그것만 쓴다."""
+        body = ("<item><statKor>반도체제조장비</statKor><expDt>20260910</expDt>"
+                "<expDlr>900000000</expDlr></item>"
+                "<item><statKor>반도체</statKor><expDt>20260910</expDt>"
+                "<expDlr>15300000000</expDlr></item>")
+        frame = mu.parse_customs_flash_xml(self.xml(body))
+        self.assertEqual(len(frame), 1)
+        self.assertEqual(frame.loc[0, "value"], 15_300_000_000.0)
+
+    def test_a_longer_name_is_still_used_when_nothing_matches_exactly(self):
+        """이름이 '반도체(집적회로)' 처럼 바뀌어도 조용히 빈 계열이 되지는 않게 한다."""
+        body = ("<item><statKor>반도체(집적회로)</statKor><expDt>20260910</expDt>"
+                "<expDlr>15300000000</expDlr></item>")
+        frame = mu.parse_customs_flash_xml(self.xml(body))
+        self.assertEqual(frame.loc[0, "value"], 15_300_000_000.0)
+
     def test_growth_rate_columns_are_not_mistaken_for_the_amount(self):
         """증감률이 금액 칸으로 뽑히면 수출이 몇 % 로 둔갑한다."""
         body = ("<item><statKor>반도체</statKor><expDt>20260910</expDt>"

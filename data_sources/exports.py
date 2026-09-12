@@ -321,18 +321,24 @@ def parse_customs_flash_xml(text, item=FLASH_ITEM):
     for element in root.iter('item'):
         fields = {child.tag: (child.text or '').strip() for child in element}
         seen.update(fields)
-        if not any(item in value for value in fields.values()):
-            continue                                   # 반도체 행만 쓴다
+        # 이름이 정확히 '반도체'인 행을 먼저 찾는다. 부분 일치만 보면 '반도체제조장비' 같은
+        # 다른 품목이 섞여 합이 부풀 수 있다. 정확히 맞는 행이 하나도 없을 때만 부분 일치로 물러선다.
+        exact = any(value == item for value in fields.values())
+        if not exact and not any(item in value for value in fields.values()):
+            continue
         period = _flash_period(fields)
         amount = _flash_amount(fields)
         if period is None or period[1] is None or amount is None:
             continue
-        rows.append({'month': period[0], 'days': period[1], 'value': amount})
+        rows.append({'month': period[0], 'days': period[1], 'value': amount, 'exact': exact})
     if not rows:
         raise CustomsEmpty(
             f"관세청 10일 잠정치 응답에서 '{item}' 수출액을 찾지 못했습니다 "
             f"— 받은 칸 이름: {', '.join(sorted(seen)) or '없음'}.")
-    frame = pd.DataFrame(rows).drop_duplicates(['month', 'days'], keep='last')
+    frame = pd.DataFrame(rows)
+    if frame['exact'].any():
+        frame = frame[frame['exact']]
+    frame = frame.drop(columns='exact').drop_duplicates(['month', 'days'], keep='last')
     frame['month'] = pd.to_datetime(frame['month'])
     return frame.sort_values(['month', 'days']).reset_index(drop=True)
 

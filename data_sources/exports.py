@@ -246,10 +246,15 @@ def fetch_customs_exports(start, end, key, hs_codes=CUSTOMS_HS, retries=3,
 
 
 def reconcile_customs(kosis, customs, tolerance=0.15, min_overlap=6):
-    """관세청 계열이 KOSIS 확정치와 같은 크기인지 확인한다.
+    """관세청 계열이 KOSIS 확정치와 **같은 크기**인지 확인한다.
 
-    품목 정의나 단위가 다르면 조용히 1000배 틀린 값이 들어간다. 겹치는 달의 비율 중앙값이 1에서
-    tolerance 이상 벗어나면 쓰지 않는다. 반환: (사용 가능 여부, 진단 정보)
+    단위 오류(1000배)를 잡는 검사다. 겹치는 달의 비율 중앙값이 1에서 tolerance 이상 벗어나면
+    같은 크기가 아니다. 반환: (같은 크기인가, 진단 정보)
+
+    주의: 이것으로 채택을 결정하지 않는다. HS 8541+8542 는 KOSIS '반도체'보다 품목 범위가 좁아
+    크기가 **정상적으로** 다르다(2026-09-12 한국에서 직접 확인: 11개월 배율 0.76~0.86,
+    중앙값 0.807). 크기가 다르다고 버리면 KOSIS 가 아직 없는 달을 영영 채우지 못한다.
+    실제 채택은 customs_scale() 이 정한다 — 배율이 안정적이면 환산해서 쓴다.
     """
     k = normalize_monthly(kosis).set_index('month')['value']
     c = normalize_monthly(customs).set_index('month')['value']
@@ -269,10 +274,61 @@ def reconcile_customs(kosis, customs, tolerance=0.15, min_overlap=6):
 
 
 
-def merge_customs_exports(kosis, customs):
-    """KOSIS 확정치를 그대로 두고, KOSIS에 아직 없는 달만 관세청 값으로 채운다."""
+# 환산 배율을 다시 맞출 때 보는 최근 겹침 개월 수. 배율이 천천히 흐르므로(2025-09 0.838 →
+# 2026-06 0.757) 전 구간 중앙값을 쓰면 최근 달에서 6%쯤 틀린다. 최근 구간만 보면 따라간다.
+CUSTOMS_SCALE_WINDOW = 6
+CUSTOMS_SCALE_TOLERANCE = 0.10       # 그 구간 안에서 배율이 이만큼 넘게 흔들리면 쓰지 않는다
+
+
+def customs_scale(kosis, customs, window=CUSTOMS_SCALE_WINDOW,
+                  tolerance=CUSTOMS_SCALE_TOLERANCE, min_overlap=6):
+    """관세청 값을 KOSIS 기준으로 환산할 배수와 진단. 반환: (쓸 수 있는가, 배수, 진단)
+
+    HS 8541+8542 는 KOSIS '반도체'보다 범위가 좁아 계통적으로 작다. 배율이 일정하면 그만큼
+    곱해서 KOSIS 기준으로 되돌릴 수 있다. 배율이 흔들리면 관계가 불안정한 것이므로 쓰지 않는다.
+
+    배율은 **겹치는 과거 달**에서만 구한다(양쪽 다 있는 달). 그것을 KOSIS 가 아직 없는 미래 달에
+    적용하므로 미래 정보를 당겨 쓰지 않는다.
+    """
     k = normalize_monthly(kosis).set_index('month')['value']
     c = normalize_monthly(customs).set_index('month')['value']
+    overlap = k.index.intersection(c.index)
+    info = {'overlap': int(len(overlap)), 'window': int(window), 'scale': None,
+            'spread': None, 'ratios': {}}
+    if len(overlap) < min_overlap:
+        info['reason'] = f'겹치는 달이 {len(overlap)}개뿐이라 배율을 정할 수 없습니다(최소 {min_overlap}개).'
+        return False, 1.0, info
+    ratio = (k.loc[overlap] / c.loc[overlap]).replace([np.inf, -np.inf], np.nan).dropna()
+    ratio = ratio[ratio > 0].sort_index()
+    if len(ratio) < min_overlap:
+        info['reason'] = f'쓸 수 있는 배율이 {len(ratio)}개뿐입니다.'
+        return False, 1.0, info
+    recent = ratio.tail(window)
+    scale = float(recent.median())
+    # 그 구간 안에서 배율이 얼마나 흔들렸나. 중앙값 대비 최대 이탈로 잰다.
+    spread = float((recent / scale - 1).abs().max())
+    info.update(scale=scale, spread=spread,
+                ratios={pd.Timestamp(m).strftime('%Y-%m'): round(float(v), 4) for m, v in recent.items()})
+    if not np.isfinite(scale) or scale <= 0:
+        info['reason'] = '배율을 계산할 수 없습니다.'
+        return False, 1.0, info
+    if spread > tolerance:
+        info['reason'] = (f'최근 {len(recent)}개월 배율이 중앙값 {scale:.3f} 대비 최대 {spread:.1%} '
+                          f'흔들립니다(허용 {tolerance:.0%}) — 관계가 불안정해 환산하지 않습니다.')
+        return False, 1.0, info
+    return True, scale, info
+
+
+def merge_customs_exports(kosis, customs, scale=1.0):
+    """KOSIS 확정치를 그대로 두고, KOSIS에 아직 없는 달만 관세청 값으로 채운다.
+
+    scale 은 customs_scale() 이 정한 환산 배수다. 관세청 원값에 곱해 KOSIS 기준으로 맞춘 뒤 넣는다.
+    곱하지 않고 넣으면 계열에 단차가 생겨 YoY·MoM 특징이 망가진다(2026-08 기준 20%).
+    """
+    if not np.isfinite(scale) or scale <= 0:
+        raise ValueError(f'환산 배수가 올바르지 않습니다: {scale!r}')
+    k = normalize_monthly(kosis).set_index('month')['value']
+    c = normalize_monthly(customs).set_index('month')['value'] * float(scale)
     added = [m for m in c.index if m not in k.index]
     merged = pd.concat([k, c.loc[added]]).sort_index()
     return (pd.DataFrame({'month': merged.index, 'value': merged.to_numpy()}),

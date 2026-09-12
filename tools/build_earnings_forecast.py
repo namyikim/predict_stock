@@ -38,8 +38,8 @@ sys.path.insert(0, str(ROOT / "tools"))
 import github_pages  # noqa: E402
 from macro_utils import (  # noqa: E402
     cli_features, data_go_kr_key, fetch_customs_exports, load_cli, load_macro_data,
-    dram_spot_summary, error_detail, load_dram_spot, load_tsmc_revenue, merge_customs_exports,
-    reconcile_customs, tsmc_features,
+    customs_scale, dram_spot_summary, error_detail, load_dram_spot, load_tsmc_revenue,
+    merge_customs_exports, reconcile_customs, tsmc_features,
 )
 
 KST = timezone(timedelta(hours=9))
@@ -680,8 +680,11 @@ def render_fragment(result):
                  + (" " + " ".join(
                      f'<b>{e(a["month"])}</b>은 관세청 1~{a["days"]}일 속보(반도체 {a["yoy"]:+.0%})로 잠정 추정한 값입니다.'
                      for a in r.get("flash_applied") or []) if r.get("flash_applied") else "")
-                 + ((f' {e(", ".join(r["customs_info"]["months_added"]))}은 관세청 원천(HS 8541·8542 합계)에서 받았습니다 — '
-                     f'KOSIS 확정치와 겹치는 달의 배율 중앙값 {r["customs_info"]["ratio_median"]:.3f}로 같은 계열임을 확인했습니다.')
+                 + ((f' {e(", ".join(r["customs_info"]["months_added"]))}은 관세청 원천(HS 8541·8542 합계)을 '
+                     f'KOSIS 기준으로 환산해 넣은 값입니다 — 품목 범위가 좁아 그대로는 KOSIS의 '
+                     f'{r["customs_info"]["scale"]:.2f}분의 1 수준이라, 겹치는 최근 '
+                     f'{r["customs_info"]["window"]}개월 배율(×{r["customs_info"]["scale"]:.3f})로 맞췄습니다. '
+                     f'확정치가 아니라 추정입니다.')
                     if (r.get("customs_info") or {}).get("months_added") else "")
                  + '</div>')
 
@@ -856,14 +859,19 @@ def analyse(target, out_dir, fetch=True):
                 print(f"  관세청 조회 실패 → 저장소 보관본 사용: {exc}", flush=True)
                 customs = pd.read_csv(customs_cache)
                 customs_info["source"] = "customs_cache"
-            ok, diag = reconcile_customs(macro["semiconductor_exports"], customs)
-            customs_info = {"enabled": ok, **diag}
+            # HS 8541+8542 는 KOSIS '반도체'보다 범위가 좁아 계통적으로 작다(2026-09 기준 0.8배).
+            # 크기가 같은지 묻는 대신, 배율이 안정적인지 보고 KOSIS 기준으로 환산해서 넣는다.
+            same_size, size_diag = reconcile_customs(macro["semiconductor_exports"], customs)
+            ok, scale, diag = customs_scale(macro["semiconductor_exports"], customs)
+            customs_info = {"enabled": ok, "same_size": same_size,
+                            "ratio_median": size_diag.get("ratio_median"), **diag}
             if ok:
                 macro["semiconductor_exports"], added = merge_customs_exports(
-                    macro["semiconductor_exports"], customs)
+                    macro["semiconductor_exports"], customs, scale=scale)
                 customs_info["months_added"] = added
                 print(f"  관세청으로 채운 달: {added or '없음(KOSIS가 이미 최신)'} "
-                      f"· KOSIS 대비 배율 중앙값 {diag['ratio_median']:.3f}", flush=True)
+                      f"· KOSIS 기준 환산 배수 {scale:.3f}"
+                      f"(최근 {diag['window']}개월 배율, 흔들림 {diag['spread']:.1%})", flush=True)
             else:
                 print("  ⚠️ 관세청 계열을 쓰지 않습니다:", diag.get("reason"), flush=True)
         except Exception as exc:

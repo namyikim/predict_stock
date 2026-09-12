@@ -353,6 +353,78 @@ class CustomsSourceTests(unittest.TestCase):
         self.assertEqual(float(values.loc[pd.Timestamp("2026-07-01")]), 3.9e10)
         self.assertEqual(added, ["2026-07"])
 
+    def test_scale_is_measured_on_recent_overlap_and_tracks_drift(self):
+        """배율은 천천히 흐른다(2025-09 0.84 → 2026-06 0.76). 전 구간 중앙값을 쓰면 최근에 틀린다."""
+        months = pd.period_range("2025-01", periods=12, freq="M").strftime("%Y-%m")
+        kosis = pd.DataFrame({"month": months, "value": [4.0e10] * 12})
+        # 앞 6개월은 0.90배, 뒤 6개월은 0.80배로 내려간 계열
+        customs = kosis.assign(value=[4.0e10 * 0.90] * 6 + [4.0e10 * 0.80] * 6)
+        ok, scale, info = mu.customs_scale(kosis, customs)
+        self.assertTrue(ok, info.get("reason"))
+        self.assertAlmostEqual(scale, 1 / 0.80, places=6, msg="최근 구간이 아니라 전 구간을 봤다")
+        self.assertEqual(info["window"], 6)
+        self.assertLess(info["spread"], 1e-9)
+
+    def test_unstable_ratio_is_refused(self):
+        months = pd.period_range("2026-01", periods=6, freq="M").strftime("%Y-%m")
+        kosis = pd.DataFrame({"month": months, "value": [4.0e10] * 6})
+        customs = kosis.assign(value=[4.0e10 * r for r in (0.6, 1.4, 0.7, 1.3, 0.8, 1.2)])
+        ok, scale, info = mu.customs_scale(kosis, customs)
+        self.assertFalse(ok)
+        self.assertEqual(scale, 1.0)
+        self.assertIn("불안정", info["reason"])
+
+    def test_too_few_overlapping_months_is_refused(self):
+        kosis = pd.DataFrame({"month": ["2026-01", "2026-02", "2026-03"], "value": [4.0e10] * 3})
+        ok, scale, info = mu.customs_scale(kosis, kosis)
+        self.assertFalse(ok)
+        self.assertEqual(scale, 1.0)
+        self.assertIn("겹치는 달", info["reason"])
+
+    def test_scale_ignores_months_kosis_does_not_have(self):
+        """배율은 겹치는 과거 달로만 정한다 — 채우려는 달의 값이 배율에 들어가면 자기참조가 된다."""
+        months = pd.period_range("2026-01", periods=6, freq="M").strftime("%Y-%m")
+        kosis = pd.DataFrame({"month": months, "value": [4.0e10] * 6})
+        customs = pd.DataFrame({"month": list(months) + ["2026-07"],
+                                "value": [4.0e10 * 0.8] * 6 + [9.9e12]})   # 마지막 달은 터무니없는 값
+        ok, scale, info = mu.customs_scale(kosis, customs)
+        self.assertTrue(ok, info.get("reason"))
+        self.assertAlmostEqual(scale, 1 / 0.8, places=6, msg="KOSIS 에 없는 달이 배율에 섞였다")
+
+    def test_merge_rescales_added_months_and_keeps_kosis(self):
+        kosis = pd.DataFrame({"month": ["2026-05", "2026-06"], "value": [3.5e10, 3.6e10]})
+        customs = pd.DataFrame({"month": ["2026-05", "2026-06", "2026-07"],
+                                "value": [2.8e10, 2.88e10, 3.2e10]})       # 0.8배 계열
+        merged, added = mu.merge_customs_exports(kosis, customs, scale=1.25)
+        values = merged.set_index("month")["value"]
+        self.assertEqual(float(values.loc[pd.Timestamp("2026-05-01")]), 3.5e10)      # KOSIS 유지
+        self.assertAlmostEqual(float(values.loc[pd.Timestamp("2026-07-01")]), 4.0e10)  # 3.2e10 × 1.25
+        self.assertEqual(added, ["2026-07"])
+
+    def test_merge_without_scaling_would_break_the_level(self):
+        """환산하지 않으면 단차가 생겨 전월비 부호까지 뒤집힌다(2026-08 실제로 그럴 뻔했다).
+
+        KOSIS 410 → 관세청 원값 386 은 '하락'으로 보이지만, 같은 기준으로 환산하면 487 상승이다.
+        """
+        kosis = pd.DataFrame({"month": ["2026-06", "2026-07"], "value": [448.2e8, 410.2e8]})
+        customs = pd.DataFrame({"month": ["2026-06", "2026-07", "2026-08"],
+                                "value": [339.1e8, 331.0e8, 386.1e8]})
+        ok, scale, _ = mu.customs_scale(kosis, customs, min_overlap=2, window=2)
+        self.assertTrue(ok)
+        raw, _ = mu.merge_customs_exports(kosis, customs, scale=1.0)
+        fixed, _ = mu.merge_customs_exports(kosis, customs, scale=scale)
+        july = 410.2e8
+        self.assertLess(float(raw.set_index("month")["value"].loc[pd.Timestamp("2026-08-01")]), july,
+                        "환산 없이 넣으면 하락으로 보인다")
+        self.assertGreater(float(fixed.set_index("month")["value"].loc[pd.Timestamp("2026-08-01")]), july,
+                           "환산하면 실제 방향(상승)이 나온다")
+
+    def test_merge_refuses_an_impossible_scale(self):
+        kosis = pd.DataFrame({"month": ["2026-05"], "value": [3.5e10]})
+        for bad in (0, -1, float("nan")):
+            with self.assertRaises(ValueError):
+                mu.merge_customs_exports(kosis, kosis, scale=bad)
+
     def test_encoded_key_is_kept_as_is(self):
         """포털의 인코딩 키를 디코딩해 버리면 관세청 API 가 거부한다(2026-09-11 실제 호출로 확인).
 

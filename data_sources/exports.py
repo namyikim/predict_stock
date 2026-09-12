@@ -71,8 +71,9 @@ FLASH_ITEM = '반도체'               # 이 API 는 HS 가 아니라 '주요품
 #   itemUsdAmt00=21,263,370   ← 전체 수출액
 #   itemUsdAmt01= 9,951,704   ← 반도체 (포털 설명의 품목 순서 첫 번째)
 #   itemUsdAmt02~10           ← 철강제품·승용차·…
-# 단위는 천 달러다. 1~20일 반도체 26,034,569천달러를 조업일로 한 달로 늘리면 39.1십억 달러이고,
-# 따로 받은 관세청 월별 HS 8541+8542 의 2026-08(38.61십억 달러)과 맞는다.
+# 단위는 천 달러다. 말일치를 KOSIS 확정치와 견줘 확인했다 — 겹치는 12개월(2025-08~2026-07)
+# 배율이 1.0027~1.0129, 중앙값 1.0055 다. 즉 이 '반도체'는 **KOSIS 와 같은 범위**이고
+# HS 8541+8542(KOSIS 의 0.8배)와는 다르다. 잠정치라 확정치보다 0.5% 안팎 높다.
 FLASH_TOTAL_TAG = 'itemUsdAmt00'
 FLASH_ITEM_TAG = 'itemUsdAmt01'
 FLASH_UNIT = 1000.0                 # 천 달러 → 달러
@@ -343,6 +344,10 @@ def _flash_wide_row(fields):
     period = fields.get('priodDt', '')
     tail = re.search(r'(\d{1,2})\s*$', period)          # '01~10' → 10, '01~말' → 없음
     days = int(tail.group(1)) if tail else 31
+    # 월말치는 달마다 28·30·31 로 오는데(실제로 셋 다 관측됐다), 그대로 두면 같은 달을 1년 전과
+    # 견줄 때 윤년 2월에서 짝이 안 맞아 그 달이 통째로 빠진다. 월말은 한 값으로 모은다.
+    if days >= 28:
+        days = 31
     return {'month': f'{month_text[:4]}-{month_text[4:]}-01', 'days': days,
             'value': value * FLASH_UNIT,
             'total': None if total is None else total * FLASH_UNIT,

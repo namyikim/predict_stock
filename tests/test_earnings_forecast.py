@@ -505,16 +505,28 @@ class CustomsFlashTests(unittest.TestCase):
         self.assertAlmostEqual(frame.loc[1, "value"] / 1e9, 26.034569, places=5)
         self.assertAlmostEqual(frame.loc[1, "total"] / 1e9, 55.21926, places=5)
 
-    def test_the_flash_month_lines_up_with_the_monthly_series(self):
-        """자릿수가 틀리면 여기서 걸린다. 1~20일치를 조업일로 늘리면 월별 확정치 언저리여야 한다.
+    def test_the_month_end_flash_matches_the_kosis_level(self):
+        """이 '반도체'는 KOSIS 와 같은 범위다. 자릿수나 단위가 틀리면 여기서 걸린다.
 
-        2026-08 관세청 월별 HS 8541+8542 는 38.61십억 달러였다. 1~20일 26.03십억 달러를
-        조업일 14/21 로 늘리면 39.1십억 달러다.
+        2026-09-12 한국에서 받은 보관본으로 확인했다 — 말일치 ÷ KOSIS 확정치가 겹치는 12개월에서
+        1.0027~1.0129(중앙값 1.0055)였다. 잠정치라 확정치보다 0.5% 안팎 높다.
+        HS 8541+8542(KOSIS 의 0.8배)와 헷갈리면 안 된다.
         """
-        frame = mu.parse_customs_flash_xml(self.xml(self.REAL))
-        twenty = float(frame.loc[frame["days"] == 20, "value"].iloc[0])
-        self.assertTrue(3.5e10 < twenty * 21 / 14 < 4.2e10,
-                        f"월 환산 {twenty * 21 / 14:,.0f} 이 월별 확정치와 자릿수가 다르다")
+        body = ("<item><itemUsdAmt00>99,190,340</itemUsdAmt00><itemUsdAmt01>41,173,420</itemUsdAmt01>"
+                "<priodDt>01~31</priodDt><priodMon>202607</priodMon></item>")
+        frame = mu.parse_customs_flash_xml(self.xml(body))
+        kosis_july = 41_015_154_158.0          # macro_history/semiconductor_exports.csv 2026-07
+        ratio = float(frame.loc[0, "value"]) / kosis_july
+        self.assertTrue(0.99 < ratio < 1.03, f"KOSIS 대비 {ratio:.4f} — 단위나 열 번호를 확인하라")
+
+    def test_month_end_is_one_marker_whatever_the_last_day_is(self):
+        """말일이 28·30·31 로 섞여 오면 1년 전과 짝이 안 맞아 그 달이 통째로 빠진다."""
+        for last in ("01~28", "01~30", "01~31"):
+            body = ("<item><itemUsdAmt00>90,000,000</itemUsdAmt00>"
+                    "<itemUsdAmt01>40,000,000</itemUsdAmt01>"
+                    f"<priodDt>{last}</priodDt><priodMon>202602</priodMon></item>")
+            with self.subTest(priodDt=last):
+                self.assertEqual(mu.parse_customs_flash_xml(self.xml(body)).loc[0, "days"], 31)
 
     def test_a_shifted_column_is_refused_rather_than_published(self):
         """번호가 밀리면 반도체가 전체보다 커진다. 그대로 쓰면 수출이 두 배로 뛴 것처럼 보인다."""

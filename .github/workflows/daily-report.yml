@@ -215,6 +215,37 @@ jobs:
 
   # 검색어는 하루 사이에 실제로 바뀌는 유일한 보고서라 3시간 간격 회차에도 돌린다.
   # 아침 백업(07:25) 회차만 건너뛴다 — 한 시간 전에 만든 것과 같은 내용이 된다.
+  ai_news:
+    runs-on: ubuntu-latest
+    # 검색어와 같은 회차에 돈다. 뉴스는 하루에도 바뀌므로 3시간 간격 회차에도 갱신한다.
+    if: github.event_name != 'schedule' || github.event.schedule != '25 22 * * 0-4'
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+        # 표준 라이브러리만 쓰므로 pip install이 필요 없다.
+      - name: 최신 AI 트렌드 및 뉴스
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python tools/build_ai_news_report.py --out runs/ai_news --publish
+      - name: Pages 재빌드 요청
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+        run: |
+          code=$(curl -sS -o /dev/null -w '%{http_code}' -X POST \
+            -H "Authorization: Bearer $GH_TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            "https://api.github.com/repos/$REPO/pages/builds")
+          echo "HTTP $code"
+          case "$code" in
+            200|201|409) echo "Pages 재빌드 요청 완료" ;;
+            *) echo "::warning::Pages 재빌드 요청 실패 ($code)" ;;
+          esac
+
   trends:
     runs-on: ubuntu-latest
     if: github.event_name != 'schedule' || github.event.schedule != '25 22 * * 0-4'

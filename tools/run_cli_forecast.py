@@ -203,6 +203,128 @@ def evaluate(table):
     return pd.DataFrame(rows)
 
 
+def choose_model(scores, horizon, default="rw", challenger="drift"):
+    """지평마다 어느 모형으로 숫자를 낼지 규칙으로 정한다.
+
+    성적 순위로 고르면 고른 표본에서 성능을 보고하는 셈이라 편향된다(분기 이익 모형과 같은 규칙).
+    기본은 가장 단순한 쪽이고, **도전자가 기본을 유의하게 이길 때만** 바꾼다.
+    """
+    part = scores[(scores["horizon"] == horizon) & (scores["model"] == challenger)]
+    if part.empty or pd.isna(part.iloc[0].get(f"vs_{default}_hi")):
+        return default, "기본(단순한 쪽)"
+    if part.iloc[0][f"vs_{default}_hi"] < 0:
+        return challenger, f"{challenger} 가 {default} 를 유의하게 이겼다"
+    return default, f"{challenger} 가 {default} 를 이기지 못했다"
+
+
+def forecast_now(series, table, scores, horizons=HORIZONS, partners=(), lags=2):
+    """마지막 값 기준으로 앞으로 몇 달을 낸다. 구간은 워크포워드 오차의 실제 분위다.
+
+    이론 분포를 가정하지 않는다. 그 지평에서 그 모형이 실제로 얼마나 빗나갔는지를 그대로 쓴다.
+    """
+    values = series.to_numpy(dtype=float)
+    rows = []
+    for horizon in horizons:
+        model, reason = choose_model(scores, horizon)
+        if model == "drift":
+            point = float(values[-1] + (values[-1] - values[-2]) * horizon)
+        else:
+            point = float(values[-1])
+        part = table[table["horizon"] == horizon]
+        errors = (part[model] - part["actual"]).dropna().to_numpy(dtype=float)
+        lo, hi = (np.quantile(errors, [0.10, 0.90]) if len(errors) >= 20 else (np.nan, np.nan))
+        alternatives = {}
+        for name, fn in (("ar", lambda: forecast_ar(values, horizon, lags)),
+                         ("var", lambda: forecast_var([series] + list(partners), horizon, lags))):
+            try:
+                alternatives[name] = fn()
+            except Exception:
+                alternatives[name] = None
+        rows.append({"horizon": horizon,
+                     "month": f"{series.index[-1] + pd.DateOffset(months=horizon):%Y-%m}",
+                     "model": model, "reason": reason, "point": point,
+                     "low": point - float(hi) if np.isfinite(hi) else None,
+                     "high": point - float(lo) if np.isfinite(lo) else None,
+                     "n_errors": int(len(errors)), **alternatives})
+    return pd.DataFrame(rows)
+
+
+def forecast_svg(series, ahead, months=48, width=900, height=340):
+    """최근 실적과 앞으로 몇 달을 한 그림에. 확정과 전망을 선 모양으로 구분한다.
+
+    구간은 워크포워드 오차의 10~90% 분위다. 점 하나만 보여 주면 '이만큼은 맞다'로 읽히므로
+    구간을 늘 함께 그린다.
+    """
+    recent = series.tail(months)
+    points = [(f"{m:%Y-%m}", float(v)) for m, v in recent.items()]
+    future = [(row["month"], float(row["point"]),
+               None if pd.isna(row["low"]) else float(row["low"]),
+               None if pd.isna(row["high"]) else float(row["high"]))
+              for _, row in ahead.iterrows()]
+    values = [v for _, v in points] + [v for _, v, _, _ in future]
+    values += [x for _, _, lo, hi in future for x in (lo, hi) if x is not None]
+    low, high = min(values), max(values)
+    pad = (high - low) * 0.18 or 0.5
+    low, high = low - pad, high + pad
+    left, right, top, bottom = 58, 18, 34, 46
+    span = len(points) + len(future) - 1
+
+    def x_of(i):
+        return left + (width - left - right) * i / max(span, 1)
+
+    def y_of(v):
+        return top + (height - top - bottom) * (high - v) / (high - low)
+
+    history = " ".join(f"{x_of(i):.1f},{y_of(v):.1f}" for i, (_, v) in enumerate(points))
+    bridge_x, bridge_y = x_of(len(points) - 1), y_of(points[-1][1])
+    forward = f"{bridge_x:.1f},{bridge_y:.1f} " + " ".join(
+        f"{x_of(len(points) + i):.1f},{y_of(v):.1f}" for i, (_, v, _, _) in enumerate(future))
+    band = ""
+    if all(lo is not None for _, _, lo, _ in future):
+        upper = [(bridge_x, bridge_y)] + [(x_of(len(points) + i), y_of(hi))
+                                          for i, (_, _, _, hi) in enumerate(future)]
+        lower = [(x_of(len(points) + i), y_of(lo))
+                 for i, (_, _, lo, _) in enumerate(future)][::-1] + [(bridge_x, bridge_y)]
+        band = ('<polygon points="'
+                + " ".join(f"{x:.1f},{y:.1f}" for x, y in upper + lower)
+                + '" fill="#4c78a8" opacity="0.14"/>')
+    ticks = "".join(
+        f'<line x1="{left}" x2="{width - right}" y1="{y_of(v):.1f}" y2="{y_of(v):.1f}" '
+        f'stroke="#eee"/><text x="{left - 8}" y="{y_of(v) + 4:.1f}" text-anchor="end" '
+        f'font-size="11" fill="#8a9199">{v:.1f}</text>'
+        for v in np.linspace(low + pad / 2, high - pad / 2, 4))
+    labels = ""
+    step = max(len(points) // 6, 1)
+    for i, (month, _) in enumerate(points):
+        if i % step == 0:
+            labels += (f'<text x="{x_of(i):.1f}" y="{height - bottom + 18}" text-anchor="middle" '
+                       f'font-size="10" fill="#8a9199">{month}</text>')
+    marks = "".join(
+        f'<circle cx="{x_of(len(points) + i):.1f}" cy="{y_of(v):.1f}" r="3.2" fill="none" '
+        f'stroke="#c8952a" stroke-width="1.6"/>'
+        f'<text x="{x_of(len(points) + i):.1f}" y="{y_of(v) - 9:.1f}" text-anchor="middle" '
+        f'font-size="10" fill="#c8952a">{v:.2f}</text>'
+        f'<text x="{x_of(len(points) + i):.1f}" y="{height - bottom + 18}" text-anchor="middle" '
+        f'font-size="10" fill="#c8952a">{month}</text>'
+        for i, (month, v, _, _) in enumerate(future))
+    return (
+        f'<svg viewBox="0 0 {width} {height}" width="100%" xmlns="http://www.w3.org/2000/svg" '
+        f'style="max-width:{width}px;font-family:-apple-system,\'Malgun Gothic\',sans-serif">'
+        f'<rect width="{width}" height="{height}" fill="#fff"/>'
+        f'<text x="{left}" y="20" font-size="13" font-weight="600" fill="#1a1a1a">'
+        f'G20 경기선행지수 — 확정 {points[0][0]}~{points[-1][0]}, 전망 {future[0][0]}~{future[-1][0]}</text>'
+        f'{ticks}{band}'
+        f'<polyline points="{history}" fill="none" stroke="#4c78a8" stroke-width="1.8"/>'
+        f'<polyline points="{forward}" fill="none" stroke="#c8952a" stroke-width="1.8" '
+        f'stroke-dasharray="5 4"/>'
+        f'<line x1="{bridge_x:.1f}" x2="{bridge_x:.1f}" y1="{top}" y2="{height - bottom}" '
+        f'stroke="#bbb" stroke-dasharray="2 3"/>'
+        f'{labels}{marks}'
+        f'<text x="{width - right}" y="20" text-anchor="end" font-size="11" fill="#8a9199">'
+        f'점선은 전망 · 음영은 워크포워드 오차 10~90%</text>'
+        '</svg>')
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--out", type=Path, required=True)
@@ -246,6 +368,19 @@ def main():
                              f"[{row[f'{key}_lo']:+.4f}, {row[f'{key}_hi']:+.4f}] {verdict}")
             print(line)
 
+    ahead = forecast_now(cli, table, scores, partners=partners, lags=args.lags)
+    print(f"\n=== 전망 · 마지막 확정 {cli.index[-1]:%Y-%m} {cli.iloc[-1]:.4f} ===")
+    for _, row in ahead.iterrows():
+        band = (f"[{row['low']:.3f}, {row['high']:.3f}]"
+                if pd.notna(row["low"]) else "구간 없음")
+        others = " · ".join(f"{k} {row[k]:.3f}" for k in ("ar", "var") if pd.notna(row.get(k)))
+        print(f"  {row['month']} ({row['horizon']}개월 앞) {row['point']:.4f} {band} "
+              f"· 채택 {row['model']} — {row['reason']}")
+        if others:
+            print(f"      참고(채택 안 함): {others}")
+
+    (args.out / "forecast.svg").write_text(forecast_svg(cli, ahead), encoding="utf-8")
+    ahead.to_csv(args.out / "forecast.csv", index=False)
     table.to_csv(args.out / "walk_forward.csv", index=False)
     scores.to_csv(args.out / "scores.csv", index=False)
     (args.out / "diagnostics.json").write_text(

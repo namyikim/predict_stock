@@ -115,5 +115,71 @@ class ScoringTests(unittest.TestCase):
         self.assertNotIn("var", set(cf.evaluate(table)["model"]))
 
 
+class ChoiceTests(unittest.TestCase):
+    """어느 모형으로 숫자를 낼지는 규칙으로 정한다 — 성적 순위로 고르면 그 성적이 편향된다."""
+
+    def scores(self, hi):
+        return pd.DataFrame([{"horizon": 1, "model": "drift", "vs_rw": -0.07,
+                              "vs_rw_lo": -0.13, "vs_rw_hi": hi}])
+
+    def test_the_challenger_is_used_only_when_it_wins_significantly(self):
+        self.assertEqual(cf.choose_model(self.scores(-0.01), 1)[0], "drift")
+        self.assertEqual(cf.choose_model(self.scores(+0.02), 1)[0], "rw")
+
+    def test_a_horizon_with_no_comparison_falls_back_to_the_simple_model(self):
+        self.assertEqual(cf.choose_model(self.scores(-0.01), 3)[0], "rw")
+        self.assertEqual(cf.choose_model(pd.DataFrame(columns=["horizon", "model"]), 1)[0], "rw")
+
+
+class ForecastNowTests(unittest.TestCase):
+    def setUp(self):
+        self.series = monthly(np.linspace(100.0, 100.5, 200))
+        self.table = cf.walk_forward(self.series, [], min_train=150, lags=2)
+        self.scores = cf.evaluate(self.table)
+
+    def test_the_published_number_matches_the_chosen_model(self):
+        ahead = cf.forecast_now(self.series, self.table, self.scores)
+        last = float(self.series.iloc[-1])
+        step = last - float(self.series.iloc[-2])
+        for _, row in ahead.iterrows():
+            expected = last + step * row["horizon"] if row["model"] == "drift" else last
+            self.assertAlmostEqual(row["point"], expected, places=6)
+
+    def test_the_band_comes_from_real_errors_and_brackets_the_point(self):
+        ahead = cf.forecast_now(self.series, self.table, self.scores)
+        for _, row in ahead.iterrows():
+            self.assertLessEqual(row["low"], row["point"] + 1e-9)
+            self.assertGreaterEqual(row["high"], row["point"] - 1e-9)
+            self.assertGreater(row["n_errors"], 0)
+
+    def test_the_forecast_month_follows_the_last_confirmed_month(self):
+        ahead = cf.forecast_now(self.series, self.table, self.scores)
+        self.assertEqual(list(ahead["month"]),
+                         [f"{self.series.index[-1] + pd.DateOffset(months=h):%Y-%m}"
+                          for h in cf.HORIZONS])
+
+    def test_models_that_were_not_adopted_are_still_reported(self):
+        """채택하지 않았다고 숨기면 나중에 왜 안 썼는지 알 수 없다."""
+        ahead = cf.forecast_now(self.series, self.table, self.scores)
+        self.assertIn("ar", ahead.columns)
+        self.assertIn("var", ahead.columns)
+
+
+class ChartTests(unittest.TestCase):
+    def test_the_chart_separates_confirmed_from_forecast(self):
+        series = monthly(np.linspace(100.0, 100.5, 60))
+        table = cf.walk_forward(series, [], min_train=40, lags=2)
+        svg = cf.forecast_svg(series, cf.forecast_now(series, table, cf.evaluate(table)))
+        self.assertTrue(svg.startswith("<svg"))
+        self.assertIn("stroke-dasharray", svg, "전망은 실선과 다른 모양이어야 한다")
+        self.assertIn("워크포워드 오차", svg, "구간이 무엇인지 그림 안에 적어야 한다")
+
+    def test_the_chart_is_valid_xml(self):
+        import xml.etree.ElementTree as ET
+        series = monthly(np.linspace(100.0, 100.5, 60))
+        table = cf.walk_forward(series, [], min_train=40, lags=2)
+        ET.fromstring(cf.forecast_svg(series, cf.forecast_now(series, table, cf.evaluate(table))))
+
+
 if __name__ == "__main__":
     unittest.main()

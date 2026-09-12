@@ -334,9 +334,19 @@ def refresh_exports_flash(out_dir, key, months=14, now=None):
     end = pd.Timestamp(now).tz_localize(None).normalize()
     start = end.replace(day=1) - pd.DateOffset(months=months)
     flash = fetch_customs_flash(start, end, key)
+    return _write_exports_flash(out_dir, flash)
+
+
+def _write_exports_flash(out_dir, flash):
+    """받은 잠정치를 증감률로 바꿔 저장한다. (원자료, 증감률, 경로)"""
     yoy = flash_yoy(flash)
     if not len(yoy):
         raise ValueError("1년 전 같은 일자 자료가 없어 증감률을 낼 수 없습니다.")
+    out_dir = Path(out_dir)
+    out_dir.mkdir(parents=True, exist_ok=True)
+    raw = flash.copy()
+    raw["month"] = pd.to_datetime(raw["month"]).dt.strftime("%Y-%m")
+    raw.to_csv(out_dir / "customs_flash.csv", index=False)     # 보관본으로 올릴 원자료
     out = yoy.copy()
     out["month"] = pd.to_datetime(out["month"]).dt.strftime("%Y-%m")
     out["released"] = "customs_flash_api"
@@ -344,6 +354,18 @@ def refresh_exports_flash(out_dir, key, months=14, now=None):
     path.parent.mkdir(parents=True, exist_ok=True)
     out.to_csv(path, index=False)
     return flash, yoy, path
+
+
+def load_flash_cache(fallback_dir):
+    """저장소 보관본(macro_history/customs_flash.csv)을 읽는다. 없으면 None."""
+    path = Path(fallback_dir) / "customs_flash.csv"
+    if not path.exists():
+        return None
+    frame = pd.read_csv(path)
+    if not {"month", "days", "value"}.issubset(frame.columns) or frame.empty:
+        return None
+    frame["month"] = pd.to_datetime(frame["month"].astype(str) + "-01", errors="coerce")
+    return frame.dropna(subset=["month"])
 
 
 def apply_exports_flash(exports, flash):
@@ -921,21 +943,40 @@ def analyse(target, out_dir, fetch=True):
                .asfreq("MS").dropna())
     # 10일 단위 잠정치를 먼저 새로 받아 둔다. 받지 못하면 지난번 파일이 그대로 쓰인다.
     flash_info = {"enabled": False, "reason": "DATA_GO_KR_KEY 없음"}
-    if key and fetch:
+    if fetch:
+        source, raw, yoy, reason = "customs_flash_api", None, None, ""
         try:
+            if not key:
+                raise RuntimeError("DATA_GO_KR_KEY 없음")
             raw, yoy, _ = refresh_exports_flash(out_dir, key)
+        except Exception as exc:
+            # Actions 는 미국에서 돌고 한국 정부 API 는 해외 IP 에서 자주 막힌다. 한국에서 한 번
+            # 받아 둔 보관본이 있으면 그것으로 이어 간다 — 순별 자료는 나중에 받아도 값이 같다.
+            reason = f"{type(exc).__name__}: {error_detail(exc)}"
+            cached = load_flash_cache(fallback_dir)
+            if cached is None:
+                flash_info = {"enabled": False, "reason": reason}
+                print("  ⚠️ 관세청 10일 잠정치를 받지 못했습니다(무시):", reason, flush=True)
+            else:
+                try:
+                    raw, yoy, _ = _write_exports_flash(out_dir, cached)
+                    source = "customs_flash_cache"
+                    print(f"  관세청 10일 잠정치 조회 실패 → 저장소 보관본 사용: {reason}", flush=True)
+                except Exception as inner:
+                    flash_info = {"enabled": False, "reason": f"{reason} / 보관본도 못 씀: {inner}"}
+                    raw = None
+        if raw is not None:
             latest = raw.iloc[-1]
             flash_info = {
-                "enabled": True, "source": "customs_flash_api", "rows": int(len(raw)),
+                "enabled": True, "source": source, "rows": int(len(raw)),
                 "first": f"{pd.Timestamp(raw['month'].min()):%Y-%m}",
                 "last": f"{pd.Timestamp(latest['month']):%Y-%m}",
                 "last_days": int(latest["days"]), "yoy_rows": int(len(yoy)),
             }
-            print(f"  관세청 10일 잠정치: {flash_info['first']}~{flash_info['last']} "
-                  f"(마지막 {flash_info['last_days']}일치, {flash_info['rows']}행)", flush=True)
-        except Exception as exc:
-            flash_info = {"enabled": False, "reason": f"{type(exc).__name__}: {error_detail(exc)}"}
-            print("  ⚠️ 관세청 10일 잠정치를 받지 못했습니다(무시):", flash_info["reason"], flush=True)
+            if reason:
+                flash_info["fetch_error"] = reason[:200]
+            print(f"  관세청 10일 잠정치({source}): {flash_info['first']}~{flash_info['last']} "
+                  f"· 마지막 {flash_info['last_days']}일치 · {flash_info['rows']}행", flush=True)
 
     flash_applied = []
     try:
@@ -1176,6 +1217,16 @@ def main():
                                      token, "macro: customs_exports")
             except Exception as exc:
                 print("  관세청 사본 업로드 실패:", exc, flush=True)
+
+        # 10일 잠정치도 같은 이유로 보관한다. 한국에서 한 번 받아 두면 해외에서 막힌 날에도
+        # 그 달을 계속 채울 수 있다 — 순별 자료는 확정치와 달리 뒤늦게 받아도 값이 바뀌지 않는다.
+        if (result.get("flash_info") or {}).get("source") == "customs_flash_api" and (out_dir / "customs_flash.csv").exists():
+            try:
+                github_pages.publish("macro_history/customs_flash.csv",
+                                     (out_dir / "customs_flash.csv").read_text(encoding="utf-8"),
+                                     token, f"macro: customs_flash ({result['flash_info'].get('last')})")
+            except Exception as exc:
+                print("  관세청 잠정치 사본 업로드 실패:", exc, flush=True)
         # 다음 실행이 최근 2년만 다시 받으면 되도록 이력을 저장소에 남긴다.
         if result["profit_source"].startswith("DART"):
             series = pd.read_csv(out_dir / "earnings_profit.csv") if (out_dir / "earnings_profit.csv").exists() else None

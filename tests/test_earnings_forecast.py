@@ -570,6 +570,31 @@ class CustomsFlashTests(unittest.TestCase):
         self.assertEqual(applied, [])
         self.assertEqual(float(merged.loc[pd.Timestamp("2026-09-01")]), 61.0)
 
+    def test_the_archive_copy_is_written_and_read_back(self):
+        """Actions 는 미국에서 돌아 관세청이 자주 막힌다. 보관본이 없으면 이 기능은 대부분 죽는다."""
+        flash = pd.DataFrame({
+            "month": pd.to_datetime(["2025-09-01", "2026-09-01"]),
+            "days": [20, 20], "value": [100.0, 130.0],
+        })
+        with tempfile.TemporaryDirectory() as tmp:
+            ef._write_exports_flash(tmp, flash)
+            copy = Path(tmp) / "customs_flash.csv"
+            self.assertTrue(copy.exists(), "보관본으로 올릴 원자료가 저장돼야 한다")
+            read_back = ef.load_flash_cache(tmp)
+            self.assertEqual(len(read_back), 2)
+            self.assertEqual(pd.Timestamp(read_back["month"].max()), pd.Timestamp("2026-09-01"))
+            self.assertAlmostEqual(float(ef.flash_yoy(read_back)["semiconductor_yoy"].iloc[0]), 0.30)
+
+    def test_missing_archive_reads_as_nothing_rather_than_raising(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            self.assertIsNone(ef.load_flash_cache(tmp))
+
+    def test_publish_condition_uses_the_api_source_only(self):
+        """보관본을 그대로 다시 올리면 같은 내용이 매일 커밋된다. 새로 받았을 때만 올린다."""
+        source = (Path(ef.__file__)).read_text(encoding="utf-8")
+        self.assertIn('.get("source") == "customs_flash_api"', source)
+        self.assertIn("macro_history/customs_flash.csv", source)
+
     def test_the_report_shows_the_flash_row_with_how_many_days(self):
         import report_html as rh
         html = rh.fragment_sources_html({}, {

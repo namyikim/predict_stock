@@ -65,6 +65,18 @@ CUSTOMS_HS = ('8541', '8542')       # 반도체: 개별소자 + 집적회로
 CUSTOMS_FLASH_URL = 'https://apis.data.go.kr/1220000/prlstMmUtPrviExpAcrs/getPrlstMmUtPrviExpAcrs'
 FLASH_ITEM = '반도체'               # 이 API 는 HS 가 아니라 '주요품목' 이름으로 나눈다
 
+# 실제 응답 구조(2026-09-12 한국에서 호출해 확인). 품목마다 행이 아니라 **한 행에 품목을 열로**
+# 늘어놓는다. 품목 이름 칸은 없고 번호만 있다.
+#   priodYear=2026 priodMon=202608 priodDt='01~10'
+#   itemUsdAmt00=21,263,370   ← 전체 수출액
+#   itemUsdAmt01= 9,951,704   ← 반도체 (포털 설명의 품목 순서 첫 번째)
+#   itemUsdAmt02~10           ← 철강제품·승용차·…
+# 단위는 천 달러다. 1~20일 반도체 26,034,569천달러를 조업일로 한 달로 늘리면 39.1십억 달러이고,
+# 따로 받은 관세청 월별 HS 8541+8542 의 2026-08(38.61십억 달러)과 맞는다.
+FLASH_TOTAL_TAG = 'itemUsdAmt00'
+FLASH_ITEM_TAG = 'itemUsdAmt01'
+FLASH_UNIT = 1000.0                 # 천 달러 → 달러
+
 # 관세청은 한 번에 1년 이내만 조회할 수 있다. 넘기면 서버가 resultCode 99 로 거부한다
 # ("시작과 종료의 조회기간은 1년이내 기간만 가능합니다"). 2026-09-12 Actions 실행이 30개월을
 # 한 번에 요청해 이 오류로 관세청 계열이 통째로 꺼져 있었다. 그래서 기간을 창으로 나눠 부른다.
@@ -304,12 +316,48 @@ def _flash_amount(fields):
     return None if best is None else best[1]
 
 
-def parse_customs_flash_xml(text, item=FLASH_ITEM):
-    """10일 단위 잠정 수출 XML → DataFrame(month, days, value).
+def _flash_number(text):
+    try:
+        return float(str(text).replace(',', '').strip())
+    except (TypeError, ValueError):
+        return None
 
-    공개 명세에 응답 칸 이름이 적혀 있지 않다. 이름을 하나로 못박으면 관세청이 칸 이름을 바꾼 날
-    조용히 빈 계열이 되어, 보고서는 아무 말 없이 옛 숫자를 계속 쓴다. 그래서 이름 대신 값의
-    모양으로 찾고, 못 찾으면 **실제로 받은 칸 이름을 그대로 알린다** — 그 한 줄이면 고칠 수 있다.
+
+def _flash_wide_row(fields):
+    """실제 응답 모양(한 행에 품목을 열로)에서 한 줄을 뽑는다. 그 모양이 아니면 None.
+
+    품목 이름 칸이 없어 번호를 믿어야 한다. 그래서 **전체 수출액과 견줘 한 번 더 확인한다** —
+    번호가 밀려 엉뚱한 품목을 읽으면 반도체가 전체보다 크거나 터무니없이 작아진다.
+    """
+    month_text = fields.get('priodMon', '')
+    if not _FLASH_MONTH.fullmatch(month_text):
+        return None
+    value = _flash_number(fields.get(FLASH_ITEM_TAG))
+    total = _flash_number(fields.get(FLASH_TOTAL_TAG))
+    if value is None or value <= 0:
+        return None
+    if total is not None and not (0 < value <= total):
+        raise CustomsRejected(
+            f'{FLASH_ITEM_TAG} 가 전체({FLASH_TOTAL_TAG})보다 큽니다 — 품목 열 순서가 바뀐 것 같습니다 '
+            f'({month_text}: {value:,.0f} > {total:,.0f}).')
+    period = fields.get('priodDt', '')
+    tail = re.search(r'(\d{1,2})\s*$', period)          # '01~10' → 10, '01~말' → 없음
+    days = int(tail.group(1)) if tail else 31
+    return {'month': f'{month_text[:4]}-{month_text[4:]}-01', 'days': days,
+            'value': value * FLASH_UNIT,
+            'total': None if total is None else total * FLASH_UNIT,
+            'exact': True}
+
+
+def parse_customs_flash_xml(text, item=FLASH_ITEM):
+    """10일 단위 잠정 수출 XML → DataFrame(month, days, value, total).
+
+    실제 모양은 priodMon·priodDt 에 기간, itemUsdAmt00 에 전체, itemUsdAmt01 에 반도체다(위 상수).
+    품목 이름 칸이 없어 번호를 믿어야 하므로 전체 수출액과 견줘 한 번 더 확인한다.
+
+    관세청이 모양을 바꿔 품목마다 한 행으로 주기 시작하면 위 칸 이름이 안 맞는다. 그때 조용히
+    빈 계열이 되면 보고서는 아무 말 없이 옛 숫자를 계속 쓴다. 그래서 이름이 안 맞으면 값의 모양으로
+    한 번 더 찾고, 그래도 못 찾으면 **실제로 받은 칸 이름을 그대로 알린다** — 그 한 줄이면 고칠 수 있다.
     """
     import xml.etree.ElementTree as ET
     root = ET.fromstring(text)
@@ -321,6 +369,10 @@ def parse_customs_flash_xml(text, item=FLASH_ITEM):
     for element in root.iter('item'):
         fields = {child.tag: (child.text or '').strip() for child in element}
         seen.update(fields)
+        wide = _flash_wide_row(fields)
+        if wide is not None:
+            rows.append(wide)
+            continue
         # 이름이 정확히 '반도체'인 행을 먼저 찾는다. 부분 일치만 보면 '반도체제조장비' 같은
         # 다른 품목이 섞여 합이 부풀 수 있다. 정확히 맞는 행이 하나도 없을 때만 부분 일치로 물러선다.
         exact = any(value == item for value in fields.values())

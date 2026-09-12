@@ -488,6 +488,48 @@ class CustomsFlashTests(unittest.TestCase):
         return (f"<response><header><resultCode>{code}</resultCode>"
                 f"<resultMsg>OK</resultMsg></header><body><items>{body}</items></body></response>")
 
+    # 2026-09-12 한국에서 실제로 받은 응답을 그대로 옮긴 것이다(값·칸 이름 모두).
+    REAL = ("<item><itemUsdAmt00>21,263,370</itemUsdAmt00><itemUsdAmt01>9,951,704</itemUsdAmt01>"
+            "<itemUsdAmt02>888,770</itemUsdAmt02><itemUsdAmt10>113,074</itemUsdAmt10>"
+            "<priodDt>01~10</priodDt><priodMon>202608</priodMon><priodYear>2026</priodYear></item>"
+            "<item><itemUsdAmt00>55,219,260</itemUsdAmt00><itemUsdAmt01>26,034,569</itemUsdAmt01>"
+            "<itemUsdAmt02>2,391,216</itemUsdAmt02><itemUsdAmt10>306,820</itemUsdAmt10>"
+            "<priodDt>01~20</priodDt><priodMon>202608</priodMon><priodYear>2026</priodYear></item>")
+
+    def test_the_real_response_shape_is_read_correctly(self):
+        """품목마다 행이 아니라 한 행에 품목을 열로 늘어놓는다. 단위는 천 달러다."""
+        frame = mu.parse_customs_flash_xml(self.xml(self.REAL))
+        self.assertEqual(list(frame["days"]), [10, 20])
+        self.assertEqual(set(frame["month"]), {pd.Timestamp("2026-08-01")})
+        # itemUsdAmt01 이 반도체, 천 달러 단위 → 1~20일 26.03십억 달러
+        self.assertAlmostEqual(frame.loc[1, "value"] / 1e9, 26.034569, places=5)
+        self.assertAlmostEqual(frame.loc[1, "total"] / 1e9, 55.21926, places=5)
+
+    def test_the_flash_month_lines_up_with_the_monthly_series(self):
+        """자릿수가 틀리면 여기서 걸린다. 1~20일치를 조업일로 늘리면 월별 확정치 언저리여야 한다.
+
+        2026-08 관세청 월별 HS 8541+8542 는 38.61십억 달러였다. 1~20일 26.03십억 달러를
+        조업일 14/21 로 늘리면 39.1십억 달러다.
+        """
+        frame = mu.parse_customs_flash_xml(self.xml(self.REAL))
+        twenty = float(frame.loc[frame["days"] == 20, "value"].iloc[0])
+        self.assertTrue(3.5e10 < twenty * 21 / 14 < 4.2e10,
+                        f"월 환산 {twenty * 21 / 14:,.0f} 이 월별 확정치와 자릿수가 다르다")
+
+    def test_a_shifted_column_is_refused_rather_than_published(self):
+        """번호가 밀리면 반도체가 전체보다 커진다. 그대로 쓰면 수출이 두 배로 뛴 것처럼 보인다."""
+        body = ("<item><itemUsdAmt00>1,000</itemUsdAmt00><itemUsdAmt01>9,000</itemUsdAmt01>"
+                "<priodDt>01~10</priodDt><priodMon>202608</priodMon></item>")
+        with self.assertRaises(mu.CustomsRejected) as caught:
+            mu.parse_customs_flash_xml(self.xml(body))
+        self.assertIn("순서", str(caught.exception))
+
+    def test_month_end_rows_count_as_the_whole_month(self):
+        body = ("<item><itemUsdAmt00>90,000,000</itemUsdAmt00><itemUsdAmt01>40,000,000</itemUsdAmt01>"
+                "<priodDt>01~말</priodDt><priodMon>202608</priodMon></item>")
+        frame = mu.parse_customs_flash_xml(self.xml(body))
+        self.assertEqual(frame.loc[0, "days"], 31)
+
     def test_reads_a_row_whose_period_is_one_eight_digit_date(self):
         body = ("<item><statKor>반도체</statKor><expDt>20260910</expDt>"
                 "<expDlr>15,300,000,000</expDlr></item>")

@@ -846,7 +846,11 @@ def analyse(target, out_dir, fetch=True):
     if key and fetch:
         try:
             try:
-                customs = fetch_customs_exports(pd.Timestamp.now(tz=KST).date().replace(day=1) - pd.DateOffset(months=30),
+                # 18개월이면 12개월 창 두 개(HS 2개 × 2 = 호출 4건)다. 30개월은 창이 셋이라 호출이
+                # 여섯이고, 한국 정부 API 가 해외에서 간헐적으로 끊기므로 요청이 많을수록 실패 확률이
+                # 올라간다. 환산 배율은 겹치는 최근 6개월이면 되고 KOSIS 는 두 달쯤 뒤처질 뿐이라
+                # 18개월로 충분하다(겹침 15개월 안팎).
+                customs = fetch_customs_exports(pd.Timestamp.now(tz=KST).date().replace(day=1) - pd.DateOffset(months=18),
                                                 pd.Timestamp.now(tz=KST).date(), key)
                 customs_info["source"] = "customs_api"
                 (out_dir / "customs_exports.csv").parent.mkdir(parents=True, exist_ok=True)
@@ -863,8 +867,13 @@ def analyse(target, out_dir, fetch=True):
             # 크기가 같은지 묻는 대신, 배율이 안정적인지 보고 KOSIS 기준으로 환산해서 넣는다.
             same_size, size_diag = reconcile_customs(macro["semiconductor_exports"], customs)
             ok, scale, diag = customs_scale(macro["semiconductor_exports"], customs)
-            customs_info = {"enabled": ok, "same_size": same_size,
-                            "ratio_median": size_diag.get("ratio_median"), **diag}
+            # source 는 위에서 이미 정해졌다. 통째로 새로 만들면 그것이 지워져 보관본 발행 조건
+            # (source == "customs_api")이 영영 거짓이 된다 — 2026-09-12 실제로 그랬다. 갱신만 한다.
+            customs_info.update(enabled=ok, same_size=same_size,
+                                ratio_median=size_diag.get("ratio_median"), **diag)
+            if ok:
+                # 첫 줄에서 넣어 둔 "DATA_GO_KR_KEY 없음" 이 남아 있으면 성공한 실행이 실패로 읽힌다.
+                customs_info.pop("reason", None)
             if ok:
                 macro["semiconductor_exports"], added = merge_customs_exports(
                     macro["semiconductor_exports"], customs, scale=scale)

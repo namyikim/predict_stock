@@ -425,6 +425,39 @@ class CustomsSourceTests(unittest.TestCase):
             with self.assertRaises(ValueError):
                 mu.merge_customs_exports(kosis, kosis, scale=bad)
 
+    def test_customs_info_keeps_the_source_so_the_cache_gets_published(self):
+        """source 를 잃으면 보관본이 영영 저장되지 않고, 연결이 끊긴 날 물러설 곳이 없다.
+
+        2026-09-12 실제로 그랬다: 환산까지 잘 돌아 months_used 가 2 로 올랐는데 customs_info 를
+        통째로 새로 만드는 바람에 source 가 None 이 되어 macro_history/customs_exports.csv 가
+        한 번도 만들어지지 않았고, 다음 날 타임아웃에서 관세청 계열이 통째로 꺼졌다.
+        """
+        source = (Path(mu.__file__).resolve().parent / "tools" / "build_earnings_forecast.py").read_text(encoding="utf-8")
+        self.assertIn("customs_info.update(enabled=ok", source,
+                      "customs_info 를 새로 만들면 source 가 지워진다 — update 로 갱신해야 한다")
+        self.assertNotIn('customs_info = {"enabled": ok', source)
+        # 발행 조건이 여전히 source 를 본다는 것도 함께 고정한다.
+        self.assertIn('.get("source") == "customs_api"', source)
+
+    def test_customs_info_update_preserves_source_and_clears_stale_reason(self):
+        """실제 갱신 동작. 성공하면 source 가 남고 '키 없음' 사유는 지워진다."""
+        info = {"enabled": False, "reason": "DATA_GO_KR_KEY 없음"}
+        info["source"] = "customs_api"
+        diag = {"overlap": 12, "window": 6, "scale": 1.26, "spread": 0.047, "ratios": {}}
+        info.update(enabled=True, same_size=False, ratio_median=0.807, **diag)
+        info.pop("reason", None)
+        self.assertEqual(info["source"], "customs_api")
+        self.assertTrue(info["enabled"])
+        self.assertNotIn("reason", info)
+
+    def test_actions_requests_at_most_two_windows(self):
+        """창이 적을수록 해외에서 끊길 기회가 적다. 18개월 = 12개월 창 두 개."""
+        source = (Path(mu.__file__).resolve().parent / "tools" / "build_earnings_forecast.py").read_text(encoding="utf-8")
+        self.assertIn("DateOffset(months=18)", source)
+        self.assertNotIn("DateOffset(months=30)", source)
+        windows = mu.month_windows("2025-04-01", "2026-09-12")
+        self.assertEqual(len(windows), 2)
+
     def test_encoded_key_is_kept_as_is(self):
         """포털의 인코딩 키를 디코딩해 버리면 관세청 API 가 거부한다(2026-09-11 실제 호출로 확인).
 

@@ -40,6 +40,7 @@ from macro_utils import (  # noqa: E402
     cli_features, data_go_kr_key, fetch_customs_exports, load_cli, load_macro_data,
     customs_scale, dram_spot_summary, error_detail, load_dram_spot, load_tsmc_revenue,
     fetch_customs_flash, flash_yoy, merge_customs_exports, reconcile_customs, tsmc_features,
+    CLI_VINTAGE_PATH, append_cli_vintage,
 )
 
 KST = timezone(timedelta(hours=9))
@@ -1238,6 +1239,21 @@ def main():
         if result.get("cli_info", {}).get("fresh") and cli_cache.exists():
             github_pages.publish("macro_history/cli_g20.csv", cli_cache.read_text(encoding="utf-8"),
                                  token, f"macro: cli_g20 ({result['cli_info'].get('last')})")
+            # 판본 보관(R09 0단계). 선행지수는 나중에 값이 바뀌는데 최신본만 덮어쓰면 '그때 보이던
+            # 값'이 남지 않아, 나중에 아무리 조심해도 개정을 미리 아는 백테스트밖에 할 수 없다.
+            # 오늘부터 쌓아 둔다. 실패해도 보고서를 멈추지 않는다.
+            try:
+                existing = github_pages.fetch(CLI_VINTAGE_PATH, token) or ""
+                series = pd.read_csv(cli_cache)
+                text = append_cli_vintage(existing, series, datetime.now(KST).date())
+                if text is None:
+                    print("  선행지수 판본: 바뀐 값이 없어 그대로 둡니다.", flush=True)
+                else:
+                    github_pages.publish(CLI_VINTAGE_PATH, text, token,
+                                         f"macro: cli_g20 판본 ({datetime.now(KST).date()})")
+                    print(f"  선행지수 판본 추가 {CLI_VINTAGE_PATH}", flush=True)
+            except Exception as exc:
+                print("  ⚠️ 선행지수 판본을 남기지 못했습니다(무시):", exc, flush=True)
         github_pages.publish(ledger_name, ledger_path.read_text(encoding="utf-8"), token,
                              f"earnings ledger: {args.target} ({result['quarter_code']})")
         print(f"발행 {ledger_name}")

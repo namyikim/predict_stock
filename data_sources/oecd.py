@@ -209,3 +209,70 @@ def cli_features(frame, dates, release_day=CLI_RELEASE_DAY, max_age_days=CLI_MAX
     for col in ('cli_level', 'cli_change_3m', 'cli_change_6m'):
         out[col] = joined[col].where(valid).to_numpy()
     return out
+
+
+# ---------------------------------------------------------------------------
+# 판본 보관 — R09 0단계
+# ---------------------------------------------------------------------------
+# OECD 선행지수는 나중에 값이 바뀐다. 특히 끝자락 몇 달이 크게 바뀐다. 그런데 우리는 최신본
+# 한 벌만 덮어쓰며 보관하므로 '그때 보이던 값'이 남지 않는다. 최신본으로 백테스트하면 그 시점에
+# 알 수 없던 개정을 미리 아는 셈이라 성적이 부풀려진다.
+#
+# 파일을 날마다 따로 만들면 금방 수백 개가 된다. 긴 형식 표 하나에 (받은 날, 달, 값)으로 쌓는다.
+# 끝자락만 남기는 이유는 오래된 달은 사실상 바뀌지 않아 같은 값을 해마다 다시 적을 뿐이기 때문이다.
+CLI_VINTAGE_PATH = 'macro_history/cli_g20_vintages.csv'
+CLI_VINTAGE_MONTHS = 18
+CLI_VINTAGE_COLUMNS = ('vintage_date', 'month', 'value')
+
+
+def read_cli_vintages(text):
+    """긴 형식 판본 표를 읽는다. 비었거나 형식이 다르면 빈 표."""
+    empty = pd.DataFrame(columns=list(CLI_VINTAGE_COLUMNS))
+    if not text or not str(text).strip():
+        return empty
+    try:
+        frame = pd.read_csv(io.StringIO(str(text)), dtype=str)
+    except Exception:
+        return empty
+    if not set(CLI_VINTAGE_COLUMNS).issubset(frame.columns):
+        return empty
+    frame = frame[list(CLI_VINTAGE_COLUMNS)].copy()
+    frame['value'] = pd.to_numeric(frame['value'], errors='coerce')
+    return frame.dropna(subset=['value'])
+
+
+def append_cli_vintage(existing_text, series, vintage_date, months=CLI_VINTAGE_MONTHS):
+    """판본 하나를 덧붙인 표 전체를 돌려준다. 덧붙일 것이 없으면 None.
+
+    덧붙이지 않는 경우가 둘이다.
+      - 같은 날짜의 판본이 이미 있다(하루에 여러 번 돌아도 한 벌만 남긴다).
+      - 직전 판본과 겹치는 달의 값이 모두 같다(값이 안 바뀌었는데 판본만 늘리지 않는다).
+    """
+    frame = read_cli_vintages(existing_text)
+    key = str(pd.Timestamp(vintage_date).date())
+    if key in set(frame['vintage_date']):
+        return None
+    raw = series.reset_index() if isinstance(series, pd.Series) else series
+    if raw is None or not len(raw):
+        return None                          # 받아온 것이 없으면 판본도 없다
+    try:
+        monthly = normalize_monthly(raw)
+    except ValueError:
+        return None                          # 값이 비었거나 읽을 수 없다 — 빈 판본을 남기지 않는다
+    monthly = monthly.set_index('month')['value'].sort_index().tail(int(months))
+    if monthly.empty:
+        return None
+    fresh = pd.DataFrame({'vintage_date': key,
+                          'month': [f'{m:%Y-%m}' for m in monthly.index],
+                          'value': monthly.to_numpy()})
+    if len(frame):
+        last_key = sorted(frame['vintage_date'])[-1]
+        previous = frame[frame['vintage_date'] == last_key].set_index('month')['value']
+        overlap = previous.index.intersection(fresh.set_index('month').index)
+        if len(overlap) == len(fresh) and np.allclose(
+                previous.loc[overlap].to_numpy(),
+                fresh.set_index('month').loc[overlap, 'value'].to_numpy(), atol=1e-9):
+            return None                      # 값이 그대로다
+    out = pd.concat([frame, fresh], ignore_index=True)
+    out = out.sort_values(['vintage_date', 'month']).reset_index(drop=True)
+    return out.to_csv(index=False)

@@ -130,6 +130,22 @@ class ChoiceTests(unittest.TestCase):
         self.assertEqual(cf.choose_model(self.scores(-0.01), 3)[0], "rw")
         self.assertEqual(cf.choose_model(pd.DataFrame(columns=["horizon", "model"]), 1)[0], "rw")
 
+    def test_the_ladder_climbs_one_rung_at_a_time_and_stops_where_it_loses(self):
+        """이기는 칸이 이어지면 계속 올라가고, 한 칸이라도 못 이기면 거기서 멈춘다."""
+        rows = [{"horizon": 1, "model": "drift", "vs_rw_hi": -0.01},
+                {"horizon": 1, "model": "ar", "vs_rw_hi": -0.02, "vs_drift_hi": -0.01},
+                {"horizon": 1, "model": "var", "vs_rw_hi": -0.02, "vs_drift_hi": -0.01,
+                 "vs_ar_hi": +0.03}]
+        model, reason = cf.choose_model(pd.DataFrame(rows), 1)
+        self.assertEqual(model, "ar")
+        self.assertIn("var", reason)
+
+    def test_the_ladder_does_not_skip_a_rung_that_loses(self):
+        """drift 가 rw 를 못 이기면 ar 이 아무리 좋아도 올라가지 않는다 — 순위가 아니라 사다리다."""
+        rows = [{"horizon": 1, "model": "drift", "vs_rw_hi": +0.02},
+                {"horizon": 1, "model": "ar", "vs_rw_hi": -0.09, "vs_drift_hi": -0.08}]
+        self.assertEqual(cf.choose_model(pd.DataFrame(rows), 1)[0], "rw")
+
 
 class ForecastNowTests(unittest.TestCase):
     def setUp(self):
@@ -139,10 +155,17 @@ class ForecastNowTests(unittest.TestCase):
 
     def test_the_published_number_matches_the_chosen_model(self):
         ahead = cf.forecast_now(self.series, self.table, self.scores)
-        last = float(self.series.iloc[-1])
-        step = last - float(self.series.iloc[-2])
+        values = self.series.to_numpy(dtype=float)
+        last, step = float(values[-1]), float(values[-1] - values[-2])
         for _, row in ahead.iterrows():
-            expected = last + step * row["horizon"] if row["model"] == "drift" else last
+            if row["model"] == "rw":
+                expected = last
+            elif row["model"] == "drift":
+                expected = last + step * row["horizon"]
+            elif row["model"] == "ar":
+                expected = cf.forecast_ar(values, int(row["horizon"]), lags=2)
+            else:
+                expected = row["point"]
             self.assertAlmostEqual(row["point"], expected, places=6)
 
     def test_the_band_comes_from_real_errors_and_brackets_the_point(self):

@@ -191,8 +191,11 @@ def evaluate(table):
         for name, errors in scores.items():
             row = {"horizon": int(horizon), "model": name,
                    "mae": float(np.nanmean(errors)), "n": int(np.isfinite(errors).sum())}
-            for baseline in ("rw", "drift"):
-                if name == baseline or baseline not in scores:
+            # 사다리에서 자기보다 앞 칸인 모형 전부와 견준다. 앞 칸과만 견주면 사다리가 중간에서
+            # 멈췄을 때 그것이 '못 이겼다'인지 '견줄 수 없었다'인지 구별되지 않는다.
+            earlier = LADDER[:LADDER.index(name)] if name in LADDER else ()
+            for baseline in earlier:
+                if baseline not in scores:
                     continue
                 result = paired_ci(part[name].to_numpy(dtype=float) - actual,
                                    part[baseline].to_numpy(dtype=float) - actual)
@@ -203,18 +206,27 @@ def evaluate(table):
     return pd.DataFrame(rows)
 
 
-def choose_model(scores, horizon, default="rw", challenger="drift"):
+LADDER = ("rw", "drift", "ar", "var")
+
+
+def choose_model(scores, horizon, ladder=LADDER):
     """지평마다 어느 모형으로 숫자를 낼지 규칙으로 정한다.
 
     성적 순위로 고르면 고른 표본에서 성능을 보고하는 셈이라 편향된다(분기 이익 모형과 같은 규칙).
-    기본은 가장 단순한 쪽이고, **도전자가 기본을 유의하게 이길 때만** 바꾼다.
+    그래서 순위가 아니라 **사다리**로 올라간다 — 가장 단순한 것에서 시작해, 다음 칸이 지금 칸을
+    유의하게 이길 때만(구간 상한 < 0) 한 칸 올린다. 이기지 못하면 거기서 멈춘다.
     """
-    part = scores[(scores["horizon"] == horizon) & (scores["model"] == challenger)]
-    if part.empty or pd.isna(part.iloc[0].get(f"vs_{default}_hi")):
-        return default, "기본(단순한 쪽)"
-    if part.iloc[0][f"vs_{default}_hi"] < 0:
-        return challenger, f"{challenger} 가 {default} 를 유의하게 이겼다"
-    return default, f"{challenger} 가 {default} 를 이기지 못했다"
+    current, reason = ladder[0], "기본(가장 단순한 쪽)"
+    for nxt in ladder[1:]:
+        part = scores[(scores["horizon"] == horizon) & (scores["model"] == nxt)]
+        key = f"vs_{current}_hi"
+        if part.empty or key not in part.columns or pd.isna(part.iloc[0][key]):
+            break                       # 견줄 수 없으면 올리지 않는다
+        if part.iloc[0][key] >= 0:
+            reason = f"{nxt} 가 {current} 를 이기지 못했다"
+            break
+        current, reason = nxt, f"{nxt} 가 {current} 를 유의하게 이겼다"
+    return current, reason
 
 
 def forecast_now(series, table, scores, horizons=HORIZONS, partners=(), lags=2):
@@ -228,8 +240,14 @@ def forecast_now(series, table, scores, horizons=HORIZONS, partners=(), lags=2):
         model, reason = choose_model(scores, horizon)
         if model == "drift":
             point = float(values[-1] + (values[-1] - values[-2]) * horizon)
+        elif model == "ar":
+            point = forecast_ar(values, horizon, lags)
+        elif model == "var":
+            point = forecast_var([series] + list(partners), horizon, lags)
         else:
             point = float(values[-1])
+        if point is None:                       # 뽑히고도 낼 수 없으면 가장 단순한 쪽으로 내린다
+            model, reason, point = "rw", f"{model} 을 낼 수 없어 rw 로 내렸다", float(values[-1])
         part = table[table["horizon"] == horizon]
         errors = (part[model] - part["actual"]).dropna().to_numpy(dtype=float)
         lo, hi = (np.quantile(errors, [0.10, 0.90]) if len(errors) >= 20 else (np.nan, np.nan))
@@ -249,13 +267,18 @@ def forecast_now(series, table, scores, horizons=HORIZONS, partners=(), lags=2):
     return pd.DataFrame(rows)
 
 
-def forecast_svg(series, ahead, months=48, width=900, height=340):
+def forecast_svg(series, ahead, months=48, width=900, height=340, overlay=None,
+                 title="경기선행지수", overlay_name="코스피", start=None):
     """최근 실적과 앞으로 몇 달을 한 그림에. 확정과 전망을 선 모양으로 구분한다.
 
     구간은 워크포워드 오차의 10~90% 분위다. 점 하나만 보여 주면 '이만큼은 맞다'로 읽히므로
     구간을 늘 함께 그린다.
+
+    overlay 를 주면 오른쪽 축에 겹쳐 그린다. 단위가 전혀 달라(지수 100 근처 vs 코스피 수천)
+    한 축에 그리면 한쪽이 납작해진다. 축이 둘이므로 **높이 비교는 뜻이 없고 방향만 본다**는 것을
+    그림 안에 적는다.
     """
-    recent = series.tail(months)
+    recent = series.loc[str(start):] if start else series.tail(months)
     points = [(f"{m:%Y-%m}", float(v)) for m, v in recent.items()]
     future = [(row["month"], float(row["point"]),
                None if pd.isna(row["low"]) else float(row["low"]),
@@ -266,7 +289,7 @@ def forecast_svg(series, ahead, months=48, width=900, height=340):
     low, high = min(values), max(values)
     pad = (high - low) * 0.18 or 0.5
     low, high = low - pad, high + pad
-    left, right, top, bottom = 58, 18, 34, 46
+    left, right, top, bottom = 58, 62, 46, 46
     span = len(points) + len(future) - 1
 
     def x_of(i):
@@ -307,21 +330,50 @@ def forecast_svg(series, ahead, months=48, width=900, height=340):
         f'<text x="{x_of(len(points) + i):.1f}" y="{height - bottom + 18}" text-anchor="middle" '
         f'font-size="10" fill="#c8952a">{month}</text>'
         for i, (month, v, _, _) in enumerate(future))
+    second = ""
+    if overlay is not None and len(overlay):
+        months_index = {month: i for i, (month, _) in enumerate(points)}
+        pairs = [(months_index[f"{m:%Y-%m}"], float(v)) for m, v in overlay.items()
+                 if f"{m:%Y-%m}" in months_index]
+        if len(pairs) > 2:
+            o_low = min(v for _, v in pairs)
+            o_high = max(v for _, v in pairs)
+            o_pad = (o_high - o_low) * 0.18 or 1.0
+            o_low, o_high = o_low - o_pad, o_high + o_pad
+
+            def oy(v):
+                return top + (height - top - bottom) * (o_high - v) / (o_high - o_low)
+
+            line = " ".join(f"{x_of(i):.1f},{oy(v):.1f}" for i, v in pairs)
+            right_ticks = "".join(
+                f'<text x="{width - right + 8}" y="{oy(v) + 4:.1f}" font-size="11" '
+                f'fill="#2e7d32">{v:,.0f}</text>'
+                for v in np.linspace(o_low + o_pad / 2, o_high - o_pad / 2, 4))
+            second = (f'<polyline points="{line}" fill="none" stroke="#2e7d32" '
+                      f'stroke-width="1.5" opacity="0.85"/>{right_ticks}')
+    legend = (
+        f'<text x="{left}" y="{top - 8}" font-size="11" fill="#4c78a8">■ {title}(왼쪽 축)</text>'
+        + (f'<text x="{left + 150}" y="{top - 8}" font-size="11" fill="#2e7d32">'
+           f'■ {overlay_name}(오른쪽 축)</text>' if second else "")
+        + f'<text x="{left + 290}" y="{top - 8}" font-size="11" fill="#c8952a">■ 전망</text>')
+    caution = ('<text x="{x}" y="{y}" text-anchor="end" font-size="10" fill="#a5abb2">'
+               '축이 둘이라 높이 비교는 뜻이 없습니다 — 방향만 보세요</text>').format(
+        x=width - right, y=height - 8) if second else ""
     return (
         f'<svg viewBox="0 0 {width} {height}" width="100%" xmlns="http://www.w3.org/2000/svg" '
         f'style="max-width:{width}px;font-family:-apple-system,\'Malgun Gothic\',sans-serif">'
         f'<rect width="{width}" height="{height}" fill="#fff"/>'
         f'<text x="{left}" y="20" font-size="13" font-weight="600" fill="#1a1a1a">'
-        f'G20 경기선행지수 — 확정 {points[0][0]}~{points[-1][0]}, 전망 {future[0][0]}~{future[-1][0]}</text>'
-        f'{ticks}{band}'
+        f'{title} — 확정 {points[0][0]}~{points[-1][0]}, 전망 {future[0][0]}~{future[-1][0]}</text>'
+        f'{ticks}{second}{band}'
         f'<polyline points="{history}" fill="none" stroke="#4c78a8" stroke-width="1.8"/>'
         f'<polyline points="{forward}" fill="none" stroke="#c8952a" stroke-width="1.8" '
         f'stroke-dasharray="5 4"/>'
         f'<line x1="{bridge_x:.1f}" x2="{bridge_x:.1f}" y1="{top}" y2="{height - bottom}" '
         f'stroke="#bbb" stroke-dasharray="2 3"/>'
-        f'{labels}{marks}'
+        f'{labels}{marks}{legend}'
         f'<text x="{width - right}" y="20" text-anchor="end" font-size="11" fill="#8a9199">'
-        f'점선은 전망 · 음영은 워크포워드 오차 10~90%</text>'
+        f'점선은 전망 · 음영은 워크포워드 오차 10~90%</text>{caution}'
         '</svg>')
 
 
@@ -330,16 +382,24 @@ def main():
     parser.add_argument("--out", type=Path, required=True)
     parser.add_argument("--lags", type=int, default=2)
     parser.add_argument("--min-train", type=int, default=MIN_TRAIN)
+    parser.add_argument("--index", default="kor", choices=("kor", "g20"),
+                        help="OECD 한국(기본) 또는 G20 선행지수")
+    parser.add_argument("--chart-start", default="2011-01",
+                        help="그림의 시작 달. 비우면 최근 48개월만 그린다")
     args = parser.parse_args()
     args.out.mkdir(parents=True, exist_ok=True)
 
-    cli = load_series("cli_g20", ROOT / "macro_history" / "cli_g20.csv")
+    name, title = (("cli_kor", "OECD 한국 경기선행지수") if args.index == "kor"
+                   else ("cli_g20", "OECD G20 경기선행지수"))
+    cli = load_series(name, ROOT / "macro_history" / f"{name}.csv")
     partners = [load_series("leading_cycle", ROOT / "macro_history" / "leading_cycle.csv"),
                 load_series("semiconductor_exports",
                             ROOT / "macro_history" / "semiconductor_exports.csv").pipe(np.log)]
+    kospi_path = ROOT / "macro_history" / "kospi_monthly.csv"
+    kospi = load_series("kospi", kospi_path) if kospi_path.exists() else None
 
     report = diagnose(cli)
-    print(f"=== 1단계 진단 · G20 선행지수 {report['first']}~{report['last']} ({report['n']}개월) ===")
+    print(f"=== 1단계 진단 · {title} {report['first']}~{report['last']} ({report['n']}개월) ===")
     print(f"  월 변화 표준편차 {report['change_std']:.4f}")
     print("  자기상관 " + " ".join(f"{k}개월 {v:+.2f}" for k, v in report["autocorr"].items()))
     for item in report["variance_ratio"]:
@@ -379,7 +439,9 @@ def main():
         if others:
             print(f"      참고(채택 안 함): {others}")
 
-    (args.out / "forecast.svg").write_text(forecast_svg(cli, ahead), encoding="utf-8")
+    (args.out / "forecast.svg").write_text(
+        forecast_svg(cli, ahead, overlay=kospi, title=title, start=args.chart_start or None),
+        encoding="utf-8")
     ahead.to_csv(args.out / "forecast.csv", index=False)
     table.to_csv(args.out / "walk_forward.csv", index=False)
     scores.to_csv(args.out / "scores.csv", index=False)

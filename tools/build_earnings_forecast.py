@@ -863,6 +863,11 @@ def analyse(target, out_dir, fetch=True):
                 print(f"  관세청 조회 실패 → 저장소 보관본 사용: {exc}", flush=True)
                 customs = pd.read_csv(customs_cache)
                 customs_info["source"] = "customs_cache"
+            # 자료원 표의 '기간' 칸은 first~last 를 읽는다. 다른 줄은 모두 채우는데 관세청만
+            # 비어 있으면 "언제 것인지 모르는 자료"로 보인다. 보관본을 쓸 때 특히 중요하다.
+            _months = pd.to_datetime(customs["month"])
+            customs_info["first"] = f"{_months.min():%Y-%m}"
+            customs_info["last"] = f"{_months.max():%Y-%m}"
             # HS 8541+8542 는 KOSIS '반도체'보다 범위가 좁아 계통적으로 작다(2026-09 기준 0.8배).
             # 크기가 같은지 묻는 대신, 배율이 안정적인지 보고 KOSIS 기준으로 환산해서 넣는다.
             same_size, size_diag = reconcile_customs(macro["semiconductor_exports"], customs)

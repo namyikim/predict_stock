@@ -450,6 +450,30 @@ class CustomsSourceTests(unittest.TestCase):
         self.assertTrue(info["enabled"])
         self.assertNotIn("reason", info)
 
+    def test_customs_info_records_the_period_for_the_sources_table(self):
+        """자료원 표의 '기간' 칸은 first~last 를 읽는다. 관세청만 비면 언제 것인지 알 수 없다.
+
+        보관본으로 물러선 날에는 이 칸이 유일하게 '얼마나 오래된 자료인가'를 알려 준다.
+        """
+        source = (Path(mu.__file__).resolve().parent / "tools" / "build_earnings_forecast.py").read_text(encoding="utf-8")
+        self.assertIn('customs_info["first"]', source)
+        self.assertIn('customs_info["last"]', source)
+        # 두 경로(API·보관본) 모두를 지나는 자리여야 한다 — source 를 정한 뒤, 환산 진단 앞.
+        self.assertLess(source.index('customs_info["source"] = "customs_cache"'),
+                        source.index('customs_info["first"]'))
+        self.assertLess(source.index('customs_info["first"]'),
+                        source.index("ok, scale, diag = customs_scale"))
+
+    def test_sources_table_shows_the_customs_period(self):
+        """렌더까지 확인한다. 기간이 들어오면 표에 'YYYY-MM ~ YYYY-MM' 로 찍힌다."""
+        import report_html as rh
+        html = rh.fragment_sources_html({}, {"customs_info": {
+            "enabled": True, "source": "customs_api", "first": "2024-10", "last": "2026-08"}})
+        self.assertIn("관세청 수출입실적", html)
+        self.assertIn("customs_api", html)
+        self.assertIn("2024-10 ~ 2026-08", html)
+        self.assertNotIn("미포함", html)
+
     def test_actions_requests_at_most_two_windows(self):
         """창이 적을수록 해외에서 끊길 기회가 적다. 18개월 = 12개월 창 두 개."""
         source = (Path(mu.__file__).resolve().parent / "tools" / "build_earnings_forecast.py").read_text(encoding="utf-8")

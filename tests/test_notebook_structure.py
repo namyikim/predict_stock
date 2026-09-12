@@ -266,7 +266,13 @@ class PublishFailureTests(unittest.TestCase):
 
         nb = json.loads((Path(__file__).resolve().parents[1] /
                          "samsung_direction_model_colab.ipynb").read_text(encoding="utf-8"))
-        setup = "".join(nb["cells"][1]["source"])
+        # 셀 번호로 찾지 않는다 — 셀을 하나 끼워 넣을 때마다 이 테스트가 깨진다
+        # (2026-09-12 관세청 점검 셀을 넣자 실제로 깨졌다). 내용으로 찾는다.
+        def cell_with(needle):
+            return next("".join(c["source"]) for c in nb["cells"]
+                        if needle in "".join(c["source"]))
+
+        setup = cell_with("RUN_TARGETS = [")
         preflight = next(node for node in ast.parse(setup).body
                          if isinstance(node, ast.If) and isinstance(node.test, ast.Name)
                          and node.test.id == "SYNC_LEDGER_TO_GITHUB")
@@ -282,7 +288,7 @@ class PublishFailureTests(unittest.TestCase):
             }
             exec(compile(ast.Module(body=[preflight], type_ignores=[]), "<preflight>", "exec"),
                  namespace)
-            final = "".join(nb["cells"][45]["source"])
+            final = cell_with("# ---- 종목별 발행 결과")
             final = "# ---- 종목별 발행 결과" + final.split("# ---- 종목별 발행 결과", 1)[1]
             with self.assertRaisesRegex(RuntimeError, "원장 조회 실패"):
                 exec(compile(final, "<publication-summary>", "exec"), namespace)

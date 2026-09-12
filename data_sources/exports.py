@@ -56,6 +56,15 @@ CUSTOMS_URL = 'https://apis.data.go.kr/1220000/Itemtrade/getItemtradeList'
 
 CUSTOMS_HS = ('8541', '8542')       # 반도체: 개별소자 + 집적회로
 
+# ---------------------------------------------------------------------------
+# 관세청 주요품목별 10일 단위 잠정치 (공공데이터포털 15157908)
+# ---------------------------------------------------------------------------
+# 확정 월별 통계보다 훨씬 빠르다. 1~10일치는 11일에, 1~20일치는 21일에, 1~말일치는 익월 1일에
+# 나온다. 분기 나우캐스트는 '분기의 앞 k개월'을 쓰므로, 말일 잠정치가 나오는 순간 그 달을 한 달로
+# 세어 k 를 하나 올릴 수 있다 — KOSIS 확정치를 2~5주 더 기다리지 않아도 된다.
+CUSTOMS_FLASH_URL = 'https://apis.data.go.kr/1220000/prlstMmUtPrviExpAcrs/getPrlstMmUtPrviExpAcrs'
+FLASH_ITEM = '반도체'               # 이 API 는 HS 가 아니라 '주요품목' 이름으로 나눈다
+
 # 관세청은 한 번에 1년 이내만 조회할 수 있다. 넘기면 서버가 resultCode 99 로 거부한다
 # ("시작과 종료의 조회기간은 1년이내 기간만 가능합니다"). 2026-09-12 Actions 실행이 30개월을
 # 한 번에 요청해 이 오류로 관세청 계열이 통째로 꺼져 있었다. 그래서 기간을 창으로 나눠 부른다.
@@ -241,6 +250,149 @@ def fetch_customs_exports(start, end, key, hs_codes=CUSTOMS_HS, retries=3,
     if skipped:
         print(f'  관세청: 자료가 없는 구간은 건너뜁니다 — {", ".join(skipped)}', flush=True)
     return pd.DataFrame({'month': total.index, 'value': total.to_numpy()})
+
+
+# ---------------------------------------------------------------------------
+# 10일 단위 잠정치
+# ---------------------------------------------------------------------------
+_FLASH_MONTH = re.compile(r'^(\d{4})[.\-/]?(\d{2})$')
+_FLASH_DATE = re.compile(r'^(\d{4})[.\-/]?(\d{2})[.\-/]?(\d{2})$')
+# 금액 칸을 고를 때 쓰는 이름 조각. 증감률·비중은 금액이 아니므로 먼저 걸러 낸다.
+_AMOUNT_HINTS = ('dlr', 'amt', 'amount', '금액')
+_NOT_AMOUNT_HINTS = ('rt', 'rate', 'ratio', 'incdec', '증감', '비중', 'pct')
+
+
+def _flash_period(fields):
+    """한 행에서 (월 첫날 문자열, 일자) 를 찾는다. 없으면 None.
+
+    기간이 20260910 처럼 날짜 하나로 오면 일자는 뒤 두 자리다. 202609 처럼 달만 오면
+    일자를 따로 적은 칸(10/20/말일)을 찾는다.
+    """
+    month, days = None, None
+    for value in fields.values():
+        matched = _FLASH_DATE.fullmatch(value)
+        if matched and 1 <= int(matched.group(2)) <= 12 and 1 <= int(matched.group(3)) <= 31:
+            return f'{matched.group(1)}-{matched.group(2)}-01', int(matched.group(3))
+        matched = _FLASH_MONTH.fullmatch(value)
+        if matched and 1 <= int(matched.group(2)) <= 12 and month is None:
+            month = f'{matched.group(1)}-{matched.group(2)}-01'
+    for value in fields.values():
+        if value in ('10', '20'):
+            days = int(value)
+        elif value in ('말', '말일', '31'):
+            days = 31
+    return (month, days) if month else None
+
+
+def _flash_amount(fields):
+    """한 행에서 수출 금액으로 보이는 칸을 고른다. 없으면 None."""
+    best = None
+    for tag, value in fields.items():
+        low = tag.lower()
+        if any(bad in low for bad in _NOT_AMOUNT_HINTS):
+            continue
+        if not any(hint in low for hint in _AMOUNT_HINTS):
+            continue
+        try:
+            number = float(value.replace(',', ''))
+        except (ValueError, AttributeError):
+            continue
+        # 같은 행에 수출·수입이 함께 오면 수출을 쓴다.
+        rank = (0 if 'exp' in low or '수출' in tag else 1, -number)
+        if best is None or rank < best[0]:
+            best = (rank, number)
+    return None if best is None else best[1]
+
+
+def parse_customs_flash_xml(text, item=FLASH_ITEM):
+    """10일 단위 잠정 수출 XML → DataFrame(month, days, value).
+
+    공개 명세에 응답 칸 이름이 적혀 있지 않다. 이름을 하나로 못박으면 관세청이 칸 이름을 바꾼 날
+    조용히 빈 계열이 되어, 보고서는 아무 말 없이 옛 숫자를 계속 쓴다. 그래서 이름 대신 값의
+    모양으로 찾고, 못 찾으면 **실제로 받은 칸 이름을 그대로 알린다** — 그 한 줄이면 고칠 수 있다.
+    """
+    import xml.etree.ElementTree as ET
+    root = ET.fromstring(text)
+    code = root.findtext('.//resultCode')
+    message = root.findtext('.//resultMsg') or ''
+    if code not in (None, '00', '0'):
+        raise CustomsRejected(f'관세청 API 오류 {code}: {message}')
+    rows, seen = [], set()
+    for element in root.iter('item'):
+        fields = {child.tag: (child.text or '').strip() for child in element}
+        seen.update(fields)
+        if not any(item in value for value in fields.values()):
+            continue                                   # 반도체 행만 쓴다
+        period = _flash_period(fields)
+        amount = _flash_amount(fields)
+        if period is None or period[1] is None or amount is None:
+            continue
+        rows.append({'month': period[0], 'days': period[1], 'value': amount})
+    if not rows:
+        raise CustomsEmpty(
+            f"관세청 10일 잠정치 응답에서 '{item}' 수출액을 찾지 못했습니다 "
+            f"— 받은 칸 이름: {', '.join(sorted(seen)) or '없음'}.")
+    frame = pd.DataFrame(rows).drop_duplicates(['month', 'days'], keep='last')
+    frame['month'] = pd.to_datetime(frame['month'])
+    return frame.sort_values(['month', 'days']).reset_index(drop=True)
+
+
+def fetch_customs_flash(start, end, key, retries=3, span=CUSTOMS_MAX_MONTHS):
+    """주요품목 10일 단위 잠정 수출액 중 반도체만. DataFrame(month, days, value).
+
+    1년 한도는 월별 조회와 같으므로 같은 방식으로 창을 나눈다.
+    """
+    variants = key_variants(key)
+    if not variants:
+        raise RuntimeError('DATA_GO_KR_KEY 가 비어 있습니다.')
+    parts, failures = [], []
+    for start_text, end_text in month_windows(start, end, span):
+        rest = urlencode({'strtYymm': start_text, 'endYymm': end_text})
+        got = None
+        for label, service_key in variants:
+            for attempt in range(retries):
+                try:
+                    with open_url(f'{CUSTOMS_FLASH_URL}?serviceKey={service_key}&{rest}', timeout=90,
+                                  accept='application/xml, text/xml, */*') as response:
+                        got = parse_customs_flash_xml(response.read().decode('utf-8'))
+                    break
+                except Exception as exc:
+                    settled = isinstance(exc, (CustomsRejected, CustomsEmpty))
+                    if settled or attempt == retries - 1:
+                        failures.append(f'{label} 키 {start_text}~{end_text}: {error_detail(exc)}')
+                        break
+                    time.sleep(3 * (2 ** attempt) + random.uniform(0, 3))
+            if got is not None:
+                break
+        if got is not None and len(got):
+            parts.append(got)
+    if not parts:
+        raise RuntimeError(f'관세청 10일 잠정치를 받지 못했습니다({key_fingerprint(key)}) — '
+                           f'{" / ".join(failures) or "응답 없음"}') from None
+    frame = pd.concat(parts).drop_duplicates(['month', 'days'], keep='last')
+    return frame.sort_values(['month', 'days']).reset_index(drop=True)
+
+
+def flash_yoy(flash):
+    """같은 달·같은 일자끼리 1년 전과 견준 증감률. DataFrame(month, days, semiconductor_yoy).
+
+    10일치는 10일치와, 20일치는 20일치와 견준다. 조업일수와 계절성이 그때 비로소 맞아떨어진다.
+    서로 다른 일자를 섞으면 증감률이 통째로 틀어진다.
+    """
+    if flash is None or not len(flash):
+        return pd.DataFrame(columns=['month', 'days', 'semiconductor_yoy'])
+    base = flash.set_index([flash['month'], flash['days']])['value']
+    rows = []
+    for _, row in flash.iterrows():
+        key = (pd.Timestamp(row['month']) - pd.DateOffset(years=1), row['days'])
+        if key not in base.index:
+            continue
+        previous = float(base.loc[key])
+        if previous <= 0:
+            continue
+        rows.append({'month': row['month'], 'days': int(row['days']),
+                     'semiconductor_yoy': float(row['value']) / previous - 1.0})
+    return pd.DataFrame(rows, columns=['month', 'days', 'semiconductor_yoy'])
 
 
 

@@ -474,6 +474,117 @@ class CustomsSourceTests(unittest.TestCase):
         self.assertIn("2024-10 ~ 2026-08", html)
         self.assertNotIn("미포함", html)
 
+class CustomsFlashTests(unittest.TestCase):
+    """관세청 주요품목별 10일 단위 잠정치.
+
+    1~10일치는 11일, 1~20일치는 21일, 1~말일치는 익월 1일에 나온다. 확정 월별 통계보다 2~5주 빠르고,
+    말일 잠정치가 나오면 그 달을 분기 나우캐스트에 바로 넣을 수 있다.
+
+    응답 칸 이름은 공개 명세에 없다. 그래서 이름을 못박지 않고 값의 모양으로 찾는다 —
+    아래 두 가지 생김새 모두에서 같은 답이 나와야 한다.
+    """
+
+    def xml(self, body, code="00"):
+        return (f"<response><header><resultCode>{code}</resultCode>"
+                f"<resultMsg>OK</resultMsg></header><body><items>{body}</items></body></response>")
+
+    def test_reads_a_row_whose_period_is_one_eight_digit_date(self):
+        body = ("<item><statKor>반도체</statKor><expDt>20260910</expDt>"
+                "<expDlr>15,300,000,000</expDlr></item>")
+        frame = mu.parse_customs_flash_xml(self.xml(body))
+        self.assertEqual(len(frame), 1)
+        self.assertEqual(frame.loc[0, "days"], 10)
+        self.assertEqual(pd.Timestamp(frame.loc[0, "month"]), pd.Timestamp("2026-09-01"))
+        self.assertEqual(frame.loc[0, "value"], 15_300_000_000.0)
+
+    def test_reads_a_row_whose_month_and_day_marker_are_separate(self):
+        body = ("<item><prlstNm>반도체</prlstNm><yymm>202609</yymm><dayGb>20</dayGb>"
+                "<expDlrAmt>30100000000</expDlrAmt></item>")
+        frame = mu.parse_customs_flash_xml(self.xml(body))
+        self.assertEqual(frame.loc[0, "days"], 20)
+        self.assertEqual(pd.Timestamp(frame.loc[0, "month"]), pd.Timestamp("2026-09-01"))
+
+    def test_other_items_are_ignored(self):
+        body = ("<item><statKor>승용차</statKor><expDt>20260910</expDt><expDlr>1</expDlr></item>"
+                "<item><statKor>반도체</statKor><expDt>20260910</expDt><expDlr>2</expDlr></item>")
+        frame = mu.parse_customs_flash_xml(self.xml(body))
+        self.assertEqual(len(frame), 1)
+        self.assertEqual(frame.loc[0, "value"], 2.0)
+
+    def test_growth_rate_columns_are_not_mistaken_for_the_amount(self):
+        """증감률이 금액 칸으로 뽑히면 수출이 몇 % 로 둔갑한다."""
+        body = ("<item><statKor>반도체</statKor><expDt>20260910</expDt>"
+                "<incdecRt>31.4</incdecRt><expDlr>15300000000</expDlr></item>")
+        frame = mu.parse_customs_flash_xml(self.xml(body))
+        self.assertEqual(frame.loc[0, "value"], 15_300_000_000.0)
+
+    def test_rejection_is_reported_as_such(self):
+        with self.assertRaises(mu.CustomsRejected):
+            mu.parse_customs_flash_xml(self.xml("", code="99"))
+
+    def test_unknown_field_names_are_named_in_the_error(self):
+        """칸 이름이 바뀌면 조용히 빈 계열이 되면 안 된다. 무엇을 받았는지 알려야 고칠 수 있다."""
+        body = "<item><품목>반도체</품목><알수없는칸>20260910</알수없는칸></item>"
+        with self.assertRaises(mu.CustomsEmpty) as caught:
+            mu.parse_customs_flash_xml(self.xml(body))
+        self.assertIn("알수없는칸", str(caught.exception))
+        self.assertIn("품목", str(caught.exception))
+
+    def test_yoy_compares_the_same_day_marker_only(self):
+        flash = pd.DataFrame({
+            "month": pd.to_datetime(["2025-09-01", "2025-09-01", "2026-09-01", "2026-09-01"]),
+            "days": [10, 20, 10, 20],
+            "value": [100.0, 200.0, 130.0, 240.0],
+        })
+        yoy = mu.flash_yoy(flash).set_index("days")["semiconductor_yoy"]
+        self.assertAlmostEqual(yoy.loc[10], 0.30)
+        self.assertAlmostEqual(yoy.loc[20], 0.20)
+
+    def test_yoy_skips_months_without_a_year_earlier_match(self):
+        flash = pd.DataFrame({"month": pd.to_datetime(["2026-09-01"]), "days": [10], "value": [1.0]})
+        self.assertEqual(len(mu.flash_yoy(flash)), 0)
+
+    def test_refresh_writes_a_file_the_reader_understands(self):
+        """받아서 쓴 파일을 그대로 다시 읽어 수출 계열에 반영되는지까지 본다."""
+        flash = pd.DataFrame({
+            "month": pd.to_datetime(["2025-09-01", "2026-09-01"]),
+            "days": [20, 20], "value": [100.0, 130.0],
+        })
+        with tempfile.TemporaryDirectory() as tmp:
+            with patch.object(ef, "fetch_customs_flash", return_value=flash):
+                raw, yoy, path = ef.refresh_exports_flash(tmp, "key", now=pd.Timestamp("2026-09-21"))
+            self.assertTrue(path.exists())
+            loaded = ef.load_exports_flash(tmp)
+            self.assertEqual(len(loaded), 1)
+            self.assertAlmostEqual(float(loaded.loc[0, "semiconductor_yoy"]), 0.30)
+            exports = pd.Series([50.0], index=pd.to_datetime(["2025-09-01"])).asfreq("MS")
+            merged, applied = ef.apply_exports_flash(exports, loaded)
+            self.assertEqual(len(applied), 1)
+            self.assertAlmostEqual(float(merged.loc[pd.Timestamp("2026-09-01")]), 65.0)
+
+    def test_confirmed_months_are_never_overwritten_by_a_flash(self):
+        flash = pd.DataFrame({"month": pd.to_datetime(["2026-09-01"]), "days": [10],
+                              "semiconductor_yoy": [5.0]})
+        exports = pd.Series([50.0, 61.0], index=pd.to_datetime(["2025-09-01", "2026-09-01"])).asfreq("MS")
+        merged, applied = ef.apply_exports_flash(exports, flash)
+        self.assertEqual(applied, [])
+        self.assertEqual(float(merged.loc[pd.Timestamp("2026-09-01")]), 61.0)
+
+    def test_the_report_shows_the_flash_row_with_how_many_days(self):
+        import report_html as rh
+        html = rh.fragment_sources_html({}, {
+            "flash_info": {"enabled": True, "source": "customs_flash_api",
+                           "first": "2025-08", "last": "2026-09", "last_days": 20},
+            "flash_applied": [{"month": "2026-09", "days": 20, "yoy": 0.3}]})
+        self.assertIn("관세청 10일 잠정치", html)
+        self.assertIn("customs_flash_api", html)
+        self.assertIn("마지막 20일치", html)
+        self.assertIn("2026-09", html)
+
+
+class CustomsRequestTests(unittest.TestCase):
+    """요청을 어떤 모양으로 보내는가 — 조회 창 크기와 인증키 형태."""
+
     def test_actions_requests_at_most_two_windows(self):
         """창이 적을수록 해외에서 끊길 기회가 적다. 18개월 = 12개월 창 두 개."""
         source = (Path(mu.__file__).resolve().parent / "tools" / "build_earnings_forecast.py").read_text(encoding="utf-8")

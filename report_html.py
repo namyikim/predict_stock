@@ -55,6 +55,22 @@ def range_bar(low, center, high, current):
         '</div>')
 
 
+def _flash_note(info, applied):
+    """10일 잠정치 줄의 비고. 몇 일치를 받았고 그것으로 어느 달을 채웠는지 적는다.
+
+    이 줄은 '빠른 대신 잠정'이라는 성격을 드러내야 한다. 며칠치인지 모르면 읽는 사람이
+    확정치와 구별할 수 없다.
+    """
+    if not info or not info.get("enabled"):
+        return ""
+    days = info.get("last_days")
+    note = f"마지막 {days}일치" if days else ""
+    months = ", ".join(str(a.get("month")) for a in (applied or []) if a.get("month"))
+    if months:
+        note = f'{note} · 이것으로 채운 달 {months}' if note else f"이것으로 채운 달 {months}"
+    return note
+
+
 def fragment_sources_html(longterm, earnings):
     """장기 전망(7절)·영업이익 추정(8절)이 쓴 자료원 표.
 
@@ -91,6 +107,8 @@ def fragment_sources_html(longterm, earnings):
     add("TSMC 월매출", earnings.get("tsmc_info"))
     add("D램 현물가", earnings.get("dram_info"))
     add("관세청 수출입실적", earnings.get("customs_info"))
+    add("관세청 10일 잠정치", earnings.get("flash_info"),
+        extra=_flash_note(earnings.get("flash_info"), earnings.get("flash_applied")))
     if earnings.get("profit_source"):
         rows.append(("분기 영업이익(DART)", str(earnings["profit_source"]),
                      f'{earnings.get("profit_first", "")} ~ {earnings.get("profit_last", "")}',

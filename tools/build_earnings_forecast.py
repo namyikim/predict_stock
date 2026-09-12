@@ -39,7 +39,7 @@ import github_pages  # noqa: E402
 from macro_utils import (  # noqa: E402
     cli_features, data_go_kr_key, fetch_customs_exports, load_cli, load_macro_data,
     customs_scale, dram_spot_summary, error_detail, load_dram_spot, load_tsmc_revenue,
-    merge_customs_exports, reconcile_customs, tsmc_features,
+    fetch_customs_flash, flash_yoy, merge_customs_exports, reconcile_customs, tsmc_features,
 )
 
 KST = timezone(timedelta(hours=9))
@@ -319,6 +319,31 @@ def load_exports_flash(storage):
     out = out.sort_values(["month", "days"]).drop_duplicates("month", keep="last")
     out.loc[out["semiconductor_yoy"].abs() > 5, "semiconductor_yoy"] /= 100.0   # 31 → 0.31
     return out.reset_index(drop=True)
+
+
+def refresh_exports_flash(out_dir, key, months=14, now=None):
+    """관세청 10일 단위 잠정치를 받아 exports_flash.csv 를 새로 쓴다. (원자료, 증감률, 경로)
+
+    1~10일치는 11일에, 1~20일치는 21일에, 1~말일치는 익월 1일에 나온다. 받아 두면 KOSIS 확정치를
+    2~5주 기다리지 않고 그 달을 분기 나우캐스트에 넣을 수 있다.
+
+    증감률은 **같은 일자끼리** 1년 전과 견준다. 10일치를 지난해 한 달 전체와 견주면 숫자가
+    통째로 틀어진다. 실패는 호출한 쪽에서 잡아 기존 파일을 그대로 두게 한다.
+    """
+    now = now or pd.Timestamp.now(tz=KST)
+    end = pd.Timestamp(now).tz_localize(None).normalize()
+    start = end.replace(day=1) - pd.DateOffset(months=months)
+    flash = fetch_customs_flash(start, end, key)
+    yoy = flash_yoy(flash)
+    if not len(yoy):
+        raise ValueError("1년 전 같은 일자 자료가 없어 증감률을 낼 수 없습니다.")
+    out = yoy.copy()
+    out["month"] = pd.to_datetime(out["month"]).dt.strftime("%Y-%m")
+    out["released"] = "customs_flash_api"
+    path = Path(out_dir) / "macro_inputs" / "exports_flash.csv"
+    path.parent.mkdir(parents=True, exist_ok=True)
+    out.to_csv(path, index=False)
+    return flash, yoy, path
 
 
 def apply_exports_flash(exports, flash):
@@ -894,6 +919,24 @@ def analyse(target, out_dir, fetch=True):
 
     exports = (macro["semiconductor_exports"].set_index("month")["value"]
                .asfreq("MS").dropna())
+    # 10일 단위 잠정치를 먼저 새로 받아 둔다. 받지 못하면 지난번 파일이 그대로 쓰인다.
+    flash_info = {"enabled": False, "reason": "DATA_GO_KR_KEY 없음"}
+    if key and fetch:
+        try:
+            raw, yoy, _ = refresh_exports_flash(out_dir, key)
+            latest = raw.iloc[-1]
+            flash_info = {
+                "enabled": True, "source": "customs_flash_api", "rows": int(len(raw)),
+                "first": f"{pd.Timestamp(raw['month'].min()):%Y-%m}",
+                "last": f"{pd.Timestamp(latest['month']):%Y-%m}",
+                "last_days": int(latest["days"]), "yoy_rows": int(len(yoy)),
+            }
+            print(f"  관세청 10일 잠정치: {flash_info['first']}~{flash_info['last']} "
+                  f"(마지막 {flash_info['last_days']}일치, {flash_info['rows']}행)", flush=True)
+        except Exception as exc:
+            flash_info = {"enabled": False, "reason": f"{type(exc).__name__}: {error_detail(exc)}"}
+            print("  ⚠️ 관세청 10일 잠정치를 받지 못했습니다(무시):", flash_info["reason"], flush=True)
+
     flash_applied = []
     try:
         exports, flash_applied = apply_exports_flash(exports, load_exports_flash(out_dir))
@@ -1034,6 +1077,7 @@ def analyse(target, out_dir, fetch=True):
         "quarter_code": str(live_quarter), "months_used": months_used,
         "months_included": month_names, "months_missing": missing_months,
         "flash_applied": flash_applied, "customs_info": customs_info,
+        "flash_info": flash_info,
         "point": point, "raw_point": raw_point,
         "low": (point + ev["residual_q10"]) if point is not None else None,
         "high": (point + ev["residual_q90"]) if point is not None else None,

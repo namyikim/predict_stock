@@ -115,3 +115,36 @@ class NotebookWiringTests(unittest.TestCase):
         self.assertIn("html, _report_sections = add_report_nav(html)", report)
         # 순서가 중요하다: 접은 뒤 목차를 만들어야 id 가 최종 HTML 에 남는다.
         self.assertLess(report.index("collapse_sections(html)"), report.index("add_report_nav(html)"))
+
+
+class MobileLayoutTests(unittest.TestCase):
+    """모바일(약 380px)에서 목차 줄바꿈이 깨지지 않아야 한다.
+
+    2026-09-12 지적: 그룹 이름과 링크가 같은 줄에서 시작해, 링크가 줄바꿈되면 다음 줄이
+    이름 자리까지 밀려 들어와 정렬이 무너졌다. 제목도 중간('1-1. 외국인·')에서 끊겼다.
+    """
+
+    def nav(self):
+        out, _ = rh.add_report_nav(PAGE)
+        start = out.index("이 보고서의 구성")
+        return out[start:out.index("<h3", start)]
+
+    def test_group_label_is_on_its_own_line(self):
+        nav = self.nav()
+        # 이름과 링크가 다른 블록에 있어야 줄바꿈이 이름 자리를 침범하지 않는다.
+        self.assertIn("margin-bottom:1px", nav)
+        self.assertNotIn("display:inline-block;min-width:38px", nav)
+
+    def test_each_link_wraps_as_a_whole(self):
+        nav = self.nav()
+        links = re.findall(r"<a\b[^>]*>", nav)
+        self.assertTrue(links)
+        for link in links:
+            self.assertIn("display:inline-block", link)
+            self.assertIn("white-space:nowrap", link)
+
+    def test_no_middot_separator_that_can_start_a_line(self):
+        # ' · ' 로 이으면 줄 맨 앞에 가운뎃점이 남을 수 있다. 여백으로 구분한다.
+        text = re.sub(r"<[^>]+>", "", self.nav())
+        self.assertNotIn(" · ", text)
+        self.assertIn("margin:0 10px 3px 0", self.nav())

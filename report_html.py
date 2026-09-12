@@ -179,11 +179,17 @@ def add_report_nav(html_text, title_limit=34):
         items = groups.get(name)
         if not items:
             continue
-        links = " · ".join(
-            f'<a href="#{s["id"]}" style="color:#1a5490;text-decoration:none">'
-            f'{escape(s["title"][:title_limit])}</a>' for s in items)
-        blocks += (f'<div style="margin:3px 0"><span style="display:inline-block;min-width:38px;'
-                   f'color:#8a9199;font-size:11px">{escape(name)}</span>{links}</div>')
+        # 링크마다 통째로 줄바꿈되게 한다. 제목 중간에서 끊기면 읽기 나쁘다.
+        links = "".join(
+            f'<a href="#{s["id"]}" style="color:#1a5490;text-decoration:none;display:inline-block;'
+            f'white-space:nowrap;margin:0 10px 3px 0">{escape(s["title"][:title_limit])}</a>'
+            for s in items)
+        # 그룹 이름을 링크와 같은 줄에 두면, 링크가 줄바꿈될 때 다음 줄이 이름 자리까지 밀려
+        # 들어와 정렬이 무너진다(모바일에서 특히 심하다). 이름을 윗줄로 올리고 링크는 아래에
+        # 통째로 흐르게 한다.
+        blocks += (f'<div style="margin:7px 0 0"><div style="color:#8a9199;font-size:11px;'
+                   f'margin-bottom:1px">{escape(name)}</div>'
+                   f'<div style="padding-left:2px">{links}</div></div>')
     nav = ('<div style="border:1px solid #e5e5e5;border-radius:6px;padding:11px 14px;margin:14px 0 4px;'
            'background:#fafafa;font-size:12px;line-height:1.8">'
            '<div style="font-size:11px;color:#8a9199;margin-bottom:4px">이 보고서의 구성</div>'

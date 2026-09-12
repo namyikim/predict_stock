@@ -1,0 +1,48 @@
+{
+  "target": "samsung",
+  "horizon": 20,
+  "curve_columns": [
+    "us3m_chg_5",
+    "us3m_level_z60",
+    "us2y_chg_5",
+    "us2y_level_z60",
+    "us30y_chg_5",
+    "us30y_level_z60",
+    "curve_10y2y",
+    "curve_10y2y_chg_20",
+    "curve_10y3m",
+    "curve_30y10y"
+  ],
+  "curve_source": "fred",
+  "tenors": {
+    "us3m": "DGS3MO",
+    "us2y": "DGS2",
+    "us10y": "DGS10",
+    "us30y": "DGS30"
+  },
+  "substitution": "",
+  "n_common_rows": 2251,
+  "rows_excluded_by_curve": 0,
+  "dev_folds": [
+    "dev_01",
+    "dev_02",
+    "dev_03",
+    "dev_04",
+    "dev_05",
+    "dev_06",
+    "dev_07",
+    "dev_08",
+    "dev_09"
+  ],
+  "n_dev_rows": 1086,
+  "lock_start": "2025-08-13",
+  "purge_violations": [],
+  "full_plus_E_vs_current_calibrated_month_ci": [
+    -5.4151632719134786e-05,
+    -0.00023029378917919336,
+    9.06378469088569e-05
+  ],
+  "verdict": "동률(CI가 0 포함)",
+  "oof_file": "D:\\SourceCode\\predict_stock\\runs\\medium_horizon\\samsung\\R07_h20_full_oof.csv",
+  "oof_sha256": "e5b26ca876476fb3f9d2d8c7d674e306524dea890e0502e52c2484972d1ecf84"
+}

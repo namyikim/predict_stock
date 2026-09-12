@@ -1,0 +1,17 @@
+target,horizon,comparison,metric,delta,common_n,calibrated,ci_lo,ci_hi,block
+samsung,5,current_full - hold_current,mae_return_calibrated,0.00012148411861467252,1086,True,-6.111935466383481e-05,0.0003252236530240964,month
+samsung,5,current_full - hold_current,mae_return_calibrated,0.00012148411861467252,1086,True,-7.15147423555972e-05,0.00033360481488243604,contiguous_20
+samsung,5,full_plus_E - current_full,mae_return_raw,0.0001544060942890606,1086,False,3.682193014124412e-05,0.0002842973111607436,month
+samsung,5,full_plus_E - current_full,mae_return_raw,0.0001544060942890606,1086,False,2.9061447165746165e-05,0.0002998294465037275,contiguous_20
+samsung,5,full_plus_E - current_full,mae_return_calibrated,3.728552653476082e-05,1086,True,-2.228674149988969e-05,9.811445990731205e-05,month
+samsung,5,full_plus_E - current_full,mae_return_calibrated,3.728552653476082e-05,1086,True,-4.056201886948017e-05,0.00010900786936716919,contiguous_20
+samsung,5,full_plus_E - hold_current,mae_return_calibrated,0.00015876964514943334,1086,True,-3.0213396380596166e-05,0.0003631548373108223,month
+samsung,5,full_plus_E - hold_current,mae_return_calibrated,0.00015876964514943334,1086,True,-3.257606428611312e-05,0.0003694532715409228,contiguous_20
+samsung,20,current_full - hold_current,mae_return_calibrated,0.0007441179349399166,1086,True,0.000269742066024841,0.0013123536488540257,month
+samsung,20,current_full - hold_current,mae_return_calibrated,0.0007441179349399166,1086,True,0.00020769388688969464,0.0012490179988494563,contiguous_40
+samsung,20,full_plus_E - current_full,mae_return_raw,0.0008733602551653782,1086,False,0.00014472775814514672,0.0016696653184325714,month
+samsung,20,full_plus_E - current_full,mae_return_raw,0.0008733602551653782,1086,False,-3.084427645165126e-05,0.00175948270103721,contiguous_40
+samsung,20,full_plus_E - current_full,mae_return_calibrated,-5.4151632719134786e-05,1086,True,-0.00023029378917919336,9.06378469088569e-05,month
+samsung,20,full_plus_E - current_full,mae_return_calibrated,-5.4151632719134786e-05,1086,True,-0.0003062385128922197,9.706071221414367e-05,contiguous_40
+samsung,20,full_plus_E - hold_current,mae_return_calibrated,0.0006899663022207819,1086,True,0.00023363618582984976,0.001240208917928173,month
+samsung,20,full_plus_E - hold_current,mae_return_calibrated,0.0006899663022207819,1086,True,0.00019427450474540604,0.0011009601620671405,contiguous_40

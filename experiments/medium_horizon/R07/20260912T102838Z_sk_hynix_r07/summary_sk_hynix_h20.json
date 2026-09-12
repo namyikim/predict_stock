@@ -1,0 +1,48 @@
+{
+  "target": "sk_hynix",
+  "horizon": 20,
+  "curve_columns": [
+    "us3m_chg_5",
+    "us3m_level_z60",
+    "us2y_chg_5",
+    "us2y_level_z60",
+    "us30y_chg_5",
+    "us30y_level_z60",
+    "curve_10y2y",
+    "curve_10y2y_chg_20",
+    "curve_10y3m",
+    "curve_30y10y"
+  ],
+  "curve_source": "fred",
+  "tenors": {
+    "us3m": "DGS3MO",
+    "us2y": "DGS2",
+    "us10y": "DGS10",
+    "us30y": "DGS30"
+  },
+  "substitution": "",
+  "n_common_rows": 2250,
+  "rows_excluded_by_curve": 0,
+  "dev_folds": [
+    "dev_01",
+    "dev_02",
+    "dev_03",
+    "dev_04",
+    "dev_05",
+    "dev_06",
+    "dev_07",
+    "dev_08",
+    "dev_09"
+  ],
+  "n_dev_rows": 1081,
+  "lock_start": "2025-08-13",
+  "purge_violations": [],
+  "full_plus_E_vs_current_calibrated_month_ci": [
+    -2.6520056448338878e-06,
+    -0.0005623318934116108,
+    0.0005578767867305994
+  ],
+  "verdict": "동률(CI가 0 포함)",
+  "oof_file": "D:\\SourceCode\\predict_stock\\runs\\medium_horizon\\sk_hynix\\R07_h20_full_oof.csv",
+  "oof_sha256": "6285e43bec0e3d0f33bf0fbb5636c4c2766ce2cfdc8ebf8e86cb5e81530b8ac2"
+}

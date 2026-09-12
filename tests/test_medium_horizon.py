@@ -645,6 +645,90 @@ class LockedCandidateTests(unittest.TestCase):
         self.assertIn("strict_gate - gate_2of3", set(rows["comparison"]))
 
 
+class YieldCurveTests(unittest.TestCase):
+    """R07: 금리는 수준(%)이라 차분을 쓰고, 예측일 전 마지막 관측만 본다."""
+
+    def series(self):
+        krx = pd.DatetimeIndex(pd.bdate_range("2020-01-01", periods=300))
+        us = krx[~krx.isin(pd.DatetimeIndex(["2020-07-03", "2020-11-26"]))]     # 미국 휴장일
+        step = np.linspace(0, 1, len(us))
+        return krx, {"us3m": pd.Series(2.0 + step, index=us),
+                     "us2y": pd.Series(3.0 + step, index=us),
+                     "us10y": pd.Series(4.0 + step, index=us),
+                     "us30y": pd.Series(4.5 + step, index=us)}
+
+    def test_levels_use_differences_not_percent_change(self):
+        krx, tenors = self.series()
+        f = mh.curve_features(tenors, krx)
+        d = pd.Timestamp("2020-08-14")
+        prev = tenors["us3m"].index[tenors["us3m"].index < d][-1]
+        k = tenors["us3m"].index.get_loc(prev)
+        expected = tenors["us3m"].iloc[k] - tenors["us3m"].iloc[k - 5]
+        self.assertAlmostEqual(f.loc[d, "us3m_chg_5"], expected, places=12)
+
+    def test_slope_is_the_level_difference(self):
+        krx, tenors = self.series()
+        f = mh.curve_features(tenors, krx)
+        d = pd.Timestamp("2020-08-14")
+        prev = tenors["us10y"].index[tenors["us10y"].index < d][-1]
+        self.assertAlmostEqual(f.loc[d, "curve_10y2y"],
+                               float(tenors["us10y"].loc[prev] - tenors["us2y"].loc[prev]), places=12)
+        self.assertAlmostEqual(f.loc[d, "curve_10y3m"],
+                               float(tenors["us10y"].loc[prev] - tenors["us3m"].loc[prev]), places=12)
+        self.assertAlmostEqual(f.loc[d, "curve_30y10y"],
+                               float(tenors["us30y"].loc[prev] - tenors["us10y"].loc[prev]), places=12)
+
+    def test_only_observations_before_the_prediction_date_are_used(self):
+        krx, tenors = self.series()
+        before = mh.curve_features(tenors, krx)
+        bumped = {k: v.copy() for k, v in tenors.items()}
+        cut = bumped["us3m"].index[-30]
+        for v in bumped.values():
+            v.loc[cut:] += 5.0                       # 마지막 30일만 크게 바꾼다
+        after = mh.curve_features(bumped, krx)
+        safe = krx[krx <= cut]
+        pd.testing.assert_frame_equal(before.loc[safe], after.loc[safe])
+
+    def test_us_holiday_does_not_shift_the_window(self):
+        krx, tenors = self.series()
+        f = mh.curve_features(tenors, krx)
+        d = pd.Timestamp("2020-07-06")               # 7/3 은 미국 휴장
+        k = tenors["us2y"].index.get_loc(pd.Timestamp("2020-07-02"))
+        self.assertAlmostEqual(f.loc[d, "us2y_chg_5"],
+                               tenors["us2y"].iloc[k] - tenors["us2y"].iloc[k - 5], places=12)
+
+    def test_curve_columns_do_not_collide_with_existing_features(self):
+        """기존 입력에는 us10y_* 만 있다. 새 열이 그것을 덮어쓰면 안 된다."""
+        krx, tenors = self.series()
+        new = set(mh.curve_features(tenors, krx).columns)
+        self.assertFalse(new & {"us10y_ret_1", "us10y_ret_5", "us10y_level_z60"})
+        self.assertFalse(any(c.startswith("us10y_") for c in new), "기존 10년물 특징과 겹친다")
+        self.assertIn("curve_10y2y", new)
+
+    def test_source_and_any_substitution_are_recorded(self):
+        """어느 출처로 받았는지, 2년물을 대체했는지가 결과에 남아야 한다."""
+        config = mh.r07_config("full")
+        self.assertIn(config["curve_source"], ("fred", "yahoo"))
+        self.assertIn("us10y", config["tenors"])
+        if config["curve_source"] == "fred":
+            self.assertIn("us2y", config["tenors"])
+            self.assertEqual(config["substitution"], "")
+        else:
+            self.assertIn("2년물", config["substitution"])
+
+    def test_missing_ten_year_is_refused(self):
+        krx, tenors = self.series()
+        del tenors["us10y"]
+        with self.assertRaises(ValueError):
+            mh.curve_features(tenors, krx)
+
+    def test_verdict_reads_the_interval(self):
+        self.assertEqual(mh.verdict_for_price({"ci_lo": -.002, "ci_hi": -.001}), "후보가 유의하게 우위")
+        self.assertEqual(mh.verdict_for_price({"ci_lo": .001, "ci_hi": .002}), "후보가 유의하게 열위")
+        self.assertEqual(mh.verdict_for_price({"ci_lo": -.001, "ci_hi": .002}), "동률(CI가 0 포함)")
+        self.assertIn("보류", mh.verdict_for_price({"ci_lo": float("nan"), "ci_hi": .1}))
+
+
 class FakeNotebook:
     def __init__(self, fail=False):
         self.calls = 0

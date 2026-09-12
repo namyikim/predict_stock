@@ -1,0 +1,17 @@
+target,horizon,comparison,metric,delta,common_n,calibrated,ci_lo,ci_hi,block
+sk_hynix,5,current_full - hold_current,mae_return_calibrated,-0.0003031398438853008,1081,True,-0.0008599399458178913,0.000247628511659993,month
+sk_hynix,5,current_full - hold_current,mae_return_calibrated,-0.0003031398438853008,1081,True,-0.0008329596556426229,0.00022853343650156374,contiguous_20
+sk_hynix,5,full_plus_E - current_full,mae_return_raw,0.00010761394619087697,1081,False,-8.450191730832278e-05,0.00030581198971585643,month
+sk_hynix,5,full_plus_E - current_full,mae_return_raw,0.00010761394619087697,1081,False,-8.694054875017371e-05,0.00029975404795416045,contiguous_20
+sk_hynix,5,full_plus_E - current_full,mae_return_calibrated,5.74748834953433e-05,1081,True,-7.64943540126352e-05,0.00020637885278764406,month
+sk_hynix,5,full_plus_E - current_full,mae_return_calibrated,5.74748834953433e-05,1081,True,-5.9350181871199645e-05,0.00018260963588240375,contiguous_20
+sk_hynix,5,full_plus_E - hold_current,mae_return_calibrated,-0.0002456649603899576,1081,True,-0.0008944084332389259,0.0003901560831778019,month
+sk_hynix,5,full_plus_E - hold_current,mae_return_calibrated,-0.0002456649603899576,1081,True,-0.000832680267727591,0.0003779830580936174,contiguous_20
+sk_hynix,20,current_full - hold_current,mae_return_calibrated,0.0004577381056221479,1081,True,-0.001917081123665999,0.003004176192396752,month
+sk_hynix,20,current_full - hold_current,mae_return_calibrated,0.0004577381056221479,1081,True,-0.0021067869604257617,0.003247973290834531,contiguous_40
+sk_hynix,20,full_plus_E - current_full,mae_return_raw,0.0007114907992836888,1081,False,-0.0006670103053095297,0.0022538501688813026,month
+sk_hynix,20,full_plus_E - current_full,mae_return_raw,0.0007114907992836888,1081,False,-0.0007823746841278487,0.002364011513578851,contiguous_40
+sk_hynix,20,full_plus_E - current_full,mae_return_calibrated,-2.6520056448338878e-06,1081,True,-0.0005623318934116108,0.0005578767867305994,month
+sk_hynix,20,full_plus_E - current_full,mae_return_calibrated,-2.6520056448338878e-06,1081,True,-0.0007276841482901767,0.0006320724633077926,contiguous_40
+sk_hynix,20,full_plus_E - hold_current,mae_return_calibrated,0.0004550860999773138,1081,True,-0.0018504751602554034,0.0029341772169705223,month
+sk_hynix,20,full_plus_E - hold_current,mae_return_calibrated,0.0004550860999773138,1081,True,-0.0018465857579484995,0.0030560619339130815,contiguous_40

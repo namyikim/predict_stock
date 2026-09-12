@@ -1,0 +1,315 @@
+{
+  "metrics": [
+    {
+      "target": "samsung",
+      "horizon": 20,
+      "candidate": "hold_current",
+      "fold": "dev_all",
+      "evaluation_stage": "dev_common",
+      "n": 1086,
+      "mae": 0.05006206151118869
+    },
+    {
+      "target": "samsung",
+      "horizon": 20,
+      "candidate": "current_full",
+      "fold": "dev_all",
+      "evaluation_stage": "dev_common",
+      "n": 1086,
+      "mae": 0.054048122149700624,
+      "mae_calibrated": 0.0508061794461286,
+      "n_features": 78,
+      "mean_slope": 0.12661721298337034
+    },
+    {
+      "target": "samsung",
+      "horizon": 20,
+      "candidate": "current_full",
+      "fold": "dev_01",
+      "evaluation_stage": "dev_fold",
+      "n": 123,
+      "mae": 0.03219876139711372,
+      "zero_mae": 0.02443764540457775
+    },
+    {
+      "target": "samsung",
+      "horizon": 20,
+      "candidate": "current_full",
+      "fold": "dev_02",
+      "evaluation_stage": "dev_fold",
+      "n": 125,
+      "mae": 0.05122406931290488,
+      "zero_mae": 0.0494481373447924
+    },
+    {
+      "target": "samsung",
+      "horizon": 20,
+      "candidate": "current_full",
+      "fold": "dev_03",
+      "evaluation_stage": "dev_fold",
+      "n": 108,
+      "mae": 0.06140604388198962,
+      "zero_mae": 0.05511537872073959
+    },
+    {
+      "target": "samsung",
+      "horizon": 20,
+      "candidate": "current_full",
+      "fold": "dev_04",
+      "evaluation_stage": "dev_fold",
+      "n": 125,
+      "mae": 0.05409439331273983,
+      "zero_mae": 0.05359914257642141
+    },
+    {
+      "target": "samsung",
+      "horizon": 20,
+      "candidate": "current_full",
+      "fold": "dev_05",
+      "evaluation_stage": "dev_fold",
+      "n": 123,
+      "mae": 0.05576386275610173,
+      "zero_mae": 0.046202301301395514
+    },
+    {
+      "target": "samsung",
+      "horizon": 20,
+      "candidate": "current_full",
+      "fold": "dev_06",
+      "evaluation_stage": "dev_fold",
+      "n": 121,
+      "mae": 0.03944543368503726,
+      "zero_mae": 0.040052940593539185
+    },
+    {
+      "target": "samsung",
+      "horizon": 20,
+      "candidate": "current_full",
+      "fold": "dev_07",
+      "evaluation_stage": "dev_fold",
+      "n": 121,
+      "mae": 0.05306124474734848,
+      "zero_mae": 0.05453007980237695
+    },
+    {
+      "target": "samsung",
+      "horizon": 20,
+      "candidate": "current_full",
+      "fold": "dev_08",
+      "evaluation_stage": "dev_fold",
+      "n": 123,
+      "mae": 0.09174779761344751,
+      "zero_mae": 0.07709427349915471
+    },
+    {
+      "target": "samsung",
+      "horizon": 20,
+      "candidate": "current_full",
+      "fold": "dev_09",
+      "evaluation_stage": "dev_fold",
+      "n": 117,
+      "mae": 0.04787957367090762,
+      "zero_mae": 0.050582678256604424
+    },
+    {
+      "target": "samsung",
+      "horizon": 20,
+      "candidate": "full_plus_E",
+      "fold": "dev_all",
+      "evaluation_stage": "dev_common",
+      "n": 1086,
+      "mae": 0.054921482404866,
+      "mae_calibrated": 0.05075202781340947,
+      "n_features": 88,
+      "mean_slope": 0.11073132124567661
+    },
+    {
+      "target": "samsung",
+      "horizon": 20,
+      "candidate": "full_plus_E",
+      "fold": "dev_01",
+      "evaluation_stage": "dev_fold",
+      "n": 123,
+      "mae": 0.036037408998521786,
+      "zero_mae": 0.02443764540457775
+    },
+    {
+      "target": "samsung",
+      "horizon": 20,
+      "candidate": "full_plus_E",
+      "fold": "dev_02",
+      "evaluation_stage": "dev_fold",
+      "n": 125,
+      "mae": 0.051782029205932084,
+      "zero_mae": 0.0494481373447924
+    },
+    {
+      "target": "samsung",
+      "horizon": 20,
+      "candidate": "full_plus_E",
+      "fold": "dev_03",
+      "evaluation_stage": "dev_fold",
+      "n": 108,
+      "mae": 0.059742599665003275,
+      "zero_mae": 0.05511537872073959
+    },
+    {
+      "target": "samsung",
+      "horizon": 20,
+      "candidate": "full_plus_E",
+      "fold": "dev_04",
+      "evaluation_stage": "dev_fold",
+      "n": 125,
+      "mae": 0.054180199659965664,
+      "zero_mae": 0.05359914257642141
+    },
+    {
+      "target": "samsung",
+      "horizon": 20,
+      "candidate": "full_plus_E",
+      "fold": "dev_05",
+      "evaluation_stage": "dev_fold",
+      "n": 123,
+      "mae": 0.05539997663547205,
+      "zero_mae": 0.046202301301395514
+    },
+    {
+      "target": "samsung",
+      "horizon": 20,
+      "candidate": "full_plus_E",
+      "fold": "dev_06",
+      "evaluation_stage": "dev_fold",
+      "n": 121,
+      "mae": 0.03881738503371079,
+      "zero_mae": 0.040052940593539185
+    },
+    {
+      "target": "samsung",
+      "horizon": 20,
+      "candidate": "full_plus_E",
+      "fold": "dev_07",
+      "evaluation_stage": "dev_fold",
+      "n": 121,
+      "mae": 0.05383427144797185,
+      "zero_mae": 0.05453007980237695
+    },
+    {
+      "target": "samsung",
+      "horizon": 20,
+      "candidate": "full_plus_E",
+      "fold": "dev_08",
+      "evaluation_stage": "dev_fold",
+      "n": 123,
+      "mae": 0.0966593629137024,
+      "zero_mae": 0.07709427349915471
+    },
+    {
+      "target": "samsung",
+      "horizon": 20,
+      "candidate": "full_plus_E",
+      "fold": "dev_09",
+      "evaluation_stage": "dev_fold",
+      "n": 117,
+      "mae": 0.04786752148698007,
+      "zero_mae": 0.050582678256604424
+    }
+  ],
+  "comparisons": [
+    {
+      "target": "samsung",
+      "horizon": 20,
+      "comparison": "current_full - hold_current",
+      "metric": "mae_return_calibrated",
+      "delta": 0.0007441179349399166,
+      "common_n": 1086,
+      "calibrated": true,
+      "ci_lo": 0.000269742066024841,
+      "ci_hi": 0.0013123536488540257,
+      "block": "month"
+    },
+    {
+      "target": "samsung",
+      "horizon": 20,
+      "comparison": "current_full - hold_current",
+      "metric": "mae_return_calibrated",
+      "delta": 0.0007441179349399166,
+      "common_n": 1086,
+      "calibrated": true,
+      "ci_lo": 0.00020769388688969464,
+      "ci_hi": 0.0012490179988494563,
+      "block": "contiguous_40"
+    },
+    {
+      "target": "samsung",
+      "horizon": 20,
+      "comparison": "full_plus_E - current_full",
+      "metric": "mae_return_raw",
+      "delta": 0.0008733602551653782,
+      "common_n": 1086,
+      "calibrated": false,
+      "ci_lo": 0.00014472775814514672,
+      "ci_hi": 0.0016696653184325714,
+      "block": "month"
+    },
+    {
+      "target": "samsung",
+      "horizon": 20,
+      "comparison": "full_plus_E - current_full",
+      "metric": "mae_return_raw",
+      "delta": 0.0008733602551653782,
+      "common_n": 1086,
+      "calibrated": false,
+      "ci_lo": -3.084427645165126e-05,
+      "ci_hi": 0.00175948270103721,
+      "block": "contiguous_40"
+    },
+    {
+      "target": "samsung",
+      "horizon": 20,
+      "comparison": "full_plus_E - current_full",
+      "metric": "mae_return_calibrated",
+      "delta": -5.4151632719134786e-05,
+      "common_n": 1086,
+      "calibrated": true,
+      "ci_lo": -0.00023029378917919336,
+      "ci_hi": 9.06378469088569e-05,
+      "block": "month"
+    },
+    {
+      "target": "samsung",
+      "horizon": 20,
+      "comparison": "full_plus_E - current_full",
+      "metric": "mae_return_calibrated",
+      "delta": -5.4151632719134786e-05,
+      "common_n": 1086,
+      "calibrated": true,
+      "ci_lo": -0.0003062385128922197,
+      "ci_hi": 9.706071221414367e-05,
+      "block": "contiguous_40"
+    },
+    {
+      "target": "samsung",
+      "horizon": 20,
+      "comparison": "full_plus_E - hold_current",
+      "metric": "mae_return_calibrated",
+      "delta": 0.0006899663022207819,
+      "common_n": 1086,
+      "calibrated": true,
+      "ci_lo": 0.00023363618582984976,
+      "ci_hi": 0.001240208917928173,
+      "block": "month"
+    },
+    {
+      "target": "samsung",
+      "horizon": 20,
+      "comparison": "full_plus_E - hold_current",
+      "metric": "mae_return_calibrated",
+      "delta": 0.0006899663022207819,
+      "common_n": 1086,
+      "calibrated": true,
+      "ci_lo": 0.00019427450474540604,
+      "ci_hi": 0.0011009601620671405,
+      "block": "contiguous_40"
+    }
+  ]
+}

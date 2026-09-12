@@ -52,7 +52,8 @@ TASKS = {"M00": "현행 5·20일 가격 모델 기준선과 실패 유형 진단
          "M04": "5·20일 직접 방향 확률 모델(규제 Logistic) vs 학습 구간 사전확률",
          "M05": "예측 구간(simple 내부 q / HAR / 최근 확정 잔차 252개)과 보류 정책 비교",
          "M06": "국내 반도체 패널 공동 학습(pooled Ridge) vs 같은 입력 단독 모델 vs 현행",
-         "M07": "고정 후보의 잠금 평가 1회와 사전 예측 관찰 현황"}
+         "M07": "고정 후보의 잠금 평가 1회와 사전 예측 관찰 현황",
+         "R07": "금리 커브 특징군(단기·장기 금리와 기울기) 비교 — 5·20일만"}
 HORIZON_LABELS = {5: "1주일", 20: "1개월"}
 
 # 평가 계약(계획 4절). 점수를 보기 전에 고정한다.
@@ -1902,8 +1903,240 @@ def run_m07(target, mode, storage, results_dir, state, run_notebook_fn=None):
     return collect_rows(state, target)
 
 
-TASK_RUNNERS = {"M00": run_m00, "M01": run_m01, "M02": run_m02, "M03": run_m03, "M04": run_m04, "M05": run_m05, "M06": run_m06, "M07": run_m07}
-TASK_CONFIGS = {"M00": m00_config, "M01": m01_config, "M02": m02_config, "M03": m03_config, "M04": m04_config, "M05": m05_config, "M06": m06_config, "M07": m07_config}
+# ---------------------------------------------------------------------------
+# R07 — 금리 커브 특징군 (guides/research-candidates-plan.md)
+# ---------------------------------------------------------------------------
+# 근거: Campbell(1987), Rapach·Strauss·Zhou(2010) — 단기 금리와 커브 기울기가 월 단위 이상
+# 지평에서 주식 수익률을 예측한다. 현재 입력에는 10년물(^TNX) 하나뿐이라 커브 정보가 없다.
+#
+# 자료원은 FRED 의 국채 고정만기(CMT) 금리다. 네 구간을 **한 출처·한 기준**으로 받아야 기울기가
+# 성립한다. Yahoo 로 섞으면 ^IRX(13주 할인율)와 ^TNX(CMT)의 기준이 달라 10년−3개월에 계통 편향이
+# 들어가고, 무엇보다 2년물이 Yahoo 에 없다(^UST2YR 은 404). 2년물은 시장이 보는 연준 경로의
+# 표준 대리 변수라 이 실험의 핵심이다.
+#
+# FRED 키가 없으면 Yahoo 로 물러서되(3개월·5년·30년) 그 사실을 설정에 남긴다 — config_hash 가
+# 달라지므로 두 실행이 섞이지 않는다.
+#
+# 1일 방향 모델에는 넣지 않는다 — P03 에서 거시류 특징군이 두 종목 모두 유의하게 열위였다.
+CURVE_CACHE = "curve_cache"
+CURVE_FRED = {"us3m": "DGS3MO", "us2y": "DGS2", "us10y": "DGS10", "us30y": "DGS30"}
+CURVE_YAHOO = {"us3m": "^IRX", "us5y": "^FVX", "us10y": "^TNX", "us30y": "^TYX"}
+
+
+def curve_source():
+    """('fred', 시리즈들) 또는 ('yahoo', 티커들). 키가 있으면 FRED 를 쓴다."""
+    sys.path.insert(0, str(ROOT))
+    from data_sources.oecd import fred_key
+    return ("fred", dict(CURVE_FRED)) if fred_key() else ("yahoo", dict(CURVE_YAHOO))
+
+
+def _fetch_curve_series(source, code, start):
+    """한 구간의 일별 금리(%). 반환: Series(index=날짜)."""
+    if source == "fred":
+        from data_sources.oecd import _fred_request, fred_key
+        payload = _fred_request(fred_key(), "series/observations",
+                                {"series_id": code, "observation_start": str(start)})
+        rows = payload.get("observations") or []
+        frame = pd.DataFrame({"date": [r["date"] for r in rows],
+                              "close": [r["value"] for r in rows]})
+        frame["date"] = pd.to_datetime(frame["date"])
+        # 휴일은 '.' 로 온다. 숫자가 아닌 행은 버린다(채우지 않는다).
+        frame["close"] = pd.to_numeric(frame["close"], errors="coerce")
+        return frame.dropna().set_index("date")["close"]
+    import yfinance as yf
+    frame = yf.Ticker(code).history(start=str(start), auto_adjust=False)
+    if frame is None or frame.empty:
+        raise SystemExit(f"{code} 시세를 받지 못했습니다.")
+    frame.index = pd.DatetimeIndex(pd.to_datetime(frame.index)).tz_localize(None).normalize()
+    frame.columns = [str(c).strip().lower().replace(" ", "_") for c in frame.columns]
+    return frame["close"].astype(float).dropna()
+
+
+def load_curve_cache(storage, start="2014-01-01"):
+    """(출처, {이름: 금리 시계열}). <storage>/curve_cache/<출처>_<이름>.csv 에 받아 두고 다시 쓴다.
+
+    data_cache 와 분리한다 — 거기에 넣으면 data_hash 가 바뀌어 M00~M07 의 고정 입력이 모두
+    무효가 된다(M06 의 panel_cache 와 같은 이유). 파일 이름에 출처를 넣어 두 출처가 섞이지 않게 한다.
+    """
+    source, codes = curve_source()
+    cache = Path(storage) / CURVE_CACHE
+    cache.mkdir(parents=True, exist_ok=True)
+    out = {}
+    for name, code in codes.items():
+        path = cache / f"{source}_{name}.csv"
+        if path.is_file():
+            series = pd.read_csv(path, index_col=0, parse_dates=True)["close"]
+        else:
+            series = _fetch_curve_series(source, code, start)
+            series.rename("close").to_frame().to_csv(path)      # 자료만 남긴다. 인증키는 어디에도 쓰지 않는다.
+        series = pd.Series(series).astype(float).dropna().sort_index()
+        out[name] = series[series > 0]
+    return source, out
+
+
+def curve_features(tenors, dates):
+    """금리 커브 특징. 행 d 에는 d 보다 앞선 마지막 관측만 쓴다(그룹 A 와 같은 규칙).
+
+    금리는 수준(%)이라 수익률이 아니라 **차분**을 쓴다. pct_change 는 금리가 0 근처일 때 폭발하고,
+    '금리가 몇 %p 움직였나'가 시장이 실제로 보는 양이다. 기울기도 같은 단위의 차다.
+
+    tenors 에는 us10y 가 반드시 있어야 하고, 단기 구간은 us2y(FRED) 또는 us5y(Yahoo 대체)다.
+    """
+    dates = pd.DatetimeIndex(dates)
+    if "us10y" not in tenors:
+        raise ValueError("커브에는 us10y 가 필요하다")
+    short = "us2y" if "us2y" in tenors else "us5y"
+    out = pd.DataFrame(index=dates)
+    # 변화·z점수·기울기는 **미국 달력**에서 먼저 계산하고 그 뒤에 한국 예측일로 정렬한다.
+    # 정렬을 먼저 하면 창이 한국 달력이 되어 미국 휴장일마다 5일이 4일로 줄어든다(그룹 A 와 같은 규칙).
+    for name, series in tenors.items():
+        if name == "us10y":
+            continue            # 기존 입력의 us10y_* 와 겹치지 않게 수준·차분은 넣지 않는다
+        out[f"{name}_chg_5"] = align_before(series.diff(5).dropna(), dates)
+        z = (series - series.rolling(60).mean()) / series.rolling(60).std()
+        out[f"{name}_level_z60"] = align_before(z.dropna(), dates)
+    for label, long_name, short_name in ((f"curve_10y{short[2:]}", "us10y", short),
+                                         ("curve_10y3m", "us10y", "us3m"),
+                                         ("curve_30y10y", "us30y", "us10y")):
+        slope = (tenors[long_name] - tenors[short_name]).dropna()
+        out[label] = align_before(slope, dates)
+        if label.startswith(f"curve_10y{short[2:]}"):
+            out[f"{label}_chg_20"] = align_before(slope.diff(20).dropna(), dates)
+    return out.replace([np.inf, -np.inf], np.nan)
+
+
+def r07_config(mode):
+    source, codes = curve_source()
+    return {"task": "R07", "mode": mode, "horizons": list(HORIZONS),
+            "candidates": ["current_full", "full_plus_E"],
+            "curve_source": source, "tenors": codes,
+            "substitution": ("" if source == "fred" else
+                             "FRED 키가 없어 2년물 대신 5년물(^FVX)을 쓰고 3개월은 할인율 기준(^IRX)이다"),
+            "model": "StandardScaler+Ridge(alpha=1e4), target=future_return/sigma_simple",
+            "folds": {"first_test": FIRST_TEST, "test_months": TEST_MONTHS, "lock_months": LOCK_MONTHS,
+                      "min_train_rows": MIN_TRAIN_ROWS, "min_test_rows": MIN_TEST_ROWS, "inner_blocks": INNER_BLOCKS},
+            "bootstrap_b": 400 if mode == "quick" else 2000, "seed": SEED}
+
+
+def run_r07(target, mode, storage, results_dir, state, run_notebook_fn=None):
+    inputs = None
+    for horizon in HORIZONS:
+        unit = f"{target}:h{horizon}"
+        if state.is_done(unit) and artifacts_intact(state, unit, target, horizon):
+            print(f"  이미 완료된 단위 건너뜀: {unit}")
+            continue
+        if inputs is None:
+            inputs = load_inputs(target, mode, storage, run_notebook_fn)
+            record_inputs(state, inputs)
+            curve_src, tenors = load_curve_cache(storage)
+            curve = curve_features(tenors, inputs["feat"].index)
+            feat_aug = inputs["feat"].copy()
+            for col in curve.columns:
+                feat_aug[col] = curve[col]
+            e_cols = list(curve.columns)
+        base_cols = list(inputs["feature_cols"])
+        cols_by_candidate = {"current_full": base_cols, "full_plus_E": base_cols + e_cols}
+        sam = inputs["sam"]
+        reg, _ = fu.price_design_frame(feat_aug, sam.index, base_cols + e_cols,
+                                       inputs["sam_raw_close"], feat_aug["sam_vol_20"], horizon)
+        reg_base, _ = fu.price_design_frame(feat_aug, sam.index, base_cols,
+                                            inputs["sam_raw_close"], feat_aug["sam_vol_20"], horizon)
+        folds, lock_start = evaluation_folds(reg.index, sam.index, horizon)
+        dev = [f for f in folds if f["name"].startswith("dev") and not f.get("excluded")]
+        violations = purge_check(reg.index, sam.index, horizon, [(f["train"], f["test"]) for f in dev]
+                                 + [(i["train"], i["test"]) for f in dev for i in f["inner"] if not i.get("excluded")])
+        template = fu.make_price_model()
+        records, y, sigma = fold_candidate_predictions(reg, cols_by_candidate, folds, horizon, template)
+        if not records:
+            raise SystemExit(f"{unit}: 개발 폴드가 없습니다.")
+
+        test_idx = np.concatenate([r["test"] for r in records])
+        y_dev, dates_dev = y[test_idx], reg.index[test_idx]
+        zero = np.abs(y_dev)
+        b = 400 if mode == "quick" else 2000
+        block = max(20, 2 * horizon)
+        preds = {name: {"raw": np.concatenate([r["candidates"][name]["raw"] for r in records]),
+                        "calibrated": np.concatenate([r["candidates"][name]["slope"] * r["candidates"][name]["raw"]
+                                                      for r in records])}
+                 for name in cols_by_candidate}
+
+        def ci_pair(diff, label, metric):
+            lo_m, hi_m = month_block_ci(dates_dev, lambda i: float(diff[i].mean()), b=b)
+            lo_c, hi_c = contiguous_block_ci(len(diff), lambda i: float(diff[i].mean()), block, b=b)
+            base = {"target": target, "horizon": horizon, "comparison": label, "metric": metric,
+                    "delta": float(diff.mean()), "common_n": int(len(diff)), "calibrated": "calibrated" in metric}
+            return [dict(base, ci_lo=lo_m, ci_hi=hi_m, block="month"),
+                    dict(base, ci_lo=lo_c, ci_hi=hi_c, block=f"contiguous_{block}")]
+
+        metrics = [{"target": target, "horizon": horizon, "candidate": "hold_current", "fold": "dev_all",
+                    "evaluation_stage": "dev_common", "n": int(len(y_dev)), "mae": float(zero.mean())}]
+        comparisons = []
+        ref = preds["current_full"]
+        for name, pth in preds.items():
+            err_raw, err_cal = np.abs(y_dev - pth["raw"]), np.abs(y_dev - pth["calibrated"])
+            metrics.append({"target": target, "horizon": horizon, "candidate": name, "fold": "dev_all",
+                            "evaluation_stage": "dev_common", "n": int(len(y_dev)),
+                            "mae": float(err_raw.mean()), "mae_calibrated": float(err_cal.mean()),
+                            "n_features": len(cols_by_candidate[name]),
+                            "mean_slope": float(np.mean([r["candidates"][name]["slope"] for r in records]))})
+            for r in records:
+                te = r["test"]
+                metrics.append({"target": target, "horizon": horizon, "candidate": name, "fold": r["fold"],
+                                "evaluation_stage": "dev_fold", "n": int(len(te)),
+                                "mae": float(np.abs(y[te] - r["candidates"][name]["raw"]).mean()),
+                                "zero_mae": float(np.abs(y[te]).mean())})
+            if name != "current_full":
+                comparisons += ci_pair(err_raw - np.abs(y_dev - ref["raw"]), f"{name} - current_full", "mae_return_raw")
+                comparisons += ci_pair(err_cal - np.abs(y_dev - ref["calibrated"]), f"{name} - current_full", "mae_return_calibrated")
+            comparisons += ci_pair(err_cal - zero, f"{name} - hold_current", "mae_return_calibrated")
+
+        raw_dir = Path(storage) / target
+        raw_dir.mkdir(parents=True, exist_ok=True)
+        oof_frame = pd.DataFrame({"prediction_date": dates_dev, "y": y_dev,
+                                  **{f"raw_{n}": p_["raw"] for n, p_ in preds.items()},
+                                  **{f"cal_{n}": p_["calibrated"] for n, p_ in preds.items()}})
+        oof_path = raw_dir / f"R07_h{horizon}_{mode}_oof.csv"
+        oof_frame.to_csv(oof_path, index=False, lineterminator="\n")
+
+        delta = next(c for c in comparisons if c["comparison"] == "full_plus_E - current_full"
+                     and c["metric"] == "mae_return_calibrated" and c["block"] == "month")
+        summary = {
+            "target": target, "horizon": horizon, "curve_columns": e_cols,
+            "curve_source": curve_src, "tenors": r07_config(mode)["tenors"],
+            "substitution": r07_config(mode)["substitution"],
+            "n_common_rows": int(len(reg)), "rows_excluded_by_curve": int(len(reg_base) - len(reg)),
+            "dev_folds": [r["fold"] for r in records], "n_dev_rows": int(len(y_dev)),
+            "lock_start": str(lock_start.date()), "purge_violations": violations,
+            "full_plus_E_vs_current_calibrated_month_ci": [delta["delta"], delta["ci_lo"], delta["ci_hi"]],
+            "verdict": verdict_for_price(delta),
+            "oof_file": str(oof_path), "oof_sha256": file_sha256(oof_path),
+        }
+        write_json(state.run_dir / f"summary_{target}_h{horizon}.json", summary)
+        save_unit_rows(state, target, horizon, metrics, comparisons)
+        state.mark(unit, {"oof_sha256": summary["oof_sha256"], "oof_file": summary["oof_file"],
+                          "verdict": summary["verdict"], "purge_violations": len(violations)})
+        print(f"  {unit}: 커브({curve_src}) {len(e_cols)}열 추가 · 공통 {len(reg)}행(제외 {len(reg_base) - len(reg)}) · "
+              f"개발 {len(records)}폴드 · full_plus_E−현행(보정) {delta['delta']:+.5f} "
+              f"[{delta['ci_lo']:+.5f}, {delta['ci_hi']:+.5f}] · {summary['verdict']}")
+    return collect_rows(state, target)
+
+
+def verdict_for_price(delta):
+    """가격 MAE 비교 판정. 작을수록 좋으므로 CI 상한 < 0 이면 우위다."""
+    lo, hi = delta["ci_lo"], delta["ci_hi"]
+    if not (np.isfinite(lo) and np.isfinite(hi)):
+        return "판단 보류(구간 없음)"
+    if hi < 0:
+        return "후보가 유의하게 우위"
+    if lo > 0:
+        return "후보가 유의하게 열위"
+    return "동률(CI가 0 포함)"
+
+
+TASK_RUNNERS = {"M00": run_m00, "M01": run_m01, "M02": run_m02, "M03": run_m03, "M04": run_m04,
+                "M05": run_m05, "M06": run_m06, "M07": run_m07, "R07": run_r07}
+TASK_CONFIGS = {"M00": m00_config, "M01": m01_config, "M02": m02_config, "M03": m03_config, "M04": m04_config,
+                "M05": m05_config, "M06": m06_config, "M07": m07_config, "R07": r07_config}
 
 
 def execute(task, target, mode, storage, results_dir, resume, run_notebook_fn=None):

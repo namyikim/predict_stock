@@ -8,6 +8,7 @@
 """
 import json
 import os
+import re
 from pathlib import Path
 
 import numpy as np
@@ -117,6 +118,125 @@ def fragment_sources_html(longterm, earnings):
             '<div style="font-size:11px;color:#8a9199;margin-top:4px">7·8절은 별도 도구가 만들어 이 보고서에 '
             '끼워집니다. 위 두 표(시세·월별 지표)는 이 보고서가 직접 받은 자료이고, 이 표는 그 두 절이 쓴 '
             '자료입니다. 빨간 글씨는 조회에 실패해 저장소 보관본을 쓴 것입니다.</div>')
+
+
+# 보고서는 14만 자에 절이 열 개가 넘는다. 목차 없이는 어디에 무엇이 있는지 알 수 없고,
+# 필요한 절로 바로 갈 수도 없다. 완성된 HTML 을 받아 h3 에 id 를 붙이고 목차를 만든다.
+# 본문을 다시 조립하지 않고 제목만 손대므로 절 순서·내용·태그 균형이 바뀌지 않는다.
+_H3 = re.compile(r'(<h3\b[^>]*>)(.*?)(</h3>)', re.S)
+# 목차 그룹. 나열 순서가 곧 목차 순서이므로 읽는 순서와 같게 둔다.
+# 판정은 '앞부분으로 시작' 또는 '포함' 둘 다 본다 — 채점 절 제목은 날짜로 시작한다
+# ("2026-09-11 (금) 예측 vs 실제"), 수급 절은 "1-1." 로 시작한다.
+NAV_GROUPS = (
+    ("요약", ("한눈에", "그 밖에")),
+    ("예측", ("1.", "1-1.", "2.", "3.")),
+    ("성적", ("예측 vs 실제", "4.", "5.")),
+    ("배경", ("6.", "참고 정보", "7.", "8.")),
+)
+
+
+def _nav_group(title):
+    for name, keys in NAV_GROUPS:
+        if any(title.startswith(k) or k in title for k in keys):
+            return name
+    return "기타"
+
+
+def add_report_nav(html_text, title_limit=34):
+    """h3 에 id 를 붙이고 맨 위에 목차를 넣는다. (새 HTML, 절 목록) 반환.
+
+    제목의 부제(회색 span)는 목차에서 뺀다 — 목차가 본문만큼 길어지면 목차가 아니다.
+    """
+    from html import escape
+    sections = []
+
+    def tag(match):
+        open_tag, inner, close_tag = match.groups()
+        # 부제는 회색 <span> 에 들어 있다. 목차에는 제목만 쓴다 — 부제까지 넣으면 목차가
+        # 본문만큼 길어진다. span 을 지운 뒤 태그를 벗긴다.
+        head = re.sub(r'<span\b.*?</span>', '', inner, flags=re.S)
+        plain = re.sub(r'<[^>]+>', '', head)
+        plain = re.sub(r'&nbsp;?', ' ', plain)
+        plain = re.sub(r'\s+', ' ', plain).replace('\xa0', ' ').strip(' ·')
+        if not plain:
+            return match.group(0)
+        index = len(sections) + 1
+        anchor_id = f'sec{index}'
+        sections.append({"id": anchor_id, "title": plain, "group": _nav_group(plain)})
+        if 'id=' in open_tag:
+            return match.group(0)
+        return f'{open_tag[:-1]} id="{anchor_id}">{inner}{close_tag}'
+
+    out = _H3.sub(tag, html_text)
+    if len(sections) < 4:
+        return html_text, sections
+
+    groups = {}
+    for section in sections:
+        groups.setdefault(section["group"], []).append(section)
+    blocks = ""
+    for name, _ in NAV_GROUPS:
+        items = groups.get(name)
+        if not items:
+            continue
+        links = " · ".join(
+            f'<a href="#{s["id"]}" style="color:#1a5490;text-decoration:none">'
+            f'{escape(s["title"][:title_limit])}</a>' for s in items)
+        blocks += (f'<div style="margin:3px 0"><span style="display:inline-block;min-width:38px;'
+                   f'color:#8a9199;font-size:11px">{escape(name)}</span>{links}</div>')
+    nav = ('<div style="border:1px solid #e5e5e5;border-radius:6px;padding:11px 14px;margin:14px 0 4px;'
+           'background:#fafafa;font-size:12px;line-height:1.8">'
+           '<div style="font-size:11px;color:#8a9199;margin-bottom:4px">이 보고서의 구성</div>'
+           + blocks + '</div>')
+    # 첫 h3(쉬운 요약) 바로 앞에 넣는다 — 제목·생성 시각 다음이다.
+    first = _H3.search(out)
+    return (out[:first.start()] + nav + out[first.start():], sections) if first else (out, sections)
+
+
+# 첫 화면에서 접어 둘 절. 결론은 위쪽 요약에 있고 이 절들은 근거·검증이라, 펼치지 않아도
+# 보고서를 읽을 수 있다. 14만 자를 한 번에 펼쳐 두면 필요한 절을 찾기 어렵다.
+COLLAPSE_PREFIXES = ("3.", "4.", "5.", "6.", "참고 정보", "7.", "8.")
+
+
+def collapse_sections(html_text, prefixes=COLLAPSE_PREFIXES, summary="펼쳐 보기"):
+    """지정한 절의 본문을 <details> 로 감싼다. 제목은 그대로 보이고 내용만 접힌다.
+
+    h3 로 절을 나누고 각 절의 본문만 감싸므로 태그 균형이 유지된다. 마지막 절은 바깥 래퍼의
+    닫는 태그를 품고 있어 건드리지 않는다(감싸면 </div> 가 details 안에 갇힌다).
+    """
+    parts = list(_H3.finditer(html_text))
+    if len(parts) < 2:
+        return html_text
+    out, cursor = [], 0
+    for index, match in enumerate(parts):
+        title = re.sub(r'<span\b.*?</span>', '', match.group(2), flags=re.S)
+        title = re.sub(r'<[^>]+>', '', title)
+        title = re.sub(r'&nbsp;?', ' ', title)
+        title = re.sub(r'\s+', ' ', title).strip(' ·')
+        body_start = match.end()
+        body_end = parts[index + 1].start() if index + 1 < len(parts) else None
+        out.append(html_text[cursor:body_start])
+        tail = ""
+        if body_end is None:
+            # 마지막 절의 본문 끝에는 바깥 래퍼의 닫는 태그가 붙어 있다. 그 부분을 떼어
+            # details 밖에 두어야 태그 균형이 유지된다(여는 태그 없이 닫히면 안 된다).
+            body = html_text[body_start:]
+            opens = len(re.findall(r'<div\b', body))
+            closes = len(re.findall(r'</div>', body))
+            for _ in range(max(0, closes - opens)):
+                position = body.rindex('</div>')
+                tail = body[position:] + tail
+                body = body[:position]
+        else:
+            body = html_text[body_start:body_end]
+        if any(title.startswith(prefix) for prefix in prefixes):
+            out.append('<details style="margin-top:4px"><summary style="font-size:12px;color:#6b7178;'
+                       f'cursor:pointer;padding:2px 0">{summary}</summary>{body}</details>{tail}')
+        else:
+            out.append(body + tail)
+        cursor = body_end if body_end is not None else len(html_text)
+    out.append(html_text[cursor:])
+    return "".join(out)
 
 
 def event_notice_html(flags):

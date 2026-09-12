@@ -95,7 +95,44 @@ def in_evening_window(now):
     return EVENING_WINDOW_KST[0] <= now.hour < EVENING_WINDOW_KST[1]
 
 
-def already_recorded(path, today, now=None, ref=None):
+# 3·4절(장기 전망·영업이익)은 월간 워크플로가 조각으로 만들어 두고, 일일 보고서가 그것을 읽어
+# 끼운다. 조각만 새로 만들어지면 보고서에는 반영되지 않는다.
+FRAGMENTS = ("longterm.html", "longterm.json", "earnings.html", "earnings.json")
+
+
+def _commit_time(ref, path):
+    """ref 에서 그 파일이 마지막으로 바뀐 시각(epoch). 없으면 None."""
+    import subprocess
+    try:
+        out = subprocess.run(["git", "log", "-1", "--format=%ct", ref, "--", path],
+                             capture_output=True, text=True, timeout=60)
+        text = out.stdout.strip()
+        return int(text) if text else None
+    except Exception:
+        return None
+
+
+def fragments_newer_than_report(target, ref="origin/main", fragments=FRAGMENTS):
+    """조각이 보고서보다 새로우면 그 이름을 돌려준다.
+
+    2026-09-12: 월간 워크플로가 3절 그림을 새로 만들었는데 일일 보고서는 기록 시간대가 아니라
+    건너뛰어져, 조각만 갱신되고 보고서에는 옛 내용이 그대로 남았다. 기록 창을 넣을 때 이 경우를
+    놓쳤다. 원장에 남길 것이 없어도 보고서는 다시 만들어야 한다.
+    """
+    if not ref:
+        return []
+    report = _commit_time(ref, f"docs/{target}/index.html")
+    if report is None:
+        return []
+    stale = []
+    for name in fragments:
+        made = _commit_time(ref, f"docs/{target}/{name}")
+        if made is not None and made > report:
+            stale.append(name)
+    return stale
+
+
+def already_recorded(path, today, now=None, ref=None, target=None):
     """다시 돌 필요가 없으면 True.
 
     15:40 KST 전에는 모델이 오늘을 예측하므로 '오늘의 사전 예측'이 있어야 넘어간다. 장 마감 뒤에는
@@ -104,8 +141,12 @@ def already_recorded(path, today, now=None, ref=None):
     now = now or datetime.now(KST)
     evening = in_evening_window(now)
     if not in_record_window(now) and not evening:
-        # 두 창 밖에서는 원장에 남을 것이 없다. 전체 재계산(종목당 15~20분)을 돌려도 보고서는
-        # 다음 아침이나 채점 회차가 다시 만든다. 그래서 건너뛴다.
+        # 두 창 밖에서는 원장에 남을 것이 없다. 다만 조각(3·4절)이 보고서보다 새로우면 보고서를
+        # 다시 만들어야 한다 — 그러지 않으면 월간 워크플로를 돌려도 화면에 나오지 않는다.
+        stale = fragments_newer_than_report(target, ref) if target else []
+        if stale:
+            return False, (f"{now:%H:%M} KST — 기록 시간대는 아니지만 조각이 보고서보다 새롭습니다"
+                           f"({', '.join(stale)}). 보고서만 다시 만듭니다")
         return True, (f"{now:%H:%M} KST — 기록 시간대가 아닙니다"
                       f"(아침 {RECORD_WINDOW_KST[0]:02d}:00~{RECORD_WINDOW_KST[1]:02d}:00, "
                       f"저녁 {EVENING_WINDOW_KST[0]:02d}:00~{EVENING_WINDOW_KST[1]:02d}:00 KST)")
@@ -155,7 +196,8 @@ def main():
     now = datetime.now(KST)
     today = str(next_trading_day(now))
     path = Path(args.ledger_root) / args.target / "forecast_log.csv"
-    recorded, reason = already_recorded(path, today, now=now, ref=args.ref or None)
+    recorded, reason = already_recorded(path, today, now=now, ref=args.ref or None,
+                                        target=args.target)
     print(f"{args.target}: {reason}")
     output = os.environ.get("GITHUB_OUTPUT")
     if output:

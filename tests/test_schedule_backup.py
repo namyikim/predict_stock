@@ -589,3 +589,59 @@ class RecordWindowTests(unittest.TestCase):
         # 저녁 실행은 가격·시초가·후보 구간을 기록하지 않는다(대표 경로와 섞이면 집계가 흐려진다).
         self.assertIn("if not RECORD_EVENING_ONLY else []", source)
         self.assertIn("if not RECORD_EVENING_ONLY:\n    log_records.append", source)
+
+
+class StaleFragmentTests(unittest.TestCase):
+    """조각(3·4절)만 새로 만들어지면 보고서에 반영되지 않는다.
+
+    2026-09-12: 월간 워크플로가 3절 그림을 새로 만들었는데 일일 보고서가 기록 시간대가 아니라
+    건너뛰어져, 조각만 갱신되고 화면에는 옛 내용이 그대로 남았다. 기록 창을 넣을 때 놓친 경우다.
+    """
+
+    def setUp(self):
+        import csv
+        self.dir = Path(tempfile.mkdtemp())
+        (self.dir / "s").mkdir()
+        self.path = self.dir / "s" / "forecast_log.csv"
+        with open(self.path, "w", newline="", encoding="utf-8") as handle:
+            csv.DictWriter(handle, fieldnames=["prediction_date", "is_prospective", "kind",
+                                               "model", "run_id"]).writeheader()
+        self.saved = srt._commit_time
+        self.addCleanup(lambda: setattr(srt, "_commit_time", self.saved))
+
+    def times(self, report, longterm):
+        table = {"docs/t/index.html": report, "docs/t/longterm.html": longterm,
+                 "docs/t/longterm.json": longterm, "docs/t/earnings.html": 1,
+                 "docs/t/earnings.json": 1}
+        srt._commit_time = lambda ref, path: table.get(path)
+
+    def at(self, hour):
+        return datetime(2026, 9, 14, hour, 30, tzinfo=timezone(timedelta(hours=9)))
+
+    def test_runs_outside_the_window_when_a_fragment_is_newer(self):
+        self.times(report=1000, longterm=2000)
+        skip, why = srt.already_recorded(self.path, "x", now=self.at(14), ref="origin/main", target="t")
+        self.assertFalse(skip)
+        self.assertIn("조각이 보고서보다 새롭습니다", why)
+        self.assertIn("longterm.html", why)
+
+    def test_skips_once_the_report_is_rebuilt(self):
+        # 보고서를 다시 만들면 index.html 이 더 새로워져 다음 회차는 건너뛴다(무한 반복 방지).
+        self.times(report=2100, longterm=2000)
+        skip, why = srt.already_recorded(self.path, "x", now=self.at(14), ref="origin/main", target="t")
+        self.assertTrue(skip)
+        self.assertIn("기록 시간대가 아닙니다", why)
+
+    def test_missing_report_does_not_trigger(self):
+        # 보고서가 아직 없으면 판단 근거가 없다. 첫 실행에서 오작동하면 안 된다.
+        self.times(report=None, longterm=2000)
+        self.assertEqual(srt.fragments_newer_than_report("t"), [])
+
+    def test_window_runs_are_unaffected(self):
+        self.times(report=2100, longterm=2000)
+        self.assertFalse(srt.already_recorded(self.path, "x", now=self.at(6),
+                                              ref="origin/main", target="t")[0])
+
+    def test_every_fragment_is_checked(self):
+        self.assertEqual(set(srt.FRAGMENTS),
+                         {"longterm.html", "longterm.json", "earnings.html", "earnings.json"})

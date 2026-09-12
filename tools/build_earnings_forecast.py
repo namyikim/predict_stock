@@ -665,7 +665,7 @@ def render_fragment(result):
     r = result
     ev = r["evaluation"]
     parts = ['<h3 style="font-size:15px;margin:24px 0 9px;padding-bottom:6px;border-bottom:1px solid #ddd">'
-             f'8. 이번 분기 영업이익 추정 <span style="font-weight:400;color:#8a9199;font-size:12px">'
+             f'4. 이번 분기 영업이익 추정 <span style="font-weight:400;color:#8a9199;font-size:12px">'
              f'&nbsp;{e(r["quarter"])} · 월별 반도체 수출액 기준 · '
              f'{e(r.get("months_included") or "")} 반영</span></h3>']
     parts.append('<div style="background:#fdf8ec;border-left:4px solid #c8952a;padding:12px 16px;'

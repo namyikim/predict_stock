@@ -657,7 +657,7 @@ def render_fragment(result):
     e = html.escape
     r = result
     parts = ['<h3 style="font-size:15px;margin:24px 0 9px;padding-bottom:6px;border-bottom:1px solid #ddd">'
-             '7. 장기 전망 (월간) <span style="font-weight:400;color:#8a9199;font-size:12px">'
+             '3. 장기 전망 (월간) <span style="font-weight:400;color:#8a9199;font-size:12px">'
              f'&nbsp;반도체 수출액·선행지수 순환변동치와 3·6·12개월 수익률 · 기준 {e(r["as_of"])}</span></h3>']
     parts.append('<div style="background:#fdf8ec;border-left:4px solid #c8952a;padding:12px 16px;border-radius:0 5px 5px 0;font-size:13px">'
                  '수출액 추세와 주가의 <b>수준</b>이 상관이 높은 것은 둘 다 우상향하기 때문이며 예측력의 근거가 아닙니다. '

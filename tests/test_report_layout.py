@@ -17,8 +17,9 @@ PAGE = ('<div class="wrap">'
         '<h3 style="x">한눈에 보는 쉬운 요약</h3><div>요약 본문</div>'
         '<h3 style="x">1. 다음 거래일 방향 <span style="y">&nbsp;부제입니다</span></h3><div>방향 본문</div>'
         '<h3 style="x">2026-09-11 (금) 예측 vs 실제</h3><div>채점 본문</div>'
-        '<h3 style="x">4. 모델 성능</h3><div>성능 본문<table><tr><td>표</td></tr></table></div>'
-        '<h3 style="x">7. 장기 전망 (월간)</h3><div>장기 본문</div>'
+        '<h3 style="x">6. 모델 성능</h3><div>성능 본문<table><tr><td>표</td></tr></table></div>'
+        '<h3 style="x">3. 장기 전망 (월간)</h3><div>장기 본문</div>'
+        '<h3 style="x">8. 이 보고서의 데이터</h3><div>데이터 본문</div>'
         '</div>')
 
 
@@ -30,8 +31,8 @@ def balance(text):
 class NavTests(unittest.TestCase):
     def test_ids_and_toc_are_added(self):
         out, sections = rh.add_report_nav(PAGE)
-        self.assertEqual(len(sections), 5)
-        self.assertEqual(len(re.findall(r'<h3[^>]*id="sec\d+"', out)), 5)
+        self.assertEqual(len(sections), 6)
+        self.assertEqual(len(re.findall(r'<h3[^>]*id="sec\d+"', out)), 6)
         self.assertIn("이 보고서의 구성", out)
         self.assertIn('href="#sec1"', out)
 
@@ -47,8 +48,9 @@ class NavTests(unittest.TestCase):
         self.assertEqual(by["한눈에 보는 쉬운 요약"], "요약")
         self.assertEqual(by["1. 다음 거래일 방향"], "예측")
         self.assertEqual(by["2026-09-11 (금) 예측 vs 실제"], "성적")
-        self.assertEqual(by["7. 장기 전망 (월간)"], "배경")
-        self.assertEqual([name for name, _ in rh.NAV_GROUPS], ["요약", "예측", "성적", "배경"])
+        self.assertEqual(by["3. 장기 전망 (월간)"], "예측")
+        self.assertEqual(by["8. 이 보고서의 데이터"], "해설")
+        self.assertEqual([name for name, _ in rh.NAV_GROUPS], ["요약", "예측", "성적", "해설"])
 
     def test_tag_balance_is_preserved(self):
         out, _ = rh.add_report_nav(PAGE)
@@ -80,27 +82,29 @@ class CollapseTests(unittest.TestCase):
     def test_evidence_sections_collapse_and_summaries_do_not(self):
         out = rh.collapse_sections(PAGE)
         titles = self.collapsed(out)
-        self.assertIn("4. 모델 성능", titles)
-        self.assertIn("7. 장기 전망 (월간)", titles)
+        self.assertIn("6. 모델 성능", titles)
+        self.assertIn("8. 이 보고서의 데이터", titles)
+        # 3·4절(장기 전망·영업이익)은 결론이므로 펼쳐 둔다.
+        self.assertNotIn("3. 장기 전망 (월간)", titles)
         self.assertNotIn("한눈에 보는 쉬운 요약", titles)
         self.assertNotIn("1. 다음 거래일 방향", titles)
 
     def test_last_section_collapses_without_breaking_the_wrapper(self):
         # 마지막 절 본문 끝에는 바깥 래퍼의 </div> 가 붙어 있다. details 안에 갇히면 안 된다.
         out = rh.collapse_sections(PAGE)
-        self.assertIn("7. 장기 전망 (월간)", self.collapsed(out))
+        self.assertIn("8. 이 보고서의 데이터", self.collapsed(out))
         for tag, (opens, closes) in balance(out).items():
             self.assertEqual(opens, closes, f"{tag} 균형이 깨졌습니다")
         self.assertTrue(out.rstrip().endswith("</div>"))
 
     def test_headings_stay_visible(self):
         out = rh.collapse_sections(PAGE)
-        self.assertEqual(len(re.findall(r"<h3\b", out)), 5)
+        self.assertEqual(len(re.findall(r"<h3\b", out)), 6)
         self.assertIn("펼쳐 보기", out)
 
     def test_nav_after_collapse_still_sees_every_section(self):
         out, sections = rh.add_report_nav(rh.collapse_sections(PAGE))
-        self.assertEqual(len(sections), 5)
+        self.assertEqual(len(sections), 6)
         for tag, (opens, closes) in balance(out).items():
             self.assertEqual(opens, closes, tag)
 

@@ -173,7 +173,8 @@ class RenderTests(unittest.TestCase):
 
     def test_point_is_shown_when_the_gate_passes(self):
         out = ef.render_fragment(self.result())
-        self.assertIn("8. 이번 분기 영업이익 추정", out)
+        # 영업이익 추정도 결론이므로 4번으로 앞당겼다(옛 조각은 renumber_fragment 가 처리).
+        self.assertIn("4. 이번 분기 영업이익 추정", out)
         self.assertIn("2026년 3분기", out)
         self.assertIn("3.00조원", out)
 

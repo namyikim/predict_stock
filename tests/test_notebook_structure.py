@@ -123,17 +123,25 @@ class NotebookStructureTests(unittest.TestCase):
         self.assertIn('_prediction_date_label = ', self.source)
         self.assertIn('1. 다음 거래일 방향 ({_prediction_date_label})', self.source)
 
-    def test_flow_supports_direction_but_disclosures_are_reference_material(self):
+    def test_conclusions_come_first_and_evidence_last(self):
+        """결론(방향·수급·가격·장기·영업이익)을 앞에, 해설·검증·데이터를 뒤에 둔다.
+
+        2026-09-12 재배치: 장기 전망·영업이익은 근거가 아니라 결론이므로 7·8 → 3·4 로 앞당기고,
+        해설·성능·판정·데이터는 5~8 로 밀어 접었다. 공시는 예측에 쓰지 않는 참고 자료라 맨 뒤다.
+        """
         direction = self.source.index("1. 다음 거래일 방향")
         flow = self.source.index("f'{flow_html}'", direction)
         price = self.source.index("2. 시초가예측과 종가예측", direction)
-        data = self.source.index("6. 이 보고서의 데이터", price)
+        longterm = self.source.index("f'{longterm_html}'", price)
+        earnings = self.source.index("f'{earnings_html}'", longterm)
+        data = self.source.index("8. 이 보고서의 데이터", earnings)
         disclosure = self.source.index("f'{disclosure_html}'", data)
-        longterm = self.source.index("f'{longterm_html}'", disclosure)
         self.assertLess(direction, flow)
         self.assertLess(flow, price)
-        self.assertLess(data, disclosure)
-        self.assertLess(disclosure, longterm)
+        self.assertLess(price, longterm)      # 3절: 장기 전망
+        self.assertLess(longterm, earnings)   # 4절: 영업이익
+        self.assertLess(earnings, data)       # 8절: 데이터(접힘)
+        self.assertLess(data, disclosure)     # 참고 정보: 공시(접힘)
 
     def test_report_reviews_prospective_ledger(self):
         # 보고서는 원장의 사전 예측만 채점한 결과를 보여주고, 축소 전 원시 예측을 원장에 남긴다.

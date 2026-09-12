@@ -115,7 +115,7 @@ def fragment_sources_html(longterm, earnings):
             '<th style="padding:8px 10px;text-align:right">기간</th>'
             '<th style="padding:8px 10px;text-align:left">비고</th></tr>'
             f'{body}</table></div>'
-            '<div style="font-size:11px;color:#8a9199;margin-top:4px">7·8절은 별도 도구가 만들어 이 보고서에 '
+            '<div style="font-size:11px;color:#8a9199;margin-top:4px">3·4절은 별도 도구가 만들어 이 보고서에 '
             '끼워집니다. 위 두 표(시세·월별 지표)는 이 보고서가 직접 받은 자료이고, 이 표는 그 두 절이 쓴 '
             '자료입니다. 빨간 글씨는 조회에 실패해 저장소 보관본을 쓴 것입니다.</div>')
 
@@ -129,9 +129,9 @@ _H3 = re.compile(r'(<h3\b[^>]*>)(.*?)(</h3>)', re.S)
 # ("2026-09-11 (금) 예측 vs 실제"), 수급 절은 "1-1." 로 시작한다.
 NAV_GROUPS = (
     ("요약", ("한눈에", "그 밖에")),
-    ("예측", ("1.", "1-1.", "2.", "3.")),
-    ("성적", ("예측 vs 실제", "4.", "5.")),
-    ("배경", ("6.", "참고 정보", "7.", "8.")),
+    ("예측", ("1.", "1-1.", "2.", "3.", "4.")),
+    ("성적", ("예측 vs 실제", "6.", "7.")),
+    ("해설", ("5.", "8.", "참고 정보")),
 )
 
 
@@ -199,9 +199,9 @@ def add_report_nav(html_text, title_limit=34):
     return (out[:first.start()] + nav + out[first.start():], sections) if first else (out, sections)
 
 
-# 첫 화면에서 접어 둘 절. 결론은 위쪽 요약에 있고 이 절들은 근거·검증이라, 펼치지 않아도
-# 보고서를 읽을 수 있다. 14만 자를 한 번에 펼쳐 두면 필요한 절을 찾기 어렵다.
-COLLAPSE_PREFIXES = ("3.", "4.", "5.", "6.", "참고 정보", "7.", "8.")
+# 첫 화면에서 접어 둘 절. 1~4절(방향·수급·가격·장기 전망·영업이익)은 결론이라 펼쳐 두고,
+# 5~8절과 참고 정보는 해설·검증·데이터라 접는다. 근거는 원하는 사람만 보면 된다.
+COLLAPSE_PREFIXES = ("5.", "6.", "7.", "8.", "참고 정보")
 
 
 def collapse_sections(html_text, prefixes=COLLAPSE_PREFIXES, summary="펼쳐 보기"):
@@ -243,6 +243,28 @@ def collapse_sections(html_text, prefixes=COLLAPSE_PREFIXES, summary="펼쳐 보
         cursor = body_end if body_end is not None else len(html_text)
     out.append(html_text[cursor:])
     return "".join(out)
+
+
+# 조각(7·8절)은 월 1회 실행이 만들어 저장소에 남는다. 보고서 절 번호를 바꿔도 옛 조각에는
+# 옛 번호가 박혀 있어 다음 월간 실행 전까지 번호가 겹친다. 그래서 조각을 끼울 때 제목의
+# 번호만 지금 체계로 바꾼다. 조각 내용 자체는 건드리지 않는다.
+FRAGMENT_RENUMBER = (("7. 장기 전망", "3. 장기 전망"),
+                     ("8. 이번 분기 영업이익", "4. 이번 분기 영업이익"))
+
+
+def renumber_fragment(html_text):
+    """조각 제목의 절 번호를 현재 체계로 맞춘다(h3 안에서만)."""
+    if not html_text:
+        return html_text
+
+    def fix(match):
+        head = match.group(0)
+        for old, new in FRAGMENT_RENUMBER:
+            if old in head:
+                return head.replace(old, new, 1)
+        return head
+
+    return re.sub(r"<h3\b[^>]*>.*?</h3>", fix, html_text, flags=re.S)
 
 
 def event_notice_html(flags):

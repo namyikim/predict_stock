@@ -137,7 +137,9 @@ class LongTermTests(unittest.TestCase):
         lt.load_macro_data = lambda *a, **k: (synthetic()[1], {"latest_month": {}, "snapshot_hash": "x"})
         res, _ = lt.analyse("samsung", Path("/tmp/lt_test"), fetch=False)
         html_ = lt.render_fragment(res)
-        self.assertIn("7. 장기 전망", html_)
+        # 장기 전망은 결론이므로 예측 절(3번)로 앞당겼다. 저장소에 남은 옛 조각(7번)은
+        # report_html.renumber_fragment 가 끼울 때 바꾼다.
+        self.assertIn("3. 장기 전망", html_)
         self.assertIn("검증", html_)
         self.assertNotIn("HP 필터를 적용", html_)
 

@@ -29,7 +29,8 @@ sys.path.insert(0, str(ROOT))
 
 SEED = 20260912
 BOOTSTRAP = 2000
-HORIZONS = (1, 2, 3)
+HORIZONS = (1, 2, 3, 4, 5, 6)
+LABEL_HORIZONS = (1, 3, 6)        # 그림에 숫자를 적는 달. 전부 적으면 겹쳐서 읽을 수 없다
 MIN_TRAIN = 120           # 워크포워드 첫 학습 구간(개월). 10년이면 여러 국면을 담는다.
 MAX_LAG = 6
 
@@ -289,11 +290,17 @@ def forecast_svg(series, ahead, months=48, width=900, height=340, overlay=None,
     low, high = min(values), max(values)
     pad = (high - low) * 0.18 or 0.5
     low, high = low - pad, high + pad
-    left, right, top, bottom = 58, 62, 46, 46
-    span = len(points) + len(future) - 1
+    left, right, top, bottom = 58, 62, 46, 52
+    # 가로축이 월 단위라 15년치 옆에 6개월을 같은 축으로 두면 전망이 수십 픽셀에 몰려 글자가
+    # 겹친다. **전망 구간만 가로로 확대해서** 그린다. 그림 안에 그 사실을 적는다.
+    plot = width - left - right
+    split = left + plot * (0.74 if future else 1.0)
 
     def x_of(i):
-        return left + (width - left - right) * i / max(span, 1)
+        if i < len(points):
+            return left + (split - left) * i / max(len(points) - 1, 1)
+        step = i - (len(points) - 1)
+        return split + (width - right - split) * step / max(len(future), 1)
 
     def y_of(v):
         return top + (height - top - bottom) * (high - v) / (high - low)
@@ -322,14 +329,18 @@ def forecast_svg(series, ahead, months=48, width=900, height=340, overlay=None,
         if i % step == 0:
             labels += (f'<text x="{x_of(i):.1f}" y="{height - bottom + 18}" text-anchor="middle" '
                        f'font-size="10" fill="#8a9199">{month}</text>')
-    marks = "".join(
-        f'<circle cx="{x_of(len(points) + i):.1f}" cy="{y_of(v):.1f}" r="3.2" fill="none" '
-        f'stroke="#c8952a" stroke-width="1.6"/>'
-        f'<text x="{x_of(len(points) + i):.1f}" y="{y_of(v) - 9:.1f}" text-anchor="middle" '
-        f'font-size="10" fill="#c8952a">{v:.2f}</text>'
-        f'<text x="{x_of(len(points) + i):.1f}" y="{height - bottom + 18}" text-anchor="middle" '
-        f'font-size="10" fill="#c8952a">{month}</text>'
-        for i, (month, v, _, _) in enumerate(future))
+    # 전망 점은 모두 찍되 **숫자와 달은 1·3·6개월에만** 적는다. 여섯 달을 다 적으면 겹친다.
+    marks = ""
+    for i, (month, v, _, _) in enumerate(future):
+        cx, cy = x_of(len(points) + i), y_of(v)
+        marks += (f'<circle cx="{cx:.1f}" cy="{cy:.1f}" r="3.2" fill="none" '
+                  f'stroke="#c8952a" stroke-width="1.6"/>')
+        if (i + 1) not in LABEL_HORIZONS:
+            continue
+        marks += (f'<text x="{cx:.1f}" y="{cy - 10:.1f}" text-anchor="middle" '
+                  f'font-size="11" font-weight="600" fill="#c8952a">{v:.2f}</text>'
+                  f'<text x="{cx:.1f}" y="{height - bottom + 16}" text-anchor="middle" '
+                  f'font-size="10" fill="#c8952a">{month[2:]}</text>')
     second = ""
     if overlay is not None and len(overlay):
         months_index = {month: i for i, (month, _) in enumerate(points)}
@@ -351,14 +362,20 @@ def forecast_svg(series, ahead, months=48, width=900, height=340, overlay=None,
                 for v in np.linspace(o_low + o_pad / 2, o_high - o_pad / 2, 4))
             second = (f'<polyline points="{line}" fill="none" stroke="#2e7d32" '
                       f'stroke-width="1.5" opacity="0.85"/>{right_ticks}')
-    legend = (
-        f'<text x="{left}" y="{top - 8}" font-size="11" fill="#4c78a8">■ {title}(왼쪽 축)</text>'
-        + (f'<text x="{left + 150}" y="{top - 8}" font-size="11" fill="#2e7d32">'
-           f'■ {overlay_name}(오른쪽 축)</text>' if second else "")
-        + f'<text x="{left + 290}" y="{top - 8}" font-size="11" fill="#c8952a">■ 전망</text>')
-    caution = ('<text x="{x}" y="{y}" text-anchor="end" font-size="10" fill="#a5abb2">'
-               '축이 둘이라 높이 비교는 뜻이 없습니다 — 방향만 보세요</text>').format(
-        x=width - right, y=height - 8) if second else ""
+    # 범례는 한 줄 안에서 tspan 으로 이어 붙인다. x 좌표를 손으로 띄우면 글자 길이가 바뀌는 순간
+    # 겹친다(2026-09-12 실제로 겹쳤다). 흐름 배치에 맡기면 겹칠 수가 없다.
+    legend = (f'<text x="{left}" y="{top - 10}" font-size="11">'
+              f'<tspan fill="#4c78a8">━ {title}(왼쪽 축)</tspan>'
+              + (f'<tspan fill="#2e7d32">   ━ {overlay_name}(오른쪽 축)</tspan>' if second else "")
+              + '<tspan fill="#c8952a">   ┄ 전망</tspan>'
+              # 구간을 못 그린 실행에서도 범례에 적으면 없는 것을 있다고 말하는 셈이다.
+              + ('<tspan fill="#8a9199">   ▒ 워크포워드 오차 10~90%</tspan>' if band else "")
+              + '</text>')
+    notes = ["전망 구간은 가로로 확대해 그렸습니다"]
+    if second:
+        notes.append("축이 둘이라 높이 비교는 뜻이 없습니다 — 방향만 보세요")
+    caution = (f'<text x="{width - right}" y="{height - 8}" text-anchor="end" font-size="10" '
+               f'fill="#a5abb2">{" · ".join(notes)}</text>')
     return (
         f'<svg viewBox="0 0 {width} {height}" width="100%" xmlns="http://www.w3.org/2000/svg" '
         f'style="max-width:{width}px;font-family:-apple-system,\'Malgun Gothic\',sans-serif">'
@@ -371,9 +388,7 @@ def forecast_svg(series, ahead, months=48, width=900, height=340, overlay=None,
         f'stroke-dasharray="5 4"/>'
         f'<line x1="{bridge_x:.1f}" x2="{bridge_x:.1f}" y1="{top}" y2="{height - bottom}" '
         f'stroke="#bbb" stroke-dasharray="2 3"/>'
-        f'{labels}{marks}{legend}'
-        f'<text x="{width - right}" y="20" text-anchor="end" font-size="11" fill="#8a9199">'
-        f'점선은 전망 · 음영은 워크포워드 오차 10~90%</text>{caution}'
+        f'{labels}{marks}{legend}{caution}'
         '</svg>')
 
 

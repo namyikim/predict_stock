@@ -275,10 +275,58 @@ class FallbackFetchTests(unittest.TestCase):
     def test_every_optional_source_has_a_cache_pull(self):
         source = (ROOT / "tools" / "build_longterm_report.py").read_text(encoding="utf-8")
         for name in ("leading_cycle.csv", "semiconductor_exports.csv", "cli_g20.csv",
+                     "cli_kor.csv", "kospi_monthly.csv",
                      "news_sentiment.csv", "term_spread.csv"):
             self.assertIn(f'"{name}"', source, name)
         # 파일마다 따로 받아야 하나가 실패해도 나머지가 들어온다.
         self.assertIn("except Exception:\n            continue", source)
+
+
+class CliOutlookSectionTests(unittest.TestCase):
+    """선행지수 전망 절(R09). 보고서를 멈추지 않는 것과, 숫자를 한계와 함께 내는 것이 요점이다."""
+
+    def outlook(self):
+        import shutil
+        import tempfile
+        tmp = Path(tempfile.mkdtemp())
+        fallback = tmp / "macro_fallback"
+        fallback.mkdir(parents=True)
+        for name in ("cli_kor.csv", "kospi_monthly.csv"):
+            shutil.copy(ROOT / "macro_history" / name, fallback / name)
+        return lt.korea_cli_outlook(tmp, fallback, fetch=False)
+
+    def test_a_missing_archive_returns_nothing_instead_of_raising(self):
+        import tempfile
+        tmp = Path(tempfile.mkdtemp())
+        self.assertIsNone(lt.korea_cli_outlook(tmp, tmp, fetch=False))
+        self.assertEqual(lt.render_cli_outlook(None), [])
+
+    def test_the_outlook_covers_six_months_from_the_last_confirmed_month(self):
+        outlook = self.outlook()
+        self.assertEqual(len(outlook["rows"]), 6)
+        self.assertEqual([r["horizon"] for r in outlook["rows"]], [1, 2, 3, 4, 5, 6])
+
+    def test_the_section_shows_the_chart_and_every_forecast_month(self):
+        outlook = self.outlook()
+        html = "".join(lt.render_cli_outlook(outlook))
+        self.assertIn("<svg", html)
+        for row in outlook["rows"]:
+            self.assertIn(str(row["month"]), html)
+
+    def test_the_section_states_the_three_limits(self):
+        """구간의 뜻, 개정, '지수의 전망이지 주가의 전망이 아니다' — 셋 다 적어야 한다."""
+        html = "".join(lt.render_cli_outlook(self.outlook()))
+        self.assertIn("빗나간 폭", html)
+        self.assertIn("나중에 값이 바뀝니다", html)
+        self.assertIn("주가의 전망이 아닙니다", html)
+
+    def test_a_failure_does_not_stop_the_report(self):
+        source = (ROOT / "tools" / "build_longterm_report.py").read_text(encoding="utf-8")
+        call = "korea_cli_outlook(out_dir, fallback_dir, fetch=fetch)"
+        self.assertIn(call, source, "analyse 가 전망을 부르지 않는다")
+        block = source[source.index(call):]
+        self.assertIn("except Exception", block[:600])
+        self.assertIn("cli_outlook = None", block[:600])
 
 
 class LegendLayoutTests(unittest.TestCase):

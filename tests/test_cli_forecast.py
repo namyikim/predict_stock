@@ -195,7 +195,24 @@ class ChartTests(unittest.TestCase):
         svg = cf.forecast_svg(series, cf.forecast_now(series, table, cf.evaluate(table)))
         self.assertTrue(svg.startswith("<svg"))
         self.assertIn("stroke-dasharray", svg, "전망은 실선과 다른 모양이어야 한다")
-        self.assertIn("워크포워드 오차", svg, "구간이 무엇인지 그림 안에 적어야 한다")
+        self.assertIn("전망 구간은 가로로 확대해 그렸습니다", svg,
+                      "가로 축을 늘렸다는 사실을 그림 안에 적어야 한다")
+
+    def test_the_band_is_named_in_the_legend_only_when_it_is_drawn(self):
+        """없는 것을 범례에 적으면 안 된다. 구간을 못 그린 실행도 있다."""
+        long_series = monthly(100 + np.cumsum(np.random.default_rng(7).normal(0, 0.2, 260)))
+        table = cf.walk_forward(long_series, [], min_train=150, lags=2)
+        svg = cf.forecast_svg(long_series, cf.forecast_now(long_series, table, cf.evaluate(table)))
+        self.assertEqual("<polygon" in svg, "워크포워드 오차" in svg)
+
+    def test_only_a_few_forecast_months_carry_labels(self):
+        """여섯 달 숫자를 모두 적으면 겹쳐서 읽을 수 없다."""
+        series = monthly(np.linspace(100.0, 100.5, 200))
+        table = cf.walk_forward(series, [], min_train=150, lags=2)
+        ahead = cf.forecast_now(series, table, cf.evaluate(table))
+        svg = cf.forecast_svg(series, ahead)
+        self.assertEqual(svg.count("font-weight=\"600\" fill=\"#c8952a\""), len(cf.LABEL_HORIZONS))
+        self.assertEqual(svg.count("<circle"), len(ahead))
 
     def test_the_chart_is_valid_xml(self):
         import xml.etree.ElementTree as ET

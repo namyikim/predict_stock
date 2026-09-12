@@ -33,6 +33,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "tools"))
 import github_pages  # noqa: E402
+from data_sources import oecd as oecd_module  # noqa: E402
 from macro_utils import (  # noqa: E402
     cli_features, daily_average, load_cli, load_macro_data, load_nsi, load_term_spread,
     macro_features, monthly_mean_by_month_end, nsi_features,
@@ -653,6 +654,104 @@ def render_chart(f, name):
     return "".join(out)
 
 
+def korea_cli_outlook(out_dir, fallback_dir, fetch=True, chart_start="2011-01"):
+    """OECD 한국 경기선행지수의 앞으로 6개월 전망과 그림. 실패하면 None.
+
+    근거: experiments/medium_horizon/R09/decision.md. 그 실험에서 ARIMA(2,1,0)가 세 지평 모두
+    '마지막 값 그대로'·'마지막 변화 그대로'를 유의하게 이겼다. 어느 모형으로 낼지는 순위가 아니라
+    사다리로 정한다(가장 단순한 것에서 시작해 다음 칸이 유의하게 이길 때만 올린다).
+
+    VAR 은 넣지 않는다 — R09 에서 ARIMA 를 이기지 못했고, 한 달에 한 번 도는 보고서에서 계산만
+    몇 배로 늘린다.
+    """
+    import run_cli_forecast as cf
+
+    cli = None
+    if fetch:
+        try:
+            frame = oecd_module.fetch_oecd_cli("KOR", "1995-01-01")
+            (fallback_dir / "cli_kor.csv").write_text(frame.to_csv(index=False), encoding="utf-8")
+            cli = frame.set_index("month")["value"]
+        except Exception as exc:
+            print("  한국 선행지수 조회 실패 → 보관본:", exc, flush=True)
+    if cli is None:
+        path = fallback_dir / "cli_kor.csv"
+        if not path.exists():
+            return None
+        frame = pd.read_csv(path, parse_dates=["month"])
+        cli = frame.set_index("month")["value"]
+    cli = cli.asfreq("MS").dropna()
+    if len(cli) < cf.MIN_TRAIN + 24:
+        return None
+
+    kospi = None
+    path = fallback_dir / "kospi_monthly.csv"
+    if path.exists():
+        k = pd.read_csv(path, parse_dates=["month"])
+        kospi = k.set_index("month")["value"].asfreq("MS").dropna()
+
+    table_rows = cf.walk_forward(cli, [], min_train=cf.MIN_TRAIN, lags=2)
+    scores = cf.evaluate(table_rows)
+    ahead = cf.forecast_now(cli, table_rows, scores, partners=(), lags=2)
+    svg = cf.forecast_svg(cli, ahead, overlay=kospi, title="OECD 한국 경기선행지수",
+                          start=chart_start)
+    last_value = float(cli.iloc[-1])
+    end = ahead.iloc[-1]
+    return {
+        "svg": svg, "last_month": f"{cli.index[-1]:%Y-%m}", "last_value": last_value,
+        "rows": ahead.to_dict("records"),
+        "change_6m": float(end["point"]) - last_value,
+        "model": str(end["model"]), "reason": str(end["reason"]),
+        "mae_3m": float(scores[(scores["horizon"] == 3) & (scores["model"] == end["model"])]["mae"].iloc[0])
+        if len(scores[(scores["horizon"] == 3) & (scores["model"] == end["model"])]) else None,
+        "mae_rw_3m": float(scores[(scores["horizon"] == 3) & (scores["model"] == "rw")]["mae"].iloc[0])
+        if len(scores[(scores["horizon"] == 3) & (scores["model"] == "rw")]) else None,
+    }
+
+
+def render_cli_outlook(outlook):
+    """전망 그림과 읽는 법. 숫자를 그냥 두면 '이만큼은 맞다'로 읽히므로 한계를 함께 적는다."""
+    if not outlook:
+        return []
+    e = html.escape
+    change = outlook["change_6m"]
+    last = outlook["last_value"]
+    end = outlook["rows"][-1]
+    direction = "낮아집니다" if change < -0.02 else ("높아집니다" if change > 0.02 else "거의 그대로입니다")
+    level = ("100 위에 머뭅니다" if float(end["point"]) > 100 else "100 아래로 내려갑니다")
+    parts = ['<h4 style="font-size:14px;margin:22px 0 6px">경기선행지수는 앞으로 어디로 가는가 '
+             '<span style="font-weight:400;color:#8a9199;font-size:12px">&nbsp;OECD 한국 · 6개월</span></h4>']
+    parts.append(f'<div style="border:1px solid #e5e5e5;border-radius:6px;padding:8px">{outlook["svg"]}</div>')
+    body = ""
+    for row in outlook["rows"]:
+        band = (f'{row["low"]:.2f} ~ {row["high"]:.2f}' if row.get("low") is not None else "—")
+        body += (f'<tr><td {TD}>{e(str(row["month"]))}</td>'
+                 f'<td {TDR}>{row["horizon"]}개월</td>'
+                 f'<td {TDR}><b>{row["point"]:.2f}</b></td><td {TDR}>{band}</td></tr>')
+    parts.append(table(f'<th {TH}>달</th><th {THR}>지평</th><th {THR}>전망</th>'
+                       f'<th {THR}>구간(오차 10~90%)</th>', body, 420))
+    accuracy = ""
+    if outlook.get("mae_3m") and outlook.get("mae_rw_3m"):
+        accuracy = (f' 3개월 지평에서 이 방법의 평균 오차는 {outlook["mae_3m"]:.3f} 포인트로, '
+                    f'"마지막 값 그대로"({outlook["mae_rw_3m"]:.3f})보다 작습니다.')
+    parts.append(
+        '<div style="font-size:13px;margin-top:10px">'
+        f'{e(outlook["last_month"])} 확정치 {last:.2f} 에서 6개월 뒤 {float(end["point"]):.2f} 로 '
+        f'<b>{direction}</b>. 지수는 그때도 {level}, 100 위는 확장 국면이므로 '
+        f'<b>확장이되 속도가 느려지는</b> 그림입니다.{accuracy}</div>')
+    parts.append(
+        '<div style="background:#fdf8ec;border-left:4px solid #c8952a;padding:12px 16px;'
+        'border-radius:0 5px 5px 0;font-size:13px;margin-top:10px">'
+        '<b>이 숫자를 읽을 때</b> 구간은 이론 분포가 아니라 과거에 같은 방법이 실제로 빗나간 폭의 '
+        '10~90% 입니다. 6개월로 갈수록 구간이 크게 벌어지는 것이 이 전망의 실제 정밀도입니다. '
+        '그리고 선행지수는 <b>나중에 값이 바뀝니다</b>. 위 성적은 최신본으로 잰 것이라 그때 알 수 없던 '
+        '개정을 미리 아는 셈이고, 실제보다 좋게 나와 있습니다. 판본을 쌓기 시작했으므로 이 한계는 '
+        '시간이 지나면 걷힙니다. 마지막으로 이것은 <b>지수의 전망이지 주가의 전망이 아닙니다</b> — '
+        '선행지수를 주가 예측에 넣어 보았으나 분기 이익 추정을 유의하게 개선하지 못했습니다.'
+        '</div>')
+    return parts
+
+
 def render_fragment(result):
     e = html.escape
     r = result
@@ -683,6 +782,8 @@ def render_fragment(result):
             parts.append(f'<div style="font-size:13px;margin-top:6px">시차 상관이 가장 큰 지점: {direction} '
                          f'(상관 {ll["corr"]:+.2f}). 앞선다면 수출 지표로 주가를 <b>예측</b>하기는 어렵고, 사이클의 위치를 '
                          '가늠하는 용도로 읽어야 합니다.</div>')
+
+    parts.extend(render_cli_outlook(r.get("cli_outlook")))
 
     # 현재 값·국면
     cur = r["current"]
@@ -886,6 +987,7 @@ def analyse(target, out_dir, fetch=True):
         tok = None
     loaded = []
     for name in ("leading_cycle.csv", "semiconductor_exports.csv", "cli_g20.csv",
+                 "cli_kor.csv", "kospi_monthly.csv",
                  "news_sentiment.csv", "term_spread.csv"):
         try:
             text = github_pages.fetch(f"macro_history/{name}", tok)
@@ -952,6 +1054,17 @@ def analyse(target, out_dir, fetch=True):
         # 라이브: 마지막 월말 행으로 예측. walk_forward가 마지막 행도 OOF로 채운다(타깃은 미래라 NaN).
         forecast[str(h)] = {"raw": raw, "point": (ev.get("shrink_slope", 0.) * raw) if (raw is not None and "shrink_slope" in ev) else None}
 
+    # 선행지수 전망(R09). 실패해도 보고서를 멈추지 않는다 — 있으면 한 절을 더하고 없으면 뺀다.
+    try:
+        cli_outlook = korea_cli_outlook(out_dir, fallback_dir, fetch=fetch)
+        if cli_outlook:
+            print(f"  한국 선행지수 전망: {cli_outlook['last_month']} "
+                  f"{cli_outlook['last_value']:.2f} → 6개월 {cli_outlook['rows'][-1]['point']:.2f}",
+                  flush=True)
+    except Exception as exc:
+        cli_outlook = None
+        print("  ⚠️ 한국 선행지수 전망을 내지 못했습니다(무시):", exc, flush=True)
+
     last = f.index[-1]
     current = {}
     for c, _ in FEATURES:
@@ -976,6 +1089,7 @@ def analyse(target, out_dir, fetch=True):
         "extra_info": extra_info,
         "duration_by_spread": phase_duration_by_spread(f),
         "cli_lead_lag": lead_lag(f, a="cli_change_3m", b="macro_semiconductor_yoy") if cli_active else None,
+        "cli_outlook": cli_outlook,
         "chart_first": f.index[0].date().isoformat(),
         "generated_at": datetime.now(KST).strftime("%Y-%m-%d %H:%M KST"),
         "macro_snapshot_hash": macro_info.get("snapshot_hash", ""),

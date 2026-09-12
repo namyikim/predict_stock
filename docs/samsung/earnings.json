@@ -62,9 +62,9 @@
     "mae_seasonal_naive": 11689915409090.908,
     "corr": 0.952932162488787,
     "beats_baselines": true,
-    "residual_q10": -4032563451034.251,
+    "residual_q10": -4032563451034.252,
     "residual_q90": 7843984052395.628,
-    "mape_model": 0.9061156357676006
+    "mape_model": 0.9061156357676005
   },
   "n_train": 38,
   "profit_source": "DART_API",
@@ -150,7 +150,7 @@
       "mae_seasonal_naive": 16855910090909.092,
       "corr": 0.7020766409074503,
       "beats_baselines": true,
-      "residual_q10": -3899365170711.6016,
+      "residual_q10": -3899365170711.6035,
       "residual_q90": 49839259120662.19,
       "mape_model": 0.5953260851617904
     },
@@ -158,12 +158,12 @@
       "n": 10,
       "first": "2021Q1",
       "last": "2023Q2",
-      "mae_model": 3369086830370.3486,
+      "mae_model": 3369086830370.349,
       "mae_random_walk": 4188391400000.0,
       "mae_seasonal_naive": 6882760500000.0,
-      "corr": 0.9222018620760912,
+      "corr": 0.9222018620760913,
       "beats_baselines": true,
-      "residual_q10": -6409248352541.025,
+      "residual_q10": -6409248352541.023,
       "residual_q90": 2286245392336.791,
       "mape_model": 2.3313939513215587
     },
@@ -171,12 +171,12 @@
       "n": 10,
       "first": "2021Q1",
       "last": "2023Q2",
-      "mae_model": 3369086830370.3486,
+      "mae_model": 3369086830370.349,
       "mae_random_walk": 4188391400000.0,
       "mae_seasonal_naive": 6882760500000.0,
-      "corr": 0.9222018620760912,
+      "corr": 0.9222018620760913,
       "beats_baselines": true,
-      "residual_q10": -6409248352541.025,
+      "residual_q10": -6409248352541.023,
       "residual_q90": 2286245392336.791,
       "mape_model": 2.3313939513215587
     },
@@ -184,13 +184,13 @@
       "n": 10,
       "first": "2021Q1",
       "last": "2023Q2",
-      "mae_model": 3469923271820.124,
+      "mae_model": 3469923271820.1255,
       "mae_random_walk": 4188391400000.0,
       "mae_seasonal_naive": 6882760500000.0,
-      "corr": 0.8826208735792521,
+      "corr": 0.8826208735792518,
       "beats_baselines": true,
-      "residual_q10": -6368607435818.111,
-      "residual_q90": 3084582447828.045,
+      "residual_q10": -6368607435818.113,
+      "residual_q90": 3084582447828.047,
       "mape_model": 2.290950697545287
     },
     "evaluation_without_cli": {
@@ -202,7 +202,7 @@
       "mae_seasonal_naive": 16855910090909.092,
       "corr": 0.7020766409074503,
       "beats_baselines": true,
-      "residual_q10": -3899365170711.6016,
+      "residual_q10": -3899365170711.6035,
       "residual_q90": 49839259120662.19,
       "mape_model": 0.5953260851617904
     },
@@ -221,7 +221,7 @@
     },
     "no_point_reason": ""
   },
-  "generated_at": "2026-09-12 22:34 KST",
+  "generated_at": "2026-09-12 23:52 KST",
   "chart_svg": "<svg viewBox=\"0 0 900 302\" width=\"100%\" style=\"max-width:900px;font-family:-apple-system,'Malgun Gothic',sans-serif;font-size:11px\"><rect x=\"314.3\" y=\"189.7\" width=\"8.4\" height=\"11.1\" fill=\"#4c78a8\" opacity=\"0.85\"/><rect x=\"326.6\" y=\"187.3\" width=\"8.4\" height=\"13.5\" fill=\"#4c78a8\" opacity=\"0.85\"/><rect x=\"339.0\" y=\"192.2\" width=\"8.4\" height=\"8.6\" fill=\"#4c78a8\" opacity=\"0.85\"/><rect x=\"351.3\" y=\"185.5\" width=\"8.4\" height=\"15.3\" fill=\"#4c78a8\" opacity=\"0.85\"/><rect x=\"363.6\" y=\"184.3\" width=\"8.4\" height=\"16.5\" fill=\"#4c78a8\" opacity=\"0.85\"/><rect x=\"375.9\" y=\"177.4\" width=\"8.4\" height=\"23.4\" fill=\"#4c78a8\" opacity=\"0.85\"/><rect x=\"388.2\" y=\"176.6\" width=\"8.4\" height=\"24.2\" fill=\"#4c78a8\" opacity=\"0.85\"/><rect x=\"400.5\" y=\"175.6\" width=\"8.4\" height=\"25.2\" fill=\"#4c78a8\" opacity=\"0.85\"/><rect x=\"412.9\" y=\"174.8\" width=\"8.4\" height=\"26.0\" fill=\"#4c78a8\" opacity=\"0.85\"/><rect x=\"425.2\" y=\"176.1\" width=\"8.4\" height=\"24.7\" fill=\"#4c78a8\" opacity=\"0.85\"/><rect x=\"437.5\" y=\"171.6\" width=\"8.4\" height=\"29.2\" fill=\"#4c78a8\" opacity=\"0.85\"/><rect x=\"449.8\" y=\"182.8\" width=\"8.4\" height=\"18.0\" fill=\"#4c78a8\" opacity=\"0.85\"/><rect x=\"462.1\" y=\"190.4\" width=\"8.4\" height=\"10.4\" fill=\"#4c78a8\" opacity=\"0.85\"/><rect x=\"474.4\" y=\"189.8\" width=\"8.4\" height=\"11.0\" fill=\"#4c78a8\" opacity=\"0.85\"/><rect x=\"486.8\" y=\"187.9\" width=\"8.4\" height=\"12.9\" fill=\"#4c78a8\" opacity=\"0.85\"/><rect x=\"499.1\" y=\"188.9\" width=\"8.4\" height=\"11.9\" fill=\"#4c78a8\" opacity=\"0.85\"/><rect x=\"511.4\" y=\"190.1\" width=\"8.4\" height=\"10.7\" fill=\"#4c78a8\" opacity=\"0.85\"/><rect x=\"523.7\" y=\"187.3\" width=\"8.4\" height=\"13.5\" fill=\"#4c78a8\" opacity=\"0.85\"/><rect x=\"536.0\" y=\"180.3\" width=\"8.4\" height=\"20.5\" fill=\"#4c78a8\" opacity=\"0.85\"/><rect x=\"548.4\" y=\"185.8\" width=\"8.4\" height=\"15.0\" fill=\"#4c78a8\" opacity=\"0.85\"/><rect x=\"560.7\" y=\"185.2\" width=\"8.4\" height=\"15.6\" fill=\"#4c78a8\" opacity=\"0.85\"/><rect x=\"573.0\" y=\"179.9\" width=\"8.4\" height=\"20.9\" fill=\"#4c78a8\" opacity=\"0.85\"/><rect x=\"585.3\" y=\"174.5\" width=\"8.4\" height=\"26.3\" fill=\"#4c78a8\" opacity=\"0.85\"/><rect x=\"597.6\" y=\"177.7\" width=\"8.4\" height=\"23.1\" fill=\"#4c78a8\" opacity=\"0.85\"/><rect x=\"609.9\" y=\"177.3\" width=\"8.4\" height=\"23.5\" fill=\"#4c78a8\" opacity=\"0.85\"/><rect x=\"622.3\" y=\"177.4\" width=\"8.4\" height=\"23.4\" fill=\"#4c78a8\" opacity=\"0.85\"/><rect x=\"634.6\" y=\"182.8\" width=\"8.4\" height=\"18.0\" fill=\"#4c78a8\" opacity=\"0.85\"/><rect x=\"646.9\" y=\"193.6\" width=\"8.4\" height=\"7.2\" fill=\"#4c78a8\" opacity=\"0.85\"/><rect x=\"659.2\" y=\"199.7\" width=\"8.4\" height=\"1.1\" fill=\"#4c78a8\" opacity=\"0.85\"/><rect x=\"671.5\" y=\"199.7\" width=\"8.4\" height=\"1.1\" fill=\"#4c78a8\" opacity=\"0.85\"/><rect x=\"683.8\" y=\"196.8\" width=\"8.4\" height=\"4.0\" fill=\"#4c78a8\" opacity=\"0.85\"/><rect x=\"696.2\" y=\"196.1\" width=\"8.4\" height=\"4.7\" fill=\"#4c78a8\" opacity=\"0.85\"/><rect x=\"708.5\" y=\"189.8\" width=\"8.4\" height=\"11.0\" fill=\"#4c78a8\" opacity=\"0.85\"/><rect x=\"720.8\" y=\"183.4\" width=\"8.4\" height=\"17.4\" fill=\"#4c78a8\" opacity=\"0.85\"/><rect x=\"733.1\" y=\"185.5\" width=\"8.4\" height=\"15.3\" fill=\"#4c78a8\" opacity=\"0.85\"/><rect x=\"745.4\" y=\"190.0\" width=\"8.4\" height=\"10.8\" fill=\"#4c78a8\" opacity=\"0.85\"/><rect x=\"757.7\" y=\"189.7\" width=\"8.4\" height=\"11.1\" fill=\"#4c78a8\" opacity=\"0.85\"/><rect x=\"770.1\" y=\"193.0\" width=\"8.4\" height=\"7.8\" fill=\"#4c78a8\" opacity=\"0.85\"/><rect x=\"782.4\" y=\"180.6\" width=\"8.4\" height=\"20.2\" fill=\"#4c78a8\" opacity=\"0.85\"/><rect x=\"794.7\" y=\"167.4\" width=\"8.4\" height=\"33.4\" fill=\"#4c78a8\" opacity=\"0.85\"/><rect x=\"807.0\" y=\"105.6\" width=\"8.4\" height=\"95.2\" fill=\"#4c78a8\" opacity=\"0.85\"/><rect x=\"819.3\" y=\"52.0\" width=\"8.4\" height=\"148.8\" fill=\"#4c78a8\" opacity=\"0.85\"/><g><circle cx=\"564.9\" cy=\"184.6\" r=\"2.6\" fill=\"none\" stroke=\"#c8952a\" stroke-width=\"1.4\"/><circle cx=\"577.2\" cy=\"177.9\" r=\"2.6\" fill=\"none\" stroke=\"#c8952a\" stroke-width=\"1.4\"/><circle cx=\"589.5\" cy=\"172.9\" r=\"2.6\" fill=\"none\" stroke=\"#c8952a\" stroke-width=\"1.4\"/><circle cx=\"601.8\" cy=\"173.9\" r=\"2.6\" fill=\"none\" stroke=\"#c8952a\" stroke-width=\"1.4\"/><circle cx=\"614.1\" cy=\"177.7\" r=\"2.6\" fill=\"none\" stroke=\"#c8952a\" stroke-width=\"1.4\"/><circle cx=\"626.4\" cy=\"176.7\" r=\"2.6\" fill=\"none\" stroke=\"#c8952a\" stroke-width=\"1.4\"/><circle cx=\"638.8\" cy=\"177.7\" r=\"2.6\" fill=\"none\" stroke=\"#c8952a\" stroke-width=\"1.4\"/><circle cx=\"651.1\" cy=\"187.3\" r=\"2.6\" fill=\"none\" stroke=\"#c8952a\" stroke-width=\"1.4\"/><circle cx=\"663.4\" cy=\"195.8\" r=\"2.6\" fill=\"none\" stroke=\"#c8952a\" stroke-width=\"1.4\"/><circle cx=\"675.7\" cy=\"190.5\" r=\"2.6\" fill=\"none\" stroke=\"#c8952a\" stroke-width=\"1.4\"/><circle cx=\"688.0\" cy=\"191.9\" r=\"2.6\" fill=\"none\" stroke=\"#c8952a\" stroke-width=\"1.4\"/><circle cx=\"700.3\" cy=\"189.4\" r=\"2.6\" fill=\"none\" stroke=\"#c8952a\" stroke-width=\"1.4\"/><circle cx=\"712.7\" cy=\"190.2\" r=\"2.6\" fill=\"none\" stroke=\"#c8952a\" stroke-width=\"1.4\"/><circle cx=\"725.0\" cy=\"184.5\" r=\"2.6\" fill=\"none\" stroke=\"#c8952a\" stroke-width=\"1.4\"/><circle cx=\"737.3\" cy=\"182.0\" r=\"2.6\" fill=\"none\" stroke=\"#c8952a\" stroke-width=\"1.4\"/><circle cx=\"749.6\" cy=\"184.3\" r=\"2.6\" fill=\"none\" stroke=\"#c8952a\" stroke-width=\"1.4\"/><circle cx=\"761.9\" cy=\"193.9\" r=\"2.6\" fill=\"none\" stroke=\"#c8952a\" stroke-width=\"1.4\"/><circle cx=\"774.3\" cy=\"184.7\" r=\"2.6\" fill=\"none\" stroke=\"#c8952a\" stroke-width=\"1.4\"/><circle cx=\"786.6\" cy=\"190.3\" r=\"2.6\" fill=\"none\" stroke=\"#c8952a\" stroke-width=\"1.4\"/><circle cx=\"798.9\" cy=\"180.8\" r=\"2.6\" fill=\"none\" stroke=\"#c8952a\" stroke-width=\"1.4\"/><circle cx=\"811.2\" cy=\"150.1\" r=\"2.6\" fill=\"none\" stroke=\"#c8952a\" stroke-width=\"1.4\"/><circle cx=\"823.5\" cy=\"66.2\" r=\"2.6\" fill=\"none\" stroke=\"#c8952a\" stroke-width=\"1.4\"/></g><line x1=\"66\" x2=\"842\" y1=\"200.8\" y2=\"200.8\" stroke=\"#999\"/><polyline points=\"72.2,267.8 84.5,267.9 96.8,267.8 109.1,266.8 121.4,268.0 133.7,267.1 146.1,267.3 158.4,266.6 170.7,267.9 183.0,265.7 195.3,264.2 207.7,264.7 220.0,265.9 232.3,265.9 244.6,264.8 256.9,261.7 269.2,264.1 281.6,263.9 293.9,261.5 306.2,263.0 318.5,264.3 330.8,263.9 343.1,262.6 355.5,260.7 367.8,256.5 380.1,253.8 392.4,248.8 404.7,246.5 417.0,246.8 429.4,244.0 441.7,239.2 454.0,243.1 466.3,253.3 478.6,250.8 491.0,250.5 503.3,252.9 515.6,251.3 527.9,250.4 540.2,248.5 552.5,249.1 564.9,249.5 577.2,244.2 589.5,237.3 601.8,234.7 614.1,236.1 626.4,233.3 638.8,231.6 651.1,241.1 663.4,252.9 675.7,249.1 688.0,244.3 700.3,239.0 712.7,236.5 725.0,229.2 737.3,226.8 749.6,220.7 761.9,229.2 774.3,219.0 786.6,210.2 798.9,194.9 811.2,152.9 823.5,89.2 835.8,40.0\" fill=\"none\" stroke=\"#2e7d32\" stroke-width=\"1.6\"/><text x=\"60\" y=\"56.0\" text-anchor=\"end\" fill=\"#4c78a8\">89조</text><text x=\"60\" y=\"130.4\" text-anchor=\"end\" fill=\"#4c78a8\">45조</text><text x=\"60\" y=\"204.8\" text-anchor=\"end\" fill=\"#4c78a8\">0조</text><text x=\"60\" y=\"279.2\" text-anchor=\"end\" fill=\"#4c78a8\">-45조</text><text x=\"848\" y=\"44.0\" fill=\"#2e7d32\">수출↑</text><text x=\"848\" y=\"272.0\" fill=\"#2e7d32\">수출↓</text><text x=\"72.2\" y=\"283.0\" text-anchor=\"middle\" fill=\"#8a9199\">2011</text><text x=\"170.7\" y=\"283.0\" text-anchor=\"middle\" fill=\"#8a9199\">2013</text><text x=\"269.2\" y=\"283.0\" text-anchor=\"middle\" fill=\"#8a9199\">2015</text><text x=\"367.8\" y=\"283.0\" text-anchor=\"middle\" fill=\"#8a9199\">2017</text><text x=\"466.3\" y=\"283.0\" text-anchor=\"middle\" fill=\"#8a9199\">2019</text><text x=\"564.9\" y=\"283.0\" text-anchor=\"middle\" fill=\"#8a9199\">2021</text><text x=\"663.4\" y=\"283.0\" text-anchor=\"middle\" fill=\"#8a9199\">2023</text><text x=\"761.9\" y=\"283.0\" text-anchor=\"middle\" fill=\"#8a9199\">2025</text><text x=\"66\" y=\"14\" fill=\"#1a1a1a\" font-weight=\"600\">삼성전자 분기 영업이익(막대)과 원화 환산 반도체 수출(선)</text><text x=\"842\" y=\"14\" text-anchor=\"end\" fill=\"#c8952a\">○ 워크포워드 추정치</text><rect x=\"66\" y=\"28\" width=\"776\" height=\"240\" fill=\"none\" stroke=\"#ddd\"/></svg>",
   "ledger_html": "<h4 style=\"font-size:14px;margin:18px 0 6px\">지난 분기 추정 vs 실제 <span style=\"font-size:11px;color:#8a9199;font-weight:400\">실제로 미리 낸 추정만 채점</span></h4><div style=\"font-size:13px;color:#6b7178\">아직 채점된 추정이 없습니다. 분기 영업이익이 공시되면 이 표에 쌓입니다.</div>"
 }

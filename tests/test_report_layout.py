@@ -47,10 +47,10 @@ class NavTests(unittest.TestCase):
         by = {s["title"]: s["group"] for s in sections}
         self.assertEqual(by["한눈에 보는 쉬운 요약"], "요약")
         self.assertEqual(by["1. 다음 거래일 방향"], "예측")
-        self.assertEqual(by["2026-09-11 (금) 예측 vs 실제"], "성적")
+        self.assertEqual(by["2026-09-11 (금) 예측 vs 실제"], "요약")
         self.assertEqual(by["3. 장기 전망 (월간)"], "예측")
         self.assertEqual(by["8. 이 보고서의 데이터"], "해설")
-        self.assertEqual([name for name, _ in rh.NAV_GROUPS], ["요약", "예측", "성적", "해설"])
+        self.assertEqual([name for name, _ in rh.NAV_GROUPS], ["요약", "예측", "해설"])
 
     def test_tag_balance_is_preserved(self):
         out, _ = rh.add_report_nav(PAGE)
@@ -139,19 +139,27 @@ class MobileLayoutTests(unittest.TestCase):
         self.assertIn("margin-bottom:1px", nav)
         self.assertNotIn("display:inline-block;min-width:38px", nav)
 
-    def test_each_link_wraps_as_a_whole(self):
+    def test_one_link_per_line(self):
+        """여러 개를 한 줄에 흘리면 '1-1.'과 '2.'가 붙어 번호 순서가 눈에 들어오지 않는다."""
         nav = self.nav()
         links = re.findall(r"<a\b[^>]*>", nav)
         self.assertTrue(links)
         for link in links:
-            self.assertIn("display:inline-block", link)
-            self.assertIn("white-space:nowrap", link)
+            self.assertIn("display:block", link)
+
+    def test_numbers_run_in_order_across_groups(self):
+        """목차의 번호는 1부터 오름차순이어야 한다. 예전에는 그룹 탓에 5번이 6·7번 뒤에 나왔다."""
+        _, sections = rh.add_report_nav(PAGE)
+        # 목차는 그룹 순서로 그려진다. 문서 순서가 아니라 그 순서로 번호를 읽어야 한다.
+        ordered = [s for name, _ in rh.NAV_GROUPS for s in sections if s["group"] == name]
+        numbers = [int(m.group(1)) for m in
+                   (re.match(r"(\d+)\.", s["title"]) for s in ordered) if m]
+        self.assertEqual(numbers, sorted(numbers), f"목차 번호가 뒤섞였습니다: {numbers}")
 
     def test_no_middot_separator_that_can_start_a_line(self):
         # ' · ' 로 이으면 줄 맨 앞에 가운뎃점이 남을 수 있다. 여백으로 구분한다.
         text = re.sub(r"<[^>]+>", "", self.nav())
         self.assertNotIn(" · ", text)
-        self.assertIn("margin:0 10px 3px 0", self.nav())
 
 
 class EasySummaryHierarchyTests(unittest.TestCase):

@@ -51,8 +51,8 @@ def decision_inputs_html(*, name, cards, unknowns, caveat=""):
             '<th style="padding:8px 11px;text-align:left">읽는 법</th>'
             '<th style="padding:8px 11px;text-align:left">출처</th></tr>'
             f'{rows}</table></div>{unknown_html}'
-            + (f'<div style="font-size:11px;color:#8a9199;margin-top:6px">{escape(caveat)}</div>'
-               if caveat else ""))
+            + (f'<div style="font-size:11px;color:#8a9199;margin:6px 0 20px;line-height:1.6">'
+               f'{escape(caveat)}</div>' if caveat else ""))
 
 
 def easy_summary_html(*, name, prediction_date, data_date, summary, open_forecast,
@@ -180,14 +180,30 @@ def easy_summary_html(*, name, prediction_date, data_date, summary, open_forecas
     if not nsi_active:
         warnings.append("단기 예측에 뉴스 분위기 지표가 빠져 있습니다")
     sections.append(("주의할 점", ". ".join(warnings) + ". 매수·매도 권유가 아닌 참고 자료입니다."))
-    body = "".join(f'<li style="margin:9px 0"><b>{escape(label)}</b><br>{escape(text)}</li>'
-                   for label, text in sections)
+    # 항목이 여섯 개인데 글자 크기가 모두 같으면 무엇이 결론인지 알 수 없다. 첫 항목
+    # (전체 결론)은 흰 박스로 크게 띄우고, 나머지는 굵은 소제목 + 눌린 본문으로 단계를 준다.
+    headline = sections[0] if sections else None
+    rest = sections[1:] if sections else []
+    lead = ""
+    if headline:
+        lead = ('<div style="background:#fff;border:1px solid #cedff0;border-radius:6px;'
+                'padding:13px 15px;margin:12px 0 2px">'
+                f'<div style="font-size:11px;color:#7a8797;letter-spacing:.5px;margin-bottom:3px">'
+                f'{escape(headline[0])}</div>'
+                f'<div style="font-size:16px;line-height:1.6;font-weight:600">{escape(headline[1])}</div>'
+                '</div>')
+    body = "".join(
+        f'<li style="margin:11px 0">'
+        f'<div style="font-size:13px;font-weight:700;color:#1a1a1a">{escape(label)}</div>'
+        f'<div style="font-size:13px;line-height:1.65;color:#3a4652;margin-top:1px">{escape(text)}</div>'
+        f'</li>' for label, text in rest)
     return ('<section id="easy-summary" aria-label="한눈에 보는 쉬운 요약" '
             'style="background:#f0f6fc;border:1px solid #cedff0;border-radius:8px;padding:16px 20px;margin:0 0 20px">'
             '<h3 style="margin:0 0 6px;font-size:19px">한눈에 보는 쉬운 요약</h3>'
             f'<div style="font-size:12px;color:#586575">단기 데이터 기준 {escape(date_text(data_date))} · '
             '보고서 생성 시점의 계산 결과를 쉬운 말로 풀었습니다.</div>'
-            f'<ul style="font-size:14px;padding-left:18px;margin:8px 0 0">{body}</ul></section>')
+            f'{lead}'
+            f'<ul style="list-style:none;padding:0;margin:6px 0 0">{body}</ul></section>')
 
 
 def rolling_train_indices(date_index, before, years=5):

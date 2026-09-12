@@ -148,3 +148,45 @@ class MobileLayoutTests(unittest.TestCase):
         text = re.sub(r"<[^>]+>", "", self.nav())
         self.assertNotIn(" · ", text)
         self.assertIn("margin:0 10px 3px 0", self.nav())
+
+
+class EasySummaryHierarchyTests(unittest.TestCase):
+    """쉬운 요약이 같은 크기 글자만 나열되면 무엇이 결론인지 알 수 없다(2026-09-12 지적)."""
+
+    def summary(self):
+        import pandas as pd
+        import forecast_utils as fu
+        return fu.easy_summary_html(
+            name="삼성전자", prediction_date=pd.Timestamp("2026-09-14"),
+            data_date=pd.Timestamp("2026-09-11"),
+            summary={"live": {"prediction": "큰 변화 없음", "p_up": .33, "p_flat": .366, "p_down": .30},
+                     "metrics": {"auc_gap": .81, "auc_session": .49},
+                     "ensemble": "No macro ensemble", "band": .01},
+            open_forecast={"signal": "없음"}, price_forecasts=[], review={"n_scored_days": 5})
+
+    def test_first_item_is_a_lead_box(self):
+        html = self.summary()
+        # 전체 결론은 흰 박스에 16px 굵은 글씨로 뽑는다.
+        self.assertIn("background:#fff;border:1px solid #cedff0", html)
+        self.assertIn("font-size:16px;line-height:1.6;font-weight:600", html)
+
+    def test_remaining_items_have_bold_titles_and_muted_bodies(self):
+        html = self.summary()
+        self.assertIn("font-size:13px;font-weight:700;color:#1a1a1a", html)
+        self.assertIn("color:#3a4652", html)
+        # 옛 스타일(같은 크기, <b>제목</b><br>본문)이 남아 있으면 안 된다.
+        self.assertNotIn('<li style="margin:9px 0"><b>', html)
+
+    def test_bullets_are_removed_because_titles_separate_items(self):
+        self.assertIn("list-style:none", self.summary())
+
+
+class CaveatSpacingTests(unittest.TestCase):
+    """표 아래 설명에 아래 여백이 없어 다음 블록과 글자가 겹쳐 보였다(2026-09-12 지적)."""
+
+    def test_caveat_has_bottom_margin(self):
+        import forecast_utils as fu
+        html = fu.decision_inputs_html(name="t", unknowns=["x"], caveat="설명",
+                                       cards=[{"label": "a", "value": "b", "detail": "c", "source": "d"}])
+        self.assertIn("margin:6px 0 20px", html)
+        self.assertNotIn('color:#8a9199;margin-top:6px">설명', html)

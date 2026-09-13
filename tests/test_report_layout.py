@@ -90,9 +90,11 @@ class TabTests(unittest.TestCase):
     def test_conclusions_stay_in_the_first_tab_and_evidence_gets_its_own_tabs(self):
         panels = panel_titles(rh.tabify_sections(PAGE))
         self.assertEqual(panels["rtab-0"], ["한눈에 보는 쉬운 요약", "1. 다음 거래일 방향",
-                                            "2026-09-11 (금) 예측 vs 실제", "3. 장기 전망 (월간)"])
+                                            "2026-09-11 (금) 예측 vs 실제"])
+        # 탭은 문서 순서다. 이 조각에서는 6절이 3절보다 앞에 있다.
         self.assertEqual(panels["rtab-1"], ["6. 모델 성능"])
-        self.assertEqual(panels["rtab-2"], ["8. 이 보고서의 데이터"])
+        self.assertEqual(panels["rtab-2"], ["3. 장기 전망 (월간)"])
+        self.assertEqual(panels["rtab-3"], ["8. 이 보고서의 데이터"])
 
     def test_the_first_tab_is_the_one_selected_by_default(self):
         out = rh.tabify_sections(PAGE)
@@ -126,7 +128,7 @@ class TabTests(unittest.TestCase):
         """절 제목을 그대로 쓰면 휴대폰에서 탭 두 개도 한 줄에 안 들어간다."""
         out = rh.tabify_sections(PAGE)
         labels = re.findall(r'<a href="#rtab-\d+" aria-selected="(?:true|false)">(.*?)</a>', out)
-        self.assertEqual(labels, ["오늘의 예측", "과거 성적", "사용한 데이터"])
+        self.assertEqual(labels, ["오늘의 예측", "과거 성적", "장기 전망", "사용한 데이터"])
         self.assertTrue(all(len(label) <= 12 for label in labels))
         # 탭 이름에는 절 번호를 붙이지 않는다(2026-09-13). 번호는 절 제목에만 남는다.
         self.assertFalse(any(re.match(r"\d", label) for label in labels), labels)
@@ -177,6 +179,39 @@ def panel_titles_raw(text, panel_id):
         if depth == 0:
             return text[opener.end():opener.end() + tag.start()]
     return text[opener.end():]
+
+
+# 실제 보고서의 절 순서. 탭 구성은 이 순서에서 판단해야 한다(PAGE 는 순서를 섞어 둔 조각이다).
+REPORT_ORDER = "".join(
+    f'<h3 style="x">{title}</h3><div>본문</div>' for title in (
+        "한눈에 보는 쉬운 요약", "그 밖에 지금 알 수 있는 것", "2026-09-11 (금) 예측 vs 실제",
+        "1. 다음 거래일 방향", "1-1. 외국인·기관 수급", "2. 시초가예측과 종가예측",
+        "3. 장기 전망 (월간)", "4. 이번 분기 영업이익 추정", "5. 이 예측을 어떻게 읽어야 하는가",
+        "6. 모델 성능", "7. 자동 판정", "8. 이 보고서의 데이터", "참고 정보: 최근 공시와 예정 발표"))
+
+
+class TabArrangementTests(unittest.TestCase):
+    """2026-09-13 제안: 5절(읽는 법)은 첫 탭 맨 아래로, 3절(장기 전망)은 둘째 탭으로."""
+
+    def out(self):
+        return rh.tabify_sections('<div class="wrap">' + REPORT_ORDER + '</div>')
+
+    def test_tabs_are_in_this_order(self):
+        labels = re.findall(r'<a href="#rtab-\d+" aria-selected="(?:true|false)">(.*?)</a>', self.out())
+        self.assertEqual(labels, ["오늘의 예측", "장기 전망", "과거 성적", "검증 결과",
+                                  "사용한 데이터", "공시·발표 일정"])
+
+    def test_reading_guide_is_the_last_thing_in_the_first_tab(self):
+        first = panel_titles(self.out())["rtab-0"]
+        self.assertEqual(first[-1], "5. 이 예측을 어떻게 읽어야 하는가")
+        self.assertEqual(first[-2], "4. 이번 분기 영업이익 추정")
+        self.assertNotIn("3. 장기 전망 (월간)", first)
+
+    def test_long_term_outlook_has_its_own_tab(self):
+        self.assertEqual(panel_titles(self.out())["rtab-1"], ["3. 장기 전망 (월간)"])
+
+    def test_the_structure_stays_sound(self):
+        self.assertEqual(rh.tab_structure_problems(self.out()), [])
 
 
 # 실제 보고서 모양을 줄인 것. 쉬운 요약은 감싸개(<section>)가 제목보다 먼저 열리고, 채점 절 앞뒤에는

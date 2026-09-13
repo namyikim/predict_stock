@@ -17,9 +17,9 @@ PAGE = ('<div class="wrap">'
         '<h3 style="x">한눈에 보는 쉬운 요약</h3><div>요약 본문</div>'
         '<h3 style="x">1. 다음 거래일 방향 <span style="y">&nbsp;부제입니다</span></h3><div>방향 본문</div>'
         '<h3 style="x">2026-09-11 (금) 예측 vs 실제</h3><div>채점 본문</div>'
-        '<h3 style="x">6. 모델 성능</h3><div>성능 본문<table><tr><td>표</td></tr></table></div>'
+        '<h3 style="x">6. 모델 성적과 검증</h3><div>성능 본문<table><tr><td>표</td></tr></table></div>'
         '<h3 style="x">3. 장기 전망 (월간)</h3><div>장기 본문</div>'
-        '<h3 style="x">8. 이 보고서의 데이터</h3><div>데이터 본문</div>'
+        '<h3 style="x">7. 이 보고서의 데이터</h3><div>데이터 본문</div>'
         '</div>')
 
 
@@ -49,7 +49,7 @@ class NavTests(unittest.TestCase):
         self.assertEqual(by["1. 다음 거래일 방향"], "예측")
         self.assertEqual(by["2026-09-11 (금) 예측 vs 실제"], "요약")
         self.assertEqual(by["3. 장기 전망 (월간)"], "예측")
-        self.assertEqual(by["8. 이 보고서의 데이터"], "해설")
+        self.assertEqual(by["7. 이 보고서의 데이터"], "해설")
         self.assertEqual([name for name, _ in rh.NAV_GROUPS], ["요약", "예측", "해설"])
 
     def test_tag_balance_is_preserved(self):
@@ -92,9 +92,9 @@ class TabTests(unittest.TestCase):
         self.assertEqual(panels["rtab-0"], ["한눈에 보는 쉬운 요약", "1. 다음 거래일 방향",
                                             "2026-09-11 (금) 예측 vs 실제"])
         # 탭은 문서 순서다. 이 조각에서는 6절이 3절보다 앞에 있다.
-        self.assertEqual(panels["rtab-1"], ["6. 모델 성능"])
+        self.assertEqual(panels["rtab-1"], ["6. 모델 성적과 검증"])
         self.assertEqual(panels["rtab-2"], ["3. 장기 전망 (월간)"])
-        self.assertEqual(panels["rtab-3"], ["8. 이 보고서의 데이터"])
+        self.assertEqual(panels["rtab-3"], ["7. 이 보고서의 데이터"])
 
     def test_the_first_tab_is_the_one_selected_by_default(self):
         out = rh.tabify_sections(PAGE)
@@ -128,11 +128,11 @@ class TabTests(unittest.TestCase):
         """절 제목을 그대로 쓰면 휴대폰에서 탭 두 개도 한 줄에 안 들어간다."""
         out = rh.tabify_sections(PAGE)
         labels = re.findall(r'<a href="#rtab-\d+" aria-selected="(?:true|false)">(.*?)</a>', out)
-        self.assertEqual(labels, ["오늘의 예측", "과거 성적", "장기 전망", "사용한 데이터"])
+        self.assertEqual(labels, ["오늘의 예측", "성적과 검증", "장기 전망", "사용한 데이터"])
         self.assertTrue(all(len(label) <= 12 for label in labels))
         # 탭 이름에는 절 번호를 붙이지 않는다(2026-09-13). 번호는 절 제목에만 남는다.
         self.assertFalse(any(re.match(r"\d", label) for label in labels), labels)
-        self.assertIn(">6. 모델 성능</h3>", out)
+        self.assertIn(">6. 모델 성적과 검증</h3>", out)
 
     def test_toc_links_into_another_tab_open_that_tab(self):
         """목차의 #sec10 같은 링크는 그 절이 든 탭을 연 뒤 그 절로 가야 한다."""
@@ -187,7 +187,7 @@ REPORT_ORDER = "".join(
         "한눈에 보는 쉬운 요약", "그 밖에 지금 알 수 있는 것", "2026-09-11 (금) 예측 vs 실제",
         "1. 다음 거래일 방향", "1-1. 외국인·기관 수급", "2. 시초가예측과 종가예측",
         "3. 장기 전망 (월간)", "4. 이번 분기 영업이익 추정", "5. 이 예측을 어떻게 읽어야 하는가",
-        "6. 모델 성능", "7. 자동 판정", "8. 이 보고서의 데이터", "참고 정보: 최근 공시와 예정 발표"))
+        "6. 모델 성적과 검증", "7. 이 보고서의 데이터", "참고 정보: 최근 공시와 예정 발표"))
 
 
 class TabArrangementTests(unittest.TestCase):
@@ -198,7 +198,7 @@ class TabArrangementTests(unittest.TestCase):
 
     def test_tabs_are_in_this_order(self):
         labels = re.findall(r'<a href="#rtab-\d+" aria-selected="(?:true|false)">(.*?)</a>', self.out())
-        self.assertEqual(labels, ["오늘의 예측", "장기 전망", "과거 성적", "검증 결과",
+        self.assertEqual(labels, ["오늘의 예측", "장기 전망", "성적과 검증",
                                   "사용한 데이터", "공시·발표 일정"])
 
     def test_reading_guide_is_the_last_thing_in_the_first_tab(self):

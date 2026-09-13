@@ -134,14 +134,27 @@ class NotebookStructureTests(unittest.TestCase):
         price = self.source.index("2. 시초가예측과 종가예측", direction)
         longterm = self.source.index("f'{longterm_html}'", price)
         earnings = self.source.index("f'{earnings_html}'", longterm)
-        data = self.source.index("8. 이 보고서의 데이터", earnings)
+        data = self.source.index("7. 이 보고서의 데이터", earnings)
         disclosure = self.source.index("f'{disclosure_html}'", data)
         self.assertLess(direction, flow)
         self.assertLess(flow, price)
         self.assertLess(price, longterm)      # 3절: 장기 전망
         self.assertLess(longterm, earnings)   # 4절: 영업이익
-        self.assertLess(earnings, data)       # 8절: 데이터(접힘)
+        self.assertLess(earnings, data)       # 7절: 데이터(탭)
         self.assertLess(data, disclosure)     # 참고 정보: 공시(접힘)
+
+    def test_performance_and_verdict_are_one_section(self):
+        """예전 6절(모델 성능)과 7절(자동 판정)은 같은 수치를 따로 보였다. 한 절로 합치고(2026-09-13)
+        판정을 먼저, 그 근거인 모델별 수치를 뒤에 둔다."""
+        merged = self.source.index("6. 모델 성적과 검증")
+        checks = self.source.index("f'{rows_check}</table></div>'", merged)
+        metrics = self.source.index("f'{rows_metric}</table></div>'", merged)
+        data = self.source.index("7. 이 보고서의 데이터", merged)
+        self.assertLess(checks, metrics)
+        self.assertLess(metrics, data)
+        self.assertNotIn("'7. 자동 판정</h3>'", self.source)
+        self.assertNotIn("'6. 모델 성능 <span", self.source)
+        self.assertNotIn("8. 이 보고서의 데이터", self.source)
 
     def test_report_reviews_prospective_ledger(self):
         # 보고서는 원장의 사전 예측만 채점한 결과를 보여주고, 축소 전 원시 예측을 원장에 남긴다.

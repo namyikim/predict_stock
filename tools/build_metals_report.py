@@ -340,6 +340,147 @@ def prob_bar(p, label, color):
             f'<span style="width:48px;text-align:right;font-variant-numeric:tabular-nums">{p * 100:.1f}%</span></div>')
 
 
+# ---------------------------------------------------------------------------
+# 장기 가격 그림 (2026-09-13 추가)
+# ---------------------------------------------------------------------------
+LONG_TERM_COLORS = {"gold": "#b8860b", "silver": "#6b7a89"}
+LONG_TERM_MIN_DAYS = 260          # 1년이 안 되는 자료로는 '장기'를 그리지 않는다
+
+
+def _log_ticks(low, high):
+    """로그 축 눈금. 1·2·5 × 10^k 가운데 범위 안에 드는 것."""
+    ticks = []
+    exponent = int(np.floor(np.log10(low))) - 1
+    while 10 ** exponent <= high * 10:
+        for step in (1, 2, 5):
+            value = step * 10 ** exponent
+            if low <= value <= high:
+                ticks.append(value)
+        exponent += 1
+    return ticks
+
+
+def _dollars(value):
+    return f"${value:,.0f}" if value >= 10 else f"${value:,.2f}".rstrip("0").rstrip(".")
+
+
+def long_term_summary(close):
+    """장기 변화와 고점 대비 위치. 자료가 짧으면 None.
+
+    변화는 마지막 종가에서 거꾸로 1·5·10년 전의 가장 가까운 종가와 견준다. 그 기간 자료가 없으면 —.
+    """
+    close = close.dropna()
+    if len(close) < LONG_TERM_MIN_DAYS:
+        return None
+    last_date, last = close.index[-1], float(close.iloc[-1])
+    first_date, first = close.index[0], float(close.iloc[0])
+
+    def change(years):
+        past = close.loc[:last_date - pd.DateOffset(years=years)]
+        return last / float(past.iloc[-1]) - 1 if len(past) else None
+
+    span_years = max((last_date - first_date).days, 1) / 365.25
+    peak_date, peak = close.idxmax(), float(close.max())
+    return {
+        "last": last, "last_date": last_date, "first": first, "first_date": first_date,
+        "peak": peak, "peak_date": peak_date, "from_peak": last / peak - 1,
+        "changes": {"1년": change(1), "5년": change(5), "10년": change(10), "전체": last / first - 1},
+        "cagr": (last / first) ** (1 / span_years) - 1,
+    }
+
+
+def long_term_chart(close, name, color, width=900, height=300):
+    """월말 종가 그림(로그 눈금). 자료가 2년이 안 되면 빈 문자열.
+
+    금은 20년 사이 열 배가 넘게 올랐다. 보통 눈금이면 앞쪽 십 년이 바닥에 깔려 보이지 않는다.
+    로그 눈금이면 같은 높이가 같은 비율의 변화라 2008년의 30%와 2020년의 30%를 같은 크기로 볼 수 있다.
+    """
+    monthly = close.dropna().resample("ME").last().dropna()
+    if len(monthly) < 24:
+        return ""
+    values = monthly.to_numpy(dtype=float)
+    low, high = float(values.min()), float(values.max())
+    lo_log, hi_log = np.log10(low) - 0.05, np.log10(high) + 0.07
+    left, right, top, bottom = 62, 24, 38, 30
+    n = len(values)
+
+    def x_of(i):
+        return left + (width - left - right) * i / (n - 1)
+
+    def y_of(v):
+        return top + (height - top - bottom) * (hi_log - np.log10(v)) / (hi_log - lo_log)
+
+    line = " ".join(f"{x_of(i):.1f},{y_of(v):.1f}" for i, v in enumerate(values))
+    area = f"{x_of(0):.1f},{height - bottom} {line} {x_of(n - 1):.1f},{height - bottom}"
+    grid = "".join(
+        f'<line x1="{left}" x2="{width - right}" y1="{y_of(t):.1f}" y2="{y_of(t):.1f}" stroke="#eee"/>'
+        f'<text x="{left - 8}" y="{y_of(t) + 4:.1f}" text-anchor="end" font-size="11" fill="#8a9199">'
+        f'{_dollars(t)}</text>'
+        for t in _log_ticks(low, high))
+    years = sorted({d.year for d in monthly.index})
+    step = max(1, int(np.ceil(len(years) / 8)))
+    year_labels = ""
+    for year in years[::step]:
+        index = next(i for i, d in enumerate(monthly.index) if d.year == year)
+        year_labels += (f'<text x="{x_of(index):.1f}" y="{height - 10}" text-anchor="middle" '
+                        f'font-size="10" fill="#8a9199">{year}</text>')
+
+    peak_i, last_i = int(np.argmax(values)), n - 1
+    marks = (f'<circle cx="{x_of(last_i):.1f}" cy="{y_of(values[last_i]):.1f}" r="3.5" fill="{color}"/>')
+    if peak_i >= last_i - 2:
+        # 지금이 곧 고점이면 이름표를 하나만 단다. 둘을 달면 같은 자리에서 겹친다.
+        marks += (f'<text x="{x_of(last_i) - 8:.1f}" y="{y_of(values[last_i]) - 10:.1f}" text-anchor="end" '
+                  f'font-size="11" font-weight="600" fill="{color}">현재 {_dollars(values[last_i])} · 사상 최고</text>')
+    else:
+        anchor = "end" if x_of(peak_i) > width * 0.75 else "middle"
+        marks += (f'<circle cx="{x_of(peak_i):.1f}" cy="{y_of(values[peak_i]):.1f}" r="3" fill="none" '
+                  f'stroke="{color}" stroke-width="1.5"/>'
+                  f'<text x="{x_of(peak_i):.1f}" y="{y_of(values[peak_i]) - 9:.1f}" text-anchor="{anchor}" '
+                  f'font-size="10" fill="#6b7178">고점 {_dollars(values[peak_i])} '
+                  f'({monthly.index[peak_i]:%Y-%m})</text>'
+                  f'<text x="{x_of(last_i) - 8:.1f}" y="{y_of(values[last_i]) + 16:.1f}" text-anchor="end" '
+                  f'font-size="11" font-weight="600" fill="{color}">현재 {_dollars(values[last_i])}</text>')
+    return (
+        f'<svg viewBox="0 0 {width} {height}" width="100%" xmlns="http://www.w3.org/2000/svg" '
+        f'style="max-width:{width}px;font-family:-apple-system,\'Malgun Gothic\',sans-serif">'
+        f'<rect width="{width}" height="{height}" fill="#fff"/>'
+        f'<text x="{left}" y="20" font-size="13" font-weight="600" fill="#1a1a1a">'
+        f'{html.escape(name)} 월말 종가 {monthly.index[0]:%Y-%m}~{monthly.index[-1]:%Y-%m}</text>'
+        f'<text x="{width - right}" y="20" text-anchor="end" font-size="11" fill="#8a9199">'
+        '달러/온스 · 로그 눈금</text>'
+        f'{grid}<polygon points="{area}" fill="{color}" opacity="0.08"/>'
+        f'<polyline points="{line}" fill="none" stroke="{color}" stroke-width="1.8"/>'
+        f'{marks}{year_labels}</svg>')
+
+
+def render_long_term(key, close):
+    """금속 절 맨 위의 장기 가격 흐름. 가격이 없거나 짧으면 아무것도 내지 않는다(보고서는 멈추지 않는다)."""
+    if close is None or len(close.dropna()) < LONG_TERM_MIN_DAYS:
+        return []
+    summary = long_term_summary(close)
+    svg = long_term_chart(close, ASSETS[key]["name"], LONG_TERM_COLORS.get(key, "#1a5490"))
+    if not summary or not svg:
+        return []
+
+    def signed(v):
+        return "—" if v is None else f"{v * 100:+,.0f}%"
+
+    parts = [f'<h4 style="font-size:14px;margin:18px 0 6px">장기 가격 흐름 '
+             f'<span style="font-size:11px;color:#8a9199;font-weight:400">'
+             f'{summary["first_date"]:%Y}년부터 · 월말 종가</span></h4>',
+             f'<div style="border:1px solid #e5e5e5;border-radius:6px;padding:8px">{svg}</div>']
+    body = "".join(f'<tr><td {TD}>{label} 전 대비</td><td {TDR}>{signed(value)}</td></tr>'
+                   for label, value in summary["changes"].items() if label != "전체")
+    body += (f'<tr><td {TD}>{summary["first_date"]:%Y-%m} 이후 전체</td>'
+             f'<td {TDR}>{signed(summary["changes"]["전체"])} · 연평균 {summary["cagr"] * 100:+.1f}%</td></tr>'
+             f'<tr><td {TD}>사상 최고 대비 ({summary["peak_date"]:%Y-%m-%d} {_dollars(summary["peak"])})</td>'
+             f'<td {TDR}>{"사상 최고 부근" if summary["from_peak"] > -0.005 else signed(summary["from_peak"])}</td></tr>')
+    parts.append(table(f'<th {TH}>기간</th><th {THR}>변화 (달러 기준)</th>', body, 420))
+    parts.append(note("로그 눈금이라 같은 높이는 같은 비율의 변화입니다. COMEX 선물 연속물 가격이라 만기가 바뀌는 날 "
+                      "작은 단차가 있을 수 있습니다. 지난 흐름은 앞으로의 방향을 알려 주지 않습니다."))
+    return parts
+
+
 def render_asset(key, res, usdkrw):
     e = html.escape
     a = ASSETS[key]
@@ -349,6 +490,9 @@ def render_asset(key, res, usdkrw):
     parts = [f'<h3 style="font-size:18px;margin:34px 0 10px;padding-bottom:6px;border-bottom:1px solid #ddd">{e(a["name"])} <span style="font-size:12px;color:#8a9199;font-weight:400">COMEX 선물 {a["ticker"]}</span></h3>']
     parts.append(f'<div style="font-size:13px;color:#6b7178">기준 봉 {live["as_of"].date()} · 종가 <b style="color:#1a1a1a">${current:,.2f}/온스</b>'
                  + (f' · 약 <b style="color:#1a1a1a">{krw_g:,.0f}원/g</b> (원/달러 {usdkrw:,.0f} 환산, 국내 KRX 금시장 가격과는 다를 수 있음)' if usdkrw else "") + '</div>')
+
+    # 장기 가격 흐름 — 지금 가격이 긴 흐름의 어디쯤인지 먼저 보인다.
+    parts.extend(render_long_term(key, res.get("history")))
 
     # 다음 거래일 방향
     skill = wf["log_loss_diff_hi"] < 0
@@ -582,7 +726,7 @@ def main():
         for a_ in review["alerts"]:
             print("  ⚠️", a_)
         results[key] = dict(live=live, wf=wf, price_rows=price_rows, price_stats=price_stats, prediction_date=prediction_date,
-                            scored=scored, review=review)
+                            scored=scored, review=review, history=bars["close"])
         if args.dump:
             print(f"  방향: 하락 {live['p_down']:.3f} 보합 {live['p_flat']:.3f} 상승 {live['p_up']:.3f} · 밴드 ±{live['band']:.4f}")
             print(f"  WF n={wf['n']} bal.acc {wf['balanced_accuracy']:.3f}/{wf['prior_balanced_accuracy']:.3f} logloss {wf['log_loss']:.4f}/{wf['prior_log_loss']:.4f} "

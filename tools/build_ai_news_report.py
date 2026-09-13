@@ -234,8 +234,8 @@ def build_html(ranked, now, total, failed):
         '@media(max-width:640px){body{padding:16px 12px 32px}}</style></head><body>'
         '<div class="wrap">'
         '<div style="border-bottom:3px solid #1a1a1a;padding-bottom:11px;margin-bottom:18px">'
-        '<div style="font-size:11px;letter-spacing:2px;color:#8a9199">AI TRENDS &amp; NEWS</div>'
-        '<h2 style="margin:6px 0 5px;font-size:27px">최신 AI 트렌드 및 뉴스</h2>'
+        '<div class="page-title" style="font-size:11px;letter-spacing:2px;color:#8a9199">AI TRENDS &amp; NEWS</div>'
+        '<h2 class="page-title" style="margin:6px 0 5px;font-size:27px">최신 AI 트렌드 및 뉴스</h2>'
         f'<div style="font-size:12px;color:#8a9199">{now:%Y-%m-%d %H:%M} KST 기준 · '
         f'최근 {WINDOW_HOURS}시간 헤드라인 {total}건</div></div>'
         + warn +

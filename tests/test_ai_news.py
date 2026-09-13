@@ -190,9 +190,10 @@ class PublishTests(unittest.TestCase):
 
     def test_page_is_wired_into_menu_counter_and_admin(self):
         index = (ROOT / "docs" / "index.html").read_text(encoding="utf-8")
-        self.assertIn('href="./ai_news/"', index)
-        # 인기 급상승 검색어 바로 위에 있어야 한다.
-        self.assertLess(index.index('href="./ai_news/"'), index.index('href="./trends/"'))
+        # 2026-09-13 부터 메인 메뉴에는 '최신 뉴스 및 트렌드' 한 장만 있고, AI 뉴스는 그 안의 첫 탭이다.
+        self.assertIn('href="./news/"', index)
+        hub = (ROOT / "docs" / "news" / "index.html").read_text(encoding="utf-8")
+        self.assertIn('data-src="../ai_news/"', hub)
         worker = (ROOT / "counter" / "worker.js").read_text(encoding="utf-8")
         self.assertIn('"ai_news"', worker)      # 이 키가 없으면 카운터가 조회를 거부한다
         admin = (ROOT / "docs" / "admin" / "index.html").read_text(encoding="utf-8")

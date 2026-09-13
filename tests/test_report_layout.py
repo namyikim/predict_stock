@@ -64,61 +64,215 @@ class NavTests(unittest.TestCase):
         self.assertEqual(len(sections), 1)
 
 
-class CollapseTests(unittest.TestCase):
-    def collapsed(self, text):
-        """접힌 절의 제목 목록. h3 마다 잘라 그 직후가 <details> 인지 본다.
-
-        (.*?)</h3>\s*<details 로 찾으면 details 가 나올 때까지 여러 절을 삼킨다.
-        """
+def panel_titles(text):
+    """탭 패널마다 들어 있는 절 제목. {패널 id: [제목, ...]}"""
+    out = {}
+    for panel_id in re.findall(r'<section class="rtab-panel" id="(rtab-\d+)">', text):
         titles = []
-        for match in re.finditer(r"<h3\b[^>]*>(.*?)</h3>", text, re.S):
-            if not text[match.end():].lstrip().startswith("<details"):
-                continue
-            title = re.sub(r"<span\b.*?</span>", "", match.group(1), flags=re.S)
+        for head in re.finditer(r"<h3\b[^>]*>(.*?)</h3>", panel_titles_raw(text, panel_id), re.S):
+            title = re.sub(r"<span\b.*?</span>", "", head.group(1), flags=re.S)
             title = re.sub(r"<[^>]+>", "", title).replace("&nbsp;", " ")
             titles.append(re.sub(r"\s+", " ", title).strip(" ·"))
-        return titles
+        out[panel_id] = titles
+    return out
 
-    def test_evidence_sections_collapse_and_summaries_do_not(self):
-        out = rh.collapse_sections(PAGE)
-        titles = self.collapsed(out)
-        self.assertIn("6. 모델 성능", titles)
-        self.assertIn("8. 이 보고서의 데이터", titles)
-        # 3·4절(장기 전망·영업이익)은 결론이므로 펼쳐 둔다.
-        self.assertNotIn("3. 장기 전망 (월간)", titles)
-        self.assertNotIn("한눈에 보는 쉬운 요약", titles)
-        self.assertNotIn("1. 다음 거래일 방향", titles)
 
-    def test_last_section_collapses_without_breaking_the_wrapper(self):
-        # 마지막 절 본문 끝에는 바깥 래퍼의 </div> 가 붙어 있다. details 안에 갇히면 안 된다.
-        out = rh.collapse_sections(PAGE)
-        self.assertIn("8. 이 보고서의 데이터", self.collapsed(out))
-        for tag, (opens, closes) in balance(out).items():
+def tab_balance(text):
+    counts = balance(text)
+    for tag in ("section", "nav"):
+        counts[tag] = (len(re.findall(rf"<{tag}\b", text)), len(re.findall(rf"</{tag}>", text)))
+    return counts
+
+
+class TabTests(unittest.TestCase):
+    """접던 절을 상단 탭으로 바꾼다(2026-09-13). '펼쳐 보기'를 찾아 누르는 것이 불편했다."""
+
+    def test_conclusions_stay_in_the_first_tab_and_evidence_gets_its_own_tabs(self):
+        panels = panel_titles(rh.tabify_sections(PAGE))
+        self.assertEqual(panels["rtab-0"], ["한눈에 보는 쉬운 요약", "1. 다음 거래일 방향",
+                                            "2026-09-11 (금) 예측 vs 실제", "3. 장기 전망 (월간)"])
+        self.assertEqual(panels["rtab-1"], ["6. 모델 성능"])
+        self.assertEqual(panels["rtab-2"], ["8. 이 보고서의 데이터"])
+
+    def test_the_first_tab_is_the_one_selected_by_default(self):
+        out = rh.tabify_sections(PAGE)
+        selected = re.findall(r'<a href="#(rtab-\d+)" aria-selected="true"', out)
+        self.assertEqual(selected, ["rtab-0"])
+
+    def test_nothing_is_hidden_without_the_script(self):
+        """스크립트가 안 돌면 예전처럼 모든 절이 보여야 한다. 숨김은 스크립트가 붙이는 클래스로만."""
+        out = rh.tabify_sections(PAGE)
+        for panel in re.findall(r'<section class="rtab-panel"[^>]*>', out):
+            self.assertNotIn("hidden", panel)
+            self.assertNotIn("display:none", panel)
+        self.assertIn("#rtabs-root.rtabs-on .rtab-panel{display:none}", out)
+        self.assertIn('r.className+=" rtabs-on"', out)
+
+    def test_no_page_level_fold_remains(self):
+        self.assertNotIn("펼쳐 보기", rh.tabify_sections(PAGE))
+
+    def test_last_section_does_not_swallow_the_wrapper(self):
+        # 마지막 절 끝에는 바깥 래퍼의 </div> 가 붙어 있다. 탭 묶음 안에 갇히면 안 된다.
+        out = rh.tabify_sections(PAGE)
+        for tag, (opens, closes) in tab_balance(out).items():
             self.assertEqual(opens, closes, f"{tag} 균형이 깨졌습니다")
         self.assertTrue(out.rstrip().endswith("</div>"))
+        self.assertLess(out.index('<div id="rtabs-root">'), out.index("한눈에 보는 쉬운 요약"))
 
-    def test_headings_stay_visible(self):
-        out = rh.collapse_sections(PAGE)
-        self.assertEqual(len(re.findall(r"<h3\b", out)), 6)
-        self.assertIn("펼쳐 보기", out)
+    def test_every_heading_survives(self):
+        self.assertEqual(len(re.findall(r"<h3\b", rh.tabify_sections(PAGE))), 6)
 
-    def test_nav_after_collapse_still_sees_every_section(self):
-        out, sections = rh.add_report_nav(rh.collapse_sections(PAGE))
+    def test_tab_labels_are_short(self):
+        """절 제목을 그대로 쓰면 휴대폰에서 탭 두 개도 한 줄에 안 들어간다."""
+        out = rh.tabify_sections(PAGE)
+        labels = re.findall(r'<a href="#rtab-\d+" aria-selected="(?:true|false)">(.*?)</a>', out)
+        self.assertEqual(labels, ["요약·예측", "모델 성능", "데이터"])
+        self.assertTrue(all(len(label) <= 12 for label in labels))
+        # 탭 이름에는 절 번호를 붙이지 않는다(2026-09-13). 번호는 절 제목에만 남는다.
+        self.assertFalse(any(re.match(r"\d", label) for label in labels), labels)
+        self.assertIn(">6. 모델 성능</h3>", out)
+
+    def test_toc_links_into_another_tab_open_that_tab(self):
+        """목차의 #sec10 같은 링크는 그 절이 든 탭을 연 뒤 그 절로 가야 한다."""
+        out = rh.tabify_sections(PAGE)
+        self.assertIn('addEventListener("hashchange",route)', out)
+        self.assertIn('closest(".rtab-panel")', out)
+        # hashchange 만으로는 부족하다 — 주소에 #조각이 안 붙는 환경에서 목차가 먹통이었다.
+        # 링크 클릭을 직접 받아 탭을 연다. 뒤로 가기는 popstate 로 따라간다.
+        self.assertIn('document.addEventListener("click"', out)
+        self.assertIn('addEventListener("popstate",route)', out)
+        # 붙어 있는 탭 막대가 제목을 가리지 않도록 띄워 멈춘다.
+        self.assertIn("scroll-margin-top", out)
+
+    def test_the_tab_bar_sticks_and_print_shows_everything(self):
+        out = rh.tabify_sections(PAGE)
+        self.assertIn("position:sticky", out)
+        self.assertIn("@media print", out)
+
+    def test_pages_without_evidence_sections_are_left_alone(self):
+        page = '<div><h3>한눈에 보는 쉬운 요약</h3><p>a</p><h3>1. 다음 거래일 방향</h3><p>b</p></div>'
+        self.assertEqual(rh.tabify_sections(page), page)
+
+    def test_the_toc_lands_below_the_tab_bar_and_sees_every_section(self):
+        """탭은 상단에 있어야 한다. 목차(13줄)가 탭 위로 오면 탭이 화면 아래로 밀려난다."""
+        out, sections = rh.add_report_nav(rh.tabify_sections(PAGE))
         self.assertEqual(len(sections), 6)
-        for tag, (opens, closes) in balance(out).items():
+        self.assertLess(out.index('class="rtabs"'), out.index("이 보고서의 구성"))
+        self.assertIn("이 보고서의 구성", panel_titles_raw(out, "rtab-0"))
+        for tag, (opens, closes) in tab_balance(out).items():
             self.assertEqual(opens, closes, tag)
 
 
+def panel_titles_raw(text, panel_id):
+    """패널 안쪽 HTML. 짝이 되는 </section> 까지 — 패널 안에 쉬운 요약 같은 <section> 이 들어 있다.
+
+    (.*?)</section> 로 자르면 안쪽 section 의 닫는 태그에서 멈춘다.
+    """
+    opener = re.search(rf'<section class="rtab-panel" id="{panel_id}">', text)
+    if not opener:
+        return ""
+    depth = 1
+    for tag in re.finditer(r"<(/?)section\b[^>]*>", text[opener.end():]):
+        depth += -1 if tag.group(1) else 1
+        if depth == 0:
+            return text[opener.end():opener.end() + tag.start()]
+    return text[opener.end():]
+
+
+# 실제 보고서 모양을 줄인 것. 쉬운 요약은 감싸개(<section>)가 제목보다 먼저 열리고, 채점 절 앞뒤에는
+# 오후 갱신이 찾는 표시 주석이 있다. PAGE 만으로는 2026-09-13 의 깨짐을 재현할 수 없었다.
+REAL_PAGE = (
+    '<div class="wrap"><h2>종합 보고서</h2>'
+    '<section id="easy-summary" style="x"><h3 style="x">한눈에 보는 쉬운 요약</h3>'
+    '<ul><li>요약 한 줄</li></ul></section>'
+    '<h3 style="x">그 밖에 지금 알 수 있는 것</h3><div>카드</div>'
+    '<!--LEDGER_SECTION_START--><h3 style="x">2026-09-11 (금) 예측 vs 실제</h3>'
+    '<div>채점 본문</div><!--LEDGER_SECTION_END-->'
+    '<h3 style="x">1. 다음 거래일 방향</h3><div>방향 본문</div>'
+    '<h3 style="x">6. 모델 성능</h3><div>성능 본문</div>'
+    '<h3 style="x">참고 정보: 최근 공시와 예정 발표</h3><div>공시 본문</div>'
+    '</div>')
+
+
+class RealShapeTabTests(unittest.TestCase):
+    """개수는 맞는데 브라우저에서 깨지는 모양을 막는다."""
+
+    def test_a_wrapper_that_opens_before_its_heading_moves_with_it(self):
+        out = rh.tabify_sections(REAL_PAGE)
+        self.assertIn('id="rtabs-root"', out, "탭이 적용되지 않았다")
+        self.assertEqual(rh.tab_structure_problems(out), [])
+        first = panel_titles_raw(out, "rtab-0")
+        self.assertIn('id="easy-summary"', first, "감싸개가 제목과 함께 첫 탭에 들어가야 한다")
+        self.assertEqual(panel_titles(out)["rtab-0"], ["한눈에 보는 쉬운 요약", "그 밖에 지금 알 수 있는 것",
+                                                       "2026-09-11 (금) 예측 vs 실제", "1. 다음 거래일 방향"])
+
+    def test_the_outer_wrapper_stays_outside_the_tabs(self):
+        out = rh.tabify_sections(REAL_PAGE)
+        self.assertTrue(out.startswith('<div class="wrap"><h2>종합 보고서</h2><div id="rtabs-root">'))
+        self.assertTrue(out.endswith("</div></div>"))
+
+    def test_the_checker_catches_the_breakage_seen_on_2026_09_13(self):
+        """제목에서 잘랐을 때의 실제 모양. 개수는 맞지만 둘째 제목이 탭 밖으로 떨어진다."""
+        broken = ('<section id="easy-summary"><div id="rtabs-root">'
+                  '<section class="rtab-panel" id="rtab-0"><h3>한눈에 보는 쉬운 요약</h3></section>'
+                  '<h3>그 밖에 지금 알 수 있는 것</h3></section></div>')
+        problems = rh.tab_structure_problems(broken)
+        self.assertTrue(any(p.startswith("탭 밖 제목") for p in problems), problems)
+
+    def test_ledger_markers_stay_in_one_tab_and_the_afternoon_update_still_splices(self):
+        out = rh.tabify_sections(REAL_PAGE)
+        first = panel_titles_raw(out, "rtab-0")
+        self.assertIn("<!--LEDGER_SECTION_START-->", first)
+        self.assertIn("<!--LEDGER_SECTION_END-->", first)
+        try:
+            sys.path.insert(0, str(ROOT / "tools"))
+            import build_afternoon_update as ba
+        except Exception as exc:          # 무거운 의존성이 없는 환경
+            self.skipTest(f"build_afternoon_update 를 불러오지 못함: {exc}")
+        spliced = ba.replace_section(out, '<h3 style="x">2026-09-11 (금) 예측 vs 실제</h3><div>새 채점</div>')
+        self.assertIsNotNone(spliced)
+        self.assertEqual(rh.tab_structure_problems(spliced), [])
+        self.assertIn("새 채점", panel_titles_raw(spliced, "rtab-0"))
+
+    def test_the_session_review_lands_in_the_first_tab(self):
+        out = rh.tabify_sections(REAL_PAGE)
+        try:
+            sys.path.insert(0, str(ROOT / "tools"))
+            import build_session_review as sr
+        except Exception as exc:
+            self.skipTest(f"build_session_review 를 불러오지 못함: {exc}")
+        section = sr.MARK_START + '<h3 style="x">오늘 장 회고 — 2026-09-11</h3><div>회고</div>' + sr.MARK_END
+        page = sr.insert_section(out, section)
+        self.assertEqual(rh.tab_structure_problems(page), [])
+        self.assertIn("오늘 장 회고", panel_titles_raw(page, "rtab-0"))
+
+    def test_a_layout_that_cannot_be_split_safely_is_left_as_it_was(self):
+        """감싸개 안에서 제목 앞에 다른 내용이 있으면 끌어올 수 없다. 깨진 탭 대신 원래 페이지를 둔다."""
+        page = ('<div><h3>한눈에 보는 쉬운 요약</h3><p>a</p>'
+                '<section><p>머리말</p><h3>6. 모델 성능</h3><p>e</p></section>'
+                '<h3>7. 자동 판정</h3><p>f</p></div>')
+        self.assertEqual(rh.tabify_sections(page), page)
+
+
 class NotebookWiringTests(unittest.TestCase):
-    def test_notebook_collapses_then_adds_nav(self):
+    def report_cell(self):
         import json
         nb = json.loads((ROOT / "samsung_direction_model_colab.ipynb").read_text(encoding="utf-8"))
-        report = next("".join(c["source"]) for c in nb["cells"]
-                      if "def build_summary():" in "".join(c.get("source", [])))
-        self.assertIn("html = collapse_sections(html)", report)
+        return next("".join(c["source"]) for c in nb["cells"]
+                    if "def build_summary():" in "".join(c.get("source", [])))
+
+    def test_notebook_makes_tabs_then_adds_nav(self):
+        report = self.report_cell()
+        self.assertIn("html = tabify_sections(html)", report)
+        self.assertNotIn("collapse_sections(html)", report)
         self.assertIn("html, _report_sections = add_report_nav(html)", report)
-        # 순서가 중요하다: 접은 뒤 목차를 만들어야 id 가 최종 HTML 에 남는다.
-        self.assertLess(report.index("collapse_sections(html)"), report.index("add_report_nav(html)"))
+        # 순서가 중요하다: 탭을 만든 뒤 목차를 넣어야 목차가 첫 탭 안, 탭 막대 아래에 온다.
+        self.assertLess(report.index("tabify_sections(html)"), report.index("add_report_nav(html)"))
+
+    def test_page_css_lets_the_tab_bar_stick(self):
+        """overflow-x:hidden 은 body 를 스크롤 상자로 만들어 sticky 가 붙지 않는다. clip 은 괜찮다."""
+        report = self.report_cell()
+        self.assertIn("overflow-x:clip", report)
 
 
 class MobileLayoutTests(unittest.TestCase):

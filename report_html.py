@@ -147,7 +147,7 @@ _H3 = re.compile(r'(<h3\b[^>]*>)(.*?)(</h3>)', re.S)
 # ("2026-09-11 (금) 예측 vs 실제"), 수급 절은 "1-1." 로 시작한다.
 # 그룹은 본문 순서이자 번호 순서와 같아야 한다. 예전에는 '성적'(6·7)이 '해설'(5·8)보다 앞이라
 # 목차에서 5번이 6·7번 뒤에 나왔다. 번호가 뒤섞이면 목차를 믿을 수 없다.
-# 경계는 접기 경계와 같다: 1~4 는 결론(펼침), 5~8 과 참고 정보는 해설·검증(접힘).
+# 경계는 탭 경계와 같다: 요약과 1~4 는 결론이라 첫 탭, 5~8 과 참고 정보는 해설·검증이라 탭 하나씩.
 NAV_GROUPS = (
     ("요약", ("한눈에", "그 밖에", "예측 vs 실제")),
     ("예측", ("1.", "1-1.", "2.", "3.", "4.")),
@@ -219,50 +219,239 @@ def add_report_nav(html_text, title_limit=34):
     return (out[:first.start()] + nav + out[first.start():], sections) if first else (out, sections)
 
 
-# 첫 화면에서 접어 둘 절. 1~4절(방향·수급·가격·장기 전망·영업이익)은 결론이라 펼쳐 두고,
-# 5~8절과 참고 정보는 해설·검증·데이터라 접는다. 근거는 원하는 사람만 보면 된다.
-COLLAPSE_PREFIXES = ("5.", "6.", "7.", "8.", "참고 정보")
+# 탭으로 따로 떼어 낼 절. 예전에는 이 절들을 <details> 로 접었는데, 14만 자 페이지에서
+# '펼쳐 보기'를 찾아 누르는 것이 불편했다(2026-09-13 지적). 이제 상단 탭 하나씩이 된다.
+# 1~4절(방향·수급·가격·장기 전망·영업이익)과 요약은 지금처럼 기본으로 보이는 첫 탭에 모은다.
+TAB_PREFIXES = ("5.", "6.", "7.", "8.", "참고 정보")
+# 탭 이름은 짧아야 한다. 절 제목을 그대로 쓰면 휴대폰에서 탭 두 개도 한 줄에 안 들어간다.
+# 번호는 뺀다 — 탭으로 떨어져 나오면 5~8 이라는 순서가 읽는 데 도움이 되지 않는다(2026-09-13).
+# 절 제목의 번호는 목차 순서를 위해 남긴다.
+TAB_LABELS = (("5.", "읽는 법"), ("6.", "모델 성능"), ("7.", "자동 판정"),
+              ("8.", "데이터"), ("참고 정보", "참고: 공시·일정"))
+DEFAULT_TAB_LABEL = "요약·예측"
+
+# 탭은 스크립트가 켠다. 스크립트가 없거나 실패하면 모든 절이 지금처럼 이어져 보이고,
+# 탭 막대는 해당 절로 건너뛰는 링크로 동작한다 — 무엇도 숨겨지지 않는 쪽으로 실패한다.
+_TAB_STYLE = (
+    '<style>'
+    '#rtabs-root .rtabs{position:sticky;top:0;z-index:20;display:flex;gap:2px;overflow-x:auto;'
+    'background:#fff;border-bottom:1px solid #d8dce0;margin:16px 0 10px;padding-top:6px;'
+    'scrollbar-width:none;-webkit-overflow-scrolling:touch}'
+    '#rtabs-root .rtabs::-webkit-scrollbar{display:none}'
+    '#rtabs-root .rtabs a{flex:0 0 auto;padding:9px 14px;font-size:13px;line-height:1.2;color:#5b6570;'
+    'text-decoration:none;white-space:nowrap;border-bottom:3px solid transparent;margin-bottom:-1px}'
+    '#rtabs-root .rtabs a[aria-selected="true"]{color:#1a1a1a;font-weight:700;border-bottom-color:#1a5490}'
+    '#rtabs-root .rtabs a:focus-visible{outline:2px solid #1a5490;outline-offset:-2px}'
+    # 목차 링크로 절에 가면 붙어 있는 탭 막대가 제목을 가린다. 그만큼 띄워 멈춘다.
+    '#rtabs-root h3{scroll-margin-top:56px}'
+    '#rtabs-root.rtabs-on .rtab-panel{display:none}'
+    '#rtabs-root.rtabs-on .rtab-panel.is-active{display:block}'
+    '@media print{#rtabs-root .rtabs{display:none}#rtabs-root .rtab-panel{display:block!important}}'
+    '</style>')
+
+_TAB_SCRIPT = (
+    '<script>(function(){var r=document.getElementById("rtabs-root");if(!r)return;'
+    'var bar=r.querySelector(".rtabs"),tabs=bar.querySelectorAll("a"),ps=r.querySelectorAll(".rtab-panel");'
+    'if(!ps.length)return;r.className+=" rtabs-on";'
+    'function show(id){var hit=false,i;for(i=0;i<ps.length;i++){var on=ps[i].id===id;'
+    'ps[i].classList.toggle("is-active",on);if(on)hit=true;}'
+    'if(!hit){id=ps[0].id;ps[0].classList.add("is-active");}'
+    'for(i=0;i<tabs.length;i++){var sel=tabs[i].getAttribute("href")==="#"+id;'
+    'tabs[i].setAttribute("aria-selected",sel?"true":"false");'
+    # 휴대폰에서 탭 막대가 가로로 넘치면 고른 탭이 화면 밖에 있을 수 있다. 보이게 민다.
+    'if(sel&&bar.scrollWidth>bar.clientWidth){bar.scrollLeft=Math.max(0,tabs[i].offsetLeft-16);}}}'
+    # 주소의 #조각이 가리키는 요소가 들어 있는 탭을 연다. 목차 링크(#sec10 등)도 이 길로 온다.
+    'function route(){var h="";try{h=decodeURIComponent(location.hash.slice(1));}catch(e){}'
+    'var el=h?document.getElementById(h):null,p=el&&el.closest?el.closest(".rtab-panel"):null;'
+    'if(!p){show(ps[0].id);return;}show(p.id);'
+    'if(el===p){window.scrollTo(0,r.getBoundingClientRect().top+window.pageYOffset-4);}'
+    'else{el.scrollIntoView();}}'
+    'for(var k=0;k<tabs.length;k++){tabs[k].addEventListener("click",function(e){e.preventDefault();'
+    'var id=this.getAttribute("href").slice(1);show(id);'
+    'if(history.replaceState)history.replaceState(null,"","#"+id);'
+    # 한참 내려와 탭 막대가 붙어 있을 때 탭을 바꾸면 새 탭의 첫머리로 올린다.
+    'if(bar.getBoundingClientRect().top<=0){window.scrollTo(0,r.getBoundingClientRect().top+window.pageYOffset-4);}'
+    '});}'
+    # 목차처럼 탭 안의 절을 가리키는 링크는 여기서 직접 그 탭을 연다. hashchange 에만 기대면
+    # #조각이 주소에 붙지 않는 환경(미리보기·일부 앱 안 브라우저)에서 목차가 먹통이 된다(2026-09-13 확인).
+    'document.addEventListener("click",function(e){'
+    'var a=e.target&&e.target.closest?e.target.closest("a"):null;if(!a||a.parentNode===bar)return;'
+    'var h=a.getAttribute("href")||"";if(h.charAt(0)!=="#")return;'
+    'var el=document.getElementById(h.slice(1)),p=el&&el.closest?el.closest(".rtab-panel"):null;'
+    'if(!p)return;e.preventDefault();show(p.id);'
+    'try{history.pushState(null,"",h);}catch(err){}'
+    'if(el===p){window.scrollTo(0,r.getBoundingClientRect().top+window.pageYOffset-4);}'
+    'else{el.scrollIntoView();}});'
+    'window.addEventListener("hashchange",route);window.addEventListener("popstate",route);'
+    'route();})();</script>')
 
 
-def collapse_sections(html_text, prefixes=COLLAPSE_PREFIXES, summary="펼쳐 보기"):
-    """지정한 절의 본문을 <details> 로 감싼다. 제목은 그대로 보이고 내용만 접힌다.
+def _section_title(inner):
+    """h3 안쪽 HTML 에서 부제(회색 span)를 뺀 제목 글자만."""
+    title = re.sub(r'<span\b.*?</span>', '', inner, flags=re.S)
+    title = re.sub(r'<[^>]+>', '', title)
+    title = re.sub(r'&nbsp;?', ' ', title)
+    return re.sub(r'\s+', ' ', title).strip(' ·')
 
-    h3 로 절을 나누고 각 절의 본문만 감싸므로 태그 균형이 유지된다. 마지막 절은 바깥 래퍼의
-    닫는 태그를 품고 있어 건드리지 않는다(감싸면 </div> 가 details 안에 갇힌다).
+
+def _tab_label(title, labels=TAB_LABELS):
+    for prefix, label in labels:
+        if title.startswith(prefix):
+            return label
+    return title[:16]
+
+
+def tabify_sections(html_text, prefixes=TAB_PREFIXES, labels=TAB_LABELS,
+                    default_label=DEFAULT_TAB_LABEL):
+    """h3 절을 상단 탭으로 나눈다. 첫 탭에는 기본으로 보이던 절을, 나머지 탭에는 접던 절을 하나씩.
+
+    h3 에서 다음 h3 직전까지를 한 절로 보고 통째로 옮기므로 절 안의 태그 균형은 그대로다.
+    마지막 절의 끝에는 바깥 래퍼의 닫는 </div> 가 붙어 있어, 그만큼 떼어 탭 묶음 밖에 둔다
+    (안에 두면 여는 태그 없이 닫혀 레이아웃이 무너진다).
+
+    기본 절이 탭 절 뒤에 나오면 첫 탭으로 끌어올려진다. 지금 보고서는 기본 절(요약·1~4)이
+    모두 앞에 있어 순서가 바뀌지 않는다.
     """
+    from html import escape
     parts = list(_H3.finditer(html_text))
     if len(parts) < 2:
         return html_text
-    out, cursor = [], 0
+    starts = _section_starts(html_text, parts)
+    head, tail, chunks = html_text[:starts[0]], "", []
     for index, match in enumerate(parts):
-        title = re.sub(r'<span\b.*?</span>', '', match.group(2), flags=re.S)
-        title = re.sub(r'<[^>]+>', '', title)
-        title = re.sub(r'&nbsp;?', ' ', title)
-        title = re.sub(r'\s+', ' ', title).strip(' ·')
-        body_start = match.end()
-        body_end = parts[index + 1].start() if index + 1 < len(parts) else None
-        out.append(html_text[cursor:body_start])
-        tail = ""
-        if body_end is None:
-            # 마지막 절의 본문 끝에는 바깥 래퍼의 닫는 태그가 붙어 있다. 그 부분을 떼어
-            # details 밖에 두어야 태그 균형이 유지된다(여는 태그 없이 닫히면 안 된다).
-            body = html_text[body_start:]
-            opens = len(re.findall(r'<div\b', body))
-            closes = len(re.findall(r'</div>', body))
-            for _ in range(max(0, closes - opens)):
-                position = body.rindex('</div>')
-                tail = body[position:] + tail
-                body = body[:position]
+        end = starts[index + 1] if index + 1 < len(parts) else len(html_text)
+        chunk = html_text[starts[index]:end]
+        if index + 1 == len(parts):
+            surplus = len(re.findall(r'</div>', chunk)) - len(re.findall(r'<div\b', chunk))
+            for _ in range(max(0, surplus)):
+                position = chunk.rindex('</div>')
+                tail = chunk[position:] + tail
+                chunk = chunk[:position]
+        chunks.append((_section_title(match.group(2)), chunk))
+    split = [(title, chunk, any(title.startswith(p) for p in prefixes)) for title, chunk in chunks]
+    tabbed = [(title, chunk) for title, chunk, is_tab in split if is_tab]
+    basic = [chunk for _, chunk, is_tab in split if not is_tab]
+    if not tabbed or not basic:
+        return html_text
+    names = [default_label] + [_tab_label(title, labels) for title, _ in tabbed]
+    bar = ('<nav class="rtabs" aria-label="보고서 탭">'
+           + "".join(f'<a href="#rtab-{i}" aria-selected="{"true" if i == 0 else "false"}">'
+                     f'{escape(name)}</a>' for i, name in enumerate(names))
+           + '</nav>')
+    panels = (f'<section class="rtab-panel" id="rtab-0">{"".join(basic)}</section>'
+              + "".join(f'<section class="rtab-panel" id="rtab-{i}">{chunk}</section>'
+                        for i, (_, chunk) in enumerate(tabbed, start=1)))
+    out = (head + '<div id="rtabs-root">' + _TAB_STYLE + bar + panels + _TAB_SCRIPT + '</div>'
+           + tail)
+    # 브라우저가 실제로 쌓을 모양으로 한 번 더 본다. 제목 하나라도 탭 밖에 떨어지거나 탭 안에 탭이
+    # 생기면 쓰지 않고 원래 페이지를 돌려준다 — 탭 없이 모든 절이 보이는 쪽이 깨진 탭보다 낫다.
+    if any(problem.startswith(BLOCKING_TAB_PROBLEMS) for problem in tab_structure_problems(out)):
+        return html_text
+    return out
+
+
+# 태그 개수만 세면 못 잡는 깨짐이 있다. 쉬운 요약은 <section id="easy-summary"><h3>…</h3>…</section>
+# 처럼 감싸개가 제목보다 먼저 열리는데, 제목에서 자르면 </section> 만 첫 탭 안에 남는다. 개수는 맞지만
+# 브라우저는 그 </section> 에서 첫 탭을 닫아 버려 1~4절이 탭 밖으로 쏟아졌다(2026-09-13 미리보기에서 확인).
+_BLOCK_TAGS = ("div", "section", "details", "table", "ul", "ol", "nav", "article", "header",
+               "footer", "aside", "main", "figure")
+_BLOCK = re.compile(r'<(/?)(' + "|".join(_BLOCK_TAGS) + r')\b[^>]*>', re.I)
+# 주석은 다른 내용을 건너뛰어 이어 붙지 않도록 --> 를 넘지 못하게 한다.
+_TRAILING_GAP = re.compile(r'(?:\s|<!--(?:(?!-->).)*-->)*\Z', re.S)
+_TRAILING_OPENER = re.compile(r'<(div|section|article|header)\b[^>]*>\Z', re.I)
+BLOCKING_TAB_PROBLEMS = ("탭 밖 제목", "탭 안에 탭")
+
+
+def _stray_closers(text, name):
+    """text 안에서 짝이 되는 여는 태그 없이 닫히는 name 태그의 수."""
+    depth = stray = 0
+    for match in _BLOCK.finditer(text):
+        if match.group(2).lower() != name:
+            continue
+        if match.group(1):
+            if depth:
+                depth -= 1
+            else:
+                stray += 1
         else:
-            body = html_text[body_start:body_end]
-        if any(title.startswith(prefix) for prefix in prefixes):
-            out.append('<details style="margin-top:4px"><summary style="font-size:12px;color:#6b7178;'
-                       f'cursor:pointer;padding:2px 0">{summary}</summary>{body}</details>{tail}')
-        else:
-            out.append(body + tail)
-        cursor = body_end if body_end is not None else len(html_text)
-    out.append(html_text[cursor:])
-    return "".join(out)
+            depth += 1
+    return stray
+
+
+def _section_starts(html_text, parts):
+    """절이 실제로 시작하는 위치들.
+
+    제목 바로 앞의 주석(<!--LEDGER_SECTION_START--> 같은 표시)은 뒤 절에 붙인다 — 오후 채점 갱신이
+    START~END 사이를 통째로 바꾸므로 두 표시가 같은 탭에 있어야 한다. 제목 바로 앞에서 열리는
+    감싸개는 **이 절 안에서 닫힐 때만** 끌어온다. 페이지 전체를 감싸는 래퍼처럼 다른 곳에서
+    닫히는 것은 끌어오지 않는다.
+    """
+    starts = []
+    for index, match in enumerate(parts):
+        end = parts[index + 1].start() if index + 1 < len(parts) else len(html_text)
+        floor = parts[index - 1].end() if index else 0      # 앞 절의 제목 안으로는 들어가지 않는다
+        start = match.start()
+        while True:
+            gap_start = _TRAILING_GAP.search(html_text, floor, start).start()
+            opener = _TRAILING_OPENER.search(html_text, floor, gap_start)
+            if opener:
+                name = opener.group(1).lower()
+                if (_stray_closers(html_text[opener.start():end], name)
+                        < _stray_closers(html_text[start:end], name)):
+                    start = opener.start()
+                    continue
+            start = gap_start
+            break
+        starts.append(start)
+    return starts
+
+
+def tab_structure_problems(html_text):
+    """브라우저처럼 태그를 쌓아 보고 탭 구조의 문제를 돌려준다. 문제가 없으면 빈 목록.
+
+    '탭 밖 제목'과 '탭 안에 탭'은 화면이 실제로 깨지는 경우라 tabify_sections 가 탭을 포기한다.
+    짝 없는 닫는 태그는 브라우저가 무시하므로 알리기만 한다.
+    """
+    from html.parser import HTMLParser
+    tracked = set(_BLOCK_TAGS)
+
+    class Walker(HTMLParser):
+        def __init__(self):
+            super().__init__(convert_charrefs=True)
+            self.stack, self.problems, self.title, self.in_h3, self.h3_inside = [], [], [], False, False
+
+        def handle_starttag(self, tag, attrs):
+            if tag in tracked:
+                is_panel = "rtab-panel" in (dict(attrs).get("class") or "").split()
+                if is_panel and any(panel for _, panel in self.stack):
+                    self.problems.append("탭 안에 탭: " + (dict(attrs).get("id") or ""))
+                self.stack.append((tag, is_panel))
+            elif tag == "h3":
+                self.in_h3, self.title = True, []
+                self.h3_inside = any(panel for _, panel in self.stack)
+
+        def handle_endtag(self, tag):
+            if tag == "h3" and self.in_h3:
+                self.in_h3 = False
+                if not self.h3_inside:
+                    self.problems.append("탭 밖 제목: " + re.sub(r"\s+", " ", "".join(self.title)).strip()[:30])
+            elif tag in tracked:
+                if tag not in [name for name, _ in self.stack]:
+                    self.problems.append(f"짝 없는 </{tag}>")
+                    return
+                while self.stack:
+                    name, _ = self.stack.pop()
+                    if name == tag:
+                        break
+
+        def handle_data(self, data):
+            if self.in_h3:
+                self.title.append(data)
+
+    walker = Walker()
+    walker.feed(html_text)
+    walker.close()
+    return walker.problems
 
 
 # 조각(7·8절)은 월 1회 실행이 만들어 저장소에 남는다. 보고서 절 번호를 바꿔도 옛 조각에는

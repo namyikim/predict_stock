@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-"""장 마감 후 갱신 — 그날 종가로 예측을 채점하고 보고서의 '어제 예측 vs 실제' 절만 다시 그린다.
+"""장 마감 후 갱신 — 그날 종가로 예측을 채점하고 보고서의 '예측 vs 실제' 절과
+쉬운 요약 맨 위의 '지난 예측은 맞았나'만 다시 그린다.
 
 아침 실행(06:30)은 전 구간 워크포워드를 다시 돌려 보고서를 통째로 만든다. 오후에 그것을 반복할
 이유가 없다. 하루 사이에 성능표가 의미 있게 달라지지 않고, 오히려 아침과 오후의 숫자가 미세하게
@@ -26,8 +27,8 @@ sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "tools"))
 import github_pages  # noqa: E402
 from forecast_utils import (  # noqa: E402
-    atomic_csv, daily_comparison, evaluate_forecasts, ledger_section_html, review_ledger,
-    summarize_daily,
+    SCORECARD_END, SCORECARD_START, atomic_csv, daily_comparison, evaluate_forecasts,
+    ledger_section_html, review_ledger, scorecard_html, summarize_daily,
 )
 
 KST = timezone(timedelta(hours=9))
@@ -83,12 +84,15 @@ def score(storage, target, bars, token):
     return evaluated, daily
 
 
-def replace_section(page, section_html):
-    """표시된 구간만 바꾼다. 표시가 없으면(옛 보고서) 건드리지 않는다."""
-    start, end = page.find(MARK_START), page.find(MARK_END)
+def replace_section(page, section_html, start_mark=MARK_START, end_mark=MARK_END):
+    """표시된 구간만 바꾼다. 표시가 없으면(옛 보고서) 건드리지 않는다.
+
+    기본은 '예측 vs 실제' 절이다. 쉬운 요약 맨 위의 '지난 예측은 맞았나'는 SCORECARD 표시를 넘긴다.
+    """
+    start, end = page.find(start_mark), page.find(end_mark)
     if start < 0 or end < 0 or end < start:
         return None
-    return page[:start] + MARK_START + section_html + page[end:]
+    return page[:start] + start_mark + section_html + page[end:]
 
 
 def main():
@@ -116,12 +120,15 @@ def main():
         headline = (f'<b>시초가 확인 {now:%H:%M} KST</b>{stamp} — 오늘 시가가 확정되어 '
                     '<b>시초가 예측만</b> 채점했습니다. 종가 관련 항목은 장 마감 후(16:10)에 채워집니다.')
     else:
-        headline = f'<b>장 마감 후 갱신 {now:%H:%M} KST</b>{stamp} — 이 절만 오늘 종가로 다시 채점했습니다.'
+        headline = (f'<b>장 마감 후 갱신 {now:%H:%M} KST</b>{stamp} — 이 절과 맨 위 ‘지난 예측은 맞았나’만 '
+                    '오늘 종가로 다시 채점했습니다.')
     note = ('<div style="font-size:12px;color:#6b7178;margin:4px 0 8px;padding:8px 12px;'
             'background:#f7f8fa;border-radius:5px">'
             f'{headline} 아래 성능표와 다음 거래일 예측은 <b>오늘 아침 기준</b> 그대로입니다.</div>')
     section = ledger_section_html(review, spec["ensemble"], updated_note=note)
     (storage / "ledger_section.html").write_text(section, encoding="utf-8")
+    # 쉬운 요약 맨 위의 '지난 예측은 맞았나'도 같은 채점으로 다시 그린다. 아침 값이 남으면 아래 절과 어긋난다.
+    card = scorecard_html(review, spec["ensemble"], note=f"{now:%H:%M} KST 채점 반영.")
     for alert in review["alerts"]:
         print("⚠️", alert, flush=True)
     print(f"채점된 예측일 {review['n_scored_days']}일 · 마지막 "
@@ -154,6 +161,8 @@ def main():
         if updated is None:
             print(f"⚠️ {path}: 교체 표시가 없어 건너뜁니다(옛 보고서).")
             continue
+        # 표시가 없는 옛 보고서(2026-09-13 이전)는 절만 바꾼다.
+        updated = replace_section(updated, card, SCORECARD_START, SCORECARD_END) or updated
         sha = github_pages.publish(path, updated, token, f"update: {path} 장 마감 후 갱신 ({now:%Y-%m-%d %H:%M} KST)")
         print(f"보고서 갱신 {path} @ {sha}")
 

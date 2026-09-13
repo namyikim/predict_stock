@@ -526,7 +526,7 @@ def fit_live(f, live_quarter, target="profit", features=None, gap=0):
 # ---------------------------------------------------------------------------
 # 추정 원장 — 나우캐스트도 기록하고 채점한다
 # ---------------------------------------------------------------------------
-# 8절은 지금까지 추정만 하고 채점이 없었다. 분기마다 몇 개뿐인 관측이라 백테스트만으로는
+# 영업이익 추정 절은 지금까지 추정만 하고 채점이 없었다. 분기마다 몇 개뿐인 관측이라 백테스트만으로는
 # 이 모듈이 쓸 만한지 알 수 없다. 그래서 (분기, 반영 개월 수)마다 '그 시점의 첫 추정'을 한 번만
 # 남기고, 실제 영업이익이 나오면 그 행을 채점한다. 예측값은 절대 고쳐 쓰지 않는다.
 LEDGER_COLUMNS = [
@@ -713,7 +713,7 @@ def render_fragment(result):
     r = result
     ev = r["evaluation"]
     parts = ['<h3 style="font-size:15px;margin:24px 0 9px;padding-bottom:6px;border-bottom:1px solid #ddd">'
-             f'4. 이번 분기 영업이익 추정 <span style="font-weight:400;color:#8a9199;font-size:12px">'
+             f'2. 이번 분기 영업이익 추정 <span style="font-weight:400;color:#8a9199;font-size:12px">'
              f'&nbsp;{e(r["quarter"])} · 월별 반도체 수출액 기준 · '
              f'{e(r.get("months_included") or "")} 반영</span></h3>']
     parts.append('<div style="background:#fdf8ec;border-left:4px solid #c8952a;padding:12px 16px;'

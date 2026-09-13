@@ -55,6 +55,208 @@ def decision_inputs_html(*, name, cards, unknowns, caveat=""):
                f'{escape(caveat)}</div>' if caveat else ""))
 
 
+# 쉬운 요약 맨 위의 두 블록. 읽는 사람이 가장 먼저 찾는 것은 '다음 거래일에 시초가·방향·종가가
+# 어떻게 되나'와 '지난 예측은 맞았나, 지금까지 얼마나 맞히나'다(2026-09-13 지적). 둘을 요약 맨 위에
+# 크게 두고 나머지 요약은 그 아래에 그대로 둔다.
+# 지난 예측 결과는 장 마감 후 갱신(tools/build_afternoon_update.py)이 아래 표시 사이만 다시 그려 넣는다.
+# 아침 보고서의 결과가 오후의 '예측 vs 실제' 절과 어긋나지 않게 하려는 것이다. 지우지 말 것.
+SCORECARD_START, SCORECARD_END = "<!--SCORECARD_START-->", "<!--SCORECARD_END-->"
+_WEEKDAYS_KO = "월화수목금토일"
+_PLAIN_DIRECTION = {"하락": "내림", "보합": "큰 변화 없음", "상승": "오름"}
+_VERDICT_COLORS = {"맞음": ("#e6f2ea", "#1e6b34"), "틀림": ("#fbeaea", "#a8322a"),
+                   "채점 전": ("#f1f2f4", "#6b7178")}
+_CARD = ('flex:1 1 92px;min-width:0;border:1px solid #e3e8ee;border-radius:6px;'
+         'padding:9px 11px;background:#fbfdff')
+_BOX = 'background:#fff;border:1px solid #cedff0;border-radius:6px;padding:12px 14px;margin:12px 0 0'
+
+
+def _finite(value):
+    try:
+        result = float(value)
+    except (TypeError, ValueError):
+        return None
+    return result if np.isfinite(result) else None
+
+
+def _day_label(value):
+    """'2026-09-14 (월)'. 날짜로 읽을 수 없으면 None."""
+    try:
+        stamp = pd.Timestamp(value)
+    except (TypeError, ValueError):
+        return None
+    if pd.isna(stamp):
+        return None
+    return f"{stamp.date().isoformat()} ({_WEEKDAYS_KO[stamp.weekday()]})"
+
+
+def next_day_forecast_html(*, prediction_date, summary, open_forecast, price_forecasts,
+                           target_mode="close_to_close"):
+    """다음 거래일의 시초가·방향·종가를 카드 셋으로. 하루의 시간 순서(09:00 → 15:30)대로 놓는다.
+
+    가격은 아래 요약과 같은 문(門)을 지난 것만 숫자로 보인다. 검증을 통과하지 못한 가격은 원시값도
+    중심값도 내지 않는다 — 숫자가 보이면 예측으로 읽힌다.
+    """
+    from html import escape
+    summary = summary if hasattr(summary, "get") else {}
+    open_forecast = open_forecast if hasattr(open_forecast, "get") else {}
+    live = summary.get("live")
+    live = live if hasattr(live, "get") else {}
+
+    probabilities = [_finite(live.get(k)) for k in ("p_down", "p_flat", "p_up")]
+    direction, direction_note = "판단 어려움", "세 확률이 비슷하거나 값이 없습니다"
+    if (all(p is not None and 0 <= p <= 1 for p in probabilities)
+            and abs(sum(probabilities) - 1) < .01):
+        best = max(probabilities)
+        if sum(abs(p - best) < 1e-9 for p in probabilities) == 1:
+            direction = ("▼ 내림", "큰 변화 없음", "▲ 오름")[probabilities.index(best)]
+            basis = "당일 시초가 대비" if target_mode == "open_to_close" else "전일 종가 대비"
+            direction_note = f"{basis} · 계산상 가능성 {best:.0%}"
+
+    def price(row, field):
+        row = row if hasattr(row, "get") else {}
+        point = _finite(row.get(field))
+        if row.get("signal") != "있음" or point is None or point <= 0:
+            return "예측 안 함", "검증을 통과하지 못해 숫자를 내지 않습니다"
+        change = _finite(row.get("predicted_return"))
+        return f"{point:,.0f}원", (f"전일 종가 대비 {change:+.2%}" if change is not None else "모델 예상")
+
+    by_days = {r.get("trading_days"): r for r in (price_forecasts or []) if hasattr(r, "get")}
+    cards = [("시초가 · 09:00",) + price(open_forecast, "predicted_open"),
+             ("종가 방향", direction, direction_note),
+             ("종가 · 15:30",) + price(by_days.get(1, {}), "predicted_close")]
+    body = ""
+    for label, value, note in cards:
+        muted = value in ("예측 안 함", "판단 어려움")
+        body += (f'<div style="{_CARD}">'
+                 f'<div style="font-size:11px;color:#7a8797">{escape(label)}</div>'
+                 f'<div style="font-size:{16 if muted else 19}px;font-weight:700;line-height:1.35;'
+                 f'color:{"#8a9199" if muted else "#1a1a1a"}">{escape(value)}</div>'
+                 f'<div style="font-size:11px;color:#7a8797;line-height:1.45">{escape(note)}</div></div>')
+    when = _day_label(open_forecast.get("target_date", prediction_date)) or _day_label(prediction_date)
+    return (f'<div style="{_BOX}">'
+            f'<div style="font-size:14px;font-weight:700;margin-bottom:8px">다음 거래일 '
+            f'{escape(when or "날짜 미확인")} 예측</div>'
+            f'<div style="display:flex;gap:8px;flex-wrap:wrap">{body}</div></div>')
+
+
+def scorecard_html(review, ensemble_name="Mean ensemble", note=""):
+    """지난 예측이 맞았는지와 지금까지의 성적. 실제로 미리 낸 예측만 센다(백테스트 아님).
+
+    판정은 아래 '예측 vs 실제' 절(ledger_section_html)과 같은 행을 같은 기준으로 고른다 —
+    시초가·종가는 실제 값이 예측 구간 안이면 맞음, 방향은 오름·큰 변화 없음·내림이 같으면 맞음.
+    성적은 review_ledger 의 가장 긴 창이다. 표본이 20일 미만이면 흐리게 하고 이르다고 적는다.
+    """
+    from html import escape
+    review = review if isinstance(review, dict) else {}
+    latest = review.get("latest")
+
+    def won(value):
+        value = _finite(value)
+        return "—" if value is None else f"{value:,.0f}원"
+
+    def verdict(flag):
+        value = _finite(flag)
+        return "채점 전" if value is None else ("맞음" if value == 1 else "틀림")
+
+    results = []
+    if isinstance(latest, pd.DataFrame) and len(latest) and "kind" in latest:
+        kind = latest["kind"]
+        model = latest["model"] if "model" in latest else pd.Series("", index=latest.index)
+        horizon = latest["horizon_days"] if "horizon_days" in latest else pd.Series(1, index=latest.index)
+
+        def first(mask):
+            picked = latest[mask]
+            return picked.iloc[0] if len(picked) else None
+
+        def price_result(label, row, point, actual, low, high):
+            predicted = won(row.get(point)) if _finite(row.get(point)) is not None else "숫자 없음(구간만)"
+            band = (f" · 구간 {won(row.get(low))}~{won(row.get(high))}"
+                    if _finite(row.get(low)) is not None and _finite(row.get(high)) is not None else "")
+            return label, verdict(row.get("interval_hit")), f"예측 {predicted} → 실제 {won(row.get(actual))}{band}"
+
+        row = first(kind == "open")
+        if row is not None:
+            results.append(price_result("시초가", row, "predicted_open", "actual_open", "low_open", "high_open"))
+        row = first((kind == "direction") & (model == ensemble_name))
+        if row is not None:
+            predicted = str(row.get("prediction"))
+            actual = _finite(row.get("actual_class"))
+            actual_text = {0: "내림", 1: "큰 변화 없음", 2: "오름"}.get(int(actual), "—") if actual is not None else "—"
+            change = _finite(row.get("actual_return"))
+            if change is not None:
+                actual_text += f" ({change:+.2%})"
+            results.append(("방향", verdict(row.get("direction_correct")),
+                            f"예측 {_PLAIN_DIRECTION.get(predicted, predicted)} → 실제 {actual_text}"))
+        row = first((kind == "price") & (horizon == 1))
+        if row is not None:
+            results.append(price_result("종가", row, "predicted_close", "actual_close", "low_close", "high_close"))
+
+    if results:
+        result_html = "".join(
+            '<div style="display:flex;gap:8px;align-items:baseline;padding:6px 0;border-top:1px solid #eef1f4">'
+            f'<span style="flex:0 0 auto;background:{_VERDICT_COLORS[mark][0]};color:{_VERDICT_COLORS[mark][1]};'
+            f'font-size:12px;font-weight:700;padding:1px 9px;border-radius:10px">{mark}</span>'
+            f'<span style="flex:0 0 42px;font-size:13px;font-weight:700">{escape(label)}</span>'
+            f'<span style="font-size:12px;color:#3a4652;line-height:1.5">{escape(detail)}</span></div>'
+            for label, mark, detail in results)
+    else:
+        result_html = ('<div style="font-size:13px;color:#6b7178">아직 채점된 예측이 없습니다. 오늘 예측은 '
+                       '다음 거래일에 실제 시가·종가와 대조됩니다.</div>')
+    scored_day = _day_label(review.get("latest_date")) if results else None
+
+    rolling = review.get("rolling")
+    n_days = int(_finite(review.get("n_scored_days")) or 0)
+    stats, span_label = [], (f"채점한 {n_days}거래일 전체" if n_days else "")
+    if isinstance(rolling, pd.DataFrame) and len(rolling) and {"window", "kind", "n"}.issubset(rolling.columns):
+        window = int(rolling["window"].max())
+        span = rolling[rolling["window"] == window]
+        if n_days > window:
+            span_label = f"최근 {window}거래일"
+
+        def pick(kind, horizon=None):
+            part = span[span["kind"] == kind]
+            if horizon is not None and "horizon_days" in part:
+                part = part[part["horizon_days"] == horizon]
+            return part.iloc[0] if len(part) else None
+
+        row = pick("direction")
+        if row is not None and _finite(row.get("hit_rate")) is not None and _finite(row.get("n")):
+            base = _finite(row.get("prior_hit_rate"))
+            stats.append(("방향 적중률", float(row["hit_rate"]), int(row["n"]),
+                          f"늘 같은 답이면 {base:.0%}" if base is not None else ""))
+        for label, kind, horizon in (("시초가 구간 적중", "open", None), ("종가 구간 적중", "price", 1)):
+            row = pick(kind, horizon)
+            if row is not None and _finite(row.get("interval_coverage")) is not None and _finite(row.get("n")):
+                target = _finite(row.get("nominal_coverage"))
+                stats.append((label, float(row["interval_coverage"]), int(row["n"]),
+                              f"목표 {target:.0%}" if target is not None else ""))
+    if stats:
+        stats_html = '<div style="display:flex;gap:8px;flex-wrap:wrap">' + "".join(
+            f'<div style="{_CARD}">'
+            f'<div style="font-size:11px;color:#7a8797">{escape(label)}</div>'
+            f'<div style="font-size:19px;font-weight:700;line-height:1.35;'
+            f'color:{"#8a9199" if n < 20 else "#1a1a1a"}">{value:.0%}</div>'
+            f'<div style="font-size:11px;color:#7a8797">{n}일 중{" · " + escape(extra) if extra else ""}</div></div>'
+            for label, value, n, extra in stats) + '</div>'
+    else:
+        stats_html = '<div style="font-size:13px;color:#6b7178">아직 성적을 낼 만큼 채점된 예측이 없습니다.</div>'
+    caution = ("표본이 20일이 안 되어 아직 판단하기 이릅니다. "
+               if stats and min(n for _, _, n, _ in stats) < 20 else "")
+    return (f'<div style="{_BOX};margin-top:8px">'
+            '<div style="font-size:14px;font-weight:700;margin-bottom:4px">지난 예측은 맞았나'
+            + (f' <span style="font-weight:400;color:#7a8797;font-size:12px">{escape(scored_day)} 예측</span>'
+               if scored_day else '') + '</div>'
+            f'{result_html}'
+            '<div style="font-size:14px;font-weight:700;margin:12px 0 6px">지금까지 성적 '
+            f'<span style="font-weight:400;color:#7a8797;font-size:12px">'
+            f'{escape(" · ".join(part for part in (span_label, "미리 낸 예측만") if part))}</span></div>'
+            f'{stats_html}'
+            '<div style="font-size:11px;color:#8a9199;margin-top:6px;line-height:1.5">'
+            f'{caution}백테스트가 아니라 실제로 미리 낸 예측을 채점한 결과입니다. 가격은 실제 값이 예측 구간 안에 '
+            '들어오면 맞음으로 셉니다. 자세한 수치는 아래 ‘예측 vs 실제’에 있습니다.'
+            + (f' {escape(note)}' if note else '') + '</div></div>')
+
+
 def easy_summary_html(*, name, prediction_date, data_date, summary, open_forecast,
                       price_forecasts, review=None, longterm=None, earnings=None,
                       target_mode="close_to_close", record_forecast=True,
@@ -197,12 +399,19 @@ def easy_summary_html(*, name, prediction_date, data_date, summary, open_forecas
         f'<div style="font-size:13px;font-weight:700;color:#1a1a1a">{escape(label)}</div>'
         f'<div style="font-size:13px;line-height:1.65;color:#3a4652;margin-top:1px">{escape(text)}</div>'
         f'</li>' for label, text in rest)
+    # 맨 위: 다음 거래일 시초가·방향·종가, 지난 예측 결과와 지금까지 성적(2026-09-13 재구성).
+    # 나머지 요약(전체 결론부터 주의할 점까지)은 그 아래에 예전 그대로 둔다.
+    top = (next_day_forecast_html(prediction_date=prediction_date, summary=summary,
+                                  open_forecast=open_forecast, price_forecasts=price_forecasts,
+                                  target_mode=target_mode)
+           + SCORECARD_START + scorecard_html(review, summary.get("ensemble") or "Mean ensemble")
+           + SCORECARD_END)
     return ('<section id="easy-summary" aria-label="한눈에 보는 쉬운 요약" '
             'style="background:#f0f6fc;border:1px solid #cedff0;border-radius:8px;padding:16px 20px;margin:0 0 20px">'
             '<h3 style="margin:0 0 6px;font-size:19px">한눈에 보는 쉬운 요약</h3>'
             f'<div style="font-size:12px;color:#586575">단기 데이터 기준 {escape(date_text(data_date))} · '
             '보고서 생성 시점의 계산 결과를 쉬운 말로 풀었습니다.</div>'
-            f'{lead}'
+            f'{top}{lead}'
             f'<ul style="list-style:none;padding:0;margin:6px 0 0">{body}</ul></section>')
 
 

@@ -173,8 +173,8 @@ class RenderTests(unittest.TestCase):
 
     def test_point_is_shown_when_the_gate_passes(self):
         out = ef.render_fragment(self.result())
-        # 영업이익 추정도 결론이므로 4번으로 앞당겼다(옛 조각은 renumber_fragment 가 처리).
-        self.assertIn("4. 이번 분기 영업이익 추정", out)
+        # 영업이익 추정은 장기 전망 탭의 2절이다(2026-09-13, 옛 조각은 renumber_fragment 가 처리).
+        self.assertIn("2. 이번 분기 영업이익 추정", out)
         self.assertIn("2026년 3분기", out)
         self.assertIn("3.00조원", out)
 
@@ -731,7 +731,7 @@ class CustomsRequestTests(unittest.TestCase):
 
 
 class EarningsLedgerTests(unittest.TestCase):
-    """8절 추정도 원장에 남기고 실제가 나오면 채점한다."""
+    """영업이익 추정도 원장에 남기고 실제가 나오면 채점한다."""
 
     def result(self, k=2, point=122e12):
         return {"target": "samsung", "quarter_code": "2026Q3", "months_used": k,

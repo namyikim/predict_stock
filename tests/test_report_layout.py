@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
-"""보고서 레이아웃: 목차와 접기.
+"""보고서 레이아웃: 절 id 와 상단 탭.
 
-보고서가 14만 자에 절 13개로 불어나 목차 없이는 어디에 무엇이 있는지 알 수 없었다(2026-09-11).
-이 두 함수는 완성된 HTML 을 후처리하므로, 태그 균형을 깨뜨리지 않는 것이 가장 중요하다.
+보고서가 14만 자에 절 13개로 불어나 한 줄로 이어 두면 어디에 무엇이 있는지 알 수 없었다(2026-09-11).
+이 함수들은 완성된 HTML 을 후처리하므로, 태그 균형을 깨뜨리지 않는 것이 가장 중요하다.
 """
 import re
 import sys
@@ -17,9 +17,9 @@ PAGE = ('<div class="wrap">'
         '<h3 style="x">한눈에 보는 쉬운 요약</h3><div>요약 본문</div>'
         '<h3 style="x">1. 다음 거래일 방향 <span style="y">&nbsp;부제입니다</span></h3><div>방향 본문</div>'
         '<h3 style="x">2026-09-11 (금) 예측 vs 실제</h3><div>채점 본문</div>'
-        '<h3 style="x">6. 모델 성적과 검증</h3><div>성능 본문<table><tr><td>표</td></tr></table></div>'
-        '<h3 style="x">3. 장기 전망 (월간)</h3><div>장기 본문</div>'
-        '<h3 style="x">7. 이 보고서의 데이터</h3><div>데이터 본문</div>'
+        '<h3 style="x">모델 성적과 검증</h3><div>성능 본문<table><tr><td>표</td></tr></table></div>'
+        '<h3 style="x">1. 장기 전망 (월간)</h3><div>장기 본문</div>'
+        '<h3 style="x">이 보고서의 데이터</h3><div>데이터 본문</div>'
         '</div>')
 
 
@@ -28,40 +28,37 @@ def balance(text):
             for tag in ("div", "table", "details", "h3")}
 
 
-class NavTests(unittest.TestCase):
-    def test_ids_and_toc_are_added(self):
-        out, sections = rh.add_report_nav(PAGE)
+class SectionIdTests(unittest.TestCase):
+    def test_every_heading_gets_an_id(self):
+        out, sections = rh.add_section_ids(PAGE)
         self.assertEqual(len(sections), 6)
         self.assertEqual(len(re.findall(r'<h3[^>]*id="sec\d+"', out)), 6)
-        self.assertIn("이 보고서의 구성", out)
-        self.assertIn('href="#sec1"', out)
+        self.assertEqual([s["id"] for s in sections], [f"sec{i}" for i in range(1, 7)])
 
-    def test_subtitle_is_excluded_from_the_toc(self):
-        _, sections = rh.add_report_nav(PAGE)
+    def test_no_table_of_contents_is_inserted(self):
+        """탭이 목차 노릇을 한다. 목차는 첫 탭 맨 위에서 쉬운 요약을 밀어낼 뿐이었다(2026-09-13)."""
+        out, _ = rh.add_section_ids(rh.tabify_sections(PAGE))
+        self.assertNotIn("이 보고서의 구성", out)
+        self.assertNotIn('href="#sec', out)
+        self.assertFalse(hasattr(rh, "add_report_nav"))
+        self.assertFalse(hasattr(rh, "NAV_GROUPS"))
+
+    def test_subtitle_is_excluded_from_the_title(self):
+        _, sections = rh.add_section_ids(PAGE)
         titles = [s["title"] for s in sections]
         self.assertIn("1. 다음 거래일 방향", titles)
         self.assertNotIn("부제입니다", " ".join(titles))
 
-    def test_sections_are_grouped_in_reading_order(self):
-        _, sections = rh.add_report_nav(PAGE)
-        by = {s["title"]: s["group"] for s in sections}
-        self.assertEqual(by["한눈에 보는 쉬운 요약"], "요약")
-        self.assertEqual(by["1. 다음 거래일 방향"], "예측")
-        self.assertEqual(by["2026-09-11 (금) 예측 vs 실제"], "요약")
-        self.assertEqual(by["3. 장기 전망 (월간)"], "예측")
-        self.assertEqual(by["7. 이 보고서의 데이터"], "해설")
-        self.assertEqual([name for name, _ in rh.NAV_GROUPS], ["요약", "예측", "해설"])
+    def test_existing_ids_are_kept(self):
+        out, sections = rh.add_section_ids('<h3 id="keep">가</h3><h3>나</h3>')
+        self.assertIn('<h3 id="keep">가</h3>', out)
+        self.assertIn('<h3 id="sec2">나</h3>', out)
+        self.assertEqual(len(sections), 2)
 
     def test_tag_balance_is_preserved(self):
-        out, _ = rh.add_report_nav(PAGE)
+        out, _ = rh.add_section_ids(PAGE)
         for tag, (opens, closes) in balance(out).items():
             self.assertEqual(opens, closes, tag)
-
-    def test_short_pages_are_left_alone(self):
-        tiny = '<h3>하나</h3><div>본문</div>'
-        out, sections = rh.add_report_nav(tiny)
-        self.assertEqual(out, tiny)
-        self.assertEqual(len(sections), 1)
 
 
 def panel_titles(text):
@@ -75,6 +72,10 @@ def panel_titles(text):
             titles.append(re.sub(r"\s+", " ", title).strip(" ·"))
         out[panel_id] = titles
     return out
+
+
+def tab_labels(text):
+    return re.findall(r'<a href="#rtab-\d+" aria-selected="(?:true|false)">(.*?)</a>', text)
 
 
 def tab_balance(text):
@@ -91,10 +92,10 @@ class TabTests(unittest.TestCase):
         panels = panel_titles(rh.tabify_sections(PAGE))
         self.assertEqual(panels["rtab-0"], ["한눈에 보는 쉬운 요약", "1. 다음 거래일 방향",
                                             "2026-09-11 (금) 예측 vs 실제"])
-        # 탭은 문서 순서다. 이 조각에서는 6절이 3절보다 앞에 있다.
-        self.assertEqual(panels["rtab-1"], ["6. 모델 성적과 검증"])
-        self.assertEqual(panels["rtab-2"], ["3. 장기 전망 (월간)"])
-        self.assertEqual(panels["rtab-3"], ["7. 이 보고서의 데이터"])
+        # 탭은 문서 순서다. 이 조각에서는 성적 절이 장기 전망보다 앞에 있다.
+        self.assertEqual(panels["rtab-1"], ["모델 성적과 검증"])
+        self.assertEqual(panels["rtab-2"], ["1. 장기 전망 (월간)"])
+        self.assertEqual(panels["rtab-3"], ["이 보고서의 데이터"])
 
     def test_the_first_tab_is_the_one_selected_by_default(self):
         out = rh.tabify_sections(PAGE)
@@ -127,19 +128,19 @@ class TabTests(unittest.TestCase):
     def test_tab_labels_are_short(self):
         """절 제목을 그대로 쓰면 휴대폰에서 탭 두 개도 한 줄에 안 들어간다."""
         out = rh.tabify_sections(PAGE)
-        labels = re.findall(r'<a href="#rtab-\d+" aria-selected="(?:true|false)">(.*?)</a>', out)
+        labels = tab_labels(out)
         self.assertEqual(labels, ["오늘의 예측", "성적과 검증", "장기 전망", "사용한 데이터"])
         self.assertTrue(all(len(label) <= 12 for label in labels))
-        # 탭 이름에는 절 번호를 붙이지 않는다(2026-09-13). 번호는 절 제목에만 남는다.
+        # 탭 이름에는 절 번호를 붙이지 않는다(2026-09-13).
         self.assertFalse(any(re.match(r"\d", label) for label in labels), labels)
-        self.assertIn(">6. 모델 성적과 검증</h3>", out)
+        self.assertIn(">모델 성적과 검증</h3>", out)
 
-    def test_toc_links_into_another_tab_open_that_tab(self):
-        """목차의 #sec10 같은 링크는 그 절이 든 탭을 연 뒤 그 절로 가야 한다."""
+    def test_links_into_another_tab_open_that_tab(self):
+        """#sec10 같은 링크는 그 절이 든 탭을 연 뒤 그 절로 가야 한다."""
         out = rh.tabify_sections(PAGE)
         self.assertIn('addEventListener("hashchange",route)', out)
         self.assertIn('closest(".rtab-panel")', out)
-        # hashchange 만으로는 부족하다 — 주소에 #조각이 안 붙는 환경에서 목차가 먹통이었다.
+        # hashchange 만으로는 부족하다 — 주소에 #조각이 안 붙는 환경에서 링크가 먹통이었다.
         # 링크 클릭을 직접 받아 탭을 연다. 뒤로 가기는 popstate 로 따라간다.
         self.assertIn('document.addEventListener("click"', out)
         self.assertIn('addEventListener("popstate",route)', out)
@@ -154,15 +155,6 @@ class TabTests(unittest.TestCase):
     def test_pages_without_evidence_sections_are_left_alone(self):
         page = '<div><h3>한눈에 보는 쉬운 요약</h3><p>a</p><h3>1. 다음 거래일 방향</h3><p>b</p></div>'
         self.assertEqual(rh.tabify_sections(page), page)
-
-    def test_the_toc_lands_below_the_tab_bar_and_sees_every_section(self):
-        """탭은 상단에 있어야 한다. 목차(13줄)가 탭 위로 오면 탭이 화면 아래로 밀려난다."""
-        out, sections = rh.add_report_nav(rh.tabify_sections(PAGE))
-        self.assertEqual(len(sections), 6)
-        self.assertLess(out.index('class="rtabs"'), out.index("이 보고서의 구성"))
-        self.assertIn("이 보고서의 구성", panel_titles_raw(out, "rtab-0"))
-        for tag, (opens, closes) in tab_balance(out).items():
-            self.assertEqual(opens, closes, tag)
 
 
 def panel_titles_raw(text, panel_id):
@@ -186,32 +178,77 @@ REPORT_ORDER = "".join(
     f'<h3 style="x">{title}</h3><div>본문</div>' for title in (
         "한눈에 보는 쉬운 요약", "그 밖에 지금 알 수 있는 것", "2026-09-11 (금) 예측 vs 실제",
         "1. 다음 거래일 방향", "1-1. 외국인·기관 수급", "2. 시초가예측과 종가예측",
-        "3. 장기 전망 (월간)", "4. 이번 분기 영업이익 추정", "5. 이 예측을 어떻게 읽어야 하는가",
-        "6. 모델 성적과 검증", "7. 이 보고서의 데이터", "참고 정보: 최근 공시와 예정 발표"))
+        "3. 이 예측을 어떻게 읽어야 하는가", "1. 장기 전망 (월간)", "2. 이번 분기 영업이익 추정",
+        "모델 성적과 검증", "이 보고서의 데이터", "참고 정보: 최근 공시와 예정 발표"))
 
 
 class TabArrangementTests(unittest.TestCase):
-    """2026-09-13 제안: 5절(읽는 법)은 첫 탭 맨 아래로, 3절(장기 전망)은 둘째 탭으로."""
+    """2026-09-13 재구성: 영업이익 추정을 장기 전망 탭으로 옮기고, 절 번호를 탭마다 새로 매긴다."""
 
     def out(self):
         return rh.tabify_sections('<div class="wrap">' + REPORT_ORDER + '</div>')
 
     def test_tabs_are_in_this_order(self):
-        labels = re.findall(r'<a href="#rtab-\d+" aria-selected="(?:true|false)">(.*?)</a>', self.out())
-        self.assertEqual(labels, ["오늘의 예측", "장기 전망", "성적과 검증",
-                                  "사용한 데이터", "공시·발표 일정"])
+        self.assertEqual(tab_labels(self.out()), ["오늘의 예측", "장기 전망", "성적과 검증",
+                                                  "사용한 데이터", "공시·발표 일정"])
 
-    def test_reading_guide_is_the_last_thing_in_the_first_tab(self):
+    def test_first_tab_holds_today_and_ends_with_the_reading_guide(self):
         first = panel_titles(self.out())["rtab-0"]
-        self.assertEqual(first[-1], "5. 이 예측을 어떻게 읽어야 하는가")
-        self.assertEqual(first[-2], "4. 이번 분기 영업이익 추정")
-        self.assertNotIn("3. 장기 전망 (월간)", first)
+        self.assertEqual(first[-1], "3. 이 예측을 어떻게 읽어야 하는가")
+        self.assertNotIn("1. 장기 전망 (월간)", first)
+        self.assertNotIn("2. 이번 분기 영업이익 추정", first)
 
-    def test_long_term_outlook_has_its_own_tab(self):
-        self.assertEqual(panel_titles(self.out())["rtab-1"], ["3. 장기 전망 (월간)"])
+    def test_long_term_tab_holds_the_outlook_and_the_quarterly_profit(self):
+        self.assertEqual(panel_titles(self.out())["rtab-1"],
+                         ["1. 장기 전망 (월간)", "2. 이번 분기 영업이익 추정"])
+
+    def test_numbers_restart_in_every_tab(self):
+        """번호는 탭 안에서 1부터 이어진다. 절이 하나뿐인 탭은 번호가 없다."""
+        for panel, titles in panel_titles(self.out()).items():
+            numbers = [int(m.group(1)) for m in (re.match(r"(\d+)\. ", t) for t in titles) if m]
+            if len(titles) == 1:
+                self.assertEqual(numbers, [], panel)
+            else:
+                self.assertEqual(numbers, list(range(1, len(numbers) + 1)), panel)
+
+    def test_sections_of_one_tab_gather_even_when_apart(self):
+        """같은 탭의 절이 문서에서 떨어져 있어도 한 탭에 문서 순서대로 모인다."""
+        page = ('<div><h3>한눈에 보는 쉬운 요약</h3><p>a</p><h3>1. 장기 전망 (월간)</h3><p>b</p>'
+                '<h3>1. 다음 거래일 방향</h3><p>c</p><h3>2. 이번 분기 영업이익 추정</h3><p>d</p></div>')
+        panels = panel_titles(rh.tabify_sections(page))
+        self.assertEqual(panels["rtab-0"], ["한눈에 보는 쉬운 요약", "1. 다음 거래일 방향"])
+        self.assertEqual(panels["rtab-1"], ["1. 장기 전망 (월간)", "2. 이번 분기 영업이익 추정"])
+
+    def test_order_inside_a_tab_follows_the_group_not_the_source(self):
+        """옛 발행본은 영업이익 절이 장기 전망보다 앞에 있다. 탭 안에서는 1·2 순서로 놓는다."""
+        page = ('<div><h3>한눈에 보는 쉬운 요약</h3><p>a</p><h3>2. 이번 분기 영업이익 추정</h3><p>d</p>'
+                '<h3>1. 장기 전망 (월간)</h3><p>b</p></div>')
+        out = rh.tabify_sections(page)
+        self.assertEqual(panel_titles(out)["rtab-1"], ["1. 장기 전망 (월간)", "2. 이번 분기 영업이익 추정"])
+        self.assertEqual(rh.tab_structure_problems(out), [])
 
     def test_the_structure_stays_sound(self):
         self.assertEqual(rh.tab_structure_problems(self.out()), [])
+
+
+class FragmentNumberTests(unittest.TestCase):
+    """월 1회 만든 조각에는 만들 때의 번호가 박혀 있다. 끼울 때 장기 전망 탭의 번호(1·2)로 맞춘다."""
+
+    def test_any_old_number_becomes_the_tab_number(self):
+        for old in ("7", "3"):
+            with self.subTest(old=old):
+                out = rh.renumber_fragment(f'<h3 style="font-size:15px">{old}. 장기 전망 (월간) '
+                                           '<span>3·6·12개월</span></h3><p>3. 장기 전망 본문</p>')
+                self.assertIn(">1. 장기 전망 (월간)", out)
+                self.assertIn("<p>3. 장기 전망 본문</p>", out)      # 제목 밖은 건드리지 않는다
+        for old in ("8", "4"):
+            with self.subTest(old=old):
+                out = rh.renumber_fragment(f'<h3 style="x">{old}. 이번 분기 영업이익 추정</h3>')
+                self.assertIn(">2. 이번 분기 영업이익 추정", out)
+
+    def test_empty_fragment_is_returned_as_is(self):
+        self.assertEqual(rh.renumber_fragment(""), "")
+        self.assertIsNone(rh.renumber_fragment(None))
 
 
 # 실제 보고서 모양을 줄인 것. 쉬운 요약은 감싸개(<section>)가 제목보다 먼저 열리고, 채점 절 앞뒤에는
@@ -219,12 +256,13 @@ class TabArrangementTests(unittest.TestCase):
 REAL_PAGE = (
     '<div class="wrap"><h2>종합 보고서</h2>'
     '<section id="easy-summary" style="x"><h3 style="x">한눈에 보는 쉬운 요약</h3>'
+    '<!--SCORECARD_START--><div>지난 예측</div><!--SCORECARD_END-->'
     '<ul><li>요약 한 줄</li></ul></section>'
     '<h3 style="x">그 밖에 지금 알 수 있는 것</h3><div>카드</div>'
     '<!--LEDGER_SECTION_START--><h3 style="x">2026-09-11 (금) 예측 vs 실제</h3>'
     '<div>채점 본문</div><!--LEDGER_SECTION_END-->'
     '<h3 style="x">1. 다음 거래일 방향</h3><div>방향 본문</div>'
-    '<h3 style="x">6. 모델 성능</h3><div>성능 본문</div>'
+    '<h3 style="x">모델 성적과 검증</h3><div>성능 본문</div>'
     '<h3 style="x">참고 정보: 최근 공시와 예정 발표</h3><div>공시 본문</div>'
     '</div>')
 
@@ -238,6 +276,7 @@ class RealShapeTabTests(unittest.TestCase):
         self.assertEqual(rh.tab_structure_problems(out), [])
         first = panel_titles_raw(out, "rtab-0")
         self.assertIn('id="easy-summary"', first, "감싸개가 제목과 함께 첫 탭에 들어가야 한다")
+        self.assertIn("<!--SCORECARD_START-->", first)
         self.assertEqual(panel_titles(out)["rtab-0"], ["한눈에 보는 쉬운 요약", "그 밖에 지금 알 수 있는 것",
                                                        "2026-09-11 (금) 예측 vs 실제", "1. 다음 거래일 방향"])
 
@@ -266,8 +305,11 @@ class RealShapeTabTests(unittest.TestCase):
             self.skipTest(f"build_afternoon_update 를 불러오지 못함: {exc}")
         spliced = ba.replace_section(out, '<h3 style="x">2026-09-11 (금) 예측 vs 실제</h3><div>새 채점</div>')
         self.assertIsNotNone(spliced)
+        spliced = ba.replace_section(spliced, "<div>오후 성적</div>", ba.SCORECARD_START, ba.SCORECARD_END)
+        self.assertIsNotNone(spliced)
         self.assertEqual(rh.tab_structure_problems(spliced), [])
         self.assertIn("새 채점", panel_titles_raw(spliced, "rtab-0"))
+        self.assertIn("오후 성적", panel_titles_raw(spliced, "rtab-0"))
 
     def test_the_session_review_lands_in_the_first_tab(self):
         out = rh.tabify_sections(REAL_PAGE)
@@ -284,8 +326,8 @@ class RealShapeTabTests(unittest.TestCase):
     def test_a_layout_that_cannot_be_split_safely_is_left_as_it_was(self):
         """감싸개 안에서 제목 앞에 다른 내용이 있으면 끌어올 수 없다. 깨진 탭 대신 원래 페이지를 둔다."""
         page = ('<div><h3>한눈에 보는 쉬운 요약</h3><p>a</p>'
-                '<section><p>머리말</p><h3>6. 모델 성능</h3><p>e</p></section>'
-                '<h3>7. 자동 판정</h3><p>f</p></div>')
+                '<section><p>머리말</p><h3>모델 성적과 검증</h3><p>e</p></section>'
+                '<h3>이 보고서의 데이터</h3><p>f</p></div>')
         self.assertEqual(rh.tabify_sections(page), page)
 
 
@@ -296,59 +338,18 @@ class NotebookWiringTests(unittest.TestCase):
         return next("".join(c["source"]) for c in nb["cells"]
                     if "def build_summary():" in "".join(c.get("source", [])))
 
-    def test_notebook_makes_tabs_then_adds_nav(self):
+    def test_notebook_makes_tabs_then_adds_ids_without_a_toc(self):
         report = self.report_cell()
         self.assertIn("html = tabify_sections(html)", report)
+        self.assertIn("html, _report_sections = add_section_ids(html)", report)
+        self.assertNotIn("add_report_nav", report)
         self.assertNotIn("collapse_sections(html)", report)
-        self.assertIn("html, _report_sections = add_report_nav(html)", report)
-        # 순서가 중요하다: 탭을 만든 뒤 목차를 넣어야 목차가 첫 탭 안, 탭 막대 아래에 온다.
-        self.assertLess(report.index("tabify_sections(html)"), report.index("add_report_nav(html)"))
+        self.assertLess(report.index("tabify_sections(html)"), report.index("add_section_ids(html)"))
 
     def test_page_css_lets_the_tab_bar_stick(self):
         """overflow-x:hidden 은 body 를 스크롤 상자로 만들어 sticky 가 붙지 않는다. clip 은 괜찮다."""
         report = self.report_cell()
         self.assertIn("overflow-x:clip", report)
-
-
-class MobileLayoutTests(unittest.TestCase):
-    """모바일(약 380px)에서 목차 줄바꿈이 깨지지 않아야 한다.
-
-    2026-09-12 지적: 그룹 이름과 링크가 같은 줄에서 시작해, 링크가 줄바꿈되면 다음 줄이
-    이름 자리까지 밀려 들어와 정렬이 무너졌다. 제목도 중간('1-1. 외국인·')에서 끊겼다.
-    """
-
-    def nav(self):
-        out, _ = rh.add_report_nav(PAGE)
-        start = out.index("이 보고서의 구성")
-        return out[start:out.index("<h3", start)]
-
-    def test_group_label_is_on_its_own_line(self):
-        nav = self.nav()
-        # 이름과 링크가 다른 블록에 있어야 줄바꿈이 이름 자리를 침범하지 않는다.
-        self.assertIn("margin-bottom:1px", nav)
-        self.assertNotIn("display:inline-block;min-width:38px", nav)
-
-    def test_one_link_per_line(self):
-        """여러 개를 한 줄에 흘리면 '1-1.'과 '2.'가 붙어 번호 순서가 눈에 들어오지 않는다."""
-        nav = self.nav()
-        links = re.findall(r"<a\b[^>]*>", nav)
-        self.assertTrue(links)
-        for link in links:
-            self.assertIn("display:block", link)
-
-    def test_numbers_run_in_order_across_groups(self):
-        """목차의 번호는 1부터 오름차순이어야 한다. 예전에는 그룹 탓에 5번이 6·7번 뒤에 나왔다."""
-        _, sections = rh.add_report_nav(PAGE)
-        # 목차는 그룹 순서로 그려진다. 문서 순서가 아니라 그 순서로 번호를 읽어야 한다.
-        ordered = [s for name, _ in rh.NAV_GROUPS for s in sections if s["group"] == name]
-        numbers = [int(m.group(1)) for m in
-                   (re.match(r"(\d+)\.", s["title"]) for s in ordered) if m]
-        self.assertEqual(numbers, sorted(numbers), f"목차 번호가 뒤섞였습니다: {numbers}")
-
-    def test_no_middot_separator_that_can_start_a_line(self):
-        # ' · ' 로 이으면 줄 맨 앞에 가운뎃점이 남을 수 있다. 여백으로 구분한다.
-        text = re.sub(r"<[^>]+>", "", self.nav())
-        self.assertNotIn(" · ", text)
 
 
 class EasySummaryHierarchyTests(unittest.TestCase):
@@ -391,3 +392,7 @@ class CaveatSpacingTests(unittest.TestCase):
                                        cards=[{"label": "a", "value": "b", "detail": "c", "source": "d"}])
         self.assertIn("margin:6px 0 20px", html)
         self.assertNotIn('color:#8a9199;margin-top:6px">설명', html)
+
+
+if __name__ == "__main__":
+    unittest.main()

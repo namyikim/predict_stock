@@ -34,6 +34,29 @@ class SectionReplacementTests(unittest.TestCase):
         self.assertNotIn("1차", page)
 
 
+class ScorecardReplacementTests(unittest.TestCase):
+    """쉬운 요약 맨 위의 '지난 예측은 맞았나'도 오후 채점으로 바뀌어야 아래 절과 어긋나지 않는다."""
+
+    def page(self):
+        return (f"<html>{fu.SCORECARD_START}아침 성적{fu.SCORECARD_END}중간"
+                f"{af.MARK_START}옛 표{af.MARK_END}뒤</html>")
+
+    def test_both_marked_ranges_are_replaced_independently(self):
+        page = af.replace_section(self.page(), "새 표")
+        page = af.replace_section(page, "오후 성적", fu.SCORECARD_START, fu.SCORECARD_END)
+        self.assertEqual(page, f"<html>{fu.SCORECARD_START}오후 성적{fu.SCORECARD_END}중간"
+                               f"{af.MARK_START}새 표{af.MARK_END}뒤</html>")
+
+    def test_old_report_without_the_scorecard_marker_is_left_alone(self):
+        page = f"<html>{af.MARK_START}옛 표{af.MARK_END}</html>"
+        self.assertIsNone(af.replace_section(page, "x", fu.SCORECARD_START, fu.SCORECARD_END))
+
+    def test_main_refreshes_the_scorecard_from_the_same_review(self):
+        source = (ROOT / "tools" / "build_afternoon_update.py").read_text(encoding="utf-8")
+        self.assertIn('scorecard_html(review, spec["ensemble"]', source)
+        self.assertIn("SCORECARD_START, SCORECARD_END)", source)
+
+
 class LedgerSectionTests(unittest.TestCase):
     def review(self):
         bars = pd.DataFrame({"open": [100., 104.], "close": [100., 99.], "adj_close": [100., 99.]},

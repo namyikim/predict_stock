@@ -72,9 +72,9 @@ def _flash_note(info, applied):
 
 
 def fragment_sources_html(longterm, earnings):
-    """장기 전망(7절)·영업이익 추정(8절)이 쓴 자료원 표.
+    """장기 전망 탭의 두 절(장기 전망·영업이익 추정)이 쓴 자료원 표.
 
-    6절의 표는 노트북이 직접 받은 자료만 적는다. 7·8절은 별도 도구가 만들어 조각으로 끼워지므로
+    데이터 절의 표는 노트북이 직접 받은 자료만 적는다. 두 절은 별도 도구가 만들어 조각으로 끼워지므로
     G20 CLI·TSMC 월매출·D램 현물가 같은 자료가 '이 보고서의 데이터'에서 빠져 보였다. 읽는 사람은
     제목을 보고 보고서 전체의 자료원이라고 생각하므로, 조각이 남긴 출처를 읽어 함께 적는다.
     """
@@ -133,110 +133,53 @@ def fragment_sources_html(longterm, earnings):
             '<th style="padding:8px 10px;text-align:right">기간</th>'
             '<th style="padding:8px 10px;text-align:left">비고</th></tr>'
             f'{body}</table></div>'
-            '<div style="font-size:11px;color:#8a9199;margin-top:4px">3·4절은 별도 도구가 만들어 이 보고서에 '
+            '<div style="font-size:11px;color:#8a9199;margin-top:4px">장기 전망 탭의 두 절은 별도 도구가 만들어 이 보고서에 '
             '끼워집니다. 위 두 표(시세·월별 지표)는 이 보고서가 직접 받은 자료이고, 이 표는 그 두 절이 쓴 '
             '자료입니다. 빨간 글씨는 조회에 실패해 저장소 보관본을 쓴 것입니다.</div>')
 
 
-# 보고서는 14만 자에 절이 열 개가 넘는다. 목차 없이는 어디에 무엇이 있는지 알 수 없고,
-# 필요한 절로 바로 갈 수도 없다. 완성된 HTML 을 받아 h3 에 id 를 붙이고 목차를 만든다.
+# 보고서는 14만 자에 절이 열 개가 넘는다. h3 에 id 를 붙여 절마다 바로 갈 수 있게 한다.
 # 본문을 다시 조립하지 않고 제목만 손대므로 절 순서·내용·태그 균형이 바뀌지 않는다.
+# 예전에는 맨 위에 '이 보고서의 구성' 목차도 넣었다. 상단 탭이 생긴 뒤로는 탭이 목차 노릇을 하고,
+# 목차는 첫 탭 맨 위에서 쉬운 요약을 한 화면 아래로 밀어낼 뿐이라 뺐다(2026-09-13 지적).
 _H3 = re.compile(r'(<h3\b[^>]*>)(.*?)(</h3>)', re.S)
-# 목차 그룹. 나열 순서가 곧 목차 순서이므로 읽는 순서와 같게 둔다.
-# 판정은 '앞부분으로 시작' 또는 '포함' 둘 다 본다 — 채점 절 제목은 날짜로 시작한다
-# ("2026-09-11 (금) 예측 vs 실제"), 수급 절은 "1-1." 로 시작한다.
-# 그룹은 본문 순서이자 번호 순서와 같아야 한다. 예전에는 '성적'(6·7)이 '해설'(5·8)보다 앞이라
-# 목차에서 5번이 6·7번 뒤에 나왔다. 번호가 뒤섞이면 목차를 믿을 수 없다.
-# 목차 묶음은 읽는 내용의 성격이고 탭 경계와는 다르다 — 3절은 탭으로, 5절은 첫 탭 맨 아래로 간다.
-# 묶음까지 탭에 맞추면 목차 번호가 1·2·4·5·3 으로 뒤섞인다.
-NAV_GROUPS = (
-    ("요약", ("한눈에", "그 밖에", "예측 vs 실제")),
-    ("예측", ("1.", "1-1.", "2.", "3.", "4.")),
-    ("해설", ("5.", "6.", "7.", "참고 정보")),
-)
 
 
-def _nav_group(title):
-    for name, keys in NAV_GROUPS:
-        if any(title.startswith(k) or k in title for k in keys):
-            return name
-    return "기타"
-
-
-def add_report_nav(html_text, title_limit=34):
-    """h3 에 id 를 붙이고 맨 위에 목차를 넣는다. (새 HTML, 절 목록) 반환.
-
-    제목의 부제(회색 span)는 목차에서 뺀다 — 목차가 본문만큼 길어지면 목차가 아니다.
-    """
-    from html import escape
+def add_section_ids(html_text):
+    """h3 에 id="secN" 을 붙인다. (새 HTML, 절 목록) 반환. 이미 id 가 있는 제목은 그대로 둔다."""
     sections = []
 
     def tag(match):
         open_tag, inner, close_tag = match.groups()
-        # 부제는 회색 <span> 에 들어 있다. 목차에는 제목만 쓴다 — 부제까지 넣으면 목차가
-        # 본문만큼 길어진다. span 을 지운 뒤 태그를 벗긴다.
-        head = re.sub(r'<span\b.*?</span>', '', inner, flags=re.S)
-        plain = re.sub(r'<[^>]+>', '', head)
-        plain = re.sub(r'&nbsp;?', ' ', plain)
-        plain = re.sub(r'\s+', ' ', plain).replace('\xa0', ' ').strip(' ·')
-        if not plain:
+        title = _section_title(inner)
+        if not title:
             return match.group(0)
-        index = len(sections) + 1
-        anchor_id = f'sec{index}'
-        sections.append({"id": anchor_id, "title": plain, "group": _nav_group(plain)})
+        anchor_id = f'sec{len(sections) + 1}'
+        sections.append({"id": anchor_id, "title": title})
         if 'id=' in open_tag:
             return match.group(0)
         return f'{open_tag[:-1]} id="{anchor_id}">{inner}{close_tag}'
 
-    out = _H3.sub(tag, html_text)
-    if len(sections) < 4:
-        return html_text, sections
-
-    groups = {}
-    for section in sections:
-        groups.setdefault(section["group"], []).append(section)
-    blocks = ""
-    for name, _ in NAV_GROUPS:
-        items = groups.get(name)
-        if not items:
-            continue
-        # 한 줄에 하나씩. 여러 개를 한 줄에 흘리면 '1-1.'과 '2.'가 같은 줄에 붙어 번호 순서가
-        # 눈에 들어오지 않는다(2026-09-12 지적).
-        links = "".join(
-            f'<a href="#{s["id"]}" style="color:#1a5490;text-decoration:none;display:block;'
-            f'padding:1px 0">{escape(s["title"][:title_limit])}</a>' for s in items)
-        # 그룹 이름을 링크와 같은 줄에 두면, 링크가 줄바꿈될 때 다음 줄이 이름 자리까지 밀려
-        # 들어와 정렬이 무너진다(모바일에서 특히 심하다). 이름을 윗줄로 올리고 링크는 아래에
-        # 통째로 흐르게 한다.
-        blocks += (f'<div style="margin:7px 0 0"><div style="color:#8a9199;font-size:11px;'
-                   f'margin-bottom:1px">{escape(name)}</div>'
-                   f'<div style="padding-left:2px">{links}</div></div>')
-    nav = ('<div style="border:1px solid #e5e5e5;border-radius:6px;padding:11px 14px;margin:14px 0 4px;'
-           'background:#fafafa;font-size:12px;line-height:1.8">'
-           '<div style="font-size:11px;color:#8a9199;margin-bottom:4px">이 보고서의 구성</div>'
-           + blocks + '</div>')
-    # 첫 h3(쉬운 요약) 바로 앞에 넣는다 — 제목·생성 시각 다음이다.
-    first = _H3.search(out)
-    return (out[:first.start()] + nav + out[first.start():], sections) if first else (out, sections)
+    return _H3.sub(tag, html_text), sections
 
 
 # 탭으로 따로 떼어 낼 절. 예전에는 이 절들을 <details> 로 접었는데, 14만 자 페이지에서
-# '펼쳐 보기'를 찾아 누르는 것이 불편했다(2026-09-13 지적). 이제 상단 탭 하나씩이 된다.
-# 요약과 1·2·4절(방향·수급·가격·영업이익)은 기본으로 보이는 첫 탭에 모은다. 5절(이 예측을 어떻게
-# 읽어야 하는가)은 오늘 예측을 읽는 법이라 첫 탭 맨 아래에 두고, 3절 장기 전망은 월 단위라 따로
-# 탭으로 뗀다. 3절이 6만 자라 첫 탭도 그만큼 가벼워진다(2026-09-13 제안).
-# 6절 '모델 성적과 검증'은 예전 6절(모델 성능)과 7절(자동 판정)을 합친 것이고, 데이터는 7절이 됐다.
-TAB_PREFIXES = ("3.", "6.", "7.", "참고 정보")
-# 탭 이름은 짧아야 한다. 절 제목을 그대로 쓰면 휴대폰에서 탭 두 개도 한 줄에 안 들어간다.
-# 번호는 뺀다 — 탭으로 떨어져 나오면 5~8 이라는 순서가 읽는 데 도움이 되지 않는다(2026-09-13).
-# 절 제목의 번호는 목차 순서를 위해 남긴다.
-# 이름은 절 제목이 아니라 **그 탭에서 알 수 있는 것**으로 짓는다. '자동 판정'·'읽는 법'만 봐서는
-# 무엇이 들어 있는지 알 수 없었다(2026-09-13 지적).
-TAB_LABELS = (("3.", "장기 전망"),        # 월 단위 전망 — 수출 사이클·선행지수와 3·6·12개월 수익률
-              ("6.", "성적과 검증"),          # 기준별 판정과 그 근거인 모델별 성능표 — 예전 6·7절을 합침
-              ("7.", "사용한 데이터"),          # 자산·티커·수집 기간
-              ("참고 정보", "공시·발표 일정"))  # 최근 공시와 다가오는 미국 발표·실적
+# '펼쳐 보기'를 찾아 누르는 것이 불편했다(2026-09-13 지적). 이제 상단 탭이 된다.
+# 쉬운 요약·방향·수급·가격과 '이 예측을 어떻게 읽어야 하는가'는 기본으로 보이는 첫 탭에 둔다.
+# 장기 전망과 이번 분기 영업이익 추정은 월 단위 결론이라 한 탭에 함께 둔다(2026-09-13 제안).
+#
+# 탭 하나에 절이 여럿 들어갈 수 있다. 절 번호는 탭마다 1부터 새로 매긴다(첫 탭 1~3, 장기 전망 탭
+# 1·2, 절이 하나뿐인 탭은 번호 없음). 그래서 절은 번호가 아니라 **번호를 뗀 제목의 앞부분**으로 고른다.
+# 탭 이름은 짧게, 그 탭에서 알 수 있는 것으로 짓는다 — 절 제목 그대로는 휴대폰에서 탭 두 개도 한 줄에
+# 안 들어가고, '자동 판정'·'읽는 법'만 봐서는 무엇이 들어 있는지 알 수 없었다(2026-09-13 지적).
+TAB_GROUPS = (
+    ("장기 전망", ("장기 전망", "이번 분기 영업이익")),  # 수출 사이클·선행지수와 3·6·12개월 수익률, 분기 영업이익
+    ("성적과 검증", ("모델 성적과 검증",)),             # 기준별 판정과 그 근거인 모델별 성능표
+    ("사용한 데이터", ("이 보고서의 데이터",)),           # 자산·티커·수집 기간
+    ("공시·발표 일정", ("참고 정보",)),                 # 최근 공시와 다가오는 미국 발표·실적
+)
 DEFAULT_TAB_LABEL = "오늘의 예측"
+_SECTION_NUMBER = re.compile(r'^\d+(?:-\d+)?\.\s*')
 
 # 탭은 스크립트가 켠다. 스크립트가 없거나 실패하면 모든 절이 지금처럼 이어져 보이고,
 # 탭 막대는 해당 절로 건너뛰는 링크로 동작한다 — 무엇도 숨겨지지 않는 쪽으로 실패한다.
@@ -302,30 +245,36 @@ def _section_title(inner):
     return re.sub(r'\s+', ' ', title).strip(' ·')
 
 
-def _tab_label(title, labels=TAB_LABELS):
-    for prefix, label in labels:
-        if title.startswith(prefix):
-            return label
-    return title[:16]
+def _tab_for(title, groups=TAB_GROUPS):
+    """절 제목이 들어갈 (탭 이름, 탭 안 순서). 첫 탭(기본)이면 (None, 0).
+
+    번호를 뗀 제목의 앞부분으로 고른다. 탭 안 순서는 groups 에 적은 열쇠의 순서다.
+    """
+    bare = _SECTION_NUMBER.sub('', title)
+    for label, keys in groups:
+        for rank, key in enumerate(keys):
+            if bare.startswith(key):
+                return label, rank
+    return None, 0
 
 
-def tabify_sections(html_text, prefixes=TAB_PREFIXES, labels=TAB_LABELS,
-                    default_label=DEFAULT_TAB_LABEL):
-    """h3 절을 상단 탭으로 나눈다. 첫 탭에는 기본으로 보이던 절을, 나머지 탭에는 접던 절을 하나씩.
+def tabify_sections(html_text, groups=TAB_GROUPS, default_label=DEFAULT_TAB_LABEL):
+    """h3 절을 상단 탭으로 나눈다. 첫 탭에는 기본으로 보이는 절을, 나머지 탭에는 groups 가 고른 절을.
 
     h3 에서 다음 h3 직전까지를 한 절로 보고 통째로 옮기므로 절 안의 태그 균형은 그대로다.
     마지막 절의 끝에는 바깥 래퍼의 닫는 </div> 가 붙어 있어, 그만큼 떼어 탭 묶음 밖에 둔다
     (안에 두면 여는 태그 없이 닫혀 레이아웃이 무너진다).
 
-    기본 절이 탭 절 뒤에 나오면 첫 탭으로 끌어올려진다. 지금 보고서는 3절을 탭으로 떼므로
-    4·5절이 첫 탭에서 2절 바로 뒤로 온다.
+    탭 순서는 그 탭의 첫 절이 문서에 나오는 순서다. 같은 탭의 절은 떨어져 있어도 한 탭에 모이고,
+    탭 안에서는 groups 에 적은 순서(장기 전망 → 영업이익)로 놓인다 — 원문 순서가 뒤바뀐 옛 발행본에서도
+    탭 안 번호가 1·2 순서로 보이게 하려는 것이다. 기본 절이 탭 절 뒤에 나오면 첫 탭으로 끌어올려진다.
     """
     from html import escape
     parts = list(_H3.finditer(html_text))
     if len(parts) < 2:
         return html_text
     starts = _section_starts(html_text, parts)
-    head, tail, chunks = html_text[:starts[0]], "", []
+    head, tail, basic, tabbed = html_text[:starts[0]], "", [], {}
     for index, match in enumerate(parts):
         end = starts[index + 1] if index + 1 < len(parts) else len(html_text)
         chunk = html_text[starts[index]:end]
@@ -335,20 +284,22 @@ def tabify_sections(html_text, prefixes=TAB_PREFIXES, labels=TAB_LABELS,
                 position = chunk.rindex('</div>')
                 tail = chunk[position:] + tail
                 chunk = chunk[:position]
-        chunks.append((_section_title(match.group(2)), chunk))
-    split = [(title, chunk, any(title.startswith(p) for p in prefixes)) for title, chunk in chunks]
-    tabbed = [(title, chunk) for title, chunk, is_tab in split if is_tab]
-    basic = [chunk for _, chunk, is_tab in split if not is_tab]
+        label, rank = _tab_for(_section_title(match.group(2)), groups)
+        if label is None:
+            basic.append(chunk)
+        else:
+            tabbed.setdefault(label, []).append((rank, index, chunk))
     if not tabbed or not basic:
         return html_text
-    names = [default_label] + [_tab_label(title, labels) for title, _ in tabbed]
+    names = [default_label] + list(tabbed)
     bar = ('<nav class="rtabs" aria-label="보고서 탭">'
            + "".join(f'<a href="#rtab-{i}" aria-selected="{"true" if i == 0 else "false"}">'
                      f'{escape(name)}</a>' for i, name in enumerate(names))
            + '</nav>')
     panels = (f'<section class="rtab-panel" id="rtab-0">{"".join(basic)}</section>'
-              + "".join(f'<section class="rtab-panel" id="rtab-{i}">{chunk}</section>'
-                        for i, (_, chunk) in enumerate(tabbed, start=1)))
+              + "".join(f'<section class="rtab-panel" id="rtab-{i}">'
+                        f'{"".join(chunk for _, _, chunk in sorted(chunks))}</section>'
+                        for i, chunks in enumerate(tabbed.values(), start=1)))
     out = (head + '<div id="rtabs-root">' + _TAB_STYLE + bar + panels + _TAB_SCRIPT + '</div>'
            + tail)
     # 브라우저가 실제로 쌓을 모양으로 한 번 더 본다. 제목 하나라도 탭 밖에 떨어지거나 탭 안에 탭이
@@ -462,23 +413,23 @@ def tab_structure_problems(html_text):
     return walker.problems
 
 
-# 조각(7·8절)은 월 1회 실행이 만들어 저장소에 남는다. 보고서 절 번호를 바꿔도 옛 조각에는
-# 옛 번호가 박혀 있어 다음 월간 실행 전까지 번호가 겹친다. 그래서 조각을 끼울 때 제목의
-# 번호만 지금 체계로 바꾼다. 조각 내용 자체는 건드리지 않는다.
-FRAGMENT_RENUMBER = (("7. 장기 전망", "3. 장기 전망"),
-                     ("8. 이번 분기 영업이익", "4. 이번 분기 영업이익"))
+# 조각(장기 전망·영업이익 추정)은 월 1회 실행이 만들어 저장소에 남는다. 보고서 절 번호를 바꿔도
+# 옛 조각에는 만들 때의 번호(7·8, 그다음 3·4)가 박혀 있어 다음 월간 실행 전까지 번호가 어긋난다.
+# 그래서 조각을 끼울 때 제목의 번호만 지금 체계(장기 전망 탭의 1·2절)로 바꾼다. 내용은 건드리지 않는다.
+FRAGMENT_NUMBERS = (("장기 전망", "1."), ("이번 분기 영업이익", "2."))
 
 
 def renumber_fragment(html_text):
-    """조각 제목의 절 번호를 현재 체계로 맞춘다(h3 안에서만)."""
+    """조각 제목의 절 번호를 현재 체계로 맞춘다(h3 안에서만, 옛 번호가 무엇이었든)."""
     if not html_text:
         return html_text
 
     def fix(match):
         head = match.group(0)
-        for old, new in FRAGMENT_RENUMBER:
-            if old in head:
-                return head.replace(old, new, 1)
+        for key, number in FRAGMENT_NUMBERS:
+            new, count = re.subn(r'\d+\.\s*(?=' + re.escape(key) + ')', number + ' ', head, count=1)
+            if count:
+                return new
         return head
 
     return re.sub(r"<h3\b[^>]*>.*?</h3>", fix, html_text, flags=re.S)

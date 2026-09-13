@@ -124,32 +124,36 @@ class NotebookStructureTests(unittest.TestCase):
         self.assertIn('1. 다음 거래일 방향 ({_prediction_date_label})', self.source)
 
     def test_conclusions_come_first_and_evidence_last(self):
-        """결론(방향·수급·가격·장기·영업이익)을 앞에, 해설·검증·데이터를 뒤에 둔다.
+        """원문 순서가 탭 순서와 같다: 오늘의 예측 → 장기 전망 탭 → 성적과 검증 → 데이터 → 공시.
 
-        2026-09-12 재배치: 장기 전망·영업이익은 근거가 아니라 결론이므로 7·8 → 3·4 로 앞당기고,
-        해설·성능·판정·데이터는 5~8 로 밀어 접었다. 공시는 예측에 쓰지 않는 참고 자료라 맨 뒤다.
+        2026-09-13 재구성: 절 번호를 탭마다 새로 매긴다. 첫 탭은 1~3절(방향·가격·읽는 법), 장기 전망 탭은
+        1·2절(장기 전망·영업이익)이고, 절이 하나뿐인 탭은 번호가 없다. 공시는 참고 자료라 맨 뒤다.
         """
         direction = self.source.index("1. 다음 거래일 방향")
         flow = self.source.index("f'{flow_html}'", direction)
         price = self.source.index("2. 시초가예측과 종가예측", direction)
-        longterm = self.source.index("f'{longterm_html}'", price)
+        guide = self.source.index("'3. 이 예측을 어떻게 읽어야 하는가</h3>'", price)
+        longterm = self.source.index("f'{longterm_html}'", guide)
         earnings = self.source.index("f'{earnings_html}'", longterm)
-        data = self.source.index("7. 이 보고서의 데이터", earnings)
+        merged = self.source.index("'모델 성적과 검증</h3>'", earnings)
+        data = self.source.index("'이 보고서의 데이터</h3>'", merged)
         disclosure = self.source.index("f'{disclosure_html}'", data)
-        self.assertLess(direction, flow)
-        self.assertLess(flow, price)
-        self.assertLess(price, longterm)      # 3절: 장기 전망
-        self.assertLess(longterm, earnings)   # 4절: 영업이익
-        self.assertLess(earnings, data)       # 7절: 데이터(탭)
-        self.assertLess(data, disclosure)     # 참고 정보: 공시(접힘)
+        order = [direction, flow, price, guide, longterm, earnings, merged, data, disclosure]
+        self.assertEqual(order, sorted(order))
+        # 조각이 없을 때 대신 쓰는 제목도 장기 전망 탭의 번호를 따른다.
+        self.assertIn("1. 장기 전망 (월간)</h3>", self.source)
+        self.assertIn("'2. 이번 분기 영업이익 추정</h3>'", self.source)
+        for old in ("'5. 이 예측을 어떻게", "6. 모델 성적과 검증", "7. 이 보고서의 데이터", "(아래 5절)",
+                    '"source": "3절"'):
+            self.assertNotIn(old, self.source)
 
     def test_performance_and_verdict_are_one_section(self):
         """예전 6절(모델 성능)과 7절(자동 판정)은 같은 수치를 따로 보였다. 한 절로 합치고(2026-09-13)
         판정을 먼저, 그 근거인 모델별 수치를 뒤에 둔다."""
-        merged = self.source.index("6. 모델 성적과 검증")
+        merged = self.source.index("'모델 성적과 검증</h3>'")
         checks = self.source.index("f'{rows_check}</table></div>'", merged)
         metrics = self.source.index("f'{rows_metric}</table></div>'", merged)
-        data = self.source.index("7. 이 보고서의 데이터", merged)
+        data = self.source.index("'이 보고서의 데이터</h3>'", merged)
         self.assertLess(checks, metrics)
         self.assertLess(metrics, data)
         self.assertNotIn("'7. 자동 판정</h3>'", self.source)

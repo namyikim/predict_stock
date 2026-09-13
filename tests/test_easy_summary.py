@@ -4,9 +4,132 @@ import json
 import unittest
 from pathlib import Path
 
+import re
+
+import numpy as np
 import pandas as pd
 
 import forecast_utils
+
+
+def scored_review():
+    """2026-09-11(금) 채점: 시초가 구간 안, 방향 틀림, 종가 구간 안. 채점일 25일(창 60일 이하)."""
+    day = pd.Timestamp("2026-09-11")
+    latest = pd.DataFrame([
+        dict(target_date=day, kind="open", horizon_days=1, model="Ridge", predicted_open=70100.,
+             low_open=69500., high_open=70800., actual_open=70500., interval_hit=1.),
+        # 후보 모델 행은 맞았지만 판정은 대표 앙상블 행으로 한다.
+        dict(target_date=day, kind="direction", horizon_days=1, model="Candidate X", prediction="하락",
+             actual_class=0, direction_correct=1., actual_return=-.012),
+        dict(target_date=day, kind="direction", horizon_days=1, model="Mean ensemble", prediction="상승",
+             actual_class=0, direction_correct=0., actual_return=-.012),
+        dict(target_date=day, kind="price", horizon_days=1, model="Ridge", predicted_close=np.nan,
+             low_close=69000., high_close=72000., actual_close=70900., interval_hit=1.),
+    ])
+    rolling = pd.DataFrame([
+        {"window": 20, "kind": "direction", "horizon_days": 1, "n": 20, "hit_rate": .45, "prior_hit_rate": .40},
+        {"window": 60, "kind": "direction", "horizon_days": 1, "n": 25, "hit_rate": .52, "prior_hit_rate": .44},
+        {"window": 60, "kind": "open", "horizon_days": 1, "n": 25, "interval_coverage": .84,
+         "nominal_coverage": .8},
+        {"window": 60, "kind": "price", "horizon_days": 1, "n": 25, "interval_coverage": .76,
+         "nominal_coverage": .8},
+        {"window": 60, "kind": "price", "horizon_days": 5, "n": 21, "interval_coverage": .10,
+         "nominal_coverage": .8},
+    ])
+    return {"latest": latest, "rolling": rolling, "n_scored_days": 25, "latest_date": day}
+
+
+class TopOfSummaryTests(unittest.TestCase):
+    """2026-09-13 재구성: 요약 맨 위에 다음 거래일 시초가·방향·종가, 지난 예측 결과, 지금까지 성적."""
+
+    def render(self, **changes):
+        args = dict(
+            name="삼성전자", prediction_date=pd.Timestamp("2026-09-14"), data_date=pd.Timestamp("2026-09-11"),
+            summary={"live": {"prediction": "상승", "p_up": .6, "p_flat": .25, "p_down": .15},
+                     "ensemble": "Mean ensemble"},
+            open_forecast={"signal": "있음", "predicted_open": 70100, "predicted_return": .004,
+                           "target_date": pd.Timestamp("2026-09-14")},
+            price_forecasts=[{"signal": "있음", "predicted_close": 71000, "predicted_return": .012,
+                              "trading_days": 1, "target_date": pd.Timestamp("2026-09-14")}],
+            review=scored_review())
+        args.update(changes)
+        return forecast_utils.easy_summary_html(**args)
+
+    def test_next_day_open_direction_and_close_come_before_everything_else(self):
+        html = self.render()
+        top = html.index("다음 거래일 2026-09-14 (월) 예측")
+        last = html.index("지난 예측은 맞았나")
+        self.assertLess(top, last)
+        self.assertLess(last, html.index("지금까지 성적"))
+        self.assertLess(html.index("지금까지 성적"), html.index("전체 결론"))
+        cards = html[top:last]
+        self.assertLess(cards.index("시초가 · 09:00"), cards.index("종가 방향"))
+        self.assertLess(cards.index("종가 방향"), cards.index("종가 · 15:30"))
+        for text in ("70,100원", "+0.40%", "▲ 오름", "71,000원", "+1.20%"):
+            self.assertIn(text, cards)
+
+    def test_the_rest_of_the_summary_stays_below(self):
+        html = self.render()
+        for label in ("전체 결론", "시초가예측 — 장이 시작할 때의 가격", "종가예측 — 장이 끝날 때의 가격",
+                      "중장기 전망", "회사 실적 — 본업으로 번 이익", "얼마나 믿을 수 있나요?", "주의할 점"):
+            self.assertGreater(html.index(label), html.index("지금까지 성적"), label)
+
+    def test_last_result_says_right_or_wrong_per_item(self):
+        card = forecast_utils.scorecard_html(scored_review(), "Mean ensemble")
+        self.assertIn("2026-09-11 (금) 예측", card)
+        marks = re.findall(r">(맞음|틀림|채점 전)</span><span[^>]*>(시초가|방향|종가)</span>", card)
+        self.assertEqual(marks, [("맞음", "시초가"), ("틀림", "방향"), ("맞음", "종가")])
+        self.assertIn("예측 오름 → 실제 내림 (-1.20%)", card)
+        self.assertIn("예측 70,100원 → 실제 70,500원 · 구간 69,500원~70,800원", card)
+        # 신호가 없던 종가는 숫자를 지어내지 않는다.
+        self.assertIn("예측 숫자 없음(구간만) → 실제 70,900원", card)
+
+    def test_track_record_uses_the_longest_window_and_its_baselines(self):
+        card = forecast_utils.scorecard_html(scored_review(), "Mean ensemble")
+        self.assertIn("채점한 25거래일 전체 · 미리 낸 예측만", card)       # 채점일 25일 ≤ 창 60일
+        for text in (">52%<", "늘 같은 답이면 44%", ">84%<", ">76%<", "목표 80%", "25일 중"):
+            self.assertIn(text, card)
+        self.assertNotIn(">45%<", card)       # 짧은 창은 쓰지 않는다
+        self.assertNotIn(">10%<", card)       # 5거래일 종가는 여기서 다루지 않는다
+        self.assertNotIn("판단하기 이릅니다", card)
+
+    def test_long_history_is_labelled_as_the_recent_window(self):
+        review = dict(scored_review(), n_scored_days=140)
+        self.assertIn("최근 60거래일", forecast_utils.scorecard_html(review, "Mean ensemble"))
+
+    def test_small_samples_are_muted_and_flagged(self):
+        review = scored_review()
+        review["rolling"] = review["rolling"].assign(n=8)
+        card = forecast_utils.scorecard_html(review, "Mean ensemble")
+        self.assertIn("판단하기 이릅니다", card)
+        self.assertIn('color:#8a9199">52%', card)
+
+    def test_nothing_scored_yet(self):
+        for review in (None, {}, {"n_scored_days": 0, "latest": pd.DataFrame(), "rolling": pd.DataFrame()}):
+            with self.subTest(review=review):
+                card = forecast_utils.scorecard_html(review)
+                self.assertIn("아직 채점된 예측이 없습니다", card)
+                self.assertIn("아직 성적을 낼 만큼", card)
+                self.assertNotIn("nan", card.lower())
+
+    def test_failed_gates_hide_next_day_prices_in_the_cards(self):
+        html = self.render(open_forecast={"signal": "없음", "predicted_open": 70100},
+                           price_forecasts=[{"signal": "없음", "predicted_close": 71000, "trading_days": 1}])
+        top = html[:html.index("지난 예측은 맞았나")]
+        self.assertNotIn("70,100", top)
+        self.assertNotIn("71,000", top)
+        self.assertEqual(top.count("예측 안 함"), 2)
+
+    def test_scorecard_is_marked_for_the_afternoon_refresh(self):
+        html = self.render()
+        self.assertEqual(html.count(forecast_utils.SCORECARD_START), 1)
+        self.assertEqual(html.count(forecast_utils.SCORECARD_END), 1)
+        self.assertLess(html.index(forecast_utils.SCORECARD_START), html.index("지난 예측은 맞았나"))
+        self.assertGreater(html.index(forecast_utils.SCORECARD_END), html.index("지금까지 성적"))
+
+    def test_top_blocks_add_no_headings(self):
+        """h3 가 늘면 탭 나누기가 요약을 쪼갠다. 맨 위 블록은 h3 를 쓰지 않는다."""
+        self.assertEqual(self.render().count("<h3"), 1)
 
 
 class EasySummaryTests(unittest.TestCase):
@@ -121,7 +244,7 @@ class EasySummaryTests(unittest.TestCase):
     def test_notebook_connects_computed_forecasts_and_handles_missing_fragments(self):
         # Catch wrong wiring (e.g. close prices used for opening prices), not just imports.
         notebook = json.loads((Path(__file__).resolve().parents[1]
-                               / "samsung_direction_model_colab.ipynb").read_text())
+                               / "samsung_direction_model_colab.ipynb").read_text(encoding="utf-8"))
         source = next("".join(c["source"]) for c in notebook["cells"]
                       if "def build_summary():" in "".join(c.get("source", [])))
         tree = ast.parse(source)

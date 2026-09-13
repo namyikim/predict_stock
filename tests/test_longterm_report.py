@@ -275,7 +275,7 @@ class FallbackFetchTests(unittest.TestCase):
     def test_every_optional_source_has_a_cache_pull(self):
         source = (ROOT / "tools" / "build_longterm_report.py").read_text(encoding="utf-8")
         for name in ("leading_cycle.csv", "semiconductor_exports.csv", "cli_g20.csv",
-                     "cli_kor.csv", "kospi_monthly.csv",
+                     "cli_kor.csv", "kospi_monthly.csv", "korea_exports.csv",
                      "news_sentiment.csv", "term_spread.csv"):
             self.assertIn(f'"{name}"', source, name)
         # 파일마다 따로 받아야 하나가 실패해도 나머지가 들어온다.
@@ -322,6 +322,63 @@ class RejectedSectionTests(unittest.TestCase):
             {"cli_active": False, "cycle_active": False,
              "cli_info": {"reason": "OECD 조회 실패"}}))
         self.assertIn("OECD 조회 실패", html)
+
+
+class G20ExportsSectionTests(unittest.TestCase):
+    """G20 선행지수와 한국 수출 증가율 절(R09 곁들임). 2026-09-13 보고서에 추가."""
+
+    @classmethod
+    def setUpClass(cls):
+        import shutil
+        import tempfile
+        tmp = Path(tempfile.mkdtemp())
+        fallback = tmp / "macro_fallback"
+        fallback.mkdir(parents=True)
+        for name in ("cli_g20.csv", "korea_exports.csv"):
+            shutil.copy(ROOT / "macro_history" / name, fallback / name)
+        cls.outlook = lt.g20_exports_outlook(tmp, fallback, fetch=False)
+        cls.html = "".join(lt.render_g20_exports_outlook(cls.outlook))
+
+    def test_a_missing_archive_returns_nothing_instead_of_raising(self):
+        import tempfile
+        tmp = Path(tempfile.mkdtemp())
+        self.assertIsNone(lt.g20_exports_outlook(tmp, tmp, fetch=False))
+        self.assertEqual(lt.render_g20_exports_outlook(None), [])
+
+    def test_both_series_forecast_the_same_six_months(self):
+        """수출은 지수보다 늦게 끝난다. 지평을 밀지 않으면 두 전망이 다른 달을 가리킨다."""
+        self.assertEqual(len(self.outlook["rows"]), 6)
+        self.assertEqual([str(r["month"]) for r in self.outlook["rows"]],
+                         [str(r["month"]) for r in self.outlook["growth_rows"]])
+
+    def test_the_chart_starts_in_2000_with_the_hundred_line_and_the_correlation(self):
+        svg = self.outlook["svg"]
+        self.assertIn("확정 2000-01", svg)
+        self.assertIn(">100</text>", svg)
+        self.assertIn("한국 수출 증가율", svg)
+        self.assertIn("둘의 상관", svg)
+
+    def test_the_section_shows_every_month_for_both_series(self):
+        self.assertIn("세계 경기와 한국 수출은 같이 가는가", self.html)
+        for row in self.outlook["rows"]:
+            self.assertIn(str(row["month"]), self.html)
+        self.assertIn("한국 수출 증가율", self.html)
+
+    def test_the_section_states_its_limits(self):
+        self.assertIn("예측기가 아닙니다", self.html)
+        self.assertIn("수출 금액이 줄어든다는 뜻이 아닙니다", self.html)
+        self.assertIn("나중에 값이 바뀝니다", self.html)
+
+    def test_it_is_wired_into_the_report_without_being_able_to_stop_it(self):
+        source = (ROOT / "tools" / "build_longterm_report.py").read_text(encoding="utf-8")
+        call = "g20_exports_outlook(out_dir, fallback_dir, fetch=fetch)"
+        self.assertIn(call, source)
+        block = source[source.index(call):]
+        self.assertIn("except Exception", block[:600])
+        self.assertIn("g20_outlook = None", block[:600])
+        self.assertIn('render_g20_exports_outlook(r.get("g20_outlook"))', source)
+        # 새로 받은 수출 계열은 보관본으로 올려야 다음에 FRED 가 막혀도 그려진다.
+        self.assertIn('"exports_fresh"', source)
 
 
 class CliOutlookSectionTests(unittest.TestCase):

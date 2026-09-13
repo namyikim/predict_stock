@@ -752,6 +752,146 @@ def render_cli_outlook(outlook):
     return parts
 
 
+KOREA_EXPORTS_SERIES = "XTEXVA01KRM667S"      # FRED: 한국 상품 수출액(달러, 월). 1995년부터 있다.
+
+
+def g20_exports_outlook(out_dir, fallback_dir, fetch=True, chart_start="2000-01"):
+    """OECD G20 경기선행지수와 한국 수출 증가율 — 2000년부터 그림과 두 계열의 6개월 전망. 실패하면 None.
+
+    근거: experiments/medium_horizon/R09/decision.md 의 곁들임 절. 수준이 아니라 증가율을 쓰는 이유는
+    둘 다 우상향하는 수준끼리 견주면 상관이 높게 나오고 그것이 예측력의 근거가 아니기 때문이다.
+    반도체 수출 보관본은 2013년부터라 2000년까지 그릴 수 없어 총수출(FRED)을 쓴다.
+    """
+    import run_cli_forecast as cf
+
+    g20 = None
+    # 이번 실행이 새로 받은 것이 있으면 그것을, 없으면 저장소 보관본을 쓴다.
+    for path in (out_dir / "macro_cache" / "cli_g20.csv", fallback_dir / "cli_g20.csv"):
+        if path.exists():
+            frame = pd.read_csv(path, parse_dates=["month"])
+            g20 = frame.set_index("month")["value"].asfreq("MS").dropna()
+            break
+
+    exports, fresh = None, False
+    if fetch:
+        try:
+            key = oecd_module.fred_key()
+            if key:
+                frame = oecd_module.fetch_fred_monthly(KOREA_EXPORTS_SERIES, key, "1995-01-01")
+                cache = out_dir / "macro_cache"
+                cache.mkdir(parents=True, exist_ok=True)
+                (cache / "korea_exports.csv").write_text(frame.to_csv(index=False), encoding="utf-8")
+                exports, fresh = frame.set_index("month")["value"], True
+        except Exception as exc:
+            print("  한국 수출(FRED) 조회 실패 → 보관본:", exc, flush=True)
+    if exports is None:
+        path = fallback_dir / "korea_exports.csv"
+        if path.exists():
+            exports = pd.read_csv(path, parse_dates=["month"]).set_index("month")["value"]
+    if g20 is None or exports is None or len(g20) < cf.MIN_TRAIN + 24:
+        return None
+    exports = exports.asfreq("MS").dropna()
+    growth = (exports / exports.shift(12) - 1).dropna()
+    if len(growth) < cf.MIN_TRAIN + 24:
+        return None
+
+    table_rows = cf.walk_forward(g20, [], min_train=cf.MIN_TRAIN, lags=2)
+    ahead = cf.forecast_now(g20, table_rows, cf.evaluate(table_rows), lags=2)
+    growth_rows, found = cf.overlay_outlook(g20, growth, stationary=True, min_train=cf.MIN_TRAIN, lags=2)
+    svg = cf.forecast_svg(g20, ahead, overlay=growth, overlay_name="한국 수출 증가율(전년 동월 대비)",
+                          overlay_fmt=lambda v: f"{v * 100:+.0f}%", title="OECD G20 경기선행지수",
+                          start=chart_start, overlay_note=cf.lead_lag_note(found),
+                          overlay_ahead=growth_rows, y_min=94, y_max=104)
+    since = g20.loc["2000-01":]
+    return {
+        "svg": svg, "rows": ahead.to_dict("records"), "growth_rows": growth_rows,
+        "g20_last_month": f"{g20.index[-1]:%Y-%m}", "g20_last": float(g20.iloc[-1]),
+        "g20_percentile": float((since < g20.iloc[-1]).mean()),
+        "g20_model_6m": str(ahead.iloc[-1]["model"]),
+        "growth_last_month": f"{growth.index[-1]:%Y-%m}", "growth_last": float(growth.iloc[-1]),
+        "exports_record": bool(exports.iloc[-1] >= exports.max()),
+        "lead_months": int(found[0]) if found else None, "corr": float(found[1]) if found else None,
+        "exports_fresh": fresh,
+    }
+
+
+def render_g20_exports_outlook(outlook):
+    """G20·수출 증가율 그림과 읽는 법. 문장은 숫자에서 다시 만든다 — 다음 달에도 맞는 말이 되도록."""
+    if not outlook:
+        return []
+    e = html.escape
+    rows, growth_rows = outlook["rows"], outlook.get("growth_rows") or []
+    growth_by_month = {str(r["month"]): r for r in growth_rows}
+    end = rows[-1]
+    parts = ['<h4 style="font-size:14px;margin:22px 0 6px">세계 경기와 한국 수출은 같이 가는가 '
+             '<span style="font-weight:400;color:#8a9199;font-size:12px">&nbsp;OECD G20 선행지수 · '
+             '한국 수출 증가율 · 2000년부터</span></h4>']
+    parts.append(f'<div style="border:1px solid #e5e5e5;border-radius:6px;padding:8px">{outlook["svg"]}</div>')
+    body = ""
+    for row in rows:
+        band = (f'{row["low"]:.2f} ~ {row["high"]:.2f}' if row.get("low") is not None else "—")
+        growth = growth_by_month.get(str(row["month"]))
+        growth_text = f'{growth["point"] * 100:+.0f}%' if growth else "—"
+        body += (f'<tr><td {TD}>{e(str(row["month"]))}</td>'
+                 f'<td {TDR}><b>{row["point"]:.2f}</b></td><td {TDR}>{band}</td>'
+                 f'<td {TDR}><b>{growth_text}</b></td></tr>')
+    parts.append(table(f'<th {TH}>달</th><th {THR}>G20 선행지수</th><th {THR}>구간(오차 10~90%)</th>'
+                       f'<th {THR}>한국 수출 증가율</th>', body, 460))
+
+    # 지금: 세계 경기는 어디쯤이고 한국 수출은 어디쯤인가
+    percentile = outlook["g20_percentile"] * 100
+    now = (f'G20 선행지수는 {e(outlook["g20_last_month"])} {outlook["g20_last"]:.2f} 로 2000년 이후 '
+           f'{percentile:.0f}번째 백분위입니다. 한국 수출은 {e(outlook["growth_last_month"])} 전년 동월 대비 '
+           f'<b>{outlook["growth_last"] * 100:+.0f}%</b>'
+           + (' 이고 금액은 사상 최대입니다.' if outlook.get("exports_record") else ' 입니다.'))
+    if percentile < 80 and outlook["growth_last"] > 0.2:
+        now += (' 세계 경기는 평범한데 한국 수출만 크게 늘고 있어, 지금의 수출 호황은 세계 경기 순환보다 '
+                '<b>특정 수요(반도체)에 몰린 것</b>으로 읽힙니다. "선행지수가 좋아지면 수출도 좋아진다"는 '
+                '평소의 독법을 지금 그대로 적용하기 어렵습니다.')
+
+    # 앞으로: G20 은 움직이는가, 수출 증가율은 어디로 가는가
+    change = float(end["point"]) - outlook["g20_last"]
+    if abs(change) < 0.05:
+        g20_text = '앞으로 6개월 G20 선행지수는 <b>사실상 수평</b>입니다'
+        if outlook.get("g20_model_6m") == "rw":
+            g20_text += ' — 어떤 모형도 "마지막 값 그대로"를 이기지 못해, 움직인다고 말할 근거가 없습니다'
+    else:
+        g20_text = (f'앞으로 6개월 G20 선행지수는 {float(end["point"]):.2f} 로 '
+                    f'<b>{"낮아집니다" if change < 0 else "높아집니다"}</b>')
+    ahead_text = g20_text + '.'
+    if growth_rows:
+        first, last = growth_rows[0], growth_rows[-1]
+        direction = "낮아지는" if last["point"] < first["point"] else "높아지는"
+        ahead_text += (f' 수출 증가율은 {e(str(first["month"]))} {first["point"] * 100:+.0f}% 에서 '
+                       f'{e(str(last["month"]))} {last["point"] * 100:+.0f}% 로 <b>{direction}</b> 전망입니다. '
+                       '증가율이 내려가는 것은 수출 금액이 줄어든다는 뜻이 아닙니다.')
+
+    relation = ""
+    if outlook.get("corr") is not None:
+        lead = outlook["lead_months"]
+        verb = (f"{lead}개월 앞섰고" if lead > 0 else (f"{-lead}개월 뒤따랐고" if lead < 0 else "같은 달에 움직였고"))
+        relation = (f'과거에는 G20 지수의 3개월 변화가 수출 증가율을 {verb} 상관은 {outlook["corr"]:+.2f} 였습니다. '
+                    f'분산의 {outlook["corr"] ** 2 * 100:.0f}% 정도만 설명하므로 방향의 참고일 뿐 예측기가 아닙니다.')
+
+    for text in (now, ahead_text, relation):
+        if text:
+            parts.append(f'<div style="font-size:13px;margin-top:10px">{text}</div>')
+
+    band_text = ""
+    if len(growth_rows) >= 3 and growth_rows[2].get("low") is not None:
+        three = growth_rows[2]
+        band_text = (f'3개월 뒤 수출 증가율의 구간은 {three["low"] * 100:+.0f}% ~ {three["high"] * 100:+.0f}% 로 '
+                     '지수 전망보다 훨씬 넓습니다. 숫자 하나가 아니라 대략의 방향으로 읽어 주세요. ')
+    parts.append(
+        '<div style="background:#fdf8ec;border-left:4px solid #c8952a;padding:12px 16px;'
+        'border-radius:0 5px 5px 0;font-size:13px;margin-top:10px">'
+        f'<b>이 숫자를 읽을 때</b> {band_text}'
+        '두 계열은 축이 달라 높이 비교는 뜻이 없고 방향만 봅니다. 전망 구간은 가로로 확대해 그렸습니다. '
+        '선행지수는 <b>나중에 값이 바뀝니다</b>. 위 성적은 최신본으로 잰 것이라 실제보다 좋게 나와 있습니다.'
+        '</div>')
+    return parts
+
+
 def ablation_verdict(ablation, horizons):
     """지평별 비교를 한 문장으로 줄인다. (요약, 나아진 지평 수, 가장 큰 차이 %p)"""
     rows = [ablation.get(str(h)) for _, h in horizons.items()]
@@ -834,6 +974,7 @@ def render_fragment(result):
                          '가늠하는 용도로 읽어야 합니다.</div>')
 
     parts.extend(render_cli_outlook(r.get("cli_outlook")))
+    parts.extend(render_g20_exports_outlook(r.get("g20_outlook")))
 
     # 현재 값·국면
     cur = r["current"]
@@ -980,7 +1121,7 @@ def analyse(target, out_dir, fetch=True):
         tok = None
     loaded = []
     for name in ("leading_cycle.csv", "semiconductor_exports.csv", "cli_g20.csv",
-                 "cli_kor.csv", "kospi_monthly.csv",
+                 "cli_kor.csv", "kospi_monthly.csv", "korea_exports.csv",
                  "news_sentiment.csv", "term_spread.csv"):
         try:
             text = github_pages.fetch(f"macro_history/{name}", tok)
@@ -1057,6 +1198,16 @@ def analyse(target, out_dir, fetch=True):
     except Exception as exc:
         cli_outlook = None
         print("  ⚠️ 한국 선행지수 전망을 내지 못했습니다(무시):", exc, flush=True)
+    # G20 선행지수·한국 수출 증가율(R09 곁들임). 위 한국 선행지수 절과 마찬가지로 실패하면 뺀다.
+    try:
+        g20_outlook = g20_exports_outlook(out_dir, fallback_dir, fetch=fetch)
+        if g20_outlook:
+            print(f"  G20 선행지수·수출 증가율: {g20_outlook['g20_last_month']} "
+                  f"{g20_outlook['g20_last']:.2f} · 수출 증가율 {g20_outlook['growth_last'] * 100:+.0f}%",
+                  flush=True)
+    except Exception as exc:
+        g20_outlook = None
+        print("  ⚠️ G20·수출 증가율 전망을 내지 못했습니다(무시):", exc, flush=True)
 
     last = f.index[-1]
     current = {}
@@ -1083,6 +1234,7 @@ def analyse(target, out_dir, fetch=True):
         "duration_by_spread": phase_duration_by_spread(f),
         "cli_lead_lag": lead_lag(f, a="cli_change_3m", b="macro_semiconductor_yoy") if cli_active else None,
         "cli_outlook": cli_outlook,
+        "g20_outlook": g20_outlook,
         "chart_first": f.index[0].date().isoformat(),
         "generated_at": datetime.now(KST).strftime("%Y-%m-%d %H:%M KST"),
         "macro_snapshot_hash": macro_info.get("snapshot_hash", ""),
@@ -1125,6 +1277,15 @@ def main():
                                          f"macro: {name} ({(info or {}).get('last', '')})")
                 except Exception as exc:
                     print(f"  사본 업로드 실패({name}):", exc, flush=True)
+        # 한국 수출(FRED)을 새로 받았으면 보관본으로 남긴다 — 다음에 FRED 가 막혀도 그림이 그려지게.
+        exports_cache = out_dir / "macro_cache" / "korea_exports.csv"
+        if (result.get("g20_outlook") or {}).get("exports_fresh") and exports_cache.exists():
+            try:
+                github_pages.publish("macro_history/korea_exports.csv",
+                                     exports_cache.read_text(encoding="utf-8"), tok,
+                                     "macro: korea_exports (FRED)")
+            except Exception as exc:
+                print("  사본 업로드 실패(korea_exports.csv):", exc, flush=True)
         for name in ("longterm.html", "longterm.json"):
             sha = github_pages.publish(f"docs/{args.target}/{name}", (out_dir / name).read_text(encoding="utf-8"),
                                        tok, f"longterm: {args.target} {result['as_of']}")

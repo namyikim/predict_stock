@@ -226,6 +226,37 @@ class LeadLagTests(unittest.TestCase):
         self.assertIsNone(cf.lead_lag(a, a))
 
 
+class OverlayOutlookTests(unittest.TestCase):
+    """겹친 계열의 전망 — 지수와 같은 달을 가리키고, 정상 계열은 차분하지 않는다."""
+
+    def pair(self):
+        rng = np.random.default_rng(11)
+        index = pd.date_range("1996-01-01", periods=368, freq="MS")
+        level = pd.Series(100 + np.cumsum(rng.normal(0, 0.2, 368)), index=index)
+        growth = pd.Series(0.1 * np.sin(np.arange(366) / 6.0) + rng.normal(0, 0.002, 366),
+                           index=index[:366])            # 지수보다 두 달 늦게 끝난다
+        return level, growth
+
+    def test_forecast_months_match_the_index_forecast(self):
+        level, growth = self.pair()
+        rows, _ = cf.overlay_outlook(level, growth, stationary=True, min_train=150)
+        self.assertEqual([r["month"] for r in rows],
+                         [f"{level.index[-1] + pd.DateOffset(months=h):%Y-%m}" for h in cf.HORIZONS])
+
+    def test_a_stationary_series_is_not_glued_to_its_last_value(self):
+        """증가율을 또 차분하면 전망이 마지막 값에 붙어 수평선이 된다(+71% 수평선이 실제로 나왔다)."""
+        level, growth = self.pair()
+        rows, _ = cf.overlay_outlook(level, growth, stationary=True, min_train=150)
+        self.assertGreater(len({round(float(r["point"]), 6) for r in rows}), 1)
+
+    def test_the_note_names_the_lead_and_the_correlation(self):
+        self.assertEqual(cf.lead_lag_note(None), "")
+        note = cf.lead_lag_note((9, 0.43))
+        self.assertIn("+0.43", note)
+        self.assertIn("9개월 선행", note)
+        self.assertIn("후행", cf.lead_lag_note((-2, -0.3)))
+
+
 class ChartTests(unittest.TestCase):
     def test_the_chart_separates_confirmed_from_forecast(self):
         series = monthly(np.linspace(100.0, 100.5, 60))

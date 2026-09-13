@@ -309,6 +309,34 @@ def lead_lag(series, other, max_lag=12, change=3, min_overlap=60):
     return best
 
 
+def lead_lag_note(found):
+    """lead_lag 결과를 그림에 적을 한 줄로. 없으면 빈 문자열."""
+    if not found:
+        return ""
+    lag, corr = found
+    where = (f"지수가 {lag}개월 선행" if lag > 0
+             else (f"지수가 {-lag}개월 후행" if lag < 0 else "같은 달"))
+    return f"둘의 상관 {corr:+.2f} ({where}, 지수 3개월 변화 기준)"
+
+
+def overlay_outlook(index_series, overlay, stationary=False, min_train=MIN_TRAIN, lags=2):
+    """겹친 계열의 앞 6개월 전망과 지수와의 관계. (전망 행 목록, (시차, 상관) 또는 None)
+
+    계열이 지수보다 늦게 끝나면(수출은 두 달쯤 뒤처진다) 지평을 그만큼 밀어 지수 전망과 **같은 달**을
+    맞힌다. 밀지 않으면 두 전망이 다른 달을 가리켜 그림이 거짓말을 한다. 증가율처럼 이미 정상인
+    계열은 차분하지 않는다 — 또 차분하면 전망이 마지막 값에 붙는다(+71% 수평선이 실제로 나왔다).
+    """
+    found = lead_lag(index_series, overlay)
+    offset = ((index_series.index[-1].year - overlay.index[-1].year) * 12
+              + index_series.index[-1].month - overlay.index[-1].month)
+    horizons = tuple(h + max(offset, 0) for h in HORIZONS)
+    table = walk_forward(overlay, [], horizons=horizons, min_train=min_train, lags=lags,
+                         difference=not stationary)
+    ahead = forecast_now(overlay, table, evaluate(table), horizons=horizons, lags=lags,
+                         difference=not stationary)
+    return ahead.to_dict("records"), found
+
+
 def forecast_svg(series, ahead, months=48, width=900, height=340, overlay=None,
                  title="경기선행지수", overlay_name="코스피", start=None,
                  overlay_fmt=lambda v: f"{v:,.0f}", overlay_note="", baseline=100.0,
@@ -552,27 +580,14 @@ def main():
 
     note, overlay_ahead = "", None
     if overlay is not None and len(overlay):
-        found = lead_lag(cli, overlay)
-        if found:
-            lag, corr = found
-            where = (f"지수가 {lag}개월 선행" if lag > 0
-                     else (f"지수가 {-lag}개월 후행" if lag < 0 else "같은 달"))
-            note = f"둘의 상관 {corr:+.2f} ({where}, 지수 3개월 변화 기준)"
-            print(f"\n{overlay_name} 와의 관계: {note}")
         # 겹친 계열도 같은 방법으로 앞을 낸다. 하나만 미래가 있으면 비교할 수가 없다.
-        # 계열이 지수보다 늦게 끝나므로(수출은 두 달쯤 뒤처진다) 지평을 그만큼 밀어
-        # **같은 달**을 맞힌다. 밀지 않으면 두 전망이 다른 달을 가리켜 그림이 거짓말을 한다.
-        offset = ((cli.index[-1].year - overlay.index[-1].year) * 12
-                  + cli.index[-1].month - overlay.index[-1].month)
-        horizons = tuple(offset + h for h in HORIZONS)
-        # 증가율은 이미 정상 계열이다. 또 차분하면 전망이 마지막 값에 붙는다.
-        flat = args.overlay.endswith("_yoy")
+        # 같은 달 맞추기·정상 계열 처리는 overlay_outlook 에 있다(장기 전망 보고서도 같은 함수를 쓴다).
         try:
-            o_table = walk_forward(overlay, [], horizons=horizons, min_train=args.min_train,
-                                   lags=args.lags, difference=not flat)
-            o_ahead = forecast_now(overlay, o_table, evaluate(o_table), horizons=horizons,
-                                   lags=args.lags, difference=not flat)
-            overlay_ahead = o_ahead.to_dict("records")
+            overlay_ahead, found = overlay_outlook(cli, overlay, stationary=args.overlay.endswith("_yoy"),
+                                                   min_train=args.min_train, lags=args.lags)
+            note = lead_lag_note(found)
+            if note:
+                print(f"\n{overlay_name} 와의 관계: {note}")
             print(f"{overlay_name} 전망: " + " · ".join(
                 f"{r['month']} {overlay_fmt(r['point'])}" for r in overlay_ahead))
         except Exception as exc:

@@ -91,9 +91,9 @@
   },
   "cli_active": true,
   "tsmc_info": {
-    "source": "last_successful_fetch",
-    "fresh": false,
-    "fetch_error": "TWSE 월매출 조회 실패(URLError ConnectionResetError: [Errno 104] Connection reset by peer). macro_inputs/tsmc_revenue.csv 로 대신할 수 있습니다.",
+    "source": "TWSE_API+cache",
+    "fresh": true,
+    "fetch_error": null,
     "first": "2025-07",
     "last": "2026-08",
     "rows": 5,

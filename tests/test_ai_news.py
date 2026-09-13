@@ -73,42 +73,74 @@ class CollectTests(unittest.TestCase):
         self.assertIn("bad", failed[0])
 
 
-class TopicTests(unittest.TestCase):
-    def test_classification_uses_words_actually_in_the_headline(self):
-        self.assertEqual(ai.classify("SK하이닉스 HBM 공급 확대"), "반도체·인프라")
-        self.assertEqual(ai.classify("오픈AI, 새 LLM 공개"), "모델·연구")
-        self.assertEqual(ai.classify("EU, AI 규제 법안 합의"), "정책·규제")
-        self.assertEqual(ai.classify("어느 주제에도 안 걸리는 말"), ai.OTHER)
-
-    def test_semiconductor_comes_first_when_several_match(self):
-        # 이 저장소의 관심사라 반도체를 앞에 둔다. 순서가 바뀌면 분류가 달라진다.
-        self.assertEqual(ai.classify("HBM 투자 확대"), "반도체·인프라")
-
-    def test_empty_topics_are_dropped_and_other_goes_last(self):
-        items = [{"title": "HBM 공급", "time": 1, "source": "", "link": ""},
-                 {"title": "분류 안 되는 제목", "time": 2, "source": "", "link": ""}]
-        groups = ai.group_by_topic(items)
-        self.assertEqual([g[0] for g in groups], ["반도체·인프라", ai.OTHER])
-
-    def test_each_topic_is_capped(self):
-        items = [{"title": f"HBM 기사 {i}", "time": i, "source": "", "link": ""} for i in range(20)]
-        groups = ai.group_by_topic(items, per_topic=3)
-        self.assertEqual(len(groups[0][2]), 3)
+NOW = datetime(2026, 9, 12, 20, 0, tzinfo=KST)
 
 
-class HotTermTests(unittest.TestCase):
-    def test_common_words_are_excluded_and_singletons_dropped(self):
-        items = [{"title": "AI 인공지능 엔비디아 실적"}, {"title": "엔비디아 주가 상승"},
-                 {"title": "한 번만 나온 낱말"}]
-        terms = dict(ai.hot_terms(items))
-        self.assertEqual(terms.get("엔비디아"), 2)
-        self.assertNotIn("AI", terms)          # 불용어
-        self.assertNotIn("인공지능", terms)
-        self.assertNotIn("주가", terms)        # 한 번만 나왔다
+def item(title, source="매체", minutes=0, link="https://e.com/a"):
+    return {"title": title, "source": source, "link": link, "time": NOW - timedelta(minutes=minutes)}
+
+
+class RankTests(unittest.TestCase):
+    """인기 급상승 검색어처럼 순위로 보인다(2026-09-13, 주제별 묶음에서 바꿈).
+
+    순위는 다룬 매체 수 → 기사 수 → 최근 시각. 검색량이 아니라 헤드라인 언급이다.
+    """
+
+    def terms(self, items, **kwargs):
+        return [row["term"] for row in ai.rank_terms(items, **kwargs)]
+
+    def test_terms_covered_by_more_outlets_rank_higher(self):
+        items = [item("엔비디아 실적", "A"), item("엔비디아 주가", "B"), item("엔비디아 신제품", "C"),
+                 item("오픈AI 신제품", "A"), item("오픈AI 소송", "A"), item("오픈AI 인수", "B")]
+        ranked = ai.rank_terms(items)
+        self.assertEqual([r["term"] for r in ranked[:2]], ["엔비디아", "오픈AI"])
+        self.assertEqual((ranked[0]["sources"], ranked[0]["articles"]), (3, 3))
+        self.assertEqual((ranked[1]["sources"], ranked[1]["articles"]), (2, 3))
+
+    def test_one_outlet_repeating_a_story_does_not_make_a_trend(self):
+        items = [item("앤트로픽 인터뷰", "A"), item("앤트로픽 소송", "A"), item("앤트로픽 인수", "A")]
+        self.assertEqual(ai.rank_terms(items), [])
+
+    def test_korean_english_compounds_stay_whole(self):
+        """쪼개면 '오픈'이 1위가 된다(2026-09-13 실제 헤드라인에서 확인)."""
+        terms = self.terms([item("오픈AI 상장 연기", "A"), item("오픈AI 올트먼 발언", "B")])
+        self.assertIn("오픈AI", terms)
+        self.assertNotIn("오픈", terms)
+
+    def test_particles_are_removed_only_when_the_bare_word_also_appears(self):
+        terms = self.terms([item("엔비디아가 반등", "A"), item("엔비디아 반등", "B"),
+                            item("마이크로 반등", "A"), item("마이크로 신고가", "B")])
+        self.assertIn("엔비디아", terms)
+        self.assertNotIn("엔비디아가", terms)
+        self.assertIn("마이크로", terms, "조사처럼 끝나는 이름을 자르면 안 된다")
+
+    def test_generic_words_and_verb_forms_do_not_rank(self):
+        terms = self.terms([item("AI 개발 속도 늦춰야", "A"), item("AI 개발 속도 늦춰야", "B")])
+        for word in ("AI", "개발", "속도", "늦춰야"):
+            self.assertNotIn(word, terms)
+
+    def test_each_term_shows_its_latest_headlines_first_and_is_capped(self):
+        row = ai.rank_terms([item(f"엔비디아 {i}", f"매체{i}", minutes=i) for i in range(6)], per_term=3)[0]
+        self.assertEqual(row["term"], "엔비디아")
+        self.assertEqual(len(row["news"]), 3)
+        self.assertEqual(row["news"][0]["title"], "엔비디아 0")
+
+    def test_the_list_is_capped_like_trending_searches(self):
+        words = ["엔비디아", "오픈AI", "반도체", "데이터센터", "앤트로픽", "올트먼",
+                 "자율주행", "울산", "최태원", "현대차", "삼성전자", "하이닉스"]
+        items = [item(word, source) for word in words for source in ("A", "B")]
+        self.assertEqual(len(ai.rank_terms(items)), ai.RANK_LIMIT)
+
+    def test_categories_are_gone(self):
+        for name in ("group_by_topic", "classify", "hot_terms", "TOPICS"):
+            self.assertFalse(hasattr(ai, name), f"{name} 이 남아 있다")
 
 
 class SafetyTests(unittest.TestCase):
     """헤드라인은 남이 쓴 글이다. 그대로 페이지에 넣으면 안 된다."""
+
+    def page(self, items, failed=()):
+        return ai.build_html(ai.rank_terms(items), NOW, len(items), list(failed))
 
     def test_non_http_links_are_not_linked(self):
         self.assertEqual(ai._safe_url("javascript:alert(1)"), "")
@@ -116,28 +148,36 @@ class SafetyTests(unittest.TestCase):
         self.assertEqual(ai._safe_url("https://example.com/a"), "https://example.com/a")
 
     def test_headline_markup_is_escaped(self):
-        now = datetime(2026, 9, 12, 20, 0, tzinfo=KST)
-        items = [{"title": '<script>alert("x")</script> HBM', "time": now,
-                  "source": "<b>매체</b>", "link": "javascript:alert(1)"}]
-        page = ai.build_html(ai.group_by_topic(items), ai.hot_terms(items), now, 1, [])
+        page = self.page([item('<script>alert("x")</script> 엔비디아', "<b>매체</b>",
+                               link="javascript:alert(1)"),
+                          item("엔비디아 반등", "B")])
+        self.assertIn("엔비디아", page)
         self.assertNotIn("<script>alert", page)
         self.assertIn("&lt;script&gt;", page)
         self.assertNotIn("javascript:alert", page)
         self.assertNotIn("<b>매체</b>", page, "매체명도 그대로 들어가면 안 된다")
         self.assertIn("&lt;b&gt;매체&lt;/b&gt;", page)
 
-    def test_page_states_what_it_does_not_do(self):
-        now = datetime(2026, 9, 12, 20, 0, tzinfo=KST)
-        items = [{"title": "HBM 공급 확대", "time": now, "source": "매체", "link": "https://e.com/1"}]
-        page = ai.build_html(ai.group_by_topic(items), [], now, 1, [])
+    def test_page_states_what_it_is_and_is_not(self):
+        page = self.page([item("엔비디아 반등", "A"), item("엔비디아 신고가", "B")])
         self.assertIn("요약하거나 해석하지 않았", page)
         self.assertIn("투자 자문이 아닙니다", page)
+        self.assertIn("검색량 순위가 아니라", page)
         self.assertIn("rel=\"noopener noreferrer nofollow\"", page)
 
+    def test_ranks_are_numbered_in_order(self):
+        page = self.page([item("엔비디아 반등", "A"), item("엔비디아 신고가", "B"), item("엔비디아 급등", "C"),
+                          item("오픈AI 상장", "A"), item("오픈AI 연기", "B")])
+        self.assertLess(page.index("엔비디아</div>"), page.index("오픈AI</div>"))
+        self.assertIn("매체 3곳 · 기사 3건", page)
+
+    def test_an_empty_ranking_says_why(self):
+        page = ai.build_html([], NOW, 5, [])
+        self.assertIn("순위를 매길 만큼", page)
+        self.assertIn("받은 기사가 없습니다", ai.build_html([], NOW, 0, []))
+
     def test_failed_queries_are_disclosed_on_the_page(self):
-        now = datetime(2026, 9, 12, 20, 0, tzinfo=KST)
-        items = [{"title": "HBM", "time": now, "source": "", "link": ""}]
-        page = ai.build_html(ai.group_by_topic(items), [], now, 1, ["AI 규제(TimeoutError)"])
+        page = self.page([item("엔비디아 반등", "A"), item("엔비디아 신고가", "B")], ["AI 규제(TimeoutError)"])
         self.assertIn("받지 못했습니다", page)
         self.assertIn("AI 규제", page)
 

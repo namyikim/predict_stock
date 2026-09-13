@@ -257,6 +257,333 @@ def scorecard_html(review, ensemble_name="Mean ensemble", note=""):
             + (f' {escape(note)}' if note else '') + '</div></div>')
 
 
+# ---------------------------------------------------------------------------
+# 장기 전망 탭의 쉬운 요약
+# ---------------------------------------------------------------------------
+# 오늘의 예측 탭처럼 장기 전망 탭에도 맨 위 요약을 둔다(2026-09-13 요청). 이번 분기 영업이익 추정을 크게,
+# 앞으로의 흐름을 짧게, 30만·40만 원 같은 딱 떨어지는 가격에 언제쯤 닿을 수 있는지를 확률로 보인다.
+# 새 모델을 만들지 않는다. 월간 도구가 계산해 둔 값(longterm.json·earnings.json)과 오늘까지의 종가만 쓴다.
+# 가격 도달 시점은 예측이 아니라 변동성 모의실험이다. 장기 주가 모델이 '변화 없음'을 이긴다는 근거가 없으므로
+# 추세를 넣지 않은 경우를 기본으로, 과거 같은 반도체 국면의 1년 중앙값을 추세로 넣은 경우를 참고로 둔다.
+MONTH_TRADING_DAYS = 21
+YEAR_TRADING_DAYS = 252
+_TONE_CHIP = {"up": ("좋은 신호", "#e6f2ea", "#1e6b34"), "down": ("조심할 신호", "#fbeaea", "#a8322a"),
+              "": ("참고", "#f1f2f4", "#6b7178")}
+
+
+def round_price_levels(current, count=2):
+    """현재가 위의 딱 떨어지는 가격들. 25.95만 원이면 30만·40만 원, 181.2만 원이면 200만·300만 원."""
+    current = _finite(current)
+    if current is None or current <= 0:
+        return []
+    step = 10.0 ** np.floor(np.log10(current))
+    first = (np.floor(current / step) + 1) * step
+    return [float(first + step * i) for i in range(count)]
+
+
+def level_reach_odds(close, levels, *, daily_drift=0.0, horizon_days=2 * YEAR_TRADING_DAYS,
+                     lookback_days=YEAR_TRADING_DAYS, n_paths=20000, seed=20260913):
+    """가격마다 '종가가 한 번이라도 닿을' 확률이 시간이 지나며 어떻게 오르는지 모의실험한다.
+
+    최근 lookback_days 거래일의 일간 로그수익률에서 평균을 뺀 값을 복원추출해 경로를 만든다. 지금의 변동성과
+    두꺼운 꼬리는 그대로 쓰되, 지난 1년의 추세가 앞으로도 이어진다고 가정하지 않는다(평균을 빼는 이유).
+    추세는 daily_drift(하루 로그수익률 — 스칼라 또는 길이 horizon_days 배열)로만 넣는다.
+    같은 seed 면 같은 결과이고, 시나리오끼리 같은 seed 를 쓰면 추세 차이만 비교된다.
+
+    반환: 종가가 61개 미만이거나 가격이 없으면 None. 아니면
+      {"current", "annual_vol", "horizon_days",
+       "levels": [{"level", "change", "curve"(1~horizon 거래일 누적 도달 확률), "half_day"(처음 50% 이상이
+                   되는 거래일 수, 기간 안에 없으면 None)}]}
+    이미 넘은 가격은 첫날부터 도달한 것으로 센다.
+    """
+    prices = pd.Series(close).astype(float)
+    prices = prices[np.isfinite(prices) & (prices > 0)]
+    levels = [float(level) for level in (levels or []) if _finite(level) is not None and float(level) > 0]
+    if len(prices) < 61 or not levels:
+        return None
+    horizon = int(horizon_days)
+    returns = np.diff(np.log(prices.to_numpy()))[-int(lookback_days):]
+    shocks = returns - returns.mean()
+    drift = np.broadcast_to(np.asarray(daily_drift, dtype=float), (horizon,))
+    rng = np.random.default_rng(seed)
+    targets = np.log(np.asarray(levels))[:, None]
+    position = np.full(int(n_paths), np.log(prices.iloc[-1]))
+    first_hit = np.where(position[None, :] >= targets, 0, horizon + 1)
+    for day in range(1, horizon + 1):
+        position += drift[day - 1] + shocks[rng.integers(0, shocks.size, position.size)]
+        first_hit[(first_hit > horizon) & (position[None, :] >= targets)] = day
+    days = np.arange(1, horizon + 1)
+    current = float(prices.iloc[-1])
+    rows = []
+    for level, hits in zip(levels, first_hit):
+        curve = np.searchsorted(np.sort(hits), days, side="right") / hits.size
+        rows.append({"level": level, "change": level / current - 1, "curve": curve,
+                     "half_day": int(days[np.argmax(curve >= .5)]) if curve[-1] >= .5 else None})
+    return {"current": current, "annual_vol": float(shocks.std(ddof=1) * np.sqrt(YEAR_TRADING_DAYS)),
+            "horizon_days": horizon, "levels": rows}
+
+
+def _trillion(value):
+    value = _finite(value)
+    return "—" if value is None else f"{value / 1e12:,.1f}조 원"
+
+
+def _man_won(value):
+    """300000 → '30만원'. 만 원 단위로 떨어지지 않으면 원 단위 그대로."""
+    man = float(value) / 1e4
+    return f"{man:,.0f}만원" if abs(man - round(man)) < 1e-6 else f"{float(value):,.0f}원"
+
+
+def _when(price_date, trading_days):
+    """거래일 수를 '약 N개월 뒤 (YYYY년 M월경)'로. 달력 날짜는 1년 252거래일로 환산한 대략값이다."""
+    months = trading_days / MONTH_TRADING_DAYS
+    text = "한 달 안" if months < 1 else f"약 {months:.0f}개월 뒤"
+    try:
+        day = pd.Timestamp(price_date) + pd.Timedelta(days=round(trading_days * 365.25 / YEAR_TRADING_DAYS))
+    except (TypeError, ValueError):
+        return text
+    return text if pd.isna(day) else f"{text} ({day.year}년 {day.month}월경)"
+
+
+def longterm_easy_summary_html(*, name, price_date, close, longterm=None, earnings=None, levels=None,
+                               n_paths=20000, seed=20260913):
+    """장기 전망 탭 맨 위의 쉬운 요약: 이번 분기 영업이익 추정(강조), 앞으로의 흐름, 가격 도달 시점.
+
+    검증 문(門)을 그대로 따른다 — 영업이익은 기준선을 이긴 추정만 숫자로, 장기 주가 모델은 '변화 없음'을
+    이긴 지평만 수익률로 적는다. 가격 도달 시점은 예측이 아니라 변동성 모의실험(level_reach_odds)이다.
+    제목은 h3 하나뿐이다 — 탭 나누기가 h3 로 절을 자르므로 안쪽 블록은 div 로만 만든다.
+    """
+    from html import escape
+
+    def mapping(value):
+        return value if isinstance(value, dict) else {}
+
+    longterm, earnings = mapping(longterm), mapping(earnings)
+
+    def passes(item):
+        return bool(mapping(item.get("evaluation")).get("beats_baselines")
+                    and _finite(item.get("point")) is not None and not item.get("no_point_reason"))
+
+    def band(item):
+        point, low, high = (_finite(item.get(key)) for key in ("point", "low", "high"))
+        if low is None or high is None:
+            return "구간 없음"
+        text = f"80% 구간 {low / 1e12:,.1f}~{high / 1e12:,.1f}조 원"
+        if point is not None and low > point:
+            text += " · 과거에 실제가 추정보다 컸던 경향이 있어 구간이 추정보다 위에 있습니다"
+        elif point is not None and high < point:
+            text += " · 과거에 실제가 추정보다 작았던 경향이 있어 구간이 추정보다 아래에 있습니다"
+        return text
+
+    def card(label, value, note, big=False, muted=False):
+        size = 16 if muted else (26 if big else 19)
+        return (f'<div style="{_CARD};flex:{"2 1 220px" if big else "1 1 150px"}">'
+                f'<div style="font-size:11px;color:#7a8797">{escape(label)}</div>'
+                f'<div style="font-size:{size}px;font-weight:700;line-height:1.3;'
+                f'color:{"#8a9199" if muted else "#1a1a1a"}">{escape(value)}</div>'
+                f'<div style="font-size:11px;color:#7a8797;line-height:1.45">{escape(note)}</div></div>')
+
+    def box(title, subtitle, body):
+        return (f'<div style="{_BOX}">'
+                f'<div style="font-size:14px;font-weight:700;margin-bottom:8px">{escape(title)}'
+                + (f' <span style="font-weight:400;color:#7a8797;font-size:12px">{escape(subtitle)}</span>'
+                   if subtitle else '') + f'</div>{body}</div>')
+
+    # ---- 1) 이번 분기 영업이익 ----------------------------------------------------
+    quarter = str(earnings.get("quarter") or "이번 분기")
+    point, last = _finite(earnings.get("point")), _finite(earnings.get("last_actual"))
+    next_q = mapping(earnings.get("next_quarter"))
+    next_label = str(next_q.get("quarter") or "다음 분기")
+    change = point / last - 1 if passes(earnings) and last else None
+    next_change = (_finite(next_q.get("point")) / point - 1) if passes(earnings) and passes(next_q) else None
+    if not earnings:
+        profit_html = '<div style="font-size:13px;color:#6b7178">영업이익 추정 자료를 확인하지 못했습니다.</div>'
+    else:
+        cards = [card(f"{quarter} 영업이익 추정", _trillion(point), band(earnings), big=True)
+                 if passes(earnings) else
+                 card(f"{quarter} 영업이익 추정", "예측하기 어렵습니다",
+                      str(earnings.get("no_point_reason") or "검증에서 기준선을 이기지 못했습니다"),
+                      big=True, muted=True)]
+        if last is not None:
+            cards.append(card(f"직전 분기 실제 · {earnings.get('last_actual_quarter') or ''}", _trillion(last),
+                              f"이번 분기 추정은 이보다 {change:+.1%}" if change is not None else "비교할 추정 없음"))
+        if next_q:
+            cards.append(card(f"{next_label} 추정", _trillion(next_q.get("point")),
+                              (f"이번 분기 추정 대비 {next_change:+.1%} · " if next_change is not None else "")
+                              + band(next_q))
+                         if passes(next_q) else
+                         card(f"{next_label} 추정", "예측하기 어렵습니다", "검증에서 기준선을 이기지 못했습니다",
+                              muted=True))
+        basis = []
+        if earnings.get("months_included"):
+            basis.append(f"{earnings['months_included']} 반도체 수출 반영")
+        for flash in earnings.get("flash_applied") or []:
+            if isinstance(flash, dict) and flash.get("month"):
+                basis.append(f"{str(flash['month'])[-2:].lstrip('0')}월은 1~{flash.get('days')}일 관세청 속보")
+        reason = mapping(mapping(earnings.get("provisional_info")).get(earnings.get("quarter_code"))).get("reason")
+        if reason:
+            basis.append(str(reason))
+        basis.append("회사 발표나 증권사 전망 평균이 아닌 자체 모델 추정")
+        profit_html = (f'<div style="display:flex;gap:8px;flex-wrap:wrap">{"".join(cards)}</div>'
+                       '<div style="font-size:11px;color:#8a9199;margin-top:6px;line-height:1.5">'
+                       f'{escape(" · ".join(basis))}</div>')
+
+    # ---- 2) 앞으로 어떻게 될까 -------------------------------------------------------
+    signals = []
+    if change is not None:
+        text = f"이익 — {quarter} 추정이 직전 분기보다 {change:+.0%}"
+        if next_change is not None:
+            text += f", {next_label} 추정은 그보다 {next_change:+.0%}"
+        tone = ("up" if change > 0 and (next_change is None or next_change > 0) else
+                "down" if change < 0 and (next_change is None or next_change < 0) else "")
+        signals.append((tone, text + "입니다."))
+    evaluation, forecast = mapping(longterm.get("evaluation")), mapping(longterm.get("forecast"))
+    passed, pending = [], []
+    for months in ("3", "6", "12"):
+        value = _finite(mapping(forecast.get(months)).get("point"))
+        if mapping(evaluation.get(months)).get("beats_zero") and value is not None:
+            passed.append((months, float(np.expm1(value))))     # 모델 타깃은 로그수익률
+        else:
+            pending.append(months)
+    if longterm:
+        if passed:
+            text = ("장기 주가 모델 — " + " · ".join(f"{m}개월 뒤 {r:+.1%}" for m, r in passed)
+                    + " 예상(검증 통과)")
+            if pending:
+                text += f", {'·'.join(pending)}개월은 판단 근거 부족"
+            signals.append(("up" if passed[0][1] > 0 else "down", text + "."))
+        else:
+            signals.append(("", "장기 주가 모델 — 3·6·12개월 모두 '변화 없음'보다 낫다는 근거가 없어 "
+                                "방향을 말하지 않습니다."))
+    state, duration = mapping(longterm.get("current")), mapping(longterm.get("duration"))
+    phase = duration.get("phase") or state.get("phase")
+    phase_row = next((row for row in (mapping(longterm.get("phases")).get("12") or [])
+                      if isinstance(row, dict) and row.get("phase") == phase
+                      and _finite(row.get("median")) is not None), None)
+    if phase:
+        text, tone = f"반도체 수출 사이클 — {str(phase).split('(')[0]} 국면", ""
+        months_so_far = _finite(duration.get("months_so_far"))
+        if months_so_far is not None:
+            text += f" {months_so_far:.0f}개월째"
+        remaining = _finite(duration.get("remaining_median"))
+        n_past, n_longer = _finite(duration.get("n_past")), _finite(duration.get("n_conditional"))
+        if remaining is not None:
+            text += f", 과거 같은 국면은 이 시점에서 {remaining:.0f}개월쯤 더 갔습니다"
+        elif n_past and n_longer is not None:
+            text += f", 과거 {n_past:.0f}번 중 이보다 길었던 것은 {n_longer:.0f}번뿐이라 국면 후반일 수 있습니다"
+            tone = "down" if n_longer / n_past < .25 else ""
+        if phase_row:
+            median = float(np.expm1(phase_row["median"]))
+            text += (f". 과거 같은 국면에서 1년 뒤 주가 중앙값 {median:+.0%}, 오른 비율 "
+                     f"{float(phase_row.get('positive_share') or 0):.0%}({int(phase_row.get('n') or 0)}개월)")
+            tone = "down" if median < 0 else ("up" if median > .05 and tone != "down" else tone)
+        signals.append((tone, text + "."))
+    change_6m = _finite(mapping(longterm.get("cli_outlook")).get("change_6m"))
+    if change_6m is not None:
+        signals.append(("up" if change_6m >= .3 else "down" if change_6m <= -.3 else "",
+                        f"경기선행지수(OECD 한국) — 앞으로 6개월 동안 {abs(change_6m):.1f}포인트 "
+                        f"{'오를' if change_6m > 0 else '내릴'} 것으로 전망됩니다."))
+    z, momentum = _finite(state.get("price_to_exports_z")), _finite(state.get("mom_12m"))
+    if z is not None:
+        text = (f"가격 부담 — 수출 대비 주가가 5년 평균보다 {z:+.1f}σ로 "
+                f"{'비싼' if z > 1 else '싼' if z < -1 else '보통인'} 편")
+        if momentum is not None:
+            text += f"(지난 1년 주가 {np.expm1(momentum):+.0%})"
+        signals.append(("down" if z > 1 else "up" if z < -1 else "", text + "입니다."))
+    if signals:
+        ups = sum(tone == "up" for tone, _ in signals)
+        downs = sum(tone == "down" for tone, _ in signals)
+        signals_html = "".join(
+            '<div style="display:flex;gap:8px;align-items:baseline;padding:6px 0;border-top:1px solid #eef1f4">'
+            f'<span style="flex:0 0 72px;text-align:center;background:{_TONE_CHIP[tone][1]};'
+            f'color:{_TONE_CHIP[tone][2]};font-size:11px;font-weight:700;padding:1px 0;border-radius:10px">'
+            f'{_TONE_CHIP[tone][0]}</span>'
+            f'<span style="font-size:13px;color:#3a4652;line-height:1.55">{escape(text)}</span></div>'
+            for tone, text in signals)
+        signals_html += (f'<div style="font-size:12px;color:#586575;margin-top:6px">좋은 신호 {ups}개 · '
+                         f'조심할 신호 {downs}개. 이미 계산된 신호를 세어 본 것이며 매수·매도 의견이 아닙니다.</div>')
+    else:
+        signals_html = '<div style="font-size:13px;color:#6b7178">장기 자료를 확인하지 못했습니다.</div>'
+
+    # ---- 3) 딱 떨어지는 가격에는 언제쯤 ------------------------------------------------
+    prices = pd.Series(close if close is not None else [], dtype=float)
+    prices = prices[np.isfinite(prices) & (prices > 0)]
+    current = float(prices.iloc[-1]) if len(prices) else None
+    levels = [float(level) for level in levels] if levels else round_price_levels(current)
+    horizon = 2 * YEAR_TRADING_DAYS
+    scenarios = [("추세 없음", 0.0)]
+    if phase_row and int(phase_row.get("n") or 0) >= 20:
+        drift = np.zeros(horizon)
+        drift[:YEAR_TRADING_DAYS] = float(phase_row["median"]) / YEAR_TRADING_DAYS   # 1년만, 그 뒤는 추세 없음
+        scenarios.append((f"과거 같은 국면의 1년 흐름({np.expm1(phase_row['median']):+.0%})이 이어지면", drift))
+    # 등락은 최근 3년에서 뽑는다. 2026년처럼 1년 변동성이 이전의 2배를 넘는 해만 쓰면(삼성전자 74% vs 이전
+    # 2년 30%) 2년 뒤까지의 도달 시점이 크게 앞당겨진다. 지평(2년)에 맞춰 더 긴 창을 쓰고 1년 값은 함께 적는다.
+    lookback = 3 * YEAR_TRADING_DAYS
+    used_days = min(lookback, max(len(prices) - 1, 0))
+    recent = np.diff(np.log(prices.to_numpy()))[-YEAR_TRADING_DAYS:] if len(prices) > 21 else np.array([])
+    recent_vol = float(recent.std(ddof=1) * np.sqrt(YEAR_TRADING_DAYS)) if recent.size > 20 else None
+    runs = [(label, level_reach_odds(prices, levels, daily_drift=drift, horizon_days=horizon,
+                                     lookback_days=lookback, n_paths=n_paths, seed=seed))
+            for label, drift in scenarios]
+    base = runs[0][1]
+    if base is None:
+        level_title = "딱 떨어지는 가격에는 언제쯤?"
+        level_html = ('<div style="font-size:13px;color:#6b7178">종가 이력이 짧거나 가격이 없어 '
+                      '계산하지 않았습니다.</div>')
+    else:
+        level_title = "·".join(_man_won(row["level"]) for row in base["levels"]) + "은 언제쯤?"
+        level_cards = ""
+        for index, row in enumerate(base["levels"]):
+            curve = row["curve"]
+            if row["change"] <= 0:
+                head, odds, extra = "이미 넘었습니다", f"현재가 {base['current']:,.0f}원", ""
+            else:
+                head = (f"가능성이 절반을 넘는 때: {_when(price_date, row['half_day'])}" if row["half_day"]
+                        else "2년 안에는 가능성이 절반을 넘지 않습니다")
+                odds = (" · ".join(f"{label} 안 {curve[min(days, curve.size) - 1]:.0%}"
+                                   for label, days in (("6개월", 126), ("1년", 252), ("2년", 504)))
+                        + " (추세 없음)")
+                extra = " / ".join(
+                    f"{label}: " + (f"절반 넘는 때 {_when(price_date, other['half_day'])}" if other["half_day"]
+                                    else "2년 안에 절반을 넘지 않음")
+                    + f" · 1년 안 {other['curve'][min(252, other['curve'].size) - 1]:.0%}"
+                    for label, run in runs[1:] for other in [run["levels"][index]])
+            level_cards += (f'<div style="{_CARD};flex:1 1 240px">'
+                            f'<div style="font-size:12px;color:#7a8797">{escape(_man_won(row["level"]))} · '
+                            f'지금보다 {row["change"]:+.1%}</div>'
+                            f'<div style="font-size:17px;font-weight:700;line-height:1.4;margin:2px 0">{escape(head)}</div>'
+                            f'<div style="font-size:12px;color:#3a4652">{escape(odds)}</div>'
+                            + (f'<div style="font-size:11px;color:#7a8797;margin-top:3px;line-height:1.45">'
+                               f'{escape(extra)}</div>' if extra else '') + '</div>')
+        model_note = (f"검증을 통과한 {'·'.join(m for m, _ in passed)}개월 주가 모델이 있지만 지평이 짧아 2년 추세로 "
+                      "늘려 쓰지 않았습니다. " if passed else
+                      "장기 주가 모델이 '변화 없음'보다 낫다는 근거가 없어 추세로 쓰지 않았습니다. ")
+        # KRX 는 1년에 245거래일 안팎이라 3년이 756거래일에 못 미친다. 두 달 안쪽 차이는 3년으로 적는다.
+        window_text = ("최근 3년" if used_days >= lookback - 2 * MONTH_TRADING_DAYS
+                       else f"최근 {used_days:,}거래일")
+        recent_text = (f", 최근 1년만 보면 {recent_vol:.0%}"
+                       if recent_vol is not None and abs(recent_vol - base["annual_vol"]) >= .05 else "")
+        level_html = (f'<div style="display:flex;gap:8px;flex-wrap:wrap">{level_cards}</div>'
+                      '<div style="font-size:11px;color:#8a9199;margin-top:6px;line-height:1.5">'
+                      f'{window_text} 일간 등락(연 변동성 {base["annual_vol"]:.0%}{recent_text})에서 평균을 빼고 다시 뽑아 '
+                      f'{int(n_paths):,}개 경로로 2년을 모의실험했습니다. 종가가 한 번이라도 그 가격에 닿을 확률이며, '
+                      f'그 가격을 지킨다는 뜻이 아닙니다. {escape(model_note)}목표가나 매수·매도 의견이 아닙니다.</div>')
+
+    stamp = " · ".join(part for part in (
+        f"장기 자료 {longterm['as_of']} 기준" if longterm.get("as_of") else "",
+        f"영업이익 추정 {str(earnings['generated_at'])[:10]} 계산" if earnings.get("generated_at") else "",
+        f"주가 {_day_label(price_date) or ''} 종가 {current:,.0f}원" if current is not None else "") if part)
+    return ('<section id="longterm-summary" aria-label="한눈에 보는 장기 전망 요약" '
+            'style="background:#f0f6fc;border:1px solid #cedff0;border-radius:8px;padding:16px 20px;margin:0 0 20px">'
+            '<h3 style="margin:0 0 6px;font-size:19px">한눈에 보는 장기 전망 요약</h3>'
+            f'<div style="font-size:12px;color:#586575">{escape(str(name))}'
+            + (f' · {escape(stamp)}' if stamp else '') + '</div>'
+            + box("이번 분기 영업이익 추정", "", profit_html)
+            + box("앞으로 어떻게 될까", "", signals_html)
+            + box(level_title, "종가 기준 · 확률", level_html)
+            + '</section>')
+
+
 def easy_summary_html(*, name, prediction_date, data_date, summary, open_forecast,
                       price_forecasts, review=None, longterm=None, earnings=None,
                       target_mode="close_to_close", record_forecast=True,

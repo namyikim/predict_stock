@@ -178,7 +178,8 @@ REPORT_ORDER = "".join(
     f'<h3 style="x">{title}</h3><div>본문</div>' for title in (
         "한눈에 보는 쉬운 요약", "그 밖에 지금 알 수 있는 것", "2026-09-11 (금) 예측 vs 실제",
         "1. 다음 거래일 방향", "1-1. 외국인·기관 수급", "2. 시초가예측과 종가예측",
-        "3. 이 예측을 어떻게 읽어야 하는가", "1. 장기 전망 (월간)", "2. 이번 분기 영업이익 추정",
+        "3. 이 예측을 어떻게 읽어야 하는가", "한눈에 보는 장기 전망 요약", "1. 장기 전망 (월간)",
+        "2. 이번 분기 영업이익 추정",
         "모델 성적과 검증", "이 보고서의 데이터", "참고 정보: 최근 공시와 예정 발표"))
 
 
@@ -199,8 +200,9 @@ class TabArrangementTests(unittest.TestCase):
         self.assertNotIn("2. 이번 분기 영업이익 추정", first)
 
     def test_long_term_tab_holds_the_outlook_and_the_quarterly_profit(self):
+        # 장기 전망 탭도 오늘의 예측처럼 쉬운 요약이 맨 위에 온다(2026-09-13).
         self.assertEqual(panel_titles(self.out())["rtab-1"],
-                         ["1. 장기 전망 (월간)", "2. 이번 분기 영업이익 추정"])
+                         ["한눈에 보는 장기 전망 요약", "1. 장기 전망 (월간)", "2. 이번 분기 영업이익 추정"])
 
     def test_numbers_restart_in_every_tab(self):
         """번호는 탭 안에서 1부터 이어진다. 절이 하나뿐인 탭은 번호가 없다."""

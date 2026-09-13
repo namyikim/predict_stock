@@ -126,7 +126,7 @@ class TabTests(unittest.TestCase):
         """절 제목을 그대로 쓰면 휴대폰에서 탭 두 개도 한 줄에 안 들어간다."""
         out = rh.tabify_sections(PAGE)
         labels = re.findall(r'<a href="#rtab-\d+" aria-selected="(?:true|false)">(.*?)</a>', out)
-        self.assertEqual(labels, ["요약·예측", "모델 성능", "데이터"])
+        self.assertEqual(labels, ["오늘의 예측", "과거 성적", "사용한 데이터"])
         self.assertTrue(all(len(label) <= 12 for label in labels))
         # 탭 이름에는 절 번호를 붙이지 않는다(2026-09-13). 번호는 절 제목에만 남는다.
         self.assertFalse(any(re.match(r"\d", label) for label in labels), labels)

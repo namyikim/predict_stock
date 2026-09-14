@@ -124,7 +124,7 @@ class NotebookStructureTests(unittest.TestCase):
         self.assertIn('1. 다음 거래일 방향 ({_prediction_date_label})', self.source)
 
     def test_conclusions_come_first_and_evidence_last(self):
-        """원문 순서가 탭 순서와 같다: 오늘의 예측 → 장기 전망 탭 → 성적과 검증 → 데이터 → 공시.
+        """원문 순서가 탭 순서와 같다: 오늘의 예측 → 장기 전망 탭 → 예측 성적 → 데이터 → 공시.
 
         2026-09-13 재구성: 절 번호를 탭마다 새로 매긴다. 첫 탭은 1~3절(방향·가격·읽는 법), 장기 전망 탭은
         1·2절(장기 전망·영업이익)이고, 절이 하나뿐인 탭은 번호가 없다. 공시는 참고 자료라 맨 뒤다.
@@ -135,7 +135,7 @@ class NotebookStructureTests(unittest.TestCase):
         guide = self.source.index("'3. 이 예측을 어떻게 읽어야 하는가</h3>'", price)
         longterm = self.source.index("f'{longterm_html}'", guide)
         earnings = self.source.index("f'{earnings_html}'", longterm)
-        merged = self.source.index("'모델 성적과 검증</h3>'", earnings)
+        merged = self.source.index("'이 모델의 예측 성적</h3>'", earnings)
         data = self.source.index("'이 보고서의 데이터</h3>'", merged)
         disclosure = self.source.index("f'{disclosure_html}'", data)
         order = [direction, flow, price, guide, longterm, earnings, merged, data, disclosure]
@@ -143,14 +143,14 @@ class NotebookStructureTests(unittest.TestCase):
         # 조각이 없을 때 대신 쓰는 제목도 장기 전망 탭의 번호를 따른다.
         self.assertIn("1. 장기 전망 (월간)</h3>", self.source)
         self.assertIn("'2. 이번 분기 영업이익 추정</h3>'", self.source)
-        for old in ("'5. 이 예측을 어떻게", "6. 모델 성적과 검증", "7. 이 보고서의 데이터", "(아래 5절)",
+        for old in ("'5. 이 예측을 어떻게", "6. 모델 성능", "7. 이 보고서의 데이터", "(아래 5절)",
                     '"source": "3절"'):
             self.assertNotIn(old, self.source)
 
     def test_performance_and_verdict_are_one_section(self):
         """예전 6절(모델 성능)과 7절(자동 판정)은 같은 수치를 따로 보였다. 한 절로 합치고(2026-09-13)
         판정을 먼저, 그 근거인 모델별 수치를 뒤에 둔다."""
-        merged = self.source.index("'모델 성적과 검증</h3>'")
+        merged = self.source.index("'이 모델의 예측 성적</h3>'")
         checks = self.source.index("f'{rows_check}</table></div>'", merged)
         metrics = self.source.index("f'{rows_metric}</table></div>'", merged)
         data = self.source.index("'이 보고서의 데이터</h3>'", merged)

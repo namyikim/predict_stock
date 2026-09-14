@@ -17,7 +17,7 @@ PAGE = ('<div class="wrap">'
         '<h3 style="x">한눈에 보는 쉬운 요약</h3><div>요약 본문</div>'
         '<h3 style="x">1. 다음 거래일 방향 <span style="y">&nbsp;부제입니다</span></h3><div>방향 본문</div>'
         '<h3 style="x">2026-09-11 (금) 예측 vs 실제</h3><div>채점 본문</div>'
-        '<h3 style="x">모델 성적과 검증</h3><div>성능 본문<table><tr><td>표</td></tr></table></div>'
+        '<h3 style="x">이 모델의 예측 성적</h3><div>성능 본문<table><tr><td>표</td></tr></table></div>'
         '<h3 style="x">1. 장기 전망 (월간)</h3><div>장기 본문</div>'
         '<h3 style="x">이 보고서의 데이터</h3><div>데이터 본문</div>'
         '</div>')
@@ -93,7 +93,7 @@ class TabTests(unittest.TestCase):
         self.assertEqual(panels["rtab-0"], ["한눈에 보는 쉬운 요약", "1. 다음 거래일 방향",
                                             "2026-09-11 (금) 예측 vs 실제"])
         # 탭은 문서 순서다. 이 조각에서는 성적 절이 장기 전망보다 앞에 있다.
-        self.assertEqual(panels["rtab-1"], ["모델 성적과 검증"])
+        self.assertEqual(panels["rtab-1"], ["이 모델의 예측 성적"])
         self.assertEqual(panels["rtab-2"], ["1. 장기 전망 (월간)"])
         self.assertEqual(panels["rtab-3"], ["이 보고서의 데이터"])
 
@@ -129,11 +129,11 @@ class TabTests(unittest.TestCase):
         """절 제목을 그대로 쓰면 휴대폰에서 탭 두 개도 한 줄에 안 들어간다."""
         out = rh.tabify_sections(PAGE)
         labels = tab_labels(out)
-        self.assertEqual(labels, ["오늘의 예측", "성적과 검증", "장기 전망", "사용한 데이터"])
+        self.assertEqual(labels, ["오늘의 예측", "예측 성적", "장기 전망", "사용한 데이터"])
         self.assertTrue(all(len(label) <= 12 for label in labels))
         # 탭 이름에는 절 번호를 붙이지 않는다(2026-09-13).
         self.assertFalse(any(re.match(r"\d", label) for label in labels), labels)
-        self.assertIn(">모델 성적과 검증</h3>", out)
+        self.assertIn(">이 모델의 예측 성적</h3>", out)
 
     def test_links_into_another_tab_open_that_tab(self):
         """#sec10 같은 링크는 그 절이 든 탭을 연 뒤 그 절로 가야 한다."""
@@ -180,7 +180,7 @@ REPORT_ORDER = "".join(
         "1. 다음 거래일 방향", "1-1. 외국인·기관 수급", "2. 시초가예측과 종가예측",
         "3. 이 예측을 어떻게 읽어야 하는가", "한눈에 보는 장기 전망 요약", "1. 장기 전망 (월간)",
         "2. 이번 분기 영업이익 추정",
-        "모델 성적과 검증", "이 보고서의 데이터", "참고 정보: 최근 공시와 예정 발표"))
+        "이 모델의 예측 성적", "이 보고서의 데이터", "참고 정보: 최근 공시와 예정 발표"))
 
 
 class TabArrangementTests(unittest.TestCase):
@@ -190,7 +190,7 @@ class TabArrangementTests(unittest.TestCase):
         return rh.tabify_sections('<div class="wrap">' + REPORT_ORDER + '</div>')
 
     def test_tabs_are_in_this_order(self):
-        self.assertEqual(tab_labels(self.out()), ["오늘의 예측", "장기 전망", "성적과 검증",
+        self.assertEqual(tab_labels(self.out()), ["오늘의 예측", "장기 전망", "예측 성적",
                                                   "사용한 데이터", "공시·발표 일정"])
 
     def test_first_tab_holds_today_and_ends_with_the_reading_guide(self):
@@ -264,7 +264,7 @@ REAL_PAGE = (
     '<!--LEDGER_SECTION_START--><h3 style="x">2026-09-11 (금) 예측 vs 실제</h3>'
     '<div>채점 본문</div><!--LEDGER_SECTION_END-->'
     '<h3 style="x">1. 다음 거래일 방향</h3><div>방향 본문</div>'
-    '<h3 style="x">모델 성적과 검증</h3><div>성능 본문</div>'
+    '<h3 style="x">이 모델의 예측 성적</h3><div>성능 본문</div>'
     '<h3 style="x">참고 정보: 최근 공시와 예정 발표</h3><div>공시 본문</div>'
     '</div>')
 
@@ -328,7 +328,7 @@ class RealShapeTabTests(unittest.TestCase):
     def test_a_layout_that_cannot_be_split_safely_is_left_as_it_was(self):
         """감싸개 안에서 제목 앞에 다른 내용이 있으면 끌어올 수 없다. 깨진 탭 대신 원래 페이지를 둔다."""
         page = ('<div><h3>한눈에 보는 쉬운 요약</h3><p>a</p>'
-                '<section><p>머리말</p><h3>모델 성적과 검증</h3><p>e</p></section>'
+                '<section><p>머리말</p><h3>이 모델의 예측 성적</h3><p>e</p></section>'
                 '<h3>이 보고서의 데이터</h3><p>f</p></div>')
         self.assertEqual(rh.tabify_sections(page), page)
 

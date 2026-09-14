@@ -1,0 +1,258 @@
+{
+  "target": "samsung",
+  "name": "삼성전자",
+  "peer_name": "SK하이닉스",
+  "session_date": "2026-09-14",
+  "generated_at": "2026-09-14 17:06 KST",
+  "summary": {
+    "prev_close": 259500.0,
+    "open": 249500.0,
+    "high": 254500.0,
+    "low": 248500.0,
+    "close": 249000.0,
+    "gap": -0.038535645472061675,
+    "session": -0.002004008016032066,
+    "c2c": -0.040462427745664775,
+    "high_vs_open": 0.02004008016032066,
+    "low_vs_open": -0.004008016032064132,
+    "volume": 17897800.0,
+    "volume_ratio": 0.8977717575646066,
+    "kospi_c2c": -0.03264008271634322,
+    "peer_c2c": -0.06346578366445921,
+    "usdkrw_chg": -0.0013351793686627866,
+    "sox_ret": 0.0180667305142308,
+    "nasdaq_ret": 0.009635804410131898
+  },
+  "classification": {
+    "labels": [
+      "갭 주도",
+      "장중 급변 09:05 주도",
+      "지수 동조"
+    ],
+    "reasons": [
+      "갭 -3.85%가 종가→종가 -4.05%의 95%",
+      "09:05 봉 -3.28%(σ의 22.2배, 거래량 2.63배)가 세션 -0.20%의 547%",
+      "KOSPI -3.26% vs 종목 -4.05%, 5분 수익률 상관 0.65 — 종목 고유 요인이 약함"
+    ]
+  },
+  "events": [
+    {
+      "time": "2026-09-14T09:05:00+09:00",
+      "ret": -0.032755298651252374,
+      "z": 22.2,
+      "volume_ratio": 2.63,
+      "cum_before": 0.0,
+      "cum_after": 0.001996007984031989,
+      "session_share": 5.470134874759103,
+      "score": 22.729115270839245,
+      "news": [
+        {
+          "time": "2026-09-14T07:51:00+09:00",
+          "title": "삼성전자·SK하이닉스, '25조 전기료 선납' 한전 제안 거절",
+          "source": "연합뉴스",
+          "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE51eWR1bEJhRHlJZmhuZmhUakNCR1RXZlJIbTI1c0FWRkg4Vy1iMTQ5Z29ZRFh2U2tZR2E2ZTFjamZyb3ZkNGV0QlE2UGtWT25McGNQWFNSZDBxUnPSAWBBVV95cUxPZkJ6bTlydHVLMWdQTEt3eFU5YTZDSWxsT1Nybkc2MmRpbDV3bHlZTWp6eHNLNmg0NmpURS1nOHAyc2sydFpsSUN1S0t6b1FvNTkwUTZmVEdwMFV3dVhKd2U?oc=5"
+        },
+        {
+          "time": "2026-09-14T08:10:15+09:00",
+          "title": "“5년치 전기료 25조원 선납”…한전 제안 거절한 삼성전자·SK하이닉스",
+          "source": "매일경제",
+          "link": "https://news.google.com/rss/articles/CBMiVkFVX3lxTE0xbVRNTEtQOUN4R3dMMVJZdDVIcXpXejhJNGRGV1Q0dDdFOUFlOEx3Q3R5SVBXOXJSRkMxYXlocG5rVDA4c0pVZDNfYUJTMGdzbjRXMFdn?oc=5"
+        },
+        {
+          "time": "2026-09-14T08:19:34+09:00",
+          "title": "삼성전자·하이닉스, 한전 '25조 전기료 선납' 제안 퇴짜",
+          "source": "티제이비",
+          "link": "https://news.google.com/rss/articles/CBMib0FVX3lxTFBHYy00TU9xNG9oZFc3b3kzMl9ZYjlYcWxkeWUwLU5uRFd6T3N2WkZieHVyN28xVFBBOFhkREJuR2gzdDFmcFFwQ29Dd0Rjb2UzSlJpeGVfUFNmQzE1VUljcUpQNnlBVXUzLTZxRGV3UQ?oc=5"
+        },
+        {
+          "time": "2026-09-14T08:27:11+09:00",
+          "title": "[속보]삼성전자·SK하이닉스, 한국전력의 25조원 전기료 선납 제안 거절",
+          "source": "강원일보",
+          "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE16eXhvTEl5RDYtb1BpN1dvMlJjeFQ4U3pDTlVmckxBb3ExU255U2dEWjNUNW5WdnQ4eUs3YjZnNDRXV1pRNUNqRERUTE9HNTFqcC1hV0hNZ0Zud2M?oc=5"
+        },
+        {
+          "time": "2026-09-14T09:02:00+09:00",
+          "title": "삼성전자·SK하이닉스, 한전 제안한 \"25조 전기료 선납\" 거절",
+          "source": "YTN",
+          "link": "https://news.google.com/rss/articles/CBMiXkFVX3lxTE9KYW91VEc1RGJRUTdET2x4TXFiX29RQ09JNUZUY3JDRzZUZHFlTUpTNjRVV0g4ZE8zMHp6SmZtRVlwZS1OTk9RdEpiZWQzdVlFTldRY25qUlNQTmRWUUE?oc=5"
+        }
+      ]
+    },
+    {
+      "time": "2026-09-14T10:55:00+09:00",
+      "ret": 0.0059880239520957446,
+      "z": 4.06,
+      "volume_ratio": 1.54,
+      "cum_before": 0.0,
+      "cum_after": 0.0059880239520957446,
+      "session_share": -0.9999999999999815,
+      "score": 4.367975017569526,
+      "news": [
+        {
+          "time": "2026-09-14T10:05:05+09:00",
+          "title": "[특징주] 삼성전자·SK하이닉스, 美 국채 금리 상승 여파.. '약세'",
+          "source": "글로벌이코노믹",
+          "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxOS2EzUkl2bXFjTFcxeW54ZjBIR0phUFFIemVXdldlZ2NvLVFoSVdGamoyWWpaWjhUN1hXdTNWV0UxTzM4SWNzTnhXai1WM2U0VUpWT2d3WkdCbWc4RkRfSVlVelQ4VkpQczF6a2VjdVRrQzd3M1hfalR3LUNDbmlmd1ZmVVUzVzdo?oc=5"
+        },
+        {
+          "time": "2026-09-14T09:34:37+09:00",
+          "title": "삼성전자, ‘2026 그린수소 글로벌 포럼’서 출품",
+          "source": "칸 kharn",
+          "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE5yUkk5ckhLY3ZaRDFESkJDNmRucmc3X1NLY2JyOHhOQnp6WlJWbWVBak8xM1dfckNROTJwVTRRbk9sTjY2bUhlek5LYUpjNHRKWWpRby0tV01YWUE?oc=5"
+        },
+        {
+          "time": "2026-09-14T09:45:00+09:00",
+          "title": "삼성전자·SK하이닉스, ‘25조 전기료 선납’ 한전 제안 거절",
+          "source": "KBS 뉴스",
+          "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE1BMjUxZDNkM0NScjBseWxGenF2bGNZaW9EbUh1YXgxRU9UWjZPOGUxRGRmc2RhLUJZUnpfVjdGM0JTRDNuMWtocjdoaG1GUnlFUkVlZ1lMN3lvLWs?oc=5"
+        },
+        {
+          "time": "2026-09-14T10:03:20+09:00",
+          "title": "한전 \"삼성전자·SK하이닉스 전기료 25조 선납 거절\"",
+          "source": "신아일보",
+          "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE9pT3A3VGhJNEh5U0laS3EwSVhmQ1A2dm9XY2VmTi16V0UxSk1KTGZGMTRtN0VuNTNNSlRrRUtpTUdZUVBfdjBsTGtXdkNKRmZUZ0paYzZxSUtyVTVJMDEtbkRQbVE5Wk9aVG04aGZVWFU?oc=5"
+        },
+        {
+          "time": "2026-09-14T10:05:00+09:00",
+          "title": "삼성전자, ₩251,000 슈퍼트렌드 지지 분수령: 매시간 업데이트",
+          "source": "Investing.com 한국어",
+          "link": "https://news.google.com/rss/articles/CBMid0FVX3lxTFBHaDllVzFmM0d6ZWJoSHV2S2ZXbmdnY3VyczZBSjhMbExrM0JaMmIzZzF0X3lEcXNvRndDWVN2NVBaUlNSSnJEU0xySDdjdUJqbW4yUTg1cDFfemFYYXNuYVhoX3ZqQVhHd1YxdzF0ZDlmWHkzby1v?oc=5"
+        }
+      ]
+    }
+  ],
+  "turning_point": {
+    "high_time": "2026-09-14T11:50:00+09:00",
+    "high": 0.012974051896207595,
+    "low_time": "2026-09-14T14:45:00+09:00",
+    "low": -0.005988023952095856,
+    "pattern": "고점 후 반락"
+  },
+  "closing_share": -0.0,
+  "intraday_corr_kospi": 0.6458658859505647,
+  "intraday_note": "장중 봉은 09:05~14:55까지만 있어 마감 구간(14:55~15:30)은 일봉 종가로만 봅니다(그 구간 +0.00%).",
+  "intraday_coverage": "09:05~14:55",
+  "overnight_news": [
+    {
+      "time": "2026-09-14T07:51:00+09:00",
+      "title": "삼성전자·SK하이닉스, '25조 전기료 선납' 한전 제안 거절",
+      "source": "연합뉴스",
+      "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE51eWR1bEJhRHlJZmhuZmhUakNCR1RXZlJIbTI1c0FWRkg4Vy1iMTQ5Z29ZRFh2U2tZR2E2ZTFjamZyb3ZkNGV0QlE2UGtWT25McGNQWFNSZDBxUnPSAWBBVV95cUxPZkJ6bTlydHVLMWdQTEt3eFU5YTZDSWxsT1Nybkc2MmRpbDV3bHlZTWp6eHNLNmg0NmpURS1nOHAyc2sydFpsSUN1S0t6b1FvNTkwUTZmVEdwMFV3dVhKd2U?oc=5"
+    },
+    {
+      "time": "2026-09-14T08:10:15+09:00",
+      "title": "“5년치 전기료 25조원 선납”…한전 제안 거절한 삼성전자·SK하이닉스",
+      "source": "매일경제",
+      "link": "https://news.google.com/rss/articles/CBMiVkFVX3lxTE0xbVRNTEtQOUN4R3dMMVJZdDVIcXpXejhJNGRGV1Q0dDdFOUFlOEx3Q3R5SVBXOXJSRkMxYXlocG5rVDA4c0pVZDNfYUJTMGdzbjRXMFdn?oc=5"
+    },
+    {
+      "time": "2026-09-14T08:19:34+09:00",
+      "title": "삼성전자·하이닉스, 한전 '25조 전기료 선납' 제안 퇴짜",
+      "source": "티제이비",
+      "link": "https://news.google.com/rss/articles/CBMib0FVX3lxTFBHYy00TU9xNG9oZFc3b3kzMl9ZYjlYcWxkeWUwLU5uRFd6T3N2WkZieHVyN28xVFBBOFhkREJuR2gzdDFmcFFwQ29Dd0Rjb2UzSlJpeGVfUFNmQzE1VUljcUpQNnlBVXUzLTZxRGV3UQ?oc=5"
+    },
+    {
+      "time": "2026-09-14T08:27:11+09:00",
+      "title": "[속보]삼성전자·SK하이닉스, 한국전력의 25조원 전기료 선납 제안 거절",
+      "source": "강원일보",
+      "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE16eXhvTEl5RDYtb1BpN1dvMlJjeFQ4U3pDTlVmckxBb3ExU255U2dEWjNUNW5WdnQ4eUs3YjZnNDRXV1pRNUNqRERUTE9HNTFqcC1hV0hNZ0Zud2M?oc=5"
+    }
+  ],
+  "top_news": [
+    {
+      "time": "2026-09-14T11:22:23+09:00",
+      "title": "삼성전자 SK하이닉스 메모리반도체 중국에 중장기적 우위 장담 어렵다, 중국 '공급망 장악' 위협적",
+      "source": "비즈니스포스트",
+      "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTE5hOW00ZFktLUNBdEoxSFoxdHZPcER5amtxbzNvU3l5Q1B2ckNUdDh0YXBlSGxPeXhOaDRWMUV0QnMwbEI3Z3hRd0xWN1IwMTVNQ1o2RVFQOGFFeTdCWUNvdURwNWpTaHRiQlpPV0xpMUx6Mnc?oc=5"
+    },
+    {
+      "time": "2026-09-14T14:25:52+09:00",
+      "title": "中에 쫓기는 삼성전자 파운드리…엑시노스·3D D램으로 반전 모색",
+      "source": "글로벌이코노믹",
+      "link": "https://news.google.com/rss/articles/CBMihgFBVV95cUxNSzBieXV1Y2UwWHJhWm5BVzNXVWVGU0ZBdzVQTFhpenBtMmZ1VDJKazNSbURzLS13X1UxeWxBVEUwZHZFYjVyS3d0ZVpDMTRwWHJzQ1lfNEVOUmhfVFVONVZaci1HMnMwVzQzSFlGLWlNQWU3bWtaSktST3F4MVpnWElzejBhZw?oc=5"
+    },
+    {
+      "time": "2026-09-14T15:50:00+09:00",
+      "title": "'고유가·고금리' 덮친 코스피 3.26% 급락…삼성전자·SK하이닉스 동반 하락",
+      "source": "조세일보",
+      "link": "https://news.google.com/rss/articles/CBMib0FVX3lxTE55eXFRaTA3VnJaQTRNT19FaVRFSkVORjJuNWhfbWJTdWRNcUZIMENnWGllQ19xS1lNRzVyU1pZSVpZM0kyb1RFcEtZSFNLM283MUdKZWJOc2g3UHVacmlLRFZiNVdOMXZYdFZPRXd3NA?oc=5"
+    },
+    {
+      "time": "2026-09-14T16:49:26+09:00",
+      "title": "코스피 3.26% 급락…AI 속도조절론·유가에 삼성전자·SK하이닉스 약세",
+      "source": "톱스타뉴스",
+      "link": "https://news.google.com/rss/articles/CBMickFVX3lxTFB1M3E0VlgwbnZTRE5DZTd2bE90SlJqcDRnZ2F1cklFdkRFN3FHWktBNUVBcHJuaXRRNElPZUhmRXVjNy16VFVoaGdIX3NQUDhqbk5aSWxhb1R4OXR4bGNNcWhFMHNHeGVJQl9oTVQySmtCUQ?oc=5"
+    },
+    {
+      "time": "2026-09-14T16:05:35+09:00",
+      "title": "금리·유가·AI 속도조절론에 코스피 급락…6600선 붕괴",
+      "source": "직썰",
+      "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE9hbTRCYnRnbGtCNTlVYmRPbGVaNzl2bWNBMnNJNGQxeVBqX3BwOFVtUVUxOXJrS2RlZ0ZfbkNIeGY2bFVDSTJqN2NkamNKcjQ0MGtfSndEdjNKS1hzWEd2bFdEVkowamJp0gFsQVVfeXFMTm9uTDB1aXQ3OW1SaDBYY0RraWxmdWRGNGlKSkR5TWNzQWM4RWkwVFNWUUQ5amNBZFFKQjJ2OXRKSi1vM3I4X2ZGeTVyRzZUN20yWnhnU04xX0l1NE1peVNHUmdseUxoRjhfOU8t?oc=5"
+    },
+    {
+      "time": "2026-09-14T16:13:09+09:00",
+      "title": "코스피 '6700선' 붕괴⋯AI 속도조절론·美 금리 '겹악재'",
+      "source": "v.daum.net",
+      "link": "https://news.google.com/rss/articles/CBMiT0FVX3lxTE00U0wxYTJHWmxtamN6UWVOeTg4YVlpc0RBc3ZiTGk1R0hNQVZHSlpyY3huSkctLXdKOEJSekdrVkMzN3kzZWo5djJKTUVyaVU?oc=5"
+    }
+  ],
+  "disclosures": [
+    {
+      "report_nm": "임원ㆍ주요주주특정증권등소유상황보고서",
+      "rcept_dt": "20260914",
+      "rcept_no": "20260914000248",
+      "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260914000248"
+    }
+  ],
+  "disclosure_note": null,
+  "flows": null,
+  "forecasts": [
+    {
+      "model": "No macro ensemble",
+      "hit": false,
+      "verdict": "틀림 — 예측 보합 38%, 실제 하락(-4.05%)",
+      "legs": "갭 -3.85%(하락) · 세션 -0.20%(보합)",
+      "where": "결과는 주로 갭(밤사이)에서 정해졌습니다.",
+      "band": 0.0126425658999971,
+      "probs": [
+        0.3759225006583739,
+        0.3784982571890973,
+        0.2455792421525288
+      ],
+      "actual": "하락",
+      "predicted": "보합"
+    },
+    {
+      "model": "Mean ensemble",
+      "hit": true,
+      "verdict": "맞음 — 예측 하락 39%, 실제 하락(-4.05%)",
+      "legs": "갭 -3.85%(하락) · 세션 -0.20%(보합)",
+      "where": "결과는 주로 갭(밤사이)에서 정해졌습니다.",
+      "band": 0.0126425658999971,
+      "probs": [
+        0.3872096846922171,
+        0.3526305893308529,
+        0.2601597259769299
+      ],
+      "actual": "하락",
+      "predicted": "하락"
+    },
+    {
+      "model": "Candidate expanding",
+      "hit": true,
+      "verdict": "맞음 — 예측 하락 39%, 실제 하락(-4.05%)",
+      "legs": "갭 -3.85%(하락) · 세션 -0.20%(보합)",
+      "where": "결과는 주로 갭(밤사이)에서 정해졌습니다.",
+      "band": 0.0126425658999971,
+      "probs": [
+        0.39184117922353,
+        0.3338051395866168,
+        0.2743536811898531
+      ],
+      "actual": "하락",
+      "predicted": "하락"
+    }
+  ],
+  "price_check": "1거래일 예상 구간 243,180~270,834원 · 종가 249,000원 → 구간 안",
+  "disclaimer": "시간이 맞는 것이지 원인 확정이 아닙니다. 뉴스 없이 움직이는 날(수급·프로그램·옵션 만기)이 많고, 기사 발행 시각은 실제 정보 유통보다 늦거나 앞섭니다. 이 절은 설명 도구이며 다음날 예측에 자동 반영되지 않습니다."
+}

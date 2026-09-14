@@ -503,6 +503,23 @@ def walk_forward(f, target="profit", features=None, gap=0, rw="profit_lag1", sn=
     return pd.DataFrame(rows).set_index("quarter") if rows else pd.DataFrame()
 
 
+def extrapolation_note(profit, point):
+    """추정이 학습 이력의 범위 밖이면 그 사실과 정도를 돌려준다.
+
+    2026Q2 영업이익이 89.5조인데 2016~2025년 이력은 대부분 5~20조다. 회귀는 한 번도 본 적 없는
+    영역을 직선으로 늘리고 있고, 검증 성적(MAE)은 그 직선이 통했던 시기의 것이라 지금을 보증하지
+    않는다. 숫자를 아무 단서 없이 내놓으면 검증된 모델의 출력으로 읽힌다.
+    """
+    history = pd.Series(profit).dropna()
+    if history.empty or point is None or not np.isfinite(point):
+        return None
+    top = float(history.max())
+    if point <= top:
+        return None
+    return {"max_history": top, "point": float(point), "ratio": float(point / top),
+            "quarter": str(history.idxmax())}
+
+
 def evaluate(oof):
     if oof.empty:
         return {"n": 0, "beats_baselines": False, "note": "표본 부족"}
@@ -516,7 +533,32 @@ def evaluate(oof):
     out["residual_q90"] = float(np.quantile(residual, .90))
     out["mape_model"] = float(np.mean(np.abs((oof["actual"] - oof["model"]) /
                                              np.where(np.abs(oof["actual"]) < 1e-9, np.nan, oof["actual"]))))
+    out.update(interval_coverage(oof))
     return out
+
+
+def interval_coverage(oof, warmup=8, lo=.10, hi=.90):
+    """'80% 구간'이 과거에 실제로 몇 %를 맞혔는지.
+
+    구간은 과거 잔차 분위수로 만든다. 그 방식이 실제로 80%를 담는지는 재 봐야 안다 —
+    2026-09-13 측정에서 삼성전자는 14개 분기 중 6개(43%)만 맞혔다. 구간이 과신이라는 뜻이고,
+    그 사실을 보고서에 적어야 읽는 사람이 스스로 할인할 수 있다.
+
+    각 시점에서 '그 시점까지의 잔차'만 써서 만든 구간으로 센다(그때 알 수 있었던 것만 쓴다).
+    """
+    if len(oof) <= warmup + 2:
+        return {"coverage_n": 0}
+    residual = (oof["actual"] - oof["model"]).to_numpy()
+    actual, model = oof["actual"].to_numpy(), oof["model"].to_numpy()
+    hits, total = 0, 0
+    for i in range(warmup, len(oof)):
+        past = residual[:i]
+        low, high = model[i] + np.quantile(past, lo), model[i] + np.quantile(past, hi)
+        hits += bool(low <= actual[i] <= high)
+        total += 1
+    return {"coverage_n": total, "coverage_hit": hits,
+            "coverage_rate": float(hits / total) if total else float("nan"),
+            "coverage_nominal": hi - lo}
 
 
 def split_selection_evaluation(oof):
@@ -762,6 +804,25 @@ def render_fragment(result):
                      f'{jo(r["low"])} ~ {jo(r["high"])}</span></div>')
         parts.append(f'<div style="font-size:12px;color:#6b7178;margin-top:4px">직전 분기 {jo(r["last_actual"])}'
                      f'({e(r["last_actual_quarter"])}) 대비 {r["change_vs_last"]:+.1%}</div>')
+        # 검증 밖이라는 사실은 숫자 바로 옆에 있어야 한다. 아래 검증 절까지 내려가서야 알게 되면
+        # 대부분은 이 숫자를 '검증된 모델의 출력'으로 읽고 지나간다.
+        note = r.get("extrapolation")
+        ev_now = r.get("evaluation") or {}
+        warnings_ = []
+        if note:
+            warnings_.append(
+                f'이 추정치는 <b>학습 이력의 최대치({jo(note["max_history"])}, '
+                f'{e(note["quarter"])})보다 {note["ratio"]:.1f}배</b> 큽니다. 모델은 한 번도 본 적 없는 '
+                '구간을 직선으로 늘리고 있고, 아래 검증 성적은 그 직선이 통했던 시기의 것이라 이 '
+                '숫자를 보증하지 않습니다.')
+        if ev_now.get("coverage_n") and ev_now["coverage_rate"] < ev_now["coverage_nominal"] - 0.15:
+            warnings_.append(
+                f'위 80% 구간은 과거 {ev_now["coverage_n"]}개 분기에서 실제로 '
+                f'<b>{ev_now["coverage_rate"]:.0%}만 담았습니다.</b> 표시된 범위보다 실제 불확실성이 큽니다.')
+        if warnings_:
+            parts.append('<div style="margin-top:8px;padding:10px 14px;background:#fdf8ec;'
+                         'border-left:4px solid #c8952a;border-radius:0 5px 5px 0;font-size:12px;'
+                         'line-height:1.7">' + "<br>".join(warnings_) + '</div>')
     else:
         parts.append('<div style="font-size:16px;font-weight:600;color:#6b7178">예측하지 않음</div>'
                      f'<div style="font-size:12px;color:#8a9199;margin-top:4px">{e(r["no_point_reason"])} '
@@ -780,7 +841,18 @@ def render_fragment(result):
         verdict = ("<b style='color:#1e6b34'>두 기준선을 모두 이겼습니다.</b>" if ev["beats_baselines"]
                    else "<b style='color:#a8322a'>기준선을 이기지 못했습니다.</b> 점 추정을 내지 않습니다.")
         parts.append(f'<div style="font-size:13px;margin-top:8px">{verdict} '
-                     f'실제값과의 상관 {ev.get("corr", float("nan")):.2f} · 평균 오차율 {ev.get("mape_model", float("nan")):.1%}</div>')
+                     f'실제값과의 상관 {ev.get("corr", float("nan")):.2f} · '
+                     f'평균 오차율 {ev.get("mape_model", float("nan")):.0%}</div>')
+        # 구간이 실제로 몇 %를 담았는지. 명목(80%)만 적고 실측을 숨기면 과신을 숨기는 것이다.
+        if ev.get("coverage_n"):
+            rate, nominal = ev["coverage_rate"], ev["coverage_nominal"]
+            short = rate < nominal - 0.15
+            parts.append(f'<div style="font-size:13px;margin-top:6px;'
+                         f'{"color:#a8322a" if short else ""}">'
+                         f'<b>구간 적중률 {rate:.0%}</b> '
+                         f'(최근 {ev["coverage_n"]}개 분기 중 {ev["coverage_hit"]}개) — '
+                         f'아래 범위는 {nominal:.0%} 구간이라고 표시하지만 실제로는 이만큼만 담았습니다.'
+                         + (' 범위를 그대로 믿지 마세요.' if short else '') + '</div>')
     else:
         parts.append(f'<div style="font-size:13px;color:#6b7178">{e(ev.get("note", "표본 부족"))}</div>')
 
@@ -1230,6 +1302,7 @@ def analyse(target, out_dir, fetch=True):
         "macro_sources": macro_info.get("sources", {}),
         "cli_info": cli_info, "cli_active": cli_active,
         "tsmc_info": tsmc_info, "tsmc_active": tsmc_active, "tsmc_ablation": tsmc_ablation,
+        "extrapolation": extrapolation_note(profit, point),
         "quantity_info": quantity_info, "price_active": price_active,
         "price_ablation": price_ablation,
         "dram_info": dram_info, "dram_summary": dram_spot_summary(dram) if dram is not None else None,

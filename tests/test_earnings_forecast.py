@@ -882,3 +882,61 @@ class UnitPriceFeatureTests(unittest.TestCase):
         self.assertNotIn("volume", headline)
         self.assertIn("UNIT_PRICE_FEATURES", source)
         self.assertIn("지금은 관찰만 합니다", source)
+
+
+class OverconfidenceTests(unittest.TestCase):
+    """'80% 구간'이 실제로 몇 %를 담는지, 추정이 학습 범위 밖인지를 보고서에 적는다.
+
+    2026-09-13 측정: 삼성전자 구간 적중률 29%(14분기 중 4개). 명목 80%와 차이가 크다.
+    그리고 2026Q2 89.5조는 2016~2025년 이력(대부분 5~20조)을 크게 벗어난다.
+    """
+
+    def oof(self, n=30, bias=0.0):
+        quarters = pd.PeriodIndex(pd.date_range("2016-01-01", periods=n, freq="QS"), freq="Q")
+        rng = np.random.default_rng(0)
+        actual = np.linspace(6e12, 90e12, n)
+        model = actual * (1 - bias) + rng.normal(0, 1e12, n)
+        return pd.DataFrame({"actual": actual, "model": model,
+                             "random_walk": np.r_[actual[0], actual[:-1]],
+                             "seasonal_naive": np.r_[actual[:4], actual[:-4]]}, index=quarters)
+
+    def test_coverage_is_measured_with_only_past_residuals(self):
+        out = ef.interval_coverage(self.oof())
+        self.assertEqual(out["coverage_n"], 30 - 8)
+        self.assertLessEqual(out["coverage_hit"], out["coverage_n"])
+        self.assertAlmostEqual(out["coverage_nominal"], 0.80)
+
+    def test_biased_model_shows_poor_coverage(self):
+        # 계속 과소 추정하면 구간이 실제를 못 담는다 — 지금 상황이 그렇다.
+        good = ef.interval_coverage(self.oof(bias=0.0))["coverage_rate"]
+        biased = ef.interval_coverage(self.oof(bias=0.30))["coverage_rate"]
+        self.assertLess(biased, good)
+
+    def test_short_series_reports_nothing(self):
+        self.assertEqual(ef.interval_coverage(self.oof(n=9))["coverage_n"], 0)
+
+    def test_evaluate_includes_coverage(self):
+        out = ef.evaluate(self.oof())
+        self.assertIn("coverage_rate", out)
+
+    def test_extrapolation_note_fires_above_history(self):
+        history = pd.Series([6e12, 12e12, 20e12, 89.5e12],
+                            index=pd.PeriodIndex(["2025Q3", "2025Q4", "2026Q1", "2026Q2"], freq="Q"))
+        note = ef.extrapolation_note(history, 122.9e12)
+        self.assertIsNotNone(note)
+        self.assertAlmostEqual(note["ratio"], 122.9 / 89.5, places=2)
+        self.assertEqual(note["quarter"], "2026Q2")
+
+    def test_extrapolation_note_silent_inside_history(self):
+        history = pd.Series([6e12, 89.5e12],
+                            index=pd.PeriodIndex(["2026Q1", "2026Q2"], freq="Q"))
+        self.assertIsNone(ef.extrapolation_note(history, 50e12))
+        self.assertIsNone(ef.extrapolation_note(history, None))
+
+    def test_warning_text_is_next_to_the_estimate(self):
+        source = (ROOT / "tools" / "build_earnings_forecast.py").read_text(encoding="utf-8")
+        estimate = source.index('<h4 style="font-size:14px;margin:18px 0 6px">추정</h4>')
+        warning = source.index("학습 이력의 최대치", estimate)
+        verification = source.index("검증 — 기준선을 이기는가", estimate)
+        self.assertLess(warning, verification, "경고가 검증 절보다 뒤에 있으면 대부분 놓친다")
+        self.assertIn("만 담았습니다", source)

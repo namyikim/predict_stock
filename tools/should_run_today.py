@@ -112,6 +112,30 @@ def _commit_time(ref, path):
         return None
 
 
+def weekly_brief_newer_than_report(target, ref="origin/main"):
+    """주간 브리핑이 보고서보다 새로우면 그 파일명을 돌려준다.
+
+    브리핑은 매주 월요일 아침 reports/ 에 올라오는데 docs/ 밖이라 조각 검사에 걸리지 않는다.
+    보고서를 다시 만들지 않으면 지난주 브리핑이 계속 보인다.
+    """
+    import subprocess
+    if not ref or not target:
+        return []
+    report = _commit_time(ref, f"docs/{target}/index.html")
+    if report is None:
+        return []
+    try:
+        out = subprocess.run(["git", "log", "-1", "--format=%ct%x09%H", ref, "--",
+                              "reports/"], capture_output=True, text=True, timeout=60)
+        text = out.stdout.strip()
+        if not text:
+            return []
+        made = int(text.split("\t")[0])
+    except Exception:
+        return []
+    return ["reports/"] if made > report else []
+
+
 def fragments_newer_than_report(target, ref="origin/main", fragments=FRAGMENTS):
     """조각이 보고서보다 새로우면 그 이름을 돌려준다.
 
@@ -143,7 +167,8 @@ def already_recorded(path, today, now=None, ref=None, target=None):
     if not in_record_window(now) and not evening:
         # 두 창 밖에서는 원장에 남을 것이 없다. 다만 조각(3·4절)이 보고서보다 새로우면 보고서를
         # 다시 만들어야 한다 — 그러지 않으면 월간 워크플로를 돌려도 화면에 나오지 않는다.
-        stale = fragments_newer_than_report(target, ref) if target else []
+        stale = (fragments_newer_than_report(target, ref)
+                 + weekly_brief_newer_than_report(target, ref)) if target else []
         if stale:
             return False, (f"{now:%H:%M} KST — 기록 시간대는 아니지만 조각이 보고서보다 새롭습니다"
                            f"({', '.join(stale)}). 보고서만 다시 만듭니다")

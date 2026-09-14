@@ -608,6 +608,10 @@ class StaleFragmentTests(unittest.TestCase):
                                                "model", "run_id"]).writeheader()
         self.saved = srt._commit_time
         self.addCleanup(lambda: setattr(srt, "_commit_time", self.saved))
+        # 주간 브리핑은 실제 저장소를 보므로 이 테스트에서는 없는 것으로 고정한다.
+        self.saved_brief = srt.weekly_brief_newer_than_report
+        srt.weekly_brief_newer_than_report = lambda target, ref="origin/main": []
+        self.addCleanup(lambda: setattr(srt, "weekly_brief_newer_than_report", self.saved_brief))
 
     def times(self, report, longterm):
         table = {"docs/t/index.html": report, "docs/t/longterm.html": longterm,

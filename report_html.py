@@ -180,6 +180,7 @@ TAB_GROUPS = (
     ("예측 성적", ("이 모델의 예측 성적",)),             # 기준별 판정과 그 근거인 모델별 성능표
     ("사용한 데이터", ("이 보고서의 데이터",)),           # 자산·티커·수집 기간
     ("공시·발표 일정", ("참고 정보",)),                 # 최근 공시와 다가오는 미국 발표·실적
+    ("주간 뉴스", ("주간 반도체 뉴스",)),               # 주 1회 브리핑. 예측에 쓰지 않는 참고 자료
 )
 DEFAULT_TAB_LABEL = "오늘의 예측"
 _SECTION_NUMBER = re.compile(r'^\d+(?:-\d+)?\.\s*')
@@ -653,6 +654,126 @@ def load_fragment(name, target, repo, branch):
             return response.read().decode("utf-8")
     except Exception:
         return None
+
+
+def latest_weekly_brief(repo, branch, today=None):
+    """가장 최근 주간 브리핑 마크다운. (본문, 파일명) 또는 (None, None).
+
+    브리핑은 reports/YYYY-MM-DD-memory-semiconductor-brief.md 로 주 단위로 쌓인다.
+    목록 API 를 쓰면 인증이 필요할 수 있어, 최근 날짜를 거슬러 올라가며 직접 찾는다.
+    """
+    import urllib.request
+    today = pd.Timestamp(today or pd.Timestamp.now(tz="Asia/Seoul").date())
+    local = Path.cwd() / "reports"
+    if local.exists():
+        files = sorted(local.glob("*-memory-semiconductor-brief.md"))
+        if files:
+            return files[-1].read_text(encoding="utf-8"), files[-1].name
+    for back in range(0, 21):                      # 3주 전까지 찾는다
+        day = (today - pd.Timedelta(days=back)).date().isoformat()
+        name = f"{day}-memory-semiconductor-brief.md"
+        url = f"https://raw.githubusercontent.com/{repo}/{branch}/reports/{name}"
+        try:
+            with urllib.request.urlopen(url, timeout=20) as response:
+                return response.read().decode("utf-8"), name
+        except Exception:
+            continue
+    return None, None
+
+
+def markdown_to_html(text):
+    """브리핑 마크다운을 보고서에 넣을 HTML 로. 표·링크·목록·강조만 다룬다.
+
+    외부 라이브러리를 들이지 않는다(폐쇄망 실행과 의존성 최소화). 브리핑이 쓰는 문법이
+    정해져 있어 그 범위만 처리하면 충분하다.
+    """
+    from html import escape
+
+    def inline(line):
+        out = escape(line)
+        out = re.sub(r'\[([^\]]+)\]\((https?://[^)\s]+)\)',
+                     r'<a href="\2" style="color:#1a5490" target="_blank" rel="noopener">\1</a>', out)
+        out = re.sub(r'\*\*([^*]+)\*\*', r'<b>\1</b>', out)
+        out = re.sub(r'(?<!\*)\*([^*]+)\*(?!\*)', r'<i>\1</i>', out)
+        out = re.sub(r'`([^`]+)`', r'<code>\1</code>', out)
+        return out
+
+    html_parts, table, in_list = [], [], False
+
+    def flush_table():
+        if not table:
+            return
+        header, rows = table[0], [r for r in table[1:] if not set(r) <= set(["", "-", ":"])
+                                  and not all(re.fullmatch(r':?-{2,}:?', c.strip() or '-') for c in r)]
+        body = "".join(
+            "<tr>" + "".join(f'<td style="padding:6px 9px;border-top:1px solid #eee">{inline(c)}</td>'
+                             for c in row) + "</tr>" for row in rows)
+        html_parts.append(
+            '<div style="overflow-x:auto;margin:10px 0"><table style="width:100%;min-width:480px;'
+            'border-collapse:collapse;font-size:12.5px;border:1px solid #e5e5e5">'
+            '<tr style="background:#fafafa;font-size:11px;color:#6b7178">'
+            + "".join(f'<th style="padding:7px 9px;text-align:left">{inline(c)}</th>' for c in header)
+            + "</tr>" + body + "</table></div>")
+        table.clear()
+
+    def flush_list():
+        nonlocal in_list
+        if in_list:
+            html_parts.append("</ul>")
+            in_list = False
+
+    for raw in text.splitlines():
+        line = raw.rstrip()
+        if line.startswith("|"):
+            flush_list()
+            table.append([c.strip() for c in line.strip("|").split("|")])
+            continue
+        flush_table()
+        if not line.strip():
+            flush_list()
+            continue
+        heading = re.match(r'^(#{1,4})\s+(.*)$', line)
+        if heading:
+            flush_list()
+            level = len(heading.group(1))
+            if level == 1:
+                continue                            # 제목은 절 제목이 대신한다
+            size = {2: 15, 3: 14, 4: 13}.get(level, 13)
+            margin = "18px 0 6px" if level == 2 else "14px 0 5px"
+            html_parts.append(f'<h4 style="font-size:{size}px;margin:{margin}">'
+                              f'{inline(heading.group(2))}</h4>')
+            continue
+        item = re.match(r'^[-*]\s+(.*)$', line)
+        if item:
+            if not in_list:
+                html_parts.append('<ul style="margin:6px 0;padding-left:18px;font-size:13px;'
+                                  'line-height:1.7">')
+                in_list = True
+            html_parts.append(f'<li style="margin:4px 0">{inline(item.group(1))}</li>')
+            continue
+        flush_list()
+        html_parts.append(f'<div style="font-size:13px;line-height:1.75;margin:7px 0">'
+                          f'{inline(line)}</div>')
+    flush_table()
+    flush_list()
+    return "".join(html_parts)
+
+
+def weekly_brief_html(repo, branch, today=None):
+    """주간 반도체 뉴스 절. 브리핑이 없으면 빈 문자열."""
+    from html import escape
+    text, name = latest_weekly_brief(repo, branch, today)
+    if not text:
+        return ""
+    date = (re.match(r'(\d{4}-\d{2}-\d{2})', name or "") or [None, ""])[1] if name else ""
+    link = (f'https://github.com/{repo}/blob/{branch}/reports/{escape(name)}') if name else ""
+    return ('<h3 style="font-size:15px;margin:24px 0 9px;padding-bottom:6px;border-bottom:1px solid #ddd">'
+            '주간 반도체 뉴스 <span style="font-weight:400;color:#8a9199;font-size:12px">'
+            f'&nbsp;{escape(date)} 기준 · 예측에 쓰지 않는 참고 자료입니다</span></h3>'
+            + markdown_to_html(text)
+            + (f'<div style="font-size:11px;color:#8a9199;margin-top:10px">원문: '
+               f'<a href="{link}" style="color:#1a5490" target="_blank" rel="noopener">'
+               f'{escape(name)}</a></div>' if link else ""))
 
 
 def load_summary_data(name, target, repo, branch):

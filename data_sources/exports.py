@@ -152,8 +152,15 @@ def key_variants(key):
 
 
 
-def parse_customs_xml(text):
-    """<item> 목록 → DataFrame(month, value=수출 달러). HS 세부 코드를 월별로 합산한다."""
+def parse_customs_xml(text, with_weight=False):
+    """<item> 목록 → DataFrame(month, value=수출 달러). HS 세부 코드를 월별로 합산한다.
+
+    with_weight=True 면 weight(수출 중량, kg) 열도 함께 돌려준다. 수출액은 가격×물량이라
+    그 자체로는 이익과의 관계가 국면마다 달라진다 — 가격이 올라 늘어난 수출액은 거의 그대로
+    이익이 되지만 물량이 늘어난 것은 원가도 따라 늘기 때문이다. 단가(수출액÷중량)와 물량을
+    나누면 그 둘을 구분할 수 있다. 기본값을 False 로 둔 것은 기존 호출부의 열 구성을 바꾸지
+    않기 위해서다.
+    """
     import xml.etree.ElementTree as ET
     root = ET.fromstring(text)
     message = root.findtext('.//resultMsg') or ''
@@ -164,24 +171,34 @@ def parse_customs_xml(text):
     for item in root.iter('item'):
         period = (item.findtext('year') or '').strip()
         amount = (item.findtext('expDlr') or '').strip()
+        weight = (item.findtext('expWgt') or '').strip()
         if not period or not amount:
             continue
         # 'year'에는 2026.06(월별)과 2026(연 합계)이 섞여 온다. 월별만 쓴다.
         if not re.fullmatch(r'\d{4}[.\-/]\d{2}', period):
             continue
         try:
-            rows.append({'month': period.replace('.', '-').replace('/', '-'), 'value': float(amount.replace(',', ''))})
+            row = {'month': period.replace('.', '-').replace('/', '-'),
+                   'value': float(amount.replace(',', ''))}
         except ValueError:
             continue
+        if with_weight:
+            try:
+                row['weight'] = float(weight.replace(',', '')) if weight else float('nan')
+            except ValueError:
+                row['weight'] = float('nan')
+        rows.append(row)
     if not rows:
         raise CustomsEmpty('관세청 응답에 월별 수출액이 없습니다.')
-    frame = pd.DataFrame(rows).groupby('month', as_index=False)['value'].sum()
+    frame = pd.DataFrame(rows)
+    columns = ['value', 'weight'] if with_weight else ['value']
+    frame = frame.groupby('month', as_index=False)[columns].sum(min_count=1)
     return normalize_monthly(frame)
 
 
 
 
-def _customs_request(hs, start_text, end_text, key, retries=3):
+def _customs_request(hs, start_text, end_text, key, retries=3, with_weight=False):
     """HS 한 건 조회. 인증키 형태를 바꿔 가며 시도한다(어느 쪽이 맞는지는 호출해 봐야 안다)."""
     variants = key_variants(key)
     if not variants:
@@ -194,7 +211,7 @@ def _customs_request(hs, start_text, end_text, key, retries=3):
             try:
                 with open_url(f'{CUSTOMS_URL}?{query}', timeout=90,
                               accept='application/xml, text/xml, */*') as response:
-                    return parse_customs_xml(response.read().decode('utf-8'))
+                    return parse_customs_xml(response.read().decode('utf-8'), with_weight=with_weight)
             except Exception as exc:
                 detail = error_detail(exc)
                 registered = 'NOT_REGISTERED' in str(exc) or 'SERVICE_KEY' in str(exc)
@@ -545,6 +562,43 @@ def customs_scale(kosis, customs, window=CUSTOMS_SCALE_WINDOW,
                           f'흔들립니다(허용 {tolerance:.0%}) — 관계가 불안정해 환산하지 않습니다.')
         return False, 1.0, info
     return True, scale, info
+
+
+def fetch_customs_quantity(start, end, key, hs_codes=CUSTOMS_HS, retries=3,
+                           span=CUSTOMS_MAX_MONTHS):
+    """반도체 월별 수출액과 중량. DataFrame(month, value=달러, weight=kg).
+
+    수출액은 가격×물량이라 그 자체로는 이익과의 관계가 국면마다 달라진다. 가격이 올라 늘어난
+    수출액은 거의 그대로 이익이 되지만, 물량이 늘어난 것은 원가도 따라 늘어 이익 기여가 작다.
+    단가(value/weight)와 물량을 나누면 그 둘을 구분할 수 있다.
+
+    중량은 관세청에만 있고 KOSIS 에는 없다. 그래서 이 계열은 관세청 단독으로 쌓는다.
+    """
+    windows = month_windows(start, end, span)
+    parts, skipped = [], []
+    for hs in hs_codes:
+        got = False
+        for start_text, end_text in windows:
+            try:
+                parts.append(_customs_request(hs, start_text, end_text, key, retries, with_weight=True))
+                got = True
+            except CustomsEmpty:
+                skipped.append(f'{hs} {start_text}~{end_text}')
+        if not got:
+            raise RuntimeError(f'관세청에 HS {hs} 자료가 없습니다'
+                               f'({windows[0][0]}~{windows[-1][1]}, 창 {len(windows)}개 모두 빔).')
+    merged = pd.concat(parts, ignore_index=True)
+    grouped = merged.groupby('month', as_index=False)[['value', 'weight']].sum(min_count=1)
+    return grouped.sort_values('month').reset_index(drop=True)
+
+
+def customs_unit_price(frame):
+    """월별 단가(달러/kg)와 물량(kg). 중량이 없거나 0인 달은 NaN."""
+    out = pd.DataFrame({'month': pd.to_datetime(frame['month'])})
+    weight = pd.to_numeric(frame['weight'], errors='coerce').replace(0, np.nan)
+    out['unit_price'] = pd.to_numeric(frame['value'], errors='coerce') / weight
+    out['volume'] = weight
+    return out.dropna(subset=['unit_price']).reset_index(drop=True)
 
 
 def merge_customs_exports(kosis, customs, scale=1.0):

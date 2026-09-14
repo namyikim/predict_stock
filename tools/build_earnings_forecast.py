@@ -39,11 +39,15 @@ import github_pages  # noqa: E402
 from macro_utils import (  # noqa: E402
     cli_features, data_go_kr_key, fetch_customs_exports, load_cli, load_macro_data,
     customs_scale, dram_spot_summary, error_detail, load_dram_spot, load_tsmc_revenue,
-    fetch_customs_flash, flash_yoy, merge_customs_exports, reconcile_customs, tsmc_features,
+    customs_unit_price, fetch_customs_flash, fetch_customs_quantity, flash_yoy,
+    merge_customs_exports, reconcile_customs, tsmc_features,
     CLI_VINTAGE_PATH, append_cli_vintage,
 )
 
 KST = timezone(timedelta(hours=9))
+# 단가·물량 계열을 처음 쌓을 때 어디부터 받을지. 영업이익 이력이 2016Q1 부터라 그보다 한 해 앞서
+# 잡아 YoY 특징의 첫 해가 비지 않게 한다.
+START_QUARTER_MONTH = "2015-01-01"
 TARGETS = {
     "samsung": {"name": "삼성전자", "corp_code": "00126380", "ticker": "005930.KS"},
     "sk_hynix": {"name": "SK하이닉스", "corp_code": "00164779", "ticker": "000660.KS"},
@@ -419,7 +423,7 @@ def first_k_months(monthly, k):
     return means.where(counts == k)
 
 
-def build_frame(profit, exports, usdkrw, k, cli=None, tsmc=None):
+def build_frame(profit, exports, usdkrw, k, cli=None, tsmc=None, quantity=None):
     """분기 표. 특징은 모두 그 분기의 앞 k개월 또는 그 이전 자료만 쓴다.
 
     다음 분기 전망을 위해 profit_next(=t+1 분기 영업이익)와, 분기 t의 k번째 달 말 시점에 보이는
@@ -432,6 +436,14 @@ def build_frame(profit, exports, usdkrw, k, cli=None, tsmc=None):
     f["exports_krw_k"] = f["exports_k"] * f["usdkrw_k"]        # 원화 환산 수출 규모
     f["exports_yoy"] = f["exports_k"] / f["exports_k"].shift(4) - 1
     f["exports_qoq"] = f["exports_k"] / f["exports_k"].shift(1) - 1
+    if quantity is not None and len(quantity):
+        q = quantity.set_index("month")
+        price_k = first_k_months(q["unit_price"], k)
+        volume_k = first_k_months(q["volume"], k)
+        f["unit_price_k"] = price_k.reindex(f.index)
+        f["volume_k"] = volume_k.reindex(f.index)
+        f["unit_price_yoy"] = f["unit_price_k"] / f["unit_price_k"].shift(4) - 1
+        f["volume_yoy"] = f["volume_k"] / f["volume_k"].shift(4) - 1
     f["profit"] = profit.reindex(f.index)
     f["profit_lag1"] = f["profit"].shift(1)                    # 직전 분기(이번 분기 중에 이미 발표됨)
     f["profit_lag3"] = f["profit"].shift(3)                    # 다음 분기의 '4분기 전'
@@ -453,6 +465,10 @@ def build_frame(profit, exports, usdkrw, k, cli=None, tsmc=None):
 FEATURES = ["exports_krw_k", "exports_yoy", "exports_qoq", "profit_lag1", "profit_lag4"]
 # TSMC 월매출. 한국 수출 확정치보다 빠르고 AI·HBM 수요를 직접 반영한다. 넣을지는 쌍체 비교로 정한다.
 TSMC_FEATURES = ["tsmc_yoy", "tsmc_qoq"]
+# 수출 단가와 물량. 수출액 하나만 보면 '가격이 올라서'와 '물량이 늘어서'를 구분하지 못한다.
+# 가격이 올라 늘어난 수출액은 거의 그대로 이익이 되지만 물량은 원가도 따라 늘기 때문이다.
+# 넣을지는 TSMC 와 같은 방식으로 쌍체 비교해 정한다.
+UNIT_PRICE_FEATURES = ["unit_price_yoy", "volume_yoy"]
 # 다음 분기: 직전 분기 영업이익은 profit_lag1(t-1)이 마지막으로 아는 값이고, 계절 기준선은 t-3이다.
 FEATURES_NEXT = ["exports_krw_k", "exports_yoy", "exports_qoq", "profit_lag1", "profit_lag3"]
 CLI_FEATURES = ["cli_level", "cli_change_3m"]
@@ -768,6 +784,32 @@ def render_fragment(result):
     else:
         parts.append(f'<div style="font-size:13px;color:#6b7178">{e(ev.get("note", "표본 부족"))}</div>')
 
+    # 수출 단가·물량 효과
+    if r.get("price_active") and r.get("price_ablation"):
+        ab = r["price_ablation"]
+        if ab.get("mae_with") is not None and ab.get("mae_without") is not None:
+            better = ab["mae_with"] < ab["mae_without"]
+            parts.append('<h4 style="font-size:14px;margin:18px 0 6px">수출 단가·물량을 나누면 나아지는가</h4>')
+            parts.append('<div style="font-size:12px;color:#6b7178;margin-bottom:6px">'
+                         '수출액은 가격 × 물량입니다. 가격이 올라 늘어난 수출액은 거의 그대로 이익이 되지만, '
+                         '물량이 늘어난 것은 원가도 따라 늘어 이익 기여가 작습니다. 관세청 중량으로 단가'
+                         '(달러/kg)와 물량을 나눠 각각의 전년 대비를 넣어 봤습니다. 지금처럼 가격이 급변하는 '
+                         '국면에서 수출액 하나만 보는 것보다 나은지가 판단 기준입니다.</div>')
+            parts.append('<div style="overflow-x:auto"><table style="width:100%;min-width:420px;'
+                         'border-collapse:collapse;font-size:13px;border:1px solid #e5e5e5">'
+                         f'<tr><th {TH}>모델</th><th {THR}>MAE</th></tr>'
+                         f'<tr><td {TD}>수출액만</td><td {TDR}>{ab["mae_without"] / TRILLION:,.2f}조원</td></tr>'
+                         f'<tr><td {TD}>단가·물량 포함</td><td {TDR}>{ab["mae_with"] / TRILLION:,.2f}조원</td></tr>'
+                         '</table></div>')
+            parts.append(f'<div style="font-size:13px;margin-top:8px">'
+                         + ("<b style='color:#1e6b34'>단가·물량을 나누면 오차가 줄었습니다.</b>" if better
+                            else "<b>수출액만 쓰는 것보다 낫지 않습니다.</b>")
+                         + f' 평가 {ab.get("n", "?")}개 분기. 발행 모델은 쌍체 비교에서 확실히 나을 때만 '
+                           '바꿉니다 — 지금은 관찰만 합니다.</div>')
+    elif (r.get("quantity_info") or {}).get("enabled") is False:
+        parts.append('<div style="font-size:11px;color:#8a9199;margin-top:8px">수출 단가·물량 미포함 — '
+                     f'{e(str((r.get("quantity_info") or {}).get("reason", ""))[:120])}</div>')
+
     # TSMC 효과
     if r.get("tsmc_active") and r.get("tsmc_ablation"):
         ab = r["tsmc_ablation"]
@@ -986,6 +1028,54 @@ def analyse(target, out_dir, fetch=True):
             print("  관세청 속보로 잠정 추정한 달:", flash_applied, flush=True)
     except Exception as exc:
         print("  ⚠️ 수출 속보를 읽지 못했습니다(무시):", exc, flush=True)
+    # 수출 단가·물량(중량). 중량은 관세청에만 있어 이 계열은 관세청 단독으로 쌓는다.
+    # 보관본이 짧으면 전체 이력을 한 번 받고(창이 많아 호출이 늘지만 한 번뿐이다), 그 뒤로는
+    # 최근 18개월만 받아 합친다.
+    quantity, quantity_info = None, {"enabled": False, "reason": "DATA_GO_KR_KEY 없음"}
+    quantity_cache = fallback_dir / "customs_quantity.csv"
+    if key:
+        base = None
+        if quantity_cache.exists():
+            try:
+                base = pd.read_csv(quantity_cache, parse_dates=["month"])
+            except Exception:
+                base = None
+        need_full = base is None or len(base) < 60
+        if fetch:
+            try:
+                start = (pd.Timestamp(START_QUARTER_MONTH) if need_full
+                         else pd.Timestamp.now(tz=KST).date().replace(day=1) - pd.DateOffset(months=18))
+                fresh = fetch_customs_quantity(start, pd.Timestamp.now(tz=KST).date(), key)
+                merged = (fresh if base is None else
+                          pd.concat([base, fresh]).drop_duplicates("month", keep="last"))
+                quantity_raw = merged.sort_values("month").reset_index(drop=True)
+                (out_dir / "customs_quantity.csv").parent.mkdir(parents=True, exist_ok=True)
+                quantity_raw.to_csv(out_dir / "customs_quantity.csv", index=False)
+                quantity = customs_unit_price(quantity_raw)
+                quantity_info = {"enabled": True, "source": "customs_api", "fresh": True,
+                                 "rows": int(len(quantity)),
+                                 "first": f'{quantity["month"].min():%Y-%m}',
+                                 "last": f'{quantity["month"].max():%Y-%m}'}
+                print(f"  수출 단가·물량: {quantity_info['first']}~{quantity_info['last']} "
+                      f"({quantity_info['rows']}개월)", flush=True)
+            except Exception as exc:
+                if base is not None:
+                    quantity = customs_unit_price(base)
+                    quantity_info = {"enabled": True, "source": "customs_cache", "fresh": False,
+                                     "rows": int(len(quantity)), "reason": str(exc)[:120],
+                                     "first": f'{quantity["month"].min():%Y-%m}',
+                                     "last": f'{quantity["month"].max():%Y-%m}'}
+                    print(f"  수출 단가·물량 조회 실패 → 보관본 사용: {str(exc)[:100]}", flush=True)
+                else:
+                    quantity_info = {"enabled": False, "reason": str(exc)[:160]}
+                    print(f"  ⚠️ 수출 단가·물량을 받지 못했습니다(무시): {str(exc)[:100]}", flush=True)
+        elif base is not None:
+            quantity = customs_unit_price(base)
+            quantity_info = {"enabled": True, "source": "customs_cache", "fresh": False,
+                             "rows": int(len(quantity)),
+                             "first": f'{quantity["month"].min():%Y-%m}',
+                             "last": f'{quantity["month"].max():%Y-%m}'}
+
     usdkrw = monthly_usdkrw(out_dir / "cache", fetch=fetch)
     usdkrw = usdkrw.reindex(usdkrw.index.union(exports.index)).ffill().reindex(exports.index)
 
@@ -1030,12 +1120,19 @@ def analyse(target, out_dir, fetch=True):
         dram_info = {"enabled": False, "reason": f"{type(exc).__name__}: {exc}"}
         print("  ⚠️ D램 현물가를 받지 못했습니다(무시):", exc, flush=True)
 
-    f = build_frame(profit, exports, usdkrw, months_used, cli, tsmc)
+    f = build_frame(profit, exports, usdkrw, months_used, cli, tsmc, quantity)
     oof = walk_forward(f)
     ev = evaluate(oof)
     point, n_train = fit_live(f, live_quarter)
 
     # TSMC 를 넣으면 이번 분기 추정이 나아지는가. 같은 날짜·같은 방법으로 쌍체 비교한다.
+    price_active = all(c in f.columns and f[c].notna().mean() > 0.5 for c in UNIT_PRICE_FEATURES)
+    price_ablation = {}
+    if price_active:
+        with_price = evaluate(walk_forward(f, features=FEATURES + UNIT_PRICE_FEATURES))
+        price_ablation = {"mae_with": with_price.get("mae_model"), "mae_without": ev.get("mae_model"),
+                          "n": with_price.get("n")}
+
     tsmc_active = all(c in f.columns and f[c].notna().mean() > 0.5 for c in TSMC_FEATURES)
     tsmc_ablation = {}
     if tsmc_active:
@@ -1133,6 +1230,8 @@ def analyse(target, out_dir, fetch=True):
         "macro_sources": macro_info.get("sources", {}),
         "cli_info": cli_info, "cli_active": cli_active,
         "tsmc_info": tsmc_info, "tsmc_active": tsmc_active, "tsmc_ablation": tsmc_ablation,
+        "quantity_info": quantity_info, "price_active": price_active,
+        "price_ablation": price_ablation,
         "dram_info": dram_info, "dram_summary": dram_spot_summary(dram) if dram is not None else None,
         "provisional": provisional, "provisional_info": provisional_info,
         "next_quarter": next_block,

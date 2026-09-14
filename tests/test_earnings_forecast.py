@@ -812,3 +812,73 @@ class ModelChoiceRuleTests(unittest.TestCase):
         self.assertEqual(list(selection.index), list(index[:4]))
         self.assertEqual(list(evaluation.index), list(index[4:]))
         self.assertLess(selection.index.max(), evaluation.index.min())
+
+
+class UnitPriceFeatureTests(unittest.TestCase):
+    """수출액은 가격 × 물량이라 그 자체로는 이익과의 관계가 국면마다 다르다.
+
+    2026-09-13: 3분기 추정 122.9조 vs 증권사 컨센서스 111조. 수출액 하나만 보면 '가격이 올라서'와
+    '물량이 늘어서'를 구분하지 못하는 것이 원인 후보라, 관세청 중량으로 단가를 만들어 재 본다.
+    """
+
+    def quantity(self, n=141):
+        months = pd.date_range("2015-01-01", periods=n, freq="MS")
+        rng = np.random.default_rng(0)
+        return pd.DataFrame({"month": months,
+                             "unit_price": np.linspace(800, 3000, n) * (1 + rng.normal(0, .03, n)),
+                             "volume": np.linspace(1e6, 1.4e6, n) * (1 + rng.normal(0, .05, n))})
+
+    def test_parser_reads_weight_only_when_asked(self):
+        from data_sources.exports import parse_customs_xml
+        xml = ('<response><header><resultCode>00</resultCode><resultMsg>정상</resultMsg></header>'
+               '<body><items><item><expDlr>5170747</expDlr><expWgt>4478</expWgt>'
+               '<hsCode>8541101000</hsCode><year>2026.01</year></item></items></body></response>')
+        self.assertEqual(list(parse_customs_xml(xml).columns), ["month", "value"])
+        self.assertIn("weight", parse_customs_xml(xml, with_weight=True).columns)
+
+    def test_unit_price_divides_value_by_weight(self):
+        from data_sources.exports import customs_unit_price
+        frame = pd.DataFrame({"month": ["2026-01-01"], "value": [1.0e9], "weight": [1.0e6]})
+        out = customs_unit_price(frame)
+        self.assertAlmostEqual(out["unit_price"].iloc[0], 1000.0)
+        self.assertAlmostEqual(out["volume"].iloc[0], 1.0e6)
+
+    def test_zero_weight_does_not_divide_by_zero(self):
+        from data_sources.exports import customs_unit_price
+        frame = pd.DataFrame({"month": ["2026-01-01", "2026-02-01"], "value": [1e9, 1e9],
+                              "weight": [0.0, 1e6]})
+        out = customs_unit_price(frame)
+        self.assertEqual(len(out), 1)                     # 0 인 달은 빠진다
+        self.assertEqual(out["month"].iloc[0], pd.Timestamp("2026-02-01"))
+
+    def test_frame_adds_price_and_volume_features(self):
+        months = pd.date_range("2015-01-01", periods=141, freq="MS")
+        quantity = self.quantity()
+        exports = pd.Series(quantity["unit_price"].to_numpy() * quantity["volume"].to_numpy(),
+                            index=months)
+        fx = pd.Series(1300.0, index=months)
+        quarters = pd.PeriodIndex(pd.date_range("2016-01-01", "2026-06-01", freq="QS"), freq="Q")
+        profit = pd.Series(np.linspace(6e12, 90e12, len(quarters)), index=quarters)
+        frame = ef.build_frame(profit, exports, fx, 3, quantity=quantity)
+        for column in ("unit_price_k", "volume_k", "unit_price_yoy", "volume_yoy"):
+            self.assertIn(column, frame.columns)
+        self.assertLess(frame["unit_price_yoy"].isna().mean(), 0.2)
+
+    def test_frame_without_quantity_is_unchanged(self):
+        # 단가 자료가 없으면 예전과 똑같이 동작해야 한다.
+        months = pd.date_range("2015-01-01", periods=141, freq="MS")
+        exports = pd.Series(np.linspace(1e9, 4e9, 141), index=months)
+        fx = pd.Series(1300.0, index=months)
+        quarters = pd.PeriodIndex(pd.date_range("2016-01-01", "2026-06-01", freq="QS"), freq="Q")
+        profit = pd.Series(np.linspace(6e12, 90e12, len(quarters)), index=quarters)
+        frame = ef.build_frame(profit, exports, fx, 3)
+        self.assertNotIn("unit_price_k", frame.columns)
+
+    def test_features_are_only_a_candidate_not_published(self):
+        source = (ROOT / "tools" / "build_earnings_forecast.py").read_text(encoding="utf-8")
+        # 발행 모델(FEATURES)에 들어가면 안 된다. 쌍체 비교로 재고 관찰만 한다.
+        headline = source[source.index("FEATURES = ["):source.index("FEATURES = [") + 120]
+        self.assertNotIn("unit_price", headline)
+        self.assertNotIn("volume", headline)
+        self.assertIn("UNIT_PRICE_FEATURES", source)
+        self.assertIn("지금은 관찰만 합니다", source)

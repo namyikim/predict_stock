@@ -17,12 +17,16 @@ import pandas as pd
 
 
 def normalize_monthly(frame):
-    columns = ['month', 'value'] + [c for c in ('released_at', 'vintage', 'source') if c in frame]
+    # weight: 수출 중량(kg). 단가(value/weight)를 만들려면 함께 통과시켜야 한다.
+    columns = ['month', 'value'] + [c for c in ('weight', 'released_at', 'vintage', 'source')
+                                    if c in frame]
     out = frame[columns].copy()
     months = out['month'].astype(str).str.replace(r'^(\d{4})[./](\d{1,2})$', r'\1-\2', regex=True)
     months = months.str.replace(r'^(\d{4})(\d{2})$', r'\1-\2', regex=True)
     out['month'] = pd.to_datetime(months, format='mixed', errors='raise').dt.to_period('M').dt.to_timestamp()
     out['value'] = pd.to_numeric(out['value'].astype(str).str.replace(',', ''), errors='coerce')
+    if 'weight' in out:
+        out['weight'] = pd.to_numeric(out['weight'].astype(str).str.replace(',', ''), errors='coerce')
     keys = ['month']
     if 'released_at' in out:
         releases = []

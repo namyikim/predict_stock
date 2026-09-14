@@ -940,3 +940,48 @@ class OverconfidenceTests(unittest.TestCase):
         verification = source.index("검증 — 기준선을 이기는가", estimate)
         self.assertLess(warning, verification, "경고가 검증 절보다 뒤에 있으면 대부분 놓친다")
         self.assertIn("만 담았습니다", source)
+
+
+class LeverageFeatureTests(unittest.TestCase):
+    """영업 레버리지: 많이 팔면서 빠르게 늘 때 이익은 비례 이상으로 늘어난다.
+
+    2026-09-13 측정: 수출 증가율과 오차의 상관이 +0.62 였다(수출이 늘 때 과소 추정).
+    규모 × 증가율 항을 넣으니 -0.31 로 떨어지고, 분할 검증 뒤 절반 -9%, 하이닉스 -24% 로
+    재현됐다. 오늘 시험한 아홉 가지 중 유일하게 살아남았다(로그·표준화·이익률·변화율·최근가중·
+    보정·단가는 모두 실패).
+    """
+
+    def frame(self):
+        months = pd.date_range("2015-01-01", periods=141, freq="MS")
+        rng = np.random.default_rng(1)
+        exports = pd.Series(np.linspace(1e9, 4e9, 141) * (1 + rng.normal(0, .05, 141)), index=months)
+        quarters = pd.PeriodIndex(pd.date_range("2016-01-01", "2026-06-01", freq="QS"), freq="Q")
+        profit = pd.Series(np.linspace(6e12, 90e12, len(quarters)), index=quarters)
+        return ef.build_frame(profit, exports, pd.Series(1300.0, index=months), 3)
+
+    def test_interaction_terms_exist_and_are_products(self):
+        frame = self.frame()
+        for column in ef.LEVERAGE_FEATURES:
+            self.assertIn(column, frame.columns)
+        row = frame.dropna(subset=["exports_krw_k", "exports_qoq", "scale_x_growth"]).iloc[0]
+        self.assertAlmostEqual(row["scale_x_growth"], row["exports_krw_k"] * row["exports_qoq"],
+                               delta=abs(row["scale_x_growth"]) * 1e-9)
+
+    def test_no_new_data_source_needed(self):
+        # 두 항 모두 이미 쓰는 값의 곱이다. 새 자료를 받지 않는다.
+        source = (ROOT / "tools" / "build_earnings_forecast.py").read_text(encoding="utf-8")
+        self.assertIn('f["scale_x_growth"] = f["exports_krw_k"] * f["exports_qoq"]', source)
+        self.assertIn('f["scale_x_yoy"] = f["exports_krw_k"] * f["exports_yoy"]', source)
+
+    def test_ablation_reports_bias_not_only_mae(self):
+        # 이 항의 목적은 편향 제거다. MAE 만 보면 두 분기가 지배해 판단이 흔들린다.
+        source = (ROOT / "tools" / "build_earnings_forecast.py").read_text(encoding="utf-8")
+        self.assertIn('"bias_with"', source)
+        self.assertIn('"bias_without"', source)
+        self.assertIn("증가율-오차 상관", source)
+
+    def test_not_in_the_published_model(self):
+        source = (ROOT / "tools" / "build_earnings_forecast.py").read_text(encoding="utf-8")
+        headline = source[source.index("FEATURES = ["):source.index("FEATURES = [") + 120]
+        self.assertNotIn("scale_x", headline)
+        self.assertIn("LEVERAGE_FEATURES", source)

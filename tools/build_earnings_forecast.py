@@ -436,6 +436,9 @@ def build_frame(profit, exports, usdkrw, k, cli=None, tsmc=None, quantity=None):
     f["exports_krw_k"] = f["exports_k"] * f["usdkrw_k"]        # 원화 환산 수출 규모
     f["exports_yoy"] = f["exports_k"] / f["exports_k"].shift(4) - 1
     f["exports_qoq"] = f["exports_k"] / f["exports_k"].shift(1) - 1
+    # 규모 × 증가율. 둘 다 이미 이 행에서 쓰는 값이라 새 자료가 필요 없다.
+    f["scale_x_growth"] = f["exports_krw_k"] * f["exports_qoq"]
+    f["scale_x_yoy"] = f["exports_krw_k"] * f["exports_yoy"]
     if quantity is not None and len(quantity):
         q = quantity.set_index("month")
         price_k = first_k_months(q["unit_price"], k)
@@ -469,6 +472,11 @@ TSMC_FEATURES = ["tsmc_yoy", "tsmc_qoq"]
 # 가격이 올라 늘어난 수출액은 거의 그대로 이익이 되지만 물량은 원가도 따라 늘기 때문이다.
 # 넣을지는 TSMC 와 같은 방식으로 쌍체 비교해 정한다.
 UNIT_PRICE_FEATURES = ["unit_price_yoy", "volume_yoy"]
+# 영업 레버리지. 많이 팔면서 빠르게 늘 때 이익은 비례 이상으로 늘어난다(고정비는 그대로다).
+# 선형 모델은 이것을 표현하지 못해 급증 국면마다 과소 추정했다 — 2026-09-13 측정에서 수출
+# 증가율과 오차의 상관이 +0.62 였다. 규모 × 증가율 항을 넣으면 -0.31 로 떨어진다.
+# 분할 검증(뒤 절반 -9%)과 다른 종목(하이닉스 -24%, 상관 +0.72 → -0.28)에서 재현됐다.
+LEVERAGE_FEATURES = ["scale_x_growth", "scale_x_yoy"]
 # 다음 분기: 직전 분기 영업이익은 profit_lag1(t-1)이 마지막으로 아는 값이고, 계절 기준선은 t-3이다.
 FEATURES_NEXT = ["exports_krw_k", "exports_yoy", "exports_qoq", "profit_lag1", "profit_lag3"]
 CLI_FEATURES = ["cli_level", "cli_change_3m"]
@@ -856,6 +864,33 @@ def render_fragment(result):
     else:
         parts.append(f'<div style="font-size:13px;color:#6b7178">{e(ev.get("note", "표본 부족"))}</div>')
 
+    # 영업 레버리지 효과
+    if r.get("leverage_active") and r.get("leverage_ablation"):
+        ab = r["leverage_ablation"]
+        if ab.get("mae_with") is not None and ab.get("mae_without") is not None:
+            better = ab["mae_with"] < ab["mae_without"]
+            fixed = abs(ab.get("bias_with", 1)) < abs(ab.get("bias_without", 1))
+            parts.append('<h4 style="font-size:14px;margin:18px 0 6px">영업 레버리지를 넣으면 나아지는가</h4>')
+            parts.append('<div style="font-size:12px;color:#6b7178;margin-bottom:6px">'
+                         '많이 팔면서 빠르게 늘 때 이익은 비례 이상으로 늘어납니다(고정비는 그대로이므로). '
+                         '선형 모델은 이것을 표현하지 못해 급증 국면마다 낮게 불렀습니다. 규모 × 증가율 항을 '
+                         '넣어 그 편향이 사라지는지 봅니다 — MAE 뿐 아니라 <b>수출 증가율과 오차의 상관</b>이 '
+                         '0 에 가까워졌는지가 핵심입니다.</div>')
+            parts.append('<div style="overflow-x:auto"><table style="width:100%;min-width:460px;'
+                         'border-collapse:collapse;font-size:13px;border:1px solid #e5e5e5">'
+                         f'<tr><th {TH}>모델</th><th {THR}>MAE</th><th {THR}>증가율-오차 상관</th></tr>'
+                         f'<tr><td {TD}>레버리지 제외</td><td {TDR}>{ab["mae_without"] / TRILLION:,.2f}조원</td>'
+                         f'<td {TDR}>{ab.get("bias_without", float("nan")):+.2f}</td></tr>'
+                         f'<tr><td {TD}>레버리지 포함</td><td {TDR}>{ab["mae_with"] / TRILLION:,.2f}조원</td>'
+                         f'<td {TDR}>{ab.get("bias_with", float("nan")):+.2f}</td></tr>'
+                         '</table></div>')
+            parts.append(f'<div style="font-size:13px;margin-top:8px">'
+                         + ("<b style='color:#1e6b34'>오차가 줄고 편향도 작아졌습니다.</b>" if better and fixed
+                            else "<b style='color:#1e6b34'>급증 국면의 편향이 작아졌습니다.</b>" if fixed
+                            else "<b>지금 자료로는 낫지 않습니다.</b>")
+                         + f' 평가 {ab.get("n", "?")}개 분기. 발행 모델은 쌍체 비교가 확실할 때만 바꿉니다 — '
+                           '지금은 관찰만 합니다.</div>')
+
     # 수출 단가·물량 효과
     if r.get("price_active") and r.get("price_ablation"):
         ab = r["price_ablation"]
@@ -1198,6 +1233,24 @@ def analyse(target, out_dir, fetch=True):
     point, n_train = fit_live(f, live_quarter)
 
     # TSMC 를 넣으면 이번 분기 추정이 나아지는가. 같은 날짜·같은 방법으로 쌍체 비교한다.
+    leverage_active = all(c in f.columns and f[c].notna().mean() > 0.5 for c in LEVERAGE_FEATURES)
+    leverage_ablation = {}
+    if leverage_active:
+        oof_lev = walk_forward(f, features=FEATURES + LEVERAGE_FEATURES)
+        with_lev = evaluate(oof_lev)
+        # 이 항의 목적은 MAE 만이 아니다. '수출이 늘 때 과소 추정'이라는 편향을 없애는 것이라
+        # 증가율과 오차의 상관이 0 에 가까워졌는지도 함께 본다.
+        def growth_bias(oof):
+            if oof is None or oof.empty:
+                return float("nan")
+            growth = f["exports_qoq"].reindex(oof.index)
+            error = oof["actual"] - oof["model"]
+            ok = growth.notna() & error.notna()
+            return float(np.corrcoef(growth[ok], error[ok])[0, 1]) if ok.sum() > 2 else float("nan")
+        leverage_ablation = {"mae_with": with_lev.get("mae_model"), "mae_without": ev.get("mae_model"),
+                             "n": with_lev.get("n"),
+                             "bias_with": growth_bias(oof_lev), "bias_without": growth_bias(oof)}
+
     price_active = all(c in f.columns and f[c].notna().mean() > 0.5 for c in UNIT_PRICE_FEATURES)
     price_ablation = {}
     if price_active:
@@ -1303,6 +1356,7 @@ def analyse(target, out_dir, fetch=True):
         "cli_info": cli_info, "cli_active": cli_active,
         "tsmc_info": tsmc_info, "tsmc_active": tsmc_active, "tsmc_ablation": tsmc_ablation,
         "extrapolation": extrapolation_note(profit, point),
+        "leverage_active": leverage_active, "leverage_ablation": leverage_ablation,
         "quantity_info": quantity_info, "price_active": price_active,
         "price_ablation": price_ablation,
         "dram_info": dram_info, "dram_summary": dram_spot_summary(dram) if dram is not None else None,

@@ -180,6 +180,8 @@ REPORT_ORDER = "".join(
         "1. 다음 거래일 방향", "1-1. 외국인·기관 수급", "2. 시초가예측과 종가예측",
         "3. 이 예측을 어떻게 읽어야 하는가", "한눈에 보는 장기 전망 요약", "1. 장기 전망 (월간)",
         "2. 이번 분기 영업이익 추정",
+        # 주간 뉴스는 자주 보는 거리라 장기 전망 뒤(세 번째 탭)에 둔다(2026-09-15).
+        "주간 반도체 뉴스",
         "이 모델의 예측 성적", "이 보고서의 데이터", "참고 정보: 최근 공시와 예정 발표"))
 
 
@@ -190,8 +192,14 @@ class TabArrangementTests(unittest.TestCase):
         return rh.tabify_sections('<div class="wrap">' + REPORT_ORDER + '</div>')
 
     def test_tabs_are_in_this_order(self):
-        self.assertEqual(tab_labels(self.out()), ["오늘의 예측", "장기 전망", "예측 성적",
-                                                  "사용한 데이터", "공시·발표 일정"])
+        self.assertEqual(tab_labels(self.out()), ["오늘의 예측", "장기 전망", "주간 뉴스",
+                                                  "예측 성적", "사용한 데이터", "공시·발표 일정"])
+
+    def test_weekly_news_is_the_third_tab(self):
+        """탭 순서는 그 탭의 첫 절이 문서에 나오는 순서다. TAB_GROUPS 만 고치면 안 바뀐다."""
+        labels = tab_labels(self.out())
+        self.assertEqual(labels[2], "주간 뉴스")
+        self.assertEqual(panel_titles(self.out())["rtab-2"], ["주간 반도체 뉴스"])
 
     def test_first_tab_holds_today_and_ends_with_the_reading_guide(self):
         first = panel_titles(self.out())["rtab-0"]

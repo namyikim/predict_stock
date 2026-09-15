@@ -97,3 +97,39 @@ class TitleHookTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class EmbeddedButtonTests(unittest.TestCase):
+    """뉴스 허브는 세 페이지를 iframe 으로 띄운다. 그 안에서는 목록 버튼을 숨겨야 한다.
+
+    2026-09-15: 허브 맨 위에 버튼이 있는데 '최신 AI 뉴스' 탭 안에도 또 보였다.
+    """
+
+    TOOLS = ("build_ai_news_report.py", "build_trends_report.py", "build_interest_report.py")
+
+    def source(self, name):
+        return (ROOT / "tools" / name).read_text(encoding="utf-8")
+
+    def test_button_has_a_class_and_is_hidden_when_embedded(self):
+        for name in self.TOOLS:
+            source = self.source(name)
+            self.assertIn('class="back-to-index"', source, name)
+            self.assertIn("window.top!==window.self", source, name)
+            self.assertIn(".embedded .back-to-index{display:none}", source, name)
+
+    def test_detection_runs_in_head_so_the_button_never_flashes(self):
+        # 버튼이 그려진 뒤에 지우면 로드 직후 깜빡인다.
+        for name in self.TOOLS:
+            source = self.source(name)
+            self.assertLess(source.index("window.top!==window.self"),
+                            source.index('class="back-to-index"'),
+                            f"{name}: 판정이 버튼보다 뒤에 있습니다")
+
+    def test_javascript_quotes_do_not_break_the_python_string(self):
+        # ' embedded' 처럼 작은따옴표를 쓰면 파이썬 문자열이 닫힌다(실제로 겪었다).
+        for name in self.TOOLS:
+            self.assertIn('className+=" embedded"', self.source(name), name)
+
+    def test_hub_embeds_exactly_those_pages(self):
+        import build_news_hub as hub
+        self.assertEqual({key for key, _, _ in hub.TABS}, {"ai_news", "trends", "interest"})

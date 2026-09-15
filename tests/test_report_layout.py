@@ -398,3 +398,32 @@ class CaveatSpacingTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class BackLinkTests(unittest.TestCase):
+    """종목 보고서 맨 위에 보고서 목록으로 가는 버튼(2026-09-14 요청).
+
+    금·은·중국 보고서는 하단에만 링크가 있어 긴 페이지를 끝까지 내려야 했다. 탭이 생기면서
+    페이지가 더 길어져 상단에 둔다.
+    """
+
+    @classmethod
+    def setUpClass(cls):
+        import json
+        nb = json.loads((ROOT / "samsung_direction_model_colab.ipynb").read_text(encoding="utf-8"))
+        cls.source = "\n".join("".join(c["source"]) for c in nb["cells"])
+
+    def test_button_exists_and_points_to_the_index(self):
+        self.assertIn('<a href="../"', self.source)
+        self.assertIn("← 보고서 목록", self.source)
+
+    def test_button_comes_before_the_title(self):
+        # 주석에도 '종합 보고서'가 나오므로 제목 태그로 찾는다.
+        button = self.source.index("← 보고서 목록")
+        title = self.source.index("<h2 style=\"margin:6px 0 5px;font-size:27px\">종합 보고서")
+        self.assertLess(button, title, "버튼이 제목보다 뒤에 있으면 상단 버튼이 아니다")
+
+    def test_button_is_inside_the_page_wrapper(self):
+        # 바깥 래퍼 div 안에 있어야 가운데 정렬·폭 제한이 적용된다.
+        wrapper = self.source.index("max-width:980px;margin:0 auto;")
+        self.assertLess(wrapper, self.source.index("← 보고서 목록"))

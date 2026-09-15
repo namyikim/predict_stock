@@ -102,7 +102,8 @@ def build_hub():
         f'<nav class="hub-tabs" aria-label="뉴스와 트렌드 탭">{buttons}</nav>'
         f'{panels}'
         '<div style="margin-top:24px;padding-top:14px;border-top:1px solid #e5e5e5;font-size:12px;color:#8a9199">'
-        '<a href="../">예측 보고서</a> · 헤드라인과 검색 지표 모음입니다. 투자 자문이 아닙니다.</div>'
+        # 목록으로 가는 링크는 맨 위 버튼 하나만 둔다(2026-09-15: 상단 버튼을 넣으면서 중복됐다).
+        '헤드라인과 검색 지표 모음입니다. 투자 자문이 아닙니다.</div>'
         f'</div>{script}</body></html>')
 
 

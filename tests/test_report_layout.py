@@ -487,3 +487,36 @@ class AllReportsBackLinkTests(unittest.TestCase):
         by_tool = len(self.TOOLS)
         self.assertGreaterEqual(by_tool + 3, len(pages),
                                 f"검사하지 않는 페이지가 있습니다: {sorted(pages)}")
+
+    def test_only_one_back_link_per_generator(self):
+        """목록 링크는 맨 위 버튼 하나만. 하단에도 있으면 같은 버튼이 두 번 보인다.
+
+        2026-09-15: 상단 버튼을 넣으면서 기존 하단 링크와 중복됐다(뉴스 허브·금은·중국·검색어·
+        관심도 다섯 곳).
+        """
+        for name in self.TOOLS:
+            source = self.source(name)
+            count = source.count('href="../"')
+            self.assertEqual(count, 1, f"{name}: 목록 링크가 {count}개입니다(맨 위 버튼 하나만)")
+
+    def test_repository_committed_pages_have_no_duplicate(self):
+        """저장소에 커밋된 페이지도 중복이 없어야 한다.
+
+        각 페이지는 자기 워크플로가 다음에 돌 때 다시 만들어지므로, 도구만 고친 직후에는
+        옛 발행본이 남아 있을 수 있다. 그래서 '도구가 고쳐졌는지'는 위 테스트가 지키고,
+        여기서는 다시 만들어진 페이지만 본다(상단 버튼 + 하단 링크가 함께 있으면 중복).
+        """
+        for page in sorted((ROOT / "docs").iterdir()):
+            if not page.is_dir() or page.name == "admin":
+                continue
+            index = page / "index.html"
+            if not index.exists() or "← 보고서 목록" not in index.read_text(encoding="utf-8"):
+                continue
+            html = index.read_text(encoding="utf-8")
+            if html.count('href="../"') <= 1:
+                continue                       # 이미 정리된 페이지
+            # 아직 옛 발행본이면 도구 쪽이 고쳐져 있는지만 확인한다.
+            self.assertTrue(any('href="../"' in self.source(name) and
+                                self.source(name).count('href="../"') == 1
+                                for name in self.TOOLS),
+                            f"{page.name}: 발행본이 중복인데 도구도 고쳐지지 않았습니다")

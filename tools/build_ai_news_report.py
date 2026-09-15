@@ -252,8 +252,8 @@ def build_html(ranked, now, total, failed):
         'font-size:12px;color:#8a9199">'
         f'생성 {now:%Y-%m-%d %H:%M} KST · 출처 '
         '<a href="https://news.google.com/">Google News</a> · '
-        f'<a href="https://github.com/{GITHUB_REPO}">저장소</a> · '
-        '<a href="../">예측 보고서</a><br>'
+        # 목록 링크는 맨 위 버튼 하나만 둔다(2026-09-15: 상단 버튼을 넣으면서 중복됐다).
+        f'<a href="https://github.com/{GITHUB_REPO}">저장소</a><br>'
         '헤드라인 모음입니다. 이 저장소의 예측 모델에는 쓰이지 않으며 투자 자문이 아닙니다.'
         f'{counter}</div>'
         "</div></body></html>")

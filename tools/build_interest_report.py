@@ -326,8 +326,8 @@ def build_html(rows, span, now):
         f'생성 {now:%Y-%m-%d %H:%M} KST · 출처 '
         '<a href="https://wikimedia.org/api/rest_v1/">Wikimedia Pageviews</a> · '
         '<a href="https://trends.google.com/trending?geo=KR">Google Trends</a> · '
-        f'<a href="https://github.com/{GITHUB_REPO}">저장소</a> · '
-        '<a href="../">예측 보고서</a>'
+        # 목록 링크는 맨 위 버튼 하나만 둔다(2026-09-15: 상단 버튼을 넣으면서 중복됐다).
+        f'<a href="https://github.com/{GITHUB_REPO}">저장소</a>'
         f'{counter}</div></div></body></html>')
 
 

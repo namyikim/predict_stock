@@ -615,7 +615,8 @@ def page(inner, today):
         'font-family:-apple-system,\'Malgun Gothic\',sans-serif;font-size:12px;color:#8a9199">'
         f'생성 {datetime.now(KST).strftime("%Y-%m-%d %H:%M")} KST · '
         f'<a href="https://github.com/{github_pages.GITHUB_REPO}" style="color:#1a5490">저장소</a> · '
-        '<a href="../" style="color:#1a5490">보고서 목록</a> · 연구·교육용입니다. 투자 자문이 아닙니다.'
+        # 목록 링크는 맨 위 버튼 하나만 둔다(2026-09-15: 상단 버튼을 넣으면서 중복됐다).
+        '연구·교육용입니다. 투자 자문이 아닙니다.'
         f'{counter}</div></body></html>')
 
 

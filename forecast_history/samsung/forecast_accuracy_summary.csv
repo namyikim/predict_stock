@@ -1,6 +1,6 @@
 ﻿model,kind,horizon_days,target_mode,config_hash,n,accuracy,mean_log_loss,mean_brier,point_forecasts,price_mae,price_mape,interval_coverage
 Candidate IV interval,price,1,close_to_close,01a15a32dfbfbe7a4a16,1,,,,1,8007.067756642296,0.0321568986210534,1.0
-Candidate evening forecast,direction,1,close_to_close,01a15a32dfbfbe7a4a16,1,1.0,0.9304445415545937,0.5566735343501641,0,,,
+Candidate evening forecast,direction,1,close_to_close,01a15a32dfbfbe7a4a16,2,1.0,0.9204919235779774,0.5484364607349561,0,,,
 Candidate expanding,direction,1,close_to_close,01a15a32dfbfbe7a4a16,1,1.0,0.9368986763311691,0.5565529648850908,0,,,
 Candidate expanding,direction,1,close_to_close,fcf9a52b1a6a87f3bd29,1,0.0,1.1978514022617497,0.7366310234911683,0,,,
 LightGBM,direction,1,close_to_close,01a15a32dfbfbe7a4a16,1,1.0,0.9821159340611566,0.5893988404197812,0,,,
@@ -71,4 +71,5 @@ Ridge,price,5,close_to_close,2df6c98b48a745b2967f,1,,,,0,,,1.0
 Ridge,price,5,close_to_close,2eb5adc74ae8d1ff1953,1,,,,0,,,1.0
 Ridge,price,5,close_to_close,7cfdc5ba38f87fc3691f,1,,,,0,,,1.0
 Ridge,price,5,close_to_close,b7e83cece61c5faf1d06,1,,,,0,,,1.0
+Ridge,price,5,close_to_close,cee1232d50d58d70f18f,1,,,,0,,,1.0
 Transformer,direction,1,close_to_close,2c241a78cab914136594,1,0.0,1.2667060758974118,0.8844179324428342,0,,,

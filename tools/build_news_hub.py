@@ -93,6 +93,7 @@ def build_hub():
         '<meta name="viewport" content="width=device-width, initial-scale=1">'
         f'<title>{escape(TITLE)}</title>{_STYLE}</head><body>'
         '<div class="wrap" id="hub">'
+        '<div style="margin-bottom:10px"><a href="../" style="display:inline-block;font-size:12px;color:#1a5490;text-decoration:none;border:1px solid #cedff0;border-radius:5px;padding:5px 11px;background:#f0f6fc">← 보고서 목록</a></div>'
         '<div style="padding-bottom:8px;margin-bottom:6px">'
         '<div style="font-size:11px;letter-spacing:2px;color:#8a9199">NEWS &amp; TRENDS</div>'
         f'<h2 style="margin:6px 0 4px;font-size:27px">{escape(TITLE)}</h2>'

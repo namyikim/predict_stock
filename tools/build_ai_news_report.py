@@ -233,6 +233,7 @@ def build_html(ranked, now, total, failed):
         '.wrap{max-width:760px;margin:0 auto}a{color:#1a5490}'
         '@media(max-width:640px){body{padding:16px 12px 32px}}</style></head><body>'
         '<div class="wrap">'
+        '<div style="margin-bottom:10px"><a href="../" style="display:inline-block;font-size:12px;color:#1a5490;text-decoration:none;border:1px solid #cedff0;border-radius:5px;padding:5px 11px;background:#f0f6fc">← 보고서 목록</a></div>'
         '<div style="border-bottom:3px solid #1a1a1a;padding-bottom:11px;margin-bottom:18px">'
         '<div class="page-title" style="font-size:11px;letter-spacing:2px;color:#8a9199">AI TRENDS &amp; NEWS</div>'
         '<h2 class="page-title" style="margin:6px 0 5px;font-size:27px">최신 AI 트렌드 및 뉴스</h2>'

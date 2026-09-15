@@ -436,8 +436,11 @@ class AllReportsBackLinkTests(unittest.TestCase):
     돌아갈 수 있었다.
     """
 
+    # 페이지를 만드는 모든 도구. 새 페이지를 추가하면 여기에도 넣어야 테스트가 지켜 준다.
+    # 2026-09-15: news·ai_news·lab 을 빠뜨려 /news/ 에만 버튼이 없었다.
     TOOLS = ("build_metals_report.py", "build_china_report.py",
-             "build_trends_report.py", "build_interest_report.py")
+             "build_trends_report.py", "build_interest_report.py",
+             "build_news_hub.py", "build_ai_news_report.py")
 
     def source(self, name):
         return (ROOT / "tools" / name).read_text(encoding="utf-8")
@@ -453,8 +456,10 @@ class AllReportsBackLinkTests(unittest.TestCase):
         for name in self.TOOLS:
             source = self.source(name)
             button = source.index("← 보고서 목록")
+            # 보고서마다 제목 태그가 다르다(h1/h2, class 유무).
             title = min((source.index(tag) for tag in ('<h1 style="font-size:24px',
-                                                       '<h2 class="page-title"')
+                                                       '<h2 class="page-title"',
+                                                       '<h2 style="margin:6px 0 4px;font-size:27px')
                          if tag in source), default=None)
             self.assertIsNotNone(title, name)
             self.assertLess(button, title, f"{name}: 버튼이 제목보다 뒤에 있습니다")
@@ -463,3 +468,22 @@ class AllReportsBackLinkTests(unittest.TestCase):
         # 보고서마다 모양이 다르면 같은 버튼으로 읽히지 않는다.
         for name in self.TOOLS:
             self.assertIn("border:1px solid #cedff0;border-radius:5px", self.source(name), name)
+
+
+    def test_static_lab_page_uses_the_same_button(self):
+        html = (ROOT / "docs" / "lab" / "index.html").read_text(encoding="utf-8")
+        self.assertIn("← 보고서 목록", html)
+        self.assertIn("border:1px solid #cedff0;border-radius:5px", html)
+        self.assertLess(html.index("← 보고서 목록"), html.index("<h1>실험실"))
+
+    def test_every_generator_is_covered(self):
+        """페이지를 만드는 도구를 빠뜨리면 그 페이지에만 버튼이 없어진다.
+
+        docs/ 에 발행되는 페이지 수와 검사 대상이 어긋나지 않는지 본다(admin 은 운영용이라 제외).
+        """
+        pages = {p.name for p in (ROOT / "docs").iterdir()
+                 if p.is_dir() and p.name != "admin" and (p / "index.html").exists()}
+        # 종목 둘은 노트북이, lab 은 정적 파일이 만든다. 나머지는 TOOLS 가 만든다.
+        by_tool = len(self.TOOLS)
+        self.assertGreaterEqual(by_tool + 3, len(pages),
+                                f"검사하지 않는 페이지가 있습니다: {sorted(pages)}")

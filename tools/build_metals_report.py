@@ -609,6 +609,7 @@ def render(results, usdkrw, today, quality):
     pred = max(r["prediction_date"] for r in results.values())
     parts = ['<div style="max-width:980px;margin:0 auto;font-family:-apple-system,\'Malgun Gothic\',sans-serif;line-height:1.65;color:#1a1a1a">'
              '<style>code{font-family:ui-monospace,monospace;font-size:12px;word-break:break-all}a{color:#1a5490}</style>'
+             '<div style="margin-bottom:10px"><a href="../" style="display:inline-block;font-size:12px;color:#1a5490;text-decoration:none;border:1px solid #cedff0;border-radius:5px;padding:5px 11px;background:#f0f6fc">← 보고서 목록</a></div>'
              '<div style="font-size:11px;letter-spacing:2px;color:#8a9199">GOLD &amp; SILVER · DIRECTION &amp; PRICE FORECAST</div>'
              '<h1 style="font-size:24px;margin:6px 0 4px">금·은 예측 보고서</h1>'
              f'<div style="font-size:13px;color:#6b7178">예측일 {pred.date()} · 시세 기준일 {today.date()} · 삼성전자·SK하이닉스 보고서와 같은 검증 장치를 씁니다</div>',

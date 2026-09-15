@@ -439,6 +439,7 @@ def render(plan_results, csi, rows15, today, fetched):
         'line-height:1.65;color:#1a1a1a">'
         '<style>.pos{color:#1a7f37}.neg{color:#a8322a}code{font-family:ui-monospace,monospace;font-size:12px;'
         'word-break:break-all}a{color:#1a5490}</style>'
+        '<div style="margin-bottom:10px"><a href="../" style="display:inline-block;font-size:12px;color:#1a5490;text-decoration:none;border:1px solid #cedff0;border-radius:5px;padding:5px 11px;background:#f0f6fc">← 보고서 목록</a></div>'
         '<div style="font-size:11px;letter-spacing:2px;color:#8a9199">CHINA · FIVE-YEAR PLANS &amp; EQUITY RETURNS</div>'
         '<h1 style="font-size:24px;margin:6px 0 4px">중국 5개년 계획과 주식 수익</h1>'
         f'<div style="font-size:13px;color:#6b7178">시세 기준일 {fetched} · 진행 중인 15차(2026~2030) 후보 종목과, 14차(2025)부터 8차(1991)까지 최신순으로 계획별 정책 종목의 '

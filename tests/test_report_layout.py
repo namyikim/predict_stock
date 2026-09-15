@@ -427,3 +427,39 @@ class BackLinkTests(unittest.TestCase):
         # 바깥 래퍼 div 안에 있어야 가운데 정렬·폭 제한이 적용된다.
         wrapper = self.source.index("max-width:980px;margin:0 auto;")
         self.assertLess(wrapper, self.source.index("← 보고서 목록"))
+
+
+class AllReportsBackLinkTests(unittest.TestCase):
+    """모든 보고서 맨 위에 목록으로 가는 버튼(2026-09-14 요청).
+
+    금·은·중국은 하단에만, 검색어·관심도는 상단 링크가 없었다. 페이지가 길어 끝까지 내려야
+    돌아갈 수 있었다.
+    """
+
+    TOOLS = ("build_metals_report.py", "build_china_report.py",
+             "build_trends_report.py", "build_interest_report.py")
+
+    def source(self, name):
+        return (ROOT / "tools" / name).read_text(encoding="utf-8")
+
+    def test_every_report_has_the_button(self):
+        for name in self.TOOLS:
+            source = self.source(name)
+            self.assertIn("← 보고서 목록", source, name)
+            self.assertIn('<a href="../"', source, name)
+
+    def test_button_precedes_the_page_title(self):
+        # 상단 버튼이어야 한다. 제목보다 뒤면 의미가 없다.
+        for name in self.TOOLS:
+            source = self.source(name)
+            button = source.index("← 보고서 목록")
+            title = min((source.index(tag) for tag in ('<h1 style="font-size:24px',
+                                                       '<h2 class="page-title"')
+                         if tag in source), default=None)
+            self.assertIsNotNone(title, name)
+            self.assertLess(button, title, f"{name}: 버튼이 제목보다 뒤에 있습니다")
+
+    def test_same_style_everywhere(self):
+        # 보고서마다 모양이 다르면 같은 버튼으로 읽히지 않는다.
+        for name in self.TOOLS:
+            self.assertIn("border:1px solid #cedff0;border-radius:5px", self.source(name), name)

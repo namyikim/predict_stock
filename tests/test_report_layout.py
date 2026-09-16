@@ -448,7 +448,7 @@ class AllReportsBackLinkTests(unittest.TestCase):
     # 2026-09-15: news·ai_news·lab 을 빠뜨려 /news/ 에만 버튼이 없었다.
     TOOLS = ("build_metals_report.py", "build_china_report.py",
              "build_trends_report.py", "build_interest_report.py",
-             "build_news_hub.py", "build_ai_news_report.py")
+             "build_news_hub.py", "build_ai_news_report.py", "build_macro_report.py")
 
     def source(self, name):
         return (ROOT / "tools" / name).read_text(encoding="utf-8")
@@ -467,7 +467,8 @@ class AllReportsBackLinkTests(unittest.TestCase):
             # 보고서마다 제목 태그가 다르다(h1/h2, class 유무).
             title = min((source.index(tag) for tag in ('<h1 style="font-size:24px',
                                                        '<h2 class="page-title"',
-                                                       '<h2 style="margin:6px 0 4px;font-size:27px')
+                                                       '<h2 style="margin:6px 0 4px;font-size:27px',
+                                                       '<h2 style="margin:6px 0 5px;font-size:27px')
                          if tag in source), default=None)
             self.assertIsNotNone(title, name)
             self.assertLess(button, title, f"{name}: 버튼이 제목보다 뒤에 있습니다")

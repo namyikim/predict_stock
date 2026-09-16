@@ -13,6 +13,7 @@ FRED_CSV = 'https://fred.stlouisfed.org/graph/fredgraph.csv?id={sid}'
 # 미·일 금리차 그림에 쓰는 세 계열
 US10Y, JP10Y, USDJPY = 'DGS10', 'IRLTLT01JPM156N', 'EXJPUS'
 US_CPI = 'CPIAUCSL'          # 미국 CPI(계절조정, 1982-84=100)
+KOREA_CPI = 'KORCPIALLMINMEI'  # OECD 한국 CPI(FRED 보조 경로, 2023-11까지)
 HIGH_YIELD_SPREAD = 'BAMLH0A0HYM2'  # ICE BofA 미국 하이일드 OAS(%p)
 NASDAQ = 'NASDAQCOM'                 # 나스닥 종합지수
 

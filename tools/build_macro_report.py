@@ -339,12 +339,22 @@ def load_fx(fetch=True):
     from data_sources.fx_inputs import build_fx_inputs
     from data_sources.ecos import (fetch_korea_rate_monthly, fetch_current_account_monthly,
                                    fetch_korea_cpi_monthly)
-    from data_sources.fred import fetch_fred, US_CPI
+    from data_sources.fred import fetch_fred, US_CPI, KOREA_CPI
+
+    def korea_cpi_with_fallback(start, end):
+        try:
+            return fetch_korea_cpi_monthly(start, end)
+        except Exception as ecos_exc:
+            try:
+                return fetch_fred(KOREA_CPI)
+            except Exception as fred_exc:
+                raise RuntimeError(f'ECOS {type(ecos_exc).__name__}; FRED {type(fred_exc).__name__}') from None
+
     try:
         frame, info = build_fx_inputs(fetch=fetch, cache_path=FX_CACHE,
                                       korea_rate_fn=fetch_korea_rate_monthly,
                                       current_account_fn=fetch_current_account_monthly,
-                                      korea_cpi_fn=fetch_korea_cpi_monthly,
+                                      korea_cpi_fn=korea_cpi_with_fallback,
                                       us_cpi_fn=lambda: fetch_fred(US_CPI))
     except Exception as exc:
         return None, {"failed": {"전체": f"{type(exc).__name__}: {exc}"[:160]}}

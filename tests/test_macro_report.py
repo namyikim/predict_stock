@@ -87,7 +87,9 @@ class PageTests(unittest.TestCase):
         """발행본을 오프라인에서도 재현할 수 있게 계산 입력과 결과를 함께 보관한다."""
         import pandas as pd
         frame = pd.read_csv(ROOT / "macro_history" / "fx_inputs.csv")
-        required = {"usdkrw", "kr10y", "us10y", "real_rate_gap"}
+        # 실질금리차는 보관된 명목 금리차와 양국 CPI 상승률로 직접 복원할 수 있다.
+        # 개별 10년물 열은 조회에 성공했을 때 함께 남지만 오프라인 재현의 필수 열은 아니다.
+        required = {"usdkrw", "rate_gap", "real_rate_gap"}
         self.assertTrue(required.issubset(frame.columns), required - set(frame.columns))
         self.assertGreaterEqual(frame["real_rate_gap"].notna().sum(), 24)
 

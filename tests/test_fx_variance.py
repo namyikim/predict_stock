@@ -391,3 +391,32 @@ class RealRateGapTests(unittest.TestCase):
         self.assertIn("real_rate_gap", info["failed"])
         self.assertIn("ECOS CPI 실패", info["failed"]["real_rate_gap"])
         self.assertIn("rate_gap", frame.columns)          # 명목 금리차는 그대로 살아 있다
+
+    def test_cached_nominal_gap_recovers_real_gap_when_rate_download_fails(self):
+        """ECOS 금리 조회가 막혀도 보관된 명목 금리차와 새 CPI로 실질금리를 복구한다."""
+        import tempfile
+        from data_sources import fx_inputs as fi
+        index = pd.date_range("2022-01-01", periods=25, freq="MS")
+        base = pd.DataFrame({"month": index, "usdkrw": 1300.0, "rate_gap": -1.0})
+        cache = Path(tempfile.mkdtemp()) / "fx.csv"
+        base.to_csv(cache, index=False)
+        market = pd.DataFrame({"usdkrw": 1300.0, "us10y": 4.0}, index=index)
+        kr_cpi = pd.Series(100 * np.exp(np.linspace(0, .06, len(index))), index=index)
+        us_cpi = pd.Series(200 * np.exp(np.linspace(0, .08, len(index))), index=index)
+        saved = fi.fetch_yahoo_monthly
+        fi.fetch_yahoo_monthly = lambda **k: (market, {})
+
+        def rate_timeout(*args, **kwargs):
+            raise RuntimeError("ECOS 금리 타임아웃")
+
+        try:
+            frame, info = fi.build_fx_inputs(
+                fetch=True, cache_path=cache, korea_rate_fn=rate_timeout,
+                current_account_fn=lambda s, e: pd.Series(0.0, index=index),
+                korea_cpi_fn=lambda s, e: kr_cpi, us_cpi_fn=lambda: us_cpi)
+        finally:
+            fi.fetch_yahoo_monthly = saved
+
+        self.assertIn("rate_gap", info["failed"])
+        self.assertEqual(frame["real_rate_gap"].notna().sum(), 13)
+        self.assertAlmostEqual(float(frame["kr10y"].dropna().iloc[-1]), 3.0)

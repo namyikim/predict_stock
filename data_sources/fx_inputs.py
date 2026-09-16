@@ -86,33 +86,33 @@ def build_fx_inputs(start='2000-01-01', end=None, fetch=True, cache_path=None,
         # 금리차 = 한국 10년 − 미국 10년. yfinance 의 ^TNX 종가는 이미 % 단위(예: 4.25)다.
         # 처음에 10으로 나눠 미국 금리가 0.4 가 됐고, 금리차가 사실상 한국 금리 수준이 돼 버렸다
         # (2026-09-16: 2024년 평균 +2.80 으로 나와 잡았다. 실제로는 -0.9 안팎).
-        if 'us10y' in market and korea_rate_fn is not None:
+        kr_infl = us_infl = None
+        if 'us10y' in market:
+            us = market['us10y']
+            if us.dropna().median() > 20:
+                us = us / 10.0
+            fresh['us10y'] = us
+        if 'us10y' in fresh and korea_rate_fn is not None:
             try:
                 korea = korea_rate_fn(start, end)
-                us = market['us10y']
-                # 만약 10배 표기(40 대)로 오면 그때만 나눈다.
-                if us.dropna().median() > 20:
-                    us = us / 10.0
-                fresh['rate_gap'] = korea.reindex(market.index) - us
+                fresh['rate_gap'] = korea.reindex(market.index) - fresh['us10y']
                 fresh['kr10y'] = korea.reindex(market.index)
-                fresh['us10y'] = us
-                # 실질금리차 = (한국 명목 − 한국 물가상승률) − (미국 명목 − 미국 물가상승률).
-                # 물가상승률은 CPI 의 12개월 전 대비. 기대인플레이션의 가장 단순한 대리다.
-                if korea_cpi_fn is not None and us_cpi_fn is not None:
-                    try:
-                        kr_cpi = korea_cpi_fn(start, end).reindex(market.index)
-                        us_cpi = us_cpi_fn().reindex(market.index)
-                        kr_infl = (kr_cpi / kr_cpi.shift(12) - 1) * 100
-                        us_infl = (us_cpi / us_cpi.shift(12) - 1) * 100
-                        fresh['real_rate_gap'] = (fresh['kr10y'] - kr_infl) - (fresh['us10y'] - us_infl)
-                    except Exception as exc:
-                        info['failed']['real_rate_gap'] = f'{type(exc).__name__}: {exc}'[:100]
             except Exception as exc:
                 info['failed']['rate_gap'] = f'{type(exc).__name__}: {exc}'[:100]
         else:
             info['failed']['rate_gap'] = '미국 10년물을 받지 못했습니다.'
         if korea_rate_fn is None:
             info['failed'].setdefault('rate_gap', '한국 금리 조회 함수가 없습니다.')
+        # CPI 조회는 한국 금리 조회와 독립이다. 금리 API가 막혀도 보관된 명목 금리차로
+        # 실질금리차를 복구할 수 있어야 한다.
+        if korea_cpi_fn is not None and us_cpi_fn is not None:
+            try:
+                kr_cpi = korea_cpi_fn(start, end)
+                us_cpi = us_cpi_fn()
+                kr_infl = (kr_cpi / kr_cpi.shift(12) - 1) * 100
+                us_infl = (us_cpi / us_cpi.shift(12) - 1) * 100
+            except Exception as exc:
+                info['failed']['real_rate_gap'] = f'{type(exc).__name__}: {exc}'[:100]
         if current_account_fn is None:
             info['failed'].setdefault('current_account', '경상수지 조회 함수가 없습니다.')
         try:
@@ -132,6 +132,20 @@ def build_fx_inputs(start='2000-01-01', end=None, fetch=True, cache_path=None,
             for column in fresh.columns:
                 frame.loc[fresh.index, column] = fresh[column].where(fresh[column].notna(),
                                                                      frame.loc[fresh.index, column])
+        # 한국 금리 조회가 실패했어도 보관된 명목 금리차와 미국 금리로 한국 금리를 복원한다.
+        if 'rate_gap' in frame and 'us10y' in frame:
+            derived_kr10y = frame['rate_gap'] + frame['us10y']
+            if 'kr10y' not in frame:
+                frame['kr10y'] = derived_kr10y
+            else:
+                frame['kr10y'] = frame['kr10y'].combine_first(derived_kr10y)
+        if kr_infl is not None and us_infl is not None and 'rate_gap' in frame:
+            # (한국 명목−한국 물가)−(미국 명목−미국 물가)
+            calculated = frame['rate_gap'] - kr_infl.reindex(frame.index) + us_infl.reindex(frame.index)
+            if 'real_rate_gap' not in frame:
+                frame['real_rate_gap'] = calculated
+            else:
+                frame['real_rate_gap'] = calculated.combine_first(frame['real_rate_gap'])
         info['source'] = 'yahoo+ecos' if len(fresh) else 'cache'
 
     frame = frame.reindex(columns=[c for c in columns if c in frame.columns]).sort_index()

@@ -14,6 +14,7 @@ import os
 import sys
 from datetime import datetime, timedelta, timezone
 from html import escape
+import numpy as np
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -55,9 +56,51 @@ def planned_section(title, note, items):
             f'<ul style="margin:8px 0 0;padding-left:18px;font-size:12px">{rows}</ul></div>')
 
 
+def fx_decomposition_section(frame, info):
+    """원/달러 결정 요인 표. 시차별로 무엇이 몇 %를 설명했는지."""
+    sys.path.insert(0, str(ROOT / "tools"))
+    from fx_variance import FX_FACTORS, FX_LABELS, HORIZONS, fit_and_decompose
+
+    head = ('<h3 style="font-size:15px;margin:24px 0 9px;padding-bottom:6px;'
+            'border-bottom:1px solid #ddd">원/달러 결정 요인 '
+            '<span style="font-weight:400;color:#8a9199;font-size:12px">'
+            '&nbsp;VAR 분산분해 · 과거 자료의 분해이지 예측이 아닙니다</span></h3>')
+    if frame is None or frame.empty:
+        return head + ('<div class="empty">자료를 받지 못했습니다 — '
+                       + escape(", ".join(f"{k}: {v}" for k, v in (info or {}).get("failed", {}).items())
+                                or "원인 미상") + '</div>')
+    table, diag = fit_and_decompose(frame)
+    if table is None:
+        return head + f'<div class="empty">{escape(diag.get("error", "계산할 수 없습니다."))}</div>'
+
+    factors = [c for c in FX_FACTORS if c in diag["factors"]]
+    rows = ""
+    for horizon in HORIZONS:
+        cells = ""
+        for name in factors:
+            share = table[horizon].get(name)
+            # 자기 자신(원/달러)은 '다른 요인으로 설명되지 않은 몫'이라 회색으로 눌러 둔다.
+            style = "color:#8a9199" if name == "usdkrw" else ""
+            cells += (f'<td class="num" style="{style}">—</td>' if share is None or not np.isfinite(share)
+                      else f'<td class="num" style="{style}">{share:.0%}</td>')
+        rows += f'<tr><td>{horizon}개월</td>{cells}</tr>'
+    header = "".join(f'<th class="num">{escape(FX_LABELS[c])}</th>' for c in factors)
+    note = (f'{escape(diag["first"])}~{escape(diag["last"])} 월별 {diag["n"]}개 · 시차 {diag["lag"]}개월 · '
+            f'{escape(diag["method"])}')
+    return (head +
+            '<div style="overflow-x:auto"><table style="min-width:620px">'
+            f'<tr><th>시차</th>{header}</tr>{rows}</table></div>'
+            f'<div class="muted" style="margin-top:6px">{note}</div>'
+            '<div style="font-size:12px;color:#6b7178;line-height:1.7;margin-top:8px">'
+            '각 행은 그 시차에서 원/달러 변동의 예측오차 분산을 100%로 놓고 나눈 것입니다. '
+            '<b>원/달러</b> 칸은 다른 요인으로 설명되지 않은 몫이라, 그 값이 클수록 "밖에서 온 것으로는 '
+            '설명이 잘 안 된다"는 뜻입니다. 일반화 분산분해는 합이 100%가 되지 않아 행별로 정규화했습니다. '
+            '인과가 아니라 과거 자료에서의 동행·선행 관계입니다.</div>')
+
+
 # 절 목록. 지표를 붙일 때 여기에 함수를 더하면 페이지 구조는 건드리지 않아도 된다.
 SECTIONS = (
-    ("환율", "원/달러를 중심으로 주요 통화를 함께 봅니다.",
+    ("환율", "원/달러 결정 요인 표는 위에 있습니다. 아래는 앞으로 더할 것입니다.",
      ("원/달러 종가와 이동평균", "엔/달러·달러지수와 함께 본 상대 강도", "최근 변동성")),
     ("금리", "한국·미국 정책금리와 시장금리를 나란히 놓습니다.",
      ("한국은행 기준금리", "미국 연방기금금리 목표", "한·미 금리차")),
@@ -68,9 +111,10 @@ SECTIONS = (
 )
 
 
-def build_page(now=None):
+def build_page(now=None, fx_frame=None, fx_info=None):
     now = now or datetime.now(KST)
-    body = "".join(planned_section(title, note, items) for title, note, items in SECTIONS)
+    body = fx_decomposition_section(fx_frame, fx_info) if fx_frame is not None else ""
+    body += "".join(planned_section(title, note, items) for title, note, items in SECTIONS)
     return (
         '<!doctype html>\n<html lang="ko"><head><meta charset="utf-8">'
         '<meta name="viewport" content="width=device-width, initial-scale=1">'
@@ -95,11 +139,40 @@ def build_page(now=None):
         '</div></body></html>')
 
 
+FX_CACHE = ROOT / "macro_history" / "fx_inputs.csv"
+
+
+def load_fx(fetch=True):
+    """(자료, 진단). 받은 것은 보관본에 누적해 다음 실행이 실패해도 표가 비지 않게 한다."""
+    # 자료원 모듈끼리는 서로 참조하지 않는다(그 규칙을 테스트가 지킨다). 야후와 ECOS 를 여기서
+    # 엮는다 — 결합은 도구의 몫이다.
+    from data_sources.fx_inputs import build_fx_inputs
+    from data_sources.ecos import fetch_korea_rate_monthly, fetch_current_account_monthly
+    try:
+        frame, info = build_fx_inputs(fetch=fetch, cache_path=FX_CACHE,
+                                      korea_rate_fn=fetch_korea_rate_monthly,
+                                      current_account_fn=fetch_current_account_monthly)
+    except Exception as exc:
+        return None, {"failed": {"전체": f"{type(exc).__name__}: {exc}"[:160]}}
+    if len(frame):
+        FX_CACHE.parent.mkdir(parents=True, exist_ok=True)
+        frame.reset_index().to_csv(FX_CACHE, index=False)
+    return frame, info
+
+
 def main():
     parser = argparse.ArgumentParser(description="거시 경제 보고서를 만든다")
     parser.add_argument("--write", action="store_true", help="docs/macro/index.html 에 저장")
+    parser.add_argument("--no-fetch", action="store_true", help="보관본만 쓰고 조회하지 않는다")
     args = parser.parse_args()
-    page = build_page()
+    frame, info = load_fx(fetch=not args.no_fetch)
+    if info.get("failed"):
+        for name, reason in info["failed"].items():
+            print(f"  ⚠️ {name}: {reason}", flush=True)
+    if frame is not None and len(frame):
+        print(f"  환율 자료: {info.get('source')} · {info.get('first')}~{info.get('last')} "
+              f"({info.get('rows')}개월, {len(info.get('columns', []))}계열)", flush=True)
+    page = build_page(fx_frame=frame, fx_info=info)
     if args.write:
         OUT.parent.mkdir(parents=True, exist_ok=True)
         OUT.write_text(page, encoding="utf-8")

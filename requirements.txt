@@ -28,3 +28,4 @@ lxml>=5                    # 네이버 표 파싱(pandas.read_html)
 # 선택: 외국인·기관 수급을 KRX에서 받을 때(pykrx). pandas<3.0 제약이 있어 requirements에서 함께
 # 설치하면 충돌한다. 워크플로가 --no-deps 로 따로 설치하며, 없으면 네이버 금융 페이지로 대체한다.
 # pykrx==1.2.8
+statsmodels

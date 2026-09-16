@@ -24,7 +24,6 @@ import pandas as pd
 from data_sources._common import *  # noqa: F401,F403
 
 DRAMEXCHANGE_URL = 'https://www.dramexchange.com/'
-KST = timezone(timedelta(hours=9))
 # 추적할 품목. 첫 페이지 표의 Item 문자열로 찾는다. 이름은 CSV 열로 쓰므로 짧게 둔다.
 DRAM_ITEMS = {
     'ddr5_16gb': 'DDR5 16Gb (2Gx8) 4800/5600',

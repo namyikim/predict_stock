@@ -1,4 +1,5 @@
 """공용: 요청 헤더(open_url), 월별·일별 정규화, 보관본 노후 판정."""
+from datetime import timedelta, timezone
 import hashlib
 import io
 import json
@@ -14,6 +15,10 @@ import numpy as np
 import pandas as pd
 
 
+
+
+# 여러 자료원이 쓰는 한국 표준시. 모듈마다 따로 정의하면 같은 이름이 흩어진다.
+KST = timezone(timedelta(hours=9))
 
 
 def normalize_monthly(frame):

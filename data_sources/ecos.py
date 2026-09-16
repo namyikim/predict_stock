@@ -99,6 +99,37 @@ def fetch_ecos_daily(stat_code, item_code, start, end, key):
 
 
 
+def fetch_ecos_monthly(stat_code, item_code, start, end, key):
+    """월별 계열. 경상수지처럼 월 단위로만 나오는 통계에 쓴다."""
+    payload = _ecos_request(key, f'StatisticSearch/{{key}}/json/kr/1/100000/{stat_code}/M/'
+                                 f'{pd.Timestamp(start):%Y%m}/{pd.Timestamp(end):%Y%m}/{item_code}')
+    rows = (payload.get('StatisticSearch') or {}).get('row') or []
+    if not rows:
+        raise ValueError(f'ECOS {stat_code}/{item_code} 월별 응답이 비어 있습니다.')
+    frame = pd.DataFrame([{'month': r.get('TIME'), 'value': r.get('DATA_VALUE')} for r in rows])
+    frame['month'] = pd.to_datetime(frame['month'], format='%Y%m', errors='coerce')
+    frame['value'] = pd.to_numeric(frame['value'], errors='coerce')
+    return frame.dropna().sort_values('month').reset_index(drop=True)
+
+
+def fetch_korea_rate_monthly(start, end, key=None):
+    """국고채 10년 월평균(%)."""
+    key = key or ecos_key()
+    if not key:
+        raise RuntimeError('ECOS_API_KEY가 없습니다.')
+    daily = fetch_ecos_daily(KR10Y_STAT, KR10Y_ITEM, start, end, key)
+    return daily.set_index('date')['value'].resample('MS').mean().dropna()
+
+
+def fetch_current_account_monthly(start, end, key=None):
+    """경상수지 월별(백만 달러)."""
+    key = key or ecos_key()
+    if not key:
+        raise RuntimeError('ECOS_API_KEY가 없습니다.')
+    monthly = fetch_ecos_monthly(CA_STAT, CA_ITEM, start, end, key)
+    return monthly.set_index('month')['value'].dropna()
+
+
 def search_ecos_tables(key, keyword):
     """통계표 목록에서 이름에 keyword가 든 표와 그 항목 코드를 돌려준다(코드 확인용)."""
     tables = _ecos_request(key, 'StatisticTableList/{key}/json/kr/1/5000/')
@@ -189,6 +220,11 @@ def nsi_features(frame, dates, lag_days=NSI_RELEASE_LAG_DAYS, max_age_days=NSI_M
 # 매일 나오고, 발표 지연이 없고, 소급 수정이 없다. CLI·선행지수·뉴스심리지수가 모두 갖는
 # '사후에 보면 잘 맞는' 문제가 없는 유일한 후보라 합성 점수에 넣는다.
 # 다만 장단기금리차는 한국 선행종합지수의 구성 항목이라 '선행지수를 앞선다'는 것은 구조적이다.
+# 원/달러 결정 요인 분석용. 국고채 10년(일별)과 경상수지(월별).
+KR10Y_STAT, KR10Y_ITEM = '817Y002', '010210000'
+CA_STAT = os.environ.get('ECOS_CA_STAT_CODE', '301Y013')
+CA_ITEM = os.environ.get('ECOS_CA_ITEM_CODE', '000000')
+
 TERM_SPREAD_STAT_CODE = os.environ.get('ECOS_RATE_STAT_CODE', '817Y002')      # 시장금리(일별)
 
 

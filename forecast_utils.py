@@ -89,13 +89,12 @@ def _day_label(value):
     return f"{stamp.date().isoformat()} ({_WEEKDAYS_KO[stamp.weekday()]})"
 
 
-# 종가 방향은 최대 확률이 이 값 이상일 때만 낸다. 그 아래는 '판단 유보'다(2026-09-16).
-# 근거는 P08(experiments/model_improvement/P08): 대표 모델의 확률은 판별력이 있어 최대 확률이 0.5 이상인
-# 날(전체의 25~29%)만 고르면 외부 구간 정확도가 0.46→0.67(삼성)·0.50→0.64(하이닉스)로 오르고, 폴드별 내부
-# 선택도 대체로 0.5를 골랐다. 나머지 날에 억지로 찍은 답이 전체 적중률을 끌어내린다.
-# 원장에는 예전처럼 argmax 라벨과 세 확률을 모두 남긴다 — 유보는 확률에서 나중에 다시 계산하는
-# 표시·집계 정책이지 기록을 바꾸는 것이 아니다. 그래서 임계치를 바꿔도 과거 기록과 비교가 된다.
-DIRECTION_ISSUE_MIN_PROB = 0.50
+# 종가 방향 발행 기준. 최대 확률이 이 값 이상일 때만 방향을 내고 그 아래는 '판단 유보'로 표시하는 장치다.
+# 2026-09-16 오전에 0.50 으로 켰다가(P08: 0.5 이상인 날만 고르면 외부 정확도 0.46→0.67·0.50→0.64, 대신
+# 전체의 4분의 1만 발행) 같은 날 사용자 결정으로 껐다 — "판단을 안 하는 것은 비겁하다. 정확도를 높이는
+# 노력을 해야지". 그래서 0.0: 세 확률 중 가장 높은 방향을 매일 낸다(예전과 같다).
+# 장치는 남겨 둔다. 원장에는 argmax 라벨과 세 확률이 그대로 남으므로, 값을 올리면 과거 기록에도 소급된다.
+DIRECTION_ISSUE_MIN_PROB = 0.0
 _DIRECTION_WORDS = {0: "▼ 내림", 1: "큰 변화 없음", 2: "▲ 오름"}
 
 
@@ -126,7 +125,8 @@ def direction_hold_note(call, min_prob=DIRECTION_ISSUE_MIN_PROB):
     if not call.get("valid"):
         return "세 확률이 비슷하거나 값이 없습니다"
     if call["issued"]:
-        return f"계산상 가능성 {call['max_prob']:.0%} (기준 {min_prob:.0%} 이상)"
+        return (f"계산상 가능성 {call['max_prob']:.0%}"
+                + (f" (기준 {min_prob:.0%} 이상)" if min_prob > 0 else ""))
     return (f"가장 높은 확률이 {call['max_prob']:.0%}로 기준 {min_prob:.0%}에 못 미쳐 방향을 내지 않습니다"
             f"(계산상 기울기: {_DIRECTION_WORDS[call['argmax']].strip('▼▲ ')})")
 
@@ -1863,16 +1863,18 @@ def review_ledger(daily, bars, ensemble_model="Mean ensemble", windows=(20, 60),
                          "prior_hit_rate": float(freq.max()),
                          "flat_share": float(freq.loc[1]),
                          "mean_log_loss": float(d["log_loss"].mean()), "prior_log_loss": prior_ll})
-            # 발행 정책(direction_call) 기준 성적: 최대 확률이 기준 이상이라 실제로 방향을 낸 날만 센다.
-            # 원장의 확률에서 다시 계산하므로 임계치를 바꿔도 과거 기록에 그대로 적용된다(2026-09-16).
-            if {"p_down", "p_flat", "p_up"}.issubset(d.columns):
-                issued = d[d.apply(lambda r: bool(direction_call(r)["issued"]), axis=1)]
-            else:
-                issued = d
-            rows.append({"window": w, "kind": "direction_issued", "horizon_days": 1, "n": int(len(issued)),
-                         "held": int(len(d) - len(issued)),
-                         "hit_rate": float(issued["direction_correct"].mean()) if len(issued) else np.nan,
-                         "prior_hit_rate": float(freq.max())})
+            # 발행 기준(DIRECTION_ISSUE_MIN_PROB)이 켜져 있을 때만: 실제로 방향을 낸 날의 성적을 따로 센다.
+            # 원장의 확률에서 다시 계산하므로 기준을 바꿔도 과거 기록에 그대로 적용된다. 기준이 0이면
+            # 전체 행과 같아지므로 만들지 않는다(2026-09-16 사용자 결정으로 꺼 둠).
+            if DIRECTION_ISSUE_MIN_PROB > 0:
+                if {"p_down", "p_flat", "p_up"}.issubset(d.columns):
+                    issued = d[d.apply(lambda r: bool(direction_call(r)["issued"]), axis=1)]
+                else:
+                    issued = d
+                rows.append({"window": w, "kind": "direction_issued", "horizon_days": 1, "n": int(len(issued)),
+                             "held": int(len(d) - len(issued)),
+                             "hit_rate": float(issued["direction_correct"].mean()) if len(issued) else np.nan,
+                             "prior_hit_rate": float(freq.max())})
         for kind in ("open", "price"):
             # 관찰용 후보(모델명 "Candidate …")는 원장에만 있고 헤드라인 성적에 섞지 않는다(M07).
             headline = recent[(recent["kind"] == kind) & ~recent["model"].astype(str).str.startswith("Candidate")]

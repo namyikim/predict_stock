@@ -462,6 +462,12 @@ balanced_accuracy·accuracy도 동률. 보정으로 정확도가 향상됐다고
 예측을 `Candidate evening open` 으로 함께 남겨 아침과 나란히 채점한다(`overnight_value_html`).
 P15 의 관찰 규칙은 그대로다 — 발행일 적중률이 60 공통 채점일 뒤에도 전체 적중률보다 높지 않으면 되돌린다.
 
+**같은 날 되돌림(2026-09-16 오후).** 사용자 결정: "판단을 유보하는 것은 비겁하다. 정확도를 높이는 노력을
+해야지 판단을 안 하는 것은 아니다." `DIRECTION_ISSUE_MIN_PROB = 0.0` 으로 두어 세 확률 중 가장 높은 방향을
+매일 낸다(예전과 같다). 장치와 원장은 그대로라 값을 올리면 과거 기록에 소급된다. 시초가의 정직한 표기와
+저녁 시초가 후보(`Candidate evening open`) 채점은 유지한다. 정확도 자체를 올리는 후속은 P10b(해외 자산
+특징을 넣은 pooled 패널, 별도 세션)와 R02(야간/장중 분해)다.
+
 **완료 증거:** 확률 보정 및 빈 선택 집합 테스트, coverage 포함 비교표.
 
 ### P09 — 갭과 장중의 별도 학습
@@ -667,7 +673,7 @@ P00 이후에는 작업 ID만 바꿔 요청한다. Colab 실행이 필요한 경
 | 2026-09-10 | P00 quick | `experiments/model_improvement/P00/20260910T0000Z_baseline_quick/` | 두 종목 46셀 무오류 완료, 평가 276일 | 기준선 계약 기록·스냅샷 고정 완료. 기존 캐시는 자산 키 불일치로 폐기. full 평가 실행 중 |
 
 | 2026-09-16 | P10b | `experiments/model_improvement/P10b/20260916T1100Z_panel_pooled_foreign/`, `experiments/model_improvement/panel_foreign.py`, `tests/test_panel_foreign.py` | 11개 통과(러너 종단 포함), 관련 48개 통과. 두 종목 12폴드 pooled/단독 재학습, 대표 모델 OOF 재사용 | **완료.** 채택 없음. 해외 자산이 예측력의 전부, 9종목 pooling은 단독 대비 동률·열위. 대표 대비 samsung 동률·sk_hynix 유의 열위 |
-| 2026-09-16 | P08 운영 반영 | `forecast_utils.direction_call`·`DIRECTION_ISSUE_MIN_PROB`, 노트북 1절·저녁 실행 `Candidate evening open`, `tests/test_direction_gate.py`, `tests/test_evening_open.py` | 새 테스트 20개 + 관련 289개 통과 | 최대 확률 0.50 이상인 날만 종가 방향 발행, 나머지 '판단 유보'. 시초가는 대표로 앞세우되 저녁 예측을 함께 채점. 60 공통 채점일 뒤 발행일 적중률로 판정 |
+| 2026-09-16 | P08 운영 반영 | `forecast_utils.direction_call`·`DIRECTION_ISSUE_MIN_PROB`, 노트북 1절·저녁 실행 `Candidate evening open`, `tests/test_direction_gate.py`, `tests/test_evening_open.py` | 새 테스트 20개 + 관련 289개 통과 | 최대 확률 0.50 이상인 날만 종가 방향 발행, 나머지 '판단 유보' — **같은 날 오후 사용자 결정으로 기준 0.0(항상 발행)으로 되돌림.** 시초가의 정직한 표기와 저녁 시초가 후보 채점은 유지 |
 - 현재 작업: P15 — 후보 사전 예측 관찰 중(등록 완료, 채점 대기). 방향 발행 정책(0.50)도 같은 창에서 판정
 - 후속 항목(계획 밖) P10b — 해외 자산 특징을 넣은 pooled 패널: **완료(2026-09-16), 채택 없음.** 해외 자산이 예측력의 전부, 공동 학습은 더하는 것이 없음. P11~P14 보류 유지
 - 완료한 신규 작업: 11/16 (P00~P10) + 계획 밖 P10b. 보류 4 (P11~P14). 진행 중 1 (P15)

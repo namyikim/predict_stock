@@ -197,3 +197,63 @@ class CacheRoundTripTests(unittest.TestCase):
         self.assertEqual(info["source"], "cache")
         self.assertEqual(len(again), 2)
         self.assertAlmostEqual(float(again["rate_gap"].iloc[0]), 3.3 - 4.2, places=6)
+
+
+class UsJpChartTests(unittest.TestCase):
+    """미·일 10년물 금리차와 엔/달러(2026-09-16 요청). 1980년부터."""
+
+    def frame(self):
+        rng = np.random.default_rng(7)
+        index = pd.date_range("1980-01-01", "2026-09-01", freq="MS")
+        n = len(index)
+        us = pd.Series(8 + np.cumsum(rng.normal(0, .1, n)), index=index)
+        jp = pd.Series(5 + np.cumsum(rng.normal(0, .08, n)), index=index)
+        jp[index < "1989-01-01"] = np.nan                    # 일본 10년물은 1989년부터
+        return pd.DataFrame({"us10y": us, "jp10y": jp, "rate_gap": us - jp,
+                             "usdjpy": 240 * np.exp(np.cumsum(rng.normal(0, .02, n)))})
+
+    def test_starts_in_1980_with_five_year_ticks(self):
+        import build_macro_report as macro
+        html = macro.us_jp_chart(self.frame())
+        self.assertIn("1980년~", html)
+        for year in ("1980", "1990", "2000", "2010", "2020"):
+            self.assertIn(f">{year}<", html)
+
+    def test_gap_line_breaks_where_data_is_missing(self):
+        # 1989년 이전 금리차는 없다. 이어 그리면 없는 자료가 있는 것처럼 보인다.
+        import build_macro_report as macro
+        html = macro.us_jp_chart(self.frame())
+        self.assertEqual(html.count("<polyline"), 2)
+        self.assertIn("1989년부터", html)
+
+    def test_zero_line_for_the_gap(self):
+        import build_macro_report as macro
+        self.assertIn('stroke-dasharray="3,3"', macro.us_jp_chart(self.frame()))
+
+    def test_fred_parser_drops_dots_and_averages_months(self):
+        from data_sources import fred
+        class Resp:
+            def __init__(self, text): self.text = text
+            def read(self): return self.text.encode()
+            def __enter__(self): return self
+            def __exit__(self, *a): pass
+        saved = fred.open_url
+        fred.open_url = lambda url, **k: Resp("DATE,DGS10\n2024-01-02,3.95\n2024-01-03,.\n2024-01-04,4.00\n")
+        try:
+            series = fred.fetch_fred("DGS10")
+        finally:
+            fred.open_url = saved
+        self.assertAlmostEqual(float(series.iloc[0]), 3.975)
+
+    def test_gap_is_us_minus_japan(self):
+        import tempfile
+        from data_sources import fred
+        index = pd.to_datetime(["2024-01-01"])
+        saved = fred.fetch_fred
+        fred.fetch_fred = lambda sid, **k: pd.Series([4.0 if sid == fred.US10Y else 0.7 if sid == fred.JP10Y else 150.0],
+                                                      index=index)
+        try:
+            frame, info = fred.build_us_jp_inputs(fetch=True, cache_path=Path(tempfile.mkdtemp()) / "x.csv")
+        finally:
+            fred.fetch_fred = saved
+        self.assertAlmostEqual(float(frame["rate_gap"].iloc[0]), 3.3)

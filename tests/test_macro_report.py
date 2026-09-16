@@ -62,8 +62,10 @@ class PageTests(unittest.TestCase):
         if not cache.exists():
             self.skipTest("fx_inputs 보관본이 아직 없습니다")
         frame, info = macro.load_fx(fetch=False)
+        us_jp, us_jp_info = macro.load_us_jp(fetch=False)
         generated = macro.build_page(datetime(2026, 9, 15, 9, 0, tzinfo=timezone(timedelta(hours=9))),
-                                     fx_frame=frame, fx_info=info)
+                                     fx_frame=frame, fx_info=info,
+                                     us_jp_frame=us_jp, us_jp_info=us_jp_info)
         committed = (ROOT / "docs" / "macro" / "index.html").read_text(encoding="utf-8")
         strip = lambda text: re.sub(r"\d{4}-\d{2}-\d{2} \d{2}:\d{2}", "", text)
         self.assertEqual(strip(committed), strip(generated),

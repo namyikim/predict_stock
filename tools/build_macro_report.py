@@ -99,62 +99,96 @@ def fx_decomposition_section(frame, info):
             '인과가 아니라 과거 자료에서의 동행·선행 관계입니다.</div>')
 
 
-def fx_overlay_chart(frame, start="2009-01-01", left="usdkrw", right="cny"):
-    """원/달러와 위안/달러를 겹친 꺾은선. 단위가 다르므로 좌우 축을 따로 둔다.
+def dual_axis_chart(frame, left, right, left_label, right_label, title, start, note,
+                    left_fmt="{:,.0f}", right_fmt="{:.2f}", left_color="#1a5490", right_color="#c8952a"):
+    """단위가 다른 두 계열을 좌우 축에 놓고 겹친 꺾은선. 연도 눈금과 월간 변화율 상관을 함께 적는다.
 
-    두 통화가 같은 방향으로 움직이는지를 눈으로 보려는 것이다. 위안은 관리변동환율이라
-    움직임이 작고, 원은 자유변동이라 크다 — 폭이 아니라 방향을 보는 그림이다.
+    한쪽 계열이 늦게 시작하면(예: 일본 10년물 1989년) 그 선은 자료가 있는 구간만 그린다.
+    x 축은 두 계열 중 먼저 시작하는 쪽에 맞춘다.
     """
     if frame is None or frame.empty or left not in frame or right not in frame:
         return ""
-    data = frame[[left, right]].dropna()
-    data = data[data.index >= pd.Timestamp(start)]
-    if len(data) < 24:
+    data = frame[[left, right]]
+    data = data[data.index >= pd.Timestamp(start)].dropna(how="all")
+    if len(data.dropna()) < 24:
         return ""
     W, H, L, R, T, B = 900, 360, 66, 66, 34, 40
     PH = H - T - B
-    xs = np.linspace(L, W - R, len(data))
+    xs = pd.Series(np.linspace(L, W - R, len(data)), index=data.index)
 
     def scale(series):
+        series = series.dropna()
         lo, hi = float(series.min()), float(series.max())
         pad = (hi - lo) * 0.06 or 1.0
         lo, hi = lo - pad, hi + pad
-        return lambda v: T + PH * (1 - (v - lo) / (hi - lo)), lo, hi
+        return (lambda v: T + PH * (1 - (v - lo) / (hi - lo))), lo, hi
 
     yl, llo, lhi = scale(data[left])
     yr, rlo, rhi = scale(data[right])
-    line = lambda series, fn, color: (
-        f'<polyline fill="none" stroke="{color}" stroke-width="1.8" points="'
-        + " ".join(f"{x:.1f},{fn(v):.1f}" for x, v in zip(xs, series)) + '"/>')
+
+    def line(series, fn, color):
+        # 결측 구간에서 선을 끊는다 — 이어 그리면 없는 자료를 있는 것처럼 보인다.
+        segments, current = [], []
+        for stamp, value in series.items():
+            if pd.isna(value):
+                if current:
+                    segments.append(current); current = []
+                continue
+            current.append(f"{xs[stamp]:.1f},{fn(value):.1f}")
+        if current:
+            segments.append(current)
+        return "".join(f'<polyline fill="none" stroke="{color}" stroke-width="1.8" points="{" ".join(seg)}"/>'
+                       for seg in segments if len(seg) > 1)
+
     svg = [f'<svg viewBox="0 0 {W} {H}" width="100%" '
            f'style="max-width:{W}px;font-family:-apple-system,Malgun Gothic,sans-serif;font-size:11px">']
-    # 연도 눈금과 세로 안내선
     years = sorted({d.year for d in data.index})
+    step = 1 if len(years) <= 10 else (2 if len(years) <= 24 else 5)
     for year in years:
         first = data.index[data.index.year == year][0]
-        x = xs[data.index.get_loc(first)]
+        x = xs[first]
         svg.append(f'<line x1="{x:.1f}" x2="{x:.1f}" y1="{T}" y2="{T + PH}" stroke="#eee"/>')
-        if year % 2 == 1 or len(years) <= 10:
+        # 간격에 걸리는 해 + 첫 해는 항상 적는다(그림이 어디서 시작하는지 바로 보이게).
+        if year % step == 0 or year == years[0]:
             svg.append(f'<text x="{x:.1f}" y="{H - 14}" text-anchor="middle" fill="#8a9199">{year}</text>')
-    # 좌우 축 눈금(3개씩)
     for frac in (0.0, 0.5, 1.0):
         lv = llo + (lhi - llo) * frac
         rv = rlo + (rhi - rlo) * frac
-        svg.append(f'<text x="{L - 8}" y="{yl(lv):.1f}" text-anchor="end" fill="#1a5490">{lv:,.0f}</text>')
-        svg.append(f'<text x="{W - R + 8}" y="{yr(rv):.1f}" fill="#c8952a">{rv:.2f}</text>')
-    svg.append(line(data[left], yl, "#1a5490"))
-    svg.append(line(data[right], yr, "#c8952a"))
-    svg.append(f'<text x="{L}" y="18" fill="#1a1a1a" font-weight="600">원/달러(파랑, 왼쪽 축) · '
-               f'위안/달러(주황, 오른쪽 축) · {years[0]}년~{years[-1]}년 월평균</text>')
+        svg.append(f'<text x="{L - 8}" y="{yl(lv):.1f}" text-anchor="end" fill="{left_color}">'
+                   f'{left_fmt.format(lv)}</text>')
+        svg.append(f'<text x="{W - R + 8}" y="{yr(rv):.1f}" fill="{right_color}">{right_fmt.format(rv)}</text>')
+    # 0 선(금리차처럼 부호가 뜻을 갖는 계열)
+    if rlo < 0 < rhi:
+        svg.append(f'<line x1="{L}" x2="{W - R}" y1="{yr(0):.1f}" y2="{yr(0):.1f}" '
+                   f'stroke="{right_color}" stroke-dasharray="3,3" opacity="0.5"/>')
+    svg.append(line(data[left], yl, left_color))
+    svg.append(line(data[right], yr, right_color))
+    svg.append(f'<text x="{L}" y="18" fill="#1a1a1a" font-weight="600">{escape(left_label)}(파랑, 왼쪽 축) · '
+               f'{escape(right_label)}(주황, 오른쪽 축) · {years[0]}년~{years[-1]}년 월평균</text>')
     svg.append("</svg>")
-    corr = float(np.log(data[left]).diff().corr(np.log(data[right]).diff()))
+    both = data.dropna()
+    corr = float(both[left].diff().corr(both[right].diff())) if len(both) > 24 else float("nan")
+    corr_text = f"월간 변화의 상관 <b>{corr:+.2f}</b> ({len(both)}개월)" if np.isfinite(corr) else ""
     return ('<h3 style="font-size:15px;margin:24px 0 9px;padding-bottom:6px;border-bottom:1px solid #ddd">'
-            '원/달러와 위안/달러 <span style="font-weight:400;color:#8a9199;font-size:12px">'
+            f'{escape(title)} <span style="font-weight:400;color:#8a9199;font-size:12px">'
             f'&nbsp;{years[0]}년부터 · 월평균</span></h3>'
             + "".join(svg) +
-            f'<div style="font-size:12px;color:#6b7178;margin-top:6px">월간 변화율의 상관 <b>{corr:+.2f}</b> '
-            f'({len(data)}개월). 단위가 다르므로 축을 따로 두었고, 폭이 아니라 방향을 보는 그림입니다. '
-            '위안은 관리변동환율이라 움직임이 작습니다.</div>')
+            f'<div style="font-size:12px;color:#6b7178;margin-top:6px">{corr_text}. {escape(note)}</div>')
+
+
+def fx_overlay_chart(frame, start="2009-01-01"):
+    return dual_axis_chart(frame, "usdkrw", "cny", "원/달러", "위안/달러", "원/달러와 위안/달러", start,
+                           "단위가 다르므로 축을 따로 두었고, 폭이 아니라 방향을 보는 그림입니다. "
+                           "위안은 관리변동환율이라 움직임이 작습니다.")
+
+
+def us_jp_chart(frame, start="1980-01-01"):
+    """미·일 10년물 금리차와 엔/달러. 금리차가 벌어지면 엔이 약해진다는 관계를 보려는 것이다."""
+    return dual_axis_chart(frame, "usdjpy", "rate_gap", "엔/달러", "미·일 10년물 금리차(%p)",
+                           "미·일 금리차와 엔/달러", start,
+                           "금리차 = 미국 10년 − 일본 10년. 일본 10년물 자료는 1989년부터라 그 전 구간은 "
+                           "금리차 선이 없습니다. 점선은 금리차 0.",
+                           left_fmt="{:,.0f}", right_fmt="{:+.1f}")
 
 
 # 절 목록. 지표를 붙일 때 여기에 함수를 더하면 페이지 구조는 건드리지 않아도 된다.
@@ -170,12 +204,17 @@ SECTIONS = (
 )
 
 
-def build_page(now=None, fx_frame=None, fx_info=None):
+def build_page(now=None, fx_frame=None, fx_info=None, us_jp_frame=None, us_jp_info=None):
     now = now or datetime.now(KST)
     body = ""
     if fx_frame is not None:
         body += fx_decomposition_section(fx_frame, fx_info)
         body += fx_overlay_chart(fx_frame)
+    if us_jp_frame is not None:
+        body += us_jp_chart(us_jp_frame)
+    elif us_jp_info and us_jp_info.get("failed"):
+        body += ('<div class="empty">미·일 금리차 자료를 받지 못했습니다 — '
+                 + escape("; ".join(f"{k}: {v}" for k, v in us_jp_info["failed"].items())) + '</div>')
     body += "".join(planned_section(title, note, items) for title, note, items in SECTIONS)
     return (
         '<!doctype html>\n<html lang="ko"><head><meta charset="utf-8">'
@@ -222,6 +261,21 @@ def load_fx(fetch=True):
     return frame, info
 
 
+US_JP_CACHE = ROOT / "macro_history" / "us_jp_rates.csv"
+
+
+def load_us_jp(fetch=True):
+    from data_sources.fred import build_us_jp_inputs
+    try:
+        frame, info = build_us_jp_inputs(fetch=fetch, cache_path=US_JP_CACHE)
+    except Exception as exc:
+        return None, {"failed": {"전체": f"{type(exc).__name__}: {exc}"[:160]}}
+    if len(frame):
+        US_JP_CACHE.parent.mkdir(parents=True, exist_ok=True)
+        frame.reset_index().to_csv(US_JP_CACHE, index=False)
+    return frame, info
+
+
 def main():
     parser = argparse.ArgumentParser(description="거시 경제 보고서를 만든다")
     parser.add_argument("--write", action="store_true", help="docs/macro/index.html 에 저장")
@@ -234,7 +288,14 @@ def main():
     if frame is not None and len(frame):
         print(f"  환율 자료: {info.get('source')} · {info.get('first')}~{info.get('last')} "
               f"({info.get('rows')}개월, {len(info.get('columns', []))}계열)", flush=True)
-    page = build_page(fx_frame=frame, fx_info=info)
+    us_jp, us_jp_info = load_us_jp(fetch=not args.no_fetch)
+    if us_jp_info.get("failed"):
+        for name, reason in us_jp_info["failed"].items():
+            print(f"  ⚠️ 미·일 {name}: {reason}", flush=True)
+    if us_jp is not None and len(us_jp):
+        print(f"  미·일 자료: {us_jp_info.get('source')} · {us_jp_info.get('first')}~{us_jp_info.get('last')} "
+              f"({us_jp_info.get('rows')}개월)", flush=True)
+    page = build_page(fx_frame=frame, fx_info=info, us_jp_frame=us_jp, us_jp_info=us_jp_info)
     if args.write:
         OUT.parent.mkdir(parents=True, exist_ok=True)
         OUT.write_text(page, encoding="utf-8")

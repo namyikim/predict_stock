@@ -6,6 +6,7 @@ on:
     paths:
       - ".github/workflows/macro-report.yml"
       - "tools/build_macro_report.py"
+      - "tools/macro_summary.py"
       - "data_sources/fx_inputs.py"
       - "data_sources/ecos.py"
       - "data_sources/fred.py"

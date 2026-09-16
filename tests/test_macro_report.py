@@ -98,7 +98,7 @@ class PageTests(unittest.TestCase):
         """수집 코드를 고친 push 뒤 수동 실행을 잊어도 비밀키가 있는 Actions가 발행한다."""
         workflow = (ROOT / ".github" / "workflows" / "macro-report.yml").read_text(encoding="utf-8")
         self.assertIn("  push:\n", workflow)
-        for path in ("tools/build_macro_report.py", "data_sources/fx_inputs.py",
+        for path in ("tools/build_macro_report.py", "tools/macro_summary.py", "data_sources/fx_inputs.py",
                      "data_sources/ecos.py", "data_sources/fred.py"):
             self.assertIn(f'      - "{path}"', workflow)
 

@@ -271,8 +271,20 @@ def us_market_chart(frame):
             '자료: FRED(BAMLH0A0HYM2, DGS10, NASDAQCOM).</div>')
 
 
-SAVING_COLORS = {"saving_rate": "#1a5490", "investment_rate": "#c8952a",
+# 국내총투자율이 파랑, 총저축률이 주황(2026-09-16 요청).
+SAVING_COLORS = {"saving_rate": "#c8952a", "investment_rate": "#1a5490",
                  "surplus": "#8cc39f", "deficit": "#e7a3a0"}
+# 꺾은선의 최저점을 막대 0 선보다 이만큼(그림 높이 비율) 위에 둔다. 선이 적자 막대 영역으로 내려오면
+# 저축률·투자율이 음수인 것처럼 읽힌다(2026-09-16 지적).
+LINE_FLOOR_GAP = .06
+
+
+def nice_ticks(lo, hi, steps, most=6):
+    """lo~hi 안의 딱 떨어지는 눈금. steps 가운데 눈금이 most 개 이하가 되는 가장 촘촘한 간격을 쓴다."""
+    for step in steps:
+        ticks = np.arange(np.ceil(lo / step) * step, hi + step * 1e-9, step)
+        if len(ticks) <= most or step == steps[-1]:
+            return [float(tick) + 0.0 for tick in ticks]      # -0.0 이 '-0' 으로 찍히지 않게
 
 
 def saving_investment_chart(frame, start_year=1990):
@@ -295,28 +307,39 @@ def saving_investment_chart(frame, start_year=1990):
     band = (W - L - R) / len(years)
     xs = {year: L + band * (i + .5) for i, year in enumerate(years)}
 
-    rates = pd.concat([data["saving_rate"], data["investment_rate"]]).dropna()
-    pad = (float(rates.max()) - float(rates.min())) * .08 or 1.0
-    rlo, rhi = float(np.floor(rates.min() - pad)), float(np.ceil(rates.max() + pad))
     ca = data["current_account"].dropna()
     clo = min(0.0, float(ca.min())) if len(ca) else -1.0
     chi = max(0.0, float(ca.max())) if len(ca) else 1.0
-    cpad = (chi - clo) * .08 or 1.0
+    cpad = (chi - clo) * .06 or 1.0
     clo, chi = clo - cpad, chi + cpad
-
-    def y_rate(value):
-        return T + PH * (1 - (value - rlo) / (rhi - rlo))
 
     def y_ca(value):
         return T + PH * (1 - (value - clo) / (chi - clo))
 
+    # 왼쪽(%) 축은 막대 축에 맞춰 정한다. 선의 최저값을 막대 0 선보다 LINE_FLOOR_GAP 만큼 위에, 최고값을
+    # 위 끝 조금 아래에 놓고 거꾸로 축 범위를 구한다 — 선이 적자 막대 영역으로 내려오지 않는다.
+    rates = pd.concat([data["saving_rate"], data["investment_rate"]]).dropna()
+    rmin, rmax = float(rates.min()), float(rates.max())
+    low_frac = min((0.0 - clo) / (chi - clo) + LINE_FLOOR_GAP, .8)
+    high_frac = .96
+    span = max(rmax - rmin, 1.0) / (high_frac - low_frac)
+    rlo = rmin - low_frac * span
+    rhi = rlo + span
+
+    def y_rate(value):
+        return T + PH * (1 - (value - rlo) / (rhi - rlo))
+
     svg = [f'<svg viewBox="0 0 {W} {H}" width="100%" style="max-width:{W}px;'
            'font-family:-apple-system,Malgun Gothic,sans-serif;font-size:11px">']
-    for frac in (0.0, .25, .5, .75, 1.0):
-        rate, amount = rlo + (rhi - rlo) * frac, clo + (chi - clo) * frac
+    # 격자는 왼쪽 % 눈금에 맞추고, 오른쪽 억 달러는 축 끝의 짧은 눈금으로만 표시한다(두 축의 딱 떨어지는
+    # 값이 같은 높이에 오지 않으므로 격자를 둘 다 그리면 어느 선이 어느 눈금인지 헷갈린다).
+    for rate in nice_ticks(rlo, rhi, (1, 2, 5, 10)):
         y = y_rate(rate)
         svg.append(f'<line x1="{L}" x2="{W - R}" y1="{y:.1f}" y2="{y:.1f}" stroke="#eee"/>')
         svg.append(f'<text x="{L - 8}" y="{y + 4:.1f}" text-anchor="end" fill="#48525c">{rate:.0f}%</text>')
+    for amount in nice_ticks(clo, chi, (100, 200, 250, 500, 1000, 2000)):
+        y = y_ca(amount)
+        svg.append(f'<line x1="{W - R}" x2="{W - R + 4}" y1="{y:.1f}" y2="{y:.1f}" stroke="#8fb39a"/>')
         svg.append(f'<text x="{W - R + 8}" y="{y + 4:.1f}" fill="#4f7a5c">{amount:,.0f}</text>')
     zero = y_ca(0.0)
     svg.append(f'<line x1="{L}" x2="{W - R}" y1="{zero:.1f}" y2="{zero:.1f}" stroke="#9aa3ab" '

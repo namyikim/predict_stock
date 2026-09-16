@@ -100,6 +100,35 @@ class ChartTests(unittest.TestCase):
         for year in ("1990", "2000", "2010", "2020", "2025"):
             self.assertIn(f'fill="#8a9199">{year}</text>', html)
 
+    def test_investment_rate_is_blue(self):
+        """2026-09-16 요청: 국내총투자율을 파랑으로."""
+        self.assertEqual(macro.SAVING_COLORS["investment_rate"], "#1a5490")
+        self.assertNotEqual(macro.SAVING_COLORS["saving_rate"], "#1a5490")
+        html = macro.saving_investment_chart(self.frame())
+        self.assertIn('stroke="#1a5490" stroke-width="2.5"/><text x="186" y="18" fill="#1a1a1a" '
+                      'font-weight="600">국내총투자율', html)
+
+    def test_lines_stay_above_the_zero_line_of_the_bars(self):
+        """2026-09-16 지적: 꺾은선이 적자 막대 영역(0 선 아래)까지 내려왔다. 왼쪽 축을 맞춰 위로 올린다."""
+        for frame in (self.frame(), self.frame().assign(current_account=lambda f: f["current_account"] - 600)):
+            with self.subTest(deficits=int((frame["current_account"] < 0).sum())):
+                html = macro.saving_investment_chart(frame)
+                zero = float(re.search(r'y1="([\d.]+)" y2="[\d.]+" stroke="#9aa3ab"', html).group(1))
+                ys = [float(y) for points in re.findall(r'<polyline [^>]*points="([^"]+)"', html)
+                      for y in re.findall(r",([\d.]+)", points)]
+                self.assertTrue(ys)
+                self.assertLess(max(ys), zero, "선의 가장 낮은 점(가장 큰 y)이 0 선보다 위여야 한다")
+
+    def test_axis_ticks_are_round_numbers(self):
+        html = macro.saving_investment_chart(self.frame())
+        left = re.findall(r'text-anchor="end" fill="#48525c">([\d.]+)%</text>', html)
+        right = re.findall(r'fill="#4f7a5c">(-?[\d,]+)</text>', html)
+        self.assertTrue(left and right)
+        self.assertTrue(all(float(v) % 1 == 0 for v in left), left)
+        self.assertIn("0", right)
+        self.assertNotIn("-0", right)
+        self.assertEqual(macro.nice_ticks(-170, 1320, (100, 200, 250, 500)), [0.0, 250.0, 500.0, 750.0, 1000.0, 1250.0])
+
     def test_latest_values_and_the_identity_are_explained(self):
         html = macro.saving_investment_chart(self.frame())
         text = re.sub(r"<[^>]+>", "", html)

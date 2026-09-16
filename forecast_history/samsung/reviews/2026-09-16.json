@@ -1,0 +1,264 @@
+{
+  "target": "samsung",
+  "name": "삼성전자",
+  "peer_name": "SK하이닉스",
+  "session_date": "2026-09-16",
+  "generated_at": "2026-09-16 17:43 KST",
+  "summary": {
+    "prev_close": 248500.0,
+    "open": 248000.0,
+    "high": 254000.0,
+    "low": 247500.0,
+    "close": 253500.0,
+    "gap": -0.002012072434607659,
+    "session": 0.022177419354838745,
+    "c2c": 0.02012072434607637,
+    "high_vs_open": 0.024193548387096753,
+    "low_vs_open": -0.0020161290322581182,
+    "volume": 12550359.0,
+    "volume_ratio": 0.6574421751554643,
+    "kospi_c2c": 0.013687474525935661,
+    "peer_c2c": 0.040828402366863914,
+    "usdkrw_chg": 0.01655012951277368,
+    "sox_ret": 0.003977038594171534,
+    "nasdaq_ret": -0.007822372082609053
+  },
+  "classification": {
+    "labels": [
+      "지수 동조"
+    ],
+    "reasons": [
+      "KOSPI +1.37% vs 종목 +2.01%, 5분 수익률 상관 0.82 — 종목 고유 요인이 약함"
+    ]
+  },
+  "events": [
+    {
+      "time": "2026-09-16T12:00:00+09:00",
+      "ret": 0.004975124378109541,
+      "z": 3.35,
+      "volume_ratio": 2.61,
+      "cum_before": 0.013104838709677491,
+      "cum_after": 0.01814516129032251,
+      "session_share": 0.3084577114427918,
+      "score": 3.8673045203841863,
+      "news": [
+        {
+          "time": "2026-09-16T10:39:46+09:00",
+          "title": "삼성전자, 가전 넘어 AI 데이터센터까지…에너지 절감 솔루션 총출동",
+          "source": "straightnews.co.kr",
+          "link": "https://news.google.com/rss/articles/CBMid0FVX3lxTFBTenMwbzNpRXNFV0hnMEVlZGdfTlFDc3pDNHhMVDhIN0NHNFdqVXdnaFRVcmhZOUF2eGp1czVOenNuRnFHSlJLZEZWMkZFWkRBZjg4UVVpdWNpLUJaMEp4Wld2b3NwNFZCZjczNTBBeU93T3JqQVVR0gF3QVVfeXFMUFN6czBvM2lFc0VXSGcwRWVkZ19OUUNzekM0eExUOEg3Q0c0V2pVd2doVFVyaFk5QXZ4anVzNU56c25GcUdKUktkRlYyRkVaREFmODhRVWl1Y2ktQlowSnhaV3Zvc3A0VkJmNzM1MEF5T3dPcmpBVVE?oc=5"
+        },
+        {
+          "time": "2026-09-16T10:34:09+09:00",
+          "title": "갤S22 성능 저하 소송 모두 종결…삼성전자 손배 책임 판결 '전무'",
+          "source": "한국경제",
+          "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTFBnbTB1ZHFVdF9XcUJJR2taMlRPeC1BMkU2QjFhU1otMkFlenU2MWZ0OWFRM0NLTmFybnBoSmJpdEp6WUVpYXhrSWEwNmZhYVZkdVN2NmdYX2JXZw?oc=5"
+        },
+        {
+          "time": "2026-09-16T10:51:18+09:00",
+          "title": "삼성전자 ‘2026 기후산업국제박람회’서 일상부터 산업까지 맞춤형 에너지 솔루션 선보여",
+          "source": "뉴스와이어",
+          "link": "https://news.google.com/rss/articles/CBMiX0FVX3lxTE0tbGZqMDBRVHQxNU42M0FhNWFFVEtpdW9mQUw0UThteVdlVHJQZmlFRThBZzZUcng3bnBzSUhobnpSanJOVkNvYTFISmpYT3FQR0tlcXJhY1NsYVdXdDVN?oc=5"
+        },
+        {
+          "time": "2026-09-16T11:03:11+09:00",
+          "title": "삼성전자, 일상부터 산업까지 맞춤형 에너지 절감 솔루션 선보여",
+          "source": "전자신문",
+          "link": "https://news.google.com/rss/articles/CBMiTkFVX3lxTE9jVVBGU2tlOWphbXpnRUh1cm5Cbjc4TEk1ZFhDWU93a2c5N1M5Y2lWYWhpbEJldGRWazJYMGY5dzdBN1ZLZUYwR29oRGl1UQ?oc=5"
+        },
+        {
+          "time": "2026-09-16T11:45:00+09:00",
+          "title": "삼성전자 주주환원책 대안으로 부상한 우선주",
+          "source": "인베스트조선",
+          "link": "https://news.google.com/rss/articles/CBMigwFBVV95cUxOaWZNbkNlTDYwNmxPeHdEWVNVcU1FbTZUdWt3RklHNjFEVVF3QmFjS2ZrTThPZmRpTWI5bmxUZ0pydkhKcEszUDlBYzlnYmtCZHBob2Z5U0xXRnA4Tll2WWtVY2lYMUp6ZFVWbnItdmlUTGxzVlhIMU14ZTFjYzloemhyRQ?oc=5"
+        }
+      ]
+    },
+    {
+      "time": "2026-09-16T09:35:00+09:00",
+      "ret": 0.005010020040080221,
+      "z": 3.37,
+      "volume_ratio": 2.19,
+      "cum_before": 0.006048387096774244,
+      "cum_after": 0.011088709677419262,
+      "session_share": 0.31062124248497397,
+      "score": 3.8073491493563556,
+      "news": [
+        {
+          "time": "2026-09-16T09:09:00+09:00",
+          "title": "[삼성전자 주주환원①] 자사주 소각 10조냐 40조냐…'우선주' 변수",
+          "source": "news.einfomax.co.kr",
+          "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE5KZloxakY4M1ZzRHJRWDBGUVM5RXQxcXlPWTN1R3RiUV92cmxYRG1KVlRrcExWV191M2VOWUwxM0VzZHktYktGNjVtR2lJWFpkNk95UVZib3J3VDViUUZob2lldGNpNU50QUlCMUpfS2U?oc=5"
+        },
+        {
+          "time": "2026-09-16T09:24:16+09:00",
+          "title": "[특징주] 삼성전자·SK하이닉스, 美 반도체주 강세.. 동반 '상승'",
+          "source": "글로벌이코노믹",
+          "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxNRlVmczAySzVZY05jTy1lWlR1WlNEdGJvZ1FBZGJ6cU9XSHhWNXhqUFVDT3U5eks4a19tV3RMRTJSLUw2UjdlMGtYdG1aTE1TS1FtaWZwM2g0bG5vbmZhQnY3YWhZMGhTZ21rNnR4dkQ5Vi1qRk5RdFNDUS1IMXdHbHhsZGppU3N4?oc=5"
+        },
+        {
+          "time": "2026-09-16T09:09:12+09:00",
+          "title": "[삼성전자 주주환원③] 10년 전에도 '우선주 카드'…괴리율 15%까지 좁혀져",
+          "source": "news.einfomax.co.kr",
+          "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTFA1QTF0aUFXMTVvbzBmZHMxeWVfTEtQWHlXMkl6OU5UeDRmRTdJTEFyUFhST2RJOW85Um00ZTJFUTh6OVhMQXpwMmxrWDA0OFMtWUY5N3hfUFZkb016cnJlV0RSWlgzY3pWSmR0SWxkdDQ?oc=5"
+        },
+        {
+          "time": "2026-09-16T09:09:14+09:00",
+          "title": "[삼성전자 주주환원②] 美달튼부터 라이프운용까지…'우선주 더 사라'는 이유",
+          "source": "news.einfomax.co.kr",
+          "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE9PRXEzSHdyY3lQYldUNlZBSDdWTEc2V2FleXJNUHNBbUFyeE51djdWZDcxR0tHdXM4NDFSeTRJTWRESHJYY2FSVmFmQlVJdlFJMlF2cV9WWVNKRnNySlFRUjNCbXJ4NHNJTWt3d3VBUTQ?oc=5"
+        },
+        {
+          "time": "2026-09-16T09:21:21+09:00",
+          "title": "[특징주] 삼성전자 보합권…하이닉스 1%대 상승",
+          "source": "연합뉴스",
+          "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE9SUnVHZ21XM1p2NjNOOEl5RkdTR0szUGNjN3ctNXRIbTFiREhzQnZ5eGpNWkluVEJzeHh3Ml9PV2p5ekVhaUZFb1R1dU5fRkxtRXBsTEVOSFFBcTTSAWBBVV95cUxOVnJ5aXJOMFp1THM1ZXpDOG9LdGdrbFlKT0c3dERZNHRnTDhOU1VSOG5lZTR3elVFZlEyNnA0UTRGbXh5YVVTZXpHbTMzRVBvc1VPa1FuS2U1R3JYRHRSdy0?oc=5"
+        }
+      ]
+    },
+    {
+      "time": "2026-09-16T11:00:00+09:00",
+      "ret": 0.005020080321285203,
+      "z": 3.38,
+      "volume_ratio": 1.14,
+      "cum_before": 0.0040322580645162365,
+      "cum_after": 0.009072580645161255,
+      "session_share": 0.31124497991968286,
+      "score": 3.604549708805442,
+      "news": [
+        {
+          "time": "2026-09-16T10:04:00+09:00",
+          "title": "\"빅테크 AI 투자 상향…삼성전자·SK하이닉스 반등 준비 시점\"",
+          "source": "news.einfomax.co.kr",
+          "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE95NFc4SWJhVkhHSkJmUWZGUnF4VkNVWW1aTFlFUnVSZmdrMkNwWHRyVldGajVQdU5TYU51eFRoTnBYZ2dQRktFUGFsVl9KMUJuU2J3eE1TVGdOSjFhWUNPY3VkVlJHUzFaZk9RX1hUMjc?oc=5"
+        },
+        {
+          "time": "2026-09-16T10:00:00+09:00",
+          "title": "삼성전자, AI기술·고효율 가전 결합 맞춤형 에너지 솔루션 선보여",
+          "source": "신아일보",
+          "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE5rcEFqN0pKYlNsY2dfdHhXcEFENUJWM1drYjN6LWxXellEMHVWZHl6QXFxR3ZoTGVhdlpObUNQMVZkRUZTSmRyMlFLYnI1NjZNS21vZ0VxRE5HVnRNa20wWXQ4MW5IcDZ4ZEthYkhkWTc?oc=5"
+        },
+        {
+          "time": "2026-09-16T10:00:00+09:00",
+          "title": "삼성전자, 기후산업박람회서 ‘고효율·AI’ 에너지 기술 선봬",
+          "source": "테크월드",
+          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE5LLXhodW0yNVN6MEpRUjlVRkdpT1YxenZYU2JkTWhkRXdPQWZoeTV4bEE4UkMxZi1ScGRMVDlGdFRRa25uZ09xQWJia3pFWUt4RVM3UGpWUFNQS3ZTM3V2NDhIMGxDZ2Vw?oc=5"
+        },
+        {
+          "time": "2026-09-16T10:05:11+09:00",
+          "title": "AI 속도 조절론?… “NO, 삼성전자·SK하이닉스 반등시점 도래”",
+          "source": "v.daum.net",
+          "link": "https://news.google.com/rss/articles/CBMiRkFVX3lxTE82U1Fhd1pkX2RQSHJsZDhOVlVrTUtiWW5mYWN0ODBkb0ZCSE92ZnpZVTZYUzNZSUVGQW9SNkdyanNMWjVuVWc?oc=5"
+        },
+        {
+          "time": "2026-09-16T10:12:07+09:00",
+          "title": "삼성전자, 기후산업국제박람회서 ‘AI 에너지’ 영토 확장",
+          "source": "v.daum.net",
+          "link": "https://news.google.com/rss/articles/CBMiT0FVX3lxTFBlc0JRVEtCRFhiRzk1VjZXN3N2RlQtX01wMTlBX3cxUjhHZUhTemFhYm1jX19yR0NjTnZobDhRRGxtbzRna2dPM2xtMzA5VU0?oc=5"
+        }
+      ]
+    }
+  ],
+  "turning_point": {
+    "high_time": "2026-09-16T13:20:00+09:00",
+    "high": 0.02318548387096775,
+    "low_time": "2026-09-16T09:05:00+09:00",
+    "low": 0.0010080645161290036,
+    "pattern": "저점 후 반등"
+  },
+  "closing_share": 0.268398268398267,
+  "intraday_corr_kospi": 0.8181129355236209,
+  "intraday_note": "장중 봉은 09:00~14:55까지만 있어 마감 구간(14:55~15:30)은 일봉 종가로만 봅니다(그 구간 +0.60%).",
+  "intraday_coverage": "09:00~14:55",
+  "overnight_news": [],
+  "top_news": [
+    {
+      "time": "2026-09-16T16:10:03+09:00",
+      "title": "“범용 지고 HBM 뜬다”···삼성전자·SK하이닉스·마이크론 '증설 전쟁'",
+      "source": "시사저널e",
+      "link": "https://news.google.com/rss/articles/CBMidkFVX3lxTE54NGc1U2tzbTlNaFpqTXlvWE5RMEd1dzdNNlJaVy1pSlFHNWVPODBBQzRkaXRVLTBRVmJEaTdMVngxYnVRMW10QkdUazVpWGN1d3htN2FSbTZNME5oUndJaGxHdUI0by15Rnp3MDNfejh1ZndyOHfSAXZBVV95cUxOeDRnNVNrc205TWhaak15b1hOUTBHdXc3TTZSWlctaUpRRzVlTzgwQUM0ZGl0VS0wUVZiRGk3TFZ4MWJ1UTFtdEJHVGs1aVhjdXd4bTdhUm02TTBOaFJ3SWhsR3VCNG8teUZ6dzAzX3o4dWZ3cjh3?oc=5"
+    },
+    {
+      "time": "2026-09-16T10:04:00+09:00",
+      "title": "\"빅테크 AI 투자 상향…삼성전자·SK하이닉스 반등 준비 시점\"",
+      "source": "news.einfomax.co.kr",
+      "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE95NFc4SWJhVkhHSkJmUWZGUnF4VkNVWW1aTFlFUnVSZmdrMkNwWHRyVldGajVQdU5TYU51eFRoTnBYZ2dQRktFUGFsVl9KMUJuU2J3eE1TVGdOSjFhWUNPY3VkVlJHUzFaZk9RX1hUMjc?oc=5"
+    },
+    {
+      "time": "2026-09-16T14:11:45+09:00",
+      "title": "이재용 삼성전자 회장, 日 참의원 대표단 회동…반도체·AI 협력 논의",
+      "source": "전자신문",
+      "link": "https://news.google.com/rss/articles/CBMiTkFVX3lxTFBaSXFGX3JzUTZoSXEyQk5uVWwxalNyZUVqT3djUFNuQnFhU3BCc2gtX2FiMjlUcTVhV3lBTlhqbVRYTlppclBONXZDR1poQQ?oc=5"
+    },
+    {
+      "time": "2026-09-16T15:20:00+09:00",
+      "title": "'엔비디아와 다른 기술' 네덜란드 스타트업에 투자한 삼성전자",
+      "source": "한국일보",
+      "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTE01RE9FYkd1WFRWemw2VlRUVTQtUWN5TjJncHAxNjRjSTZEYy10aWFOc0NLWUdPc2JJRjJKMkNmNGdqQWZKYmRhWl9Va2pabC1TcVhaOGtnQzhEdUNEZ0hHcFpqQjBGaUNHeWdkWHpjTG5IcTjSAXNBVV95cUxNNURPRWJHdVhUVnpsNlZUVFU0LVFjeU4yZ3BwMTY0Y0k2RGMtdGlhTnNDS1lHT3NiSUYySjJDZjRnakFmSmJkYVpfVWtqWmwtU3FYWjhrZ0M4RHVDRGdIR3BaakIwRmlDR3lnZFh6Y0xuSHE4?oc=5"
+    },
+    {
+      "time": "2026-09-16T15:24:39+09:00",
+      "title": "'AI 종말론' 짓누른 트럼프…삼성전자·SK하이닉스 'HBM 슈퍼사이클' 청신호",
+      "source": "파이낸셜포스트",
+      "link": "https://news.google.com/rss/articles/CBMidEFVX3lxTE83T2ZTOUFjZWdGSzMxQTBOMGVQVHFTSXpUWk5GU3A5Ml9YTUdEX2FLemdKb0Qzc2VZZ2JyT0t2UWt3MVQtSjB5RXBic1BuajhjY25HM09Ba0lnNS1CSGRNTWVRT1REZUs3MjF3Z2I5QlVQX0J3?oc=5"
+    },
+    {
+      "time": "2026-09-16T16:07:20+09:00",
+      "title": "[빅테크칼럼] “반도체는 11월을 기다리지 않았다”…삼성전자 테일러 팹, 테슬라 AI칩 생산 시작",
+      "source": "newsspace.kr",
+      "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTFA1WEk2c05rNElpSWlfZnF3RmJvX09BTXEzWWJYRHFFV1owSFcxZ3pIOHlYQnlKbE5SR3ZJZjJYTTBIQzY3RFZMdjBualFLNGhaRVNHRWw3dk5XTWZqQXhjUw?oc=5"
+    }
+  ],
+  "disclosures": null,
+  "disclosure_note": "DART 조회 실패(URLError)",
+  "flows": null,
+  "forecasts": [
+    {
+      "model": "No macro ensemble",
+      "hit": false,
+      "verdict": "틀림 — 예측 하락 35%, 실제 상승(+2.01%)",
+      "legs": "갭 -0.20%(보합) · 세션 +2.22%(상승)",
+      "where": "갭은 예측 방향이었으나 장중에 반대로 움직여 결과가 뒤집혔습니다.",
+      "band": 0.0127184266735917,
+      "probs": [
+        0.346838937749479,
+        0.3258684552992943,
+        0.3272926069512265
+      ],
+      "actual": "상승",
+      "predicted": "하락"
+    },
+    {
+      "model": "Mean ensemble",
+      "hit": false,
+      "verdict": "틀림 — 예측 보합 34%, 실제 상승(+2.01%)",
+      "legs": "갭 -0.20%(보합) · 세션 +2.22%(상승)",
+      "where": "결과는 주로 장중에서 정해졌습니다.",
+      "band": 0.0127184266735917,
+      "probs": [
+        0.3338555491641612,
+        0.3381119439659772,
+        0.3280325068698615
+      ],
+      "actual": "상승",
+      "predicted": "보합"
+    },
+    {
+      "model": "Candidate expanding",
+      "hit": false,
+      "verdict": "틀림 — 예측 보합 37%, 실제 상승(+2.01%)",
+      "legs": "갭 -0.20%(보합) · 세션 +2.22%(상승)",
+      "where": "결과는 주로 장중에서 정해졌습니다.",
+      "band": 0.0127184266735917,
+      "probs": [
+        0.261242470484572,
+        0.3695422038487169,
+        0.3692153256667111
+      ],
+      "actual": "상승",
+      "predicted": "보합"
+    }
+  ],
+  "price_check": "1거래일 예상 구간 235,081~261,687원 · 종가 253,500원 → 구간 안",
+  "disclaimer": "시간이 맞는 것이지 원인 확정이 아닙니다. 뉴스 없이 움직이는 날(수급·프로그램·옵션 만기)이 많고, 기사 발행 시각은 실제 정보 유통보다 늦거나 앞섭니다. 이 절은 설명 도구이며 다음날 예측에 자동 반영되지 않습니다."
+}

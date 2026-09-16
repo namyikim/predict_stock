@@ -483,7 +483,7 @@
 
 
   // ---- 별도 AI 일일예측 원장 ---------------------------------------------
-  var AI_BASE = "https://raw.githubusercontent.com/namyikim/predict_stock/main/ai_daily_forecast/";
+  var AI_INDEX = "https://raw.githubusercontent.com/namyikim/predict_stock/main/ai_daily_forecast/index.json";
   var aiLoaded = false;
 
   function esc(value) {
@@ -590,7 +590,7 @@
 
   function loadAiForecasts() {
     $("ai-status").textContent = "AI 판단 기록을 불러오는 중…";
-    fetch(AI_BASE + "index.json", {cache: "no-store"})
+    fetch(AI_INDEX, {cache: "no-store"})
       .then(function (response) {
         if (!response.ok) throw new Error("HTTP " + response.status);
         return response.json();

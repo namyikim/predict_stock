@@ -201,6 +201,76 @@ def us_jp_chart(frame, start="1980-01-01"):
                            left_fmt="{:,.0f}", right_fmt="{:+.1f}")
 
 
+def us_market_chart(frame):
+    """미국 하이일드 OAS·10년물 금리(왼쪽 %)와 나스닥(오른쪽)을 일별로 겹친다."""
+    columns = ["high_yield_spread", "us10y", "nasdaq"]
+    if frame is None or frame.empty or any(name not in frame for name in columns):
+        return ""
+    data = frame[columns].dropna()
+    if len(data) < 24:
+        return ""
+    W, H, L, R, T, B = 900, 390, 66, 72, 48, 40
+    PH = H - T - B
+    first, last = data.index.min(), data.index.max()
+    span = max((last - first).days, 1)
+    xs = pd.Series([L + (W - L - R) * (stamp - first).days / span for stamp in data.index], index=data.index)
+
+    def scale(series):
+        lo, hi = float(series.min()), float(series.max())
+        pad = (hi - lo) * .06 or 1.0
+        lo, hi = lo - pad, hi + pad
+        return (lambda value: T + PH * (1 - (value - lo) / (hi - lo))), lo, hi
+
+    rate_values = pd.concat([data["high_yield_spread"], data["us10y"]])
+    yr, rlo, rhi = scale(rate_values)
+    yn, nlo, nhi = scale(data["nasdaq"])
+
+    def polyline(series, fn, color, width="1.7"):
+        points = " ".join(f"{xs[stamp]:.1f},{fn(value):.1f}" for stamp, value in series.items())
+        return f'<polyline fill="none" stroke="{color}" stroke-width="{width}" points="{points}"/>'
+
+    colors = {"high_yield_spread": "#b33a3a", "us10y": "#1a5490", "nasdaq": "#2a8b57"}
+    svg = [f'<svg viewBox="0 0 {W} {H}" width="100%" style="max-width:{W}px;'
+           'font-family:-apple-system,Malgun Gothic,sans-serif;font-size:11px">']
+    years = list(range(first.year, last.year + 1))
+    step = 1 if len(years) <= 10 else (2 if len(years) <= 24 else 5)
+    for year in years:
+        stamp = max(first, pd.Timestamp(year=year, month=1, day=1))
+        if stamp > last:
+            continue
+        x = L + (W - L - R) * (stamp - first).days / span
+        svg.append(f'<line x1="{x:.1f}" x2="{x:.1f}" y1="{T}" y2="{T + PH}" stroke="#eee"/>')
+        if year == first.year or year % step == 0:
+            svg.append(f'<text x="{x:.1f}" y="{H - 14}" text-anchor="middle" fill="#8a9199">{year}</text>')
+    for frac in (0.0, .5, 1.0):
+        rv = rlo + (rhi - rlo) * frac
+        nv = nlo + (nhi - nlo) * frac
+        svg.append(f'<text x="{L - 8}" y="{yr(rv):.1f}" text-anchor="end" fill="#48525c">{rv:.1f}</text>')
+        svg.append(f'<text x="{W - R + 8}" y="{yn(nv):.1f}" fill="{colors["nasdaq"]}">{nv:,.0f}</text>')
+    svg.append(polyline(data["high_yield_spread"], yr, colors["high_yield_spread"]))
+    svg.append(polyline(data["us10y"], yr, colors["us10y"]))
+    svg.append(polyline(data["nasdaq"], yn, colors["nasdaq"]))
+    svg.append(f'<text x="{L}" y="18" fill="{colors["high_yield_spread"]}" font-weight="600">'
+               '하이일드 채권 스프레드</text>')
+    svg.append(f'<text x="{L + 180}" y="18" fill="{colors["us10y"]}" font-weight="600">'
+               '미국 국채 10년</text>')
+    svg.append(f'<text x="{L + 310}" y="18" fill="{colors["nasdaq"]}" font-weight="600">'
+               '나스닥 종합지수</text>')
+    svg.append(f'<text x="{L}" y="35" fill="#6b7178">금리·스프레드(%, 왼쪽 축) · '
+               '나스닥(오른쪽 축)</text>')
+    svg.append("</svg>")
+    return ('<h3 style="font-size:15px;margin:24px 0 9px;padding-bottom:6px;border-bottom:1px solid #ddd">'
+            '미국 신용위험·국채금리와 나스닥 '
+            f'<span style="font-weight:400;color:#8a9199;font-size:12px">&nbsp;{first.year}년~{last.year}년 · 일별</span></h3>'
+            + "".join(svg) +
+            '<div style="font-size:12px;color:#6b7178;margin-top:6px">'
+            '하이일드 채권 스프레드는 ICE BofA 미국 하이일드 지수의 옵션조정 스프레드(OAS)입니다. '
+            '세 계열이 모두 관측되는 날짜만 그렸으며 결측값을 보간하지 않았습니다. '
+            'FRED는 ICE 라이선스에 따라 2026년 4월부터 이 스프레드의 최근 3년만 제공하므로, '
+            '현재 공식 공개 경로에서 받을 수 있는 최대 기간을 표시합니다. '
+            '자료: FRED(BAMLH0A0HYM2, DGS10, NASDAQCOM).</div>')
+
+
 # 절 목록. 지표를 붙일 때 여기에 함수를 더하면 페이지 구조는 건드리지 않아도 된다.
 SECTIONS = (
     ("환율", "원/달러 결정 요인 표는 위에 있습니다. 아래는 앞으로 더할 것입니다.",
@@ -214,7 +284,8 @@ SECTIONS = (
 )
 
 
-def build_page(now=None, fx_frame=None, fx_info=None, us_jp_frame=None, us_jp_info=None):
+def build_page(now=None, fx_frame=None, fx_info=None, us_jp_frame=None, us_jp_info=None,
+               us_market_frame=None, us_market_info=None):
     now = now or datetime.now(KST)
     body = ""
     if fx_frame is not None:
@@ -228,6 +299,11 @@ def build_page(now=None, fx_frame=None, fx_info=None, us_jp_frame=None, us_jp_in
     elif us_jp_info and us_jp_info.get("failed"):
         body += ('<div class="empty">미·일 금리차 자료를 받지 못했습니다 — '
                  + escape("; ".join(f"{k}: {v}" for k, v in us_jp_info["failed"].items())) + '</div>')
+    if us_market_frame is not None:
+        body += us_market_chart(us_market_frame)
+    elif us_market_info and us_market_info.get("failed"):
+        body += ('<div class="empty">미국 금융시장 자료를 받지 못했습니다 — '
+                 + escape("; ".join(f"{k}: {v}" for k, v in us_market_info["failed"].items())) + '</div>')
     body += "".join(planned_section(title, note, items) for title, note, items in SECTIONS)
     return (
         '<!doctype html>\n<html lang="ko"><head><meta charset="utf-8">'
@@ -279,6 +355,7 @@ def load_fx(fetch=True):
 
 
 US_JP_CACHE = ROOT / "macro_history" / "us_jp_rates.csv"
+US_MARKET_CACHE = ROOT / "macro_history" / "us_market_daily.csv"
 
 
 def load_us_jp(fetch=True):
@@ -290,6 +367,18 @@ def load_us_jp(fetch=True):
     if len(frame):
         US_JP_CACHE.parent.mkdir(parents=True, exist_ok=True)
         frame.reset_index().to_csv(US_JP_CACHE, index=False)
+    return frame, info
+
+
+def load_us_market(fetch=True):
+    from data_sources.fred import build_us_market_inputs
+    try:
+        frame, info = build_us_market_inputs(fetch=fetch, cache_path=US_MARKET_CACHE)
+    except Exception as exc:
+        return None, {"failed": {"전체": f"{type(exc).__name__}: {exc}"[:160]}}
+    if len(frame):
+        US_MARKET_CACHE.parent.mkdir(parents=True, exist_ok=True)
+        frame.reset_index().to_csv(US_MARKET_CACHE, index=False)
     return frame, info
 
 
@@ -312,7 +401,16 @@ def main():
     if us_jp is not None and len(us_jp):
         print(f"  미·일 자료: {us_jp_info.get('source')} · {us_jp_info.get('first')}~{us_jp_info.get('last')} "
               f"({us_jp_info.get('rows')}개월)", flush=True)
-    page = build_page(fx_frame=frame, fx_info=info, us_jp_frame=us_jp, us_jp_info=us_jp_info)
+    us_market, us_market_info = load_us_market(fetch=not args.no_fetch)
+    if us_market_info.get("failed"):
+        for name, reason in us_market_info["failed"].items():
+            print(f"  ⚠️ 미국 금융시장 {name}: {reason}", flush=True)
+    if us_market is not None and len(us_market):
+        print(f"  미국 금융시장 자료: {us_market_info.get('source')} · "
+              f"{us_market_info.get('first')}~{us_market_info.get('last')} "
+              f"({us_market_info.get('rows')}일)", flush=True)
+    page = build_page(fx_frame=frame, fx_info=info, us_jp_frame=us_jp, us_jp_info=us_jp_info,
+                      us_market_frame=us_market, us_market_info=us_market_info)
     if args.write:
         OUT.parent.mkdir(parents=True, exist_ok=True)
         OUT.write_text(page, encoding="utf-8")

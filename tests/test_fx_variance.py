@@ -259,6 +259,71 @@ class UsJpChartTests(unittest.TestCase):
         self.assertAlmostEqual(float(frame["rate_gap"].iloc[0]), 3.3)
 
 
+class UsMarketChartTests(unittest.TestCase):
+    """하이일드 스프레드·미국 10년물·나스닥을 최대 공통 일별 구간에 겹친다."""
+
+    def frame(self):
+        index = pd.bdate_range("1996-12-30", periods=520)
+        n = len(index)
+        return pd.DataFrame({
+            "high_yield_spread": np.linspace(3.0, 7.0, n),
+            "us10y": np.linspace(6.5, 4.0, n),
+            "nasdaq": np.linspace(1200.0, 2400.0, n),
+        }, index=index)
+
+    def test_daily_fred_parser_keeps_daily_observations(self):
+        from data_sources import fred
+        class Resp:
+            def read(self):
+                return b"DATE,DGS10\n2024-01-02,3.95\n2024-01-03,.\n2024-01-04,4.00\n"
+            def __enter__(self): return self
+            def __exit__(self, *args): pass
+        saved = fred.open_url
+        fred.open_url = lambda url, **kwargs: Resp()
+        try:
+            series = fred.fetch_fred_daily("DGS10")
+        finally:
+            fred.open_url = saved
+        self.assertEqual(series.index.tolist(), [pd.Timestamp("2024-01-02"), pd.Timestamp("2024-01-04")])
+        self.assertEqual(series.tolist(), [3.95, 4.0])
+
+    def test_builder_starts_at_first_date_shared_by_all_three_series(self):
+        from data_sources import fred
+        series = {
+            fred.HIGH_YIELD_SPREAD: pd.Series([3.0, 3.1], index=pd.to_datetime(["1996-12-31", "1997-01-02"])),
+            fred.US10Y: pd.Series([6.4, 6.3], index=pd.to_datetime(["1997-01-01", "1997-01-02"])),
+            fred.NASDAQ: pd.Series([1290.0, 1300.0], index=pd.to_datetime(["1996-12-30", "1997-01-02"])),
+        }
+        saved = fred.fetch_fred_daily
+        fred.fetch_fred_daily = lambda sid, **kwargs: series[sid]
+        try:
+            frame, info = fred.build_us_market_inputs(fetch=True, cache_path=None)
+        finally:
+            fred.fetch_fred_daily = saved
+        self.assertEqual(frame.index.min(), pd.Timestamp("1997-01-02"))
+        self.assertEqual(info["first"], "1997-01-02")
+        self.assertEqual(list(frame.columns), ["high_yield_spread", "us10y", "nasdaq"])
+
+    def test_chart_has_three_lines_and_two_axes(self):
+        import build_macro_report as macro
+        html = macro.us_market_chart(self.frame())
+        self.assertEqual(html.count("<polyline"), 3)
+        self.assertIn("하이일드 채권 스프레드", html)
+        self.assertIn("미국 국채 10년", html)
+        self.assertIn("나스닥 종합지수", html)
+        self.assertIn("금리·스프레드(%, 왼쪽 축)", html)
+        self.assertIn("나스닥(오른쪽 축)", html)
+        self.assertIn("1996년~", html)
+        self.assertIn("최근 3년만 제공", html)
+
+    def test_page_explains_a_failed_us_market_download(self):
+        import build_macro_report as macro
+        html = macro.build_page(us_market_frame=None,
+                                us_market_info={"failed": {"nasdaq": "FRED 응답 오류"}})
+        self.assertIn("미국 금융시장 자료를 받지 못했습니다", html)
+        self.assertIn("FRED 응답 오류", html)
+
+
 class RealRateGapTests(unittest.TestCase):
     """원/달러와 한·미 실질금리차(2026-09-16 요청). 2001년부터.
 

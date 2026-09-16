@@ -31,7 +31,7 @@ jobs:
         run: |
           # 다른 워크플로(검색어·AI 뉴스 등)가 같은 시각에 push 하면 거부된다(2026-09-16 실제로
           # 겪었다). 거부되면 원격을 받아 rebase 한 뒤 다시 민다. 이 워크플로가 바꾸는 파일은
-          # docs/macro 와 macro_history/fx_inputs.csv 뿐이라 다른 워크플로와 겹치지 않아 충돌은 없다.
+          # docs/macro 와 거시 자료 보관본뿐이라 다른 워크플로와 겹치지 않아 충돌은 없다.
           if [ -z "$(git status --porcelain docs/macro macro_history)" ]; then
             echo "변경 없음"; exit 0
           fi

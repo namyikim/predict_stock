@@ -163,6 +163,141 @@ class ScopeTests(unittest.TestCase):
         self.assertEqual(bars["close"].iloc[-1], 104.5)
 
 
+class RunLabelTests(unittest.TestCase):
+    """절 머리와 커밋 제목은 --scope 가 아니라 실제로 채점한 범위를 말한다.
+
+    2026-09-15·16: 09:37 cron이 4.5시간 밀려 14:17·14:11에 도착했다(GitHub 예약 실행). 게이트는 scope=open을
+    골랐고 보고서에도 '시초가 확인 14:11 KST'가 찍혔지만, 커밋 제목은 scope와 무관하게
+    'update: docs/sk_hynix/index.html 장 마감 후 갱신 (2026-09-16 14:11 KST)'이어서 마감 전에 마감 후 갱신이
+    돈 것처럼 보였다. 장중에 수동으로 scope=all을 고르면 load_bars가 오늘 봉을 버려 지난 거래일까지만
+    채점되는데도 절 머리에 '장 마감 후 갱신 … 오늘 종가로 다시 채점했습니다'라고 적혔다.
+    """
+
+    DAYS = ["2026-09-14", "2026-09-15", "2026-09-16"]
+
+    def frame(self, days=None):
+        days = days or self.DAYS
+        n = len(days)
+        return pd.DataFrame({"Open": [100., 101., 104.][:n], "High": [101., 102., 105.][:n],
+                             "Low": [99., 100., 103.][:n], "Close": [100., 101.5, 104.5][:n],
+                             "Adj Close": [100., 101.5, 104.5][:n], "Volume": [1e6, 1e6, 5e5][:n]},
+                            index=pd.to_datetime(days))
+
+    def ledger(self):
+        rows = []
+        for day, prev in (("2026-09-15", "2026-09-14"), ("2026-09-16", "2026-09-15")):
+            common = dict(run_id="r" + day, target_date=day, prediction_date=day, as_of_date=prev,
+                          created_at_utc=f"{prev}T21:30:00Z", current_close=100., horizon_days=1,
+                          target_mode="close_to_close")
+            rows += [dict(common, record_id="o" + day, kind="open", model="Ridge", predicted_open=103.,
+                          center_open=103., low_open=101., high_open=106., predicted_return=.03),
+                     dict(common, record_id="d" + day, kind="direction", band=.01,
+                          model=af.TARGETS["sk_hynix"]["ensemble"],
+                          p_down=.2, p_flat=.3, p_up=.5, prediction="상승")]
+        return pd.DataFrame(rows).to_csv(index=False)
+
+    def frozen(self, when):
+        """yfinance·pd.Timestamp.now·af.datetime 을 when(KST)으로 고정한다."""
+        import yfinance
+        fixed = pd.Timestamp(when, tz="Asia/Seoul")
+        saved = (yfinance.Ticker, pd.Timestamp.now, af.datetime)
+        real_now = pd.Timestamp.now
+        pd.Timestamp.now = classmethod(lambda cls, tz=None: real_now(tz=tz) if tz is None else fixed)
+
+        class Frozen(af.datetime):
+            @classmethod
+            def now(cls, tz=None):
+                return fixed.to_pydatetime()
+        af.datetime = Frozen
+
+        def restore():
+            yfinance.Ticker, pd.Timestamp.now, af.datetime = saved
+        self.addCleanup(restore)
+        return fixed.to_pydatetime()
+
+    def fake_yahoo(self, frame):
+        import yfinance
+
+        class FakeTicker:
+            def __init__(self, *a, **k): pass
+            def history(self, **k): return frame.copy()
+        yfinance.Ticker = FakeTicker
+
+    def label_at(self, when, scope, frame=None):
+        now = self.frozen(when)
+        self.fake_yahoo(self.frame() if frame is None else frame)
+        return af.describe_run(af.load_bars("000660.KS", scope=scope), now)
+
+    def test_1411_all_scope_is_an_intraday_rescore_not_a_close_update(self):
+        label, detail = self.label_at("2026-09-16 14:11", "all")
+        self.assertEqual(label, "장중 재채점")
+        self.assertIn("9월 15일", detail)
+        self.assertNotIn("오늘 종가로", detail)
+
+    def test_1411_open_scope_is_the_open_check(self):
+        label, detail = self.label_at("2026-09-16 14:11", "open")
+        self.assertEqual(label, "시초가 확인")
+        self.assertIn("시초가 예측만", detail)
+
+    def test_open_scope_without_todays_bar_does_not_claim_the_open(self):
+        # 2026-09-15 14:17 삼성: 야후에 당일 봉이 없어 시가 채점이 안 됐는데 '시초가 확인'이라고 적혔다.
+        label, _ = self.label_at("2026-09-16 14:11", "open", self.frame(self.DAYS[:2]))
+        self.assertEqual(label, "장중 재채점")
+
+    def test_after_the_close_is_a_close_update_with_todays_close(self):
+        label, detail = self.label_at("2026-09-16 16:10", "all")
+        self.assertEqual(label, "장 마감 후 갱신")
+        self.assertIn("오늘 종가로", detail)
+
+    def test_open_scope_that_lands_after_the_close_is_a_close_update(self):
+        # 게이트는 15:39에 open을 골랐는데 도구가 15:41에 돌면 load_bars가 종가를 남기고 원장도 종가를 채점한다.
+        label, _ = self.label_at("2026-09-16 15:41", "open")
+        self.assertEqual(label, "장 마감 후 갱신")
+
+    def test_past_midnight_run_names_the_session_it_scored(self):
+        label, detail = self.label_at("2026-09-17 00:30", "all")
+        self.assertEqual(label, "장 마감 후 갱신")
+        self.assertIn("9월 16일 종가", detail)
+        self.assertNotIn("오늘 종가", detail)
+
+    def run_main(self, when, scope):
+        """main() 을 when(KST)에 --publish 로 돌리고 (경로, 커밋 메시지, 본문) 목록을 돌려준다."""
+        import tempfile
+        self.frozen(when)
+        self.fake_yahoo(self.frame())
+        ledger = self.ledger()
+        page = f"<html>{fu.SCORECARD_START}아침{fu.SCORECARD_END}{af.MARK_START}옛 표{af.MARK_END}</html>"
+        gp = af.github_pages
+        saved = (gp.token, gp.code_version, gp.fetch, gp.publish, sys.argv)
+        published = []
+        gp.token = lambda: "t"
+        gp.code_version = lambda tok=None: {"short": "abc1234"}
+        gp.fetch = lambda path, tok: ledger if path.endswith("forecast_log.csv") else page
+        gp.publish = lambda path, text, tok, message: published.append((path, message, text)) or "deadbee"
+        sys.argv = ["x", "--target", "sk_hynix", "--out", tempfile.mkdtemp(), "--scope", scope, "--publish"]
+        try:
+            af.main()
+        finally:
+            gp.token, gp.code_version, gp.fetch, gp.publish, sys.argv = saved
+        return [p for p in published if p[0].startswith("docs/")]
+
+    def test_main_at_1411_never_labels_a_post_close_update(self):
+        for scope, expected in (("open", "시초가 확인"), ("all", "장중 재채점")):
+            with self.subTest(scope=scope):
+                pages = self.run_main("2026-09-16 14:11", scope)
+                self.assertTrue(pages)
+                for path, message, text in pages:
+                    self.assertEqual(message, f"update: {path} {expected} (2026-09-16 14:11 KST)")
+                    self.assertNotIn("장 마감 후 갱신", message)
+                    self.assertIn(f"<b>{expected} 14:11 KST</b>", text)
+                    self.assertNotIn("장 마감 후 갱신", text)
+
+    def test_main_after_the_close_keeps_the_close_update_label(self):
+        for path, message, text in self.run_main("2026-09-16 16:10", "all"):
+            self.assertEqual(message, f"update: {path} 장 마감 후 갱신 (2026-09-16 16:10 KST)")
+            self.assertIn("<b>장 마감 후 갱신 16:10 KST</b>", text)
+
+
 class OpenScoringTimeTests(unittest.TestCase):
     """시가는 09:00에 확정되므로 그날 오전에 채점할 수 있다. 종가는 마감 뒤라야 한다."""
 

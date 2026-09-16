@@ -41,6 +41,7 @@ TARGETS = {
 }
 LEDGER_FILES = ["forecast_log.csv", "daily_forecast_comparison.csv", "forecast_accuracy_summary.csv"]
 MARK_START, MARK_END = "<!--LEDGER_SECTION_START-->", "<!--LEDGER_SECTION_END-->"
+OPEN_CONFIRMED, CLOSE_CONFIRMED = (9, 5), (15, 40)   # should_score_now·evaluate_forecasts와 같은 기준
 
 
 def load_bars(ticker, scope="all"):
@@ -60,7 +61,7 @@ def load_bars(ticker, scope="all"):
     if "adj_close" not in frame:
         frame["adj_close"] = frame["close"]
     now = pd.Timestamp.now(tz="Asia/Seoul")
-    if frame.index[-1].date() >= now.date() and (now.hour, now.minute) < (15, 40):
+    if frame.index[-1].date() >= now.date() and (now.hour, now.minute) < CLOSE_CONFIRMED:
         if scope == "open":
             frame = frame.copy()
             frame.loc[frame.index[-1], ["close", "high", "low", "adj_close"]] = np.nan
@@ -69,6 +70,29 @@ def load_bars(ticker, scope="all"):
     # 거래량 0에 시가=고가=저가=종가인 유령봉은 '보합'을 조작하므로 채점에서 뺀다(노트북과 같은 규칙).
     ghost = (frame["volume"] == 0) & (frame["high"] == frame["low"]) & (frame["open"] == frame["close"])
     return frame[~ghost][["open", "high", "low", "close", "adj_close", "volume"]].astype(float)
+
+
+def describe_run(bars, now):
+    """(이름, 설명) — 이번 실행이 실제로 채점한 범위. 절 머리와 커밋 제목이 같은 이름을 쓴다.
+
+    --scope 만 보고 정하면 틀린다. 커밋 제목이 scope와 무관하게 '장 마감 후 갱신'이어서, 09:37 cron이
+    4.5시간 밀려 14:11에 도착한 시초가 채점이 마감 전에 돈 마감 후 갱신처럼 보였다(2026-09-15·16).
+    장중에 scope=all을 고르면 load_bars가 오늘 봉을 버려 지난 거래일까지만 채점되고, scope=open이어도
+    야후에 오늘 봉이 없으면 시가를 채점하지 못한다. 그래서 받은 봉과 지금 시각으로 정한다.
+    """
+    last = bars.index[-1]
+    if last.date() == now.date():
+        if np.isfinite(bars["close"].iloc[-1]):
+            return "장 마감 후 갱신", "이 절과 맨 위 ‘지난 예측은 맞았나’만 오늘 종가로 다시 채점했습니다."
+        if np.isfinite(bars["open"].iloc[-1]):
+            return "시초가 확인", ("오늘 시가가 확정되어 <b>시초가 예측만</b> 채점했습니다. "
+                               "종가 관련 항목은 장 마감 후(16:10)에 채워집니다.")
+    day = f"{last.month}월 {last.day}일"
+    if OPEN_CONFIRMED <= (now.hour, now.minute) < CLOSE_CONFIRMED:
+        return "장중 재채점", (f"오늘 종가는 아직 확정되지 않아(15:40 KST) <b>{day}까지만</b> 다시 채점했습니다. "
+                             "오늘 예측은 장 마감 후(16:10)에 채점됩니다.")
+    # 개장 전(자정을 넘긴 밀린 회차) 또는 마감 뒤인데 야후에 오늘 봉이 아직 없는 경우
+    return "장 마감 후 갱신", f"이 절과 맨 위 ‘지난 예측은 맞았나’만 {day} 종가까지 다시 채점했습니다."
 
 
 def score(storage, target, bars, token):
@@ -119,15 +143,12 @@ def main():
     now = datetime.now(KST)
     version = github_pages.code_version(token)
     stamp = (f' · 코드 커밋 <code>{version["short"]}</code>' if version["short"] else "")
-    if args.scope == "open":
-        headline = (f'<b>시초가 확인 {now:%H:%M} KST</b>{stamp} — 오늘 시가가 확정되어 '
-                    '<b>시초가 예측만</b> 채점했습니다. 종가 관련 항목은 장 마감 후(16:10)에 채워집니다.')
-    else:
-        headline = (f'<b>장 마감 후 갱신 {now:%H:%M} KST</b>{stamp} — 이 절과 맨 위 ‘지난 예측은 맞았나’만 '
-                    '오늘 종가로 다시 채점했습니다.')
+    label, detail = describe_run(bars, now)
+    print(f"이번 실행: {label} (scope={args.scope})", flush=True)
     note = ('<div style="font-size:12px;color:#6b7178;margin:4px 0 8px;padding:8px 12px;'
             'background:#f7f8fa;border-radius:5px">'
-            f'{headline} 아래 성능표와 다음 거래일 예측은 <b>오늘 아침 기준</b> 그대로입니다.</div>')
+            f'<b>{label} {now:%H:%M} KST</b>{stamp} — {detail} '
+            '아래 성능표와 다음 거래일 예측은 <b>오늘 아침 기준</b> 그대로입니다.</div>')
     section = ledger_section_html(review, spec["ensemble"], updated_note=note)
     (storage / "ledger_section.html").write_text(section, encoding="utf-8")
     # 쉬운 요약 맨 위의 '지난 예측은 맞았나'도 같은 채점으로 다시 그린다. 아침 값이 남으면 아래 절과 어긋난다.
@@ -166,7 +187,7 @@ def main():
             continue
         # 표시가 없는 옛 보고서(2026-09-13 이전)는 절만 바꾼다.
         updated = replace_section(updated, card, SCORECARD_START, SCORECARD_END) or updated
-        sha = github_pages.publish(path, updated, token, f"update: {path} 장 마감 후 갱신 ({now:%Y-%m-%d %H:%M} KST)")
+        sha = github_pages.publish(path, updated, token, f"update: {path} {label} ({now:%Y-%m-%d %H:%M} KST)")
         print(f"보고서 갱신 {path} @ {sha}")
 
 

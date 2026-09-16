@@ -76,6 +76,27 @@ class DelayedScheduleTests(unittest.TestCase):
         self.assertTrue(manual["run"])
         self.assertFalse(manual["review"], "휴장일 회고는 없다")
 
+    def test_morning_cron_arriving_at_1411_on_2026_09_16_is_an_open_scoring(self):
+        # 실제 사례: GitHub 예약 실행(run 35058514773)이 05:11 UTC = 14:11 KST에 도착했다. 커밋 제목은
+        # '장 마감 후 갱신 (2026-09-16 14:11 KST)'이었지만 게이트는 시초가 채점만 골랐다.
+        text = ledger(("2026-09-15", "direction", "scored"),
+                      ("2026-09-16", "open", "missing_actual"), ("2026-09-16", "direction", "pending"))
+        r = gate.decide(datetime(2026, 9, 16, 14, 11, tzinfo=KST), trading=True, ledger_text=text)
+        self.assertEqual((r["phase"], r["scope"], r["run"], r["score"], r["review"], r["session"]),
+                         ("session", "open", True, True, False, "2026-09-16"))
+
+    def test_auto_scope_never_picks_all_before_the_close(self):
+        start = datetime(2026, 9, 16, 9, 5, tzinfo=KST)
+        for minutes in range(0, 6 * 60 + 35):          # 09:05 ~ 15:39
+            now = start + timedelta(minutes=minutes)
+            self.assertEqual(gate.decide(now, trading=True)["scope"], "open", now)
+        self.assertEqual(gate.decide(datetime(2026, 9, 16, 15, 40, tzinfo=KST), trading=True)["scope"], "all")
+
+    def test_explicit_all_before_the_close_is_logged_as_an_intraday_rescore(self):
+        r = gate.decide(at(16, 14, 11), event="workflow_dispatch", requested="all", trading=True)
+        self.assertIn("장중 재채점", r["reason"])
+        self.assertNotIn("종가 채점", r["reason"])
+
     def test_explicit_scope_is_respected_but_review_waits_for_the_close(self):
         r = gate.decide(at(10, 14, 10), event="workflow_dispatch", requested="all", trading=True)
         self.assertEqual((r["scope"], r["review"]), ("all", False))

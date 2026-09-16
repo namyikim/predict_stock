@@ -106,7 +106,9 @@ def decide(now, event="schedule", requested="auto", trading=None, ledger_text=No
     review = review_due and not (scheduled and review_published)
     result.update(run=score or review, score=score, review=review)
     if score or review:
-        result["reason"] = f"{session} " + "·".join((["종가 채점"] if score else []) + (["회고"] if review else []))
+        # auto 는 장중에 all을 고르지 않는다. 수동으로 all을 고르면 오늘 봉이 빠져 지난 거래일까지만 채점된다.
+        scoring = "종가 채점" if review_due else "장중 재채점(오늘 종가 미확정)"
+        result["reason"] = f"{session} " + "·".join(([scoring] if score else []) + (["회고"] if review else []))
     else:
         result["reason"] = f"{session} 마감 채점·회고가 이미 발행됨"
     return result

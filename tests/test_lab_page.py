@@ -4,6 +4,7 @@
 이 페이지의 위험은 '검증 안 된 수익 곡선을 결론처럼 읽는 것'이다. 그래서 백테스트를 쓰지 않고
 원장의 사전 예측만 쓰는지, 비용을 끌 수 없는지, 보유 전략과 나란히 보여 주는지를 테스트로 고정한다.
 """
+import json
 import re
 import subprocess
 import unittest
@@ -164,8 +165,46 @@ class AiDailyForecastTabTests(PageSource):
         self.assertIn('url.indexOf("https://") === 0', self.script)
         self.assertIn('rel="noopener noreferrer nofollow"', self.script)
 
-    def test_ai_data_loads_only_when_the_tab_is_opened(self):
-        self.assertIn('if (name === "ai" && !aiLoaded) loadAiForecasts();', self.script)
+    def test_reopening_ai_tab_fetches_fresh_data(self):
+        # 예측이 없을 때 탭을 먼저 열어도, 나중에 다시 열면 새 원장을 받아야 한다.
+        harness = f"""
+const listeners = {{}};
+const elements = {{}};
+function element(id) {{
+  if (!elements[id]) elements[id] = {{
+    value: id === "target" ? "samsung" : "",
+    className: "", hidden: false, innerHTML: "", textContent: "",
+    addEventListener: function (event, handler) {{
+      if (event === "click") listeners[id] = handler;
+    }}
+  }};
+  return elements[id];
+}}
+global.document = {{ getElementById: element }};
+let aiFetches = 0;
+global.fetch = function (url) {{
+  if (String(url).includes("ai_daily_forecast/index.json")) aiFetches += 1;
+  return Promise.resolve({{
+    ok: true,
+    text: function () {{ return Promise.resolve(""); }},
+    json: function () {{ return Promise.resolve({{records: [], summary: {{}}}}); }}
+  }});
+}};
+eval({json.dumps(self.script)});
+async function settle() {{
+  await Promise.resolve(); await Promise.resolve(); await Promise.resolve();
+}}
+(async function () {{
+  listeners["tab-ai"](); await settle();
+  listeners["tab-ai"](); await settle();
+  if (aiFetches !== 2) {{
+    console.error("expected 2 AI fetches, got " + aiFetches);
+    process.exit(1);
+  }}
+}})();
+"""
+        done = subprocess.run(["node"], input=harness, capture_output=True, text=True)
+        self.assertEqual(done.returncode, 0, done.stderr)
 
 class AttributionRecordingTests(unittest.TestCase):
     """기여도는 대표 모델과 같은 특징 집합에서 뽑아야 한다."""

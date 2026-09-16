@@ -282,7 +282,33 @@ def verdict_html(items):
             '위치와 최근 석 달 방향을 정해진 규칙으로 나눈 것이며 예측이 아닙니다.</div></div>')
 
 
-def summary_html(fx, us_jp, us_market, now):
+def page_digest_html(insights):
+    """판정 아래 '한 문단 요약' — 그림마다 짧은 구절 하나를 이어 한 문장, 원화 함의를 세어 한 문장.
+
+    insights: [{"short", "won"}] — short 는 그림의 insight 함수가 자료로 만든 짧은 구절(끝에 마침표 없음),
+    won 은 +1(원화 강세 쪽)·−1(약세 쪽)·0(방향 없음)·None(원화와 무관). 그림이 바뀌면 문장도 바뀐다. 예측이 아니다.
+    처음에는 그림마다 한 줄씩 네 항목으로 냈는데 거추장스럽다는 지적(2026-09-16)에 두세 문장으로 줄였다.
+    """
+    insights = [it for it in (insights or []) if it and it.get("short")]
+    if not insights:
+        return ""
+    now = "지금은 " + ", ".join(escape(it["short"].rstrip(".")) for it in insights) + "."
+    signed = [it["won"] for it in insights if it.get("won") is not None]
+    up, down = sum(w > 0 for w in signed), sum(w < 0 for w in signed)
+    if up > down:
+        lean = f"원화 강세 쪽입니다(우호적 {up}개·부담 {down}개)"
+    elif down > up:
+        lean = f"원화 약세 쪽입니다(부담 {down}개·우호적 {up}개)"
+    else:
+        lean = f"뚜렷한 한 방향이 아닙니다(우호적 {up}개·부담 {down}개)"
+    closing = f" 종합하면 자료가 가리키는 쪽은 {lean}." if signed else ""
+    return ('<div style="background:#fff;border:1px solid #cedff0;border-radius:6px;padding:12px 14px;margin:10px 0 0;'
+            'font-size:13px;line-height:1.75">'
+            '<b>한 문단 요약</b> <span style="color:#7a8797;font-size:11px">자료가 바뀌면 문장도 바뀝니다</span><br>'
+            f'{now}{closing} 정해진 규칙으로 읽은 방향이며 예측이 아닙니다.</div>')
+
+
+def summary_html(fx, us_jp, us_market, now, insights=None):
     items = build_items(fx, us_jp, us_market, now)
     if not items:
         return ""
@@ -310,7 +336,7 @@ def summary_html(fx, us_jp, us_market, now):
         '<h3 style="margin:0 0 6px;font-size:19px">한눈에 보는 쉬운 요약</h3>'
         f'<div style="font-size:12px;color:#586575">자료 기준 {escape(basis)} · 아래 그림의 최근값을 정해진 규칙으로 '
         '읽은 것입니다. 예측이나 매매 판단이 아닙니다.</div>'
-        + verdict_html(items) +
+        + verdict_html(items) + page_digest_html(insights) +
         '<div style="font-size:11px;color:#7a8797;margin-top:10px">위치 = 최근 12개월 범위 안에서 어디인가 · '
         '방향 = 최근 3개월 변화 · 해석은 흔히 쓰이는 읽는 법이지 지금의 인과 주장이 아닙니다.</div>'
         '<div style="font-size:13px;font-weight:700;margin-top:12px">지표별로 보면</div>'

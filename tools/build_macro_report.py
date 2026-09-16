@@ -242,20 +242,25 @@ def _commentary_box(facts, view, original_notes, basis, reading):
             '</div>')
 
 
-def fx_pair_commentary(frame, start="2009-01-01", recent_months=36, cross_months=60):
-    """원/달러·위안/달러 그림의 해석.
+FX_PAIR_READING = ('읽는 법: 이 그림에서 선이 내려가면 그 통화가 달러보다 강해진 것입니다(위안/달러가 내려가면 위안화 강세, '
+                   '원/달러가 내려가면 원화 강세). 위안화는 관리변동환율이라 움직임 자체가 작습니다.')
+
+
+def fx_pair_insight(frame, start="2009-01-01", recent_months=36, cross_months=60):
+    """원/달러·위안/달러 그림의 해석 재료. 없으면 None.
 
     판단 틀(2026-09 코멘트): 중국이 최대 수출 상대국이라 원화와 위안화는 같이 움직인다. 미·중 경상수지
     불균형이 줄려면 달러 약세·위안 강세여야 하고, 위안화가 강해지면 원화도 강해질 수 있다.
     이 틀을 지금의 동행 강도·위안화 12개월 방향·원/위안 교차환율 위치에 적용한다.
+    반환: {"facts", "view", "basis", "summary"(한 문장), "won"(원화 함의 +1 강세·−1 약세·0 없음)}.
     """
     if frame is None or len(frame) == 0 or "usdkrw" not in frame or "cny" not in frame:
-        return ""
+        return None
     data = frame[["usdkrw", "cny"]]
     data = data[data.index >= pd.Timestamp(start)].dropna()
     data = data[(data > 0).all(axis=1)]
     if len(data) < recent_months + 1:
-        return ""
+        return None
     change = np.log(data).diff().dropna()
     corr_all = float(change["usdkrw"].corr(change["cny"]))
     recent = change.iloc[-recent_months:]
@@ -299,10 +304,28 @@ def fx_pair_commentary(frame, start="2009-01-01", recent_months=36, cross_months
         view.append("원화가 위안화보다 평소보다 약한 상태라, 동행 관계로 보면 원화가 따라잡을(강세) 여지가 있습니다.")
     elif z is not None and z < -1:
         view.append("원화가 위안화보다 평소보다 강한 상태라, 원화의 추가 강세 여지는 상대적으로 작습니다.")
-    return _commentary_box(
-        facts, view, FX_PAIR_EXPERT_NOTES, data.index[-1],
-        '읽는 법: 이 그림에서 선이 내려가면 그 통화가 달러보다 강해진 것입니다(위안/달러가 내려가면 위안화 강세, '
-        '원/달러가 내려가면 원화 강세). 위안화는 관리변동환율이라 움직임 자체가 작습니다.')
+    # 페이지 맨 위 요약에 올릴 한 문장과 원화 함의
+    if not together:
+        summary, won = "원화와 위안화의 동행이 약해져 위안화 흐름만으로 원화를 읽기는 어렵습니다.", 0
+        short = "원화와 위안화의 동행이 약해 위안화로 원화를 읽기 어렵고"
+    elif cny_12 is not None and cny_12 <= -.01:
+        summary, won = (f"위안화가 최근 1년 {abs(cny_12):.1%} 올랐고 원화는 위안화를 따라 움직이는 편이라, "
+                        "원화도 강세 쪽으로 끌리는 국면입니다."), 1
+        short = f"위안화가 1년간 {abs(cny_12):.1%} 올라 원화도 강세 쪽으로 끌리고"
+    elif cny_12 is not None and cny_12 >= .01:
+        summary, won = (f"위안화가 최근 1년 {cny_12:.1%} 떨어졌고 원화는 위안화를 따라 움직이는 편이라, "
+                        "원화에도 약세 압력이 있는 국면입니다."), -1
+        short = f"위안화가 1년간 {cny_12:.1%} 내려 원화에도 약세 압력이 있고"
+    else:
+        summary, won = "위안화가 최근 1년 뚜렷한 방향이 없어 위안화 쪽에서 오는 원화 방향성은 약합니다.", 0
+        short = "위안화는 뚜렷한 방향이 없고"
+    return {"facts": facts, "view": view, "basis": data.index[-1], "summary": summary, "short": short, "won": won}
+
+
+def fx_pair_commentary(frame, start="2009-01-01"):
+    insight = fx_pair_insight(frame, start)
+    return _commentary_box(insight["facts"], insight["view"], FX_PAIR_EXPERT_NOTES, insight["basis"],
+                           FX_PAIR_READING) if insight else ""
 
 
 def fx_overlay_chart(frame, start="2009-01-01"):
@@ -312,8 +335,12 @@ def fx_overlay_chart(frame, start="2009-01-01"):
     return chart + fx_pair_commentary(frame, start) if chart else ""
 
 
-def real_rate_commentary(frame, info=None, start="2001-01-01", stale_months=3):
-    """원/달러·한·미 실질금리차 그림의 해석.
+REAL_RATE_READING = ('읽는 법: 이 그림에서 주황 선(실질금리차)이 올라가면 한국의 실질금리가 미국보다 상대적으로 높아진 것이고, '
+                     '파랑 선(원/달러)이 내려가면 원화 강세입니다.')
+
+
+def real_rate_insight(frame, info=None, start="2001-01-01", stale_months=3):
+    """원/달러·한·미 실질금리차 그림의 해석 재료. 없으면 None.
 
     판단 틀(2026-09 코멘트): 원/달러에는 명목보다 실질금리 차이가 더 영향을 준다. 명목금리가 미국이 높아도
     한국 물가상승률이 더 낮으면 실질금리는 한국이 높고, 그러면 원화 가치가 오를 수 있다.
@@ -321,12 +348,12 @@ def real_rate_commentary(frame, info=None, start="2001-01-01", stale_months=3):
     """
     columns = ["usdkrw", "rate_gap", "real_rate_gap"]
     if frame is None or len(frame) == 0 or any(name not in frame for name in columns):
-        return ""
+        return None
     data = frame[frame.index >= pd.Timestamp(start)]
     both = data[columns].dropna()
     both = both[both["usdkrw"] > 0]
     if len(both) < 36:
-        return ""
+        return None
     fx_change = np.log(both["usdkrw"]).diff()
     corr_real = float(fx_change.corr(both["real_rate_gap"].diff()))
     corr_nom = float(fx_change.corr(both["rate_gap"].diff()))
@@ -386,10 +413,25 @@ def real_rate_commentary(frame, info=None, start="2001-01-01", stale_months=3):
     if real_12 is not None and abs(real_12) >= .3:
         view.append(f'최근 1년 실질금리차가 {"한국" if real_12 > 0 else "미국"} 쪽으로 {abs(real_12):.2f}%p 움직여 '
                     f'원화에 {"우호적인" if real_12 > 0 else "불리한"} 방향입니다.')
-    return _commentary_box(
-        facts, view, REAL_RATE_EXPERT_NOTES, fx_last,
-        '읽는 법: 이 그림에서 주황 선(실질금리차)이 올라가면 한국의 실질금리가 미국보다 상대적으로 높아진 것이고, '
-        '파랑 선(원/달러)이 내려가면 원화 강세입니다.')
+    if stale:
+        nominal = f"(명목은 미국이 {abs(gap):.2f}%p 높음)" if gap is not None and gap < 0 else ""
+        summary, won = ("최신 물가 자료가 없어 지금 어느 나라의 실질금리가 더 높은지는 판단하지 못합니다"
+                        + (f"(명목금리는 미국이 {abs(gap):.2f}%p 높음)." if gap is not None and gap < 0 else "."), 0)
+        short = f"실질금리 우위는 물가 자료가 끊겨 판단 보류{nominal}이며"
+    elif real_value > 0:
+        summary, won = (f"물가를 뺀 실질금리는 한국이 {real_value:.2f}%p 높아, 실질 기준으로는 원화 가치가 오를 수 "
+                        "있는 조건입니다."), 1
+        short = f"실질금리는 한국이 {real_value:.2f}%p 높아 원화에 우호적이며"
+    else:
+        summary, won = f"물가를 빼도 미국의 실질금리가 {abs(real_value):.2f}%p 높아, 금리 면에서는 원화에 부담입니다.", -1
+        short = f"실질금리는 미국이 {abs(real_value):.2f}%p 높아 원화에 부담이며"
+    return {"facts": facts, "view": view, "basis": fx_last, "summary": summary, "short": short, "won": won}
+
+
+def real_rate_commentary(frame, info=None, start="2001-01-01"):
+    insight = real_rate_insight(frame, info, start)
+    return _commentary_box(insight["facts"], insight["view"], REAL_RATE_EXPERT_NOTES, insight["basis"],
+                           REAL_RATE_READING) if insight else ""
 
 
 def real_rate_chart(frame, start="2001-01-01", info=None):
@@ -403,20 +445,24 @@ def real_rate_chart(frame, start="2001-01-01", info=None):
     return chart + real_rate_commentary(frame, info, start) if chart else ""
 
 
-def us_jp_commentary(frame, fx=None, start="1989-01-01", fit_months=120):
-    """미·일 금리차·엔/달러 그림의 해석.
+US_JP_READING = ('읽는 법: 이 그림에서 주황 선(미·일 금리차)이 내려가면 달러를 들고 있을 때의 금리 이점이 줄어든 것이고, '
+                 '파랑 선(엔/달러)이 내려가면 엔화 강세입니다.')
+
+
+def us_jp_insight(frame, fx=None, start="1989-01-01", fit_months=120):
+    """미·일 금리차·엔/달러 그림의 해석 재료. 없으면 None.
 
     판단 틀(2026-09 코멘트): 엔/달러를 결정하는 가장 중요한 요소는 미·일 10년물 금리차다. 금리차가 줄면 엔화
     가치가 오를 수 있고, 금리차에 비해 엔화가 약하면 저평가다. 엔화가 오르면 원화도 오를 수 있다.
     이 틀을 금리차의 방향, '금리차에 맞는 엔/달러'(최근 10년 수준 관계, 참고치), 원화와의 동행에 적용한다.
     """
     if frame is None or len(frame) == 0 or "usdjpy" not in frame or "rate_gap" not in frame:
-        return ""
+        return None
     data = frame[["usdjpy", "rate_gap"]]
     data = data[data.index >= pd.Timestamp(start)].dropna()
     data = data[data["usdjpy"] > 0]
     if len(data) < 48:
-        return ""
+        return None
     corr = float(np.log(data["usdjpy"]).diff().corr(data["rate_gap"].diff()))
     last = data.index[-1]
     gap, yen = float(data["rate_gap"].iloc[-1]), float(data["usdjpy"].iloc[-1])
@@ -475,14 +521,64 @@ def us_jp_commentary(frame, fx=None, start="1989-01-01", fit_months=120):
             text += (" 원화도 엔화와 같은 방향으로 움직이는 경향이 있어 원화 가치도 오를 수 있습니다." if won_corr >= .3
                      else " 다만 원화와 엔화의 동행이 약해, 원화까지 함께 오른다고 보기는 어렵습니다.")
         view.append(text)
+        follows = won_corr is not None and won_corr >= .3
+        summary = (f"미·일 금리차가 줄고 엔화는 금리차로 설명되는 수준보다 {off:.0%} 약해, 엔화 가치가 오를 여지가 있습니다"
+                   + (" — 원화도 함께 강해질 수 있습니다." if follows else " — 다만 원화가 따라간다고 보기는 어렵습니다."))
+        short = ("미·일 금리차 축소로 엔화가 오를 여지가 있어 원화도 따라 강해질 수 있고" if follows
+                 else "미·일 금리차 축소로 엔화가 오를 여지가 있지만 원화가 따라간다고 보기는 어렵고")
+        won = 1 if follows else 0
     elif widening and off is not None and off < -.05:
         view.append("금리차 확대와 고평가가 겹쳐 엔화 가치가 떨어질 여지가 있습니다.")
+        follows = won_corr is not None and won_corr >= .3
+        summary = "미·일 금리차가 벌어지고 엔화는 고평가 상태라 엔화 가치가 떨어질 여지가 있습니다"
+        summary += " — 원화에도 약세 압력입니다." if follows else "."
+        short = ("미·일 금리차 확대로 엔화가 약해질 여지가 있어 원화에도 약세 압력이 있고" if follows
+                 else "미·일 금리차 확대로 엔화가 약해질 여지가 있고")
+        won = -1 if follows else 0
     else:
         view.append("금리차와 엔화 가치가 한 방향을 가리키지 않아, 엔화 방향에 대한 판단은 보류합니다.")
-    return _commentary_box(
-        facts, view, US_JP_EXPERT_NOTES, last,
-        '읽는 법: 이 그림에서 주황 선(미·일 금리차)이 내려가면 달러를 들고 있을 때의 금리 이점이 줄어든 것이고, '
-        '파랑 선(엔/달러)이 내려가면 엔화 강세입니다.')
+        summary, won = "미·일 금리차와 엔화 가치가 한 방향을 가리키지 않아 엔화 방향은 판단 보류입니다.", 0
+        short = "엔화는 금리차와 가치가 엇갈려 판단 보류이고"
+    return {"facts": facts, "view": view, "basis": last, "summary": summary, "short": short, "won": won}
+
+
+def us_jp_commentary(frame, fx=None, start="1989-01-01"):
+    insight = us_jp_insight(frame, fx, start)
+    return _commentary_box(insight["facts"], insight["view"], US_JP_EXPERT_NOTES, insight["basis"],
+                           US_JP_READING) if insight else ""
+
+
+def saving_insight(frame):
+    """총저축률·투자율·경상수지 그림의 한 문장. 자료가 없으면 None.
+
+    저축 − 투자 ≈ 경상수지(회계상 항등식). 흑자가 크면 달러가 들어오는 구조라 원화에 우호적인 배경이지만
+    연간 자료라 느리게 움직인다.
+    """
+    columns = ["saving_rate", "investment_rate", "current_account"]
+    if frame is None or len(frame) == 0 or any(name not in frame for name in columns):
+        return None
+    data = frame[columns].dropna()
+    if data.empty:
+        return None
+    year, row = int(data.index[-1]), data.iloc[-1]
+    gap = float(row["saving_rate"] - row["investment_rate"])
+    ca = float(row["current_account"])
+    trend = ""
+    if len(data) >= 2:
+        prior = float(data["current_account"].iloc[-2])
+        trend = f" 전년({int(data.index[-2])}년 {prior:,.0f}억 달러)보다 {'늘었습니다' if ca > prior else '줄었습니다'}."
+    if ca >= 0:
+        summary = (f"{year}년 총저축률 {row['saving_rate']:.1f}%가 투자율 {row['investment_rate']:.1f}%보다 {gap:+.1f}%p "
+                   f"높아 경상수지 흑자 {ca:,.0f}억 달러가 나는 구조입니다.{trend} 흑자는 달러가 들어오는 배경이라 "
+                   "원화에 우호적이지만 연간 자료라 느리게 움직입니다.")
+        short = f"{year}년 경상수지는 저축이 투자보다 {gap:.1f}%p 많아 {ca:,.0f}억 달러 흑자로 원화에 우호적입니다"
+        won = 1
+    else:
+        summary = (f"{year}년 투자율 {row['investment_rate']:.1f}%가 저축률 {row['saving_rate']:.1f}%보다 높아 경상수지 적자 "
+                   f"{abs(ca):,.0f}억 달러가 나는 구조입니다.{trend} 적자는 달러가 나가는 배경이라 원화에 부담입니다.")
+        short = f"{year}년 경상수지는 투자가 저축보다 {abs(gap):.1f}%p 많아 {abs(ca):,.0f}억 달러 적자로 원화에 부담입니다"
+        won = -1
+    return {"summary": summary, "short": short, "won": won}
 
 
 def us_jp_chart(frame, start="1980-01-01", fx=None):
@@ -726,7 +822,16 @@ def build_page(now=None, fx_frame=None, fx_info=None, us_jp_frame=None, us_jp_in
                us_market_frame=None, us_market_info=None, saving_frame=None, saving_info=None):
     now = now or datetime.now(KST)
     from macro_summary import summary_html
-    body = summary_html(fx_frame, us_jp_frame, us_market_frame, now)
+    # 판정 아래 '이 페이지를 한 문단으로': 그림마다 자료로 다시 쓴 결론 한 문장(2026-09-16 요청).
+    insights = []
+    for title, insight in (("원/달러와 위안/달러", fx_pair_insight(fx_frame)),
+                           ("원/달러와 한·미 실질금리차", real_rate_insight(fx_frame, fx_info)),
+                           ("미·일 금리차와 엔/달러", us_jp_insight(us_jp_frame, fx=fx_frame)),
+                           ("총저축률·투자율과 경상수지", saving_insight(saving_frame))):
+        if insight:
+            insights.append({"title": title, "short": insight.get("short") or insight["summary"],
+                             "summary": insight["summary"], "won": insight.get("won")})
+    body = summary_html(fx_frame, us_jp_frame, us_market_frame, now, insights=insights)
     if fx_frame is not None:
         body += fx_decomposition_section(fx_frame, fx_info)
         body += fx_overlay_chart(fx_frame)

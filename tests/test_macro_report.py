@@ -73,6 +73,32 @@ class PageTests(unittest.TestCase):
         self.assertEqual(strip(committed), strip(generated),
                          "docs/macro/index.html 을 python tools/build_macro_report.py --write --no-fetch 로 다시 만드세요")
 
+    def test_published_real_rate_chart_precedes_us_market_chart(self):
+        """요청한 두 선이 빈 안내로 대체되지 않고 미국 금융시장 그림 바로 위에 있어야 한다."""
+        html = (ROOT / "docs" / "macro" / "index.html").read_text(encoding="utf-8")
+        real_rate = "원/달러와 한·미 실질금리차"
+        us_market = "미국 신용위험·국채금리와 나스닥"
+        self.assertIn(real_rate, html)
+        self.assertIn(us_market, html)
+        self.assertLess(html.index(real_rate), html.index(us_market))
+        self.assertNotIn("한·미 실질금리차를 만들지 못했습니다", html)
+
+    def test_committed_fx_cache_contains_real_rate_inputs(self):
+        """발행본을 오프라인에서도 재현할 수 있게 계산 입력과 결과를 함께 보관한다."""
+        import pandas as pd
+        frame = pd.read_csv(ROOT / "macro_history" / "fx_inputs.csv")
+        required = {"usdkrw", "kr10y", "us10y", "real_rate_gap"}
+        self.assertTrue(required.issubset(frame.columns), required - set(frame.columns))
+        self.assertGreaterEqual(frame["real_rate_gap"].notna().sum(), 24)
+
+    def test_macro_workflow_rebuilds_after_collector_changes(self):
+        """수집 코드를 고친 push 뒤 수동 실행을 잊어도 비밀키가 있는 Actions가 발행한다."""
+        workflow = (ROOT / ".github" / "workflows" / "macro-report.yml").read_text(encoding="utf-8")
+        self.assertIn("  push:\n", workflow)
+        for path in ("tools/build_macro_report.py", "data_sources/fx_inputs.py",
+                     "data_sources/ecos.py", "data_sources/fred.py"):
+            self.assertIn(f'      - "{path}"', workflow)
+
 
 class LandingTests(unittest.TestCase):
     def test_landing_links_to_the_macro_page_after_metals(self):

@@ -65,10 +65,12 @@ class PageTests(unittest.TestCase):
         frame, info = macro.load_fx(fetch=False)
         us_jp, us_jp_info = macro.load_us_jp(fetch=False)
         us_market, us_market_info = macro.load_us_market(fetch=False)
+        saving, saving_info = macro.load_saving_investment(fetch=False)
         generated = macro.build_page(datetime(2026, 9, 15, 9, 0, tzinfo=timezone(timedelta(hours=9))),
                                      fx_frame=frame, fx_info=info,
                                      us_jp_frame=us_jp, us_jp_info=us_jp_info,
-                                     us_market_frame=us_market, us_market_info=us_market_info)
+                                     us_market_frame=us_market, us_market_info=us_market_info,
+                                     saving_frame=saving, saving_info=saving_info)
         committed = (ROOT / "docs" / "macro" / "index.html").read_text(encoding="utf-8")
         strip = lambda text: re.sub(r"\d{4}-\d{2}-\d{2} \d{2}:\d{2}", "", text)
         self.assertEqual(strip(committed), strip(generated),

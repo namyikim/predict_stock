@@ -156,6 +156,72 @@ def search_ecos_tables(key, keyword):
 
 
 
+# ---------------------------------------------------------------------------
+# 총저축률·국내총투자율·경상수지(연간) — 거시 경제 페이지의 그림 하나(2026-09-16)
+# ---------------------------------------------------------------------------
+# 2.1.1.1 주요지표(연간지표): 총저축률(80101)·국내총투자율(8010200). 둘 다 국민총처분가능소득 대비 %.
+# 2.5.1.1 국제수지: 경상수지(000000) 연간, 백만 달러. 코드는 2026-09-16 ECOS 에서 확인했다.
+SAVING_STAT = os.environ.get('ECOS_SAVING_STAT_CODE', '200Y101')
+SAVING_ITEM = os.environ.get('ECOS_SAVING_ITEM_CODE', '80101')
+INVESTMENT_ITEM = os.environ.get('ECOS_INVESTMENT_ITEM_CODE', '8010200')
+SAVING_INVESTMENT_START = 1990
+SAVING_INVESTMENT_COLUMNS = ['saving_rate', 'investment_rate', 'current_account']
+
+
+def fetch_ecos_annual(stat_code, item_code, start_year, end_year, key):
+    """연간 계열 → Series(연도 → 값)."""
+    payload = _ecos_request(key, f'StatisticSearch/{{key}}/json/kr/1/1000/{stat_code}/A/'
+                                 f'{int(start_year)}/{int(end_year)}/{item_code}')
+    rows = (payload.get('StatisticSearch') or {}).get('row') or []
+    if not rows:
+        raise ValueError(f'ECOS {stat_code}/{item_code} 연간 응답이 비어 있습니다.')
+    values = {int(r['TIME']): r.get('DATA_VALUE') for r in rows}
+    return pd.to_numeric(pd.Series(values), errors='coerce').dropna().sort_index()
+
+
+def build_saving_investment(fetch=True, cache_path=None, start_year=SAVING_INVESTMENT_START,
+                            end_year=None, key=None, fetch_fn=None):
+    """(DataFrame, info). 연도 색인에 saving_rate·investment_rate(%)와 current_account(억 달러).
+
+    받은 것은 보관본과 합친다 — 새로 받은 값이 우선이다(최근 연도 잠정치가 확정치로 바뀐다).
+    조회에 실패한 계열은 보관본 값으로 그리고 그 사실을 info['failed'] 에 남긴다.
+    fetch_fn(stat, item, start_year, end_year) 를 넘기면 그것으로 받는다(시험·키 없는 수동 갱신용).
+    """
+    end_year = int(end_year or pd.Timestamp.now().year)
+    columns = SAVING_INVESTMENT_COLUMNS
+    cached = pd.DataFrame(columns=columns, dtype=float)
+    if cache_path is not None and Path(cache_path).exists():
+        cached = pd.read_csv(cache_path).set_index('year').reindex(columns=columns).astype(float)
+    info = {'source': 'cache' if len(cached) else 'none', 'failed': {}}
+    fresh = {}
+    if fetch:
+        key = key or ecos_key()
+        if fetch_fn is None and not key:
+            info['failed']['ECOS'] = 'ECOS_API_KEY가 없습니다'
+        else:
+            get = fetch_fn or (lambda stat, item, first, last: fetch_ecos_annual(stat, item, first, last, key))
+            specs = {'saving_rate': (SAVING_STAT, SAVING_ITEM, 1.0),
+                     'investment_rate': (SAVING_STAT, INVESTMENT_ITEM, 1.0),
+                     'current_account': (CA_STAT, CA_ITEM, 0.01)}      # 백만 달러 → 억 달러
+            for name, (stat, item, scale) in specs.items():
+                try:
+                    # 환산 뒤 부동소수점 꼬리(-28.041999…)가 보관본에 남지 않게 자른다.
+                    fresh[name] = (get(stat, item, start_year, end_year) * scale).round(4)
+                except Exception as exc:
+                    info['failed'][name] = f'{type(exc).__name__}: {exc}'[:160]
+    frame = cached
+    if fresh:
+        new = pd.DataFrame(fresh).reindex(columns=columns)
+        frame = new.combine_first(cached) if len(cached) else new
+        info['source'] = 'ECOS_API+cache' if info['failed'] else 'ECOS_API'
+    frame = frame.reindex(columns=columns)
+    frame.index = pd.Index([int(year) for year in frame.index], name='year')
+    frame = frame[frame.index >= int(start_year)].sort_index()
+    if len(frame):
+        info.update(first=int(frame.index.min()), last=int(frame.index.max()), rows=int(len(frame)))
+    return frame, info
+
+
 def load_nsi(storage, start, end, use_cache=False, fallback_dir=None):
     """(DataFrame(date,value), info).
 

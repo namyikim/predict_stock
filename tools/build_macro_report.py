@@ -271,6 +271,127 @@ def us_market_chart(frame):
             '자료: FRED(BAMLH0A0HYM2, DGS10, NASDAQCOM).</div>')
 
 
+SAVING_COLORS = {"saving_rate": "#1a5490", "investment_rate": "#c8952a",
+                 "surplus": "#8cc39f", "deficit": "#e7a3a0"}
+
+
+def saving_investment_chart(frame, start_year=1990):
+    """총저축률·국내총투자율(꺾은선, 왼쪽 %)과 경상수지(막대, 오른쪽 억 달러)를 연도별로 겹친다.
+
+    국민계정 항등식(저축 − 투자 ≈ 경상수지)을 눈으로 보려는 그림이다. 두 선의 간격이 벌어진 해에
+    막대가 크게 나온다. 인과가 아니라 회계상 같은 것을 두 방향에서 잰 것이다.
+    두 축은 눈금 위치(격자)를 함께 쓰고, 막대에는 0 기준선을 긋는다.
+    """
+    columns = ["saving_rate", "investment_rate", "current_account"]
+    if frame is None or len(frame) == 0 or any(name not in frame for name in columns):
+        return ""
+    data = frame[columns]
+    data = data[data.index >= start_year].dropna(how="all")
+    if len(data.dropna(subset=["saving_rate", "investment_rate"])) < 5:
+        return ""
+    years = [int(year) for year in data.index]
+    W, H, L, R, T, B = 900, 410, 58, 84, 62, 40
+    PH = H - T - B
+    band = (W - L - R) / len(years)
+    xs = {year: L + band * (i + .5) for i, year in enumerate(years)}
+
+    rates = pd.concat([data["saving_rate"], data["investment_rate"]]).dropna()
+    pad = (float(rates.max()) - float(rates.min())) * .08 or 1.0
+    rlo, rhi = float(np.floor(rates.min() - pad)), float(np.ceil(rates.max() + pad))
+    ca = data["current_account"].dropna()
+    clo = min(0.0, float(ca.min())) if len(ca) else -1.0
+    chi = max(0.0, float(ca.max())) if len(ca) else 1.0
+    cpad = (chi - clo) * .08 or 1.0
+    clo, chi = clo - cpad, chi + cpad
+
+    def y_rate(value):
+        return T + PH * (1 - (value - rlo) / (rhi - rlo))
+
+    def y_ca(value):
+        return T + PH * (1 - (value - clo) / (chi - clo))
+
+    svg = [f'<svg viewBox="0 0 {W} {H}" width="100%" style="max-width:{W}px;'
+           'font-family:-apple-system,Malgun Gothic,sans-serif;font-size:11px">']
+    for frac in (0.0, .25, .5, .75, 1.0):
+        rate, amount = rlo + (rhi - rlo) * frac, clo + (chi - clo) * frac
+        y = y_rate(rate)
+        svg.append(f'<line x1="{L}" x2="{W - R}" y1="{y:.1f}" y2="{y:.1f}" stroke="#eee"/>')
+        svg.append(f'<text x="{L - 8}" y="{y + 4:.1f}" text-anchor="end" fill="#48525c">{rate:.0f}%</text>')
+        svg.append(f'<text x="{W - R + 8}" y="{y + 4:.1f}" fill="#4f7a5c">{amount:,.0f}</text>')
+    zero = y_ca(0.0)
+    svg.append(f'<line x1="{L}" x2="{W - R}" y1="{zero:.1f}" y2="{zero:.1f}" stroke="#9aa3ab" '
+               'stroke-dasharray="3,3"/>')
+    last = years[-1]
+    for year in years:
+        x = xs[year]
+        svg.append(f'<line x1="{x:.1f}" x2="{x:.1f}" y1="{T + PH}" y2="{T + PH + 4}" stroke="#c9ced6"/>')
+        # 5년마다 + 처음·마지막 해. 마지막 해 바로 앞의 5년 눈금은 글자가 겹치므로 뺀다.
+        if year in (years[0], last) or (year % 5 == 0 and last - year > 1):
+            svg.append(f'<text x="{x:.1f}" y="{H - 14}" text-anchor="middle" fill="#8a9199">{year}</text>')
+        value = data.at[year, "current_account"]
+        if pd.isna(value):
+            continue
+        top, bottom = sorted((y_ca(float(value)), zero))
+        color = SAVING_COLORS["surplus" if value >= 0 else "deficit"]
+        svg.append(f'<rect x="{x - band * .32:.1f}" y="{top:.1f}" width="{band * .64:.1f}" '
+                   f'height="{max(bottom - top, .6):.1f}" fill="{color}">'
+                   f'<title>{year}년 경상수지 {value:,.0f}억 달러</title></rect>')
+    for name, label in (("saving_rate", "총저축률"), ("investment_rate", "국내총투자율")):
+        segments, current = [], []
+        for year in years:
+            value = data.at[year, name]
+            if pd.isna(value):
+                if current:
+                    segments.append(current)
+                    current = []
+                continue
+            current.append((xs[year], y_rate(float(value)), year, float(value)))
+        if current:
+            segments.append(current)
+        color = SAVING_COLORS[name]
+        for segment in segments:
+            points = " ".join(f"{x:.1f},{y:.1f}" for x, y, _, _ in segment)
+            svg.append(f'<polyline fill="none" stroke="{color}" stroke-width="2" points="{points}"/>')
+            svg.extend(f'<circle cx="{x:.1f}" cy="{y:.1f}" r="2.2" fill="{color}">'
+                       f'<title>{year}년 {label} {value:.1f}%</title></circle>' for x, y, year, value in segment)
+    # 범례: 윗줄은 선, 아랫줄은 막대와 축 설명
+    svg.append(f'<line x1="{L}" x2="{L + 22}" y1="14" y2="14" stroke="{SAVING_COLORS["saving_rate"]}" stroke-width="2.5"/>'
+               f'<text x="{L + 28}" y="18" fill="#1a1a1a" font-weight="600">총저축률</text>'
+               f'<line x1="{L + 100}" x2="{L + 122}" y1="14" y2="14" stroke="{SAVING_COLORS["investment_rate"]}" '
+               f'stroke-width="2.5"/><text x="{L + 128}" y="18" fill="#1a1a1a" font-weight="600">국내총투자율</text>'
+               f'<text x="{L + 230}" y="18" fill="#6b7178">선: 국민총처분가능소득 대비 %(왼쪽 축)</text>')
+    svg.append(f'<rect x="{L}" y="28" width="22" height="10" fill="{SAVING_COLORS["surplus"]}"/>'
+               f'<text x="{L + 28}" y="37" fill="#1a1a1a" font-weight="600">경상수지 흑자</text>'
+               f'<rect x="{L + 110}" y="28" width="22" height="10" fill="{SAVING_COLORS["deficit"]}"/>'
+               f'<text x="{L + 138}" y="37" fill="#1a1a1a" font-weight="600">적자</text>'
+               f'<text x="{L + 230}" y="37" fill="#6b7178">막대: 억 달러(오른쪽 축) · 점선은 경상수지 0</text>')
+    svg.append("</svg>")
+
+    latest = data.loc[last]
+    facts = []
+    if pd.notna(latest["saving_rate"]) and pd.notna(latest["investment_rate"]):
+        facts.append(f'{last}년 총저축률 <b>{latest["saving_rate"]:.1f}%</b> · 국내총투자율 '
+                     f'<b>{latest["investment_rate"]:.1f}%</b> (차이 {latest["saving_rate"] - latest["investment_rate"]:+.1f}%p)')
+    if pd.notna(latest["current_account"]):
+        facts.append(f'경상수지 <b>{latest["current_account"]:,.0f}억 달러</b>')
+    both = data.dropna()
+    if len(both) >= 10:
+        corr = float((both["saving_rate"] - both["investment_rate"]).corr(both["current_account"]))
+        if np.isfinite(corr):
+            facts.append(f'저축률−투자율 차이와 경상수지의 상관 <b>{corr:+.2f}</b> ({len(both)}년)')
+    return ('<h3 style="font-size:15px;margin:24px 0 9px;padding-bottom:6px;border-bottom:1px solid #ddd">'
+            '총저축률·국내총투자율과 경상수지 '
+            f'<span style="font-weight:400;color:#8a9199;font-size:12px">&nbsp;{years[0]}년~{last}년 · 연간</span></h3>'
+            + "".join(svg) +
+            f'<div style="font-size:13px;margin-top:6px">{" · ".join(facts)}</div>'
+            '<div style="font-size:12px;color:#6b7178;margin-top:6px;line-height:1.7">'
+            '총저축률 = 총저축 ÷ 국민총처분가능소득, 국내총투자율 = 국내총투자 ÷ 국민총처분가능소득(한국은행 '
+            '국민계정 주요지표, 연간). 경상수지는 국제수지 기준 연간 합계입니다. 국민계정에서는 저축과 투자의 '
+            '차이가 대체로 경상수지와 같아지므로(회계상 항등식), 저축률이 투자율보다 높은 해에 흑자 막대가 '
+            '나옵니다. 인과가 아니라 같은 것을 두 방향에서 잰 관계입니다. 최근 연도는 잠정치라 바뀔 수 있습니다. '
+            '자료: 한국은행 ECOS(2.1.1.1 주요지표 연간지표, 2.5.1.1 국제수지).</div>')
+
+
 # 절 목록. 지표를 붙일 때 여기에 함수를 더하면 페이지 구조는 건드리지 않아도 된다.
 SECTIONS = (
     ("환율", "원/달러 결정 요인 표는 위에 있습니다. 아래는 앞으로 더할 것입니다.",
@@ -285,7 +406,7 @@ SECTIONS = (
 
 
 def build_page(now=None, fx_frame=None, fx_info=None, us_jp_frame=None, us_jp_info=None,
-               us_market_frame=None, us_market_info=None):
+               us_market_frame=None, us_market_info=None, saving_frame=None, saving_info=None):
     now = now or datetime.now(KST)
     from macro_summary import summary_html
     body = summary_html(fx_frame, us_jp_frame, us_market_frame, now)
@@ -295,6 +416,12 @@ def build_page(now=None, fx_frame=None, fx_info=None, us_jp_frame=None, us_jp_in
         body += real_rate_chart(fx_frame) or (
             '<div class="empty">한·미 실질금리차를 만들지 못했습니다 — '
             + escape(str((fx_info or {}).get("failed", {}).get("real_rate_gap", "자료 부족"))) + '</div>')
+    # 한국 그림끼리 모은다: 환율 그림 다음, 미·일·미국 그림 앞(2026-09-16 요청).
+    if saving_frame is not None and len(saving_frame):
+        body += saving_investment_chart(saving_frame)
+    elif saving_info and saving_info.get("failed"):
+        body += ('<div class="empty">총저축률·투자율·경상수지 자료를 받지 못했습니다 — '
+                 + escape("; ".join(f"{k}: {v}" for k, v in saving_info["failed"].items())) + '</div>')
     if us_jp_frame is not None:
         body += us_jp_chart(us_jp_frame)
     elif us_jp_info and us_jp_info.get("failed"):
@@ -389,6 +516,22 @@ def load_us_market(fetch=True):
     return frame, info
 
 
+SAVING_CACHE = ROOT / "macro_history" / "korea_saving_investment.csv"
+
+
+def load_saving_investment(fetch=True):
+    """총저축률·국내총투자율·경상수지(연간). 받은 것은 보관본에 누적한다."""
+    from data_sources.ecos import build_saving_investment
+    try:
+        frame, info = build_saving_investment(fetch=fetch, cache_path=SAVING_CACHE)
+    except Exception as exc:
+        return None, {"failed": {"전체": f"{type(exc).__name__}: {exc}"[:160]}}
+    if fetch and len(frame) and info.get("source", "").startswith("ECOS_API"):
+        SAVING_CACHE.parent.mkdir(parents=True, exist_ok=True)
+        frame.reset_index().to_csv(SAVING_CACHE, index=False)
+    return (frame if len(frame) else None), info
+
+
 def main():
     parser = argparse.ArgumentParser(description="거시 경제 보고서를 만든다")
     parser.add_argument("--write", action="store_true", help="docs/macro/index.html 에 저장")
@@ -416,8 +559,16 @@ def main():
         print(f"  미국 금융시장 자료: {us_market_info.get('source')} · "
               f"{us_market_info.get('first')}~{us_market_info.get('last')} "
               f"({us_market_info.get('rows')}일)", flush=True)
+    saving, saving_info = load_saving_investment(fetch=not args.no_fetch)
+    if saving_info.get("failed"):
+        for name, reason in saving_info["failed"].items():
+            print(f"  ⚠️ 저축·투자·경상수지 {name}: {reason}", flush=True)
+    if saving is not None:
+        print(f"  저축·투자·경상수지: {saving_info.get('source')} · {saving_info.get('first')}~"
+              f"{saving_info.get('last')} ({saving_info.get('rows')}년)", flush=True)
     page = build_page(fx_frame=frame, fx_info=info, us_jp_frame=us_jp, us_jp_info=us_jp_info,
-                      us_market_frame=us_market, us_market_info=us_market_info)
+                      us_market_frame=us_market, us_market_info=us_market_info,
+                      saving_frame=saving, saving_info=saving_info)
     if args.write:
         OUT.parent.mkdir(parents=True, exist_ok=True)
         OUT.write_text(page, encoding="utf-8")

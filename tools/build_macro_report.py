@@ -176,29 +176,285 @@ def dual_axis_chart(frame, left, right, left_label, right_label, title, start, n
             f'<div style="font-size:12px;color:#6b7178;margin-top:6px">{corr_text}. {escape(note)}</div>')
 
 
+# 원/달러·위안/달러 그림 아래의 전문가 코멘트(2026-09-16 사용자 제공). 외부 의견을 옮긴 것이며 이 페이지의
+# 계산이나 예측이 아니다 — 화면에도 그렇게 적는다. 내용을 바꿀 때는 여기만 고치면 된다.
+FX_PAIR_EXPERT_NOTES = (
+    "원/달러와 위안/달러는 거의 같은 방향으로 움직입니다. 우리 수출에서 중국이 차지하는 비중이 22%로 가장 큽니다.",
+    "중장기적으로도 같은 방향으로 움직일 수밖에 없습니다.",
+    "중국의 경상수지 흑자는 너무 커졌고, 미국의 경상수지 적자는 반대로 너무 커졌습니다.",
+    "이 불균형을 해소하려면 달러 가치는 떨어지고 위안화 가치는 올라야 합니다. 중국은 위안화 가치 상승을 유도할 것입니다.",
+)
+
+
+def _comove_phrase(corr):
+    return ("강하게 같이 움직였습니다" if corr >= .6 else "뚜렷하게 같이 움직였습니다" if corr >= .3 else
+            "약하게만 같이 움직였습니다" if corr >= .1 else "거의 따로 움직였습니다")
+
+
+def fx_pair_commentary(frame, start="2009-01-01", recent_months=36, cross_months=60):
+    """원/달러·위안/달러 그림의 해석. 그림을 만들 때마다 자료로 다시 계산한 문장 + 전문가 코멘트.
+
+    계산하는 것: 월간 로그변화의 상관(전체·최근 3년), 위안/달러 1% 변화에 대한 원/달러의 평균 반응(회귀 기울기),
+    최근 12개월 두 환율의 방향, 원/위안 교차환율의 최근 5년 대비 위치. 모두 과거 자료의 관계다.
+    """
+    if frame is None or len(frame) == 0 or "usdkrw" not in frame or "cny" not in frame:
+        return ""
+    data = frame[["usdkrw", "cny"]]
+    data = data[data.index >= pd.Timestamp(start)].dropna()
+    data = data[(data > 0).all(axis=1)]
+    if len(data) < recent_months + 1:
+        return ""
+    change = np.log(data).diff().dropna()
+    corr_all = float(change["usdkrw"].corr(change["cny"]))
+    recent = change.iloc[-recent_months:]
+    corr_recent = float(recent["usdkrw"].corr(recent["cny"]))
+    beta = float(np.cov(change["usdkrw"], change["cny"])[0, 1] / change["cny"].var())
+    last = data.index[-1]
+    points = [
+        f'2009년 이후 두 환율의 월간 변화는 {_comove_phrase(corr_all)}'
+        f'(상관 <b>{corr_all:+.2f}</b>, {len(change)}개월). 최근 {recent_months // 12}년은 '
+        f'{_comove_phrase(corr_recent)}(상관 <b>{corr_recent:+.2f}</b>).',
+        f'위안/달러가 1% 움직일 때 원/달러는 {"같은" if beta >= 0 else "반대"} 방향으로 평균 '
+        f'<b>{abs(beta):.1f}%</b> 따라 움직였습니다. 월간 변동폭은 원/달러가 위안/달러의 '
+        f'<b>{float(change["usdkrw"].std() / change["cny"].std()):.1f}배</b>입니다 — 위안화는 관리변동환율이라 '
+        '움직임 자체가 작습니다.',
+    ]
+    if len(data) >= 13:
+        krw_12 = float(data["usdkrw"].iloc[-1] / data["usdkrw"].iloc[-13] - 1)
+        cny_12 = float(data["cny"].iloc[-1] / data["cny"].iloc[-13] - 1)
+        if abs(krw_12) < .005 and abs(cny_12) < .005:
+            trend = "둘 다 거의 그대로입니다"
+        elif np.sign(krw_12) == np.sign(cny_12) and min(abs(krw_12), abs(cny_12)) >= .005:
+            trend = ("같은 방향으로 " + ("올랐습니다(원화·위안화 모두 약세)" if krw_12 > 0
+                                        else "내렸습니다(원화·위안화 모두 강세)"))
+        else:
+            trend = "방향이 엇갈렸습니다"
+        points.append(f'최근 12개월 원/달러 <b>{krw_12:+.1%}</b>, 위안/달러 <b>{cny_12:+.1%}</b> — {trend}.')
+    cross = (data["usdkrw"] / data["cny"]).iloc[-cross_months:]
+    if len(cross) >= 24 and float(cross.std()) > 0:
+        z = float((cross.iloc[-1] - cross.mean()) / cross.std())
+        where = ("원화가 위안화보다 평소보다 약한 편" if z > 1 else
+                 "원화가 위안화보다 평소보다 강한 편" if z < -1 else "평소 범위")
+        points.append(f'원/위안 환율(원/달러 ÷ 위안/달러)은 <b>{cross.iloc[-1]:,.1f}원</b>으로 최근 5년 평균 '
+                      f'{cross.mean():,.1f}원 대비 {z:+.1f}σ — {where}입니다.')
+    points.append('아래 코멘트의 "같은 방향으로 움직인다"는 관찰은 '
+                  + ("최근 3년 자료에서도 확인됩니다." if corr_recent >= .3 else
+                     "최근 3년에는 약해져, 따로 움직인 구간이 있습니다."))
+    return _commentary_box(
+        points, FX_PAIR_EXPERT_NOTES, last,
+        '읽는 법: 이 그림에서 선이 내려가면 그 통화가 달러보다 강해진 것입니다. 코멘트대로 위안화 가치가 오르면 '
+        '위안/달러 선이 내려가고, 두 환율의 동행이 이어진다면 원/달러 선도 함께 내려가는(원화 강세) 쪽입니다. '
+        '동행은 과거 자료의 관계이며 인과나 예측이 아닙니다. 중국 수출 비중(22%)은 코멘트의 수치이며 해마다 '
+        '다릅니다(최근 몇 년은 20% 안팎).')
+
+
+def _commentary_box(points, expert_notes, basis, reading):
+    """그림 아래 해석 상자: 자료로 다시 계산한 문장(points, HTML) + 전문가 코멘트(글자 그대로) + 읽는 법."""
+    bullets = "".join(f'<li style="margin:4px 0">{point}</li>' for point in points)
+    notes = "".join(f'<li style="margin:4px 0">{escape(note)}</li>' for note in expert_notes)
+    return ('<div style="border:1px solid #e5e5e5;border-radius:6px;padding:12px 14px;margin-top:10px;'
+            'background:#fbfcfd;font-size:13px;line-height:1.7">'
+            '<div style="font-weight:700">해석 — 자료로 본 지금 '
+            f'<span style="font-weight:400;color:#8a9199;font-size:12px">{basis:%Y-%m} 기준 · '
+            '그림을 만들 때마다 다시 계산</span></div>'
+            f'<ul style="margin:4px 0 0;padding-left:18px">{bullets}</ul>'
+            '<div style="font-weight:700;margin-top:10px">전문가 코멘트 '
+            '<span style="font-weight:400;color:#8a9199;font-size:12px">외부 의견을 옮긴 것 · '
+            '이 페이지의 계산이나 예측이 아닙니다</span></div>'
+            f'<ul style="margin:4px 0 0;padding-left:18px">{notes}</ul>'
+            f'<div style="font-size:11px;color:#8a9199;margin-top:8px">{reading}</div>'
+            '</div>')
+
+
 def fx_overlay_chart(frame, start="2009-01-01"):
-    return dual_axis_chart(frame, "usdkrw", "cny", "원/달러", "위안/달러", "원/달러와 위안/달러", start,
-                           "단위가 다르므로 축을 따로 두었고, 폭이 아니라 방향을 보는 그림입니다. "
-                           "위안은 관리변동환율이라 움직임이 작습니다.")
+    chart = dual_axis_chart(frame, "usdkrw", "cny", "원/달러", "위안/달러", "원/달러와 위안/달러", start,
+                            "단위가 다르므로 축을 따로 두었고, 폭이 아니라 방향을 보는 그림입니다. "
+                            "위안은 관리변동환율이라 움직임이 작습니다.")
+    return chart + fx_pair_commentary(frame, start) if chart else ""
 
 
-def real_rate_chart(frame, start="2001-01-01"):
+# 원/달러·한·미 실질금리차 그림 아래의 전문가 코멘트(2026-09-16 사용자 제공). 외부 의견이며 작성 시점 기준이다.
+REAL_RATE_EXPERT_NOTES = (
+    "금리차도 원/달러 환율에 많은 영향을 줍니다. 명목금리보다 실질금리가 원/달러 환율에 더 영향을 미칩니다.",
+    "실질금리는 10년 국채수익률에서 소비자물가 상승률을 뺀 것입니다.",
+    "명목금리는 미국이 더 높습니다. 미국 10년 국채수익률은 5%, 우리나라는 4.5% 안팎입니다.",
+    "명목금리는 미국이 높지만 우리 물가상승률이 미국보다 낮습니다. 실질금리는 우리가 더 높기 때문에 "
+    "원화 가치는 더 오를 수 있습니다.",
+)
+EXPERT_NOMINAL = {"us10y": 5.0, "kr10y": 4.5}      # 코멘트에 적힌 명목금리(작성 시점)
+
+
+def real_rate_commentary(frame, info=None, start="2001-01-01", stale_months=3):
+    """원/달러·한·미 실질금리차 그림의 해석. 그림을 만들 때마다 자료로 다시 계산한 문장 + 전문가 코멘트.
+
+    계산하는 것: 원/달러 월간 로그변화와 실질·명목 금리차 월간 변화의 상관(같은 기간), 최근 명목 10년물,
+    실질금리차 최신값과 그 자료가 끊겼는지, 지금 명목금리차에서 실질금리차 부호가 바뀌는 물가 격차.
+    코멘트의 판단('지금 실질금리는 한국이 더 높다')은 자료로 확인될 때만 맞다고 적는다.
+    """
+    columns = ["usdkrw", "rate_gap", "real_rate_gap"]
+    if frame is None or len(frame) == 0 or any(name not in frame for name in columns):
+        return ""
+    data = frame[frame.index >= pd.Timestamp(start)]
+    both = data[columns].dropna()
+    both = both[both["usdkrw"] > 0]
+    if len(both) < 36:
+        return ""
+    fx_change = np.log(both["usdkrw"]).diff()
+    corr_real = float(fx_change.corr(both["real_rate_gap"].diff()))
+    corr_nom = float(fx_change.corr(both["rate_gap"].diff()))
+    if corr_real < 0 and abs(corr_real) > abs(corr_nom) + .02:
+        # 둘 다 약하면(|상관| < 0.3) 그 사실을 먼저 말한다. '더 뚜렷하다'만 쓰면 과장으로 읽힌다.
+        verdict = (("" if abs(corr_real) >= .3 else "둘 다 약한 관계이지만 ")
+                   + "실질금리차 쪽 관계가 더 뚜렷해, 코멘트의 '실질금리가 더 영향을 준다'는 관찰과 맞는 방향입니다.")
+    elif abs(corr_real) > abs(corr_nom) + .02:
+        verdict = "실질금리차 쪽 연결이 더 크지만 방향이 예상(음)과 반대입니다."
+    elif abs(corr_nom) > abs(corr_real) + .02:
+        verdict = "이 기간 월간 변화로는 명목금리차 쪽 관계가 더 뚜렷했습니다 — 코멘트와 다른 결과입니다."
+    else:
+        verdict = "두 관계의 차이는 크지 않습니다."
+    points = [f'{both.index[0]:%Y-%m}~{both.index[-1]:%Y-%m} 월간 변화로 보면 원/달러와 실질금리차의 상관은 '
+              f'<b>{corr_real:+.2f}</b>, 같은 기간 명목금리차와는 <b>{corr_nom:+.2f}</b>입니다. 음(−)이면 한국 금리가 '
+              f'상대적으로 오를 때 원/달러가 내리는(원화 강세) 관계입니다. {verdict}']
+
+    gap = None
+    if {"kr10y", "us10y"}.issubset(data.columns):
+        nominal = data[["kr10y", "us10y"]].dropna()
+        if len(nominal):
+            kr, us = (float(v) for v in nominal.iloc[-1])
+            gap = kr - us
+            close = (abs(us - EXPERT_NOMINAL["us10y"]) <= .3 and abs(kr - EXPERT_NOMINAL["kr10y"]) <= .3)
+            points.append(f'{nominal.index[-1]:%Y-%m} 명목 10년물은 한국 <b>{kr:.2f}%</b>, 미국 <b>{us:.2f}%</b> — '
+                          f'명목금리차 <b>{gap:+.2f}%p</b>로 {"미국" if gap < 0 else "한국"}이 더 높습니다. '
+                          '코멘트의 수치(미국 5%, 한국 4.5% 안팎)와 ' + ("비슷합니다." if close else "차이가 있습니다."))
+
+    real = data["real_rate_gap"].dropna()
+    real_value, real_month = float(real.iloc[-1]), real.index[-1]
+    fx_last = data["usdkrw"].dropna().index[-1]
+    lag = (fx_last.to_period("M") - real_month.to_period("M")).n
+    text = (f'실질금리차 최신값은 <b>{real_value:+.2f}%p</b>({real_month:%Y-%m})로 '
+            f'{"한국" if real_value > 0 else "미국"}의 실질금리가 더 높았습니다.')
+    if lag > stale_months:
+        reason = ((info or {}).get("notes") or {}).get("korea_cpi")
+        text += (f' 그 뒤 {lag}개월은 한국 물가 자료가 끊겨 계산하지 못했습니다'
+                 + (f'({escape(str(reason))})' if reason else '')
+                 + ". 그래서 코멘트의 '지금 실질금리는 한국이 더 높다'는 이 페이지 자료로는 아직 확인되지 않습니다.")
+    else:
+        text += " 코멘트의 '실질금리는 한국이 더 높다'와 " + ("맞습니다." if real_value > 0 else "다릅니다.")
+    points.append(text)
+    if gap is not None:
+        if gap < 0:
+            points.append(f'지금 명목금리차가 {gap:+.2f}%p이므로, 한국 소비자물가 상승률이 미국보다 '
+                          f'<b>{abs(gap):.2f}%p 넘게 낮으면</b> 실질금리차는 한국이 높은 쪽(+)이 됩니다 — '
+                          '코멘트가 말하는 조건입니다.')
+        else:
+            points.append(f'지금 명목금리차가 {gap:+.2f}%p이므로, 한국 물가상승률이 미국보다 {gap:.2f}%p 넘게 '
+                          '높지 않으면 실질금리차도 한국이 높은 쪽(+)입니다.')
+    return _commentary_box(
+        points, REAL_RATE_EXPERT_NOTES, fx_last,
+        '읽는 법: 이 그림에서 주황 선(실질금리차)이 올라가면 한국의 실질금리가 미국보다 상대적으로 높아진 '
+        '것입니다. 코멘트대로라면 그때 파랑 선(원/달러)은 내려가는(원화 강세) 쪽입니다. 과거 자료의 관계이며 '
+        '인과나 예측이 아닙니다. 코멘트의 금리 수치는 작성 시점(2026-09) 기준입니다.')
+
+
+def real_rate_chart(frame, start="2001-01-01", info=None):
     """원/달러와 한·미 실질금리차. 실질금리차가 벌어지면 원화가 강해진다는 관계를 보려는 것이다."""
-    return dual_axis_chart(frame, "usdkrw", "real_rate_gap", "원/달러", "한·미 실질금리차(%p)",
-                           "원/달러와 한·미 실질금리차", start,
-                           "실질금리 = 10년물 명목금리 − 최근 12개월 소비자물가 상승률. 금리차 = 한국 − 미국. "
-                           "점선은 실질금리차 0. 물가상승률은 기대인플레이션의 가장 단순한 대리이며, "
-                           "다른 정의(기대치 조사·물가연동채)를 쓰면 값이 달라집니다.",
-                           left_fmt="{:,.0f}", right_fmt="{:+.1f}")
+    chart = dual_axis_chart(frame, "usdkrw", "real_rate_gap", "원/달러", "한·미 실질금리차(%p)",
+                            "원/달러와 한·미 실질금리차", start,
+                            "실질금리 = 10년물 명목금리 − 최근 12개월 소비자물가 상승률. 금리차 = 한국 − 미국. "
+                            "점선은 실질금리차 0. 물가상승률은 기대인플레이션의 가장 단순한 대리이며, "
+                            "다른 정의(기대치 조사·물가연동채)를 쓰면 값이 달라집니다.",
+                            left_fmt="{:,.0f}", right_fmt="{:+.1f}")
+    return chart + real_rate_commentary(frame, info, start) if chart else ""
 
 
-def us_jp_chart(frame, start="1980-01-01"):
+# 미·일 금리차·엔/달러 그림 아래의 전문가 코멘트(2026-09-16 사용자 제공). 외부 의견이며 작성 시점 기준이다.
+US_JP_EXPERT_NOTES = (
+    "엔화 가치가 너무 저평가되어 있습니다.",
+    "엔/달러 환율을 결정하는 가장 중요한 요소는 미국과 일본의 10년 국채수익률 차이인데, 이 차이가 많이 "
+    "축소되고 있습니다.",
+    "이런 점을 볼 때 엔화 가치가 오를 수 있고, 우리나라 원화 가치도 오를 수 있습니다.",
+)
+
+
+def us_jp_commentary(frame, fx=None, start="1989-01-01", fit_months=120):
+    """미·일 금리차·엔/달러 그림의 해석. 그림을 만들 때마다 자료로 다시 계산한 문장 + 전문가 코멘트.
+
+    계산하는 것: 금리차와 엔/달러 월간 변화의 상관, 최근 3년 고점 대비 금리차 축소 폭, 엔/달러의 12개월
+    변화와 10년 중 위치, 최근 10년 수준 관계로 본 '금리차에 맞는 엔/달러'(참고치), 원/달러와 엔/달러의 동행.
+    """
+    if frame is None or len(frame) == 0 or "usdjpy" not in frame or "rate_gap" not in frame:
+        return ""
+    data = frame[["usdjpy", "rate_gap"]]
+    data = data[data.index >= pd.Timestamp(start)].dropna()
+    data = data[data["usdjpy"] > 0]
+    if len(data) < 48:
+        return ""
+    corr = float(np.log(data["usdjpy"]).diff().corr(data["rate_gap"].diff()))
+    last = data.index[-1]
+    gap, yen = float(data["rate_gap"].iloc[-1]), float(data["usdjpy"].iloc[-1])
+    points = [f'{data.index[0]:%Y-%m}~{last:%Y-%m} 월간 변화로 보면 미·일 금리차와 엔/달러의 상관은 '
+              f'<b>{corr:+.2f}</b>입니다. 양(+)이면 금리차가 벌어질 때 엔/달러가 오르는(엔화 약세) 관계이고, '
+              f'두 선은 {_comove_phrase(corr)}.']
+
+    recent = data["rate_gap"].iloc[-36:]
+    peak, peak_month = float(recent.max()), recent.idxmax()
+    change_12 = gap - float(data["rate_gap"].iloc[-13])
+    shrinking = change_12 <= -.15 or (peak - gap) >= .5
+    points.append(f'금리차는 {last:%Y-%m} <b>{gap:+.2f}%p</b>로 최근 3년 고점 {peak:+.2f}%p({peak_month:%Y-%m})보다 '
+                  f'{peak - gap:.2f}%p 낮고, 최근 12개월 {change_12:+.2f}%p 움직였습니다 — '
+                  + ("코멘트의 '금리차가 많이 축소되고 있다'와 맞습니다." if shrinking else
+                     "최근에는 금리차가 줄지 않아 코멘트의 '축소되고 있다'와 맞지 않습니다."))
+
+    yen_12 = yen / float(data["usdjpy"].iloc[-13]) - 1
+    rank = float((data["usdjpy"].iloc[-120:] < yen).mean())
+    text = (f'엔/달러는 <b>{yen:,.1f}엔</b>으로 최근 12개월 {yen_12:+.1%}, 최근 10년 중 {rank:.0%} 지점입니다'
+            '(높을수록 엔화 약세).')
+    if shrinking and yen_12 > .02:
+        text += ' 금리차가 줄었는데도 엔/달러는 올라(엔화 약세) 두 선이 벌어져 있습니다.'
+    points.append(text)
+
+    fit = data.iloc[-fit_months:]
+    if len(fit) >= 60 and float(fit["rate_gap"].std()) > 0:
+        slope, intercept = np.polyfit(fit["rate_gap"], np.log(fit["usdjpy"]), 1)
+        if slope > 0:
+            implied = float(np.exp(intercept + slope * gap))
+            off = yen / implied - 1
+            if off > .05:
+                side = "엔화가 금리차로 설명되는 수준보다 약합니다. 코멘트의 '엔화 저평가'와 같은 방향입니다."
+            elif off < -.05:
+                side = "엔화가 금리차로 설명되는 수준보다 강합니다. 코멘트의 '엔화 저평가'와 다릅니다."
+            else:
+                side = "엔화가 금리차로 설명되는 수준과 비슷해, 이 기준으로는 '저평가'가 뚜렷하지 않습니다."
+            points.append(f'최근 {len(fit) // 12}년 금리차와 엔/달러의 수준 관계로 보면 지금 금리차에 맞는 엔/달러는 '
+                          f'약 <b>{implied:,.0f}엔</b>이고 실제는 {yen:,.0f}엔({off:+.0%})입니다 — {side} '
+                          '수준끼리의 단순 회귀라 참고치입니다.')
+
+    if fx is not None and len(fx) and {"usdkrw", "jpy"}.issubset(fx.columns):
+        pair = fx[["usdkrw", "jpy"]].dropna()
+        pair = pair[(pair > 0).all(axis=1)]
+        if len(pair) >= 36:
+            won_corr = float(np.log(pair["usdkrw"]).diff().corr(np.log(pair["jpy"]).diff()))
+            text = (f'원/달러와 엔/달러의 월간 변화는 {_comove_phrase(won_corr)}(상관 <b>{won_corr:+.2f}</b>, '
+                    f'{pair.index[0]:%Y}년부터 {len(pair)}개월). 코멘트의 \'원화 가치도 오를 수 있다\'는 이 동행에 '
+                    '기댄 판단입니다.')
+            if won_corr < .3:
+                text += ' 동행이 약해 원화가 엔화를 따라간다고 단정하기는 어렵습니다.'
+            points.append(text)
+    return _commentary_box(
+        points, US_JP_EXPERT_NOTES, last,
+        '읽는 법: 이 그림에서 주황 선(미·일 금리차)이 내려가면 달러를 들고 있을 때의 금리 이점이 줄어든 것입니다. '
+        '코멘트대로라면 파랑 선(엔/달러)도 내려가는(엔화 강세) 쪽입니다. 과거 자료의 관계이며 인과나 예측이 '
+        '아닙니다.')
+
+
+def us_jp_chart(frame, start="1980-01-01", fx=None):
     """미·일 10년물 금리차와 엔/달러. 금리차가 벌어지면 엔이 약해진다는 관계를 보려는 것이다."""
-    return dual_axis_chart(frame, "usdjpy", "rate_gap", "엔/달러", "미·일 10년물 금리차(%p)",
-                           "미·일 금리차와 엔/달러", start,
-                           "금리차 = 미국 10년 − 일본 10년. 일본 10년물 자료는 1989년부터라 그 전 구간은 "
-                           "금리차 선이 없습니다. 점선은 금리차 0.",
-                           left_fmt="{:,.0f}", right_fmt="{:+.1f}")
+    chart = dual_axis_chart(frame, "usdjpy", "rate_gap", "엔/달러", "미·일 10년물 금리차(%p)",
+                            "미·일 금리차와 엔/달러", start,
+                            "금리차 = 미국 10년 − 일본 10년. 일본 10년물 자료는 1989년부터라 그 전 구간은 "
+                            "금리차 선이 없습니다. 점선은 금리차 0.",
+                            left_fmt="{:,.0f}", right_fmt="{:+.1f}")
+    return chart + us_jp_commentary(frame, fx) if chart else ""
 
 
 def us_market_chart(frame):
@@ -436,7 +692,7 @@ def build_page(now=None, fx_frame=None, fx_info=None, us_jp_frame=None, us_jp_in
     if fx_frame is not None:
         body += fx_decomposition_section(fx_frame, fx_info)
         body += fx_overlay_chart(fx_frame)
-        body += real_rate_chart(fx_frame) or (
+        body += real_rate_chart(fx_frame, info=fx_info) or (
             '<div class="empty">한·미 실질금리차를 만들지 못했습니다 — '
             + escape(str((fx_info or {}).get("failed", {}).get("real_rate_gap", "자료 부족"))) + '</div>')
     # 한국 그림끼리 모은다: 환율 그림 다음, 미·일·미국 그림 앞(2026-09-16 요청).
@@ -446,7 +702,7 @@ def build_page(now=None, fx_frame=None, fx_info=None, us_jp_frame=None, us_jp_in
         body += ('<div class="empty">총저축률·투자율·경상수지 자료를 받지 못했습니다 — '
                  + escape("; ".join(f"{k}: {v}" for k, v in saving_info["failed"].items())) + '</div>')
     if us_jp_frame is not None:
-        body += us_jp_chart(us_jp_frame)
+        body += us_jp_chart(us_jp_frame, fx=fx_frame)
     elif us_jp_info and us_jp_info.get("failed"):
         body += ('<div class="empty">미·일 금리차 자료를 받지 못했습니다 — '
                  + escape("; ".join(f"{k}: {v}" for k, v in us_jp_info["failed"].items())) + '</div>')
@@ -488,10 +744,18 @@ def load_fx(fetch=True):
                                    fetch_korea_cpi_monthly)
     from data_sources.fred import fetch_fred, US_CPI, KOREA_CPI
 
+    # ECOS 한국 물가가 실패해 FRED(OECD 계열, 2023-11까지)로 넘어가면 실질금리차가 그 달에서 멈춘다.
+    # 예전에는 ECOS 오류를 버려 왜 멈췄는지 알 수 없었다(2026-09-16). 사유를 남겨 페이지에 적는다.
+    # 오류 문구는 _ecos_request 가 키를 뺀 형태로 만든다.
+    notes = {}
+
     def korea_cpi_with_fallback(start, end):
         try:
             return fetch_korea_cpi_monthly(start, end)
         except Exception as ecos_exc:
+            notes["korea_cpi"] = (f"ECOS {type(ecos_exc).__name__}: {str(ecos_exc)[:120]} → "
+                                  "FRED OECD 한국 CPI(2023-11까지)로 대체")
+            print(f"  ⚠️ 한국 소비자물가: {notes['korea_cpi']}", flush=True)
             try:
                 return fetch_fred(KOREA_CPI)
             except Exception as fred_exc:
@@ -504,7 +768,9 @@ def load_fx(fetch=True):
                                       korea_cpi_fn=korea_cpi_with_fallback,
                                       us_cpi_fn=lambda: fetch_fred(US_CPI))
     except Exception as exc:
-        return None, {"failed": {"전체": f"{type(exc).__name__}: {exc}"[:160]}}
+        return None, {"failed": {"전체": f"{type(exc).__name__}: {exc}"[:160]}, "notes": notes}
+    if notes:
+        info.setdefault("notes", {}).update(notes)
     if len(frame):
         FX_CACHE.parent.mkdir(parents=True, exist_ok=True)
         frame.reset_index().to_csv(FX_CACHE, index=False)

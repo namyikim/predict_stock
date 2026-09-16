@@ -284,7 +284,8 @@ def price_forecasts(f, cols, close, as_of):
 # ---------------------------------------------------------------------------
 # 원장
 # ---------------------------------------------------------------------------
-def ledger_update(storage, key, bars, run_id, common, live, price_rows):
+def ledger_update(storage, key, bars, run_id, common, live, price_rows, record=True):
+    """원장을 갱신한다. record=False 면 이번 예측을 더하지 않고 기존 원장만 다시 채점한다(3시간 간격 회차)."""
     storage.mkdir(parents=True, exist_ok=True)
     label = ["하락", "보합", "상승"][int(np.argmax([live["p_down"], live["p_flat"], live["p_up"]]))]
     records = [{**common, "prediction": label, **{k: live[k] for k in PROB_COLS}, "model": "Logistic",
@@ -294,7 +295,11 @@ def ledger_update(storage, key, bars, run_id, common, live, price_rows):
         records.append({**common, **row, "model": "Ridge", "kind": "price", "horizon_days": row["trading_days"],
                         "record_id": f"{run_id}:price:{row['trading_days']}"})
     log_path = storage / "forecast_log.csv"
-    all_log = append_forecasts(log_path, pd.DataFrame(records))
+    if record:
+        all_log = append_forecasts(log_path, pd.DataFrame(records))
+    else:
+        print("ℹ️ --no-record: 이번 예측은 원장에 더하지 않습니다(보고서·채점만 갱신).", flush=True)
+        all_log = pd.read_csv(log_path) if log_path.exists() else pd.DataFrame(columns=["record_id"])
     evaluated = evaluate_forecasts(all_log, bars)
     atomic_csv(evaluated, log_path)
     daily = daily_comparison(evaluated)
@@ -678,6 +683,9 @@ def main():
     parser.add_argument("--publish", action="store_true", help="GITHUB_TOKEN으로 원장과 보고서를 저장소에 발행")
     parser.add_argument("--no-fetch", action="store_true")
     parser.add_argument("--dump", action="store_true")
+    # 3시간 간격 회차(2026-09-16부터)는 시세·그림·채점만 새로 하고 예측은 원장에 더하지 않는다.
+    # 원장은 날짜별 첫 예측만 집계하지만, 매 회차 행을 더하면 원장만 불어난다. 아침 회차(06:22)만 기록한다.
+    parser.add_argument("--no-record", action="store_true", help="예측을 원장에 기록하지 않고 보고서·채점만 갱신")
     args = parser.parse_args()
     cache = args.out / "cache"
     cache.mkdir(parents=True, exist_ok=True)
@@ -727,7 +735,8 @@ def main():
             if remote:
                 (storage / "forecast_log.csv").write_text(remote, encoding="utf-8-sig")
                 print(f"  원장 불러옴: {ledger_path}")
-        evaluated, daily, scored = ledger_update(storage, key, bars, run_id, common, live, price_rows)
+        evaluated, daily, scored = ledger_update(storage, key, bars, run_id, common, live, price_rows,
+                                                 record=not args.no_record)
         print(f"  원장 {len(evaluated)}건 · 채점 {int((evaluated.status == 'scored').sum())}건")
         review = review_ledger(daily, bars, ensemble_model="Logistic", windows=(20, 60))
         for a_ in review["alerts"]:

@@ -293,9 +293,9 @@ jobs:
   # 종목 보고서(report)와 독립적으로 돈다. 원장은 forecast_history/gold, silver.
   metals:
     runs-on: ubuntu-latest
-    # 백업 스케줄(07:25)에는 돌지 않는다. 이 잡들은 원장이 없어 '이미 기록됐는지'를
-    # 판단할 수 없고, 두 번 돌면 같은 내용을 두 번 발행하게 된다.
-    if: github.event_name != 'schedule' || github.event.schedule == '22 21 * * 0-4'
+    # 검색어·뉴스처럼 3시간 간격 회차에도 돌아 페이지를 최신으로 유지한다(2026-09-16 요청). 백업 스케줄
+    # (07:25)만 건너뛴다 — 본 실행 직후라 새 자료가 없고 같은 내용을 두 번 발행하게 된다.
+    if: github.event_name != 'schedule' || github.event.schedule != '25 22 * * 0-4'
     timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
@@ -310,7 +310,8 @@ jobs:
       - name: 금·은 예측 보고서
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: python tools/build_metals_report.py --out runs/metals --publish
+        # 아침 본 실행(06:22)만 예측을 원장에 기록한다. 3시간 간격 회차는 시세·그림·채점만 새로 한다.
+        run: python tools/build_metals_report.py --out runs/metals --publish ${{ github.event_name == 'schedule' && github.event.schedule != '22 21 * * 0-4' && '--no-record' || '' }}
 
       - name: Pages 재빌드 요청
         env:
@@ -331,9 +332,9 @@ jobs:
   # 5개년 계획 분석은 시세만 새로 받는다. 종목 56개라 몇 분이면 끝난다.
   china:
     runs-on: ubuntu-latest
-    # 백업 스케줄(07:25)에는 돌지 않는다. 이 잡들은 원장이 없어 '이미 기록됐는지'를
-    # 판단할 수 없고, 두 번 돌면 같은 내용을 두 번 발행하게 된다.
-    if: github.event_name != 'schedule' || github.event.schedule == '22 21 * * 0-4'
+    # 검색어·뉴스처럼 3시간 간격 회차에도 돌아 페이지를 최신으로 유지한다(2026-09-16 요청). 백업 스케줄
+    # (07:25)만 건너뛴다 — 본 실행 직후라 새 자료가 없고 같은 내용을 두 번 발행하게 된다.
+    if: github.event_name != 'schedule' || github.event.schedule != '25 22 * * 0-4'
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
@@ -370,9 +371,9 @@ jobs:
   # 위키백과 조회수는 월 단위로만 갱신되지만, 매일 돌려도 API 호출 40회로 가볍다.
   interest:
     runs-on: ubuntu-latest
-    # 백업 스케줄(07:25)에는 돌지 않는다. 이 잡들은 원장이 없어 '이미 기록됐는지'를
-    # 판단할 수 없고, 두 번 돌면 같은 내용을 두 번 발행하게 된다.
-    if: github.event_name != 'schedule' || github.event.schedule == '22 21 * * 0-4'
+    # 검색어·뉴스처럼 3시간 간격 회차에도 돌아 페이지를 최신으로 유지한다(2026-09-16 요청). 백업 스케줄
+    # (07:25)만 건너뛴다 — 본 실행 직후라 새 자료가 없고 같은 내용을 두 번 발행하게 된다.
+    if: github.event_name != 'schedule' || github.event.schedule != '25 22 * * 0-4'
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4

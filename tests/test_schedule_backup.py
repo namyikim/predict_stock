@@ -70,13 +70,22 @@ class ScheduleTests(unittest.TestCase):
             kst_hour = (hour + 9) % 24
             self.assertLess(kst_hour + minute / 60, 8.0, item["cron"])
 
-    def test_heavy_side_reports_run_once_a_day(self):
+    def test_side_reports_refresh_every_three_hours_except_earnings(self):
+        """2026-09-16 요청: 금·은·중국·장기 관심도도 뉴스·검색어처럼 3시간 간격으로 갱신한다.
+        영업이익 추정(KOSIS·DART 조회)만 아침 한 번이다. 백업 스케줄(07:25)은 모두 건너뛴다."""
         jobs = WORKFLOW["jobs"]
         self.assertIn("needs.validation.result", jobs["report"]["if"])
-        for name in ("metals", "china", "interest", "earnings"):
-            self.assertIn(f"== '{MAIN_CRON}'", jobs[name]["if"], name)
-        # 검색어만 3시간 간격 회차에도 돈다(하루 사이에 실제로 바뀌는 유일한 보고서).
-        self.assertIn("!= '25 22 * * 0-4'", jobs["trends"]["if"])
+        self.assertIn(f"== '{MAIN_CRON}'", jobs["earnings"]["if"])
+        for name in ("metals", "china", "interest", "trends", "ai_news"):
+            self.assertIn("!= '25 22 * * 0-4'", jobs[name]["if"], name)
+            self.assertNotIn(f"== '{MAIN_CRON}'", jobs[name]["if"], name)
+
+    def test_metals_records_a_forecast_only_on_the_morning_run(self):
+        """금·은은 원장이 있다. 3시간 간격 회차는 --no-record 로 보고서·채점만 갱신해야 원장이 불지 않는다."""
+        steps = {s.get("name"): s for s in WORKFLOW["jobs"]["metals"]["steps"]}
+        run = steps["금·은 예측 보고서"]["run"]
+        self.assertIn("--publish", run)
+        self.assertIn(f"github.event.schedule != '{MAIN_CRON}' && '--no-record'", run)
 
     def test_backup_run_is_gated_on_the_ledger(self):
         steps = {s.get("name"): s for s in WORKFLOW["jobs"]["report"]["steps"]}

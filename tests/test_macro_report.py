@@ -26,24 +26,21 @@ class PageTests(unittest.TestCase):
     def test_only_one_back_link(self):
         self.assertEqual(self.page().count('href="../"'), 1)
 
-    def test_every_planned_section_is_rendered(self):
+    def test_placeholder_sections_are_gone(self):
+        """뼈대 때 두었던 '환율·금리·채권·경기 지표' 빈 칸은 그림이 채워진 뒤 지웠다(2026-09-16 요청)."""
         html = self.page()
-        for title, _, items in macro.SECTIONS:
-            self.assertIn(f">{title}</h3>", html)
-            for item in items:
-                self.assertIn(item, html)
+        for title in ("환율", "금리", "채권", "경기 지표"):
+            self.assertNotIn(f">{title}</h3>", html)
+        self.assertNotIn("앞으로 더할 것입니다", html)
+        self.assertNotIn("준비 중입니다", html)
+        self.assertFalse(hasattr(macro, "SECTIONS"))
+        self.assertFalse(hasattr(macro, "planned_section"))
 
     def test_states_that_it_is_not_a_forecast(self):
         # 이 저장소의 다른 보고서와 같은 태도를 유지한다.
         html = self.page()
         self.assertIn("예측이 아니라 자료 정리입니다", html)
         self.assertIn("투자 자문이 아닙니다", html)
-
-    def test_empty_sections_say_so_instead_of_guessing(self):
-        # 뼈대 때의 '준비 중' 안내는 요약 절이 대신한다. 값이 없는 절이 비어 있는 그대로인지만 본다.
-        html = self.page()
-        self.assertIn('class="empty"', html)
-        self.assertNotIn("준비 중입니다", html)
 
     def test_tag_balance(self):
         import re

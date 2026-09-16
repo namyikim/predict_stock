@@ -106,7 +106,8 @@ class PlacementTests(unittest.TestCase):
         chart = page.index("원/달러와 위안/달러 <span")
         comment = page.index("2009년 이후 두 환율의 월간 변화는")
         self.assertLess(chart, comment)
-        self.assertLess(comment, page.index("<h3", chart + 10))
+        next_heading = page.find("<h3", chart + 10)          # 마지막 그림이면 다음 제목이 없다
+        self.assertLess(comment, next_heading if next_heading != -1 else len(page))
 
     def test_published_page_has_the_commentary(self):
         html = (ROOT / "docs" / "macro" / "index.html").read_text(encoding="utf-8")

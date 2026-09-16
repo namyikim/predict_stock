@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """거시 경제 보고서 — 환율·금리·채권 등 거시 지표를 모아 보는 페이지.
 
-2026-09-15 시작. 지금은 뼈대만 있고 지표는 하나씩 붙인다. 뼈대를 먼저 두는 이유는, 지표를
-추가할 때마다 페이지 구조를 다시 정하지 않고 SECTIONS 에 함수 하나만 더하면 되게 하기 위해서다.
+2026-09-15 시작. 지표는 build_page 에서 그림 함수 하나씩으로 붙인다. 처음 뼈대 때 두었던 '환율·금리·채권·
+경기 지표' 빈 칸(planned_section)은 그림이 채워진 뒤 지웠다(2026-09-16).
 
 이 저장소의 규칙을 그대로 따른다.
 - 받은 자료를 그대로 보여 준다. 예측하거나 매수·매도 의견을 내지 않는다.
@@ -46,15 +46,6 @@ BACK_BUTTON = ('<div class="back-to-index" style="margin-bottom:10px">'
                '<a href="../" style="display:inline-block;font-size:12px;color:#1a5490;'
                'text-decoration:none;border:1px solid #cedff0;border-radius:5px;padding:5px 11px;'
                'background:#f0f6fc">← 보고서 목록</a></div>')
-
-
-def planned_section(title, note, items):
-    """아직 자료를 붙이지 않은 절. 무엇을 넣을지 적어 두어 다음 작업의 목록이 되게 한다."""
-    rows = "".join(f"<li style='margin:3px 0'>{escape(item)}</li>" for item in items)
-    return (f'<h3 style="font-size:15px;margin:24px 0 9px;padding-bottom:6px;'
-            f'border-bottom:1px solid #ddd">{escape(title)}</h3>'
-            f'<div class="empty">{escape(note)}'
-            f'<ul style="margin:8px 0 0;padding-left:18px;font-size:12px">{rows}</ul></div>')
 
 
 def fx_decomposition_section(frame, info):
@@ -805,19 +796,6 @@ def saving_investment_chart(frame, start_year=1990):
             '자료: 한국은행 ECOS(2.1.1.1 주요지표 연간지표, 2.5.1.1 국제수지).</div>')
 
 
-# 절 목록. 지표를 붙일 때 여기에 함수를 더하면 페이지 구조는 건드리지 않아도 된다.
-SECTIONS = (
-    ("환율", "원/달러 결정 요인 표는 위에 있습니다. 아래는 앞으로 더할 것입니다.",
-     ("원/달러 종가와 이동평균", "엔/달러·달러지수와 함께 본 상대 강도", "최근 변동성")),
-    ("금리", "한국·미국 정책금리와 시장금리를 나란히 놓습니다.",
-     ("한국은행 기준금리", "미국 연방기금금리 목표", "한·미 금리차")),
-    ("채권", "국채 수익률 곡선과 장단기 금리차를 봅니다.",
-     ("한국 3년·10년 국고채", "미국 2년·10년 국채", "장단기 금리차(경기 신호로 읽히는 값)")),
-    ("경기 지표", "이미 이 저장소가 받고 있는 지표를 한곳에 모읍니다.",
-     ("선행지수 순환변동치", "G20 경기선행지수", "뉴스심리지수", "반도체 수출")),
-)
-
-
 def build_page(now=None, fx_frame=None, fx_info=None, us_jp_frame=None, us_jp_info=None,
                us_market_frame=None, us_market_info=None, saving_frame=None, saving_info=None):
     now = now or datetime.now(KST)
@@ -854,7 +832,6 @@ def build_page(now=None, fx_frame=None, fx_info=None, us_jp_frame=None, us_jp_in
     elif us_market_info and us_market_info.get("failed"):
         body += ('<div class="empty">미국 금융시장 자료를 받지 못했습니다 — '
                  + escape("; ".join(f"{k}: {v}" for k, v in us_market_info["failed"].items())) + '</div>')
-    body += "".join(planned_section(title, note, items) for title, note, items in SECTIONS)
     return (
         '<!doctype html>\n<html lang="ko"><head><meta charset="utf-8">'
         '<meta name="viewport" content="width=device-width, initial-scale=1">'

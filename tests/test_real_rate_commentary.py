@@ -119,7 +119,8 @@ class WiringTests(unittest.TestCase):
         chart = page.index("원/달러와 한·미 실질금리차 <span")
         comment = page.index("원/달러와 실질금리차의 상관")
         self.assertLess(chart, comment)
-        self.assertLess(comment, page.index("<h3", chart + 10))
+        next_heading = page.find("<h3", chart + 10)          # 마지막 그림이면 다음 제목이 없다
+        self.assertLess(comment, next_heading if next_heading != -1 else len(page))
 
     def test_ecos_cpi_failure_is_recorded_instead_of_swallowed(self):
         """ECOS 한국 물가가 실패해 FRED(2023-11까지)로 넘어갈 때 그 사유를 남긴다(2026-09-16)."""

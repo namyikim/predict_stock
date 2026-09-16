@@ -241,6 +241,13 @@ class EasySummaryTests(unittest.TestCase):
         self.assertIn("월별 경제지표", html)
         self.assertIn("뉴스 분위기 지표", html)
 
+    def test_rebuilt_report_names_the_official_forecast_instead_of_a_reference_value(self):
+        """2026-09-16: 다시 만든 보고서는 원장의 공식 사전 예측을 보여 준다. '참고값'이라고 적으면 틀린 말이다."""
+        html = self.render(record_forecast=False,
+                           official_note="보고서는 다시 만들었지만 예측은 원장에 기록된 공식 사전 예측입니다")
+        self.assertIn("원장에 기록된 공식 사전 예측", html)
+        self.assertNotIn("원장에 기록되지 않는 참고값", html)
+
     def test_notebook_connects_computed_forecasts_and_handles_missing_fragments(self):
         # Catch wrong wiring (e.g. close prices used for opening prices), not just imports.
         notebook = json.loads((Path(__file__).resolve().parents[1]

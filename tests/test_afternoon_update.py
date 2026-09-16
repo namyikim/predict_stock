@@ -34,6 +34,26 @@ class SectionReplacementTests(unittest.TestCase):
         self.assertNotIn("1차", page)
 
 
+class HeadlineModelConsistencyTests(unittest.TestCase):
+    """2026-09-16: 대표 모델은 No macro ensemble 인데 장 마감 후 갱신만 Mean ensemble 로 채점해, 대표 모델이
+    '보합'으로 틀린 날이 '상승 적중'으로 보였다. 보고서·장 마감 후 갱신·장 마감 회고가 같은 모델을 봐야 한다."""
+
+    def test_every_tool_scores_the_notebook_headline_model(self):
+        import json
+        import re
+        nb = json.loads((ROOT / "samsung_direction_model_colab.ipynb").read_text(encoding="utf-8"))
+        source = "\n".join("".join(c["source"]) for c in nb["cells"] if c["cell_type"] == "code")
+        headline = re.search(r'^HEADLINE_MODEL = "([^"]+)"', source, re.M).group(1)
+        for target, spec in af.TARGETS.items():
+            self.assertEqual(spec["ensemble"], headline, target)
+        try:
+            import build_session_review as sr
+        except Exception as exc:          # 무거운 의존성이 없는 환경
+            self.skipTest(f"build_session_review 를 불러오지 못함: {exc}")
+        for target in af.TARGETS:
+            self.assertEqual(sr.TARGETS[target]["headline"], headline, target)
+
+
 class ScorecardReplacementTests(unittest.TestCase):
     """쉬운 요약 맨 위의 '지난 예측은 맞았나'도 오후 채점으로 바뀌어야 아래 절과 어긋나지 않는다."""
 

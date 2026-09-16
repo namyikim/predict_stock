@@ -258,6 +258,97 @@ def scorecard_html(review, ensemble_name="Mean ensemble", note=""):
 
 
 # ---------------------------------------------------------------------------
+# 기록하지 않는 재실행이 보여 줄 예측
+# ---------------------------------------------------------------------------
+# 2026-09-16: SK하이닉스 보고서가 코드 push·조각 갱신으로 하루에 여덟 번 다시 만들어졌다. 매번 모델을 새로
+# 학습해 15:25 판에는 '하락'이 맨 위에 떴지만, 원장에 기록되고 채점된 그날 아침 예측은 '보합'이었다.
+# 화면의 예측과 채점하는 예측이 달라서는 안 된다. 기록하지 않는 실행은 원장의 공식 사전 예측을 보여 준다.
+_COMMON_FORECAST_FIELDS = ("signal", "current_close", "as_of_date", "target_date", "predicted_return",
+                           "raw_predicted_return", "band_coverage", "model_mae", "zero_baseline_mae",
+                           "mae_diff_lo", "mae_diff_hi", "oof_slope")
+_OPEN_FORECAST_FIELDS = _COMMON_FORECAST_FIELDS + ("predicted_open", "center_open", "low_open", "high_open",
+                                                   "gap_sign_auc", "gap_corr")
+_PRICE_FORECAST_FIELDS = _COMMON_FORECAST_FIELDS + ("predicted_close", "center_close", "low_close",
+                                                    "high_close", "vol_model")
+# 비어 있는 것 자체가 뜻인 칸(검증을 통과하지 못해 점 예측을 내지 않음). 나머지 칸은 원장이 비어 있으면
+# 새로 계산한 값을 둔다 — 옛 원장에 없던 통계 칸이 'nan%' 로 찍히지 않게.
+_NULL_MEANS_NO_FORECAST = ("predicted_return", "predicted_open", "predicted_close")
+
+
+def official_forecast(ledger, prediction_date, evening_model="Candidate evening forecast"):
+    """원장에 기록된 그날의 공식 사전 예측 — 그 예측일에 가장 먼저 기록된 사전 예측 실행의 행들.
+
+    저녁 후보(evening_model)와 사전 예측이 아닌 행은 뺀다. 원장의 채점 규칙(날짜별 최초 사전 예측)과 같다.
+    반환: 없으면 None, 있으면 {"run_id", "created_at_utc", "direction": {모델: 행},
+    "open": 행 또는 None, "price": {거래일 수: 행}}. 가격·시초가는 'Candidate …' 관찰 후보를 뺀 대표 행이다.
+    """
+    needed = {"prediction_date", "run_id", "kind", "model"}
+    if not isinstance(ledger, pd.DataFrame) or ledger.empty or not needed.issubset(ledger.columns):
+        return None
+    prospective = (ledger["is_prospective"].astype(str).str.strip().str.lower().isin(["true", "1"])
+                   if "is_prospective" in ledger else pd.Series(True, index=ledger.index))
+    rows = ledger[(ledger["prediction_date"].astype(str).str[:10] == str(pd.Timestamp(prediction_date).date()))
+                  & prospective & (ledger["model"].astype(str) != evening_model)]
+    direction = rows[rows["kind"] == "direction"]
+    if direction.empty:
+        return None
+    if "created_at_utc" in direction:
+        direction = direction.assign(_created=pd.to_datetime(direction["created_at_utc"], utc=True, errors="coerce"))
+        direction = direction.sort_values("_created", kind="stable")
+    first = direction.iloc[0]
+    run = rows[rows["run_id"] == first["run_id"]]
+    headline = ~run["model"].astype(str).str.startswith("Candidate")
+    opens = run[(run["kind"] == "open") & headline]
+    prices = run[(run["kind"] == "price") & headline & run.get("horizon_days", pd.Series(np.nan, index=run.index)).notna()]
+    return {"run_id": str(first["run_id"]), "created_at_utc": first.get("created_at_utc"),
+            "direction": {str(r["model"]): r.to_dict() for _, r in run[run["kind"] == "direction"].iterrows()},
+            "open": opens.iloc[0].to_dict() if len(opens) else None,
+            "price": {int(r["horizon_days"]): r.to_dict() for _, r in prices.iterrows()}}
+
+
+def apply_official_forecast(official, live_table, open_row, price_rows, band):
+    """official_forecast 의 값으로 화면에 보일 예측을 바꾼다. 받은 객체는 건드리지 않고 새 객체를 돌려준다.
+
+    방향은 원장에 있는 모델만, 가격은 같은 거래일 수의 행만 바꾼다. 원장에 없는 것은 새로 계산한 값을 둔다.
+    반환: (live_table, open_row, price_rows, band)
+    """
+    table = live_table.copy()
+    for model, row in official["direction"].items():
+        if model not in table.index:
+            continue
+        for column in ("prediction", "p_down", "p_flat", "p_up"):
+            if column in table.columns and pd.notna(row.get(column)):
+                table.loc[model, column] = row[column]
+
+    def merge(fresh, recorded, fields):
+        merged = dict(fresh)
+        for field in fields:
+            if field not in recorded:
+                continue
+            value = recorded[field]
+            if field in _NULL_MEANS_NO_FORECAST:
+                merged[field] = np.nan if pd.isna(value) else value
+            elif not pd.isna(value):
+                merged[field] = value
+        return merged
+
+    opened = merge(open_row, official["open"], _OPEN_FORECAST_FIELDS) if official.get("open") else dict(open_row)
+    prices = [merge(row, official["price"][row.get("trading_days")], _PRICE_FORECAST_FIELDS)
+              if row.get("trading_days") in official["price"] else dict(row) for row in price_rows]
+    bands = [row.get("band") for row in official["direction"].values() if _finite(row.get("band")) is not None]
+    return table, opened, prices, (float(bands[0]) if bands else band)
+
+
+def official_forecast_note(official):
+    """다시 만든 보고서가 어떤 예측을 보여 주는지 한 문장으로."""
+    created = pd.to_datetime(official.get("created_at_utc"), utc=True, errors="coerce")
+    when = f"{created.tz_convert('Asia/Seoul'):%m-%d %H:%M} KST" if pd.notna(created) else "그날 아침"
+    return (f"보고서는 다시 만들었지만 예측은 원장에 기록된 공식 사전 예측({when} 실행 {official['run_id']})을 "
+            "그대로 보여 줍니다. 채점도 이 예측으로 합니다. 이번에 새로 학습한 모델의 값은 원장에 기록되지 않으므로 "
+            "보여 주지 않습니다.")
+
+
+# ---------------------------------------------------------------------------
 # 장기 전망 탭의 쉬운 요약
 # ---------------------------------------------------------------------------
 # 오늘의 예측 탭처럼 장기 전망 탭에도 맨 위 요약을 둔다(2026-09-13 요청). 이번 분기 영업이익 추정을 크게,
@@ -587,11 +678,12 @@ def longterm_easy_summary_html(*, name, price_date, close, longterm=None, earnin
 def easy_summary_html(*, name, prediction_date, data_date, summary, open_forecast,
                       price_forecasts, review=None, longterm=None, earnings=None,
                       target_mode="close_to_close", record_forecast=True,
-                      macro_active=True, nsi_active=True):
+                      macro_active=True, nsi_active=True, official_note=""):
     """Summarize already-computed results; never infer news causes or bypass signal gates.
 
     This is a generation-time snapshot. Intraday ledger refreshes remain separate and
     must not make the original forecast look as though it used later observations.
+    official_note: 기록하지 않는 재실행이 원장의 공식 사전 예측을 보여 줄 때의 설명(official_forecast_note).
     """
     from html import escape
 
@@ -622,8 +714,9 @@ def easy_summary_html(*, name, prediction_date, data_date, summary, open_forecas
                          f"({best:.1%}). 이 확률은 실제 적중률이 아닙니다.")
     sections.append(("전체 결론", f"{name} · {date_text(prediction_date)}: {direction}"))
     if not record_forecast:
-        sections.append(("예측 상태", "이번 실행의 예측은 원장에 기록되지 않는 참고값입니다. "
-                         "실제 성적은 별도로 저장된 장 시작 전 예측으로 평가합니다."))
+        sections.append(("예측 상태", official_note or (
+            "이번 실행의 예측은 원장에 기록되지 않는 참고값입니다. "
+            "실제 성적은 별도로 저장된 장 시작 전 예측으로 평가합니다.")))
 
     def price_text(row, field):
         point = number(row.get(field))

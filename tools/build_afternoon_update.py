@@ -32,9 +32,12 @@ from forecast_utils import (  # noqa: E402
 )
 
 KST = timezone(timedelta(hours=9))
+# 채점할 방향 모델은 보고서 대표 모델(노트북 HEADLINE_MODEL)과 같아야 한다. 2026-09-08 대표 모델을 시세만
+# 모델로 바꿀 때 여기를 놓쳐 장 마감 후 갱신만 Mean ensemble 로 채점했고, 대표 모델이 '보합'으로 틀린 날이
+# '상승 적중'으로 보였다(2026-09-16 SK하이닉스). tests/test_afternoon_update.py 가 둘을 맞춰 본다.
 TARGETS = {
-    "samsung": {"ticker": "005930.KS", "name": "삼성전자", "ensemble": "Mean ensemble"},
-    "sk_hynix": {"ticker": "000660.KS", "name": "SK하이닉스", "ensemble": "Mean ensemble"},
+    "samsung": {"ticker": "005930.KS", "name": "삼성전자", "ensemble": "No macro ensemble"},
+    "sk_hynix": {"ticker": "000660.KS", "name": "SK하이닉스", "ensemble": "No macro ensemble"},
 }
 LEDGER_FILES = ["forecast_log.csv", "daily_forecast_comparison.csv", "forecast_accuracy_summary.csv"]
 MARK_START, MARK_END = "<!--LEDGER_SECTION_START-->", "<!--LEDGER_SECTION_END-->"

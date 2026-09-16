@@ -52,11 +52,22 @@ class PageTests(unittest.TestCase):
                              len(re.findall(rf"</{tag}>", html)), tag)
 
     def test_committed_page_matches_the_generator(self):
+        """발행본은 같은 보관본으로 만든 결과와 같아야 한다(시각 제외).
+
+        페이지가 자료를 담으므로 자료 없이 만든 것과 비교하면 안 된다. 보관본이 없으면 비교하지
+        않는다(첫 실행 전).
+        """
         import re
+        cache = ROOT / "macro_history" / "fx_inputs.csv"
+        if not cache.exists():
+            self.skipTest("fx_inputs 보관본이 아직 없습니다")
+        frame, info = macro.load_fx(fetch=False)
+        generated = macro.build_page(datetime(2026, 9, 15, 9, 0, tzinfo=timezone(timedelta(hours=9))),
+                                     fx_frame=frame, fx_info=info)
         committed = (ROOT / "docs" / "macro" / "index.html").read_text(encoding="utf-8")
         strip = lambda text: re.sub(r"\d{4}-\d{2}-\d{2} \d{2}:\d{2}", "", text)
-        self.assertEqual(strip(committed), strip(self.page()),
-                         "docs/macro/index.html 을 python tools/build_macro_report.py --write 로 다시 만드세요")
+        self.assertEqual(strip(committed), strip(generated),
+                         "docs/macro/index.html 을 python tools/build_macro_report.py --write --no-fetch 로 다시 만드세요")
 
 
 class LandingTests(unittest.TestCase):

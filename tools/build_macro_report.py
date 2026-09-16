@@ -15,6 +15,7 @@ import sys
 from datetime import datetime, timedelta, timezone
 from html import escape
 import numpy as np
+import pandas as pd
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -98,6 +99,64 @@ def fx_decomposition_section(frame, info):
             '인과가 아니라 과거 자료에서의 동행·선행 관계입니다.</div>')
 
 
+def fx_overlay_chart(frame, start="2009-01-01", left="usdkrw", right="cny"):
+    """원/달러와 위안/달러를 겹친 꺾은선. 단위가 다르므로 좌우 축을 따로 둔다.
+
+    두 통화가 같은 방향으로 움직이는지를 눈으로 보려는 것이다. 위안은 관리변동환율이라
+    움직임이 작고, 원은 자유변동이라 크다 — 폭이 아니라 방향을 보는 그림이다.
+    """
+    if frame is None or frame.empty or left not in frame or right not in frame:
+        return ""
+    data = frame[[left, right]].dropna()
+    data = data[data.index >= pd.Timestamp(start)]
+    if len(data) < 24:
+        return ""
+    W, H, L, R, T, B = 900, 360, 66, 66, 34, 40
+    PH = H - T - B
+    xs = np.linspace(L, W - R, len(data))
+
+    def scale(series):
+        lo, hi = float(series.min()), float(series.max())
+        pad = (hi - lo) * 0.06 or 1.0
+        lo, hi = lo - pad, hi + pad
+        return lambda v: T + PH * (1 - (v - lo) / (hi - lo)), lo, hi
+
+    yl, llo, lhi = scale(data[left])
+    yr, rlo, rhi = scale(data[right])
+    line = lambda series, fn, color: (
+        f'<polyline fill="none" stroke="{color}" stroke-width="1.8" points="'
+        + " ".join(f"{x:.1f},{fn(v):.1f}" for x, v in zip(xs, series)) + '"/>')
+    svg = [f'<svg viewBox="0 0 {W} {H}" width="100%" '
+           f'style="max-width:{W}px;font-family:-apple-system,Malgun Gothic,sans-serif;font-size:11px">']
+    # 연도 눈금과 세로 안내선
+    years = sorted({d.year for d in data.index})
+    for year in years:
+        first = data.index[data.index.year == year][0]
+        x = xs[data.index.get_loc(first)]
+        svg.append(f'<line x1="{x:.1f}" x2="{x:.1f}" y1="{T}" y2="{T + PH}" stroke="#eee"/>')
+        if year % 2 == 1 or len(years) <= 10:
+            svg.append(f'<text x="{x:.1f}" y="{H - 14}" text-anchor="middle" fill="#8a9199">{year}</text>')
+    # 좌우 축 눈금(3개씩)
+    for frac in (0.0, 0.5, 1.0):
+        lv = llo + (lhi - llo) * frac
+        rv = rlo + (rhi - rlo) * frac
+        svg.append(f'<text x="{L - 8}" y="{yl(lv):.1f}" text-anchor="end" fill="#1a5490">{lv:,.0f}</text>')
+        svg.append(f'<text x="{W - R + 8}" y="{yr(rv):.1f}" fill="#c8952a">{rv:.2f}</text>')
+    svg.append(line(data[left], yl, "#1a5490"))
+    svg.append(line(data[right], yr, "#c8952a"))
+    svg.append(f'<text x="{L}" y="18" fill="#1a1a1a" font-weight="600">원/달러(파랑, 왼쪽 축) · '
+               f'위안/달러(주황, 오른쪽 축) · {years[0]}년~{years[-1]}년 월평균</text>')
+    svg.append("</svg>")
+    corr = float(np.log(data[left]).diff().corr(np.log(data[right]).diff()))
+    return ('<h3 style="font-size:15px;margin:24px 0 9px;padding-bottom:6px;border-bottom:1px solid #ddd">'
+            '원/달러와 위안/달러 <span style="font-weight:400;color:#8a9199;font-size:12px">'
+            f'&nbsp;{years[0]}년부터 · 월평균</span></h3>'
+            + "".join(svg) +
+            f'<div style="font-size:12px;color:#6b7178;margin-top:6px">월간 변화율의 상관 <b>{corr:+.2f}</b> '
+            f'({len(data)}개월). 단위가 다르므로 축을 따로 두었고, 폭이 아니라 방향을 보는 그림입니다. '
+            '위안은 관리변동환율이라 움직임이 작습니다.</div>')
+
+
 # 절 목록. 지표를 붙일 때 여기에 함수를 더하면 페이지 구조는 건드리지 않아도 된다.
 SECTIONS = (
     ("환율", "원/달러 결정 요인 표는 위에 있습니다. 아래는 앞으로 더할 것입니다.",
@@ -113,7 +172,10 @@ SECTIONS = (
 
 def build_page(now=None, fx_frame=None, fx_info=None):
     now = now or datetime.now(KST)
-    body = fx_decomposition_section(fx_frame, fx_info) if fx_frame is not None else ""
+    body = ""
+    if fx_frame is not None:
+        body += fx_decomposition_section(fx_frame, fx_info)
+        body += fx_overlay_chart(fx_frame)
     body += "".join(planned_section(title, note, items) for title, note, items in SECTIONS)
     return (
         '<!doctype html>\n<html lang="ko"><head><meta charset="utf-8">'

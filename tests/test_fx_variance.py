@@ -104,3 +104,96 @@ class ReportTests(unittest.TestCase):
                                 fx_info={"failed": {"usdkrw": "빈 응답"}})
         self.assertIn("자료를 받지 못했습니다", html)
         self.assertIn("빈 응답", html)
+
+
+class OverlayChartTests(unittest.TestCase):
+    """원/달러·위안/달러 겹친 꺾은선(2026-09-16 요청). 2009년부터 연도별."""
+
+    def test_chart_covers_2009_onward_with_year_ticks(self):
+        import build_macro_report as macro
+        frame = synthetic(n=280)
+        frame.index = pd.date_range("2003-01-01", periods=280, freq="MS")
+        html = macro.fx_overlay_chart(frame)
+        self.assertIn("2009년~", html)
+        self.assertIn(">2009<", html)
+        self.assertNotIn(">2007<", html)
+
+    def test_two_axes_because_units_differ(self):
+        import build_macro_report as macro
+        frame = synthetic(n=280)
+        frame.index = pd.date_range("2003-01-01", periods=280, freq="MS")
+        html = macro.fx_overlay_chart(frame)
+        self.assertIn("왼쪽 축", html)
+        self.assertIn("오른쪽 축", html)
+        self.assertEqual(html.count("<polyline"), 2)
+
+    def test_short_or_missing_data_renders_nothing(self):
+        import build_macro_report as macro
+        self.assertEqual(macro.fx_overlay_chart(None), "")
+        self.assertEqual(macro.fx_overlay_chart(synthetic(n=30)), "")
+
+
+class RateGapScaleTests(unittest.TestCase):
+    """한·미 금리차 = 한국 10년 − 미국 10년. 미국 금리를 10으로 잘못 나눠 금리차가 한국 금리
+    수준이 돼 버린 적이 있다(2026-09-16: 2024년 평균 +2.80, 실제는 -0.9 안팎)."""
+
+    def test_percent_yields_are_not_divided_again(self):
+        from data_sources import fx_inputs as fi
+        import types
+        market = pd.DataFrame({"usdkrw": [1300.0], "dxy": [100.0], "jpy": [150.0], "cny": [7.0],
+                               "us10y": [4.2]}, index=pd.to_datetime(["2024-06-01"]))
+        saved = fi.fetch_yahoo_monthly
+        fi.fetch_yahoo_monthly = lambda **k: (market, {})
+        try:
+            frame, info = fi.build_fx_inputs(
+                fetch=True, cache_path=None,
+                korea_rate_fn=lambda s, e: pd.Series([3.3], index=market.index),
+                current_account_fn=lambda s, e: pd.Series([5000.0], index=market.index))
+        finally:
+            fi.fetch_yahoo_monthly = saved
+        self.assertAlmostEqual(float(frame["rate_gap"].iloc[0]), 3.3 - 4.2, places=6)
+
+    def test_tenfold_quotes_are_divided_once(self):
+        from data_sources import fx_inputs as fi
+        market = pd.DataFrame({"usdkrw": [1300.0], "us10y": [42.0]}, index=pd.to_datetime(["2024-06-01"]))
+        saved = fi.fetch_yahoo_monthly
+        fi.fetch_yahoo_monthly = lambda **k: (market, {})
+        try:
+            frame, _ = fi.build_fx_inputs(
+                fetch=True, cache_path=None,
+                korea_rate_fn=lambda s, e: pd.Series([3.3], index=market.index),
+                current_account_fn=lambda s, e: pd.Series([0.0], index=market.index))
+        finally:
+            fi.fetch_yahoo_monthly = saved
+        self.assertAlmostEqual(float(frame["rate_gap"].iloc[0]), 3.3 - 4.2, places=6)
+
+
+class CacheRoundTripTests(unittest.TestCase):
+    """보관본을 저장한 뒤 다시 읽을 수 있어야 한다.
+
+    2026-09-16: 저장할 때 색인 이름이 야후 그대로 'Date' 로 남아, 'month' 를 찾던 읽기가 실패했다.
+    보관본 대체가 조용히 작동하지 않는 상태였다.
+    """
+
+    def test_saved_cache_is_readable_without_fetching(self):
+        import tempfile
+        from data_sources import fx_inputs as fi
+        path = Path(tempfile.mkdtemp()) / "fx_inputs.csv"
+        market = pd.DataFrame({"usdkrw": [1300.0, 1310.0], "dxy": [100.0, 101.0],
+                               "jpy": [150.0, 151.0], "cny": [7.0, 7.1], "us10y": [4.2, 4.3]},
+                              index=pd.to_datetime(["2024-05-01", "2024-06-01"]))
+        market.index.name = "Date"                      # 야후가 주는 그대로
+        saved = fi.fetch_yahoo_monthly
+        fi.fetch_yahoo_monthly = lambda **k: (market, {})
+        try:
+            frame, _ = fi.build_fx_inputs(
+                fetch=True, cache_path=path,
+                korea_rate_fn=lambda s, e: pd.Series([3.3, 3.4], index=market.index),
+                current_account_fn=lambda s, e: pd.Series([1.0, 2.0], index=market.index))
+            frame.reset_index().to_csv(path, index=False)
+            again, info = fi.build_fx_inputs(fetch=False, cache_path=path)
+        finally:
+            fi.fetch_yahoo_monthly = saved
+        self.assertEqual(info["source"], "cache")
+        self.assertEqual(len(again), 2)
+        self.assertAlmostEqual(float(again["rate_gap"].iloc[0]), 3.3 - 4.2, places=6)

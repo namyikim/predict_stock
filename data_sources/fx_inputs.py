@@ -59,7 +59,13 @@ def build_fx_inputs(start='2000-01-01', end=None, fetch=True, cache_path=None,
     base = None
     if cache_path is not None and Path(cache_path).exists():
         try:
-            base = pd.read_csv(cache_path, parse_dates=['month']).set_index('month')
+            raw = pd.read_csv(cache_path)
+            # 저장할 때 색인 이름이 야후 그대로 'Date' 로 남아 'month' 를 찾던 읽기가 실패했다
+            # (2026-09-16). 첫 열을 날짜로 본다 — 이름이 무엇이든.
+            date_col = raw.columns[0]
+            raw[date_col] = pd.to_datetime(raw[date_col], errors='coerce')
+            base = raw.dropna(subset=[date_col]).set_index(date_col)
+            base.index.name = 'month'
         except Exception:
             base = None
 
@@ -75,11 +81,17 @@ def build_fx_inputs(start='2000-01-01', end=None, fetch=True, cache_path=None,
         for name in ('usdkrw', 'dxy', 'jpy', 'cny'):
             if name in market:
                 fresh[name] = market[name]
-        # 금리차 = 한국 10년 − 미국 10년. ^TNX 는 10배 표기라 10으로 나눈다.
+        # 금리차 = 한국 10년 − 미국 10년. yfinance 의 ^TNX 종가는 이미 % 단위(예: 4.25)다.
+        # 처음에 10으로 나눠 미국 금리가 0.4 가 됐고, 금리차가 사실상 한국 금리 수준이 돼 버렸다
+        # (2026-09-16: 2024년 평균 +2.80 으로 나와 잡았다. 실제로는 -0.9 안팎).
         if 'us10y' in market and korea_rate_fn is not None:
             try:
                 korea = korea_rate_fn(start, end)
-                fresh['rate_gap'] = korea.reindex(market.index) - market['us10y'] / 10.0
+                us = market['us10y']
+                # 만약 10배 표기(40 대)로 오면 그때만 나눈다.
+                if us.dropna().median() > 20:
+                    us = us / 10.0
+                fresh['rate_gap'] = korea.reindex(market.index) - us
             except Exception as exc:
                 info['failed']['rate_gap'] = f'{type(exc).__name__}: {exc}'[:100]
         else:
@@ -99,10 +111,16 @@ def build_fx_inputs(start='2000-01-01', end=None, fetch=True, cache_path=None,
         if base is None:
             frame = fresh
         else:
+            # 새로 받은 값이 이긴다. 보관본은 '받지 못한 달'을 채우는 용도이지 새 값을 덮는 용도가
+            # 아니다 — 계산 방식을 고쳤을 때 옛 값이 남으면 고친 의미가 없다.
             frame = fresh.combine_first(base) if len(fresh) else base
+            for column in fresh.columns:
+                frame.loc[fresh.index, column] = fresh[column].where(fresh[column].notna(),
+                                                                     frame.loc[fresh.index, column])
         info['source'] = 'yahoo+ecos' if len(fresh) else 'cache'
 
     frame = frame.reindex(columns=[c for c in columns if c in frame.columns]).sort_index()
+    frame.index.name = 'month'
     info.update({'rows': int(len(frame)), 'columns': list(frame.columns),
                  'first': f'{frame.index.min():%Y-%m}' if len(frame) else None,
                  'last': f'{frame.index.max():%Y-%m}' if len(frame) else None})

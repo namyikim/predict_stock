@@ -1,4 +1,4 @@
 model,kind,horizon_days,target_mode,config_hash,n,accuracy,mean_log_loss,mean_brier,point_forecasts,price_mae,price_mape,interval_coverage
 Logistic,direction,1,close_to_close,9b0b1adcafba0fea37db,5,0.2,1.1060634830833318,0.6717613649362967,0,,,
-Ridge,price,1,close_to_close,9b0b1adcafba0fea37db,6,,,,6,36.636387622668735,0.008305096214272155,1.0
+Ridge,price,1,close_to_close,9b0b1adcafba0fea37db,6,,,,6,37.319737232043735,0.008463713824863169,1.0
 Ridge,price,5,close_to_close,9b0b1adcafba0fea37db,3,,,,0,,,1.0

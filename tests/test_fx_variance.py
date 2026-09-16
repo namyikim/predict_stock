@@ -257,3 +257,72 @@ class UsJpChartTests(unittest.TestCase):
         finally:
             fred.fetch_fred = saved
         self.assertAlmostEqual(float(frame["rate_gap"].iloc[0]), 3.3)
+
+
+class RealRateGapTests(unittest.TestCase):
+    """원/달러와 한·미 실질금리차(2026-09-16 요청). 2001년부터.
+
+    실질금리 = 10년물 명목 − 최근 12개월 CPI 상승률. 금리차 = 한국 − 미국.
+    """
+
+    def build(self):
+        from data_sources import fx_inputs as fi
+        index = pd.date_range("2000-01-01", "2026-08-01", freq="MS")
+        n = len(index)
+        market = pd.DataFrame({"usdkrw": 1200.0, "dxy": 100.0, "jpy": 120.0, "cny": 7.0,
+                               "us10y": 4.0}, index=index)
+        kr_rate = pd.Series(4.5, index=index)
+        kr_cpi = pd.Series(80 * np.exp(np.linspace(0, .6, n)), index=index)
+        us_cpi = pd.Series(170 * np.exp(np.linspace(0, .7, n)), index=index)
+        saved = fi.fetch_yahoo_monthly
+        fi.fetch_yahoo_monthly = lambda **k: (market, {})
+        try:
+            frame, info = fi.build_fx_inputs(
+                fetch=True, cache_path=None,
+                korea_rate_fn=lambda s, e: kr_rate,
+                current_account_fn=lambda s, e: pd.Series(0.0, index=index),
+                korea_cpi_fn=lambda s, e: kr_cpi, us_cpi_fn=lambda: us_cpi)
+        finally:
+            fi.fetch_yahoo_monthly = saved
+        return frame, info, kr_rate, kr_cpi, us_cpi, market
+
+    def test_real_gap_matches_hand_calculation(self):
+        frame, info, kr_rate, kr_cpi, us_cpi, market = self.build()
+        self.assertEqual(info["failed"], {})
+        kr_infl = (kr_cpi.iloc[-1] / kr_cpi.iloc[-13] - 1) * 100
+        us_infl = (us_cpi.iloc[-1] / us_cpi.iloc[-13] - 1) * 100
+        expected = (kr_rate.iloc[-1] - kr_infl) - (market["us10y"].iloc[-1] - us_infl)
+        self.assertAlmostEqual(float(frame["real_rate_gap"].iloc[-1]), float(expected), places=9)
+
+    def test_first_year_is_empty_because_yoy_needs_twelve_months(self):
+        frame, *_ = self.build()
+        real = frame["real_rate_gap"].dropna()
+        self.assertEqual(f"{real.index[0]:%Y-%m}", "2001-01")
+
+    def test_chart_starts_in_2001(self):
+        import build_macro_report as macro
+        frame, *_ = self.build()
+        frame["usdkrw"] = 1200 * np.exp(np.cumsum(np.random.default_rng(1).normal(0, .02, len(frame))))
+        html = macro.real_rate_chart(frame)
+        self.assertIn("2001년~", html)
+        self.assertIn("실질금리 = 10년물 명목금리", html)
+
+    def test_missing_cpi_is_reported_not_silent(self):
+        from data_sources import fx_inputs as fi
+        index = pd.date_range("2024-01-01", periods=3, freq="MS")
+        market = pd.DataFrame({"usdkrw": 1300.0, "us10y": 4.0}, index=index)
+        saved = fi.fetch_yahoo_monthly
+        fi.fetch_yahoo_monthly = lambda **k: (market, {})
+        def boom(*a, **k):
+            raise RuntimeError("ECOS CPI 실패")
+        try:
+            frame, info = fi.build_fx_inputs(
+                fetch=True, cache_path=None,
+                korea_rate_fn=lambda s, e: pd.Series(3.3, index=index),
+                current_account_fn=lambda s, e: pd.Series(0.0, index=index),
+                korea_cpi_fn=boom, us_cpi_fn=lambda: pd.Series(300.0, index=index))
+        finally:
+            fi.fetch_yahoo_monthly = saved
+        self.assertIn("real_rate_gap", info["failed"])
+        self.assertIn("ECOS CPI 실패", info["failed"]["real_rate_gap"])
+        self.assertIn("rate_gap", frame.columns)          # 명목 금리차는 그대로 살아 있다

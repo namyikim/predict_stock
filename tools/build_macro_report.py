@@ -182,6 +182,16 @@ def fx_overlay_chart(frame, start="2009-01-01"):
                            "위안은 관리변동환율이라 움직임이 작습니다.")
 
 
+def real_rate_chart(frame, start="2001-01-01"):
+    """원/달러와 한·미 실질금리차. 실질금리차가 벌어지면 원화가 강해진다는 관계를 보려는 것이다."""
+    return dual_axis_chart(frame, "usdkrw", "real_rate_gap", "원/달러", "한·미 실질금리차(%p)",
+                           "원/달러와 한·미 실질금리차", start,
+                           "실질금리 = 10년물 명목금리 − 최근 12개월 소비자물가 상승률. 금리차 = 한국 − 미국. "
+                           "점선은 실질금리차 0. 물가상승률은 기대인플레이션의 가장 단순한 대리이며, "
+                           "다른 정의(기대치 조사·물가연동채)를 쓰면 값이 달라집니다.",
+                           left_fmt="{:,.0f}", right_fmt="{:+.1f}")
+
+
 def us_jp_chart(frame, start="1980-01-01"):
     """미·일 10년물 금리차와 엔/달러. 금리차가 벌어지면 엔이 약해진다는 관계를 보려는 것이다."""
     return dual_axis_chart(frame, "usdjpy", "rate_gap", "엔/달러", "미·일 10년물 금리차(%p)",
@@ -210,6 +220,9 @@ def build_page(now=None, fx_frame=None, fx_info=None, us_jp_frame=None, us_jp_in
     if fx_frame is not None:
         body += fx_decomposition_section(fx_frame, fx_info)
         body += fx_overlay_chart(fx_frame)
+        body += real_rate_chart(fx_frame) or (
+            '<div class="empty">한·미 실질금리차를 만들지 못했습니다 — '
+            + escape(str((fx_info or {}).get("failed", {}).get("real_rate_gap", "자료 부족"))) + '</div>')
     if us_jp_frame is not None:
         body += us_jp_chart(us_jp_frame)
     elif us_jp_info and us_jp_info.get("failed"):
@@ -248,11 +261,15 @@ def load_fx(fetch=True):
     # 자료원 모듈끼리는 서로 참조하지 않는다(그 규칙을 테스트가 지킨다). 야후와 ECOS 를 여기서
     # 엮는다 — 결합은 도구의 몫이다.
     from data_sources.fx_inputs import build_fx_inputs
-    from data_sources.ecos import fetch_korea_rate_monthly, fetch_current_account_monthly
+    from data_sources.ecos import (fetch_korea_rate_monthly, fetch_current_account_monthly,
+                                   fetch_korea_cpi_monthly)
+    from data_sources.fred import fetch_fred, US_CPI
     try:
         frame, info = build_fx_inputs(fetch=fetch, cache_path=FX_CACHE,
                                       korea_rate_fn=fetch_korea_rate_monthly,
-                                      current_account_fn=fetch_current_account_monthly)
+                                      current_account_fn=fetch_current_account_monthly,
+                                      korea_cpi_fn=fetch_korea_cpi_monthly,
+                                      us_cpi_fn=lambda: fetch_fred(US_CPI))
     except Exception as exc:
         return None, {"failed": {"전체": f"{type(exc).__name__}: {exc}"[:160]}}
     if len(frame):

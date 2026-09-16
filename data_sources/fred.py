@@ -12,6 +12,7 @@ from data_sources._common import *  # noqa: F401,F403
 FRED_CSV = 'https://fred.stlouisfed.org/graph/fredgraph.csv?id={sid}'
 # 미·일 금리차 그림에 쓰는 세 계열
 US10Y, JP10Y, USDJPY = 'DGS10', 'IRLTLT01JPM156N', 'EXJPUS'
+US_CPI = 'CPIAUCSL'          # 미국 CPI(계절조정, 1982-84=100)
 
 
 def fetch_fred(series_id, retries=3):

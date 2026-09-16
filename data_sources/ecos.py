@@ -130,6 +130,15 @@ def fetch_current_account_monthly(start, end, key=None):
     return monthly.set_index('month')['value'].dropna()
 
 
+def fetch_korea_cpi_monthly(start, end, key=None):
+    """한국 소비자물가지수(월별, 지수 수준). 상승률은 호출부가 12개월 전 대비로 만든다."""
+    key = key or ecos_key()
+    if not key:
+        raise RuntimeError('ECOS_API_KEY가 없습니다.')
+    monthly = fetch_ecos_monthly(CPI_STAT, CPI_ITEM, start, end, key)
+    return monthly.set_index('month')['value'].dropna()
+
+
 def search_ecos_tables(key, keyword):
     """통계표 목록에서 이름에 keyword가 든 표와 그 항목 코드를 돌려준다(코드 확인용)."""
     tables = _ecos_request(key, 'StatisticTableList/{key}/json/kr/1/5000/')
@@ -222,6 +231,9 @@ def nsi_features(frame, dates, lag_days=NSI_RELEASE_LAG_DAYS, max_age_days=NSI_M
 # 다만 장단기금리차는 한국 선행종합지수의 구성 항목이라 '선행지수를 앞선다'는 것은 구조적이다.
 # 원/달러 결정 요인 분석용. 국고채 10년(일별)과 경상수지(월별).
 KR10Y_STAT, KR10Y_ITEM = '817Y002', '010210000'
+# 소비자물가지수(2020=100, 월별). 실질금리 = 명목 10년물 − 최근 12개월 물가상승률.
+CPI_STAT = os.environ.get('ECOS_CPI_STAT_CODE', '901Y009')
+CPI_ITEM = os.environ.get('ECOS_CPI_ITEM_CODE', '0')
 CA_STAT = os.environ.get('ECOS_CA_STAT_CODE', '301Y013')
 CA_ITEM = os.environ.get('ECOS_CA_ITEM_CODE', '000000')
 

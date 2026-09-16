@@ -52,10 +52,12 @@ def fetch_yahoo_monthly(tickers=YAHOO_SERIES, start='2000-01-01'):
 
 
 def build_fx_inputs(start='2000-01-01', end=None, fetch=True, cache_path=None,
-                    korea_rate_fn=None, current_account_fn=None):
+                    korea_rate_fn=None, current_account_fn=None,
+                    korea_cpi_fn=None, us_cpi_fn=None):
     """(DataFrame(month, 여섯 계열), info). 받은 것을 보관본과 합쳐 누적한다."""
     end = pd.Timestamp(end or pd.Timestamp.now(tz=KST).date())
-    columns = ['usdkrw', 'dxy', 'jpy', 'cny', 'rate_gap', 'current_account']
+    columns = ['usdkrw', 'dxy', 'jpy', 'cny', 'rate_gap', 'current_account',
+               'kr10y', 'us10y', 'real_rate_gap']
     base = None
     if cache_path is not None and Path(cache_path).exists():
         try:
@@ -92,6 +94,19 @@ def build_fx_inputs(start='2000-01-01', end=None, fetch=True, cache_path=None,
                 if us.dropna().median() > 20:
                     us = us / 10.0
                 fresh['rate_gap'] = korea.reindex(market.index) - us
+                fresh['kr10y'] = korea.reindex(market.index)
+                fresh['us10y'] = us
+                # 실질금리차 = (한국 명목 − 한국 물가상승률) − (미국 명목 − 미국 물가상승률).
+                # 물가상승률은 CPI 의 12개월 전 대비. 기대인플레이션의 가장 단순한 대리다.
+                if korea_cpi_fn is not None and us_cpi_fn is not None:
+                    try:
+                        kr_cpi = korea_cpi_fn(start, end).reindex(market.index)
+                        us_cpi = us_cpi_fn().reindex(market.index)
+                        kr_infl = (kr_cpi / kr_cpi.shift(12) - 1) * 100
+                        us_infl = (us_cpi / us_cpi.shift(12) - 1) * 100
+                        fresh['real_rate_gap'] = (fresh['kr10y'] - kr_infl) - (fresh['us10y'] - us_infl)
+                    except Exception as exc:
+                        info['failed']['real_rate_gap'] = f'{type(exc).__name__}: {exc}'[:100]
             except Exception as exc:
                 info['failed']['rate_gap'] = f'{type(exc).__name__}: {exc}'[:100]
         else:

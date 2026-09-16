@@ -1,0 +1,2194 @@
+{
+  "samsung": {
+    "selection_date": "2026-09-10",
+    "instruments": [
+      "000660.KS",
+      "000990.KS",
+      "005290.KQ",
+      "005930.KS",
+      "036930.KQ",
+      "039030.KQ",
+      "042700.KS",
+      "058470.KQ",
+      "095340.KQ"
+    ],
+    "excluded": {
+      "403870.KS": "HPSP: 첫 거래일 2022-07-15 > 2015-01-01",
+      "240810.KQ": "원익IPS: 첫 거래일 2016-05-02 > 2015-01-01",
+      "357780.KQ": "솔브레인: 첫 거래일 2020-08-06 > 2015-01-01"
+    },
+    "rows": 24775,
+    "rows_before_dropna": 25576,
+    "leaky_rows_dropped": 33,
+    "fabricated_rows": 0,
+    "features": [
+      "ret_1",
+      "ret_2",
+      "ret_3",
+      "mom_5",
+      "mom_10",
+      "mom_20",
+      "vol_20",
+      "vol_ratio",
+      "ma50_gap",
+      "turnover_ratio_20",
+      "inst_000660_KS",
+      "inst_000990_KS",
+      "inst_005290_KQ",
+      "inst_005930_KS",
+      "inst_036930_KQ",
+      "inst_039030_KQ",
+      "inst_042700_KS",
+      "inst_058470_KQ",
+      "inst_095340_KQ",
+      "kospi_ret_1",
+      "kospi_ret_5",
+      "kospi_vol_20",
+      "sox_ret_1",
+      "sox_ret_5",
+      "nasdaq_ret_1",
+      "nasdaq_ret_5",
+      "sp500_ret_1",
+      "sp500_ret_5",
+      "micron_ret_1",
+      "micron_ret_5",
+      "nvidia_ret_1",
+      "nvidia_ret_5",
+      "tsmc_adr_ret_1",
+      "tsmc_adr_ret_5",
+      "korea_etf_ret_1",
+      "korea_etf_ret_5",
+      "usdkrw_ret_1",
+      "usdkrw_ret_5",
+      "usdkrw_level_z60",
+      "dxy_ret_1",
+      "dxy_ret_5",
+      "dxy_level_z60",
+      "vix_ret_1",
+      "vix_ret_5",
+      "vix_level_z60",
+      "us10y_ret_1",
+      "us10y_ret_5",
+      "us10y_level_z60",
+      "wti_ret_1",
+      "wti_ret_5",
+      "wti_level_z60",
+      "usdjpy_ret_1",
+      "usdjpy_ret_5",
+      "vxn_ret_1",
+      "vxn_ret_5",
+      "krwjpy_ret_1",
+      "krwjpy_ret_20",
+      "krwjpy_level_z60",
+      "cal_dow",
+      "cal_is_monday",
+      "cal_is_friday",
+      "cal_month_end"
+    ],
+    "common_features": [
+      "kospi_ret_1",
+      "kospi_ret_5",
+      "kospi_vol_20",
+      "sox_ret_1",
+      "sox_ret_5",
+      "nasdaq_ret_1",
+      "nasdaq_ret_5",
+      "sp500_ret_1",
+      "sp500_ret_5",
+      "micron_ret_1",
+      "micron_ret_5",
+      "nvidia_ret_1",
+      "nvidia_ret_5",
+      "tsmc_adr_ret_1",
+      "tsmc_adr_ret_5",
+      "korea_etf_ret_1",
+      "korea_etf_ret_5",
+      "usdkrw_ret_1",
+      "usdkrw_ret_5",
+      "usdkrw_level_z60",
+      "dxy_ret_1",
+      "dxy_ret_5",
+      "dxy_level_z60",
+      "vix_ret_1",
+      "vix_ret_5",
+      "vix_level_z60",
+      "us10y_ret_1",
+      "us10y_ret_5",
+      "us10y_level_z60",
+      "wti_ret_1",
+      "wti_ret_5",
+      "wti_level_z60",
+      "usdjpy_ret_1",
+      "usdjpy_ret_5",
+      "vxn_ret_1",
+      "vxn_ret_5",
+      "krwjpy_ret_1",
+      "krwjpy_ret_20",
+      "krwjpy_level_z60",
+      "cal_dow",
+      "cal_is_monday",
+      "cal_is_friday",
+      "cal_month_end"
+    ],
+    "panel_features": [
+      "ret_1",
+      "ret_2",
+      "ret_3",
+      "mom_5",
+      "mom_10",
+      "mom_20",
+      "vol_20",
+      "vol_ratio",
+      "ma50_gap",
+      "turnover_ratio_20"
+    ],
+    "headline_model": "No macro ensemble",
+    "issue_min_prob": 0.5,
+    "common_evaluation_days": 1362,
+    "label_agreement_target_rows": 1.0,
+    "timing_seconds": {
+      "pooled": 94.75649642944336,
+      "single": 34.96839356422424
+    },
+    "fold_choices": [
+      {
+        "fold": 0,
+        "train_rows_pooled": 10818,
+        "train_rows_single": 1204,
+        "test_rows": 123,
+        "pooled": [
+          {
+            "family": "Logistic",
+            "params": {
+              "C": 0.003,
+              "class_weight": null
+            },
+            "temperature": 2.0,
+            "inner_accuracy": 0.4099616858237548,
+            "inner_log_loss": 1.0993023620883609,
+            "inner_rows": 3393,
+            "training_rows": 10818
+          },
+          {
+            "family": "LightGBM",
+            "params": {
+              "n_estimators": 60,
+              "class_weight": null
+            },
+            "temperature": 1.0,
+            "inner_accuracy": 0.4134983790156204,
+            "inner_log_loss": 1.0735324007614233,
+            "inner_rows": 3393,
+            "training_rows": 10818
+          }
+        ],
+        "single": [
+          {
+            "family": "Logistic",
+            "params": {
+              "C": 0.003,
+              "class_weight": null
+            },
+            "temperature": 1.5,
+            "inner_accuracy": 0.4497354497354497,
+            "inner_log_loss": 1.0664527268704203,
+            "inner_rows": 378,
+            "training_rows": 1204
+          },
+          {
+            "family": "LightGBM",
+            "params": {
+              "n_estimators": 60,
+              "class_weight": null
+            },
+            "temperature": 1.0,
+            "inner_accuracy": 0.455026455026455,
+            "inner_log_loss": 1.050619146017925,
+            "inner_rows": 378,
+            "training_rows": 1204
+          }
+        ]
+      },
+      {
+        "fold": 1,
+        "train_rows_pooled": 10836,
+        "train_rows_single": 1206,
+        "test_rows": 125,
+        "pooled": [
+          {
+            "family": "Logistic",
+            "params": {
+              "C": 0.003,
+              "class_weight": null
+            },
+            "temperature": 2.0,
+            "inner_accuracy": 0.41025641025641024,
+            "inner_log_loss": 1.1104209872859772,
+            "inner_rows": 3393,
+            "training_rows": 10836
+          },
+          {
+            "family": "LightGBM",
+            "params": {
+              "n_estimators": 120,
+              "class_weight": null
+            },
+            "temperature": 1.0,
+            "inner_accuracy": 0.4161508989095196,
+            "inner_log_loss": 1.0700134225885756,
+            "inner_rows": 3393,
+            "training_rows": 10836
+          }
+        ],
+        "single": [
+          {
+            "family": "Logistic",
+            "params": {
+              "C": 0.003,
+              "class_weight": null
+            },
+            "temperature": 1.5,
+            "inner_accuracy": 0.4365079365079365,
+            "inner_log_loss": 1.0654698993300131,
+            "inner_rows": 378,
+            "training_rows": 1206
+          },
+          {
+            "family": "LightGBM",
+            "params": {
+              "n_estimators": 60,
+              "class_weight": null
+            },
+            "temperature": 1.0,
+            "inner_accuracy": 0.46296296296296297,
+            "inner_log_loss": 1.0560675225916776,
+            "inner_rows": 378,
+            "training_rows": 1206
+          }
+        ]
+      },
+      {
+        "fold": 2,
+        "train_rows_pooled": 10818,
+        "train_rows_single": 1204,
+        "test_rows": 108,
+        "pooled": [
+          {
+            "family": "Logistic",
+            "params": {
+              "C": 0.003,
+              "class_weight": null
+            },
+            "temperature": 1.5,
+            "inner_accuracy": 0.4074074074074074,
+            "inner_log_loss": 1.0845895385361302,
+            "inner_rows": 3402,
+            "training_rows": 10818
+          },
+          {
+            "family": "LightGBM",
+            "params": {
+              "n_estimators": 60,
+              "class_weight": null
+            },
+            "temperature": 1.0,
+            "inner_accuracy": 0.4141681363903586,
+            "inner_log_loss": 1.0786789957334335,
+            "inner_rows": 3402,
+            "training_rows": 10818
+          }
+        ],
+        "single": [
+          {
+            "family": "Logistic",
+            "params": {
+              "C": 0.003,
+              "class_weight": null
+            },
+            "temperature": 1.5,
+            "inner_accuracy": 0.42063492063492064,
+            "inner_log_loss": 1.0728065269852343,
+            "inner_rows": 378,
+            "training_rows": 1204
+          },
+          {
+            "family": "LightGBM",
+            "params": {
+              "n_estimators": 60,
+              "class_weight": null
+            },
+            "temperature": 1.5,
+            "inner_accuracy": 0.41798941798941797,
+            "inner_log_loss": 1.0790214108407326,
+            "inner_rows": 378,
+            "training_rows": 1204
+          }
+        ]
+      },
+      {
+        "fold": 3,
+        "train_rows_pooled": 10708,
+        "train_rows_single": 1192,
+        "test_rows": 125,
+        "pooled": [
+          {
+            "family": "Logistic",
+            "params": {
+              "C": 0.003,
+              "class_weight": "balanced"
+            },
+            "temperature": 1.0,
+            "inner_accuracy": 0.45236668663870583,
+            "inner_log_loss": 1.054737634875749,
+            "inner_rows": 3338,
+            "training_rows": 10708
+          },
+          {
+            "family": "LightGBM",
+            "params": {
+              "n_estimators": 120,
+              "class_weight": null
+            },
+            "temperature": 1.0,
+            "inner_accuracy": 0.43259436788496103,
+            "inner_log_loss": 1.0561147147861196,
+            "inner_rows": 3338,
+            "training_rows": 10708
+          }
+        ],
+        "single": [
+          {
+            "family": "Logistic",
+            "params": {
+              "C": 0.01,
+              "class_weight": null
+            },
+            "temperature": 1.0,
+            "inner_accuracy": 0.47883597883597884,
+            "inner_log_loss": 1.0417468327360784,
+            "inner_rows": 378,
+            "training_rows": 1192
+          },
+          {
+            "family": "LightGBM",
+            "params": {
+              "n_estimators": 60,
+              "class_weight": null
+            },
+            "temperature": 1.0,
+            "inner_accuracy": 0.43915343915343913,
+            "inner_log_loss": 1.0618014983864439,
+            "inner_rows": 378,
+            "training_rows": 1192
+          }
+        ]
+      },
+      {
+        "fold": 4,
+        "train_rows_pooled": 10907,
+        "train_rows_single": 1214,
+        "test_rows": 123,
+        "pooled": [
+          {
+            "family": "Logistic",
+            "params": {
+              "C": 0.003,
+              "class_weight": null
+            },
+            "temperature": 1.0,
+            "inner_accuracy": 0.47902935889754344,
+            "inner_log_loss": 1.0322063420017686,
+            "inner_rows": 3338,
+            "training_rows": 10907
+          },
+          {
+            "family": "LightGBM",
+            "params": {
+              "n_estimators": 120,
+              "class_weight": null
+            },
+            "temperature": 1.0,
+            "inner_accuracy": 0.46075494307968845,
+            "inner_log_loss": 1.0449471758098932,
+            "inner_rows": 3338,
+            "training_rows": 10907
+          }
+        ],
+        "single": [
+          {
+            "family": "Logistic",
+            "params": {
+              "C": 0.01,
+              "class_weight": null
+            },
+            "temperature": 1.0,
+            "inner_accuracy": 0.4894179894179894,
+            "inner_log_loss": 1.0156468535991683,
+            "inner_rows": 378,
+            "training_rows": 1214
+          },
+          {
+            "family": "LightGBM",
+            "params": {
+              "n_estimators": 120,
+              "class_weight": null
+            },
+            "temperature": 1.0,
+            "inner_accuracy": 0.455026455026455,
+            "inner_log_loss": 1.0348804488234074,
+            "inner_rows": 378,
+            "training_rows": 1214
+          }
+        ]
+      },
+      {
+        "fold": 5,
+        "train_rows_pooled": 10943,
+        "train_rows_single": 1218,
+        "test_rows": 121,
+        "pooled": [
+          {
+            "family": "Logistic",
+            "params": {
+              "C": 0.003,
+              "class_weight": null
+            },
+            "temperature": 1.0,
+            "inner_accuracy": 0.4766327142001198,
+            "inner_log_loss": 1.0359967252533688,
+            "inner_rows": 3338,
+            "training_rows": 10943
+          },
+          {
+            "family": "LightGBM",
+            "params": {
+              "n_estimators": 120,
+              "class_weight": null
+            },
+            "temperature": 1.0,
+            "inner_accuracy": 0.4664469742360695,
+            "inner_log_loss": 1.0434358967551254,
+            "inner_rows": 3338,
+            "training_rows": 10943
+          }
+        ],
+        "single": [
+          {
+            "family": "Logistic",
+            "params": {
+              "C": 0.003,
+              "class_weight": "balanced"
+            },
+            "temperature": 0.75,
+            "inner_accuracy": 0.46825396825396826,
+            "inner_log_loss": 1.029425163111287,
+            "inner_rows": 378,
+            "training_rows": 1218
+          },
+          {
+            "family": "LightGBM",
+            "params": {
+              "n_estimators": 120,
+              "class_weight": null
+            },
+            "temperature": 1.0,
+            "inner_accuracy": 0.4708994708994709,
+            "inner_log_loss": 1.0280256831344308,
+            "inner_rows": 378,
+            "training_rows": 1218
+          }
+        ]
+      },
+      {
+        "fold": 6,
+        "train_rows_pooled": 10935,
+        "train_rows_single": 1218,
+        "test_rows": 121,
+        "pooled": [
+          {
+            "family": "Logistic",
+            "params": {
+              "C": 0.003,
+              "class_weight": null
+            },
+            "temperature": 1.0,
+            "inner_accuracy": 0.4664113140836771,
+            "inner_log_loss": 1.0468026281718044,
+            "inner_rows": 3394,
+            "training_rows": 10935
+          },
+          {
+            "family": "LightGBM",
+            "params": {
+              "n_estimators": 120,
+              "class_weight": null
+            },
+            "temperature": 0.75,
+            "inner_accuracy": 0.44725987035945786,
+            "inner_log_loss": 1.0507171443292425,
+            "inner_rows": 3394,
+            "training_rows": 10935
+          }
+        ],
+        "single": [
+          {
+            "family": "Logistic",
+            "params": {
+              "C": 0.003,
+              "class_weight": null
+            },
+            "temperature": 0.75,
+            "inner_accuracy": 0.47883597883597884,
+            "inner_log_loss": 1.0343956120781064,
+            "inner_rows": 378,
+            "training_rows": 1218
+          },
+          {
+            "family": "LightGBM",
+            "params": {
+              "n_estimators": 60,
+              "class_weight": null
+            },
+            "temperature": 0.75,
+            "inner_accuracy": 0.48148148148148145,
+            "inner_log_loss": 1.034521307394881,
+            "inner_rows": 378,
+            "training_rows": 1218
+          }
+        ]
+      },
+      {
+        "fold": 7,
+        "train_rows_pooled": 10935,
+        "train_rows_single": 1218,
+        "test_rows": 123,
+        "pooled": [
+          {
+            "family": "Logistic",
+            "params": {
+              "C": 0.003,
+              "class_weight": null
+            },
+            "temperature": 1.0,
+            "inner_accuracy": 0.44961697112551563,
+            "inner_log_loss": 1.0599047158819992,
+            "inner_rows": 3394,
+            "training_rows": 10935
+          },
+          {
+            "family": "LightGBM",
+            "params": {
+              "n_estimators": 120,
+              "class_weight": null
+            },
+            "temperature": 1.0,
+            "inner_accuracy": 0.4213317619328226,
+            "inner_log_loss": 1.0613670054878186,
+            "inner_rows": 3394,
+            "training_rows": 10935
+          }
+        ],
+        "single": [
+          {
+            "family": "Logistic",
+            "params": {
+              "C": 0.01,
+              "class_weight": null
+            },
+            "temperature": 1.0,
+            "inner_accuracy": 0.4656084656084656,
+            "inner_log_loss": 1.0311160958933445,
+            "inner_rows": 378,
+            "training_rows": 1218
+          },
+          {
+            "family": "LightGBM",
+            "params": {
+              "n_estimators": 120,
+              "class_weight": null
+            },
+            "temperature": 1.0,
+            "inner_accuracy": 0.46825396825396826,
+            "inner_log_loss": 1.0275062003426827,
+            "inner_rows": 378,
+            "training_rows": 1218
+          }
+        ]
+      },
+      {
+        "fold": 8,
+        "train_rows_pooled": 10917,
+        "train_rows_single": 1216,
+        "test_rows": 117,
+        "pooled": [
+          {
+            "family": "Logistic",
+            "params": {
+              "C": 0.003,
+              "class_weight": null
+            },
+            "temperature": 1.0,
+            "inner_accuracy": 0.4558043606364172,
+            "inner_log_loss": 1.050274471106966,
+            "inner_rows": 3394,
+            "training_rows": 10917
+          },
+          {
+            "family": "LightGBM",
+            "params": {
+              "n_estimators": 60,
+              "class_weight": null
+            },
+            "temperature": 1.0,
+            "inner_accuracy": 0.42486741308190923,
+            "inner_log_loss": 1.0650631789970915,
+            "inner_rows": 3394,
+            "training_rows": 10917
+          }
+        ],
+        "single": [
+          {
+            "family": "Logistic",
+            "params": {
+              "C": 0.003,
+              "class_weight": null
+            },
+            "temperature": 1.0,
+            "inner_accuracy": 0.4497354497354497,
+            "inner_log_loss": 1.0412311129437215,
+            "inner_rows": 378,
+            "training_rows": 1216
+          },
+          {
+            "family": "LightGBM",
+            "params": {
+              "n_estimators": 60,
+              "class_weight": null
+            },
+            "temperature": 1.0,
+            "inner_accuracy": 0.42328042328042326,
+            "inner_log_loss": 1.0434992723843606,
+            "inner_rows": 378,
+            "training_rows": 1216
+          }
+        ]
+      },
+      {
+        "fold": 9,
+        "train_rows_pooled": 10879,
+        "train_rows_single": 1213,
+        "test_rows": 107,
+        "pooled": [
+          {
+            "family": "Logistic",
+            "params": {
+              "C": 0.003,
+              "class_weight": null
+            },
+            "temperature": 1.0,
+            "inner_accuracy": 0.43880861102919494,
+            "inner_log_loss": 1.053824223216286,
+            "inner_rows": 3391,
+            "training_rows": 10879
+          },
+          {
+            "family": "LightGBM",
+            "params": {
+              "n_estimators": 120,
+              "class_weight": null
+            },
+            "temperature": 1.0,
+            "inner_accuracy": 0.4234739015039811,
+            "inner_log_loss": 1.064199387667287,
+            "inner_rows": 3391,
+            "training_rows": 10879
+          }
+        ],
+        "single": [
+          {
+            "family": "Logistic",
+            "params": {
+              "C": 0.003,
+              "class_weight": null
+            },
+            "temperature": 1.0,
+            "inner_accuracy": 0.43915343915343913,
+            "inner_log_loss": 1.040505566355457,
+            "inner_rows": 378,
+            "training_rows": 1213
+          },
+          {
+            "family": "LightGBM",
+            "params": {
+              "n_estimators": 120,
+              "class_weight": null
+            },
+            "temperature": 1.0,
+            "inner_accuracy": 0.4365079365079365,
+            "inner_log_loss": 1.038377677328848,
+            "inner_rows": 378,
+            "training_rows": 1213
+          }
+        ]
+      },
+      {
+        "fold": 10,
+        "train_rows_pooled": 10726,
+        "train_rows_single": 1196,
+        "test_rows": 120,
+        "pooled": [
+          {
+            "family": "Logistic",
+            "params": {
+              "C": 0.003,
+              "class_weight": null
+            },
+            "temperature": 1.0,
+            "inner_accuracy": 0.4567974048953111,
+            "inner_log_loss": 1.0446853870480959,
+            "inner_rows": 3391,
+            "training_rows": 10726
+          },
+          {
+            "family": "LightGBM",
+            "params": {
+              "n_estimators": 120,
+              "class_weight": null
+            },
+            "temperature": 1.0,
+            "inner_accuracy": 0.43084635800648774,
+            "inner_log_loss": 1.0599653223079764,
+            "inner_rows": 3391,
+            "training_rows": 10726
+          }
+        ],
+        "single": [
+          {
+            "family": "Logistic",
+            "params": {
+              "C": 0.003,
+              "class_weight": null
+            },
+            "temperature": 1.5,
+            "inner_accuracy": 0.40476190476190477,
+            "inner_log_loss": 1.0537218821170182,
+            "inner_rows": 378,
+            "training_rows": 1196
+          },
+          {
+            "family": "LightGBM",
+            "params": {
+              "n_estimators": 60,
+              "class_weight": "balanced"
+            },
+            "temperature": 1.0,
+            "inner_accuracy": 0.4497354497354497,
+            "inner_log_loss": 1.0538691025346207,
+            "inner_rows": 378,
+            "training_rows": 1196
+          }
+        ]
+      },
+      {
+        "fold": 11,
+        "train_rows_pooled": 10699,
+        "train_rows_single": 1193,
+        "test_rows": 49,
+        "pooled": [
+          {
+            "family": "Logistic",
+            "params": {
+              "C": 0.003,
+              "class_weight": null
+            },
+            "temperature": 1.5,
+            "inner_accuracy": 0.43497493364789147,
+            "inner_log_loss": 1.076573818897815,
+            "inner_rows": 3391,
+            "training_rows": 10699
+          },
+          {
+            "family": "LightGBM",
+            "params": {
+              "n_estimators": 120,
+              "class_weight": null
+            },
+            "temperature": 1.0,
+            "inner_accuracy": 0.4473606605721026,
+            "inner_log_loss": 1.0559265900112271,
+            "inner_rows": 3391,
+            "training_rows": 10699
+          }
+        ],
+        "single": [
+          {
+            "family": "Logistic",
+            "params": {
+              "C": 0.003,
+              "class_weight": null
+            },
+            "temperature": 1.5,
+            "inner_accuracy": 0.3941798941798942,
+            "inner_log_loss": 1.0690021329353292,
+            "inner_rows": 378,
+            "training_rows": 1193
+          },
+          {
+            "family": "LightGBM",
+            "params": {
+              "n_estimators": 60,
+              "class_weight": "balanced"
+            },
+            "temperature": 1.0,
+            "inner_accuracy": 0.42592592592592593,
+            "inner_log_loss": 1.0589499046007875,
+            "inner_rows": 378,
+            "training_rows": 1193
+          }
+        ]
+      }
+    ],
+    "comparisons": [
+      {
+        "target": "samsung",
+        "comparison": "pooled+해외 − 대표(No macro ensemble)",
+        "metric": "balanced_accuracy",
+        "delta": -0.009942223346828538,
+        "ci_low": -0.03318334702799404,
+        "ci_high": 0.01526103559581425,
+        "common_n": 1362,
+        "verdict": "동률(CI가 0 포함)"
+      },
+      {
+        "target": "samsung",
+        "comparison": "pooled+해외 − 대표(No macro ensemble)",
+        "metric": "log_loss",
+        "delta": 0.00962829997589143,
+        "ci_low": -0.00010844591778145782,
+        "ci_high": 0.019554739821746006,
+        "common_n": 1362,
+        "verdict": "동률(CI가 0 포함)"
+      },
+      {
+        "target": "samsung",
+        "comparison": "pooled+해외 − 대표(No macro ensemble)",
+        "metric": "accuracy",
+        "delta": -0.0051395007342144305,
+        "ci_low": -0.028760140775791018,
+        "ci_high": 0.020409655090106178,
+        "common_n": 1362,
+        "verdict": "동률(CI가 0 포함)"
+      },
+      {
+        "target": "samsung",
+        "comparison": "단독+해외 − 대표(No macro ensemble)",
+        "metric": "balanced_accuracy",
+        "delta": -0.004213991915845927,
+        "ci_low": -0.023145837167571452,
+        "ci_high": 0.015084090708571092,
+        "common_n": 1362,
+        "verdict": "동률(CI가 0 포함)"
+      },
+      {
+        "target": "samsung",
+        "comparison": "단독+해외 − 대표(No macro ensemble)",
+        "metric": "log_loss",
+        "delta": 0.007412485862495322,
+        "ci_low": 0.0016717825321480473,
+        "ci_high": 0.013674989262854431,
+        "common_n": 1362,
+        "verdict": "후보가 유의하게 열위"
+      },
+      {
+        "target": "samsung",
+        "comparison": "단독+해외 − 대표(No macro ensemble)",
+        "metric": "accuracy",
+        "delta": -0.004405286343612369,
+        "ci_low": -0.02352962154904755,
+        "ci_high": 0.015408323737243698,
+        "common_n": 1362,
+        "verdict": "동률(CI가 0 포함)"
+      },
+      {
+        "target": "samsung",
+        "comparison": "pooled+해외 − 단독+해외(같은 입력)",
+        "metric": "balanced_accuracy",
+        "delta": -0.005728231430982611,
+        "ci_low": -0.028698369916488976,
+        "ci_high": 0.0182533248939169,
+        "common_n": 1362,
+        "verdict": "동률(CI가 0 포함)"
+      },
+      {
+        "target": "samsung",
+        "comparison": "pooled+해외 − 단독+해외(같은 입력)",
+        "metric": "log_loss",
+        "delta": 0.0022158141133961085,
+        "ci_low": -0.0071729042999425455,
+        "ci_high": 0.011169658962718874,
+        "common_n": 1362,
+        "verdict": "동률(CI가 0 포함)"
+      },
+      {
+        "target": "samsung",
+        "comparison": "pooled+해외 − 단독+해외(같은 입력)",
+        "metric": "accuracy",
+        "delta": -0.0007342143906020615,
+        "ci_low": -0.024673694539847194,
+        "ci_high": 0.023585806281487987,
+        "common_n": 1362,
+        "verdict": "동률(CI가 0 포함)"
+      },
+      {
+        "target": "samsung",
+        "comparison": "pooled+해외 − 사전확률",
+        "metric": "balanced_accuracy",
+        "delta": 0.09436658752597749,
+        "ci_low": 0.06877395611711033,
+        "ci_high": 0.11848581072665598,
+        "common_n": 1362,
+        "verdict": "후보가 유의하게 우위"
+      },
+      {
+        "target": "samsung",
+        "comparison": "pooled+해외 − 사전확률",
+        "metric": "log_loss",
+        "delta": -0.058084954064124616,
+        "ci_low": -0.07344232785968259,
+        "ci_high": -0.043608437737329746,
+        "common_n": 1362,
+        "verdict": "후보가 유의하게 우위"
+      },
+      {
+        "target": "samsung",
+        "comparison": "pooled+해외 − 사전확률",
+        "metric": "accuracy",
+        "delta": 0.17254038179148307,
+        "ci_low": 0.13021261188723438,
+        "ci_high": 0.21525327296695806,
+        "common_n": 1362,
+        "verdict": "후보가 유의하게 우위"
+      }
+    ],
+    "selective": [
+      {
+        "target": "samsung",
+        "model": "panel pooled + foreign",
+        "threshold": "none",
+        "selected": 1362,
+        "total": 1362,
+        "coverage": 1.0,
+        "selected_accuracy": 0.4544787077826725,
+        "overall_accuracy": 0.4544787077826725
+      },
+      {
+        "target": "samsung",
+        "model": "panel pooled + foreign",
+        "threshold": "0.5",
+        "selected": 239,
+        "total": 1362,
+        "coverage": 0.17547723935389134,
+        "selected_accuracy": 0.7364016736401674,
+        "overall_accuracy": 0.4544787077826725
+      },
+      {
+        "target": "samsung",
+        "model": "panel pooled + foreign",
+        "threshold": "0.6",
+        "selected": 59,
+        "total": 1362,
+        "coverage": 0.04331864904552129,
+        "selected_accuracy": 0.8135593220338984,
+        "overall_accuracy": 0.4544787077826725
+      },
+      {
+        "target": "samsung",
+        "model": "panel pooled + foreign",
+        "threshold": "0.7",
+        "selected": 13,
+        "total": 1362,
+        "coverage": 0.009544787077826725,
+        "selected_accuracy": 1.0,
+        "overall_accuracy": 0.4544787077826725
+      },
+      {
+        "target": "samsung",
+        "model": "panel single + foreign",
+        "threshold": "none",
+        "selected": 1362,
+        "total": 1362,
+        "coverage": 1.0,
+        "selected_accuracy": 0.4552129221732746,
+        "overall_accuracy": 0.4552129221732746
+      },
+      {
+        "target": "samsung",
+        "model": "panel single + foreign",
+        "threshold": "0.5",
+        "selected": 293,
+        "total": 1362,
+        "coverage": 0.21512481644640236,
+        "selected_accuracy": 0.6450511945392492,
+        "overall_accuracy": 0.4552129221732746
+      },
+      {
+        "target": "samsung",
+        "model": "panel single + foreign",
+        "threshold": "0.6",
+        "selected": 77,
+        "total": 1362,
+        "coverage": 0.0565345080763583,
+        "selected_accuracy": 0.7662337662337663,
+        "overall_accuracy": 0.4552129221732746
+      },
+      {
+        "target": "samsung",
+        "model": "panel single + foreign",
+        "threshold": "0.7",
+        "selected": 22,
+        "total": 1362,
+        "coverage": 0.016152716593245228,
+        "selected_accuracy": 0.7727272727272727,
+        "overall_accuracy": 0.4552129221732746
+      },
+      {
+        "target": "samsung",
+        "model": "No macro ensemble",
+        "threshold": "none",
+        "selected": 1362,
+        "total": 1362,
+        "coverage": 1.0,
+        "selected_accuracy": 0.45961820851688695,
+        "overall_accuracy": 0.45961820851688695
+      },
+      {
+        "target": "samsung",
+        "model": "No macro ensemble",
+        "threshold": "0.5",
+        "selected": 309,
+        "total": 1362,
+        "coverage": 0.22687224669603523,
+        "selected_accuracy": 0.6828478964401294,
+        "overall_accuracy": 0.45961820851688695
+      },
+      {
+        "target": "samsung",
+        "model": "No macro ensemble",
+        "threshold": "0.6",
+        "selected": 74,
+        "total": 1362,
+        "coverage": 0.05433186490455213,
+        "selected_accuracy": 0.7972972972972973,
+        "overall_accuracy": 0.45961820851688695
+      },
+      {
+        "target": "samsung",
+        "model": "No macro ensemble",
+        "threshold": "0.7",
+        "selected": 16,
+        "total": 1362,
+        "coverage": 0.011747430249632892,
+        "selected_accuracy": 0.875,
+        "overall_accuracy": 0.45961820851688695
+      }
+    ],
+    "survivorship_note": "목록은 2026-09-10 상장 종목이므로 과거로 적용하면 생존 편향이 있다. 종목 수 증가는 독립 날짜 표본 증가가 아니다.",
+    "note": "대표 모델은 재학습하지 않고 노트북 OOF 확률을 재사용. 세 모델 모두 같은 날짜·같은 공식 라벨로 채점."
+  },
+  "sk_hynix": {
+    "selection_date": "2026-09-10",
+    "instruments": [
+      "000660.KS",
+      "000990.KS",
+      "005290.KQ",
+      "005930.KS",
+      "036930.KQ",
+      "039030.KQ",
+      "042700.KS",
+      "058470.KQ",
+      "095340.KQ"
+    ],
+    "excluded": {
+      "403870.KS": "HPSP: 첫 거래일 2022-07-15 > 2015-01-01",
+      "240810.KQ": "원익IPS: 첫 거래일 2016-05-02 > 2015-01-01",
+      "357780.KQ": "솔브레인: 첫 거래일 2020-08-06 > 2015-01-01"
+    },
+    "rows": 24789,
+    "rows_before_dropna": 25590,
+    "leaky_rows_dropped": 19,
+    "fabricated_rows": 0,
+    "features": [
+      "ret_1",
+      "ret_2",
+      "ret_3",
+      "mom_5",
+      "mom_10",
+      "mom_20",
+      "vol_20",
+      "vol_ratio",
+      "ma50_gap",
+      "turnover_ratio_20",
+      "inst_000660_KS",
+      "inst_000990_KS",
+      "inst_005290_KQ",
+      "inst_005930_KS",
+      "inst_036930_KQ",
+      "inst_039030_KQ",
+      "inst_042700_KS",
+      "inst_058470_KQ",
+      "inst_095340_KQ",
+      "kospi_ret_1",
+      "kospi_ret_5",
+      "kospi_vol_20",
+      "sox_ret_1",
+      "sox_ret_5",
+      "nasdaq_ret_1",
+      "nasdaq_ret_5",
+      "sp500_ret_1",
+      "sp500_ret_5",
+      "micron_ret_1",
+      "micron_ret_5",
+      "nvidia_ret_1",
+      "nvidia_ret_5",
+      "tsmc_adr_ret_1",
+      "tsmc_adr_ret_5",
+      "korea_etf_ret_1",
+      "korea_etf_ret_5",
+      "usdkrw_ret_1",
+      "usdkrw_ret_5",
+      "usdkrw_level_z60",
+      "dxy_ret_1",
+      "dxy_ret_5",
+      "dxy_level_z60",
+      "vix_ret_1",
+      "vix_ret_5",
+      "vix_level_z60",
+      "us10y_ret_1",
+      "us10y_ret_5",
+      "us10y_level_z60",
+      "wti_ret_1",
+      "wti_ret_5",
+      "wti_level_z60",
+      "usdjpy_ret_1",
+      "usdjpy_ret_5",
+      "vxn_ret_1",
+      "vxn_ret_5",
+      "krwjpy_ret_1",
+      "krwjpy_ret_20",
+      "krwjpy_level_z60",
+      "cal_dow",
+      "cal_is_monday",
+      "cal_is_friday",
+      "cal_month_end"
+    ],
+    "common_features": [
+      "kospi_ret_1",
+      "kospi_ret_5",
+      "kospi_vol_20",
+      "sox_ret_1",
+      "sox_ret_5",
+      "nasdaq_ret_1",
+      "nasdaq_ret_5",
+      "sp500_ret_1",
+      "sp500_ret_5",
+      "micron_ret_1",
+      "micron_ret_5",
+      "nvidia_ret_1",
+      "nvidia_ret_5",
+      "tsmc_adr_ret_1",
+      "tsmc_adr_ret_5",
+      "korea_etf_ret_1",
+      "korea_etf_ret_5",
+      "usdkrw_ret_1",
+      "usdkrw_ret_5",
+      "usdkrw_level_z60",
+      "dxy_ret_1",
+      "dxy_ret_5",
+      "dxy_level_z60",
+      "vix_ret_1",
+      "vix_ret_5",
+      "vix_level_z60",
+      "us10y_ret_1",
+      "us10y_ret_5",
+      "us10y_level_z60",
+      "wti_ret_1",
+      "wti_ret_5",
+      "wti_level_z60",
+      "usdjpy_ret_1",
+      "usdjpy_ret_5",
+      "vxn_ret_1",
+      "vxn_ret_5",
+      "krwjpy_ret_1",
+      "krwjpy_ret_20",
+      "krwjpy_level_z60",
+      "cal_dow",
+      "cal_is_monday",
+      "cal_is_friday",
+      "cal_month_end"
+    ],
+    "panel_features": [
+      "ret_1",
+      "ret_2",
+      "ret_3",
+      "mom_5",
+      "mom_10",
+      "mom_20",
+      "vol_20",
+      "vol_ratio",
+      "ma50_gap",
+      "turnover_ratio_20"
+    ],
+    "headline_model": "No macro ensemble",
+    "issue_min_prob": 0.5,
+    "common_evaluation_days": 1357,
+    "label_agreement_target_rows": 1.0,
+    "timing_seconds": {
+      "pooled": 97.29671597480774,
+      "single": 33.49406290054321
+    },
+    "fold_choices": [
+      {
+        "fold": 0,
+        "train_rows_pooled": 10844,
+        "train_rows_single": 1208,
+        "test_rows": 123,
+        "pooled": [
+          {
+            "family": "Logistic",
+            "params": {
+              "C": 0.003,
+              "class_weight": null
+            },
+            "temperature": 2.0,
+            "inner_accuracy": 0.41119293078055963,
+            "inner_log_loss": 1.096344835778213,
+            "inner_rows": 3395,
+            "training_rows": 10844
+          },
+          {
+            "family": "LightGBM",
+            "params": {
+              "n_estimators": 60,
+              "class_weight": null
+            },
+            "temperature": 1.0,
+            "inner_accuracy": 0.41384388807069217,
+            "inner_log_loss": 1.0739396407582924,
+            "inner_rows": 3395,
+            "training_rows": 10844
+          }
+        ],
+        "single": [
+          {
+            "family": "Logistic",
+            "params": {
+              "C": 0.003,
+              "class_weight": null
+            },
+            "temperature": 1.5,
+            "inner_accuracy": 0.47619047619047616,
+            "inner_log_loss": 1.0661394219773743,
+            "inner_rows": 378,
+            "training_rows": 1208
+          },
+          {
+            "family": "LightGBM",
+            "params": {
+              "n_estimators": 60,
+              "class_weight": null
+            },
+            "temperature": 1.0,
+            "inner_accuracy": 0.48148148148148145,
+            "inner_log_loss": 1.034590710189785,
+            "inner_rows": 378,
+            "training_rows": 1208
+          }
+        ]
+      },
+      {
+        "fold": 1,
+        "train_rows_pooled": 10862,
+        "train_rows_single": 1210,
+        "test_rows": 125,
+        "pooled": [
+          {
+            "family": "Logistic",
+            "params": {
+              "C": 0.003,
+              "class_weight": null
+            },
+            "temperature": 2.0,
+            "inner_accuracy": 0.409720176730486,
+            "inner_log_loss": 1.107190845583213,
+            "inner_rows": 3395,
+            "training_rows": 10862
+          },
+          {
+            "family": "LightGBM",
+            "params": {
+              "n_estimators": 120,
+              "class_weight": null
+            },
+            "temperature": 1.0,
+            "inner_accuracy": 0.41148748159057436,
+            "inner_log_loss": 1.0695566413724849,
+            "inner_rows": 3395,
+            "training_rows": 10862
+          }
+        ],
+        "single": [
+          {
+            "family": "Logistic",
+            "params": {
+              "C": 0.003,
+              "class_weight": null
+            },
+            "temperature": 1.5,
+            "inner_accuracy": 0.48148148148148145,
+            "inner_log_loss": 1.0745831451032677,
+            "inner_rows": 378,
+            "training_rows": 1210
+          },
+          {
+            "family": "LightGBM",
+            "params": {
+              "n_estimators": 60,
+              "class_weight": null
+            },
+            "temperature": 1.0,
+            "inner_accuracy": 0.46296296296296297,
+            "inner_log_loss": 1.0537240619717898,
+            "inner_rows": 378,
+            "training_rows": 1210
+          }
+        ]
+      },
+      {
+        "fold": 2,
+        "train_rows_pooled": 10844,
+        "train_rows_single": 1208,
+        "test_rows": 103,
+        "pooled": [
+          {
+            "family": "Logistic",
+            "params": {
+              "C": 0.003,
+              "class_weight": null
+            },
+            "temperature": 1.5,
+            "inner_accuracy": 0.4097589653145209,
+            "inner_log_loss": 1.0847061414451393,
+            "inner_rows": 3402,
+            "training_rows": 10844
+          },
+          {
+            "family": "LightGBM",
+            "params": {
+              "n_estimators": 60,
+              "class_weight": null
+            },
+            "temperature": 1.0,
+            "inner_accuracy": 0.4091710758377425,
+            "inner_log_loss": 1.078493342129946,
+            "inner_rows": 3402,
+            "training_rows": 10844
+          }
+        ],
+        "single": [
+          {
+            "family": "Logistic",
+            "params": {
+              "C": 0.003,
+              "class_weight": null
+            },
+            "temperature": 1.0,
+            "inner_accuracy": 0.4365079365079365,
+            "inner_log_loss": 1.057827572782426,
+            "inner_rows": 378,
+            "training_rows": 1208
+          },
+          {
+            "family": "LightGBM",
+            "params": {
+              "n_estimators": 60,
+              "class_weight": null
+            },
+            "temperature": 1.5,
+            "inner_accuracy": 0.4444444444444444,
+            "inner_log_loss": 1.0757745361598867,
+            "inner_rows": 378,
+            "training_rows": 1208
+          }
+        ]
+      },
+      {
+        "fold": 3,
+        "train_rows_pooled": 10722,
+        "train_rows_single": 1193,
+        "test_rows": 125,
+        "pooled": [
+          {
+            "family": "Logistic",
+            "params": {
+              "C": 0.003,
+              "class_weight": "balanced"
+            },
+            "temperature": 1.0,
+            "inner_accuracy": 0.4536483253588517,
+            "inner_log_loss": 1.0547681718085704,
+            "inner_rows": 3344,
+            "training_rows": 10722
+          },
+          {
+            "family": "LightGBM",
+            "params": {
+              "n_estimators": 120,
+              "class_weight": null
+            },
+            "temperature": 1.0,
+            "inner_accuracy": 0.43480861244019137,
+            "inner_log_loss": 1.0588867725151094,
+            "inner_rows": 3344,
+            "training_rows": 10722
+          }
+        ],
+        "single": [
+          {
+            "family": "Logistic",
+            "params": {
+              "C": 0.01,
+              "class_weight": null
+            },
+            "temperature": 1.0,
+            "inner_accuracy": 0.48677248677248675,
+            "inner_log_loss": 1.0348792856668365,
+            "inner_rows": 378,
+            "training_rows": 1193
+          },
+          {
+            "family": "LightGBM",
+            "params": {
+              "n_estimators": 60,
+              "class_weight": null
+            },
+            "temperature": 1.0,
+            "inner_accuracy": 0.4603174603174603,
+            "inner_log_loss": 1.0567650369632657,
+            "inner_rows": 378,
+            "training_rows": 1193
+          }
+        ]
+      },
+      {
+        "fold": 4,
+        "train_rows_pooled": 10921,
+        "train_rows_single": 1215,
+        "test_rows": 123,
+        "pooled": [
+          {
+            "family": "Logistic",
+            "params": {
+              "C": 0.003,
+              "class_weight": null
+            },
+            "temperature": 1.0,
+            "inner_accuracy": 0.47996411483253587,
+            "inner_log_loss": 1.0319614303763809,
+            "inner_rows": 3344,
+            "training_rows": 10921
+          },
+          {
+            "family": "LightGBM",
+            "params": {
+              "n_estimators": 120,
+              "class_weight": null
+            },
+            "temperature": 1.0,
+            "inner_accuracy": 0.45873205741626794,
+            "inner_log_loss": 1.0457655622090034,
+            "inner_rows": 3344,
+            "training_rows": 10921
+          }
+        ],
+        "single": [
+          {
+            "family": "Logistic",
+            "params": {
+              "C": 0.01,
+              "class_weight": null
+            },
+            "temperature": 1.0,
+            "inner_accuracy": 0.4708994708994709,
+            "inner_log_loss": 1.0153915315874218,
+            "inner_rows": 378,
+            "training_rows": 1215
+          },
+          {
+            "family": "LightGBM",
+            "params": {
+              "n_estimators": 60,
+              "class_weight": null
+            },
+            "temperature": 1.0,
+            "inner_accuracy": 0.4497354497354497,
+            "inner_log_loss": 1.046526926437907,
+            "inner_rows": 378,
+            "training_rows": 1215
+          }
+        ]
+      },
+      {
+        "fold": 5,
+        "train_rows_pooled": 10933,
+        "train_rows_single": 1216,
+        "test_rows": 121,
+        "pooled": [
+          {
+            "family": "Logistic",
+            "params": {
+              "C": 0.003,
+              "class_weight": null
+            },
+            "temperature": 1.0,
+            "inner_accuracy": 0.47577751196172247,
+            "inner_log_loss": 1.0364322886821904,
+            "inner_rows": 3344,
+            "training_rows": 10933
+          },
+          {
+            "family": "LightGBM",
+            "params": {
+              "n_estimators": 120,
+              "class_weight": null
+            },
+            "temperature": 1.0,
+            "inner_accuracy": 0.4602272727272727,
+            "inner_log_loss": 1.0438971935949346,
+            "inner_rows": 3344,
+            "training_rows": 10933
+          }
+        ],
+        "single": [
+          {
+            "family": "Logistic",
+            "params": {
+              "C": 0.01,
+              "class_weight": null
+            },
+            "temperature": 1.0,
+            "inner_accuracy": 0.4708994708994709,
+            "inner_log_loss": 1.0256922238332407,
+            "inner_rows": 378,
+            "training_rows": 1216
+          },
+          {
+            "family": "LightGBM",
+            "params": {
+              "n_estimators": 60,
+              "class_weight": "balanced"
+            },
+            "temperature": 0.75,
+            "inner_accuracy": 0.4603174603174603,
+            "inner_log_loss": 1.0341351569101254,
+            "inner_rows": 378,
+            "training_rows": 1216
+          }
+        ]
+      },
+      {
+        "fold": 6,
+        "train_rows_pooled": 10925,
+        "train_rows_single": 1216,
+        "test_rows": 121,
+        "pooled": [
+          {
+            "family": "Logistic",
+            "params": {
+              "C": 0.003,
+              "class_weight": null
+            },
+            "temperature": 1.0,
+            "inner_accuracy": 0.4655274012964054,
+            "inner_log_loss": 1.0465575913326333,
+            "inner_rows": 3394,
+            "training_rows": 10925
+          },
+          {
+            "family": "LightGBM",
+            "params": {
+              "n_estimators": 120,
+              "class_weight": null
+            },
+            "temperature": 0.75,
+            "inner_accuracy": 0.44755450795521506,
+            "inner_log_loss": 1.0511355201021058,
+            "inner_rows": 3394,
+            "training_rows": 10925
+          }
+        ],
+        "single": [
+          {
+            "family": "Logistic",
+            "params": {
+              "C": 0.01,
+              "class_weight": null
+            },
+            "temperature": 1.0,
+            "inner_accuracy": 0.4656084656084656,
+            "inner_log_loss": 1.0434820367791227,
+            "inner_rows": 378,
+            "training_rows": 1216
+          },
+          {
+            "family": "LightGBM",
+            "params": {
+              "n_estimators": 60,
+              "class_weight": "balanced"
+            },
+            "temperature": 0.75,
+            "inner_accuracy": 0.4470899470899471,
+            "inner_log_loss": 1.0395584561300304,
+            "inner_rows": 378,
+            "training_rows": 1216
+          }
+        ]
+      },
+      {
+        "fold": 7,
+        "train_rows_pooled": 10925,
+        "train_rows_single": 1216,
+        "test_rows": 123,
+        "pooled": [
+          {
+            "family": "Logistic",
+            "params": {
+              "C": 0.003,
+              "class_weight": null
+            },
+            "temperature": 1.0,
+            "inner_accuracy": 0.4510901591043017,
+            "inner_log_loss": 1.0599814185615226,
+            "inner_rows": 3394,
+            "training_rows": 10925
+          },
+          {
+            "family": "LightGBM",
+            "params": {
+              "n_estimators": 120,
+              "class_weight": null
+            },
+            "temperature": 1.0,
+            "inner_accuracy": 0.4257513258691809,
+            "inner_log_loss": 1.0619040675049867,
+            "inner_rows": 3394,
+            "training_rows": 10925
+          }
+        ],
+        "single": [
+          {
+            "family": "Logistic",
+            "params": {
+              "C": 0.01,
+              "class_weight": null
+            },
+            "temperature": 1.0,
+            "inner_accuracy": 0.4947089947089947,
+            "inner_log_loss": 1.0387457065561037,
+            "inner_rows": 378,
+            "training_rows": 1216
+          },
+          {
+            "family": "LightGBM",
+            "params": {
+              "n_estimators": 60,
+              "class_weight": null
+            },
+            "temperature": 1.0,
+            "inner_accuracy": 0.47883597883597884,
+            "inner_log_loss": 1.0425079968269677,
+            "inner_rows": 378,
+            "training_rows": 1216
+          }
+        ]
+      },
+      {
+        "fold": 8,
+        "train_rows_pooled": 10907,
+        "train_rows_single": 1214,
+        "test_rows": 117,
+        "pooled": [
+          {
+            "family": "Logistic",
+            "params": {
+              "C": 0.003,
+              "class_weight": null
+            },
+            "temperature": 1.0,
+            "inner_accuracy": 0.45197407189157335,
+            "inner_log_loss": 1.0508053172369178,
+            "inner_rows": 3394,
+            "training_rows": 10907
+          },
+          {
+            "family": "LightGBM",
+            "params": {
+              "n_estimators": 60,
+              "class_weight": null
+            },
+            "temperature": 1.0,
+            "inner_accuracy": 0.4222156747200943,
+            "inner_log_loss": 1.067507443965332,
+            "inner_rows": 3394,
+            "training_rows": 10907
+          }
+        ],
+        "single": [
+          {
+            "family": "Logistic",
+            "params": {
+              "C": 0.01,
+              "class_weight": null
+            },
+            "temperature": 1.0,
+            "inner_accuracy": 0.5052910052910053,
+            "inner_log_loss": 1.0197986248346154,
+            "inner_rows": 378,
+            "training_rows": 1214
+          },
+          {
+            "family": "LightGBM",
+            "params": {
+              "n_estimators": 60,
+              "class_weight": null
+            },
+            "temperature": 0.75,
+            "inner_accuracy": 0.5105820105820106,
+            "inner_log_loss": 1.0258205314882225,
+            "inner_rows": 378,
+            "training_rows": 1214
+          }
+        ]
+      },
+      {
+        "fold": 9,
+        "train_rows_pooled": 10867,
+        "train_rows_single": 1210,
+        "test_rows": 107,
+        "pooled": [
+          {
+            "family": "Logistic",
+            "params": {
+              "C": 0.003,
+              "class_weight": null
+            },
+            "temperature": 1.0,
+            "inner_accuracy": 0.44116779710999704,
+            "inner_log_loss": 1.0540748609007442,
+            "inner_rows": 3391,
+            "training_rows": 10867
+          },
+          {
+            "family": "LightGBM",
+            "params": {
+              "n_estimators": 120,
+              "class_weight": null
+            },
+            "temperature": 1.0,
+            "inner_accuracy": 0.4193453258625774,
+            "inner_log_loss": 1.0653225228011194,
+            "inner_rows": 3391,
+            "training_rows": 10867
+          }
+        ],
+        "single": [
+          {
+            "family": "Logistic",
+            "params": {
+              "C": 0.003,
+              "class_weight": null
+            },
+            "temperature": 0.75,
+            "inner_accuracy": 0.4894179894179894,
+            "inner_log_loss": 1.0097141248042611,
+            "inner_rows": 378,
+            "training_rows": 1210
+          },
+          {
+            "family": "LightGBM",
+            "params": {
+              "n_estimators": 60,
+              "class_weight": null
+            },
+            "temperature": 1.0,
+            "inner_accuracy": 0.4947089947089947,
+            "inner_log_loss": 1.034323285146871,
+            "inner_rows": 378,
+            "training_rows": 1210
+          }
+        ]
+      },
+      {
+        "fold": 10,
+        "train_rows_pooled": 10714,
+        "train_rows_single": 1193,
+        "test_rows": 120,
+        "pooled": [
+          {
+            "family": "Logistic",
+            "params": {
+              "C": 0.003,
+              "class_weight": null
+            },
+            "temperature": 1.0,
+            "inner_accuracy": 0.45650250663521086,
+            "inner_log_loss": 1.044618427840474,
+            "inner_rows": 3391,
+            "training_rows": 10714
+          },
+          {
+            "family": "LightGBM",
+            "params": {
+              "n_estimators": 120,
+              "class_weight": null
+            },
+            "temperature": 1.0,
+            "inner_accuracy": 0.4346800353877912,
+            "inner_log_loss": 1.0609018954439413,
+            "inner_rows": 3391,
+            "training_rows": 10714
+          }
+        ],
+        "single": [
+          {
+            "family": "Logistic",
+            "params": {
+              "C": 0.01,
+              "class_weight": null
+            },
+            "temperature": 1.0,
+            "inner_accuracy": 0.47354497354497355,
+            "inner_log_loss": 1.0012017831054147,
+            "inner_rows": 378,
+            "training_rows": 1193
+          },
+          {
+            "family": "LightGBM",
+            "params": {
+              "n_estimators": 60,
+              "class_weight": null
+            },
+            "temperature": 1.0,
+            "inner_accuracy": 0.4973544973544973,
+            "inner_log_loss": 1.0310357549716158,
+            "inner_rows": 378,
+            "training_rows": 1193
+          }
+        ]
+      },
+      {
+        "fold": 11,
+        "train_rows_pooled": 10687,
+        "train_rows_single": 1190,
+        "test_rows": 49,
+        "pooled": [
+          {
+            "family": "Logistic",
+            "params": {
+              "C": 0.003,
+              "class_weight": null
+            },
+            "temperature": 2.0,
+            "inner_accuracy": 0.43438513712769095,
+            "inner_log_loss": 1.0773149309401866,
+            "inner_rows": 3391,
+            "training_rows": 10687
+          },
+          {
+            "family": "LightGBM",
+            "params": {
+              "n_estimators": 120,
+              "class_weight": null
+            },
+            "temperature": 1.0,
+            "inner_accuracy": 0.4420524918902978,
+            "inner_log_loss": 1.0544673765175399,
+            "inner_rows": 3391,
+            "training_rows": 10687
+          }
+        ],
+        "single": [
+          {
+            "family": "Logistic",
+            "params": {
+              "C": 0.003,
+              "class_weight": null
+            },
+            "temperature": 1.0,
+            "inner_accuracy": 0.48148148148148145,
+            "inner_log_loss": 1.0186710149505325,
+            "inner_rows": 378,
+            "training_rows": 1190
+          },
+          {
+            "family": "LightGBM",
+            "params": {
+              "n_estimators": 60,
+              "class_weight": null
+            },
+            "temperature": 1.0,
+            "inner_accuracy": 0.5079365079365079,
+            "inner_log_loss": 1.019137924740363,
+            "inner_rows": 378,
+            "training_rows": 1190
+          }
+        ]
+      }
+    ],
+    "comparisons": [
+      {
+        "target": "sk_hynix",
+        "comparison": "pooled+해외 − 대표(No macro ensemble)",
+        "metric": "balanced_accuracy",
+        "delta": -0.005026978312986152,
+        "ci_low": -0.027440250509756958,
+        "ci_high": 0.017980922476430655,
+        "common_n": 1357,
+        "verdict": "동률(CI가 0 포함)"
+      },
+      {
+        "target": "sk_hynix",
+        "comparison": "pooled+해외 − 대표(No macro ensemble)",
+        "metric": "log_loss",
+        "delta": 0.009664668042189017,
+        "ci_low": 0.0018695520859302928,
+        "ci_high": 0.01783270352319735,
+        "common_n": 1357,
+        "verdict": "후보가 유의하게 열위"
+      },
+      {
+        "target": "sk_hynix",
+        "comparison": "pooled+해외 − 대표(No macro ensemble)",
+        "metric": "accuracy",
+        "delta": -0.008843036109064062,
+        "ci_low": -0.02994406221417212,
+        "ci_high": 0.012632378259825073,
+        "common_n": 1357,
+        "verdict": "동률(CI가 0 포함)"
+      },
+      {
+        "target": "sk_hynix",
+        "comparison": "단독+해외 − 대표(No macro ensemble)",
+        "metric": "balanced_accuracy",
+        "delta": -0.008192133355593045,
+        "ci_low": -0.02131338159576701,
+        "ci_high": 0.005936914997289343,
+        "common_n": 1357,
+        "verdict": "동률(CI가 0 포함)"
+      },
+      {
+        "target": "sk_hynix",
+        "comparison": "단독+해외 − 대표(No macro ensemble)",
+        "metric": "log_loss",
+        "delta": 0.0005241382981142628,
+        "ci_low": -0.0051382020659062385,
+        "ci_high": 0.006182563230633504,
+        "common_n": 1357,
+        "verdict": "동률(CI가 0 포함)"
+      },
+      {
+        "target": "sk_hynix",
+        "comparison": "단독+해외 − 대표(No macro ensemble)",
+        "metric": "accuracy",
+        "delta": -0.008843036109064062,
+        "ci_low": -0.021788129226145703,
+        "ci_high": 0.00584421704735563,
+        "common_n": 1357,
+        "verdict": "동률(CI가 0 포함)"
+      },
+      {
+        "target": "sk_hynix",
+        "comparison": "pooled+해외 − 단독+해외(같은 입력)",
+        "metric": "balanced_accuracy",
+        "delta": 0.003165155042606893,
+        "ci_low": -0.018613173410604464,
+        "ci_high": 0.024890797722016342,
+        "common_n": 1357,
+        "verdict": "동률(CI가 0 포함)"
+      },
+      {
+        "target": "sk_hynix",
+        "comparison": "pooled+해외 − 단독+해외(같은 입력)",
+        "metric": "log_loss",
+        "delta": 0.009140529744074755,
+        "ci_low": 0.00013992937978155043,
+        "ci_high": 0.018102819567485676,
+        "common_n": 1357,
+        "verdict": "후보가 유의하게 열위"
+      },
+      {
+        "target": "sk_hynix",
+        "comparison": "pooled+해외 − 단독+해외(같은 입력)",
+        "metric": "accuracy",
+        "delta": 0.0,
+        "ci_low": -0.0213755921216654,
+        "ci_high": 0.020275958608681817,
+        "common_n": 1357,
+        "verdict": "동률(CI가 0 포함)"
+      },
+      {
+        "target": "sk_hynix",
+        "comparison": "pooled+해외 − 사전확률",
+        "metric": "balanced_accuracy",
+        "delta": 0.12875000788320423,
+        "ci_low": 0.10753094118978451,
+        "ci_high": 0.15055846066524425,
+        "common_n": 1357,
+        "verdict": "후보가 유의하게 우위"
+      },
+      {
+        "target": "sk_hynix",
+        "comparison": "pooled+해외 − 사전확률",
+        "metric": "log_loss",
+        "delta": -0.06769963688910763,
+        "ci_low": -0.07944643373131574,
+        "ci_high": -0.05610774896791604,
+        "common_n": 1357,
+        "verdict": "후보가 유의하게 우위"
+      },
+      {
+        "target": "sk_hynix",
+        "comparison": "pooled+해외 − 사전확률",
+        "metric": "accuracy",
+        "delta": 0.2188651436993368,
+        "ci_low": 0.1746362387652047,
+        "ci_high": 0.26229508196721313,
+        "common_n": 1357,
+        "verdict": "후보가 유의하게 우위"
+      }
+    ],
+    "selective": [
+      {
+        "target": "sk_hynix",
+        "model": "panel pooled + foreign",
+        "threshold": "none",
+        "selected": 1357,
+        "total": 1357,
+        "coverage": 1.0,
+        "selected_accuracy": 0.4922623434045689,
+        "overall_accuracy": 0.4922623434045689
+      },
+      {
+        "target": "sk_hynix",
+        "model": "panel pooled + foreign",
+        "threshold": "0.5",
+        "selected": 210,
+        "total": 1357,
+        "coverage": 0.15475313190862197,
+        "selected_accuracy": 0.7238095238095238,
+        "overall_accuracy": 0.4922623434045689
+      },
+      {
+        "target": "sk_hynix",
+        "model": "panel pooled + foreign",
+        "threshold": "0.6",
+        "selected": 50,
+        "total": 1357,
+        "coverage": 0.036845983787767135,
+        "selected_accuracy": 0.82,
+        "overall_accuracy": 0.4922623434045689
+      },
+      {
+        "target": "sk_hynix",
+        "model": "panel pooled + foreign",
+        "threshold": "0.7",
+        "selected": 11,
+        "total": 1357,
+        "coverage": 0.008106116433308769,
+        "selected_accuracy": 1.0,
+        "overall_accuracy": 0.4922623434045689
+      },
+      {
+        "target": "sk_hynix",
+        "model": "panel single + foreign",
+        "threshold": "none",
+        "selected": 1357,
+        "total": 1357,
+        "coverage": 1.0,
+        "selected_accuracy": 0.4922623434045689,
+        "overall_accuracy": 0.4922623434045689
+      },
+      {
+        "target": "sk_hynix",
+        "model": "panel single + foreign",
+        "threshold": "0.5",
+        "selected": 384,
+        "total": 1357,
+        "coverage": 0.2829771554900516,
+        "selected_accuracy": 0.6276041666666666,
+        "overall_accuracy": 0.4922623434045689
+      },
+      {
+        "target": "sk_hynix",
+        "model": "panel single + foreign",
+        "threshold": "0.6",
+        "selected": 115,
+        "total": 1357,
+        "coverage": 0.0847457627118644,
+        "selected_accuracy": 0.7391304347826086,
+        "overall_accuracy": 0.4922623434045689
+      },
+      {
+        "target": "sk_hynix",
+        "model": "panel single + foreign",
+        "threshold": "0.7",
+        "selected": 27,
+        "total": 1357,
+        "coverage": 0.01989683124539425,
+        "selected_accuracy": 0.8518518518518519,
+        "overall_accuracy": 0.4922623434045689
+      },
+      {
+        "target": "sk_hynix",
+        "model": "No macro ensemble",
+        "threshold": "none",
+        "selected": 1357,
+        "total": 1357,
+        "coverage": 1.0,
+        "selected_accuracy": 0.501105379513633,
+        "overall_accuracy": 0.501105379513633
+      },
+      {
+        "target": "sk_hynix",
+        "model": "No macro ensemble",
+        "threshold": "0.5",
+        "selected": 372,
+        "total": 1357,
+        "coverage": 0.2741341193809875,
+        "selected_accuracy": 0.6424731182795699,
+        "overall_accuracy": 0.501105379513633
+      },
+      {
+        "target": "sk_hynix",
+        "model": "No macro ensemble",
+        "threshold": "0.6",
+        "selected": 99,
+        "total": 1357,
+        "coverage": 0.07295504789977893,
+        "selected_accuracy": 0.7474747474747475,
+        "overall_accuracy": 0.501105379513633
+      },
+      {
+        "target": "sk_hynix",
+        "model": "No macro ensemble",
+        "threshold": "0.7",
+        "selected": 21,
+        "total": 1357,
+        "coverage": 0.015475313190862197,
+        "selected_accuracy": 0.9047619047619048,
+        "overall_accuracy": 0.501105379513633
+      }
+    ],
+    "survivorship_note": "목록은 2026-09-10 상장 종목이므로 과거로 적용하면 생존 편향이 있다. 종목 수 증가는 독립 날짜 표본 증가가 아니다.",
+    "note": "대표 모델은 재학습하지 않고 노트북 OOF 확률을 재사용. 세 모델 모두 같은 날짜·같은 공식 라벨로 채점."
+  }
+}

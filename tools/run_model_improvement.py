@@ -51,6 +51,7 @@ TASKS = {
     "P08": "확률 신뢰도·예측 보류 평가",
     "P09": "갭·장중 별도 학습 비교",
     "P10": "국내 관련 종목 공동 학습 기반",
+    "P10b": "해외 자산 특징을 넣은 pooled 패널 vs 대표 모델",
 }
 
 # P03에서 비교하는 특징군. 노트북이 같은 폴드·같은 날짜로 이미 계산해 CSV로 남기므로
@@ -1394,8 +1395,237 @@ def run_p10(target, mode, storage, state, run_notebook_fn=None):
     return rows
 
 
+# ---------------------------------------------------------------------------
+# P10b — 해외 자산(종목 공통) 특징을 넣은 pooled 패널 vs 대표 모델
+# ---------------------------------------------------------------------------
+PANEL_FAMILIES = ("Logistic", "LightGBM")
+PANEL_INNER_BLOCK_DATES = 126     # 노트북 fit_direction_model의 내부 검증 크기(126행 = 126일)를 날짜로 옮긴 것
+
+
+def panel_foreign_module():
+    sys.path.insert(0, str(ROOT / "experiments" / "model_improvement"))
+    import panel_foreign
+    return panel_foreign
+
+
+def issue_min_prob():
+    """보고서가 종가 방향을 내는 최소 확률. forecast_utils 값을 그대로 쓴다(없으면 0.5)."""
+    sys.path.insert(0, str(ROOT))
+    try:
+        from forecast_utils import DIRECTION_ISSUE_MIN_PROB
+        return float(DIRECTION_ISSUE_MIN_PROB)
+    except Exception:
+        return 0.5
+
+
+def fit_panel_family(ns, X, y, train_idx, row_dates, family, seed=42, selection="log_loss",
+                     block_dates=PANEL_INNER_BLOCK_DATES):
+    """노트북 fit_direction_model과 같은 후보·온도·선택 규칙. 내부 분할만 날짜 블록으로 한다.
+
+    패널은 같은 날짜에 여러 종목 행이 있으므로 행 수 기준 분할은 한 날짜를 반으로 가른다.
+    날짜 블록(126거래일)으로 나눠 같은 날짜의 행이 같은 쪽에 가게 한다. 단독(대상 종목만)
+    학습에서는 행 = 날짜이므로 노트북과 같은 분할이 된다.
+    """
+    sys.path.insert(0, str(ROOT / "experiments" / "model_improvement"))
+    import panel_foreign as pf
+    from sklearn.dummy import DummyClassifier
+
+    train_idx = np.asarray(train_idx, dtype=int)
+    xt, yt = X[train_idx], y[train_idx]
+    if family == "Logistic":
+        candidates = [{"C": c, "class_weight": w} for c in (.003, .01, .03) for w in (None, "balanced")]
+    elif family == "LightGBM":
+        candidates = [{"n_estimators": n, "class_weight": w} for n in (60, 120) for w in (None, "balanced")]
+    else:
+        raise ValueError(family)
+    splits = pf.date_block_splits(np.asarray(row_dates)[train_idx], n_splits=3, block_dates=block_dates)
+    if not splits:
+        raise ValueError("내부 검증 블록을 만들 수 없습니다(학습 날짜가 너무 적음)")
+    labels = np.concatenate([yt[va] for _, va in splits])
+    trials = []
+    for params in candidates:
+        parts = []
+        for tr, va in splits:
+            est = (ns["direction_estimator"](family, params, seed) if len(np.unique(yt[tr])) > 1
+                   else DummyClassifier(strategy="prior"))
+            est.fit(xt[tr], yt[tr])
+            parts.append(ns["aligned_probabilities"](est, xt[va]))
+        probs = np.vstack(parts)
+        trials.append((float(np.mean(probs.argmax(axis=1) == labels)), ns["probability_loss"](labels, probs),
+                       params, probs))
+    best = (min(trials, key=lambda t: (t[1], -t[0])) if selection == "log_loss"
+            else min(trials, key=lambda t: (-t[0], t[1])))
+    temperature = min((1., .75, 1.5, 2.),
+                      key=lambda t: ns["probability_loss"](labels, ns["temperature_probabilities"](best[3], t)))
+    est = (ns["direction_estimator"](family, best[2], seed) if len(np.unique(yt)) > 1
+           else DummyClassifier(strategy="prior"))
+    est.fit(xt, yt)
+    return {"estimator": est, "temperature": temperature,
+            "selection": {"family": family, "params": best[2], "temperature": temperature,
+                          "inner_accuracy": best[0], "inner_log_loss": best[1],
+                          "inner_rows": int(len(labels)), "training_rows": int(len(train_idx))}}
+
+
+def panel_ensemble(ns, X, y, train_idx, test_idx, row_dates, seed=42, selection="log_loss"):
+    """Logistic·LightGBM을 각각 적합해 확률을 평균한다(대표 모델과 같은 결합). 선택 기록도 돌려준다."""
+    probs, chosen = [], []
+    for family in PANEL_FAMILIES:
+        fitted = fit_panel_family(ns, X, y, train_idx, row_dates, family, seed=seed, selection=selection)
+        probs.append(ns["temperature_probabilities"](ns["aligned_probabilities"](fitted["estimator"], X[test_idx]),
+                                                    fitted["temperature"]))
+        chosen.append(fitted["selection"])
+    return np.mean(probs, axis=0), chosen
+
+
+def selective_rows(target, model, probs, y):
+    """P08 abstention_table을 계약 열로 옮긴다. 임계치 0.5 행이 보고서의 발행 규칙이다."""
+    return [{"target": target, "model": model, **row} for row in abstention_table(probs, y)]
+
+
+def run_p10b(target, mode, storage, state, run_notebook_fn=None):
+    """P10 패널 + 대표 모델의 종목 공통 특징(해외 자산·KOSPI·달력)으로 pooled를 학습해
+    **같은 평가 날짜·같은 정답**에서 대표 모델(No macro ensemble)과 쌍체 비교한다.
+
+    모델 후보는 셋뿐이다: pooled+해외(9종목), 단독+해외(대상 종목만, 같은 입력), 대표 모델(P00 OOF 확률
+    재사용). 대표 모델은 다시 학습하지 않는다 — 노트북이 같은 폴드에서 낸 확률을 그대로 쓴다.
+    보류 진단(최대 확률 ≥ 발행 기준)은 세 모델 모두 같은 날짜에서 낸다.
+    """
+    import time
+    sys.path.insert(0, str(ROOT / "experiments" / "model_improvement"))
+    import panel_data as pdm
+    import panel_foreign as pf
+
+    unit = f"{target}:pooled_foreign"
+    if state.is_done(unit):
+        print(f"  이미 완료된 단위 건너뜀: {unit} (metrics.csv 유지)")
+        return None
+    if run_notebook_fn is None:
+        sys.path.insert(0, str(ROOT / "tools"))
+        from run_notebook import run_notebook as run_notebook_fn
+
+    snapshot = snapshot_paths(storage, target)
+    ns = run_notebook_fn(Path(storage) / target, targets=target,
+                         quick=(mode == "quick"), use_cache=bool(snapshot))[target]
+    folds, dates = ns["folds"], pd.DatetimeIndex(ns["dates"])
+    seed, selection = ns.get("SEED", 42), ns.get("SELECTION_METRIC", "log_loss")
+    headline = ns.get("HEADLINE_MODEL", "No macro ensemble")
+    nb_predictions = ns["predictions"]
+    if headline not in set(nb_predictions["model"]):
+        raise RuntimeError(f"노트북 예측 프레임에 대표 모델이 없습니다: {headline}")
+    official_y = pd.Series(np.asarray(ns["y"], dtype=int), index=dates)
+    min_prob = issue_min_prob()
+
+    # 종목 공통 특징: 대표 모델 입력(시세만)에서 종목 고유 열을 뺀 것. 노트북 특징 프레임에서 한 번 만든다.
+    common_cols = pf.common_feature_columns(list(ns["feature_cols"]), list(ns["market_feature_idx"]))
+    common = ns["feat"][common_cols].copy()
+    common.index = pd.DatetimeIndex(common.index).tz_localize(None).normalize()
+
+    bars, first = _load_panel_bars(Path(storage) / "panel_cache", [t for t, _, _ in pdm.PANEL_UNIVERSE])
+    kept, excluded = pdm.eligible_universe(first)
+    bars = {t: bars[t] for t, _, _ in kept if t in bars}
+    panel = pdm.build_panel(bars)
+    fabricated = pdm.check_no_interpolation(panel, bars)
+    panel = panel.sort_values(["date", "instrument"]).reset_index(drop=True)
+    panel["label_date"] = pf.label_dates(panel)
+    panel = pf.attach_common_features(panel, common)
+    panel, leaky_rows = pf.drop_rows_with_features_after_label(panel)
+    instruments = sorted(bars)
+    panel_cols = [c for c in pdm.instrument_features(bars[instruments[0]]["close"], bars[instruments[0]].get("volume")).columns]
+    dummies = pf.instrument_dummies(panel, instruments)
+    panel = pd.concat([panel, dummies], axis=1)
+    cols = panel_cols + list(dummies.columns) + common_cols
+    rows_before = len(panel)
+    valid = panel[cols + ["y"]].notna().all(axis=1) & panel["pred_date"].notna() & panel["label_date"].notna()
+    panel = panel[valid].reset_index(drop=True)
+    target_ticker = ns["TARGET_SPEC"]["ticker"]
+    is_target = (panel["instrument"] == target_ticker).to_numpy()
+    print(f"  패널: 종목 {len(instruments)} · 행 {len(panel):,}(결측 제거 전 {rows_before:,}, 누수 후보 제거 {leaky_rows})"
+          f" · 특징 {len(cols)}(패널 {len(panel_cols)} + 종목 {len(dummies.columns)} + 공통 {len(common_cols)}) · 보간 위반 {fabricated}")
+
+    X = panel[cols].to_numpy(dtype=np.float32)
+    y = panel["y"].to_numpy(dtype=int)
+    pred_date = pd.DatetimeIndex(panel["pred_date"])
+    label_date = pd.DatetimeIndex(panel["label_date"])
+    row_dates = panel["date"].to_numpy()
+    # 대상 종목 행의 패널 라벨과 노트북 공식 라벨의 일치율(같은 규칙·조정 종가라 거의 같아야 한다).
+    official_for_rows = official_y.reindex(pred_date).to_numpy()
+    have_official = np.isfinite(official_for_rows.astype(float)) & is_target
+    label_agreement = float(np.mean(official_for_rows[have_official].astype(int) == y[have_official])) if have_official.any() else float("nan")
+
+    frames, timing, choices = [], {"pooled": 0., "single": 0.}, []
+    for fold in folds:
+        t0, t1 = dates[fold["test_idx"][0]], dates[fold["test_idx"][-1]]
+        tr_all, te = pf.fold_rows(pred_date, label_date, is_target, t0, t1, window_years=5)
+        tr_single = tr_all[is_target[tr_all]]
+        if len(te) < 20 or len(tr_single) < MIN_TRAIN_ROWS or len(np.unique(y[tr_all])) < 3:
+            continue
+        # 정답은 노트북 공식 라벨(대표 모델과 같은 y_true). 없는 날은 뒤의 공통 날짜 교집합에서 빠진다.
+        y_te = official_y.reindex(pred_date[te]).to_numpy()
+        keep = np.isfinite(y_te.astype(float))
+        te, y_te = te[keep], y_te[keep].astype(int)
+        started = time.time()
+        p_pool, chosen_pool = panel_ensemble(ns, X, y, tr_all, te, row_dates, seed=seed, selection=selection)
+        timing["pooled"] += time.time() - started
+        started = time.time()
+        p_single, chosen_single = panel_ensemble(ns, X, y, tr_single, te, row_dates, seed=seed, selection=selection)
+        timing["single"] += time.time() - started
+        choices.append({"fold": fold["fold"], "train_rows_pooled": int(len(tr_all)), "train_rows_single": int(len(tr_single)),
+                        "test_rows": int(len(te)), "pooled": chosen_pool, "single": chosen_single})
+        frames.append(ns["prediction_frame"]("panel pooled + foreign", pred_date[te], y_te, p_pool, fold["fold"]))
+        frames.append(ns["prediction_frame"]("panel single + foreign", pred_date[te], y_te, p_single, fold["fold"]))
+        print(f"  폴드 {fold['fold']}: 학습 pooled {len(tr_all):,} / 단독 {len(tr_single):,} · 시험 {len(te)}")
+
+    candidates = pd.concat(frames, ignore_index=True)
+    reference = nb_predictions[nb_predictions["model"].isin([headline, "Always flat"])].copy()
+    reference["date"] = pd.DatetimeIndex(reference["date"]).tz_localize(None).normalize()
+    predictions = pd.concat([candidates, reference], ignore_index=True)
+    # 모든 모델을 같은 날짜 집합으로 자른다 — 지표표의 숫자도 서로 비교 가능해야 한다.
+    common_dates = None
+    for model_name, g in predictions.groupby("model"):
+        common_dates = set(g["date"]) if common_dates is None else common_dates & set(g["date"])
+    predictions = predictions[predictions["date"].isin(common_dates)].reset_index(drop=True)
+    metrics = ns["summarize_predictions"](predictions, with_ci=False)
+
+    rows = []
+    for model_name, r in metrics.iterrows():
+        seconds = timing["pooled"] if "pooled" in model_name else timing["single"] if "single" in model_name else 0.
+        rows.append({"target": target, "model": model_name, "target_mode": "close_to_close", "fold": "all",
+                     **{k: r.get(k, "") for k in ("n", "accuracy", "balanced_accuracy", "log_loss", "brier", "auc_gap", "auc_session")},
+                     "seconds": round(seconds, 1)})
+    comparisons = []
+    for a, b, label in (("panel pooled + foreign", headline, f"pooled+해외 − 대표({headline})"),
+                        ("panel single + foreign", headline, f"단독+해외 − 대표({headline})"),
+                        ("panel pooled + foreign", "panel single + foreign", "pooled+해외 − 단독+해외(같은 입력)"),
+                        ("panel pooled + foreign", "Always flat", "pooled+해외 − 사전확률")):
+        for metric in ("balanced_accuracy", "log_loss", "accuracy"):
+            d = ns["paired_delta_ci"](predictions, a, b, metric)
+            comparisons.append({"target": target, "comparison": label, "metric": metric, "delta": d["delta"],
+                                "ci_low": d["lo"], "ci_high": d["hi"], "common_n": d["n"],
+                                "verdict": verdict_for(metric, d["lo"], d["hi"])})
+    selective = []
+    for model_name in ("panel pooled + foreign", "panel single + foreign", headline):
+        g = predictions[predictions["model"] == model_name].sort_values("date")
+        selective += selective_rows(target, model_name, g[["p_down", "p_flat", "p_up"]].to_numpy(), g["y_true"].to_numpy())
+
+    write_json(state.run_dir / f"panel_foreign_{target}.json", {
+        "selection_date": pdm.SELECTION_DATE, "instruments": instruments, "excluded": excluded,
+        "rows": int(len(panel)), "rows_before_dropna": rows_before, "leaky_rows_dropped": leaky_rows,
+        "fabricated_rows": fabricated, "features": cols, "common_features": common_cols,
+        "panel_features": panel_cols, "headline_model": headline, "issue_min_prob": min_prob,
+        "common_evaluation_days": int(len(common_dates)), "label_agreement_target_rows": label_agreement,
+        "timing_seconds": timing, "fold_choices": choices, "comparisons": comparisons, "selective": selective,
+        "survivorship_note": "목록은 2026-09-10 상장 종목이므로 과거로 적용하면 생존 편향이 있다. 종목 수 증가는 독립 날짜 표본 증가가 아니다.",
+        "note": "대표 모델은 재학습하지 않고 노트북 OOF 확률을 재사용. 세 모델 모두 같은 날짜·같은 공식 라벨로 채점."})
+    write_metrics_named(state, comparisons, "comparisons.csv")
+    write_metrics_named(state, selective, "selective.csv")
+    state.mark(unit, {"instruments": len(instruments), "panel_rows": int(len(panel)),
+                      "evaluation_days": int(len(common_dates)), "label_agreement": label_agreement})
+    return rows
+
+
 TASK_RUNNERS = {"P00": run_p00, "P03": run_p03, "P04": run_p04, "P05": run_p05,
-                "P06": run_p06, "P07": run_p07, "P08": run_p08, "P09": run_p09, "P10": run_p10}
+                "P06": run_p06, "P07": run_p07, "P08": run_p08, "P09": run_p09, "P10": run_p10,
+                "P10b": run_p10b}
 
 
 # ---------------------------------------------------------------------------
@@ -1474,6 +1704,12 @@ def execute(task, target, mode, storage, resume, run_notebook_fn=None):
         config = {"task": "P09", "mode": mode, "legs": list(TARGET_LEGS)}
     elif task == "P10":
         config = {"task": "P10", "mode": mode, "selection_date": "2026-09-10", "window": BASELINE_WINDOW}
+    elif task == "P10b":
+        config = {"task": "P10b", "mode": mode, "selection_date": "2026-09-10", "window": BASELINE_WINDOW,
+                  "families": list(PANEL_FAMILIES), "inner_block_dates": PANEL_INNER_BLOCK_DATES,
+                  "common_feature_rule": "headline market inputs minus " + "/".join(
+                      panel_foreign_module().TARGET_SPECIFIC_PREFIXES),
+                  "issue_min_prob": issue_min_prob()}
     else:
         config = {"mode": mode}
     identity = {

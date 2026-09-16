@@ -1,0 +1,50 @@
+{
+  "task_id": "P10b",
+  "run_id": "20260916T1100Z_panel_pooled_foreign",
+  "target": [
+    "samsung",
+    "sk_hynix"
+  ],
+  "code_commit": "104ebe4be03887ed63cce5844aa927952fdff9e3",
+  "data_hash": "P00 full 고정 스냅샷 (samsung d8a92744da7a2ec2b7d0 / sk_hynix 8798bdb0703e0325a836)",
+  "seed": 42,
+  "mode": "full",
+  "target_mode": "close_to_close",
+  "classes": [
+    "down",
+    "flat",
+    "up"
+  ],
+  "status": "completed",
+  "completed_units": [
+    "samsung:pooled_foreign",
+    "sk_hynix:pooled_foreign"
+  ],
+  "failed_units": [],
+  "baseline_run": "experiments/model_improvement/P00/20260910T0100Z_baseline_full",
+  "source_runs": {
+    "samsung": "P10b\\20260916T111202Z_samsung_p10b",
+    "sk_hynix": "P10b\\20260916T111209Z_sk_hynix_p10b"
+  },
+  "config": {
+    "task": "P10b",
+    "mode": "full",
+    "selection_date": "2026-09-10",
+    "window": "5y",
+    "families": [
+      "Logistic",
+      "LightGBM"
+    ],
+    "inner_block_dates": 126,
+    "common_feature_rule": "headline market inputs minus sam_/peer_/target_gdr_/gdr_",
+    "issue_min_prob": 0.5
+  },
+  "artifact_paths": {
+    "metrics": "experiments/model_improvement/P10b/20260916T1100Z_panel_pooled_foreign/metrics.csv",
+    "comparisons": "experiments/model_improvement/P10b/20260916T1100Z_panel_pooled_foreign/comparisons.csv",
+    "selective": "experiments/model_improvement/P10b/20260916T1100Z_panel_pooled_foreign/selective.csv"
+  },
+  "created_at_utc": "2026-09-16T11:26:42.947909+00:00",
+  "selection_date": "2026-09-10",
+  "note": "P10 패널(9종목) + 대표 모델의 종목 공통 특징(해외 자산·KOSPI·달력). 대표 모델은 노트북 OOF 확률 재사용, 세 모델을 같은 날짜·같은 공식 라벨로 채점"
+}

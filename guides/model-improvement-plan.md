@@ -76,6 +76,7 @@
 | P08 | [x] | 확률 신뢰도·예측 보류 평가 | P07 | CPU | 완료: 온도 보정 동률, 보류 진단만 저장(보고서 반영은 P15) |
 | P09 | [x] | 갭·장중 별도 학습 비교 | P08 | CPU/Colab | 완료: 예측력은 갭에, 장중은 비용 차감 후 0 근처. 채택 없음 |
 | P10 | [x] | 국내 관련 종목 공동 학습 기반 | P09 | CPU/Colab, 선택 | 완료: 패널·pooled 기준선 구축. 패널 입력만으로는 사전확률과 동률, 채택 없음 |
+| P10b | [x] | 해외 자산(종목 공통) 특징을 넣은 pooled 패널 vs 대표 모델 | P10 | CPU | 완료: 채택 없음. 해외 자산이 예측력의 전부이고 9종목 pooling은 단독 대비 동률(samsung)·유의 열위(sk_hynix). 대표 모델 대비 동률·열위 |
 | P11 | [ ] | MASTER 비교 실험 | P10 | GPU, 선택 | 보류(P10 패널이 사전확률과 동률 — 무거운 모델을 올릴 신호가 없음. GPU 없음) |
 | P12 | [ ] | DoubleAdapt 비교 실험 | P06·P10 | GPU, 선택 | 보류(P04·P05·P06이 일관되게 최근성·적응은 손해. 단순 가중이 이미 열위라 전제가 약함. GPU 없음) |
 | P13 | [ ] | TRA 방식 모델 선택 실험 | P07·P10 | GPU, 선택 | 보류(P07에서 내부 검증이 후보를 구분하지 못함 — 라우터가 배울 국면 신호가 없음. GPU 없음) |
@@ -514,6 +515,30 @@ pooled가 단독보다 나은 것은 정규화 효과다. 대표 모델의 우�
 
 **완료 증거:** 패널 누수/결측 테스트와 pooled 기준선. 종목 수 증가를 독립 날짜 표본 증가로 주장하지 않는다.
 
+### P10b — 해외 자산(종목 공통) 특징을 넣은 pooled 패널 (P10 후속, 계획 밖 등록 2026-09-16)
+
+**파일:** 생성 experiments/model_improvement/panel_foreign.py, tests/test_panel_foreign.py, 러너 P10b 등록.
+**입출력:** P10 패널 + 대표 모델(시세만)의 종목 공통 입력(해외 자산·KOSPI·달력, `sam_`·`peer_`·GDR 제외) → 대표 모델과 같은 평가 날짜의 대상 종목 예측.
+
+- [x] 공통 특징은 노트북 특징 프레임에서 한 번 만들어 날짜로 붙인다. 패널 행 d에는 d **뒤** 첫 예측일의 특징만 붙이고, 라벨 완성 봉이 특징 날짜보다 앞서는 행은 버린다. → `panel_foreign.attach_common_features`·`drop_rows_with_features_after_label`, 테스트 11개
+- [x] 폴드는 날짜 단위, 학습 행은 라벨이 시험 시작 전에 완성된 행뿐. 내부 검증은 126거래일 날짜 블록(같은 날짜의 종목 행이 갈라지지 않음). → `fold_rows`·`date_block_splits`
+- [x] 대표 모델은 재학습하지 않고 같은 실행의 노트북 OOF 확률을 재사용, 세 모델을 같은 날짜·같은 공식 라벨로 채점(라벨 일치율 1.000). 후보는 pooled+해외·단독+해외(같은 입력) 둘뿐. → 러너 `run_p10b`
+- [x] balanced_accuracy·log_loss·accuracy 쌍체 95% 월 블록 CI, 보류 진단(최대 확률 ≥ `DIRECTION_ISSUE_MIN_PROB`)의 coverage·발행일 정확도. → `comparisons.csv`·`selective.csv`
+
+#### 결과 (2026-09-16, `experiments/model_improvement/P10b/20260916T1100Z_panel_pooled_foreign/`)
+
+평가 samsung 1,362일 / sk_hynix 1,357일(대표 모델과 동일). 입력 62 = 패널 10 + 종목 one-hot 9 + 공통 43.
+
+log_loss(음수가 개선): pooled+해외 − 대표 samsung +0.00963 [−0.00011, +0.01956] 동률 · sk_hynix +0.00966 [+0.00187, +0.01783] **유의 열위**;
+pooled+해외 − 단독+해외(같은 입력) samsung +0.00222 [−0.00717, +0.01117] 동률 · sk_hynix +0.00914 [+0.00014, +0.01810] 유의 열위;
+pooled+해외 − 사전확률 samsung −0.05809 · sk_hynix −0.06770(둘 다 유의 우위 — P10의 +0.0003/+0.0077에서 해외 자산이 만든 차이).
+발행 기준 0.50: 대표 coverage 22.7%/27.4% · 발행일 정확도 0.683/0.642, pooled 17.5%/15.5% · 0.736/0.724(발행 집합이 달라 쌍체 비교 불가, 채택 근거 아님).
+
+**채택 없음.** 해외 자산 특징이 예측력의 전부이고, 9종목 공동 학습은 그 위에 더하는 것이 없다(단독 대비 동률·열위).
+대표 모델 대비 열위는 종목 고유 입력(sam_ 기술 지표·peer_·GDR)이 후보에 없어서다. P11~P14 보류 사유 유지.
+
+**완료 증거:** 정렬·누수 테스트 11개, 두 종목 12폴드 재학습(pooled 95~97초), 같은 날짜·같은 정답의 쌍체 비교표.
+
 ### P11 — MASTER 선택 실험
 
 **파일:** 생성 experiments/model_improvement/master_adapter.py, tests/test_master_adapter.py. 선택 의존성은 experiments/model_improvement/requirements-master.txt. 러너 P11 등록.
@@ -641,13 +666,14 @@ P00 이후에는 작업 ID만 바꿔 요청한다. Colab 실행이 필요한 경
 | 2026-09-10 | P01 | `tools/run_model_improvement.py`, `tests/test_model_improvement_runner.py` | `discover -p test_model_improvement_runner.py` 15개 통과 | 완료. 재개·해시 격리·원자적 쓰기·발행 차단 검증. 구현 중 결함 2건(재개 시 반환형 불일치, 같은 초 run_id 충돌) 발견·수정 |
 | 2026-09-10 | P00 quick | `experiments/model_improvement/P00/20260910T0000Z_baseline_quick/` | 두 종목 46셀 무오류 완료, 평가 276일 | 기준선 계약 기록·스냅샷 고정 완료. 기존 캐시는 자산 키 불일치로 폐기. full 평가 실행 중 |
 
+| 2026-09-16 | P10b | `experiments/model_improvement/P10b/20260916T1100Z_panel_pooled_foreign/`, `experiments/model_improvement/panel_foreign.py`, `tests/test_panel_foreign.py` | 11개 통과(러너 종단 포함), 관련 48개 통과. 두 종목 12폴드 pooled/단독 재학습, 대표 모델 OOF 재사용 | **완료.** 채택 없음. 해외 자산이 예측력의 전부, 9종목 pooling은 단독 대비 동률·열위. 대표 대비 samsung 동률·sk_hynix 유의 열위 |
 | 2026-09-16 | P08 운영 반영 | `forecast_utils.direction_call`·`DIRECTION_ISSUE_MIN_PROB`, 노트북 1절·저녁 실행 `Candidate evening open`, `tests/test_direction_gate.py`, `tests/test_evening_open.py` | 새 테스트 20개 + 관련 289개 통과 | 최대 확률 0.50 이상인 날만 종가 방향 발행, 나머지 '판단 유보'. 시초가는 대표로 앞세우되 저녁 예측을 함께 채점. 60 공통 채점일 뒤 발행일 적중률로 판정 |
 - 현재 작업: P15 — 후보 사전 예측 관찰 중(등록 완료, 채점 대기). 방향 발행 정책(0.50)도 같은 창에서 판정
-- 후속 항목(계획 밖, 등록됨): 해외 자산 특징을 넣은 pooled 패널(P10b) — 별도 세션 작업으로 등록(2026-09-16)
-- 완료한 신규 작업: 11/16 (P00~P10). 보류 4 (P11~P14). 진행 중 1 (P15)
+- 후속 항목(계획 밖) P10b — 해외 자산 특징을 넣은 pooled 패널: **완료(2026-09-16), 채택 없음.** 해외 자산이 예측력의 전부, 공동 학습은 더하는 것이 없음. P11~P14 보류 유지
+- 완료한 신규 작업: 11/16 (P00~P10) + 계획 밖 P10b. 보류 4 (P11~P14). 진행 중 1 (P15)
 - 다음 작업: 2026-09-11부터 매일 원장에 `Candidate expanding` 행이 쌓이는지 확인 → 60 공통 채점일 뒤 종목별 판정(4절 규칙)
 - P15로 넘긴 후보: sk_hynix(및 참고로 samsung) `expanding` 학습 창
-- 후속 항목(계획 밖): 해외 자산 특징을 넣은 pooled 패널; P04 내부 선택을 폴드 반복형으로
+- 후속 항목(계획 밖): P04 내부 선택을 폴드 반복형으로. (해외 자산 pooled 패널은 P10b로 완료 — 채택 없음. 남은 아이디어: 다른 종목의 전일 수익률을 대표 모델 단독 입력에 특징으로만 더하기)
 - 고쳐야 할 절차: P04/P05 내부 선택이 마지막 폴드 하나만 사용
 - P15로 넘긴 후보: sk_hynix `expanding` 학습 창 (P04에서 외부 유의 우위, 내부 선택 미채택)
 - 고쳐야 할 절차: P04 내부 선택을 폴드 반복형으로 (현재 마지막 폴드 하나만 사용)

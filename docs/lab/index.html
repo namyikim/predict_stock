@@ -611,7 +611,7 @@
         $("panel-" + other).hidden = other !== name;
       });
       if (name === "attr" && !attrRows.length) loadAttribution();
-      if (name === "ai" && !aiLoaded) loadAiForecasts();
+      if (name === "ai") loadAiForecasts();
     });
   });
 })();

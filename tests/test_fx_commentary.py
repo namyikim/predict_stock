@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 """거시 경제: 원/달러·위안/달러 그림 아래의 해석(2026-09-16 요청).
 
-자료로 다시 계산한 문장은 매번 달라지고, 전문가 코멘트는 외부 의견으로 구분해 옮긴다.
+전문가 코멘트의 판단 틀을 지금 자료에 적용해 결론을 쓴다. 그림이 바뀌면 결론도 바뀌어야 한다 —
+고정 인용은 시간이 지나면 틀린 말로 남는다(2026-09-16 지적). 원문은 작성 시점 기록으로 접어 둔다.
 """
 import re
 import sys
@@ -30,52 +31,68 @@ def plain(html):
     return re.sub(r"\s+", " ", re.sub(r"<[^>]+>", "", html))
 
 
-class CommentaryTests(unittest.TestCase):
-    def test_moving_together_is_described_and_matches_the_comment(self):
+def view(html):
+    """'전문가 시각' 부분의 글자만."""
+    text = plain(html)
+    return text.split("전문가 시각", 1)[1].split("판단 틀을 가져온 전문가 코멘트 원문", 1)[0]
+
+
+class FactTests(unittest.TestCase):
+    def test_facts_are_recomputed_from_the_data(self):
         text = plain(macro.fx_pair_commentary(fx(together=True)))
         self.assertIn("2009년 이후 두 환율의 월간 변화는 강하게 같이 움직였습니다", text)
         self.assertRegex(text, r"최근 3년은 강하게 같이 움직였습니다\(상관 \+0\.\d\d\)")
-        self.assertIn("관찰은 최근 3년 자료에서도 확인됩니다", text)
-        # 원/달러가 위안/달러보다 세 배쯤 크게, 같은 방향으로 움직이도록 만들었다.
         beta = float(re.search(r"원/달러는 같은 방향으로 평균 (\d\.\d)% 따라 움직였습니다", text).group(1))
         ratio = float(re.search(r"월간 변동폭은 원/달러가 위안/달러의 (\d\.\d)배", text).group(1))
         self.assertGreater(beta, 2.0)
         self.assertGreater(ratio, 2.0)
-        self.assertNotIn("1보다 크면", text)
+        self.assertRegex(text, r"최근 12개월 원/달러 [+-]\d+\.\d%, 위안/달러 [+-]\d+\.\d%")
+        self.assertRegex(text, r"원/위안 환율\(원/달러 ÷ 위안/달러\)은 [\d,.]+원으로 최근 5년 평균 [\d,.]+원 대비 [+-]\d\.\dσ")
+        self.assertIn("2026-09 기준 · 그림을 만들 때마다 다시 계산", text)
 
-    def test_moving_apart_is_described_honestly(self):
-        text = plain(macro.fx_pair_commentary(fx(together=False)))
-        self.assertIn("월간 변화는 거의 따로 움직였습니다", text)
-        self.assertNotIn("따로 같이", text)
-        self.assertIn("최근 3년에는 약해져, 따로 움직인 구간이 있습니다", text)
 
-    def test_twelve_month_direction(self):
-        weaker = plain(macro.fx_pair_commentary(fx(krw_drift=.015, cny_drift=.008)))
-        self.assertIn("같은 방향으로 올랐습니다(원화·위안화 모두 약세)", weaker)
-        stronger = plain(macro.fx_pair_commentary(fx(krw_drift=-.015, cny_drift=-.008)))
-        self.assertIn("같은 방향으로 내렸습니다(원화·위안화 모두 강세)", stronger)
-        split = plain(macro.fx_pair_commentary(fx(krw_drift=.015, cny_drift=-.008)))
-        self.assertIn("방향이 엇갈렸습니다", split)
+class ViewTests(unittest.TestCase):
+    """같은 판단 틀이라도 자료가 달라지면 결론이 달라져야 한다."""
 
-    def test_cross_rate_position(self):
+    def test_strengthening_yuan_with_co_movement(self):
+        text = view(macro.fx_pair_commentary(fx(together=True, krw_drift=-.012, cny_drift=-.008)))
+        self.assertIn("원/달러와 위안/달러는 같은 방향으로 움직이고 있습니다", text)
+        self.assertRegex(text, r"위안화 가치가 최근 1년 \d+\.\d% 올랐습니다")
+        self.assertIn("불균형을 줄이는 방향(달러 약세·위안 강세)과 맞는 흐름입니다", text)
+        self.assertIn("원화 가치도 함께 오를 수 있습니다", text)
+
+    def test_weakening_yuan_reverses_the_conclusion(self):
+        text = view(macro.fx_pair_commentary(fx(together=True, krw_drift=.012, cny_drift=.008)))
+        self.assertRegex(text, r"위안화 가치가 최근 1년 \d+\.\d% 떨어졌습니다")
+        self.assertIn("불균형 해소 방향(위안 강세)과 반대로 가고 있고, 동행이 유지되면 원화에도 약세 압력입니다", text)
+        self.assertNotIn("원화 가치도 함께 오를 수 있습니다", text)
+
+    def test_weak_co_movement_is_not_passed_on_to_the_won(self):
+        text = view(macro.fx_pair_commentary(fx(together=False, cny_drift=-.008)))
+        self.assertIn("동행이 약해, 위안화 흐름만으로 원화를 읽기는 어렵습니다", text)
+        self.assertIn("원화가 함께 강해진다고 보기는 어렵습니다", text)
+
+    def test_flat_yuan_has_no_directional_call(self):
         frame = fx()
-        frame.iloc[-1, frame.columns.get_loc("usdkrw")] *= 1.3        # 마지막 달 원화만 크게 약세
-        text = plain(macro.fx_pair_commentary(frame))
-        self.assertRegex(text, r"원/위안 환율\(원/달러 ÷ 위안/달러\)은 [\d,.]+원으로 최근 5년 평균 [\d,.]+원 대비 \+\d\.\dσ")
-        self.assertIn("원화가 위안화보다 평소보다 약한 편", text)
+        frame.iloc[-13:, frame.columns.get_loc("cny")] = frame["cny"].iloc[-13]
+        text = view(macro.fx_pair_commentary(frame))
+        self.assertIn("위안화는 최근 1년 뚜렷한 방향이 없어", text)
 
-    def test_expert_comment_is_quoted_and_labelled_as_outside_opinion(self):
-        text = plain(macro.fx_pair_commentary(fx()))
+    def test_cheap_won_against_the_yuan(self):
+        frame = fx()
+        frame.iloc[-1, frame.columns.get_loc("usdkrw")] *= 1.3
+        self.assertIn("원화가 따라잡을(강세) 여지가 있습니다", view(macro.fx_pair_commentary(frame)))
+
+    def test_original_comment_is_kept_folded_as_a_dated_record(self):
+        html = macro.fx_pair_commentary(fx())
+        self.assertIn("<details", html)
+        self.assertIn("판단 틀을 가져온 전문가 코멘트 원문 (2026-09 작성 · 수치는 작성 시점 기준)", html)
         for note in macro.FX_PAIR_EXPERT_NOTES:
-            self.assertIn(note, text)
-        self.assertIn("외부 의견을 옮긴 것 · 이 페이지의 계산이나 예측이 아닙니다", text)
-        self.assertIn("중국 수출 비중(22%)은 코멘트의 수치이며 해마다 다릅니다", text)
-        self.assertIn("인과나 예측이 아닙니다", text)
+            self.assertIn(note, plain(html))
+        self.assertNotIn("22%", view(html))                     # 고정 수치는 결론에 쓰지 않는다
+        self.assertIn("자료가 바뀌면 결론도 바뀝니다 · 예측이나 매매 판단이 아닙니다", plain(html))
         for banned in ("매수", "매도", "사세요", "파세요"):
-            self.assertNotIn(banned, text)
-
-    def test_basis_month_is_stated(self):
-        self.assertIn("2026-09 기준 · 그림을 만들 때마다 다시 계산", plain(macro.fx_pair_commentary(fx())))
+            self.assertNotIn(banned, plain(html))
 
     def test_short_or_missing_data_writes_nothing(self):
         self.assertEqual(macro.fx_pair_commentary(None), "")
@@ -87,13 +104,14 @@ class PlacementTests(unittest.TestCase):
     def test_commentary_sits_right_under_the_krw_cny_chart(self):
         page = macro.build_page(datetime(2026, 9, 16, 9, 0, tzinfo=timezone(timedelta(hours=9))), fx_frame=fx())
         chart = page.index("원/달러와 위안/달러 <span")
-        comment = page.index("해석 — 자료로 본 지금")
+        comment = page.index("2009년 이후 두 환율의 월간 변화는")
         self.assertLess(chart, comment)
-        self.assertLess(comment, page.index("<h3", chart + 10))       # 다음 절 제목보다 앞
+        self.assertLess(comment, page.index("<h3", chart + 10))
 
     def test_published_page_has_the_commentary(self):
         html = (ROOT / "docs" / "macro" / "index.html").read_text(encoding="utf-8")
-        self.assertIn("해석 — 자료로 본 지금", html)
+        self.assertIn("2009년 이후 두 환율의 월간 변화는", html)
+        self.assertIn("전문가 시각", html)
         self.assertIn(macro.FX_PAIR_EXPERT_NOTES[0], html)
 
 

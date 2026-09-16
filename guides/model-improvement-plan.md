@@ -453,6 +453,14 @@ balanced_accuracy·accuracy도 동률. 보정으로 정확도가 향상됐다고
 
 **채택 없음(보고서 변경 없음).** 진단만 저장. 운영 반영 여부는 P15 사전 예측에서 coverage와 함께 본다.
 
+**2026-09-16 운영 반영 — 보류 임계치 0.50.** 실제 사전 예측 10일에서 방향 적중률이 40~44%로 낮다는
+지적에, 위 진단대로 최대 확률 0.50 이상인 날만 종가 방향을 내고 나머지는 '판단 유보'로 표시한다
+(`forecast_utils.DIRECTION_ISSUE_MIN_PROB`, `direction_call`). 원장 기록(argmax 라벨·세 확률)은 바꾸지 않고,
+집계는 `review_ledger` 의 `direction_issued` 행(발행일만 적중률·유보 일수)으로 따로 센다. 대표 예측은
+시초가(갭)로 앞세우되 '밤사이 미국 시장을 반영한 값'이라고 적고, 같은 날 저녁(미국 장 전)에 낸 시초가
+예측을 `Candidate evening open` 으로 함께 남겨 아침과 나란히 채점한다(`overnight_value_html`).
+P15 의 관찰 규칙은 그대로다 — 발행일 적중률이 60 공통 채점일 뒤에도 전체 적중률보다 높지 않으면 되돌린다.
+
 **완료 증거:** 확률 보정 및 빈 선택 집합 테스트, coverage 포함 비교표.
 
 ### P09 — 갭과 장중의 별도 학습
@@ -633,7 +641,9 @@ P00 이후에는 작업 ID만 바꿔 요청한다. Colab 실행이 필요한 경
 | 2026-09-10 | P01 | `tools/run_model_improvement.py`, `tests/test_model_improvement_runner.py` | `discover -p test_model_improvement_runner.py` 15개 통과 | 완료. 재개·해시 격리·원자적 쓰기·발행 차단 검증. 구현 중 결함 2건(재개 시 반환형 불일치, 같은 초 run_id 충돌) 발견·수정 |
 | 2026-09-10 | P00 quick | `experiments/model_improvement/P00/20260910T0000Z_baseline_quick/` | 두 종목 46셀 무오류 완료, 평가 276일 | 기준선 계약 기록·스냅샷 고정 완료. 기존 캐시는 자산 키 불일치로 폐기. full 평가 실행 중 |
 
-- 현재 작업: P15 — 후보 사전 예측 관찰 중(등록 완료, 채점 대기)
+| 2026-09-16 | P08 운영 반영 | `forecast_utils.direction_call`·`DIRECTION_ISSUE_MIN_PROB`, 노트북 1절·저녁 실행 `Candidate evening open`, `tests/test_direction_gate.py`, `tests/test_evening_open.py` | 새 테스트 20개 + 관련 289개 통과 | 최대 확률 0.50 이상인 날만 종가 방향 발행, 나머지 '판단 유보'. 시초가는 대표로 앞세우되 저녁 예측을 함께 채점. 60 공통 채점일 뒤 발행일 적중률로 판정 |
+- 현재 작업: P15 — 후보 사전 예측 관찰 중(등록 완료, 채점 대기). 방향 발행 정책(0.50)도 같은 창에서 판정
+- 후속 항목(계획 밖, 등록됨): 해외 자산 특징을 넣은 pooled 패널(P10b) — 별도 세션 작업으로 등록(2026-09-16)
 - 완료한 신규 작업: 11/16 (P00~P10). 보류 4 (P11~P14). 진행 중 1 (P15)
 - 다음 작업: 2026-09-11부터 매일 원장에 `Candidate expanding` 행이 쌓이는지 확인 → 60 공통 채점일 뒤 종목별 판정(4절 규칙)
 - P15로 넘긴 후보: sk_hynix(및 참고로 samsung) `expanding` 학습 창

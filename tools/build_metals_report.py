@@ -576,11 +576,16 @@ def render_asset(key, res, usdkrw):
         for _, r in review["rolling"].iterrows():
             if r["kind"] == "direction":
                 detail = (f'적중률 {r["hit_rate"] * 100:.0f}% · log loss {r["mean_log_loss"]:.3f} vs 빈도기준 {r["prior_log_loss"]:.3f}')
+            elif r["kind"] == "direction_issued":
+                # review_ledger 가 2026-09-16부터 더하는 행: 최대 확률이 기준 이상이라 방향을 낸 날만의 성적.
+                hit = f'적중률 {r["hit_rate"] * 100:.0f}% · ' if pd.notna(r["hit_rate"]) else ""
+                detail = f'{hit}발행 {int(r["n"])}일 · 유보 {int(r.get("held", 0))}일'
             else:
                 cov = f'{r["interval_coverage"] * 100:.0f}%' if pd.notna(r["interval_coverage"]) else "—"
                 detail = (f'구간 적중 {cov} · MAE {r["mae_return"] * 100:.2f}% vs 변화없음 {r["zero_mae_return"] * 100:.2f}% · '
                           f'신호 {int(r["signal_days"])}/{int(r["n"])}일')
-            label2 = "방향" if r["kind"] == "direction" else f'{int(r["horizon_days"])}거래일 종가'
+            label2 = ("방향" if r["kind"] == "direction" else "방향(확률 50% 이상인 날만)" if r["kind"] == "direction_issued"
+                      else f'{int(r["horizon_days"])}거래일 종가')
             body += f'<tr><td {TD}>최근 {int(r["window"])}일 · {label2}</td><td {TDR}>{int(r["n"])}</td><td {TD}>{detail}</td></tr>'
         parts.append(table(f'<th {TH}>창</th><th {THR}>n</th><th {TH}>누적 성능 (사전 예측만)</th>', body))
         for a_ in review.get("alerts", []):

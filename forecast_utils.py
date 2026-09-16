@@ -64,7 +64,7 @@ SCORECARD_START, SCORECARD_END = "<!--SCORECARD_START-->", "<!--SCORECARD_END-->
 _WEEKDAYS_KO = "월화수목금토일"
 _PLAIN_DIRECTION = {"하락": "내림", "보합": "큰 변화 없음", "상승": "오름"}
 _VERDICT_COLORS = {"맞음": ("#e6f2ea", "#1e6b34"), "틀림": ("#fbeaea", "#a8322a"),
-                   "채점 전": ("#f1f2f4", "#6b7178")}
+                   "채점 전": ("#f1f2f4", "#6b7178"), "유보": ("#eef1f5", "#5b6570")}
 _CARD = ('flex:1 1 92px;min-width:0;border:1px solid #e3e8ee;border-radius:6px;'
          'padding:9px 11px;background:#fbfdff')
 _BOX = 'background:#fff;border:1px solid #cedff0;border-radius:6px;padding:12px 14px;margin:12px 0 0'
@@ -89,10 +89,54 @@ def _day_label(value):
     return f"{stamp.date().isoformat()} ({_WEEKDAYS_KO[stamp.weekday()]})"
 
 
+# 종가 방향은 최대 확률이 이 값 이상일 때만 낸다. 그 아래는 '판단 유보'다(2026-09-16).
+# 근거는 P08(experiments/model_improvement/P08): 대표 모델의 확률은 판별력이 있어 최대 확률이 0.5 이상인
+# 날(전체의 25~29%)만 고르면 외부 구간 정확도가 0.46→0.67(삼성)·0.50→0.64(하이닉스)로 오르고, 폴드별 내부
+# 선택도 대체로 0.5를 골랐다. 나머지 날에 억지로 찍은 답이 전체 적중률을 끌어내린다.
+# 원장에는 예전처럼 argmax 라벨과 세 확률을 모두 남긴다 — 유보는 확률에서 나중에 다시 계산하는
+# 표시·집계 정책이지 기록을 바꾸는 것이 아니다. 그래서 임계치를 바꿔도 과거 기록과 비교가 된다.
+DIRECTION_ISSUE_MIN_PROB = 0.50
+_DIRECTION_WORDS = {0: "▼ 내림", 1: "큰 변화 없음", 2: "▲ 오름"}
+
+
+def direction_call(row, min_prob=DIRECTION_ISSUE_MIN_PROB):
+    """세 확률에서 종가 방향 판정을 만든다.
+
+    반환: {"valid", "issued", "label", "max_prob", "argmax"}.
+      valid  — 세 확률이 모두 있고 합이 1이며 최댓값이 하나뿐인가.
+      issued — valid 이고 최대 확률이 min_prob 이상인가. 아니면 '판단 유보'.
+      label  — issued 면 '▼ 내림'·'큰 변화 없음'·'▲ 오름', 유보면 '판단 유보', valid 가 아니면 '판단 어려움'.
+    """
+    row = row if hasattr(row, "get") else {}
+    probabilities = [_finite(row.get(k)) for k in ("p_down", "p_flat", "p_up")]
+    valid = (all(p is not None and 0 <= p <= 1 for p in probabilities)
+             and abs(sum(probabilities) - 1) < .01
+             and sum(abs(p - max(probabilities)) < 1e-9 for p in probabilities) == 1)
+    if not valid:
+        return {"valid": False, "issued": False, "label": "판단 어려움", "max_prob": None, "argmax": None}
+    best = max(probabilities)
+    argmax = probabilities.index(best)
+    issued = best >= min_prob
+    return {"valid": True, "issued": issued, "max_prob": float(best), "argmax": argmax,
+            "label": _DIRECTION_WORDS[argmax] if issued else "판단 유보"}
+
+
+def direction_hold_note(call, min_prob=DIRECTION_ISSUE_MIN_PROB):
+    """유보·발행 사유 한 줄."""
+    if not call.get("valid"):
+        return "세 확률이 비슷하거나 값이 없습니다"
+    if call["issued"]:
+        return f"계산상 가능성 {call['max_prob']:.0%} (기준 {min_prob:.0%} 이상)"
+    return (f"가장 높은 확률이 {call['max_prob']:.0%}로 기준 {min_prob:.0%}에 못 미쳐 방향을 내지 않습니다"
+            f"(계산상 기울기: {_DIRECTION_WORDS[call['argmax']].strip('▼▲ ')})")
+
+
 def next_day_forecast_html(*, prediction_date, summary, open_forecast, price_forecasts,
                            target_mode="close_to_close"):
     """다음 거래일의 시초가·방향·종가를 카드 셋으로. 하루의 시간 순서(09:00 → 15:30)대로 놓는다.
 
+    시초가 카드를 크게 둔다 — 이 모델의 예측력은 거의 전부 갭(전일 종가→시가)에 있고(갭 AUC 0.8,
+    장중 AUC 0.5), 종가 방향은 확률이 기준 이상인 날만 낸다(direction_call).
     가격은 아래 요약과 같은 문(門)을 지난 것만 숫자로 보인다. 검증을 통과하지 못한 가격은 원시값도
     중심값도 내지 않는다 — 숫자가 보이면 예측으로 읽힌다.
     """
@@ -100,17 +144,9 @@ def next_day_forecast_html(*, prediction_date, summary, open_forecast, price_for
     summary = summary if hasattr(summary, "get") else {}
     open_forecast = open_forecast if hasattr(open_forecast, "get") else {}
     live = summary.get("live")
-    live = live if hasattr(live, "get") else {}
-
-    probabilities = [_finite(live.get(k)) for k in ("p_down", "p_flat", "p_up")]
-    direction, direction_note = "판단 어려움", "세 확률이 비슷하거나 값이 없습니다"
-    if (all(p is not None and 0 <= p <= 1 for p in probabilities)
-            and abs(sum(probabilities) - 1) < .01):
-        best = max(probabilities)
-        if sum(abs(p - best) < 1e-9 for p in probabilities) == 1:
-            direction = ("▼ 내림", "큰 변화 없음", "▲ 오름")[probabilities.index(best)]
-            basis = "당일 시초가 대비" if target_mode == "open_to_close" else "전일 종가 대비"
-            direction_note = f"{basis} · 계산상 가능성 {best:.0%}"
+    call = direction_call(live if hasattr(live, "get") else {})
+    basis = "당일 시초가 대비" if target_mode == "open_to_close" else "전일 종가 대비"
+    direction_note = (f"{basis} · " if call["valid"] else "") + direction_hold_note(call)
 
     def price(row, field):
         row = row if hasattr(row, "get") else {}
@@ -121,15 +157,17 @@ def next_day_forecast_html(*, prediction_date, summary, open_forecast, price_for
         return f"{point:,.0f}원", (f"전일 종가 대비 {change:+.2%}" if change is not None else "모델 예상")
 
     by_days = {r.get("trading_days"): r for r in (price_forecasts or []) if hasattr(r, "get")}
-    cards = [("시초가 · 09:00",) + price(open_forecast, "predicted_open"),
-             ("종가 방향", direction, direction_note),
-             ("종가 · 15:30",) + price(by_days.get(1, {}), "predicted_close")]
+    cards = [("시초가 · 09:00",) + price(open_forecast, "predicted_open") + (True,),
+             ("종가 방향", call["label"], direction_note, False),
+             ("종가 · 15:30",) + price(by_days.get(1, {}), "predicted_close") + (False,)]
     body = ""
-    for label, value, note in cards:
-        muted = value in ("예측 안 함", "판단 어려움")
-        body += (f'<div style="{_CARD}">'
-                 f'<div style="font-size:11px;color:#7a8797">{escape(label)}</div>'
-                 f'<div style="font-size:{16 if muted else 19}px;font-weight:700;line-height:1.35;'
+    for label, value, note, big in cards:
+        muted = value in ("예측 안 함", "판단 어려움", "판단 유보")
+        size = 16 if muted else (24 if big else 19)
+        body += (f'<div style="{_CARD}{";flex:2 1 150px" if big else ""}">'
+                 f'<div style="font-size:11px;color:#7a8797">{escape(label)}'
+                 f'{" · 밤사이 미국 시장을 반영한 값 · 09:00 전에만 의미" if big else ""}</div>'
+                 f'<div style="font-size:{size}px;font-weight:700;line-height:1.35;'
                  f'color:{"#8a9199" if muted else "#1a1a1a"}">{escape(value)}</div>'
                  f'<div style="font-size:11px;color:#7a8797;line-height:1.45">{escape(note)}</div></div>')
     when = _day_label(open_forecast.get("target_date", prediction_date)) or _day_label(prediction_date)
@@ -164,8 +202,12 @@ def scorecard_html(review, ensemble_name="Mean ensemble", note=""):
         model = latest["model"] if "model" in latest else pd.Series("", index=latest.index)
         horizon = latest["horizon_days"] if "horizon_days" in latest else pd.Series(1, index=latest.index)
 
+        # 관찰 후보('Candidate …': 저녁 시초가, HAR·IV 구간, strict gate)는 대표 행이 아니다. 같은 날 같은
+        # kind 의 행이 여럿이므로 이름으로 걸러야 한다(2026-09-16: 저녁 시초가 후보를 추가하며 확인).
+        headline = ~model.astype(str).str.startswith("Candidate")
+
         def first(mask):
-            picked = latest[mask]
+            picked = latest[mask & headline]
             return picked.iloc[0] if len(picked) else None
 
         def price_result(label, row, point, actual, low, high):
@@ -185,8 +227,16 @@ def scorecard_html(review, ensemble_name="Mean ensemble", note=""):
             change = _finite(row.get("actual_return"))
             if change is not None:
                 actual_text += f" ({change:+.2%})"
-            results.append(("방향", verdict(row.get("direction_correct")),
-                            f"예측 {_PLAIN_DIRECTION.get(predicted, predicted)} → 실제 {actual_text}"))
+            call = direction_call(row)
+            if call["valid"] and not call["issued"]:
+                # 그날은 방향을 내지 않았다. 맞음·틀림으로 세지 않고, 계산상 기울기가 어땠는지만 참고로 적는다.
+                results.append(("방향", "유보",
+                                f"판단 유보(가장 높은 확률 {call['max_prob']:.0%}, 기준 {DIRECTION_ISSUE_MIN_PROB:.0%} 미만) "
+                                f"→ 실제 {actual_text} · 참고: 계산상 기울기 {_PLAIN_DIRECTION.get(predicted, predicted)}, "
+                                f"{verdict(row.get('direction_correct'))}"))
+            else:
+                results.append(("방향", verdict(row.get("direction_correct")),
+                                f"예측 {_PLAIN_DIRECTION.get(predicted, predicted)} → 실제 {actual_text}"))
         row = first((kind == "price") & (horizon == 1))
         if row is not None:
             results.append(price_result("종가", row, "predicted_close", "actual_close", "low_close", "high_close"))
@@ -206,7 +256,8 @@ def scorecard_html(review, ensemble_name="Mean ensemble", note=""):
 
     rolling = review.get("rolling")
     n_days = int(_finite(review.get("n_scored_days")) or 0)
-    stats, span_label = [], (f"채점한 {n_days}거래일 전체" if n_days else "")
+    stats, held_note = [], ""
+    span_label = f"채점한 {n_days}거래일 전체" if n_days else ""
     if isinstance(rolling, pd.DataFrame) and len(rolling) and {"window", "kind", "n"}.issubset(rolling.columns):
         window = int(rolling["window"].max())
         span = rolling[rolling["window"] == window]
@@ -219,11 +270,21 @@ def scorecard_html(review, ensemble_name="Mean ensemble", note=""):
                 part = part[part["horizon_days"] == horizon]
             return part.iloc[0] if len(part) else None
 
-        row = pick("direction")
-        if row is not None and _finite(row.get("hit_rate")) is not None and _finite(row.get("n")):
+        # 방향 성적은 실제로 방향을 낸 날(최대 확률이 기준 이상)만 센다. 유보한 날 수는 옆에 적는다.
+        # direction_issued 행이 없는 옛 review 면 전체 행으로 물러선다.
+        row = pick("direction_issued")
+        issued_only = row is not None
+        if row is None:
+            row = pick("direction")
+        if row is not None and _finite(row.get("n")) and int(row["n"]) > 0 and _finite(row.get("hit_rate")) is not None:
             base = _finite(row.get("prior_hit_rate"))
-            stats.append(("방향 적중률", float(row["hit_rate"]), int(row["n"]),
-                          f"늘 같은 답이면 {base:.0%}" if base is not None else ""))
+            held = _finite(row.get("held"))
+            parts = ([f"방향을 낸 날만 · 유보 {held:.0f}일"] if issued_only and held is not None else []) + \
+                    ([f"늘 같은 답이면 {base:.0%}"] if base is not None else [])
+            stats.append(("종가 방향 적중률", float(row["hit_rate"]), int(row["n"]), " · ".join(parts)))
+        elif row is not None and issued_only:
+            held = _finite(row.get("held")) or 0
+            held_note = f"종가 방향은 최근 {held:.0f}일 모두 판단 유보였습니다(가장 높은 확률이 {DIRECTION_ISSUE_MIN_PROB:.0%} 미만). "
         for label, kind, horizon in (("시초가 구간 적중", "open", None), ("종가 구간 적중", "price", 1)):
             row = pick(kind, horizon)
             if row is not None and _finite(row.get("interval_coverage")) is not None and _finite(row.get("n")):
@@ -252,7 +313,7 @@ def scorecard_html(review, ensemble_name="Mean ensemble", note=""):
             f'{escape(" · ".join(part for part in (span_label, "미리 낸 예측만") if part))}</span></div>'
             f'{stats_html}'
             '<div style="font-size:11px;color:#8a9199;margin-top:6px;line-height:1.5">'
-            f'{caution}백테스트가 아니라 실제로 미리 낸 예측을 채점한 결과입니다. 가격은 실제 값이 예측 구간 안에 '
+            f'{caution}{held_note}백테스트가 아니라 실제로 미리 낸 예측을 채점한 결과입니다. 가격은 실제 값이 예측 구간 안에 '
             '들어오면 맞음으로 셉니다. 자세한 수치는 아래 ‘예측 vs 실제’에 있습니다.'
             + (f' {escape(note)}' if note else '') + '</div></div>')
 
@@ -702,27 +763,37 @@ def easy_summary_html(*, name, prediction_date, data_date, summary, open_forecas
 
     sections = []
     live = summary.get("live", {})
-    probabilities = [number(live.get(k)) for k in ("p_down", "p_flat", "p_up")]
     basis = "당일 시초가 대비" if target_mode == "open_to_close" else "전일 종가 대비"
-    direction = "방향을 판단하기 어렵습니다."
-    if (all(p is not None and 0 <= p <= 1 for p in probabilities)
-            and abs(sum(probabilities) - 1) < .01):
-        best = max(probabilities)
-        if sum(abs(p - best) < 1e-9 for p in probabilities) == 1:
-            label = ("내림", "큰 변화 없음", "오름")[probabilities.index(best)]
-            direction = (f"{basis} 종가 방향은 ‘{label}’ 쪽의 계산상 가능성이 가장 높습니다 "
-                         f"({best:.1%}). 이 확률은 실제 적중률이 아닙니다.")
-    sections.append(("전체 결론", f"{name} · {date_text(prediction_date)}: {direction}"))
-    if not record_forecast:
-        sections.append(("예측 상태", official_note or (
-            "이번 실행의 예측은 원장에 기록되지 않는 참고값입니다. "
-            "실제 성적은 별도로 저장된 장 시작 전 예측으로 평가합니다.")))
 
     def price_text(row, field):
         point = number(row.get(field))
         if row.get("signal") != "있음" or point is None or point <= 0:
             return "예측하기 어렵습니다(검증 근거 부족)."
         return f"약 {point:,.0f}원. 확정 가격이 아닌 모델 예상입니다."
+
+    # 전체 결론은 시초가가 앞이다. 이 모델이 실제로 맞히는 것은 갭(전일 종가→시가)이고, 종가 방향은
+    # 확률이 기준(DIRECTION_ISSUE_MIN_PROB) 이상인 날만 낸다(2026-09-16). 유보한 날은 그렇다고 적는다.
+    open_point = number(open_forecast.get("predicted_open"))
+    if open_forecast.get("signal") == "있음" and open_point is not None and open_point > 0:
+        open_change = number(open_forecast.get("predicted_return"))
+        headline = (f"시초가 약 {open_point:,.0f}원"
+                    + (f"({open_change:+.2%})" if open_change is not None else "") + " 예상.")
+    else:
+        headline = "시초가는 예측하지 않습니다(검증 근거 부족)."
+    call = direction_call(live)
+    if not call["valid"]:
+        direction = "종가 방향을 판단하기 어렵습니다."
+    elif call["issued"]:
+        direction = (f"{basis} 종가 방향은 ‘{call['label'].strip('▼▲ ')}’ 쪽의 계산상 가능성이 가장 높습니다 "
+                     f"({call['max_prob']:.1%}). 이 확률은 실제 적중률이 아닙니다.")
+    else:
+        direction = (f"종가 방향은 판단 유보 — 가장 높은 확률 {call['max_prob']:.1%}가 기준 "
+                     f"{DIRECTION_ISSUE_MIN_PROB:.0%}에 못 미쳐 방향을 내지 않습니다.")
+    sections.append(("전체 결론", f"{name} · {date_text(prediction_date)}: {headline} {direction}"))
+    if not record_forecast:
+        sections.append(("예측 상태", official_note or (
+            "이번 실행의 예측은 원장에 기록되지 않는 참고값입니다. "
+            "실제 성적은 별도로 저장된 장 시작 전 예측으로 평가합니다.")))
 
     sections.append(("시초가예측 — 장이 시작할 때의 가격",
                      f"{date_text(open_forecast.get('target_date', prediction_date))}: "
@@ -1575,7 +1646,7 @@ def interval_coverage_by_event(daily, models, min_n=10):
 
 
 def overnight_value_html(daily, headline_model, evening_model="Candidate evening forecast",
-                         min_n=10):
+                         evening_open_model="Candidate evening open", min_n=10):
     """아침 예측 vs 저녁 예측 — 밤사이 미국 시장 정보가 실제로 얼마나 기여하나.
 
     같은 예측일을 두 시점에서 예측한다. 아침(06:22 KST)은 미국 장 마감 후라 갭 정보가 있고,
@@ -1584,42 +1655,70 @@ def overnight_value_html(daily, headline_model, evening_model="Candidate evening
     """
     if daily is None or len(daily) == 0 or "model" not in daily:
         return ""
-    frame = daily[(daily["kind"] == "direction") & (daily["status"] == "scored")].copy()
-    if "is_prospective" in frame:
-        frame = frame[frame["is_prospective"].astype(str).str.lower().isin(("true", "1", "yes"))]
-    if frame.empty:
+    scored = daily[daily["status"] == "scored"].copy()
+    if "is_prospective" in scored:
+        scored = scored[scored["is_prospective"].astype(str).str.lower().isin(("true", "1", "yes"))]
+    if scored.empty:
         return ""
-    pairs = []
-    for label, model in (("아침 (갭 정보 있음)", headline_model), ("저녁 (갭 정보 없음)", evening_model)):
-        sub = frame[frame["model"] == model]
-        if sub.empty:
-            continue
-        common = set(frame[frame["model"] == evening_model]["target_date"]) & \
-                 set(frame[frame["model"] == headline_model]["target_date"])
-        matched = sub[sub["target_date"].isin(common)] if common else sub.iloc[0:0]
-        pairs.append({"label": label, "n": len(matched),
-                      "hit": float(matched["direction_correct"].mean()) if len(matched) else None})
-    if len(pairs) < 2 or not any(p["n"] for p in pairs):
+    cell = 'style="padding:7px 11px;border-top:1px solid #eee;text-align:right"'
+    head_style = 'style="background:#fafafa;font-size:11px;color:#6b7178"'
+
+    def paired(frame, morning_mask, evening_mask):
+        """같은 예측일에 아침·저녁 행이 모두 있는 날만. (아침 행, 저녁 행)"""
+        morning, evening = frame[morning_mask], frame[evening_mask]
+        common = set(morning["target_date"]) & set(evening["target_date"])
+        return morning[morning["target_date"].isin(common)], evening[evening["target_date"].isin(common)]
+
+    # 1) 종가 방향: 아침 대표 모델 vs 저녁 후보
+    direction = scored[scored["kind"] == "direction"]
+    morning, evening = paired(direction, direction["model"] == headline_model, direction["model"] == evening_model)
+    rows, n_min = "", None
+    if len(morning) and len(evening):
+        for label, sub in (("아침 (갭 정보 있음)", morning), ("저녁 (갭 정보 없음)", evening)):
+            value = "—" if len(sub) < min_n else f'{sub["direction_correct"].mean():.0%}'
+            rows += (f'<tr><td style="padding:7px 11px;border-top:1px solid #eee">{label}</td>'
+                     f'<td {cell}>{value}</td><td {cell};color:#8a9199">n={len(sub)}</td></tr>')
+        n_min = min(len(morning), len(evening))
+    # 2) 시초가(갭): 아침 대표 행 vs 저녁 후보. 아침 시초가 예측은 밤사이 미국 시장을 보고 내는 값이라
+    #    맞히기 쉽다(2026-09-16 지적). 전날 저녁에 낸 시초가 예측을 실제 시가로 채점한 것이 공정한 성적이다.
+    opens = scored[scored["kind"] == "open"]
+    is_candidate = opens["model"].astype(str).str.startswith("Candidate")
+    open_morning, open_evening = paired(opens, ~is_candidate, opens["model"] == evening_open_model)
+    open_rows = ""
+    if len(open_morning) and len(open_evening):
+        for label, sub in (("아침 (갭 정보 있음)", open_morning), ("저녁 (갭 정보 없음)", open_evening)):
+            if len(sub) < min_n:
+                value = "—"
+            else:
+                value = f'{sub["interval_hit"].mean():.0%}'
+                error = pd.to_numeric(sub.get("return_error"), errors="coerce").abs().mean()
+                if pd.notna(error):
+                    value += f' · MAE {error:.2%}'
+            open_rows += (f'<tr><td style="padding:7px 11px;border-top:1px solid #eee">{label}</td>'
+                          f'<td {cell}>{value}</td><td {cell};color:#8a9199">n={len(sub)}</td></tr>')
+        n_min = min(len(open_morning), len(open_evening), n_min if n_min is not None else 10 ** 9)
+    if not rows and not open_rows:
         return ""
-    rows = ""
-    for pair in pairs:
-        value = "—" if pair["hit"] is None or pair["n"] < min_n else f'{pair["hit"]:.0%}'
-        rows += (f'<tr><td style="padding:7px 11px;border-top:1px solid #eee">{pair["label"]}</td>'
-                 f'<td style="padding:7px 11px;border-top:1px solid #eee;text-align:right">{value}</td>'
-                 f'<td style="padding:7px 11px;border-top:1px solid #eee;text-align:right;color:#8a9199">'
-                 f'n={pair["n"]}</td></tr>')
     note = ("같은 예측일만 짝지어 비교합니다. 표본 10일 미만은 — 로 둡니다."
-            if min(p["n"] for p in pairs) < min_n else
+            if n_min is not None and n_min < min_n else
             "아침이 높으면 밤사이 미국 시장 정보가 실제로 기여한다는 뜻입니다.")
-    return ('<div style="font-size:12px;color:#6b7178;margin:14px 0 4px">밤사이 정보의 값 — '
-            '같은 날을 아침·저녁 두 시점에서 예측해 각각 채점한 결과</div>'
-            '<div style="overflow-x:auto"><table style="width:100%;min-width:380px;border-collapse:collapse;'
-            'font-size:12px;border:1px solid #e5e5e5"><tr style="background:#fafafa;font-size:11px;color:#6b7178">'
-            '<th style="padding:8px 11px;text-align:left">예측 시점</th>'
-            '<th style="padding:8px 11px;text-align:right">방향 적중률</th>'
-            '<th style="padding:8px 11px;text-align:right">표본</th></tr>'
-            f'{rows}</table></div>'
-            f'<div style="font-size:11px;color:#8a9199;margin-top:4px">{note}</div>')
+    if open_rows:
+        note += " 시초가는 전날 저녁에 낸 시초가 예측이 공정한 성적입니다 — 아침 예측은 미국 시장을 이미 본 값입니다."
+    out = ('<div style="font-size:12px;color:#6b7178;margin:14px 0 4px">밤사이 정보의 값 — '
+           '같은 날을 아침·저녁 두 시점에서 예측해 각각 채점한 결과</div>')
+    if rows:
+        out += ('<div style="overflow-x:auto"><table style="width:100%;min-width:380px;border-collapse:collapse;'
+                f'font-size:12px;border:1px solid #e5e5e5"><tr {head_style}>'
+                '<th style="padding:8px 11px;text-align:left">예측 시점</th>'
+                '<th style="padding:8px 11px;text-align:right">방향 적중률</th>'
+                f'<th style="padding:8px 11px;text-align:right">표본</th></tr>{rows}</table></div>')
+    if open_rows:
+        out += ('<div style="overflow-x:auto;margin-top:6px"><table style="width:100%;min-width:380px;'
+                f'border-collapse:collapse;font-size:12px;border:1px solid #e5e5e5"><tr {head_style}>'
+                '<th style="padding:8px 11px;text-align:left">예측 시점</th>'
+                '<th style="padding:8px 11px;text-align:right">시초가 구간 적중률 · 갭 오차</th>'
+                f'<th style="padding:8px 11px;text-align:right">표본</th></tr>{open_rows}</table></div>')
+    return out + f'<div style="font-size:11px;color:#8a9199;margin-top:4px">{note}</div>'
 
 
 def price_position(close, windows=(20, 60, 120), lookahead=20, band=0.10, min_samples=20):
@@ -1764,6 +1863,16 @@ def review_ledger(daily, bars, ensemble_model="Mean ensemble", windows=(20, 60),
                          "prior_hit_rate": float(freq.max()),
                          "flat_share": float(freq.loc[1]),
                          "mean_log_loss": float(d["log_loss"].mean()), "prior_log_loss": prior_ll})
+            # 발행 정책(direction_call) 기준 성적: 최대 확률이 기준 이상이라 실제로 방향을 낸 날만 센다.
+            # 원장의 확률에서 다시 계산하므로 임계치를 바꿔도 과거 기록에 그대로 적용된다(2026-09-16).
+            if {"p_down", "p_flat", "p_up"}.issubset(d.columns):
+                issued = d[d.apply(lambda r: bool(direction_call(r)["issued"]), axis=1)]
+            else:
+                issued = d
+            rows.append({"window": w, "kind": "direction_issued", "horizon_days": 1, "n": int(len(issued)),
+                         "held": int(len(d) - len(issued)),
+                         "hit_rate": float(issued["direction_correct"].mean()) if len(issued) else np.nan,
+                         "prior_hit_rate": float(freq.max())})
         for kind in ("open", "price"):
             # 관찰용 후보(모델명 "Candidate …")는 원장에만 있고 헤드라인 성적에 섞지 않는다(M07).
             headline = recent[(recent["kind"] == kind) & ~recent["model"].astype(str).str.startswith("Candidate")]
@@ -1965,9 +2074,11 @@ def ledger_section_html(review, ensemble_name, updated_note=""):
         except (TypeError, ValueError):
             scored_date = str(stamp)[:10]
     head = _headline(scored_date) + _pending_block(review.get("pending"))
+    # 관찰 후보('Candidate …')는 같은 날 같은 kind 로 여러 행이 있다. 대표 행만 표에 올린다.
+    headline_rows = ~latest["model"].astype(str).str.startswith("Candidate") if "model" in latest else pd.Series(True, index=latest.index)
     d = latest[(latest["kind"] == "direction") & (latest["model"] == ensemble_name)]
-    o = latest[latest["kind"] == "open"]
-    p1 = latest[(latest["kind"] == "price") & (latest["horizon_days"] == 1)]
+    o = latest[(latest["kind"] == "open") & headline_rows]
+    p1 = latest[(latest["kind"] == "price") & (latest["horizon_days"] == 1) & headline_rows]
     rows = ""
     def _row(label, predicted, actual, verdict, ok):
         color = "#1e6b34" if ok else "#a8322a"
@@ -1986,9 +2097,17 @@ def ledger_section_html(review, ensemble_name, updated_note=""):
     if len(d):
         r = d.iloc[0]
         actual_label = _LABELS.get(int(r["actual_class"]), "?") if pd.notna(r["actual_class"]) else "—"
-        rows += _row("종가 방향", f'{r["prediction"]} (상승 {r["p_up"]:.0%}·보합 {r["p_flat"]:.0%}·하락 {r["p_down"]:.0%})',
-                     f'{actual_label} ({_fmt_num(r["actual_return"], "pct")}, 밴드 ±{r["band"]:.2%})',
-                     "적중" if r["direction_correct"] == 1 else "미적중", r["direction_correct"] == 1)
+        call = direction_call(r)
+        if call["valid"] and not call["issued"]:
+            # 그날은 방향을 내지 않았다(최대 확률이 기준 미만). 맞음·미적중으로 세지 않고 참고로만 적는다.
+            rows += _row("종가 방향",
+                         f'판단 유보 · 계산상 {r["prediction"]} (상승 {r["p_up"]:.0%}·보합 {r["p_flat"]:.0%}·하락 {r["p_down"]:.0%})',
+                         f'{actual_label} ({_fmt_num(r["actual_return"], "pct")}, 밴드 ±{r["band"]:.2%})',
+                         f'유보 (참고: {"적중" if r["direction_correct"] == 1 else "미적중"})', r["direction_correct"] == 1)
+        else:
+            rows += _row("종가 방향", f'{r["prediction"]} (상승 {r["p_up"]:.0%}·보합 {r["p_flat"]:.0%}·하락 {r["p_down"]:.0%})',
+                         f'{actual_label} ({_fmt_num(r["actual_return"], "pct")}, 밴드 ±{r["band"]:.2%})',
+                         "적중" if r["direction_correct"] == 1 else "미적중", r["direction_correct"] == 1)
     if len(p1):
         r = p1.iloc[0]
         pred = (f'{_fmt_num(r["predicted_close"], "won")} ({_fmt_num(r["predicted_return"], "pct")})'
@@ -2006,8 +2125,13 @@ def ledger_section_html(review, ensemble_name, updated_note=""):
     rrows = ""
     for _, r in roll.iterrows():
         if r["kind"] == "direction":
-            label, detail = "종가 방향", (f'적중률 {r["hit_rate"]:.0%} (보합 비중 {r["flat_share"]:.0%}) · '
-                                        f'log loss {r["mean_log_loss"]:.3f} vs 빈도기준 {r["prior_log_loss"]:.3f}')
+            label, detail = "종가 방향(전체)", (f'적중률 {r["hit_rate"]:.0%} (보합 비중 {r["flat_share"]:.0%}) · '
+                                            f'log loss {r["mean_log_loss"]:.3f} vs 빈도기준 {r["prior_log_loss"]:.3f}')
+        elif r["kind"] == "direction_issued":
+            issued_n, held_n = int(r["n"]), int(r.get("held", 0))
+            label = "종가 방향(발행일만)"
+            detail = ((f'적중률 {r["hit_rate"]:.0%} · ' if issued_n and pd.notna(r["hit_rate"]) else "")
+                      + f'발행 {issued_n}일 · 유보 {held_n}일 (최대 확률 {DIRECTION_ISSUE_MIN_PROB:.0%} 이상만 발행)')
         else:
             label = "시초가예측(갭)" if r["kind"] == "open" else f'{int(r["horizon_days"])}거래일 종가예측'
             detail = (f'구간 적중 {_fmt_num(r["interval_coverage"], "num") if pd.isna(r["interval_coverage"]) else format(r["interval_coverage"], ".0%")} · '
@@ -2024,8 +2148,12 @@ def ledger_section_html(review, ensemble_name, updated_note=""):
         cards = []
         for _, r in roll[roll["window"] == window].iterrows():
             if r["kind"] == "direction":
-                cards.append({"label": "종가 방향", "metric": "적중률", "value": r["hit_rate"],
+                cards.append({"label": "종가 방향(전체)", "metric": "적중률", "value": r["hit_rate"],
                               "baseline": r.get("prior_hit_rate"), "n": int(r["n"])})
+            elif r["kind"] == "direction_issued":
+                # 방향을 낸 날만. 0일이면 도넛은 '—'로 비우고 n=0 이라 흐리게 나온다.
+                cards.append({"label": "종가 방향(발행일만)", "metric": f'적중률 · 유보 {int(r.get("held", 0))}일',
+                              "value": r["hit_rate"], "baseline": r.get("prior_hit_rate"), "n": int(r["n"])})
             else:
                 label = "시초가(갭)" if r["kind"] == "open" else f'{int(r["horizon_days"])}거래일 종가'
                 cards.append({"label": label, "metric": "구간 적중", "value": r["interval_coverage"],

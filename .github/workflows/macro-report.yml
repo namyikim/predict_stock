@@ -31,6 +31,15 @@ jobs:
           python-version: "3.12"
       - name: 의존성 설치
         run: pip install -r requirements.txt
+      - name: ECOS 소비자물가 통계표 탐색 (수동 실행 때만)
+        if: github.event_name == 'workflow_dispatch'
+        env:
+          ECOS_API_KEY: ${{ secrets.ECOS_API_KEY }}
+        run: |
+          # 한국 CPI 의 ECOS 코드를 확정하려는 것이다. 지금 기본값(901Y009/0)이 실패해 FRED 의
+          # OECD 계열(2023-11 에서 끝남)로 대체돼 있다. 로그에 나온 표·항목 코드를
+          # ECOS_CPI_STAT_CODE / ECOS_CPI_ITEM_CODE 로 넣으면 실질금리차가 다시 갱신된다.
+          python tools/probe_ecos.py 소비자물가 || true
       - name: 보고서 생성
         env:
           ECOS_API_KEY: ${{ secrets.ECOS_API_KEY }}

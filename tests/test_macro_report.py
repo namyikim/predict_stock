@@ -40,9 +40,10 @@ class PageTests(unittest.TestCase):
         self.assertIn("투자 자문이 아닙니다", html)
 
     def test_empty_sections_say_so_instead_of_guessing(self):
+        # 뼈대 때의 '준비 중' 안내는 요약 절이 대신한다. 값이 없는 절이 비어 있는 그대로인지만 본다.
         html = self.page()
-        self.assertIn("준비 중입니다", html)
-        self.assertIn("추측해 채우지 않습니다", html)
+        self.assertIn('class="empty"', html)
+        self.assertNotIn("준비 중입니다", html)
 
     def test_tag_balance(self):
         import re

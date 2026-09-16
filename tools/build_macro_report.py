@@ -287,7 +287,8 @@ SECTIONS = (
 def build_page(now=None, fx_frame=None, fx_info=None, us_jp_frame=None, us_jp_info=None,
                us_market_frame=None, us_market_info=None):
     now = now or datetime.now(KST)
-    body = ""
+    from macro_summary import summary_html
+    body = summary_html(fx_frame, us_jp_frame, us_market_frame, now)
     if fx_frame is not None:
         body += fx_decomposition_section(fx_frame, fx_info)
         body += fx_overlay_chart(fx_frame)
@@ -316,10 +317,6 @@ def build_page(now=None, fx_frame=None, fx_info=None, us_jp_frame=None, us_jp_in
         f'<h2 style="margin:6px 0 5px;font-size:27px">{escape(TITLE)}</h2>'
         f'<div style="font-size:12px;color:#8a9199">{now:%Y-%m-%d %H:%M} KST 기준 · '
         '환율·금리·채권 등 거시 지표를 모아 봅니다. 예측이 아니라 자료 정리입니다.</div></div>'
-        '<div style="background:#fdf8ec;border-left:4px solid #c8952a;padding:11px 15px;'
-        'border-radius:0 5px 5px 0;font-size:12px;line-height:1.7;margin-bottom:6px">'
-        '<b>준비 중입니다.</b> 아래는 앞으로 넣을 항목이고, 자료가 붙는 대로 하나씩 채웁니다. '
-        '값이 없는 절은 비어 있는 그대로 두고 추측해 채우지 않습니다.</div>'
         + body +
         '<div style="margin-top:24px;padding-top:14px;border-top:1px solid #e5e5e5;'
         'font-size:12px;color:#8a9199">'

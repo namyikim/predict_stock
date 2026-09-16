@@ -46,6 +46,7 @@
   <div class="tabs">
     <button id="tab-sim" class="tab active">가상 매매</button>
     <button id="tab-attr" class="tab">무엇이 예측을 밀었나</button>
+    <button id="tab-ai" class="tab">AI 일일예측</button>
   </div>
 
   <div class="warn">
@@ -119,6 +120,22 @@
     </div>
     <div id="attr-status" class="muted">기여도 기록을 불러오는 중…</div>
     <div id="attr-result"></div>
+  </div>
+
+
+  <div id="panel-ai" hidden>
+    <div class="warn">
+      <b>기존 알고리즘과 거시경제 예측을 사용하지 않은 별도 AI 판단</b>입니다.
+      매 거래일 09:00 전에 공개 자료를 직접 확인해 시초가·종가를 예상하고, 장 마감 뒤 실제값과 비교합니다.
+      종가 방향은 <b>전일 종가 대비</b> 상승·보합·하락입니다.
+      표본이 적을 때의 수치는 우연의 영향이 크며, 이 기록은 연구·교육용으로 <b>투자 자문이 아닙니다.</b>
+    </div>
+    <div id="ai-status" class="muted">AI 판단 기록을 불러오는 중…</div>
+    <div id="ai-latest"></div>
+    <h2>누적 성과</h2>
+    <div id="ai-summary"></div>
+    <h2>전체 이력</h2>
+    <div id="ai-history"></div>
   </div>
 
   <div class="muted" style="margin-top:18px">
@@ -464,14 +481,137 @@
       "다만 표본이 충분해지기 전에는 어느 쪽도 말할 수 없습니다.</div>";
   }
 
+
+  // ---- 별도 AI 일일예측 원장 ---------------------------------------------
+  var AI_BASE = "https://raw.githubusercontent.com/namyikim/predict_stock/main/ai_daily_forecast/";
+  var aiLoaded = false;
+
+  function esc(value) {
+    return String(value === null || value === undefined ? "" : value)
+      .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+  }
+
+  function aiPrice(value) {
+    var number = Number(value);
+    return isFinite(number) && value !== null && value !== "" ? nf.format(number) + "원" : "—";
+  }
+
+  function aiPct(value) {
+    if (value === null || value === undefined || value === "") return "—";
+    var number = Number(value);
+    return isFinite(number) ? number.toFixed(2) + "%" : "—";
+  }
+
+  function aiSourceLinks(sources) {
+    return (Array.isArray(sources) ? sources : []).map(function (source) {
+      var title = esc(source && source.title ? source.title : "출처");
+      var url = source && typeof source.url === "string" ? source.url : "";
+      return url.indexOf("https://") === 0
+        ? '<a href="' + esc(url) + '" target="_blank" rel="noopener noreferrer nofollow">' + title + "</a>"
+        : title;
+    }).join(" · ");
+  }
+
+  function aiStockCard(stock) {
+    if (!stock) return "";
+    var actual = stock.actual_close !== undefined
+      ? '<div class="muted">실제 시가 ' + aiPrice(stock.actual_open) +
+        " · 실제 종가 " + aiPrice(stock.actual_close) +
+        " · 실제 방향 " + esc(stock.actual_close_direction) +
+        " · 방향 " + (stock.direction_correct ? "적중" : "미적중") + "</div>"
+      : '<div class="muted">장 마감 뒤 실제값을 채점합니다.</div>';
+    var reasons = (Array.isArray(stock.rationale) ? stock.rationale : [])
+      .map(function (item) { return "<li>" + esc(item) + "</li>"; }).join("");
+    return '<div class="tile" style="min-width:280px;flex:1">' +
+      "<strong>" + esc(stock.name) + "</strong>" +
+      '<div>예상 시가 <b style="display:inline;font-size:16px">' + aiPrice(stock.predicted_open) +
+      "</b> · 예상 종가 <b style=\"display:inline;font-size:16px\">" + aiPrice(stock.predicted_close) +
+      "</b></div><div>예상 방향 <b style=\"display:inline;font-size:16px\">" +
+      esc(stock.predicted_close_direction) + "</b> <span class=\"muted\">(전일 종가 대비)</span></div>" +
+      actual + (reasons ? "<ul>" + reasons + "</ul>" : "") +
+      '<div class="muted">' + aiSourceLinks(stock.sources) + "</div></div>";
+  }
+
+  function aiSummaryTile(label, summary) {
+    if (!summary) return "";
+    return '<div class="tile"><span class="muted">' + esc(label) + "</span>" +
+      "<b>" + aiPct(summary.direction_accuracy_pct) + "</b>" +
+      '<div class="muted">방향 적중률 · ' + esc(summary.scored_days || 0) + "건</div>" +
+      "<div>시초가 평균 오차 " + aiPct(summary.open_mape_pct) + "</div>" +
+      "<div>종가 평균 오차 " + aiPct(summary.close_mape_pct) + "</div></div>";
+  }
+
+  function renderAiForecasts(index) {
+    aiLoaded = true;
+    $("ai-status").textContent = "";
+    var records = Array.isArray(index && index.records) ? index.records : [];
+    if (!records.length) {
+      $("ai-latest").innerHTML = '<div class="empty">아직 AI 일일예측 기록이 없습니다. 첫 거래일 오전 예측부터 표시됩니다.</div>';
+      $("ai-summary").innerHTML = '<div class="empty">채점된 표본이 아직 없습니다.</div>';
+      $("ai-history").innerHTML = '<div class="empty">이력이 쌓이면 날짜별 예측과 실제 결과를 보여 줍니다.</div>';
+      return;
+    }
+    var latest = records[0];
+    $("ai-latest").innerHTML = "<h2>최근 판단 · " + esc(latest.target_date) + "</h2>" +
+      '<div class="tiles">' + aiStockCard(latest.stocks && latest.stocks.samsung) +
+      aiStockCard(latest.stocks && latest.stocks.sk_hynix) + "</div>";
+
+    var summary = index.summary || {};
+    var sample = summary.overall || {};
+    $("ai-summary").innerHTML =
+      ((Number(sample.scored_days) || 0) < 20
+        ? '<div class="warn">채점 표본이 <b>' + esc(sample.scored_days || 0) +
+          "건</b>뿐입니다. 20건 미만 결과는 성능 판단보다 기록 확인용으로 보세요.</div>" : "") +
+      '<div class="tiles">' + aiSummaryTile("삼성전자", summary.samsung) +
+      aiSummaryTile("SK하이닉스", summary.sk_hynix) +
+      aiSummaryTile("두 종목 합계", summary.overall) + "</div>";
+
+    var body = records.map(function (record) {
+      var samsung = record.stocks && record.stocks.samsung || {};
+      var hynix = record.stocks && record.stocks.sk_hynix || {};
+      function outcome(stock) {
+        if (stock.actual_close === undefined) return "채점 대기";
+        return esc(stock.actual_close_direction) + " · " +
+          (stock.direction_correct ? "적중" : "미적중") +
+          " · 종가오차 " + aiPct(stock.close_ape_pct);
+      }
+      return "<tr><td>" + esc(record.target_date) + "</td><td>" + esc(record.status) +
+        "</td><td>예상 " + esc(samsung.predicted_close_direction) + " · " +
+        aiPrice(samsung.predicted_close) + "<br><span class=\"muted\">" + outcome(samsung) +
+        "</span></td><td>예상 " + esc(hynix.predicted_close_direction) + " · " +
+        aiPrice(hynix.predicted_close) + "<br><span class=\"muted\">" + outcome(hynix) +
+        "</span></td></tr>";
+    }).join("");
+    $("ai-history").innerHTML =
+      "<table><tr><th>날짜</th><th>상태</th><th>삼성전자</th><th>SK하이닉스</th></tr>" +
+      body + "</table>";
+  }
+
+  function loadAiForecasts() {
+    $("ai-status").textContent = "AI 판단 기록을 불러오는 중…";
+    fetch(AI_BASE + "index.json", {cache: "no-store"})
+      .then(function (response) {
+        if (!response.ok) throw new Error("HTTP " + response.status);
+        return response.json();
+      })
+      .then(renderAiForecasts)
+      .catch(function (error) {
+        $("ai-status").textContent = "";
+        $("ai-latest").innerHTML =
+          '<div class="empty">AI 판단 기록을 불러오지 못했습니다 (' + esc(error.message) + ").</div>";
+      });
+  }
+
   $("attr-view").addEventListener("change", renderAttribution);
-  ["sim", "attr"].forEach(function (name) {
+  ["sim", "attr", "ai"].forEach(function (name) {
     $("tab-" + name).addEventListener("click", function () {
-      ["sim", "attr"].forEach(function (other) {
+      ["sim", "attr", "ai"].forEach(function (other) {
         $("tab-" + other).className = "tab" + (other === name ? " active" : "");
         $("panel-" + other).hidden = other !== name;
       });
       if (name === "attr" && !attrRows.length) loadAttribution();
+      if (name === "ai" && !aiLoaded) loadAiForecasts();
     });
   });
 })();

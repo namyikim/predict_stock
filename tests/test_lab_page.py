@@ -128,6 +128,45 @@ class AttributionTabTests(PageSource):
         self.assertNotIn("attribution", report)
 
 
+
+
+class AiDailyForecastTabTests(PageSource):
+    """기존 모델·거시경제와 분리된 사람이 읽을 수 있는 AI 판단 원장."""
+
+    def test_tab_is_separate_and_not_default(self):
+        self.assertIn('id="tab-ai"', self.html)
+        self.assertIn('id="panel-ai" hidden', self.html)
+        self.assertIn("AI 일일예측", self.html)
+
+    def test_reads_only_the_separate_ai_ledger(self):
+        self.assertIn("ai_daily_forecast/index.json", self.script)
+        ai_block = self.script[self.script.index("function loadAiForecasts") :]
+        self.assertNotIn("forecast_log.csv", ai_block)
+        self.assertNotIn("macro", ai_block.lower())
+
+    def test_explains_baseline_and_separate_metrics(self):
+        for text in ("전일 종가 대비", "방향 적중률", "시초가 평균 오차", "종가 평균 오차"):
+            self.assertIn(text, self.html + self.script)
+
+    def test_warns_on_small_samples_and_disclaims_advice(self):
+        self.assertIn("scored_days", self.script)
+        self.assertIn("< 20", self.script)
+        self.assertIn("투자 자문이 아닙니다", self.html)
+
+    def test_missing_metrics_render_as_unknown_not_zero(self):
+        self.assertIn(
+            'if (value === null || value === undefined || value === "") return "—";',
+            self.script,
+        )
+
+    def test_all_ledger_text_is_escaped_and_links_are_https_only(self):
+        self.assertIn("function esc(value)", self.script)
+        self.assertIn('url.indexOf("https://") === 0', self.script)
+        self.assertIn('rel="noopener noreferrer nofollow"', self.script)
+
+    def test_ai_data_loads_only_when_the_tab_is_opened(self):
+        self.assertIn('if (name === "ai" && !aiLoaded) loadAiForecasts();', self.script)
+
 class AttributionRecordingTests(unittest.TestCase):
     """기여도는 대표 모델과 같은 특징 집합에서 뽑아야 한다."""
 

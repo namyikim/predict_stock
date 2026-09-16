@@ -7,7 +7,6 @@ macro_history/fx_inputs.csv 에 누적해, 다음 실행이 조회에 실패해�
 환율이 반응하는 것이 정책 결정 자체보다 시장이 반영한 기대이기 때문이고, 두 나라 모두 같은
 만기를 써야 비교가 되기 때문이다.
 """
-import os
 from datetime import timedelta, timezone
 from pathlib import Path
 
@@ -22,9 +21,9 @@ YAHOO_SERIES = {"usdkrw": "KRW=X", "dxy": "DX-Y.NYB", "jpy": "JPY=X",
                 "cny": "CNY=X", "us10y": "^TNX"}
 # 국고채 10년(일별 시장금리)
 KR10Y_STAT, KR10Y_ITEM = '817Y002', '010210000'
-# 경상수지(월별, 백만 달러). 통계표·항목 코드는 환경변수로 바꿀 수 있다.
-CA_STAT = os.environ.get('ECOS_CA_STAT_CODE', '301Y013')
-CA_ITEM = os.environ.get('ECOS_CA_ITEM_CODE', '000000')
+# 경상수지(월별, 백만 달러) 코드는 data_sources/ecos.py 의 CA_STAT·CA_ITEM 이 가진다. 이 모듈은 조회 함수를
+# current_account_fn 으로 받기만 한다. 여기에 같은 이름을 또 두면 자료원 모듈끼리 이름이 겹쳐
+# 경계 검사(tests/test_macro_features.py)에 걸린다(2026-09-16).
 
 
 def fetch_yahoo_monthly(tickers=YAHOO_SERIES, start='2000-01-01'):

@@ -467,11 +467,11 @@
       "fresh": true,
       "fetch_error": null,
       "first": "2005-01-01",
-      "last": "2026-09-06",
-      "rows": 7919,
+      "last": "2026-09-13",
+      "rows": 7926,
       "release_lag_days": 14,
       "note": "뉴스심리지수는 일별 지수이지만 주 1회, 약 1주 지연 공개되므로 지수 날짜+14일 이후에만 사용. 2026-09 신지수로 과거치가 재계산되어 백테스트는 재계산 이력 기준",
-      "snapshot_hash": "63b6499b2a81c93e04b9",
+      "snapshot_hash": "42b9a8f40d8b1f8bc8cb",
       "enabled": true
     },
     "term_spread": {
@@ -479,9 +479,9 @@
       "fresh": true,
       "fetch_error": null,
       "first": "2000-12-18",
-      "last": "2026-09-11",
-      "rows": 6373,
-      "snapshot_hash": "cb99fbd1bb23a33387ab",
+      "last": "2026-09-17",
+      "rows": 6377,
+      "snapshot_hash": "d285b027c1f8dd702adb",
       "enabled": true
     }
   },
@@ -754,7 +754,7 @@
     "exports_fresh": false
   },
   "chart_first": "2000-01-31",
-  "generated_at": "2026-09-14 10:45 KST",
+  "generated_at": "2026-09-17 16:51 KST",
   "macro_snapshot_hash": "7ed3ebee8562f01fbf17",
   "macro_sources": {
     "leading_cycle": "last_successful_fetch",

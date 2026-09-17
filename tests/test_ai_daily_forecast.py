@@ -165,12 +165,13 @@ class LedgerTests(unittest.TestCase):
 
 class CliTests(unittest.TestCase):
     def test_empty_index_contract(self):
-        index = json.loads(
-            (ROOT / "ai_daily_forecast" / "index.json").read_text(encoding="utf-8")
-        )
-        self.assertEqual(index["schema_version"], 1)
-        self.assertEqual(index["records"], [])
-        self.assertEqual(index["summary"], {})
+        with tempfile.TemporaryDirectory() as tmp:
+            index = ai.build_index(
+                Path(tmp), datetime(2026, 9, 17, 8, 0, tzinfo=ai.KST)
+            )
+            self.assertEqual(index["schema_version"], 1)
+            self.assertEqual(index["records"], [])
+            self.assertEqual(index["summary"], {})
 
     def test_help_exposes_record_score_and_rebuild(self):
         done = subprocess.run(

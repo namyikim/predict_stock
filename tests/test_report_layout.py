@@ -428,7 +428,8 @@ class BackLinkTests(unittest.TestCase):
     def test_button_comes_before_the_title(self):
         # 주석에도 '종합 보고서'가 나오므로 제목 태그로 찾는다.
         button = self.source.index("← 보고서 목록")
-        title = self.source.index("<h2 style=\"margin:6px 0 5px;font-size:27px\">종합 보고서")
+        # 제목에 종목 이름이 들어간다(2026-09-17): '삼성전자 종합 보고서'
+        title = self.source.index("{TARGET_NAME} 종합 보고서</h2>")
         self.assertLess(button, title, "버튼이 제목보다 뒤에 있으면 상단 버튼이 아니다")
 
     def test_button_is_inside_the_page_wrapper(self):

@@ -65,7 +65,7 @@ class TopOfSummaryTests(unittest.TestCase):
         cards = html[top:last]
         self.assertLess(cards.index("시초가 · 09:00"), cards.index("종가 방향"))
         self.assertLess(cards.index("종가 방향"), cards.index("종가 · 15:30"))
-        for text in ("70,100원", "+0.40%", "▲ 오름", "71,000원", "+1.20%"):
+        for text in ("70,100원", "+0.40%", "▲ 상승", "71,000원", "+1.20%"):
             self.assertIn(text, cards)
 
     def test_the_rest_of_the_summary_stays_below(self):
@@ -79,7 +79,7 @@ class TopOfSummaryTests(unittest.TestCase):
         self.assertIn("2026-09-11 (금) 예측", card)
         marks = re.findall(r">(맞음|틀림|채점 전)</span><span[^>]*>(시초가|방향|종가)</span>", card)
         self.assertEqual(marks, [("맞음", "시초가"), ("틀림", "방향"), ("맞음", "종가")])
-        self.assertIn("예측 오름 → 실제 내림 (-1.20%)", card)
+        self.assertIn("예측 상승 → 실제 하락 (-1.20%)", card)
         self.assertIn("예측 70,100원 → 실제 70,500원 · 구간 69,500원~70,800원", card)
         # 신호가 없던 종가는 숫자를 지어내지 않는다.
         self.assertIn("예측 숫자 없음(구간만) → 실제 70,900원", card)

@@ -62,7 +62,9 @@ def decision_inputs_html(*, name, cards, unknowns, caveat=""):
 # 아침 보고서의 결과가 오후의 '예측 vs 실제' 절과 어긋나지 않게 하려는 것이다. 지우지 말 것.
 SCORECARD_START, SCORECARD_END = "<!--SCORECARD_START-->", "<!--SCORECARD_END-->"
 _WEEKDAYS_KO = "월화수목금토일"
-_PLAIN_DIRECTION = {"하락": "내림", "보합": "큰 변화 없음", "상승": "오름"}
+# 방향 낱말은 보고서 전체에서 상승·보합·하락으로 통일한다(2026-09-17). 쉬운 요약만 "오름·큰 변화
+# 없음·내림"을 써서 1절·판단 재료 표와 어긋났고, 같은 예측이 다른 말로 보였다.
+_PLAIN_DIRECTION = {"하락": "하락", "보합": "보합", "상승": "상승"}
 _VERDICT_COLORS = {"맞음": ("#e6f2ea", "#1e6b34"), "틀림": ("#fbeaea", "#a8322a"),
                    "채점 전": ("#f1f2f4", "#6b7178"), "유보": ("#eef1f5", "#5b6570")}
 _CARD = ('flex:1 1 92px;min-width:0;border:1px solid #e3e8ee;border-radius:6px;'
@@ -95,7 +97,7 @@ def _day_label(value):
 # 노력을 해야지". 그래서 0.0: 세 확률 중 가장 높은 방향을 매일 낸다(예전과 같다).
 # 장치는 남겨 둔다. 원장에는 argmax 라벨과 세 확률이 그대로 남으므로, 값을 올리면 과거 기록에도 소급된다.
 DIRECTION_ISSUE_MIN_PROB = 0.0
-_DIRECTION_WORDS = {0: "▼ 내림", 1: "큰 변화 없음", 2: "▲ 오름"}
+_DIRECTION_WORDS = {0: "▼ 하락", 1: "보합", 2: "▲ 상승"}
 
 
 def direction_call(row, min_prob=DIRECTION_ISSUE_MIN_PROB):
@@ -104,7 +106,7 @@ def direction_call(row, min_prob=DIRECTION_ISSUE_MIN_PROB):
     반환: {"valid", "issued", "label", "max_prob", "argmax"}.
       valid  — 세 확률이 모두 있고 합이 1이며 최댓값이 하나뿐인가.
       issued — valid 이고 최대 확률이 min_prob 이상인가. 아니면 '판단 유보'.
-      label  — issued 면 '▼ 내림'·'큰 변화 없음'·'▲ 오름', 유보면 '판단 유보', valid 가 아니면 '판단 어려움'.
+      label  — issued 면 '▼ 하락'·'보합'·'▲ 상승', 유보면 '판단 유보', valid 가 아니면 '판단 어려움'.
     """
     row = row if hasattr(row, "get") else {}
     probabilities = [_finite(row.get(k)) for k in ("p_down", "p_flat", "p_up")]
@@ -181,7 +183,7 @@ def scorecard_html(review, ensemble_name="Mean ensemble", note=""):
     """지난 예측이 맞았는지와 지금까지의 성적. 실제로 미리 낸 예측만 센다(백테스트 아님).
 
     판정은 아래 '예측 vs 실제' 절(ledger_section_html)과 같은 행을 같은 기준으로 고른다 —
-    시초가·종가는 실제 값이 예측 구간 안이면 맞음, 방향은 오름·큰 변화 없음·내림이 같으면 맞음.
+    시초가·종가는 실제 값이 예측 구간 안이면 맞음, 방향은 상승·보합·하락이 같으면 맞음.
     성적은 review_ledger 의 가장 긴 창이다. 표본이 20일 미만이면 흐리게 하고 이르다고 적는다.
     """
     from html import escape
@@ -223,7 +225,7 @@ def scorecard_html(review, ensemble_name="Mean ensemble", note=""):
         if row is not None:
             predicted = str(row.get("prediction"))
             actual = _finite(row.get("actual_class"))
-            actual_text = {0: "내림", 1: "큰 변화 없음", 2: "오름"}.get(int(actual), "—") if actual is not None else "—"
+            actual_text = {0: "하락", 1: "보합", 2: "상승"}.get(int(actual), "—") if actual is not None else "—"
             change = _finite(row.get("actual_return"))
             if change is not None:
                 actual_text += f" ({change:+.2%})"

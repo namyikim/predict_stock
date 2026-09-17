@@ -27,7 +27,7 @@ class PolicyTests(unittest.TestCase):
     def test_gate_is_off_so_the_top_class_is_always_issued(self):
         self.assertEqual(fu.DIRECTION_ISSUE_MIN_PROB, 0.0)
         call = fu.direction_call({"p_down": .35, "p_flat": .33, "p_up": .32})
-        self.assertEqual((call["valid"], call["issued"], call["label"], call["argmax"]), (True, True, "▼ 내림", 0))
+        self.assertEqual((call["valid"], call["issued"], call["label"], call["argmax"]), (True, True, "▼ 하락", 0))
         self.assertEqual(fu.direction_hold_note(call), "계산상 가능성 35%")
 
     def test_the_machinery_still_holds_when_a_threshold_is_given(self):
@@ -35,7 +35,7 @@ class PolicyTests(unittest.TestCase):
         self.assertEqual((held["issued"], held["label"]), (False, "판단 유보"))
         self.assertIn("36%로 기준 50%에 못 미쳐", fu.direction_hold_note(held, min_prob=.5))
         issued = fu.direction_call({"p_down": .2, "p_flat": .3, "p_up": .5}, min_prob=.5)
-        self.assertEqual(issued["label"], "▲ 오름")
+        self.assertEqual(issued["label"], "▲ 상승")
         self.assertIn("(기준 50% 이상)", fu.direction_hold_note(issued, min_prob=.5))
 
     def test_invalid_probabilities_are_not_a_call(self):
@@ -60,14 +60,14 @@ class SummaryTests(unittest.TestCase):
     def test_low_confidence_direction_is_still_shown(self):
         html = self.render({"p_down": .35, "p_flat": .33, "p_up": .32})
         text = plain(html)
-        self.assertIn("전일 종가 대비 종가 방향은 ‘내림’ 쪽의 계산상 가능성이 가장 높습니다 (35.0%)", text)
-        self.assertIn("▼ 내림", text)
+        self.assertIn("전일 종가 대비 종가 방향은 ‘하락’ 쪽의 계산상 가능성이 가장 높습니다 (35.0%)", text)
+        self.assertIn("▼ 하락", text)
         self.assertIn("전일 종가 대비 · 계산상 가능성 35%", text)
         self.assertNotIn("판단 유보", text)
 
     def test_open_forecast_leads_but_is_labelled_honestly(self):
         text = plain(self.render({"p_down": .2, "p_flat": .3, "p_up": .5}))
-        self.assertIn("삼성전자 · 2026-09-17: 시초가 약 250,100원(+0.40%) 예상. 전일 종가 대비 종가 방향은 ‘오름’", text)
+        self.assertIn("삼성전자 · 2026-09-17: 시초가 약 250,100원(+0.40%) 예상. 전일 종가 대비 종가 방향은 ‘상승’", text)
         self.assertIn("시초가 · 09:00 · 밤사이 미국 시장을 반영한 값 · 09:00 전에만 의미", text)
         self.assertNotIn("가장 믿을 만한", text)
 
@@ -90,7 +90,7 @@ class ScorecardTests(unittest.TestCase):
     def test_low_confidence_day_is_scored_right_or_wrong(self):
         card = fu.scorecard_html(scored((.30, .36, .34), correct=0), "No macro ensemble")
         self.assertRegex(card, r">틀림</span><span[^>]*>방향</span>")
-        self.assertIn("예측 큰 변화 없음 → 실제 오름 (+2.00%)", plain(card))
+        self.assertIn("예측 보합 → 실제 상승 (+2.00%)", plain(card))
         self.assertNotIn("유보", plain(card))
 
     def test_track_record_uses_every_day(self):

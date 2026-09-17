@@ -1,0 +1,255 @@
+{
+  "target": "sk_hynix",
+  "name": "SK하이닉스",
+  "peer_name": "삼성전자",
+  "session_date": "2026-09-17",
+  "generated_at": "2026-09-17 16:34 KST",
+  "summary": {
+    "prev_close": 1759000.0,
+    "open": 1770000.0,
+    "high": 1785000.0,
+    "low": 1735000.0,
+    "close": 1745000.0,
+    "gap": 0.00625355315520193,
+    "session": -0.01412429378531077,
+    "c2c": -0.007959067652074991,
+    "high_vs_open": 0.008474576271186418,
+    "low_vs_open": -0.019774011299435013,
+    "volume": 2790521.0,
+    "volume_ratio": 0.7963808820939936,
+    "kospi_c2c": -0.000381076204847286,
+    "peer_c2c": -0.0039447731755424265,
+    "usdkrw_chg": 0.012885344391163622,
+    "sox_ret": 0.0063138322595461815,
+    "nasdaq_ret": -0.00012087895235834978
+  },
+  "classification": {
+    "labels": [
+      "장중 급변 09:35 주도",
+      "지수 동조"
+    ],
+    "reasons": [
+      "09:35 봉 +0.81%(σ의 3.19배, 거래량 1.26배)가 세션 -1.41%의 51%",
+      "KOSPI -0.04% vs 종목 -0.80%, 5분 수익률 상관 0.83 — 종목 고유 요인이 약함"
+    ]
+  },
+  "events": [
+    {
+      "time": "2026-09-17T09:05:00+09:00",
+      "ret": -0.006242905788876318,
+      "z": 2.47,
+      "volume_ratio": 3.53,
+      "cum_before": -0.004519774011299438,
+      "cum_after": -0.010734463276836137,
+      "session_share": 0.3946408302253956,
+      "score": 4.175778867450736,
+      "news": [
+        {
+          "time": "2026-09-17T08:57:05+09:00",
+          "title": "하나증권 \"SK하이닉스 인텔과 손잡고 미국 생산거점 확대 기대, 반도체주 투심 개선 전망\"",
+          "source": "businesspost.co.kr",
+          "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTFA1QWMta1B0V2R5TGxWM2dlakd4dkZvV005S1JoeXBTdlhCM2xfcVNLRmdIYjJ2Y05BTC1HM2NaUlVVNXFpc3dZTk56NGNtYzJGYjljRjJHTUwwT2NzdXBJM215UUVrNEpoV0NhVWt5WGtsRkU?oc=5"
+        },
+        {
+          "time": "2026-09-17T07:38:00+09:00",
+          "title": "삼성·SK하이닉스 독주 계속된다...빅테크 \"HBM 대체기술은 보완재일 뿐\"",
+          "source": "YTN",
+          "link": "https://news.google.com/rss/articles/CBMiXkFVX3lxTE56a0RyWWV2U2xScTZISWV3NDJTNzhtVlJJc1phTVQwUlVoYWdPaW91SUVINlV3SzQ4SXdmYVFlNHF5T21jMjVPSzVmeTdicXB0YnY2ekpZUXNfY2xicVE?oc=5"
+        },
+        {
+          "time": "2026-09-17T08:02:48+09:00",
+          "title": "SK하이닉스, “미 메모리 생산·인텔 협력설 결정된 바 없다”",
+          "source": "서울경제TV",
+          "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE01SDJpVFFVcWg4WGRBcUxGYTd4bnpNSU5GYjRsTHpEeVRkbGdJSG5xbHh2SWgtMDhVTldaVlJOanczdUZZX1dfNmRhYl9RelNIeEZ3cFBCT2pWSW5hVjE2Y2pEaDQ?oc=5"
+        },
+        {
+          "time": "2026-09-17T08:24:56+09:00",
+          "title": "[뉴욕증시] 인텔 4%↑…SK하이닉스, 美 첫 메모리 생산기지 검토",
+          "source": "ebn.co.kr",
+          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE5UY2tpWXlCZUdFTlllbUdyeFVXaHZtNnlfY0tFZ2lMTEhXNm5xdVpiOWRLTTdBSWdUY0xUakFsa1d1V3pKUk0zQXp1SlcwWUNTaVluRDg3VlAtTDFmUUd4ZHBMWU5Felpw?oc=5"
+        },
+        {
+          "time": "2026-09-17T08:28:15+09:00",
+          "title": "[기업이슈] \"SK하이닉스, 인텔과 미국서 메모리 생산 협상중\"",
+          "source": "v.daum.net",
+          "link": "https://news.google.com/rss/articles/CBMiT0FVX3lxTE9yYkpZaGh4clNQa3gycFFZWVAzUTB1SHZaNm1mWkV5VVdyUzRTOUdjSUNCejd5eFNrWGNPRUxlcE1UTmdETjJVZGJPNEViRU0?oc=5"
+        }
+      ]
+    },
+    {
+      "time": "2026-09-17T09:35:00+09:00",
+      "ret": 0.008064516129032251,
+      "z": 3.19,
+      "volume_ratio": 1.26,
+      "cum_before": -0.019209039548022555,
+      "cum_after": -0.011299435028248594,
+      "session_share": -0.5097926267281099,
+      "score": 3.441903333035522,
+      "news": [
+        {
+          "time": "2026-09-17T08:57:05+09:00",
+          "title": "하나증권 \"SK하이닉스 인텔과 손잡고 미국 생산거점 확대 기대, 반도체주 투심 개선 전망\"",
+          "source": "businesspost.co.kr",
+          "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTFA1QWMta1B0V2R5TGxWM2dlakd4dkZvV005S1JoeXBTdlhCM2xfcVNLRmdIYjJ2Y05BTC1HM2NaUlVVNXFpc3dZTk56NGNtYzJGYjljRjJHTUwwT2NzdXBJM215UUVrNEpoV0NhVWt5WGtsRkU?oc=5"
+        },
+        {
+          "time": "2026-09-17T09:29:09+09:00",
+          "title": "SK하이닉스 “연산 메모리, AI 데이터 병목 해결할 것”",
+          "source": "v.daum.net",
+          "link": "https://news.google.com/rss/articles/CBMiRkFVX3lxTE1nenNvWDVGX2NLU05lUjY4NWtpWTFkX3V0RWRUWFVIeDV2NFM3UU5TVFJOT2VfUzVkNHNQLTNWMHNxSHZiUGc?oc=5"
+        },
+        {
+          "time": "2026-09-17T09:38:08+09:00",
+          "title": "SK하이닉스, ‘연산하는 메모리’ PIM 승부수…AI 데이터 병목 줄인다",
+          "source": "산경투데이",
+          "link": "https://news.google.com/rss/articles/CBMidEFVX3lxTE9CSDZVVDY0NkMwOXF5TDU3emhuVlRHVUZBUTlNc1lNOV83ZUFVLVFHRGswTUhIOVhhU0lJRWl3M00tdUh6cV8tdGNiQjBNemZzd1NqOTdaaG9rcWpHc09hQi1BR2o4UGZiLXVYdDdoVnhHbzJI0gF0QVVfeXFMT0JINlVUNjQ2QzA5cXlMNTd6aG5WVEdVRkFROU1zWU05XzdlQVUtUUdEazBNSEg5WGFTSUlFaXczTS11SHpxXy10Y2JCME16ZnN3U2o5N1pob2txakdzT2FCLUFHajhQZmItdVh0N2hWeEdvMkg?oc=5"
+        },
+        {
+          "time": "2026-09-17T08:24:56+09:00",
+          "title": "[뉴욕증시] 인텔 4%↑…SK하이닉스, 美 첫 메모리 생산기지 검토",
+          "source": "ebn.co.kr",
+          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE5UY2tpWXlCZUdFTlllbUdyeFVXaHZtNnlfY0tFZ2lMTEhXNm5xdVpiOWRLTTdBSWdUY0xUakFsa1d1V3pKUk0zQXp1SlcwWUNTaVluRDg3VlAtTDFmUUd4ZHBMWU5Felpw?oc=5"
+        },
+        {
+          "time": "2026-09-17T08:28:15+09:00",
+          "title": "[기업이슈] \"SK하이닉스, 인텔과 미국서 메모리 생산 협상중\"",
+          "source": "v.daum.net",
+          "link": "https://news.google.com/rss/articles/CBMiT0FVX3lxTE9yYkpZaGh4clNQa3gycFFZWVAzUTB1SHZaNm1mWkV5VVdyUzRTOUdjSUNCejd5eFNrWGNPRUxlcE1UTmdETjJVZGJPNEViRU0?oc=5"
+        }
+      ]
+    }
+  ],
+  "turning_point": {
+    "high_time": "2026-09-17T13:45:00+09:00",
+    "high": 0.0005649717514124575,
+    "low_time": "2026-09-17T09:30:00+09:00",
+    "low": -0.019209039548022555,
+    "pattern": "저점 후 반등"
+  },
+  "closing_share": -0.12192881745119889,
+  "intraday_corr_kospi": 0.8281919946987573,
+  "intraday_note": "장중 봉은 09:00~14:55까지만 있어 마감 구간(14:55~15:30)은 일봉 종가로만 봅니다(그 구간 +0.17%).",
+  "intraday_coverage": "09:00~14:55",
+  "overnight_news": [
+    {
+      "time": "2026-09-17T08:57:05+09:00",
+      "title": "하나증권 \"SK하이닉스 인텔과 손잡고 미국 생산거점 확대 기대, 반도체주 투심 개선 전망\"",
+      "source": "businesspost.co.kr",
+      "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTFA1QWMta1B0V2R5TGxWM2dlakd4dkZvV005S1JoeXBTdlhCM2xfcVNLRmdIYjJ2Y05BTC1HM2NaUlVVNXFpc3dZTk56NGNtYzJGYjljRjJHTUwwT2NzdXBJM215UUVrNEpoV0NhVWt5WGtsRkU?oc=5"
+    },
+    {
+      "time": "2026-09-16T20:53:00+09:00",
+      "title": "\"SK하이닉스, 인텔과 美 메모리 생산 협상 중\"",
+      "source": "연합뉴스TV",
+      "link": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE5SckgtaHd6SnkyU1AxRGhSRGp1alRsbXkxdGdFQlgwTkRBS1NKeldCSWJoMllwZl9zUFc5Vkswak9GY2hEd28ybEQwVWlFUHlKc2JwSVNTd0owcmVtR1BQdUc1UXRJT1k?oc=5"
+    },
+    {
+      "time": "2026-09-17T04:24:00+09:00",
+      "title": "\"SK하이닉스, 인텔과 美서 메모리 생산 논의\"",
+      "source": "v.daum.net",
+      "link": "https://news.google.com/rss/articles/CBMiVEFVX3lxTFB2UTlNNnFFRE9aSjdPclg2Y1llbWNUVExCV3FKUVItWWxfVzZOdjRwVHVURllPLXF3MXd2Ym9qVDk1QTk2QXAwN2lNVUxrQWhMVUhuNw?oc=5"
+    },
+    {
+      "time": "2026-09-17T04:30:00+09:00",
+      "title": "“SK하이닉스, 인텔과 美서 메모리 생산 검토”",
+      "source": "동아일보",
+      "link": "https://news.google.com/rss/articles/CBMiZkFVX3lxTE93LWszMDd1X1p6dEN3VmxfYWVqWncxMmVXZG1sdFJzX1c2TlE4N0ctbDRTSGtsQ0NodzBCbXU2MzdRc2VtSU9vUkNNUEVuV3FaZUVhcWZMeWFOYXRUbTVLd0NrWmVpUdIBZkFVX3lxTE93LWszMDd1X1p6dEN3VmxfYWVqWncxMmVXZG1sdFJzX1c2TlE4N0ctbDRTSGtsQ0NodzBCbXU2MzdRc2VtSU9vUkNNUEVuV3FaZUVhcWZMeWFOYXRUbTVLd0NrWmVpUQ?oc=5"
+    },
+    {
+      "time": "2026-09-17T04:51:00+09:00",
+      "title": "[글로벌 비즈 브리핑] \"SK하이닉스, 인텔과 美서 메모리 생산 논의\" 外",
+      "source": "v.daum.net",
+      "link": "https://news.google.com/rss/articles/CBMiT0FVX3lxTE51SXZVSjc2eDFkM09HM21LU3dIODNMeTFyN2ZqbDJtMzEtanhuaDNCbjlDUTlmX21UcXpGS29jYlNOQVhkb2VhUV9HWkl5OTQ?oc=5"
+    }
+  ],
+  "top_news": [
+    {
+      "time": "2026-09-17T10:33:00+09:00",
+      "title": "고금리에도 AI 투자는 계속…KB證 \"삼성전자·SK하이닉스 최대 수혜\"",
+      "source": "ebn.co.kr",
+      "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTFBlZkdlci1GcEczUFp1Y3lHTk92M04zZndtajdKajR4TFdGSjFqS3RwTmJCZmxNaUtIMTcxVENlQ01LaGtUMXI2NDEyQ2hVTHp2M1ZydTJLLUw3VmVZa0s4QV9QTU02d1Q5?oc=5"
+    },
+    {
+      "time": "2026-09-17T08:57:05+09:00",
+      "title": "하나증권 \"SK하이닉스 인텔과 손잡고 미국 생산거점 확대 기대, 반도체주 투심 개선 전망\"",
+      "source": "businesspost.co.kr",
+      "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTFA1QWMta1B0V2R5TGxWM2dlakd4dkZvV005S1JoeXBTdlhCM2xfcVNLRmdIYjJ2Y05BTC1HM2NaUlVVNXFpc3dZTk56NGNtYzJGYjljRjJHTUwwT2NzdXBJM215UUVrNEpoV0NhVWt5WGtsRkU?oc=5"
+    },
+    {
+      "time": "2026-09-17T09:29:09+09:00",
+      "title": "SK하이닉스 “연산 메모리, AI 데이터 병목 해결할 것”",
+      "source": "v.daum.net",
+      "link": "https://news.google.com/rss/articles/CBMiRkFVX3lxTE1nenNvWDVGX2NLU05lUjY4NWtpWTFkX3V0RWRUWFVIeDV2NFM3UU5TVFJOT2VfUzVkNHNQLTNWMHNxSHZiUGc?oc=5"
+    },
+    {
+      "time": "2026-09-17T09:38:08+09:00",
+      "title": "SK하이닉스, ‘연산하는 메모리’ PIM 승부수…AI 데이터 병목 줄인다",
+      "source": "산경투데이",
+      "link": "https://news.google.com/rss/articles/CBMidEFVX3lxTE9CSDZVVDY0NkMwOXF5TDU3emhuVlRHVUZBUTlNc1lNOV83ZUFVLVFHRGswTUhIOVhhU0lJRWl3M00tdUh6cV8tdGNiQjBNemZzd1NqOTdaaG9rcWpHc09hQi1BR2o4UGZiLXVYdDdoVnhHbzJI0gF0QVVfeXFMT0JINlVUNjQ2QzA5cXlMNTd6aG5WVEdVRkFROU1zWU05XzdlQVUtUUdEazBNSEg5WGFTSUlFaXczTS11SHpxXy10Y2JCME16ZnN3U2o5N1pob2txakdzT2FCLUFHajhQZmItdVh0N2hWeEdvMkg?oc=5"
+    },
+    {
+      "time": "2026-09-17T09:53:00+09:00",
+      "title": "SK하이닉스 \"연산하는 메모리로 AI 데이터 병목 해결\"",
+      "source": "YTN",
+      "link": "https://news.google.com/rss/articles/CBMidkFVX3lxTE84Z2dUcFVoRUlOc21sV1M0UXd3TVNyeDMzRk1mMFdCaHJ3WDJSLUp3dXhXdTFwOUFIN2x1STlDWi1FSWpTUnVVbEd3eGlnTmRHWWFmdTVoaVRBeVRpbkJnSi1yd1FOemEyRzVlWkluZ1owM2MwOVE?oc=5"
+    },
+    {
+      "time": "2026-09-17T10:09:49+09:00",
+      "title": "SK하이닉스 \"연산 가능 메모리로 AI 데이터 병목 해결\"",
+      "source": "글로벌경제신문",
+      "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTFB1eFUwX0M0Mk1TNzNQZ05IWkFrZU1qcnFHaHVxOWRUX2M3czZzSFdpQWIyVVEzZE5vTFZ1QlRtSGFka3Q2VUkwV3VaMmhSczFTVG8tZ3ptTE5sZjFocUJCNUZCd25xTXEtOU8tbNIBcEFVX3lxTFBJSW9UU3RsT0o1d1JYcVpvZ3BqTjNvOU4xYlhXYnlrYUJ4dWhsWHg0bXBaS2hub3NHa1hLaWNPRzQ0X2xqbW01dkNvWEVKcldjSk95WE5lQ2RONHEyNU94V1pYajBselA1RkZWTWNVd1M?oc=5"
+    }
+  ],
+  "disclosures": [],
+  "disclosure_note": null,
+  "flows": null,
+  "forecasts": [
+    {
+      "model": "No macro ensemble",
+      "hit": true,
+      "verdict": "맞음 — 예측 보합 42%, 실제 보합(-0.80%)",
+      "legs": "갭 +0.63%(보합) · 세션 -1.41%(하락)",
+      "where": "결과는 주로 장중에서 정해졌습니다.",
+      "band": 0.0132212167836358,
+      "probs": [
+        0.3406578870101959,
+        0.4248820091975663,
+        0.2344601037922377
+      ],
+      "actual": "보합",
+      "predicted": "보합"
+    },
+    {
+      "model": "Mean ensemble",
+      "hit": false,
+      "verdict": "틀림 — 예측 하락 38%, 실제 보합(-0.80%)",
+      "legs": "갭 +0.63%(보합) · 세션 -1.41%(하락)",
+      "where": "결과는 주로 장중에서 정해졌습니다.",
+      "band": 0.0132212167836358,
+      "probs": [
+        0.3835481962810393,
+        0.3638469435256044,
+        0.2526048601933562
+      ],
+      "actual": "보합",
+      "predicted": "하락"
+    },
+    {
+      "model": "Candidate expanding",
+      "hit": true,
+      "verdict": "맞음 — 예측 보합 39%, 실제 보합(-0.80%)",
+      "legs": "갭 +0.63%(보합) · 세션 -1.41%(하락)",
+      "where": "결과는 주로 장중에서 정해졌습니다.",
+      "band": 0.0132212167836358,
+      "probs": [
+        0.3520330172778635,
+        0.388290426511685,
+        0.2596765562104514
+      ],
+      "actual": "보합",
+      "predicted": "보합"
+    }
+  ],
+  "price_check": "1거래일 예상 구간 1,663,063~1,855,352원 · 종가 1,745,000원 → 구간 안",
+  "disclaimer": "시간이 맞는 것이지 원인 확정이 아닙니다. 뉴스 없이 움직이는 날(수급·프로그램·옵션 만기)이 많고, 기사 발행 시각은 실제 정보 유통보다 늦거나 앞섭니다. 이 절은 설명 도구이며 다음날 예측에 자동 반영되지 않습니다."
+}

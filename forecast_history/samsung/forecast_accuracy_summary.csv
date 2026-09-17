@@ -1,6 +1,7 @@
 ﻿model,kind,horizon_days,target_mode,config_hash,n,accuracy,mean_log_loss,mean_brier,point_forecasts,price_mae,price_mape,interval_coverage
 Candidate IV interval,price,1,close_to_close,01a15a32dfbfbe7a4a16,2,,,,2,6561.596415158754,0.026169425787203646,1.0
 Candidate evening forecast,direction,1,close_to_close,01a15a32dfbfbe7a4a16,3,0.6666666666666666,1.158084083291077,0.693043952302506,0,,,
+Candidate evening open,open,1,close_to_close,01a15a32dfbfbe7a4a16,1,,,,1,4646.649601627112,0.01808034864446347,1.0
 Candidate expanding,direction,1,close_to_close,01a15a32dfbfbe7a4a16,2,0.5,0.9666369715364648,0.5796256695345465,0,,,
 Candidate expanding,direction,1,close_to_close,fcf9a52b1a6a87f3bd29,1,0.0,1.1978514022617497,0.7366310234911683,0,,,
 LightGBM,direction,1,close_to_close,01a15a32dfbfbe7a4a16,2,0.5,1.0807856215960718,0.6545678774783612,0,,,
@@ -51,7 +52,7 @@ No macro ensemble,direction,1,close_to_close,fcf9a52b1a6a87f3bd29,1,0.0,1.229744
 No macro price ensemble,direction,1,close_to_close,01a15a32dfbfbe7a4a16,2,0.5,1.0047520306798594,0.6034557066867295,0,,,
 No macro price ensemble,direction,1,close_to_close,92f57958414c79f097af,1,1.0,0.7556341597018115,0.42180703159463995,0,,,
 No macro price ensemble,direction,1,close_to_close,fcf9a52b1a6a87f3bd29,1,0.0,1.2569918371377933,0.7812547543185786,0,,,
-Ridge,open,1,close_to_close,01a15a32dfbfbe7a4a16,2,,,,2,3705.9771974454925,0.014857590501293975,1.0
+Ridge,open,1,close_to_close,01a15a32dfbfbe7a4a16,3,,,,3,3725.8625428143328,0.014789150131280307,1.0
 Ridge,open,1,close_to_close,2eb5adc74ae8d1ff1953,1,,,,1,2009.8444744944572,0.007389134097406093,1.0
 Ridge,open,1,close_to_close,7cfdc5ba38f87fc3691f,1,,,,1,1960.9529171139002,0.007209385724683457,1.0
 Ridge,open,1,close_to_close,92f57958414c79f097af,1,,,,1,1637.2739251962048,0.006086520168015632,1.0

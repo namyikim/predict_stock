@@ -1,6 +1,84 @@
 {
   "records": [
     {
+      "created_at_kst": "2026-09-18T08:05:50+09:00",
+      "schema_version": 1,
+      "status": "predicted",
+      "stocks": {
+        "samsung": {
+          "name": "삼성전자",
+          "predicted_close": 257500,
+          "predicted_close_direction": "상승",
+          "predicted_open": 256000,
+          "previous_close": 252500,
+          "rationale": [
+            "전일 정규장 종가 252,500원에 비해 오전 08시대 대체거래소 시세가 256,000원 안팎으로 형성돼 상승 출발 신호가 확인됐다.",
+            "밤사이 나스닥이 1.7%, 필라델피아 반도체지수가 3.1% 상승하고 엔비디아·마이크론도 강세를 보여 국내 대형 반도체주 투자심리에 우호적이다.",
+            "메모리 가격 급등과 공급 부족 지속 전망은 실적 기대를 지지하지만, 최근 주가 변동성이 큰 점을 반영해 장중 상승 폭은 제한적으로 판단했다."
+          ],
+          "sources": [
+            {
+              "title": "삼성전자 IR 주가정보 — 2026-09-17 정규장 가격",
+              "url": "https://ir.gsifn.io/"
+            },
+            {
+              "title": "토스증권 삼성전자 주문 화면 — 2026-09-18 오전 시세",
+              "url": "https://www.tossinvest.com/stocks/A005930/order"
+            },
+            {
+              "title": "AP — 2026-09-17 미국 증시 마감",
+              "url": "https://apnews.com/article/a8ce06ff4ffcf66d9f28bd3453bdf998"
+            },
+            {
+              "title": "Investor's Business Daily — 2026-09-17 반도체주와 SOX 지수 강세",
+              "url": "https://www.investors.com/news/technology/amd-stock-leads-chip-stocks-sox-index-higher-amid-sector-rebound/"
+            },
+            {
+              "title": "Barron's — 2026-09-17 메모리 가격·공급 전망과 마이크론 강세",
+              "url": "https://www.barrons.com/articles/micron-stock-price-intel-memory-chips-b0eca0f2"
+            }
+          ],
+          "ticker": "005930"
+        },
+        "sk_hynix": {
+          "name": "SK하이닉스",
+          "predicted_close": 1785000,
+          "predicted_close_direction": "상승",
+          "predicted_open": 1766000,
+          "previous_close": 1745000,
+          "rationale": [
+            "전일 정규장 종가 1,745,000원에 비해 오전 08시대 대체거래소 시세가 1,766,000원 안팎으로 형성돼 상승 출발 신호가 확인됐다.",
+            "밤사이 필라델피아 반도체지수가 3.1% 상승하고 마이크론이 5.3% 오르는 등 AI·메모리 관련주가 강세를 보여 전일 하락 뒤 반등 여건이 우세하다.",
+            "메모리 가격 급등과 공급 부족 지속 전망 및 인텔과의 협력 가능성은 긍정적이지만, 절대 주가 수준과 최근 변동성을 고려해 추가 상승 폭을 보수적으로 잡았다."
+          ],
+          "sources": [
+            {
+              "title": "Investing.com SK하이닉스 — 2026-09-17 정규장 가격",
+              "url": "https://kr.investing.com/equities/sk-hynix-inc"
+            },
+            {
+              "title": "토스증권 SK하이닉스 주문 화면 — 2026-09-18 오전 시세",
+              "url": "https://www.tossinvest.com/stocks/A000660/order"
+            },
+            {
+              "title": "Investor's Business Daily — 2026-09-17 반도체주와 SOX 지수 강세",
+              "url": "https://www.investors.com/news/technology/amd-stock-leads-chip-stocks-sox-index-higher-amid-sector-rebound/"
+            },
+            {
+              "title": "Barron's — 2026-09-17 메모리 가격·공급 전망과 마이크론 강세",
+              "url": "https://www.barrons.com/articles/micron-stock-price-intel-memory-chips-b0eca0f2"
+            },
+            {
+              "title": "Reuters — 2026-09-17 달러·미 국채금리 동향",
+              "url": "https://www.reuters.com/world/asia-pacific/hawkish-fed-lifts-dollar-seven-week-high-focus-turn-boj-2026-09-17/"
+            }
+          ],
+          "ticker": "000660"
+        }
+      },
+      "target_date": "2026-09-18"
+    },
+    {
       "created_at_kst": "2026-09-17T08:48:00+09:00",
       "schema_version": 1,
       "scored_at_kst": "2026-09-17T16:12:57.488270+09:00",
@@ -101,5 +179,5 @@
       "scored_days": 1
     }
   },
-  "updated_at_kst": "2026-09-17T16:12:57.524596+09:00"
+  "updated_at_kst": "2026-09-18T08:06:24.008658+09:00"
 }

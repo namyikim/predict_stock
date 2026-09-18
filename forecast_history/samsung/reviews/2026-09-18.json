@@ -1,0 +1,288 @@
+{
+  "target": "samsung",
+  "name": "삼성전자",
+  "peer_name": "SK하이닉스",
+  "session_date": "2026-09-18",
+  "generated_at": "2026-09-18 21:12 KST",
+  "summary": {
+    "prev_close": 252500.0,
+    "open": 261000.0,
+    "high": 262000.0,
+    "low": 257500.0,
+    "close": 261000.0,
+    "gap": 0.03366336633663369,
+    "session": 0.0,
+    "c2c": 0.03366336633663369,
+    "high_vs_open": 0.003831417624521105,
+    "low_vs_open": -0.013409961685823757,
+    "volume": 21139732.0,
+    "volume_ratio": 1.1859806912265847,
+    "kospi_c2c": 0.02662828033702791,
+    "peer_c2c": 0.06418338108882526,
+    "usdkrw_chg": 0.00873894341873327,
+    "sox_ret": 0.031422409327808376,
+    "nasdaq_ret": 0.016932166379619584
+  },
+  "classification": {
+    "labels": [
+      "갭 주도",
+      "장중 급변 09:00 주도",
+      "지수 동조"
+    ],
+    "reasons": [
+      "갭 +3.37%가 종가→종가 +3.37%의 100%",
+      "09:00 봉 +2.77%(σ의 19.4배, 거래량 7.54배)가 세션 +0.00%의 579%",
+      "KOSPI +2.66% vs 종목 +3.37%, 5분 수익률 상관 0.75 — 종목 고유 요인이 약함"
+    ]
+  },
+  "events": [
+    {
+      "time": "2026-09-18T09:00:00+09:00",
+      "ret": 0.027722772277227747,
+      "z": 19.4,
+      "volume_ratio": 7.54,
+      "cum_before": 0.0,
+      "cum_after": -0.005747126436781658,
+      "session_share": -5.788514851485105,
+      "score": 21.399952487143278,
+      "news": [
+        {
+          "time": "2026-09-18T07:33:53+09:00",
+          "title": "주가 41% 빠졌는데 \"기회다\"…300만원 간다는 삼성전자 동생",
+          "source": "edaily.co.kr",
+          "link": "https://news.google.com/rss/articles/CBMigAFBVV95cUxNOUs0b0RYODRHVmVSNHk2WjVUbHJUeTVOUURRbDlLcWpON0lGTV80QlN2TVFLRlZabFJZNXVoS1VHTGxZMGYyMzh1SUU5azBEb2JlSUlubVpJRnBnZEtfdWRPSE52OU9kODhIRzVVSmM2UF9sbWZKMUlRQTRYY3A1Mw?oc=5"
+        },
+        {
+          "time": "2026-09-18T08:00:00+09:00",
+          "title": "삼성전자, 교사 500명 노하우 반영한 교실 수업 솔루션 ‘삼성 녹스 클래스룸’ 론칭",
+          "source": "news.samsung.com",
+          "link": "https://news.google.com/rss/articles/CBMivwJBVV95cUxOaEVNM0pvTUMzd19haFZKMENpdmUtNEdiSjhUT1A4Umpra2l0Z0hWQjNaOXZ2b29hMk1nY0g0eWtaZEEyV1JQUTFzb182d0tQNWVCYzZvUDRaV2VYV25rNm5abHpIRW5PUXh3bkZfeURyTDJURW1ZLUxkVjJiZlp0cWJJb0Z5cFVqbldGSUo3YWNaNkZmQy1vbzBDb010VnpLZFNuRmFIRjVrclVTOEV2THBzZzk1QjdFam1BdzU3WVpPQTB1VENsT2ViZFNOVW5HODNnbWRUbk1tbkFZSUhrZU11WU9CYjM4SnlEV1c0V2xrZWZFMVJkMG5rMDdJMy0yOE5FcFg5YUlYMlRzTnh0U3BHR3hIcWVXcWRGWE1vaVdrb2VNLVlicldVSEhDdm1uUl91el9kUFE4bkQwN3lN?oc=5"
+        },
+        {
+          "time": "2026-09-18T08:15:20+09:00",
+          "title": "거래 급감에도 동탄 30대 비중↑…삼성전자 '5억 대출' 새 변수",
+          "source": "뉴스1",
+          "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE5wcU5jdS1ZYzdQM2FsNEgyVVdsQmxYWFhhaXlRaFBiTTVqZlNGOFFhczU0M2J1cUdtNXZfY0NKRk1vb2x0OXVpWURtNFNZeVlieHV4d016WXFJREXSAWBBVV95cUxQRThib2h0a0xGMVAyVV91UVV0NVJIRkxvZ0JuUnFwbFowdExhNWpjNFN5Z2tLU1Rfc0hNdmdzSURnZ3Qxb1Z6cW45RFp1NzRrN1BBZ2tDZHNrNnlFU09rTEs?oc=5"
+        }
+      ]
+    },
+    {
+      "time": "2026-09-18T12:10:00+09:00",
+      "ret": 0.005780346820809301,
+      "z": 4.04,
+      "volume_ratio": 1.55,
+      "cum_before": -0.005747126436781658,
+      "cum_after": 0.0,
+      "session_share": -1.2069364161849718,
+      "score": 4.355273676563794,
+      "news": [
+        {
+          "time": "2026-09-18T11:05:40+09:00",
+          "title": "삼성전자 담고 삼성SDI 던졌다 [주식 초고수는 지금]",
+          "source": "매일경제",
+          "link": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE1lQUtnRTRSV0psWEFKdjNRVHp4RmwxcENoVkhuWmVtYTVSY0tjaFgzbFBzem83Z3ZhSXBpdEx6YWYzTFEyaHQxMUFhaWFyX0h5b2c?oc=5"
+        },
+        {
+          "time": "2026-09-18T11:08:35+09:00",
+          "title": "인텔 7% 급등에도…초고수는 삼성전자만 담았다",
+          "source": "한국경제",
+          "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE0zOTRVeUktQjdtdTB5VEVkTUhZUUdqZ2NGck1DVVFBMnIzaFpqN0YyU1lCa1BKNURZRWgxY1BvTHVPX0cxWUw2WXkxUHVobkJ3ekU2VDcyZk9tQQ?oc=5"
+        },
+        {
+          "time": "2026-09-18T11:36:14+09:00",
+          "title": "리모컨 한 번 누르면 장바구니로... 삼성전자가 그리는 'TV 커머스'",
+          "source": "시장경제신문",
+          "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE04a3VwVkdyOWEyQk1Pdlc4blNnVjdTVDNBN29nOGhNZFIzdUNDcDVvcUxtd1VYNlhJcm9zc3U1Ung2ckJJbWs1bGNRc0NjZ0NORkVsVVZhU29oZEZFS2xRcUgteDRwZXNOMUo3NE5yYXA?oc=5"
+        },
+        {
+          "time": "2026-09-18T11:31:20+09:00",
+          "title": "삼성전자, 교사 500명 노하우 담긴 교육 솔루션 ‘갤럭시 클래스룸’ 출시",
+          "source": "주간한국",
+          "link": "https://news.google.com/rss/articles/CBMidEFVX3lxTE9EQjFPMzRxV0lvVUtJdFBnbzc4elp0ZVUtYi01aWMzZmFtRGNCM1ItRmFCR1FkUHdoV3FVQkNmaW1lcVhxVlhLZDEyNDFpczdIeTJvbVBva1ZHTDBLRHhndjY0N21sc0dFX2FBNTlDakd4RG4w0gF0QVVfeXFMT0RCMU8zNHFXSW9VS0l0UGdvNzh6WnRlVS1iLTVpYzNmYW1EY0IzUi1GYUJHUWRQd2hXcVVCQ2ZpbWVxWHFWWEtkMTI0MWlzN0h5Mm9tUG9rVkdMMEtEeGd2NjQ3bWxzR0VfYUE1OUNqR3hEbjA?oc=5"
+        }
+      ]
+    },
+    {
+      "time": "2026-09-18T13:50:00+09:00",
+      "ret": 0.0019193857965451588,
+      "z": 1.34,
+      "volume_ratio": 3.09,
+      "cum_before": -0.0019157088122605526,
+      "cum_after": 0.0,
+      "session_share": -0.40076775431862577,
+      "score": 2.960896492182306,
+      "news": [
+        {
+          "time": "2026-09-18T13:43:17+09:00",
+          "title": "반도체주 강세에 코스피 2%대 상승‥삼성전자 3%↑·SK하이닉스 5%↑",
+          "source": "imnews.imbc.com",
+          "link": "https://news.google.com/rss/articles/CBMidEFVX3lxTE40YzJrMjNDZmlMLXU4VDVRYnlCZ1NQX2FUaUwwRVBFUFlIclRDTHNDSXZNcEhGdXZUejVabFhEQndYWndtM1lKdFQ5cDlyMVpzVzViSE1OaU1TRkljRXZ5TU1IM09wbENoM2F2N2ZDWlN3ZFp40gF0QVVfeXFMTjRjMmsyM0NmaUwtdThUNVFieUJnU1BfYVRpTDBFUEVQWUhyVENMc0NJdk1wSEZ1dlR6NVpsWERCd1had20zWUp0VDlwOXIxWnNXNWJITU5pTVNGSWNFdnlNTUgzT3BsQ2gzYXY3ZkNaU3dkWng?oc=5"
+        },
+        {
+          "time": "2026-09-18T13:45:00+09:00",
+          "title": "[장중시황] 코스피, 2.6% 상승해 6880선⋯ 삼성전자·SK하이닉스 강세",
+          "source": "브릿지경제",
+          "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE5PTmdIbjB5MG9CZnZaU3pvcGlpNnN6aFpGRnNYMk81cElpNWNuZm53ZGdwaVp6M3ZjTnFma2NhZW9XZDdoZ1d1QVVUWEN5MXJGUlk4NUdhbTlrQQ?oc=5"
+        },
+        {
+          "time": "2026-09-18T13:30:00+09:00",
+          "title": "삼성전자, 임직원과 함께 생태계 보전 나서… 사업장 인근 생물다양성 탐사",
+          "source": "news.samsung.com",
+          "link": "https://news.google.com/rss/articles/CBMiugJBVV95cUxOcm9fc2JMMm5DRDBFZEs0MUdheUpQVlEzajBFVGh5ZUt2NTM1c3I5V1N3UGdMeEJSSVBRMjdFTmp1ODIwa01fdnNzRTZITUpXZE5VdmpyeUpYaTVuTkZlLUhPVHpyOEJyNTgxem1sQmtPNEtXb0NPSE1FQkc2TnlPdEtkUGV1Z0VYZTFlN245OTByZnJOOXVwU3pMMVdjaDNJaEdrVlQxZ3Z6aDNvcjl1b2NuaGFrOW5rQjljUVZMbU9CRzZCNUZBLU16a21WdXkzV3ZHaE0tVkk3ZUh2cU5Gd3A4M0N4VXpUR1dKMkk3MGh4NkRtLWllUkhacDFGSlluekhXMFllUVRCZmR0WUozSnZDbHBVTVpoUm15V0p3NV80UWZCRmZqRnM1M1NsWXVGd1ZpdGViT1d3Zw?oc=5"
+        },
+        {
+          "time": "2026-09-18T13:44:47+09:00",
+          "title": "삼성전자 ‘노노 갈등’ 사분오열? DX 중심 동행노조 내홍",
+          "source": "매일경제",
+          "link": "https://news.google.com/rss/articles/CBMiVkFVX3lxTFA1d2dlY2ZXbHM1MVVHUkpmSEJsWjgycWxULWtLcDBYVGR2NW56eHlOdm9KQXJLYjYxRE5vdDdHbkh2MVlkQkg3TFM5QWpyMXBlUlRQQXZn?oc=5"
+        },
+        {
+          "time": "2026-09-18T13:51:41+09:00",
+          "title": "삼성전자, 교실 맞춤형 솔루션 ‘갤럭시 클래스룸’ 공개",
+          "source": "포인트경제",
+          "link": "https://news.google.com/rss/articles/CBMiakFVX3lxTE85TFJrbEI1OFdUdnRQSGFyaDhLRENCOEs0QmY0YnZmVzNJTDlDeGQwUmNCaEpfTG51WVhYbkVnaTFoVk9sbDR0dl81N29kUjA3YWJRMjE2QlQ5ZFB6UVVhRmw4VV9oMGtwbXc?oc=5"
+        }
+      ]
+    }
+  ],
+  "turning_point": {
+    "high_time": "2026-09-18T14:15:00+09:00",
+    "high": 0.002873563218390718,
+    "low_time": "2026-09-18T10:25:00+09:00",
+    "low": -0.011494252873563204,
+    "pattern": "저점 후 반등"
+  },
+  "closing_share": NaN,
+  "intraday_corr_kospi": 0.7487126549916124,
+  "intraday_note": "장중 봉은 09:00~14:55까지만 있어 마감 구간(14:55~15:30)은 일봉 종가로만 봅니다(그 구간 +0.48%).",
+  "intraday_coverage": "09:00~14:55",
+  "overnight_news": [
+    {
+      "time": "2026-09-18T07:33:53+09:00",
+      "title": "주가 41% 빠졌는데 \"기회다\"…300만원 간다는 삼성전자 동생",
+      "source": "edaily.co.kr",
+      "link": "https://news.google.com/rss/articles/CBMigAFBVV95cUxNOUs0b0RYODRHVmVSNHk2WjVUbHJUeTVOUURRbDlLcWpON0lGTV80QlN2TVFLRlZabFJZNXVoS1VHTGxZMGYyMzh1SUU5azBEb2JlSUlubVpJRnBnZEtfdWRPSE52OU9kODhIRzVVSmM2UF9sbWZKMUlRQTRYY3A1Mw?oc=5"
+    },
+    {
+      "time": "2026-09-18T08:00:00+09:00",
+      "title": "삼성전자, 교사 500명 노하우 반영한 교실 수업 솔루션 ‘삼성 녹스 클래스룸’ 론칭",
+      "source": "news.samsung.com",
+      "link": "https://news.google.com/rss/articles/CBMivwJBVV95cUxOaEVNM0pvTUMzd19haFZKMENpdmUtNEdiSjhUT1A4Umpra2l0Z0hWQjNaOXZ2b29hMk1nY0g0eWtaZEEyV1JQUTFzb182d0tQNWVCYzZvUDRaV2VYV25rNm5abHpIRW5PUXh3bkZfeURyTDJURW1ZLUxkVjJiZlp0cWJJb0Z5cFVqbldGSUo3YWNaNkZmQy1vbzBDb010VnpLZFNuRmFIRjVrclVTOEV2THBzZzk1QjdFam1BdzU3WVpPQTB1VENsT2ViZFNOVW5HODNnbWRUbk1tbkFZSUhrZU11WU9CYjM4SnlEV1c0V2xrZWZFMVJkMG5rMDdJMy0yOE5FcFg5YUlYMlRzTnh0U3BHR3hIcWVXcWRGWE1vaVdrb2VNLVlicldVSEhDdm1uUl91el9kUFE4bkQwN3lN?oc=5"
+    },
+    {
+      "time": "2026-09-18T08:15:20+09:00",
+      "title": "거래 급감에도 동탄 30대 비중↑…삼성전자 '5억 대출' 새 변수",
+      "source": "뉴스1",
+      "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE5wcU5jdS1ZYzdQM2FsNEgyVVdsQmxYWFhhaXlRaFBiTTVqZlNGOFFhczU0M2J1cUdtNXZfY0NKRk1vb2x0OXVpWURtNFNZeVlieHV4d016WXFJREXSAWBBVV95cUxQRThib2h0a0xGMVAyVV91UVV0NVJIRkxvZ0JuUnFwbFowdExhNWpjNFN5Z2tLU1Rfc0hNdmdzSURnZ3Qxb1Z6cW45RFp1NzRrN1BBZ2tDZHNrNnlFU09rTEs?oc=5"
+    }
+  ],
+  "top_news": [
+    {
+      "time": "2026-09-18T16:04:42+09:00",
+      "title": "[속보] 삼성전자 3%·SK하이닉스 6% 급등…AI 반도체 투자심리 ‘활짝’",
+      "source": "v.daum.net",
+      "link": "https://news.google.com/rss/articles/CBMiT0FVX3lxTE1sSnFyczg1ZmtnNk1aSEpvQTVTTTd6M2FHRzl5bDBpbnFGdGtJODFiby1zNFpIemdudzhxMHpOZHRSLU1NaWJBZmxLeklOczQ?oc=5"
+    },
+    {
+      "time": "2026-09-18T16:52:43+09:00",
+      "title": "반도체주가 견인한 코스피 상승... 외국인도 순매수 전환",
+      "source": "세계일보",
+      "link": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE0zejJ4dHNMMjJLZHRabEtHVjk2NWNIcnFOWi1QajRCV1pZVXFOOHlvVjlQeTVDRmRmZmQ1TFJNQ0hJWFpjMzI4VnkzY1Y4NXIxeHMxa9IBVEFVX3lxTE0zejJ4dHNMMjJLZHRabEtHVjk2NWNIcnFOWi1QajRCV1pZVXFOOHlvVjlQeTVDRmRmZmQ1TFJNQ0hJWFpjMzI4VnkzY1Y4NXIxeHMxaw?oc=5"
+    },
+    {
+      "time": "2026-09-18T09:32:23+09:00",
+      "title": "반도체주 강세에 코스피 2%대 상승 출발‥삼성전자 2%↑·SK하이닉스 4%↑",
+      "source": "imnews.imbc.com",
+      "link": "https://news.google.com/rss/articles/CBMidEFVX3lxTE5GWFk1cWg2M1lPRzRFQ29xWlJBT3ZzUFBBV3JzVVhrY0ZxQm1HWEZKdGctWWNEOHltU0M5Nnp3cXlyRTJmZGJJOGlMbHZKRWtKem1OWHZOOERBR3VkNzZ1RDFOZTg1bWNZMk04SndYakZIVkJs0gF0QVVfeXFMT216MzVKWlhHa1NPVExWZmJnd0ctaUNZLXVfN2NJb19ibGhXNGl5QTBMZExzTXZZWVBSenA5aG1qR2N4MlVBdGJOTGJMZFUzaUtlbHRuSVFoVUJQVFhlaGtaUnUybU1aMl84S0M0NTFYWkJ4NWk?oc=5"
+    },
+    {
+      "time": "2026-09-18T13:43:17+09:00",
+      "title": "반도체주 강세에 코스피 2%대 상승‥삼성전자 3%↑·SK하이닉스 5%↑",
+      "source": "imnews.imbc.com",
+      "link": "https://news.google.com/rss/articles/CBMidEFVX3lxTE40YzJrMjNDZmlMLXU4VDVRYnlCZ1NQX2FUaUwwRVBFUFlIclRDTHNDSXZNcEhGdXZUejVabFhEQndYWndtM1lKdFQ5cDlyMVpzVzViSE1OaU1TRkljRXZ5TU1IM09wbENoM2F2N2ZDWlN3ZFp40gF0QVVfeXFMTjRjMmsyM0NmaUwtdThUNVFieUJnU1BfYVRpTDBFUEVQWUhyVENMc0NJdk1wSEZ1dlR6NVpsWERCd1had20zWUp0VDlwOXIxWnNXNWJITU5pTVNGSWNFdnlNTUgzT3BsQ2gzYXY3ZkNaU3dkWng?oc=5"
+    },
+    {
+      "time": "2026-09-18T16:07:17+09:00",
+      "title": "美 반도체 훈풍에 삼성전자·SK하이닉스 급등…외국인 수급은 엇갈려",
+      "source": "산경투데이",
+      "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTFBJdGdXMU5sNlUtc2NIRVhtS19KYVlSSnNtaGlOX3VOejdSU01QY1FOUmZBTmNERWtpVURseFhuV2dIMFFqSzBSVFp3bmNpLXROUlNrNW5ha1ZSTGwzTnZKWVNpaEtWcld1VkNoTDBTMzXSAXRBVV95cUxQbzg5RzBOOEVSQUh4eVZlZEpHZmoyOUNUbUlqNHZmOU91NkpMWV8yWHBXWWhTcmxmS2tIUTYyYlZfeS1DQmZVUkRlTW1pRjJoOWIzOVhZZWFmSDlhbFdfaU94VTVGNFR6bE1LX3Q4S3NkOS1ZOQ?oc=5"
+    },
+    {
+      "time": "2026-09-18T16:17:54+09:00",
+      "title": "'금리 이겨낸 반도체'…코스피 6890선, 외인 8거래일만 순매수[시황종합]",
+      "source": "뉴스1",
+      "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTFBVV1A0UktVSzJZdW1YVW1UZUlyaW1TV3VBamxaQVYzSVVkY3lIalZpY2I0bl9aOVZHYmM2SFZxZVR4VWx1Vk1ELUdnOUNJaGx2N25FTllfVWUwYlNRSWpiSkllUGTSAWRBVV95cUxQVVdQNFJLVUsyWXVtWFVtVGVJcmltU1d1QWpsWkFWM0lVZGN5SGpWaWNiNG5fWjlWR2JjNkhWcWVUeFVsdVZNRC1HZzlDSWhsdjduRU5ZX1VlMGJTUUlqYkpJZVBk?oc=5"
+    }
+  ],
+  "disclosures": [
+    {
+      "report_nm": "최대주주등소유주식변동신고서",
+      "rcept_dt": "20260918",
+      "rcept_no": "20260918800754",
+      "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260918800754"
+    },
+    {
+      "report_nm": "임원ㆍ주요주주특정증권등소유상황보고서",
+      "rcept_dt": "20260918",
+      "rcept_no": "20260918000212",
+      "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260918000212"
+    },
+    {
+      "report_nm": "임원ㆍ주요주주특정증권등소유상황보고서",
+      "rcept_dt": "20260918",
+      "rcept_no": "20260918000191",
+      "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260918000191"
+    }
+  ],
+  "disclosure_note": null,
+  "flows": null,
+  "forecasts": [
+    {
+      "model": "No macro ensemble",
+      "hit": true,
+      "verdict": "맞음 — 예측 상승 53%, 실제 상승(+3.37%)",
+      "legs": "갭 +3.37%(상승) · 세션 +0.00%(보합)",
+      "where": "결과는 주로 갭(밤사이)에서 정해졌습니다.",
+      "band": 0.0095944317864753,
+      "probs": [
+        0.189260642136606,
+        0.2810828045461533,
+        0.5296565533172407
+      ],
+      "actual": "상승",
+      "predicted": "상승"
+    },
+    {
+      "model": "Mean ensemble",
+      "hit": true,
+      "verdict": "맞음 — 예측 상승 53%, 실제 상승(+3.37%)",
+      "legs": "갭 +3.37%(상승) · 세션 +0.00%(보합)",
+      "where": "결과는 주로 갭(밤사이)에서 정해졌습니다.",
+      "band": 0.0095944317864753,
+      "probs": [
+        0.1907623313786225,
+        0.2812903416204286,
+        0.5279473270009488
+      ],
+      "actual": "상승",
+      "predicted": "상승"
+    },
+    {
+      "model": "Candidate expanding",
+      "hit": true,
+      "verdict": "맞음 — 예측 상승 57%, 실제 상승(+3.37%)",
+      "legs": "갭 +3.37%(상승) · 세션 +0.00%(보합)",
+      "where": "결과는 주로 갭(밤사이)에서 정해졌습니다.",
+      "band": 0.0095944317864753,
+      "probs": [
+        0.1599381334318164,
+        0.2673149491818979,
+        0.5727469173862857
+      ],
+      "actual": "상승",
+      "predicted": "상승"
+    }
+  ],
+  "price_check": "1거래일 예상 구간 245,886~266,277원 · 종가 261,000원 → 구간 안",
+  "disclaimer": "시간이 맞는 것이지 원인 확정이 아닙니다. 뉴스 없이 움직이는 날(수급·프로그램·옵션 만기)이 많고, 기사 발행 시각은 실제 정보 유통보다 늦거나 앞섭니다. 이 절은 설명 도구이며 다음날 예측에 자동 반영되지 않습니다."
+}

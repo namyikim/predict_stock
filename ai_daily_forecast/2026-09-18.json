@@ -1,10 +1,17 @@
 {
   "created_at_kst": "2026-09-18T08:05:50+09:00",
   "schema_version": 1,
-  "status": "predicted",
+  "scored_at_kst": "2026-09-18T16:20:31.175138+09:00",
+  "status": "scored",
   "stocks": {
     "samsung": {
+      "actual_close": 261000.0,
+      "actual_close_direction": "상승",
+      "actual_open": 261000.0,
+      "close_ape_pct": 1.340996,
+      "direction_correct": true,
       "name": "삼성전자",
+      "open_ape_pct": 1.915709,
       "predicted_close": 257500,
       "predicted_close_direction": "상승",
       "predicted_open": 256000,
@@ -39,7 +46,13 @@
       "ticker": "005930"
     },
     "sk_hynix": {
+      "actual_close": 1857000.0,
+      "actual_close_direction": "상승",
+      "actual_open": 1810000.0,
+      "close_ape_pct": 3.877221,
+      "direction_correct": true,
       "name": "SK하이닉스",
+      "open_ape_pct": 2.430939,
       "predicted_close": 1785000,
       "predicted_close_direction": "상승",
       "predicted_open": 1766000,

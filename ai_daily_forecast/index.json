@@ -3,10 +3,17 @@
     {
       "created_at_kst": "2026-09-18T08:05:50+09:00",
       "schema_version": 1,
-      "status": "predicted",
+      "scored_at_kst": "2026-09-18T16:20:31.175138+09:00",
+      "status": "scored",
       "stocks": {
         "samsung": {
+          "actual_close": 261000.0,
+          "actual_close_direction": "상승",
+          "actual_open": 261000.0,
+          "close_ape_pct": 1.340996,
+          "direction_correct": true,
           "name": "삼성전자",
+          "open_ape_pct": 1.915709,
           "predicted_close": 257500,
           "predicted_close_direction": "상승",
           "predicted_open": 256000,
@@ -41,7 +48,13 @@
           "ticker": "005930"
         },
         "sk_hynix": {
+          "actual_close": 1857000.0,
+          "actual_close_direction": "상승",
+          "actual_open": 1810000.0,
+          "close_ape_pct": 3.877221,
+          "direction_correct": true,
           "name": "SK하이닉스",
+          "open_ape_pct": 2.430939,
           "predicted_close": 1785000,
           "predicted_close_direction": "상승",
           "predicted_open": 1766000,
@@ -161,23 +174,23 @@
   "schema_version": 1,
   "summary": {
     "overall": {
-      "close_mape_pct": 1.74,
-      "direction_accuracy_pct": 50.0,
-      "open_mape_pct": 1.17,
-      "scored_days": 2
+      "close_mape_pct": 2.17,
+      "direction_accuracy_pct": 75.0,
+      "open_mape_pct": 1.67,
+      "scored_days": 4
     },
     "samsung": {
-      "close_mape_pct": 1.19,
+      "close_mape_pct": 1.26,
       "direction_accuracy_pct": 100.0,
-      "open_mape_pct": 2.33,
-      "scored_days": 1
+      "open_mape_pct": 2.13,
+      "scored_days": 2
     },
     "sk_hynix": {
-      "close_mape_pct": 2.29,
-      "direction_accuracy_pct": 0.0,
-      "open_mape_pct": 0.0,
-      "scored_days": 1
+      "close_mape_pct": 3.08,
+      "direction_accuracy_pct": 50.0,
+      "open_mape_pct": 1.22,
+      "scored_days": 2
     }
   },
-  "updated_at_kst": "2026-09-18T08:06:24.008658+09:00"
+  "updated_at_kst": "2026-09-18T16:20:31.299158+09:00"
 }

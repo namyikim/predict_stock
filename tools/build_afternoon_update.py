@@ -6,10 +6,16 @@
 이유가 없다. 하루 사이에 성능표가 의미 있게 달라지지 않고, 오히려 아침과 오후의 숫자가 미세하게
 달라져 "왜 바뀌었지"만 남는다. 그래서 이 도구는
 
-  1) 대상 종목 시세만 받아 원장을 채점하고(예측은 새로 만들지 않는다),
+  1) 대상 종목 시세만 받아 원장을 채점하고(07:00 예측은 새로 만들지 않는다),
   2) 이미 발행된 보고서에서 표시된 구간만 새 표로 바꿔 끼운다.
 
 성능표·다음 거래일 예측은 아침 값 그대로다. 그 사실을 절 머리에 적는다.
+
+예외 하나(P16 운영 반영, 2026-09-20): --scope open 회차는 아침 노트북이 미리 계산해 둔 가상 갭 격자
+(forecast_history/<종목>/post_open_grid.csv)를 실제 시가로 보간해 'Post-open' 행 하나를 원장에 더한다.
+07:00 행은 건드리지 않고, 정보 마감(15:30)이 다른 별도 행으로 따로 채점된다. 더 나은 모델이 아니라
+늦은 정보 시점이다 — 카드에 그렇게 적는다. 격자의 target_date 가 오늘 세션이 아니거나 오늘 봉에
+시가가 없으면 만들지 않고 건너뛴다(전일 격자·전일 시가를 끌어오면 그것이 P16 이 막은 거짓말이다).
 
     python tools/build_afternoon_update.py --target samsung --out runs/afternoon
     python tools/build_afternoon_update.py --target samsung --out runs/afternoon --publish
@@ -27,8 +33,10 @@ sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "tools"))
 import github_pages  # noqa: E402
 from forecast_utils import (  # noqa: E402
-    SCORECARD_END, SCORECARD_START, atomic_csv, daily_comparison, evaluate_forecasts,
-    ledger_section_html, review_ledger, scorecard_html, summarize_daily,
+    POST_OPEN_MODEL, POSTOPEN_END, POSTOPEN_START, SCORECARD_END, SCORECARD_START, append_forecasts,
+    atomic_csv, daily_comparison, evaluate_forecasts, is_headline_model, ledger_section_html,
+    post_open_card_html, post_open_ledger_row, post_open_row_for, review_ledger, scorecard_html,
+    summarize_daily,
 )
 
 KST = timezone(timedelta(hours=9))
@@ -40,6 +48,9 @@ TARGETS = {
     "sk_hynix": {"ticker": "000660.KS", "name": "SK하이닉스", "ensemble": "No macro ensemble"},
 }
 LEDGER_FILES = ["forecast_log.csv", "daily_forecast_comparison.csv", "forecast_accuracy_summary.csv"]
+GRID_FILE = "post_open_grid.csv"            # 아침 노트북이 올리는 가상 갭 격자(같은 forecast_history 폴더)
+# 시가 반영 갱신을 끄려면 여기를 False 로. 원장에는 추가 행만 쌓이므로 끄면 07:00 만 있던 상태로 돌아간다.
+POST_OPEN_ENABLED = True
 MARK_START, MARK_END = "<!--LEDGER_SECTION_START-->", "<!--LEDGER_SECTION_END-->"
 OPEN_CONFIRMED, CLOSE_CONFIRMED = (9, 5), (15, 40)   # should_score_now·evaluate_forecasts와 같은 기준
 
@@ -95,7 +106,8 @@ def describe_run(bars, now):
     return "장 마감 후 갱신", f"이 절과 맨 위 ‘지난 예측은 맞았나’만 {day} 종가까지 다시 채점했습니다."
 
 
-def score(storage, target, bars, token):
+def fetch_ledger(storage, target, token):
+    """원격 원장을 받아 둔다(토큰이 없으면 로컬 사본). 경로를 돌려준다."""
     storage.mkdir(parents=True, exist_ok=True)
     remote = github_pages.fetch(f"forecast_history/{target}/forecast_log.csv", token) if token else None
     if remote:
@@ -103,6 +115,52 @@ def score(storage, target, bars, token):
     path = storage / "forecast_log.csv"
     if not path.exists():
         raise RuntimeError("원장이 없습니다. 아침 실행이 한 번은 성공해야 채점할 것이 생깁니다.")
+    return path
+
+
+def fetch_grid(storage, target, token):
+    """아침 노트북이 올린 가상 갭 격자. 없거나 읽을 수 없으면 None."""
+    text = github_pages.fetch(f"forecast_history/{target}/{GRID_FILE}", token) if token else None
+    if text:
+        (storage / GRID_FILE).write_text(text, encoding="utf-8")
+    path = storage / GRID_FILE
+    if not path.exists():
+        return None
+    try:
+        return pd.read_csv(path)
+    except Exception as exc:              # HTML 오류 페이지 등
+        print(f"⚠️ {GRID_FILE} 을 읽지 못했습니다: {type(exc).__name__}: {exc}")
+        return None
+
+
+def append_post_open(ledger_path, grid, bars, now):
+    """시가 반영 갱신 행 하나를 원장에 더한다. (행 또는 None, 이유). 기존 행은 한 칸도 바꾸지 않는다.
+
+    now: 실제 실행 시각(tz-aware). 09:37 cron 이 14:10 에 도착한 날은 created_at_utc 에 그렇게 남는다.
+    """
+    if not POST_OPEN_ENABLED:
+        return None, "POST_OPEN_ENABLED=False"
+    if grid is None:
+        return None, f"{GRID_FILE} 이 없습니다(아침 실행이 격자를 올리지 않았습니다)"
+    session = pd.Timestamp(now).tz_convert("Asia/Seoul").normalize().tz_localize(None)
+    if bars.index[-1] != session:
+        return None, f"오늘({session.date()}) 봉이 아직 없습니다 — 전일 시가로 만들지 않습니다"
+    existing = pd.read_csv(ledger_path)
+    if post_open_row_for(existing, session) is not None:
+        return None, f"{session.date()} 의 {POST_OPEN_MODEL} 행이 이미 있습니다(중복 기록 안 함)"
+    prev = bars.index[bars.index < session]
+    if not len(prev):
+        return None, "전일 봉이 없습니다"
+    row, reason = post_open_ledger_row(grid, session, bars["open"].iloc[-1], bars.loc[prev[-1], "close"],
+                                       prev[-1], pd.Timestamp(now).tz_convert("UTC"))
+    if row is None:
+        return None, reason
+    append_forecasts(ledger_path, pd.DataFrame([row]))
+    return row, ""
+
+
+def score(storage, target, bars, token, ledger_path=None):
+    path = ledger_path or fetch_ledger(storage, target, token)
     evaluated = evaluate_forecasts(pd.read_csv(path), bars)
     atomic_csv(evaluated, path)
     daily = daily_comparison(evaluated)
@@ -136,11 +194,25 @@ def main():
 
     bars = load_bars(spec["ticker"], scope=args.scope)
     print(f"시세 {len(bars):,}행 · 마지막 봉 {bars.index[-1].date()} · scope={args.scope}", flush=True)
-    evaluated, daily = score(storage, args.target, bars, token)
+    now = datetime.now(KST)
+    ledger_path = fetch_ledger(storage, args.target, token)
+    # 시가 반영 갱신(P16 운영 반영): 개장 직후 회차에만, 오늘 격자와 오늘 시가가 모두 있을 때만 한 행을 더한다.
+    post_open_row = None
+    if args.scope == "open":
+        try:
+            post_open_row, why = append_post_open(ledger_path, fetch_grid(storage, args.target, token), bars, now)
+        except Exception as exc:          # 격자 문제로 채점 전체가 죽으면 안 된다
+            post_open_row, why = None, f"{type(exc).__name__}: {exc}"
+        if post_open_row is None:
+            print(f"시가 반영 갱신 건너뜀: {why}", flush=True)
+        else:
+            print(f"시가 반영 갱신 기록: {post_open_row['prediction']} (갭 {post_open_row['gap']:+.2%}, "
+                  f"상승 {post_open_row['p_up']:.0%}·보합 {post_open_row['p_flat']:.0%}·하락 {post_open_row['p_down']:.0%}) "
+                  f"· 실제 실행 {now:%H:%M} KST", flush=True)
+    evaluated, daily = score(storage, args.target, bars, token, ledger_path=ledger_path)
     print("채점 상태:", evaluated["status"].value_counts().to_dict(), flush=True)
 
     review = review_ledger(daily, bars, ensemble_model=spec["ensemble"], windows=(20, 60))
-    now = datetime.now(KST)
     version = github_pages.code_version(token)
     stamp = (f' · 코드 커밋 <code>{version["short"]}</code>' if version["short"] else "")
     label, detail = describe_run(bars, now)
@@ -153,6 +225,15 @@ def main():
     (storage / "ledger_section.html").write_text(section, encoding="utf-8")
     # 쉬운 요약 맨 위의 '지난 예측은 맞았나'도 같은 채점으로 다시 그린다. 아침 값이 남으면 아래 절과 어긋난다.
     card = scorecard_html(review, spec["ensemble"], note=f"{now:%H:%M} KST 채점 반영.")
+    # 시가 반영 갱신 카드. 07:00 대표 행(같은 target_date 의 사전 예측)을 함께 적어 '위 카드 그대로'를 보인다.
+    post_open_card = None
+    if post_open_row is not None:
+        morning = evaluated[(evaluated["kind"] == "direction") & (evaluated["model"] == spec["ensemble"])
+                            & (evaluated["target_date"].astype(str).str[:10] == post_open_row["target_date"])
+                            & is_headline_model(evaluated["model"])]
+        post_open_card = post_open_card_html(post_open_row, target=args.target,
+                                             morning=morning.iloc[0].to_dict() if len(morning) else None)
+        (storage / "post_open_card.html").write_text(post_open_card, encoding="utf-8")
     for alert in review["alerts"]:
         print("⚠️", alert, flush=True)
     print(f"채점된 예측일 {review['n_scored_days']}일 · 마지막 "
@@ -187,6 +268,12 @@ def main():
             continue
         # 표시가 없는 옛 보고서(2026-09-13 이전)는 절만 바꾼다.
         updated = replace_section(updated, card, SCORECARD_START, SCORECARD_END) or updated
+        if post_open_card is not None:
+            replaced = replace_section(updated, post_open_card, POSTOPEN_START, POSTOPEN_END)
+            if replaced is None:
+                print(f"⚠️ {path}: 시가 반영 갱신 표시가 없어 카드를 넣지 못했습니다(옛 보고서).")
+            else:
+                updated = replaced
         sha = github_pages.publish(path, updated, token, f"update: {path} {label} ({now:%Y-%m-%d %H:%M} KST)")
         print(f"보고서 갱신 {path} @ {sha}")
 

@@ -61,7 +61,33 @@ def decision_inputs_html(*, name, cards, unknowns, caveat=""):
 # 지난 예측 결과는 장 마감 후 갱신(tools/build_afternoon_update.py)이 아래 표시 사이만 다시 그려 넣는다.
 # 아침 보고서의 결과가 오후의 '예측 vs 실제' 절과 어긋나지 않게 하려는 것이다. 지우지 말 것.
 SCORECARD_START, SCORECARD_END = "<!--SCORECARD_START-->", "<!--SCORECARD_END-->"
+# 시가 반영 갱신(P16 운영 반영, 2026-09-20). 아침 보고서는 이 표시 사이에 자리 표시만 두고, 09:37 회차
+# (tools/build_afternoon_update.py --scope open)가 실제 시가로 낸 종가 방향 카드로 바꿔 끼운다.
+POSTOPEN_START, POSTOPEN_END = "<!--POSTOPEN_START-->", "<!--POSTOPEN_END-->"
+# 09:37 행의 모델명과 정보 마감 표시. 07:00 사전 예측 행(대표 모델·Candidate …)은 절대 덮어쓰지 않고
+# 같은 target_date 에 별도 모델명으로 한 행만 더한다. 이름이 대표 집계(is_headline_model)에서 빠진다.
+POST_OPEN_MODEL = "Post-open"
+POST_OPEN_INFORMATION_CUTOFF = "post_open"
+PRE_OPEN_INFORMATION_CUTOFF = "pre_open"
+# P16 결정 문서의 과거 검증 정확도(같은 날짜·같은 정답, 정보 마감만 다름). 카드에 "모델이 좋아진 것이
+# 아니라 정보가 늘어난 것"을 숫자로 적기 위한 값이다. experiments/model_improvement/P16/…/decision.md.
+POST_OPEN_TRACK_RECORD = {
+    "samsung": {"pre_open": .454, "post_open": .564, "gap_rule": .544},
+    "sk_hynix": {"pre_open": .499, "post_open": .576, "gap_rule": .544},
+}
 _WEEKDAYS_KO = "월화수목금토일"
+
+
+def is_headline_model(model):
+    """대표 행인가. 관찰 후보('Candidate …')와 시가 반영 갱신('Post-open')은 대표 집계에 넣지 않는다.
+
+    Series 를 받으면 같은 인덱스의 bool Series, 문자열을 받으면 bool 을 돌려준다.
+    """
+    if isinstance(model, pd.Series):
+        text = model.astype(str)
+        return ~(text.str.startswith("Candidate") | text.str.startswith(POST_OPEN_MODEL))
+    text = str(model)
+    return not (text.startswith("Candidate") or text.startswith(POST_OPEN_MODEL))
 # 방향 낱말은 보고서 전체에서 상승·보합·하락으로 통일한다(2026-09-17). 쉬운 요약만 "오름·큰 변화
 # 없음·내림"을 써서 1절·판단 재료 표와 어긋났고, 같은 예측이 다른 말로 보였다.
 _PLAIN_DIRECTION = {"하락": "하락", "보합": "보합", "상승": "상승"}
@@ -206,7 +232,7 @@ def scorecard_html(review, ensemble_name="Mean ensemble", note=""):
 
         # 관찰 후보('Candidate …': 저녁 시초가, HAR·IV 구간, strict gate)는 대표 행이 아니다. 같은 날 같은
         # kind 의 행이 여럿이므로 이름으로 걸러야 한다(2026-09-16: 저녁 시초가 후보를 추가하며 확인).
-        headline = ~model.astype(str).str.startswith("Candidate")
+        headline = is_headline_model(model)
 
         def first(mask):
             picked = latest[mask & headline]
@@ -239,6 +265,20 @@ def scorecard_html(review, ensemble_name="Mean ensemble", note=""):
             else:
                 results.append(("방향", verdict(row.get("direction_correct")),
                                 f"예측 {_PLAIN_DIRECTION.get(predicted, predicted)} → 실제 {actual_text}"))
+        # 시가 반영 갱신(Post-open)은 대표 행이 아니므로 headline 마스크 밖에서 따로 찾는다. 07:00 결과와
+        # 같은 줄에 합치지 않는다 — 정보 마감이 다른 두 예측은 다른 질문의 답이다.
+        post = latest[(kind == "direction") & (model.astype(str) == POST_OPEN_MODEL)]
+        if len(post):
+            row = post.iloc[0]
+            actual = _finite(row.get("actual_class"))
+            actual_text = {0: "하락", 1: "보합", 2: "상승"}.get(int(actual), "—") if actual is not None else "—"
+            created = pd.to_datetime(row.get("created_at_utc"), utc=True, errors="coerce")
+            when = f"{created.tz_convert('Asia/Seoul'):%H:%M}" if pd.notna(created) else "시각 미상"
+            gap = _finite(row.get("gap"))
+            results.append(("시가반영", verdict(row.get("direction_correct")),
+                            f"시가 반영 갱신(실제 실행 {when}) 예측 {_PLAIN_DIRECTION.get(str(row.get('prediction')), str(row.get('prediction')))}"
+                            + (f"(갭 {gap:+.2%})" if gap is not None else "") + f" → 실제 {actual_text}"
+                            " · 정보 마감 15:30 이전 · 07:00 예측과 별개로 셉니다"))
         row = first((kind == "price") & (horizon == 1))
         if row is not None:
             results.append(price_result("종가", row, "predicted_close", "actual_close", "low_close", "high_close"))
@@ -293,6 +333,11 @@ def scorecard_html(review, ensemble_name="Mean ensemble", note=""):
                 target = _finite(row.get("nominal_coverage"))
                 stats.append((label, float(row["interval_coverage"]), int(row["n"]),
                               f"목표 {target:.0%}" if target is not None else ""))
+        # 시가 반영 갱신 적중률은 별도 카드다. 대표 적중률과 합치지 않고 정보 마감을 적는다.
+        row = pick("direction_post_open")
+        if row is not None and _finite(row.get("n")) and int(row["n"]) > 0 and _finite(row.get("hit_rate")) is not None:
+            stats.append(("시가 반영 갱신 적중률", float(row["hit_rate"]), int(row["n"]),
+                          "정보 마감 15:30 이전 · 07:00 과 다른 질문"))
     if stats:
         stats_html = '<div style="display:flex;gap:8px;flex-wrap:wrap">' + "".join(
             f'<div style="{_CARD}">'
@@ -360,7 +405,7 @@ def official_forecast(ledger, prediction_date, evening_model="Candidate evening 
         direction = direction.sort_values("_created", kind="stable")
     first = direction.iloc[0]
     run = rows[rows["run_id"] == first["run_id"]]
-    headline = ~run["model"].astype(str).str.startswith("Candidate")
+    headline = is_headline_model(run["model"])
     opens = run[(run["kind"] == "open") & headline]
     prices = run[(run["kind"] == "price") & headline & run.get("horizon_days", pd.Series(np.nan, index=run.index)).notna()]
     return {"run_id": str(first["run_id"]), "created_at_utc": first.get("created_at_utc"),
@@ -741,12 +786,15 @@ def longterm_easy_summary_html(*, name, price_date, close, longterm=None, earnin
 def easy_summary_html(*, name, prediction_date, data_date, summary, open_forecast,
                       price_forecasts, review=None, longterm=None, earnings=None,
                       target_mode="close_to_close", record_forecast=True,
-                      macro_active=True, nsi_active=True, official_note=""):
+                      macro_active=True, nsi_active=True, official_note="",
+                      post_open=None, target=None):
     """Summarize already-computed results; never infer news causes or bypass signal gates.
 
     This is a generation-time snapshot. Intraday ledger refreshes remain separate and
     must not make the original forecast look as though it used later observations.
     official_note: 기록하지 않는 재실행이 원장의 공식 사전 예측을 보여 줄 때의 설명(official_forecast_note).
+    post_open: 이 예측일의 시가 반영 갱신 행(post_open_row_for). 있으면 카드, 없으면 09:37 자리 표시를 둔다.
+    target: 종목 키(samsung·sk_hynix) — 카드의 과거 검증 수치(POST_OPEN_TRACK_RECORD)용.
     """
     from html import escape
 
@@ -894,9 +942,12 @@ def easy_summary_html(*, name, prediction_date, data_date, summary, open_forecas
         f'</li>' for label, text in rest)
     # 맨 위: 다음 거래일 시초가·방향·종가, 지난 예측 결과와 지금까지 성적(2026-09-13 재구성).
     # 나머지 요약(전체 결론부터 주의할 점까지)은 그 아래에 예전 그대로 둔다.
+    # 세 카드 바로 아래에 시가 반영 갱신 블록(P16 운영 반영). 아침에는 자리 표시, 09:37 회차가 카드로 바꾼다.
+    # 다시 만든 보고서에 그날 Post-open 행이 이미 있으면 카드를 그대로 그린다(자리 표시로 되돌리지 않는다).
     top = (next_day_forecast_html(prediction_date=prediction_date, summary=summary,
                                   open_forecast=open_forecast, price_forecasts=price_forecasts,
                                   target_mode=target_mode)
+           + post_open_block_html(post_open, target=target, morning=live)
            + SCORECARD_START + scorecard_html(review, summary.get("ensemble") or "Mean ensemble")
            + SCORECARD_END)
     return ('<section id="easy-summary" aria-label="한눈에 보는 쉬운 요약" '
@@ -1377,6 +1428,222 @@ def snapshot_hash(raw):
     return digest.hexdigest()[:20]
 
 
+# ---------------------------------------------------------------------------
+# 시가 반영(09:37) 종가 방향 갱신 — P16 운영 반영 (2026-09-20)
+# ---------------------------------------------------------------------------
+# P16 이 보인 것: 09:00 시가가 확정된 뒤 같은 타깃(전일 종가→당일 종가)을 다시 물으면 정확도가
+# samsung 0.454→0.564 · sk_hynix 0.499→0.576 으로 오른다. **더 나은 모델이 아니라 늦은 정보 시점이다.**
+# 갭 부호만 읽는 규칙도 0.544 / 0.544 이고, 세션(시가→종가) 쪽은 아무것도 더 맞히지 못한다.
+# 그래서 07:00 예측은 그대로 두고, 같은 target_date 에 'Post-open' 행 하나를 더해 따로 채점한다.
+#
+# 09:37 도구에는 모델도 특징 파이프라인도 없다(원장과 보고서를 받아 채점만 한다). 그래서 아침 노트북이
+# "시가가 이렇게 열리면 확률은 이렇다"를 가상 갭 격자(−10%…+10%, 0.1% 간격)로 미리 계산해 두고
+# (post_open_grid.csv), 09:37 에는 실제 갭으로 그 격자를 보간만 한다.
+POST_OPEN_GAP_Z_WINDOW = 60
+POST_OPEN_GAP_COLUMNS = ("gap_0", "gap_over_band", "gap_z60", "gap_abs", "gap_up_band", "gap_down_band")
+POST_OPEN_GRID_GAPS = tuple(round(k / 1000., 3) for k in range(-100, 101))     # 201행
+POST_OPEN_GRID_COLUMNS = ("target_date", "gap", "p_down", "p_flat", "p_up", "band", "gap_rule_label")
+
+
+def _gap_group_g(gap, band, mean, std):
+    """그룹 G 6열. 갭·밴드·(d−1 까지의) 갭 평균·표준편차만 받는다 — 과거 행과 가상 격자가 같은 식을 쓴다."""
+    gap = pd.Series(gap, dtype=float)
+    b = pd.Series(band, dtype=float, index=gap.index).replace(0, np.nan)
+    mean = pd.Series(mean, dtype=float, index=gap.index)
+    std = pd.Series(std, dtype=float, index=gap.index).replace(0, np.nan)
+    both = gap.notna() & b.notna()
+    out = pd.DataFrame(index=gap.index)
+    out["gap_0"] = gap
+    out["gap_over_band"] = gap / b
+    out["gap_z60"] = (gap - mean) / std
+    out["gap_abs"] = gap.abs()
+    out["gap_up_band"] = (gap > b).astype(float).where(both)
+    out["gap_down_band"] = (gap < -b).astype(float).where(both)
+    return out[list(POST_OPEN_GAP_COLUMNS)]
+
+
+def post_open_gap_series(bars):
+    """gap_d = open_d / close_{d−1} − 1 (원본 종가 기준, 노트북 `sam_gap` 과 같은 정의)."""
+    bars = bars.sort_index()
+    prev_close = bars["close"].astype(float).shift(1).replace(0, np.nan)
+    return bars["open"].astype(float) / prev_close - 1
+
+
+def post_open_gap_features(bars, band, calendar, window=POST_OPEN_GAP_Z_WINDOW):
+    """그룹 G — 실현 갭. 행 d 가 쓰는 d일 정보는 **시가 하나뿐**이다.
+
+    z 점수의 평균·표준편차는 `shift(1)` 이라 d−1 까지의 갭 분포만 보고, 밴드도 노트북이 이미
+    d−1 까지로 만든 값이다. d일 종가·고가·저가·거래량은 어느 열에도 들어가지 않는다.
+    봉이 없거나 시가가 없는 날짜는 NaN 으로 남긴다(앞 값을 끌어오지 않는다).
+    tests/test_post_open_reforecast.py 가 이 계약을 고정한다(러너 P16 과 노트북이 같은 함수를 쓴다).
+    """
+    bars = bars.sort_index()
+    gap = post_open_gap_series(bars)
+    mean = gap.rolling(window).mean().shift(1)
+    std = gap.rolling(window).std().shift(1)
+    b = pd.Series(band, dtype=float).reindex(bars.index)
+    out = _gap_group_g(gap, b, mean, std)
+    return out.reindex(pd.DatetimeIndex(calendar))[list(POST_OPEN_GAP_COLUMNS)]
+
+
+def post_open_gap_stats(bars, window=POST_OPEN_GAP_Z_WINDOW):
+    """예측일의 z 점수에 쓸 (직전 window 세션 갭 평균, 표준편차). 마지막 봉까지의 갭만 본다(d−1 까지)."""
+    gap = post_open_gap_series(bars).dropna()
+    tail = gap.iloc[-window:]
+    if len(tail) < 2:
+        return np.nan, np.nan
+    return float(tail.mean()), float(tail.std())
+
+
+def gap_rule_labels(gap, band):
+    """모델 없는 트리비얼 기준: 갭 > 밴드면 상승(2), 갭 < −밴드면 하락(0), 아니면 보합(1)."""
+    g, b = np.asarray(gap, dtype=float), np.asarray(band, dtype=float)
+    out = np.where(g > b, 2., np.where(g < -b, 0., 1.))
+    out[~np.isfinite(g) | ~np.isfinite(b)] = np.nan
+    return out
+
+
+def build_post_open_grid(models, live_market_row, band, gap_mean, gap_std, target_date,
+                         gaps=POST_OPEN_GRID_GAPS):
+    """가상 갭 격자 → 확률표. 그룹 G 밖의 열은 07:00 라이브 행 그대로이고 그룹 G 만 가상 갭으로 만든다.
+
+    models: {가족: fit_direction_model 결과}. 확률은 대표 모델과 같은 단순 평균이다.
+    반환 열: POST_OPEN_GRID_COLUMNS. gap_rule_label 은 모델 없는 갭 규칙(하락·보합·상승)이다.
+    """
+    gaps = np.asarray(gaps, dtype=float)
+    g = _gap_group_g(pd.Series(gaps), pd.Series(np.full(len(gaps), float(band))),
+                     pd.Series(np.full(len(gaps), float(gap_mean))),
+                     pd.Series(np.full(len(gaps), float(gap_std))))
+    base = np.tile(np.asarray(live_market_row, dtype=np.float32).reshape(1, -1), (len(gaps), 1))
+    X = np.hstack([base, g.to_numpy(dtype=np.float32)])
+    probs = np.mean([predict_direction_model(fitted, X) for fitted in models.values()], axis=0)
+    probs = probs / probs.sum(axis=1, keepdims=True)
+    labels = {0: "하락", 1: "보합", 2: "상승"}
+    rule = gap_rule_labels(gaps, np.full(len(gaps), float(band)))
+    return pd.DataFrame({
+        "target_date": pd.Timestamp(target_date).date().isoformat(), "gap": gaps,
+        "p_down": probs[:, 0], "p_flat": probs[:, 1], "p_up": probs[:, 2], "band": float(band),
+        "gap_rule_label": [labels.get(int(r), "") if np.isfinite(r) else "" for r in rule],
+    })[list(POST_OPEN_GRID_COLUMNS)]
+
+
+def interpolate_post_open_grid(grid, gap):
+    """격자 사이를 선형 보간한다. 격자 밖이면 끝값으로 고정하고 clamped=True 를 남긴다. 합은 1로 맞춘다."""
+    grid = grid.sort_values("gap")
+    xs = grid["gap"].to_numpy(dtype=float)
+    gap = float(gap)
+    clamped = bool(gap < xs[0] or gap > xs[-1])
+    x = min(max(gap, xs[0]), xs[-1])
+    p = np.array([np.interp(x, xs, grid[c].to_numpy(dtype=float)) for c in ("p_down", "p_flat", "p_up")])
+    p = np.clip(p, 1e-7, 1.)
+    p = p / p.sum()
+    band = float(grid["band"].iloc[0])
+    rule = gap_rule_labels([gap], [band])[0]
+    return {"p_down": float(p[0]), "p_flat": float(p[1]), "p_up": float(p[2]), "clamped": clamped,
+            "band": band, "gap_rule_label": {0: "하락", 1: "보합", 2: "상승"}.get(int(rule), "") if np.isfinite(rule) else ""}
+
+
+def post_open_ledger_row(grid, target_date, open_price, prev_close, prev_close_date, now_utc,
+                         run_id=None, model=POST_OPEN_MODEL):
+    """09:37 원장 행 하나. (행, 건너뛴 이유) — 행이 None 이면 이유가 있다.
+
+    격자의 target_date 가 오늘 세션이 아니면(어제 격자) 쓰지 않는다 — 전일 격자로 오늘 갭을 읽으면
+    07:00 정보가 다른 날의 것이다. 시가가 없으면 만들지 않는다(전일 시가를 끌어오는 것이 P16 이 막은 거짓말).
+    created_at_utc 는 지금 시각이다 — cron 이 14:10 에 도착한 날은 그렇게 적혀야 한다.
+    """
+    import uuid
+    target = pd.Timestamp(target_date).date().isoformat()
+    if grid is None or len(grid) == 0 or not set(POST_OPEN_GRID_COLUMNS).issubset(grid.columns):
+        return None, "post_open_grid.csv 가 없거나 열이 맞지 않습니다"
+    grid_dates = set(pd.to_datetime(grid["target_date"], errors="coerce").dt.date.astype(str))
+    if grid_dates != {target}:
+        return None, f"격자의 target_date {sorted(grid_dates)} 가 오늘 세션 {target} 이 아닙니다"
+    open_price, prev_close = _finite(open_price), _finite(prev_close)
+    if open_price is None or open_price <= 0:
+        return None, f"{target} 봉에 시가가 없습니다"
+    if prev_close is None or prev_close <= 0:
+        return None, "전일 종가가 없습니다"
+    gap = open_price / prev_close - 1
+    probs = interpolate_post_open_grid(grid, gap)
+    now = pd.Timestamp(now_utc)
+    now = now.tz_localize("UTC") if now.tzinfo is None else now.tz_convert("UTC")
+    run_id = run_id or f"postopen_{now:%Y%m%dT%H%M%S}_{uuid.uuid4().hex[:12]}"
+    p = np.array([probs["p_down"], probs["p_flat"], probs["p_up"]])
+    row = {
+        "schema_version": 3, "run_id": run_id, "record_id": f"{run_id}:direction:{model}",
+        "created_at_utc": now.isoformat(), "prediction_date": target, "as_of_date": str(pd.Timestamp(prev_close_date).date()),
+        "target_date": target, "target_mode": "close_to_close", "band": probs["band"],
+        "config_hash": "post-open-grid-v1", "model": model, "kind": "direction", "horizon_days": 1,
+        "prediction": {0: "하락", 1: "보합", 2: "상승"}[int(np.argmax(p))],
+        "p_down": probs["p_down"], "p_flat": probs["p_flat"], "p_up": probs["p_up"],
+        "current_close": prev_close, "information_cutoff": POST_OPEN_INFORMATION_CUTOFF,
+        "gap": gap, "gap_rule_label": probs["gap_rule_label"], "gap_clamped": probs["clamped"],
+        # 채점 열(actual_*)은 evaluate_forecasts 가 관리하므로 카드에 보일 시가는 따로 둔다.
+        "open_price": open_price,
+    }
+    return row, ""
+
+
+def post_open_row_for(ledger, target_date, model=POST_OPEN_MODEL):
+    """원장(또는 daily)에서 그 예측일의 시가 반영 갱신 행. 없으면 None."""
+    needed = {"model", "target_date"}
+    if not isinstance(ledger, pd.DataFrame) or ledger.empty or not needed.issubset(ledger.columns):
+        return None
+    target = pd.Timestamp(target_date).date().isoformat()
+    rows = ledger[(ledger["model"].astype(str) == model) & (ledger["target_date"].astype(str).str[:10] == target)]
+    if rows.empty:
+        return None
+    if "created_at_utc" in rows:
+        rows = rows.assign(_created=pd.to_datetime(rows["created_at_utc"], utc=True, errors="coerce")).sort_values("_created", kind="stable")
+    return rows.iloc[0].to_dict()
+
+
+def post_open_placeholder_html():
+    """아침 보고서의 자리 표시. 09:37 회차가 replace_section 으로 카드로 바꾼다."""
+    return (POSTOPEN_START
+            + f'<div style="{_BOX};margin-top:8px;background:#f7f8fa;border-style:dashed;color:#6b7178;font-size:12px;line-height:1.6">'
+              '<b>09:37 갱신</b> — 시가가 확정되면 이 자리에 시가를 반영한 종가 방향을 다시 냅니다 '
+              '(07:00 예측은 그대로 남습니다).</div>'
+            + POSTOPEN_END)
+
+
+def post_open_card_html(row, target=None, morning=None):
+    """시가 반영 갱신 카드(표시 사이에 들어갈 본문). 정직 규칙: 실제 실행 시각·갭 규칙·07:00 예측을 함께 적는다."""
+    from html import escape
+    row = row if hasattr(row, "get") else {}
+    created = pd.to_datetime(row.get("created_at_utc"), utc=True, errors="coerce")
+    when = f"{created.tz_convert('Asia/Seoul'):%H:%M}" if pd.notna(created) else "시각 미상"
+    call = direction_call(row)
+    open_price, gap = _finite(row.get("open_price")), _finite(row.get("gap"))
+    open_text = (f"시가 {open_price:,.0f}원" if open_price is not None else "시가") + (f"(갭 {gap:+.2%})" if gap is not None else "")
+    rule = str(row.get("gap_rule_label") or "").strip()
+    rule_text = f" · 갭 규칙만으로도 ‘{rule}’" if rule else ""
+    morning_call = direction_call(morning if hasattr(morning, "get") else {})
+    morning_text = (f" · 07:00 예측(‘{morning_call['label'].strip('▼▲ ')}’ {morning_call['max_prob']:.0%})은 위 카드 그대로"
+                    if morning_call["valid"] else " · 07:00 예측은 위 카드 그대로")
+    record = POST_OPEN_TRACK_RECORD.get(target or "", None)
+    record_text = (f" — 과거 검증에서 07:00 {record['pre_open']:.0%}·시가 반영 {record['post_open']:.0%}, "
+                   f"갭 부호만 읽어도 {record['gap_rule']:.0%}" if record else "")
+    late = " · 예정 09:37 보다 늦게 실행됨" if pd.notna(created) and (created.tz_convert("Asia/Seoul").hour, created.tz_convert("Asia/Seoul").minute) > (10, 0) else ""
+    clamped = " · 갭이 격자(±10%) 밖이라 끝값으로 고정" if str(row.get("gap_clamped", "")).lower() == "true" else ""
+    verdict = f"{call['label']} ({call['max_prob']:.0%})" if call["valid"] else "판단 어려움"
+    return (f'<div style="{_BOX};margin-top:8px;border-color:#d9c48a;background:#fffdf5">'
+            f'<div style="font-size:13px;font-weight:700;margin-bottom:4px">시가 반영 갱신 '
+            f'<span style="font-weight:400;color:#7a8797;font-size:12px">(실제 실행 {escape(when)} KST{escape(late)})</span></div>'
+            f'<div style="font-size:14px;line-height:1.6">{escape(open_text)}을 반영한 종가 방향: <b>{escape(verdict)}</b>'
+            f'{escape(rule_text)}{escape(morning_text)}{escape(clamped)}</div>'
+            f'<div style="font-size:12px;color:#6b7178;margin-top:4px;line-height:1.6"><b>모델이 좋아진 것이 아니라 정보가 늘어난 것입니다</b>'
+            f'{escape(record_text)}. 시가에 행동하려는 사람에게는 쓸모가 없습니다 — 갭은 이미 가격에 들어가 있습니다. '
+            '정보 마감 15:30 이전 예측으로 따로 채점하며 대표 성적에는 섞지 않습니다.</div></div>')
+
+
+def post_open_block_html(row=None, target=None, morning=None):
+    """표시를 포함한 전체 블록. 행이 있으면 카드, 없으면 자리 표시."""
+    if row is None:
+        return post_open_placeholder_html()
+    return POSTOPEN_START + post_open_card_html(row, target=target, morning=morning) + POSTOPEN_END
+
+
 def atomic_csv(frame, path):
     """단일 실행자용 원자적 교체. 중간에 런타임이 끊겨도 기존 원장을 보존한다."""
     path = Path(path)
@@ -1448,7 +1715,15 @@ def evaluate_forecasts(log, bars, now=None):
         created = pd.to_datetime(row.get("created_at_utc"), utc=True, errors="coerce")
         mode = row.get("target_mode", "close_to_close")
         # 09:00 시가 기반 예측은 시가 확인 직후(09:05까지)만 별도 집계한다.
-        if pd.notna(start) and pd.notna(created):
+        # information_cutoff 열(없으면 pre_open): pre_open 은 target_date 09:00 KST 전에 만든 행만 사전 예측이다.
+        # post_open(시가 반영 갱신) 은 정보 마감이 그날 종가(15:30 KST)이므로 그 전에 만든 행만 사전 예측이다.
+        # 'is_prospective' 의 뜻은 두 경우 모두 같다 — 자기 정보 마감보다 먼저 낸 예측인가.
+        cutoff = row.get("information_cutoff", PRE_OPEN_INFORMATION_CUTOFF)
+        cutoff = PRE_OPEN_INFORMATION_CUTOFF if pd.isna(cutoff) or not str(cutoff).strip() else str(cutoff).strip()
+        if cutoff == POST_OPEN_INFORMATION_CUTOFF and pd.notna(created):
+            deadline = target.tz_localize("Asia/Seoul") + pd.Timedelta(hours=15, minutes=30)
+            result.loc[i, "is_prospective"] = bool(created < deadline)
+        elif pd.notna(start) and pd.notna(created):
             deadline = pd.Timestamp(start).tz_localize(None).normalize().tz_localize("Asia/Seoul") + pd.Timedelta(hours=9)
             if mode == "open_to_close":
                 deadline += pd.Timedelta(minutes=5)
@@ -1684,8 +1959,8 @@ def overnight_value_html(daily, headline_model, evening_model="Candidate evening
     # 2) 시초가(갭): 아침 대표 행 vs 저녁 후보. 아침 시초가 예측은 밤사이 미국 시장을 보고 내는 값이라
     #    맞히기 쉽다(2026-09-16 지적). 전날 저녁에 낸 시초가 예측을 실제 시가로 채점한 것이 공정한 성적이다.
     opens = scored[scored["kind"] == "open"]
-    is_candidate = opens["model"].astype(str).str.startswith("Candidate")
-    open_morning, open_evening = paired(opens, ~is_candidate, opens["model"] == evening_open_model)
+    open_morning, open_evening = paired(opens, is_headline_model(opens["model"]),
+                                        opens["model"] == evening_open_model)
     open_rows = ""
     if len(open_morning) and len(open_evening):
         for label, sub in (("아침 (갭 정보 있음)", open_morning), ("저녁 (갭 정보 없음)", open_evening)):
@@ -1847,7 +2122,9 @@ def review_ledger(daily, bars, ensemble_model="Mean ensemble", windows=(20, 60),
                         "predicted_return", "raw_predicted_return", "predicted_close", "center_close",
                         "low_close", "high_close", "predicted_open", "center_open", "low_open", "high_open",
                         "actual_open", "actual_close", "actual_return", "actual_gap", "actual_session",
-                        "return_error", "interval_hit", "oof_slope", "run_id"] if c in scored]
+                        "return_error", "interval_hit", "oof_slope", "run_id",
+                        # 시가 반영 갱신 행의 표시용 열(정보 마감·실제 실행 시각·갭)
+                        "information_cutoff", "created_at_utc", "gap", "gap_rule_label", "open_price"] if c in scored]
     latest = scored.loc[scored["target_date"] == latest_date, keep].reset_index(drop=True)
 
     dates = np.sort(scored["target_date"].unique())
@@ -1877,9 +2154,21 @@ def review_ledger(daily, bars, ensemble_model="Mean ensemble", windows=(20, 60),
                              "held": int(len(d) - len(issued)),
                              "hit_rate": float(issued["direction_correct"].mean()) if len(issued) else np.nan,
                              "prior_hit_rate": float(freq.max())})
+        # 시가 반영 갱신(Post-open)은 정보 마감(15:30)이 다른 별도 행이다. 대표 방향 행과 절대 합치지 않고
+        # 같은 창에서 따로 센다. 대표 모델 선택 근거로 쓰지 않는다(P16 decision.md).
+        po = recent[(recent["kind"] == "direction") & (recent["model"].astype(str) == POST_OPEN_MODEL)]
+        po = po.dropna(subset=["actual_class"])
+        if len(po):
+            freq_po = po["actual_class"].astype(int).value_counts(normalize=True).reindex([0, 1, 2]).fillna(0.)
+            rows.append({"window": w, "kind": "direction_post_open", "horizon_days": 1, "n": int(len(po)),
+                         "hit_rate": float(po["direction_correct"].mean()),
+                         "prior_hit_rate": float(freq_po.max()), "flat_share": float(freq_po.loc[1]),
+                         "mean_log_loss": float(po["log_loss"].mean()) if po["log_loss"].notna().any() else np.nan,
+                         "prior_log_loss": float(-np.sum(freq_po * np.log(np.clip(freq_po, 1e-7, 1.)))),
+                         "information_cutoff": POST_OPEN_INFORMATION_CUTOFF})
         for kind in ("open", "price"):
             # 관찰용 후보(모델명 "Candidate …")는 원장에만 있고 헤드라인 성적에 섞지 않는다(M07).
-            headline = recent[(recent["kind"] == kind) & ~recent["model"].astype(str).str.startswith("Candidate")]
+            headline = recent[(recent["kind"] == kind) & is_headline_model(recent["model"])]
             for h, g in headline.groupby("horizon_days"):
                 g = g.dropna(subset=["actual_return"])
                 if not len(g):
@@ -2079,7 +2368,7 @@ def ledger_section_html(review, ensemble_name, updated_note=""):
             scored_date = str(stamp)[:10]
     head = _headline(scored_date) + _pending_block(review.get("pending"))
     # 관찰 후보('Candidate …')는 같은 날 같은 kind 로 여러 행이 있다. 대표 행만 표에 올린다.
-    headline_rows = ~latest["model"].astype(str).str.startswith("Candidate") if "model" in latest else pd.Series(True, index=latest.index)
+    headline_rows = is_headline_model(latest["model"]) if "model" in latest else pd.Series(True, index=latest.index)
     d = latest[(latest["kind"] == "direction") & (latest["model"] == ensemble_name)]
     o = latest[(latest["kind"] == "open") & headline_rows]
     p1 = latest[(latest["kind"] == "price") & (latest["horizon_days"] == 1) & headline_rows]
@@ -2112,6 +2401,18 @@ def ledger_section_html(review, ensemble_name, updated_note=""):
             rows += _row("종가 방향", f'{r["prediction"]} (상승 {r["p_up"]:.0%}·보합 {r["p_flat"]:.0%}·하락 {r["p_down"]:.0%})',
                          f'{actual_label} ({_fmt_num(r["actual_return"], "pct")}, 밴드 ±{r["band"]:.2%})',
                          "적중" if r["direction_correct"] == 1 else "미적중", r["direction_correct"] == 1)
+    # 시가 반영 갱신 행(Post-open). 07:00 방향 행 바로 아래 별도 줄 — 정보 마감이 다르므로 합치지 않는다.
+    po = latest[(latest["kind"] == "direction") & (latest["model"].astype(str) == POST_OPEN_MODEL)] if "model" in latest else latest.iloc[0:0]
+    if len(po):
+        r = po.iloc[0]
+        actual_label = _LABELS.get(int(r["actual_class"]), "?") if pd.notna(r["actual_class"]) else "—"
+        created = pd.to_datetime(r.get("created_at_utc"), utc=True, errors="coerce")
+        when = f"{created.tz_convert('Asia/Seoul'):%H:%M}" if pd.notna(created) else "시각 미상"
+        gap = _fmt_num(float(r["gap"]), "pct") if "gap" in r and pd.notna(r.get("gap")) else "—"
+        rows += _row(f"종가 방향 · 시가 반영 갱신 <span style=\"color:#8a9199;font-size:11px\">(실제 실행 {when} · 정보 마감 15:30 이전)</span>",
+                     f'{r["prediction"]} (상승 {r["p_up"]:.0%}·보합 {r["p_flat"]:.0%}·하락 {r["p_down"]:.0%}) · 갭 {gap}',
+                     f'{actual_label} ({_fmt_num(r["actual_return"], "pct")}, 밴드 ±{r["band"]:.2%})',
+                     "적중" if r["direction_correct"] == 1 else "미적중", r["direction_correct"] == 1)
     if len(p1):
         r = p1.iloc[0]
         pred = (f'{_fmt_num(r["predicted_close"], "won")} ({_fmt_num(r["predicted_return"], "pct")})'
@@ -2136,6 +2437,11 @@ def ledger_section_html(review, ensemble_name, updated_note=""):
             label = "종가 방향(발행일만)"
             detail = ((f'적중률 {r["hit_rate"]:.0%} · ' if issued_n and pd.notna(r["hit_rate"]) else "")
                       + f'발행 {issued_n}일 · 유보 {held_n}일 (최대 확률 {DIRECTION_ISSUE_MIN_PROB:.0%} 이상만 발행)')
+        elif r["kind"] == "direction_post_open":
+            label = "시가 반영 갱신 방향 · 정보 마감 15:30 이전"
+            detail = (f'적중률 {r["hit_rate"]:.0%} (보합 비중 {r["flat_share"]:.0%}) · '
+                      + (f'log loss {r["mean_log_loss"]:.3f} vs 빈도기준 {r["prior_log_loss"]:.3f} · ' if pd.notna(r.get("mean_log_loss")) else "")
+                      + '07:00 행과 다른 질문이라 대표 성적과 합치지 않음')
         else:
             label = "시초가예측(갭)" if r["kind"] == "open" else f'{int(r["horizon_days"])}거래일 종가예측'
             detail = (f'구간 적중 {_fmt_num(r["interval_coverage"], "num") if pd.isna(r["interval_coverage"]) else format(r["interval_coverage"], ".0%")} · '
@@ -2158,6 +2464,10 @@ def ledger_section_html(review, ensemble_name, updated_note=""):
                 # 방향을 낸 날만. 0일이면 도넛은 '—'로 비우고 n=0 이라 흐리게 나온다.
                 cards.append({"label": "종가 방향(발행일만)", "metric": f'적중률 · 유보 {int(r.get("held", 0))}일',
                               "value": r["hit_rate"], "baseline": r.get("prior_hit_rate"), "n": int(r["n"])})
+            elif r["kind"] == "direction_post_open":
+                cards.append({"label": "시가 반영 갱신 방향", "metric": "적중률 · 정보 마감 15:30 이전",
+                              "value": r["hit_rate"], "baseline": r.get("prior_hit_rate"), "n": int(r["n"]),
+                              "color": "#8a6d1f"})
             else:
                 label = "시초가(갭)" if r["kind"] == "open" else f'{int(r["horizon_days"])}거래일 종가'
                 cards.append({"label": label, "metric": "구간 적중", "value": r["interval_coverage"],

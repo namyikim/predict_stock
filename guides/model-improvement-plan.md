@@ -82,7 +82,7 @@
 | P13 | [ ] | TRA 방식 모델 선택 실험 | P07·P10 | GPU, 선택 | 보류(P07에서 내부 검증이 후보를 구분하지 못함 — 라우터가 배울 국면 신호가 없음. GPU 없음) |
 | P14 | [ ] | Chronos-2 비교 실험 | P09 | GPU, 선택 | 보류(P09: 예측력은 갭이고 갭은 해외 자산 입력 — 단변량 시계열 파운데이션 모델이 볼 정보가 아님. Kronos zero-shot이 기준선 이하였던 전례. GPU 없음) |
 | P15 | [ ] | 후보 사전 예측·공식 반영·복구 | P09, 선택 실험은 완료된 것만 | Colab/Actions | 미실행 |
-| P16 | [x] | 시가 확정 후(09:37) 종가 방향 재예측 — 정보 마감 시각을 바꾼다 | P09, R02c | CPU | 완료: 채택 조건 충족(두 종목 log_loss −0.10). **단 모델 개선이 아니라 정보 시점 차이.** 운영 반영은 별도 승인 작업 |
+| P16 | [x] | 시가 확정 후(09:37) 종가 방향 재예측 — 정보 마감 시각을 바꾼다 | P09, R02c | CPU | 완료: 채택 조건 충족(두 종목 log_loss −0.10). **단 모델 개선이 아니라 정보 시점 차이.** 운영 반영 완료 2026-09-20(`Post-open` 행, 정보 마감 15:30, 별도 채점). 07:00 행만이 4절의 사전 예측 |
 | P17 | [ ] | 해외 수익률의 as-of 결합·결측 채움 정리 — 미국 휴장일에 직전 수익률이 새 정보처럼 반복되는 것(검토 #6) | P00 | CPU | 미실행. 대표 모델의 입력이 바뀌므로 P03 계약(같은 날짜·쌍체 CI)으로만 반영 |
 
 P10~P14는 전부 수행할 의무가 없다. P09까지 완료한 뒤 가장 유망한 후보 하나만 선택할 수 있다.
@@ -590,8 +590,16 @@ sk_hynix −0.00101 [−0.00218, +0.00017], 세션 AUC 차이 −0.002 / +0.002.
 쓸모가 없고, **07:00 예측이 여전히 유일한 정직한 사전 예측**이다. 모델이 `gap_rule` 을 이기는 폭은 확률
 품질뿐이고 방향 정확도는 사실상 동률이다.
 
-**코드·노트북·보고서는 바꾸지 않았다.** 운영 반영(09:37 행의 원장 `kind`, 별도 채점, 보고서 문구, 봉이
-없을 때 건너뛰기)은 decision.md 의 “운영 반영 설계”에 설계만 남겼고, 실제 배선은 사용자가 승인하는 별도 작업이다.
+**실험 단계에서는 코드·노트북·보고서를 바꾸지 않았고**, 운영 반영은 사용자 승인 뒤 별도 작업으로 했다.
+
+#### 운영 반영 (2026-09-20, 사용자 승인)
+
+- **격자.** 아침 노트북이 시세만 라이브 학습 직후 `post_open_live_models`(Logistic + LightGBM, 같은 `live_train_idx`·SEED·선택 규칙, 입력 = 시세만 + 그룹 G 6열)을 학습하고, 07:00 라이브 행에 가상 갭(−10%…+10%, 0.1%) 201개를 붙인 확률표 `post_open_grid.csv`를 실행 폴더와 `forecast_history/<종목>/`에 올린다(07:00 사전 예측 행을 기록하는 실행만). 그룹 G 정의는 `forecast_utils.post_open_gap_features`·`gap_rule_labels` 하나뿐이고 러너 P16 은 그것에 위임한다.
+- **09:37 도구.** `tools/build_afternoon_update.py --scope open` 이 격자를 받아 실제 갭으로 선형 보간(격자 밖은 끝값 고정 + `gap_clamped`)해 `model=Post-open`, `kind=direction`, `information_cutoff=post_open`, `created_at_utc=실제 실행 시각` 행 **하나**를 `append_forecasts` 로 더한다. 격자 `target_date` ≠ 오늘 세션이거나 오늘 봉에 시가가 없으면 건너뛴다. 07:00 행은 바이트 하나 바뀌지 않는다(테스트로 고정).
+- **채점·격리.** `evaluate_forecasts` 의 사전 예측 기준은 pre_open 09:00 / post_open 15:30(target_date KST). `is_headline_model` 이 `Candidate …`·`Post-open` 을 대표 집계에서 빼고, `review_ledger` 는 `direction_post_open` 으로 따로 센다. **07:00 행만이 계획 4절이 말하는 '조정하지 않은 미래 사전 예측'이고 Post-open 행은 대표 모델 선택 근거로 쓰지 않는다.**
+- **보고서.** 세 카드 아래 `POSTOPEN_START/END` 블록: 아침은 자리 표시, 09:37 뒤에는 '시가 반영 갱신(실제 실행 HH:MM KST) — 시가 x원(갭 ±x%)을 반영한 종가 방향 … 갭 규칙만으로도 … 07:00 예측은 위 카드 그대로 · **모델이 좋아진 것이 아니라 정보가 늘어난 것입니다**(07:00 45%·시가 반영 56%·갭 부호만 54%)'. 16:10 성적표와 예측 vs 실제 표에 07:00 결과와 시가 반영 결과가 정보 마감 표시와 함께 별도 줄로 나온다.
+- **되돌림.** `tools/build_afternoon_update.py` 의 `POST_OPEN_ENABLED = False`(09:37 도구의 post-open 단계 끄기). 추가 행만 쌓이므로 원장·보고서가 07:00 만 있던 상태로 그대로 돌아간다.
+- **테스트.** `tests/test_post_open_wiring.py` 30개(격자 보간·건너뛰기·행 형식·채점 기준·격리·렌더링·노트북 구조·도구 종단) + `tests/test_post_open_reforecast.py` 18개 유지.
 
 **완료 증거:** 누수 테스트 18개(러너 종단 포함), 두 종목 12폴드 × 2타깃 × 2후보 재학습, t0700 의 노트북 OOF 완전 재현.
 
@@ -742,14 +750,15 @@ P00 이후에는 작업 ID만 바꿔 요청한다. Colab 실행이 필요한 경
 | 2026-09-16 | P10b | `experiments/model_improvement/P10b/20260916T1100Z_panel_pooled_foreign/`, `experiments/model_improvement/panel_foreign.py`, `tests/test_panel_foreign.py` | 11개 통과(러너 종단 포함), 관련 48개 통과. 두 종목 12폴드 pooled/단독 재학습, 대표 모델 OOF 재사용 | **완료.** 채택 없음. 해외 자산이 예측력의 전부, 9종목 pooling은 단독 대비 동률·열위. 대표 대비 samsung 동률·sk_hynix 유의 열위 |
 | 2026-09-16 | P08 운영 반영 | `forecast_utils.direction_call`·`DIRECTION_ISSUE_MIN_PROB`, 노트북 1절·저녁 실행 `Candidate evening open`, `tests/test_direction_gate.py`, `tests/test_evening_open.py` | 새 테스트 20개 + 관련 289개 통과 | 최대 확률 0.50 이상인 날만 종가 방향 발행, 나머지 '판단 유보' — **같은 날 오후 사용자 결정으로 기준 0.0(항상 발행)으로 되돌림.** 시초가의 정직한 표기와 저녁 시초가 후보 채점은 유지 |
 | 2026-09-20 | P16(계획 밖 등록, 정보 마감 시각 변경) | `experiments/model_improvement/P16/20260920T0000Z_post_open_reforecast/`, 러너 `--task P16`(`run_p16`·`p16_gap_features`·`gap_rule_labels`·`gap_rule_probabilities`), `tests/test_post_open_reforecast.py` | 18개 통과(러너 종단 포함), 전체 회귀 통과. 두 종목 12폴드 × 2타깃(close_to_close·session) × 2후보 재학습. t0700 은 노트북 OOF 와 argmax 일치 1.000·log_loss 차이 0 | **완료. 채택 조건 충족 — 단 모델 개선이 아니라 정보 시점 차이.** t0900 − t0700 log_loss samsung −0.1027 [−0.1236, −0.0818] · sk_hynix −0.1001 [−0.1228, −0.0791]. **세션 타깃은 여덟 칸 전부 동률** — 이득은 전부 관측된 갭. 모델 없는 `gap_rule` 대비 우위는 log_loss 뿐(방향 정확도 동률). 코드·보고서 미변경, 운영 반영은 별도 승인 작업 |
+| 2026-09-20 | P16 운영 반영(사용자 승인) | `forecast_utils`(`post_open_gap_features`·`build_post_open_grid`·`interpolate_post_open_grid`·`post_open_ledger_row`·`is_headline_model`·`POSTOPEN_START/END`·`evaluate_forecasts` 정보 마감), 노트북 셀 34/38/40(`post_open_live_models`·`post_open_grid.csv` 발행·카드/자리 표시), `tools/build_afternoon_update.py --scope open`(`Post-open` 행 추가·카드 교체), 러너 P16 은 공용 함수에 위임, `tests/test_post_open_wiring.py` | 새 테스트 30개 + `test_post_open_reforecast.py` 18개 유지, 전체 회귀 통과 | **완료.** 09:37 에 `information_cutoff=post_open` 행 하나(실제 실행 시각 기록), 15:30 사전 예측 기준으로 별도 채점, 대표 집계 격리. 카드에 '모델이 좋아진 것이 아니라 정보가 늘어난 것' 과 갭 규칙 병기. 되돌림 `POST_OPEN_ENABLED=False` |
 | 2026-09-20 | 코드 검토 조치 | `reports/2026-09-20-code-data-economic-review.md` 의 10건 중 9건 조치·1건 실험 등록(P17). 커밋 `9b8a8e95`(#1 장기 보정 누수, 캐시 덮어쓰기, tmp 경로), `8db59082`(#4 conformal 구간), `655ee4a4`(#2·#3 단가·물량), 이 문서를 갱신한 커밋(#5 시세만 모델 상시 생성, #8 같은 분기 비교, #9 VXN 주석, #10 달력 기준 앞 k개월) | 각 묶음마다 새 테스트 + 전체 회귀 통과 | 10건 모두 코드로 사실 확인. #6 은 대표 모델 입력 변경이라 P17 로 등록 |
 | 2026-09-16 | R02c(계획 밖, research-candidates-plan R02 의 방향 모델 변형) | `experiments/model_improvement/R02c/20260916T1200Z_group_d_direction/`, 러너 `run_model_improvement.py --task R02c`(`run_r02c`·`leg_sign_auc`·`paired_leg_auc_delta`), 그룹 D 빌더 `run_medium_horizon.group_d_features`, `tests/test_overnight_intraday.py` | 19개 통과(러너 종단 포함). 두 종목 12폴드에서 시세만 입력 vs 같은 입력 + 그룹 D 18열(종목·KOSPI 누적 야간/장중 5·20·60) 재학습, 재학습한 current 는 노트북 OOF 와 argmax 일치 1.000 | **완료.** 채택 없음. log_loss samsung −0.0003 [−0.0046, +0.0039] · sk_hynix +0.0031 [−0.0017, +0.0082], balanced_accuracy·갭 AUC·세션 AUC 도 전부 동률. 세션 AUC 차이 +0.003/−0.003 — 누적 야간/장중은 세션 쪽에도 더하는 것이 없다 |
 - 현재 작업: P15 — 후보 사전 예측 관찰 중(등록 완료, 채점 대기). 방향 발행 정책(0.50)도 같은 창에서 판정
 - 후속 항목(계획 밖) P10b — 해외 자산 특징을 넣은 pooled 패널: **완료(2026-09-16), 채택 없음.** 해외 자산이 예측력의 전부, 공동 학습은 더하는 것이 없음. P11~P14 보류 유지
 - 후속 항목(계획 밖) R02c — 누적 야간/장중 특징 그룹 D: **완료(2026-09-16), 채택 없음.** 열 칸 전부 동률. P03·P10b·R02c 로 07:00 특징 확장(월별·수급·패널·커브·야간/장중 누적)은 전부 동률 또는 열위 — 남은 정보 시점은 시가 이후(09:37 재예측)뿐
-- 후속 항목(계획 밖) P16 — 시가 확정 후 재예측: **완료(2026-09-20), 채택 조건 충족.** 일봉의 `open` 만으로 가능해 새 수집이 필요 없었다(R02c 가 적은 "데이터 수집이 먼저"는 틀린 전제였다). **두 종목 log_loss −0.10 이지만 이는 모델 개선이 아니라 정보 마감 시각 차이이고, 세션 타깃에서 얻은 것은 0이다.** 07:00 예측이 여전히 유일한 정직한 사전 예측. 운영 반영(09:37 행 별도 `kind`·별도 채점·보고서 문구)은 decision.md 에 설계만 있고 배선은 사용자 승인 대기
+- 후속 항목(계획 밖) P16 — 시가 확정 후 재예측: **완료(2026-09-20), 채택 조건 충족, 같은 날 운영 반영.** 일봉의 `open` 만으로 가능해 새 수집이 필요 없었다(R02c 가 적은 "데이터 수집이 먼저"는 틀린 전제였다). **두 종목 log_loss −0.10 이지만 이는 모델 개선이 아니라 정보 마감 시각 차이이고, 세션 타깃에서 얻은 것은 0이다.** 07:00 예측이 여전히 유일한 정직한 사전 예측. 09:37 `Post-open` 행(정보 마감 15:30)은 별도 채점·별도 표시이며 되돌림은 `POST_OPEN_ENABLED = False`
 - 완료한 신규 작업: 11/16 (P00~P10) + 계획 밖 P10b·R02c·P16. 보류 4 (P11~P14). 진행 중 1 (P15)
-- 다음 작업: ① 2026-09-11부터 매일 원장에 `Candidate expanding` 행이 쌓이는지 확인 → 60 공통 채점일 뒤 종목별 판정(4절 규칙) ② P16 의 09:37 재예측을 실제로 붙일지 사용자 결정(붙인다면 decision.md 의 "운영 반영 설계"대로 별도 작업)
+- 다음 작업: ① 2026-09-11부터 매일 원장에 `Candidate expanding` 행이 쌓이는지 확인 → 60 공통 채점일 뒤 종목별 판정(4절 규칙) ② 09:37 `Post-open` 행이 매 거래일 하나씩 쌓이고 16:10 에 채점되는지 확인(첫 며칠은 격자 발행·cron 지연 확인)
 - P15로 넘긴 후보: sk_hynix(및 참고로 samsung) `expanding` 학습 창
 - 후속 항목(계획 밖): P04 내부 선택을 폴드 반복형으로. (해외 자산 pooled 패널은 P10b로 완료 — 채택 없음. 남은 아이디어: 다른 종목의 전일 수익률을 대표 모델 단독 입력에 특징으로만 더하기)
 - 고쳐야 할 절차: P04/P05 내부 선택이 마지막 폴드 하나만 사용

@@ -1849,42 +1849,18 @@ P16_T0700 = "t0700"
 P16_T0900 = "t0900"
 P16_GAP_RULE = "gap_rule"
 P16_LABEL_TARGETS = ("close_to_close", "session")
-P16_GAP_Z_WINDOW = 60
-P16_GAP_COLUMNS = ("gap_0", "gap_over_band", "gap_z60", "gap_abs", "gap_up_band", "gap_down_band")
+# 그룹 G 정의와 갭 규칙은 forecast_utils 의 것 하나뿐이다(2026-09-20 운영 반영). 노트북(아침 격자)과 러너
+# (P16 실험)가 같은 함수를 쓰므로, 실험이 잰 것과 운영이 내는 것이 어긋날 수 없다. 이름은 호환용 별칭이다.
+sys.path.insert(0, str(ROOT))
+from forecast_utils import (  # noqa: E402
+    POST_OPEN_GAP_COLUMNS as P16_GAP_COLUMNS, POST_OPEN_GAP_Z_WINDOW as P16_GAP_Z_WINDOW,
+    gap_rule_labels, post_open_gap_features,
+)
 
 
 def p16_gap_features(bars, band, calendar, window=P16_GAP_Z_WINDOW):
-    """그룹 G — 실현 갭. 행 d 가 쓰는 d일 정보는 **시가 하나뿐**이다.
-
-    gap_d = open_d / close_{d-1} − 1 (노트북 `sam_gap` 과 같은 정의: 원본 종가 기준).
-    z 점수의 평균·표준편차는 `shift(1)` 이라 d−1 까지의 갭 분포만 보고, 밴드도 노트북이 이미
-    d−1 까지로 만든 값이다. d일 종가·고가·저가·거래량은 어느 열에도 들어가지 않는다.
-    봉이 없거나 시가가 없는 날짜는 NaN 으로 남긴다(앞 값을 끌어오지 않는다).
-    """
-    bars = bars.sort_index()
-    open_ = bars["open"].astype(float)
-    prev_close = bars["close"].astype(float).shift(1).replace(0, np.nan)
-    gap = open_ / prev_close - 1
-    mean = gap.rolling(window).mean().shift(1)
-    std = gap.rolling(window).std().shift(1).replace(0, np.nan)
-    b = pd.Series(band, dtype=float).reindex(bars.index)
-    both = gap.notna() & b.notna()
-    out = pd.DataFrame(index=bars.index)
-    out["gap_0"] = gap
-    out["gap_over_band"] = gap / b.replace(0, np.nan)
-    out["gap_z60"] = (gap - mean) / std
-    out["gap_abs"] = gap.abs()
-    out["gap_up_band"] = (gap > b).astype(float).where(both)
-    out["gap_down_band"] = (gap < -b).astype(float).where(both)
-    return out.reindex(pd.DatetimeIndex(calendar))[list(P16_GAP_COLUMNS)]
-
-
-def gap_rule_labels(gap, band):
-    """모델 없는 트리비얼 기준: 갭 > 밴드면 상승(2), 갭 < −밴드면 하락(0), 아니면 보합(1)."""
-    g, b = np.asarray(gap, dtype=float), np.asarray(band, dtype=float)
-    out = np.where(g > b, 2., np.where(g < -b, 0., 1.))
-    out[~np.isfinite(g) | ~np.isfinite(b)] = np.nan
-    return out
+    """그룹 G — forecast_utils.post_open_gap_features 에 위임한다(정의는 그쪽 docstring)."""
+    return post_open_gap_features(bars, band, calendar, window=window)
 
 
 def gap_rule_probabilities(rule_train, y_train, rule_test, alpha=1., min_bucket=20):

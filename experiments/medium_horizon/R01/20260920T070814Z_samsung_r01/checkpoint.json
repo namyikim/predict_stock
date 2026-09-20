@@ -1,0 +1,51 @@
+{
+  "completed_units": [
+    "samsung:open",
+    "samsung:h1",
+    "samsung:h5",
+    "samsung:h20"
+  ],
+  "results": {
+    "samsung:open": {
+      "oof_sha256": "083d2ebb61021b0e5a5715aa869b528f16fcec7d3f9873538ef29e23cfadd905",
+      "oof_file": "D:\\SourceCode\\predict_stock\\runs\\medium_horizon\\samsung\\R01_open_full_oof.csv",
+      "leak_violations": 0,
+      "chosen": {
+        "trailing_q": "trailing_q_w250",
+        "conformal_trailing": "conformal_w250",
+        "aci": "aci_g0.005_w250"
+      }
+    },
+    "samsung:h1": {
+      "oof_sha256": "c09eaa5842895a535b68b7c788697372022e06391d11c40be5fc44a71d4dd4a0",
+      "oof_file": "D:\\SourceCode\\predict_stock\\runs\\medium_horizon\\samsung\\R01_h1_full_oof.csv",
+      "leak_violations": 0,
+      "chosen": {
+        "trailing_q": "trailing_q_w500",
+        "conformal_trailing": "conformal_w250",
+        "aci": "aci_g0.005_w500"
+      }
+    },
+    "samsung:h5": {
+      "oof_sha256": "e388afe3f6c5987d00b09997d7b7a6c0eaa560bf9c4fe04018df67cbf3e06727",
+      "oof_file": "D:\\SourceCode\\predict_stock\\runs\\medium_horizon\\samsung\\R01_h5_full_oof.csv",
+      "leak_violations": 0,
+      "chosen": {
+        "trailing_q": "trailing_q_w250",
+        "conformal_trailing": "conformal_w250",
+        "aci": "aci_g0.005_w500"
+      }
+    },
+    "samsung:h20": {
+      "oof_sha256": "0d9ce98d3041afafedfdf96decff20bd0dc5624fc957415eea95ef008f296a64",
+      "oof_file": "D:\\SourceCode\\predict_stock\\runs\\medium_horizon\\samsung\\R01_h20_full_oof.csv",
+      "leak_violations": 0,
+      "chosen": {
+        "trailing_q": "trailing_q_w500",
+        "conformal_trailing": "conformal_w500",
+        "aci": "aci_g0.005_w500"
+      }
+    }
+  },
+  "updated_at_utc": "2026-09-20T07:09:34.983423+00:00"
+}

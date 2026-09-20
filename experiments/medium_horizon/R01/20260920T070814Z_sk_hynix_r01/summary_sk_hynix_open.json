@@ -1,0 +1,436 @@
+{
+  "target": "sk_hynix",
+  "cell": "open",
+  "label": "시초가(갭)",
+  "horizon": 1,
+  "n_oof": 2290,
+  "stages": {
+    "selection": {
+      "n": 572,
+      "start": "2021-11-11",
+      "end": "2024-04-03"
+    },
+    "evaluation": {
+      "n": 573,
+      "start": "2024-04-04",
+      "end": "2026-09-09"
+    },
+    "sequential_all": {
+      "n": 1145,
+      "start": "2021-11-11",
+      "end": "2026-09-09"
+    }
+  },
+  "production": {
+    "oof_slope": 1.0,
+    "beats_baseline": true,
+    "band_q": 1.070260483320878,
+    "band_coverage_realized": 0.8237347294938918,
+    "band_halfwidth_mean": 0.03218179312852247
+  },
+  "notebook_equivalence": {
+    "band_q": {
+      "runner": 1.070260483320878,
+      "notebook": null,
+      "equal": false
+    },
+    "band_coverage_realized": {
+      "runner": 0.8237347294938918,
+      "notebook": null,
+      "equal": false
+    },
+    "oof_slope": {
+      "runner": 1.0,
+      "notebook": null,
+      "equal": false
+    }
+  },
+  "leak_violations": 0,
+  "chosen": {
+    "trailing_q": "trailing_q_w500",
+    "conformal_trailing": "conformal_w500",
+    "aci": "aci_g0.005_w250"
+  },
+  "not_run": {
+    "pid": "M05 에 구현이 없다(재사용 불가) — 실행하지 않음",
+    "enbpi": "M05 에 구현이 없다(Ridge 부트스트랩 앙상블을 새로 만들어야 한다) — 실행하지 않음"
+  },
+  "evaluation": {
+    "current": {
+      "n": 573,
+      "interval_coverage": 0.8237347294938918,
+      "coverage_ci_lo": 0.7909897353799793,
+      "coverage_ci_hi": 0.8571428571428571,
+      "mean_halfwidth": 0.03218179312852247,
+      "interval_score": 0.0911834654190446,
+      "score_delta": null,
+      "score_delta_ci_lo": null,
+      "score_delta_ci_hi": null,
+      "verdict": null,
+      "mean_q": 1.070260483320878
+    },
+    "trailing_q_w250": {
+      "n": 573,
+      "interval_coverage": 0.8167539267015707,
+      "coverage_ci_lo": 0.7827548725637181,
+      "coverage_ci_hi": 0.8508809480894015,
+      "mean_halfwidth": 0.03099914413405435,
+      "interval_score": 0.09080635835866217,
+      "score_delta": -0.00037710706038244406,
+      "score_delta_ci_lo": -0.0014754523890623784,
+      "score_delta_ci_hi": 0.0004816292838901227,
+      "verdict": "동률",
+      "mean_q": 1.0294851593598735
+    },
+    "conformal_w250": {
+      "n": 573,
+      "interval_coverage": 0.8202443280977313,
+      "coverage_ci_lo": 0.7861025048911127,
+      "coverage_ci_hi": 0.8546524159667155,
+      "mean_halfwidth": 0.0313002799785063,
+      "interval_score": 0.09087457774969122,
+      "score_delta": -0.0003088876693533753,
+      "score_delta_ci_lo": -0.0012308749648513365,
+      "score_delta_ci_hi": 0.00042193330762161415,
+      "verdict": "동률",
+      "mean_q": 1.0383391164762583
+    },
+    "trailing_q_w500": {
+      "n": 573,
+      "interval_coverage": 0.8167539267015707,
+      "coverage_ci_lo": 0.7837837837837838,
+      "coverage_ci_hi": 0.8510667258755841,
+      "mean_halfwidth": 0.0310467180625861,
+      "interval_score": 0.09043874203660325,
+      "score_delta": -0.0007447233824413455,
+      "score_delta_ci_lo": -0.0021289384327774215,
+      "score_delta_ci_hi": 0.00023488444712122653,
+      "verdict": "동률",
+      "mean_q": 1.0456924781401717
+    },
+    "conformal_w500": {
+      "n": 573,
+      "interval_coverage": 0.8167539267015707,
+      "coverage_ci_lo": 0.7837837837837838,
+      "coverage_ci_hi": 0.8510667258755841,
+      "mean_halfwidth": 0.031196352458447454,
+      "interval_score": 0.09052953294697708,
+      "score_delta": -0.000653932472067523,
+      "score_delta_ci_lo": -0.0020174833708777417,
+      "score_delta_ci_hi": 0.00029309998504423824,
+      "verdict": "동률",
+      "mean_q": 1.050740298253942
+    },
+    "aci_g0.005_w250": {
+      "n": 573,
+      "interval_coverage": 0.806282722513089,
+      "coverage_ci_lo": 0.7704626334519573,
+      "coverage_ci_hi": 0.8432055749128919,
+      "mean_halfwidth": 0.031033621386833674,
+      "interval_score": 0.09092142347765583,
+      "score_delta": -0.00026204194138875744,
+      "score_delta_ci_lo": -0.001549144733449492,
+      "score_delta_ci_hi": 0.0008215630438878184,
+      "verdict": "동률",
+      "mean_q": 1.030208341414412
+    },
+    "aci_g0.005_w500": {
+      "n": 573,
+      "interval_coverage": 0.8080279232111692,
+      "coverage_ci_lo": 0.7729589934762349,
+      "coverage_ci_hi": 0.8438061041292639,
+      "mean_halfwidth": 0.030150836841267053,
+      "interval_score": 0.09007266998112357,
+      "score_delta": -0.001110795437921031,
+      "score_delta_ci_lo": -0.002863158659731204,
+      "score_delta_ci_hi": 0.00027733836701671966,
+      "verdict": "동률",
+      "mean_q": 1.0142479918986373
+    },
+    "aci_g0.02_w250": {
+      "n": 573,
+      "interval_coverage": 0.8045375218150087,
+      "coverage_ci_lo": 0.7714751082665849,
+      "coverage_ci_hi": 0.8383136554038875,
+      "mean_halfwidth": 0.03091198764677394,
+      "interval_score": 0.09077459771038182,
+      "score_delta": -0.0004088677086627977,
+      "score_delta_ci_lo": -0.0021036496350357804,
+      "score_delta_ci_hi": 0.0011130113593456816,
+      "verdict": "동률",
+      "mean_q": 1.034447986996559
+    },
+    "aci_g0.02_w500": {
+      "n": 573,
+      "interval_coverage": 0.8045375218150087,
+      "coverage_ci_lo": 0.7695130446431562,
+      "coverage_ci_hi": 0.837841612562283,
+      "mean_halfwidth": 0.030614533741173643,
+      "interval_score": 0.09043087953339499,
+      "score_delta": -0.0007525858856496173,
+      "score_delta_ci_lo": -0.002197302169739064,
+      "score_delta_ci_hi": 0.0005473594254997434,
+      "verdict": "동률",
+      "mean_q": 1.0236326459647926
+    }
+  },
+  "selection": {
+    "current": {
+      "n": 572,
+      "interval_coverage": 0.7937062937062938,
+      "coverage_ci_lo": 0.7569894146948941,
+      "coverage_ci_hi": 0.8316550460355769,
+      "mean_halfwidth": 0.016712178095365272,
+      "interval_score": 0.05315306562752999,
+      "score_delta": null,
+      "score_delta_ci_lo": null,
+      "score_delta_ci_hi": null,
+      "verdict": null,
+      "mean_q": 1.070260483320878
+    },
+    "trailing_q_w250": {
+      "n": 572,
+      "interval_coverage": 0.8006993006993007,
+      "coverage_ci_lo": 0.7605165796620643,
+      "coverage_ci_hi": 0.839931694350402,
+      "mean_halfwidth": 0.016761302113682555,
+      "interval_score": 0.053291961526284036,
+      "score_delta": 0.0001388958987540486,
+      "score_delta_ci_lo": -0.00012272993969368533,
+      "score_delta_ci_hi": 0.00040061185408110894,
+      "verdict": "동률",
+      "mean_q": 1.0712851701366561
+    },
+    "conformal_w250": {
+      "n": 572,
+      "interval_coverage": 0.8024475524475524,
+      "coverage_ci_lo": 0.7631511123168747,
+      "coverage_ci_hi": 0.8409485928503525,
+      "mean_halfwidth": 0.016918396667758993,
+      "interval_score": 0.053332948559978825,
+      "score_delta": 0.00017988293244883185,
+      "score_delta_ci_lo": -6.332169833594694e-05,
+      "score_delta_ci_hi": 0.00042828107335916274,
+      "verdict": "동률",
+      "mean_q": 1.0815103797487127
+    },
+    "trailing_q_w500": {
+      "n": 572,
+      "interval_coverage": 0.7972027972027972,
+      "coverage_ci_lo": 0.7602026696287372,
+      "coverage_ci_hi": 0.8344738766712001,
+      "mean_halfwidth": 0.01681671380572012,
+      "interval_score": 0.05327366387990841,
+      "score_delta": 0.00012059825237841088,
+      "score_delta_ci_lo": -2.4281530728479498e-06,
+      "score_delta_ci_hi": 0.0002657313623762871,
+      "verdict": "동률",
+      "mean_q": 1.0756720718887771
+    },
+    "conformal_w500": {
+      "n": 572,
+      "interval_coverage": 0.7972027972027972,
+      "coverage_ci_lo": 0.7602026696287372,
+      "coverage_ci_hi": 0.8344738766712001,
+      "mean_halfwidth": 0.016870194383602103,
+      "interval_score": 0.053279494708607086,
+      "score_delta": 0.00012642908107709917,
+      "score_delta_ci_lo": -1.500119290447345e-05,
+      "score_delta_ci_hi": 0.00028635562644094243,
+      "verdict": "동률",
+      "mean_q": 1.0791490565092796
+    },
+    "aci_g0.005_w250": {
+      "n": 572,
+      "interval_coverage": 0.8024475524475524,
+      "coverage_ci_lo": 0.7633448991696323,
+      "coverage_ci_hi": 0.8402283281733746,
+      "mean_halfwidth": 0.017074026874507868,
+      "interval_score": 0.053454280066971026,
+      "score_delta": 0.00030121443944103126,
+      "score_delta_ci_lo": -4.8347193188951595e-05,
+      "score_delta_ci_hi": 0.000678270160145502,
+      "verdict": "동률",
+      "mean_q": 1.0902006397289694
+    },
+    "aci_g0.005_w500": {
+      "n": 572,
+      "interval_coverage": 0.8059440559440559,
+      "coverage_ci_lo": 0.7690903526096348,
+      "coverage_ci_hi": 0.8412989878780746,
+      "mean_halfwidth": 0.0171188801749597,
+      "interval_score": 0.0534957420326949,
+      "score_delta": 0.00034267640516490855,
+      "score_delta_ci_lo": 8.4007615103272e-05,
+      "score_delta_ci_hi": 0.0006320715858735031,
+      "verdict": "점수 열위",
+      "mean_q": 1.0924440233605186
+    },
+    "aci_g0.02_w250": {
+      "n": 572,
+      "interval_coverage": 0.8024475524475524,
+      "coverage_ci_lo": 0.7636046231101898,
+      "coverage_ci_hi": 0.8375420619973758,
+      "mean_halfwidth": 0.017065041480313212,
+      "interval_score": 0.05361424960847986,
+      "score_delta": 0.0004611839809498691,
+      "score_delta_ci_lo": -0.00035671489546147065,
+      "score_delta_ci_hi": 0.0012788439684108244,
+      "verdict": "동률",
+      "mean_q": 1.0877563024689723
+    },
+    "aci_g0.02_w500": {
+      "n": 572,
+      "interval_coverage": 0.8006993006993007,
+      "coverage_ci_lo": 0.7653060134447915,
+      "coverage_ci_hi": 0.8345629664637141,
+      "mean_halfwidth": 0.017276284911254124,
+      "interval_score": 0.05366843291502246,
+      "score_delta": 0.0005153672874924685,
+      "score_delta_ci_lo": -0.00016932673058065795,
+      "score_delta_ci_hi": 0.0012623585212246007,
+      "verdict": "동률",
+      "mean_q": 1.1004589829315605
+    }
+  },
+  "sequential_all": {
+    "current": {
+      "n": 1145,
+      "interval_coverage": 0.8087336244541484,
+      "coverage_ci_lo": 0.7827580828839817,
+      "coverage_ci_hi": 0.8344920400201359,
+      "mean_halfwidth": 0.024453740902351362,
+      "interval_score": 0.07218487268476831,
+      "score_delta": null,
+      "score_delta_ci_lo": null,
+      "score_delta_ci_hi": null,
+      "verdict": null,
+      "mean_q": 1.070260483320878
+    },
+    "trailing_q_w250": {
+      "n": 1145,
+      "interval_coverage": 0.8087336244541484,
+      "coverage_ci_lo": 0.7811860016197206,
+      "coverage_ci_hi": 0.8342059401252625,
+      "mean_halfwidth": 0.02388644052213062,
+      "interval_score": 0.072065541775151,
+      "score_delta": -0.00011933090961731415,
+      "score_delta_ci_lo": -0.0007192125324616023,
+      "score_delta_ci_hi": 0.000368535973288218,
+      "verdict": "동률",
+      "mean_q": 1.0503669114684497
+    },
+    "conformal_w250": {
+      "n": 1145,
+      "interval_coverage": 0.8113537117903931,
+      "coverage_ci_lo": 0.7832285283147923,
+      "coverage_ci_hi": 0.8370307167235495,
+      "mean_halfwidth": 0.024115618621521617,
+      "interval_score": 0.07212015687937202,
+      "score_delta": -6.471580539629021e-05,
+      "score_delta_ci_lo": -0.0005726933552314893,
+      "score_delta_ci_hi": 0.00035551275173359816,
+      "verdict": "동률",
+      "mean_q": 1.0599058960324539
+    },
+    "trailing_q_w500": {
+      "n": 1145,
+      "interval_coverage": 0.8069868995633188,
+      "coverage_ci_lo": 0.7808930707614543,
+      "coverage_ci_hi": 0.8321954969396677,
+      "mean_halfwidth": 0.023937929909811133,
+      "interval_score": 0.0718724322500273,
+      "score_delta": -0.0003124404347409955,
+      "score_delta_ci_lo": -0.00105037791547715,
+      "score_delta_ci_hi": 0.0001670612676236915,
+      "verdict": "동률",
+      "mean_q": 1.06066918348882
+    },
+    "conformal_w500": {
+      "n": 1145,
+      "interval_coverage": 0.8069868995633188,
+      "coverage_ci_lo": 0.7808930707614543,
+      "coverage_ci_hi": 0.8321954969396677,
+      "mean_halfwidth": 0.0240395293852496,
+      "interval_score": 0.07192078022003592,
+      "score_delta": -0.00026409246473239293,
+      "score_delta_ci_lo": -0.0009866870329362089,
+      "score_delta_ci_hi": 0.00019995070944052204,
+      "verdict": "동률",
+      "mean_q": 1.06493227181032
+    },
+    "aci_g0.005_w250": {
+      "n": 1145,
+      "interval_coverage": 0.8043668122270743,
+      "coverage_ci_lo": 0.7759987889273356,
+      "coverage_ci_hi": 0.8306751440602836,
+      "mean_halfwidth": 0.024059920023470915,
+      "interval_score": 0.07220421297030936,
+      "score_delta": 1.9340285541058393e-05,
+      "score_delta_ci_lo": -0.0006842020950347949,
+      "score_delta_ci_hi": 0.0006444604102919883,
+      "verdict": "동률",
+      "mean_q": 1.0601782930615096
+    },
+    "aci_g0.005_w500": {
+      "n": 1145,
+      "interval_coverage": 0.8069868995633188,
+      "coverage_ci_lo": 0.7807242547227656,
+      "coverage_ci_hi": 0.831913302497659,
+      "mean_halfwidth": 0.02364054931888469,
+      "interval_score": 0.07180017846452864,
+      "score_delta": -0.00038469422023967094,
+      "score_delta_ci_lo": -0.0013416116130044668,
+      "score_delta_ci_hi": 0.0003320904943995066,
+      "verdict": "동률",
+      "mean_q": 1.0533118608909482
+    },
+    "aci_g0.02_w250": {
+      "n": 1145,
+      "interval_coverage": 0.8034934497816594,
+      "coverage_ci_lo": 0.7767914703742599,
+      "coverage_ci_hi": 0.8287763570950154,
+      "mean_halfwidth": 0.023994561264926308,
+      "interval_score": 0.0722106508856762,
+      "score_delta": 2.5778200907896943e-05,
+      "score_delta_ci_lo": -0.00096465663930975,
+      "score_delta_ci_hi": 0.0008750383269776064,
+      "verdict": "동률",
+      "mean_q": 1.0610788659923847
+    },
+    "aci_g0.02_w500": {
+      "n": 1145,
+      "interval_coverage": 0.8026200873362446,
+      "coverage_ci_lo": 0.7761320791512819,
+      "coverage_ci_hi": 0.8270598482686453,
+      "mean_halfwidth": 0.02395123388902171,
+      "interval_score": 0.07206570969434775,
+      "score_delta": -0.00011916299042055782,
+      "score_delta_ci_lo": -0.0009744709842942851,
+      "score_delta_ci_hi": 0.0006118103934452352,
+      "verdict": "동률",
+      "mean_q": 1.0620122658294138
+    }
+  },
+  "miss_side_evaluation": {
+    "current": {
+      "above": 0.0924956369982548,
+      "below": 0.08376963350785341
+    },
+    "trailing_q_w500": {
+      "above": 0.09598603839441536,
+      "below": 0.08726003490401396
+    },
+    "conformal_w500": {
+      "above": 0.09598603839441536,
+      "below": 0.08726003490401396
+    },
+    "aci_g0.005_w250": {
+      "above": 0.09947643979057591,
+      "below": 0.09424083769633508
+    }
+  },
+  "current_matches_production_coverage": true,
+  "oof_file": "D:\\SourceCode\\predict_stock\\runs\\medium_horizon\\sk_hynix\\R01_open_full_oof.csv",
+  "oof_sha256": "9f78c9739a7392ab24cf0395be8a99337c617a553faea07a5286b052e9cec081"
+}

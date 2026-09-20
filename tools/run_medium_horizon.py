@@ -18,6 +18,8 @@ M00 — 현행 5·20일 가격 모델(StandardScaler+Ridge(1e4), 변동성 스�
 구간 품질, 변동성 구간별 오차, 비중첩 부분집합, 날짜 기준 purge 검사, 분할·배당 경계, 원장 만기 현황을 저장한다.
 M01 — 평가 계약(개발 6개월 외부 폴드 + 마지막 12개월 잠금 + 내부 3구간)을 네 조합에 적용해 폴드 날짜·
 학습 행·purge 검사·제외 사유를 저장하고, 고정 입력 로더로 M00 기준선이 그대로 재현되는지 확인한다.
+R01 — 운영 OOF(노트북 36셀과 같은 분할) 위에서 구간 q 만 바꿔 본다(시초가·종가 1/5/20일). 날 t 의 q 는 그 아침에
+이미 정답이 나온 점수만 쓴다. 계수는 선택 25% 에서 고르고 평가 25% 로 판정한다.
 """
 import argparse
 import hashlib
@@ -54,7 +56,8 @@ TASKS = {"M00": "현행 5·20일 가격 모델 기준선과 실패 유형 진단
          "M06": "국내 반도체 패널 공동 학습(pooled Ridge) vs 같은 입력 단독 모델 vs 현행",
          "M07": "고정 후보의 잠금 평가 1회와 사전 예측 관찰 현황",
          "R07": "금리 커브 특징군(단기·장기 금리와 기울기) 비교 — 5·20일만",
-         "R02": "야간/장중 분해 — 누적 야간·장중 특징 그룹 D(R02a)와 타깃 분해 예측(R02b), 5·20일"}
+         "R02": "야간/장중 분해 — 누적 야간·장중 특징 그룹 D(R02a)와 타깃 분해 예측(R02b), 5·20일",
+         "R01": "예측 구간 재보정 — 시초가·종가 1/5/20일, 현행 q vs 최근 창 분위·conformal·ACI (운영 OOF, 순차)"}
 HORIZON_LABELS = {5: "1주일", 20: "1개월"}
 
 # 평가 계약(계획 4절). 점수를 보기 전에 고정한다.
@@ -2406,10 +2409,328 @@ def verdict_for_price(delta):
     return "동률(CI가 0 포함)"
 
 
+# ---------------------------------------------------------------------------
+# R01 — 예측 구간 재보정(시초가·종가 1/5/20일), 운영 OOF 위에서 순차 평가
+# ---------------------------------------------------------------------------
+# 운영 구간(forecast_utils.calibrate_price_forecast): OOF 의 가장 오래된 50% 에서 q = |잔차|/σ 의 80% 분위를 한 번 정해
+# 끝까지 쓴다. 여기서는 같은 OOF·같은 중심값(운영 기울기 × OOF)·같은 σ 위에서 q 만 바꾼다. 날 t 의 q 는
+# target_date < t 인(= t 아침에 이미 정답이 나온) 점수만 쓴다. 계수 격자·판정 규칙은 점수를 보기 전에 고정했다.
+R01_CELLS = ("open", 1, 5, 20)
+R01_CELL_LABELS = {"open": "시초가(갭)", 1: "종가 1일", 5: "종가 5일", 20: "종가 20일"}
+R01_WINDOWS = (250, 500)
+R01_GAMMAS = (0.005, 0.02)
+R01_MIN_SCORES = 100           # 확정 점수가 이보다 적으면 q 를 내지 않는다(NaN) — 평가 구간은 모두 이 뒤다
+R01_COVERAGE_BAND = 0.04       # 포함률 허용 범위 80% ± 4%p
+R01_FAMILIES = {
+    "trailing_q": [f"trailing_q_w{w}" for w in R01_WINDOWS],
+    "conformal_trailing": [f"conformal_w{w}" for w in R01_WINDOWS],
+    "aci": [f"aci_g{g}_w{w}" for g in R01_GAMMAS for w in R01_WINDOWS],
+}
+R01_NOT_RUN = {"pid": "M05 에 구현이 없다(재사용 불가) — 실행하지 않음",
+               "enbpi": "M05 에 구현이 없다(Ridge 부트스트랩 앙상블을 새로 만들어야 한다) — 실행하지 않음"}
+
+
+def conformal_rank(n, coverage=COVERAGE):
+    """split-conformal 유한표본 보정 순위 ⌈(n+1)·coverage⌉ (1부터 센다). n 을 넘으면 n+1 을 돌려준다(= 무한 구간)."""
+    return int(np.ceil((n + 1) * coverage - 1e-12))
+
+
+def conformal_quantile(scores, coverage=COVERAGE):
+    """점수의 ⌈(n+1)·coverage⌉ 번째 작은 값. 순위가 n 을 넘으면 최댓값(유한 구간을 유지한다 — 이 경우 보장은 없다)."""
+    s = np.sort(np.asarray(scores, dtype=float))
+    if len(s) == 0:
+        return np.nan
+    return float(s[min(conformal_rank(len(s), coverage), len(s)) - 1])
+
+
+def level_quantile(scores, level):
+    """ACI 용 분위. level ≥ 1 이면 창의 최댓값, level ≤ 0 이면 0 (α_t 가 [0,1] 을 벗어나도 유한한 폭을 낸다)."""
+    s = np.asarray(scores, dtype=float)
+    if len(s) == 0:
+        return np.nan
+    if level >= 1:
+        return float(s.max())
+    if level <= 0:
+        return 0.
+    return float(np.quantile(s, level))
+
+
+def aci_update(alpha_t, err, gamma, alpha=1 - COVERAGE):
+    """Gibbs & Candès(2021): α_{t+1} = α_t + γ(α − err_t). 빗나가면(err=1) α 가 줄어 구간이 넓어진다."""
+    return float(alpha_t + gamma * (alpha - float(err)))
+
+
+def matured_counts(prediction_dates, target_dates):
+    """행 t 의 예측을 내는 아침에 정답이 이미 나온 앞선 예측의 수(target_date < prediction_date[t]).
+
+    target_date 는 행 순서로 단조 증가한다고 가정한다(같은 지평의 예측을 날짜순으로 쌓은 것). 아니면 거부한다.
+    """
+    pred = pd.DatetimeIndex(prediction_dates).values
+    targ = pd.DatetimeIndex(target_dates).values
+    if len(targ) > 1 and (np.diff(targ.astype("int64")) < 0).any():
+        raise ValueError("target_date 가 행 순서로 증가하지 않는다")
+    return np.searchsorted(targ, pred, side="left")
+
+
+def scaled_scores(y, center, sigma):
+    y, center, sigma = (np.asarray(a, dtype=float) for a in (y, center, sigma))
+    return np.abs(y - center) / np.maximum(sigma, 1e-6)
+
+
+def trailing_q_path(scores, avail, window, rule="quantile", coverage=COVERAGE, min_scores=R01_MIN_SCORES):
+    """날마다 최근 window 개 확정 점수로 q 를 다시 정한다. rule: 'quantile'(np.quantile) | 'conformal'(순위 규칙)."""
+    scores = np.asarray(scores, dtype=float)
+    q = np.full(len(scores), np.nan)
+    cache_a, cache_q = -1, np.nan
+    for t, a in enumerate(avail):
+        if a < min_scores:
+            continue
+        if a != cache_a:
+            recent = scores[max(0, a - window):a]
+            cache_q = float(np.quantile(recent, coverage)) if rule == "quantile" else conformal_quantile(recent, coverage)
+            cache_a = a
+        q[t] = cache_q
+    return q
+
+
+def aci_q_path(scores, avail, gamma, window, coverage=COVERAGE, min_scores=R01_MIN_SCORES, return_alpha=False):
+    """지연 피드백 ACI. 예측 s 의 빗나감은 그 정답이 나온 뒤(s < avail[t])에야 α 를 갱신한다 — 예측마다 정확히 한 번.
+
+    q_t = 최근 window 개 확정 점수의 (1 − α_t) 분위. α_0 = 1 − coverage.
+    """
+    scores = np.asarray(scores, dtype=float)
+    alpha = 1 - coverage
+    alpha_t, done = alpha, 0
+    q, alphas = np.full(len(scores), np.nan), np.full(len(scores), np.nan)
+    for t, a in enumerate(avail):
+        while done < a:
+            if np.isfinite(q[done]):
+                alpha_t = aci_update(alpha_t, scores[done] > q[done], gamma, alpha)
+            done += 1
+        alphas[t] = alpha_t
+        if a >= min_scores:
+            q[t] = level_quantile(scores[max(0, a - window):a], 1 - alpha_t)
+    return (q, alphas) if return_alpha else q
+
+
+def interval_q_paths(y, center, sigma, prediction_dates, target_dates, current_q, coverage=COVERAGE):
+    """모든 후보의 날짜별 q. {이름: q 배열}. current 는 운영값(상수)이다."""
+    scores = scaled_scores(y, center, sigma)
+    avail = matured_counts(prediction_dates, target_dates)
+    paths = {"current": np.full(len(scores), float(current_q))}
+    for w in R01_WINDOWS:
+        paths[f"trailing_q_w{w}"] = trailing_q_path(scores, avail, w, "quantile", coverage)
+        paths[f"conformal_w{w}"] = trailing_q_path(scores, avail, w, "conformal", coverage)
+    for g in R01_GAMMAS:
+        for w in R01_WINDOWS:
+            paths[f"aci_g{g}_w{w}"] = aci_q_path(scores, avail, g, w, coverage)
+    return paths
+
+
+def open_gap_design(inputs):
+    """노트북 36셀 open_gap_forecast 와 같은 설계 행렬: 갭 = open_d/close_{d−1} − 1, σ = 갭 20일 표준편차(전일까지)."""
+    sam, raw_close = inputs["sam"], pd.Series(inputs["sam_raw_close"]).astype(float)
+    gap = sam["open"].astype(float) / raw_close.shift(1) - 1
+    cols = list(inputs["feature_cols"])
+    reg = inputs["feat"].loc[sam.index, cols].copy()
+    reg["future_return"], reg["sigma_simple"] = gap.reindex(sam.index), gap.rolling(20).std().shift(1).reindex(sam.index)
+    return reg.replace([np.inf, -np.inf], np.nan).dropna(), cols
+
+
+def r01_cell_oof(inputs, cell, mode, sigma_col="sigma_simple"):
+    """한 칸의 운영 OOF 와 운영 보정. (frame[prediction_date,target_date,y,center,sigma], stats, 구간 위치) 반환."""
+    horizon = 1 if cell == "open" else int(cell)
+    if cell == "open":
+        reg, cols = open_gap_design(inputs)
+        target_dates = pd.DatetimeIndex(reg.index)                # 시가는 예측일 당일 09:00 에 확정된다
+    else:
+        reg, cols = price_design(inputs, horizon)
+        _, mature = maturity_positions(reg.index, inputs["sam"].index, horizon)
+        target_dates = pd.DatetimeIndex(inputs["sam"].index[mature])
+    if sigma_col not in reg.columns:
+        return None
+    X = reg[cols].to_numpy(dtype=np.float32)
+    y = reg["future_return"].to_numpy(dtype=np.float64)
+    sigma = reg[sigma_col].to_numpy(dtype=np.float64)
+    oof, _ = fu.price_oof_predictions(X, y, sigma, horizon, fu.make_price_model(), 3 if mode == "quick" else 5)
+    mask = ~np.isnan(oof)
+    b = int(inputs["bootstrap_b"])
+    stats = fu.calibrate_price_forecast(y[mask], oof[mask], sigma[mask], reg.index[mask], horizon,
+                                        lambda dates, fn: month_block_ci(dates, fn, b=b), coverage=COVERAGE)
+    frame = pd.DataFrame({"prediction_date": reg.index[mask], "target_date": target_dates[mask], "y": y[mask],
+                          "center": stats["oof_slope"] * oof[mask], "sigma": sigma[mask]}).reset_index(drop=True)
+    return frame, stats, calibration_splits(len(frame), horizon), horizon
+
+
+def r01_verdict(score_month, score_contig, horizon, cov, cov_current, target=COVERAGE, band=R01_COVERAGE_BAND):
+    """사전 고정 채택 규칙. 점수(Winkler) 차 후보−현행의 월 블록 CI 상한 < 0 (h>1 은 연속 블록 CI 도) 이고,
+    포함률이 80% ± 4%p 안이거나 — 현행이 그 밖일 때 — 현행보다 80% 에 엄밀히 가까울 것."""
+    better = np.isfinite(score_month[2]) and score_month[2] < 0 and (
+        horizon == 1 or (np.isfinite(score_contig[2]) and score_contig[2] < 0))
+    worse = np.isfinite(score_month[1]) and score_month[1] > 0
+    dev, dev_cur = abs(cov - target), abs(cov_current - target)
+    cov_ok = dev <= band + 1e-12 or (dev_cur > band + 1e-12 and dev < dev_cur)
+    if better and cov_ok:
+        return "채택 조건 충족"
+    if better:
+        return "점수 우위·포함률 탈락"
+    if worse:
+        return "점수 열위"
+    return "동률" + ("" if cov_ok else "·포함률 탈락")
+
+
+def r01_config(mode):
+    return {"task": "R01", "mode": mode, "cells": [str(c) for c in R01_CELLS], "coverage": COVERAGE,
+            "center": "운영 중심값(calibrate_price_forecast 의 기울기 × 운영 OOF, 판정 미통과면 0) — 바꾸지 않는다",
+            "sigma": "종가: 20일 변동성×sqrt(h), 시초가: 갭 20일 표준편차(전일까지)",
+            "schemes": {"current": "가장 오래된 50% 의 80% 분위(운영)", "trailing_q": list(R01_WINDOWS),
+                        "conformal_trailing": list(R01_WINDOWS), "aci": {"gamma": list(R01_GAMMAS), "window": list(R01_WINDOWS)},
+                        "reference": "sigma_har(노트북 HAR 변형 — 타깃 스케일·OOF·q 모두 HAR σ, 종가만)", "not_run": R01_NOT_RUN},
+            "min_scores": R01_MIN_SCORES, "feedback": "target_date < prediction_date 인 점수만(지연 = h)",
+            "windows": {"selection": "운영 분할의 선택 25%(계수 선택용)", "evaluation": "운영 분할의 평가 25%(보고·판정)",
+                        "sequential_all": "선택+평가 = 최근 50%(현행 q 가 표본 밖인 전체 구간)"},
+            "adoption_rule": "Winkler 차(후보−현행) 월 블록 95% CI 상한 < 0 (h>1 은 연속 블록 max(20,2h) 도) & 포함률 80%±4%p "
+                             "또는 현행이 밖일 때 현행보다 80% 에 가까움. 계수는 selection 구간 Winkler 최소로 고른다",
+            "coverage_band": R01_COVERAGE_BAND, "bootstrap_b": 400 if mode == "quick" else 2000, "seed": SEED}
+
+
+def r01_rows_path(state, target, cell):
+    return state.run_dir / f"rows_{target}_{'open' if cell == 'open' else f'h{cell}'}.json"
+
+
+def run_r01(target, mode, storage, results_dir, state, run_notebook_fn=None):
+    from run_model_improvement import read_json
+    inputs = None
+    b = 400 if mode == "quick" else 2000
+    for cell in R01_CELLS:
+        tag = "open" if cell == "open" else f"h{cell}"
+        unit = f"{target}:{tag}"
+        result = state.results().get(unit) or {}
+        intact = (state.is_done(unit) and r01_rows_path(state, target, cell).is_file() and result.get("oof_file")
+                  and Path(result["oof_file"]).is_file() and file_sha256(result["oof_file"]) == result.get("oof_sha256"))
+        if intact:
+            print(f"  이미 완료된 단위 건너뜀: {unit}")
+            continue
+        if inputs is None:
+            inputs = load_inputs(target, mode, storage, run_notebook_fn)
+            record_inputs(state, inputs)
+        frame, stats, (cal, gate, evaluation), horizon = r01_cell_oof(inputs, cell, mode)
+        y, center, sigma = (frame[c].to_numpy(dtype=float) for c in ("y", "center", "sigma"))
+        dates = pd.DatetimeIndex(frame["prediction_date"])
+        paths = interval_q_paths(y, center, sigma, dates, frame["target_date"], stats["band_q"])
+        avail = matured_counts(dates, frame["target_date"])
+        # 누수 검사: 날 t 의 q 에 들어간 점수의 만기일은 모두 t 앞이다
+        leak = int(sum(pd.Timestamp(frame["target_date"].iloc[a - 1]) >= dates[t] for t, a in enumerate(avail) if a > 0))
+        windows = {"selection": gate, "evaluation": evaluation, "sequential_all": np.arange(gate[0], len(y))}
+        block = max(20, 2 * horizon)
+
+        scored = {}
+        for name, q in paths.items():
+            hit, score, width = coverage_and_score(y, center, q * sigma)
+            scored[name] = {"q": q, "hit": hit, "score": score, "half": width / 2}
+        # 참고: 노트북 HAR 변형(중심값·σ·q 모두 HAR). 같은 행·같은 분할이라 행 단위로 짝지을 수 있다.
+        har = r01_cell_oof(inputs, cell, mode, "sigma_har") if cell != "open" else None
+        if har is not None and len(har[0]) == len(frame):
+            hf, hstats = har[0], har[1]
+            hit, score, width = coverage_and_score(y, hf["center"].to_numpy(), hstats["band_q"] * hf["sigma"].to_numpy())
+            scored["sigma_har"] = {"q": np.full(len(y), hstats["band_q"]), "hit": hit, "score": score, "half": width / 2}
+
+        def ci_pair(fn, idx):
+            lo_m, hi_m = month_block_ci(dates[idx], lambda i: fn(idx[i]), b=b)
+            lo_c, hi_c = contiguous_block_ci(len(idx), lambda i: fn(idx[i]), block, b=b)
+            return (lo_m, hi_m), (lo_c, hi_c)
+
+        metrics, comparisons, table = [], [], {}
+        for wname, idx in windows.items():
+            cur = scored["current"]
+            for name, s in scored.items():
+                if not np.isfinite(s["score"][idx]).all():
+                    raise SystemExit(f"{unit}: {name} 의 q 가 {wname} 구간에서 비어 있다(확정 점수 부족)")
+                cov = float(s["hit"][idx].mean())
+                cov_m, _ = ci_pair(lambda i, h_=s["hit"]: float(h_[i].mean()), idx)
+                row = {"target": target, "cell": str(cell), "horizon": horizon, "candidate": name, "fold": wname,
+                       "evaluation_stage": wname, "n": int(len(idx)), "interval_coverage": cov, "coverage_ci_lo": cov_m[0],
+                       "coverage_ci_hi": cov_m[1], "mean_halfwidth": float(s["half"][idx].mean()),
+                       "interval_score": float(s["score"][idx].mean()), "mean_q": float(np.mean(s["q"][idx])),
+                       "start": str(dates[idx[0]].date()), "end": str(dates[idx[-1]].date())}
+                if name != "current":
+                    m_ci, c_ci = ci_pair(lambda i, a_=s["score"], c_=cur["score"]: float((a_[i] - c_[i]).mean()), idx)
+                    delta = float((s["score"][idx] - cur["score"][idx]).mean())
+                    row.update(score_delta=delta, score_delta_ci_lo=m_ci[0], score_delta_ci_hi=m_ci[1],
+                               verdict=r01_verdict((delta, *m_ci), (delta, *c_ci), horizon, cov, float(cur["hit"][idx].mean())))
+                    base = {"target": target, "cell": str(cell), "horizon": horizon, "comparison": f"{name} - current",
+                            "metric": "interval_score", "window": wname, "delta": delta, "common_n": int(len(idx)), "calibrated": True}
+                    comparisons += [dict(base, ci_lo=m_ci[0], ci_hi=m_ci[1], block="month"),
+                                    dict(base, ci_lo=c_ci[0], ci_hi=c_ci[1], block=f"contiguous_{block}")]
+                    cm, _ = ci_pair(lambda i, a_=s["hit"], c_=cur["hit"]: float(a_[i].mean() - c_[i].mean()), idx)
+                    comparisons.append(dict(base, metric="interval_coverage", delta=cov - float(cur["hit"][idx].mean()),
+                                            ci_lo=cm[0], ci_hi=cm[1], block="month"))
+                metrics.append(row)
+                table[(wname, name)] = row
+        # 반기별 포함률·폭(최근 50%) — 안정성
+        half_key = np.array([f"{d.year}H{1 if d.month <= 6 else 2}" for d in dates])
+        seq = windows["sequential_all"]
+        for name, s in scored.items():
+            for hk in pd.unique(half_key[seq]):
+                idx = seq[half_key[seq] == hk]
+                metrics.append({"target": target, "cell": str(cell), "horizon": horizon, "candidate": name, "fold": hk,
+                                "evaluation_stage": "halfyear", "n": int(len(idx)), "interval_coverage": float(s["hit"][idx].mean()),
+                                "mean_halfwidth": float(s["half"][idx].mean()), "interval_score": float(s["score"][idx].mean())})
+        # 계수 선택: selection 구간 Winkler 최소(평가 구간은 보지 않는다)
+        chosen = {fam: min(names, key=lambda n_: table[("selection", n_)]["interval_score"]) for fam, names in R01_FAMILIES.items()}
+
+        notebook = (inputs["price_forecast_stats"].get({1: "1거래일", 5: "1주일", 20: "1개월"}.get(cell, ""), {}) if cell != "open" else {})
+        equivalence = {k: {"runner": float(stats[k]), "notebook": (float(notebook[k]) if k in notebook else None),
+                           "equal": bool(k in notebook and np.isclose(float(stats[k]), float(notebook[k]), rtol=0, atol=1e-9))}
+                       for k in ("band_q", "band_coverage_realized", "oof_slope")}
+        raw_dir = Path(storage) / target
+        raw_dir.mkdir(parents=True, exist_ok=True)
+        oof_path = raw_dir / f"R01_{tag}_{mode}_oof.csv"
+        stage = np.full(len(y), "", dtype=object)
+        stage[cal], stage[gate], stage[evaluation] = "calibration", "selection", "evaluation"
+        pd.concat([frame, pd.DataFrame({"stage": stage, "n_matured": avail, **{f"q_{n_}": s["q"] for n_, s in scored.items()}})],
+                  axis=1).to_csv(oof_path, index=False, lineterminator="\n")
+
+        def brief(wname, name):
+            r = table[(wname, name)]
+            return {k: r.get(k) for k in ("n", "interval_coverage", "coverage_ci_lo", "coverage_ci_hi", "mean_halfwidth", "interval_score",
+                                          "score_delta", "score_delta_ci_lo", "score_delta_ci_hi", "verdict", "mean_q")}
+        summary = {
+            "target": target, "cell": str(cell), "label": R01_CELL_LABELS[cell], "horizon": horizon, "n_oof": int(len(y)),
+            "stages": {k: {"n": int(len(v)), "start": str(dates[v[0]].date()), "end": str(dates[v[-1]].date())} for k, v in windows.items()},
+            "production": {k: (float(v) if isinstance(v, (float, np.floating)) else v) for k, v in stats.items()
+                           if k in ("band_q", "band_coverage_realized", "band_halfwidth_mean", "oof_slope", "beats_baseline")},
+            "notebook_equivalence": equivalence, "leak_violations": leak, "chosen": chosen, "not_run": R01_NOT_RUN,
+            "evaluation": {n_: brief("evaluation", n_) for n_ in scored}, "selection": {n_: brief("selection", n_) for n_ in scored},
+            "sequential_all": {n_: brief("sequential_all", n_) for n_ in scored},
+            # 빗나감의 방향(평가 구간). 한쪽으로 쏠려 있으면 폭이 아니라 중심값·대칭 구간의 문제다.
+            "miss_side_evaluation": {n_: {"above": float(((y > center + scored[n_]["half"]) & ~scored[n_]["hit"])[evaluation].mean()),
+                                          "below": float(((y < center - scored[n_]["half"]) & ~scored[n_]["hit"])[evaluation].mean())}
+                                     for n_ in ["current", *chosen.values()]},
+            "current_matches_production_coverage": bool(np.isclose(table[("evaluation", "current")]["interval_coverage"],
+                                                                   stats["band_coverage_realized"], atol=1e-12)),
+            "oof_file": str(oof_path), "oof_sha256": file_sha256(oof_path),
+        }
+        write_json(state.run_dir / f"summary_{target}_{tag}.json", summary)
+        write_json(r01_rows_path(state, target, cell), {"metrics": metrics, "comparisons": comparisons})
+        state.mark(unit, {"oof_sha256": summary["oof_sha256"], "oof_file": summary["oof_file"], "leak_violations": leak, "chosen": chosen})
+        ev = summary["evaluation"]
+        print(f"  {unit}: 평가 {len(evaluation)}행 · 현행 포함률 {ev['current']['interval_coverage']:.3f} 반폭 {ev['current']['mean_halfwidth']:.4f} "
+              f"점수 {ev['current']['interval_score']:.5f} · " + " · ".join(
+                  f"{n_} {ev[n_]['interval_coverage']:.3f}/{ev[n_]['score_delta']:+.5f} {ev[n_]['verdict']}" for n_ in chosen.values()) + f" · 누수 {leak}")
+    metrics, comparisons = [], []
+    for cell in R01_CELLS:
+        payload = read_json(r01_rows_path(state, target, cell))
+        if payload:
+            metrics += payload.get("metrics", [])
+            comparisons += payload.get("comparisons", [])
+    return metrics, comparisons
+
+
 TASK_RUNNERS = {"M00": run_m00, "M01": run_m01, "M02": run_m02, "M03": run_m03, "M04": run_m04,
-                "M05": run_m05, "M06": run_m06, "M07": run_m07, "R07": run_r07, "R02": run_r02}
+                "M05": run_m05, "M06": run_m06, "M07": run_m07, "R07": run_r07, "R02": run_r02, "R01": run_r01}
 TASK_CONFIGS = {"M00": m00_config, "M01": m01_config, "M02": m02_config, "M03": m03_config, "M04": m04_config,
-                "M05": m05_config, "M06": m06_config, "M07": m07_config, "R07": r07_config, "R02": r02_config}
+                "M05": m05_config, "M06": m06_config, "M07": m07_config, "R07": r07_config, "R02": r02_config, "R01": r01_config}
 
 
 def execute(task, target, mode, storage, results_dir, resume, run_notebook_fn=None):

@@ -1,0 +1,51 @@
+{
+  "completed_units": [
+    "sk_hynix:open",
+    "sk_hynix:h1",
+    "sk_hynix:h5",
+    "sk_hynix:h20"
+  ],
+  "results": {
+    "sk_hynix:open": {
+      "oof_sha256": "9f78c9739a7392ab24cf0395be8a99337c617a553faea07a5286b052e9cec081",
+      "oof_file": "D:\\SourceCode\\predict_stock\\runs\\medium_horizon\\sk_hynix\\R01_open_full_oof.csv",
+      "leak_violations": 0,
+      "chosen": {
+        "trailing_q": "trailing_q_w500",
+        "conformal_trailing": "conformal_w500",
+        "aci": "aci_g0.005_w250"
+      }
+    },
+    "sk_hynix:h1": {
+      "oof_sha256": "a248240ed9ed31e67cdf7b9b269d44f3516bf8c0b80efe8a370ad738a3f28ce6",
+      "oof_file": "D:\\SourceCode\\predict_stock\\runs\\medium_horizon\\sk_hynix\\R01_h1_full_oof.csv",
+      "leak_violations": 0,
+      "chosen": {
+        "trailing_q": "trailing_q_w500",
+        "conformal_trailing": "conformal_w500",
+        "aci": "aci_g0.005_w500"
+      }
+    },
+    "sk_hynix:h5": {
+      "oof_sha256": "fc0741cd0721aed9ab61362776157f7076232a2d23f98ab5a9903fe2884102ef",
+      "oof_file": "D:\\SourceCode\\predict_stock\\runs\\medium_horizon\\sk_hynix\\R01_h5_full_oof.csv",
+      "leak_violations": 0,
+      "chosen": {
+        "trailing_q": "trailing_q_w500",
+        "conformal_trailing": "conformal_w500",
+        "aci": "aci_g0.005_w500"
+      }
+    },
+    "sk_hynix:h20": {
+      "oof_sha256": "d75aa656af304daa7bec769a1d67a2cdbd28e607c9ae6ef272b6f3e8ad5202e9",
+      "oof_file": "D:\\SourceCode\\predict_stock\\runs\\medium_horizon\\sk_hynix\\R01_h20_full_oof.csv",
+      "leak_violations": 0,
+      "chosen": {
+        "trailing_q": "trailing_q_w250",
+        "conformal_trailing": "conformal_w250",
+        "aci": "aci_g0.005_w500"
+      }
+    }
+  },
+  "updated_at_utc": "2026-09-20T07:09:34.513476+00:00"
+}

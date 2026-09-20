@@ -528,6 +528,29 @@ def extrapolation_note(profit, point):
             "quarter": str(history.idxmax())}
 
 
+MIN_CANDIDATE_ROWS = 8
+
+
+def feature_coverage(f, cols, base=None, target="profit"):
+    """후보 열의 충족률을 '기본 모델이 학습할 수 있는 분기'(기본 특징과 정답이 있는 행)에서 잰다.
+
+    전체 프레임(2005년부터)으로 재면 단가·중량처럼 2015년부터 받는 자료는 오래된 빈 구간이 분모에
+    들어가 실제로는 거의 다 있는데도 탈락했다 — 발행본에서 140개월을 받고도 price_active=false
+    (2026-09-20 검토 #2: 전체 48% vs 학습 가능 분기 97%). 후보 행이 MIN_CANDIDATE_ROWS 보다 적으면 0.
+    이 판정은 후보 비교(ablation)를 할 수 있느냐이지 대표 모델에 채택한다는 뜻이 아니다.
+    """
+    base = FEATURES if base is None else base
+    if any(c not in f.columns for c in cols) or target not in f.columns:
+        return 0.0
+    trainable = f[[c for c in base if c in f.columns] + [target]].notna().all(axis=1)
+    if not trainable.any():
+        return 0.0
+    present = f.loc[trainable, list(cols)].notna().all(axis=1)
+    if int(present.sum()) < MIN_CANDIDATE_ROWS:
+        return 0.0
+    return float(present.mean())
+
+
 def evaluate(oof):
     if oof.empty:
         return {"n": 0, "beats_baselines": False, "note": "표본 부족"}
@@ -1051,7 +1074,7 @@ def analyse(target, out_dir, fetch=True):
         pass
     loaded = []
     for _name in ("semiconductor_exports.csv", "leading_cycle.csv", "customs_exports.csv",
-                  "cli_g20.csv", "tsmc_revenue.csv", "dram_spot.csv"):
+                  "cli_g20.csv", "tsmc_revenue.csv", "dram_spot.csv", "customs_quantity.csv"):
         try:
             text = github_pages.fetch(f"macro_history/{_name}", _token)
             if text:
@@ -1165,9 +1188,13 @@ def analyse(target, out_dir, fetch=True):
     # 수출 단가·물량(중량). 중량은 관세청에만 있어 이 계열은 관세청 단독으로 쌓는다.
     # 보관본이 짧으면 전체 이력을 한 번 받고(창이 많아 호출이 늘지만 한 번뿐이다), 그 뒤로는
     # 최근 18개월만 받아 합친다.
-    quantity, quantity_info = None, {"enabled": False, "reason": "DATA_GO_KR_KEY 없음"}
+    # 읽기는 보관본(macro_history → fallback_dir), 쓰기는 out_dir 이고 발행 단계가 그 파일을 저장소에
+    # 올린다. 전에는 목록·발행에 빠져 있어 매 실행이 전체 이력을 다시 받고 장애 시 대체 자료도 없었다.
+    # 키는 새 조회만 제어한다 — 키가 없어도 보관본이 있으면 그것으로 이어 간다(2026-09-20 검토 #3).
     quantity_cache = fallback_dir / "customs_quantity.csv"
-    if key:
+    quantity, quantity_info = None, {"enabled": False,
+                                     "reason": "DATA_GO_KR_KEY 없음" if not key else "보관본 없음(조회 생략)"}
+    if key or quantity_cache.exists():
         base = None
         if quantity_cache.exists():
             try:
@@ -1175,7 +1202,7 @@ def analyse(target, out_dir, fetch=True):
             except Exception:
                 base = None
         need_full = base is None or len(base) < 60
-        if fetch:
+        if fetch and key:
             try:
                 start = (pd.Timestamp(START_QUARTER_MONTH) if need_full
                          else pd.Timestamp.now(tz=KST).date().replace(day=1) - pd.DateOffset(months=18))
@@ -1260,7 +1287,7 @@ def analyse(target, out_dir, fetch=True):
     point, n_train = fit_live(f, live_quarter)
 
     # TSMC 를 넣으면 이번 분기 추정이 나아지는가. 같은 날짜·같은 방법으로 쌍체 비교한다.
-    leverage_active = all(c in f.columns and f[c].notna().mean() > 0.5 for c in LEVERAGE_FEATURES)
+    leverage_active = feature_coverage(f, LEVERAGE_FEATURES) > 0.5
     leverage_ablation = {}
     if leverage_active:
         oof_lev = walk_forward(f, features=FEATURES + LEVERAGE_FEATURES)
@@ -1278,14 +1305,14 @@ def analyse(target, out_dir, fetch=True):
                              "n": with_lev.get("n"),
                              "bias_with": growth_bias(oof_lev), "bias_without": growth_bias(oof)}
 
-    price_active = all(c in f.columns and f[c].notna().mean() > 0.5 for c in UNIT_PRICE_FEATURES)
+    price_active = feature_coverage(f, UNIT_PRICE_FEATURES) > 0.5
     price_ablation = {}
     if price_active:
         with_price = evaluate(walk_forward(f, features=FEATURES + UNIT_PRICE_FEATURES))
         price_ablation = {"mae_with": with_price.get("mae_model"), "mae_without": ev.get("mae_model"),
                           "n": with_price.get("n")}
 
-    tsmc_active = all(c in f.columns and f[c].notna().mean() > 0.5 for c in TSMC_FEATURES)
+    tsmc_active = feature_coverage(f, TSMC_FEATURES) > 0.5
     tsmc_ablation = {}
     if tsmc_active:
         with_tsmc = evaluate(walk_forward(f, features=FEATURES + TSMC_FEATURES))
@@ -1481,6 +1508,15 @@ def main():
                                      token, f"macro: customs_flash ({result['flash_info'].get('last')})")
             except Exception as exc:
                 print("  관세청 잠정치 사본 업로드 실패:", exc, flush=True)
+        # 단가·중량도 보관한다. 읽는 곳(macro_history)과 쓰는 곳(out_dir)이 이어지지 않아 매 실행이
+        # 전체 이력을 다시 받고 있었다(2026-09-20 검토 #3).
+        if (result.get("quantity_info") or {}).get("source") == "customs_api" and (out_dir / "customs_quantity.csv").exists():
+            try:
+                github_pages.publish("macro_history/customs_quantity.csv",
+                                     (out_dir / "customs_quantity.csv").read_text(encoding="utf-8"),
+                                     token, f"macro: customs_quantity ({result['quantity_info'].get('last')})")
+            except Exception as exc:
+                print("  관세청 단가·중량 사본 업로드 실패:", exc, flush=True)
         # 다음 실행이 최근 2년만 다시 받으면 되도록 이력을 저장소에 남긴다.
         if result["profit_source"].startswith("DART"):
             series = pd.read_csv(out_dir / "earnings_profit.csv") if (out_dir / "earnings_profit.csv").exists() else None

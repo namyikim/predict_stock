@@ -229,6 +229,42 @@ class ConformalIntervalTests(unittest.TestCase):
         self.assertEqual(ev["interval_method"], "conformal_relative")
 
 
+class UnitPriceActivationTests(unittest.TestCase):
+    """수출 단가·물량 후보의 활성화 판정과 보관 경로(2026-09-20 검토 #2·#3)."""
+
+    def frame(self):
+        quarters = pd.PeriodIndex(pd.date_range("2001-01-01", periods=102, freq="QS"), freq="Q")   # 2001~2026
+        f = pd.DataFrame(index=quarters)
+        for c in ef.FEATURES:
+            f[c] = 1.0
+        f["profit"] = np.where(quarters >= pd.Period("2016Q1", freq="Q"), 5e12, np.nan)   # 이익은 2016년부터
+        for c in ef.UNIT_PRICE_FEATURES:
+            f[c] = np.where(quarters >= pd.Period("2015Q1", freq="Q"), 1.0, np.nan)      # 단가는 2015년부터
+        return f
+
+    def test_coverage_is_measured_on_trainable_quarters_not_the_whole_frame(self):
+        f = self.frame()
+        whole = f[list(ef.UNIT_PRICE_FEATURES)].notna().all(axis=1).mean()
+        self.assertLess(whole, 0.5)                                       # 옛 분모로는 탈락
+        self.assertGreater(ef.feature_coverage(f, ef.UNIT_PRICE_FEATURES), 0.95)   # 학습 가능 분기에서는 거의 전부
+
+    def test_too_few_candidate_rows_is_inactive(self):
+        f = self.frame()
+        f.loc[f.index < pd.Period("2025Q1", freq="Q"), list(ef.UNIT_PRICE_FEATURES)] = np.nan
+        self.assertEqual(ef.feature_coverage(f, ef.UNIT_PRICE_FEATURES), 0.0)
+
+    def test_missing_column_is_inactive(self):
+        self.assertEqual(ef.feature_coverage(self.frame(), ["no_such_column"]), 0.0)
+
+    def test_quantity_cache_is_downloaded_published_and_read_without_a_key(self):
+        source = (ROOT / "tools" / "build_earnings_forecast.py").read_text(encoding="utf-8")
+        head = source[source.index("for _name in ("):source.index("for _name in (") + 200]
+        self.assertIn("customs_quantity.csv", head)                                  # 초기 보관본 목록
+        self.assertIn('github_pages.publish("macro_history/customs_quantity.csv"', source)   # 발행
+        self.assertIn("if key or quantity_cache.exists():", source)                  # 키 없이도 보관본 읽기
+        self.assertIn("if fetch and key:", source)                                   # 새 조회만 키가 제어
+
+
 if __name__ == "__main__":
     unittest.main()
 

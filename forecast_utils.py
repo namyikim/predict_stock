@@ -783,11 +783,174 @@ def longterm_easy_summary_html(*, name, price_date, close, longterm=None, earnin
             + '</section>')
 
 
+# ---- 지금 차트 상황 (2026-09-20) --------------------------------------------------------------
+# "이제 반등이 나올 때가 됐나" 같은 질문에 과거 빈도로 답한다. 전날 종가까지의 봉만 쓰므로 저녁 보고서에도
+# 그대로 나온다. 예측이 아니라 '같은 상황이 과거에 몇 번 있었고 다음 날 어땠나'를 센 것이다.
+# 2026-09-20 점검(2010~2026, 두 종목): 며칠 급하게 빠진 뒤에는 다음 날 상승이 평소 36%에서 43~50%로
+# 잦았고, RSI 30 미만·볼린저 하단 이탈 같은 교과서 지표는 통하지 않았다(2021년 이후 하단 이탈 뒤 상승 40%).
+# 대표 모델 입력에 최근 수익률·RSI·이동평균 거리가 이미 있어, 그런 날 모델도 '상승'을 더 자주 낸다.
+# 임계값은 점검 때 쓴 값을 그대로 고정한다 — 맞는 값을 찾아 조정하지 않는다.
+CHART_SITUATION_SINCE = "2021-01-01"      # 대표 모델의 외부 평가 구간과 같은 시작
+CHART_SITUATION_MIN_N = 20
+CHART_SITUATION_BAND_MULT = 0.3           # 보고서의 상승·보합·하락 밴드(0.3 × 20일 변동성)와 같은 정의
+_SITUATION_ORDER = ("down_streak", "drop_5d", "drop_1d", "off_high_20d", "up_streak", "rise_5d", "rise_1d")
+
+
+def _run_length(flag):
+    """True 가 이어진 길이(그 날 포함). False 면 0."""
+    flag = flag.astype(int)
+    return flag.groupby((flag != flag.shift()).cumsum()).cumsum() * flag
+
+
+def chart_situation_signals(close):
+    """날짜별 신호(그 날 종가까지의 정보만)와 그 근거 값. 반환: (신호 DataFrame, 값 DataFrame)."""
+    close = pd.Series(close, dtype=float).dropna()
+    ret = close.pct_change()
+    down, up = _run_length(ret < 0), _run_length(ret > 0)
+    ret5 = close / close.shift(5) - 1
+    off_high = close / close.rolling(20).max() - 1
+    signals = pd.DataFrame({"down_streak": down >= 3, "drop_5d": ret5 <= -.08, "drop_1d": ret <= -.04,
+                            "off_high_20d": off_high <= -.10, "up_streak": up >= 3, "rise_5d": ret5 >= .08,
+                            "rise_1d": ret >= .04})
+    values = pd.DataFrame({"ret_1d": ret, "ret_5d": ret5, "off_high": off_high, "down_run": down, "up_run": up})
+    return signals, values
+
+
+def _situation_label(key, row):
+    if key == "down_streak":
+        return f"{int(row['down_run'])}일 연속 하락 중", "3일 이상 연속 하락"
+    if key == "up_streak":
+        return f"{int(row['up_run'])}일 연속 상승 중", "3일 이상 연속 상승"
+    if key == "drop_5d":
+        return f"최근 5거래일 {row['ret_5d']:+.1%}", "5거래일 −8% 이상 급락"
+    if key == "rise_5d":
+        return f"최근 5거래일 {row['ret_5d']:+.1%}", "5거래일 +8% 이상 급등"
+    if key == "drop_1d":
+        return f"직전 거래일 하루 {row['ret_1d']:+.1%}", "하루 −4% 이상 급락"
+    if key == "rise_1d":
+        return f"직전 거래일 하루 {row['ret_1d']:+.1%}", "하루 +4% 이상 급등"
+    return f"20일 고점 대비 {row['off_high']:+.1%}", "20일 고점 대비 −10% 이상"
+
+
+def chart_situation(bars, since=CHART_SITUATION_SINCE, min_n=CHART_SITUATION_MIN_N,
+                    band_mult=CHART_SITUATION_BAND_MULT):
+    """마지막 마감 봉 기준의 차트 상황과, 같은 상황 뒤 다음 거래일이 과거에 어땠는지.
+
+    bars: 마감된 일봉(adj_close 가 있으면 그것, 없으면 close). 결과 분류는 보고서와 같다 — 다음 날 수익률이
+    밴드(0.3 × 직전 20일 변동성)보다 크면 상승, 작으면 하락, 사이면 보합. 신호 날짜 s 의 결과는 s+1 거래일이고
+    마지막 봉은 결과가 없어 통계에서 빠진다. since 이후 표본이 min_n 미만이면 전체 이력으로 넓히고 그렇게 적는다.
+    반환: None(자료 부족) 또는 {"as_of", "facts", "base", "active": [...], "since"}.
+    """
+    if bars is None or len(bars) < 80:
+        return None
+    column = "adj_close" if "adj_close" in bars else "close"
+    close = pd.Series(bars[column], dtype=float).dropna()
+    close = close[close > 0]
+    if len(close) < 80:
+        return None
+    signals, values = chart_situation_signals(close)
+    ret = close.pct_change()
+    band = (band_mult * ret.rolling(20).std()).shift(1)
+    cls = pd.Series(np.where(ret < -band, 0., np.where(ret > band, 2., 1.)), index=close.index).where(band.notna() & ret.notna())
+    nxt_cls, nxt_ret, nxt5 = cls.shift(-1), ret.shift(-1), close.shift(-5) / close - 1
+    valid = nxt_cls.notna()
+
+    def stats(mask):
+        m = mask & valid
+        n = int(m.sum())
+        if n == 0:
+            return {"n": 0}
+        c = nxt_cls[m]
+        return {"n": n, "up": float((c == 2).mean()), "flat": float((c == 1).mean()), "down": float((c == 0).mean()),
+                "mean_next": float(nxt_ret[m].mean()), "mean_5d": float(nxt5[m].mean()) if nxt5[m].notna().any() else float("nan")}
+
+    recent = pd.Series(close.index >= pd.Timestamp(since), index=close.index)
+    everything = pd.Series(True, index=close.index)
+    base_recent, base_all = stats(recent), stats(everything)
+    last = close.index[-1]
+    row = values.loc[last]
+    active = []
+    for key in _SITUATION_ORDER:
+        if not bool(signals.loc[last, key]):
+            continue
+        detail, rule = _situation_label(key, row)
+        found = stats(signals[key] & recent)
+        window, base = f"{pd.Timestamp(since).year}년 이후", base_recent
+        if found["n"] < min_n:
+            found, window, base = stats(signals[key]), f"{close.index[0].year}년 이후 전체", base_all
+        item = {"key": key, "detail": detail, "rule": rule, "window": window, "base": base, **found,
+                "enough": found["n"] >= min_n, "side": "down" if key in ("down_streak", "drop_5d", "drop_1d", "off_high_20d") else "up"}
+        if item["enough"] and base.get("n"):
+            se = float(np.sqrt(base["up"] * (1 - base["up"]) / found["n"]))
+            item["up_differs"] = bool(abs(found["up"] - base["up"]) > 2 * se)
+            se_d = float(np.sqrt(base["down"] * (1 - base["down"]) / found["n"]))
+            item["down_differs"] = bool(abs(found["down"] - base["down"]) > 2 * se_d)
+        active.append(item)
+    facts = {"ret_1d": float(row["ret_1d"]), "ret_5d": float(row["ret_5d"]), "off_high": float(row["off_high"]),
+             "down_run": int(row["down_run"]), "up_run": int(row["up_run"])}
+    return {"as_of": pd.Timestamp(last), "facts": facts, "base": base_recent, "active": active, "since": since}
+
+
+def chart_situation_html(situation):
+    """쉬운 요약의 '지금 차트 상황' 카드. h3 를 쓰지 않는다(탭 나누기가 요약을 쪼갠다)."""
+    from html import escape
+    if not situation:
+        return ""
+    facts, base, active = situation["facts"], situation.get("base") or {}, situation.get("active") or []
+    box = ('<div style="background:#fff;border:1px solid #cedff0;border-radius:6px;padding:12px 14px;margin:10px 0 0;'
+           'font-size:13px;line-height:1.7">')
+    head = (f'<b>지금 차트 상황</b> <span style="color:#7a8797;font-size:11px">'
+            f'{_day_label(situation["as_of"])} 종가 기준 · 과거에 같은 상황이 몇 번 있었고 다음 날 어땠는지 센 것 · 예측이 아닙니다</span>')
+    if not active:
+        # 기준일이 어제가 아닐 수 있다(주말·휴일 뒤 보고서). '직전 거래일'이라고 적는다.
+        run = (f" · {facts['down_run']}일 연속 하락" if facts["down_run"] >= 2 else
+               f" · {facts['up_run']}일 연속 상승" if facts["up_run"] >= 2 else "")
+        return (box + head + f'<br>특별한 신호 없음 — 직전 거래일 {facts["ret_1d"]:+.1%} · 최근 5거래일 {facts["ret_5d"]:+.1%}{run} · '
+                f'20일 고점 대비 {facts["off_high"]:+.1%}. 급락·급등이나 3일 이상 연속 움직임일 때만 과거 통계를 보입니다.</div>')
+    rows = ""
+    for item in active:
+        if not item.get("enough"):
+            rows += (f'<tr><td style="padding:5px 8px;border-top:1px solid #eef1f5"><b>{escape(item["detail"])}</b>'
+                     f'<div style="font-size:11px;color:#7a8797">{escape(item["rule"])}</div></td>'
+                     f'<td colspan="4" style="padding:5px 8px;border-top:1px solid #eef1f5;color:#7a8797">'
+                     f'과거 표본 {item["n"]}번 — 말하기에 부족합니다</td></tr>')
+            continue
+        b = item["base"]
+        if item.get("up_differs") and item["up"] > b["up"]:
+            verdict, color = "다음 날 상승이 평소보다 잦았습니다", "#1e6b34"
+        elif item.get("down_differs") and item["down"] > b["down"]:
+            verdict, color = "다음 날 하락이 평소보다 잦았습니다", "#a8322a"
+        elif item.get("up_differs") and item["up"] < b["up"]:
+            verdict, color = "다음 날 상승이 평소보다 드물었습니다", "#a8322a"
+        else:
+            verdict, color = "평소와 뚜렷이 다르지 않았습니다", "#5b6570"
+        five = "" if not np.isfinite(item.get("mean_5d", float("nan"))) else f' · 5거래일 뒤 평균 {item["mean_5d"]:+.1%}'
+        rows += (f'<tr><td style="padding:5px 8px;border-top:1px solid #eef1f5"><b>{escape(item["detail"])}</b>'
+                 f'<div style="font-size:11px;color:#7a8797">{escape(item["rule"])} · {escape(item["window"])} {item["n"]}번</div></td>'
+                 f'<td style="padding:5px 8px;border-top:1px solid #eef1f5;text-align:right">{item["up"]:.0%}'
+                 f'<div style="font-size:11px;color:#7a8797">평소 {b["up"]:.0%}</div></td>'
+                 f'<td style="padding:5px 8px;border-top:1px solid #eef1f5;text-align:right">{item["flat"]:.0%}'
+                 f'<div style="font-size:11px;color:#7a8797">{b["flat"]:.0%}</div></td>'
+                 f'<td style="padding:5px 8px;border-top:1px solid #eef1f5;text-align:right">{item["down"]:.0%}'
+                 f'<div style="font-size:11px;color:#7a8797">{b["down"]:.0%}</div></td>'
+                 f'<td style="padding:5px 8px;border-top:1px solid #eef1f5;color:{color}">{verdict}'
+                 f'<div style="font-size:11px;color:#7a8797">다음 날 평균 {item["mean_next"]:+.2%}{five}</div></td></tr>')
+    table = ('<div style="overflow-x:auto"><table style="width:100%;min-width:480px;border-collapse:collapse;margin-top:6px">'
+             '<tr style="font-size:11px;color:#6b7178;background:#fafafa"><th style="padding:5px 8px;text-align:left">상황</th>'
+             '<th style="padding:5px 8px;text-align:right">다음 날 상승</th><th style="padding:5px 8px;text-align:right">보합</th>'
+             '<th style="padding:5px 8px;text-align:right">하락</th><th style="padding:5px 8px;text-align:left">과거에는</th></tr>'
+             f'{rows}</table></div>')
+    note = ('<div style="font-size:11px;color:#7a8797;margin-top:6px">상승·보합·하락은 위 종가 방향과 같은 기준(밴드)입니다. '
+            '신호가 여럿이면 같은 날들이 겹쳐 세어집니다. 대표 모델의 입력에 최근 수익률·RSI·이동평균 거리가 이미 들어 있어 '
+            '이 경향은 위 예측 확률에 반영돼 있습니다 — 따로 더해 읽지 마세요. 반등의 상당 부분은 밤사이 갭으로 왔습니다.</div>')
+    return box + head + table + note + "</div>"
+
+
 def easy_summary_html(*, name, prediction_date, data_date, summary, open_forecast,
                       price_forecasts, review=None, longterm=None, earnings=None,
                       target_mode="close_to_close", record_forecast=True,
                       macro_active=True, nsi_active=True, official_note="",
-                      post_open=None, target=None):
+                      post_open=None, target=None, situation=None):
     """Summarize already-computed results; never infer news causes or bypass signal gates.
 
     This is a generation-time snapshot. Intraday ledger refreshes remain separate and
@@ -795,6 +958,7 @@ def easy_summary_html(*, name, prediction_date, data_date, summary, open_forecas
     official_note: 기록하지 않는 재실행이 원장의 공식 사전 예측을 보여 줄 때의 설명(official_forecast_note).
     post_open: 이 예측일의 시가 반영 갱신 행(post_open_row_for). 있으면 카드, 없으면 09:37 자리 표시를 둔다.
     target: 종목 키(samsung·sk_hynix) — 카드의 과거 검증 수치(POST_OPEN_TRACK_RECORD)용.
+    situation: chart_situation(bars) 결과. 있으면 세 카드 아래에 '지금 차트 상황' 카드를 둔다.
     """
     from html import escape
 
@@ -948,6 +1112,7 @@ def easy_summary_html(*, name, prediction_date, data_date, summary, open_forecas
                                   open_forecast=open_forecast, price_forecasts=price_forecasts,
                                   target_mode=target_mode)
            + post_open_block_html(post_open, target=target, morning=live)
+           + chart_situation_html(situation)
            + SCORECARD_START + scorecard_html(review, summary.get("ensemble") or "Mean ensemble")
            + SCORECARD_END)
     return ('<section id="easy-summary" aria-label="한눈에 보는 쉬운 요약" '

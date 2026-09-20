@@ -54,6 +54,7 @@ TASKS = {
     "P10b": "해외 자산 특징을 넣은 pooled 패널 vs 대표 모델",
     "R02c": "누적 야간/장중 특징 그룹 D 를 다음 날 방향 대표 모델에 더했을 때(같은 날짜, 갭·세션 AUC 병기)",
     "P16": "시가 확정 후(09:37) 종가 방향 재예측 — 모델이 아니라 정보 마감 시각을 옮긴다",
+    "P18": "전날 저녁(20:00 KST) 예측에 저녁에 거래되는 자산(나스닥·S&P 선물, DAX·유로스톡스 시간봉)을 더할 수 있는가",
 }
 
 # P03에서 비교하는 특징군. 노트북이 같은 폴드·같은 날짜로 이미 계산해 CSV로 남기므로
@@ -2072,9 +2073,466 @@ def run_p16(target, mode, storage, state, run_notebook_fn=None):
     return rows
 
 
+# ---------------------------------------------------------------------------
+# P18 — 전날 저녁(20:00 KST) 예측에 저녁에 거래되는 자산을 더할 수 있는가
+# ---------------------------------------------------------------------------
+# 저녁 실행(노트북 셀 1, EVENING_WINDOW_KST=(17,23))은 별도 모델이 아니다. 아침 모델을 그 시각에 있는
+# 일봉으로 돌린 것이라, 미국·해외 자산 열은 **직전 미국 세션**(d−2 미국 날짜)의 값이다(merge_latest_available
+# as-of backward). 이 모델의 예측력은 밤사이 갭(P09 갭 AUC 0.81/0.83)에서 오는데 그 갭을 만드는 미국 세션은
+# 20:00 KST 에 아직 열리지도 않았다. 저녁 시각에 실제로 움직이는 것은 CME 야간 선물(NQ·ES)과 유럽 지수뿐이므로
+# 그 시간봉을 20:00 KST 마감으로 잘라 더해 본다. 정직한 기대는 "기껏해야 작은 이득"이다.
+P18_T0700 = "t0700"
+P18_T_EVENING = "t_evening"
+P18_T_EVENING_F = "t_evening_f2000"
+P18_T_EVENING_F22 = "t_evening_f2200"
+P18_NQ_RULE = "nq_rule"
+P18_HOURLY_TICKERS = {"nq": "NQ=F", "es": "ES=F", "dax": "^GDAXI", "stoxx": "^STOXX50E"}
+P18_HOURLY_INTERVAL = "1h"
+P18_HOURLY_PERIOD = "730d"          # yfinance 시간봉의 최대 조회 기간
+P18_CUTOFFS_KST = {"f2000": (20, 0), "f2200": (22, 0)}   # 22:00 은 미국 개장(22:30) 직전의 민감도 확인용
+P18_FUTURES_COLUMNS = ("nq_ret", "nq_sign", "nq_cum5", "es_ret", "dax_ret", "stoxx_ret")
+P18_AVAILABLE_FLAG = "evening_f_available"
+P18_NQ_CUM_SESSIONS = 5
+P18_MIN_TRAIN_F_ROWS = 100          # 학습 구간에 선물 특징이 있는 행이 이보다 적은 폴드는 후보가 배울 기회가 없어 뺀다
+P18_LEDGER_ROOT = ROOT / "forecast_history"
+P18_EVENING_LEDGER_MODEL = "Candidate evening forecast"
+# 노트북 셀 11 의 ASSET_SESSION 사본. 러너는 노트북 네임스페이스의 ASSET_SESSION 을 우선 쓰고 없을 때만 이것을 쓴다.
+P18_DEFAULT_ASSET_SESSION = {
+    "target": "korea", "kospi": "korea", "peer": "korea",
+    "sox": "us", "nasdaq": "us", "sp500": "us", "micron": "us", "nvidia": "us", "tsmc_adr": "us",
+    "korea_etf": "us", "us10y": "us", "vxn": "us", "target_gdr": "london",
+    "usdkrw": "cont", "dxy": "cont", "vix": "cont", "wti": "cont", "usdjpy": "cont",
+}
+# 특징 접두어 중 자산 이름이 아닌 것. sam_ 은 대상 종목(korea), cal_ 은 예측일 달력, krwjpy_ 는 usdkrw/usdjpy 로 만든 교차환율(cont).
+P18_PREFIX_ALIASES = {"sam": "korea", "cal": "calendar", "krwjpy": "cont"}
+# 두 세션이 섞인 열: (전 행에서 가져올 열, 당일 행에서 가져올 열). gdr_overnight_signal = target_gdr_ret_1 − sam_ret_1.
+P18_CROSS_COLUMNS = {"gdr_overnight_signal": ("target_gdr_ret_1", "sam_ret_1")}
+P18_SAME_ROW_SESSIONS = ("korea", "calendar")
+
+
+def evening_column_sessions(columns, asset_session=None):
+    """특징 열 → 세션 이름. 자산 이름은 긴 것부터 맞춰 target_gdr_ 이 target_ 에 잡히지 않게 한다.
+    분류할 수 없는 열은 예외다 — 새 열이 조용히 '한국' 취급되면 저녁 기준선이 미래를 보게 된다."""
+    session_of = dict(P18_DEFAULT_ASSET_SESSION if asset_session is None else asset_session)
+    session_of.update(P18_PREFIX_ALIASES)
+    names = sorted(session_of, key=len, reverse=True)
+    out = {}
+    for column in columns:
+        if column in P18_CROSS_COLUMNS:
+            out[column] = "cross"
+            continue
+        match = next((n for n in names if column.startswith(n + "_")), None)
+        if match is None:
+            raise ValueError(f"세션을 알 수 없는 특징 열입니다: {column}. P18_DEFAULT_ASSET_SESSION/P18_PREFIX_ALIASES 에 등록하세요.")
+        out[column] = session_of[match]
+    return out
+
+
+def evening_feature_frame(feat, columns, asset_session=None):
+    """저녁(전날 20:00 KST) 실행이 보는 특징 행렬을 아침 특징 프레임에서 재구성한다.
+
+    행 d 에서 한국 세션 열(대상 종목·KOSPI·peer)과 달력 열은 아침 행 d 그대로다(d−1 한국 종가는 d−1 17:00 에 이미
+    안다). 미국·런던·연속(FX·선물) 열은 **행 d−1 의 값**이다 — d−1 20:00 KST 에 마지막으로 마감된 해외 세션은 아침
+    행 d−1 이 본 것과 같다(그 사이에 새로 마감된 해외 세션이 없다). 교차 열은 두 부분을 각각의 시점에서 다시 만든다.
+    반환값은 feat 와 같은 인덱스(달력)의 프레임과 열별 세션 표다. 첫 행은 앞 행이 없어 해외 열이 결측이다."""
+    sessions = evening_column_sessions(columns, asset_session)
+    shifted = feat.shift(1)
+    out = pd.DataFrame(index=feat.index)
+    for column in columns:
+        session = sessions[column]
+        if session in P18_SAME_ROW_SESSIONS:
+            out[column] = feat[column].to_numpy()
+        elif session == "cross":
+            prev_col, same_col = P18_CROSS_COLUMNS[column]
+            out[column] = (shifted[prev_col] - feat[same_col]).to_numpy()
+        else:
+            out[column] = shifted[column].to_numpy()
+    return out, sessions
+
+
+def hourly_cache_dir(storage):
+    return Path(storage) / "P18" / "cache"
+
+
+def hourly_cache_paths(storage):
+    return [hourly_cache_dir(storage) / f"{name}_1h.parquet" for name in P18_HOURLY_TICKERS]
+
+
+def _download_hourly(ticker, period=P18_HOURLY_PERIOD, retries=3):
+    """yfinance 시간봉. 인덱스는 봉 **시작** 시각(UTC). 아직 끝나지 않은 마지막 봉은 버린다."""
+    import time
+    import yfinance as yf
+    last_error = None
+    for attempt in range(retries):
+        try:
+            frame = yf.download(ticker, interval=P18_HOURLY_INTERVAL, period=period, auto_adjust=False,
+                                progress=False, threads=False, timeout=60)
+            if isinstance(frame.columns, pd.MultiIndex):
+                frame.columns = frame.columns.get_level_values(0)
+            frame.columns = [str(c).strip().lower().replace(" ", "_") for c in frame.columns]
+            if frame.empty:
+                raise ValueError("empty response")
+            index = pd.DatetimeIndex(frame.index)
+            if index.tz is None:
+                raise ValueError("시간봉 인덱스에 시간대가 없습니다 — 마감 시각 판정을 할 수 없습니다")
+            keep = [c for c in ("open", "high", "low", "close", "volume") if c in frame.columns]
+            frame = frame[keep].astype(float)
+            frame.index = index.tz_convert("UTC")
+            frame = frame[~frame.index.duplicated(keep="last")].sort_index()
+            frame = frame[frame.index + pd.Timedelta(hours=1) <= pd.Timestamp.now(tz="UTC")]
+            return frame.dropna(subset=["open", "close"])
+        except Exception as exc:
+            last_error = exc
+            time.sleep(2. * (attempt + 1))
+    raise RuntimeError(f"{ticker} 시간봉 다운로드 실패: {type(last_error).__name__}: {last_error}")
+
+
+def ensure_hourly_cache(storage, period=P18_HOURLY_PERIOD):
+    """캐시에 없는 종목만 받는다. 있는 파일은 다시 받지 않는다 — 같은 실행이 같은 자료를 보게(재현성)."""
+    cache = hourly_cache_dir(storage)
+    cache.mkdir(parents=True, exist_ok=True)
+    for name, ticker in P18_HOURLY_TICKERS.items():
+        path = cache / f"{name}_1h.parquet"
+        if path.is_file():
+            continue
+        frame = _download_hourly(ticker, period)
+        frame.to_parquet(path)
+        print(f"  시간봉 캐시: {name}({ticker}) {len(frame):,}봉 {frame.index.min()} ~ {frame.index.max()} → {path.name}")
+    return cache
+
+
+def load_hourly_bars(storage):
+    """캐시된 시간봉 {이름: DataFrame(UTC 봉 시작 시각, open/close ...)}. 없으면 예외(조용히 빈 특징을 만들지 않는다)."""
+    out = {}
+    for name in P18_HOURLY_TICKERS:
+        path = hourly_cache_dir(storage) / f"{name}_1h.parquet"
+        if not path.is_file():
+            raise RuntimeError(f"시간봉 캐시가 없습니다: {path}. ensure_hourly_cache 를 먼저 부르세요.")
+        out[name] = _hourly_ns(pd.read_parquet(path))
+    return out
+
+
+def evening_cutoffs(calendar, cutoff_kst):
+    """행 d 의 정보 마감 = 직전 달력 행(전 한국 세션) 날짜의 cutoff_kst(Asia/Seoul). 첫 행은 NaT."""
+    calendar = pd.DatetimeIndex(calendar).as_unit("ns")
+    hour, minute = cutoff_kst
+    prev = (calendar[:-1].tz_localize("Asia/Seoul") + pd.Timedelta(hours=hour, minutes=minute)).tz_convert("UTC")
+    head = pd.DatetimeIndex([pd.NaT]).tz_localize("UTC").as_unit("ns")
+    return head.append(prev.as_unit("ns"))
+
+
+def _hourly_ns(bars):
+    """시간봉 인덱스를 UTC·ns 단위로 통일한다. parquet 은 ms, 문자열 달력은 s 단위로 읽힐 수 있어 asi8 비교가 어긋난다."""
+    bars = bars.copy()
+    index = pd.DatetimeIndex(bars.index)
+    index = index.tz_localize("UTC") if index.tz is None else index.tz_convert("UTC")
+    bars.index = index.as_unit("ns")
+    return bars.sort_index()
+
+
+def _last_bar_ending_by(bars, cutoffs_utc):
+    """각 마감 시각에 대해 '끝나는 시각(시작+1h) ≤ 마감'인 마지막 봉의 위치. 없으면 −1.
+    봉의 close 는 그 봉이 끝나야 확정되므로 마감 시각에 걸쳐 있는 봉은 쓰지 않는다."""
+    ends = (bars.index.as_unit("ns") + pd.Timedelta(hours=1)).asi8
+    cutoffs = cutoffs_utc.as_unit("ns").asi8
+    positions = np.searchsorted(ends, cutoffs, side="right") - 1
+    positions[cutoffs == pd.NaT.value] = -1
+    return positions
+
+
+def futures_return_to_cutoff(bars, cutoffs_utc, sessions_back=1, tz="America/New_York", settle_hour=17):
+    """CME 선물: 직전 미국 정규 세션 마감(settle_hour 전 마지막 시간봉, 보통 16:00 ET 봉)에서 마감 시각까지의 수익률.
+
+    sessions_back=k 이면 마감 시각의 ET 날짜보다 앞선 k번째 정규 세션 마감이 기준이다(5일 누적용).
+    정규 마감 뒤 18:00 부터의 야간 봉은 기준으로 쓰지 않는다 — 그것은 '오늘 밤의 움직임'이라 분자 쪽이다."""
+    if len(bars) == 0:
+        return np.full(len(cutoffs_utc), np.nan)
+    local = bars.index.tz_convert(tz)
+    close = bars["close"].to_numpy(dtype=float)
+    regular = local.hour < settle_hour
+    reg_day = local[regular].normalize()
+    reg_close = pd.Series(close[regular], index=reg_day).groupby(level=0).last()
+    reg_stamp = pd.Series(bars.index[regular].asi8, index=reg_day).groupby(level=0).last()
+    reg_days = reg_close.index.asi8
+    last_pos = _last_bar_ending_by(bars, cutoffs_utc)
+    bar_utc = bars.index.asi8
+    out = np.full(len(cutoffs_utc), np.nan)
+    for i, cutoff in enumerate(cutoffs_utc):
+        j = last_pos[i]
+        if j < 0 or pd.isna(cutoff):
+            continue
+        cutoff_day = cutoff.tz_convert(tz).normalize().value
+        k = np.searchsorted(reg_days, cutoff_day, side="left") - sessions_back
+        if k < 0:
+            continue
+        ref_close = float(reg_close.iloc[k])
+        if bar_utc[j] <= int(reg_stamp.iloc[k]) or not np.isfinite(ref_close) or ref_close == 0:
+            continue
+        out[i] = close[j] / ref_close - 1.
+    return out
+
+
+def index_session_return_to_cutoff(bars, cutoffs_utc, tz):
+    """유럽 현물 지수: 마감 시각의 현지 날짜 세션 첫 봉의 시가에서 마감 시각까지의 수익률.
+    그 날짜에 마감 전에 끝난 봉이 없으면(휴장·개장 전) 결측이다 — 앞 값을 끌어오지 않는다."""
+    if len(bars) == 0:
+        return np.full(len(cutoffs_utc), np.nan)
+    local_day = bars.index.tz_convert(tz).normalize().asi8
+    open_ = bars["open"].to_numpy(dtype=float)
+    close = bars["close"].to_numpy(dtype=float)
+    last_pos = _last_bar_ending_by(bars, cutoffs_utc)
+    out = np.full(len(cutoffs_utc), np.nan)
+    for i, cutoff in enumerate(cutoffs_utc):
+        j = last_pos[i]
+        if j < 0 or pd.isna(cutoff):
+            continue
+        day = cutoff.tz_convert(tz).normalize().value
+        if local_day[j] != day:
+            continue
+        first = int(np.searchsorted(local_day, day, side="left"))
+        if first > j or not np.isfinite(open_[first]) or open_[first] == 0:
+            continue
+        out[i] = close[j] / open_[first] - 1.
+    return out
+
+
+def evening_futures_features(hourly, calendar, cutoff_kst=(20, 0), cum_sessions=P18_NQ_CUM_SESSIONS):
+    """저녁 마감 시각(전 한국 세션 날짜의 cutoff_kst)까지의 시간봉으로 만든 6열. 인덱스는 calendar(행 d).
+    마감 뒤에 시작하거나 마감에 걸쳐 있는 봉은 어느 열에도 들어가지 않는다(tests/test_evening_futures.py 가 고정)."""
+    calendar = pd.DatetimeIndex(calendar)
+    hourly = {name: _hourly_ns(frame) for name, frame in hourly.items()}
+    cutoffs = evening_cutoffs(calendar, cutoff_kst)
+    frame = pd.DataFrame(index=calendar)
+    frame["nq_ret"] = futures_return_to_cutoff(hourly["nq"], cutoffs, 1)
+    frame["nq_sign"] = np.sign(frame["nq_ret"])
+    frame["nq_cum5"] = futures_return_to_cutoff(hourly["nq"], cutoffs, cum_sessions)
+    frame["es_ret"] = futures_return_to_cutoff(hourly["es"], cutoffs, 1)
+    frame["dax_ret"] = index_session_return_to_cutoff(hourly["dax"], cutoffs, "Europe/Berlin")
+    frame["stoxx_ret"] = index_session_return_to_cutoff(hourly["stoxx"], cutoffs, "Europe/Paris")
+    return frame[list(P18_FUTURES_COLUMNS)]
+
+
+def p18_fill_policy(frame):
+    """가용 규칙. 선물(NQ·ES) 열이 있어야 그 행이 '가용'이다. 가용 행에서 유럽 열만 비면(유럽 휴장) 0 으로 두고 센다.
+    비가용 행은 전부 0 — 학습 행에서 flag 0 과 함께 '정보 없음'을 뜻하고, 시험 행으로는 쓰지 않는다."""
+    available = frame[["nq_ret", "es_ret", "nq_cum5"]].notna().all(axis=1)
+    filled = frame.copy()
+    europe = ["dax_ret", "stoxx_ret"]
+    european_filled = int((filled.loc[available, europe].isna().any(axis=1)).sum())
+    filled.loc[available, europe] = filled.loc[available, europe].fillna(0.)
+    filled.loc[~available, :] = 0.
+    filled[P18_AVAILABLE_FLAG] = available.astype(float)
+    return filled, available, european_filled
+
+
+def p18_ledger_check(target, predictions, ledger_root=None):
+    """실제 원장의 저녁 후보(Candidate evening forecast) 행과 재구성한 t_evening 의 argmax 를 같은 target_date 에서 맞춰 본다.
+    읽기만 한다. 라이브 모델은 예측일 직전 5년으로 학습하고 여기 폴드 모델은 폴드 시작 전 5년이라 완전 일치가 기대값은 아니다."""
+    path = Path(ledger_root or P18_LEDGER_ROOT) / target / "forecast_log.csv"
+    if not path.is_file():
+        return {"available": False, "ledger_days": 0, "overlap_days": 0, "rows": []}
+    log = pd.read_csv(path, dtype=str, encoding="utf-8-sig")
+    log = log[(log.get("model") == P18_EVENING_LEDGER_MODEL) & (log.get("kind") == "direction")]
+    log = log.sort_values("created_at_utc").drop_duplicates("target_date", keep="first")
+    mapping = {"하락": 0, "보합": 1, "상승": 2}
+    by_model = {m: g.set_index("date") for m, g in predictions.groupby("model")}
+    rows = []
+    for _, r in log.iterrows():
+        day = pd.Timestamp(r["target_date"]).normalize()
+        if P18_T_EVENING not in by_model or day not in by_model[P18_T_EVENING].index:
+            continue
+        row = {"target_date": day.date().isoformat(), "ledger_prediction": r["prediction"],
+               "ledger_class": mapping.get(r["prediction"]),
+               "actual_class": int(by_model[P18_T_EVENING].loc[day, "y_true"])}
+        for model in (P18_T_EVENING, P18_T0700, P18_T_EVENING_F):
+            if model in by_model and day in by_model[model].index:
+                row[f"{model}_pred"] = int(by_model[model].loc[day, "y_pred"])
+        row["agree_t_evening"] = (row.get("ledger_class") == row.get(f"{P18_T_EVENING}_pred"))
+        rows.append(row)
+    return {"available": True, "ledger_days": int(len(log)), "overlap_days": len(rows), "rows": rows}
+
+
+def run_p18(target, mode, storage, state, run_notebook_fn=None):
+    """같은 12폴드에서 t_evening(저녁 기준선 재구성) vs t_evening + 저녁 시간봉 특징(20:00·22:00 마감) vs t0700(아침 상한)
+    vs nq_rule(모델 없는 선물 부호 규칙)을 **시간봉이 있는 같은 날짜**에서 재학습·쌍체 비교한다."""
+    import time
+
+    unit = f"{target}:evening_futures"
+    if state.is_done(unit):
+        print(f"  이미 완료된 단위 건너뜀: {unit} (metrics.csv 유지)")
+        return None
+    if run_notebook_fn is None:
+        sys.path.insert(0, str(ROOT / "tools"))
+        from run_notebook import run_notebook as run_notebook_fn
+
+    hourly = load_hourly_bars(storage)
+    snapshot = snapshot_paths(storage, target)
+    ns = run_notebook_fn(Path(storage) / target, targets=target,
+                         quick=(mode == "quick"), use_cache=bool(snapshot))[target]
+    dates, folds = pd.DatetimeIndex(ns["dates"]), ns["folds"]
+    dates = dates.tz_localize(None).normalize() if dates.tz is not None else dates.normalize()
+    headline = ns.get("HEADLINE_MODEL", "No macro ensemble")
+    boot = 400 if mode == "quick" else 2000
+    feature_cols = list(ns["feature_cols"])
+    market_cols = [feature_cols[i] for i in ns["market_feature_idx"]]
+
+    feat = ns["feat"].copy()
+    feat_index = pd.DatetimeIndex(feat.index)
+    feat.index = feat_index.tz_localize(None).normalize() if feat_index.tz is not None else feat_index.normalize()
+    feat = feat[~feat.index.duplicated(keep="last")]
+    calendar = feat.index
+
+    # 아침 행렬을 feat 에서 다시 만들어 노트북 market_X 와 같은지 확인한다(재구성이 어긋나면 저녁 행렬도 못 믿는다).
+    X_0700 = feat.loc[dates, market_cols].to_numpy(dtype=np.float32)
+    rebuild_gap = float(np.nanmax(np.abs(X_0700 - np.asarray(ns["market_X"], dtype=np.float32))))
+    if not rebuild_gap < 1e-5:
+        raise RuntimeError(f"feat 에서 재구성한 아침 행렬이 노트북 market_X 와 다릅니다(최대 차이 {rebuild_gap}).")
+
+    asset_session = ns.get("ASSET_SESSION") or P18_DEFAULT_ASSET_SESSION
+    evening_frame, sessions = evening_feature_frame(feat, market_cols, asset_session)
+    X_evening = evening_frame.loc[dates].to_numpy(dtype=np.float32)
+    valid_evening = np.isfinite(X_evening).all(axis=1)
+
+    futures, availability, european_filled, coverage = {}, {}, {}, {}
+    for key, cutoff in P18_CUTOFFS_KST.items():
+        raw = evening_futures_features(hourly, calendar, cutoff)
+        filled, available, n_eu = p18_fill_policy(raw)
+        futures[key] = filled.loc[dates]
+        availability[key] = available.loc[dates].to_numpy()
+        european_filled[key] = n_eu
+        have = raw.loc[dates].index[available.loc[dates].to_numpy()]
+        coverage[key] = {"first": have.min().date().isoformat() if len(have) else None,
+                         "last": have.max().date().isoformat() if len(have) else None, "days": int(len(have))}
+    available_all = np.logical_and.reduce([availability[k] for k in P18_CUTOFFS_KST])
+    X_f = {key: np.hstack([X_evening, futures[key].to_numpy(dtype=np.float32)]) for key in P18_CUTOFFS_KST}
+
+    y_all = np.asarray(ns["y"], dtype=float)
+    valid_rows = valid_evening & np.isfinite(y_all)
+    test_ok = valid_rows & available_all
+    y_int = np.where(np.isfinite(y_all), y_all, 1).astype(int)
+    band = pd.Series(np.asarray(feat["band"], dtype=float), index=calendar).reindex(dates).to_numpy()
+    nq_ret_2000 = np.where(availability["f2000"], futures["f2000"]["nq_ret"].to_numpy(dtype=float), np.nan)
+    rule = gap_rule_labels(nq_ret_2000, band)
+    rule_ok = np.isfinite(rule)
+
+    bars = ns["raw"]["target"][["open", "close"]].astype(float).copy()
+    bars.index = pd.DatetimeIndex(bars.index).tz_localize(None).normalize()
+    legs = decompose_returns(bars.sort_index()).reindex(dates)
+
+    candidates = ((P18_T0700, X_0700), (P18_T_EVENING, X_evening),
+                  (P18_T_EVENING_F, X_f["f2000"]), (P18_T_EVENING_F22, X_f["f2200"]))
+    frames, fold_info, skipped, timing = [], [], [], {name: 0. for name, _ in candidates}
+    for fold in folds:
+        tr = fold["train_idx"][valid_rows[fold["train_idx"]]]
+        te = fold["test_idx"][test_ok[fold["test_idx"]] & rule_ok[fold["test_idx"]]]
+        n_train_f = int(available_all[tr].sum())
+        reason = None
+        if len(te) < 20:
+            reason = "시험 행 20 미만(시간봉 범위 밖)"
+        elif n_train_f < P18_MIN_TRAIN_F_ROWS:
+            reason = f"학습 구간의 선물 특징 가용 행 {n_train_f} < {P18_MIN_TRAIN_F_ROWS}"
+        elif len(tr) < MIN_TRAIN_ROWS or len(np.unique(y_int[tr])) < 3:
+            reason = "학습 행 부족"
+        if reason:
+            skipped.append({"fold": fold["fold"], "train_rows": int(len(tr)), "test_rows": int(len(te)),
+                            "train_rows_with_futures": n_train_f, "reason": reason})
+            continue
+        for name, X in candidates:
+            started = time.time()
+            probs = _ensemble_probabilities(ns, X, y_int, tr, te)
+            timing[name] += time.time() - started
+            frames.append(ns["prediction_frame"](name, dates[te], y_int[te], probs, fold["fold"]))
+        tr_f = tr[available_all[tr] & rule_ok[tr]]
+        probs, _ = gap_rule_probabilities(rule[tr_f].astype(int), y_int[tr_f], rule[te].astype(int))
+        frames.append(ns["prediction_frame"](P18_NQ_RULE, dates[te], y_int[te], probs, fold["fold"],
+                                             y_pred=rule[te].astype(int)))
+        fold_info.append({"fold": fold["fold"], "train_rows": int(len(tr)), "test_rows": int(len(te)),
+                          "train_rows_with_futures": n_train_f,
+                          "test_rows_dropped": int(len(fold["test_idx"]) - len(te)),
+                          "test_first": dates[te].min().date().isoformat(), "test_last": dates[te].max().date().isoformat()})
+        print(f"  폴드 {fold['fold']}: 학습 {len(tr):,}(선물 가용 {n_train_f}) · 시험 {len(te)}"
+              f" {fold_info[-1]['test_first']}~{fold_info[-1]['test_last']}")
+    if not frames:
+        raise RuntimeError("시간봉 범위와 겹치는 학습 가능한 폴드가 없습니다.")
+    predictions = pd.concat(frames, ignore_index=True)
+    common_dates = None
+    for _, g in predictions.groupby("model"):
+        common_dates = set(g["date"]) if common_dates is None else common_dates & set(g["date"])
+    predictions = predictions[predictions["date"].isin(common_dates)].reset_index(drop=True)
+    metrics = ns["summarize_predictions"](predictions, with_ci=False)
+
+    scores, leg_auc = {}, {}
+    for model_name, g in predictions.groupby("model"):
+        g = g.sort_values("date")
+        score = (g["p_up"] - g["p_down"]).to_numpy()
+        scores[model_name] = pd.Series(score, index=pd.DatetimeIndex(g["date"]))
+        leg_auc[model_name] = {"auc_gap": leg_sign_auc(score, legs["gap"].reindex(g["date"]).to_numpy()),
+                               "auc_session": leg_sign_auc(score, legs["session"].reindex(g["date"]).to_numpy())}
+    n_features = {P18_T0700: X_0700.shape[1], P18_T_EVENING: X_evening.shape[1],
+                  P18_T_EVENING_F: X_f["f2000"].shape[1], P18_T_EVENING_F22: X_f["f2200"].shape[1]}
+    rows = []
+    for model_name, r in metrics.iterrows():
+        rows.append({"target": target, "model": model_name, "target_mode": "close_to_close", "fold": "all",
+                     **{k: r.get(k, "") for k in ("n", "accuracy", "balanced_accuracy", "log_loss", "brier")},
+                     **leg_auc.get(model_name, {}), "seconds": round(timing.get(model_name, 0.), 1),
+                     "n_features": n_features.get(model_name, "")})
+
+    pairs = [(P18_T_EVENING_F, P18_T_EVENING, f"{P18_T_EVENING_F} − {P18_T_EVENING}"),
+             (P18_T_EVENING_F22, P18_T_EVENING, f"{P18_T_EVENING_F22} − {P18_T_EVENING}"),
+             (P18_T_EVENING_F22, P18_T_EVENING_F, f"{P18_T_EVENING_F22} − {P18_T_EVENING_F}"),
+             (P18_T_EVENING_F, P18_T0700, f"{P18_T_EVENING_F} − {P18_T0700}"),
+             (P18_T_EVENING_F22, P18_T0700, f"{P18_T_EVENING_F22} − {P18_T0700}"),
+             (P18_T_EVENING, P18_T0700, f"{P18_T_EVENING} − {P18_T0700}"),
+             (P18_NQ_RULE, P18_T_EVENING, f"{P18_NQ_RULE} − {P18_T_EVENING}"),
+             (P18_T_EVENING_F, P18_NQ_RULE, f"{P18_T_EVENING_F} − {P18_NQ_RULE}")]
+    comparisons = []
+    for a, b_, label in pairs:
+        for metric in ("log_loss", "balanced_accuracy", "accuracy"):
+            d = ns["paired_delta_ci"](predictions, a, b_, metric)
+            comparisons.append({"target": target, "target_mode": "close_to_close", "comparison": label,
+                                "metric": metric, "delta": d["delta"], "ci_low": d["lo"], "ci_high": d["hi"],
+                                "common_n": d["n"], "verdict": verdict_for(metric, d["lo"], d["hi"])})
+        common = scores[a].index.intersection(scores[b_].index)
+        for leg in ("gap", "session"):
+            d = paired_leg_auc_delta(common, scores[a].reindex(common).to_numpy(), scores[b_].reindex(common).to_numpy(),
+                                     legs[leg].reindex(common).to_numpy(), b=boot)
+            comparisons.append({"target": target, "target_mode": "close_to_close", "comparison": label,
+                                "metric": f"auc_{leg}", "delta": d["delta"], "ci_low": d["lo"], "ci_high": d["hi"],
+                                "common_n": d["n"], "verdict": verdict_for(f"auc_{leg}", d["lo"], d["hi"])})
+
+    selective = []
+    for model_name in [m for m, _ in candidates] + [P18_NQ_RULE]:
+        g = predictions[predictions["model"] == model_name].sort_values("date")
+        selective += selective_rows(target, model_name, g[["p_down", "p_flat", "p_up"]].to_numpy(), g["y_true"].to_numpy())
+    ledger = p18_ledger_check(target, predictions)
+    eval_dates = sorted(common_dates)
+    detail = {
+        "headline_model": headline, "evaluation_days": int(len(eval_dates)),
+        "evaluation_first": pd.Timestamp(eval_dates[0]).date().isoformat(), "evaluation_last": pd.Timestamp(eval_dates[-1]).date().isoformat(),
+        "folds": fold_info, "skipped_folds": skipped, "timing_seconds": {k: round(v, 1) for k, v in timing.items()},
+        "n_features": n_features, "column_sessions": sessions,
+        "market_x_rebuild_max_abs_diff": rebuild_gap,
+        "rows_missing_evening_baseline": int((~valid_evening).sum()),
+        "futures_coverage": coverage, "european_rows_filled_zero": european_filled,
+        "hourly_bars": {name: {"bars": int(len(f)), "first_utc": f.index.min().isoformat(), "last_utc": f.index.max().isoformat()}
+                        for name, f in hourly.items()},
+        "leg_auc": leg_auc, "ledger_check": ledger, "comparisons": comparisons, "selective": selective,
+        "note": "t_evening 은 저녁 실행이 보는 것의 재구성이다: 한국·달력 열은 행 d, 해외·연속 열은 행 d−1, gdr_overnight_signal 은 "
+                "gdr(d−1)−sam(d). 선물 특징은 전 한국 세션 날짜의 마감 시각(20:00/22:00 KST)까지 끝난 시간봉만 쓴다. 비가용 학습 행은 "
+                "0 + flag 0. 시험 행은 두 마감 모두 가용한 날짜만이고 모든 후보가 같은 날짜에서 채점된다. nq_rule 은 NQ 저녁 수익률을 "
+                "종목 밴드와 비교하는 모델 없는 규칙이며 확률은 학습 구간 버킷별 조건부 분포다."}
+    write_json(state.run_dir / f"p18_{target}.json", detail)
+    write_metrics_named(state, comparisons, "comparisons.csv")
+    write_metrics_named(state, selective, "selective.csv")
+    state.mark(unit, {"evaluation_days": int(len(eval_dates)), "evaluation_first": detail["evaluation_first"],
+                      "evaluation_last": detail["evaluation_last"], "folds_used": [f["fold"] for f in fold_info],
+                      "ledger_overlap_days": ledger["overlap_days"]})
+    return rows
+
+
 TASK_RUNNERS = {"P00": run_p00, "P03": run_p03, "P04": run_p04, "P05": run_p05,
                 "P06": run_p06, "P07": run_p07, "P08": run_p08, "P09": run_p09, "P10": run_p10,
-                "P10b": run_p10b, "R02c": run_r02c, "P16": run_p16}
+                "P10b": run_p10b, "R02c": run_r02c, "P16": run_p16, "P18": run_p18}
 
 
 # ---------------------------------------------------------------------------
@@ -2169,6 +2627,20 @@ def execute(task, target, mode, storage, resume, run_notebook_fn=None):
                   "trivial_baseline": P16_GAP_RULE, "label_targets": list(P16_LABEL_TARGETS),
                   "group_g": {"columns": list(P16_GAP_COLUMNS), "z_window": P16_GAP_Z_WINDOW,
                               "definition": "gap = open_d/close_{d-1} − 1. 행 d 의 당일 정보는 시가 하나뿐이다"},
+                  "headline": "No macro ensemble", "window": BASELINE_WINDOW, "issue_min_prob": issue_min_prob()}
+    elif task == "P18":
+        # 시간봉 캐시가 곧 이 실험의 자료다. 설정에 캐시 해시를 넣어 자료가 바뀌면 다른 실행이 되게 한다.
+        ensure_hourly_cache(storage)
+        config = {"task": "P18", "mode": mode, "reference": P18_T_EVENING,
+                  "candidates": [P18_T_EVENING_F, P18_T_EVENING_F22], "ceiling": P18_T0700,
+                  "trivial_baseline": P18_NQ_RULE,
+                  "hourly": {"tickers": dict(P18_HOURLY_TICKERS), "interval": P18_HOURLY_INTERVAL,
+                             "period": P18_HOURLY_PERIOD, "cache_hash": data_hash(hourly_cache_paths(storage))},
+                  "cutoffs_kst": {k: f"{h:02d}:{m:02d}" for k, (h, m) in P18_CUTOFFS_KST.items()},
+                  "futures_columns": list(P18_FUTURES_COLUMNS), "available_flag": P18_AVAILABLE_FLAG,
+                  "nq_cum_sessions": P18_NQ_CUM_SESSIONS, "min_train_futures_rows": P18_MIN_TRAIN_F_ROWS,
+                  "evening_definition": "행 d: 한국·달력 열 = 아침 행 d, 해외(us/london/cont) 열 = 아침 행 d−1, "
+                                        "gdr_overnight_signal = gdr(d−1) − sam(d). 선물 열은 전 한국 세션 날짜의 마감 시각까지 끝난 시간봉만",
                   "headline": "No macro ensemble", "window": BASELINE_WINDOW, "issue_min_prob": issue_min_prob()}
     else:
         config = {"mode": mode}

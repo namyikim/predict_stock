@@ -1,0 +1,105 @@
+{
+  "task_id": "P18",
+  "run_id": "20260920T0500Z_evening_futures",
+  "target": [
+    "samsung",
+    "sk_hynix"
+  ],
+  "code_commit": "70317b3c441b4570bd3d6597f79f587b09ceb3d9",
+  "data_hash": "samsung 3d1a03863c448ec5d1aa / sk_hynix fa4dfc966108ea6024bb",
+  "hourly_cache_hash": "0d6dd4db5304d881301f",
+  "config_hash": "edc9711194261db1a720",
+  "seed": 42,
+  "mode": "full",
+  "target_mode": "close_to_close",
+  "classes": [
+    "down",
+    "flat",
+    "up"
+  ],
+  "status": "completed",
+  "completed_units": [
+    "samsung:evening_futures",
+    "sk_hynix:evening_futures"
+  ],
+  "failed_units": [],
+  "baseline_run": "experiments/model_improvement/P00/20260910T0100Z_baseline_full",
+  "post_open_run": "experiments/model_improvement/P16/20260920T0000Z_post_open_reforecast",
+  "source_runs": {
+    "samsung": "P18\\20260920T051057Z_samsung_p18",
+    "sk_hynix": "P18\\20260920T052427Z_sk_hynix_p18"
+  },
+  "config": {
+    "task": "P18",
+    "mode": "full",
+    "reference": "t_evening",
+    "candidates": [
+      "t_evening_f2000",
+      "t_evening_f2200"
+    ],
+    "ceiling": "t0700",
+    "trivial_baseline": "nq_rule",
+    "hourly": {
+      "tickers": {
+        "nq": "NQ=F",
+        "es": "ES=F",
+        "dax": "^GDAXI",
+        "stoxx": "^STOXX50E"
+      },
+      "interval": "1h",
+      "period": "730d",
+      "cache_hash": "0d6dd4db5304d881301f"
+    },
+    "cutoffs_kst": {
+      "f2000": "20:00",
+      "f2200": "22:00"
+    },
+    "futures_columns": [
+      "nq_ret",
+      "nq_sign",
+      "nq_cum5",
+      "es_ret",
+      "dax_ret",
+      "stoxx_ret"
+    ],
+    "available_flag": "evening_f_available",
+    "nq_cum_sessions": 5,
+    "min_train_futures_rows": 100,
+    "evening_definition": "행 d: 한국·달력 열 = 아침 행 d, 해외(us/london/cont) 열 = 아침 행 d−1, gdr_overnight_signal = gdr(d−1) − sam(d). 선물 열은 전 한국 세션 날짜의 마감 시각까지 끝난 시간봉만",
+    "headline": "No macro ensemble",
+    "window": "5y",
+    "issue_min_prob": 0.0
+  },
+  "evaluation": {
+    "samsung": {
+      "days": 394,
+      "first": "2025-01-02",
+      "last": "2026-09-16",
+      "folds_used": [
+        8,
+        9,
+        10,
+        11
+      ]
+    },
+    "sk_hynix": {
+      "days": 394,
+      "first": "2025-01-02",
+      "last": "2026-09-16",
+      "folds_used": [
+        8,
+        9,
+        10,
+        11
+      ]
+    }
+  },
+  "artifact_paths": {
+    "metrics": "experiments\\model_improvement\\P18\\20260920T0500Z_evening_futures\\metrics.csv",
+    "comparisons": "experiments\\model_improvement\\P18\\20260920T0500Z_evening_futures\\comparisons.csv",
+    "selective": "experiments\\model_improvement\\P18\\20260920T0500Z_evening_futures\\selective.csv"
+  },
+  "started_at_utc": "2026-09-20T05:10:57.798012+00:00",
+  "finished_at_utc": "2026-09-20T05:37:46.555696+00:00",
+  "note": "저녁(전날 20:00 KST) 예측 개선 실험. t_evening 은 저녁 실행이 보는 것의 재구성(한국·달력 열 = 행 d, 해외 열 = 행 d−1), t_evening_f2000/f2200 은 같은 입력 + 20:00/22:00 KST 마감 시간봉 특징 6열 + 가용 플래그. t0700 은 아침 대표 모델(상한). nq_rule 은 NQ 저녁 수익률 부호를 종목 밴드와 비교하는 모델 없는 규칙. 평가일은 시간봉 범위와 겹치고 학습 구간에 선물 특징 가용 행이 100 이상인 폴드의 시험일이며 다섯 모델이 같은 날짜에서 채점됐다."
+}

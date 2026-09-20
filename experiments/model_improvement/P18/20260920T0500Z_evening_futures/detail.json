@@ -1,0 +1,553 @@
+{
+  "samsung": {
+    "headline_model": "No macro ensemble",
+    "evaluation_days": 394,
+    "evaluation_first": "2025-01-02",
+    "evaluation_last": "2026-09-16",
+    "folds": [
+      {
+        "fold": 8,
+        "train_rows": 1215,
+        "test_rows": 116,
+        "train_rows_with_futures": 158,
+        "test_rows_dropped": 1,
+        "test_first": "2025-01-02",
+        "test_last": "2025-06-30"
+      },
+      {
+        "fold": 9,
+        "train_rows": 1211,
+        "test_rows": 106,
+        "train_rows_with_futures": 274,
+        "test_rows_dropped": 1,
+        "test_first": "2025-07-01",
+        "test_last": "2025-12-30"
+      },
+      {
+        "fold": 10,
+        "train_rows": 1193,
+        "test_rows": 119,
+        "train_rows_with_futures": 380,
+        "test_rows_dropped": 1,
+        "test_first": "2026-01-02",
+        "test_last": "2026-06-30"
+      },
+      {
+        "fold": 11,
+        "train_rows": 1190,
+        "test_rows": 53,
+        "train_rows_with_futures": 499,
+        "test_rows_dropped": 1,
+        "test_first": "2026-07-01",
+        "test_last": "2026-09-16"
+      }
+    ],
+    "skipped_folds": [
+      {
+        "fold": 0,
+        "train_rows": 1203,
+        "test_rows": 0,
+        "train_rows_with_futures": 0,
+        "reason": "시험 행 20 미만(시간봉 범위 밖)"
+      },
+      {
+        "fold": 1,
+        "train_rows": 1205,
+        "test_rows": 0,
+        "train_rows_with_futures": 0,
+        "reason": "시험 행 20 미만(시간봉 범위 밖)"
+      },
+      {
+        "fold": 2,
+        "train_rows": 1205,
+        "test_rows": 0,
+        "train_rows_with_futures": 0,
+        "reason": "시험 행 20 미만(시간봉 범위 밖)"
+      },
+      {
+        "fold": 3,
+        "train_rows": 1191,
+        "test_rows": 0,
+        "train_rows_with_futures": 0,
+        "reason": "시험 행 20 미만(시간봉 범위 밖)"
+      },
+      {
+        "fold": 4,
+        "train_rows": 1214,
+        "test_rows": 0,
+        "train_rows_with_futures": 0,
+        "reason": "시험 행 20 미만(시간봉 범위 밖)"
+      },
+      {
+        "fold": 5,
+        "train_rows": 1219,
+        "test_rows": 0,
+        "train_rows_with_futures": 0,
+        "reason": "시험 행 20 미만(시간봉 범위 밖)"
+      },
+      {
+        "fold": 6,
+        "train_rows": 1217,
+        "test_rows": 36,
+        "train_rows_with_futures": 0,
+        "reason": "학습 구간의 선물 특징 가용 행 0 < 100"
+      },
+      {
+        "fold": 7,
+        "train_rows": 1217,
+        "test_rows": 122,
+        "train_rows_with_futures": 36,
+        "reason": "학습 구간의 선물 특징 가용 행 36 < 100"
+      }
+    ],
+    "timing_seconds": {
+      "t0700": 9.9,
+      "t_evening": 9.7,
+      "t_evening_f2000": 10.0,
+      "t_evening_f2200": 9.9
+    },
+    "n_features": {
+      "t0700": 61,
+      "t_evening": 61,
+      "t_evening_f2000": 68,
+      "t_evening_f2200": 68
+    },
+    "column_sessions": {
+      "sam_ret_1": "korea",
+      "sam_ret_2": "korea",
+      "sam_ret_5": "korea",
+      "sam_ret_20": "korea",
+      "sam_vol_5": "korea",
+      "sam_vol_20": "korea",
+      "sam_gap_1": "korea",
+      "sam_range_1": "korea",
+      "sam_volume_z20": "korea",
+      "sam_price_to_ma20": "korea",
+      "sam_price_to_ma60": "korea",
+      "sam_rsi14": "korea",
+      "kospi_ret_1": "korea",
+      "kospi_ret_5": "korea",
+      "kospi_vol_20": "korea",
+      "peer_ret_1": "korea",
+      "peer_ret_5": "korea",
+      "peer_vol_20": "korea",
+      "sox_ret_1": "us",
+      "sox_ret_5": "us",
+      "nasdaq_ret_1": "us",
+      "nasdaq_ret_5": "us",
+      "sp500_ret_1": "us",
+      "sp500_ret_5": "us",
+      "micron_ret_1": "us",
+      "micron_ret_5": "us",
+      "nvidia_ret_1": "us",
+      "nvidia_ret_5": "us",
+      "tsmc_adr_ret_1": "us",
+      "tsmc_adr_ret_5": "us",
+      "korea_etf_ret_1": "us",
+      "korea_etf_ret_5": "us",
+      "usdkrw_ret_1": "cont",
+      "usdkrw_ret_5": "cont",
+      "usdkrw_level_z60": "cont",
+      "dxy_ret_1": "cont",
+      "dxy_ret_5": "cont",
+      "dxy_level_z60": "cont",
+      "vix_ret_1": "cont",
+      "vix_ret_5": "cont",
+      "vix_level_z60": "cont",
+      "us10y_ret_1": "us",
+      "us10y_ret_5": "us",
+      "us10y_level_z60": "us",
+      "wti_ret_1": "cont",
+      "wti_ret_5": "cont",
+      "wti_level_z60": "cont",
+      "usdjpy_ret_1": "cont",
+      "usdjpy_ret_5": "cont",
+      "vxn_ret_1": "us",
+      "vxn_ret_5": "us",
+      "target_gdr_ret_1": "london",
+      "target_gdr_ret_5": "london",
+      "gdr_overnight_signal": "cross",
+      "krwjpy_ret_1": "cont",
+      "krwjpy_ret_20": "cont",
+      "krwjpy_level_z60": "cont",
+      "cal_dow": "calendar",
+      "cal_is_monday": "calendar",
+      "cal_is_friday": "calendar",
+      "cal_month_end": "calendar"
+    },
+    "market_x_rebuild_max_abs_diff": 0.0,
+    "rows_missing_evening_baseline": 0,
+    "futures_coverage": {
+      "f2000": {
+        "first": "2024-05-08",
+        "last": "2026-09-16",
+        "days": 552
+      },
+      "f2200": {
+        "first": "2024-05-08",
+        "last": "2026-09-16",
+        "days": 552
+      }
+    },
+    "european_rows_filled_zero": {
+      "f2000": 16,
+      "f2200": 16
+    },
+    "hourly_bars": {
+      "nq": {
+        "bars": 13675,
+        "first_utc": "2024-04-28T22:00:00+00:00",
+        "last_utc": "2026-09-18T20:00:00+00:00"
+      },
+      "es": {
+        "bars": 13677,
+        "first_utc": "2024-04-28T22:00:00+00:00",
+        "last_utc": "2026-09-18T20:00:00+00:00"
+      },
+      "dax": {
+        "bars": 6552,
+        "first_utc": "2023-11-02T08:00:00+00:00",
+        "last_utc": "2026-09-18T15:00:00+00:00"
+      },
+      "stoxx": {
+        "bars": 6558,
+        "first_utc": "2023-10-18T07:00:00+00:00",
+        "last_utc": "2026-09-18T15:00:00+00:00"
+      }
+    },
+    "leg_auc": {
+      "nq_rule": {
+        "auc_gap": 0.48438044361862737,
+        "auc_session": 0.5056438127090301
+      },
+      "t0700": {
+        "auc_gap": 0.80681686215306,
+        "auc_session": 0.466164994425864
+      },
+      "t_evening": {
+        "auc_gap": 0.4729706189757288,
+        "auc_session": 0.5224637681159421
+      },
+      "t_evening_f2000": {
+        "auc_gap": 0.4863546626408083,
+        "auc_session": 0.517056856187291
+      },
+      "t_evening_f2200": {
+        "auc_gap": 0.489374056439438,
+        "auc_session": 0.514659977703456
+      }
+    },
+    "ledger_check": {
+      "available": true,
+      "ledger_days": 6,
+      "overlap_days": 3,
+      "rows": [
+        {
+          "target_date": "2026-09-14",
+          "ledger_prediction": "하락",
+          "ledger_class": 0,
+          "actual_class": 0,
+          "t_evening_pred": 2,
+          "t0700_pred": 1,
+          "t_evening_f2000_pred": 2,
+          "agree_t_evening": false
+        },
+        {
+          "target_date": "2026-09-15",
+          "ledger_prediction": "보합",
+          "ledger_class": 1,
+          "actual_class": 1,
+          "t_evening_pred": 1,
+          "t0700_pred": 0,
+          "t_evening_f2000_pred": 1,
+          "agree_t_evening": true
+        },
+        {
+          "target_date": "2026-09-16",
+          "ledger_prediction": "하락",
+          "ledger_class": 0,
+          "actual_class": 2,
+          "t_evening_pred": 2,
+          "t0700_pred": 1,
+          "t_evening_f2000_pred": 2,
+          "agree_t_evening": false
+        }
+      ]
+    },
+    "note": "t_evening 은 저녁 실행이 보는 것의 재구성이다: 한국·달력 열은 행 d, 해외·연속 열은 행 d−1, gdr_overnight_signal 은 gdr(d−1)−sam(d). 선물 특징은 전 한국 세션 날짜의 마감 시각(20:00/22:00 KST)까지 끝난 시간봉만 쓴다. 비가용 학습 행은 0 + flag 0. 시험 행은 두 마감 모두 가용한 날짜만이고 모든 후보가 같은 날짜에서 채점된다. nq_rule 은 NQ 저녁 수익률을 종목 밴드와 비교하는 모델 없는 규칙이며 확률은 학습 구간 버킷별 조건부 분포다."
+  },
+  "sk_hynix": {
+    "headline_model": "No macro ensemble",
+    "evaluation_days": 394,
+    "evaluation_first": "2025-01-02",
+    "evaluation_last": "2026-09-16",
+    "folds": [
+      {
+        "fold": 8,
+        "train_rows": 1211,
+        "test_rows": 116,
+        "train_rows_with_futures": 158,
+        "test_rows_dropped": 1,
+        "test_first": "2025-01-02",
+        "test_last": "2025-06-30"
+      },
+      {
+        "fold": 9,
+        "train_rows": 1206,
+        "test_rows": 106,
+        "train_rows_with_futures": 274,
+        "test_rows_dropped": 1,
+        "test_first": "2025-07-01",
+        "test_last": "2025-12-30"
+      },
+      {
+        "fold": 10,
+        "train_rows": 1188,
+        "test_rows": 119,
+        "train_rows_with_futures": 380,
+        "test_rows_dropped": 1,
+        "test_first": "2026-01-02",
+        "test_last": "2026-06-30"
+      },
+      {
+        "fold": 11,
+        "train_rows": 1185,
+        "test_rows": 53,
+        "train_rows_with_futures": 499,
+        "test_rows_dropped": 1,
+        "test_first": "2026-07-01",
+        "test_last": "2026-09-16"
+      }
+    ],
+    "skipped_folds": [
+      {
+        "fold": 0,
+        "train_rows": 1207,
+        "test_rows": 0,
+        "train_rows_with_futures": 0,
+        "reason": "시험 행 20 미만(시간봉 범위 밖)"
+      },
+      {
+        "fold": 1,
+        "train_rows": 1209,
+        "test_rows": 0,
+        "train_rows_with_futures": 0,
+        "reason": "시험 행 20 미만(시간봉 범위 밖)"
+      },
+      {
+        "fold": 2,
+        "train_rows": 1209,
+        "test_rows": 0,
+        "train_rows_with_futures": 0,
+        "reason": "시험 행 20 미만(시간봉 범위 밖)"
+      },
+      {
+        "fold": 3,
+        "train_rows": 1190,
+        "test_rows": 0,
+        "train_rows_with_futures": 0,
+        "reason": "시험 행 20 미만(시간봉 범위 밖)"
+      },
+      {
+        "fold": 4,
+        "train_rows": 1213,
+        "test_rows": 0,
+        "train_rows_with_futures": 0,
+        "reason": "시험 행 20 미만(시간봉 범위 밖)"
+      },
+      {
+        "fold": 5,
+        "train_rows": 1215,
+        "test_rows": 0,
+        "train_rows_with_futures": 0,
+        "reason": "시험 행 20 미만(시간봉 범위 밖)"
+      },
+      {
+        "fold": 6,
+        "train_rows": 1213,
+        "test_rows": 36,
+        "train_rows_with_futures": 0,
+        "reason": "학습 구간의 선물 특징 가용 행 0 < 100"
+      },
+      {
+        "fold": 7,
+        "train_rows": 1213,
+        "test_rows": 122,
+        "train_rows_with_futures": 36,
+        "reason": "학습 구간의 선물 특징 가용 행 36 < 100"
+      }
+    ],
+    "timing_seconds": {
+      "t0700": 9.3,
+      "t_evening": 9.0,
+      "t_evening_f2000": 9.5,
+      "t_evening_f2200": 9.4
+    },
+    "n_features": {
+      "t0700": 58,
+      "t_evening": 58,
+      "t_evening_f2000": 65,
+      "t_evening_f2200": 65
+    },
+    "column_sessions": {
+      "sam_ret_1": "korea",
+      "sam_ret_2": "korea",
+      "sam_ret_5": "korea",
+      "sam_ret_20": "korea",
+      "sam_vol_5": "korea",
+      "sam_vol_20": "korea",
+      "sam_gap_1": "korea",
+      "sam_range_1": "korea",
+      "sam_volume_z20": "korea",
+      "sam_price_to_ma20": "korea",
+      "sam_price_to_ma60": "korea",
+      "sam_rsi14": "korea",
+      "kospi_ret_1": "korea",
+      "kospi_ret_5": "korea",
+      "kospi_vol_20": "korea",
+      "peer_ret_1": "korea",
+      "peer_ret_5": "korea",
+      "peer_vol_20": "korea",
+      "sox_ret_1": "us",
+      "sox_ret_5": "us",
+      "nasdaq_ret_1": "us",
+      "nasdaq_ret_5": "us",
+      "sp500_ret_1": "us",
+      "sp500_ret_5": "us",
+      "micron_ret_1": "us",
+      "micron_ret_5": "us",
+      "nvidia_ret_1": "us",
+      "nvidia_ret_5": "us",
+      "tsmc_adr_ret_1": "us",
+      "tsmc_adr_ret_5": "us",
+      "korea_etf_ret_1": "us",
+      "korea_etf_ret_5": "us",
+      "usdkrw_ret_1": "cont",
+      "usdkrw_ret_5": "cont",
+      "usdkrw_level_z60": "cont",
+      "dxy_ret_1": "cont",
+      "dxy_ret_5": "cont",
+      "dxy_level_z60": "cont",
+      "vix_ret_1": "cont",
+      "vix_ret_5": "cont",
+      "vix_level_z60": "cont",
+      "us10y_ret_1": "us",
+      "us10y_ret_5": "us",
+      "us10y_level_z60": "us",
+      "wti_ret_1": "cont",
+      "wti_ret_5": "cont",
+      "wti_level_z60": "cont",
+      "usdjpy_ret_1": "cont",
+      "usdjpy_ret_5": "cont",
+      "vxn_ret_1": "us",
+      "vxn_ret_5": "us",
+      "krwjpy_ret_1": "cont",
+      "krwjpy_ret_20": "cont",
+      "krwjpy_level_z60": "cont",
+      "cal_dow": "calendar",
+      "cal_is_monday": "calendar",
+      "cal_is_friday": "calendar",
+      "cal_month_end": "calendar"
+    },
+    "market_x_rebuild_max_abs_diff": 0.0,
+    "rows_missing_evening_baseline": 0,
+    "futures_coverage": {
+      "f2000": {
+        "first": "2024-05-08",
+        "last": "2026-09-16",
+        "days": 552
+      },
+      "f2200": {
+        "first": "2024-05-08",
+        "last": "2026-09-16",
+        "days": 552
+      }
+    },
+    "european_rows_filled_zero": {
+      "f2000": 16,
+      "f2200": 16
+    },
+    "hourly_bars": {
+      "nq": {
+        "bars": 13675,
+        "first_utc": "2024-04-28T22:00:00+00:00",
+        "last_utc": "2026-09-18T20:00:00+00:00"
+      },
+      "es": {
+        "bars": 13677,
+        "first_utc": "2024-04-28T22:00:00+00:00",
+        "last_utc": "2026-09-18T20:00:00+00:00"
+      },
+      "dax": {
+        "bars": 6552,
+        "first_utc": "2023-11-02T08:00:00+00:00",
+        "last_utc": "2026-09-18T15:00:00+00:00"
+      },
+      "stoxx": {
+        "bars": 6558,
+        "first_utc": "2023-10-18T07:00:00+00:00",
+        "last_utc": "2026-09-18T15:00:00+00:00"
+      }
+    },
+    "leg_auc": {
+      "nq_rule": {
+        "auc_gap": 0.49336773325107264,
+        "auc_session": 0.47540961662026127
+      },
+      "t0700": {
+        "auc_gap": 0.8235508567262122,
+        "auc_session": 0.46541015206682373
+      },
+      "t_evening": {
+        "auc_gap": 0.4521719621974817,
+        "auc_session": 0.48998714928250164
+      },
+      "t_evening_f2000": {
+        "auc_gap": 0.49889228525757867,
+        "auc_session": 0.48540908117369885
+      },
+      "t_evening_f2200": {
+        "auc_gap": 0.5275806949157296,
+        "auc_session": 0.48626579567359185
+      }
+    },
+    "ledger_check": {
+      "available": true,
+      "ledger_days": 6,
+      "overlap_days": 3,
+      "rows": [
+        {
+          "target_date": "2026-09-14",
+          "ledger_prediction": "하락",
+          "ledger_class": 0,
+          "actual_class": 0,
+          "t_evening_pred": 2,
+          "t0700_pred": 2,
+          "t_evening_f2000_pred": 2,
+          "agree_t_evening": false
+        },
+        {
+          "target_date": "2026-09-15",
+          "ledger_prediction": "상승",
+          "ledger_class": 2,
+          "actual_class": 1,
+          "t_evening_pred": 2,
+          "t0700_pred": 0,
+          "t_evening_f2000_pred": 2,
+          "agree_t_evening": true
+        },
+        {
+          "target_date": "2026-09-16",
+          "ledger_prediction": "하락",
+          "ledger_class": 0,
+          "actual_class": 2,
+          "t_evening_pred": 2,
+          "t0700_pred": 1,
+          "t_evening_f2000_pred": 2,
+          "agree_t_evening": false
+        }
+      ]
+    },
+    "note": "t_evening 은 저녁 실행이 보는 것의 재구성이다: 한국·달력 열은 행 d, 해외·연속 열은 행 d−1, gdr_overnight_signal 은 gdr(d−1)−sam(d). 선물 특징은 전 한국 세션 날짜의 마감 시각(20:00/22:00 KST)까지 끝난 시간봉만 쓴다. 비가용 학습 행은 0 + flag 0. 시험 행은 두 마감 모두 가용한 날짜만이고 모든 후보가 같은 날짜에서 채점된다. nq_rule 은 NQ 저녁 수익률을 종목 밴드와 비교하는 모델 없는 규칙이며 확률은 학습 구간 버킷별 조건부 분포다."
+  }
+}

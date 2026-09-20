@@ -1,4 +1,5 @@
 """장기 전망 모듈: 겹치는 타깃의 purge, 국면 분류, 유사 시기, 잡음에서의 판정."""
+import re
 import sys
 import tempfile
 import unittest
@@ -198,6 +199,27 @@ class CalibrationBoundaryTests(unittest.TestCase):
 
     def test_calibration_count_is_reported(self):
         self.assertEqual(self.evaluate(self.frame)["n_calibration"], len(self.safe_zone))
+
+
+class PublicationLagIsVisibleTests(unittest.TestCase):
+    """KOSIS 두 계열은 발표 지연만큼 오른쪽으로 밀려 그려진다는 것을 범례·설명이 밝혀야 한다(2026-09-20 요청).
+
+    주가만 실제 달 위치라, 구분이 없으면 같은 x 좌표를 같은 달로 읽게 된다.
+    """
+
+    def test_legend_marks_which_lines_are_shifted(self):
+        svg = lt.render_chart(lt.build_frame(*synthetic()), "삼성전자")
+        labels = re.findall(r'<text x="[\d.]+" y="34"[^>]*>([^<]*)</text>', svg)
+        self.assertEqual(len(labels), 3)
+        self.assertIn("(실제 달)", labels[0])
+        for label in labels[1:]:
+            self.assertIn("(발표 2개월 뒤)", label)
+
+    def test_caption_gives_the_reading_rule(self):
+        source = (ROOT / "tools" / "build_longterm_report.py").read_text(encoding="utf-8")
+        self.assertIn("2개월 오른쪽으로 밀려 있습니다", source)
+        self.assertIn("9월 수출은 11월 자리에 찍힙니다", source)
+        self.assertIn("같은 x 좌표라고 같은 달이 아닙니다", source)
 
 
 if __name__ == "__main__":

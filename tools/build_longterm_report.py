@@ -652,8 +652,11 @@ def render_chart(f, name):
     out.append(f'<text x="{L}" y="14" fill="#1a1a1a" font-weight="600">'
                f'{html.escape(name)} 주가와 반도체 사이클 — 추세를 뺀 뒤 겹쳐 그림 (모두 표준화)</text>')
     x = L
-    for text, color in ((f"{name} 12개월 수익률", "#1a5490"),
-                        ("반도체 수출 YoY", "#b5453c"), ("선행지수 순환변동치", "#2e7d32")):
+    # KOSIS 두 계열은 macro_features 가 월+2 를 걸어 '그때 알 수 있던 값'으로 그린다. 주가만 실제 달 위치라
+    # 범례에서 구분하지 않으면 같은 x 위치를 같은 달로 읽게 된다(2026-09-20 요청).
+    for text, color in ((f"{name} 12개월 수익률 (실제 달)", "#1a5490"),
+                        ("반도체 수출 YoY (발표 2개월 뒤)", "#b5453c"),
+                        ("선행지수 순환변동치 (발표 2개월 뒤)", "#2e7d32")):
         out.append(f'<line x1="{x:.0f}" x2="{x + 16:.0f}" y1="30" y2="30" stroke="{color}" stroke-width="2"/>'
                    f'<text x="{x + 21:.0f}" y="34" fill="#6b7178">{html.escape(text)}</text>')
         x += 21 + text_width(text) + 18
@@ -973,7 +976,9 @@ def render_fragment(result):
         parts.append('<h4 style="font-size:14px;margin:18px 0 6px">실제 통계치와 주가 — 추세를 빼고 겹쳐 보기</h4>')
         parts.append(f'<div style="border:1px solid #e5e5e5;border-radius:6px;padding:8px">{r["chart_svg"]}</div>')
         parts.append(f'<div style="font-size:11px;color:#8a9199;margin-top:4px">시세는 Yahoo Finance 월말 수정종가({e(first)}부터 제공). '
-                     '수출액·선행지수는 KOSIS 원자료이며 발표 지연(월+2)을 반영해 "그 시점에 알 수 있던 값"으로 그렸습니다. '
+                     '<b>읽는 법: 붉은·초록 선은 발표 지연만큼 2개월 오른쪽으로 밀려 있습니다.</b> KOSIS 통계는 두 달 뒤에야 볼 수 있어 '
+                     '"그 시점에 알 수 있던 값"으로 그렸기 때문입니다. 그래서 9월 수출은 11월 자리에 찍힙니다. '
+                     '파란 선(주가)만 실제 달 위치입니다 — 같은 x 좌표라고 같은 달이 아닙니다. '
                      '주가는 장기 우상향이라 <b>수준</b>으로는 사이클이 보이지 않습니다. 그래서 위 칸은 주가를 <b>12개월 수익률</b>로 바꿔(그 시점까지의 자료만 쓰는 추세 제거) '
                      '세 계열을 모두 표준화해 겹쳤고, 아래 칸에 실제 주가 수준을 참고로 두었습니다. 표준화는 보기 위한 것이고 모형은 원값을 씁니다. '
                      '주가 봉우리가 수출 봉우리보다 <b>왼쪽</b>에 있으면 주가가 사이클을 앞선 것이고, 그때 수출은 설명 변수이지 예측 변수가 아닙니다.</div>')

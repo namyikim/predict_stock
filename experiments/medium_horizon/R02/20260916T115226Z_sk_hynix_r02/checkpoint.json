@@ -1,0 +1,23 @@
+{
+  "completed_units": [
+    "sk_hynix:h5",
+    "sk_hynix:h20"
+  ],
+  "results": {
+    "sk_hynix:h5": {
+      "oof_sha256": "3be1105db369e72097e52be5b9bda3f31c115096c0bad61b9b9d4a501516244f",
+      "oof_file": "D:\\SourceCode\\predict_stock\\runs\\medium_horizon\\sk_hynix\\R02_h5_full_oof.csv",
+      "verdict_r02a": "동률(CI가 0 포함)",
+      "verdict_r02b": "동률(CI가 0 포함)",
+      "purge_violations": 0
+    },
+    "sk_hynix:h20": {
+      "oof_sha256": "8e916cb48732dc8a670a1090e1b341cd8d8bc12383a08a7640cc500488c62cf5",
+      "oof_file": "D:\\SourceCode\\predict_stock\\runs\\medium_horizon\\sk_hynix\\R02_h20_full_oof.csv",
+      "verdict_r02a": "동률(CI가 0 포함)",
+      "verdict_r02b": "동률(CI가 0 포함)",
+      "purge_violations": 0
+    }
+  },
+  "updated_at_utc": "2026-09-16T11:52:37.243180+00:00"
+}

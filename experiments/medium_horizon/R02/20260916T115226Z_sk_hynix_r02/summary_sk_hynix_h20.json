@@ -1,0 +1,97 @@
+{
+  "target": "sk_hynix",
+  "horizon": 20,
+  "group_d_columns": [
+    "sam_ovn_5",
+    "sam_intra_5",
+    "sam_ovn_minus_intra_5",
+    "sam_ovn_20",
+    "sam_intra_20",
+    "sam_ovn_minus_intra_20",
+    "sam_ovn_60",
+    "sam_intra_60",
+    "sam_ovn_minus_intra_60",
+    "kospi_ovn_5",
+    "kospi_intra_5",
+    "kospi_ovn_minus_intra_5",
+    "kospi_ovn_20",
+    "kospi_intra_20",
+    "kospi_ovn_minus_intra_20",
+    "kospi_ovn_60",
+    "kospi_intra_60",
+    "kospi_ovn_minus_intra_60"
+  ],
+  "group_d_assets_available": {
+    "sam": true,
+    "kospi": true
+  },
+  "n_common_rows": 2250,
+  "rows_excluded_by_group_d": 0,
+  "dev_folds": [
+    "dev_01",
+    "dev_02",
+    "dev_03",
+    "dev_04",
+    "dev_05",
+    "dev_06",
+    "dev_07",
+    "dev_08",
+    "dev_09"
+  ],
+  "n_dev_rows": 1081,
+  "lock_start": "2025-08-13",
+  "purge_violations": [],
+  "leg_identity_max_abs_error": 1.1102230246251565e-15,
+  "full_plus_D_vs_current_calibrated_month_ci": [
+    -0.00022823090601556772,
+    -0.000981106210701126,
+    0.00045894853104726707
+  ],
+  "decomposed_vs_current_calibrated_month_ci": [
+    -0.00032968163936723783,
+    -0.0009439162061536181,
+    0.00027200670435574033
+  ],
+  "verdict_r02a": "동률(CI가 0 포함)",
+  "verdict_r02b": "동률(CI가 0 포함)",
+  "legs": {
+    "overnight": {
+      "zero_mae": 0.07156259543636283,
+      "raw_mae": 0.06989970483737944,
+      "calibrated_mae": 0.07092180884869305,
+      "corr_raw": 0.0736471706763984,
+      "mean_slope": 0.55775998463318,
+      "raw_minus_zero_month_ci": [
+        -0.0016628905989834028,
+        -0.008742623926864517,
+        0.00563225538144051
+      ],
+      "calibrated_minus_zero_month_ci": [
+        -0.0006407865876697824,
+        -0.005415764950752276,
+        0.00410181729670239
+      ],
+      "share_of_label_variance": 0.7608618737204565
+    },
+    "intraday": {
+      "zero_mae": 0.05636014346331957,
+      "raw_mae": 0.05648500922446177,
+      "calibrated_mae": 0.056146829335966285,
+      "corr_raw": -0.06711130474547901,
+      "mean_slope": 0.47805178018453254,
+      "raw_minus_zero_month_ci": [
+        0.00012486576114219194,
+        -0.0032098994470283384,
+        0.003561743953264013
+      ],
+      "calibrated_minus_zero_month_ci": [
+        -0.00021331412735329624,
+        -0.002234882175479851,
+        0.0017545286758555568
+      ],
+      "share_of_label_variance": 0.43196873085951754
+    }
+  },
+  "oof_file": "D:\\SourceCode\\predict_stock\\runs\\medium_horizon\\sk_hynix\\R02_h20_full_oof.csv",
+  "oof_sha256": "8e916cb48732dc8a670a1090e1b341cd8d8bc12383a08a7640cc500488c62cf5"
+}

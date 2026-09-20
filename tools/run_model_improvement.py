@@ -52,6 +52,7 @@ TASKS = {
     "P09": "갭·장중 별도 학습 비교",
     "P10": "국내 관련 종목 공동 학습 기반",
     "P10b": "해외 자산 특징을 넣은 pooled 패널 vs 대표 모델",
+    "R02c": "누적 야간/장중 특징 그룹 D 를 다음 날 방향 대표 모델에 더했을 때(같은 날짜, 갭·세션 AUC 병기)",
 }
 
 # P03에서 비교하는 특징군. 노트북이 같은 폴드·같은 날짜로 이미 계산해 CSV로 남기므로
@@ -1623,9 +1624,222 @@ def run_p10b(target, mode, storage, state, run_notebook_fn=None):
     return rows
 
 
+# ---------------------------------------------------------------------------
+# R02c — 그룹 D(누적 야간/장중, guides/research-candidates-plan.md R02)를 다음 날 방향 대표 모델에 더했을 때
+# ---------------------------------------------------------------------------
+# P03 계약: 같은 폴드·같은 날짜·같은 정답에서 특징군을 넣은 모델 − 뺀 모델의 log_loss·balanced_accuracy 쌍체
+# 월 블록 CI. 여기에 P09 의 갭·세션 AUC 를 모델별로 내고 그 차이도 같은 방식으로 CI 를 낸다 — 그룹 D 가
+# 세션(시가→종가) 쪽에 무엇이든 더하는지가 질문이기 때문이다. 후보는 하나뿐이다(후보를 늘리면 낙관 편향).
+R02C_CURRENT = "current (market only)"
+R02C_CANDIDATE = "current + D"
+R02C_ASSETS = {"sam": "target", "kospi": "kospi"}
+
+
+def _month_block_ci(date_index, stat_fn, b=2000, seed=42, alpha=.05):
+    """노트북 block_bootstrap_ci 와 같은 달력 월 블록 부트스트랩. NaN 이 나온 표본은 버린다."""
+    key = pd.PeriodIndex(pd.DatetimeIndex(date_index), freq="M")
+    blocks = [np.where(key == m)[0] for m in key.unique()]
+    if not blocks:
+        return (float("nan"), float("nan"))
+    rng = np.random.default_rng(seed)
+    draws = []
+    for _ in range(b):
+        pick = rng.integers(0, len(blocks), len(blocks))
+        idx = np.concatenate([blocks[i] for i in pick])
+        try:
+            value = float(stat_fn(idx))
+        except Exception:
+            continue
+        if np.isfinite(value):
+            draws.append(value)
+    if not draws:
+        return (float("nan"), float("nan"))
+    return tuple(float(v) for v in np.percentile(draws, [100 * alpha / 2, 100 * (1 - alpha / 2)]))
+
+
+def leg_sign_auc(score, leg):
+    """방향 점수(p_up − p_down)가 구간(갭 또는 세션) 수익률의 부호를 맞히는 AUC. 노트북 _auc_vs_sign 과 같은 규칙:
+    0 과 결측은 빼고, 30개 미만이거나 부호가 한쪽뿐이면 NaN."""
+    from sklearn.metrics import roc_auc_score
+    score, leg = np.asarray(score, dtype=float), np.asarray(leg, dtype=float)
+    ok = np.isfinite(leg) & (leg != 0) & np.isfinite(score)
+    if ok.sum() < 30 or len(np.unique(leg[ok] > 0)) < 2:
+        return float("nan")
+    return float(roc_auc_score((leg[ok] > 0).astype(int), score[ok]))
+
+
+def paired_leg_auc_delta(dates, score_a, score_b, leg, b=2000, seed=42):
+    """같은 날짜에서 두 모델의 구간 AUC 차이(a − b)와 95% 월 블록 CI."""
+    dates = pd.DatetimeIndex(dates)
+    sa, sb, lg = (np.asarray(v, dtype=float) for v in (score_a, score_b, leg))
+
+    def stat(idx):
+        return leg_sign_auc(sa[idx], lg[idx]) - leg_sign_auc(sb[idx], lg[idx])
+    delta = stat(np.arange(len(dates)))
+    lo, hi = _month_block_ci(dates, stat, b=b, seed=seed)
+    return {"delta": float(delta), "lo": lo, "hi": hi, "n": int(len(dates))}
+
+
+def r02c_group_d(ns):
+    """노트북 원시 봉(대상 종목·KOSPI 의 원본 시가·종가)으로 그룹 D 를 만들어 노트북 행(dates)에 맞춘다.
+
+    특징 정의는 중기 러너(run_medium_horizon.group_d_features)와 같은 함수다 — 한 정의, 두 실험.
+    calendar 는 노트북 feat 의 인덱스(봉 ∪ 예측일)이므로 행 d 는 d−1 세션까지만 본다.
+    """
+    sys.path.insert(0, str(ROOT / "tools"))
+    from run_medium_horizon import group_d_features       # 지연 import(그 모듈이 이 모듈을 import 한다)
+    calendar = pd.DatetimeIndex(ns["feat"].index).tz_localize(None).normalize()
+    bars = {}
+    for prefix, name in R02C_ASSETS.items():
+        frame = ns["raw"].get(name)
+        if frame is None or len(frame) == 0 or "open" not in frame.columns or "close" not in frame.columns:
+            continue
+        frame = frame[["open", "close"]].astype(float).copy()
+        frame.index = pd.DatetimeIndex(frame.index).tz_localize(None).normalize()
+        bars[prefix] = frame.dropna().sort_index()
+    if "sam" not in bars:
+        raise RuntimeError("대상 종목 봉에 시가·종가가 없어 그룹 D 를 만들 수 없습니다.")
+    return group_d_features(bars, calendar), sorted(bars)
+
+
+def run_r02c(target, mode, storage, state, run_notebook_fn=None):
+    """대표 모델의 입력(시세만) vs 같은 입력 + 그룹 D 를 같은 12폴드·같은 날짜·같은 정답에서 다시 학습해 쌍체 비교한다.
+
+    두 후보 모두 이 실행에서 같은 코드(_ensemble_probabilities)로 학습한다. 노트북이 같은 폴드로 낸 대표 모델
+    OOF 확률은 재현 확인용 참조 행으로만 둔다(다시 학습한 current 와 argmax 일치율·log_loss 차이를 기록).
+    그룹 D 가 결측인 날짜(첫 60세션·KOSPI 결측)는 두 후보 모두에서 뺀다 — 쉬운 날짜만 남는 문제를 막는 공통 행 규칙.
+    """
+    import time
+
+    unit = f"{target}:group_d"
+    if state.is_done(unit):
+        print(f"  이미 완료된 단위 건너뜀: {unit} (metrics.csv 유지)")
+        return None
+    if run_notebook_fn is None:
+        sys.path.insert(0, str(ROOT / "tools"))
+        from run_notebook import run_notebook as run_notebook_fn
+
+    snapshot = snapshot_paths(storage, target)
+    ns = run_notebook_fn(Path(storage) / target, targets=target,
+                         quick=(mode == "quick"), use_cache=bool(snapshot))[target]
+    features, y, dates, folds = ns["market_X"], np.asarray(ns["y"], dtype=int), pd.DatetimeIndex(ns["dates"]), ns["folds"]
+    dates = dates.tz_localize(None).normalize() if dates.tz is not None else dates.normalize()
+    headline = ns.get("HEADLINE_MODEL", "No macro ensemble")
+    min_prob = issue_min_prob()
+    b = 400 if mode == "quick" else 2000
+
+    d_all, assets = r02c_group_d(ns)
+    d_frame = d_all.reindex(dates)
+    d_cols = list(d_frame.columns)
+    valid = d_frame.notna().all(axis=1).to_numpy()
+    X_cur = np.asarray(features, dtype=np.float32)
+    X_d = np.hstack([X_cur, d_frame.to_numpy(dtype=np.float32)])
+    bars = ns["raw"]["target"][["open", "close"]].astype(float).copy()
+    bars.index = pd.DatetimeIndex(bars.index).tz_localize(None).normalize()
+    legs = decompose_returns(bars).reindex(dates)          # 갭·세션은 평가에만 쓴다(특징에 넣지 않는다)
+
+    frames, fold_info, skipped = [], [], []
+    timing = {R02C_CURRENT: 0., R02C_CANDIDATE: 0.}
+    for fold in folds:
+        tr = fold["train_idx"][valid[fold["train_idx"]]]
+        te = fold["test_idx"][valid[fold["test_idx"]]]
+        if len(tr) < MIN_TRAIN_ROWS or len(te) < 20 or len(np.unique(y[tr])) < 3:
+            skipped.append({"fold": fold["fold"], "train_rows": int(len(tr)), "test_rows": int(len(te))})
+            continue
+        for name, X in ((R02C_CURRENT, X_cur), (R02C_CANDIDATE, X_d)):
+            started = time.time()
+            probs = _ensemble_probabilities(ns, X, y, tr, te)
+            timing[name] += time.time() - started
+            frames.append(ns["prediction_frame"](name, dates[te], y[te], probs, fold["fold"]))
+        fold_info.append({"fold": fold["fold"], "train_rows": int(len(tr)), "test_rows": int(len(te)),
+                          "train_rows_dropped_by_d": int(len(fold["train_idx"]) - len(tr)),
+                          "test_rows_dropped_by_d": int(len(fold["test_idx"]) - len(te))})
+        print(f"  폴드 {fold['fold']}: 학습 {len(tr):,} · 시험 {len(te)} (그룹 D 결측 제외 학습 {fold_info[-1]['train_rows_dropped_by_d']} / 시험 {fold_info[-1]['test_rows_dropped_by_d']})")
+    if not frames:
+        raise RuntimeError("그룹 D 를 붙인 뒤 학습 가능한 폴드가 없습니다.")
+    predictions = pd.concat(frames, ignore_index=True)
+    # 참조 행: 노트북이 같은 폴드로 낸 대표 모델 OOF 와 사전확률(재학습하지 않는다)
+    nb = ns.get("predictions")
+    reference_models = []
+    if nb is not None and len(nb):
+        keep = [m for m in (headline, "Always flat") if m in set(nb["model"])]
+        if keep:
+            reference = nb[nb["model"].isin(keep)].copy()
+            reference["date"] = pd.DatetimeIndex(reference["date"]).tz_localize(None).normalize()
+            reference["model"] = reference["model"].map({headline: f"notebook OOF ({headline})", "Always flat": "Always flat"})
+            predictions = pd.concat([predictions, reference], ignore_index=True)
+            reference_models = list(reference["model"].unique())
+    common_dates = None
+    for _, g in predictions.groupby("model"):
+        common_dates = set(g["date"]) if common_dates is None else common_dates & set(g["date"])
+    predictions = predictions[predictions["date"].isin(common_dates)].reset_index(drop=True)
+    metrics = ns["summarize_predictions"](predictions, with_ci=False)
+
+    scores, leg_auc = {}, {}
+    for model_name, g in predictions.groupby("model"):
+        g = g.sort_values("date")
+        score = (g["p_up"] - g["p_down"]).to_numpy()
+        scores[model_name] = pd.Series(score, index=pd.DatetimeIndex(g["date"]))
+        leg_auc[model_name] = {"auc_gap": leg_sign_auc(score, legs["gap"].reindex(g["date"]).to_numpy()),
+                               "auc_session": leg_sign_auc(score, legs["session"].reindex(g["date"]).to_numpy())}
+    rows = []
+    for model_name, r in metrics.iterrows():
+        rows.append({"target": target, "model": model_name, "target_mode": "close_to_close", "fold": "all",
+                     **{k: r.get(k, "") for k in ("n", "accuracy", "balanced_accuracy", "log_loss", "brier")},
+                     **leg_auc.get(model_name, {}), "seconds": round(timing.get(model_name, 0.), 1),
+                     "n_features": (X_d.shape[1] if model_name == R02C_CANDIDATE else X_cur.shape[1]
+                                    if model_name == R02C_CURRENT else "")})
+
+    comparisons = []
+    pairs = [(R02C_CANDIDATE, R02C_CURRENT, f"{R02C_CANDIDATE} − {R02C_CURRENT}")]
+    if "Always flat" in reference_models:
+        pairs.append((R02C_CANDIDATE, "Always flat", f"{R02C_CANDIDATE} − 사전확률"))
+    nb_name = f"notebook OOF ({headline})"
+    if nb_name in reference_models:
+        pairs.append((R02C_CURRENT, nb_name, f"{R02C_CURRENT} − 노트북 OOF(재현 확인)"))
+    for a, b_, label in pairs:
+        for metric in ("log_loss", "balanced_accuracy", "accuracy"):
+            d = ns["paired_delta_ci"](predictions, a, b_, metric)
+            comparisons.append({"target": target, "comparison": label, "metric": metric, "delta": d["delta"],
+                                "ci_low": d["lo"], "ci_high": d["hi"], "common_n": d["n"],
+                                "verdict": verdict_for(metric, d["lo"], d["hi"])})
+        if a == R02C_CANDIDATE and b_ == R02C_CURRENT:
+            common = scores[a].index.intersection(scores[b_].index)
+            for leg in ("gap", "session"):
+                d = paired_leg_auc_delta(common, scores[a].reindex(common).to_numpy(), scores[b_].reindex(common).to_numpy(),
+                                         legs[leg].reindex(common).to_numpy(), b=b)
+                comparisons.append({"target": target, "comparison": label, "metric": f"auc_{leg}", "delta": d["delta"],
+                                    "ci_low": d["lo"], "ci_high": d["hi"], "common_n": d["n"],
+                                    "verdict": verdict_for(f"auc_{leg}", d["lo"], d["hi"])})
+    selective = []
+    for model_name in [R02C_CURRENT, R02C_CANDIDATE] + [m for m in reference_models if m != "Always flat"]:
+        g = predictions[predictions["model"] == model_name].sort_values("date")
+        selective += selective_rows(target, model_name, g[["p_down", "p_flat", "p_up"]].to_numpy(), g["y_true"].to_numpy())
+    argmax_agreement = float("nan")
+    if nb_name in reference_models:
+        a = predictions[predictions["model"] == R02C_CURRENT].sort_values("date")["y_pred"].to_numpy()
+        b2 = predictions[predictions["model"] == nb_name].sort_values("date")["y_pred"].to_numpy()
+        argmax_agreement = float(np.mean(a == b2))
+
+    write_json(state.run_dir / f"r02c_{target}.json", {
+        "headline_model": headline, "assets": assets, "group_d_columns": d_cols, "n_group_d_columns": len(d_cols),
+        "n_current_features": int(X_cur.shape[1]), "n_candidate_features": int(X_d.shape[1]),
+        "rows_missing_group_d": int((~valid).sum()), "common_evaluation_days": int(len(common_dates)),
+        "folds": fold_info, "skipped_folds": skipped, "timing_seconds": {k: round(v, 1) for k, v in timing.items()},
+        "issue_min_prob": min_prob, "argmax_agreement_current_vs_notebook": argmax_agreement,
+        "leg_auc": leg_auc, "comparisons": comparisons, "selective": selective,
+        "note": "두 후보는 같은 코드로 재학습(대표 모델 결합·후보·온도·선택 규칙). 갭·세션은 평가에만 쓰고 특징에 넣지 않는다. "
+                "그룹 D 결측 날짜는 두 후보 모두에서 제외(공통 행)."})
+    write_metrics_named(state, comparisons, "comparisons.csv")
+    write_metrics_named(state, selective, "selective.csv")
+    state.mark(unit, {"group_d_columns": len(d_cols), "evaluation_days": int(len(common_dates)),
+                      "argmax_agreement_current_vs_notebook": argmax_agreement})
+    return rows
+
+
 TASK_RUNNERS = {"P00": run_p00, "P03": run_p03, "P04": run_p04, "P05": run_p05,
                 "P06": run_p06, "P07": run_p07, "P08": run_p08, "P09": run_p09, "P10": run_p10,
-                "P10b": run_p10b}
+                "P10b": run_p10b, "R02c": run_r02c}
 
 
 # ---------------------------------------------------------------------------
@@ -1710,6 +1924,11 @@ def execute(task, target, mode, storage, resume, run_notebook_fn=None):
                   "common_feature_rule": "headline market inputs minus " + "/".join(
                       panel_foreign_module().TARGET_SPECIFIC_PREFIXES),
                   "issue_min_prob": issue_min_prob()}
+    elif task == "R02c":
+        config = {"task": "R02c", "mode": mode, "candidate": R02C_CANDIDATE, "reference": R02C_CURRENT,
+                  "group_d": {"assets": sorted(R02C_ASSETS), "windows": [5, 20, 60],
+                              "definition": "누적 야간 Π(open_t/close_{t-1})-1, 누적 장중 Π(close_t/open_t)-1, 둘의 차. 행 d 는 d-1 세션까지"},
+                  "headline": "No macro ensemble", "window": BASELINE_WINDOW, "issue_min_prob": issue_min_prob()}
     else:
         config = {"mode": mode}
     identity = {

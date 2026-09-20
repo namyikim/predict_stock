@@ -1,0 +1,59 @@
+{
+ "task_id": "R02c",
+ "run_id": "20260916T1200Z_group_d_direction",
+ "target": [
+  "samsung",
+  "sk_hynix"
+ ],
+ "code_commit": "b04a819c9823b024b5db09d7e695b0693254eaf0",
+ "data_hash": "P00 full 고정 스냅샷 (samsung nodata / sk_hynix nodata)",
+ "config_hash": "e18d10200f3e389ba2a2",
+ "seed": 42,
+ "mode": "full",
+ "target_mode": "close_to_close",
+ "classes": [
+  "down",
+  "flat",
+  "up"
+ ],
+ "status": "completed",
+ "completed_units": [
+  "samsung:group_d",
+  "sk_hynix:group_d"
+ ],
+ "failed_units": [],
+ "baseline_run": "experiments/model_improvement/P00/20260910T0100Z_baseline_full",
+ "source_runs": {
+  "samsung": "R02c\\20260916T115212Z_samsung_r02c",
+  "sk_hynix": "R02c\\20260916T115214Z_sk_hynix_r02c"
+ },
+ "config": {
+  "task": "R02c",
+  "mode": "full",
+  "candidate": "current + D",
+  "reference": "current (market only)",
+  "group_d": {
+   "assets": [
+    "kospi",
+    "sam"
+   ],
+   "windows": [
+    5,
+    20,
+    60
+   ],
+   "definition": "누적 야간 Π(open_t/close_{t-1})-1, 누적 장중 Π(close_t/open_t)-1, 둘의 차. 행 d 는 d-1 세션까지"
+  },
+  "headline": "No macro ensemble",
+  "window": "5y",
+  "issue_min_prob": 0.0
+ },
+ "artifact_paths": {
+  "metrics": "experiments/model_improvement/R02c/20260916T1200Z_group_d_direction/metrics.csv",
+  "comparisons": "experiments/model_improvement/R02c/20260916T1200Z_group_d_direction/comparisons.csv",
+  "selective": "experiments/model_improvement/R02c/20260916T1200Z_group_d_direction/selective.csv"
+ },
+ "started_at_utc": "2026-09-16T11:52:12.107841+00:00",
+ "finished_at_utc": "2026-09-16T12:09:11.542451+00:00",
+ "note": "대표 모델 입력(시세만) vs 같은 입력 + 그룹 D(누적 야간/장중 18열)를 같은 12폴드·같은 날짜·같은 정답에서 재학습해 쌍체 비교. 갭·세션 AUC 는 평가에만 쓰고 특징에 넣지 않는다."
+}

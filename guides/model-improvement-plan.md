@@ -674,9 +674,11 @@ P00 이후에는 작업 ID만 바꿔 요청한다. Colab 실행이 필요한 경
 
 | 2026-09-16 | P10b | `experiments/model_improvement/P10b/20260916T1100Z_panel_pooled_foreign/`, `experiments/model_improvement/panel_foreign.py`, `tests/test_panel_foreign.py` | 11개 통과(러너 종단 포함), 관련 48개 통과. 두 종목 12폴드 pooled/단독 재학습, 대표 모델 OOF 재사용 | **완료.** 채택 없음. 해외 자산이 예측력의 전부, 9종목 pooling은 단독 대비 동률·열위. 대표 대비 samsung 동률·sk_hynix 유의 열위 |
 | 2026-09-16 | P08 운영 반영 | `forecast_utils.direction_call`·`DIRECTION_ISSUE_MIN_PROB`, 노트북 1절·저녁 실행 `Candidate evening open`, `tests/test_direction_gate.py`, `tests/test_evening_open.py` | 새 테스트 20개 + 관련 289개 통과 | 최대 확률 0.50 이상인 날만 종가 방향 발행, 나머지 '판단 유보' — **같은 날 오후 사용자 결정으로 기준 0.0(항상 발행)으로 되돌림.** 시초가의 정직한 표기와 저녁 시초가 후보 채점은 유지 |
+| 2026-09-16 | R02c(계획 밖, research-candidates-plan R02 의 방향 모델 변형) | `experiments/model_improvement/R02c/20260916T1200Z_group_d_direction/`, 러너 `run_model_improvement.py --task R02c`(`run_r02c`·`leg_sign_auc`·`paired_leg_auc_delta`), 그룹 D 빌더 `run_medium_horizon.group_d_features`, `tests/test_overnight_intraday.py` | 19개 통과(러너 종단 포함). 두 종목 12폴드에서 시세만 입력 vs 같은 입력 + 그룹 D 18열(종목·KOSPI 누적 야간/장중 5·20·60) 재학습, 재학습한 current 는 노트북 OOF 와 argmax 일치 1.000 | **완료.** 채택 없음. log_loss samsung −0.0003 [−0.0046, +0.0039] · sk_hynix +0.0031 [−0.0017, +0.0082], balanced_accuracy·갭 AUC·세션 AUC 도 전부 동률. 세션 AUC 차이 +0.003/−0.003 — 누적 야간/장중은 세션 쪽에도 더하는 것이 없다 |
 - 현재 작업: P15 — 후보 사전 예측 관찰 중(등록 완료, 채점 대기). 방향 발행 정책(0.50)도 같은 창에서 판정
 - 후속 항목(계획 밖) P10b — 해외 자산 특징을 넣은 pooled 패널: **완료(2026-09-16), 채택 없음.** 해외 자산이 예측력의 전부, 공동 학습은 더하는 것이 없음. P11~P14 보류 유지
-- 완료한 신규 작업: 11/16 (P00~P10) + 계획 밖 P10b. 보류 4 (P11~P14). 진행 중 1 (P15)
+- 후속 항목(계획 밖) R02c — 누적 야간/장중 특징 그룹 D: **완료(2026-09-16), 채택 없음.** 열 칸 전부 동률. P03·P10b·R02c 로 07:00 특징 확장(월별·수급·패널·커브·야간/장중 누적)은 전부 동률 또는 열위 — 남은 정보 시점은 시가 이후(09:37 재예측, 세션 타깃)뿐이며 이는 데이터 수집(시가·장초 가격)이 먼저다
+- 완료한 신규 작업: 11/16 (P00~P10) + 계획 밖 P10b·R02c. 보류 4 (P11~P14). 진행 중 1 (P15)
 - 다음 작업: 2026-09-11부터 매일 원장에 `Candidate expanding` 행이 쌓이는지 확인 → 60 공통 채점일 뒤 종목별 판정(4절 규칙)
 - P15로 넘긴 후보: sk_hynix(및 참고로 samsung) `expanding` 학습 창
 - 후속 항목(계획 밖): P04 내부 선택을 폴드 반복형으로. (해외 자산 pooled 패널은 P10b로 완료 — 채택 없음. 남은 아이디어: 다른 종목의 전일 수익률을 대표 모델 단독 입력에 특징으로만 더하기)

@@ -53,7 +53,8 @@ TASKS = {"M00": "현행 5·20일 가격 모델 기준선과 실패 유형 진단
          "M05": "예측 구간(simple 내부 q / HAR / 최근 확정 잔차 252개)과 보류 정책 비교",
          "M06": "국내 반도체 패널 공동 학습(pooled Ridge) vs 같은 입력 단독 모델 vs 현행",
          "M07": "고정 후보의 잠금 평가 1회와 사전 예측 관찰 현황",
-         "R07": "금리 커브 특징군(단기·장기 금리와 기울기) 비교 — 5·20일만"}
+         "R07": "금리 커브 특징군(단기·장기 금리와 기울기) 비교 — 5·20일만",
+         "R02": "야간/장중 분해 — 누적 야간·장중 특징 그룹 D(R02a)와 타깃 분해 예측(R02b), 5·20일"}
 HORIZON_LABELS = {5: "1주일", 20: "1개월"}
 
 # 평가 계약(계획 4절). 점수를 보기 전에 고정한다.
@@ -2121,6 +2122,278 @@ def run_r07(target, mode, storage, results_dir, state, run_notebook_fn=None):
     return collect_rows(state, target)
 
 
+# ---------------------------------------------------------------------------
+# R02 — 야간/장중 분해 (Lou·Polk·Skouras 2019). 그룹 D 특징(R02a)과 타깃 분해 예측(R02b).
+# 미국 누적 수익률은 그룹 A 와 중복이라 만들지 않는다. 1일 갭(sam_gap_1)은 기존 열에 있으므로 5일 미만 창은 없다.
+# ---------------------------------------------------------------------------
+GROUP_D_WINDOWS = (5, 20, 60)
+GROUP_D_ASSETS = {"sam": "target", "kospi": "kospi"}       # 열 접두어 → 스냅샷 파일 이름
+R02_CANDIDATES = ("current_full", "full_plus_D", "decomposed")
+R02_LEGS = ("overnight", "intraday")
+
+
+def load_asset_bars(storage, target, name):
+    """고정 스냅샷의 원본 시가·종가(수정 없음, 자산 자체 거래일 인덱스). 시가가 없는 자산은 None."""
+    path = Path(storage) / target / "data_cache" / f"{name}.parquet"
+    if not path.is_file():
+        return None
+    frame = pd.read_parquet(path)
+    frame.columns = [str(c).strip().lower().replace(" ", "_") for c in frame.columns]
+    if "open" not in frame.columns or "close" not in frame.columns:
+        return None
+    frame.index = pd.DatetimeIndex(pd.to_datetime(frame.index)).tz_localize(None).normalize()
+    return frame[["open", "close"]].astype(float).dropna().sort_index()
+
+
+def overnight_intraday_returns(bars):
+    """세션 t 의 야간 수익률 open_t/close_{t−1}−1 과 장중 수익률 close_t/open_t−1. 원본 시가·종가, 자산 달력.
+
+    같은 봉의 시가·종가만 쓰므로 분할·배당 조정이 두 값에 같은 비율로 걸리면 그대로 성립한다(P09 와 같은 규칙).
+    """
+    bars = bars.sort_index()
+    open_, close = bars["open"].astype(float), bars["close"].astype(float)
+    return pd.DataFrame({"overnight": open_ / close.shift(1) - 1, "intraday": close / open_ - 1}, index=bars.index)
+
+
+def group_d_features(bars_by_prefix, calendar, windows=GROUP_D_WINDOWS):
+    """그룹 D. 접두어별 최근 k세션의 누적 야간 수익률 Π(open_t/close_{t−1})−1, 누적 장중 수익률 Π(close_t/open_t)−1, 둘의 차.
+
+    calendar 는 예측일을 포함한 **전체 거래일 달력**(노트북 all_dates = 봉 ∪ 예측일)이어야 한다. 누적은 자산
+    달력에서 만들고 calendar 로 정렬한 뒤 한 칸 민다(노트북의 한국 자산 규칙 reindex → shift(1)). 그래서 행 d 에는
+    d−1 세션까지의 값만 들어가고, 장중 성분도 d−1 세션의 종가까지다. d 이후 봉을 바꿔도 행 d 는 변하지 않는다(테스트).
+    """
+    calendar = pd.DatetimeIndex(calendar)
+    out = pd.DataFrame(index=calendar)
+    for prefix, bars in bars_by_prefix.items():
+        if bars is None or len(bars) == 0:
+            continue
+        legs = overnight_intraday_returns(bars)
+        log_ovn, log_intra = np.log1p(legs["overnight"]), np.log1p(legs["intraday"])
+        for k in windows:
+            ovn = np.expm1(log_ovn.rolling(k).sum()).reindex(calendar).shift(1)
+            intra = np.expm1(log_intra.rolling(k).sum()).reindex(calendar).shift(1)
+            out[f"{prefix}_ovn_{k}"] = ovn
+            out[f"{prefix}_intra_{k}"] = intra
+            out[f"{prefix}_ovn_minus_intra_{k}"] = ovn - intra
+    return out.replace([np.inf, -np.inf], np.nan)
+
+
+def horizon_leg_labels(bars, horizon):
+    """설계 행렬 행 d 의 h일 라벨을 야간 합·장중 합(로그 수익률)으로 나눈다. 세션 d..d+h−1 의 합이다.
+
+    항등식(텔레스코핑): log(1+future_return) = Σ log(open_t/close_{t−1}) + Σ log(close_t/open_t). 합이 정확히
+    같으려면(1e-12) 단순 수익률이 아니라 로그 수익률로 나눠야 한다 — 단순 수익률의 합에는 교차항이 남는다.
+    행 d 의 값은 d+h−1 봉까지만 쓴다. 그 뒤 봉을 바꿔도 변하지 않는다(테스트).
+    """
+    legs = overnight_intraday_returns(bars)
+    lo, li = np.log1p(legs["overnight"]), np.log1p(legs["intraday"])
+    return pd.DataFrame({"log_overnight_h": lo.rolling(horizon).sum().shift(-(horizon - 1)),
+                         "log_intraday_h": li.rolling(horizon).sum().shift(-(horizon - 1))}, index=legs.index)
+
+
+def ridge_predictor(X, z, sigma, template):
+    """(train, test) → σ 를 곱한 예측. 열 목록 대신 예측 함수를 받는 폴드 루프(R02b)용."""
+    def predict(train, test):
+        return fit_predict(template, X, z, sigma, train, test)
+    return predict
+
+
+def fold_predictor_predictions(y, predictors, folds):
+    """fold_candidate_predictions 와 같은 규칙(외부 raw·내부 3구간 기울기·내부 MAE)인데 입력이 열 목록이 아니라
+    (train, test) → 예측 함수다. 분해 예측기처럼 Ridge 하나로 표현되지 않는 후보를 같은 폴드·같은 행에서 비교한다."""
+    dev = [f for f in folds if f["name"].startswith("dev") and not f.get("excluded")]
+    records = []
+    for f in dev:
+        record = {"fold": f["name"], "test": f["test"], "candidates": {}}
+        for name, predict in predictors.items():
+            raw = predict(f["train"], f["test"])
+            inner_pred, inner_y, inner_mae = [], [], []
+            for block in f["inner"]:
+                if block.get("excluded") or len(block["train"]) < MIN_TRAIN_ROWS:
+                    continue
+                p = predict(block["train"], block["test"])
+                inner_pred.append(p); inner_y.append(y[block["test"]])
+                inner_mae.append(float(np.abs(y[block["test"]] - p).mean()))
+            slope = inner_slope(np.concatenate(inner_pred), np.concatenate(inner_y)) if inner_pred else 0.
+            record["candidates"][name] = {"raw": raw, "slope": slope, "inner_mae": inner_mae}
+        records.append(record)
+    return records
+
+
+def r02_config(mode):
+    return {"task": "R02", "mode": mode, "horizons": list(HORIZONS), "candidates": list(R02_CANDIDATES),
+            "group_d": {"assets": list(GROUP_D_ASSETS), "windows": list(GROUP_D_WINDOWS),
+                        "definition": "누적 야간 Π(open_t/close_{t-1})-1, 누적 장중 Π(close_t/open_t)-1, 둘의 차. 행 d 는 d-1 세션까지"},
+            "decomposition": "log(1+y) = Σlog 야간 + Σlog 장중. 각 성분을 σ 스케일 Ridge(1e4) 로 예측해 합을 expm1",
+            "model": "StandardScaler+Ridge(alpha=1e4), target=future_return/sigma_simple",
+            "folds": {"first_test": FIRST_TEST, "test_months": TEST_MONTHS, "lock_months": LOCK_MONTHS,
+                      "min_train_rows": MIN_TRAIN_ROWS, "min_test_rows": MIN_TEST_ROWS, "inner_blocks": INNER_BLOCKS},
+            "bootstrap_b": 400 if mode == "quick" else 2000, "seed": SEED}
+
+
+def run_r02(target, mode, storage, results_dir, state, run_notebook_fn=None):
+    inputs = None
+    for horizon in HORIZONS:
+        unit = f"{target}:h{horizon}"
+        if state.is_done(unit) and artifacts_intact(state, unit, target, horizon):
+            print(f"  이미 완료된 단위 건너뜀: {unit}")
+            continue
+        if inputs is None:
+            inputs = load_inputs(target, mode, storage, run_notebook_fn)
+            record_inputs(state, inputs)
+            # 대상 종목은 고정 입력의 봉(= 스냅샷 target)을 그대로 쓰고, KOSPI 만 스냅샷에서 읽는다.
+            bars = {prefix: (inputs["sam"][["open", "close"]].astype(float) if name == "target"
+                             else load_asset_bars(storage, target, name)) for prefix, name in GROUP_D_ASSETS.items()}
+            d_frame = group_d_features(bars, inputs["feat"].index)
+            feat_aug = inputs["feat"].copy()
+            for col in d_frame.columns:
+                feat_aug[col] = d_frame[col]
+            d_cols = list(d_frame.columns)
+        base_cols = list(inputs["feature_cols"])
+        cols_by_candidate = {"current_full": base_cols, "full_plus_D": base_cols + d_cols}
+        sam = inputs["sam"]
+        reg, _ = fu.price_design_frame(feat_aug, sam.index, base_cols + d_cols,
+                                       inputs["sam_raw_close"], feat_aug["sam_vol_20"], horizon)
+        reg_base, _ = fu.price_design_frame(feat_aug, sam.index, base_cols,
+                                            inputs["sam_raw_close"], feat_aug["sam_vol_20"], horizon)
+        folds, lock_start = evaluation_folds(reg.index, sam.index, horizon)
+        dev = [f for f in folds if f["name"].startswith("dev") and not f.get("excluded")]
+        violations = purge_check(reg.index, sam.index, horizon, [(f["train"], f["test"]) for f in dev]
+                                 + [(i["train"], i["test"]) for f in dev for i in f["inner"] if not i.get("excluded")])
+        template = fu.make_price_model()
+
+        # R02b 타깃 분해 — 같은 행의 라벨을 로그 야간 합·로그 장중 합으로 나눈다(항등식 검사 기록).
+        y = reg["future_return"].to_numpy(dtype=float)
+        sigma = reg["sigma_simple"].to_numpy(dtype=float)
+        z = y / np.maximum(sigma, 1e-6)
+        legs = horizon_leg_labels(inputs["sam"][["open", "close"]].astype(float), horizon).reindex(reg.index)
+        leg_values = {"overnight": legs["log_overnight_h"].to_numpy(dtype=float),
+                      "intraday": legs["log_intraday_h"].to_numpy(dtype=float)}
+        leg_ok = np.isfinite(leg_values["overnight"]) & np.isfinite(leg_values["intraday"])
+        identity_error = float(np.nanmax(np.abs(np.log1p(y[leg_ok]) - leg_values["overnight"][leg_ok] - leg_values["intraday"][leg_ok])))
+        if not leg_ok.all():
+            raise SystemExit(f"{unit}: 야간·장중 성분이 없는 행 {int((~leg_ok).sum())}개(시가 결측). 분해 비교를 같은 행에서 할 수 없다.")
+        if identity_error > 1e-12:
+            raise SystemExit(f"{unit}: 성분 합이 라벨과 다르다(최대 오차 {identity_error:.3e} > 1e-12)")
+        X_cur = reg[base_cols].to_numpy(dtype=np.float32)
+        X_d = reg[base_cols + d_cols].to_numpy(dtype=np.float32)
+        leg_predictors = {leg: ridge_predictor(X_cur, leg_values[leg] / np.maximum(sigma, 1e-6), sigma, template)
+                          for leg in R02_LEGS}
+
+        def decomposed(train, test):
+            return np.expm1(leg_predictors["overnight"](train, test) + leg_predictors["intraday"](train, test))
+
+        predictors = {"current_full": ridge_predictor(X_cur, z, sigma, template),
+                      "full_plus_D": ridge_predictor(X_d, z, sigma, template), "decomposed": decomposed}
+        records = fold_predictor_predictions(y, predictors, folds)
+        if not records:
+            raise SystemExit(f"{unit}: 개발 폴드가 없습니다.")
+        leg_records = {leg: fold_predictor_predictions(leg_values[leg], {f"{leg}_leg": leg_predictors[leg]}, folds)
+                       for leg in R02_LEGS}
+
+        test_idx = np.concatenate([r["test"] for r in records])
+        y_dev, dates_dev = y[test_idx], reg.index[test_idx]
+        zero = np.abs(y_dev)
+        b = 400 if mode == "quick" else 2000
+        block = max(20, 2 * horizon)
+        preds = {name: {"raw": np.concatenate([r["candidates"][name]["raw"] for r in records]),
+                        "calibrated": np.concatenate([r["candidates"][name]["slope"] * r["candidates"][name]["raw"]
+                                                      for r in records])}
+                 for name in R02_CANDIDATES}
+
+        def ci_pair(diff, label, metric):
+            lo_m, hi_m = month_block_ci(dates_dev, lambda i: float(diff[i].mean()), b=b)
+            lo_c, hi_c = contiguous_block_ci(len(diff), lambda i: float(diff[i].mean()), block, b=b)
+            base = {"target": target, "horizon": horizon, "comparison": label, "metric": metric,
+                    "delta": float(diff.mean()), "common_n": int(len(diff)), "calibrated": "calibrated" in metric}
+            return [dict(base, ci_lo=lo_m, ci_hi=hi_m, block="month"),
+                    dict(base, ci_lo=lo_c, ci_hi=hi_c, block=f"contiguous_{block}")]
+
+        metrics = [{"target": target, "horizon": horizon, "candidate": "hold_current", "fold": "dev_all",
+                    "evaluation_stage": "dev_common", "n": int(len(y_dev)), "mae": float(zero.mean())}]
+        comparisons = []
+        ref = preds["current_full"]
+        for name, pth in preds.items():
+            err_raw, err_cal = np.abs(y_dev - pth["raw"]), np.abs(y_dev - pth["calibrated"])
+            metrics.append({"target": target, "horizon": horizon, "candidate": name, "fold": "dev_all",
+                            "evaluation_stage": "dev_common", "n": int(len(y_dev)),
+                            "mae": float(err_raw.mean()), "mae_calibrated": float(err_cal.mean()),
+                            "n_features": len(cols_by_candidate.get(name, base_cols)),
+                            "mean_slope": float(np.mean([r["candidates"][name]["slope"] for r in records]))})
+            for r in records:
+                te = r["test"]
+                metrics.append({"target": target, "horizon": horizon, "candidate": name, "fold": r["fold"],
+                                "evaluation_stage": "dev_fold", "n": int(len(te)),
+                                "mae": float(np.abs(y[te] - r["candidates"][name]["raw"]).mean()),
+                                "zero_mae": float(np.abs(y[te]).mean())})
+            if name != "current_full":
+                comparisons += ci_pair(err_raw - np.abs(y_dev - ref["raw"]), f"{name} - current_full", "mae_return_raw")
+                comparisons += ci_pair(err_cal - np.abs(y_dev - ref["calibrated"]), f"{name} - current_full", "mae_return_calibrated")
+            comparisons += ci_pair(err_cal - zero, f"{name} - hold_current", "mae_return_calibrated")
+
+        # 성분별 raw 예측력(진단, 채택 근거 아님): 각 성분을 그 성분의 '0 유지'와 로그 수익률 MAE 로 비교한다.
+        leg_table = {}
+        for leg in R02_LEGS:
+            recs = leg_records[leg]
+            name = f"{leg}_leg"
+            lab = leg_values[leg][test_idx]
+            raw = np.concatenate([r["candidates"][name]["raw"] for r in recs])
+            cal = np.concatenate([r["candidates"][name]["slope"] * r["candidates"][name]["raw"] for r in recs])
+            corr = float(np.corrcoef(raw, lab)[0, 1]) if np.std(raw) > 0 else float("nan")
+            metrics.append({"target": target, "horizon": horizon, "candidate": name, "fold": "dev_all",
+                            "evaluation_stage": "dev_common_leg", "n": int(len(lab)),
+                            "mae": float(np.abs(lab - raw).mean()), "mae_calibrated": float(np.abs(lab - cal).mean()),
+                            "zero_mae": float(np.abs(lab).mean()), "n_features": len(base_cols),
+                            "mean_slope": float(np.mean([r["candidates"][name]["slope"] for r in recs])), "corr_raw": corr,
+                            "metric_note": "로그 수익률 단위(성분 진단)"})
+            leg_cmp = ci_pair(np.abs(lab - raw) - np.abs(lab), f"{name} - hold_zero", "mae_logret_raw")
+            leg_cmp += ci_pair(np.abs(lab - cal) - np.abs(lab), f"{name} - hold_zero", "mae_logret_calibrated")
+            comparisons += leg_cmp
+            leg_table[leg] = {"zero_mae": float(np.abs(lab).mean()), "raw_mae": float(np.abs(lab - raw).mean()),
+                              "calibrated_mae": float(np.abs(lab - cal).mean()), "corr_raw": corr,
+                              "mean_slope": float(np.mean([r["candidates"][name]["slope"] for r in recs])),
+                              "raw_minus_zero_month_ci": [leg_cmp[0]["delta"], leg_cmp[0]["ci_lo"], leg_cmp[0]["ci_hi"]],
+                              "calibrated_minus_zero_month_ci": [leg_cmp[2]["delta"], leg_cmp[2]["ci_lo"], leg_cmp[2]["ci_hi"]],
+                              "share_of_label_variance": float(np.var(lab) / max(np.var(np.log1p(y_dev)), 1e-18))}
+
+        raw_dir = Path(storage) / target
+        raw_dir.mkdir(parents=True, exist_ok=True)
+        oof_frame = pd.DataFrame({"prediction_date": dates_dev, "y": y_dev,
+                                  "log_overnight_h": leg_values["overnight"][test_idx],
+                                  "log_intraday_h": leg_values["intraday"][test_idx],
+                                  **{f"raw_{n}": p_["raw"] for n, p_ in preds.items()},
+                                  **{f"cal_{n}": p_["calibrated"] for n, p_ in preds.items()}})
+        oof_path = raw_dir / f"R02_h{horizon}_{mode}_oof.csv"
+        oof_frame.to_csv(oof_path, index=False, lineterminator="\n")
+
+        def month_delta(label):
+            return next(c for c in comparisons if c["comparison"] == label
+                        and c["metric"] == "mae_return_calibrated" and c["block"] == "month")
+        delta_d, delta_dec = month_delta("full_plus_D - current_full"), month_delta("decomposed - current_full")
+        summary = {
+            "target": target, "horizon": horizon, "group_d_columns": d_cols,
+            "group_d_assets_available": {k: v is not None for k, v in bars.items()},
+            "n_common_rows": int(len(reg)), "rows_excluded_by_group_d": int(len(reg_base) - len(reg)),
+            "dev_folds": [r["fold"] for r in records], "n_dev_rows": int(len(y_dev)),
+            "lock_start": str(lock_start.date()), "purge_violations": violations,
+            "leg_identity_max_abs_error": identity_error,
+            "full_plus_D_vs_current_calibrated_month_ci": [delta_d["delta"], delta_d["ci_lo"], delta_d["ci_hi"]],
+            "decomposed_vs_current_calibrated_month_ci": [delta_dec["delta"], delta_dec["ci_lo"], delta_dec["ci_hi"]],
+            "verdict_r02a": verdict_for_price(delta_d), "verdict_r02b": verdict_for_price(delta_dec),
+            "legs": leg_table, "oof_file": str(oof_path), "oof_sha256": file_sha256(oof_path),
+        }
+        write_json(state.run_dir / f"summary_{target}_h{horizon}.json", summary)
+        save_unit_rows(state, target, horizon, metrics, comparisons)
+        state.mark(unit, {"oof_sha256": summary["oof_sha256"], "oof_file": summary["oof_file"],
+                          "verdict_r02a": summary["verdict_r02a"], "verdict_r02b": summary["verdict_r02b"],
+                          "purge_violations": len(violations)})
+        print(f"  {unit}: 그룹 D {len(d_cols)}열 · 공통 {len(reg)}행(제외 {len(reg_base) - len(reg)}) · 개발 {len(records)}폴드 · "
+              f"R02a full_plus_D−현행(보정) {delta_d['delta']:+.5f} [{delta_d['ci_lo']:+.5f}, {delta_d['ci_hi']:+.5f}] {summary['verdict_r02a']} · "
+              f"R02b decomposed−현행(보정) {delta_dec['delta']:+.5f} [{delta_dec['ci_lo']:+.5f}, {delta_dec['ci_hi']:+.5f}] {summary['verdict_r02b']} · "
+              f"항등식 오차 {identity_error:.1e} · purge {len(violations)}")
+    return collect_rows(state, target)
+
+
 def verdict_for_price(delta):
     """가격 MAE 비교 판정. 작을수록 좋으므로 CI 상한 < 0 이면 우위다."""
     lo, hi = delta["ci_lo"], delta["ci_hi"]
@@ -2134,9 +2407,9 @@ def verdict_for_price(delta):
 
 
 TASK_RUNNERS = {"M00": run_m00, "M01": run_m01, "M02": run_m02, "M03": run_m03, "M04": run_m04,
-                "M05": run_m05, "M06": run_m06, "M07": run_m07, "R07": run_r07}
+                "M05": run_m05, "M06": run_m06, "M07": run_m07, "R07": run_r07, "R02": run_r02}
 TASK_CONFIGS = {"M00": m00_config, "M01": m01_config, "M02": m02_config, "M03": m03_config, "M04": m04_config,
-                "M05": m05_config, "M06": m06_config, "M07": m07_config, "R07": r07_config}
+                "M05": m05_config, "M06": m06_config, "M07": m07_config, "R07": r07_config, "R02": r02_config}
 
 
 def execute(task, target, mode, storage, results_dir, resume, run_notebook_fn=None):

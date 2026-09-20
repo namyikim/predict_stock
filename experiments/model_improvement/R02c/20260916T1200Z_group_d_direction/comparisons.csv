@@ -1,0 +1,23 @@
+target,comparison,metric,delta,ci_low,ci_high,common_n,verdict
+samsung,current + D − current (market only),log_loss,-0.0002595142992405,-0.004641233802271,0.0038912411156904,1367,동률(CI가 0 포함)
+samsung,current + D − current (market only),balanced_accuracy,0.0052915247267026,-0.0110782168507092,0.0218834591334948,1367,동률(CI가 0 포함)
+samsung,current + D − current (market only),accuracy,0.0058522311631309,-0.0102204786863457,0.0225618631732169,1367,동률(CI가 0 포함)
+samsung,current + D − current (market only),auc_gap,0.0001328998752784,-0.004733641813365,0.0047243133565923,1367,동률(CI가 0 포함)
+samsung,current + D − current (market only),auc_session,0.0030873836020894,-0.0043883659329103,0.0100196485871666,1367,동률(CI가 0 포함)
+samsung,current + D − 사전확률,log_loss,-0.068349920690508,-0.0853359785548221,-0.0501288996969569,1367,후보가 유의하게 우위
+samsung,current + D − 사전확률,balanced_accuracy,0.1048097616787082,0.0775229006792746,0.1304604155991336,1367,후보가 유의하게 우위
+samsung,current + D − 사전확률,accuracy,0.1777615215801024,0.1335703673619117,0.2209119436727439,1367,후보가 유의하게 우위
+samsung,current (market only) − 노트북 OOF(재현 확인),log_loss,0.0,0.0,0.0,1367,동률(CI가 0 포함)
+samsung,current (market only) − 노트북 OOF(재현 확인),balanced_accuracy,0.0,0.0,0.0,1367,동률(CI가 0 포함)
+samsung,current (market only) − 노트북 OOF(재현 확인),accuracy,0.0,0.0,0.0,1367,동률(CI가 0 포함)
+sk_hynix,current + D − current (market only),log_loss,0.0030548706438489,-0.0016965957923069,0.0082410022020915,1362,동률(CI가 0 포함)
+sk_hynix,current + D − current (market only),balanced_accuracy,-0.0072456199044379,-0.0215552466410162,0.0071305914665863,1362,동률(CI가 0 포함)
+sk_hynix,current + D − current (market only),accuracy,-0.0073421439060205,-0.0221611100173667,0.0067979690155082,1362,동률(CI가 0 포함)
+sk_hynix,current + D − current (market only),auc_gap,-0.0050708858060879,-0.013854048255199,0.0039225337568207,1362,동률(CI가 0 포함)
+sk_hynix,current + D − current (market only),auc_session,-0.002782060894126,-0.0097021200883532,0.0036959583581559,1362,동률(CI가 0 포함)
+sk_hynix,current + D − 사전확률,log_loss,-0.0747777729563377,-0.0907772278603427,-0.0586401352248976,1362,후보가 유의하게 우위
+sk_hynix,current + D − 사전확률,balanced_accuracy,0.1245879271290159,0.0999260140216672,0.1496526800792495,1362,후보가 유의하게 우위
+sk_hynix,current + D − 사전확률,accuracy,0.2180616740088105,0.1706770373030988,0.2629319003299665,1362,후보가 유의하게 우위
+sk_hynix,current (market only) − 노트북 OOF(재현 확인),log_loss,0.0,0.0,0.0,1362,동률(CI가 0 포함)
+sk_hynix,current (market only) − 노트북 OOF(재현 확인),balanced_accuracy,0.0,0.0,0.0,1362,동률(CI가 0 포함)
+sk_hynix,current (market only) − 노트북 OOF(재현 확인),accuracy,0.0,0.0,0.0,1362,동률(CI가 0 포함)

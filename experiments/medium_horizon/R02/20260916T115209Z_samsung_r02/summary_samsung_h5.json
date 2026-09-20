@@ -1,0 +1,97 @@
+{
+  "target": "samsung",
+  "horizon": 5,
+  "group_d_columns": [
+    "sam_ovn_5",
+    "sam_intra_5",
+    "sam_ovn_minus_intra_5",
+    "sam_ovn_20",
+    "sam_intra_20",
+    "sam_ovn_minus_intra_20",
+    "sam_ovn_60",
+    "sam_intra_60",
+    "sam_ovn_minus_intra_60",
+    "kospi_ovn_5",
+    "kospi_intra_5",
+    "kospi_ovn_minus_intra_5",
+    "kospi_ovn_20",
+    "kospi_intra_20",
+    "kospi_ovn_minus_intra_20",
+    "kospi_ovn_60",
+    "kospi_intra_60",
+    "kospi_ovn_minus_intra_60"
+  ],
+  "group_d_assets_available": {
+    "sam": true,
+    "kospi": true
+  },
+  "n_common_rows": 2281,
+  "rows_excluded_by_group_d": 0,
+  "dev_folds": [
+    "dev_01",
+    "dev_02",
+    "dev_03",
+    "dev_04",
+    "dev_05",
+    "dev_06",
+    "dev_07",
+    "dev_08",
+    "dev_09"
+  ],
+  "n_dev_rows": 1086,
+  "lock_start": "2025-09-04",
+  "purge_violations": [],
+  "leg_identity_max_abs_error": 6.158268339717665e-16,
+  "full_plus_D_vs_current_calibrated_month_ci": [
+    -4.383092405738625e-05,
+    -0.00010444293835596009,
+    1.283726406928752e-05
+  ],
+  "decomposed_vs_current_calibrated_month_ci": [
+    -5.202440343584033e-05,
+    -9.239347606296538e-05,
+    -1.805784064485607e-05
+  ],
+  "verdict_r02a": "동률(CI가 0 포함)",
+  "verdict_r02b": "후보가 유의하게 우위",
+  "legs": {
+    "overnight": {
+      "zero_mae": 0.019068792425877473,
+      "raw_mae": 0.01880441797767917,
+      "calibrated_mae": 0.018844169293500978,
+      "corr_raw": 0.0896698356109014,
+      "mean_slope": 0.6797996301423832,
+      "raw_minus_zero_month_ci": [
+        -0.00026437444819830166,
+        -0.0009201950285416073,
+        0.0004460774865278624
+      ],
+      "calibrated_minus_zero_month_ci": [
+        -0.00022462313237649678,
+        -0.0006744851127790275,
+        0.0002855152717861691
+      ],
+      "share_of_label_variance": 0.5064872225821402
+    },
+    "intraday": {
+      "zero_mae": 0.020195325514617155,
+      "raw_mae": 0.01992584240221348,
+      "calibrated_mae": 0.019971297563772604,
+      "corr_raw": 0.047640005943144485,
+      "mean_slope": 0.6807450027421458,
+      "raw_minus_zero_month_ci": [
+        -0.00026948311240367664,
+        -0.000644148470054383,
+        6.234310857518589e-05
+      ],
+      "calibrated_minus_zero_month_ci": [
+        -0.0002240279508445527,
+        -0.0005723039515207226,
+        9.538412716138134e-05
+      ],
+      "share_of_label_variance": 0.5749200914538629
+    }
+  },
+  "oof_file": "D:\\SourceCode\\predict_stock\\runs\\medium_horizon\\samsung\\R02_h5_full_oof.csv",
+  "oof_sha256": "a0cd95a5fdd860101e85fb3629c540e46b30f51342d63816a50c5a4d5c1f56be"
+}

@@ -8,7 +8,8 @@
 | `afternoon-report.yml` | 평일 09:37 (Cloudflare 정시 호출 + GitHub cron 백업) | 실제 시가로 시초가예측 채점 |
 | `afternoon-report.yml` | 평일 16:10 (정시 호출) 및 16:25·17:52·22:52 백업 | 실제 종가로 나머지 예측 채점, 장 마감 회고 |
 | `watchdog.yml` | 평일 09:20 | 최신 거래일의 사전 예측 누락 감시 |
-| `monthly-longterm.yml` | 매달 7일 07:00 | 장기 전망 갱신 |
+| `monthly-longterm.yml` | 매주 월요일 07:00 + 매달 7일 07:00 | 장기 전망·영업이익 추정 갱신 |
+| `macro-report.yml` | 평일 07:40 및 3시간 간격 | 거시 경제 페이지 갱신 |
 | `tests.yml` | 코드 push·PR | 전체 테스트 |
 | `transformer-experiment.yml` | 수동 실행 | Transformer 비교 실험 |
 

@@ -53,6 +53,7 @@ TASKS = {
     "P10": "국내 관련 종목 공동 학습 기반",
     "P10b": "해외 자산 특징을 넣은 pooled 패널 vs 대표 모델",
     "R02c": "누적 야간/장중 특징 그룹 D 를 다음 날 방향 대표 모델에 더했을 때(같은 날짜, 갭·세션 AUC 병기)",
+    "P16": "시가 확정 후(09:37) 종가 방향 재예측 — 모델이 아니라 정보 마감 시각을 옮긴다",
 }
 
 # P03에서 비교하는 특징군. 노트북이 같은 폴드·같은 날짜로 이미 계산해 CSV로 남기므로
@@ -1837,9 +1838,267 @@ def run_r02c(target, mode, storage, state, run_notebook_fn=None):
     return rows
 
 
+# ---------------------------------------------------------------------------
+# P16 — 시가 확정 후(09:37) 종가 방향 재예측
+# ---------------------------------------------------------------------------
+# P09·P10b·R02c 는 모두 "07:00 에 무엇을 더 넣을까"를 물었고 전부 동률이었다. P16 은 **모델이 아니라
+# 정보 마감 시각**을 바꾼다: 09:00 시가가 확정된 뒤 같은 타깃(전일 종가→당일 종가)을 다시 묻는다.
+# 그러면 라벨의 갭 성분이 예측 대상이 아니라 **관측값**이 된다. 얻는 것이 있어도 그것은 더 나은
+# 모델이 아니라 늦은 정보 시점의 결과이고, decision.md 는 그 사실을 먼저 적어야 한다.
+P16_T0700 = "t0700"
+P16_T0900 = "t0900"
+P16_GAP_RULE = "gap_rule"
+P16_LABEL_TARGETS = ("close_to_close", "session")
+P16_GAP_Z_WINDOW = 60
+P16_GAP_COLUMNS = ("gap_0", "gap_over_band", "gap_z60", "gap_abs", "gap_up_band", "gap_down_band")
+
+
+def p16_gap_features(bars, band, calendar, window=P16_GAP_Z_WINDOW):
+    """그룹 G — 실현 갭. 행 d 가 쓰는 d일 정보는 **시가 하나뿐**이다.
+
+    gap_d = open_d / close_{d-1} − 1 (노트북 `sam_gap` 과 같은 정의: 원본 종가 기준).
+    z 점수의 평균·표준편차는 `shift(1)` 이라 d−1 까지의 갭 분포만 보고, 밴드도 노트북이 이미
+    d−1 까지로 만든 값이다. d일 종가·고가·저가·거래량은 어느 열에도 들어가지 않는다.
+    봉이 없거나 시가가 없는 날짜는 NaN 으로 남긴다(앞 값을 끌어오지 않는다).
+    """
+    bars = bars.sort_index()
+    open_ = bars["open"].astype(float)
+    prev_close = bars["close"].astype(float).shift(1).replace(0, np.nan)
+    gap = open_ / prev_close - 1
+    mean = gap.rolling(window).mean().shift(1)
+    std = gap.rolling(window).std().shift(1).replace(0, np.nan)
+    b = pd.Series(band, dtype=float).reindex(bars.index)
+    both = gap.notna() & b.notna()
+    out = pd.DataFrame(index=bars.index)
+    out["gap_0"] = gap
+    out["gap_over_band"] = gap / b.replace(0, np.nan)
+    out["gap_z60"] = (gap - mean) / std
+    out["gap_abs"] = gap.abs()
+    out["gap_up_band"] = (gap > b).astype(float).where(both)
+    out["gap_down_band"] = (gap < -b).astype(float).where(both)
+    return out.reindex(pd.DatetimeIndex(calendar))[list(P16_GAP_COLUMNS)]
+
+
+def gap_rule_labels(gap, band):
+    """모델 없는 트리비얼 기준: 갭 > 밴드면 상승(2), 갭 < −밴드면 하락(0), 아니면 보합(1)."""
+    g, b = np.asarray(gap, dtype=float), np.asarray(band, dtype=float)
+    out = np.where(g > b, 2., np.where(g < -b, 0., 1.))
+    out[~np.isfinite(g) | ~np.isfinite(b)] = np.nan
+    return out
+
+
+def gap_rule_probabilities(rule_train, y_train, rule_test, alpha=1., min_bucket=20):
+    """규칙 버킷별 **학습 구간** 조건부 분포(라플라스 평활). 외부 라벨은 보지 않는다.
+
+    규칙 자체는 확률이 없어 log_loss 를 낼 수 없다. 버킷이 세 개뿐인 범주형 분류기로 보고
+    학습 구간의 P(y | 버킷)을 확률로 쓴다. 표본이 적은 버킷은 학습 구간 사전확률로 되돌린다.
+    y_pred 는 이 확률의 argmax 가 아니라 **규칙이 말한 방향** 그대로다(정의에 충실하게).
+    """
+    rule_train, rule_test = np.asarray(rule_train, dtype=int), np.asarray(rule_test, dtype=int)
+    y_train = np.asarray(y_train, dtype=int)
+    prior = np.bincount(y_train, minlength=3) + alpha
+    prior = prior / prior.sum()
+    table = {}
+    for bucket in (0, 1, 2):
+        mask = rule_train == bucket
+        if int(mask.sum()) < min_bucket:
+            table[bucket] = prior
+            continue
+        counts = np.bincount(y_train[mask], minlength=3) + alpha
+        table[bucket] = counts / counts.sum()
+    return np.vstack([table[int(b)] for b in rule_test]), {str(k): [float(v) for v in table[k]] for k in table}
+
+
+def run_p16(target, mode, storage, state, run_notebook_fn=None):
+    """같은 12폴드·같은 날짜에서 t0700(현행 07:00 특징) vs t0900(+ 실현 갭 그룹 G)을 재학습해 쌍체 비교한다.
+
+    타깃은 보고서와 같은 종가→종가가 1순위이고, 세션(시가→종가)은 진단용 2순위다. 세션에서
+    이득이 없고 종가→종가에서만 이득이 나면 그 이득은 **관측된 갭**에서 온 것이지 더 나은 모델이
+    아니다. 모델 없는 `gap_rule`(갭 부호만 읽는 규칙)을 같은 날짜에 함께 채점해 그 사실을 드러낸다.
+    """
+    import time
+
+    unit = f"{target}:post_open"
+    if state.is_done(unit):
+        print(f"  이미 완료된 단위 건너뜀: {unit} (metrics.csv 유지)")
+        return None
+    if run_notebook_fn is None:
+        sys.path.insert(0, str(ROOT / "tools"))
+        from run_notebook import run_notebook as run_notebook_fn
+
+    snapshot = snapshot_paths(storage, target)
+    ns = run_notebook_fn(Path(storage) / target, targets=target,
+                         quick=(mode == "quick"), use_cache=bool(snapshot))[target]
+    features, dates, folds = ns["market_X"], pd.DatetimeIndex(ns["dates"]), ns["folds"]
+    dates = dates.tz_localize(None).normalize() if dates.tz is not None else dates.normalize()
+    headline = ns.get("HEADLINE_MODEL", "No macro ensemble")
+    vol_mult = float(ns.get("VOL_BAND_MULT", .3))
+    min_prob = issue_min_prob()
+    boot = 400 if mode == "quick" else 2000
+
+    bars = ns["raw"]["target"][["open", "close"]].astype(float).copy()
+    bars.index = pd.DatetimeIndex(bars.index).tz_localize(None).normalize()
+    bars = bars.sort_index()
+    feat = ns["feat"]
+    feat_index = pd.DatetimeIndex(feat.index)
+    band_all = pd.Series(np.asarray(feat["band"], dtype=float),
+                         index=feat_index.tz_localize(None).normalize() if feat_index.tz is not None
+                         else feat_index.normalize())
+    band_all = band_all[~band_all.index.duplicated(keep="last")]
+
+    gap_frame = p16_gap_features(bars, band_all.reindex(bars.index), bars.index)
+    G = gap_frame.reindex(dates)
+    valid_g = G.notna().all(axis=1).to_numpy()
+    has_bar = pd.Index(dates).isin(bars.index)
+    missing_bar = int((~has_bar).sum())
+    no_open = int(bars["open"].reindex(dates).isna().to_numpy()[has_bar].sum())
+    X_0700 = np.asarray(features, dtype=np.float32)
+    X_0900 = np.hstack([X_0700, G.to_numpy(dtype=np.float32)])
+
+    legs = decompose_returns(bars).reindex(dates)          # 갭·세션은 평가에, 갭만 특징으로(그룹 G)
+    band_cc = band_all.reindex(dates)
+    rule = gap_rule_labels(legs["gap"].to_numpy(), band_cc.to_numpy())
+    session_band = legs["session"].rolling(20).std().shift(1) * vol_mult
+    labels = {"close_to_close": np.asarray(ns["y"], dtype=float),
+              "session": leg_labels(legs["session"].to_numpy(), session_band.to_numpy())}
+
+    rows, comparisons, selective, detail = [], [], [], {}
+    for leg_target in P16_LABEL_TARGETS:
+        y_leg = labels[leg_target]
+        valid = valid_g & np.isfinite(y_leg)
+        y_int = np.where(valid, y_leg, 1).astype(int)
+        frames, fold_info, skipped = [], [], []
+        timing = {P16_T0700: 0., P16_T0900: 0.}
+        for fold in folds:
+            tr = fold["train_idx"][valid[fold["train_idx"]]]
+            te = fold["test_idx"][valid[fold["test_idx"]]]
+            if len(tr) < MIN_TRAIN_ROWS or len(te) < 20 or len(np.unique(y_int[tr])) < 3:
+                skipped.append({"fold": fold["fold"], "train_rows": int(len(tr)), "test_rows": int(len(te))})
+                continue
+            for name, X in ((P16_T0700, X_0700), (P16_T0900, X_0900)):
+                started = time.time()
+                probs = _ensemble_probabilities(ns, X, y_int, tr, te)
+                timing[name] += time.time() - started
+                frames.append(ns["prediction_frame"](name, dates[te], y_int[te], probs, fold["fold"]))
+            if leg_target == "close_to_close":
+                probs, _ = gap_rule_probabilities(rule[tr], y_int[tr], rule[te])
+                frames.append(ns["prediction_frame"](P16_GAP_RULE, dates[te], y_int[te], probs, fold["fold"],
+                                                     y_pred=rule[te].astype(int)))
+            fold_info.append({"fold": fold["fold"], "train_rows": int(len(tr)), "test_rows": int(len(te)),
+                              "train_rows_dropped": int(len(fold["train_idx"]) - len(tr)),
+                              "test_rows_dropped": int(len(fold["test_idx"]) - len(te))})
+            print(f"  [{leg_target}] 폴드 {fold['fold']}: 학습 {len(tr):,} · 시험 {len(te)}"
+                  f" (제외 학습 {fold_info[-1]['train_rows_dropped']} / 시험 {fold_info[-1]['test_rows_dropped']})")
+        if not frames:
+            raise RuntimeError(f"{leg_target}: 학습 가능한 폴드가 없습니다.")
+        predictions = pd.concat(frames, ignore_index=True)
+
+        reference_models = []
+        if leg_target == "close_to_close":
+            nb = ns.get("predictions")
+            if nb is not None and len(nb):
+                keep = [m for m in (headline, "Always flat") if m in set(nb["model"])]
+                if keep:
+                    reference = nb[nb["model"].isin(keep)].copy()
+                    reference["date"] = pd.DatetimeIndex(reference["date"]).tz_localize(None).normalize()
+                    reference["model"] = reference["model"].map(
+                        {headline: f"notebook OOF ({headline})", "Always flat": "Always flat"})
+                    predictions = pd.concat([predictions, reference], ignore_index=True)
+                    reference_models = list(reference["model"].unique())
+        common_dates = None
+        for _, g in predictions.groupby("model"):
+            common_dates = set(g["date"]) if common_dates is None else common_dates & set(g["date"])
+        predictions = predictions[predictions["date"].isin(common_dates)].reset_index(drop=True)
+        metrics = ns["summarize_predictions"](predictions, with_ci=False)
+
+        scores, leg_auc = {}, {}
+        for model_name, g in predictions.groupby("model"):
+            g = g.sort_values("date")
+            score = (g["p_up"] - g["p_down"]).to_numpy()
+            scores[model_name] = pd.Series(score, index=pd.DatetimeIndex(g["date"]))
+            leg_auc[model_name] = {
+                "auc_gap": leg_sign_auc(score, legs["gap"].reindex(g["date"]).to_numpy()),
+                "auc_session": leg_sign_auc(score, legs["session"].reindex(g["date"]).to_numpy())}
+        for model_name, r in metrics.iterrows():
+            rows.append({"target": target, "model": model_name, "target_mode": leg_target, "fold": "all",
+                         **{k: r.get(k, "") for k in ("n", "accuracy", "balanced_accuracy", "log_loss", "brier")},
+                         **leg_auc.get(model_name, {}), "seconds": round(timing.get(model_name, 0.), 1),
+                         "n_features": (X_0900.shape[1] if model_name == P16_T0900 else
+                                        X_0700.shape[1] if model_name == P16_T0700 else "")})
+
+        pairs = [(P16_T0900, P16_T0700, f"{P16_T0900} − {P16_T0700}")]
+        if P16_GAP_RULE in set(predictions["model"]):
+            pairs.append((P16_T0900, P16_GAP_RULE, f"{P16_T0900} − {P16_GAP_RULE}"))
+            pairs.append((P16_T0700, P16_GAP_RULE, f"{P16_T0700} − {P16_GAP_RULE}"))
+        for name in (P16_T0700, P16_T0900, P16_GAP_RULE):
+            if "Always flat" in reference_models and name in set(predictions["model"]):
+                pairs.append((name, "Always flat", f"{name} − 사전확률"))
+        nb_name = f"notebook OOF ({headline})"
+        if nb_name in reference_models:
+            pairs.append((P16_T0700, nb_name, f"{P16_T0700} − 노트북 OOF(재현 확인)"))
+        for a, b_, label in pairs:
+            for metric in ("log_loss", "balanced_accuracy", "accuracy"):
+                d = ns["paired_delta_ci"](predictions, a, b_, metric)
+                comparisons.append({"target": target, "target_mode": leg_target, "comparison": label,
+                                    "metric": metric, "delta": d["delta"], "ci_low": d["lo"], "ci_high": d["hi"],
+                                    "common_n": d["n"], "verdict": verdict_for(metric, d["lo"], d["hi"])})
+            if b_ in (P16_T0700, P16_GAP_RULE):
+                common = scores[a].index.intersection(scores[b_].index)
+                for leg in ("gap", "session"):
+                    d = paired_leg_auc_delta(common, scores[a].reindex(common).to_numpy(),
+                                             scores[b_].reindex(common).to_numpy(),
+                                             legs[leg].reindex(common).to_numpy(), b=boot)
+                    comparisons.append({"target": target, "target_mode": leg_target, "comparison": label,
+                                        "metric": f"auc_{leg}", "delta": d["delta"], "ci_low": d["lo"],
+                                        "ci_high": d["hi"], "common_n": d["n"],
+                                        "verdict": verdict_for(f"auc_{leg}", d["lo"], d["hi"])})
+        for model_name in [m for m in (P16_T0700, P16_T0900, P16_GAP_RULE) if m in set(predictions["model"])] \
+                + [m for m in reference_models if m != "Always flat"]:
+            g = predictions[predictions["model"] == model_name].sort_values("date")
+            selective += [{"target_mode": leg_target, **row} for row in
+                          selective_rows(target, model_name, g[["p_down", "p_flat", "p_up"]].to_numpy(),
+                                         g["y_true"].to_numpy())]
+        argmax_agreement, logloss_gap = float("nan"), float("nan")
+        if nb_name in reference_models:
+            a = predictions[predictions["model"] == P16_T0700].sort_values("date")
+            b2 = predictions[predictions["model"] == nb_name].sort_values("date")
+            argmax_agreement = float(np.mean(a["y_pred"].to_numpy() == b2["y_pred"].to_numpy()))
+            logloss_gap = float(metrics.loc[P16_T0700, "log_loss"] - metrics.loc[nb_name, "log_loss"])
+        rule_agreement = float("nan")
+        if P16_GAP_RULE in set(predictions["model"]):
+            g = predictions[predictions["model"] == P16_GAP_RULE]
+            rule_agreement = float(np.mean(g["y_pred"].to_numpy()
+                                           == g[["p_down", "p_flat", "p_up"]].to_numpy().argmax(axis=1)))
+        detail[leg_target] = {
+            "common_evaluation_days": int(len(common_dates)), "folds": fold_info, "skipped_folds": skipped,
+            "timing_seconds": {k: round(v, 1) for k, v in timing.items()}, "leg_auc": leg_auc,
+            "rows_missing_group_g": int((~valid_g).sum()), "rows_missing_label": int((~np.isfinite(y_leg)).sum()),
+            "rows_excluded_total": int((~valid).sum()),
+            "argmax_agreement_t0700_vs_notebook": argmax_agreement,
+            "log_loss_gap_t0700_minus_notebook": logloss_gap,
+            "gap_rule_argmax_agreement": rule_agreement}
+
+    write_json(state.run_dir / f"p16_{target}.json", {
+        "headline_model": headline, "group_g_columns": list(P16_GAP_COLUMNS), "gap_z_window": P16_GAP_Z_WINDOW,
+        "n_t0700_features": int(X_0700.shape[1]), "n_t0900_features": int(X_0900.shape[1]),
+        "dates_without_bar": missing_bar, "dates_without_open": no_open,
+        "issue_min_prob": min_prob, "vol_band_mult": vol_mult, "by_label_target": detail,
+        "comparisons": comparisons, "selective": selective,
+        "note": "t0900 은 모델이 아니라 정보 마감 시각을 09:00(시가 확정) 이후로 옮긴 것이다. 행 d 가 쓰는 당일 정보는 "
+                "시가 하나뿐이고 종가·고가·저가·거래량은 들어가지 않는다. 그룹 G 결측 날짜는 두 후보 모두에서 제외(공통 행). "
+                "gap_rule 은 모델 없는 규칙이며 확률은 학습 구간 버킷별 조건부 분포다."})
+    write_metrics_named(state, comparisons, "comparisons.csv")
+    write_metrics_named(state, selective, "selective.csv")
+    state.mark(unit, {"label_targets": list(P16_LABEL_TARGETS),
+                      "evaluation_days": {k: v["common_evaluation_days"] for k, v in detail.items()},
+                      "argmax_agreement_t0700_vs_notebook":
+                          detail["close_to_close"]["argmax_agreement_t0700_vs_notebook"]})
+    return rows
+
+
 TASK_RUNNERS = {"P00": run_p00, "P03": run_p03, "P04": run_p04, "P05": run_p05,
                 "P06": run_p06, "P07": run_p07, "P08": run_p08, "P09": run_p09, "P10": run_p10,
-                "P10b": run_p10b, "R02c": run_r02c}
+                "P10b": run_p10b, "R02c": run_r02c, "P16": run_p16}
 
 
 # ---------------------------------------------------------------------------
@@ -1928,6 +2187,12 @@ def execute(task, target, mode, storage, resume, run_notebook_fn=None):
         config = {"task": "R02c", "mode": mode, "candidate": R02C_CANDIDATE, "reference": R02C_CURRENT,
                   "group_d": {"assets": sorted(R02C_ASSETS), "windows": [5, 20, 60],
                               "definition": "누적 야간 Π(open_t/close_{t-1})-1, 누적 장중 Π(close_t/open_t)-1, 둘의 차. 행 d 는 d-1 세션까지"},
+                  "headline": "No macro ensemble", "window": BASELINE_WINDOW, "issue_min_prob": issue_min_prob()}
+    elif task == "P16":
+        config = {"task": "P16", "mode": mode, "candidate": P16_T0900, "reference": P16_T0700,
+                  "trivial_baseline": P16_GAP_RULE, "label_targets": list(P16_LABEL_TARGETS),
+                  "group_g": {"columns": list(P16_GAP_COLUMNS), "z_window": P16_GAP_Z_WINDOW,
+                              "definition": "gap = open_d/close_{d-1} − 1. 행 d 의 당일 정보는 시가 하나뿐이다"},
                   "headline": "No macro ensemble", "window": BASELINE_WINDOW, "issue_min_prob": issue_min_prob()}
     else:
         config = {"mode": mode}

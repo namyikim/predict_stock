@@ -1,0 +1,64 @@
+{
+  "task_id": "P16",
+  "run_id": "20260920T0000Z_post_open_reforecast",
+  "target": [
+    "samsung",
+    "sk_hynix"
+  ],
+  "code_commit": "37ba02658d281efce413553c5e239feaaf4474dc",
+  "data_hash": "samsung 3d1a03863c448ec5d1aa / sk_hynix fa4dfc966108ea6024bb",
+  "config_hash": "81b15ab0e0b1359768f7",
+  "seed": 42,
+  "mode": "full",
+  "target_mode": "close_to_close (1순위) · session (진단)",
+  "classes": [
+    "down",
+    "flat",
+    "up"
+  ],
+  "status": "completed",
+  "completed_units": [
+    "samsung:post_open",
+    "sk_hynix:post_open"
+  ],
+  "failed_units": [],
+  "baseline_run": "experiments/model_improvement/P00/20260910T0100Z_baseline_full",
+  "source_runs": {
+    "samsung": "P16\\20260920T001457Z_samsung_p16",
+    "sk_hynix": "P16\\20260920T002909Z_sk_hynix_p16"
+  },
+  "config": {
+    "task": "P16",
+    "mode": "full",
+    "candidate": "t0900",
+    "reference": "t0700",
+    "trivial_baseline": "gap_rule",
+    "label_targets": [
+      "close_to_close",
+      "session"
+    ],
+    "group_g": {
+      "columns": [
+        "gap_0",
+        "gap_over_band",
+        "gap_z60",
+        "gap_abs",
+        "gap_up_band",
+        "gap_down_band"
+      ],
+      "z_window": 60,
+      "definition": "gap = open_d/close_{d-1} − 1. 행 d 의 당일 정보는 시가 하나뿐이다"
+    },
+    "headline": "No macro ensemble",
+    "window": "5y",
+    "issue_min_prob": 0.0
+  },
+  "artifact_paths": {
+    "metrics": "experiments\\model_improvement\\P16\\20260920T0000Z_post_open_reforecast\\metrics.csv",
+    "comparisons": "experiments\\model_improvement\\P16\\20260920T0000Z_post_open_reforecast\\comparisons.csv",
+    "selective": "experiments\\model_improvement\\P16\\20260920T0000Z_post_open_reforecast\\selective.csv"
+  },
+  "started_at_utc": "2026-09-20T00:14:57.920540+00:00",
+  "finished_at_utc": "2026-09-20T00:44:28.493546+00:00",
+  "note": "정보 마감 시각 비교다. t0700 은 현행 07:00 특징, t0900 은 같은 특징 + 실현 갭 그룹 G 6열. 행 d 의 당일 입력은 시가 하나뿐이다. gap_rule 은 모델 없는 규칙(확률은 학습 구간 버킷별 조건부 분포). t0900 의 이득은 더 나은 모델이 아니라 늦은 정보 시점의 결과다."
+}

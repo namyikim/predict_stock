@@ -1,0 +1,1748 @@
+{
+  "samsung": {
+    "headline_model": "No macro ensemble",
+    "group_g_columns": [
+      "gap_0",
+      "gap_over_band",
+      "gap_z60",
+      "gap_abs",
+      "gap_up_band",
+      "gap_down_band"
+    ],
+    "gap_z_window": 60,
+    "n_t0700_features": 61,
+    "n_t0900_features": 67,
+    "dates_without_bar": 0,
+    "dates_without_open": 0,
+    "issue_min_prob": 0.0,
+    "vol_band_mult": 0.3,
+    "by_label_target": {
+      "close_to_close": {
+        "common_evaluation_days": 1367,
+        "folds": [
+          {
+            "fold": 0,
+            "train_rows": 1203,
+            "test_rows": 123,
+            "train_rows_dropped": 0,
+            "test_rows_dropped": 0
+          },
+          {
+            "fold": 1,
+            "train_rows": 1205,
+            "test_rows": 125,
+            "train_rows_dropped": 0,
+            "test_rows_dropped": 0
+          },
+          {
+            "fold": 2,
+            "train_rows": 1205,
+            "test_rows": 108,
+            "train_rows_dropped": 0,
+            "test_rows_dropped": 0
+          },
+          {
+            "fold": 3,
+            "train_rows": 1191,
+            "test_rows": 125,
+            "train_rows_dropped": 0,
+            "test_rows_dropped": 0
+          },
+          {
+            "fold": 4,
+            "train_rows": 1214,
+            "test_rows": 123,
+            "train_rows_dropped": 0,
+            "test_rows_dropped": 0
+          },
+          {
+            "fold": 5,
+            "train_rows": 1219,
+            "test_rows": 121,
+            "train_rows_dropped": 0,
+            "test_rows_dropped": 0
+          },
+          {
+            "fold": 6,
+            "train_rows": 1217,
+            "test_rows": 121,
+            "train_rows_dropped": 0,
+            "test_rows_dropped": 0
+          },
+          {
+            "fold": 7,
+            "train_rows": 1217,
+            "test_rows": 123,
+            "train_rows_dropped": 0,
+            "test_rows_dropped": 0
+          },
+          {
+            "fold": 8,
+            "train_rows": 1215,
+            "test_rows": 117,
+            "train_rows_dropped": 0,
+            "test_rows_dropped": 0
+          },
+          {
+            "fold": 9,
+            "train_rows": 1211,
+            "test_rows": 107,
+            "train_rows_dropped": 0,
+            "test_rows_dropped": 0
+          },
+          {
+            "fold": 10,
+            "train_rows": 1193,
+            "test_rows": 120,
+            "train_rows_dropped": 0,
+            "test_rows_dropped": 0
+          },
+          {
+            "fold": 11,
+            "train_rows": 1190,
+            "test_rows": 54,
+            "train_rows_dropped": 0,
+            "test_rows_dropped": 0
+          }
+        ],
+        "skipped_folds": [],
+        "timing_seconds": {
+          "t0700": 29.6,
+          "t0900": 32.0
+        },
+        "leg_auc": {
+          "Always flat": {
+            "auc_gap": 0.4941792410394815,
+            "auc_session": 0.4622570311908547
+          },
+          "gap_rule": {
+            "auc_gap": 0.9379114784599971,
+            "auc_session": 0.4608836777954425
+          },
+          "notebook OOF (No macro ensemble)": {
+            "auc_gap": 0.8096797113005787,
+            "auc_session": 0.49511223408282234
+          },
+          "t0700": {
+            "auc_gap": 0.8096797113005787,
+            "auc_session": 0.49511223408282234
+          },
+          "t0900": {
+            "auc_gap": 0.9878626633135006,
+            "auc_session": 0.48115631387690205
+          }
+        },
+        "rows_missing_group_g": 1,
+        "rows_missing_label": 0,
+        "rows_excluded_total": 1,
+        "argmax_agreement_t0700_vs_notebook": 1.0,
+        "log_loss_gap_t0700_minus_notebook": 0.0,
+        "gap_rule_argmax_agreement": 0.6847110460863204
+      },
+      "session": {
+        "common_evaluation_days": 1367,
+        "folds": [
+          {
+            "fold": 0,
+            "train_rows": 1203,
+            "test_rows": 123,
+            "train_rows_dropped": 0,
+            "test_rows_dropped": 0
+          },
+          {
+            "fold": 1,
+            "train_rows": 1205,
+            "test_rows": 125,
+            "train_rows_dropped": 0,
+            "test_rows_dropped": 0
+          },
+          {
+            "fold": 2,
+            "train_rows": 1205,
+            "test_rows": 108,
+            "train_rows_dropped": 0,
+            "test_rows_dropped": 0
+          },
+          {
+            "fold": 3,
+            "train_rows": 1191,
+            "test_rows": 125,
+            "train_rows_dropped": 0,
+            "test_rows_dropped": 0
+          },
+          {
+            "fold": 4,
+            "train_rows": 1214,
+            "test_rows": 123,
+            "train_rows_dropped": 0,
+            "test_rows_dropped": 0
+          },
+          {
+            "fold": 5,
+            "train_rows": 1219,
+            "test_rows": 121,
+            "train_rows_dropped": 0,
+            "test_rows_dropped": 0
+          },
+          {
+            "fold": 6,
+            "train_rows": 1217,
+            "test_rows": 121,
+            "train_rows_dropped": 0,
+            "test_rows_dropped": 0
+          },
+          {
+            "fold": 7,
+            "train_rows": 1217,
+            "test_rows": 123,
+            "train_rows_dropped": 0,
+            "test_rows_dropped": 0
+          },
+          {
+            "fold": 8,
+            "train_rows": 1215,
+            "test_rows": 117,
+            "train_rows_dropped": 0,
+            "test_rows_dropped": 0
+          },
+          {
+            "fold": 9,
+            "train_rows": 1211,
+            "test_rows": 107,
+            "train_rows_dropped": 0,
+            "test_rows_dropped": 0
+          },
+          {
+            "fold": 10,
+            "train_rows": 1193,
+            "test_rows": 120,
+            "train_rows_dropped": 0,
+            "test_rows_dropped": 0
+          },
+          {
+            "fold": 11,
+            "train_rows": 1190,
+            "test_rows": 54,
+            "train_rows_dropped": 0,
+            "test_rows_dropped": 0
+          }
+        ],
+        "skipped_folds": [],
+        "timing_seconds": {
+          "t0700": 29.9,
+          "t0900": 32.2
+        },
+        "leg_auc": {
+          "t0700": {
+            "auc_gap": 0.35822650227974395,
+            "auc_session": 0.5315291657203423
+          },
+          "t0900": {
+            "auc_gap": 0.29909116931444113,
+            "auc_session": 0.5298044893633129
+          }
+        },
+        "rows_missing_group_g": 1,
+        "rows_missing_label": 20,
+        "rows_excluded_total": 20,
+        "argmax_agreement_t0700_vs_notebook": NaN,
+        "log_loss_gap_t0700_minus_notebook": NaN,
+        "gap_rule_argmax_agreement": NaN
+      }
+    },
+    "comparisons": [
+      {
+        "target": "samsung",
+        "target_mode": "close_to_close",
+        "comparison": "t0900 − t0700",
+        "metric": "log_loss",
+        "delta": -0.1026909473929386,
+        "ci_low": -0.12360505634774518,
+        "ci_high": -0.08178253552436408,
+        "common_n": 1367,
+        "verdict": "후보가 유의하게 우위"
+      },
+      {
+        "target": "samsung",
+        "target_mode": "close_to_close",
+        "comparison": "t0900 − t0700",
+        "metric": "balanced_accuracy",
+        "delta": 0.10693761189349205,
+        "ci_low": 0.08058654165061488,
+        "ci_high": 0.13499087658549364,
+        "common_n": 1367,
+        "verdict": "후보가 유의하게 우위"
+      },
+      {
+        "target": "samsung",
+        "target_mode": "close_to_close",
+        "comparison": "t0900 − t0700",
+        "metric": "accuracy",
+        "delta": 0.10972933430870518,
+        "ci_low": 0.08395231493740252,
+        "ci_high": 0.13758897660245367,
+        "common_n": 1367,
+        "verdict": "후보가 유의하게 우위"
+      },
+      {
+        "target": "samsung",
+        "target_mode": "close_to_close",
+        "comparison": "t0900 − t0700",
+        "metric": "auc_gap",
+        "delta": 0.1781829520129219,
+        "ci_low": 0.15304955509110715,
+        "ci_high": 0.20478135911370318,
+        "common_n": 1367,
+        "verdict": "후보가 유의하게 우위"
+      },
+      {
+        "target": "samsung",
+        "target_mode": "close_to_close",
+        "comparison": "t0900 − t0700",
+        "metric": "auc_session",
+        "delta": -0.013955920205920291,
+        "ci_low": -0.04013105491557204,
+        "ci_high": 0.014093571487060527,
+        "common_n": 1367,
+        "verdict": "동률(CI가 0 포함)"
+      },
+      {
+        "target": "samsung",
+        "target_mode": "close_to_close",
+        "comparison": "t0900 − gap_rule",
+        "metric": "log_loss",
+        "delta": -0.03586356782013811,
+        "ci_low": -0.04904130458152428,
+        "ci_high": -0.02094376922389306,
+        "common_n": 1367,
+        "verdict": "후보가 유의하게 우위"
+      },
+      {
+        "target": "samsung",
+        "target_mode": "close_to_close",
+        "comparison": "t0900 − gap_rule",
+        "metric": "balanced_accuracy",
+        "delta": -0.002581483734268919,
+        "ci_low": -0.024888749904869938,
+        "ci_high": 0.017251116279550244,
+        "common_n": 1367,
+        "verdict": "동률(CI가 0 포함)"
+      },
+      {
+        "target": "samsung",
+        "target_mode": "close_to_close",
+        "comparison": "t0900 − gap_rule",
+        "metric": "accuracy",
+        "delta": 0.019751280175566932,
+        "ci_low": -0.004507973540161403,
+        "ci_high": 0.04275392017106202,
+        "common_n": 1367,
+        "verdict": "동률(CI가 0 포함)"
+      },
+      {
+        "target": "samsung",
+        "target_mode": "close_to_close",
+        "comparison": "t0900 − gap_rule",
+        "metric": "auc_gap",
+        "delta": 0.04995118485350347,
+        "ci_low": 0.03929560436514074,
+        "ci_high": 0.06224173734588292,
+        "common_n": 1367,
+        "verdict": "후보가 유의하게 우위"
+      },
+      {
+        "target": "samsung",
+        "target_mode": "close_to_close",
+        "comparison": "t0900 − gap_rule",
+        "metric": "auc_session",
+        "delta": 0.020272636081459572,
+        "ci_low": 0.005763929559197659,
+        "ci_high": 0.034453764381714914,
+        "common_n": 1367,
+        "verdict": "후보가 유의하게 우위"
+      },
+      {
+        "target": "samsung",
+        "target_mode": "close_to_close",
+        "comparison": "t0700 − gap_rule",
+        "metric": "log_loss",
+        "delta": 0.0668273795728005,
+        "ci_low": 0.0454637546700856,
+        "ci_high": 0.09037294918861123,
+        "common_n": 1367,
+        "verdict": "후보가 유의하게 열위"
+      },
+      {
+        "target": "samsung",
+        "target_mode": "close_to_close",
+        "comparison": "t0700 − gap_rule",
+        "metric": "balanced_accuracy",
+        "delta": -0.10951909562776097,
+        "ci_low": -0.14172307274496326,
+        "ci_high": -0.07858388406296168,
+        "common_n": 1367,
+        "verdict": "후보가 유의하게 열위"
+      },
+      {
+        "target": "samsung",
+        "target_mode": "close_to_close",
+        "comparison": "t0700 − gap_rule",
+        "metric": "accuracy",
+        "delta": -0.08997805413313825,
+        "ci_low": -0.12511085197010738,
+        "ci_high": -0.05838018543167198,
+        "common_n": 1367,
+        "verdict": "후보가 유의하게 열위"
+      },
+      {
+        "target": "samsung",
+        "target_mode": "close_to_close",
+        "comparison": "t0700 − gap_rule",
+        "metric": "auc_gap",
+        "delta": -0.12823176715941842,
+        "ci_low": -0.15318422134604578,
+        "ci_high": -0.10387315584031044,
+        "common_n": 1367,
+        "verdict": "후보가 유의하게 열위"
+      },
+      {
+        "target": "samsung",
+        "target_mode": "close_to_close",
+        "comparison": "t0700 − gap_rule",
+        "metric": "auc_session",
+        "delta": 0.03422855628737986,
+        "ci_low": 0.003296645170326758,
+        "ci_high": 0.06356880447846949,
+        "common_n": 1367,
+        "verdict": "후보가 유의하게 우위"
+      },
+      {
+        "target": "samsung",
+        "target_mode": "close_to_close",
+        "comparison": "t0700 − 사전확률",
+        "metric": "log_loss",
+        "delta": -0.06809040639126751,
+        "ci_low": -0.08525226163855193,
+        "ci_high": -0.04951274796779088,
+        "common_n": 1367,
+        "verdict": "후보가 유의하게 우위"
+      },
+      {
+        "target": "samsung",
+        "target_mode": "close_to_close",
+        "comparison": "t0700 − 사전확률",
+        "metric": "balanced_accuracy",
+        "delta": 0.09951823695200551,
+        "ci_low": 0.07405211181323296,
+        "ci_high": 0.12502635724302677,
+        "common_n": 1367,
+        "verdict": "후보가 유의하게 우위"
+      },
+      {
+        "target": "samsung",
+        "target_mode": "close_to_close",
+        "comparison": "t0700 − 사전확률",
+        "metric": "accuracy",
+        "delta": 0.17190929041697145,
+        "ci_low": 0.12879289603680422,
+        "ci_high": 0.21340133005473041,
+        "common_n": 1367,
+        "verdict": "후보가 유의하게 우위"
+      },
+      {
+        "target": "samsung",
+        "target_mode": "close_to_close",
+        "comparison": "t0900 − 사전확률",
+        "metric": "log_loss",
+        "delta": -0.1707813537842061,
+        "ci_low": -0.19855348359600844,
+        "ci_high": -0.14041464991399535,
+        "common_n": 1367,
+        "verdict": "후보가 유의하게 우위"
+      },
+      {
+        "target": "samsung",
+        "target_mode": "close_to_close",
+        "comparison": "t0900 − 사전확률",
+        "metric": "balanced_accuracy",
+        "delta": 0.20645584884549756,
+        "ci_low": 0.1778541552005751,
+        "ci_high": 0.2356765000061045,
+        "common_n": 1367,
+        "verdict": "후보가 유의하게 우위"
+      },
+      {
+        "target": "samsung",
+        "target_mode": "close_to_close",
+        "comparison": "t0900 − 사전확률",
+        "metric": "accuracy",
+        "delta": 0.28163862472567663,
+        "ci_low": 0.23893114452084085,
+        "ci_high": 0.3217452450680655,
+        "common_n": 1367,
+        "verdict": "후보가 유의하게 우위"
+      },
+      {
+        "target": "samsung",
+        "target_mode": "close_to_close",
+        "comparison": "gap_rule − 사전확률",
+        "metric": "log_loss",
+        "delta": -0.134917785964068,
+        "ci_low": -0.16174665136420843,
+        "ci_high": -0.10844738699637786,
+        "common_n": 1367,
+        "verdict": "후보가 유의하게 우위"
+      },
+      {
+        "target": "samsung",
+        "target_mode": "close_to_close",
+        "comparison": "gap_rule − 사전확률",
+        "metric": "balanced_accuracy",
+        "delta": 0.20903733257976648,
+        "ci_low": 0.17821331394516302,
+        "ci_high": 0.24026384647494442,
+        "common_n": 1367,
+        "verdict": "후보가 유의하게 우위"
+      },
+      {
+        "target": "samsung",
+        "target_mode": "close_to_close",
+        "comparison": "gap_rule − 사전확률",
+        "metric": "accuracy",
+        "delta": 0.2618873445501097,
+        "ci_low": 0.2269715780549126,
+        "ci_high": 0.29615959417586424,
+        "common_n": 1367,
+        "verdict": "후보가 유의하게 우위"
+      },
+      {
+        "target": "samsung",
+        "target_mode": "close_to_close",
+        "comparison": "t0700 − 노트북 OOF(재현 확인)",
+        "metric": "log_loss",
+        "delta": 0.0,
+        "ci_low": 0.0,
+        "ci_high": 0.0,
+        "common_n": 1367,
+        "verdict": "동률(CI가 0 포함)"
+      },
+      {
+        "target": "samsung",
+        "target_mode": "close_to_close",
+        "comparison": "t0700 − 노트북 OOF(재현 확인)",
+        "metric": "balanced_accuracy",
+        "delta": 0.0,
+        "ci_low": 0.0,
+        "ci_high": 0.0,
+        "common_n": 1367,
+        "verdict": "동률(CI가 0 포함)"
+      },
+      {
+        "target": "samsung",
+        "target_mode": "close_to_close",
+        "comparison": "t0700 − 노트북 OOF(재현 확인)",
+        "metric": "accuracy",
+        "delta": 0.0,
+        "ci_low": 0.0,
+        "ci_high": 0.0,
+        "common_n": 1367,
+        "verdict": "동률(CI가 0 포함)"
+      },
+      {
+        "target": "samsung",
+        "target_mode": "session",
+        "comparison": "t0900 − t0700",
+        "metric": "log_loss",
+        "delta": -0.001628845528251599,
+        "ci_low": -0.003924515797389139,
+        "ci_high": 0.0009763719558897342,
+        "common_n": 1367,
+        "verdict": "동률(CI가 0 포함)"
+      },
+      {
+        "target": "samsung",
+        "target_mode": "session",
+        "comparison": "t0900 − t0700",
+        "metric": "balanced_accuracy",
+        "delta": 0.009601676268342962,
+        "ci_low": -0.003291238228546324,
+        "ci_high": 0.022366844596738707,
+        "common_n": 1367,
+        "verdict": "동률(CI가 0 포함)"
+      },
+      {
+        "target": "samsung",
+        "target_mode": "session",
+        "comparison": "t0900 − t0700",
+        "metric": "accuracy",
+        "delta": 0.012435991221653286,
+        "ci_low": -0.0014963966605103685,
+        "ci_high": 0.027517790162783544,
+        "common_n": 1367,
+        "verdict": "동률(CI가 0 포함)"
+      },
+      {
+        "target": "samsung",
+        "target_mode": "session",
+        "comparison": "t0900 − t0700",
+        "metric": "auc_gap",
+        "delta": -0.05913533296530282,
+        "ci_low": -0.07033305255020533,
+        "ci_high": -0.04947663171848131,
+        "common_n": 1367,
+        "verdict": "후보가 유의하게 열위"
+      },
+      {
+        "target": "samsung",
+        "target_mode": "session",
+        "comparison": "t0900 − t0700",
+        "metric": "auc_session",
+        "delta": -0.001724676357029331,
+        "ci_low": -0.010311533080974326,
+        "ci_high": 0.006396095193606059,
+        "common_n": 1367,
+        "verdict": "동률(CI가 0 포함)"
+      }
+    ],
+    "selective": [
+      {
+        "target_mode": "close_to_close",
+        "target": "samsung",
+        "model": "t0700",
+        "threshold": "none",
+        "selected": 1367,
+        "total": 1367,
+        "coverage": 1.0,
+        "selected_accuracy": 0.4542794440380395,
+        "overall_accuracy": 0.4542794440380395
+      },
+      {
+        "target_mode": "close_to_close",
+        "target": "samsung",
+        "model": "t0700",
+        "threshold": "0.5",
+        "selected": 334,
+        "total": 1367,
+        "coverage": 0.24433065106071689,
+        "selected_accuracy": 0.6796407185628742,
+        "overall_accuracy": 0.4542794440380395
+      },
+      {
+        "target_mode": "close_to_close",
+        "target": "samsung",
+        "model": "t0700",
+        "threshold": "0.6",
+        "selected": 80,
+        "total": 1367,
+        "coverage": 0.058522311631309436,
+        "selected_accuracy": 0.8,
+        "overall_accuracy": 0.4542794440380395
+      },
+      {
+        "target_mode": "close_to_close",
+        "target": "samsung",
+        "model": "t0700",
+        "threshold": "0.7",
+        "selected": 15,
+        "total": 1367,
+        "coverage": 0.010972933430870519,
+        "selected_accuracy": 0.8666666666666667,
+        "overall_accuracy": 0.4542794440380395
+      },
+      {
+        "target_mode": "close_to_close",
+        "target": "samsung",
+        "model": "t0900",
+        "threshold": "none",
+        "selected": 1367,
+        "total": 1367,
+        "coverage": 1.0,
+        "selected_accuracy": 0.5640087783467447,
+        "overall_accuracy": 0.5640087783467447
+      },
+      {
+        "target_mode": "close_to_close",
+        "target": "samsung",
+        "model": "t0900",
+        "threshold": "0.5",
+        "selected": 758,
+        "total": 1367,
+        "coverage": 0.5544989027066569,
+        "selected_accuracy": 0.6767810026385225,
+        "overall_accuracy": 0.5640087783467447
+      },
+      {
+        "target_mode": "close_to_close",
+        "target": "samsung",
+        "model": "t0900",
+        "threshold": "0.6",
+        "selected": 465,
+        "total": 1367,
+        "coverage": 0.3401609363569861,
+        "selected_accuracy": 0.7440860215053764,
+        "overall_accuracy": 0.5640087783467447
+      },
+      {
+        "target_mode": "close_to_close",
+        "target": "samsung",
+        "model": "t0900",
+        "threshold": "0.7",
+        "selected": 237,
+        "total": 1367,
+        "coverage": 0.1733723482077542,
+        "selected_accuracy": 0.8312236286919831,
+        "overall_accuracy": 0.5640087783467447
+      },
+      {
+        "target_mode": "close_to_close",
+        "target": "samsung",
+        "model": "gap_rule",
+        "threshold": "none",
+        "selected": 1367,
+        "total": 1367,
+        "coverage": 1.0,
+        "selected_accuracy": 0.5332845647403073,
+        "overall_accuracy": 0.5332845647403073
+      },
+      {
+        "target_mode": "close_to_close",
+        "target": "samsung",
+        "model": "gap_rule",
+        "threshold": "0.5",
+        "selected": 832,
+        "total": 1367,
+        "coverage": 0.6086320409656182,
+        "selected_accuracy": 0.65625,
+        "overall_accuracy": 0.5332845647403073
+      },
+      {
+        "target_mode": "close_to_close",
+        "target": "samsung",
+        "model": "gap_rule",
+        "threshold": "0.6",
+        "selected": 719,
+        "total": 1367,
+        "coverage": 0.5259692757863935,
+        "selected_accuracy": 0.6564673157162726,
+        "overall_accuracy": 0.5332845647403073
+      },
+      {
+        "target_mode": "close_to_close",
+        "target": "samsung",
+        "model": "gap_rule",
+        "threshold": "0.7",
+        "selected": 39,
+        "total": 1367,
+        "coverage": 0.02852962692026335,
+        "selected_accuracy": 0.5641025641025641,
+        "overall_accuracy": 0.5332845647403073
+      },
+      {
+        "target_mode": "close_to_close",
+        "target": "samsung",
+        "model": "notebook OOF (No macro ensemble)",
+        "threshold": "none",
+        "selected": 1367,
+        "total": 1367,
+        "coverage": 1.0,
+        "selected_accuracy": 0.4542794440380395,
+        "overall_accuracy": 0.4542794440380395
+      },
+      {
+        "target_mode": "close_to_close",
+        "target": "samsung",
+        "model": "notebook OOF (No macro ensemble)",
+        "threshold": "0.5",
+        "selected": 334,
+        "total": 1367,
+        "coverage": 0.24433065106071689,
+        "selected_accuracy": 0.6796407185628742,
+        "overall_accuracy": 0.4542794440380395
+      },
+      {
+        "target_mode": "close_to_close",
+        "target": "samsung",
+        "model": "notebook OOF (No macro ensemble)",
+        "threshold": "0.6",
+        "selected": 80,
+        "total": 1367,
+        "coverage": 0.058522311631309436,
+        "selected_accuracy": 0.8,
+        "overall_accuracy": 0.4542794440380395
+      },
+      {
+        "target_mode": "close_to_close",
+        "target": "samsung",
+        "model": "notebook OOF (No macro ensemble)",
+        "threshold": "0.7",
+        "selected": 15,
+        "total": 1367,
+        "coverage": 0.010972933430870519,
+        "selected_accuracy": 0.8666666666666667,
+        "overall_accuracy": 0.4542794440380395
+      },
+      {
+        "target_mode": "session",
+        "target": "samsung",
+        "model": "t0700",
+        "threshold": "none",
+        "selected": 1367,
+        "total": 1367,
+        "coverage": 1.0,
+        "selected_accuracy": 0.387710314557425,
+        "overall_accuracy": 0.387710314557425
+      },
+      {
+        "target_mode": "session",
+        "target": "samsung",
+        "model": "t0700",
+        "threshold": "0.5",
+        "selected": 6,
+        "total": 1367,
+        "coverage": 0.0043891733723482075,
+        "selected_accuracy": 0.16666666666666666,
+        "overall_accuracy": 0.387710314557425
+      },
+      {
+        "target_mode": "session",
+        "target": "samsung",
+        "model": "t0700",
+        "threshold": "0.6",
+        "selected": 0,
+        "total": 1367,
+        "coverage": 0.0,
+        "selected_accuracy": NaN,
+        "overall_accuracy": 0.387710314557425
+      },
+      {
+        "target_mode": "session",
+        "target": "samsung",
+        "model": "t0700",
+        "threshold": "0.7",
+        "selected": 0,
+        "total": 1367,
+        "coverage": 0.0,
+        "selected_accuracy": NaN,
+        "overall_accuracy": 0.387710314557425
+      },
+      {
+        "target_mode": "session",
+        "target": "samsung",
+        "model": "t0900",
+        "threshold": "none",
+        "selected": 1367,
+        "total": 1367,
+        "coverage": 1.0,
+        "selected_accuracy": 0.4001463057790783,
+        "overall_accuracy": 0.4001463057790783
+      },
+      {
+        "target_mode": "session",
+        "target": "samsung",
+        "model": "t0900",
+        "threshold": "0.5",
+        "selected": 7,
+        "total": 1367,
+        "coverage": 0.005120702267739576,
+        "selected_accuracy": 0.2857142857142857,
+        "overall_accuracy": 0.4001463057790783
+      },
+      {
+        "target_mode": "session",
+        "target": "samsung",
+        "model": "t0900",
+        "threshold": "0.6",
+        "selected": 0,
+        "total": 1367,
+        "coverage": 0.0,
+        "selected_accuracy": NaN,
+        "overall_accuracy": 0.4001463057790783
+      },
+      {
+        "target_mode": "session",
+        "target": "samsung",
+        "model": "t0900",
+        "threshold": "0.7",
+        "selected": 0,
+        "total": 1367,
+        "coverage": 0.0,
+        "selected_accuracy": NaN,
+        "overall_accuracy": 0.4001463057790783
+      }
+    ],
+    "note": "t0900 은 모델이 아니라 정보 마감 시각을 09:00(시가 확정) 이후로 옮긴 것이다. 행 d 가 쓰는 당일 정보는 시가 하나뿐이고 종가·고가·저가·거래량은 들어가지 않는다. 그룹 G 결측 날짜는 두 후보 모두에서 제외(공통 행). gap_rule 은 모델 없는 규칙이며 확률은 학습 구간 버킷별 조건부 분포다."
+  },
+  "sk_hynix": {
+    "headline_model": "No macro ensemble",
+    "group_g_columns": [
+      "gap_0",
+      "gap_over_band",
+      "gap_z60",
+      "gap_abs",
+      "gap_up_band",
+      "gap_down_band"
+    ],
+    "gap_z_window": 60,
+    "n_t0700_features": 58,
+    "n_t0900_features": 64,
+    "dates_without_bar": 0,
+    "dates_without_open": 0,
+    "issue_min_prob": 0.0,
+    "vol_band_mult": 0.3,
+    "by_label_target": {
+      "close_to_close": {
+        "common_evaluation_days": 1362,
+        "folds": [
+          {
+            "fold": 0,
+            "train_rows": 1207,
+            "test_rows": 123,
+            "train_rows_dropped": 0,
+            "test_rows_dropped": 0
+          },
+          {
+            "fold": 1,
+            "train_rows": 1209,
+            "test_rows": 125,
+            "train_rows_dropped": 0,
+            "test_rows_dropped": 0
+          },
+          {
+            "fold": 2,
+            "train_rows": 1209,
+            "test_rows": 103,
+            "train_rows_dropped": 0,
+            "test_rows_dropped": 0
+          },
+          {
+            "fold": 3,
+            "train_rows": 1190,
+            "test_rows": 125,
+            "train_rows_dropped": 0,
+            "test_rows_dropped": 0
+          },
+          {
+            "fold": 4,
+            "train_rows": 1213,
+            "test_rows": 123,
+            "train_rows_dropped": 0,
+            "test_rows_dropped": 0
+          },
+          {
+            "fold": 5,
+            "train_rows": 1215,
+            "test_rows": 121,
+            "train_rows_dropped": 0,
+            "test_rows_dropped": 0
+          },
+          {
+            "fold": 6,
+            "train_rows": 1213,
+            "test_rows": 121,
+            "train_rows_dropped": 0,
+            "test_rows_dropped": 0
+          },
+          {
+            "fold": 7,
+            "train_rows": 1213,
+            "test_rows": 123,
+            "train_rows_dropped": 0,
+            "test_rows_dropped": 0
+          },
+          {
+            "fold": 8,
+            "train_rows": 1211,
+            "test_rows": 117,
+            "train_rows_dropped": 0,
+            "test_rows_dropped": 0
+          },
+          {
+            "fold": 9,
+            "train_rows": 1206,
+            "test_rows": 107,
+            "train_rows_dropped": 0,
+            "test_rows_dropped": 0
+          },
+          {
+            "fold": 10,
+            "train_rows": 1188,
+            "test_rows": 120,
+            "train_rows_dropped": 0,
+            "test_rows_dropped": 0
+          },
+          {
+            "fold": 11,
+            "train_rows": 1185,
+            "test_rows": 54,
+            "train_rows_dropped": 0,
+            "test_rows_dropped": 0
+          }
+        ],
+        "skipped_folds": [],
+        "timing_seconds": {
+          "t0700": 29.3,
+          "t0900": 30.8
+        },
+        "leg_auc": {
+          "Always flat": {
+            "auc_gap": 0.49600141111737145,
+            "auc_session": 0.47593399442644746
+          },
+          "gap_rule": {
+            "auc_gap": 0.9450032232357226,
+            "auc_session": 0.4654376087479312
+          },
+          "notebook OOF (No macro ensemble)": {
+            "auc_gap": 0.8284934037876827,
+            "auc_session": 0.4894328839597685
+          },
+          "t0700": {
+            "auc_gap": 0.8284934037876827,
+            "auc_session": 0.4894328839597685
+          },
+          "t0900": {
+            "auc_gap": 0.9856705599293425,
+            "auc_session": 0.4827936606734473
+          }
+        },
+        "rows_missing_group_g": 1,
+        "rows_missing_label": 0,
+        "rows_excluded_total": 1,
+        "argmax_agreement_t0700_vs_notebook": 1.0,
+        "log_loss_gap_t0700_minus_notebook": 0.0,
+        "gap_rule_argmax_agreement": 0.631424375917768
+      },
+      "session": {
+        "common_evaluation_days": 1362,
+        "folds": [
+          {
+            "fold": 0,
+            "train_rows": 1207,
+            "test_rows": 123,
+            "train_rows_dropped": 0,
+            "test_rows_dropped": 0
+          },
+          {
+            "fold": 1,
+            "train_rows": 1209,
+            "test_rows": 125,
+            "train_rows_dropped": 0,
+            "test_rows_dropped": 0
+          },
+          {
+            "fold": 2,
+            "train_rows": 1209,
+            "test_rows": 103,
+            "train_rows_dropped": 0,
+            "test_rows_dropped": 0
+          },
+          {
+            "fold": 3,
+            "train_rows": 1190,
+            "test_rows": 125,
+            "train_rows_dropped": 0,
+            "test_rows_dropped": 0
+          },
+          {
+            "fold": 4,
+            "train_rows": 1213,
+            "test_rows": 123,
+            "train_rows_dropped": 0,
+            "test_rows_dropped": 0
+          },
+          {
+            "fold": 5,
+            "train_rows": 1215,
+            "test_rows": 121,
+            "train_rows_dropped": 0,
+            "test_rows_dropped": 0
+          },
+          {
+            "fold": 6,
+            "train_rows": 1213,
+            "test_rows": 121,
+            "train_rows_dropped": 0,
+            "test_rows_dropped": 0
+          },
+          {
+            "fold": 7,
+            "train_rows": 1213,
+            "test_rows": 123,
+            "train_rows_dropped": 0,
+            "test_rows_dropped": 0
+          },
+          {
+            "fold": 8,
+            "train_rows": 1211,
+            "test_rows": 117,
+            "train_rows_dropped": 0,
+            "test_rows_dropped": 0
+          },
+          {
+            "fold": 9,
+            "train_rows": 1206,
+            "test_rows": 107,
+            "train_rows_dropped": 0,
+            "test_rows_dropped": 0
+          },
+          {
+            "fold": 10,
+            "train_rows": 1188,
+            "test_rows": 120,
+            "train_rows_dropped": 0,
+            "test_rows_dropped": 0
+          },
+          {
+            "fold": 11,
+            "train_rows": 1185,
+            "test_rows": 54,
+            "train_rows_dropped": 0,
+            "test_rows_dropped": 0
+          }
+        ],
+        "skipped_folds": [],
+        "timing_seconds": {
+          "t0700": 28.7,
+          "t0900": 31.1
+        },
+        "leg_auc": {
+          "t0700": {
+            "auc_gap": 0.3173516677072388,
+            "auc_session": 0.5811088634573944
+          },
+          "t0900": {
+            "auc_gap": 0.32191241935565745,
+            "auc_session": 0.5829172030385763
+          }
+        },
+        "rows_missing_group_g": 1,
+        "rows_missing_label": 20,
+        "rows_excluded_total": 20,
+        "argmax_agreement_t0700_vs_notebook": NaN,
+        "log_loss_gap_t0700_minus_notebook": NaN,
+        "gap_rule_argmax_agreement": NaN
+      }
+    },
+    "comparisons": [
+      {
+        "target": "sk_hynix",
+        "target_mode": "close_to_close",
+        "comparison": "t0900 − t0700",
+        "metric": "log_loss",
+        "delta": -0.10010617764752783,
+        "ci_low": -0.1228026617281215,
+        "ci_high": -0.07909990572652757,
+        "common_n": 1362,
+        "verdict": "후보가 유의하게 우위"
+      },
+      {
+        "target": "sk_hynix",
+        "target_mode": "close_to_close",
+        "comparison": "t0900 − t0700",
+        "metric": "balanced_accuracy",
+        "delta": 0.07750216265194693,
+        "ci_low": 0.051460688008669375,
+        "ci_high": 0.10504142435532837,
+        "common_n": 1362,
+        "verdict": "후보가 유의하게 우위"
+      },
+      {
+        "target": "sk_hynix",
+        "target_mode": "close_to_close",
+        "comparison": "t0900 − t0700",
+        "metric": "accuracy",
+        "delta": 0.07635829662261384,
+        "ci_low": 0.05071656556674183,
+        "ci_high": 0.10410671987834079,
+        "common_n": 1362,
+        "verdict": "후보가 유의하게 우위"
+      },
+      {
+        "target": "sk_hynix",
+        "target_mode": "close_to_close",
+        "comparison": "t0900 − t0700",
+        "metric": "auc_gap",
+        "delta": 0.15717715614165984,
+        "ci_low": 0.13336028156579433,
+        "ci_high": 0.18308082236027381,
+        "common_n": 1362,
+        "verdict": "후보가 유의하게 우위"
+      },
+      {
+        "target": "sk_hynix",
+        "target_mode": "close_to_close",
+        "comparison": "t0900 − t0700",
+        "metric": "auc_session",
+        "delta": -0.006639223286321216,
+        "ci_low": -0.03197088272754504,
+        "ci_high": 0.017674564138967876,
+        "common_n": 1362,
+        "verdict": "동률(CI가 0 포함)"
+      },
+      {
+        "target": "sk_hynix",
+        "target_mode": "close_to_close",
+        "comparison": "t0900 − gap_rule",
+        "metric": "log_loss",
+        "delta": -0.02665770357602204,
+        "ci_low": -0.04022669592513236,
+        "ci_high": -0.013397412100746683,
+        "common_n": 1362,
+        "verdict": "후보가 유의하게 우위"
+      },
+      {
+        "target": "sk_hynix",
+        "target_mode": "close_to_close",
+        "comparison": "t0900 − gap_rule",
+        "metric": "balanced_accuracy",
+        "delta": 0.004230606398691217,
+        "ci_low": -0.019829828720239064,
+        "ci_high": 0.027979644421234923,
+        "common_n": 1362,
+        "verdict": "동률(CI가 0 포함)"
+      },
+      {
+        "target": "sk_hynix",
+        "target_mode": "close_to_close",
+        "comparison": "t0900 − gap_rule",
+        "metric": "accuracy",
+        "delta": 0.03157121879588842,
+        "ci_low": 0.007421726278499394,
+        "ci_high": 0.05501858736059473,
+        "common_n": 1362,
+        "verdict": "후보가 유의하게 우위"
+      },
+      {
+        "target": "sk_hynix",
+        "target_mode": "close_to_close",
+        "comparison": "t0900 − gap_rule",
+        "metric": "auc_gap",
+        "delta": 0.04066733669361988,
+        "ci_low": 0.03138156067542758,
+        "ci_high": 0.050686416413016876,
+        "common_n": 1362,
+        "verdict": "후보가 유의하게 우위"
+      },
+      {
+        "target": "sk_hynix",
+        "target_mode": "close_to_close",
+        "comparison": "t0900 − gap_rule",
+        "metric": "auc_session",
+        "delta": 0.01735605192551609,
+        "ci_low": 0.0033583369546237546,
+        "ci_high": 0.03224474495484385,
+        "common_n": 1362,
+        "verdict": "후보가 유의하게 우위"
+      },
+      {
+        "target": "sk_hynix",
+        "target_mode": "close_to_close",
+        "comparison": "t0700 − gap_rule",
+        "metric": "log_loss",
+        "delta": 0.07344847407150579,
+        "ci_low": 0.052249066498690926,
+        "ci_high": 0.09354127785456104,
+        "common_n": 1362,
+        "verdict": "후보가 유의하게 열위"
+      },
+      {
+        "target": "sk_hynix",
+        "target_mode": "close_to_close",
+        "comparison": "t0700 − gap_rule",
+        "metric": "balanced_accuracy",
+        "delta": -0.07327155625325571,
+        "ci_low": -0.10384740216488426,
+        "ci_high": -0.0445468420546596,
+        "common_n": 1362,
+        "verdict": "후보가 유의하게 열위"
+      },
+      {
+        "target": "sk_hynix",
+        "target_mode": "close_to_close",
+        "comparison": "t0700 − gap_rule",
+        "metric": "accuracy",
+        "delta": -0.04478707782672542,
+        "ci_low": -0.07658603446852695,
+        "ci_high": -0.014545454545454528,
+        "common_n": 1362,
+        "verdict": "후보가 유의하게 열위"
+      },
+      {
+        "target": "sk_hynix",
+        "target_mode": "close_to_close",
+        "comparison": "t0700 − gap_rule",
+        "metric": "auc_gap",
+        "delta": -0.11650981944803995,
+        "ci_low": -0.144566431600395,
+        "ci_high": -0.0902133773696326,
+        "common_n": 1362,
+        "verdict": "후보가 유의하게 열위"
+      },
+      {
+        "target": "sk_hynix",
+        "target_mode": "close_to_close",
+        "comparison": "t0700 − gap_rule",
+        "metric": "auc_session",
+        "delta": 0.023995275211837308,
+        "ci_low": -0.0031054602945790625,
+        "ci_high": 0.05397561833127624,
+        "common_n": 1362,
+        "verdict": "동률(CI가 0 포함)"
+      },
+      {
+        "target": "sk_hynix",
+        "target_mode": "close_to_close",
+        "comparison": "t0700 − 사전확률",
+        "metric": "log_loss",
+        "delta": -0.0778326436001866,
+        "ci_low": -0.09336849455691204,
+        "ci_high": -0.06272352310463765,
+        "common_n": 1362,
+        "verdict": "후보가 유의하게 우위"
+      },
+      {
+        "target": "sk_hynix",
+        "target_mode": "close_to_close",
+        "comparison": "t0700 − 사전확률",
+        "metric": "balanced_accuracy",
+        "delta": 0.13183354703345385,
+        "ci_low": 0.11025071861321888,
+        "ci_high": 0.1529899077626713,
+        "common_n": 1362,
+        "verdict": "후보가 유의하게 우위"
+      },
+      {
+        "target": "sk_hynix",
+        "target_mode": "close_to_close",
+        "comparison": "t0700 − 사전확률",
+        "metric": "accuracy",
+        "delta": 0.2254038179148311,
+        "ci_low": 0.1812907904278463,
+        "ci_high": 0.26808245681659904,
+        "common_n": 1362,
+        "verdict": "후보가 유의하게 우위"
+      },
+      {
+        "target": "sk_hynix",
+        "target_mode": "close_to_close",
+        "comparison": "t0900 − 사전확률",
+        "metric": "log_loss",
+        "delta": -0.17793882124771443,
+        "ci_low": -0.20437459775756117,
+        "ci_high": -0.15290929784764218,
+        "common_n": 1362,
+        "verdict": "후보가 유의하게 우위"
+      },
+      {
+        "target": "sk_hynix",
+        "target_mode": "close_to_close",
+        "comparison": "t0900 − 사전확률",
+        "metric": "balanced_accuracy",
+        "delta": 0.20933570968540077,
+        "ci_low": 0.18621306203499471,
+        "ci_high": 0.23263700413248453,
+        "common_n": 1362,
+        "verdict": "후보가 유의하게 우위"
+      },
+      {
+        "target": "sk_hynix",
+        "target_mode": "close_to_close",
+        "comparison": "t0900 − 사전확률",
+        "metric": "accuracy",
+        "delta": 0.30176211453744495,
+        "ci_low": 0.2543583308117921,
+        "ci_high": 0.34579614925163366,
+        "common_n": 1362,
+        "verdict": "후보가 유의하게 우위"
+      },
+      {
+        "target": "sk_hynix",
+        "target_mode": "close_to_close",
+        "comparison": "gap_rule − 사전확률",
+        "metric": "log_loss",
+        "delta": -0.1512811176716924,
+        "ci_low": -0.17378580220658932,
+        "ci_high": -0.12754820268008024,
+        "common_n": 1362,
+        "verdict": "후보가 유의하게 우위"
+      },
+      {
+        "target": "sk_hynix",
+        "target_mode": "close_to_close",
+        "comparison": "gap_rule − 사전확률",
+        "metric": "balanced_accuracy",
+        "delta": 0.20510510328670956,
+        "ci_low": 0.17608594081866077,
+        "ci_high": 0.2333010286348256,
+        "common_n": 1362,
+        "verdict": "후보가 유의하게 우위"
+      },
+      {
+        "target": "sk_hynix",
+        "target_mode": "close_to_close",
+        "comparison": "gap_rule − 사전확률",
+        "metric": "accuracy",
+        "delta": 0.2701908957415565,
+        "ci_low": 0.22885929263480279,
+        "ci_high": 0.3110062259225733,
+        "common_n": 1362,
+        "verdict": "후보가 유의하게 우위"
+      },
+      {
+        "target": "sk_hynix",
+        "target_mode": "close_to_close",
+        "comparison": "t0700 − 노트북 OOF(재현 확인)",
+        "metric": "log_loss",
+        "delta": 0.0,
+        "ci_low": 0.0,
+        "ci_high": 0.0,
+        "common_n": 1362,
+        "verdict": "동률(CI가 0 포함)"
+      },
+      {
+        "target": "sk_hynix",
+        "target_mode": "close_to_close",
+        "comparison": "t0700 − 노트북 OOF(재현 확인)",
+        "metric": "balanced_accuracy",
+        "delta": 0.0,
+        "ci_low": 0.0,
+        "ci_high": 0.0,
+        "common_n": 1362,
+        "verdict": "동률(CI가 0 포함)"
+      },
+      {
+        "target": "sk_hynix",
+        "target_mode": "close_to_close",
+        "comparison": "t0700 − 노트북 OOF(재현 확인)",
+        "metric": "accuracy",
+        "delta": 0.0,
+        "ci_low": 0.0,
+        "ci_high": 0.0,
+        "common_n": 1362,
+        "verdict": "동률(CI가 0 포함)"
+      },
+      {
+        "target": "sk_hynix",
+        "target_mode": "session",
+        "comparison": "t0900 − t0700",
+        "metric": "log_loss",
+        "delta": -0.0010114606846209906,
+        "ci_low": -0.002182803191339527,
+        "ci_high": 0.0001738297248297934,
+        "common_n": 1362,
+        "verdict": "동률(CI가 0 포함)"
+      },
+      {
+        "target": "sk_hynix",
+        "target_mode": "session",
+        "comparison": "t0900 − t0700",
+        "metric": "balanced_accuracy",
+        "delta": -0.00146058575228869,
+        "ci_low": -0.010194317450513597,
+        "ci_high": 0.007785394992222276,
+        "common_n": 1362,
+        "verdict": "동률(CI가 0 포함)"
+      },
+      {
+        "target": "sk_hynix",
+        "target_mode": "session",
+        "comparison": "t0900 − t0700",
+        "metric": "accuracy",
+        "delta": -0.0007342143906020615,
+        "ci_low": -0.0096656072977518,
+        "ci_high": 0.00872108879492602,
+        "common_n": 1362,
+        "verdict": "동률(CI가 0 포함)"
+      },
+      {
+        "target": "sk_hynix",
+        "target_mode": "session",
+        "comparison": "t0900 − t0700",
+        "metric": "auc_gap",
+        "delta": 0.004560751648418626,
+        "ci_low": -0.00016210871626454174,
+        "ci_high": 0.009371199504818866,
+        "common_n": 1362,
+        "verdict": "동률(CI가 0 포함)"
+      },
+      {
+        "target": "sk_hynix",
+        "target_mode": "session",
+        "comparison": "t0900 − t0700",
+        "metric": "auc_session",
+        "delta": 0.0018083395811818725,
+        "ci_low": -0.0013671876578191522,
+        "ci_high": 0.0051064203788506,
+        "common_n": 1362,
+        "verdict": "동률(CI가 0 포함)"
+      }
+    ],
+    "selective": [
+      {
+        "target_mode": "close_to_close",
+        "target": "sk_hynix",
+        "model": "t0700",
+        "threshold": "none",
+        "selected": 1362,
+        "total": 1362,
+        "coverage": 1.0,
+        "selected_accuracy": 0.49926578560939794,
+        "overall_accuracy": 0.49926578560939794
+      },
+      {
+        "target_mode": "close_to_close",
+        "target": "sk_hynix",
+        "model": "t0700",
+        "threshold": "0.5",
+        "selected": 386,
+        "total": 1362,
+        "coverage": 0.2834067547723935,
+        "selected_accuracy": 0.6398963730569949,
+        "overall_accuracy": 0.49926578560939794
+      },
+      {
+        "target_mode": "close_to_close",
+        "target": "sk_hynix",
+        "model": "t0700",
+        "threshold": "0.6",
+        "selected": 102,
+        "total": 1362,
+        "coverage": 0.07488986784140969,
+        "selected_accuracy": 0.7450980392156863,
+        "overall_accuracy": 0.49926578560939794
+      },
+      {
+        "target_mode": "close_to_close",
+        "target": "sk_hynix",
+        "model": "t0700",
+        "threshold": "0.7",
+        "selected": 29,
+        "total": 1362,
+        "coverage": 0.021292217327459617,
+        "selected_accuracy": 0.896551724137931,
+        "overall_accuracy": 0.49926578560939794
+      },
+      {
+        "target_mode": "close_to_close",
+        "target": "sk_hynix",
+        "model": "t0900",
+        "threshold": "none",
+        "selected": 1362,
+        "total": 1362,
+        "coverage": 1.0,
+        "selected_accuracy": 0.5756240822320118,
+        "overall_accuracy": 0.5756240822320118
+      },
+      {
+        "target_mode": "close_to_close",
+        "target": "sk_hynix",
+        "model": "t0900",
+        "threshold": "0.5",
+        "selected": 752,
+        "total": 1362,
+        "coverage": 0.5521292217327459,
+        "selected_accuracy": 0.6888297872340425,
+        "overall_accuracy": 0.5756240822320118
+      },
+      {
+        "target_mode": "close_to_close",
+        "target": "sk_hynix",
+        "model": "t0900",
+        "threshold": "0.6",
+        "selected": 492,
+        "total": 1362,
+        "coverage": 0.36123348017621143,
+        "selected_accuracy": 0.7520325203252033,
+        "overall_accuracy": 0.5756240822320118
+      },
+      {
+        "target_mode": "close_to_close",
+        "target": "sk_hynix",
+        "model": "t0900",
+        "threshold": "0.7",
+        "selected": 278,
+        "total": 1362,
+        "coverage": 0.20411160058737152,
+        "selected_accuracy": 0.8201438848920863,
+        "overall_accuracy": 0.5756240822320118
+      },
+      {
+        "target_mode": "close_to_close",
+        "target": "sk_hynix",
+        "model": "gap_rule",
+        "threshold": "none",
+        "selected": 1362,
+        "total": 1362,
+        "coverage": 1.0,
+        "selected_accuracy": 0.5411160058737151,
+        "overall_accuracy": 0.5411160058737151
+      },
+      {
+        "target_mode": "close_to_close",
+        "target": "sk_hynix",
+        "model": "gap_rule",
+        "threshold": "0.5",
+        "selected": 837,
+        "total": 1362,
+        "coverage": 0.6145374449339207,
+        "selected_accuracy": 0.6714456391875747,
+        "overall_accuracy": 0.5411160058737151
+      },
+      {
+        "target_mode": "close_to_close",
+        "target": "sk_hynix",
+        "model": "gap_rule",
+        "threshold": "0.6",
+        "selected": 733,
+        "total": 1362,
+        "coverage": 0.5381791483113069,
+        "selected_accuracy": 0.6725784447476125,
+        "overall_accuracy": 0.5411160058737151
+      },
+      {
+        "target_mode": "close_to_close",
+        "target": "sk_hynix",
+        "model": "gap_rule",
+        "threshold": "0.7",
+        "selected": 0,
+        "total": 1362,
+        "coverage": 0.0,
+        "selected_accuracy": NaN,
+        "overall_accuracy": 0.5411160058737151
+      },
+      {
+        "target_mode": "close_to_close",
+        "target": "sk_hynix",
+        "model": "notebook OOF (No macro ensemble)",
+        "threshold": "none",
+        "selected": 1362,
+        "total": 1362,
+        "coverage": 1.0,
+        "selected_accuracy": 0.49926578560939794,
+        "overall_accuracy": 0.49926578560939794
+      },
+      {
+        "target_mode": "close_to_close",
+        "target": "sk_hynix",
+        "model": "notebook OOF (No macro ensemble)",
+        "threshold": "0.5",
+        "selected": 386,
+        "total": 1362,
+        "coverage": 0.2834067547723935,
+        "selected_accuracy": 0.6398963730569949,
+        "overall_accuracy": 0.49926578560939794
+      },
+      {
+        "target_mode": "close_to_close",
+        "target": "sk_hynix",
+        "model": "notebook OOF (No macro ensemble)",
+        "threshold": "0.6",
+        "selected": 102,
+        "total": 1362,
+        "coverage": 0.07488986784140969,
+        "selected_accuracy": 0.7450980392156863,
+        "overall_accuracy": 0.49926578560939794
+      },
+      {
+        "target_mode": "close_to_close",
+        "target": "sk_hynix",
+        "model": "notebook OOF (No macro ensemble)",
+        "threshold": "0.7",
+        "selected": 29,
+        "total": 1362,
+        "coverage": 0.021292217327459617,
+        "selected_accuracy": 0.896551724137931,
+        "overall_accuracy": 0.49926578560939794
+      },
+      {
+        "target_mode": "session",
+        "target": "sk_hynix",
+        "model": "t0700",
+        "threshold": "none",
+        "selected": 1362,
+        "total": 1362,
+        "coverage": 1.0,
+        "selected_accuracy": 0.42143906020558003,
+        "overall_accuracy": 0.42143906020558003
+      },
+      {
+        "target_mode": "session",
+        "target": "sk_hynix",
+        "model": "t0700",
+        "threshold": "0.5",
+        "selected": 93,
+        "total": 1362,
+        "coverage": 0.06828193832599119,
+        "selected_accuracy": 0.5591397849462365,
+        "overall_accuracy": 0.42143906020558003
+      },
+      {
+        "target_mode": "session",
+        "target": "sk_hynix",
+        "model": "t0700",
+        "threshold": "0.6",
+        "selected": 6,
+        "total": 1362,
+        "coverage": 0.004405286343612335,
+        "selected_accuracy": 0.8333333333333334,
+        "overall_accuracy": 0.42143906020558003
+      },
+      {
+        "target_mode": "session",
+        "target": "sk_hynix",
+        "model": "t0700",
+        "threshold": "0.7",
+        "selected": 1,
+        "total": 1362,
+        "coverage": 0.0007342143906020558,
+        "selected_accuracy": 0.0,
+        "overall_accuracy": 0.42143906020558003
+      },
+      {
+        "target_mode": "session",
+        "target": "sk_hynix",
+        "model": "t0900",
+        "threshold": "none",
+        "selected": 1362,
+        "total": 1362,
+        "coverage": 1.0,
+        "selected_accuracy": 0.42070484581497797,
+        "overall_accuracy": 0.42070484581497797
+      },
+      {
+        "target_mode": "session",
+        "target": "sk_hynix",
+        "model": "t0900",
+        "threshold": "0.5",
+        "selected": 86,
+        "total": 1362,
+        "coverage": 0.0631424375917768,
+        "selected_accuracy": 0.5697674418604651,
+        "overall_accuracy": 0.42070484581497797
+      },
+      {
+        "target_mode": "session",
+        "target": "sk_hynix",
+        "model": "t0900",
+        "threshold": "0.6",
+        "selected": 7,
+        "total": 1362,
+        "coverage": 0.005139500734214391,
+        "selected_accuracy": 0.8571428571428571,
+        "overall_accuracy": 0.42070484581497797
+      },
+      {
+        "target_mode": "session",
+        "target": "sk_hynix",
+        "model": "t0900",
+        "threshold": "0.7",
+        "selected": 1,
+        "total": 1362,
+        "coverage": 0.0007342143906020558,
+        "selected_accuracy": 0.0,
+        "overall_accuracy": 0.42070484581497797
+      }
+    ],
+    "note": "t0900 은 모델이 아니라 정보 마감 시각을 09:00(시가 확정) 이후로 옮긴 것이다. 행 d 가 쓰는 당일 정보는 시가 하나뿐이고 종가·고가·저가·거래량은 들어가지 않는다. 그룹 G 결측 날짜는 두 후보 모두에서 제외(공통 행). gap_rule 은 모델 없는 규칙이며 확률은 학습 구간 버킷별 조건부 분포다."
+  }
+}

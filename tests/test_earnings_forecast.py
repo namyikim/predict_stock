@@ -184,6 +184,51 @@ class RenderTests(unittest.TestCase):
         self.assertNotIn("80% 구간", out)
 
 
+class ConformalIntervalTests(unittest.TestCase):
+    """80% 구간은 표본 수를 보정한 순위(split conformal)와 예측 크기에 비례한 잔차로 만든다(2026-09-20 검토 #4).
+
+    발행본의 구간이 두 종목 모두 14분기 중 4개(29%)만 담았다. 절대 잔차의 10/90% 분위수는 표본 10~20개에서
+    꼬리를 과소평가하고 이익 규모가 100배 오가는 구간을 따라가지 못했다.
+    """
+
+    def test_rank_rule_uses_the_sample_size(self):
+        model = np.full(4, 10e12)
+        actual = model * (1 + np.array([.1, -.2, .3, -.4]))
+        # n=4: ⌈5×0.8⌉=4 번째 → 최댓값 0.4
+        self.assertAlmostEqual(ef.conformal_rel_halfwidth(actual, model), .4)
+        model9 = np.full(9, 10e12)
+        actual9 = model9 * (1 + np.arange(1, 10) / 10)          # 상대 잔차 .1 … .9
+        # n=9: ⌈10×0.8⌉=8 번째 → 0.8 (최댓값이 아니다)
+        self.assertAlmostEqual(ef.conformal_rel_halfwidth(actual9, model9), .8)
+
+    def test_bounds_scale_with_the_point_and_have_a_floor(self):
+        lo, hi = ef.interval_bounds(50e12, .3)
+        self.assertAlmostEqual(lo, 35e12); self.assertAlmostEqual(hi, 65e12)
+        lo, hi = ef.interval_bounds(0.1e12, .3)                  # 1조 바닥: 0.1조 예측이어도 폭은 ±0.3조
+        self.assertAlmostEqual(hi - lo, 0.6e12)
+        self.assertEqual(ef.interval_bounds(None, .3), (None, None))
+        self.assertEqual(ef.interval_bounds(5e12, float("nan")), (None, None))
+        self.assertEqual(ef.interval_bounds(5e12, None), (None, None))
+
+    def test_coverage_uses_the_same_interval_and_only_the_past(self):
+        seen = []
+        real = ef.conformal_rel_halfwidth
+
+        def spy(actual, model, **kw):
+            seen.append(len(actual)); return real(actual, model, **kw)
+        oof = OverconfidenceTests().oof(n=20)
+        with patch.object(ef, "conformal_rel_halfwidth", side_effect=spy):
+            out = ef.interval_coverage(oof)
+        self.assertEqual(seen, list(range(8, 20)))                # i 번째 판정은 앞 i 개 잔차만 본다
+        self.assertEqual(out["coverage_method"], "conformal_relative")
+        self.assertAlmostEqual(out["coverage_nominal"], .8)
+
+    def test_evaluate_reports_the_halfwidth_used_for_publishing(self):
+        ev = ef.evaluate(OverconfidenceTests().oof())
+        self.assertGreater(ev["interval_rel_halfwidth"], 0)
+        self.assertEqual(ev["interval_method"], "conformal_relative")
+
+
 if __name__ == "__main__":
     unittest.main()
 

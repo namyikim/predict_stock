@@ -537,36 +537,63 @@ def evaluate(oof):
     out["corr"] = float(np.corrcoef(oof["actual"], oof["model"])[0, 1]) if len(oof) > 2 else np.nan
     out["beats_baselines"] = bool(out["mae_model"] < min(out["mae_random_walk"], out["mae_seasonal_naive"]))
     residual = (oof["actual"] - oof["model"]).to_numpy()
-    out["residual_q10"] = float(np.quantile(residual, .10))
+    out["residual_q10"] = float(np.quantile(residual, .10))      # 참고용. 구간은 아래 conformal 반폭으로 만든다
     out["residual_q90"] = float(np.quantile(residual, .90))
+    out["interval_rel_halfwidth"] = conformal_rel_halfwidth(oof["actual"], oof["model"])
+    out["interval_method"] = "conformal_relative"
     out["mape_model"] = float(np.mean(np.abs((oof["actual"] - oof["model"]) /
                                              np.where(np.abs(oof["actual"]) < 1e-9, np.nan, oof["actual"]))))
     out.update(interval_coverage(oof))
     return out
 
 
-def interval_coverage(oof, warmup=8, lo=.10, hi=.90):
+CONFORMAL_ALPHA = 0.20          # 80% 구간
+CONFORMAL_FLOOR = 1e12          # 상대 잔차의 분모 바닥(1조원). 0 근처 예측에서 폭이 폭발하지 않게 한다.
+
+
+def conformal_rel_halfwidth(actual, model, alpha=CONFORMAL_ALPHA, floor=CONFORMAL_FLOOR):
+    """과거 |잔차| / max(|예측|, 바닥) 의 ⌈(n+1)(1−α)⌉ 번째 작은 값(split conformal). 상대 반폭.
+
+    전에는 절대 잔차의 10/90% 분위수를 그대로 썼다. 표본이 10~20개면 분위수는 꼬리를 늘 과소평가하고,
+    이익이 0.6조에서 90조까지 오가는 동안 절대 금액의 폭은 따라가지 못한다 — 2026-09-20 검토에서 확인:
+    발행본의 '80% 구간'이 두 종목 모두 14분기 중 4개(29%)만 담았다. 같은 OOF 로 순차 재계산하면
+    옛 방식 삼성 50%·하이닉스 21%, 이 방식 64%·86%. 순위를 표본 수로 보정하므로 표본이 적을수록
+    최댓값에 가까워져 구간이 넓어진다 — 그것이 정직한 값이다.
+    """
+    actual, model = np.asarray(actual, dtype=float), np.asarray(model, dtype=float)
+    score = np.sort(np.abs(actual - model) / np.maximum(np.abs(model), floor))
+    if len(score) == 0:
+        return float("nan")
+    k = int(np.ceil((len(score) + 1) * (1 - alpha)))
+    return float(score[min(k, len(score)) - 1])
+
+
+def interval_bounds(point, halfwidth, floor=CONFORMAL_FLOOR):
+    """점 추정 ± 상대 반폭 × max(|점 추정|, 바닥). 점 추정이나 반폭이 없으면 (None, None)."""
+    if point is None or halfwidth is None or not np.isfinite(halfwidth):
+        return None, None
+    half = float(halfwidth) * max(abs(float(point)), floor)
+    return float(point) - half, float(point) + half
+
+
+def interval_coverage(oof, warmup=8, alpha=CONFORMAL_ALPHA):
     """'80% 구간'이 과거에 실제로 몇 %를 맞혔는지.
 
-    구간은 과거 잔차 분위수로 만든다. 그 방식이 실제로 80%를 담는지는 재 봐야 안다 —
-    2026-09-13 측정에서 삼성전자는 14개 분기 중 6개(43%)만 맞혔다. 구간이 과신이라는 뜻이고,
-    그 사실을 보고서에 적어야 읽는 사람이 스스로 할인할 수 있다.
-
-    각 시점에서 '그 시점까지의 잔차'만 써서 만든 구간으로 센다(그때 알 수 있었던 것만 쓴다).
+    구간을 만드는 방식(conformal_rel_halfwidth)이 실제로 80%를 담는지는 재 봐야 안다. 그 사실을 보고서에
+    적어야 읽는 사람이 스스로 할인할 수 있다. 각 시점에서 '그 시점까지의 잔차'만 써서 만든 구간으로 센다
+    (그때 알 수 있었던 것만 쓴다). 발행 구간과 같은 함수로 만들어야 이 숫자가 발행 구간의 성적이 된다.
     """
     if len(oof) <= warmup + 2:
         return {"coverage_n": 0}
-    residual = (oof["actual"] - oof["model"]).to_numpy()
-    actual, model = oof["actual"].to_numpy(), oof["model"].to_numpy()
+    actual, model = oof["actual"].to_numpy(dtype=float), oof["model"].to_numpy(dtype=float)
     hits, total = 0, 0
     for i in range(warmup, len(oof)):
-        past = residual[:i]
-        low, high = model[i] + np.quantile(past, lo), model[i] + np.quantile(past, hi)
+        low, high = interval_bounds(model[i], conformal_rel_halfwidth(actual[:i], model[:i], alpha=alpha))
         hits += bool(low <= actual[i] <= high)
         total += 1
     return {"coverage_n": total, "coverage_hit": hits,
             "coverage_rate": float(hits / total) if total else float("nan"),
-            "coverage_nominal": hi - lo}
+            "coverage_nominal": 1 - alpha, "coverage_method": "conformal_relative"}
 
 
 def split_selection_evaluation(oof):
@@ -1297,8 +1324,8 @@ def analyse(target, out_dir, fetch=True):
     next_block = {
         "quarter": f"{next_quarter.year}년 {next_quarter.quarter}분기", "quarter_code": str(next_quarter),
         "chosen": chosen, "point": next_point,
-        "low": (next_point + nr["evaluation"]["residual_q10"]) if next_point is not None else None,
-        "high": (next_point + nr["evaluation"]["residual_q90"]) if next_point is not None else None,
+        "low": interval_bounds(next_point, nr["evaluation"].get("interval_rel_halfwidth"))[0],
+        "high": interval_bounds(next_point, nr["evaluation"].get("interval_rel_halfwidth"))[1],
         "raw_point": nr["raw_point"], "evaluation": nr["evaluation"],
         "selection": nr["selection"],
         "selection_without_cli": next_results["without_cli"]["selection"],
@@ -1343,8 +1370,8 @@ def analyse(target, out_dir, fetch=True):
         "flash_applied": flash_applied, "customs_info": customs_info,
         "flash_info": flash_info,
         "point": point, "raw_point": raw_point,
-        "low": (point + ev["residual_q10"]) if point is not None else None,
-        "high": (point + ev["residual_q90"]) if point is not None else None,
+        "low": interval_bounds(point, ev.get("interval_rel_halfwidth"))[0],
+        "high": interval_bounds(point, ev.get("interval_rel_halfwidth"))[1],
         "change_vs_last": (point / last_actual - 1) if (point is not None and last_actual) else float("nan"),
         "no_point_reason": no_point_reason,
         "last_actual": last_actual, "last_actual_quarter": str(last_actual_quarter),

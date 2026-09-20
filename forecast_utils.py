@@ -564,6 +564,8 @@ def longterm_easy_summary_html(*, name, price_date, close, longterm=None, earnin
                     and _finite(item.get("point")) is not None and not item.get("no_point_reason"))
 
     def band(item):
+        if item.get("estimate_basis") == "partial_month_scenario":
+            return "속보 기반 시나리오 · 구간 미검증"
         point, low, high = (_finite(item.get(key)) for key in ("point", "low", "high"))
         if low is None or high is None:
             return "구간 없음"
@@ -613,7 +615,7 @@ def longterm_easy_summary_html(*, name, price_date, close, longterm=None, earnin
                          if passes(next_q) else
                          card(f"{next_label} 추정", "예측하기 어렵습니다", "검증에서 기준선을 이기지 못했습니다",
                               muted=True))
-        basis = []
+        basis = [str(earnings["interval_note"])] if earnings.get("interval_note") else []
         if earnings.get("months_included"):
             basis.append(f"{earnings['months_included']} 반도체 수출 반영")
         for flash in earnings.get("flash_applied") or []:
@@ -1044,12 +1046,15 @@ def easy_summary_html(*, name, prediction_date, data_date, summary, open_forecas
         point = number(item.get("point"))
         if (mapping(item.get("evaluation")).get("beats_baselines") and point is not None
                 and not item.get("no_point_reason")):
-            earnings_parts.append(f"{quarter} 영업이익 약 {point / 1e12:,.1f}조 원 예상")
+            label = "속보 기반 시나리오" if item.get("estimate_basis") == "partial_month_scenario" else "예상"
+            earnings_parts.append(f"{quarter} 영업이익 약 {point / 1e12:,.1f}조 원 {label}")
         else:
             earnings_parts.append(f"{quarter} 영업이익은 예측하기 어렵습니다")
     earnings_text = " / ".join(earnings_parts) if earnings_parts else "실적 추정 자료를 확인하지 못했습니다"
     if earnings:
         earnings_text += ". 회사 발표나 증권사 전망 평균이 아닌 자체 모델의 추정입니다."
+        if earnings.get("interval_note"):
+            earnings_text += " " + str(earnings["interval_note"])
         months_used = number(earnings.get("months_used"))
         if months_used is not None:
             earnings_text += f" 분기 3개월 중 {months_used:.0f}개월 자료 반영."

@@ -226,6 +226,8 @@ def main():
     # 쉬운 요약 맨 위의 '지난 예측은 맞았나'도 같은 채점으로 다시 그린다. 아침 값이 남으면 아래 절과 어긋난다.
     card = scorecard_html(review, spec["ensemble"], note=f"{now:%H:%M} KST 채점 반영.")
     # 시가 반영 갱신 카드. 07:00 대표 행(같은 target_date 의 사전 예측)을 함께 적어 '위 카드 그대로'를 보인다.
+    # 원장 발행 뒤 HTML 발행이 실패해도 재실행/마감 회차에서 기존 행으로 복구한다.
+    post_open_row = post_open_row_for(evaluated, now.date())
     post_open_card = None
     if post_open_row is not None:
         morning = evaluated[(evaluated["kind"] == "direction") & (evaluated["model"] == spec["ensemble"])

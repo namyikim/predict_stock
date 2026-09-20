@@ -236,6 +236,83 @@ class ConformalIntervalTests(unittest.TestCase):
         self.assertGreater(ev["interval_rel_halfwidth"], 0)
         self.assertEqual(ev["interval_method"], "conformal_relative")
 
+    def test_next_quarter_coverage_excludes_unreleased_quarter_after_split(self):
+        profit, exports, fx = synthetic()
+        frame = ef.build_frame(profit, exports, fx, 2)
+        oof = ef.walk_forward(frame, target="profit_next", features=ef.FEATURES_NEXT,
+                              gap=1, rw="profit_lag1", sn="profit_lag3")
+        _, evaluation = ef.split_selection_evaluation(oof)
+        self.assertEqual(evaluation.attrs.get("target_gap"), 1)
+        seen = []
+        real = ef.conformal_rel_halfwidth
+        def spy(actual, model, **kw):
+            seen.append(np.asarray(actual).copy())
+            return real(actual, model, **kw)
+        with patch.object(ef, "conformal_rel_halfwidth", side_effect=spy):
+            ef.evaluate(evaluation)
+        # evaluate's first call calibrates the live band from known historical OOF.
+        # Coverage must leave the preceding quarter out at each historical origin.
+        expected = [evaluation.loc[evaluation.index < t - 1, "actual"].to_numpy()
+                    for t in evaluation.index
+                    if sum(evaluation.index < t - 1) >= 8]
+        self.assertEqual(len(seen[1:]), len(expected))
+        for actual, wanted in zip(seen[1:], expected):
+            np.testing.assert_array_equal(actual, wanted)
+
+    def test_next_quarter_gap_uses_calendar_even_when_oof_has_missing_quarters(self):
+        oof = OverconfidenceTests().oof(n=20).drop(pd.Period("2018Q2", freq="Q"))
+        oof.attrs["target_gap"] = 1
+        seen = []
+        real = ef.conformal_rel_halfwidth
+        with patch.object(ef, "conformal_rel_halfwidth", side_effect=lambda a, m, **kw:
+                          (seen.append(len(a)), real(a, m, **kw))[1]):
+            ef.interval_coverage(oof)
+        expected = [sum(oof.index < t - 1) for t in oof.index if sum(oof.index < t - 1) >= 8]
+        self.assertEqual(seen, expected)
+
+
+class FlashIntervalPolicyTests(unittest.TestCase):
+    def result(self, days=10):
+        r = RenderTests().result()
+        r["target"], r["quarter_code"] = "samsung", "2026Q3"
+        r["flash_applied"] = [{"month": "2026-09", "days": days, "yoy": .5}]
+        r["next_quarter"] = {"quarter": "2026년 4분기", "point": 4e12,
+                             "low": 2e12, "high": 6e12, "chosen": "without_cli",
+                             "evaluation_without_cli": {}, "evaluation": {}}
+        return r
+
+    def test_partial_month_suppresses_both_intervals_and_labels_scenarios(self):
+        for days in (10, 20, None):
+            with self.subTest(days=days):
+                r = self.result(days)
+                point = r["point"]
+                ef.apply_flash_interval_policy(r)
+                self.assertEqual(r["point"], point)
+                for block in (r, r["next_quarter"]):
+                    self.assertIsNone(block["low"])
+                    self.assertIsNone(block["high"])
+                    self.assertEqual(block["estimate_basis"], "partial_month_scenario")
+                    self.assertTrue(block["interval_note"])
+                rendered = ef.render_fragment(r)
+                self.assertGreaterEqual(rendered.count("속보 기반 시나리오"), 2)
+                self.assertNotIn("80% 구간", rendered)
+                self.assertIn("속보와 확정치의 차이", rendered)
+                ledger, _ = ef.append_estimate(pd.DataFrame(columns=ef.LEDGER_COLUMNS), r, "r1")
+                self.assertEqual(ledger.iloc[0]["estimate_basis"], "partial_month_scenario")
+                self.assertTrue(pd.isna(ledger.iloc[0]["low"]))
+
+    def test_full_month_or_no_flash_keeps_the_interval(self):
+        for days in (30, 31):
+            r = self.result(days)
+            bounds = r["low"], r["high"]
+            ef.apply_flash_interval_policy(r)
+            self.assertEqual((r["low"], r["high"]), bounds)
+        r = self.result()
+        r["flash_applied"] = []
+        bounds = r["low"], r["high"]
+        ef.apply_flash_interval_policy(r)
+        self.assertEqual((r["low"], r["high"]), bounds)
+
 
 class UnitPriceActivationTests(unittest.TestCase):
     """수출 단가·물량 후보의 활성화 판정과 보관 경로(2026-09-20 검토 #2·#3)."""

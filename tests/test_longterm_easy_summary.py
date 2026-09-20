@@ -101,6 +101,17 @@ class ReachOddsTests(unittest.TestCase):
 
 
 class LongtermSummaryTests(unittest.TestCase):
+    def test_partial_month_scenario_label_survives_the_summary_card(self):
+        earnings = dict(EARNINGS, low=None, high=None, estimate_basis="partial_month_scenario",
+                        interval_note="속보와 확정치의 차이는 미검증입니다.")
+        earnings["next_quarter"] = dict(earnings["next_quarter"], low=None, high=None,
+                                        estimate_basis="partial_month_scenario",
+                                        interval_note=earnings["interval_note"])
+        html = self.render(earnings=earnings)
+        self.assertGreaterEqual(html.count("속보 기반 시나리오"), 2)
+        self.assertIn("속보와 확정치의 차이", html)
+        self.assertNotIn("80% 구간", html)
+
     def render(self, **changes):
         args = dict(name="삼성전자", price_date=pd.Timestamp("2026-09-11"), close=closes(),
                     longterm=LONGTERM, earnings=EARNINGS, levels=(300000, 400000), n_paths=3000)

@@ -512,7 +512,10 @@ def walk_forward(f, target="profit", features=None, gap=0, rw="profit_lag1", sn=
             "random_walk": float(usable.loc[t, rw]),
             "seasonal_naive": float(usable.loc[t, sn]),
         })
-    return pd.DataFrame(rows).set_index("quarter") if rows else pd.DataFrame()
+    oof = pd.DataFrame(rows).set_index("quarter") if rows else pd.DataFrame()
+    # 선택/평가 분할(copy) 뒤에도 타깃의 확정 지연을 구간 검증까지 전달한다.
+    oof.attrs["target_gap"] = gap
+    return oof
 
 
 def extrapolation_note(profit, point):
@@ -630,9 +633,15 @@ def interval_coverage(oof, warmup=8, alpha=CONFORMAL_ALPHA):
     if len(oof) <= warmup + 2:
         return {"coverage_n": 0}
     actual, model = oof["actual"].to_numpy(dtype=float), oof["model"].to_numpy(dtype=float)
+    gap = oof.attrs.get("target_gap", 0)
     hits, total = 0, 0
     for i in range(warmup, len(oof)):
-        low, high = interval_bounds(model[i], conformal_rel_halfwidth(actual[:i], model[:i], alpha=alpha))
+        # profit_next의 직전 행 정답은 이번 분기 이익이라 아직 모른다.
+        # 결측 분기를 건너뛴 OOF에서도 학습과 같은 달력 기준을 적용한다.
+        known = np.flatnonzero(oof.index < oof.index[i] - gap)
+        if len(known) < warmup:
+            continue
+        low, high = interval_bounds(model[i], conformal_rel_halfwidth(actual[known], model[known], alpha=alpha))
         hits += bool(low <= actual[i] <= high)
         total += 1
     return {"coverage_n": total, "coverage_hit": hits,
@@ -644,6 +653,24 @@ def split_selection_evaluation(oof):
     """시간 순서 OOF의 앞 절반은 모델 선택, 뒤 절반은 최종 평가에만 쓴다."""
     split = len(oof) // 2
     return oof.iloc[:split].copy(), oof.iloc[split:].copy()
+
+
+def apply_flash_interval_policy(result):
+    """부분월 입력의 오차를 검증할 이력이 없으므로 시나리오만 내고 구간은 보류한다.
+
+    월말 표식(31)은 짧은 달에도 월 전체를 뜻한다. 기간 미상은 부분월로 취급한다.
+    속보는 학습 특징에도 영향을 줄 수 있어 이번/다음 분기 모두 같은 정책을 쓴다.
+    """
+    partial = [row for row in result.get("flash_applied", [])
+               if row.get("days") is None
+               or row["days"] < pd.Timestamp(row["month"]).days_in_month]
+    if not partial:
+        return
+    note = ("속보와 확정치의 차이를 과거 시점별로 검증하지 않아 예측 구간을 제공하지 않습니다. "
+            "아래 월 전체 자료 기준의 검증 성적은 이 속보 기반 시나리오의 성적이 아닙니다.")
+    for block in (result, result.get("next_quarter")):
+        if block is not None:
+            block.update(estimate_basis="partial_month_scenario", low=None, high=None, interval_note=note)
 
 
 def fit_live(f, live_quarter, target="profit", features=None, gap=0):
@@ -670,7 +697,7 @@ LEDGER_COLUMNS = [
     "record_id", "run_id", "created_at_kst", "target", "quarter", "months_used", "months_included",
     "point", "low", "high", "raw_point", "beats_baselines", "mae_model", "mae_random_walk",
     "mae_seasonal_naive", "n_eval", "last_actual", "status", "actual", "actual_source",
-    "error", "ape", "scored_at_kst",
+    "error", "ape", "scored_at_kst", "estimate_basis", "interval_note",
 ]
 
 
@@ -700,6 +727,8 @@ def append_estimate(ledger, result, run_id):
         "run_id": run_id, "created_at_kst": datetime.now(KST).strftime("%Y-%m-%d %H:%M"),
         "target": result["target"], "quarter": key[0], "months_used": key[1],
         "months_included": result.get("months_included"),
+        "estimate_basis": result.get("estimate_basis", "monthly"),
+        "interval_note": result.get("interval_note", ""),
         "point": result.get("point"), "low": result.get("low"), "high": result.get("high"),
         # 축소·게이트 이전의 원시 추정값. 게이트에 걸려 point 가 비어도 무엇을 계산했는지는 남는다.
         "raw_point": result.get("raw_point"),
@@ -752,6 +781,8 @@ def render_ledger_block(ledger, target):
     body = ""
     for _, r in mine.sort_values(["quarter", "months_used"], ascending=[False, True]).iterrows():
         point = jo(r["point"]) if pd.notna(r["point"]) else "예측하지 않음"
+        if r.get("estimate_basis") == "partial_month_scenario":
+            point += " (속보 기반 시나리오)"
         err = "—" if pd.isna(r["error"]) else f'{r["error"] / TRILLION:+,.2f}조원 ({r["ape"]:.0%})'
         source = "확정" if r["actual_source"] == "confirmed" else "잠정"
         body += (f'<tr><td {TD}>{html.escape(str(r["quarter"]))}</td>'
@@ -878,9 +909,10 @@ def render_fragment(result):
 
     parts.append('<h4 style="font-size:14px;margin:18px 0 6px">추정</h4>')
     if r["point"] is not None:
+        interval_text = ("속보 기반 시나리오 · 구간 미검증" if r.get("interval_note") else
+                         f'80% 구간 {jo(r["low"])} ~ {jo(r["high"])}')
         parts.append(f'<div style="font-size:22px;font-weight:700">{jo(r["point"])}'
-                     f'<span style="font-size:13px;font-weight:400;color:#6b7178"> · 80% 구간 '
-                     f'{jo(r["low"])} ~ {jo(r["high"])}</span></div>')
+                     f'<span style="font-size:13px;font-weight:400;color:#6b7178"> · {interval_text}</span></div>')
         parts.append(f'<div style="font-size:12px;color:#6b7178;margin-top:4px">직전 분기 {jo(r["last_actual"])}'
                      f'({e(r["last_actual_quarter"])}) 대비 {r["change_vs_last"]:+.1%}</div>')
         # 검증 밖이라는 사실은 숫자 바로 옆에 있어야 한다. 아래 검증 절까지 내려가서야 알게 되면
@@ -888,13 +920,15 @@ def render_fragment(result):
         note = r.get("extrapolation")
         ev_now = r.get("evaluation") or {}
         warnings_ = []
+        if r.get("interval_note"):
+            warnings_.append(e(r["interval_note"]))
         if note:
             warnings_.append(
                 f'이 추정치는 <b>학습 이력의 최대치({jo(note["max_history"])}, '
                 f'{e(note["quarter"])})보다 {note["ratio"]:.1f}배</b> 큽니다. 모델은 한 번도 본 적 없는 '
                 '구간을 직선으로 늘리고 있고, 아래 검증 성적은 그 직선이 통했던 시기의 것이라 이 '
                 '숫자를 보증하지 않습니다.')
-        if ev_now.get("coverage_n") and ev_now["coverage_rate"] < ev_now["coverage_nominal"] - 0.15:
+        if not r.get("interval_note") and ev_now.get("coverage_n") and ev_now["coverage_rate"] < ev_now["coverage_nominal"] - 0.15:
             warnings_.append(
                 f'위 80% 구간은 과거 {ev_now["coverage_n"]}개 분기에서 실제로 '
                 f'<b>{ev_now["coverage_rate"]:.0%}만 담았습니다.</b> 표시된 범위보다 실제 불확실성이 큽니다.')
@@ -908,6 +942,8 @@ def render_fragment(result):
                      f'참고로 직전 분기는 {jo(r["last_actual"])}({e(r["last_actual_quarter"])})였습니다.</div>')
 
     parts.append('<h4 style="font-size:14px;margin:18px 0 6px">검증 — 기준선을 이기는가 (워크포워드)</h4>')
+    if r.get("interval_note"):
+        parts.append('<div style="font-size:12px;color:#6b7178">월 전체 자료 기준 검증 · 속보 시나리오 검증 아님</div>')
     if ev.get("n"):
         body = ""
         for key, label in (("model", "수출 기반 모델"), ("random_walk", "직전 분기 그대로"),
@@ -930,7 +966,7 @@ def render_fragment(result):
                          f'{"color:#a8322a" if short else ""}">'
                          f'<b>구간 적중률 {rate:.0%}</b> '
                          f'(최근 {ev["coverage_n"]}개 분기 중 {ev["coverage_hit"]}개) — '
-                         f'아래 범위는 {nominal:.0%} 구간이라고 표시하지만 실제로는 이만큼만 담았습니다.'
+                         f'월 전체 자료로 만든 명목 {nominal:.0%} 구간의 과거 포함률입니다.'
                          + (' 범위를 그대로 믿지 마세요.' if short else '') + '</div>')
     else:
         parts.append(f'<div style="font-size:13px;color:#6b7178">{e(ev.get("note", "표본 부족"))}</div>')
@@ -1045,12 +1081,16 @@ def render_fragment(result):
                      '나타나야 합니다. 같은 날짜에서 CLI를 넣은 모델과 뺀 모델을 나란히 쟀습니다. '
                      '과거 OOF의 앞 절반에서 모델을 선택하고 뒤 절반에서 최종 평가했습니다.</div>')
         if nq["point"] is not None:
+            interval_text = ("속보 기반 시나리오 · 구간 미검증" if nq.get("interval_note") else
+                             f'80% 구간 {jo(nq["low"])} ~ {jo(nq["high"])}')
             parts.append(f'<div style="font-size:20px;font-weight:700">{jo(nq["point"])}'
-                         f'<span style="font-size:13px;font-weight:400;color:#6b7178"> · 80% 구간 '
-                         f'{jo(nq["low"])} ~ {jo(nq["high"])} · {"CLI 포함" if nq["chosen"] == "with_cli" else "CLI 제외"} 모델</span></div>')
+                         f'<span style="font-size:13px;font-weight:400;color:#6b7178"> · {interval_text} · '
+                         f'{"CLI 포함" if nq["chosen"] == "with_cli" else "CLI 제외"} 모델</span></div>')
         else:
             parts.append('<div style="font-size:16px;font-weight:600;color:#6b7178">예측하지 않음</div>'
                          f'<div style="font-size:12px;color:#8a9199;margin-top:4px">{e(nq["no_point_reason"])}</div>')
+        if nq.get("interval_note"):
+            parts.append(f'<div style="font-size:12px;color:#6b7178">{e(nq["interval_note"])}</div>')
         body = ""
         for label, evx in (("CLI 제외", nq["evaluation_without_cli"]), ("CLI 포함", nq.get("evaluation_with_cli"))):
             if not evx or not evx.get("n"):
@@ -1436,6 +1476,7 @@ def analyse(target, out_dir, fetch=True):
         "next_quarter": next_block,
         "generated_at": datetime.now(KST).strftime("%Y-%m-%d %H:%M KST"),
     }
+    apply_flash_interval_policy(result)
     result["chart_svg"] = render_chart(f, oof, spec["name"])
     return result, f, oof, profit
 

@@ -330,7 +330,7 @@ class ToolEndToEndTests(unittest.TestCase):
                              "Close": [100., 102., 104.5], "Adj Close": [100., 102., 104.5],
                              "Volume": [1e6, 1e6, 5e5]}, index=pd.to_datetime(["2026-09-17", "2026-09-18", "2026-09-21"]))
 
-    def run_main(self, when, scope, grid_text):
+    def run_main(self, when, scope, grid_text, ledger_text=None):
         import yfinance
         fixed = pd.Timestamp(when, tz="Asia/Seoul")
         real_now = pd.Timestamp.now
@@ -350,7 +350,7 @@ class ToolEndToEndTests(unittest.TestCase):
         yfinance.Ticker = FakeTicker
         page = (f"<html>{fu.SCORECARD_START}아침{fu.SCORECARD_END}{fu.POSTOPEN_START}자리{fu.POSTOPEN_END}"
                 f"{af.MARK_START}옛 표{af.MARK_END}</html>")
-        ledger = _ledger_csv()
+        ledger = _ledger_csv() if ledger_text is None else ledger_text
         gp = af.github_pages
         saved_gp = (gp.token, gp.code_version, gp.fetch, gp.publish, sys.argv)
         published = []
@@ -398,6 +398,18 @@ class ToolEndToEndTests(unittest.TestCase):
         log = pd.read_csv(io.StringIO(out["forecast_history/samsung/forecast_log.csv"][1]))
         self.assertNotIn("Post-open", set(log["model"]))
         self.assertIn("자리", out["docs/samsung/index.html"][1])
+
+    def test_existing_ledger_repairs_unpublished_card_on_retry_or_close_run(self):
+        first = self.run_main("2026-09-21 09:40", "open", _grid().to_csv(index=False))
+        ledger = first["forecast_history/samsung/forecast_log.csv"][1]
+        for when, scope in (("2026-09-21 09:45", "open"), ("2026-09-21 16:10", "all")):
+            with self.subTest(scope=scope):
+                retry = self.run_main(when, scope, None, ledger_text=ledger)
+                page = retry["docs/samsung/index.html"][1]
+                self.assertNotIn("자리", page)
+                self.assertIn("실제 실행 09:40 KST", page)
+                rows = pd.read_csv(io.StringIO(retry["forecast_history/samsung/forecast_log.csv"][1]))
+                self.assertEqual((rows["model"] == "Post-open").sum(), 1)
 
     def test_stale_grid_or_missing_grid_is_skipped_without_failing_the_scoring(self):
         for grid_text in (_grid(target="2026-09-18").to_csv(index=False), None, "<html>404</html>"):

@@ -203,6 +203,15 @@ class EasySummaryTests(unittest.TestCase):
         self.assertIn("회사 발표나 증권사 전망 평균이 아닌", html)
         self.assertIn("2026년 4분기", html)
 
+    def test_flash_scenario_is_not_presented_as_a_validated_earnings_prediction(self):
+        html = self.render(earnings={"quarter": "2026년 3분기", "point": 12.34e12,
+                                    "estimate_basis": "partial_month_scenario",
+                                    "interval_note": "속보와 확정치의 차이는 미검증입니다.",
+                                    "evaluation": {"beats_baselines": True}})
+        self.assertIn("12.3조 원", html)
+        self.assertIn("속보 기반 시나리오", html)
+        self.assertIn("속보와 확정치의 차이", html)
+
     def test_longterm_log_returns_are_shown_as_ordinary_price_changes(self):
         html = self.render(longterm={"as_of": "2026-08-31",
                                     "forecast": {"3": {"point": .4}, "6": {"point": -.4}},

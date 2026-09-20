@@ -128,6 +128,9 @@
       <b>기존 알고리즘과 거시경제 예측을 사용하지 않은 별도 AI 판단</b>입니다.
       매 거래일 09:00 전에 공개 자료를 직접 확인해 시초가·종가를 예상하고, 장 마감 뒤 실제값과 비교합니다.
       종가 방향은 <b>전일 종가 대비</b> 상승·보합·하락입니다.
+      <b>날짜는 예측을 쓴 날이자 맞히려는 날입니다</b> — 그날 아침(09:00 전)에 <b>그날</b> 종가를 예측합니다.
+      종목 보고서의 모델 예측은 <b>전날</b> 06:22에 <b>다음</b> 거래일을 맞히므로, 이쪽이 밤사이 미국 시장과
+      장전 시세를 이미 보고 답합니다. 두 성적을 같은 잣대로 비교하지 마세요.
       표본이 적을 때의 수치는 우연의 영향이 크며, 이 기록은 연구·교육용으로 <b>투자 자문이 아닙니다.</b>
     </div>
     <div id="ai-status" class="muted">AI 판단 기록을 불러오는 중…</div>
@@ -497,6 +500,12 @@
     return isFinite(number) && value !== null && value !== "" ? nf.format(number) + "원" : "—";
   }
 
+  function aiWrittenAt(iso) {
+    // "2026-09-18T08:05:50+09:00" → " 08:05". 값이 없거나 이상하면 빈 문자열이라 제목이 깨지지 않는다.
+    var match = /T(\d{2}:\d{2})/.exec(String(iso || ""));
+    return match ? " " + match[1] : "";
+  }
+
   function aiPct(value) {
     if (value === null || value === undefined || value === "") return "—";
     var number = Number(value);
@@ -553,7 +562,11 @@
       return;
     }
     var latest = records[0];
-    $("ai-latest").innerHTML = "<h2>최근 판단 · " + esc(latest.target_date) + "</h2>" +
+    // 날짜 하나가 '작성일 = 예측 대상일'이라 무엇을 뜻하는지 제목과 한 줄 설명에 적는다(2026-09-20 질문).
+    $("ai-latest").innerHTML = "<h2>최근 판단 · " + esc(latest.target_date) + " 종가 예측</h2>" +
+      '<div class="muted" style="margin:-4px 0 8px">' + esc(latest.target_date) +
+      aiWrittenAt(latest.created_at_kst) + " 작성 — 같은 날 장 마감 종가를 맞히려는 예측입니다" +
+      (latest.status === "scored" ? " · 채점 완료" : " · 채점 대기") + "</div>" +
       '<div class="tiles">' + aiStockCard(latest.stocks && latest.stocks.samsung) +
       aiStockCard(latest.stocks && latest.stocks.sk_hynix) + "</div>";
 
@@ -576,7 +589,8 @@
           (stock.direction_correct ? "적중" : "미적중") +
           " · 종가오차 " + aiPct(stock.close_ape_pct);
       }
-      return "<tr><td>" + esc(record.target_date) + "</td><td>" + esc(record.status) +
+      return "<tr><td>" + esc(record.target_date) +
+        '<div class="muted">' + aiWrittenAt(record.created_at_kst) + " 작성</div></td><td>" + esc(record.status) +
         "</td><td>예상 " + esc(samsung.predicted_close_direction) + " · " +
         aiPrice(samsung.predicted_close) + "<br><span class=\"muted\">" + outcome(samsung) +
         "</span></td><td>예상 " + esc(hynix.predicted_close_direction) + " · " +
@@ -584,7 +598,7 @@
         "</span></td></tr>";
     }).join("");
     $("ai-history").innerHTML =
-      "<table><tr><th>날짜</th><th>상태</th><th>삼성전자</th><th>SK하이닉스</th></tr>" +
+      "<table><tr><th>예측일 = 대상일</th><th>상태</th><th>삼성전자</th><th>SK하이닉스</th></tr>" +
       body + "</table>";
   }
 

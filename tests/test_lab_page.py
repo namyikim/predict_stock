@@ -237,3 +237,33 @@ class AttributionRecordingTests(unittest.TestCase):
         forecast = (ROOT / "forecast_utils.py").read_text(encoding="utf-8")
         self.assertIn("pred_contrib=True", forecast)     # LightGBM 내장
         self.assertIn('hasattr(model, "coef_")', forecast)   # 로지스틱은 계수×표준화값
+
+
+class AiForecastDateLabelTests(PageSource):
+    """날짜 하나가 '작성일이자 예측 대상일'임을 화면이 밝혀야 한다(2026-09-20 질문).
+
+    모델 예측은 전날 06:22에 다음 거래일을 맞히고, 이쪽은 당일 아침에 당일을 맞힌다. 같은 잣대로 비교하면 안 된다.
+    """
+
+    def test_intro_contrasts_the_two_forecast_times(self):
+        self.assertIn("날짜는 예측을 쓴 날이자 맞히려는 날입니다", self.html)
+        self.assertIn("그날</b> 종가를 예측합니다", self.html)
+        self.assertIn("전날</b> 06:22", self.html)
+        self.assertIn("같은 잣대로 비교하지 마세요", self.html)
+
+    def test_latest_heading_says_what_the_date_means(self):
+        self.assertIn('"<h2>최근 판단 · " + esc(latest.target_date) + " 종가 예측</h2>"', self.script)
+        self.assertIn("같은 날 장 마감 종가를 맞히려는 예측입니다", self.script)
+        self.assertIn("aiWrittenAt(latest.created_at_kst)", self.script)
+
+    def test_history_table_names_the_column_and_shows_the_writing_time(self):
+        self.assertIn("<th>예측일 = 대상일</th>", self.script)
+        self.assertIn("aiWrittenAt(record.created_at_kst)", self.script)
+        self.assertNotIn("<th>날짜</th><th>상태</th>", self.script)
+
+    def test_writing_time_helper_is_defensive(self):
+        body = self.script[self.script.index("function aiWrittenAt"):]
+        body = body[:body.index("function aiPct")]
+        self.assertIn('String(iso || "")', body)              # null 이어도 제목이 깨지지 않는다
+        self.assertIn("/T(" + chr(92) + "d{2}:" + chr(92) + "d{2})/", body)   # ISO 에서 시:분만 꺼낸다
+        self.assertIn('return match ? " " + match[1] : "";', body)

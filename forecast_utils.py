@@ -1355,10 +1355,18 @@ def predict_direction_model(fitted, X):
     return temperature_probabilities(aligned_probabilities(fitted["estimator"], X), fitted["temperature"])
 
 
-def calibrate_price_forecast(y, prediction, sigma, dates, horizon, ci_function, coverage=.8):
+def calibrate_price_forecast(y, prediction, sigma, dates, horizon, ci_function, coverage=.8, band_window=None):
     """OOF를 보정 50% / 신호 선택 25% / 최종 평가 25%로 나누고 경계 라벨을 제거한다.
 
     최종 평가 정답은 slope, 신호 선택, 구간 폭 결정에 사용하지 않는다.
+
+    band_window=None(기본)이면 구간 폭 q 를 가장 오래된 절반에서 한 번 정한다 — 예전 그대로다.
+    band_window=W 이면 q 를 '그 날 이전에 정답이 확정된 최근 W개 점수'의 분위수로 날마다 다시 잡는다.
+    발행에 쓰는 band_q 는 마지막 W개(확정분)이고, band_coverage_realized·band_halfwidth_mean 은 평가 구간에서
+    그날그날의 q_t 로 잰 값이다(마지막 q 하나를 평가 구간 전체에 걸면 표본 안 값이 된다).
+    R01(2026-09-20): 여덟 칸(두 종목 × 시초가·종가 1/5/20일) 중 이 방식이 Winkler 점수를 유의하게 낮춘 것은
+    삼성 시초가뿐이고(포함률 86.6%→81.8%, 반폭 −12%), 하이닉스 시초가는 동률, 종가 20일은 나빠졌다. 그래서
+    시초가에만 쓴다 — 종가·금속은 band_window 를 주지 않는다. 일괄 교체는 금속 포함률을 77%→74%로 떨어뜨렸다.
     """
     y, prediction, sigma = map(lambda a: np.asarray(a, dtype=float), (y, prediction, sigma))
     n = len(y)
@@ -1376,7 +1384,19 @@ def calibrate_price_forecast(y, prediction, sigma, dates, horizon, ci_function, 
     if not beats_baseline:
         slope = 0.
     residual = np.abs(y[cal] - slope * prediction[cal]) / np.maximum(sigma[cal], 1e-6)
-    q = float(np.quantile(residual, coverage))
+    q_oldest = float(np.quantile(residual, coverage))
+    q, q_path, q_method = q_oldest, None, "oldest_half"
+    if band_window:
+        window = int(band_window)
+        score = np.abs(y - slope * prediction) / np.maximum(sigma, 1e-6)
+
+        def q_before(t):
+            """행 t 이전에 정답이 확정된(행 < t − gap) 최근 window 개 점수의 분위수. 모자라면 예전 q."""
+            seen = score[max(0, t - gap - window):max(0, t - gap)]
+            return float(np.quantile(seen, coverage)) if len(seen) >= min(window, 100) else q_oldest
+
+        q_path = np.array([q_before(t) for t in evaluation])
+        q, q_method = q_before(n), f"trailing_{window}"
     test_error = np.abs(y[evaluation] - slope * prediction[evaluation])
     diff = test_error - np.abs(y[evaluation])
     lo, hi = ci_function(pd.DatetimeIndex(dates)[evaluation], lambda i: float(diff[i].mean()))
@@ -1387,8 +1407,9 @@ def calibrate_price_forecast(y, prediction, sigma, dates, horizon, ci_function, 
         "mae_diff_lo": float(lo), "mae_diff_hi": float(hi),
         "selection_mae_diff_lo": float(gate_lo), "selection_mae_diff_hi": float(gate_hi),
         "oof_slope": slope, "beats_baseline": beats_baseline, "band_q": q,
-        "band_coverage_realized": float(np.mean(test_error <= q * sigma[evaluation])),
-        "band_halfwidth_mean": float(np.mean(q * sigma[evaluation])),
+        "band_coverage_realized": float(np.mean(test_error <= (q if q_path is None else q_path) * sigma[evaluation])),
+        "band_halfwidth_mean": float(np.mean((q if q_path is None else q_path) * sigma[evaluation])),
+        "band_q_method": q_method, "band_q_oldest_half": q_oldest,
         "n_oof": n, "n_evaluation": len(evaluation), "calibration_end": int(cal[-1]),
         "gate_start": int(gate[0]), "gate_end": int(gate[-1]), "evaluation_start": int(evaluation[0]),
     }

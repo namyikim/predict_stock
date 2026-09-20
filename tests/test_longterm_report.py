@@ -144,6 +144,62 @@ class LongTermTests(unittest.TestCase):
         self.assertNotIn("HP 필터를 적용", html_)
 
 
+
+class CalibrationBoundaryTests(unittest.TestCase):
+    """축소 기울기는 평가 시작 전에 실현된 정답만으로 구한다(2026-09-20 검토 #1).
+
+    앞절반 마지막 h행의 정답은 평가가 시작된 뒤에야 실현된다. 그 값을 바꿔도 기울기가 그대로여야 한다.
+    walk_forward 를 고정해 OOF 예측은 같게 두고 정답만 흔든다.
+    """
+    H = 12
+
+    @classmethod
+    def setUpClass(cls):
+        lt.BOOTSTRAP_B = 100
+        price, macro = synthetic()
+        cls.frame = lt.build_frame(price, macro)
+        cls.cols = [c for c, _ in lt.FEATURES if c in cls.frame.columns]
+        cls.oof = lt.walk_forward(cls.frame, cls.cols, cls.H)
+        ok = cls.oof.notna() & cls.frame[f"fwd_{cls.H}m"].notna()
+        cls.dates = ok[ok].index
+        half = len(cls.dates) // 2
+        eval_start = cls.dates[half]
+        pos = cls.frame.index.get_indexer(cls.dates[:half])
+        realized = cls.frame.index[pos + cls.H]
+        cls.leak_zone = list(cls.dates[:half][realized > eval_start])
+        cls.safe_zone = list(cls.dates[:half][realized <= eval_start])
+        # 합성 자료는 신호가 강해 기울기가 1로 잘린다. 잘린 값끼리는 같아도 의미가 없으므로,
+        # 안전 구간의 원기울기가 0.5 가 되도록 OOF 예측의 크기를 맞춘다(기울기 = Σpy/Σp² 이라 p 를 키우면 준다).
+        y = cls.frame.loc[cls.safe_zone, f"fwd_{cls.H}m"].to_numpy()
+        p_ = cls.oof.loc[cls.safe_zone].to_numpy()
+        raw = float((p_ * y).sum() / (p_ ** 2).sum())
+        assert raw > 0, raw
+        cls.oof = cls.oof * (raw / 0.5)
+
+    def evaluate(self, frame):
+        with patch.object(lt, "walk_forward", return_value=self.oof):
+            ev, _ = lt.evaluate(frame, self.cols, self.H)
+        return ev
+
+    def test_labels_realized_after_evaluation_start_do_not_move_the_slope(self):
+        base = self.evaluate(self.frame)
+        self.assertTrue(0 < base["shrink_slope"] < 1, base["shrink_slope"])   # 클리핑에 가린 동등이 아니어야 한다
+        # 평가 시작 달에 정확히 실현되는 행은 그때 이미 아는 값이므로 누수 구간은 h-1 행이다.
+        self.assertEqual(len(self.leak_zone), self.H - 1)
+        g = self.frame.copy()
+        g.loc[self.leak_zone, f"fwd_{self.H}m"] *= -3
+        self.assertEqual(self.evaluate(g)["shrink_slope"], base["shrink_slope"])
+
+    def test_labels_realized_before_evaluation_start_do_move_the_slope(self):
+        base = self.evaluate(self.frame)
+        g = self.frame.copy()
+        g.loc[self.safe_zone[-6:], f"fwd_{self.H}m"] *= 0.5
+        self.assertNotEqual(self.evaluate(g)["shrink_slope"], base["shrink_slope"])
+
+    def test_calibration_count_is_reported(self):
+        self.assertEqual(self.evaluate(self.frame)["n_calibration"], len(self.safe_zone))
+
+
 if __name__ == "__main__":
     unittest.main()
 

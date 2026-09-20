@@ -7,6 +7,9 @@ import sys
 import unittest
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
+from unittest.mock import patch
+
+import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "tools"))
@@ -109,3 +112,29 @@ class LandingTests(unittest.TestCase):
         self.assertLess(html.index('href="./metals/"'), html.index('href="./macro/"'),
                         "금·은 아래에 두기로 했다")
         self.assertLess(html.index('href="./macro/"'), html.index('href="./news/"'))
+
+
+
+class ReadOnlyRunDoesNotRewriteCacheTests(unittest.TestCase):
+    """fetch=False(오프라인 읽기)는 보관본을 덮어쓰지 않는다(2026-09-20 검토).
+
+    전에는 읽기만 해도 macro_history/*.csv 를 다시 저장해, 테스트를 돌릴 때마다 버전 관리 파일이 바뀌었다.
+    """
+
+    def run_loader(self, loader, cache_attr, builder_module, builder_name, fetch):
+        import importlib, tempfile
+        frame = pd.DataFrame({"a": [1.0, 2.0]}, index=pd.date_range("2026-01-31", periods=2, freq="ME"))
+        module = importlib.import_module(builder_module)
+        with tempfile.TemporaryDirectory() as d:
+            cache = Path(d) / "cache.csv"
+            with patch.object(macro, cache_attr, cache), patch.object(module, builder_name, return_value=(frame, {})):
+                loader(fetch=fetch)
+            return cache.exists()
+
+    def test_fx_cache_is_written_only_when_fetching(self):
+        self.assertFalse(self.run_loader(macro.load_fx, "FX_CACHE", "data_sources.fx_inputs", "build_fx_inputs", False))
+        self.assertTrue(self.run_loader(macro.load_fx, "FX_CACHE", "data_sources.fx_inputs", "build_fx_inputs", True))
+
+    def test_us_jp_cache_is_written_only_when_fetching(self):
+        self.assertFalse(self.run_loader(macro.load_us_jp, "US_JP_CACHE", "data_sources.fred", "build_us_jp_inputs", False))
+        self.assertTrue(self.run_loader(macro.load_us_jp, "US_JP_CACHE", "data_sources.fred", "build_us_jp_inputs", True))

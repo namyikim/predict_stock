@@ -891,7 +891,7 @@ def load_fx(fetch=True):
         return None, {"failed": {"전체": f"{type(exc).__name__}: {exc}"[:160]}, "notes": notes}
     if notes:
         info.setdefault("notes", {}).update(notes)
-    if len(frame):
+    if fetch and len(frame):          # 읽기 전용 실행은 보관본을 건드리지 않는다(2026-09-20)
         FX_CACHE.parent.mkdir(parents=True, exist_ok=True)
         frame.reset_index().to_csv(FX_CACHE, index=False)
     return frame, info
@@ -907,7 +907,7 @@ def load_us_jp(fetch=True):
         frame, info = build_us_jp_inputs(fetch=fetch, cache_path=US_JP_CACHE)
     except Exception as exc:
         return None, {"failed": {"전체": f"{type(exc).__name__}: {exc}"[:160]}}
-    if len(frame):
+    if fetch and len(frame):          # 읽기 전용 실행은 보관본을 건드리지 않는다(2026-09-20)
         US_JP_CACHE.parent.mkdir(parents=True, exist_ok=True)
         frame.reset_index().to_csv(US_JP_CACHE, index=False)
     return frame, info
@@ -919,7 +919,7 @@ def load_us_market(fetch=True):
         frame, info = build_us_market_inputs(fetch=fetch, cache_path=US_MARKET_CACHE)
     except Exception as exc:
         return None, {"failed": {"전체": f"{type(exc).__name__}: {exc}"[:160]}}
-    if len(frame):
+    if fetch and len(frame):          # 읽기 전용 실행은 보관본을 건드리지 않는다(2026-09-20)
         US_MARKET_CACHE.parent.mkdir(parents=True, exist_ok=True)
         frame.reset_index().to_csv(US_MARKET_CACHE, index=False)
     return frame, info

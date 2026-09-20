@@ -239,10 +239,23 @@ def evaluate(f, cols, h):
     if n < 3 * h:
         out.update(beats_zero=False, note="표본 부족")
         return out, oof
-    # 축소: OOF 예측에 실제를 회귀한 기울기(0~1). 첫 절반에서 추정해 둘째 절반에 적용.
+    # 축소: OOF 예측에 실제를 회귀한 기울기(0~1). 앞절반에서 추정해 뒷절반에 적용한다.
+    # 보정 행은 타깃(h개월 뒤 수익률)이 평가 시작 시점까지 실현된 것만 쓴다. 앞절반을 통째로 쓰면 그
+    # 마지막 h행의 정답은 평가가 시작된 뒤에야 실현되므로 미래 정보가 기울기에 들어간다 — 2026-09-20
+    # 검토에서 확인(그 값 하나만 바꿔도 기울기가 0.20→0.35). 실현 시점은 fwd_{h}m 의 정의(h행 뒤 가격)와
+    # 같은 방법으로 전체 프레임의 위치에서 구하므로 달력 가정이 필요 없다.
+    dates = ok[ok].index
     half = n // 2
-    denom = float(np.sum(pp[:half] ** 2))
-    slope = float(np.clip(np.sum(pp[:half] * yy[:half]) / denom, 0., 1.)) if denom > 0 else 0.
+    eval_start = dates[half]
+    pos = f.index.get_indexer(dates[:half])
+    in_range = pos + h < len(f.index)
+    realized_at = f.index[np.minimum(pos + h, len(f.index) - 1)]
+    cal = np.flatnonzero(in_range & (realized_at <= eval_start))
+    if len(cal) < h:
+        out.update(beats_zero=False, note="보정 표본 부족")
+        return out, oof
+    denom = float(np.sum(pp[cal] ** 2))
+    slope = float(np.clip(np.sum(pp[cal] * yy[cal]) / denom, 0., 1.)) if denom > 0 else 0.
     err_model = np.abs(yy[half:] - slope * pp[half:])
     err_zero = np.abs(yy[half:])
     diff = err_model - err_zero
@@ -252,7 +265,7 @@ def evaluate(f, cols, h):
     out.update(
         corr_spearman=spearman(pp, yy),
         sign_hit=float(np.mean(np.sign(pp) == np.sign(yy))),
-        shrink_slope=slope,
+        shrink_slope=slope, n_calibration=int(len(cal)),
         mae_model=float(err_model.mean()), mae_zero=float(err_zero.mean()),
         mae_diff=float(diff.mean()), mae_diff_lo=float(lo), mae_diff_hi=float(hi),
         beats_zero=bool(enough and np.isfinite(hi) and hi < 0),

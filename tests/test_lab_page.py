@@ -27,9 +27,11 @@ class LabPageTests(PageSource):
     pass
 
     def test_javascript_parses(self):
-        tmp = Path("/tmp/_lab_check.js")
-        tmp.write_text(self.script, encoding="utf-8")
-        done = subprocess.run(["node", "--check", str(tmp)], capture_output=True, text=True)
+        import tempfile
+        with tempfile.TemporaryDirectory() as d:          # 고정 /tmp 는 Windows 에서 쓸 수 없다
+            tmp = Path(d) / "_lab_check.js"
+            tmp.write_text(self.script, encoding="utf-8")
+            done = subprocess.run(["node", "--check", str(tmp)], capture_output=True, text=True)
         self.assertEqual(done.returncode, 0, done.stderr)
 
     def test_uses_only_prospective_scored_ledger_rows(self):

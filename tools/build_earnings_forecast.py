@@ -413,10 +413,14 @@ def monthly_usdkrw(cache_dir, fetch=True):
 
 
 def first_k_months(monthly, k):
-    """분기별로 앞 k개월만 평균낸다. 분기 안에 k개월이 다 없으면 NaN."""
+    """분기별로 달력상의 앞 k개월만 평균낸다. 그 k개월이 다 있어야 하고 없으면 NaN.
+
+    전에는 관측 행의 순서(cumcount)로 세어, 1월이 빠진 2·3월 자료에 k=2 를 주면 그것을 '앞 2개월'로
+    썼다(2026-09-20 검토 #10). 누락 월을 건너뛰어 k 를 채운 것으로 치면 안 된다.
+    """
     frame = pd.DataFrame({"value": monthly})
     frame["quarter"] = pd.PeriodIndex(frame.index, freq="Q")
-    frame["rank"] = frame.groupby("quarter").cumcount() + 1
+    frame["rank"] = (pd.DatetimeIndex(frame.index).month - 1) % 3 + 1      # 분기 안의 달 번호 1~3
     picked = frame[frame["rank"] <= k]
     counts = picked.groupby("quarter")["value"].count()
     means = picked.groupby("quarter")["value"].mean()
@@ -529,6 +533,23 @@ def extrapolation_note(profit, point):
 
 
 MIN_CANDIDATE_ROWS = 8
+
+
+def paired_ablation(oof_base, oof_candidate):
+    """후보와 기본 모델의 MAE 를 같은 분기(양쪽 OOF 의 교집합)에서 비교한다.
+
+    walk_forward 는 특징별로 dropna 하므로 평가 분기가 달라질 수 있고, 후보가 어려운 분기를 빼기만 해도
+    좋아 보일 수 있다(2026-09-20 검토 #8). 교집합의 크기와 한쪽에만 있는 분기 수를 함께 남긴다.
+    """
+    common = oof_base.index.intersection(oof_candidate.index)
+    if len(common) == 0:
+        return {"n": 0}
+    b, c = oof_base.loc[common], oof_candidate.loc[common]
+    err_b, err_c = np.abs(b["actual"] - b["model"]), np.abs(c["actual"] - c["model"])
+    return {"n": int(len(common)), "mae_with": float(err_c.mean()), "mae_without": float(err_b.mean()),
+            "mae_diff": float((err_c - err_b).mean()),
+            "n_candidate_only": int(len(oof_candidate.index.difference(oof_base.index))),
+            "n_base_only": int(len(oof_base.index.difference(oof_candidate.index)))}
 
 
 def feature_coverage(f, cols, base=None, target="profit"):
@@ -1301,23 +1322,20 @@ def analyse(target, out_dir, fetch=True):
             error = oof["actual"] - oof["model"]
             ok = growth.notna() & error.notna()
             return float(np.corrcoef(growth[ok], error[ok])[0, 1]) if ok.sum() > 2 else float("nan")
-        leverage_ablation = {"mae_with": with_lev.get("mae_model"), "mae_without": ev.get("mae_model"),
-                             "n": with_lev.get("n"),
+        leverage_ablation = {**paired_ablation(oof, oof_lev),          # 같은 분기에서만 비교
                              "bias_with": growth_bias(oof_lev), "bias_without": growth_bias(oof)}
 
     price_active = feature_coverage(f, UNIT_PRICE_FEATURES) > 0.5
     price_ablation = {}
     if price_active:
-        with_price = evaluate(walk_forward(f, features=FEATURES + UNIT_PRICE_FEATURES))
-        price_ablation = {"mae_with": with_price.get("mae_model"), "mae_without": ev.get("mae_model"),
-                          "n": with_price.get("n")}
+        price_ablation = paired_ablation(oof, walk_forward(f, features=FEATURES + UNIT_PRICE_FEATURES))
 
     tsmc_active = feature_coverage(f, TSMC_FEATURES) > 0.5
     tsmc_ablation = {}
     if tsmc_active:
-        with_tsmc = evaluate(walk_forward(f, features=FEATURES + TSMC_FEATURES))
-        tsmc_ablation = {"mae_with": with_tsmc.get("mae_model"), "mae_without": ev.get("mae_model"),
-                         "n": with_tsmc.get("n"),
+        oof_tsmc = walk_forward(f, features=FEATURES + TSMC_FEATURES)
+        with_tsmc = evaluate(oof_tsmc)
+        tsmc_ablation = {**paired_ablation(oof, oof_tsmc),
                          "beats_with": with_tsmc.get("beats_baselines"),
                          "beats_without": ev.get("beats_baselines")}
     raw_point = point          # 기준선 게이트에 걸리기 전의 원시 추정값

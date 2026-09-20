@@ -248,6 +248,28 @@ class NotebookStructureTests(unittest.TestCase):
         self.assertIn("assert staleness_days", self.source)
 
 
+class HeadlineModelIsAlwaysBuiltTests(unittest.TestCase):
+    """대표 모델(시세만)은 경제자료 유무와 무관하게 만들어져야 한다(2026-09-20 검토 #5).
+
+    전에는 MACRO_ACTIVE 안에 있어 월별 지표가 꺼지면 'No macro ensemble' 이 생기지 않고 다른 모델이 대표가 됐다.
+    """
+
+    @classmethod
+    def setUpClass(cls):
+        from pathlib import Path
+        root = Path(__file__).resolve().parents[1]
+        nb = json.loads((root / "samsung_direction_model_colab.ipynb").read_text(encoding="utf-8"))
+        cls.cells = ["".join(c["source"]) for c in nb["cells"] if c["cell_type"] == "code"]
+
+    def test_fold_loop_and_live_fit_are_not_gated_on_macro(self):
+        fold = next(s for s in self.cells if 'prediction_frame("No macro ensemble"' in s)
+        self.assertNotIn("if MACRO_ACTIVE:\n        no_macro_probs", fold)
+        self.assertIn("시세만 모델은 경제자료 유무와 무관하게 늘 만든다", fold)
+        live = next(s for s in self.cells if "market_live_models = {}" in s)
+        self.assertNotIn("market_live_models = {}\nif MACRO_ACTIVE:", live)
+        self.assertRegex(live, r"market_live_models = \{\}\nfor family in")
+
+
 if __name__ == "__main__":
     unittest.main()
 

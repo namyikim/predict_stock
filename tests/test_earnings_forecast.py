@@ -70,6 +70,14 @@ class TimingTests(unittest.TestCase):
         # 3개월을 요구하면 2개월뿐인 3분기는 비어야 한다.
         self.assertTrue(np.isnan(ef.first_k_months(series, 3)[pd.Period("2026Q3", freq="Q")]))
 
+    def test_first_k_months_counts_calendar_months_not_observed_rows(self):
+        # 1월이 빠진 2·3월 자료에 k=2 를 주면 '앞 2개월'이 아니다(2026-09-20 검토 #10: 전에는 2.5 가 나왔다).
+        months = pd.to_datetime(["2026-02-01", "2026-03-01", "2026-04-01", "2026-05-01"])
+        series = pd.Series([2.0, 3.0, 4.0, 5.0], index=months)
+        got = ef.first_k_months(series, 2)
+        self.assertTrue(np.isnan(got[pd.Period("2026Q1", freq="Q")]))
+        self.assertAlmostEqual(got[pd.Period("2026Q2", freq="Q")], 4.5)          # 4·5월은 달력상 앞 2개월
+
     def test_live_features_use_only_the_quarters_first_k_months(self):
         profit, exports, fx = synthetic()
         f = ef.build_frame(profit, exports, fx, 2)
@@ -263,6 +271,28 @@ class UnitPriceActivationTests(unittest.TestCase):
         self.assertIn('github_pages.publish("macro_history/customs_quantity.csv"', source)   # 발행
         self.assertIn("if key or quantity_cache.exists():", source)                  # 키 없이도 보관본 읽기
         self.assertIn("if fetch and key:", source)                                   # 새 조회만 키가 제어
+
+
+class PairedAblationTests(unittest.TestCase):
+    """후보 비교는 같은 분기에서만(2026-09-20 검토 #8)."""
+
+    def oof(self, quarters, error):
+        idx = pd.PeriodIndex(quarters, freq="Q")
+        actual = pd.Series(10e12, index=idx)
+        return pd.DataFrame({"actual": actual, "model": actual - error})
+
+    def test_compares_on_the_intersection_only(self):
+        base = self.oof(["2024Q1", "2024Q2", "2024Q3", "2024Q4"], 2e12)
+        cand = self.oof(["2024Q3", "2024Q4", "2025Q1"], 1e12)      # 어려운 앞 분기 두 개를 뺐다
+        out = ef.paired_ablation(base, cand)
+        self.assertEqual(out["n"], 2)
+        self.assertAlmostEqual(out["mae_without"], 2e12)
+        self.assertAlmostEqual(out["mae_with"], 1e12)
+        self.assertAlmostEqual(out["mae_diff"], -1e12)
+        self.assertEqual((out["n_base_only"], out["n_candidate_only"]), (2, 1))
+
+    def test_no_overlap(self):
+        self.assertEqual(ef.paired_ablation(self.oof(["2024Q1"], 1e12), self.oof(["2025Q1"], 1e12)), {"n": 0})
 
 
 if __name__ == "__main__":

@@ -310,3 +310,271 @@ class InputValidationTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+# ----------------------------------------------------------------------------------------------
+# S02 Task 1: 고정 스냅샷 로더
+# ----------------------------------------------------------------------------------------------
+import tempfile  # noqa: E402
+
+from weekly_sequence_utils import (  # noqa: E402
+    OhlcvSnapshot, availability_policy, corporate_action_flags, load_ohlcv_snapshot, session_calendar,
+)
+
+
+def write_snapshot(cache_dir, bars, adj_close=None, fmt="csv"):
+    """노트북 load_raw 와 같은 형식(open/high/low/close/adj_close/volume, tz 없는 날짜 인덱스)."""
+    frame = bars[["open", "high", "low", "close"]].copy()
+    frame["adj_close"] = bars["close"] if adj_close is None else adj_close
+    frame["volume"] = bars["volume"]
+    frame = frame.round(6)
+    path = Path(cache_dir) / f"target.{fmt}"
+    if fmt == "csv":
+        frame.to_csv(path)
+    else:
+        frame.to_parquet(path)
+    return path
+
+
+class SnapshotLoaderTests(unittest.TestCase):
+    def setUp(self):
+        self.cache = Path(tempfile.mkdtemp())
+        self.inputs = fixture(n=160)
+
+    def test_missing_snapshot_is_refused_not_downloaded(self):
+        with self.assertRaises(FileNotFoundError):
+            load_ohlcv_snapshot(self.cache, "samsung")
+
+    def test_loader_feeds_build_sequences_unchanged(self):
+        write_snapshot(self.cache, self.inputs["bars"])
+        snap = load_ohlcv_snapshot(self.cache, "samsung")
+        self.assertIsInstance(snap, OhlcvSnapshot)
+        self.assertEqual(list(snap.bars.columns), ["open", "high", "low", "close", "volume"])
+        self.assertFalse(snap.adjusted)
+        self.assertEqual(snap.ticker, "005930.KS")
+        sessions = session_calendar(snap.bars.index[0], snap.bars.index[-1])
+        available_at, prediction_at = availability_policy(snap.bars, sessions)
+        batch = build_sequences(snap.bars, sessions, available_at, prediction_at,
+                                corporate_action_flags(snap.bars), lookback=LOOKBACK, horizon=HORIZON)
+        reference = build_sequences(**self.inputs, lookback=LOOKBACK, horizon=HORIZON)
+        np.testing.assert_allclose(batch.X, reference.X, rtol=0, atol=1e-6)
+        np.testing.assert_allclose(batch.y, reference.y, rtol=0, atol=1e-9)
+
+    def test_raw_close_is_used_even_when_adj_close_differs(self):
+        # 조정 종가와 비조정 OHLC 를 섞지 않는다: close(원본)를 쓰고 adjusted=False 로 기록한다.
+        write_snapshot(self.cache, self.inputs["bars"], adj_close=self.inputs["bars"]["close"] * 0.9)
+        snap = load_ohlcv_snapshot(self.cache, "samsung")
+        np.testing.assert_allclose(snap.bars["close"].to_numpy(),
+                                   self.inputs["bars"]["close"].round(6).to_numpy())
+        self.assertFalse(snap.adjusted)
+
+    def test_adjusted_ohlc_marker_is_rejected(self):
+        path = write_snapshot(self.cache, self.inputs["bars"])
+        frame = pd.read_csv(path, index_col=0)
+        frame.attrs = {}
+        frame["adjusted"] = True                      # 조정된 OHLC 표시 열
+        frame.to_csv(path)
+        with self.assertRaisesRegex(ValueError, "조정"):
+            load_ohlcv_snapshot(self.cache, "samsung")
+
+    def test_sha256_changes_with_content(self):
+        path = write_snapshot(self.cache, self.inputs["bars"])
+        first = load_ohlcv_snapshot(self.cache, "samsung").sha256
+        frame = pd.read_csv(path, index_col=0)
+        frame.iloc[-1, frame.columns.get_loc("close")] += 1.0
+        frame.to_csv(path)
+        second = load_ohlcv_snapshot(self.cache, "samsung").sha256
+        self.assertNotEqual(first, second)
+        self.assertEqual(len(first), 64)
+
+    def test_parquet_and_csv_give_the_same_bars(self):
+        try:
+            import pyarrow  # noqa: F401
+        except ImportError:
+            self.skipTest("pyarrow 없음")
+        write_snapshot(self.cache, self.inputs["bars"], fmt="parquet")
+        a = load_ohlcv_snapshot(self.cache, "samsung").bars
+        other = Path(tempfile.mkdtemp())
+        write_snapshot(other, self.inputs["bars"], fmt="csv")
+        b = load_ohlcv_snapshot(other, "samsung").bars
+        pd.testing.assert_frame_equal(a, b, check_exact=False, rtol=0, atol=1e-6)
+
+
+class AvailabilityPolicyTests(unittest.TestCase):
+    def test_policy_times_are_aware_and_ordered(self):
+        bars = fixture(n=40)["bars"]
+        sessions = session_calendar(bars.index[0], bars.index[-1])
+        available_at, prediction_at = availability_policy(bars, sessions)
+        self.assertEqual(str(available_at.dt.tz), "Asia/Seoul")
+        self.assertEqual(str(prediction_at.dt.tz), "Asia/Seoul")
+        self.assertTrue((available_at.dt.hour == 16).all())
+        self.assertTrue((prediction_at.dt.hour == 7).all())
+        # 각 봉의 공개 시각은 다음 세션의 예측 시각보다 앞선다.
+        nxt = prediction_at.shift(-1).dropna()
+        self.assertTrue((available_at.loc[nxt.index] < nxt).all())
+
+    def test_recorded_fetch_time_takes_precedence_over_policy(self):
+        bars = fixture(n=40)["bars"].copy()
+        sessions = session_calendar(bars.index[0], bars.index[-1])
+        recorded = pd.Series(bars.index + pd.Timedelta(hours=18, minutes=30), index=bars.index).dt.tz_localize(KST)
+        available_at, _ = availability_policy(bars, sessions, recorded_at=recorded)
+        self.assertTrue((available_at == recorded).all())
+
+    def test_policy_marks_itself_assumed(self):
+        bars = fixture(n=40)["bars"]
+        sessions = session_calendar(bars.index[0], bars.index[-1])
+        available_at, _ = availability_policy(bars, sessions)
+        self.assertEqual(available_at.attrs.get("policy"), "assumed")
+        recorded = pd.Series(bars.index + pd.Timedelta(hours=18), index=bars.index).dt.tz_localize(KST)
+        available_at, _ = availability_policy(bars, sessions, recorded_at=recorded)
+        self.assertEqual(available_at.attrs.get("policy"), "recorded")
+
+
+class CorporateActionHeuristicTests(unittest.TestCase):
+    def test_split_like_gap_is_flagged(self):
+        bars = fixture(n=100)["bars"].copy()
+        split = bars.index[50]
+        after = bars.index >= split
+        for column in ("open", "high", "low", "close"):
+            bars.loc[after, column] /= 2.0
+        flags = corporate_action_flags(bars)
+        self.assertTrue(flags.loc[split])
+        self.assertEqual(int(flags.sum()), 1)
+
+    def test_ordinary_moves_are_not_flagged(self):
+        bars = fixture(n=100)["bars"].copy()
+        day = bars.index[50]
+        for column in ("open", "high", "low", "close"):
+            bars.loc[day, column] *= 1.10          # +10% 는 흔한 급등
+        self.assertFalse(corporate_action_flags(bars).any())
+
+    def test_heuristic_is_labelled_as_such(self):
+        flags = corporate_action_flags(fixture(n=40)["bars"])
+        self.assertEqual(flags.attrs.get("source"), "heuristic")
+        self.assertEqual(flags.dtype, bool)
+
+
+# ----------------------------------------------------------------------------------------------
+# S02 Task 2: 공통 날짜 기준선
+# ----------------------------------------------------------------------------------------------
+from weekly_sequence_utils import (  # noqa: E402
+    common_dates, flatten_windows, persistence_baseline, ridge_baseline, score, walk_forward_folds,
+)
+
+
+def long_fixture(n=700, seed=0):
+    """2023~2025 KRX 세션 ~700개, 무작위 보행 종가. 폴드 테스트용(합성 — 성능 의미 없음)."""
+    import exchange_calendars as xc
+    sessions = pd.DatetimeIndex(xc.get_calendar("XKRX").sessions_in_range("2023-01-01", "2025-12-31")[:n]).tz_localize(None)
+    rng = np.random.default_rng(seed)
+    close = pd.Series(60000 * np.exp(np.cumsum(rng.normal(0, 0.015, len(sessions)))), index=sessions)
+    bars = pd.DataFrame({"open": close * (1 + rng.normal(0, 0.003, len(sessions))),
+                         "close": close, "volume": rng.integers(500, 2000, len(sessions)).astype(float)},
+                        index=sessions)
+    bars["high"] = bars[["open", "close"]].max(axis=1) * 1.01
+    bars["low"] = bars[["open", "close"]].min(axis=1) * 0.99
+    available_at = pd.Series(sessions + pd.Timedelta(hours=16), index=sessions).dt.tz_localize(KST)
+    prediction_at = pd.Series(sessions + pd.Timedelta(hours=7), index=sessions).dt.tz_localize(KST)
+    return {"bars": bars, "sessions": sessions, "available_at": available_at,
+            "prediction_at": prediction_at, "corporate_actions": pd.Series(False, index=sessions)}
+
+
+class FoldContractTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.inputs = long_fixture()
+        cls.batch = build_sequences(**cls.inputs, lookback=LOOKBACK, horizon=HORIZON)
+        cls.folds, cls.lock_start = walk_forward_folds(cls.batch.metadata, first_test="2024-01-01",
+                                                       test_months=6, lock_months=12, min_train_rows=100)
+
+    def test_purge_zero_violations_in_every_fold(self):
+        meta = self.batch.metadata
+        for fold in self.folds:
+            if fold.get("excluded") or not len(fold["test"]):
+                continue
+            test_start = meta["prediction_date"].iloc[fold["test"][0]]
+            train_maturity = meta["target_date"].iloc[fold["train"]]
+            self.assertEqual(int((train_maturity >= test_start).sum()), 0, fold["name"])
+
+    def test_locked_period_is_excluded_from_development(self):
+        names = [f["name"] for f in self.folds]
+        self.assertTrue(all(n.startswith("dev_") for n in names))          # S02 는 잠금 폴드를 만들지 않는다
+        last_test_end = max(pd.Timestamp(f["test_end"]) for f in self.folds)
+        self.assertLess(last_test_end, self.lock_start)
+        meta = self.batch.metadata
+        self.assertEqual(self.lock_start,
+                         (meta["prediction_date"].iloc[-1] - pd.DateOffset(months=12) + pd.Timedelta(days=1)).normalize())
+
+    def test_folds_are_six_calendar_months_in_order(self):
+        starts = [pd.Timestamp(f["test_start"]) for f in self.folds]
+        self.assertEqual(starts, sorted(starts))
+        for a, b in zip(starts, starts[1:]):
+            self.assertEqual(b, a + pd.DateOffset(months=6))
+
+    def test_small_train_fold_is_excluded_with_reason_not_relaxed(self):
+        folds, _ = walk_forward_folds(self.batch.metadata, first_test="2024-01-01", test_months=6,
+                                      lock_months=12, min_train_rows=10_000)
+        self.assertTrue(all("학습 행" in f.get("excluded", "") for f in folds))
+
+
+class BaselineTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.inputs = long_fixture()
+        cls.batch = build_sequences(**cls.inputs, lookback=LOOKBACK, horizon=HORIZON)
+        cls.folds, _ = walk_forward_folds(cls.batch.metadata, first_test="2024-01-01", test_months=6,
+                                          lock_months=12, min_train_rows=100)
+        cls.fold = next(f for f in cls.folds if not f.get("excluded"))
+
+    def test_flatten_shape(self):
+        flat = flatten_windows(self.batch.X)
+        self.assertEqual(flat.shape, (len(self.batch.y), LOOKBACK * len(CHANNELS)))
+
+    def test_ridge_predictions_ignore_future_data(self):
+        X = flatten_windows(self.batch.X)
+        train, test = self.fold["train"], self.fold["test"]
+        before = ridge_baseline(X[train], self.batch.y[train], X[test], alpha=1e4)
+        changed = long_fixture()
+        after_start = self.batch.metadata["target_date"].iloc[test[-1]]
+        later = changed["bars"].index > after_start
+        for column in ("open", "high", "low", "close"):
+            changed["bars"].loc[later, column] *= 1.5
+        batch2 = build_sequences(**changed, lookback=LOOKBACK, horizon=HORIZON)
+        X2 = flatten_windows(batch2.X)
+        after = ridge_baseline(X2[train], batch2.y[train], X2[test], alpha=1e4)
+        np.testing.assert_allclose(before, after, rtol=0, atol=1e-9)
+
+    def test_scaler_uses_training_rows_only(self):
+        X = flatten_windows(self.batch.X)
+        train, test = self.fold["train"], self.fold["test"]
+        a = ridge_baseline(X[train], self.batch.y[train], X[test], alpha=1e4)
+        X_extreme = X.copy()
+        X_extreme[test] *= 1000.0           # 시험 구간을 극단으로 바꿔도 학습 통계는 변하면 안 된다
+        b = ridge_baseline(X_extreme[train], self.batch.y[train], X_extreme[test], alpha=1e4)
+        # 예측은 시험 입력에 따라 달라지지만, 학습 구간 예측(자기 자신)은 같아야 한다.
+        a_train = ridge_baseline(X[train], self.batch.y[train], X[train], alpha=1e4)
+        b_train = ridge_baseline(X_extreme[train], self.batch.y[train], X_extreme[train], alpha=1e4)
+        np.testing.assert_allclose(a_train, b_train, rtol=0, atol=1e-9)
+        self.assertFalse(np.allclose(a, b))
+
+    def test_persistence_is_zero_return(self):
+        np.testing.assert_array_equal(persistence_baseline(self.batch.y[:5]), np.zeros(5))
+
+    def test_common_dates_is_the_intersection(self):
+        a = pd.DatetimeIndex(["2024-01-02", "2024-01-03", "2024-01-04"])
+        b = pd.DatetimeIndex(["2024-01-03", "2024-01-04", "2024-01-05"])
+        c = pd.DatetimeIndex(["2024-01-04", "2024-01-05"])
+        self.assertEqual(list(common_dates(a, b, c)), [pd.Timestamp("2024-01-04")])
+
+    def test_score_reports_mae_first_and_no_probability_keys(self):
+        y = np.array([0.01, -0.02, 0.03, -0.01])
+        pred = np.array([0.02, -0.01, -0.01, -0.02])
+        out = score(y, pred)
+        self.assertAlmostEqual(out["mae"], float(np.mean(np.abs(y - pred))))
+        self.assertAlmostEqual(out["direction_hit"], 0.75)
+        self.assertEqual(out["n"], 4)
+        self.assertFalse(any(k.startswith("p_") for k in out))
+        # 방향을 부르지 않은 모델(현재가 유지)은 적중률이 없다 — 0 이 아니다.
+        zero = score(y, np.zeros(4))
+        self.assertTrue(np.isnan(zero["direction_hit"]))
+        self.assertEqual(zero["direction_n"], 0)

@@ -9,11 +9,11 @@
 
 - [x] S01 완료(main d6c8ed69).
 - [x] S02 상세 실행 계획 작성(이 문서, 2026-09-22).
-- [ ] 상세 실행 계획 검토.
-- [ ] S02 코드 구현·검증.
+- [x] 상세 실행 계획 검토 — 사용자 재개 지시에 따라 진행(2026-09-22).
+- [x] S02 코드 구현·검증 — 신규 테스트 28개(시퀀스 22 + 러너 6), 전체 1374개 통과.
 - [ ] S02 완료 기록 및 main 반영 확인.
 
-이 문서는 실행 계획이다. 아래 러너·CLI·테스트는 아직 존재하지 않는다.
+이 문서는 실행 계획이다. 아래 러너·CLI·테스트는 2026-09-22 구현됐다(진행 기록은 설계 문서 참고).
 
 ## Global Constraints
 
@@ -52,11 +52,11 @@ Interfaces:
 - `corporate_action_flags(bars, ratio_threshold=0.5) -> Series[bool]`
   - 기업행동 자료원이 없으므로 **가격 불연속 휴리스틱**으로만 표시한다: 종가 대비 익일 시가·종가 비율이 threshold 밖이면 True. 이것이 기업행동을 다 잡는다고 주장하지 않는다 — manifest에 `corporate_actions: heuristic` 로 남기고, 결과 문서에 한계로 적는다.
 
-- [ ] 실패 테스트: `load_ohlcv_snapshot` 미존재 → ImportError; 스냅샷 없는 디렉터리 → FileNotFoundError; 조정 OHLC 표시 → ValueError.
-- [ ] 합성 스냅샷 fixture(csv, 2년치 KRX 세션)로 로더가 S01 `build_sequences`에 그대로 들어가는 것을 확인한다.
-- [ ] `availability_policy` 산출이 시간대 있는 시각이고 available_at < 다음 세션 prediction_at 인지 확인한다.
-- [ ] `corporate_action_flags` 가 반감 분할을 잡고, 정상 변동(±10%)은 잡지 않는지 확인한다.
-- [ ] 스냅샷 sha256 이 파일 내용 변경에 반응하는지 확인한다.
+- [x] 실패 테스트: `load_ohlcv_snapshot` 미존재 → ImportError; 스냅샷 없는 디렉터리 → FileNotFoundError; 조정 OHLC 표시 → ValueError.
+- [x] 합성 스냅샷 fixture(csv, 2년치 KRX 세션)로 로더가 S01 `build_sequences`에 그대로 들어가는 것을 확인한다.
+- [x] `availability_policy` 산출이 시간대 있는 시각이고 available_at < 다음 세션 prediction_at 인지 확인한다.
+- [x] `corporate_action_flags` 가 반감 분할을 잡고, 정상 변동(±10%)은 잡지 않는지 확인한다.
+- [x] 스냅샷 sha256 이 파일 내용 변경에 반응하는지 확인한다.
 
 ## Task 2: 공통 날짜 기준선 (weekly_sequence_utils.py)
 
@@ -71,11 +71,11 @@ Interfaces:
 - `score(y, pred) -> dict(mae, rmse, direction_hit, n)` — 주 지표 MAE, 보조 RMSE·방향 적중률.
 - `block_bootstrap_ci(y, pred_a, pred_b, dates, b=2000, seed=42)` — run_medium_horizon.month_block_ci 를 그대로 호출해 두 모델 MAE 차이의 95% CI.
 
-- [ ] 실패 테스트: purge 위반(학습 행의 target_date >= 시험 첫 prediction_date)이 0건인지 폴드마다 검사하는 테스트를 먼저 쓴다.
-- [ ] 미래 자료 변경 불변: 시험 구간 이후 봉을 바꿔도 앞 폴드 예측이 같음.
-- [ ] 스케일러가 학습 구간 통계만 쓰는지: 시험 구간 값을 극단으로 바꿔도 학습 구간 변환 결과 불변.
-- [ ] 공통 날짜: 세 날짜 집합 중 하나에만 있는 날은 결과에서 빠지고, 표본 수가 세 모델에서 같음.
-- [ ] 방향 적중률은 부호 일치 비율이며 확률로 포장하지 않는다(결과 dict 에 `p_up` 같은 키가 없음).
+- [x] 실패 테스트: purge 위반(학습 행의 target_date >= 시험 첫 prediction_date)이 0건인지 폴드마다 검사하는 테스트를 먼저 쓴다.
+- [x] 미래 자료 변경 불변: 시험 구간 이후 봉을 바꿔도 앞 폴드 예측이 같음.
+- [x] 스케일러가 학습 구간 통계만 쓰는지: 시험 구간 값을 극단으로 바꿔도 학습 구간 변환 결과 불변.
+- [x] 공통 날짜: 세 날짜 집합 중 하나에만 있는 날은 결과에서 빠지고, 표본 수가 세 모델에서 같음.
+- [x] 방향 적중률은 부호 일치 비율이며 확률로 포장하지 않는다(결과 dict 에 `p_up` 같은 키가 없음).
 
 ## Task 3: 재개 가능한 CLI (tools/run_weekly_sequence.py)
 
@@ -91,23 +91,23 @@ python tools/run_weekly_sequence.py --task S02 --target samsung --mode quick \
 - 운영 Ridge 기준선은 run_medium_horizon 의 고정 입력 pkl(`inputs_<mode>_<data_hash>.pkl`)이 있을 때만 계산하고, 없으면 `skipped: operational inputs missing` 으로 기록한다. 노트북을 이 러너가 실행하지 않는다.
 - decision.md 는 "S02는 인프라 단계 — 채택 판단 없음"을 명시하고 세 기준선의 수치와 CI, 공통 표본 수, 한계(availability 정책 가정, 기업행동 휴리스틱, 탐색 평가)를 적는다.
 
-- [ ] 실패 테스트: 스냅샷 없이 실행 → 종료 코드 2 와 명확한 메시지(다운로드하지 않음).
-- [ ] 합성 스냅샷으로 quick 실행이 끝까지 돌고 6개 파일이 생기는지.
-- [ ] 중단 복구: `baseline:ohlcv_ridge` 뒤에서 KeyboardInterrupt 를 흉내 내 재실행하면 앞 단위를 건너뛰고 이어서 완료하는지.
-- [ ] 산출물 훼손: metrics.csv 를 지우면 완료 표시가 있어도 그 단위를 다시 계산하는지(run_medium_horizon.artifacts_intact 방식).
-- [ ] 설정 변경 격리: alpha 를 바꾸면 다른 run_id 가 되고 이전 산출물을 덮지 않는지.
-- [ ] manifest 에 인증키·토큰 문자열이 없는지(환경변수 값을 흘리지 않음).
+- [x] 실패 테스트: 스냅샷 없이 실행 → 종료 코드 2 와 명확한 메시지(다운로드하지 않음).
+- [x] 합성 스냅샷으로 quick 실행이 끝까지 돌고 6개 파일이 생기는지.
+- [x] 중단 복구: `baseline:ohlcv_ridge` 뒤에서 KeyboardInterrupt 를 흉내 내 재실행하면 앞 단위를 건너뛰고 이어서 완료하는지.
+- [x] 산출물 훼손: metrics.csv 를 지우면 완료 표시가 있어도 그 단위를 다시 계산하는지(run_medium_horizon.artifacts_intact 방식).
+- [x] 설정 변경 격리: alpha 를 바꾸면 다른 run_id 가 되고 이전 산출물을 덮지 않는지.
+- [x] manifest 에 인증키·토큰 문자열이 없는지(환경변수 값을 흘리지 않음).
 
 ## Task 4: 검증·인수인계·커밋
 
-- [ ] python -m unittest tests.test_weekly_sequence -v
-- [ ] python -m unittest tests.test_medium_horizon.DesignTests -v
-- [ ] PREDICT_STOCK_SKIP_SMOKE=1 python -m unittest discover -s tests
-- [ ] git diff --check
-- [ ] 실제 스냅샷이 이 환경에 없으면 quick 실행은 합성 fixture 로만 검증했다고 적는다. 실제 수치를 만들지 않는다.
-- [ ] guides/weekly-sequence-model-plan.md 의 S02 상태·진행 기록·다음 단계(S03) 갱신.
-- [ ] 운영 파일 무변경 확인(git status).
-- [ ] 커밋: feat: add weekly sequence snapshot loader, baselines and resumable runner
+- [x] python -m unittest tests.test_weekly_sequence -v
+- [x] python -m unittest tests.test_medium_horizon.DesignTests -v
+- [x] PREDICT_STOCK_SKIP_SMOKE=1 python -m unittest discover -s tests
+- [x] git diff --check
+- [x] 실제 스냅샷이 이 환경에 없으면 quick 실행은 합성 fixture 로만 검증했다고 적는다. 실제 수치를 만들지 않는다.
+- [x] guides/weekly-sequence-model-plan.md 의 S02 상태·진행 기록·다음 단계(S03) 갱신.
+- [x] 운영 파일 무변경 확인(git status).
+- [x] 커밋: feat: add weekly sequence snapshot loader, baselines and resumable runner
 - [ ] main 반영 뒤 원격 파일·커밋 재확인. 실패 시 체크하지 않는다.
 
 ## 다음 단계

@@ -208,3 +208,204 @@ def build_sequences(bars, sessions, available_at, prediction_at, corporate_actio
     metadata = pd.DataFrame(rows, columns=list(METADATA_COLUMNS))
     excluded = pd.DataFrame(excluded, columns=["prediction_date", "reason"])
     return SequenceBatch(X=X, y=y, metadata=metadata, excluded=excluded)
+
+
+# ==============================================================================================
+# S02 Task 1 — 고정 스냅샷 로더
+#
+# 시세는 기존 실험 기반(runs/medium_horizon/<target>/data_cache)의 고정 스냅샷만 읽는다. 여기서
+# 다운로드하지 않는다 — 새로 내려받으면 다른 스냅샷이 되어 이전 실험과 같은 자료라고 말할 수 없다.
+# 스냅샷 형식은 노트북 load_raw 가 쓰는 것과 같다: <cache>/target.parquet(또는 .csv),
+# 열 open/high/low/close/adj_close/volume, auto_adjust=False 라 OHLC·close 는 원본이다.
+# ==============================================================================================
+import hashlib
+from pathlib import Path
+
+TICKERS = {"samsung": "005930.KS", "sk_hynix": "000660.KS"}
+SNAPSHOT_NAME = "target"                # 노트북 ASSETS 의 종목 키
+TZ = "Asia/Seoul"
+
+
+@dataclass
+class OhlcvSnapshot:
+    """원본 OHLCV 스냅샷. bars 는 open/high/low/close/volume 만(원본), adjusted 는 항상 False 여야 한다."""
+    bars: pd.DataFrame
+    adjusted: bool
+    source: str
+    fetched_at: object
+    sha256: str
+    ticker: str
+    path: str
+
+
+def _sha256(path):
+    digest = hashlib.sha256()
+    with open(path, "rb") as handle:
+        for chunk in iter(lambda: handle.read(1 << 20), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
+def load_ohlcv_snapshot(cache_dir, target):
+    """<cache_dir>/target.parquet(없으면 .csv) 를 읽는다. 없으면 FileNotFoundError — 내려받지 않는다."""
+    if target not in TICKERS:
+        raise ValueError(f"알 수 없는 target: {target!r} (가능: {sorted(TICKERS)})")
+    cache = Path(cache_dir)
+    parquet, csv = cache / f"{SNAPSHOT_NAME}.parquet", cache / f"{SNAPSHOT_NAME}.csv"
+    if parquet.is_file():
+        frame, path = pd.read_parquet(parquet), parquet
+    elif csv.is_file():
+        frame, path = pd.read_csv(csv, index_col=0), csv
+    else:
+        raise FileNotFoundError(
+            f"{cache} 에 고정 시세 스냅샷({SNAPSHOT_NAME}.parquet/.csv)이 없습니다. 이 러너는 내려받지 않습니다 — "
+            "기존 medium_horizon 실험의 data_cache 를 복사하거나 노트북을 캐시 모드로 한 번 실행하세요.")
+    frame = frame.copy()
+    frame.columns = [str(c).strip().lower().replace(" ", "_") for c in frame.columns]
+    if "adjusted" in frame.columns and frame["adjusted"].astype(bool).any():
+        raise ValueError("스냅샷의 OHLC 가 조정된 것으로 표시돼 있습니다. 원본 OHLC 스냅샷만 씁니다(조정 종가와 혼용 금지).")
+    missing = [c for c in ("open", "high", "low", "close", "volume") if c not in frame.columns]
+    if missing:
+        raise ValueError(f"스냅샷에 열이 없습니다: {missing}")
+    index = pd.DatetimeIndex(pd.to_datetime(frame.index))
+    if index.tz is not None:
+        index = index.tz_localize(None)
+    # parquet 은 ns, csv 파싱은 us 정밀도로 와서 같은 날짜가 다른 dtype 이 된다. ns 로 통일한다.
+    frame.index = index.normalize().as_unit("ns")
+    bars = frame[["open", "high", "low", "close", "volume"]].astype(float)
+    bars = bars[~bars.index.duplicated(keep="last")].sort_index()
+    fetched_at = pd.Timestamp(path.stat().st_mtime, unit="s", tz="UTC")
+    return OhlcvSnapshot(bars=bars, adjusted=False, source=f"data_cache/{path.name}",
+                         fetched_at=fetched_at, sha256=_sha256(path), ticker=TICKERS[target],
+                         path=str(path))
+
+
+def session_calendar(start, end):
+    """KRX 세션 날짜(tz 없음). S01 테스트와 같은 exchange_calendars XKRX."""
+    import exchange_calendars as xc
+    sessions = xc.get_calendar("XKRX").sessions_in_range(pd.Timestamp(start), pd.Timestamp(end))
+    return pd.DatetimeIndex(sessions).tz_localize(None)
+
+
+def availability_policy(bars, sessions, recorded_at=None, publish_hour=16, predict_hour=7, tz=TZ):
+    """(available_at, prediction_at).
+
+    봉의 공개 시각은 실제 수집 시각(recorded_at)이 있으면 그것을, 없으면 '그 세션 publish_hour' 라는
+    정책값을 쓴다. 정책값은 사실이 아니라 가정이므로 attrs["policy"]="assumed" 로 표시하고, 러너는
+    그것을 manifest 에 남긴다. 봉 날짜만으로 공개 시각을 확정하지 않는다는 S01 제약을 지키는 방법이다.
+    prediction_at 은 각 세션의 predict_hour(장 전).
+    """
+    index = pd.DatetimeIndex(bars.index)
+    if recorded_at is not None:
+        recorded = _aware_series(recorded_at, index, "recorded_at")
+        available_at = pd.Series(recorded.to_numpy(), index=index)
+        available_at.attrs["policy"] = "recorded"
+    else:
+        available_at = pd.Series(index + pd.Timedelta(hours=publish_hour), index=index).dt.tz_localize(tz)
+        available_at.attrs["policy"] = "assumed"
+    sessions = pd.DatetimeIndex(sessions)
+    prediction_at = pd.Series(sessions + pd.Timedelta(hours=predict_hour), index=sessions).dt.tz_localize(tz)
+    prediction_at.attrs["policy"] = "assumed"
+    return available_at, prediction_at
+
+
+def corporate_action_flags(bars, ratio_threshold=0.3):
+    """가격 불연속 휴리스틱으로 분할·병합 후보를 표시한다. bool Series, attrs["source"]="heuristic".
+
+    기업행동 자료원이 없다. 전일 종가 대비 당일 시가·종가가 **모두** (1-threshold)배 아래이거나
+    1/(1-threshold)배 위이면 True 로 둔다. 기본 threshold 0.3 은 KRX 일일 가격제한폭(±30%)이다 —
+    시가와 종가가 함께 제한폭 밖으로 뛰는 것은 정상 거래로는 불가능하므로 기준가 변경(분할·병합·
+    액면 변경)으로 본다. 2:1 분할(0.5배)은 잡히고 ±10% 급등락은 잡히지 않는다.
+    배당·소규모 행동은 잡지 못한다 — 이것으로 기업행동이 없었다고 말하지 않는다. 결과 문서에 한계로 적는다.
+    """
+    previous = bars["close"].shift(1)
+    lo, hi = 1.0 - ratio_threshold, 1.0 / (1.0 - ratio_threshold)
+    open_ratio = bars["open"] / previous
+    close_ratio = bars["close"] / previous
+    down = (open_ratio <= lo) & (close_ratio <= lo)
+    up = (open_ratio >= hi) & (close_ratio >= hi)
+    flags = (down | up).fillna(False).astype(bool)
+    flags.attrs["source"] = "heuristic"
+    flags.attrs["ratio_threshold"] = ratio_threshold
+    return flags
+
+
+# ==============================================================================================
+# S02 Task 2 — 공통 날짜 기준선
+#
+# 폴드 계약은 tools/run_medium_horizon.evaluation_folds 와 같다: first_test 부터 test_months 개월씩
+# 개발 폴드, 학습 행은 라벨 만기(target_date)가 시험 시작일보다 앞선 행만(purge). 마지막
+# lock_months 개월(잠금)은 S02 에서 만들지 않는다 — M07 이 이미 본 구간이고 S04 까지 열지 않는다.
+# ==============================================================================================
+
+
+def walk_forward_folds(metadata, first_test, test_months=6, lock_months=12, min_train_rows=500,
+                       min_test_rows=60):
+    """(폴드 목록, 잠금 시작일). 각 폴드: name, test_start, test_end, train, test, train_rows, test_rows, excluded?"""
+    dates = pd.DatetimeIndex(metadata["prediction_date"])
+    maturity = pd.DatetimeIndex(metadata["target_date"])
+    last = dates[-1]
+    lock_start = (last - pd.DateOffset(months=lock_months) + pd.Timedelta(days=1)).normalize()
+    folds = []
+    t0 = pd.Timestamp(first_test)
+    while t0 < lock_start:
+        t1 = min(t0 + pd.DateOffset(months=test_months), lock_start)
+        test = np.flatnonzero((dates >= t0) & (dates < t1))
+        train = np.flatnonzero(maturity < t0)                      # purge: 만기가 시험 시작 전
+        entry = {"name": f"dev_{len(folds) + 1:02d}", "test_start": str(t0.date()),
+                 "test_end": str((t1 - pd.Timedelta(days=1)).date()),
+                 "train_rows": int(len(train)), "test_rows": int(len(test)), "train": train, "test": test,
+                 "train_start": str(dates[train[0]].date()) if len(train) else None,
+                 "train_end": str(dates[train[-1]].date()) if len(train) else None}
+        if len(test) == 0:
+            entry["excluded"] = "시험 행 없음"
+        elif len(test) < min_test_rows:
+            entry["excluded"] = f"시험 행 {len(test)} < {min_test_rows}(자료 끝에서 잘린 폴드)"
+        elif len(train) < min_train_rows:
+            entry["excluded"] = f"학습 행 {len(train)} < {min_train_rows}"
+        folds.append(entry)
+        t0 = t1
+    return folds, lock_start
+
+
+def flatten_windows(X):
+    """(N, lookback, 5) → (N, lookback*5). Ridge 입력."""
+    X = np.asarray(X, dtype=np.float64)
+    return X.reshape(len(X), -1)
+
+
+def ridge_baseline(X_train, y_train, X_test, alpha=1e4):
+    """StandardScaler(학습 구간만) + Ridge. 운영 5일 가격 모델과 같은 alpha 가 기본."""
+    from sklearn.linear_model import Ridge
+    from sklearn.pipeline import make_pipeline
+    from sklearn.preprocessing import StandardScaler
+    model = make_pipeline(StandardScaler(), Ridge(alpha=float(alpha)))
+    model.fit(np.asarray(X_train, dtype=float), np.asarray(y_train, dtype=float))
+    return model.predict(np.asarray(X_test, dtype=float))
+
+
+def persistence_baseline(y):
+    """현재가 유지 — 5일 수익률 0."""
+    return np.zeros(len(y), dtype=float)
+
+
+def common_dates(*date_sets):
+    """모든 모델이 예측을 낸 날짜만. 표본 수가 다른 비교를 같은 표에 놓지 않기 위해서다."""
+    out = pd.DatetimeIndex(date_sets[0])
+    for other in date_sets[1:]:
+        out = out.intersection(pd.DatetimeIndex(other))
+    return out.sort_values()
+
+
+def score(y, pred):
+    """주 지표 MAE, 보조 RMSE·방향 적중률·표본 수. 확률(p_*)은 만들지 않는다.
+
+    방향 적중률은 예측이 방향을 부른 행(pred != 0)에서만 센다. 현재가 유지(예측 0)는 방향을 부르지
+    않으므로 NaN — 0 으로 세면 '항상 틀린 모델'처럼 보인다.
+    """
+    y, pred = np.asarray(y, dtype=float), np.asarray(pred, dtype=float)
+    error = y - pred
+    called = pred != 0
+    hit = float(np.mean(np.sign(y[called]) == np.sign(pred[called]))) if called.any() else float("nan")
+    return {"mae": float(np.mean(np.abs(error))), "rmse": float(np.sqrt(np.mean(error ** 2))),
+            "direction_hit": hit, "direction_n": int(called.sum()), "n": int(len(y))}

@@ -1,6 +1,6 @@
 # 가격·거래량 시계열 기반 5거래일 예측 — 설계 및 인수인계
 
-상태: 설계 승인. S01(시퀀스·날짜 계약) 구현 완료. 모델 구현(S03~)·성능 실험·운영 채택은 미완료.
+상태: 설계 승인. S01(시퀀스·날짜 계약)·S02(스냅샷 로더·기준선·재개 CLI) 구현 완료. 모델 구현(S03~)·실제 데이터 성능 실험(S04)·운영 채택은 미완료.
 대상: 삼성전자(samsung), SK하이닉스(sk_hynix).
 사용자 요청: 과거 주가 흐름으로 주간 예측을 개선하고, 작업을 하나씩 완료할 때마다 검증 결과와 함께 GitHub main에 반영한다. 중단 시 Claude가 이 문서로 재개한다.
 
@@ -63,15 +63,17 @@ CPU quick 검증을 제공하고, 실제 전체 학습은 Colab에서 재개 가
 | --- | --- | --- |
 | S00 | 완료 | 설계 승인(사용자), S01 상세 실행 계획 작성 |
 | S01 | 완료(main d6c8ed69) | 기존 타깃과 동등한 OHLCV 시퀀스·날짜 계약 및 누수/휴장/분할 테스트 |
-| S02 | 미시작 | 해시 고정 데이터 로더, 공통 날짜 기준선, 재개 가능한 실험 CLI와 중단 복구 테스트 |
+| S02 | 완료(코드·테스트) | 해시 고정 데이터 로더, 공통 날짜 기준선, 재개 가능한 실험 CLI와 중단 복구 테스트 |
 | S03 | 미시작 | 작은 TCN 회귀 후보, seed 고정, CPU quick 학습·저장·재개 테스트 |
 | S04 | 미시작 | 실제 데이터 시간순 full 비교와 오차·불확실성·계산비용 결과; 실패/미개선도 기록 |
 | S05 | 미시작 | 과거 잔차 기반 가격 범위 및 입력 그룹 제거 비교; 기여도와 인과 구분 |
 | S06 | 미시작 | 통과 시에만 별도 승인 후 후보 원장·보고서 연결, 미통과 시 현행 유지 |
 
-구현됨(S01): weekly_sequence_utils.py, tests/test_weekly_sequence.py.
-세부 경로 후보(미구현): tools/run_weekly_sequence.py, experiments/weekly_sequence/<step>/<run_id>/,
-runs/weekly_sequence/. 미구현 경로는 실행 가능하다고 안내하지 않는다.
+구현됨(S01·S02): weekly_sequence_utils.py, tools/run_weekly_sequence.py, tests/test_weekly_sequence.py,
+tests/test_weekly_sequence_runner.py. 산출물 경로: experiments/weekly_sequence/<task>/<run_id>/,
+시세 스냅샷: runs/weekly_sequence/<target>/data_cache/target.parquet(러너가 내려받지 않는다).
+실행 예: `python tools/run_weekly_sequence.py --task S02 --target samsung --mode quick --resume`
+— 이 환경에는 실제 스냅샷이 없어 합성 fixture 로만 검증했다.
 
 ## 실험 산출물과 체크포인트
 
@@ -120,3 +122,30 @@ checkpoint.json: 완료 단위, 산출물 해시, 다음 단위. 설정/데이�
   - 재개 명령: `python -m unittest tests.test_weekly_sequence -v`
   - 다음: S02 — 해시 고정 데이터 로더(OHLCV·기업행동·available_at), 공통 날짜 기준선, 재개 가능한
     실험 CLI와 중단 복구 테스트. S02 상세 실행 계획부터 작성한다.
+- S02 (2026-09-22, Claude): 상세 계획(guides/weekly-sequence-s02-implementation.md) 작성 후 구현.
+  - 완료 파일: weekly_sequence_utils.py 에 로더(load_ohlcv_snapshot, session_calendar,
+    availability_policy, corporate_action_flags)와 기준선(walk_forward_folds, flatten_windows,
+    ridge_baseline, persistence_baseline, common_dates, score) 추가; tools/run_weekly_sequence.py(러너);
+    tests/test_weekly_sequence.py +22개, tests/test_weekly_sequence_runner.py 6개.
+  - 검증: 신규 28개 OK(경고를 오류로 둬도 OK), test_medium_horizon.DesignTests OK, 전체 1374개 OK
+    (skipped 5), git diff --check 문제 없음, 운영 파일 무변경.
+  - 스냅샷 계약: 노트북 load_raw 형식(<cache>/target.parquet, open/high/low/close/adj_close/volume,
+    auto_adjust=False). 원본 close 를 쓰고 adj_close 는 무시(adjusted=False 기록), 조정 OHLC 표시는 거부.
+    parquet(ns)·csv(us) 인덱스 정밀도 차이를 ns 로 통일했다.
+  - 정한 것: ① 봉 공개 시각은 실제 수집 시각이 있으면 그것, 없으면 세션 16:00 KST 정책값 —
+    manifest 에 availability_policy: assumed 로 남긴다. ② 기업행동은 KRX 일일 제한폭(±30%)을 시가·종가가
+    함께 넘는 불연속 휴리스틱으로만 표시(corporate_actions: heuristic). 처음 0.5배 기준은 2:1 분할이
+    경계값(0.5014)에 걸려 안 잡혀 제한폭 근거로 바꿨다. ③ 폴드는 run_medium_horizon 과 같은 계약
+    (2021-01 부터 6개월, purge = 만기 < 시험 시작)이되 잠금 12개월은 만들지 않는다(S04 까지 닫음).
+    ④ 방향 적중률은 예측이 방향을 부른 행에서만 센다 — 현재가 유지(예측 0)는 NaN. 0 으로 세면
+    '항상 틀린 모델'로 보였다. ⑤ 운영 Ridge 기준선은 medium_horizon 고정 입력 pkl 이 있어야 하며 S02 는
+    skipped 로 기록만 한다(연결은 S04).
+  - 재개: WEEKLY_SEQ_FAIL_AFTER=<unit> 로 중단을 흉내 내 완료 단위 건너뜀·산출물 훼손 시 재계산·설정
+    변경 시 별도 run·manifest 에 토큰 문자열 없음을 테스트로 고정했다.
+  - 합성 무작위보행에서 ohlcv_ridge ≈ persistence(MAE 차이 +0.0004, CI 가 0 을 포함) — 신호가 없는
+    자료에서 기대되는 결과이며 코드 동작 확인일 뿐이다.
+  - 남은 한계: 실제 스냅샷으로 돌리지 않았다. 실제 실행은 Colab 또는 medium_horizon data_cache 를
+    runs/weekly_sequence/<target>/data_cache 로 복사한 뒤 위 명령으로 한다.
+  - 재개 명령: `python -m unittest tests.test_weekly_sequence tests.test_weekly_sequence_runner -v`
+  - 다음: S03 — 작은 causal TCN 회귀 후보(seed 42·43·44 모두 보고), CPU quick 학습·저장·재개 테스트.
+    S02 러너의 sequences·folds 단위를 입력으로 쓴다. S03 상세 실행 계획부터 작성한다.

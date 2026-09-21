@@ -3,7 +3,7 @@
   "name": "삼성전자",
   "peer_name": "SK하이닉스",
   "session_date": "2026-09-21",
-  "generated_at": "2026-09-21 19:06 KST",
+  "generated_at": "2026-09-22 07:27 KST",
   "summary": {
     "prev_close": 261000.0,
     "open": 264000.0,
@@ -15,22 +15,20 @@
     "c2c": 0.04980842911877392,
     "high_vs_open": 0.04166666666666674,
     "low_vs_open": -0.0018939393939394478,
-    "volume": 23435169.0,
-    "volume_ratio": 1.3537074217752219,
-    "kospi_c2c": 0.016461625837332905,
+    "volume": 22261519.0,
+    "volume_ratio": 1.285912787327888,
+    "kospi_c2c": NaN,
     "peer_c2c": 0.005923532579429125,
-    "usdkrw_chg": -0.005617855237228908,
+    "usdkrw_chg": -0.0035085049167736804,
     "sox_ret": 0.027777099579571418,
     "nasdaq_ret": 0.003945684550763495
   },
   "classification": {
     "labels": [
-      "장중 급변 09:05 주도",
-      "지수 동조"
+      "장중 급변 09:05 주도"
     ],
     "reasons": [
-      "09:05 봉 +3.45%(σ의 25.28배, 거래량 7.36배)가 세션 +3.79%의 232%",
-      "KOSPI +1.65% vs 종목 +4.98%, 5분 수익률 상관 0.74 — 종목 고유 요인이 약함"
+      "09:05 봉 +3.45%(σ의 25.28배, 거래량 7.36배)가 세션 +3.79%의 232%"
     ]
   },
   "events": [
@@ -56,22 +54,10 @@
       "score": 3.6550136716387946,
       "news": [
         {
-          "time": "2026-09-21T09:31:10+09:00",
-          "title": "“반도체주 훈풍 탔다”…삼성전자, 장 초반 3%대 강세",
-          "source": "매일경제",
-          "link": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE5yTTZhOXlETkUtQ09USTgxekNfNnF4djhJdWVBUWtRT0ZXc3ZoYXNfZEZ6VkpzbWdaaHdFazRSUG8zbG5KdHlGaHA3WEVmcmpCLUE?oc=5"
-        },
-        {
           "time": "2026-09-21T10:00:01+09:00",
           "title": "삼성전자, 전남 광주사업장에 HVAC 생산라인 착공…내후년 초 가동 목표",
           "source": "지디넷코리아",
           "link": "https://news.google.com/rss/articles/CBMiVkFVX3lxTE5PRmw5azNUalAtY3NpeF9JNF9ISWt3Yy1veUdINXZ3UWRkYW5LZ09IdkFBVGNqLUx1OWRzWUpTNXRtSnd3WnZFQVF3b3lZT3BjeEctR0Nn?oc=5"
-        },
-        {
-          "time": "2026-09-21T10:22:00+09:00",
-          "title": "삼성전자, 광주서 플랙트그룹 냉난방공조 생산라인 착공",
-          "source": "연합뉴스TV",
-          "link": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE52OTZqQ3dSZ2ZUcmh0dnJQZVNzQXQtUWlaRmF2dDNRTTZiOTFVeDRJa2twUmJnU2Y4RW13R3FSbEZ6LUNqeFhBeVdoQ0VRS1d1OGx0V2tuTjdVXzdqLWZDbDdpSklvWHc?oc=5"
         }
       ]
     }
@@ -93,7 +79,7 @@
       "time": "2026-09-21T14:49:58+09:00",
       "title": "[특징주] 삼성전자, 반도체 수출 호조 및 특별배당 기대에 4%대 강세",
       "source": "오피니언뉴스",
-      "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE1PbDhoUWdtd0FCWXY5aFlodUI2MmxhVlo2STJGOExIeGtaZTZBRlRBUEF5a3JlSXoxc1REZW5rLTR3ZkJGa2hQM3VLQTJrdm8tbWNpSWx0NjE1d0oyZG9aaTJDRHV6QjY0WC1RQmc5NDg?oc=5"
+      "link": "https://news.google.com/rss/articles/CBMickFVX3lxTFBBZzEwaklyOEEwd002TmJTcURkVzVoQ3ZTaXZCWTVLWlB4QThSZkJzMWljNVdqNGNKdUpCbXY4bFgtNW0zOXJhV2dfRWdtWFJveDFZVUJuU2VteDZzSTdiRlhiaC1TX1p3QmVHUHhreDIyUQ?oc=5"
     },
     {
       "time": "2026-09-21T15:11:00+09:00",
@@ -108,12 +94,6 @@
       "link": "https://news.google.com/rss/articles/CBMiakFVX3lxTFBkWHdHTnE2dVJ4QVg0eDM3T2tYb2lyLUdVZmY5aE4wYWtRakI4MkZTR3ZwR3V1LVhsa2htakVOLTZkdUdLOVpVWk5Jc0tORklabk81RjlSLXlIa2tKc2h1LUN6MDJ4eDAyNGc?oc=5"
     },
     {
-      "time": "2026-09-21T17:06:01+09:00",
-      "title": "코스피, 반도체·수출 훈풍에 '7,000피' 탈환…삼성전자 5% 급등",
-      "source": "뉴스퀘스트",
-      "link": "https://news.google.com/rss/articles/CBMib0FVX3lxTE9BOXNmQm1QeFJSUHFhQ0ljYlFLa3BWcXRxc1J5TUVBVHExWlk2SDIyQkc0ZzN3TGNFTng3dDlVS3BjSjkxd3gzaXVLS2FBdm1rcElQNm4yb2FZc2hISjBRaGItZVlUWlBLR2g1aUUwZw?oc=5"
-    },
-    {
       "time": "2026-09-21T17:24:44+09:00",
       "title": "역대급 반도체 수출에 코스피 7000선 회복…삼성전자 5% 급등",
       "source": "hidomin.com",
@@ -121,9 +101,15 @@
     },
     {
       "time": "2026-09-21T17:49:47+09:00",
-      "title": "[오늘의 주목주] '반도체 강세' 삼성전자우 주가 6%대 올라, 코스피 기관 매수세에 7천 선 회복",
+      "title": "[오늘의 주목주] '반도체주 강세' 삼성전자우 주가 6%대 올라, 코스피 기관 매수세에 7천 선 회복",
       "source": "비즈니스포스트",
       "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTE9nRUN2VlhXckdlbm9iS0FDSV9qdGNBbTlQQ3J6M2xicWl4bjRFTDhBazVvYmdsTG51MkNmNHBrUmFhbE5MalZwSFpsaEZSNUhzcDNBc013UGdIaXNVMW1BN1RhODMzc3R3dkVfZDFpckQxSFE?oc=5"
+    },
+    {
+      "time": "2026-09-21T15:51:16+09:00",
+      "title": "코스피, 7거래일만 7000 회복...삼성전자 배당 기대에 5% 급등",
+      "source": "오피니언뉴스",
+      "link": "https://news.google.com/rss/articles/CBMickFVX3lxTE5DN1BFTER5VEUtVjMwNTBmQUJRREJmTTAxbGY3ZUFTUVFZYmZyT2hZMWtRYTV5dWJ6eWZBQ2lSVmRubnZ5OEg5dThFbzNSd21SZG8zZFM3ZEg4RGpFZERrTTJmLUtSSHh0TU9xRmg0Qm91dw?oc=5"
     }
   ],
   "disclosures": [],

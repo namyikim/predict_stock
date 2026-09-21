@@ -1,0 +1,181 @@
+{
+  "target": "samsung",
+  "name": "삼성전자",
+  "peer_name": "SK하이닉스",
+  "session_date": "2026-09-21",
+  "generated_at": "2026-09-21 19:06 KST",
+  "summary": {
+    "prev_close": 261000.0,
+    "open": 264000.0,
+    "high": 275000.0,
+    "low": 263500.0,
+    "close": 274000.0,
+    "gap": 0.011494252873563315,
+    "session": 0.037878787878787845,
+    "c2c": 0.04980842911877392,
+    "high_vs_open": 0.04166666666666674,
+    "low_vs_open": -0.0018939393939394478,
+    "volume": 23435169.0,
+    "volume_ratio": 1.3537074217752219,
+    "kospi_c2c": 0.016461625837332905,
+    "peer_c2c": 0.005923532579429125,
+    "usdkrw_chg": -0.005617855237228908,
+    "sox_ret": 0.027777099579571418,
+    "nasdaq_ret": 0.003945684550763495
+  },
+  "classification": {
+    "labels": [
+      "장중 급변 09:05 주도",
+      "지수 동조"
+    ],
+    "reasons": [
+      "09:05 봉 +3.45%(σ의 25.28배, 거래량 7.36배)가 세션 +3.79%의 232%",
+      "KOSPI +1.65% vs 종목 +4.98%, 5분 수익률 상관 0.74 — 종목 고유 요인이 약함"
+    ]
+  },
+  "events": [
+    {
+      "time": "2026-09-21T09:05:00+09:00",
+      "ret": 0.034482758620689724,
+      "z": 25.28,
+      "volume_ratio": 7.36,
+      "cum_before": 0.0,
+      "cum_after": 0.0046511627906977715,
+      "session_share": 2.316810344827584,
+      "score": 27.281774329347538,
+      "news": []
+    },
+    {
+      "time": "2026-09-21T10:10:00+09:00",
+      "ret": 0.002767527675276771,
+      "z": 2.03,
+      "volume_ratio": 3.13,
+      "cum_before": 0.008372093023255811,
+      "cum_after": 0.01116279069767434,
+      "session_share": 0.18594326568265748,
+      "score": 3.6550136716387946,
+      "news": [
+        {
+          "time": "2026-09-21T09:31:10+09:00",
+          "title": "“반도체주 훈풍 탔다”…삼성전자, 장 초반 3%대 강세",
+          "source": "매일경제",
+          "link": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE5yTTZhOXlETkUtQ09USTgxekNfNnF4djhJdWVBUWtRT0ZXc3ZoYXNfZEZ6VkpzbWdaaHdFazRSUG8zbG5KdHlGaHA3WEVmcmpCLUE?oc=5"
+        },
+        {
+          "time": "2026-09-21T10:00:01+09:00",
+          "title": "삼성전자, 전남 광주사업장에 HVAC 생산라인 착공…내후년 초 가동 목표",
+          "source": "지디넷코리아",
+          "link": "https://news.google.com/rss/articles/CBMiVkFVX3lxTE5PRmw5azNUalAtY3NpeF9JNF9ISWt3Yy1veUdINXZ3UWRkYW5LZ09IdkFBVGNqLUx1OWRzWUpTNXRtSnd3WnZFQVF3b3lZT3BjeEctR0Nn?oc=5"
+        },
+        {
+          "time": "2026-09-21T10:22:00+09:00",
+          "title": "삼성전자, 광주서 플랙트그룹 냉난방공조 생산라인 착공",
+          "source": "연합뉴스TV",
+          "link": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE52OTZqQ3dSZ2ZUcmh0dnJQZVNzQXQtUWlaRmF2dDNRTTZiOTFVeDRJa2twUmJnU2Y4RW13R3FSbEZ6LUNqeFhBeVdoQ0VRS1d1OGx0V2tuTjdVXzdqLWZDbDdpSklvWHc?oc=5"
+        }
+      ]
+    }
+  ],
+  "turning_point": {
+    "high_time": "2026-09-21T13:25:00+09:00",
+    "high": 0.022325581395348904,
+    "low_time": "2026-09-21T09:15:00+09:00",
+    "low": 0.0009302325581395099,
+    "pattern": "저점 후 반등"
+  },
+  "closing_share": 0.12098991750687517,
+  "intraday_corr_kospi": 0.7391232958630822,
+  "intraday_note": "장중 봉은 09:05~14:55까지만 있어 마감 구간(14:55~15:30)은 일봉 종가로만 봅니다(그 구간 +0.46%).",
+  "intraday_coverage": "09:05~14:55",
+  "overnight_news": [],
+  "top_news": [
+    {
+      "time": "2026-09-21T14:49:58+09:00",
+      "title": "[특징주] 삼성전자, 반도체 수출 호조 및 특별배당 기대에 4%대 강세",
+      "source": "오피니언뉴스",
+      "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE1PbDhoUWdtd0FCWXY5aFlodUI2MmxhVlo2STJGOExIeGtaZTZBRlRBUEF5a3JlSXoxc1REZW5rLTR3ZkJGa2hQM3VLQTJrdm8tbWNpSWx0NjE1d0oyZG9aaTJDRHV6QjY0WC1RQmc5NDg?oc=5"
+    },
+    {
+      "time": "2026-09-21T15:11:00+09:00",
+      "title": "삼성전자, HBM4 수율 개선에 생산 확대 시동…메모리 실적 반등 정조준 By EBN",
+      "source": "kr.investing.com",
+      "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE5rQThfclhVLVBlQnFuUjJ2cThZQ09FeHZlYVVUcEFfajdHUDdvUm9uRVYteU5hWl9fT2R1RHZHbkoyRDBvZjdKeFFYRWpYN2hrRWRFdGZzUFdRcXU0NFJhYUZTbkE3SzVvYVlzMHBuT2g?oc=5"
+    },
+    {
+      "time": "2026-09-21T16:20:23+09:00",
+      "title": "코스피, 반도체·수출 호조에 7000선 회복···삼성전자 4.98%↑",
+      "source": "서울파이낸스",
+      "link": "https://news.google.com/rss/articles/CBMiakFVX3lxTFBkWHdHTnE2dVJ4QVg0eDM3T2tYb2lyLUdVZmY5aE4wYWtRakI4MkZTR3ZwR3V1LVhsa2htakVOLTZkdUdLOVpVWk5Jc0tORklabk81RjlSLXlIa2tKc2h1LUN6MDJ4eDAyNGc?oc=5"
+    },
+    {
+      "time": "2026-09-21T17:06:01+09:00",
+      "title": "코스피, 반도체·수출 훈풍에 '7,000피' 탈환…삼성전자 5% 급등",
+      "source": "뉴스퀘스트",
+      "link": "https://news.google.com/rss/articles/CBMib0FVX3lxTE9BOXNmQm1QeFJSUHFhQ0ljYlFLa3BWcXRxc1J5TUVBVHExWlk2SDIyQkc0ZzN3TGNFTng3dDlVS3BjSjkxd3gzaXVLS2FBdm1rcElQNm4yb2FZc2hISjBRaGItZVlUWlBLR2g1aUUwZw?oc=5"
+    },
+    {
+      "time": "2026-09-21T17:24:44+09:00",
+      "title": "역대급 반도체 수출에 코스피 7000선 회복…삼성전자 5% 급등",
+      "source": "hidomin.com",
+      "link": "https://news.google.com/rss/articles/CBMiakFVX3lxTFB5RzVpbmt1TzZrTWxNdGdBQWZGMFlxNkNCVlo0LXpoVTN0YWwzaVc4ZUVKSVVpMVhpNTF4S3JacTdzTkR1RnMwNlp6emgzbEYzdlkzYXpWaHRpQ3hwelJvS0RTSS1rWFdILWc?oc=5"
+    },
+    {
+      "time": "2026-09-21T17:49:47+09:00",
+      "title": "[오늘의 주목주] '반도체 강세' 삼성전자우 주가 6%대 올라, 코스피 기관 매수세에 7천 선 회복",
+      "source": "비즈니스포스트",
+      "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTE9nRUN2VlhXckdlbm9iS0FDSV9qdGNBbTlQQ3J6M2xicWl4bjRFTDhBazVvYmdsTG51MkNmNHBrUmFhbE5MalZwSFpsaEZSNUhzcDNBc013UGdIaXNVMW1BN1RhODMzc3R3dkVfZDFpckQxSFE?oc=5"
+    }
+  ],
+  "disclosures": [],
+  "disclosure_note": null,
+  "flows": null,
+  "forecasts": [
+    {
+      "model": "No macro ensemble",
+      "hit": true,
+      "verdict": "맞음 — 예측 상승 38%, 실제 상승(+4.98%)",
+      "legs": "갭 +1.15%(상승) · 세션 +3.79%(상승)",
+      "where": "결과는 주로 장중에서 정해졌습니다.",
+      "band": 0.0094951493112605,
+      "probs": [
+        0.3601662938284539,
+        0.2647729490432378,
+        0.3750607571283083
+      ],
+      "actual": "상승",
+      "predicted": "상승"
+    },
+    {
+      "model": "Mean ensemble",
+      "hit": true,
+      "verdict": "맞음 — 예측 상승 39%, 실제 상승(+4.98%)",
+      "legs": "갭 +1.15%(상승) · 세션 +3.79%(상승)",
+      "where": "결과는 주로 장중에서 정해졌습니다.",
+      "band": 0.0094951493112605,
+      "probs": [
+        0.3420187579691734,
+        0.2719402097640079,
+        0.3860410322668187
+      ],
+      "actual": "상승",
+      "predicted": "상승"
+    },
+    {
+      "model": "Candidate expanding",
+      "hit": true,
+      "verdict": "맞음 — 예측 상승 43%, 실제 상승(+4.98%)",
+      "legs": "갭 +1.15%(상승) · 세션 +3.79%(상승)",
+      "where": "결과는 주로 장중에서 정해졌습니다.",
+      "band": 0.0094951493112605,
+      "probs": [
+        0.3002878397355554,
+        0.2723881237443565,
+        0.4273240365200882
+      ],
+      "actual": "상승",
+      "predicted": "상승"
+    }
+  ],
+  "price_check": "1거래일 예상 구간 251,784~272,653원 · 종가 274,000원 → 구간 밖",
+  "disclaimer": "시간이 맞는 것이지 원인 확정이 아닙니다. 뉴스 없이 움직이는 날(수급·프로그램·옵션 만기)이 많고, 기사 발행 시각은 실제 정보 유통보다 늦거나 앞섭니다. 이 절은 설명 도구이며 다음날 예측에 자동 반영되지 않습니다."
+}

@@ -13,11 +13,11 @@ run-name: >-
 #
 # 시각을 :22로 둔 이유: GitHub의 cron은 :00과 :30에 전 세계 요청이 몰려 가장 많이 밀리고,
 # 아예 건너뛰기도 한다(2026-09-08 06:30 예정 실행은 실행 흔적조차 없었다).
-# 그래서 붐비는 지점을 피하고, 한 시간 뒤에 백업 스케줄을 하나 더 건다.
-# 백업은 오늘 사전 예측이 이미 원장에 있으면 아무것도 하지 않는다(tools/should_run_today.py).
+# 그래서 붐비는 지점을 피하고, 06:32부터 07:52까지 10분 간격으로 재시도한다.
+# 재시도는 오늘 사전 예측이 이미 원장에 있으면 아무것도 하지 않는다(tools/should_run_today.py).
 #
 # 원장은 09:00 KST 이후에 만들어진 예측을 '사전 예측'으로 세지 않는다(is_prospective).
-# 그래서 두 스케줄 모두 09:00 전에 끝나야 하고, 종목을 병렬로 돌리며 부트스트랩 반복수를 줄인다.
+# 그래서 모든 아침 스케줄은 09:00 전에 시작하고, 종목을 병렬로 돌리며 부트스트랩 반복수를 줄인다.
 #
 # 코드가 바뀌면(push) 바로 다시 만든다. 손으로 Run workflow를 누르지 않아도 고친 내용이 반영된다.
 # 다만 이때는 새 예측을 원장에 기록하지 않는다(PREDICT_STOCK_RECORD_FORECAST=false).
@@ -27,7 +27,8 @@ run-name: >-
 on:
   schedule:
     - cron: "22 21 * * 0-4"   # 06:22 KST — 본 실행(종목 보고서 + 모든 보조 보고서)
-    - cron: "25 22 * * 0-4"   # 07:25 KST — 아침 백업. 09:00(사전 예측 마감) 전 두 번째 기회
+    - cron: "32,42,52 21 * * 0-4"          # 06:32·06:42·06:52 KST — 아침 재시도
+    - cron: "2,12,22,32,42,52 22 * * 0-4" # 07:02~07:52 KST — 10분 간격 아침 재시도
     # 3시간 간격 보강. 09:22·12:22·15:22·18:22·21:22·00:22·03:22 KST.
     # GitHub cron은 한 시간 넘게 밀리거나 통째로 건너뛴다(2026-09-08 06:22 예정분은 흔적도 없었다).
     # 종목 보고서는 오늘 기록이 이미 있으면 몇 초 만에 끝나고, 검색어만 매번 새로 만든다.
@@ -117,7 +118,7 @@ jobs:
         if: github.event_name == 'schedule' && steps.gate.outputs.run == 'true'
         run: pip install exchange_calendars==4.13.2
 
-      # 백업 스케줄(07:25 KST)은 본 실행이 이미 성공했으면 돌 필요가 없다.
+      # 10분 간격 재시도는 본 실행이 이미 성공했으면 돌 필요가 없다.
       # 수동 실행은 사람이 의도한 것이므로 이 검사를 하지 않는다.
       - name: 오늘 예측이 이미 기록됐는지 확인
         id: recorded
@@ -214,11 +215,14 @@ jobs:
         run: python tools/build_earnings_forecast.py --target ${{ matrix.target }} --out runs/earnings --publish
 
   # 검색어는 하루 사이에 실제로 바뀌는 유일한 보고서라 3시간 간격 회차에도 돌린다.
-  # 아침 백업(07:25) 회차만 건너뛴다 — 한 시간 전에 만든 것과 같은 내용이 된다.
+  # 아침 10분 재시도 회차는 건너뛴다 — 본 실행과 같은 보조 보고서를 반복 생성할 필요가 없다.
   ai_news:
     runs-on: ubuntu-latest
     # 검색어와 같은 회차에 돈다. 뉴스는 하루에도 바뀌므로 3시간 간격 회차에도 갱신한다.
-    if: github.event_name != 'schedule' || github.event.schedule != '25 22 * * 0-4'
+    if: >-
+      github.event_name != 'schedule' ||
+      (github.event.schedule != '32,42,52 21 * * 0-4' &&
+       github.event.schedule != '2,12,22,32,42,52 22 * * 0-4')
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
@@ -248,7 +252,10 @@ jobs:
 
   trends:
     runs-on: ubuntu-latest
-    if: github.event_name != 'schedule' || github.event.schedule != '25 22 * * 0-4'
+    if: >-
+      github.event_name != 'schedule' ||
+      (github.event.schedule != '32,42,52 21 * * 0-4' &&
+       github.event.schedule != '2,12,22,32,42,52 22 * * 0-4')
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
@@ -293,9 +300,12 @@ jobs:
   # 종목 보고서(report)와 독립적으로 돈다. 원장은 forecast_history/gold, silver.
   metals:
     runs-on: ubuntu-latest
-    # 검색어·뉴스처럼 3시간 간격 회차에도 돌아 페이지를 최신으로 유지한다(2026-09-16 요청). 백업 스케줄
-    # (07:25)만 건너뛴다 — 본 실행 직후라 새 자료가 없고 같은 내용을 두 번 발행하게 된다.
-    if: github.event_name != 'schedule' || github.event.schedule != '25 22 * * 0-4'
+    # 검색어·뉴스처럼 3시간 간격 회차에도 돌아 페이지를 최신으로 유지한다(2026-09-16 요청).
+    # 아침 10분 재시도는 본 실행 직후라 새 자료가 없어 건너뛴다.
+    if: >-
+      github.event_name != 'schedule' ||
+      (github.event.schedule != '32,42,52 21 * * 0-4' &&
+       github.event.schedule != '2,12,22,32,42,52 22 * * 0-4')
     timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
@@ -332,9 +342,12 @@ jobs:
   # 5개년 계획 분석은 시세만 새로 받는다. 종목 56개라 몇 분이면 끝난다.
   china:
     runs-on: ubuntu-latest
-    # 검색어·뉴스처럼 3시간 간격 회차에도 돌아 페이지를 최신으로 유지한다(2026-09-16 요청). 백업 스케줄
-    # (07:25)만 건너뛴다 — 본 실행 직후라 새 자료가 없고 같은 내용을 두 번 발행하게 된다.
-    if: github.event_name != 'schedule' || github.event.schedule != '25 22 * * 0-4'
+    # 검색어·뉴스처럼 3시간 간격 회차에도 돌아 페이지를 최신으로 유지한다(2026-09-16 요청).
+    # 아침 10분 재시도는 본 실행 직후라 새 자료가 없어 건너뛴다.
+    if: >-
+      github.event_name != 'schedule' ||
+      (github.event.schedule != '32,42,52 21 * * 0-4' &&
+       github.event.schedule != '2,12,22,32,42,52 22 * * 0-4')
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
@@ -371,9 +384,12 @@ jobs:
   # 위키백과 조회수는 월 단위로만 갱신되지만, 매일 돌려도 API 호출 40회로 가볍다.
   interest:
     runs-on: ubuntu-latest
-    # 검색어·뉴스처럼 3시간 간격 회차에도 돌아 페이지를 최신으로 유지한다(2026-09-16 요청). 백업 스케줄
-    # (07:25)만 건너뛴다 — 본 실행 직후라 새 자료가 없고 같은 내용을 두 번 발행하게 된다.
-    if: github.event_name != 'schedule' || github.event.schedule != '25 22 * * 0-4'
+    # 검색어·뉴스처럼 3시간 간격 회차에도 돌아 페이지를 최신으로 유지한다(2026-09-16 요청).
+    # 아침 10분 재시도는 본 실행 직후라 새 자료가 없어 건너뛴다.
+    if: >-
+      github.event_name != 'schedule' ||
+      (github.event.schedule != '32,42,52 21 * * 0-4' &&
+       github.event.schedule != '2,12,22,32,42,52 22 * * 0-4')
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4

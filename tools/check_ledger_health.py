@@ -79,7 +79,7 @@ def main():
         if not ok:
             failures.append(message)
     if failures:
-        print("\n원장이 갱신되지 않았습니다. 아침 회차(06:22·07:25)와 3시간 회차가 모두 "
+        print("\n원장이 갱신되지 않았습니다. 아침 회차(06:22~07:52 10분 간격)와 3시간 회차가 모두 "
               "돌지 않았거나, 돌았지만 예측을 기록하지 못했습니다.", file=sys.stderr)
         raise SystemExit(1)
     print("\n모든 종목의 원장이 최신입니다.")

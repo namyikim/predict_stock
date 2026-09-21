@@ -16,6 +16,10 @@ import should_run_trends as trends_gate  # noqa: E402
 
 WORKFLOW = yaml.safe_load((ROOT / ".github/workflows/daily-report.yml").read_text(encoding="utf-8"))
 MAIN_CRON = "22 21 * * 0-4"
+MORNING_RETRY_CRONS = [
+    "32,42,52 21 * * 0-4",
+    "2,12,22,32,42,52 22 * * 0-4",
+]
 THREE_HOUR_CRON = "22 0,3,6,9,12,15,18 * * *"
 RETRY_CRONS = [
     "37 0,3,6,9,12,15,18 * * *",
@@ -24,14 +28,14 @@ RETRY_CRONS = [
 
 
 class ScheduleTests(unittest.TestCase):
-    def test_schedules_cover_the_morning_twice_and_every_three_hours(self):
+    def test_schedules_retry_every_ten_minutes_until_0752_and_every_three_hours(self):
         crons = [item["cron"] for item in WORKFLOW[True]["schedule"]]
-        self.assertEqual(crons, [MAIN_CRON, "25 22 * * 0-4", THREE_HOUR_CRON, *RETRY_CRONS])
+        self.assertEqual(crons, [MAIN_CRON, *MORNING_RETRY_CRONS, THREE_HOUR_CRON, *RETRY_CRONS])
         for cron in crons:
-            minute = int(cron.split()[0])
-            self.assertNotIn(minute, (0, 30), "정각·30분은 GitHub cron이 가장 많이 밀리는 지점")
+            for minute in map(int, cron.split()[0].split(",")):
+                self.assertNotIn(minute, (0, 30), "정각·30분은 GitHub cron이 가장 많이 밀리는 지점")
         # 3시간 간격 회차가 하루를 고르게 덮는지
-        for cron in crons[2:]:
+        for cron in crons[1 + len(MORNING_RETRY_CRONS):]:
             hours = sorted(int(h) for h in cron.split()[1].split(","))
             self.assertEqual(hours, [0, 3, 6, 9, 12, 15, 18])
 
@@ -64,20 +68,23 @@ class ScheduleTests(unittest.TestCase):
         self.assertNotIn("import pandas", source)
 
     def test_morning_schedules_finish_before_the_market_opens(self):
-        # 원장은 09:00 KST 이후 예측을 사전 예측으로 세지 않는다. 아침 두 회차가 그 전이어야 한다.
-        for item in WORKFLOW[True]["schedule"][:2]:
-            minute, hour = int(item["cron"].split()[0]), int(item["cron"].split()[1])
-            kst_hour = (hour + 9) % 24
-            self.assertLess(kst_hour + minute / 60, 8.0, item["cron"])
+        # 마지막 시도는 07:52다. 09:00 사전 예측 마감 전에 계산을 끝낼 여유를 남긴다.
+        for cron in [MAIN_CRON, *MORNING_RETRY_CRONS]:
+            minute_field, hour_field = cron.split()[:2]
+            for minute in map(int, minute_field.split(",")):
+                for hour in map(int, hour_field.split(",")):
+                    kst_hour = (hour + 9) % 24
+                    self.assertLessEqual(kst_hour + minute / 60, 7 + 52 / 60, cron)
 
     def test_side_reports_refresh_every_three_hours_except_earnings(self):
         """2026-09-16 요청: 금·은·중국·장기 관심도도 뉴스·검색어처럼 3시간 간격으로 갱신한다.
-        영업이익 추정(KOSIS·DART 조회)만 아침 한 번이다. 백업 스케줄(07:25)은 모두 건너뛴다."""
+        영업이익 추정(KOSIS·DART 조회)만 아침 한 번이다. 10분 아침 재시도는 모두 건너뛴다."""
         jobs = WORKFLOW["jobs"]
         self.assertIn("needs.validation.result", jobs["report"]["if"])
         self.assertIn(f"== '{MAIN_CRON}'", jobs["earnings"]["if"])
         for name in ("metals", "china", "interest", "trends", "ai_news"):
-            self.assertIn("!= '25 22 * * 0-4'", jobs[name]["if"], name)
+            for cron in MORNING_RETRY_CRONS:
+                self.assertIn(f"!= '{cron}'", jobs[name]["if"], name)
             self.assertNotIn(f"== '{MAIN_CRON}'", jobs[name]["if"], name)
 
     def test_metals_records_a_forecast_only_on_the_morning_run(self):

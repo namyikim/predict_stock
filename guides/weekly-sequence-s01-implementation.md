@@ -11,11 +11,11 @@
 
 - [x] 사용자 설계 승인: “하나씩 구현을 진행해주세요. 완료되면 git push 하고 완료 체크”.
 - [x] S01 상세 실행 계획 작성.
-- [ ] 상세 실행 계획 검토.
-- [ ] S01 코드 구현·검증.
+- [x] 상세 실행 계획 검토 — 사용자 재개 지시(2026-09-22)로 진행.
+- [x] S01 코드 구현·검증 — 28개 테스트, 전체 1346개 통과.
 - [ ] S01 완료 기록 및 main 반영 확인.
 
-이 문서는 실행 계획이다. 아직 아래 API와 테스트 파일은 존재하지 않는다.
+이 문서는 실행 계획이다. 아래 API와 테스트 파일은 2026-09-22 구현됐다(진행 기록은 설계 문서 참고).
 직접 순차 실행을 기본으로 하며 자동으로 하위 에이전트를 만들지 않는다.
 
 ## Global Constraints
@@ -65,7 +65,7 @@ features = pd.DataFrame({
 }, index=bars.index)
 ```
 
-- [ ] 위 인터페이스를 호출하는 실패 테스트부터 작성한다. 아래 코드는 최소 타깃 계약이며 실제 fixture를 같은 파일에 정의한다.
+- [x] 위 인터페이스를 호출하는 실패 테스트부터 작성한다. 아래 코드는 최소 타깃 계약이며 실제 fixture를 같은 파일에 정의한다.
 
 ```python
 def test_target_matches_existing_five_session_definition(self):
@@ -82,43 +82,43 @@ def test_target_matches_existing_five_session_definition(self):
     self.assertEqual(batch.X.shape[1:], (60, 5))
 ```
 
-- [ ] Fixture는 KRX sessions_in_range의 2025년 거래일 160개, 양의 증가 종가, open=close, high=close×1.01, low=close×0.99, volume=1000을 쓴다. available_at=각 세션 16:00 Asia/Seoul, prediction_at=각 세션 07:00, 기업행동=False.
-- [ ] python -m unittest tests.test_weekly_sequence -v 실행으로 모듈 미존재 실패를 확인한다.
-- [ ] 입력 검증과 시퀀스 생성 구현: sessions를 기준으로 재색인하되 누락 데이터는 채우지 않는다. 20일 거래량 워밍업과 60일 입력 전체가 유효한 표본만 사용한다.
-- [ ] 예측시각보다 늦은 입력 봉, 거래량 과거 평균 0, 기업행동, 누락 봉은 명확한 제외 사유로 남긴다. 중복/비정렬 날짜·타임존 없는 시각·음수 거래량·양수가 아닌 가격·고저 관계 오류는 ValueError.
-- [ ] 타깃 아직 없음은 pending_target으로 제외한다. 라이브 예측 입력 지원은 S02에서 별도 API로 추가하고 학습 y를 가짜로 채우지 않는다.
+- [x] Fixture는 KRX sessions_in_range의 2025년 거래일 160개, 양의 증가 종가, open=close, high=close×1.01, low=close×0.99, volume=1000을 쓴다. available_at=각 세션 16:00 Asia/Seoul, prediction_at=각 세션 07:00, 기업행동=False.
+- [x] python -m unittest tests.test_weekly_sequence -v 실행으로 모듈 미존재 실패를 확인한다.
+- [x] 입력 검증과 시퀀스 생성 구현: sessions를 기준으로 재색인하되 누락 데이터는 채우지 않는다. 20일 거래량 워밍업과 60일 입력 전체가 유효한 표본만 사용한다.
+- [x] 예측시각보다 늦은 입력 봉, 거래량 과거 평균 0, 기업행동, 누락 봉은 명확한 제외 사유로 남긴다. 중복/비정렬 날짜·타임존 없는 시각·음수 거래량·양수가 아닌 가격·고저 관계 오류는 ValueError.
+- [x] 타깃 아직 없음은 pending_target으로 제외한다. 라이브 예측 입력 지원은 S02에서 별도 API로 추가하고 학습 y를 가짜로 채우지 않는다.
 
 ## Task 2: 경계·누수·기업행동 테스트
 
 Files: 위 두 파일만 수정한다.
 
-- [ ] 예측일 이후 OHLCV를 1.5배로 바꾸어도 해당 예측 X가 그대로임을 검증한다.
+- [x] 예측일 이후 OHLCV를 1.5배로 바꾸어도 해당 예측 X가 그대로임을 검증한다.
 
 ```python
 np.testing.assert_array_equal(before.X[0], after.X[0])
 self.assertNotEqual(before.y[0], after.y[0])
 ```
 
-- [ ] 만기 이후 값만 변경한 경우 이미 만기 지난 표본 X와 y가 모두 동일함을 확인한다.
-- [ ] 2025년 5월 한국 휴장일을 넘기는 표본의 target_date가 세션 인덱스 d+4인지 확인한다.
-- [ ] 입력 중간의 봉 한 개를 삭제해 제외 사유 missing_bar를 확인한다. lookback을 줄여 통과시키지 않는다.
-- [ ] 입력 마지막 봉 available_at을 예측시각 이후로 바꿔 unavailable_input을 확인한다.
-- [ ] corporate_actions를 입력 또는 만기 구간에서 True로 바꾸면 corporate_action으로 제외되는지 각각 확인한다.
-- [ ] 분할을 흉내 낸 raw OHLC 반감·거래량 변화에서도 기업행동 표시가 있으면 제외되는지 확인한다.
-- [ ] NaN/inf 가격, 음수 거래량, 중복 날짜, 잘못된 타임존, lookback/horizon이 bool·0·음수·실수인 경우 거부 테스트를 추가한다.
-- [ ] 기업행동 제외 구간에는 입력 시작 전 20거래일 워밍업을 포함한다. 워밍업의 분할이 거래량 비율을 오염시키는 경우도 검사한다.
-- [ ] 모든 정상 표본에서 최대 입력 available_at < prediction_at, origin_date < prediction_date <= target_date를 확인한다.
+- [x] 만기 이후 값만 변경한 경우 이미 만기 지난 표본 X와 y가 모두 동일함을 확인한다.
+- [x] 2025년 5월 한국 휴장일을 넘기는 표본의 target_date가 세션 인덱스 d+4인지 확인한다.
+- [x] 입력 중간의 봉 한 개를 삭제해 제외 사유 missing_bar를 확인한다. lookback을 줄여 통과시키지 않는다.
+- [x] 입력 마지막 봉 available_at을 예측시각 이후로 바꿔 unavailable_input을 확인한다.
+- [x] corporate_actions를 입력 또는 만기 구간에서 True로 바꾸면 corporate_action으로 제외되는지 각각 확인한다.
+- [x] 분할을 흉내 낸 raw OHLC 반감·거래량 변화에서도 기업행동 표시가 있으면 제외되는지 확인한다.
+- [x] NaN/inf 가격, 음수 거래량, 중복 날짜, 잘못된 타임존, lookback/horizon이 bool·0·음수·실수인 경우 거부 테스트를 추가한다.
+- [x] 기업행동 제외 구간에는 입력 시작 전 20거래일 워밍업을 포함한다. 워밍업의 분할이 거래량 비율을 오염시키는 경우도 검사한다.
+- [x] 모든 정상 표본에서 최대 입력 available_at < prediction_at, origin_date < prediction_date <= target_date를 확인한다.
 
 ## Task 3: 검증·인수인계·커밋
 
-- [ ] python -m unittest tests.test_weekly_sequence -v
-- [ ] python -m unittest tests.test_medium_horizon.DesignTests -v
-- [ ] python -m unittest discover -s tests -v
-- [ ] git diff --check
-- [ ] 전체 테스트가 의존성 부족으로 실패하면 정확한 테스트명과 원인을 기록한다. 통과했다고 쓰지 않는다.
-- [ ] guides/weekly-sequence-model-plan.md에서 S01 완료 여부, 테스트 수·결과, 다음 S02 작업을 갱신한다.
-- [ ] 운영 파일과 원장에 변경이 없음을 git diff --stat로 확인한다.
-- [ ] 커밋: feat: add leakage-safe weekly OHLCV sequences
+- [x] python -m unittest tests.test_weekly_sequence -v
+- [x] python -m unittest tests.test_medium_horizon.DesignTests -v
+- [x] python -m unittest discover -s tests -v
+- [x] git diff --check
+- [x] 전체 테스트가 의존성 부족으로 실패하면 정확한 테스트명과 원인을 기록한다. 통과했다고 쓰지 않는다.
+- [x] guides/weekly-sequence-model-plan.md에서 S01 완료 여부, 테스트 수·결과, 다음 S02 작업을 갱신한다.
+- [x] 운영 파일과 원장에 변경이 없음을 git diff --stat로 확인한다.
+- [x] 커밋: feat: add leakage-safe weekly OHLCV sequences
 - [ ] main에 반영한 뒤 원격 파일·커밋을 다시 읽어 확인한다. 실패 시 체크하지 않는다.
 
 ## 다음 단계

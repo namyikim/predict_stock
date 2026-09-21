@@ -1,6 +1,6 @@
 # 가격·거래량 시계열 기반 5거래일 예측 — 설계 및 인수인계
 
-상태: 설계 초안. 사용자 문서 검토 대기. 모델 구현·성능 실험·운영 채택은 미완료.
+상태: 설계 승인. S01(시퀀스·날짜 계약) 구현 완료. 모델 구현(S03~)·성능 실험·운영 채택은 미완료.
 대상: 삼성전자(samsung), SK하이닉스(sk_hynix).
 사용자 요청: 과거 주가 흐름으로 주간 예측을 개선하고, 작업을 하나씩 완료할 때마다 검증 결과와 함께 GitHub main에 반영한다. 중단 시 Claude가 이 문서로 재개한다.
 
@@ -61,17 +61,17 @@ CPU quick 검증을 제공하고, 실제 전체 학습은 Colab에서 재개 가
 
 | 단계 | 상태 | 산출물 / 종료 조건 |
 | --- | --- | --- |
-| S00 | 문서 작성, 검토 대기 | 이 설계 승인 후 상세 실행 계획 작성 |
-| S01 | 미시작 | 기존 타깃과 동등한 OHLCV 시퀀스·날짜 계약 및 누수/휴장/분할 테스트 |
+| S00 | 완료 | 설계 승인(사용자), S01 상세 실행 계획 작성 |
+| S01 | 완료(코드·테스트) | 기존 타깃과 동등한 OHLCV 시퀀스·날짜 계약 및 누수/휴장/분할 테스트 |
 | S02 | 미시작 | 해시 고정 데이터 로더, 공통 날짜 기준선, 재개 가능한 실험 CLI와 중단 복구 테스트 |
 | S03 | 미시작 | 작은 TCN 회귀 후보, seed 고정, CPU quick 학습·저장·재개 테스트 |
 | S04 | 미시작 | 실제 데이터 시간순 full 비교와 오차·불확실성·계산비용 결과; 실패/미개선도 기록 |
 | S05 | 미시작 | 과거 잔차 기반 가격 범위 및 입력 그룹 제거 비교; 기여도와 인과 구분 |
 | S06 | 미시작 | 통과 시에만 별도 승인 후 후보 원장·보고서 연결, 미통과 시 현행 유지 |
 
-세부 경로 후보: tools/run_weekly_sequence.py, weekly_sequence_utils.py, tests/test_weekly_sequence.py,
-experiments/weekly_sequence/<step>/<run_id>/, runs/weekly_sequence/.
-이 경로와 명령은 아직 구현되지 않았다. 구현 전 실행 가능하다고 안내하지 않는다.
+구현됨(S01): weekly_sequence_utils.py, tests/test_weekly_sequence.py.
+세부 경로 후보(미구현): tools/run_weekly_sequence.py, experiments/weekly_sequence/<step>/<run_id>/,
+runs/weekly_sequence/. 미구현 경로는 실행 가능하다고 안내하지 않는다.
 
 ## 실험 산출물과 체크포인트
 
@@ -97,3 +97,26 @@ checkpoint.json: 완료 단위, 산출물 해시, 다음 단위. 설정/데이�
 - S00: 기존 5·20일 러너와 계획, 테스트 실행 설정 확인. 사용자 요청에 따른 설계·단계·재개 규칙 작성.
 - 검증: 문서 내 단계 상태와 미구현 명령 구분 점검. 코드/모델 변경 없음; 성능 실험 미실행.
 - 다음: 설계 검토 승인 → 상세 실행 계획 → S01 구현.
+- S01 (2026-09-22, Claude 재개): Codex 가 계획 작성 후 토큰 만료로 중단한 지점에서 이어 구현.
+  - 완료 파일: weekly_sequence_utils.py(build_sequences, causal_features, SequenceBatch, CHANNELS),
+    tests/test_weekly_sequence.py(28개).
+  - 실패 테스트 먼저 확인: 모듈 미존재 ModuleNotFoundError → 구현 후 통과.
+  - 검증: `python -m unittest tests.test_weekly_sequence -v` 28/28 OK(경고를 오류로 둬도 OK),
+    `python -m unittest tests.test_medium_horizon.DesignTests` OK,
+    `PREDICT_STOCK_SKIP_SMOKE=1 python -m unittest discover -s tests` 1346개 OK(skipped 5),
+    `git diff --check` 문제 없음, 변경 파일은 새 파일 둘뿐(운영 노트북·원장·보고서·워크플로 무변경).
+  - 운영 타깃과의 일치: 같은 종가 계열에서 forecast_utils.price_design_frame 의 future_return
+    (close[d+h-1]/close[d-1]-1)과 전 표본 값이 같음을 테스트로 고정.
+  - 계획 대비 정한 것: ① 자료 시작 전 표본은 insufficient_history 로 따로 기록. ② 봉 결측 검사는
+    워밍업 시작부터 만기까지 전체 범위(만기 사이 중간 봉 결측도 제외 — 보수적). ③ 사유가 여럿이면
+    insufficient_history → pending_target → missing_bar → corporate_action → unavailable_input →
+    zero_volume_mean 순으로 하나만 기록. ④ metadata.available_at 은 워밍업+입력 봉 공개 시각의 최댓값.
+  - 거부 테스트는 메시지까지 확인한다. 메시지 검사를 넣자 원래 '주말 봉' 테스트가 엉뚱한 이유
+    (available_at 날짜 불일치)로 통과하고 있었음이 드러나 고쳤다.
+  - 남은 한계: 실제 OHLCV 로 돌려 보지 않았다(합성 fixture 만 — 성능에 대해 아무것도 말하지 않는다).
+    기업행동 자료원과 실제 공개 시각(available_at) 산정은 S02 로더의 책임이다. 운영 모델은 종목 자체
+    거래일 행 기준으로 이동하므로, 종목 봉이 빠진 날(거래정지 등)에는 두 정의가 다를 수 있다 — S02
+    비교는 계획대로 공통 날짜에서만 한다.
+  - 재개 명령: `python -m unittest tests.test_weekly_sequence -v`
+  - 다음: S02 — 해시 고정 데이터 로더(OHLCV·기업행동·available_at), 공통 날짜 기준선, 재개 가능한
+    실험 CLI와 중단 복구 테스트. S02 상세 실행 계획부터 작성한다.

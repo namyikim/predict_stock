@@ -11,7 +11,7 @@
 - [x] S02 상세 실행 계획 작성(이 문서, 2026-09-22).
 - [x] 상세 실행 계획 검토 — 사용자 재개 지시에 따라 진행(2026-09-22).
 - [x] S02 코드 구현·검증 — 신규 테스트 28개(시퀀스 22 + 러너 6), 전체 1374개 통과.
-- [ ] S02 완료 기록 및 main 반영 확인.
+- [x] S02 완료 기록 및 main 반영 확인 — 8cc8c3d5, 원격에서 파일 셋 재확인(2026-09-22).
 
 이 문서는 실행 계획이다. 아래 러너·CLI·테스트는 2026-09-22 구현됐다(진행 기록은 설계 문서 참고).
 
@@ -108,7 +108,7 @@ python tools/run_weekly_sequence.py --task S02 --target samsung --mode quick \
 - [x] guides/weekly-sequence-model-plan.md 의 S02 상태·진행 기록·다음 단계(S03) 갱신.
 - [x] 운영 파일 무변경 확인(git status).
 - [x] 커밋: feat: add weekly sequence snapshot loader, baselines and resumable runner
-- [ ] main 반영 뒤 원격 파일·커밋 재확인. 실패 시 체크하지 않는다.
+- [x] main 반영 뒤 원격 파일·커밋 재확인 — origin/main 8cc8c3d5.
 
 ## 다음 단계
 

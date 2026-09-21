@@ -955,7 +955,7 @@
     "exports_fresh": false
   },
   "chart_first": "2000-01-31",
-  "generated_at": "2026-09-21 19:11 KST",
+  "generated_at": "2026-09-22 07:31 KST",
   "macro_snapshot_hash": "80bb3714ee750421109f",
   "macro_sources": {
     "leading_cycle": "KOSIS_API",

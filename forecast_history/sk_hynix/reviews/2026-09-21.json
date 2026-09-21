@@ -1,0 +1,173 @@
+{
+  "target": "sk_hynix",
+  "name": "SK하이닉스",
+  "peer_name": "삼성전자",
+  "session_date": "2026-09-21",
+  "generated_at": "2026-09-21 19:06 KST",
+  "summary": {
+    "prev_close": 1857000.0,
+    "open": 1872000.0,
+    "high": 1888000.0,
+    "low": 1847000.0,
+    "close": 1868000.0,
+    "gap": 0.008077544426494443,
+    "session": -0.002136752136752129,
+    "c2c": 0.005923532579429125,
+    "high_vs_open": 0.008547008547008517,
+    "low_vs_open": -0.013354700854700807,
+    "volume": 2875029.0,
+    "volume_ratio": 0.8465893783020978,
+    "kospi_c2c": 0.016461625837332905,
+    "peer_c2c": 0.04980842911877392,
+    "usdkrw_chg": -0.005364163343246853,
+    "sox_ret": 0.027777099579571418,
+    "nasdaq_ret": 0.003945684550763495
+  },
+  "classification": {
+    "labels": [
+      "갭 주도",
+      "장중 급변 09:15 주도",
+      "지수 동조"
+    ],
+    "reasons": [
+      "갭 +0.81%가 종가→종가 +0.59%의 136%",
+      "09:15 봉 -0.70%(σ의 4.41배, 거래량 3.14배)가 세션 -0.21%의 101%",
+      "KOSPI +1.65% vs 종목 +0.59%, 5분 수익률 상관 0.85 — 종목 고유 요인이 약함"
+    ]
+  },
+  "events": [
+    {
+      "time": "2026-09-21T09:15:00+09:00",
+      "ret": -0.006989247311827929,
+      "z": 4.41,
+      "volume_ratio": 3.14,
+      "cum_before": -0.009057005860415579,
+      "cum_after": -0.01598295151838036,
+      "session_share": 1.0091397849462405,
+      "score": 6.03735742203114,
+      "news": [
+        {
+          "time": "2026-09-21T08:49:20+09:00",
+          "title": "'빅쇼트' 아이스만, SK하이닉스 주목 \"AI 시대엔 칼 쓰는 기업보다 칼 파는 기업이 승자\"",
+          "source": "더구루",
+          "link": "https://news.google.com/rss/articles/CBMiXkFVX3lxTE4zR3dYcXRwVkpRbUJsN2pEUTJvN2FqbENNQXZHd0JlR1RZdE15M2FzOFkwMFF2eGpqZXZlWFRVbWc3QWVkaTFpdURjNVVaQ21yQzBHeFR2elR5UXJrMlE?oc=5"
+        },
+        {
+          "time": "2026-09-21T09:01:00+09:00",
+          "title": "한미글로벌, SK하이닉스 인디애나 HBM 공장 건설사업관리",
+          "source": "연합뉴스TV",
+          "link": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE11bF9ZNHBYWERsQ19SdUQ5UzNaVm5ZQ0dZcW94M2s5dlBlcllHZHh4NjhoTjJTWnpCemV5M2V0OEpxRDhOdnFiQ0NJS25PdW1pNjRLUWZRUERUWmxpeDcxdXo1c3p4Q2M?oc=5"
+        }
+      ]
+    }
+  ],
+  "turning_point": {
+    "high_time": "2026-09-21T10:10:00+09:00",
+    "high": 0.0013319126265316505,
+    "low_time": "2026-09-21T09:15:00+09:00",
+    "low": -0.01598295151838036,
+    "pattern": "저점 후 반등"
+  },
+  "closing_share": -1.0042918454935341,
+  "intraday_corr_kospi": 0.8507924345724094,
+  "intraday_note": "장중 봉은 09:05~14:55까지만 있어 마감 구간(14:55~15:30)은 일봉 종가로만 봅니다(그 구간 +0.21%).",
+  "intraday_coverage": "09:05~14:55",
+  "overnight_news": [
+    {
+      "time": "2026-09-21T08:49:20+09:00",
+      "title": "'빅쇼트' 아이스만, SK하이닉스 주목 \"AI 시대엔 칼 쓰는 기업보다 칼 파는 기업이 승자\"",
+      "source": "더구루",
+      "link": "https://news.google.com/rss/articles/CBMiXkFVX3lxTE4zR3dYcXRwVkpRbUJsN2pEUTJvN2FqbENNQXZHd0JlR1RZdE15M2FzOFkwMFF2eGpqZXZlWFRVbWc3QWVkaTFpdURjNVVaQ21yQzBHeFR2elR5UXJrMlE?oc=5"
+    }
+  ],
+  "top_news": [
+    {
+      "time": "2026-09-21T11:49:04+09:00",
+      "title": "SK하이닉스 곽노정 사장 \"차세대 메모리, AI 반도체 시장 주도권 이어갈 것\"",
+      "source": "뉴스웍스",
+      "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTE5BVHYwenpBTHktRWo3MDZWRHlRZXZhSk5ENENydGk5UVVHV2djLW5mVFY5alNxUTZCalZkV29TS2F1QkxlVEF1M1k2THgwYmh3MDdSNUc4QlBlSHFRQXJEaFE3cXV2VG9yZHF6UU4xVzM3czg?oc=5"
+    },
+    {
+      "time": "2026-09-21T13:44:57+09:00",
+      "title": "곽노정 SK하이닉스 사장 \"HBM 이어 차세대 메모리로 AI 가능성 열 것\"",
+      "source": "알파경제",
+      "link": "https://news.google.com/rss/articles/CBMibkFVX3lxTFB3RXdhMDE3S0lSMDExMlExQXFVbHlyWFZZSTFXb0ctNWxrZXdPbzZPR3pEVlBNT3QwNVo3R095UUhNZkVmcFRGTC1MbTY0MEF6a3dxWlhkSVBCVDZqOTladnVZaHNOX1JLX3BPTEh3?oc=5"
+    },
+    {
+      "time": "2026-09-21T14:56:11+09:00",
+      "title": "SK하이닉스 곽노정 사장 \"HBM 넘어 차세대 메모리로 AI 새 가능성 열 것\"",
+      "source": "뉴시스",
+      "link": "https://news.google.com/rss/articles/CBMieEFVX3lxTFAwMTd4SHdlcjlZTXBnSWpMYmtBaTdCYUVSRVZjUFVDX2hEcDZuNm00eU9fNTlLLWREYnZxa2p4TzhPUWhhQVpfUFp2czVleU9pc1lSRTJnZ3M3d2Q0R0hCa3lSbDNtSG5PQmVsaE9iYjMxakNHMzFRMdIBeEFVX3lxTFAwMTd4SHdlcjlZTXBnSWpMYmtBaTdCYUVSRVZjUFVDX2hEcDZuNm00eU9fNTlLLWREYnZxa2p4TzhPUWhhQVpfUFp2czVleU9pc1lSRTJnZ3M3d2Q0R0hCa3lSbDNtSG5PQmVsaE9iYjMxakNHMzFRMQ?oc=5"
+    },
+    {
+      "time": "2026-09-21T14:56:25+09:00",
+      "title": "낸드·D램 판도 넓히는 SK하이닉스, 美 공략 강화 [반도체레이다]",
+      "source": "디지털데일리",
+      "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE5EUENSZUlwX3M3V0pZR3ppbUxkcHBscTVSVUtlbXM1NTVRcEQzekthVjRnckcyUFNFV3VNUGZMY3cxZmNhYi1XZlFvdFhfcVo0SGhCS2dtY2VVRzBjdDZxOUtRMEI?oc=5"
+    },
+    {
+      "time": "2026-09-21T15:49:00+09:00",
+      "title": "SK하이닉스, 차세대 메모리로 AI 반도체 시장 주도 선언",
+      "source": "동아일보",
+      "link": "https://news.google.com/rss/articles/CBMiZkFVX3lxTFAzVWoyd1R5YXJqR2dlcUVFTnh5QmtIWG0zSDZkaXpqR2YzOVFNbnB3bWs5M1NNOXR6T0hVd042TU82c3gyb2NuSGZzdzB2Yl9BR1l3eGd0U2x2cDhzQktWUldYdjM5Z9IBZkFVX3lxTFAzVWoyd1R5YXJqR2dlcUVFTnh5QmtIWG0zSDZkaXpqR2YzOVFNbnB3bWs5M1NNOXR6T0hVd042TU82c3gyb2NuSGZzdzB2Yl9BR1l3eGd0U2x2cDhzQktWUldYdjM5Zw?oc=5"
+    },
+    {
+      "time": "2026-09-21T10:03:48+09:00",
+      "title": "SK하이닉스 곽노정 \"차세대 메모리로 AI 새로운 가능성 열 것\"",
+      "source": "연합뉴스",
+      "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE1BZVFtUG9LdE1GczN1djBKcDFZeVV6UnJXd1dHa21WWXNVVEJoMDk3bkZqdWVTUnFkd2xjSzVXVVFvU3M2c1pZdzBiQnV2N1d5UjBRcE16VU5waXVCRHI5bdIBYEFVX3lxTE1BZVFtUG9LdE1GczN1djBKcDFZeVV6UnJXd1dHa21WWXNVVEJoMDk3bkZqdWVTUnFkd2xjSzVXVVFvU3M2c1pZdzBiQnV2N1d5UjBRcE16VU5waXVCRHI5bQ?oc=5"
+    }
+  ],
+  "disclosures": [],
+  "disclosure_note": null,
+  "flows": null,
+  "forecasts": [
+    {
+      "model": "No macro ensemble",
+      "hit": true,
+      "verdict": "맞음 — 예측 보합 44%, 실제 보합(+0.59%)",
+      "legs": "갭 +0.81%(보합) · 세션 -0.21%(보합)",
+      "where": "결과는 주로 갭(밤사이)에서 정해졌습니다.",
+      "band": 0.0110061153637702,
+      "probs": [
+        0.1998401565728911,
+        0.4420329955378703,
+        0.3581268478892385
+      ],
+      "actual": "보합",
+      "predicted": "보합"
+    },
+    {
+      "model": "Mean ensemble",
+      "hit": false,
+      "verdict": "틀림 — 예측 상승 40%, 실제 보합(+0.59%)",
+      "legs": "갭 +0.81%(보합) · 세션 -0.21%(보합)",
+      "where": "결과는 주로 갭(밤사이)에서 정해졌습니다.",
+      "band": 0.0110061153637702,
+      "probs": [
+        0.226672982034881,
+        0.3714453527513842,
+        0.4018816652137348
+      ],
+      "actual": "보합",
+      "predicted": "상승"
+    },
+    {
+      "model": "Candidate expanding",
+      "hit": false,
+      "verdict": "틀림 — 예측 상승 45%, 실제 보합(+0.59%)",
+      "legs": "갭 +0.81%(보합) · 세션 -0.21%(보합)",
+      "where": "결과는 주로 갭(밤사이)에서 정해졌습니다.",
+      "band": 0.0110061153637702,
+      "probs": [
+        0.1891318508119529,
+        0.3639969063217687,
+        0.4468712428662783
+      ],
+      "actual": "보합",
+      "predicted": "상승"
+    }
+  ],
+  "price_check": "1거래일 예상 구간 1,788,138~1,956,619원 · 종가 1,868,000원 → 구간 안",
+  "disclaimer": "시간이 맞는 것이지 원인 확정이 아닙니다. 뉴스 없이 움직이는 날(수급·프로그램·옵션 만기)이 많고, 기사 발행 시각은 실제 정보 유통보다 늦거나 앞섭니다. 이 절은 설명 도구이며 다음날 예측에 자동 반영되지 않습니다."
+}

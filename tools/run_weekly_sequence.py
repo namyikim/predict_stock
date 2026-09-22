@@ -145,7 +145,7 @@ def maybe_fail_after(unit):
 
 def main(argv=None):
     parser = argparse.ArgumentParser(description="주간 OHLCV 시퀀스 실험(S02 기준선)")
-    parser.add_argument("--task", default="S02", choices=["S02", "S03"])
+    parser.add_argument("--task", default="S02", choices=["S02", "S03", "S04"])
     parser.add_argument("--target", required=True, choices=["samsung", "sk_hynix"])
     parser.add_argument("--mode", default="quick", choices=["quick", "full"])
     parser.add_argument("--storage", default="runs/weekly_sequence")
@@ -164,8 +164,28 @@ def main(argv=None):
         print(f"오류: {exc}", file=sys.stderr)
         return 2
 
+    operational = None
+    if args.task == "S04":
+        # 운영 Ridge 없이는 설계 기준을 적용할 수 없다. skipped 가 아니라 거부한다.
+        operational = load_operational_inputs(storage, args.target, args.mode)
+        if operational is None:
+            print(f"오류: 운영 입력이 없습니다 — {storage}/{args.target}/inputs_{args.mode}_*.pkl. "
+                  "S04 는 네 후보 비교라 운영 Ridge 가 필요합니다. medium_horizon 러너(M01 고정 입력)를 먼저 만드세요.",
+                  file=sys.stderr)
+            return 2
+        op_last = pd.Timestamp(operational["sam"].index[-1]).normalize()
+        if op_last != snapshot.bars.index[-1]:
+            print(f"오류: 운영 입력의 마지막 봉({op_last.date()})과 스냅샷의 마지막 봉({snapshot.bars.index[-1].date()})이 "
+                  "다릅니다. 같은 시점의 자료여야 공통 날짜 비교가 성립합니다.", file=sys.stderr)
+            return 2
+        marker = lock_marker_path(Path(args.results), args.target)
+        if marker.is_file():
+            opened = read_json(marker) or {}
+            print(f"오류: {args.target} 의 잠금 구간은 이미 열렸습니다(run {opened.get('run_id')}, "
+                  f"{opened.get('opened_at_utc')}). 두 번째로 열 수 없습니다 — 첫 결과가 판정 근거입니다.", file=sys.stderr)
+            return 3
     config = s02_config(args.mode, args.alpha, args.lookback, args.horizon, task=args.task)
-    if args.task == "S03":
+    if args.task in ("S03", "S04"):
         config["tcn"] = {"seeds": list(TCN_SEEDS), "inner_months": INNER_MONTHS,
                          "torch": torch_available(),
                          "config": (tcn_config(args.mode, args.lookback).__dict__ if torch_available() else None)}
@@ -301,7 +321,8 @@ def main(argv=None):
             maybe_fail_after("comparison")
 
         # ---------------------------------------------------------------- S03: TCN 후보
-        if args.task == "S03":
+        tcn_preds = None
+        if args.task in ("S03", "S04"):
             tcn_preds = run_tcn_units(args, config, state, storage, batch, usable, X, y, dates, test_idx,
                                       predictions, done, maybe_fail_after)
             if not done("tcn:summary"):
@@ -311,6 +332,11 @@ def main(argv=None):
                                            "status": "skipped" if tcn_preds is None else "done",
                                            **({"note": "skipped: torch missing"} if tcn_preds is None else {})})
                 maybe_fail_after("tcn:summary")
+
+        # ---------------------------------------------------------------- S04: 운영 Ridge · 잠금 · 판정
+        if args.task == "S04":
+            run_s04_units(args, config, state, storage, snapshot, batch, folds, usable, lock_start, X, y, dates,
+                          test_idx, predictions, tcn_preds, operational, done, maybe_fail_after)
 
         state.finish("completed")
         write_json(state.manifest_path, state.manifest)
@@ -367,6 +393,270 @@ def run_tcn_units(args, config, state, storage, batch, usable, X, y, dates, test
         write_json(state.manifest_path, state.manifest)
         maybe_fail_after(unit)
     return preds
+
+
+# ==============================================================================================
+# S04 — 운영 Ridge 연결, 잠금 1회 열기, 기계적 판정
+# ==============================================================================================
+BASELINES_FOR_VERDICT = ("persistence", "operational_ridge", "ohlcv_ridge")
+
+
+def lock_marker_path(results_dir, target):
+    return Path(results_dir) / "S04" / f"LOCK_OPENED_{target}.json"
+
+
+def load_operational_inputs(storage, target, mode):
+    """runs/medium_horizon 형식의 고정 입력 pkl. 없으면 None."""
+    import pickle
+    paths = sorted((Path(storage) / target).glob(f"inputs_{mode}_*.pkl"))
+    if not paths:
+        return None
+    with open(paths[-1], "rb") as handle:
+        inputs = pickle.load(handle)
+    inputs["_path"] = str(paths[-1])
+    return inputs
+
+
+def operational_ridge_predictions(inputs, horizon=5, alpha=1e4, folds=None):
+    """운영 5일 가격 모델(StandardScaler+Ridge, sigma 로 나눈 타깃)을 날짜 기준 폴드로 재현.
+
+    특징 행의 날짜는 원본 봉 d-1 이므로 예측일은 그 다음 봉이다. 반환 Series 의 인덱스는 예측일.
+    folds 가 None 이면 전 기간을 하나의 확장 창으로 보지 않고, 호출부가 준 폴드마다 학습·예측한다.
+    """
+    import forecast_utils as fu
+    reg, feature_cols = price_design_from_inputs(inputs, horizon)
+    X = reg[feature_cols].to_numpy(dtype=float)
+    y = reg["future_return"].to_numpy(dtype=float)
+    sigma = reg["sigma_simple"].to_numpy(dtype=float)
+    z = y / np.maximum(sigma, 1e-6)
+    sam_index = pd.DatetimeIndex(inputs["sam"].index)
+    pos = sam_index.get_indexer(reg.index)
+    next_pos = pos + 1
+    valid = next_pos < len(sam_index)
+    pred_dates = pd.DatetimeIndex([sam_index[i] if ok else pd.NaT for i, ok in zip(next_pos, valid)])
+    out = pd.Series(np.nan, index=reg.index, dtype=float)
+    if folds is None:
+        folds = [{"train": np.arange(len(reg)), "test": np.arange(len(reg))}]
+    for fold in folds:
+        tr, te = fold["train"], fold["test"]
+        if len(tr) == 0 or len(te) == 0:
+            continue
+        model = fu.make_price_model(alpha=alpha).fit(X[tr], z[tr])
+        out.iloc[te] = model.predict(X[te]) * sigma[te]
+    out.index = pred_dates
+    return out[out.index.notna()]
+
+
+def price_design_from_inputs(inputs, horizon):
+    import forecast_utils as fu
+    reg, _ = fu.price_design_frame(inputs["feat"], inputs["sam"].index, inputs["feature_cols"],
+                                   inputs["sam_raw_close"], inputs["feat"]["sam_vol_20"], horizon)
+    return reg, list(inputs["feature_cols"])
+
+
+def operational_folds(reg_index, sam_index, horizon, test_windows):
+    """운영 설계 행렬 위에 날짜 기준 폴드를 만든다. test_windows: [(t0, t1)] (예측일 기준 반개구간)."""
+    feature_dates = pd.DatetimeIndex(reg_index)
+    sam_index = pd.DatetimeIndex(sam_index)
+    pos = sam_index.get_indexer(feature_dates)
+    pred_pos = pos + 1
+    maturity_pos = pos + horizon                     # 특징 행 d-1 의 만기 = d + h - 1 = (d-1) + h
+    ok = maturity_pos < len(sam_index)
+    pred_dates = pd.DatetimeIndex([sam_index[i] if i < len(sam_index) else pd.NaT for i in pred_pos])
+    maturity = pd.DatetimeIndex([sam_index[i] if o else pd.NaT for i, o in zip(maturity_pos, ok)])
+    folds = []
+    for t0, t1 in test_windows:
+        test = np.flatnonzero((pred_dates >= t0) & (pred_dates < t1))
+        train = np.flatnonzero(ok & (maturity < t0))
+        folds.append({"train": train, "test": test})
+    return folds, pred_dates
+
+
+def verdict(dev_comps, lock_comps, seed_mae, operational_mae):
+    """설계 기준을 기계적으로 적용한다. (판정, 근거 목록).
+
+    채택 후보: 개발·잠금 모두에서 tcn_mean 이 세 기준선 각각보다 낫고(CI 상한 < 0), seed 셋 모두 운영 Ridge 보다 낫다.
+    관찰 후보: 개발에서만 통과. 미채택: 개발에서 실패하거나 seed 하나라도 운영 Ridge 보다 나쁘다.
+    """
+    reasons = []
+    seeds_ok = all(m < operational_mae for m in seed_mae.values())
+    if not seeds_ok:
+        worse = [k for k, m in seed_mae.items() if m >= operational_mae]
+        reasons.append(f"seed {worse} 의 MAE 가 운영 Ridge({operational_mae:.5f}) 이상 — 후보 탈락")
+    def passes(comps, label):
+        ok = True
+        for b in BASELINES_FOR_VERDICT:
+            c = comps.get(f"tcn_mean_vs_{b}")
+            if c is None:
+                reasons.append(f"{label}: {b} 비교 없음"); ok = False; continue
+            good = c["mae_diff"] < 0 and c["ci_high"] < 0
+            reasons.append(f"{label} vs {b}: MAE 차이 {c['mae_diff']:+.5f}, CI 상한 {c['ci_high']:+.5f} → {'통과' if good else '미통과'}")
+            ok = ok and good
+        return ok
+    dev_ok = passes(dev_comps, "개발")
+    lock_ok = passes(lock_comps, "잠금") if lock_comps else False
+    if not seeds_ok or not dev_ok:
+        return "미채택", reasons
+    if dev_ok and lock_ok:
+        return "채택 후보", reasons
+    return "관찰 후보", reasons
+
+
+def _comps_map(rows):
+    return {r["comparison"]: r for r in rows}
+
+
+def run_s04_units(args, config, state, storage, snapshot, batch, folds, usable, lock_start, X, y, dates,
+                  test_idx, predictions, tcn_preds, operational, done, maybe_fail_after):
+    from weekly_sequence_tcn import fit_tcn, predict_tcn
+    if tcn_preds is None:
+        raise SystemExit("S04 는 TCN 후보가 필요합니다(torch). 설치 후 다시 실행하세요.")
+    sam_index = pd.DatetimeIndex(operational["sam"].index)
+    reg, _ = price_design_from_inputs(operational, config["horizon"])
+
+    # ---- dev: 운영 Ridge 를 같은 시험 창으로 예측하고 네 후보를 공통 날짜에서 비교
+    if not done("dev"):
+        windows = [(pd.Timestamp(f["test_start"]), pd.Timestamp(f["test_end"]) + pd.Timedelta(days=1)) for f in usable]
+        op_folds, _ = operational_folds(reg.index, sam_index, config["horizon"], windows)
+        op_pred = operational_ridge_predictions(operational, config["horizon"], folds=op_folds)
+        seq_dates = dates[test_idx]
+        common = common_dates(seq_dates, op_pred.index)
+        mask = np.isin(seq_dates, common)
+        cands = {"persistence": predictions["persistence"][mask], "ohlcv_ridge": predictions["ohlcv_ridge"][mask],
+                 "operational_ridge": op_pred.reindex(seq_dates[mask]).to_numpy()}
+        for k, pred in tcn_preds.items():
+            cands[f"tcn_seed{k}"] = pred[mask]
+        cands["tcn_mean"] = np.mean(np.stack([tcn_preds[k] for k in sorted(tcn_preds)]), axis=0)[mask]
+        yt, dt = y[test_idx][mask], seq_dates[mask]
+        rows, comps = [], []
+        for name, pred in cands.items():
+            for fold in usable:
+                m = np.isin(dt, dates[fold["test"]])
+                if m.any():
+                    rows.append({"target": args.target, "model": name, "fold": fold["name"],
+                                 "seed": int(name[-2:]) if name.startswith("tcn_seed") else np.nan, **score(yt[m], pred[m])})
+            rows.append({"target": args.target, "model": name, "fold": "all_used",
+                         "seed": int(name[-2:]) if name.startswith("tcn_seed") else np.nan, **score(yt, pred)})
+        err_t = np.abs(yt - cands["tcn_mean"])
+        for b in BASELINES_FOR_VERDICT:
+            err_b = np.abs(yt - cands[b])
+            lo, hi = block_bootstrap_diff_ci(dt, err_t, err_b, config["bootstrap_b"], SEED)
+            comps.append({"target": args.target, "comparison": f"tcn_mean_vs_{b}", "mae_diff": float(err_t.mean() - err_b.mean()),
+                          "ci_low": lo, "ci_high": hi, "n": int(len(yt)), "bootstrap_b": config["bootstrap_b"], "block": "month"})
+        write_csv(state.run_dir / "metrics_dev.csv", pd.DataFrame(rows))
+        write_csv(state.run_dir / "comparisons_dev.csv", pd.DataFrame(comps))
+        state.mark("dev", {"common_n": int(len(yt)), "dropped_seq_dates": int((~mask).sum()),
+                           "dropped_operational_dates": int(len(op_pred) - len(common))})
+        maybe_fail_after("dev")
+
+    # ---- lock: 잠금 폴드 하나. 학습은 잠금 시작 전에 만기된 행만.
+    if not done("lock"):
+        marker = lock_marker_path(Path(args.results), args.target)
+        if marker.is_file():
+            raise SystemExit(f"{args.target} 잠금 구간은 이미 열렸습니다({read_json(marker).get('run_id')}).")
+        maturity = pd.DatetimeIndex(batch.metadata["target_date"])
+        seq_train = np.flatnonzero(maturity < lock_start)
+        seq_test = np.flatnonzero(dates >= lock_start)
+        if len(seq_test) == 0 or len(seq_train) < config["min_train_rows"]:
+            raise SystemExit(f"잠금 폴드를 만들 수 없습니다(학습 {len(seq_train)}, 시험 {len(seq_test)}).")
+        lock_end = dates[-1] + pd.Timedelta(days=1)
+        op_folds, _ = operational_folds(reg.index, sam_index, config["horizon"], [(lock_start, lock_end)])
+        op_pred = operational_ridge_predictions(operational, config["horizon"], folds=op_folds)
+        seq_dates = dates[seq_test]
+        common = common_dates(seq_dates, op_pred.index)
+        mask = np.isin(seq_dates, common)
+        yt, dt = y[seq_test][mask], seq_dates[mask]
+        lock_preds = {"persistence": persistence_baseline(yt),
+                      "ohlcv_ridge": ridge_baseline(X[seq_train], y[seq_train], X[seq_test], alpha=config["alpha"])[mask],
+                      "operational_ridge": op_pred.reindex(seq_dates[mask]).to_numpy()}
+        cfg = tcn_config(args.mode, config["lookback"])
+        inner_train, valid = inner_split({"train": seq_train}, batch.metadata)
+        ck_root = storage / args.target / "weekly_sequence" / args.task / state.run_dir.name
+        seed_preds = {}
+        for k in TCN_SEEDS:
+            fit = fit_tcn(batch.X[inner_train], y[inner_train], batch.X[valid], y[valid], cfg, seed=k,
+                          checkpoint_path=ck_root / f"lock_seed{k}.pt", resume=True)
+            seed_preds[k] = predict_tcn(fit, batch.X[seq_test])[mask]
+            lock_preds[f"tcn_seed{k}"] = seed_preds[k]
+        lock_preds["tcn_mean"] = np.mean(np.stack([seed_preds[k] for k in sorted(seed_preds)]), axis=0)
+        rows = [{"target": args.target, "model": name, "fold": "lock",
+                 "seed": int(name[-2:]) if name.startswith("tcn_seed") else np.nan, **score(yt, pred)}
+                for name, pred in lock_preds.items()]
+        err_t = np.abs(yt - lock_preds["tcn_mean"])
+        comps = []
+        for b in BASELINES_FOR_VERDICT:
+            err_b = np.abs(yt - lock_preds[b])
+            lo, hi = block_bootstrap_diff_ci(dt, err_t, err_b, config["bootstrap_b"], SEED)
+            comps.append({"target": args.target, "comparison": f"tcn_mean_vs_{b}", "mae_diff": float(err_t.mean() - err_b.mean()),
+                          "ci_low": lo, "ci_high": hi, "n": int(len(yt)), "bootstrap_b": config["bootstrap_b"], "block": "month"})
+        write_csv(state.run_dir / "metrics_lock.csv", pd.DataFrame(rows))
+        write_csv(state.run_dir / "comparisons_lock.csv", pd.DataFrame(comps))
+        # folds.csv 에 잠금 폴드 행을 추가한다(학습 만기 최댓값을 남겨 purge 를 확인할 수 있게).
+        fold_frame = pd.read_csv(state.run_dir / "folds.csv")
+        lock_row = {"name": "lock", "test_start": str(lock_start.date()), "test_end": str(dates[-1].date()),
+                    "train_rows": int(len(seq_train)), "test_rows": int(len(seq_test)),
+                    "train_start": str(dates[seq_train[0]].date()), "train_end": str(dates[seq_train[-1]].date()),
+                    "train_maturity_max": str(maturity[seq_train].max().date()), "used": True}
+        write_csv(state.run_dir / "folds.csv", pd.concat([fold_frame, pd.DataFrame([lock_row])], ignore_index=True))
+        from datetime import datetime, timezone
+        opened = {"target": args.target, "run_id": state.run_dir.name, "opened_at_utc": datetime.now(timezone.utc).isoformat(),
+                  "data_hash": state.manifest.get("data_hash"), "lock_start": str(lock_start.date()),
+                  "last_bar": str(snapshot.bars.index[-1].date())}
+        write_json(marker, opened)
+        state.manifest["lock_opened_at"] = opened["opened_at_utc"]
+        state.mark("lock", {"common_n": int(len(yt)), "lock_start": str(lock_start.date())})
+        maybe_fail_after("lock")
+
+    # ---- verdict
+    if not done("verdict"):
+        dev_c = _comps_map(pd.read_csv(state.run_dir / "comparisons_dev.csv").to_dict("records"))
+        lock_c = _comps_map(pd.read_csv(state.run_dir / "comparisons_lock.csv").to_dict("records"))
+        dev_m = pd.read_csv(state.run_dir / "metrics_dev.csv")
+        overall = dev_m[dev_m["fold"] == "all_used"].set_index("model")
+        seed_mae = {k: float(overall.loc[f"tcn_seed{k}", "mae"]) for k in TCN_SEEDS}
+        label, reasons = verdict(dev_c, lock_c, seed_mae, float(overall.loc["operational_ridge", "mae"]))
+        lock_m = pd.read_csv(state.run_dir / "metrics_lock.csv").set_index("model")
+        write_text(state.run_dir / "decision.md", s04_decision_text(args, config, state, label, reasons, overall, lock_m,
+                                                                     dev_c, lock_c))
+        state.mark("verdict", {"verdict": label})
+        maybe_fail_after("verdict")
+
+
+def s04_decision_text(args, config, state, label, reasons, dev_overall, lock_m, dev_c, lock_c):
+    def table(frame, title):
+        lines = [f"### {title}", "", "| 모델 | seed | MAE | RMSE | 방향 적중률 | n |", "| --- | --- | --- | --- | --- | --- |"]
+        for name in ("persistence", "operational_ridge", "ohlcv_ridge", "tcn_seed42", "tcn_seed43", "tcn_seed44", "tcn_mean"):
+            if name in frame.index:
+                r = frame.loc[name]
+                seed = "—" if pd.isna(r.get("seed", np.nan)) else int(r["seed"])
+                hit = "—" if pd.isna(r["direction_hit"]) else f"{r['direction_hit']:.3f}"
+                lines.append(f"| {name} | {seed} | {r['mae']:.5f} | {r['rmse']:.5f} | {hit} | {int(r['n'])} |")
+        return "\n".join(lines) + "\n"
+    def comps(c, title):
+        lines = [f"### {title}", ""]
+        for b in BASELINES_FOR_VERDICT:
+            r = c.get(f"tcn_mean_vs_{b}")
+            if r:
+                lines.append(f"- tcn_mean vs {b}: MAE 차이 {r['mae_diff']:+.5f}, 95% CI [{r['ci_low']:+.5f}, {r['ci_high']:+.5f}], n={int(r['n'])}")
+        return "\n".join(lines) + "\n"
+    dev_n = int(dev_overall["n"].iloc[0]) if len(dev_overall) else 0
+    return "\n".join([
+        f"# S04 판정 — {args.target} ({args.mode})", "",
+        f"판정: **{label}**", "",
+        "**운영 채택은 별도 결정이다**(설계 문서 8절). 이 문서는 설계 기준을 기계적으로 적용한 결과이고, 사람의 판단을 담지 않았다.", "",
+        "## 기준", "",
+        "- 채택 후보: 개발 폴드와 잠금 구간 **모두**에서 tcn_mean 의 MAE 가 현재가 유지·운영 Ridge·OHLCV Ridge 각각보다 낮고 95% CI 상한 < 0. seed 셋 모두 운영 Ridge 보다 낮아야 한다.",
+        "- 관찰 후보: 개발에서만 통과. 미채택: 개발 실패 또는 seed 하나라도 운영 Ridge 이상.", "",
+        "## 근거", "", *[f"- {r}" for r in reasons], "",
+        f"## 개발 폴드 (공통 예측일 {dev_n}개)", "", table(dev_overall, "지표"), comps(dev_c, "비교"),
+        f"## 잠금 구간 (잠금 시작 {state.manifest.get('lock_opened_at', '')[:10] and read_json(lock_marker_path(Path(args.results), args.target)).get('lock_start')})", "",
+        table(lock_m, "지표"), comps(lock_c, "비교"),
+        "## 한계", "",
+        f"- 봉 공개 시각 {state.manifest.get('availability_policy')} · 기업행동 {state.manifest.get('corporate_actions')} — S02 와 같은 가정.",
+        "- 잠금 구간은 이 실행에서 한 번 열렸다. 같은 종목에 대해 다시 열 수 없다(LOCK_OPENED 표식).",
+        "- 합성 자료로 돌렸다면 판정은 코드 동작 확인일 뿐이다. manifest.snapshot 으로 실제 자료 여부를 확인한다.", "",
+        f"code_commit {state.manifest.get('code_commit')} · data_hash {state.manifest.get('data_hash')} · config_hash {state.manifest.get('config_hash')}",
+    ]) + "\n"
 
 
 def _file_sha256(path):

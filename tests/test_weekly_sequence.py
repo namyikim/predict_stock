@@ -261,10 +261,29 @@ class InputValidationTests(unittest.TestCase):
         self.assertRejects(zero_price, "양수")
         self.assertRejects(negative_volume, "음수")
 
-    def test_inconsistent_high_low(self):
+    def test_grossly_inconsistent_high_low_is_rejected(self):
         def bad(i):
             i["bars"].loc[i["sessions"][50], "high"] = i["bars"].loc[i["sessions"][50], "low"] * 0.5
         self.assertRejects(bad, "고가·저가")
+
+    def test_small_inconsistency_becomes_a_missing_bar_not_a_fix(self):
+        # 실제 야후 자료(2024-10-14 삼성전자): 종가가 저가보다 100원 낮다(0.17%). 값을 고치지 않고 그 봉을
+        # 결측으로 둬, 그 봉이 범위에 드는 표본만 missing_bar 로 빠진다.
+        inputs = fixture()
+        sessions = inputs["sessions"]
+        day = sessions[100]
+        inputs["bars"].loc[day, "close"] = inputs["bars"].loc[day, "low"] * 0.999
+        batch = build_sequences(**inputs, lookback=LOOKBACK, horizon=HORIZON)
+        self.assertEqual(excluded_reason(batch, sessions[120]), "missing_bar")      # 범위 [40,124] 에 100 포함
+        self.assertEqual(excluded_reason(batch, sessions[150]), "missing_bar")      # 범위 [70,154] 에 100 포함
+        # 범위가 그 봉을 지나면 표본은 살아난다(긴 자료로 확인).
+        long = long_fixture()
+        day = long["sessions"][100]
+        long["bars"].loc[day, "close"] = long["bars"].loc[day, "low"] * 0.999
+        batch = build_sequences(**long, lookback=LOOKBACK, horizon=HORIZON)
+        self.assertEqual(excluded_reason(batch, long["sessions"][120]), "missing_bar")
+        self.assertIsNone(excluded_reason(batch, long["sessions"][200]))            # 범위 [120,204] 는 100 밖
+        self.assertTrue(np.isfinite(batch.X).all())
 
     def test_duplicate_or_unsorted_dates(self):
         def duplicate(i):

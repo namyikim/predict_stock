@@ -98,12 +98,28 @@ def _validate_bars(bars):
         raise ValueError("bars 의 가격은 모두 양수여야 합니다.")
     if (frame["volume"] < 0).any():
         raise ValueError("bars 의 거래량이 음수입니다.")
+    return frame
+
+
+def inconsistent_bars(frame, tolerance=0.005):
+    """고가·저가가 시가·종가와 맞지 않는 봉. bool Series(True = 어긋남).
+
+    2024-10-14 삼성전자처럼 종가가 저가보다 100원 낮게 기록된 봉이 실제 야후 자료에 있다(2,855봉 중 1봉,
+    종가 대비 0.17%). 값을 고치지 않고 그 봉을 결측으로 취급해, S01 규칙대로 그 봉이 범위에 드는 표본만
+    빠지게 한다. tolerance(종가 대비)를 넘게 어긋나면 잡음이 아니라 자료 오류로 보고 거부한다.
+    """
     high, low = frame["high"], frame["low"]
     body_top = frame[["open", "close"]].max(axis=1)
     body_bottom = frame[["open", "close"]].min(axis=1)
-    if (high < low).any() or (high < body_top).any() or (low > body_bottom).any():
-        raise ValueError("bars 의 고가·저가가 시가·종가와 맞지 않습니다.")
-    return frame
+    off = (high < low) | (high < body_top) | (low > body_bottom)
+    if off.any():
+        gap = pd.concat([(body_top - high).clip(lower=0), (low - body_bottom).clip(lower=0),
+                         (low - high).clip(lower=0)], axis=1).max(axis=1) / frame["close"]
+        worst = float(gap[off].max())
+        if worst > tolerance:
+            raise ValueError(f"bars 의 고가·저가가 시가·종가와 맞지 않습니다(최대 종가 대비 {worst:.2%}, "
+                             f"허용 {tolerance:.1%}). 잡음 수준을 넘어 자료 오류로 봅니다.")
+    return off
 
 
 def causal_features(bars_on_sessions):
@@ -153,6 +169,10 @@ def build_sequences(bars, sessions, available_at, prediction_at, corporate_actio
     if len(not_sessions):
         raise ValueError(f"세션이 아닌 예측일이 있습니다: {not_sessions[:3].date.tolist()}")
 
+    # 고가·저가가 시가·종가와 어긋난 봉은 값을 고치지 않고 결측으로 둔다(사유는 missing_bar 로 잡힌다).
+    off = inconsistent_bars(frame)
+    if off.any():
+        frame = frame.mask(off)
     # 세션 달력에 맞춰 다시 색인한다. 빠진 봉은 NaN 으로 남기고 절대 채우지 않는다.
     on_sessions = frame.reindex(sessions)
     present = on_sessions["close"].notna().to_numpy()

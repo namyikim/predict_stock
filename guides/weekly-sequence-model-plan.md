@@ -65,7 +65,7 @@ CPU quick 검증을 제공하고, 실제 전체 학습은 Colab에서 재개 가
 | S01 | 완료(main d6c8ed69) | 기존 타깃과 동등한 OHLCV 시퀀스·날짜 계약 및 누수/휴장/분할 테스트 |
 | S02 | 완료(main 8cc8c3d5) | 해시 고정 데이터 로더, 공통 날짜 기준선, 재개 가능한 실험 CLI와 중단 복구 테스트 |
 | S03 | 완료(main ea4cd345) | 작은 causal TCN 회귀 후보, seed 42·43·44 모두 보고, CPU quick 학습·저장·재개 테스트 |
-| S04 | 미시작 | 실제 데이터 시간순 full 비교와 오차·불확실성·계산비용 결과; 실패/미개선도 기록 |
+| S04 | 코드 완료(main 2fca009a)·실행 대기 | 실제 데이터 시간순 full 비교와 오차·불확실성·계산비용 결과; 실패/미개선도 기록 — Colab 노트북으로 실행 |
 | S05 | 미시작 | 과거 잔차 기반 가격 범위 및 입력 그룹 제거 비교; 기여도와 인과 구분 |
 | S06 | 미시작 | 통과 시에만 별도 승인 후 후보 원장·보고서 연결, 미통과 시 현행 유지 |
 
@@ -180,3 +180,18 @@ checkpoint.json: 완료 단위, 산출물 해시, 다음 단위. 설정/데이�
   - 다음: S04 — 실제 스냅샷 full 비교. 현재가 유지·운영 Ridge(medium_horizon 고정 입력 pkl 연결)·
     OHLCV Ridge·TCN(seed 3개)을 공통 날짜에서 비교하고 잠금 12개월을 한 번만 연다. 실제 스냅샷을
     이 환경에 가져오는 절차(Colab 또는 data_cache 복사)를 먼저 정한다.
+- S04 코드 (2026-09-22, Claude): 사용자가 A(Colab) 경로를 택함. 상세 계획 작성 후 구현, main 2fca009a.
+  - tools/run_weekly_sequence.py --task S04: 운영 입력 pkl 없으면 종료 2, 마지막 봉 불일치면 종료 2,
+    잠금이 이미 열렸으면 종료 3. 단위 dev(운영 Ridge 를 같은 시험 창으로 예측해 네 후보 공통 날짜 비교)
+    → lock(잠금 폴드 1개, 학습은 잠금 시작 전 만기 행만, TCN 도 잠금 전 자료로 재학습, LOCK_OPENED_<target>.json
+    표식) → verdict(설계 기준의 기계적 적용: 채택 후보/관찰 후보/미채택).
+  - 운영 Ridge 재현: forecast_utils.make_price_model + price_design_frame + sigma 스케일을 그대로 쓰되,
+    TimeSeriesSplit 대신 날짜 기준 폴드(특징 행 d-1 → 예측일 다음 봉, 만기 = (d-1)+h)로 학습·예측한다.
+    M00 summary 와의 수치 대조는 스냅샷이 있는 Colab 에서 한다(이 환경에서는 미실행).
+  - weekly_sequence_s04_colab.ipynb: 클론·의존성 → 종목별 캐시 모드 노트북 1회(발행·기록·동기화 끔,
+    스냅샷+inputs_full pkl 생성) → S04 실행 → 판정 출력 → experiments/ 만 커밋·push. 종목당 잠금 1회.
+  - 테스트 11개(tests/test_weekly_sequence_s04.py): 운영 입력 거부·마지막 봉 불일치·예측일 정렬·
+    네 후보 산출·이중 열기 거부와 첫 결과 보존·잠금 학습 만기 purge·판정 규칙 4조합. 합성 자료라 판정은
+    '미채택'(신호 없음)으로 나오며 그것이 정답이다.
+  - 다음: Colab 에서 노트북 실행(samsung → sk_hynix). 결과가 오면 두 종목 판정 표를 설계 문서에 적고
+    채택 후보만 S05 로 간다.

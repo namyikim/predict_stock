@@ -9,12 +9,12 @@
 
 - [x] S03 완료(main ea4cd345).
 - [x] S04 상세 실행 계획 작성(이 문서, 2026-09-22).
-- [ ] 상세 실행 계획 검토 — **잠금 구간을 여는 단계라 아래 "열기 전 확정 사항"에 사용자 승인이 필요하다.**
-- [ ] S04 코드 구현·검증(합성 데이터).
+- [x] 상세 실행 계획 검토 — 사용자가 A(Colab) 경로와 코드 진행을 지시(2026-09-22). 확정 사항은 아래 그대로.
+- [x] S04 코드 구현·검증(합성 데이터) — 테스트 11개, S02·S03 러너 회귀 OK.
 - [ ] 실제 스냅샷 반입 및 full 실행(스냅샷이 있는 환경에서).
 - [ ] 결과 기록·판정 근거·main 반영 확인.
 
-이 문서는 실행 계획이다. `--task S04`와 아래 테스트는 아직 존재하지 않는다.
+이 문서는 실행 계획이다. `--task S04`·테스트·Colab 노트북(`weekly_sequence_s04_colab.ipynb`)은 2026-09-22 구현됐다(main 2fca009a). 실제 실행(Task 3)은 아직이다.
 
 ## 열기 전 확정 사항 (승인 필요)
 
@@ -49,10 +49,10 @@
 - `operational_ridge_predictions(inputs, folds, horizon=5)`: run_medium_horizon.analyse_horizon이 쓰는 M00 재현 경로(price_design → StandardScaler+Ridge)를 **함수로 재사용**해 폴드별 시험 예측을 얻는다. 필요하면 run_medium_horizon에 작은 공개 함수를 추출하되 기존 결과(M00 summary)와 동등한지 회귀 테스트로 확인한다.
 - 예측일을 OHLCV 시퀀스의 prediction_date와 맞추는 매핑(특징 행 날짜 = 예측일 d 의 원본 봉 d-1 → prediction_date = 다음 세션)을 명시하고 테스트한다.
 
-- [ ] 실패 테스트: pkl 없이 `--task S04` → 종료 코드 2, "운영 입력 없음" 메시지.
-- [ ] 합성 pkl fixture(run_medium_horizon.extract_inputs 형식)로 운영 Ridge 예측이 만들어지고 날짜가 세션 기준으로 정렬되는지.
-- [ ] pkl 마지막 봉과 스냅샷 마지막 봉이 다르면 거부.
-- [ ] 회귀: 기존 M00 quick summary의 raw MAE와 새 함수 결과가 같은 폴드에서 일치(허용 1e-9). (스냅샷 없는 환경에서는 skip.)
+- [x] 실패 테스트: pkl 없이 `--task S04` → 종료 코드 2, "운영 입력 없음" 메시지.
+- [x] 합성 pkl fixture(run_medium_horizon.extract_inputs 형식)로 운영 Ridge 예측이 만들어지고 날짜가 세션 기준으로 정렬되는지.
+- [x] pkl 마지막 봉과 스냅샷 마지막 봉이 다르면 거부.
+- [ ] 회귀: 기존 M00 quick summary의 raw MAE와 새 함수 결과가 같은 폴드에서 일치(허용 1e-9). (이 환경에 스냅샷이 없어 미실행 — Colab 실행 때 M00 summary 와 대조한다.)
 
 ## Task 2: S04 단위 (dev·lock·verdict)
 
@@ -60,17 +60,17 @@
 - `lock`: `LOCK_OPENED_<target>.json`이 있으면 거부. 없으면 잠금 폴드 하나(잠금 시작~마지막 만기)를 만들고, 각 후보를 잠금 시작 전 자료로 학습해 예측. `metrics_lock.csv`, `comparisons_lock.csv`. 표식 파일에 run_id·시각·data_hash 기록.
 - `verdict`: 확정 사항 2의 기준을 기계적으로 적용해 `decision.md`에 "채택 후보 / 관찰 후보 / 미채택"과 근거 표(개발·잠금 각각의 MAE·CI, seed별 값, 공통 표본 수, 빠진 날짜 수)를 쓴다. 운영 채택은 별도 결정임을 명시.
 
-- [ ] 실패 테스트: `lock` 단위가 `dev` 완료 전이면 거부.
-- [ ] 두 번째 `lock` 실행이 표식 파일로 거부되고 첫 결과가 보존되는지.
-- [ ] 잠금 폴드 학습 행의 만기가 모두 잠금 시작 전인지.
-- [ ] verdict 문장이 기준 조합별로 맞게 나오는지(개발만 통과 → 관찰 후보, 둘 다 통과 → 채택 후보, seed 하나라도 열위 → 미채택).
-- [ ] decision.md에 "운영 채택은 별도 결정" 문구.
+- [x] 실패 테스트: `lock` 단위가 `dev` 완료 전이면 거부.
+- [x] 두 번째 `lock` 실행이 표식 파일로 거부되고 첫 결과가 보존되는지.
+- [x] 잠금 폴드 학습 행의 만기가 모두 잠금 시작 전인지.
+- [x] verdict 문장이 기준 조합별로 맞게 나오는지(개발만 통과 → 관찰 후보, 둘 다 통과 → 채택 후보, seed 하나라도 열위 → 미채택).
+- [x] decision.md에 "운영 채택은 별도 결정" 문구.
 
 ## Task 3: 실제 스냅샷 반입·실행 (사용자 환경)
 
 이 컨테이너에는 야후 접근이 없어 스냅샷을 만들 수 없다. 두 경로 중 하나:
 
-- **A. Colab 실행**: 저장소를 Colab에서 열고 `runs/medium_horizon/<target>/data_cache`를 만든 M00 절차(노트북 `USE_DATA_CACHE=True` 캐시 모드 1회)로 스냅샷과 `inputs_full_<hash>.pkl`을 만든 뒤, 같은 세션에서 `python tools/run_weekly_sequence.py --task S04 --target samsung --mode full --storage runs/weekly_sequence --resume`. 산출물(`experiments/weekly_sequence/S04/`)만 커밋한다. `runs/`는 커밋하지 않는다.
+- **A. Colab 실행(선택됨)**: `weekly_sequence_s04_colab.ipynb` 를 Colab 에서 열어 위에서 아래로 실행한다. 셀 2가 운영 노트북을 캐시 모드로 돌려 스냅샷·pkl 을 만들고(발행·원장 기록·동기화 끔), 셀 3이 S04 를 돌리고, 셀 5가 산출물만 커밋한다. 원래 절차: 저장소를 Colab에서 열고 `runs/medium_horizon/<target>/data_cache`를 만든 M00 절차(노트북 `USE_DATA_CACHE=True` 캐시 모드 1회)로 스냅샷과 `inputs_full_<hash>.pkl`을 만든 뒤, 같은 세션에서 `python tools/run_weekly_sequence.py --task S04 --target samsung --mode full --storage runs/weekly_sequence --resume`. 산출물(`experiments/weekly_sequence/S04/`)만 커밋한다. `runs/`는 커밋하지 않는다.
 - **B. 로컬 복사**: 사용자 PC에 `runs/model_improvement/P00/<target>/` 스냅샷이 있으면 `runs/weekly_sequence/<target>/data_cache/`로 복사하고 위 명령을 로컬에서 실행.
 
 - [ ] 스냅샷 마지막 봉 날짜와 pkl data_hash를 실행 전에 기록한다.

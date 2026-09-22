@@ -1,0 +1,116 @@
+{
+  "task_id": "S04",
+  "run_id": "20260922T051048Z_sk_hynix_s04",
+  "target": "sk_hynix",
+  "code_commit": "c3d9d64c347c6226aadc3f0a75b73d83c1bfceac",
+  "seed": 42,
+  "mode": "full",
+  "status": "completed",
+  "started_at_utc": "2026-09-22T05:10:48.231822+00:00",
+  "completed_units": [
+    "snapshot",
+    "sequences",
+    "folds",
+    "baseline:persistence",
+    "baseline:ohlcv_ridge",
+    "baseline:operational_ridge",
+    "comparison",
+    "tcn:seed42",
+    "tcn:seed43",
+    "tcn:seed44",
+    "tcn:summary",
+    "dev",
+    "lock",
+    "verdict"
+  ],
+  "failed_units": [],
+  "artifact_paths": {},
+  "config": {
+    "task": "S04",
+    "lookback": 60,
+    "horizon": 5,
+    "alpha": 10000.0,
+    "first_test": "2021-01-01",
+    "test_months": 6,
+    "lock_months": 12,
+    "min_train_rows": 500,
+    "min_test_rows": 60,
+    "max_folds": null,
+    "bootstrap_b": 2000,
+    "channels": [
+      "close_return",
+      "open_gap",
+      "high_relative",
+      "low_relative",
+      "volume_relative"
+    ],
+    "seed": 42,
+    "tcn": {
+      "seeds": [
+        42,
+        43,
+        44
+      ],
+      "inner_months": 6,
+      "torch": true,
+      "config": {
+        "channels": 5,
+        "lookback": 60,
+        "blocks": 3,
+        "filters": 32,
+        "kernel": 3,
+        "dropout": 0.1,
+        "lr": 0.001,
+        "epochs": 60,
+        "batch": 64,
+        "patience": 8
+      }
+    }
+  },
+  "data_hash": "fb7b58e33ca9340b5c3b",
+  "config_hash": "f4eaae126db772a51566",
+  "versions": {
+    "python": "3.13.15",
+    "numpy": "2.5.2",
+    "pandas": "3.0.5",
+    "sklearn": "1.9.0"
+  },
+  "dirty": true,
+  "snapshot": {
+    "path": "runs/weekly_sequence/sk_hynix/data_cache/target.parquet",
+    "sha256": "d00d21a87ec7b65ab0aa926bd4809da3f9a432064c002d8eb4763ba75c01705c",
+    "ticker": "000660.KS",
+    "adjusted": false,
+    "fetched_at": "2026-09-22 04:33:41.407757998+00:00"
+  },
+  "availability_policy": "assumed",
+  "corporate_actions": "heuristic",
+  "date_range": {
+    "first_bar": "2015-01-02",
+    "last_bar": "2026-09-21",
+    "bars": 2856,
+    "sessions": 2879,
+    "flagged_corporate_actions": 0
+  },
+  "evaluation": "exploratory (development folds only; locked 12 months not opened)",
+  "resumed_at_utc": "2026-09-22T05:16:31.714404+00:00",
+  "checkpoints": {
+    "42": {
+      "path": "runs/weekly_sequence/sk_hynix/weekly_sequence/S04/20260922T051048Z_sk_hynix_s04/seed42_dev_09.pt",
+      "sha256": "2c579e0e07fb9f0eb3a60011415c659a6ba83de9baae8d3c318c3a066f44879b",
+      "parameters": 16257
+    },
+    "43": {
+      "path": "runs/weekly_sequence/sk_hynix/weekly_sequence/S04/20260922T051048Z_sk_hynix_s04/seed43_dev_09.pt",
+      "sha256": "a8806bbb32566ac94c9f060b8fa29af53bd857ae3fa5eb69ba6f5d93a408840e",
+      "parameters": 16257
+    },
+    "44": {
+      "path": "runs/weekly_sequence/sk_hynix/weekly_sequence/S04/20260922T051048Z_sk_hynix_s04/seed44_dev_09.pt",
+      "sha256": "d75edbec1b2780e0b3cfe904fc237bf8eea74b6c231eebe9e287e81e5bb9beb1",
+      "parameters": 16257
+    }
+  },
+  "lock_opened_at": "2026-09-22T05:19:54.656719+00:00",
+  "finished_at_utc": "2026-09-22T05:19:54.669826+00:00"
+}

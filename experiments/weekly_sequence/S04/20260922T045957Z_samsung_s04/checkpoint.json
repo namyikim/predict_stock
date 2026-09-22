@@ -1,0 +1,87 @@
+{
+  "completed_units": [
+    "snapshot",
+    "sequences",
+    "folds",
+    "baseline:persistence",
+    "baseline:ohlcv_ridge",
+    "baseline:operational_ridge",
+    "comparison",
+    "tcn:seed42",
+    "tcn:seed43",
+    "tcn:seed44",
+    "tcn:summary",
+    "dev",
+    "lock",
+    "verdict"
+  ],
+  "results": {
+    "snapshot": {
+      "bars": 2855
+    },
+    "sequences": {
+      "samples": 2061,
+      "excluded": {
+        "missing_bar": 734,
+        "insufficient_history": 80,
+        "pending_target": 4
+      }
+    },
+    "folds": {
+      "folds": 9,
+      "used": 8,
+      "lock_start": "2025-05-28"
+    },
+    "baseline:persistence": {
+      "n": 825
+    },
+    "baseline:ohlcv_ridge": {
+      "n": 825
+    },
+    "baseline:operational_ridge": {
+      "status": "skipped",
+      "note": "고정 입력 pkl 이 있지만 S02 에서는 연결하지 않았다(inputs_full_aaae8483087981e786d8.pkl) — S04 에서 공통 날짜 비교에 넣는다."
+    },
+    "comparison": {
+      "n": 825,
+      "mae_diff": 0.003813124398448293,
+      "ci": [
+        0.0008414090174529845,
+        0.007558618008072802
+      ]
+    },
+    "tcn:seed42": {
+      "n": 825,
+      "parameters": 16257
+    },
+    "tcn:seed43": {
+      "n": 825,
+      "parameters": 16257
+    },
+    "tcn:seed44": {
+      "n": 825,
+      "parameters": 16257
+    },
+    "tcn:summary": {
+      "seeds": [
+        42,
+        43,
+        44
+      ],
+      "status": "done"
+    },
+    "dev": {
+      "common_n": 824,
+      "dropped_seq_dates": 1,
+      "dropped_operational_dates": 1465
+    },
+    "lock": {
+      "common_n": 158,
+      "lock_start": "2025-05-28"
+    },
+    "verdict": {
+      "verdict": "미채택"
+    }
+  },
+  "updated_at_utc": "2026-09-22T05:10:44.745223+00:00"
+}

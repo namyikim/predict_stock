@@ -1,0 +1,116 @@
+{
+  "task_id": "S04",
+  "run_id": "20260922T045957Z_samsung_s04",
+  "target": "samsung",
+  "code_commit": "3f30e7d43055e5612b58a65f2fb31152fe4482f9",
+  "seed": 42,
+  "mode": "full",
+  "status": "completed",
+  "started_at_utc": "2026-09-22T04:59:57.589171+00:00",
+  "completed_units": [
+    "snapshot",
+    "sequences",
+    "folds",
+    "baseline:persistence",
+    "baseline:ohlcv_ridge",
+    "baseline:operational_ridge",
+    "comparison",
+    "tcn:seed42",
+    "tcn:seed43",
+    "tcn:seed44",
+    "tcn:summary",
+    "dev",
+    "lock",
+    "verdict"
+  ],
+  "failed_units": [],
+  "artifact_paths": {},
+  "config": {
+    "task": "S04",
+    "lookback": 60,
+    "horizon": 5,
+    "alpha": 10000.0,
+    "first_test": "2021-01-01",
+    "test_months": 6,
+    "lock_months": 12,
+    "min_train_rows": 500,
+    "min_test_rows": 60,
+    "max_folds": null,
+    "bootstrap_b": 2000,
+    "channels": [
+      "close_return",
+      "open_gap",
+      "high_relative",
+      "low_relative",
+      "volume_relative"
+    ],
+    "seed": 42,
+    "tcn": {
+      "seeds": [
+        42,
+        43,
+        44
+      ],
+      "inner_months": 6,
+      "torch": true,
+      "config": {
+        "channels": 5,
+        "lookback": 60,
+        "blocks": 3,
+        "filters": 32,
+        "kernel": 3,
+        "dropout": 0.1,
+        "lr": 0.001,
+        "epochs": 60,
+        "batch": 64,
+        "patience": 8
+      }
+    }
+  },
+  "data_hash": "2ad9c2d9be16a0ea7cf5",
+  "config_hash": "f4eaae126db772a51566",
+  "versions": {
+    "python": "3.13.15",
+    "numpy": "2.5.2",
+    "pandas": "3.0.5",
+    "sklearn": "1.9.0"
+  },
+  "dirty": false,
+  "snapshot": {
+    "path": "runs/weekly_sequence/samsung/data_cache/target.parquet",
+    "sha256": "38c10fb1d48015c6b90afac0bdc658724f58b7c542df8a724f29ab0e25580f71",
+    "ticker": "005930.KS",
+    "adjusted": false,
+    "fetched_at": "2026-09-22 04:09:39.760166407+00:00"
+  },
+  "availability_policy": "assumed",
+  "corporate_actions": "heuristic",
+  "date_range": {
+    "first_bar": "2015-01-02",
+    "last_bar": "2026-09-21",
+    "bars": 2855,
+    "sessions": 2879,
+    "flagged_corporate_actions": 0
+  },
+  "evaluation": "exploratory (development folds only; locked 12 months not opened)",
+  "resumed_at_utc": "2026-09-22T05:06:43.626112+00:00",
+  "checkpoints": {
+    "42": {
+      "path": "runs/weekly_sequence/samsung/weekly_sequence/S04/20260922T045957Z_samsung_s04/seed42_dev_09.pt",
+      "sha256": "7a0a48ba9956511484d82900422ccd6443736e06a6946247b76986b3339d250a",
+      "parameters": 16257
+    },
+    "43": {
+      "path": "runs/weekly_sequence/samsung/weekly_sequence/S04/20260922T045957Z_samsung_s04/seed43_dev_09.pt",
+      "sha256": "268d3d46ed3179ec58bd127a5bf09300a6c6431166c451593628b8f67e5ee8ba",
+      "parameters": 16257
+    },
+    "44": {
+      "path": "runs/weekly_sequence/samsung/weekly_sequence/S04/20260922T045957Z_samsung_s04/seed44_dev_09.pt",
+      "sha256": "b771a99da770c2ee5cf4a6f382b377ef8968d1d8ac4e70b369516d5f46cde29d",
+      "parameters": 16257
+    }
+  },
+  "lock_opened_at": "2026-09-22T05:10:44.732506+00:00",
+  "finished_at_utc": "2026-09-22T05:10:44.746142+00:00"
+}

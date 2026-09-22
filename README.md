@@ -62,6 +62,16 @@ python tools/run_notebook.py --storage ./outputs
 
 Colab·로컬 실행 결과는 기본적으로 해당 실행 환경에만 저장되며 GitHub 보고서를 덮어쓰지 않습니다. 자세한 설정과 산출물은 [실행 안내](guides/running.md)를 참고하세요.
 
+### 실험 노트북 — 주간 시퀀스 모델 S04
+
+운영 노트북과 별개로, 주간(5거래일) 시퀀스 모델 후보를 실제 스냅샷으로 한 번 비교하는 노트북입니다. 발행·원장 기록을 하지 않으며, 결과는 `experiments/weekly_sequence/S04/`에만 남깁니다.
+
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/namyikim/predict_stock/blob/main/weekly_sequence_s04_colab.ipynb)
+
+- **한 번만 실행합니다.** 잠금 12개월을 종목당 한 번 열어 판정하는 단계라, 두 번째 실행은 러너가 거부합니다.
+- 보안 비밀에 `GITHUB_TOKEN`이 필요합니다(결과 push). 런타임 → 모두 실행.
+- 설계와 판정 기준: [주간 시퀀스 모델 설계](guides/weekly-sequence-model-plan.md), [S04 실행 계획](guides/weekly-sequence-s04-implementation.md).
+
 ## 자동 발행
 
 - 주식 보고서: 평일 06:22 KST 본 실행, 07:25 백업 및 3시간 간격 복구 실행

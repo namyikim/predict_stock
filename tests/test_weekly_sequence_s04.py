@@ -10,6 +10,7 @@ import subprocess
 import sys
 import tempfile
 import unittest
+from unittest import mock
 from pathlib import Path
 
 import numpy as np
@@ -71,6 +72,65 @@ def snapshot_bars(storage):
 
 
 class OperationalRidgeTests(unittest.TestCase):
+    def test_operational_features_use_the_m00_float32_contract(self):
+        import forecast_utils as fu
+        import run_weekly_sequence as rws
+
+        storage, _ = make_storage(tempfile.mkdtemp(), years=(2019, 2025))
+        inputs = fake_operational_inputs(snapshot_bars(storage))
+
+        class DtypeCheckingModel:
+            def fit(self, X, y):
+                self.asserted_dtype = X.dtype
+                if X.dtype != np.dtype(np.float32):
+                    raise AssertionError(f"M00 특징 dtype은 float32여야 합니다: {X.dtype}")
+                return self
+
+            def predict(self, X):
+                return np.zeros(len(X))
+
+        with mock.patch.object(fu, "make_price_model", return_value=DtypeCheckingModel()):
+            rws.operational_ridge_predictions(inputs, horizon=5)
+
+    def test_operational_predictions_reproduce_m00_on_identical_folds(self):
+        """S04 연결 경로는 기존 M00 raw Ridge 계산을 같은 폴드에서 정확히 재현한다."""
+        import forecast_utils as fu
+        import run_medium_horizon as rmh
+        import run_weekly_sequence as rws
+
+        storage, _ = make_storage(tempfile.mkdtemp(), years=(2019, 2025))
+        inputs = fake_operational_inputs(snapshot_bars(storage))
+        # float32/float64 경로가 우연히 같아 보이지 않도록 특징 규모를 크게 벌린다.
+        inputs["feat"].loc[:, "f1"] *= 1e8
+        inputs["feat"].loc[:, "f2"] *= 1e-8
+        inputs["feat"].loc[:, "f3"] *= 1e3
+        reg, feature_cols = rmh.price_design(inputs, horizon=5)
+        X = reg[feature_cols].to_numpy(dtype=np.float32)
+        y = reg["future_return"].to_numpy(dtype=np.float64)
+        sigma = reg["sigma_simple"].to_numpy(dtype=np.float64)
+
+        expected, m00_folds = fu.price_oof_predictions(
+            X, y, sigma, 5, fu.make_price_model(), n_splits=3
+        )
+        folds = [
+            {
+                "train": np.arange(fold["train_pos"][0], fold["train_pos"][1] + 1),
+                "test": np.arange(fold["test_pos"][0], fold["test_pos"][1] + 1),
+            }
+            for fold in m00_folds
+        ]
+        actual = rws.operational_ridge_predictions(inputs, horizon=5, folds=folds).dropna()
+        expected_mask = ~np.isnan(expected)
+        expected_values = expected[expected_mask]
+        sam_index = pd.DatetimeIndex(inputs["sam"].index)
+        expected_dates = sam_index[sam_index.get_indexer(reg.index[expected_mask]) + 1]
+        self.assertEqual(len(actual), len(expected_values))
+        pd.testing.assert_index_equal(actual.index, expected_dates)
+        np.testing.assert_allclose(actual.to_numpy(), expected_values, rtol=0, atol=1e-9)
+        expected_mae = float(np.abs(y[expected_mask] - expected_values).mean())
+        actual_mae = float(np.abs(y[expected_mask] - actual.to_numpy()).mean())
+        np.testing.assert_allclose(actual_mae, expected_mae, rtol=0, atol=1e-9)
+
     def test_missing_operational_inputs_exits_2(self):
         storage, results = make_storage(tempfile.mkdtemp(), years=(2019, 2025))
         out = run_s04(storage, results)

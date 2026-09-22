@@ -425,7 +425,8 @@ def operational_ridge_predictions(inputs, horizon=5, alpha=1e4, folds=None):
     """
     import forecast_utils as fu
     reg, feature_cols = price_design_from_inputs(inputs, horizon)
-    X = reg[feature_cols].to_numpy(dtype=float)
+    # M00 analyse_horizon 과 동일한 수치 경로를 유지한다.
+    X = reg[feature_cols].to_numpy(dtype=np.float32)
     y = reg["future_return"].to_numpy(dtype=float)
     sigma = reg["sigma_simple"].to_numpy(dtype=float)
     z = y / np.maximum(sigma, 1e-6)

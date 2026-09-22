@@ -174,7 +174,7 @@ def fit_tcn(X_train, y_train, X_valid, y_valid, config, seed, checkpoint_path=No
             loss = torch.mean(torch.abs(out - yt[idx]))
             loss.backward()
             optimiser.step()
-            total += float(loss) * len(idx)
+            total += float(loss.detach()) * len(idx)
         model.eval()
         with torch.no_grad():
             pv = model(Xv)[:, -1].numpy() * scaler["y_std"]

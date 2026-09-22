@@ -261,10 +261,20 @@ class InputValidationTests(unittest.TestCase):
         self.assertRejects(zero_price, "양수")
         self.assertRejects(negative_volume, "음수")
 
-    def test_grossly_inconsistent_high_low_is_rejected(self):
+    def test_widespread_inconsistency_is_rejected(self):
+        # 어긋난 봉이 전체의 1% 를 넘으면 자료 자체의 문제다(160봉 중 2봉 = 1.25%).
         def bad(i):
-            i["bars"].loc[i["sessions"][50], "high"] = i["bars"].loc[i["sessions"][50], "low"] * 0.5
-        self.assertRejects(bad, "고가·저가")
+            for k in (50, 90):
+                i["bars"].loc[i["sessions"][k], "high"] = i["bars"].loc[i["sessions"][k], "low"] * 0.5
+        self.assertRejects(bad, "맞지 않습니다")
+
+    def test_large_single_inconsistency_is_a_missing_bar_not_a_rejection(self):
+        # 크기가 커도(1.4%) 한 봉이면 결측 처리한다. 불가능한 봉은 크기와 무관하게 못 쓴다.
+        inputs = fixture()
+        day = inputs["sessions"][100]
+        inputs["bars"].loc[day, "close"] = inputs["bars"].loc[day, "low"] * 0.985
+        batch = build_sequences(**inputs, lookback=LOOKBACK, horizon=HORIZON)
+        self.assertEqual(excluded_reason(batch, inputs["sessions"][120]), "missing_bar")
 
     def test_small_inconsistency_becomes_a_missing_bar_not_a_fix(self):
         # 실제 야후 자료(2024-10-14 삼성전자): 종가가 저가보다 100원 낮다(0.17%). 값을 고치지 않고 그 봉을

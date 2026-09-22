@@ -101,24 +101,25 @@ def _validate_bars(bars):
     return frame
 
 
-def inconsistent_bars(frame, tolerance=0.005):
+def inconsistent_bars(frame, max_share=0.01):
     """고가·저가가 시가·종가와 맞지 않는 봉. bool Series(True = 어긋남).
 
-    2024-10-14 삼성전자처럼 종가가 저가보다 100원 낮게 기록된 봉이 실제 야후 자료에 있다(2,855봉 중 1봉,
-    종가 대비 0.17%). 값을 고치지 않고 그 봉을 결측으로 취급해, S01 규칙대로 그 봉이 범위에 드는 표본만
-    빠지게 한다. tolerance(종가 대비)를 넘게 어긋나면 잡음이 아니라 자료 오류로 보고 거부한다.
+    고가보다 시가·종가가 높거나 저가보다 낮은 봉은 물리적으로 불가능하므로 크기와 무관하게 자료 오류다.
+    실제 야후 자료에서 삼성전자 2,855봉 중 1봉, SK하이닉스 2,856봉 중 3봉이 이랬다(2024-10-14 는 두 종목
+    모두 — 야후 정정 잡음; 하이닉스 2023-02-02·09 는 거래량이 8천·1만 주로 정상 거래일이 아니다).
+    값을 고치지 않고 그 봉을 결측으로 취급해, S01 규칙대로 그 봉이 범위에 드는 표본만 빠지게 한다.
+
+    어긋난 봉이 전체의 max_share 를 넘으면 잡음이 아니라 자료 자체의 문제로 보고 거부한다. 크기 문턱
+    (몇 % 어긋났나)은 근거를 대기 어려워 쓰지 않는다 — 불가능한 봉은 0.1% 든 1.4% 든 똑같이 못 쓴다.
     """
     high, low = frame["high"], frame["low"]
     body_top = frame[["open", "close"]].max(axis=1)
     body_bottom = frame[["open", "close"]].min(axis=1)
     off = (high < low) | (high < body_top) | (low > body_bottom)
-    if off.any():
-        gap = pd.concat([(body_top - high).clip(lower=0), (low - body_bottom).clip(lower=0),
-                         (low - high).clip(lower=0)], axis=1).max(axis=1) / frame["close"]
-        worst = float(gap[off].max())
-        if worst > tolerance:
-            raise ValueError(f"bars 의 고가·저가가 시가·종가와 맞지 않습니다(최대 종가 대비 {worst:.2%}, "
-                             f"허용 {tolerance:.1%}). 잡음 수준을 넘어 자료 오류로 봅니다.")
+    share = float(off.mean()) if len(off) else 0.0
+    if share > max_share:
+        raise ValueError(f"bars 의 {int(off.sum())}봉({share:.1%})이 고가·저가와 시가·종가가 맞지 않습니다"
+                         f"(허용 {max_share:.0%}). 자료 자체의 문제로 봅니다.")
     return off
 
 

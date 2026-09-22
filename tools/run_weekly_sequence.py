@@ -45,12 +45,49 @@ MIN_TRAIN_ROWS = 500
 MIN_TEST_ROWS = 60
 UNITS = ("snapshot", "sequences", "folds", "baseline:persistence", "baseline:ohlcv_ridge",
          "baseline:operational_ridge", "comparison")
-ARTIFACTS = {"comparison": ("metrics.csv", "comparisons.csv", "decision.md"), "folds": ("folds.csv",)}
+TCN_SEEDS = (42, 43, 44)
+INNER_MONTHS = 6                      # early stopping 용 내부 검증: 학습 구간 마지막 6개월(purge 적용)
+ARTIFACTS = {"comparison": ("metrics.csv", "comparisons.csv", "decision.md"), "folds": ("folds.csv",),
+             **{f"tcn:seed{k}": (f"predictions_tcn_seed{k}.csv",) for k in TCN_SEEDS},
+             "tcn:summary": ("metrics.csv", "comparisons.csv", "decision.md")}
 
 
-def s02_config(mode, alpha, lookback, horizon):
+def torch_available():
+    if os.environ.get("WEEKLY_SEQ_NO_TORCH"):          # 테스트용: torch 부재를 흉내 낸다
+        return False
+    try:
+        import torch  # noqa: F401
+        return True
+    except ImportError:
+        return False
+
+
+def tcn_config(mode, lookback):
+    """quick 은 CPU 에서 몇 분 안에 끝나야 한다. full 설정은 상수로만 두고 S03 에서 돌리지 않는다."""
+    from weekly_sequence_tcn import TcnConfig
+    if mode == "quick":
+        return TcnConfig(lookback=lookback, blocks=2, filters=16, kernel=3, dropout=0.1, lr=1e-3,
+                         epochs=20, batch=64, patience=5)
+    return TcnConfig(lookback=lookback, blocks=3, filters=32, kernel=3, dropout=0.1, lr=1e-3,
+                     epochs=60, batch=64, patience=8)
+
+
+def inner_split(fold, metadata, months=INNER_MONTHS):
+    """폴드 학습 행을 (학습, 내부 검증)으로. 검증은 학습 구간 마지막 months 개월, 학습은 그 시작 전에 만기된 행."""
+    dates = pd.DatetimeIndex(metadata["prediction_date"])
+    maturity = pd.DatetimeIndex(metadata["target_date"])
+    train = fold["train"]
+    if len(train) == 0:
+        return train, train
+    v0 = (dates[train[-1]] - pd.DateOffset(months=months)).normalize()
+    valid = train[dates[train] >= v0]
+    inner_train = train[maturity[train] < v0]                     # purge: 만기가 검증 시작 전
+    return inner_train, valid
+
+
+def s02_config(mode, alpha, lookback, horizon, task="S02"):
     quick = mode == "quick"
-    return {"lookback": int(lookback), "horizon": int(horizon), "alpha": float(alpha),
+    return {"task": task, "lookback": int(lookback), "horizon": int(horizon), "alpha": float(alpha),
             "first_test": FIRST_TEST, "test_months": TEST_MONTHS, "lock_months": LOCK_MONTHS,
             "min_train_rows": 100 if quick else MIN_TRAIN_ROWS, "min_test_rows": 20 if quick else MIN_TEST_ROWS,
             "max_folds": 2 if quick else None, "bootstrap_b": 200 if quick else 2000,
@@ -108,7 +145,7 @@ def maybe_fail_after(unit):
 
 def main(argv=None):
     parser = argparse.ArgumentParser(description="주간 OHLCV 시퀀스 실험(S02 기준선)")
-    parser.add_argument("--task", default="S02", choices=["S02"])
+    parser.add_argument("--task", default="S02", choices=["S02", "S03"])
     parser.add_argument("--target", required=True, choices=["samsung", "sk_hynix"])
     parser.add_argument("--mode", default="quick", choices=["quick", "full"])
     parser.add_argument("--storage", default="runs/weekly_sequence")
@@ -127,7 +164,11 @@ def main(argv=None):
         print(f"오류: {exc}", file=sys.stderr)
         return 2
 
-    config = s02_config(args.mode, args.alpha, args.lookback, args.horizon)
+    config = s02_config(args.mode, args.alpha, args.lookback, args.horizon, task=args.task)
+    if args.task == "S03":
+        config["tcn"] = {"seeds": list(TCN_SEEDS), "inner_months": INNER_MONTHS,
+                         "torch": torch_available(),
+                         "config": (tcn_config(args.mode, args.lookback).__dict__ if torch_available() else None)}
     dhash = data_hash([snapshot.path])
     identity = {"task_id": args.task, "target": args.target, "mode": args.mode,
                 "data_hash": dhash, "config_hash": config_hash(config)}
@@ -259,6 +300,18 @@ def main(argv=None):
                                       "ci": [lo, hi]})
             maybe_fail_after("comparison")
 
+        # ---------------------------------------------------------------- S03: TCN 후보
+        if args.task == "S03":
+            tcn_preds = run_tcn_units(args, config, state, storage, batch, usable, X, y, dates, test_idx,
+                                      predictions, done, maybe_fail_after)
+            if not done("tcn:summary"):
+                write_tcn_summary(args, config, state, usable, lock_start, dates, test_idx, y,
+                                  predictions, tcn_preds, operational_note)
+                state.mark("tcn:summary", {"seeds": sorted(tcn_preds) if tcn_preds else [],
+                                           "status": "skipped" if tcn_preds is None else "done",
+                                           **({"note": "skipped: torch missing"} if tcn_preds is None else {})})
+                maybe_fail_after("tcn:summary")
+
         state.finish("completed")
         write_json(state.manifest_path, state.manifest)
         print(f"완료: {state.run_dir}")
@@ -269,6 +322,125 @@ def main(argv=None):
         write_json(state.manifest_path, state.manifest)
         print(f"중단됨: {exc} — --resume 로 이어서 실행할 수 있습니다.", file=sys.stderr)
         return 130
+
+
+def run_tcn_units(args, config, state, storage, batch, usable, X, y, dates, test_idx, predictions, done,
+                  maybe_fail_after):
+    """seed 마다 폴드별 학습·예측. torch 가 없으면 None 을 돌려주고 단위를 skipped 로 기록한다."""
+    if not torch_available():
+        for k in TCN_SEEDS:
+            if not state.is_done(f"tcn:seed{k}"):
+                state.mark(f"tcn:seed{k}", {"status": "skipped", "note": "skipped: torch missing (선택 의존성)"})
+        print("  [tcn] torch 없음 — S03 단위를 건너뜁니다(requirements.txt 주석 참고).")
+        return None
+    from weekly_sequence_tcn import fit_tcn, predict_tcn
+    cfg = tcn_config(args.mode, config["lookback"])
+    ck_root = storage / args.target / "weekly_sequence" / args.task / state.run_dir.name
+    state.manifest.setdefault("checkpoints", {})
+    preds = {}
+    for k in TCN_SEEDS:
+        unit = f"tcn:seed{k}"
+        out_path = state.run_dir / f"predictions_tcn_seed{k}.csv"
+        if done(unit):
+            frame = pd.read_csv(out_path, parse_dates=["prediction_date"])
+            preds[k] = frame.set_index("prediction_date")["pred"].reindex(dates[test_idx]).to_numpy()
+            continue
+        rows, parts = [], []
+        for fold in usable:
+            inner_train, valid = inner_split(fold, batch.metadata)
+            if len(inner_train) < 50 or len(valid) < 10:
+                raise SystemExit(f"{fold['name']}: 내부 검증을 만들 학습 행이 부족합니다"
+                                 f"(학습 {len(inner_train)}, 검증 {len(valid)}).")
+            ck = ck_root / f"seed{k}_{fold['name']}.pt"
+            fit = fit_tcn(batch.X[inner_train], y[inner_train], batch.X[valid], y[valid], cfg, seed=k,
+                          checkpoint_path=ck, resume=True)
+            pred = predict_tcn(fit, batch.X[fold["test"]])
+            parts.append(pred)
+            for i, p_ in zip(fold["test"], pred):
+                rows.append({"prediction_date": dates[i], "target_date": batch.metadata["target_date"].iloc[i],
+                             "fold": fold["name"], "y": y[i], "pred": p_, "best_epoch": fit.best_epoch})
+            state.manifest["checkpoints"][str(k)] = {"path": str(ck), "sha256": _file_sha256(ck),
+                                                     "parameters": fit.notes.get("parameters")}
+        preds[k] = np.concatenate(parts)
+        write_csv(out_path, pd.DataFrame(rows))
+        state.mark(unit, {"n": int(len(preds[k])), "parameters": fit.notes.get("parameters")})
+        write_json(state.manifest_path, state.manifest)
+        maybe_fail_after(unit)
+    return preds
+
+
+def _file_sha256(path):
+    import hashlib
+    digest = hashlib.sha256()
+    with open(path, "rb") as handle:
+        for chunk in iter(lambda: handle.read(1 << 20), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
+def write_tcn_summary(args, config, state, usable, lock_start, dates, test_idx, y, predictions, tcn_preds,
+                      operational_note):
+    """seed 별·평균 지표를 metrics.csv 에 더하고 비교와 decision.md 를 다시 쓴다."""
+    metrics = pd.read_csv(state.run_dir / "metrics.csv")
+    metrics = metrics[~metrics["model"].astype(str).str.startswith("tcn")]
+    if "seed" not in metrics.columns:
+        metrics["seed"] = np.nan
+    comps = pd.read_csv(state.run_dir / "comparisons.csv")
+    comps = comps[~comps["comparison"].astype(str).str.startswith("tcn")]
+    yt, dt = y[test_idx], dates[test_idx]
+    if tcn_preds:
+        rows = []
+        for k, pred in tcn_preds.items():
+            for fold in usable:
+                m = np.isin(dt, dates[fold["test"]])
+                rows.append({"target": args.target, "model": f"tcn_seed{k}", "seed": k, "fold": fold["name"],
+                             "test_start": fold["test_start"], "test_end": fold["test_end"], **score(yt[m], pred[m])})
+            rows.append({"target": args.target, "model": f"tcn_seed{k}", "seed": k, "fold": "all_used",
+                         "test_start": usable[0]["test_start"], "test_end": usable[-1]["test_end"], **score(yt, pred)})
+        mean_pred = np.mean(np.stack(list(tcn_preds.values())), axis=0)
+        rows.append({"target": args.target, "model": "tcn_mean", "seed": np.nan, "fold": "all_used",
+                     "test_start": usable[0]["test_start"], "test_end": usable[-1]["test_end"], **score(yt, mean_pred)})
+        metrics = pd.concat([metrics, pd.DataFrame(rows)], ignore_index=True)
+        err_t = np.abs(yt - mean_pred)
+        new_comps = []
+        for name, other in (("persistence", predictions["persistence"]), ("ohlcv_ridge", predictions["ohlcv_ridge"])):
+            err_o = np.abs(yt - other)
+            lo, hi = block_bootstrap_diff_ci(dt, err_t, err_o, config["bootstrap_b"], SEED)
+            new_comps.append({"target": args.target, "comparison": f"tcn_mean_vs_{name}",
+                              "mae_diff": float(err_t.mean() - err_o.mean()), "ci_low": lo, "ci_high": hi,
+                              "n": int(len(yt)), "bootstrap_b": config["bootstrap_b"], "block": "month"})
+        comps = pd.concat([comps, pd.DataFrame(new_comps)], ignore_index=True)
+    write_csv(state.run_dir / "metrics.csv", metrics)
+    write_csv(state.run_dir / "comparisons.csv", comps)
+    base = decision_text(args, config, state, usable, lock_start, metrics.to_dict("records"),
+                         comps[comps["comparison"] == "ohlcv_ridge_vs_persistence"].to_dict("records"),
+                         operational_note)
+    write_text(state.run_dir / "decision.md", base + tcn_decision_text(config, metrics, comps, tcn_preds))
+
+
+def tcn_decision_text(config, metrics, comps, tcn_preds):
+    lines = ["", "## S03 — TCN 후보", ""]
+    if not tcn_preds:
+        lines.append("- **skipped: torch missing** — 선택 의존성이 없어 TCN 단위를 건너뛰었다. S02 기준선은 위와 같다.")
+        return "\n".join(lines) + "\n"
+    cfg = config["tcn"]["config"]
+    lines += [
+        f"- 설정: 블록 {cfg['blocks']}, 필터 {cfg['filters']}, 커널 {cfg['kernel']}, epoch ≤ {cfg['epochs']}, "
+        f"patience {cfg['patience']}. 회귀(5일 수익률), 확률·구간 없음.",
+        f"- early stopping 은 각 폴드 학습 구간의 마지막 {config['tcn']['inner_months']}개월(purge 적용)로만 했다. 시험 폴드를 보고 고르지 않았다.",
+        "- **seed 3개(42·43·44)를 모두 보고한다. 최고 seed 선택 없음.** 평균(tcn_mean)은 세 예측의 평균이다.",
+        "", "| 모델 | seed | MAE | RMSE | 방향 적중률 | n |", "| --- | --- | --- | --- | --- | --- |",
+    ]
+    overall = metrics[(metrics["fold"] == "all_used") & metrics["model"].astype(str).str.startswith("tcn")]
+    for _, r in overall.iterrows():
+        seed = "—" if pd.isna(r["seed"]) else int(r["seed"])
+        hit = "—" if pd.isna(r["direction_hit"]) else f"{r['direction_hit']:.3f}"
+        lines.append(f"| {r['model']} | {seed} | {r['mae']:.5f} | {r['rmse']:.5f} | {hit} | {int(r['n'])} |")
+    lines.append("")
+    for _, c in comps[comps["comparison"].astype(str).str.startswith("tcn")].iterrows():
+        lines.append(f"- {c['comparison']}: MAE 차이 {c['mae_diff']:+.5f}, 95% CI [{c['ci_low']:+.5f}, {c['ci_high']:+.5f}] (n={int(c['n'])}).")
+    lines += ["", "**채택 판단 없음.** 실제 스냅샷 full 비교와 잠금 구간 평가는 S04 다. 합성 자료라면 위 수치는 코드 동작 확인일 뿐이다."]
+    return "\n".join(lines) + "\n"
 
 
 def decision_text(args, config, state, usable, lock_start, metric_rows, comp_rows, operational_note):

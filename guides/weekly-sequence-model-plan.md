@@ -64,13 +64,14 @@ CPU quick 검증을 제공하고, 실제 전체 학습은 Colab에서 재개 가
 | S00 | 완료 | 설계 승인(사용자), S01 상세 실행 계획 작성 |
 | S01 | 완료(main d6c8ed69) | 기존 타깃과 동등한 OHLCV 시퀀스·날짜 계약 및 누수/휴장/분할 테스트 |
 | S02 | 완료(main 8cc8c3d5) | 해시 고정 데이터 로더, 공통 날짜 기준선, 재개 가능한 실험 CLI와 중단 복구 테스트 |
-| S03 | 미시작 | 작은 TCN 회귀 후보, seed 고정, CPU quick 학습·저장·재개 테스트 |
+| S03 | 완료(코드·테스트) | 작은 causal TCN 회귀 후보, seed 42·43·44 모두 보고, CPU quick 학습·저장·재개 테스트 |
 | S04 | 미시작 | 실제 데이터 시간순 full 비교와 오차·불확실성·계산비용 결과; 실패/미개선도 기록 |
 | S05 | 미시작 | 과거 잔차 기반 가격 범위 및 입력 그룹 제거 비교; 기여도와 인과 구분 |
 | S06 | 미시작 | 통과 시에만 별도 승인 후 후보 원장·보고서 연결, 미통과 시 현행 유지 |
 
-구현됨(S01·S02): weekly_sequence_utils.py, tools/run_weekly_sequence.py, tests/test_weekly_sequence.py,
-tests/test_weekly_sequence_runner.py. 산출물 경로: experiments/weekly_sequence/<task>/<run_id>/,
+구현됨(S01·S02·S03): weekly_sequence_utils.py, weekly_sequence_tcn.py(torch 선택 의존성),
+tools/run_weekly_sequence.py(--task S02|S03), tests/test_weekly_sequence.py,
+tests/test_weekly_sequence_runner.py, tests/test_weekly_sequence_tcn.py. 산출물 경로: experiments/weekly_sequence/<task>/<run_id>/,
 시세 스냅샷: runs/weekly_sequence/<target>/data_cache/target.parquet(러너가 내려받지 않는다).
 실행 예: `python tools/run_weekly_sequence.py --task S02 --target samsung --mode quick --resume`
 — 이 환경에는 실제 스냅샷이 없어 합성 fixture 로만 검증했다.
@@ -149,3 +150,31 @@ checkpoint.json: 완료 단위, 산출물 해시, 다음 단위. 설정/데이�
   - 재개 명령: `python -m unittest tests.test_weekly_sequence tests.test_weekly_sequence_runner -v`
   - 다음: S03 — 작은 causal TCN 회귀 후보(seed 42·43·44 모두 보고), CPU quick 학습·저장·재개 테스트.
     S02 러너의 sequences·folds 단위를 입력으로 쓴다. S03 상세 실행 계획부터 작성한다.
+- S03 (2026-09-22, Claude): 상세 계획(guides/weekly-sequence-s03-implementation.md) 작성 후 구현.
+  - 완료 파일: weekly_sequence_tcn.py(TcnConfig, build_model, fit_tcn, predict_tcn, forward_sequence,
+    count_parameters), tools/run_weekly_sequence.py 에 --task S03 과 단위 tcn:seed42/43/44·tcn:summary,
+    tests/test_weekly_sequence_tcn.py 10개, tests/test_weekly_sequence_runner.py +4개.
+  - 환경: torch 는 이 환경에 없어 pip 로 설치해 검증했다(디스크가 차 pip 캐시·임시파일 정리 후 성공).
+    torch 없이도 러너·테스트가 명시적으로 건너뛰는지 WEEKLY_SEQ_NO_TORCH=1 로 확인했다.
+  - 모델: Conv1d causal padding(왼쪽만) 블록 2, 필터 16, 커널 3, dilation 1·2, residual, Conv1d(1) 헤드.
+    파라미터 ≤ 50,000 을 테스트로 고정. 인과성은 '더 긴 입력의 앞부분만 쓰면 출력 불변'으로 검증.
+  - 학습: L1 손실, Adam, 채널별 표준화는 학습 구간만(시험 구간 극단값 불변 테스트), 타깃은 학습 구간
+    표준편차로 나눠 학습하고 되곱한다(FitResult.notes 에 기록). early stopping 은 각 폴드 학습 구간의
+    마지막 6개월(purge 적용) 내부 검증으로만. 결정성: torch·numpy seed, use_deterministic_algorithms,
+    스레드 1 — 같은 seed 두 번 학습이 atol 1e-6 로 같고 다른 seed 는 다름을 테스트로 고정.
+  - 재개: epoch 마다 model/optimizer/generator/rng/history/best 를 원자적으로 저장. epoch 3 에서 중단
+    후 재개한 결과가 처음부터 돌린 것과 history·예측이 같다(테스트). 체크포인트는 storage 쪽
+    (runs/..., .gitignore 로 제외)에 두고 manifest 에 경로·sha256·파라미터 수만 남긴다.
+  - 러너: seed 셋을 모두 학습·보고하고 tcn_mean(세 예측 평균)을 더한다. 최고 seed 선택 없음.
+    tcn_mean_vs_persistence·tcn_mean_vs_ohlcv_ridge 를 월 블록 CI 로. decision.md 에 채택 판단 없음 명시.
+    seed43 뒤 중단 → 42·43 건너뛰고 44 부터 재개, 예측 csv 삭제 시 그 seed 만 재계산을 테스트로 고정.
+  - 정한 것: 내부 검증 학습 행이 50 미만이거나 검증이 10 미만이면 거부한다(기준을 낮추지 않는다).
+    처음 S03 러너 테스트가 2023~2025 700일 fixture 로 이 조건에 걸려 실패했고, 설정을 자료에 맞추지
+    않고 fixture 를 2019~2025 로 늘려 해결했다.
+  - 합성 무작위보행에서 tcn_mean ≈ ohlcv_ridge ≈ persistence(CI 가 0 포함) — 신호 없는 자료의 기대
+    결과이며 코드 동작 확인일 뿐이다. 실제 성능은 아무것도 말하지 않는다.
+  - 전체 스위트가 5분을 넘겨(TCN 학습 테스트 추가) 백그라운드로 돌려 확인했다.
+  - 재개 명령: `python -m unittest tests.test_weekly_sequence_tcn tests.test_weekly_sequence_runner -v`
+  - 다음: S04 — 실제 스냅샷 full 비교. 현재가 유지·운영 Ridge(medium_horizon 고정 입력 pkl 연결)·
+    OHLCV Ridge·TCN(seed 3개)을 공통 날짜에서 비교하고 잠금 12개월을 한 번만 연다. 실제 스냅샷을
+    이 환경에 가져오는 절차(Colab 또는 data_cache 복사)를 먼저 정한다.

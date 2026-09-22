@@ -11,7 +11,7 @@
 - [x] S03 상세 실행 계획 작성(이 문서, 2026-09-22).
 - [x] 상세 실행 계획 검토 — 사용자 '계속 진행' 지시(2026-09-22).
 - [x] S03 코드 구현·검증 — TCN 테스트 10개, 러너 테스트 +4개.
-- [ ] S03 완료 기록 및 main 반영 확인.
+- [x] S03 완료 기록 및 main 반영 확인 — ea4cd345, 원격에서 파일 셋 재확인(2026-09-22).
 
 이 문서는 실행 계획이다. 아래 모듈·단위·테스트는 2026-09-22 구현됐다(진행 기록은 설계 문서 참고).
 
@@ -80,7 +80,7 @@ Interfaces:
 - [x] git diff --check, 운영 파일 무변경, `runs/` 산출물이 스테이징되지 않음.
 - [x] guides/weekly-sequence-model-plan.md 의 S03 상태·진행 기록·다음(S04) 갱신.
 - [x] 커밋: feat: add causal TCN candidate with seeded, resumable CPU training
-- [ ] main 반영 뒤 원격 재확인.
+- [x] main 반영 뒤 원격 재확인 — origin/main ea4cd345.
 
 ## 다음 단계
 

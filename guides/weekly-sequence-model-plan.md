@@ -64,7 +64,7 @@ CPU quick 검증을 제공하고, 실제 전체 학습은 Colab에서 재개 가
 | S00 | 완료 | 설계 승인(사용자), S01 상세 실행 계획 작성 |
 | S01 | 완료(main d6c8ed69) | 기존 타깃과 동등한 OHLCV 시퀀스·날짜 계약 및 누수/휴장/분할 테스트 |
 | S02 | 완료(main 8cc8c3d5) | 해시 고정 데이터 로더, 공통 날짜 기준선, 재개 가능한 실험 CLI와 중단 복구 테스트 |
-| S03 | 완료(코드·테스트) | 작은 causal TCN 회귀 후보, seed 42·43·44 모두 보고, CPU quick 학습·저장·재개 테스트 |
+| S03 | 완료(main ea4cd345) | 작은 causal TCN 회귀 후보, seed 42·43·44 모두 보고, CPU quick 학습·저장·재개 테스트 |
 | S04 | 미시작 | 실제 데이터 시간순 full 비교와 오차·불확실성·계산비용 결과; 실패/미개선도 기록 |
 | S05 | 미시작 | 과거 잔차 기반 가격 범위 및 입력 그룹 제거 비교; 기여도와 인과 구분 |
 | S06 | 미시작 | 통과 시에만 별도 승인 후 후보 원장·보고서 연결, 미통과 시 현행 유지 |
@@ -175,6 +175,8 @@ checkpoint.json: 완료 단위, 산출물 해시, 다음 단위. 설정/데이�
     결과이며 코드 동작 확인일 뿐이다. 실제 성능은 아무것도 말하지 않는다.
   - 전체 스위트가 5분을 넘겨(TCN 학습 테스트 추가) 백그라운드로 돌려 확인했다.
   - 재개 명령: `python -m unittest tests.test_weekly_sequence_tcn tests.test_weekly_sequence_runner -v`
+  - push 중 앞선 rebase 가 미완료로 남아 있어 S03 커밋이 분리됐다(7480b002). 원격 최신 위에 cherry-pick 으로
+    다시 얹어 ea4cd345 로 반영했다. 교훈: push 전에 `git status` 로 rebase/cherry-pick 진행 상태를 확인한다.
   - 다음: S04 — 실제 스냅샷 full 비교. 현재가 유지·운영 Ridge(medium_horizon 고정 입력 pkl 연결)·
     OHLCV Ridge·TCN(seed 3개)을 공통 날짜에서 비교하고 잠금 12개월을 한 번만 연다. 실제 스냅샷을
     이 환경에 가져오는 절차(Colab 또는 data_cache 복사)를 먼저 정한다.

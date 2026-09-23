@@ -1,0 +1,301 @@
+{
+  "target": "samsung",
+  "name": "삼성전자",
+  "peer_name": "SK하이닉스",
+  "session_date": "2026-09-23",
+  "generated_at": "2026-09-23 17:28 KST",
+  "summary": {
+    "prev_close": 276500.0,
+    "open": 284500.0,
+    "high": 285500.0,
+    "low": 281000.0,
+    "close": 285500.0,
+    "gap": 0.02893309222423146,
+    "session": 0.0035149384885764245,
+    "c2c": 0.032549728752260476,
+    "high_vs_open": 0.0035149384885764245,
+    "low_vs_open": -0.012302284710017597,
+    "volume": 20212019.0,
+    "volume_ratio": 1.2154446281033084,
+    "kospi_c2c": 0.01044558070058188,
+    "peer_c2c": 0.011956521739130421,
+    "usdkrw_chg": -0.006915729739495169,
+    "sox_ret": 0.042903269062733784,
+    "nasdaq_ret": NaN
+  },
+  "classification": {
+    "labels": [
+      "갭 주도",
+      "장중 급변 09:00 주도",
+      "지수 동조",
+      "마감 구간 쏠림(14:55~종가)"
+    ],
+    "reasons": [
+      "갭 +2.89%가 종가→종가 +3.25%의 89%",
+      "09:00 봉 +2.89%(σ의 22.13배, 거래량 7.85배)가 세션 +0.35%의 3293%",
+      "KOSPI +1.04% vs 종목 +3.25%, 5분 수익률 상관 0.60 — 종목 고유 요인이 약함",
+      "14:55~종가 구간이 세션 +0.35%의 125% (5분봉이 없는 구간, 일봉 종가 기준)"
+    ]
+  },
+  "events": [
+    {
+      "time": "2026-09-23T09:00:00+09:00",
+      "ret": 0.02893309222423146,
+      "z": 22.13,
+      "volume_ratio": 7.85,
+      "cum_before": 0.0,
+      "cum_after": 0.0,
+      "session_share": -32.92585895117356,
+      "score": 24.13012719700493,
+      "news": [
+        {
+          "time": "2026-09-23T08:30:34+09:00",
+          "title": "키움증권 \"삼성전자, 3분기 실적 기존 전망치 하회할듯\"",
+          "source": "연합뉴스",
+          "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE8wOVRQUElQWHVFZGRwQUMzMWJ1WXZ4RzBOenBwUUJXLVIta3ZNMVMyRTRmM2lMZzFROWgyNm5fdGxOX1NwSWhrWlhGeG1RM0RGUVhZc0dHZzliZXfSAWBBVV95cUxOVExkVWVKaFp4QUlETjRKMVpHelRQaUJ0Uk9MTXFPWXNCUnM1ZE92UXo4TS1kRGg3OXlXNFpJQXRtRU9NWlJPQ3hNLWlfTnZOSmIyRDl0WWRjSjYwd2FaaXk?oc=5"
+        },
+        {
+          "time": "2026-09-23T08:58:00+09:00",
+          "title": "[모닝 리포트] \"삼성물산, 삼성전자 배당 확대 수혜…주당배당금 8550원 전망\"",
+          "source": "뉴스핌",
+          "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE9uYV9LVUZBYjRMYTFiY1hFaFFGZXpSN2JqUGJEb01IRzVWMU5QWGZfZGwzWUlTc3Y2QzB1ZVFXbUpadkFmX1UwSE9zMDhNb043czhnSnkxSUdQOENT?oc=5"
+        },
+        {
+          "time": "2026-09-23T08:00:31+09:00",
+          "title": "\"삼성전자, 목표가 63만원으로 상향…조정은 매수 기회\"-유안타 - 머니투데이",
+          "source": "머니투데이",
+          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE1fS1NJVUg5bHpoSXZ6RGM5M2owQUpNN09GMkU2a2h1WnFvSUdqRXEyUW90ZXZGbEZOSGYtcmF4NndpeHhBaGE4dVZmeXZmRzhOOF82MUt5djdBV2FhOGd3bFJBVkFTUlZw0gFuQVVfeXFMT3IwNWxtZkhsZW9Cc3Ixb0pjUGpiV3N6T0RNekMyRGtKRTJIM3RQQ0YwZ25rS2paQW9pRkJ5YkZjdnpBQlBzSDJGYjJDSk5yWERYbnZTYWZ3OWdjZW9LdkdtcnFNSERjR3hoQWJPS1E?oc=5"
+        },
+        {
+          "time": "2026-09-23T09:11:26+09:00",
+          "title": "삼성전자 냉장고, 스마트싱스 업데이트 후 수십 대 먹통…추석 음식 `비상`",
+          "source": "매일신문",
+          "link": "https://news.google.com/rss/articles/CBMiYkFVX3lxTE5PbFBwZl9SXzlwbUdOc1J6MmdFQ2IyY0JpVlduREN6dzNpMzFuUUgybVRXaDZEOVZEZjFueUppUWZDOWxsdHB5XzFDNlhnOF9PR2N6S1A5MHhfRmtkQ0Q1VnNR?oc=5"
+        },
+        {
+          "time": "2026-09-23T08:40:00+09:00",
+          "title": "“업데이트 눌렀더니 삼성 냉장고 먹통”…추석 앞두고 ‘발동동’",
+          "source": "주간조선",
+          "link": "https://news.google.com/rss/articles/CBMiakFVX3lxTFBONmVhei1lSk9oc2thQjl0R3I2TTFSbXdQZmZiYktMY0xDRTFFa3F5ZGR5aXVyTE5lNXZPb0Z4Vk1XclZLcXR0U1d4a2paVnV0RVRZUXJ2dEl0UnRMN01hYklwZ0ZuUmRUS2fSAW5BVV95cUxNZGdsQ0ctVFRBdUFlWmxvdTV4ZlNCQXBhSWN5VXg2dGxvVXhCQlVQVFowWmlNLXB0TjhheFc5RGlqZUc0ZlVPOFlGbW12QWkzU1NHVVJMeUtGUTBzWmJXYllSempiQnlaOWlIVW5PQQ?oc=5"
+        }
+      ]
+    },
+    {
+      "time": "2026-09-23T09:45:00+09:00",
+      "ret": -0.004385964912280715,
+      "z": 3.35,
+      "volume_ratio": 3.07,
+      "cum_before": 0.0017574692442883233,
+      "cum_after": -0.002636203866432374,
+      "session_share": 4.991228070175175,
+      "score": 4.969456015451227,
+      "news": [
+        {
+          "time": "2026-09-23T08:30:34+09:00",
+          "title": "키움증권 \"삼성전자, 3분기 실적 기존 전망치 하회할듯\"",
+          "source": "연합뉴스",
+          "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE8wOVRQUElQWHVFZGRwQUMzMWJ1WXZ4RzBOenBwUUJXLVIta3ZNMVMyRTRmM2lMZzFROWgyNm5fdGxOX1NwSWhrWlhGeG1RM0RGUVhZc0dHZzliZXfSAWBBVV95cUxOVExkVWVKaFp4QUlETjRKMVpHelRQaUJ0Uk9MTXFPWXNCUnM1ZE92UXo4TS1kRGg3OXlXNFpJQXRtRU9NWlJPQ3hNLWlfTnZOSmIyRDl0WWRjSjYwd2FaaXk?oc=5"
+        },
+        {
+          "time": "2026-09-23T09:23:00+09:00",
+          "title": "삼성전자 배당의 거대한 '낙수효과'...코스피 배당도 최대 60% 증가",
+          "source": "v.daum.net",
+          "link": "https://news.google.com/rss/articles/CBMiRkFVX3lxTE1mZTdKOWQxeHBBeXl2Ml9mQ0MzLUtqTmlQOTVoZUswNmhtQnh6RGhlcE5pcE9CR0JFanMyMzRBZXVneGVtNmc?oc=5"
+        },
+        {
+          "time": "2026-09-23T09:36:02+09:00",
+          "title": "[특징주] 삼성전자·SK하이닉스, 메모리 반도체 수요 증가.. '강세\"",
+          "source": "글로벌이코노믹",
+          "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxPNjdieWtyTmduS3IzZTFKako4U3NyT2pUNU5lYVZmMVJNWHJVUndPWFZ1TlpnQzRKRVZzWVpwT283SG85OVZCdzhnZkRuTHVySlZtOVotV0xHMUxDQ1dXRERXWXp4WnR1aTBOQk5DTWlwRVZmSkg5cUw5dzgwcnRGaVBpYjhQSEpw?oc=5"
+        },
+        {
+          "time": "2026-09-23T08:58:00+09:00",
+          "title": "[모닝 리포트] \"삼성물산, 삼성전자 배당 확대 수혜…주당배당금 8550원 전망\"",
+          "source": "뉴스핌",
+          "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE9uYV9LVUZBYjRMYTFiY1hFaFFGZXpSN2JqUGJEb01IRzVWMU5QWGZfZGwzWUlTc3Y2QzB1ZVFXbUpadkFmX1UwSE9zMDhNb043czhnSnkxSUdQOENT?oc=5"
+        },
+        {
+          "time": "2026-09-23T09:34:44+09:00",
+          "title": "\"메타가 불 지폈다\"…삼성전자·SK하이닉스 다시 '들썩'",
+          "source": "한국경제",
+          "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE5LNUZxNkFTZ2k2Z0d1QkJCdFVkSGx1dW9UcVR0bG9DbDN1OS0tTHhrcG5kN0dwVXNmdm8tS3NCV3pBcG5wVHZMTjRuaE1ZVzNKWVVOZFdPUlVMUQ?oc=5"
+        }
+      ]
+    },
+    {
+      "time": "2026-09-23T13:05:00+09:00",
+      "ret": 0.002645502645502562,
+      "z": 2.02,
+      "volume_ratio": 3.05,
+      "cum_before": -0.0035149384885764245,
+      "cum_after": -0.0008787346221441616,
+      "session_share": -3.0105820105817473,
+      "score": 3.6325017665682444,
+      "news": [
+        {
+          "time": "2026-09-23T11:46:18+09:00",
+          "title": "삼성전자, 4나노 공정 증설 검토…HBM이 파운드리 새 수요처로",
+          "source": "녹색경제신문",
+          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTFBPODhDZUJHUWRfWm9RQkN1dFJyUEtXWmp5T3RnM0hBcHdld1NLT1pNbTF6OFYzdS05YWQyWUJmak1aNXd4ckhfRUVCMTBQRHdzbzlQM0VlaVhEYUNUTGNsRzE3ZVpzOXQy?oc=5"
+        },
+        {
+          "time": "2026-09-23T11:46:20+09:00",
+          "title": "미국발 훈풍에 코스피 장초반 7100선 재돌파…삼성전자 2%대 상승",
+          "source": "v.daum.net",
+          "link": "https://news.google.com/rss/articles/CBMiRkFVX3lxTE1ULW1jZ19odmtYUThhUHdsMjNjZVdQdUtwdHBtd1ByOW5QeEJ4aHNBLWxaSGp5akZyUnpqclVtZFo2bUt4cUE?oc=5"
+        },
+        {
+          "time": "2026-09-23T13:20:00+09:00",
+          "title": "“삼성전자 주식, 1년 안에 이 정도 가격까지 폭등한다”",
+          "source": "위키트리",
+          "link": "https://news.google.com/rss/articles/CBMiVkFVX3lxTFAzM2MwbzR4cU1HcmV4QjVxQjdoMHpISklQUFFreWM4XzVzdWMzS3VGcVlJX3VudEtlVGdaa254T2xLSVVpZ0dXTEJCeUZOeXB6WFpxYWFR?oc=5"
+        },
+        {
+          "time": "2026-09-23T11:38:00+09:00",
+          "title": "추석 앞두고 최신 삼성 냉장고 ‘먹통사태’…삼성전자 “긴급 복구 중”",
+          "source": "KBS 뉴스",
+          "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE5IUUIzWDAxS19MTmZvUUpZQ2dobTdyR2gxSDFRT3F4VGdNeS00Z3A1VnlSTzU2U0hJWGFiNC1oOUc4UlE0a1pJTVVBS3cxRGtfWkFwQnhneGYxSkk?oc=5"
+        },
+        {
+          "time": "2026-09-23T12:10:05+09:00",
+          "title": "삼성전자 냉장고 추석 앞두고 '먹통', 소프트웨어 오배포로 작동 중지",
+          "source": "비즈니스포스트",
+          "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTE1kRlVJX0tLQ0tIT3dUaFk0eFRSLVlEX2JtZFRiRDM0Q2dvVzdTYUFNWXBhdUVQaXlWSmVkZFdOT3VUbU84aW1ZOXl6Vm1aSC1pM3VRX0VTaVZPeTNXaXg0a0dvbGJNRmNUTDFQYnRFSXdzWkE?oc=5"
+        }
+      ]
+    }
+  ],
+  "turning_point": {
+    "high_time": "2026-09-23T09:40:00+09:00",
+    "high": 0.0017574692442883233,
+    "low_time": "2026-09-23T10:50:00+09:00",
+    "low": -0.010544815465729385,
+    "pattern": "고점 후 반락"
+  },
+  "closing_share": 1.251099384344762,
+  "intraday_corr_kospi": 0.6035136443493753,
+  "intraday_note": "장중 봉은 09:00~14:55까지만 있어 마감 구간(14:55~15:30)은 일봉 종가로만 봅니다(그 구간 +0.44%).",
+  "intraday_coverage": "09:00~14:55",
+  "overnight_news": [
+    {
+      "time": "2026-09-23T07:25:00+09:00",
+      "title": "키움證 “삼성전자 3분기 영업익 기대치 하회 전망…범용 메모리보다 HBM·파운드리 주목해야” - 조선비즈",
+      "source": "Chosunbiz",
+      "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxQanRSeUppTnplZExHRzc0a0F1Z3ktQ3ZNczIxSlh5RHZvZ3RObDZseUVyNWNwN0wtZVZHVTVfbzFBZnYyUUpLVUVOaXBsSmpCeWlVODd6eTh1VG81ZWlxRHdLZ2lBdzdLb2QyNHowdFROVk5qeFRCZzQ3Nl9oZzhlSy10NkJHdWhN0gGcAUFVX3lxTE9XUnJkT19ZdG1lV1hGZW1jVTZnVTlxdHdoclFQd19JMFQxcXNWOEJlekJTMnRzV1RKTnUxY0pQMEl2MmtHNDFtSWJObjdvWVcxeEtQYkU2dG81ZTh1X2FfSnlFdm1DODY0dUpXT3Zndm9vUm9KeFJmQnhLYmtiNGxpUkFneF8zMUc1cW5PbUptZEdvbjRGOVV4YW5NNw?oc=5"
+    },
+    {
+      "time": "2026-09-23T08:30:34+09:00",
+      "title": "키움증권 \"삼성전자, 3분기 실적 기존 전망치 하회할듯\"",
+      "source": "연합뉴스",
+      "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE8wOVRQUElQWHVFZGRwQUMzMWJ1WXZ4RzBOenBwUUJXLVIta3ZNMVMyRTRmM2lMZzFROWgyNm5fdGxOX1NwSWhrWlhGeG1RM0RGUVhZc0dHZzliZXfSAWBBVV95cUxOVExkVWVKaFp4QUlETjRKMVpHelRQaUJ0Uk9MTXFPWXNCUnM1ZE92UXo4TS1kRGg3OXlXNFpJQXRtRU9NWlJPQ3hNLWlfTnZOSmIyRDl0WWRjSjYwd2FaaXk?oc=5"
+    },
+    {
+      "time": "2026-09-23T06:53:00+09:00",
+      "title": "“1000주면 460만 원?”…삼성전자 배당, 28일까지 사야 받는다 [잇슈 머니]",
+      "source": "KBS 뉴스",
+      "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE1iLURKZ0JFTEwzZmQxZW5yXzNWb0pUYmRUdHlBclNiZVBybEpmWUFsWXFCNjNHTWdKWHVzZ2RyaDI3Vm9DTUkzOTJpT0lPNFdiY2tvS0lIaUhkeHc?oc=5"
+    },
+    {
+      "time": "2026-09-23T08:58:00+09:00",
+      "title": "[모닝 리포트] \"삼성물산, 삼성전자 배당 확대 수혜…주당배당금 8550원 전망\"",
+      "source": "뉴스핌",
+      "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE9uYV9LVUZBYjRMYTFiY1hFaFFGZXpSN2JqUGJEb01IRzVWMU5QWGZfZGwzWUlTc3Y2QzB1ZVFXbUpadkFmX1UwSE9zMDhNb043czhnSnkxSUdQOENT?oc=5"
+    },
+    {
+      "time": "2026-09-23T08:00:31+09:00",
+      "title": "\"삼성전자, 목표가 63만원으로 상향…조정은 매수 기회\"-유안타 - 머니투데이",
+      "source": "머니투데이",
+      "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE1fS1NJVUg5bHpoSXZ6RGM5M2owQUpNN09GMkU2a2h1WnFvSUdqRXEyUW90ZXZGbEZOSGYtcmF4NndpeHhBaGE4dVZmeXZmRzhOOF82MUt5djdBV2FhOGd3bFJBVkFTUlZw0gFuQVVfeXFMT3IwNWxtZkhsZW9Cc3Ixb0pjUGpiV3N6T0RNekMyRGtKRTJIM3RQQ0YwZ25rS2paQW9pRkJ5YkZjdnpBQlBzSDJGYjJDSk5yWERYbnZTYWZ3OWdjZW9LdkdtcnFNSERjR3hoQWJPS1E?oc=5"
+    }
+  ],
+  "top_news": [
+    {
+      "time": "2026-09-23T07:25:00+09:00",
+      "title": "키움證 “삼성전자 3분기 영업익 기대치 하회 전망…범용 메모리보다 HBM·파운드리 주목해야” - 조선비즈",
+      "source": "Chosunbiz",
+      "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxQanRSeUppTnplZExHRzc0a0F1Z3ktQ3ZNczIxSlh5RHZvZ3RObDZseUVyNWNwN0wtZVZHVTVfbzFBZnYyUUpLVUVOaXBsSmpCeWlVODd6eTh1VG81ZWlxRHdLZ2lBdzdLb2QyNHowdFROVk5qeFRCZzQ3Nl9oZzhlSy10NkJHdWhN0gGcAUFVX3lxTE9XUnJkT19ZdG1lV1hGZW1jVTZnVTlxdHdoclFQd19JMFQxcXNWOEJlekJTMnRzV1RKTnUxY0pQMEl2MmtHNDFtSWJObjdvWVcxeEtQYkU2dG81ZTh1X2FfSnlFdm1DODY0dUpXT3Zndm9vUm9KeFJmQnhLYmtiNGxpUkFneF8zMUc1cW5PbUptZEdvbjRGOVV4YW5NNw?oc=5"
+    },
+    {
+      "time": "2026-09-23T10:04:52+09:00",
+      "title": "“삼성전자 목표주가 63만원”…30만선 회복 앞두고 증권가 전망 보니",
+      "source": "mk.co.kr",
+      "link": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE5lbUpFWkQxaUdJbHVaVVJuSl9YTVp4YVl2TVR1QkhZY3FLVlJMZndVZmpHcm1PQTdVLTBjZy1fM0VxdTdyRGZtWDdsOGxkZWhfUnc?oc=5"
+    },
+    {
+      "time": "2026-09-23T11:46:18+09:00",
+      "title": "삼성전자, 4나노 공정 증설 검토…HBM이 파운드리 새 수요처로",
+      "source": "녹색경제신문",
+      "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTFBPODhDZUJHUWRfWm9RQkN1dFJyUEtXWmp5T3RnM0hBcHdld1NLT1pNbTF6OFYzdS05YWQyWUJmak1aNXd4ckhfRUVCMTBQRHdzbzlQM0VlaVhEYUNUTGNsRzE3ZVpzOXQy?oc=5"
+    },
+    {
+      "time": "2026-09-23T15:58:18+09:00",
+      "title": "HBM4 날개 단 삼성전자, 3분기도 사상 최대 실적…환율은 '복병' - 머니투데이",
+      "source": "머니투데이",
+      "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE5lc2N5akRRNDZPVGdLY2h4WWdIYkVIY21la1NSUUNPenpRR0NtTGF4Z1ZVcUpzNEFMaVNlMUNwRFdsSEk3STJ1eThBRDV1RXNMQ04zRXhYY1BCaDVDZ0Y4czNVb0E5SUE1NERIQ9IBckFVX3lxTFBHV1ZfVm8zWmsyT1Q1R3RvN1M2VTlDMlVuaWhtS2xYYnhGRGhOVmpfUE84bEN6YzUtVXJtS0tRTjdQSGhHYVM1SHJXY0RoRkV1NENNSHR5STVySmVoaTdZdnZwYkVNVFZwRElvWTNWVm5SQQ?oc=5"
+    },
+    {
+      "time": "2026-09-23T16:07:18+09:00",
+      "title": "[마감시황] 코스피, AI 반도체 강세에 7080선 마감…삼성전자 3%↑",
+      "source": "블록미디어",
+      "link": "https://news.google.com/rss/articles/CBMiWEFVX3lxTE1OLTV5Rk9PRWc2aGtOMUl3V3I0aDl6dVhDeExiX2RQMmJHMzJUUk1wQ3Z6MjBtVGhoNnFYWjBHeFRldnJjTUczYzN1TEt6bThDTEx4N09TWmI?oc=5"
+    },
+    {
+      "time": "2026-09-23T08:30:34+09:00",
+      "title": "키움증권 \"삼성전자, 3분기 실적 기존 전망치 하회할듯\"",
+      "source": "연합뉴스",
+      "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE8wOVRQUElQWHVFZGRwQUMzMWJ1WXZ4RzBOenBwUUJXLVIta3ZNMVMyRTRmM2lMZzFROWgyNm5fdGxOX1NwSWhrWlhGeG1RM0RGUVhZc0dHZzliZXfSAWBBVV95cUxOVExkVWVKaFp4QUlETjRKMVpHelRQaUJ0Uk9MTXFPWXNCUnM1ZE92UXo4TS1kRGg3OXlXNFpJQXRtRU9NWlJPQ3hNLWlfTnZOSmIyRDl0WWRjSjYwd2FaaXk?oc=5"
+    }
+  ],
+  "disclosures": [],
+  "disclosure_note": null,
+  "flows": null,
+  "forecasts": [
+    {
+      "model": "No macro ensemble",
+      "hit": true,
+      "verdict": "맞음 — 예측 상승 43%, 실제 상승(+3.25%)",
+      "legs": "갭 +2.89%(상승) · 세션 +0.35%(보합)",
+      "where": "결과는 주로 갭(밤사이)에서 정해졌습니다.",
+      "band": 0.0081193167145498,
+      "probs": [
+        0.2969322435139006,
+        0.2710849298766247,
+        0.4319828266094747
+      ],
+      "actual": "상승",
+      "predicted": "상승"
+    },
+    {
+      "model": "Mean ensemble",
+      "hit": true,
+      "verdict": "맞음 — 예측 상승 43%, 실제 상승(+3.25%)",
+      "legs": "갭 +2.89%(상승) · 세션 +0.35%(보합)",
+      "where": "결과는 주로 갭(밤사이)에서 정해졌습니다.",
+      "band": 0.0081193167145498,
+      "probs": [
+        0.2709809666696303,
+        0.2947121145040735,
+        0.4343069188262961
+      ],
+      "actual": "상승",
+      "predicted": "상승"
+    },
+    {
+      "model": "Candidate expanding",
+      "hit": true,
+      "verdict": "맞음 — 예측 상승 47%, 실제 상승(+3.25%)",
+      "legs": "갭 +2.89%(상승) · 세션 +0.35%(보합)",
+      "where": "결과는 주로 갭(밤사이)에서 정해졌습니다.",
+      "band": 0.0081193167145498,
+      "probs": [
+        0.2459385985171194,
+        0.2846499969542157,
+        0.4694114045286648
+      ],
+      "actual": "상승",
+      "predicted": "상승"
+    }
+  ],
+  "price_check": "1거래일 예상 구간 268,988~287,879원 · 종가 285,500원 → 구간 안",
+  "disclaimer": "시간이 맞는 것이지 원인 확정이 아닙니다. 뉴스 없이 움직이는 날(수급·프로그램·옵션 만기)이 많고, 기사 발행 시각은 실제 정보 유통보다 늦거나 앞섭니다. 이 절은 설명 도구이며 다음날 예측에 자동 반영되지 않습니다."
+}

@@ -137,7 +137,7 @@ class WorkflowWiringTests(unittest.TestCase):
         import yaml
         wf = yaml.safe_load((ROOT / ".github" / "workflows" / "monthly-longterm.yml").read_text(encoding="utf-8"))
         crons = [x["cron"] for x in wf[True]["schedule"]]
-        self.assertIn("30 0 1,2,3,11,12,13,21,22,23 * *", crons)      # 발표일 + 휴일 지연 이틀, 09:30 KST
+        self.assertIn("30 0 * * *", crons)      # 매일 09:30 KST — 발표가 늦어져도 받을 때까지 확인
         steps = wf["jobs"]["longterm"]["steps"]
         names = [s.get("name", "") for s in steps]
         gate_pos = next(i for i, n in enumerate(names) if n.startswith("발표 확인"))

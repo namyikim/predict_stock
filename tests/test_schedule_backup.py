@@ -78,10 +78,16 @@ class ScheduleTests(unittest.TestCase):
 
     def test_side_reports_refresh_every_three_hours_except_earnings(self):
         """2026-09-16 요청: 금·은·중국·장기 관심도도 뉴스·검색어처럼 3시간 간격으로 갱신한다.
-        영업이익 추정(KOSIS·DART 조회)만 아침 한 번이다. 10분 아침 재시도는 모두 건너뛴다."""
+        10분 아침 재시도는 모두 건너뛴다.
+
+        영업이익 추정은 2026-09-23 일일 보고서에서 빠져 '수출 통계·장기 전망·영업이익 일일 갱신'
+        (monthly-longterm.yml, 매일 10:17 KST)으로 옮겨졌다. 여기 남아 있으면 같은 조각을 두 곳에서 쓴다."""
         jobs = WORKFLOW["jobs"]
         self.assertIn("needs.validation.result", jobs["report"]["if"])
-        self.assertIn(f"== '{MAIN_CRON}'", jobs["earnings"]["if"])
+        self.assertNotIn("earnings", jobs)
+        export = yaml.safe_load((ROOT / ".github" / "workflows" / "monthly-longterm.yml").read_text(encoding="utf-8"))
+        steps = " ".join(s.get("run", "") for s in export["jobs"]["longterm"]["steps"])
+        self.assertIn("build_earnings_forecast.py", steps)
         for name in ("metals", "china", "interest", "trends", "ai_news"):
             for cron in MORNING_RETRY_CRONS:
                 self.assertIn(f"!= '{cron}'", jobs[name]["if"], name)

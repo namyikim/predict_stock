@@ -7,6 +7,9 @@ import pandas as pd
 from pathlib import Path
 
 import macro_utils as mu
+import sys as _sys
+from pathlib import Path as _Path
+_sys.path.insert(0, str(_Path(__file__).resolve().parent))  # 모듈 지정 실행에서도 형제 테스트를 찾게
 from test_pipeline_behavior import make_synthetic_raw, run_feature_cell
 
 

@@ -35,7 +35,7 @@ sys.path.insert(0, str(ROOT / "tools"))
 import github_pages  # noqa: E402
 from forecast_utils import (  # noqa: E402
     POST_OPEN_MODEL, POSTOPEN_END, POSTOPEN_START, SCORECARD_END, SCORECARD_START, append_forecasts,
-    atomic_csv, daily_comparison, evaluate_forecasts, is_headline_model, ledger_section_html,
+    atomic_csv, daily_comparison, evaluate_forecasts, is_headline_model, ledger_section_html, merge_ledger_logs,
     post_open_card_html, post_open_ledger_row, post_open_row_for, review_ledger, scorecard_html,
     summarize_daily,
 )
@@ -131,15 +131,15 @@ def merge_ledger(latest_text, ours_path, bars, storage):
     이 실행이 이미 그린 HTML 절은 합치기 전 원장 기준이지만 다음 회차에서 스스로 맞춰진다 — 지키는 것은 원장이다.
     """
     ours = pd.read_csv(ours_path)
-    latest = pd.read_csv(io.StringIO(latest_text)) if latest_text else ours.iloc[0:0]
-    extra = ours[ours["record_id"].notna() & ~ours["record_id"].isin(latest["record_id"])]
-    evaluated = evaluate_forecasts(pd.concat([latest, extra], ignore_index=True), bars)
+    latest = pd.read_csv(io.StringIO(latest_text)) if latest_text else None
+    evaluated = merge_ledger_logs(latest, ours, bars)          # 노트북과 같은 규칙
     atomic_csv(evaluated, ours_path)
     daily = daily_comparison(evaluated)
     atomic_csv(daily, storage / "daily_forecast_comparison.csv")
     atomic_csv(summarize_daily(daily), storage / "forecast_accuracy_summary.csv")
-    print(f"⚠️ 원장이 이 실행이 읽은 뒤 다른 실행에서 바뀌었습니다 — 최신 원장 {len(latest)}행에 이 실행의 "
-          f"{len(extra)}행을 합쳐 올립니다(덮어쓰지 않음).", flush=True)
+    n_latest = 0 if latest is None else len(latest)
+    print(f"⚠️ 원장이 이 실행이 읽은 뒤 다른 실행에서 바뀌었습니다 — 최신 원장 {n_latest}행에 이 실행의 "
+          f"{len(evaluated) - n_latest}행을 합쳐 올립니다(덮어쓰지 않음).", flush=True)
     return ours_path.read_text(encoding="utf-8")
 
 

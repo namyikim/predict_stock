@@ -1877,6 +1877,22 @@ def append_forecasts(path, new_rows):
     return combined
 
 
+def merge_ledger_logs(remote, ours, bars, evaluate=None):
+    """원장을 저장하기 직전에, 이 실행이 읽은 뒤 다른 실행이 바꿨을 수 있는 최신 원장(remote)과 합쳐 다시 채점한다.
+
+    같은 record_id 는 remote 쪽을 남긴다. 예측 칸은 불변이라 같고, 채점 칸은 evaluate_forecasts 가 bars 로 다시
+    매기되 bars 에 봉이 없는 행은 이미 채점된 값을 되돌리지 않는다 — 그래서 다른 실행이 끝낸 채점(예: 09:37
+    시초가)이 남는다. 전에는 노트북이 이 실행 쪽(keep="last")을 남기고 다시 채점하지 않아, 시작 뒤에 끝난 채점을
+    채점 전 값으로 덮을 수 있었다(2026-09-23). ours 에만 있는 record_id(이번 실행의 새 예측)를 더한다.
+    remote 가 None 이거나 비어 있으면 ours 만 채점한다.
+    """
+    evaluate = evaluate or evaluate_forecasts
+    if remote is None or len(remote) == 0:
+        return evaluate(ours.copy(), bars)
+    extra = ours[ours["record_id"].notna() & ~ours["record_id"].isin(remote["record_id"])]
+    return evaluate(pd.concat([remote, extra], ignore_index=True), bars)
+
+
 def evaluate_forecasts(log, bars, now=None):
     """확정 봉으로 실제값/오차를 갱신한다. 당시 band/mode 및 원래 예측은 보존한다."""
     result = log.copy()

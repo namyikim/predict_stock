@@ -21,6 +21,7 @@
     python tools/build_afternoon_update.py --target samsung --out runs/afternoon --publish
 """
 import argparse
+import io
 import sys
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
@@ -107,15 +108,39 @@ def describe_run(bars, now):
 
 
 def fetch_ledger(storage, target, token):
-    """원격 원장을 받아 둔다(토큰이 없으면 로컬 사본). 경로를 돌려준다."""
+    """원격 원장을 받아 둔다(토큰이 없으면 로컬 사본). (경로, 처음 읽은 blob sha) 를 돌려준다.
+
+    sha 는 저장할 때 publish(expected_sha=…) 로 넘겨, 그 사이 다른 실행이 원장에 더한 행을 지우지 않게 한다.
+    """
     storage.mkdir(parents=True, exist_ok=True)
-    remote = github_pages.fetch(f"forecast_history/{target}/forecast_log.csv", token) if token else None
+    remote, sha = (github_pages.fetch_with_sha(f"forecast_history/{target}/forecast_log.csv", token)
+                   if token else (None, None))
     if remote:
         (storage / "forecast_log.csv").write_text(remote, encoding="utf-8")
     path = storage / "forecast_log.csv"
     if not path.exists():
         raise RuntimeError("원장이 없습니다. 아침 실행이 한 번은 성공해야 채점할 것이 생깁니다.")
-    return path
+    return path, sha
+
+
+def merge_ledger(latest_text, ours_path, bars, storage):
+    """원장이 이 실행이 읽은 뒤 바뀌었을 때: 최신 원장 + 이 실행에만 있는 record_id, 그리고 다시 채점한다.
+
+    같은 record_id 는 최신 원장 쪽을 남긴다. 예측 칸은 불변이라 같고, 채점 칸은 evaluate_forecasts 가 이 실행의
+    시세로 다시 매기되 이미 채점된 값을 되돌리지 않는다. 파생 파일(일별 비교·요약)도 합친 원장으로 다시 만든다.
+    이 실행이 이미 그린 HTML 절은 합치기 전 원장 기준이지만 다음 회차에서 스스로 맞춰진다 — 지키는 것은 원장이다.
+    """
+    ours = pd.read_csv(ours_path)
+    latest = pd.read_csv(io.StringIO(latest_text)) if latest_text else ours.iloc[0:0]
+    extra = ours[ours["record_id"].notna() & ~ours["record_id"].isin(latest["record_id"])]
+    evaluated = evaluate_forecasts(pd.concat([latest, extra], ignore_index=True), bars)
+    atomic_csv(evaluated, ours_path)
+    daily = daily_comparison(evaluated)
+    atomic_csv(daily, storage / "daily_forecast_comparison.csv")
+    atomic_csv(summarize_daily(daily), storage / "forecast_accuracy_summary.csv")
+    print(f"⚠️ 원장이 이 실행이 읽은 뒤 다른 실행에서 바뀌었습니다 — 최신 원장 {len(latest)}행에 이 실행의 "
+          f"{len(extra)}행을 합쳐 올립니다(덮어쓰지 않음).", flush=True)
+    return ours_path.read_text(encoding="utf-8")
 
 
 def fetch_grid(storage, target, token):
@@ -160,7 +185,7 @@ def append_post_open(ledger_path, grid, bars, now):
 
 
 def score(storage, target, bars, token, ledger_path=None):
-    path = ledger_path or fetch_ledger(storage, target, token)
+    path = ledger_path or fetch_ledger(storage, target, token)[0]
     evaluated = evaluate_forecasts(pd.read_csv(path), bars)
     atomic_csv(evaluated, path)
     daily = daily_comparison(evaluated)
@@ -195,7 +220,7 @@ def main():
     bars = load_bars(spec["ticker"], scope=args.scope)
     print(f"시세 {len(bars):,}행 · 마지막 봉 {bars.index[-1].date()} · scope={args.scope}", flush=True)
     now = datetime.now(KST)
-    ledger_path = fetch_ledger(storage, args.target, token)
+    ledger_path, ledger_sha = fetch_ledger(storage, args.target, token)
     # 시가 반영 갱신(P16 운영 반영): 개장 직후 회차에만, 오늘 격자와 오늘 시가가 모두 있을 때만 한 행을 더한다.
     post_open_row = None
     if args.scope == "open":
@@ -246,10 +271,18 @@ def main():
         return
 
     for name in LEDGER_FILES:
-        sha = github_pages.publish(f"forecast_history/{args.target}/{name}",
-                                   (storage / name).read_text(encoding="utf-8"),
-                                   token, f"score: {name} ({now:%Y-%m-%d %H:%M} KST)")
-        print(f"원장 저장 forecast_history/{args.target}/{name} @ {sha}")
+        remote_path = f"forecast_history/{args.target}/{name}"
+        message = f"score: {name} ({now:%Y-%m-%d %H:%M} KST)"
+        if name == "forecast_log.csv":
+            # 원장은 처음 읽은 sha 로만 올린다. 그 사이 다른 실행(아침 노트북·코드 반영 재실행)이 행을 더했으면
+            # 합쳐서 올리고, 지우지 않는다(2026-09-23). 원장이 첫 파일이라 합친 뒤의 파생 파일이 아래에서 올라간다.
+            sha = github_pages.publish(remote_path, ledger_path.read_text(encoding="utf-8"), token, message,
+                                       expected_sha=ledger_sha,
+                                       merge=lambda latest: merge_ledger(latest, ledger_path, bars, storage))
+        else:
+            # 파생 파일은 원장에서 매번 다시 계산하는 값이라 덮어써도 잃는 것이 없다.
+            sha = github_pages.publish(remote_path, (storage / name).read_text(encoding="utf-8"), token, message)
+        print(f"원장 저장 {remote_path} @ {sha}")
 
     pages = [f"docs/{args.target}/index.html"]
     latest = github_pages.fetch(pages[0], token)

@@ -268,17 +268,18 @@ class RunLabelTests(unittest.TestCase):
         ledger = self.ledger()
         page = f"<html>{fu.SCORECARD_START}아침{fu.SCORECARD_END}{af.MARK_START}옛 표{af.MARK_END}</html>"
         gp = af.github_pages
-        saved = (gp.token, gp.code_version, gp.fetch, gp.publish, sys.argv)
+        saved = (gp.token, gp.code_version, gp.fetch, gp.fetch_with_sha, gp.publish, sys.argv)
         published = []
         gp.token = lambda: "t"
         gp.code_version = lambda tok=None: {"short": "abc1234"}
         gp.fetch = lambda path, tok: ledger if path.endswith("forecast_log.csv") else page
-        gp.publish = lambda path, text, tok, message: published.append((path, message, text)) or "deadbee"
+        gp.fetch_with_sha = lambda path, tok: (gp.fetch(path, tok), "sha0")
+        gp.publish = lambda path, text, tok, message, **kw: published.append((path, message, text)) or "deadbee"
         sys.argv = ["x", "--target", "sk_hynix", "--out", tempfile.mkdtemp(), "--scope", scope, "--publish"]
         try:
             af.main()
         finally:
-            gp.token, gp.code_version, gp.fetch, gp.publish, sys.argv = saved
+            gp.token, gp.code_version, gp.fetch, gp.fetch_with_sha, gp.publish, sys.argv = saved
         return [p for p in published if p[0].startswith("docs/")]
 
     def test_main_at_1411_never_labels_a_post_close_update(self):

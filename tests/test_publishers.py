@@ -89,5 +89,104 @@ class RetryTests(unittest.TestCase):
             self.assertEqual(github_pages.publish("docs/new.html", "hi", "tok", "msg"), "1234567")
 
 
+class ExpectedShaTests(unittest.TestCase):
+    """원장처럼 행을 더하는 파일은 처음 읽은 sha 로만 저장한다(2026-09-23).
+
+    예전 발행기는 저장 직전에 최신 sha 를 읽어 덮어써서, 이 실행이 읽은 뒤 다른 실행이 더한 행을 오류 없이 지웠다.
+    """
+
+    def remote(self, text, sha):
+        import base64
+        return {"content": base64.b64encode(text.encode()).decode(), "sha": sha}
+
+    def test_unchanged_file_is_written_once_with_the_sha_we_read(self):
+        calls = []
+
+        def fake(path, tok, method="GET", body=None):
+            calls.append((method, (body or {}).get("sha")))
+            return {"content": {"sha": "newblob123"}}
+
+        with patch.object(github_pages, "_api", fake):
+            self.assertEqual(github_pages.publish("l.csv", "ours", "tok", "m", expected_sha="s1"), "newblob")
+        self.assertEqual(calls, [("PUT", "s1")], "처음 읽은 sha 로 곧바로 쓰고, 그 전에 sha 를 새로 읽지 않는다")
+
+    def test_changed_file_is_merged_not_overwritten(self):
+        state = {"remote": ("a\nb\n", "s2"), "puts": []}      # 우리가 s1 을 읽은 뒤 누군가 b 를 더했다
+
+        def fake(path, tok, method="GET", body=None):
+            if method == "GET":
+                return self.remote(*state["remote"])
+            state["puts"].append(body)
+            if body.get("sha") != state["remote"][1]:
+                raise HttpError(409)
+            return {"content": {"sha": "merged1234"}}
+
+        merged_from = []
+
+        def merge(latest):
+            merged_from.append(latest)
+            return latest + "ours\n"
+
+        with patch.object(github_pages, "_api", fake), patch("time.sleep"):
+            github_pages.publish("l.csv", "a\nours\n", "tok", "m", expected_sha="s1", merge=merge)
+        self.assertEqual(merged_from, ["a\nb\n"], "최신 내용을 합치기 함수에 넘긴다")
+        self.assertEqual([p.get("sha") for p in state["puts"]], ["s1", "s2"])
+        import base64
+        self.assertEqual(base64.b64decode(state["puts"][-1]["content"]).decode(), "a\nb\nours\n")
+
+    def test_without_merge_a_changed_file_is_left_alone(self):
+        puts = []
+
+        def fake(path, tok, method="GET", body=None):
+            if method == "GET":
+                return self.remote("theirs", "s2")
+            puts.append(body)
+            raise HttpError(409)
+
+        with patch.object(github_pages, "_api", fake), patch("time.sleep"):
+            with self.assertRaises(RuntimeError) as caught:
+                github_pages.publish("l.csv", "ours", "secret-token", "m", expected_sha="s1")
+        self.assertEqual(len(puts), 1, "덮어쓰려고 다시 시도하지 않는다")
+        self.assertIn("동시 변경", str(caught.exception))
+        self.assertNotIn("secret-token", str(caught.exception))
+
+    def test_a_422_with_the_same_sha_is_not_treated_as_contention(self):
+        merged = []
+
+        def fake(path, tok, method="GET", body=None):
+            if method == "GET":
+                return self.remote("same", "s1")
+            raise HttpError(422)
+
+        with patch.object(github_pages, "_api", fake), patch("time.sleep"):
+            with self.assertRaises(RuntimeError) as caught:
+                github_pages.publish("l.csv", "ours", "tok", "m", expected_sha="s1", merge=merged.append)
+        self.assertEqual(merged, [], "파일이 그대로면 합치지 않는다")
+        self.assertIn("경합이 아님", str(caught.exception))
+
+    def test_a_file_that_did_not_exist_is_created_without_a_sha(self):
+        def fake(path, tok, method="GET", body=None):
+            self.assertNotIn("sha", body)
+            return {"content": {"sha": "created123"}}
+
+        with patch.object(github_pages, "_api", fake):
+            self.assertEqual(github_pages.publish("new.csv", "x", "tok", "m", expected_sha=None), "created")
+
+    def test_fetch_with_sha(self):
+        with patch.object(github_pages, "_api", lambda path, tok, method="GET", body=None: self.remote("hi", "s9")):
+            self.assertEqual(github_pages.fetch_with_sha("x", "tok"), ("hi", "s9"))
+
+        def missing(path, tok, method="GET", body=None):
+            raise HttpError(404)
+
+        with patch.object(github_pages, "_api", missing):
+            self.assertEqual(github_pages.fetch_with_sha("x", "tok"), (None, None))
+
+    def test_docstring_no_longer_claims_a_commit_sha_or_that_overwriting_is_safe(self):
+        doc = github_pages.publish.__doc__
+        self.assertIn("blob sha", doc)
+        self.assertNotIn("재시도가 안전하다.", doc.replace("재시도가 안전하다\"", ""))
+
+
 if __name__ == "__main__":
     unittest.main()

@@ -33,6 +33,24 @@ def _api(path, tok, method="GET", body=None):
         return json.loads(response.read().decode())
 
 
+_ANY = object()   # publish(expected_sha=…) 를 주지 않은 기존 호출의 표시
+
+
+def fetch_with_sha(path, tok):
+    """(텍스트, blob sha). 없으면 (None, None).
+
+    원장처럼 '읽고 → 고치고 → 쓰는' 파일은 여기서 받은 sha 를 publish(expected_sha=…) 에 넘긴다. 그래야 그 사이
+    다른 실행이 바꾼 것을 알아챈다.
+    """
+    try:
+        data = _api(path, tok)
+    except Exception as exc:
+        if getattr(exc, "code", None) == 404:
+            return None, None
+        raise RuntimeError(f"조회 실패({type(exc).__name__} {getattr(exc, 'code', '')})") from None
+    return base64.b64decode(data["content"]).decode("utf-8"), data["sha"]
+
+
 def fetch(path, tok):
     """저장소의 텍스트 파일을 돌려준다. 없으면 None."""
     try:
@@ -44,15 +62,23 @@ def fetch(path, tok):
     return base64.b64decode(data["content"]).decode("utf-8")
 
 
-def publish(path, text, tok, message, attempts=4):
-    """파일을 올리고 커밋 sha 앞 7자리를 돌려준다. 오류 문구에 토큰이 섞이지 않게 한다.
+def publish(path, text, tok, message, attempts=4, expected_sha=_ANY, merge=None):
+    """파일을 올리고 **올린 파일의 blob sha** 앞 7자리를 돌려준다(커밋 sha 가 아니다). 오류 문구에 토큰이 섞이지 않게 한다.
 
-    sha를 읽고 쓰는 사이에 다른 잡이 같은 파일을 커밋하면 409(또는 422)가 온다. 여러 워크플로가
-    같은 원장·보고서를 건드리므로 드문 일이 아니다(2026-09-08 채점 실행이 이것으로 죽었다).
-    충돌이면 sha를 다시 읽어 재시도한다 — 이 함수는 파일 전체를 덮어쓰므로 재시도가 안전하다.
+    expected_sha 를 주지 않으면(기존 호출) 올리기 직전에 최신 sha 를 읽어 파일 전체를 덮어쓴다. 이 실행이 내용을
+    전부 새로 만드는 보고서 HTML 같은 파일에는 맞다. **원장처럼 여러 실행이 행을 더하는 파일에는 쓰면 안 된다** —
+    이 실행이 처음 읽은 뒤 다른 실행이 더한 행을 오류 없이 지운다. sha 를 매번 새로 읽으므로 409 도 나지 않는다
+    (2026-09-23 검토. 예전 설명 "파일 전체를 덮어쓰므로 재시도가 안전하다"는 추가만 되는 파일에는 틀렸다).
+
+    expected_sha 를 주면(fetch_with_sha 로 처음 읽을 때 받은 값, 그때 없던 파일이면 None) 그 sha 로만 올린다.
+    409/422 가 오면 최신을 다시 읽어 **실제로 바뀌었는지** 확인한다 — sha 가 그대로면 경합이 아니라 다른 오류라
+    재시도하지 않는다. 바뀌었으면 merge(최신 텍스트) 가 돌려준 합친 내용을 최신 sha 로 다시 올린다. merge 가
+    없으면 덮어쓰지 않고 실패한다(다음 실행이 다시 읽어 처리한다).
     """
     import random
     import time
+    if expected_sha is not _ANY:
+        return _publish_expected(path, text, tok, message, attempts, expected_sha, merge)
     for attempt in range(attempts):
         sha = None
         try:
@@ -73,6 +99,33 @@ def publish(path, text, tok, message, attempts=4):
                 time.sleep(2 * (2 ** attempt) + random.uniform(0, 2))
                 continue
             raise RuntimeError(f"업로드 실패({type(exc).__name__} {code or ''})") from None
+
+
+def _publish_expected(path, text, tok, message, attempts, sha, merge):
+    """publish(expected_sha=…) 의 본체. 처음 읽은 sha 로만 쓰고, 바뀌었으면 합치거나 멈춘다."""
+    import random
+    import time
+    for attempt in range(attempts):
+        body = {"message": message, "branch": GITHUB_BRANCH,
+                "content": base64.b64encode(text.encode("utf-8")).decode()}
+        if sha:
+            body["sha"] = sha
+        try:
+            return _api(path, tok, "PUT", body)["content"]["sha"][:7]
+        except Exception as exc:
+            code = getattr(exc, "code", None)
+            if code not in (409, 422):
+                raise RuntimeError(f"업로드 실패({type(exc).__name__} {code or ''})") from None
+        latest_text, latest_sha = fetch_with_sha(path, tok)
+        if latest_sha == sha:
+            raise RuntimeError(f"업로드 실패({code}) — {path} 는 그대로인데 거절됐습니다(경합이 아님)")
+        if merge is None:
+            raise RuntimeError(f"동시 변경 감지({code}) — {path} 가 이 실행이 읽은 뒤 바뀌었습니다. 덮어쓰지 않습니다")
+        if attempt == attempts - 1:
+            break
+        text, sha = merge(latest_text), latest_sha
+        time.sleep(1 + attempt + random.uniform(0, 1))
+    raise RuntimeError(f"업로드 실패 — {path} 가 {attempts}번 연달아 바뀌어 합치기를 멈췄습니다")
 
 
 def _git_head():

@@ -352,7 +352,7 @@ class ToolEndToEndTests(unittest.TestCase):
                 f"{af.MARK_START}옛 표{af.MARK_END}</html>")
         ledger = _ledger_csv() if ledger_text is None else ledger_text
         gp = af.github_pages
-        saved_gp = (gp.token, gp.code_version, gp.fetch, gp.publish, sys.argv)
+        saved_gp = (gp.token, gp.code_version, gp.fetch, gp.fetch_with_sha, gp.publish, sys.argv)
         published = []
 
         def fetch(path, tok):
@@ -364,13 +364,14 @@ class ToolEndToEndTests(unittest.TestCase):
         gp.token = lambda: "t"
         gp.code_version = lambda tok=None: {"short": "abc1234"}
         gp.fetch = fetch
-        gp.publish = lambda path, text, tok, message: published.append((path, message, text)) or "deadbee"
+        gp.fetch_with_sha = lambda path, tok: (fetch(path, tok), "sha0")
+        gp.publish = lambda path, text, tok, message, **kw: published.append((path, message, text)) or "deadbee"
         sys.argv = ["x", "--target", "samsung", "--out", tempfile.mkdtemp(), "--scope", scope, "--publish"]
         try:
             af.main()
         finally:
             yfinance.Ticker, pd.Timestamp.now, af.datetime = saved
-            gp.token, gp.code_version, gp.fetch, gp.publish, sys.argv = saved_gp
+            gp.token, gp.code_version, gp.fetch, gp.fetch_with_sha, gp.publish, sys.argv = saved_gp
         return {p: (m, t) for p, m, t in published}
 
     def test_open_scope_appends_one_post_open_row_and_swaps_the_card(self):
@@ -469,6 +470,91 @@ class RunnerDelegationTests(unittest.TestCase):
         band = pd.Series(.01, index=bars.index)
         pd.testing.assert_frame_equal(runner.p16_gap_features(bars, band, bars.index),
                                       fu.post_open_gap_features(bars, band, bars.index))
+
+
+class ConcurrentLedgerWriteTests(unittest.TestCase):
+    """09:37 도구가 원장을 읽은 직후 다른 실행이 행을 더해도 그 행이 살아남아야 한다(2026-09-23).
+
+    예전에는 저장 직전에 최신 sha 를 새로 읽어 덮어써서, 그 행이 오류 없이 사라졌다.
+    """
+
+    def test_row_added_by_another_run_after_our_read_survives(self):
+        import base64
+        import yfinance
+        from unittest.mock import patch
+
+        class HttpError(Exception):
+            def __init__(self, code):
+                super().__init__(f"HTTP {code}")
+                self.code = code
+
+        fixed = pd.Timestamp("2026-09-21 09:40", tz="Asia/Seoul")
+        real_now = pd.Timestamp.now
+        saved = (yfinance.Ticker, pd.Timestamp.now, af.datetime)
+        pd.Timestamp.now = classmethod(lambda cls, tz=None: real_now(tz=tz) if tz is None else fixed)
+
+        class Frozen(af.datetime):
+            @classmethod
+            def now(cls, tz=None):
+                return fixed.to_pydatetime()
+        af.datetime = Frozen
+        frame = ToolEndToEndTests.frame(None)
+
+        class FakeTicker:
+            def __init__(self, *a, **k): pass
+            def history(self, **k): return frame.copy()
+        yfinance.Ticker = FakeTicker
+
+        ledger_path = "forecast_history/samsung/forecast_log.csv"
+        v1 = pd.read_csv(io.StringIO(_ledger_csv()))
+        other = v1.iloc[[0]].copy()
+        other["record_id"], other["run_id"] = "other-run:direction:No macro ensemble", "other-run"
+        v2 = pd.concat([v1, other], ignore_index=True)
+        page = (f"<html>{fu.SCORECARD_START}아침{fu.SCORECARD_END}{fu.POSTOPEN_START}자리{fu.POSTOPEN_END}"
+                f"{af.MARK_START}옛 표{af.MARK_END}</html>")
+        store = {ledger_path: [v1.to_csv(index=False), "s1"],
+                 "forecast_history/samsung/post_open_grid.csv": [_grid().to_csv(index=False), "g1"],
+                 "docs/samsung/index.html": [page, "p1"]}
+        state = {"ledger_reads": 0, "ledger_puts": []}
+
+        def fake_api(path, tok, method="GET", body=None):
+            if method == "GET":
+                if path not in store:
+                    raise HttpError(404)
+                text, sha = store[path]
+                if path == ledger_path:
+                    state["ledger_reads"] += 1
+                    if state["ledger_reads"] == 1:            # 우리가 읽은 직후 다른 실행이 행을 더한다
+                        store[path] = [v2.to_csv(index=False), "s2"]
+                return {"content": base64.b64encode(text.encode()).decode(), "sha": sha}
+            current = store.get(path, [None, None])[1]
+            if path == ledger_path:
+                state["ledger_puts"].append(body.get("sha"))
+            if current is not None and body.get("sha") != current:
+                raise HttpError(409)
+            new_sha = f"{path}-{len(state['ledger_puts'])}"
+            store[path] = [base64.b64decode(body["content"]).decode("utf-8"), new_sha]
+            return {"content": {"sha": new_sha}}
+
+        gp = af.github_pages
+        saved_gp = (gp.token, gp.code_version, gp._api, sys.argv)
+        gp.token = lambda: "t"
+        gp.code_version = lambda tok=None: {"short": "abc1234"}
+        gp._api = fake_api
+        sys.argv = ["x", "--target", "samsung", "--out", tempfile.mkdtemp(), "--scope", "open", "--publish"]
+        try:
+            with patch("time.sleep"):
+                af.main()
+        finally:
+            yfinance.Ticker, pd.Timestamp.now, af.datetime = saved
+            gp.token, gp.code_version, gp._api, sys.argv = saved_gp
+
+        final = pd.read_csv(io.StringIO(store[ledger_path][0]))
+        self.assertIn("other-run:direction:No macro ensemble", set(final["record_id"]),
+                      "다른 실행이 더한 행이 지워졌다")
+        self.assertEqual(int((final["model"] == "Post-open").sum()), 1, "이 실행의 시가 반영 행도 있어야 한다")
+        self.assertEqual(len(final), len(v2) + 1)
+        self.assertEqual(state["ledger_puts"], ["s1", "s2"], "처음 읽은 sha 로 시도 → 거절 → 최신 sha 로 합쳐서 저장")
 
 
 if __name__ == "__main__":

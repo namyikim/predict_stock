@@ -1023,6 +1023,8 @@ def render_fragment(result):
              f'&nbsp;반도체 수출액·선행지수 순환변동치와 3·6·12개월 수익률 · 기준 {e(r["as_of"])}</span></h3>']
     from export_refresh import render_live
     parts.append(render_live(r.get("live_exports")))
+    from valuation_reference import render as render_valuation
+    parts.append(render_valuation(r.get("valuation")))
     parts.append('<div style="background:#fdf8ec;border-left:4px solid #c8952a;padding:12px 16px;border-radius:0 5px 5px 0;font-size:13px">'
                  '수출액 추세와 주가의 <b>수준</b>이 상관이 높은 것은 둘 다 우상향하기 때문이며 예측력의 근거가 아닙니다. '
                  'HP 필터처럼 미래 자료를 쓰는 양방향 추세도 쓰지 않았습니다. 아래는 그 시점까지의 자료로 계산한 지표가 '
@@ -1342,9 +1344,22 @@ def main():
         exports_snapshot = json.loads(args.exports_snapshot.read_text(encoding="utf-8"))
         result["live_exports"] = live_scenario(frame, result["features"], exports_snapshot,
                                                 result["evaluation"])
+    from valuation_reference import load as load_valuation
+    result["valuation"] = load_valuation(TARGETS[args.target]["ticker"], out_dir / "cache",
+                                         fetch=not args.no_fetch)
     fragment = render_fragment(result)
     (out_dir / "longterm.json").write_text(json.dumps(result, ensure_ascii=False, indent=2, default=str), encoding="utf-8")
     (out_dir / "longterm.html").write_text(fragment, encoding="utf-8")
+    # 현재 재무정보를 과거 백테스트에 주입하지 않고 당시 자료와 모델 결과를 함께 보관한다.
+    valuation_record = {
+        "recorded_at": datetime.now(KST).isoformat(), "target": args.target,
+        "valuation": result["valuation"], "model_as_of": result["as_of"],
+        "model_forecast": result["forecast"], "live_exports": result.get("live_exports"),
+        "evaluation_status": "참고 시나리오 보관 — 미래 성능 평가 결과 아님",
+    }
+    record_text = json.dumps(valuation_record, ensure_ascii=False, indent=2, default=str)
+    record_name = datetime.now(KST).strftime("%Y-%m-%dT%H%M%S%f") + ".json"
+    (out_dir / "valuation_snapshot.json").write_text(record_text, encoding="utf-8")
     frame.to_csv(out_dir / "longterm_frame.csv")
     if args.dump:
         for label, h in HORIZONS.items():
@@ -1377,6 +1392,8 @@ def main():
             sha = github_pages.publish(f"docs/{args.target}/{name}", (out_dir / name).read_text(encoding="utf-8"),
                                        tok, f"longterm: {args.target} {result['as_of']}")
             print(f"발행 docs/{args.target}/{name} @ {sha}")
+        github_pages.publish(f"docs/{args.target}/valuation_history/{record_name}", record_text,
+                             tok, f"valuation: {args.target} reference snapshot")
 
 
 if __name__ == "__main__":

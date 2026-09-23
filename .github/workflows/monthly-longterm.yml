@@ -12,6 +12,8 @@ on:
       - "tools/export_refresh.py"
       - "tools/refresh_longterm_tab.py"
       - "tools/build_longterm_report.py"
+      - "tools/valuation_reference.py"
+      - "valuation_assumptions.json"
       - "tools/build_earnings_forecast.py"
 
 permissions:

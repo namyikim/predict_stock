@@ -657,10 +657,22 @@ def longterm_easy_summary_html(*, name, price_date, close, longterm=None, earnin
             signals.append(("", "장기 주가 모델 — 3·6·12개월 모두 '변화 없음'보다 낫다는 근거가 없어 "
                                 "방향을 말하지 않습니다."))
     state, duration = mapping(longterm.get("current")), mapping(longterm.get("duration"))
+    live = mapping(longterm.get("live_exports"))
+    if live:
+        state = {**state, **mapping(live.get("current")), "phase": live.get("phase")}
+        duration = {}  # 속보 국면에 월간 검증의 지속기간을 붙이지 않는다.
+        period = mapping(live.get("latest_period"))
+        period_label = ("월말 잠정치" if period.get("basis") == "full_month_preliminary" else
+                        f"1~{period['days']}일 잠정치" if period.get("days") else "월간 자료")
+        signals.append(("", f"최신 수출 반영 — {live.get('exports_last_month')} {period_label}, "
+                        f"{live.get('generated_at')} 확인. 월말 가격을 고정한 수출 민감도이며 "
+                        "속보 반영 전망은 별도 검증 전입니다."))
     phase = duration.get("phase") or state.get("phase")
     phase_row = next((row for row in (mapping(longterm.get("phases")).get("12") or [])
                       if isinstance(row, dict) and row.get("phase") == phase
                       and _finite(row.get("median")) is not None), None)
+    if live:
+        phase_row = None
     if phase:
         text, tone = f"반도체 수출 사이클 — {str(phase).split('(')[0]} 국면", ""
         months_so_far = _finite(duration.get("months_so_far"))

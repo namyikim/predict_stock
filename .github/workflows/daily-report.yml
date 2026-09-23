@@ -182,37 +182,7 @@ jobs:
             *) echo "::warning::Pages 재빌드 요청이 거부되었습니다($code). 브랜치 배포 설정이면 잠시 뒤 자동으로 반영될 수 있습니다." ;;
           esac
 
-  # 예측 보고서와 독립적으로 돈다. 종목 쪽이 실패해도(예: 월별 지표 없음)
-  # 검색어 보고서는 그대로 갱신되어야 한다.
-  # 분기 영업이익 나우캐스트. 월별 수출이 KOSIS에 올라오는 날짜가 들쭉날쭉해서(관세청 속보 다음
-  # 며칠~2주) 매달 한 번이 아니라 매일 확인한다. 영업이익 이력은 저장소 캐시를 쓰고 최근 2년만
-  # 다시 받으므로 DART 요청은 종목당 8건이다.
-  earnings:
-    runs-on: ubuntu-latest
-    timeout-minutes: 20
-    if: github.event_name != 'schedule' || github.event.schedule == '22 21 * * 0-4'
-    strategy:
-      fail-fast: false
-      max-parallel: 1     # 같은 KOSIS 키로 동시에 부르면 한쪽이 거절된다
-      matrix:
-        target: [samsung, sk_hynix]
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.13"
-      - name: 의존성 설치
-        run: pip install numpy==2.5.2 pandas==3.0.5 scikit-learn==1.9.0 yfinance==1.7.0
-      - name: 이번 분기 영업이익 추정·발행
-        continue-on-error: true
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          KOSIS_API_KEY: ${{ secrets.KOSIS_API_KEY }}
-          DART_API_KEY: ${{ secrets.DART_API_KEY }}
-          FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
-          # 관세청 품목별 수출입실적(공공데이터포털). KOSIS보다 빠른 원천이다.
-          DATA_GO_KR_KEY: ${{ secrets.DATA_GO_KR_KEY }}
-        run: python tools/build_earnings_forecast.py --target ${{ matrix.target }} --out runs/earnings --publish
+  # 수출 통계·실적 예상·장기 전망은 monthly-longterm.yml에서 하루 한 번 함께 갱신한다.
 
   # 검색어는 하루 사이에 실제로 바뀌는 유일한 보고서라 3시간 간격 회차에도 돌린다.
   # 아침 10분 재시도 회차는 건너뛴다 — 본 실행과 같은 보조 보고서를 반복 생성할 필요가 없다.

@@ -894,7 +894,9 @@ def render_fragment(result):
                  + (f' <b>{e(r["months_missing"])} 수출은 아직 KOSIS에 올라오지 않았습니다.</b> '
                     '그 달이 들어오면 추정이 더 단단해집니다.' if r.get("months_missing") else "")
                  + (" " + " ".join(
-                     f'<b>{e(a["month"])}</b>은 관세청 1~{a["days"]}일 속보(반도체 {a["yoy"]:+.0%})로 잠정 추정한 값입니다.'
+                     (f'<b>{e(a["month"])}</b>은 관세청 월말 잠정 수출액을 반영했습니다.'
+                      if a.get("basis") == "full_month_preliminary" else
+                      f'<b>{e(a["month"])}</b>은 관세청 1~{a["days"]}일 속보(반도체 {a["yoy"]:+.0%})로 잠정 추정한 값입니다.')
                      for a in r.get("flash_applied") or []) if r.get("flash_applied") else "")
                  + ((f' {e(", ".join(r["customs_info"]["months_added"]))}은 관세청 원천(HS 8541·8542 합계)을 '
                      f'KOSIS 기준으로 환산해 넣은 값입니다 — 품목 범위가 좁아 그대로는 KOSIS의 '
@@ -1135,7 +1137,7 @@ def analyse(target, out_dir, fetch=True):
         pass
     loaded = []
     for _name in ("semiconductor_exports.csv", "leading_cycle.csv", "customs_exports.csv",
-                  "cli_g20.csv", "tsmc_revenue.csv", "dram_spot.csv", "customs_quantity.csv"):
+                  "cli_g20.csv", "tsmc_revenue.csv", "dram_spot.csv", "customs_quantity.csv", "customs_flash.csv"):
         try:
             text = github_pages.fetch(f"macro_history/{_name}", _token)
             if text:
@@ -1241,7 +1243,14 @@ def analyse(target, out_dir, fetch=True):
 
     flash_applied = []
     try:
-        exports, flash_applied = apply_exports_flash(exports, load_exports_flash(out_dir))
+        from export_refresh import resolve_exports
+        raw_flash = load_flash_cache(out_dir)
+        if raw_flash is None:
+            raw_flash = load_flash_cache(fallback_dir)
+        if raw_flash is not None:
+            exports, flash_applied = resolve_exports(exports, raw_flash)
+        else:
+            exports, flash_applied = apply_exports_flash(exports, load_exports_flash(out_dir))
         if flash_applied:
             print("  관세청 속보로 잠정 추정한 달:", flash_applied, flush=True)
     except Exception as exc:
@@ -1445,6 +1454,12 @@ def analyse(target, out_dir, fetch=True):
             elif info.get("reason"):
                 print(f"  잠정실적 {period}: {info['reason']}", flush=True)
 
+    # 같은 실행의 장기 전망도 정확히 같은 수출 계열을 사용한다.
+    from export_refresh import snapshot
+    exports_snapshot = snapshot(exports, flash_applied, flash_info,
+                                datetime.now(KST).strftime("%Y-%m-%d %H:%M KST"))
+    (out_dir / "exports_snapshot.json").write_text(
+        json.dumps(exports_snapshot, ensure_ascii=False, indent=2), encoding="utf-8")
     last_actual_quarter = profit.index[-1]
     last_actual = float(profit.iloc[-1])
     result = {
@@ -1454,6 +1469,7 @@ def analyse(target, out_dir, fetch=True):
         "months_included": month_names, "months_missing": missing_months,
         "flash_applied": flash_applied, "customs_info": customs_info,
         "flash_info": flash_info,
+        "exports_snapshot_hash": exports_snapshot["snapshot_hash"],
         "point": point, "raw_point": raw_point,
         "low": interval_bounds(point, ev.get("interval_rel_halfwidth"))[0],
         "high": interval_bounds(point, ev.get("interval_rel_halfwidth"))[1],
@@ -1605,7 +1621,7 @@ def main():
         github_pages.publish(ledger_name, ledger_path.read_text(encoding="utf-8"), token,
                              f"earnings ledger: {args.target} ({result['quarter_code']})")
         print(f"발행 {ledger_name}")
-        for name in ("earnings.html", "earnings.json"):
+        for name in ("earnings.html", "earnings.json", "exports_snapshot.json"):
             sha = github_pages.publish(f"docs/{args.target}/{name}",
                                        (out_dir / name).read_text(encoding="utf-8"),
                                        token, f"earnings: {args.target} {result['quarter_code']}")

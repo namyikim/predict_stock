@@ -137,10 +137,9 @@ class WorkflowWiringTests(unittest.TestCase):
         import yaml
         wf = yaml.safe_load((ROOT / ".github" / "workflows" / "monthly-longterm.yml").read_text(encoding="utf-8"))
         crons = [x["cron"] for x in wf[True]["schedule"]]
-        self.assertIn("30 0 * * *", crons)      # 매일 09:30 KST — 발표가 늦어져도 받을 때까지 확인
+        self.assertEqual(crons, ["17 1 * * *"])  # 매일 10:17 KST 한 번
         steps = wf["jobs"]["longterm"]["steps"]
         names = [s.get("name", "") for s in steps]
-        gate_pos = next(i for i, n in enumerate(names) if n.startswith("발표 확인"))
-        for step in steps[gate_pos + 1:]:
-            self.assertEqual(step.get("if"), "steps.gate.outputs.run == 'true'", step.get("name"))
-        self.assertIn("customs_release_gate.py", steps[gate_pos]["run"])
+        self.assertLess(names.index("이번 분기 영업이익 추정·발행"), names.index("장기 전망 계산·발행"))
+        self.assertLess(names.index("장기 전망 계산·발행"), names.index("종합 보고서의 장기 전망 탭 갱신"))
+        self.assertFalse(any("customs_release_gate.py" in step.get("run", "") for step in steps))

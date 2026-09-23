@@ -2,7 +2,7 @@
 """장기 전망 — 반도체 수출액·선행지수 순환변동치와 3·6·12개월 주가 수익률.
 
 매일 보고서의 맨 아래 '장기 전망 (월간)' 절에 들어갈 조각(HTML)과 수치(JSON)를 만든다.
-월 1회 실행하고, 실패하면 이전 달 조각이 그대로 남는다.
+하루 1회 실행하고, 실패하면 마지막 성공 조각이 그대로 남는다.
 
 설계 원칙
 - 상관계수가 높다는 사실은 예측력의 근거가 아니다. 두 시계열이 모두 우상향하면 수준끼리는
@@ -93,6 +93,10 @@ def monthly_prices(ticker, cache_dir, fetch=True):
             print("  ⚠️ 수정종가에 0 이하 값이 많아 원종가를 씁니다.", flush=True)
             daily = raw[raw > 0]
         daily = daily.dropna()
+        # 종합 보고서 요약의 변동성 계산에는 월봉이 아닌 일봉을 넘긴다.
+        # 오전 실행의 당일 장중 가격은 종가로 표시하지 않는다.
+        today = pd.Timestamp.now(tz="Asia/Seoul").tz_localize(None).normalize()
+        daily[daily.index < today].to_csv(cache_dir / f"{ticker.replace('.', '_')}_daily.csv", header=["close"])
         # 진행 중인 달은 월말 종가가 아니므로 뺀다(이번 달 1일이어도 전월까지만 남는다).
         last_full = pd.Timestamp.now(tz="Asia/Seoul").tz_localize(None).normalize().replace(day=1) - pd.Timedelta(days=1)
         daily = daily[daily.index <= last_full]
@@ -1017,6 +1021,8 @@ def render_fragment(result):
     parts = ['<h3 style="font-size:15px;margin:24px 0 9px;padding-bottom:6px;border-bottom:1px solid #ddd">'
              '1. 장기 전망 (월간) <span style="font-weight:400;color:#8a9199;font-size:12px">'
              f'&nbsp;반도체 수출액·선행지수 순환변동치와 3·6·12개월 수익률 · 기준 {e(r["as_of"])}</span></h3>']
+    from export_refresh import render_live
+    parts.append(render_live(r.get("live_exports")))
     parts.append('<div style="background:#fdf8ec;border-left:4px solid #c8952a;padding:12px 16px;border-radius:0 5px 5px 0;font-size:13px">'
                  '수출액 추세와 주가의 <b>수준</b>이 상관이 높은 것은 둘 다 우상향하기 때문이며 예측력의 근거가 아닙니다. '
                  'HP 필터처럼 미래 자료를 쓰는 양방향 추세도 쓰지 않았습니다. 아래는 그 시점까지의 자료로 계산한 지표가 '
@@ -1325,10 +1331,17 @@ def main():
     parser.add_argument("--no-fetch", action="store_true")
     parser.add_argument("--dump", action="store_true")
     parser.add_argument("--publish", action="store_true")
+    parser.add_argument("--exports-snapshot", type=Path,
+                        help="같은 일일 실행의 실적 예상이 저장한 수출 스냅샷")
     args = parser.parse_args()
     out_dir = args.out / args.target
     out_dir.mkdir(parents=True, exist_ok=True)
     result, frame = analyse(args.target, out_dir, fetch=not args.no_fetch)
+    if args.exports_snapshot:
+        from export_refresh import live_scenario
+        exports_snapshot = json.loads(args.exports_snapshot.read_text(encoding="utf-8"))
+        result["live_exports"] = live_scenario(frame, result["features"], exports_snapshot,
+                                                result["evaluation"])
     fragment = render_fragment(result)
     (out_dir / "longterm.json").write_text(json.dumps(result, ensure_ascii=False, indent=2, default=str), encoding="utf-8")
     (out_dir / "longterm.html").write_text(fragment, encoding="utf-8")

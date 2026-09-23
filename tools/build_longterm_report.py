@@ -395,6 +395,7 @@ def phase_duration_outlook(f, min_len=3, min_sample=3):
     out = {
         "phase": current["phase"],
         "since": current["start"], "as_of": current["end"],
+        "flash_note": latest_flash_note(current["end"]),
         "months_so_far": current["months"],
         "episodes": [{"start": e["start"], "end": e["end"], "months": e["months"]} for e in same],
         "n_past": len(same),
@@ -958,6 +959,58 @@ def render_rejected(r):
             '<code>cli_ablation</code>·<code>cycle_ablation</code> 에 그대로 있습니다.</div>']
 
 
+FLASH_PATH = ROOT / "macro_history" / "customs_flash.csv"
+
+
+def latest_flash_note(model_as_of, flash_path=FLASH_PATH):
+    """모델이 쓴 마지막 확정월 뒤에 나온 관세청 10일 단위 잠정치. 없으면 None.
+
+    장기 전망 모델의 입력은 월간 확정치 그대로다(그 정의로 검증·잠금됐다). 발표일에 보고서가 다시
+    만들어질 때 '그 뒤 수출이 어떻게 가고 있나'를 표시만 한다 — 입력에 넣지 않는다(2026-09-23).
+    """
+    if not Path(flash_path).is_file():
+        return None
+    try:
+        flash = pd.read_csv(flash_path)
+    except Exception:
+        return None
+    if flash.empty or not {"month", "days", "value"}.issubset(flash.columns):
+        return None
+    # 보관본의 month 는 "2026-09" 문자열이다. flash_yoy 는 Timestamp 키로 1년 전을 찾으므로 바꿔 준다
+    # (실적 예상 도구의 load_flash_cache 와 같은 변환).
+    flash["month"] = pd.to_datetime(flash["month"].astype(str) + "-01", errors="coerce")
+    flash = flash.dropna(subset=["month"])
+    from data_sources.exports import flash_yoy
+    yoy = flash_yoy(flash)
+    if yoy.empty:
+        return None
+    as_of = pd.Timestamp(model_as_of).to_period("M")
+    later = yoy[pd.to_datetime(yoy["month"]).dt.to_period("M") > as_of]
+    if later.empty:
+        return None
+    later = later.sort_values(["month", "days"])
+    last = later.iloc[-1]
+    rows = [{"month": str(pd.Timestamp(r["month"]).to_period("M")), "days": int(r["days"]),
+             "yoy": float(r["semiconductor_yoy"])} for _, r in later.iterrows()]
+    return {"rows": rows, "latest_month": rows[-1]["month"], "latest_days": rows[-1]["days"],
+            "latest_yoy": rows[-1]["yoy"], "model_as_of": str(as_of)}
+
+
+def flash_note_html(note):
+    if not note:
+        return ""
+    e = html.escape
+    items = " · ".join(f'{e(r["month"])} {"1~" + str(r["days"]) + "일" if r["days"] < 31 else "월 전체(잠정)"} '
+                       f'<b>{r["yoy"]:+.1%}</b>' for r in note["rows"])
+    return ('<div style="border:1px solid #cedff0;background:#f0f6fc;border-radius:6px;padding:11px 15px;'
+            'margin:0 0 12px;font-size:13px;line-height:1.7">'
+            f'<b>최신 반도체 수출 잠정치</b> <span style="color:#8a9199;font-size:12px">'
+            f'(관세청 10일 단위 · 같은 일자끼리 1년 전과 비교)</span><br>{items}<br>'
+            f'<span style="font-size:12px;color:#6b7178">위 장기 전망은 <b>{e(note["model_as_of"])}</b>까지의 월간 확정치로 '
+            '계산했고, 이 잠정치는 입력에 넣지 않았습니다(모델 정의를 바꾸지 않기 위해). 월 전체 확정치가 KOSIS 에 실리면 '
+            '그때 전망에 들어갑니다.</span></div>')
+
+
 def render_fragment(result):
     e = html.escape
     r = result
@@ -969,6 +1022,9 @@ def render_fragment(result):
                  'HP 필터처럼 미래 자료를 쓰는 양방향 추세도 쓰지 않았습니다. 아래는 그 시점까지의 자료로 계산한 지표가 '
                  '<b>앞으로</b> h개월 수익률을 맞히는지를 2012년 이후 워크포워드로 잰 결과입니다. 12개월 지평은 독립 표본이 '
                  f'{r["evaluation"]["12"]["n_independent"]}개뿐이라 결론은 잠정적입니다.</div>')
+
+    # 최신 수출 잠정치 — 표시만. 입력은 월간 확정치 그대로.
+    parts.append(flash_note_html(r.get("flash_note")))
 
     # 그림: 실제 통계치와 주가
     if r.get("chart_svg"):

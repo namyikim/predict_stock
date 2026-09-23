@@ -2719,3 +2719,138 @@ def ledger_section_html(review, ensemble_name, updated_note=""):
             f'마지막 채점 {review["latest_date"].date()} · 하루 결과는 잡음입니다(1거래일 MAE ≈ 2~3%). '
             '판단은 60일 창으로 하세요.</div>')
     return head + updated_note + table + rtable + alerts + note
+
+
+# ---- 장 마감 회고 절 (2026-09-23) -------------------------------------------------------------
+# tools/build_session_review.py 가 16:10 회차에 페이지에 끼우는 절이다. 노트북도 같은 함수로 그린다 — 저녁·코드 반영
+# 실행이 페이지를 새로 만들면 오후에 끼운 회고가 사라져서, 마지막 마감 거래일의 회고 기록(reviews/<날짜>.json)을
+# 읽어 다시 붙인다. 기록에서 읽으면 시각이 ISO 문자열이고 결측이 None 이라 둘 다 받는다.
+REVIEW_START, REVIEW_END = "<!--REVIEW_SECTION_START-->", "<!--REVIEW_SECTION_END-->"
+REVIEW_LEDGER_END = "<!--LEDGER_SECTION_END-->"
+REVIEW_DISCLAIMER = ("시간이 맞는 것이지 원인 확정이 아닙니다. 뉴스 없이 움직이는 날(수급·프로그램·옵션 만기)이 많고, "
+                     "기사 발행 시각은 실제 정보 유통보다 늦거나 앞섭니다. 이 절은 설명 도구이며 다음날 예측에 "
+                     "자동 반영되지 않습니다.")
+_RV_TD = 'style="padding:6px 10px;border-top:1px solid #eee"'
+_RV_TDR = 'style="padding:6px 10px;border-top:1px solid #eee;text-align:right;font-variant-numeric:tabular-nums"'
+_RV_TH = 'style="padding:8px 10px;text-align:left;font-size:11px;color:#6b7178;letter-spacing:.5px;background:#fafafa"'
+
+
+def _rv_finite(x):
+    try:
+        return bool(np.isfinite(float(x)))
+    except (TypeError, ValueError):
+        return False
+
+
+def _rv_pct(x, d=2):
+    return f"{float(x) * 100:+.{d}f}%" if _rv_finite(x) else "—"
+
+
+def _rv_hhmm(t):
+    """Timestamp 또는 ISO 문자열 → HH:MM."""
+    if hasattr(t, "strftime"):
+        return t.strftime("%H:%M")
+    try:
+        return pd.Timestamp(t).strftime("%H:%M")
+    except Exception:
+        return str(t)[11:16] or "—"
+
+
+def _rv_news_list(items):
+    from html import escape as e
+    if not items:
+        return '<div style="font-size:12px;color:#8a9199;margin:2px 0 4px">관련 뉴스 없음(이 창에 발행된 헤드라인이 없거나 조회하지 않음)</div>'
+    return ('<ul style="margin:0 0 6px;padding-left:20px;font-size:12px;color:#4a4f55">'
+            + "".join(f'<li>{_rv_hhmm(it["time"])} · <a href="{e(it["link"])}" style="color:#1a5490">{e(it["title"])}</a>'
+                      f' <span style="color:#8a9199">{e(it["source"])}</span></li>' for it in items) + "</ul>")
+
+
+def review_section_html(review, carried=False):
+    """장 마감 회고 절 HTML. carried=True 면 새로 만든 다음 거래일 보고서에 다시 붙이는 직전 거래일 회고다."""
+    from html import escape as e
+    r = review
+    if carried:
+        heading = f'직전 거래일 장 회고 — {e(r["session_date"])}'
+        note = (f'<b>{e(r["session_date"])} 장 마감 후 생성 {e(r["generated_at"])}</b> — 다음 거래일 보고서를 새로 만들며 '
+                '이 회고를 다시 붙였습니다. 그날 장을 설명할 뿐 위 성능표·다음 거래일 예측을 바꾸지 않습니다.')
+    else:
+        heading = f'오늘 장 회고 — {e(r["session_date"])}'
+        note = (f'<b>장 마감 후 생성 {e(r["generated_at"])}</b> — 이 절은 오늘 장을 설명할 뿐 위 성능표·다음 거래일 '
+                '예측을 바꾸지 않습니다.')
+    parts = [REVIEW_START,
+             '<h3 style="font-size:15px;margin:24px 0 9px;padding-bottom:6px;border-bottom:1px solid #ddd">'
+             f'{heading}</h3>',
+             '<div style="font-size:12px;color:#6b7178;margin:4px 0 8px;padding:8px 12px;background:#f7f8fa;border-radius:5px">'
+             f'{note}</div>']
+    s = r["summary"]
+    rows = [("전일 종가 → 시가 (갭)", _rv_pct(s["gap"])), ("시가 → 종가 (세션)", _rv_pct(s["session"])),
+            ("전일 종가 → 종가", _rv_pct(s["c2c"])),
+            ("고가 / 저가 (시가 대비)", f'{_rv_pct(s.get("high_vs_open"))} / {_rv_pct(s.get("low_vs_open"))}'),
+            ("거래량 (20일 평균 대비)", f'{float(s["volume_ratio"]):.2f}배' if _rv_finite(s.get("volume_ratio")) else "—"),
+            (f'KOSPI / {e(r["peer_name"])}', f'{_rv_pct(s.get("kospi_c2c"))} / {_rv_pct(s.get("peer_c2c"))}'),
+            ("원/달러", _rv_pct(s.get("usdkrw_chg"))),
+            ("전날 밤 SOX / 나스닥", f'{_rv_pct(s.get("sox_ret"))} / {_rv_pct(s.get("nasdaq_ret"))}')]
+    if r.get("flows"):
+        rows.append(("외국인 / 기관 순매수", e(r["flows"])))
+    body = "".join(f'<tr><td {_RV_TD}>{e(k)}</td><td {_RV_TDR}>{v}</td></tr>' for k, v in rows)
+    parts.append('<div style="overflow-x:auto"><table style="width:100%;min-width:420px;border-collapse:collapse;font-size:13px;border:1px solid #e5e5e5">'
+                 f'<tr><th {_RV_TH}>오늘 장</th><th {_RV_TH}></th></tr>{body}</table></div>')
+    c = r["classification"]
+    badge = " · ".join(f'<b>{e(l)}</b>' for l in c["labels"])
+    parts.append(f'<div style="margin:12px 0 4px;font-size:14px">흐름의 성격: {badge}</div>'
+                 '<ul style="margin:0 0 10px;padding-left:20px;font-size:13px;color:#4a4f55">'
+                 + "".join(f"<li>{e(x)}</li>" for x in c["reasons"]) + "</ul>")
+    parts.append('<div style="font-size:14px;margin:14px 0 6px"><b>아침 예측과 비교</b></div>')
+    if r["forecasts"]:
+        for f in r["forecasts"]:
+            color = "#1a7f37" if f["hit"] else "#a8322a"
+            band = f'±{float(f["band"]) * 100:.2f}%' if _rv_finite(f.get("band")) else "—"
+            parts.append(f'<div style="font-size:13px;margin:4px 0 8px;padding:8px 12px;border-left:3px solid {color};background:#fafafa">'
+                         f'<b>{e(str(f["model"]))}</b> · {e(f["verdict"])}<br>'
+                         f'<span style="color:#6b7178">{e(f["legs"])} · 보합 밴드 {band} · {e(f["where"])}</span></div>')
+        if r.get("price_check"):
+            parts.append(f'<div style="font-size:12px;color:#6b7178;margin:2px 0 8px">{e(r["price_check"])}</div>')
+    else:
+        parts.append('<div style="font-size:13px;color:#6b7178">오늘 예측일의 아침 예측 기록이 원장에 없습니다.</div>')
+    parts.append('<div style="font-size:14px;margin:14px 0 6px"><b>흐름이 바뀐 시각과 그 전후의 뉴스</b></div>')
+    if r.get("intraday_note"):
+        parts.append(f'<div style="font-size:13px;color:#a8322a">{e(r["intraday_note"])}</div>')
+    if r.get("overnight_news") is not None:
+        parts.append('<div style="font-size:13px;margin:6px 0 2px"><b>밤사이 (전일 15:30 ~ 09:00)</b> → 갭 ' + _rv_pct(s["gap"]) + "</div>")
+        parts.append(_rv_news_list(r["overnight_news"]))
+    for ev in r["events"]:
+        parts.append(f'<div style="font-size:13px;margin:8px 0 2px"><b>{_rv_hhmm(ev["time"])}</b> · 봉 {_rv_pct(ev["ret"])} '
+                     f'(σ의 {ev["z"]}배, 거래량 {ev["volume_ratio"]}배) · '
+                     f'시가 대비 {_rv_pct(ev["cum_before"])} → {_rv_pct(ev["cum_after"])}</div>')
+        parts.append(_rv_news_list(ev.get("news", [])))
+    if r.get("turning_point"):
+        tp = r["turning_point"]
+        parts.append(f'<div style="font-size:12px;color:#6b7178;margin:6px 0">경로: 시가 대비 고점 {_rv_pct(tp["high"])}({_rv_hhmm(tp["high_time"])}) · '
+                     f'저점 {_rv_pct(tp["low"])}({_rv_hhmm(tp["low_time"])}) — {e(tp["pattern"])}</div>')
+    if r.get("disclosures") is not None:
+        if r["disclosures"]:
+            parts.append('<div style="font-size:13px;margin:10px 0 2px"><b>오늘 공시(DART)</b></div><ul style="margin:0;padding-left:20px;font-size:13px">'
+                         + "".join(f'<li><a href="{e(d["url"])}" style="color:#1a5490">{e(d["report_nm"])}</a></li>' for d in r["disclosures"]) + "</ul>")
+        else:
+            parts.append('<div style="font-size:12px;color:#6b7178;margin:6px 0">오늘 공시(DART): 없음</div>')
+    elif r.get("disclosure_note"):
+        parts.append(f'<div style="font-size:12px;color:#6b7178;margin:6px 0">{e(r["disclosure_note"])}</div>')
+    if r.get("top_news"):
+        parts.append('<div style="font-size:13px;margin:10px 0 2px"><b>오늘의 관련 헤드라인 (관련도 순)</b></div>' + _rv_news_list(r["top_news"]))
+    parts.append('<div style="margin:12px 0 0;padding:10px 14px;background:#fff4e5;border:1px solid #f0c58a;border-radius:6px;'
+                 f'font-size:12px;color:#7a4b00">{e(REVIEW_DISCLAIMER)}</div>')
+    parts.append(REVIEW_END)
+    return "".join(parts)
+
+
+def insert_review_section(page, section):
+    """회고 절을 넣는다. 이미 있으면 교체, 없으면 원장 절 뒤, 그것도 없으면 body 끝."""
+    start, end = page.find(REVIEW_START), page.find(REVIEW_END)
+    if start >= 0 and end > start:
+        return page[:start] + section + page[end + len(REVIEW_END):]
+    anchor = page.find(REVIEW_LEDGER_END)
+    if anchor >= 0:
+        cut = anchor + len(REVIEW_LEDGER_END)
+        return page[:cut] + section + page[cut:]
+    body_end = page.rfind("</body>")
+    return page[:body_end] + section + page[body_end:] if body_end >= 0 else page + section

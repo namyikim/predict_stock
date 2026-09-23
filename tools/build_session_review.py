@@ -40,11 +40,11 @@ TARGETS = {
     "sk_hynix": {"ticker": "000660.KS", "name": "SK하이닉스", "peer": "005930.KS", "peer_name": "삼성전자",
                  "corp_code": "00164779", "headline": "No macro ensemble"},
 }
-MARK_START, MARK_END = "<!--REVIEW_SECTION_START-->", "<!--REVIEW_SECTION_END-->"
-LEDGER_END = "<!--LEDGER_SECTION_END-->"
-DISCLAIMER = ("시간이 맞는 것이지 원인 확정이 아닙니다. 뉴스 없이 움직이는 날(수급·프로그램·옵션 만기)이 많고, "
-              "기사 발행 시각은 실제 정보 유통보다 늦거나 앞섭니다. 이 절은 설명 도구이며 다음날 예측에 "
-              "자동 반영되지 않습니다.")
+# 절 그리기는 forecast_utils 로 옮겼다(2026-09-23) — 노트북이 페이지를 새로 만들 때 같은 함수로 직전 회고를 다시 붙인다.
+from forecast_utils import (  # noqa: E402
+    REVIEW_DISCLAIMER as DISCLAIMER, REVIEW_END as MARK_END, REVIEW_LEDGER_END as LEDGER_END,
+    REVIEW_START as MARK_START, insert_review_section, review_section_html,
+)
 # 전환점 판정 문턱. 그날 5분 수익률의 robust σ 배수.
 EVENT_Z, VOLUME_SPIKE, MERGE_MINUTES, MAX_EVENTS = 3.0, 3.0, 15, 3
 NEWS_BEFORE_MIN, NEWS_AFTER_MIN = 90, 15
@@ -344,95 +344,13 @@ def _pct(x, d=2):
 
 
 def render_section(review):
-    e = html.escape
-    r = review
-    parts = [MARK_START,
-             '<h3 style="font-size:15px;margin:24px 0 9px;padding-bottom:6px;border-bottom:1px solid #ddd">'
-             f'오늘 장 회고 — {e(r["session_date"])}</h3>',
-             f'<div style="font-size:12px;color:#6b7178;margin:4px 0 8px;padding:8px 12px;background:#f7f8fa;border-radius:5px">'
-             f'<b>장 마감 후 생성 {e(r["generated_at"])}</b> — 이 절은 오늘 장을 설명할 뿐 위 성능표·다음 거래일 예측을 바꾸지 않습니다.</div>']
-    s = r["summary"]
-    rows = [("전일 종가 → 시가 (갭)", _pct(s["gap"])), ("시가 → 종가 (세션)", _pct(s["session"])),
-            ("전일 종가 → 종가", _pct(s["c2c"])), ("고가 / 저가 (시가 대비)", f'{_pct(s["high_vs_open"])} / {_pct(s["low_vs_open"])}'),
-            ("거래량 (20일 평균 대비)", f'{s["volume_ratio"]:.2f}배' if np.isfinite(s["volume_ratio"]) else "—"),
-            (f'KOSPI / {e(r["peer_name"])}', f'{_pct(s.get("kospi_c2c"))} / {_pct(s.get("peer_c2c"))}'),
-            ("원/달러", _pct(s.get("usdkrw_chg"))), ("전날 밤 SOX / 나스닥", f'{_pct(s.get("sox_ret"))} / {_pct(s.get("nasdaq_ret"))}')]
-    if r.get("flows"):
-        rows.append(("외국인 / 기관 순매수", e(r["flows"])))
-    body = "".join(f'<tr><td {TD}>{e(k)}</td><td {TDR}>{v}</td></tr>' for k, v in rows)
-    parts.append('<div style="overflow-x:auto"><table style="width:100%;min-width:420px;border-collapse:collapse;font-size:13px;border:1px solid #e5e5e5">'
-                 f'<tr><th {TH}>오늘 장</th><th {TH}></th></tr>{body}</table></div>')
-    # 성격
-    c = r["classification"]
-    badge = " · ".join(f'<b>{e(l)}</b>' for l in c["labels"])
-    parts.append(f'<div style="margin:12px 0 4px;font-size:14px">흐름의 성격: {badge}</div>'
-                 '<ul style="margin:0 0 10px;padding-left:20px;font-size:13px;color:#4a4f55">'
-                 + "".join(f"<li>{e(x)}</li>" for x in c["reasons"]) + "</ul>")
-    # 예측 비교
-    parts.append('<div style="font-size:14px;margin:14px 0 6px"><b>아침 예측과 비교</b></div>')
-    if r["forecasts"]:
-        for f in r["forecasts"]:
-            color = "#1a7f37" if f["hit"] else "#a8322a"
-            parts.append(f'<div style="font-size:13px;margin:4px 0 8px;padding:8px 12px;border-left:3px solid {color};background:#fafafa">'
-                         f'<b>{e(str(f["model"]))}</b> · {e(f["verdict"])}<br>'
-                         f'<span style="color:#6b7178">{e(f["legs"])} · 보합 밴드 ±{f["band"] * 100:.2f}% · {e(f["where"])}</span></div>')
-        if r.get("price_check"):
-            parts.append(f'<div style="font-size:12px;color:#6b7178;margin:2px 0 8px">{e(r["price_check"])}</div>')
-    else:
-        parts.append('<div style="font-size:13px;color:#6b7178">오늘 예측일의 아침 예측 기록이 원장에 없습니다.</div>')
-    # 전환점과 뉴스
-    parts.append('<div style="font-size:14px;margin:14px 0 6px"><b>흐름이 바뀐 시각과 그 전후의 뉴스</b></div>')
-    if r.get("intraday_note"):
-        parts.append(f'<div style="font-size:13px;color:#a8322a">{e(r["intraday_note"])}</div>')
-    if r.get("overnight_news") is not None:
-        parts.append('<div style="font-size:13px;margin:6px 0 2px"><b>밤사이 (전일 15:30 ~ 09:00)</b> → 갭 ' + _pct(s["gap"]) + "</div>")
-        parts.append(_news_list(r["overnight_news"]))
-    for ev in r["events"]:
-        t = ev["time"].strftime("%H:%M") if hasattr(ev["time"], "strftime") else str(ev["time"])
-        parts.append(f'<div style="font-size:13px;margin:8px 0 2px"><b>{t}</b> · 봉 {_pct(ev["ret"])} (σ의 {ev["z"]}배, 거래량 {ev["volume_ratio"]}배) · '
-                     f'시가 대비 {_pct(ev["cum_before"])} → {_pct(ev["cum_after"])}</div>')
-        parts.append(_news_list(ev.get("news", [])))
-    if r.get("turning_point"):
-        tp = r["turning_point"]
-        parts.append(f'<div style="font-size:12px;color:#6b7178;margin:6px 0">경로: 시가 대비 고점 {_pct(tp["high"])}({tp["high_time"].strftime("%H:%M")}) · '
-                     f'저점 {_pct(tp["low"])}({tp["low_time"].strftime("%H:%M")}) — {e(tp["pattern"])}</div>')
-    # 공시
-    if r.get("disclosures") is not None:
-        if r["disclosures"]:
-            parts.append('<div style="font-size:13px;margin:10px 0 2px"><b>오늘 공시(DART)</b></div><ul style="margin:0;padding-left:20px;font-size:13px">'
-                         + "".join(f'<li><a href="{e(d["url"])}" style="color:#1a5490">{e(d["report_nm"])}</a></li>' for d in r["disclosures"]) + "</ul>")
-        else:
-            parts.append('<div style="font-size:12px;color:#6b7178;margin:6px 0">오늘 공시(DART): 없음</div>')
-    elif r.get("disclosure_note"):
-        parts.append(f'<div style="font-size:12px;color:#6b7178;margin:6px 0">{e(r["disclosure_note"])}</div>')
-    # 그날의 주요 헤드라인
-    if r.get("top_news"):
-        parts.append('<div style="font-size:13px;margin:10px 0 2px"><b>오늘의 관련 헤드라인 (관련도 순)</b></div>' + _news_list(r["top_news"]))
-    parts.append(f'<div style="margin:12px 0 0;padding:10px 14px;background:#fff4e5;border:1px solid #f0c58a;border-radius:6px;font-size:12px;color:#7a4b00">{e(DISCLAIMER)}</div>')
-    parts.append(MARK_END)
-    return "".join(parts)
-
-
-def _news_list(items):
-    e = html.escape
-    if not items:
-        return '<div style="font-size:12px;color:#8a9199;margin:2px 0 4px">관련 뉴스 없음(이 창에 발행된 헤드라인이 없거나 조회하지 않음)</div>'
-    return ('<ul style="margin:0 0 6px;padding-left:20px;font-size:12px;color:#4a4f55">'
-            + "".join(f'<li>{it["time"].strftime("%H:%M")} · <a href="{e(it["link"])}" style="color:#1a5490">{e(it["title"])}</a>'
-                      f' <span style="color:#8a9199">{e(it["source"])}</span></li>' for it in items) + "</ul>")
+    """오늘 장 회고 절. 본체는 forecast_utils.review_section_html."""
+    return review_section_html(review)
 
 
 def insert_section(page, section):
     """회고 절을 넣는다. 이미 있으면 교체, 없으면 원장 절 뒤, 그것도 없으면 body 끝."""
-    start, end = page.find(MARK_START), page.find(MARK_END)
-    if start >= 0 and end > start:
-        return page[:start] + section + page[end + len(MARK_END):]
-    anchor = page.find(LEDGER_END)
-    if anchor >= 0:
-        cut = anchor + len(LEDGER_END)
-        return page[:cut] + section + page[cut:]
-    body_end = page.rfind("</body>")
-    return page[:body_end] + section + page[body_end:] if body_end >= 0 else page + section
+    return insert_review_section(page, section)
 
 
 # ---------------------------------------------------------------------------

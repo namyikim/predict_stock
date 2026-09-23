@@ -90,7 +90,13 @@ class TopOfSummaryTests(unittest.TestCase):
         for text in (">52%<", "늘 같은 답이면 44%", ">84%<", ">76%<", "목표 80%", "25일 중"):
             self.assertIn(text, card)
         self.assertNotIn(">45%<", card)       # 짧은 창은 쓰지 않는다
-        self.assertNotIn(">10%<", card)       # 5거래일 종가는 여기서 다루지 않는다
+        # 5거래일 종가를 1일 '종가 구간 적중' 카드에 섞지 않는다. 2026-09-23 부터 5거래일은 라벨이 다른
+        # '1주일 종가 구간 적중' 카드로 따로 보인다 — 10% 는 그 카드에만 있어야 한다.
+        import re
+        one_day = re.search(r">종가 구간 적중</div><div[^>]*>([^<]+)<", card).group(1)
+        self.assertEqual(one_day, "76%")
+        one_week = re.search(r">1주일 종가 구간 적중</div><div[^>]*>([^<]+)<", card).group(1)
+        self.assertEqual(one_week, "10%")
         self.assertNotIn("판단하기 이릅니다", card)
 
     def test_long_history_is_labelled_as_the_recent_window(self):
@@ -300,3 +306,44 @@ class EasySummaryTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class MultiDayIntervalCardTests(unittest.TestCase):
+    """누적 성적 카드에 1주일·1개월 종가 구간 적중을 보인다(2026-09-23).
+
+    원장은 5·20거래일 예측을 매일 채점하지만 카드에는 1일만 나왔다. rolling 표는 가격 예측을 기간별로
+    이미 묶으므로 고르기만 하면 된다. 만기가 없는 기간은 행이 없어 카드도 없다.
+    """
+
+    def html(self, rows):
+        import re
+        import html as H
+        rolling = pd.DataFrame(rows)
+        out = forecast_utils.scorecard_html({"rolling": rolling, "n_scored_days": 20, "latest": pd.DataFrame()})
+        return re.sub(r"\s+", " ", H.unescape(re.sub(r"<[^>]+>", " ", out)))
+
+    def base(self):
+        return [{"window": 60, "kind": "price", "horizon_days": 1, "n": 20, "interval_coverage": 0.85,
+                 "nominal_coverage": 0.80}]
+
+    def test_one_week_card_appears_when_scored(self):
+        text = self.html(self.base() + [{"window": 60, "kind": "price", "horizon_days": 5, "n": 11,
+                                         "interval_coverage": 0.91, "nominal_coverage": 0.80}])
+        self.assertIn("1주일 종가 구간 적중 91% 11건 중", text)
+        self.assertIn("기간이 겹쳐 독립 표본 아님", text)
+
+    def test_one_month_card_appears_only_after_maturity(self):
+        self.assertNotIn("1개월 종가 구간 적중", self.html(self.base()))
+        text = self.html(self.base() + [{"window": 60, "kind": "price", "horizon_days": 20, "n": 3,
+                                         "interval_coverage": 1.0, "nominal_coverage": 0.80}])
+        self.assertIn("1개월 종가 구간 적중 100% 3건 중", text)
+
+    def test_one_day_card_is_unchanged(self):
+        text = self.html(self.base())
+        self.assertIn("종가 구간 적중 85% 20일 중 · 목표 80%", text)
+        self.assertNotIn("독립 표본 아님", text)
+
+    def test_small_multi_day_sample_triggers_the_caution(self):
+        text = self.html(self.base() + [{"window": 60, "kind": "price", "horizon_days": 5, "n": 11,
+                                         "interval_coverage": 0.91, "nominal_coverage": 0.80}])
+        self.assertIn("표본이 20일이 안 되어", text)

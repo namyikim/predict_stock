@@ -100,3 +100,44 @@
 - [GitHub Pages 발행 소스 설정 — GITHUB_TOKEN 커밋의 빌드 제한](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site)
 - [Git references API — force, 409/422 응답](https://docs.github.com/en/rest/git/refs)
 - 검토 코드: `tools/github_pages.py`, `tools/refresh_longterm_tab.py`, `.github/workflows/monthly-longterm.yml`
+
+## Claude 재검토 — 2026-09-23
+
+위 "검토 보완 사항"(GPT)을 코드와 GitHub API 실측으로 확인했다. 상태: 문서 검토. 구현 아님.
+
+### 항목별 판정
+
+| 지적 | 판정 | 확인 근거 |
+| --- | --- | --- |
+| 같은 파일 동시 기록 시 유실 | 맞음 — **현재 코드에 이미 있다** | 아래 '기존 유실 위험' |
+| `publish_tab()` 은 공통 `publish()` 대신 직접 API | 맞음 | `refresh_longterm_tab.py` 가 `github_pages._api` 를 직접 호출하고 409 때 최신 HTML 에 재적용한다 |
+| `publish()` 반환값은 blob SHA 7자 | 맞음 | `["content"]["sha"][:7]`. 독스트링의 "커밋 sha" 는 틀린 설명이다 |
+| `ContextVar` 는 프로세스 간 공유되지 않는다 | 맞음 | 원래 계획의 "실행 한 번 = 커밋 한 번" 은 과장이다. 정확히는 **도구 한 번 = 커밋 한 번**. 하루 60~100개 추정도 낙관적이며 이행 후 실측으로 다시 정한다 |
+| 생성한 커밋의 트리로 검증 | 맞음 | 최신 ref 로 비교하면 다른 실행의 정상 후속 커밋을 오류로 본다 |
+| 409/422 구분, ref 갱신 응답 유실 시 중복 커밋 방지, 무변경 배치 생략 | 맞음 | 표준적인 보완 |
+| GITHUB_TOKEN 커밋은 Pages 자동 빌드를 일으키지 않는다 | **이 저장소 실측과 다르다** | 아래 'Pages 실측' |
+
+### Pages 실측
+
+`GET /repos/.../pages/builds` 최근 100건(2026-09-23 04:53~06:25 UTC, 92분):
+- 빌드 촉발자: `github-actions[bot]` 97건, `namyikim` 3건.
+- 빌드가 붙은 서로 다른 커밋 79개. 커밋당 빌드 1회 58개, 2회 21개(자동 + 명시적 요청으로 보인다).
+- 상태: built 9, errored 81(대부분 뒤 빌드에 밀린 것), building 10.
+- 명시적 `POST pages/builds` 는 daily-report 6곳, afternoon-report 1곳, monthly-longterm 1곳 — 실행당 최대 6~7회라 92분에 79개 커밋의 빌드를 설명하지 못한다.
+
+→ 이 저장소에서는 **봇 커밋이 실제로 Pages 빌드를 일으킨다.** GPT 의 이유는 맞지 않지만 "명시적 요청을 대체 경로 검증 전까지 유지" 라는 결론은 해가 없으므로 그대로 따른다. 커밋을 줄이면 Pages 취소가 줄어든다는 원래 기대도 이 실측과 일치한다.
+
+### 기존 유실 위험 (배치와 무관하게 지금 있다)
+
+- `github_pages.publish()` 와 노트북 `github_put()` 은 409/422 때 sha 만 다시 읽고 **자기 전체 내용으로 다시 덮어쓴다.** 독스트링은 "파일 전체를 덮어쓰므로 재시도가 안전하다" 고 하지만, 다른 실행이 그 사이 행을 추가했다면 그 행이 지워진다.
+- `forecast_history/<target>/forecast_log.csv`(와 daily_forecast_comparison·forecast_accuracy_summary)를 **오후 갱신**(`build_afternoon_update.py`, concurrency 그룹 `afternoon-report`)과 **일일 보고서 노트북**(그룹 `daily-report`)이 둘 다 쓴다. 그룹이 달라 동시에 돌 수 있다.
+- 두 실행이 겹치면 늦게 쓴 쪽이 먼저 추가된 기록을 지운다. 시간대(오후 갱신 09:37·16:10 KST, 일일 기록 06~09·17~23 KST)가 대체로 어긋나 확률은 낮지만, 원장은 이 저장소에서 가장 중요한 자산이다.
+
+### 제안 (결정 대기)
+
+1. **원장 유실 방지를 배치와 별개로 먼저.** 가장 간단한 대책: 원장을 쓰는 워크플로(일일 보고서·오후 갱신·채점)를 같은 concurrency 그룹으로 묶는다. 워크플로당 한 줄이며 실행이 서로 기다리게 되는 것이 비용이다. 근본 대책(충돌 시 최신 원장을 다시 읽어 레코드 키로 병합)은 배치 ④단계에서 한다.
+2. `publish()` 독스트링을 실제 반환값(blob SHA)과 재시도의 한계(전체 덮어쓰기)에 맞게 고친다.
+3. 효과 목표는 "도구 단위 커밋"으로 다시 적고, 수치는 ① 이행 후 실측으로 정한다.
+
+- [ ] 제안 1 — 원장 쓰는 워크플로 concurrency 그룹 통합(사용자 승인 필요)
+- [ ] 제안 2 — `publish()` 독스트링 정정

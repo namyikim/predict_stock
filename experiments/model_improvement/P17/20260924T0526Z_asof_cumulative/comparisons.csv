@@ -1,0 +1,19 @@
+target,comparison,metric,delta,ci_low,ci_high,common_n,verdict
+samsung,asof cumulative − current (market only),log_loss,-0.0017408913119534,-0.0063079801337199,0.0027161634986405,1367,동률(CI가 0 포함)
+samsung,asof cumulative − current (market only),balanced_accuracy,0.0124610795880424,-0.0013023456059035,0.027295637268205,1367,동률(CI가 0 포함)
+samsung,asof cumulative − current (market only),accuracy,0.0117044623262618,-0.0022340975160624,0.026667870036101,1367,동률(CI가 0 포함)
+samsung,asof cumulative − 사전확률,log_loss,-0.0698312977032209,-0.0873556302379651,-0.0507863503858488,1367,후보가 유의하게 우위
+samsung,asof cumulative − 사전확률,balanced_accuracy,0.1119793165400479,0.0837162124890441,0.1394318359629289,1367,후보가 유의하게 우위
+samsung,asof cumulative − 사전확률,accuracy,0.1836137527432333,0.1415080067365056,0.2270097724659768,1367,후보가 유의하게 우위
+samsung,current (market only) − 노트북 OOF(재현 확인),log_loss,0.0,0.0,0.0,1367,동률(CI가 0 포함)
+samsung,current (market only) − 노트북 OOF(재현 확인),balanced_accuracy,0.0,0.0,0.0,1367,동률(CI가 0 포함)
+samsung,current (market only) − 노트북 OOF(재현 확인),accuracy,0.0,0.0,0.0,1367,동률(CI가 0 포함)
+sk_hynix,asof cumulative − current (market only),log_loss,-0.007878549582972,-0.0128874490876083,-0.0029783789017417,1362,후보가 유의하게 우위
+sk_hynix,asof cumulative − current (market only),balanced_accuracy,0.0013488926532403,-0.0114934693188239,0.0139431904987377,1362,동률(CI가 0 포함)
+sk_hynix,asof cumulative − current (market only),accuracy,0.0014684287812041,-0.0118345385184762,0.0144246174797725,1362,동률(CI가 0 포함)
+sk_hynix,asof cumulative − 사전확률,log_loss,-0.0857111931831586,-0.1027109457902409,-0.0689305434384483,1362,후보가 유의하게 우위
+sk_hynix,asof cumulative − 사전확률,balanced_accuracy,0.1331824396866942,0.1126349507671821,0.1530563068313823,1362,후보가 유의하게 우위
+sk_hynix,asof cumulative − 사전확률,accuracy,0.2268722466960352,0.1849219274723388,0.2692880303694769,1362,후보가 유의하게 우위
+sk_hynix,current (market only) − 노트북 OOF(재현 확인),log_loss,0.0,0.0,0.0,1362,동률(CI가 0 포함)
+sk_hynix,current (market only) − 노트북 OOF(재현 확인),balanced_accuracy,0.0,0.0,0.0,1362,동률(CI가 0 포함)
+sk_hynix,current (market only) − 노트북 OOF(재현 확인),accuracy,0.0,0.0,0.0,1362,동률(CI가 0 포함)

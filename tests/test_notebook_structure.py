@@ -362,8 +362,10 @@ class MacroPriceFeatureTests(unittest.TestCase):
     def test_cross_rate_uses_lagged_series_only(self):
         # 원/엔은 두 달러 환율의 비율로 만들고, 다른 글로벌 자산과 같은 지연 규칙을 쓴다.
         self.assertIn('_krwjpy = (raw["usdkrw"]["close"] / raw["usdjpy"]["close"])', self.source)
-        for name in ("krwjpy_ret_1", "krwjpy_ret_20", "krwjpy_level_z60"):
+        for name in ("krwjpy_ret_20", "krwjpy_level_z60"):
             self.assertIn(f'feat["{name}"] = merge_latest_available(all_dates', self.source)
+        # 1일 수익률은 as-of 가격 수준의 한국 행 사이 누적(P17, 2026-09-24) — 같은 지연 규칙(세션 d → 한국 d+1)이다.
+        self.assertIn('feat["krwjpy_ret_1"] = asof_cumulative_return(all_dates, _krwjpy)', self.source)
 
     def test_effect_is_measured_by_a_paired_comparison(self):
         self.assertIn('MACRO_PRICE_PREFIXES = ("wti_", "usdjpy_", "krwjpy_")', self.source)

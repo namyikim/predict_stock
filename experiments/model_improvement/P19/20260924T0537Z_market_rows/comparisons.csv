@@ -1,0 +1,19 @@
+target,comparison,metric,delta,ci_low,ci_high,common_n,verdict
+samsung,market-feature rows − current (all-feature rows),log_loss,0.0010956239551742,-0.0012138511299222,0.0034948052473163,1367,동률(CI가 0 포함)
+samsung,market-feature rows − current (all-feature rows),balanced_accuracy,0.0119957936375285,0.002043983778065,0.0224613624533747,1367,후보가 유의하게 우위
+samsung,market-feature rows − current (all-feature rows),accuracy,0.0109729334308705,0.0007438830067425,0.0210915398327163,1367,후보가 유의하게 우위
+samsung,market-feature rows − 사전확률,log_loss,-0.0669947824360932,-0.0843239287611082,-0.0488164757464867,1367,후보가 유의하게 우위
+samsung,market-feature rows − 사전확률,balanced_accuracy,0.111514030589534,0.0847678066040148,0.1369608400490213,1367,후보가 유의하게 우위
+samsung,market-feature rows − 사전확률,accuracy,0.1828822238478419,0.1403837225732221,0.2249088706278971,1367,후보가 유의하게 우위
+samsung,current (all-feature rows) − 노트북 OOF(재현 확인),log_loss,0.0,0.0,0.0,1367,동률(CI가 0 포함)
+samsung,current (all-feature rows) − 노트북 OOF(재현 확인),balanced_accuracy,0.0,0.0,0.0,1367,동률(CI가 0 포함)
+samsung,current (all-feature rows) − 노트북 OOF(재현 확인),accuracy,0.0,0.0,0.0,1367,동률(CI가 0 포함)
+sk_hynix,market-feature rows − current (all-feature rows),log_loss,0.0003875900256462,-0.0009793160680144,0.0017837096841887,1362,동률(CI가 0 포함)
+sk_hynix,market-feature rows − current (all-feature rows),balanced_accuracy,-0.0008959257706198,-0.0081615128313258,0.006770355453532,1362,동률(CI가 0 포함)
+sk_hynix,market-feature rows − current (all-feature rows),accuracy,-0.0022026431718061,-0.009672619047619,0.005786005270088,1362,동률(CI가 0 포함)
+sk_hynix,market-feature rows − 사전확률,log_loss,-0.0774450535745403,-0.0931849823172445,-0.0622221091633062,1362,후보가 유의하게 우위
+sk_hynix,market-feature rows − 사전확률,balanced_accuracy,0.130937621262834,0.110186281058393,0.151155936386242,1362,후보가 유의하게 우위
+sk_hynix,market-feature rows − 사전확률,accuracy,0.2232011747430249,0.1795385183856724,0.2644023386004223,1362,후보가 유의하게 우위
+sk_hynix,current (all-feature rows) − 노트북 OOF(재현 확인),log_loss,0.0,0.0,0.0,1362,동률(CI가 0 포함)
+sk_hynix,current (all-feature rows) − 노트북 OOF(재현 확인),balanced_accuracy,0.0,0.0,0.0,1362,동률(CI가 0 포함)
+sk_hynix,current (all-feature rows) − 노트북 OOF(재현 확인),accuracy,0.0,0.0,0.0,1362,동률(CI가 0 포함)

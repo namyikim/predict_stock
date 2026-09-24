@@ -1,0 +1,45 @@
+{
+ "task_id": "P19",
+ "run_id": "20260924T0537Z_market_rows",
+ "target": [
+  "samsung",
+  "sk_hynix"
+ ],
+ "code_commit": "9e2874ffe2fb33dc69ae15c6bbd50a4bd8063bab (+ 이 실험의 러너 변경, 같은 커밋에 포함)",
+ "data_hash": {
+  "sk_hynix": "fa4dfc966108ea6024bb",
+  "samsung": "3d1a03863c448ec5d1aa"
+ },
+ "config_hash": "24f38cdbfcab88fe1be6",
+ "seed": 42,
+ "mode": "full",
+ "target_mode": "close_to_close",
+ "classes": [
+  "down",
+  "flat",
+  "up"
+ ],
+ "status": "completed",
+ "completed_units": [
+  "samsung:market_rows",
+  "sk_hynix:market_rows"
+ ],
+ "failed_units": [],
+ "baseline_run": "experiments/model_improvement/P00/20260910T0100Z_baseline_full",
+ "source_runs": {
+  "sk_hynix": "P19\\20260924T053746Z_sk_hynix_p19",
+  "samsung": "P19\\20260924T053757Z_samsung_p19"
+ },
+ "config": {
+  "task": "P19",
+  "mode": "full",
+  "reference": "current (all-feature rows)",
+  "candidate": "market-feature rows",
+  "row_rule": "시세 열 + target/target_return/band 이 모두 있는 대상 종목 거래일",
+  "folds": "make_walk_forward_folds(후보 날짜) — 같은 규칙",
+  "evaluation": "두 판의 공통 날짜",
+  "headline": "No macro ensemble",
+  "window": "5y",
+  "issue_min_prob": 0.0
+ }
+}

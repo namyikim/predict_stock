@@ -128,6 +128,10 @@ def run_feature_cell(raw, **overrides):
     ns.setdefault("USE_DISCLOSURES", False)
     ns.setdefault("disclosures", [])
     ns.setdefault("disclosure_info", {"enabled": False})
+    # 해외 1일 수익률의 as-of 누적(P17)은 forecast_utils 헬퍼 셀에서 온다(노트북에서는 앞 셀이 올려 둔다).
+    import forecast_utils
+    for name in ("asof_cumulative_return", "us_session_features", "US_SESSION_ASSET", "US_SESSION_COLUMNS"):
+        ns.setdefault(name, getattr(forecast_utils, name))
     exec(compile(cell, "cell-features", "exec"), ns)
     return ns
 

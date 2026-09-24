@@ -55,6 +55,8 @@ TASKS = {
     "R02c": "누적 야간/장중 특징 그룹 D 를 다음 날 방향 대표 모델에 더했을 때(같은 날짜, 갭·세션 AUC 병기)",
     "P16": "시가 확정 후(09:37) 종가 방향 재예측 — 모델이 아니라 정보 마감 시각을 옮긴다",
     "P18": "전날 저녁(20:00 KST) 예측에 저녁에 거래되는 자산(나스닥·S&P 선물, DAX·유로스톡스 시간봉)을 더할 수 있는가",
+    "P17": "해외 1일 수익률을 as-of 가격 수준의 한국 행 사이 누적으로 — 미국 휴장일 반복값 제거(검토 #6)",
+    "P19": "대표 모델 학습 행을 보조 자료 결측과 무관하게 시세 열 기준으로(검토 #7)",
 }
 
 # P03에서 비교하는 특징군. 노트북이 같은 폴드·같은 날짜로 이미 계산해 CSV로 남기므로
@@ -2530,9 +2532,278 @@ def run_p18(target, mode, storage, state, run_notebook_fn=None):
     return rows
 
 
+# ---------------------------------------------------------------------------
+# P17·P19 공용 — 대표 모델 입력(시세만)의 두 판을 같은 코드로 다시 학습해 공통 날짜에서 쌍체 비교한다
+# ---------------------------------------------------------------------------
+def market_columns(ns):
+    """대표 모델(시세만)의 입력 열 이름. 노트북 market_feature_idx 와 같은 순서다."""
+    return [ns["feature_cols"][i] for i in ns["market_feature_idx"]]
+
+
+def retrain_variants(ns, variants):
+    """variants: 이름 → {X, y, dates, folds}. 판마다 자기 폴드로 학습하고 예측 틀을 모은다.
+
+    폴드는 판마다 다를 수 있다(P19 는 학습 행이 다르다). 비교는 호출부가 공통 날짜로 자른다.
+    """
+    import time
+    frames, fold_info, timing = [], [], {}
+    for name, v in variants.items():
+        started = time.time()
+        for fold in v["folds"]:
+            tr, te = fold["train_idx"], fold["test_idx"]
+            record = {"variant": name, "fold": fold["fold"], "train_rows": int(len(tr)), "test_rows": int(len(te)),
+                      "train_first": str(pd.DatetimeIndex(v["dates"])[tr[0]].date()) if len(tr) else ""}
+            if len(tr) < MIN_TRAIN_ROWS or len(te) < 20 or len(np.unique(v["y"][tr])) < 3:
+                fold_info.append({**record, "skipped": True})
+                continue
+            probs = _ensemble_probabilities(ns, v["X"], v["y"], tr, te)
+            frames.append(ns["prediction_frame"](name, pd.DatetimeIndex(v["dates"])[te], v["y"][te], probs, fold["fold"]))
+            fold_info.append(record)
+        timing[name] = round(time.time() - started, 1)
+        print(f"  {name}: {timing[name]}초", flush=True)
+    if not frames:
+        raise RuntimeError("학습 가능한 폴드가 없습니다.")
+    return pd.concat(frames, ignore_index=True), fold_info, timing
+
+
+def paired_report(ns, target, mode, predictions, current, candidate, extra_columns=None):
+    """공통 날짜로 자르고 지표·쌍체 비교·선택 발행 표를 만든다(R02c 와 같은 계약). 노트북 OOF 는 재현 확인 참조."""
+    headline = ns.get("HEADLINE_MODEL", "No macro ensemble")
+    nb = ns.get("predictions")
+    nb_name = f"notebook OOF ({headline})"
+    reference_models = []
+    if nb is not None and len(nb):
+        keep = [m for m in (headline, "Always flat") if m in set(nb["model"])]
+        if keep:
+            reference = nb[nb["model"].isin(keep)].copy()
+            reference["date"] = pd.DatetimeIndex(reference["date"]).tz_localize(None).normalize()
+            reference["model"] = reference["model"].map({headline: nb_name, "Always flat": "Always flat"})
+            predictions = pd.concat([predictions, reference], ignore_index=True)
+            reference_models = list(reference["model"].unique())
+    common = None
+    for _, g in predictions.groupby("model"):
+        common = set(g["date"]) if common is None else common & set(g["date"])
+    predictions = predictions[predictions["date"].isin(common)].reset_index(drop=True)
+    # 같은 날짜의 정답은 판마다 같아야 한다(라벨은 학습 행 규칙과 무관하다).
+    truth = predictions.groupby("date")["y_true"].nunique()
+    if (truth > 1).any():
+        raise RuntimeError(f"같은 날짜의 정답이 판마다 다릅니다: {list(truth[truth > 1].index[:3])}")
+    metrics = ns["summarize_predictions"](predictions, with_ci=False)
+    rows = [{"target": target, "model": m, "target_mode": "close_to_close", "fold": "all",
+             **{k: r.get(k, "") for k in ("n", "accuracy", "balanced_accuracy", "log_loss", "brier")},
+             **(extra_columns or {}).get(m, {})} for m, r in metrics.iterrows()]
+    pairs = [(candidate, current, f"{candidate} − {current}")]
+    if "Always flat" in reference_models:
+        pairs.append((candidate, "Always flat", f"{candidate} − 사전확률"))
+    if nb_name in reference_models:
+        pairs.append((current, nb_name, f"{current} − 노트북 OOF(재현 확인)"))
+    comparisons = []
+    for a, b_, label in pairs:
+        for metric in ("log_loss", "balanced_accuracy", "accuracy"):
+            d = ns["paired_delta_ci"](predictions, a, b_, metric)
+            comparisons.append({"target": target, "comparison": label, "metric": metric, "delta": d["delta"],
+                                "ci_low": d["lo"], "ci_high": d["hi"], "common_n": d["n"],
+                                "verdict": verdict_for(metric, d["lo"], d["hi"])})
+    selective = []
+    for m in [current, candidate] + [m for m in reference_models if m != "Always flat"]:
+        g = predictions[predictions["model"] == m].sort_values("date")
+        selective += selective_rows(target, m, g[["p_down", "p_flat", "p_up"]].to_numpy(), g["y_true"].to_numpy())
+    agreement = float("nan")
+    if nb_name in reference_models:
+        a = predictions[predictions["model"] == current].sort_values("date")["y_pred"].to_numpy()
+        b2 = predictions[predictions["model"] == nb_name].sort_values("date")["y_pred"].to_numpy()
+        agreement = float(np.mean(a == b2))
+    return rows, comparisons, selective, sorted(common), agreement
+
+
+# ---------------------------------------------------------------------------
+# P17 — 해외 수익률의 as-of 결합 정리(2026-09-20 검토 #6)
+# ---------------------------------------------------------------------------
+# 지금은 해외 '수익률'을 as-of 로 붙여, 미국 휴장일에 직전 세션 수익률이 다음 한국 행에도 그대로 반복된다
+# (새 정보처럼 보인다). 한국 연휴에는 그 사이 미국 세션 여럿 중 마지막 하루만 들어간다. 후보는 가격 **수준**을
+# 같은 규칙(미국 세션 d → 한국 날짜 d+1 부터)으로 붙이고, 1일 수익률을 '직전 한국 행 이후의 누적'으로 다시 만든다.
+# 새 세션이 없으면 정확히 0, 연휴면 그 사이 누적이다. 5일 수익률·z 점수는 '지금 상태'를 나타내는 값이라 반복이
+# 옳으므로 그대로 둔다. 새 세션 여부와 관측 나이를 특징으로 더한다(0 이 '휴장'인지 '보합'인지 모델이 구분하도록).
+P17_CURRENT = "current (market only)"
+P17_CANDIDATE = "asof cumulative"
+# 정의는 forecast_utils 의 것 하나뿐이다(2026-09-24 운영 반영). 노트북과 러너가 같은 함수를 쓴다.
+from forecast_utils import (  # noqa: E402
+    US_SESSION_ASSET as P17_FLAG_ASSET, US_SESSION_COLUMNS as P17_NEW_COLUMNS,
+    asof_cumulative_return, asof_level_with_source as asof_with_source, us_session_features,
+)
+
+
+def p17_candidate_columns(ns):
+    """후보 열(달력 = 노트북 feat 인덱스). 바꾸는 열: 해외 자산 *_ret_1, krwjpy_ret_1, gdr_overnight_signal.
+
+    P17 운영 반영 뒤의 노트북은 이미 이 정의로 feat 를 만든다 — 그때 이 함수는 같은 값을 다시 만든다.
+    """
+    feat, raw = ns["feat"], ns["raw"]
+    calendar = pd.DatetimeIndex(feat.index)
+    calendar = (calendar.tz_localize(None) if calendar.tz is not None else calendar).normalize()
+    out = {}
+    for name in ns["GLOBAL_ASSETS"]:
+        frame = raw.get(name)
+        if frame is None or len(frame) == 0 or "adj_close" not in frame:
+            continue
+        out[f"{name}_ret_1"] = asof_cumulative_return(calendar, frame["adj_close"].astype(float)).to_numpy()
+    if "usdjpy" in raw and "usdkrw" in raw and len(raw["usdjpy"]) and len(raw["usdkrw"]):
+        ratio = (raw["usdkrw"]["close"] / raw["usdjpy"]["close"]).replace([np.inf, -np.inf], np.nan)
+        out["krwjpy_ret_1"] = asof_cumulative_return(calendar, ratio).to_numpy()
+    frame = pd.DataFrame(out, index=calendar)
+    if "target_gdr_ret_1" in frame and "sam_ret_1" in feat:
+        frame["gdr_overnight_signal"] = frame["target_gdr_ret_1"] - feat["sam_ret_1"].to_numpy()
+    flag = raw.get(P17_FLAG_ASSET)
+    if flag is None or len(flag) == 0 or "adj_close" not in flag or P17_FLAG_ASSET not in ns["GLOBAL_ASSETS"]:
+        raise RuntimeError(f"{P17_FLAG_ASSET} 시세가 없어 새 세션 여부를 만들 수 없습니다.")
+    sessions = us_session_features(calendar, flag["adj_close"].astype(float))
+    for column in P17_NEW_COLUMNS:
+        frame[column] = sessions[column].to_numpy()
+    return frame
+
+
+def run_p17(target, mode, storage, state, run_notebook_fn=None):
+    """대표 모델 입력(시세만) vs 해외 1일 수익률을 as-of 누적으로 바꾼 판. 같은 행·같은 폴드·같은 정답.
+
+    후보 열이 결측인 행(첫 행·7일 넘게 관측이 없는 행)은 두 판 모두에서 뺀다(공통 행 규칙, R02c 와 같다).
+    """
+    unit = f"{target}:asof_cumulative"
+    if state.is_done(unit):
+        print(f"  이미 완료된 단위 건너뜀: {unit} (metrics.csv 유지)")
+        return None
+    if run_notebook_fn is None:
+        sys.path.insert(0, str(ROOT / "tools"))
+        from run_notebook import run_notebook as run_notebook_fn
+    ns = run_notebook_fn(Path(storage) / target, targets=target, quick=(mode == "quick"),
+                         use_cache=bool(snapshot_paths(storage, target)))[target]
+    y, folds = np.asarray(ns["y"], dtype=int), ns["folds"]
+    dates = pd.DatetimeIndex(ns["dates"])
+    dates = (dates.tz_localize(None) if dates.tz is not None else dates).normalize()
+    cols = market_columns(ns)
+    X_cur = np.asarray(ns["market_X"], dtype=np.float32)
+    current = pd.DataFrame(X_cur, index=dates, columns=cols)
+    cand_cols = p17_candidate_columns(ns).reindex(dates)
+    replaced = [c for c in cand_cols.columns if c in cols]
+    candidate = current.copy()
+    for c in replaced:
+        candidate[c] = cand_cols[c].to_numpy()
+    for c in P17_NEW_COLUMNS:
+        candidate[c] = cand_cols[c].to_numpy()
+    valid = candidate.notna().all(axis=1).to_numpy()
+
+    # 정직성 점검: 새 미국 세션이 없는 행에서 후보 1일 수익률은 정확히 0 이어야 하고, 지금 값은 반복값이다.
+    flag_col = f"{P17_FLAG_ASSET}_ret_1"
+    quiet = valid & (candidate["us_new_session"].to_numpy() == 0)
+    check = {
+        "rows": int(len(dates)), "rows_dropped_missing_candidate": int((~valid).sum()),
+        "replaced_columns": replaced, "new_columns": list(P17_NEW_COLUMNS),
+        "no_new_us_session_rows": int(quiet.sum()),
+        "candidate_nonzero_on_no_session_rows": int(np.count_nonzero(candidate.loc[quiet, flag_col].to_numpy()))
+        if flag_col in candidate else None,
+        "current_repeats_previous_row_on_no_session_rows": int(np.sum(
+            current[flag_col].to_numpy()[quiet] == np.r_[np.nan, current[flag_col].to_numpy()[:-1]][quiet]))
+        if flag_col in current else None,
+        "age_days_distribution": {str(k): int(v) for k, v in
+                                  candidate.loc[valid, "us_obs_age_days"].value_counts().sort_index().items()},
+    }
+    if check["candidate_nonzero_on_no_session_rows"]:
+        raise RuntimeError(f"누수·정직성 점검 실패: 새 세션이 없는 행에서 후보 수익률이 0 이 아닙니다 {check}")
+    print(f"  새 미국 세션 없는 행 {check['no_new_us_session_rows']} · 지금 값이 직전 행 반복 "
+          f"{check['current_repeats_previous_row_on_no_session_rows']} · 후보 결측 제외 {check['rows_dropped_missing_candidate']}")
+
+    masked = [{**f, "train_idx": f["train_idx"][valid[f["train_idx"]]], "test_idx": f["test_idx"][valid[f["test_idx"]]]}
+              for f in folds]
+    predictions, fold_info, timing = retrain_variants(ns, {
+        P17_CURRENT: {"X": X_cur, "y": y, "dates": dates, "folds": masked},
+        P17_CANDIDATE: {"X": candidate.to_numpy(dtype=np.float32), "y": y, "dates": dates, "folds": masked},
+    })
+    rows, comparisons, selective, common, agreement = paired_report(
+        ns, target, mode, predictions, P17_CURRENT, P17_CANDIDATE,
+        {P17_CURRENT: {"n_features": len(cols), "seconds": timing[P17_CURRENT]},
+         P17_CANDIDATE: {"n_features": candidate.shape[1], "seconds": timing[P17_CANDIDATE]}})
+    write_json(state.run_dir / f"p17_{target}.json", {
+        "headline_model": ns.get("HEADLINE_MODEL"), "honesty_check": check, "folds": fold_info,
+        "common_evaluation_days": len(common), "timing_seconds": timing,
+        "argmax_agreement_current_vs_notebook": agreement, "comparisons": comparisons, "selective": selective,
+        "note": "후보는 해외 가격 수준을 as-of(미국 세션 d → 한국 d+1)로 붙인 뒤 한국 행 사이 누적으로 1일 수익률을 다시 만든다. "
+                "5일 수익률·z 점수는 그대로. 새 세션 여부·관측 나이 두 열 추가. 후보 결측 행은 두 판 모두 제외."})
+    write_metrics_named(state, comparisons, "comparisons.csv")
+    write_metrics_named(state, selective, "selective.csv")
+    state.mark(unit, {"evaluation_days": len(common), "argmax_agreement_current_vs_notebook": agreement,
+                      "no_new_us_session_rows": check["no_new_us_session_rows"]})
+    return rows
+
+
+# ---------------------------------------------------------------------------
+# P19 — 대표 모델 학습 행을 자기 입력으로 정한다(2026-09-20 검토 #7)
+# ---------------------------------------------------------------------------
+# 노트북은 모든 특징(월별 지표·뉴스심리·수급 포함)이 있는 행만 남긴 뒤 시세 열을 떼어 대표 모델을 학습한다.
+# 그래서 대표 모델이 쓰지 않는 보조 자료의 결측이 대표 모델의 학습 행을 줄인다. 후보는 시세 열(과 정답·밴드)이
+# 모두 있는 행으로 학습하고 폴드를 같은 규칙(make_walk_forward_folds)으로 다시 만든다. 평가는 공통 날짜에서만 한다.
+P19_CURRENT = "current (all-feature rows)"
+P19_CANDIDATE = "market-feature rows"
+
+
+def p19_market_rows(ns):
+    """시세 열·정답·밴드가 모두 있는 대상 종목 거래일. (X, y, dates)"""
+    cols = market_columns(ns)
+    needed = cols + [c for c in ns.get("NON_FEATURE_COLS", ["target", "target_return", "band"])]
+    frame = ns["feat"].loc[ns["sam"].index, needed].dropna()
+    dates = pd.DatetimeIndex(frame.index)
+    dates = (dates.tz_localize(None) if dates.tz is not None else dates).normalize()
+    return frame[cols].to_numpy(dtype=np.float32), frame["target"].to_numpy(dtype=int), dates
+
+
+def run_p19(target, mode, storage, state, run_notebook_fn=None):
+    """지금(모든 특징이 있는 행) vs 후보(시세 열이 있는 행)로 대표 모델을 다시 학습해 공통 날짜에서 비교한다."""
+    unit = f"{target}:market_rows"
+    if state.is_done(unit):
+        print(f"  이미 완료된 단위 건너뜀: {unit} (metrics.csv 유지)")
+        return None
+    if run_notebook_fn is None:
+        sys.path.insert(0, str(ROOT / "tools"))
+        from run_notebook import run_notebook as run_notebook_fn
+    ns = run_notebook_fn(Path(storage) / target, targets=target, quick=(mode == "quick"),
+                         use_cache=bool(snapshot_paths(storage, target)))[target]
+    dates = pd.DatetimeIndex(ns["dates"])
+    dates = (dates.tz_localize(None) if dates.tz is not None else dates).normalize()
+    X_m, y_m, dates_m = p19_market_rows(ns)
+    folds_m = ns["make_walk_forward_folds"](dates_m)
+    extra = dates_m.difference(dates)
+    rows_info = {
+        "current_rows": int(len(dates)), "candidate_rows": int(len(dates_m)),
+        "rows_added": int(len(extra)), "rows_only_in_current": int(len(dates.difference(dates_m))),
+        "current_first": str(dates.min().date()), "candidate_first": str(dates_m.min().date()),
+        "current_last": str(dates.max().date()), "candidate_last": str(dates_m.max().date()),
+        "added_by_year": {str(k): int(v) for k, v in pd.Series(1, index=extra).groupby(extra.year).sum().items()},
+    }
+    print(f"  학습 가능 행: 지금 {rows_info['current_rows']:,} → 후보 {rows_info['candidate_rows']:,} "
+          f"(+{rows_info['rows_added']:,}, 연도별 {rows_info['added_by_year']})", flush=True)
+    predictions, fold_info, timing = retrain_variants(ns, {
+        P19_CURRENT: {"X": np.asarray(ns["market_X"], dtype=np.float32), "y": np.asarray(ns["y"], dtype=int),
+                      "dates": dates, "folds": ns["folds"]},
+        P19_CANDIDATE: {"X": X_m, "y": y_m, "dates": dates_m, "folds": folds_m},
+    })
+    rows, comparisons, selective, common, agreement = paired_report(
+        ns, target, mode, predictions, P19_CURRENT, P19_CANDIDATE,
+        {P19_CURRENT: {"train_rows_total": rows_info["current_rows"], "seconds": timing[P19_CURRENT]},
+         P19_CANDIDATE: {"train_rows_total": rows_info["candidate_rows"], "seconds": timing[P19_CANDIDATE]}})
+    write_json(state.run_dir / f"p19_{target}.json", {
+        "headline_model": ns.get("HEADLINE_MODEL"), "rows": rows_info, "folds": fold_info,
+        "common_evaluation_days": len(common), "timing_seconds": timing,
+        "argmax_agreement_current_vs_notebook": agreement, "comparisons": comparisons, "selective": selective,
+        "note": "후보는 시세 열·정답·밴드가 모두 있는 행으로 학습하고 폴드를 같은 규칙으로 다시 만든다. 평가는 두 판의 공통 날짜."})
+    write_metrics_named(state, comparisons, "comparisons.csv")
+    write_metrics_named(state, selective, "selective.csv")
+    state.mark(unit, {"evaluation_days": len(common), "rows_added": rows_info["rows_added"],
+                      "argmax_agreement_current_vs_notebook": agreement})
+    return rows
+
+
 TASK_RUNNERS = {"P00": run_p00, "P03": run_p03, "P04": run_p04, "P05": run_p05,
                 "P06": run_p06, "P07": run_p07, "P08": run_p08, "P09": run_p09, "P10": run_p10,
-                "P10b": run_p10b, "R02c": run_r02c, "P16": run_p16, "P18": run_p18}
+                "P10b": run_p10b, "R02c": run_r02c, "P16": run_p16, "P18": run_p18,
+                "P17": run_p17, "P19": run_p19}
 
 
 # ---------------------------------------------------------------------------
@@ -2641,6 +2912,17 @@ def execute(task, target, mode, storage, resume, run_notebook_fn=None):
                   "nq_cum_sessions": P18_NQ_CUM_SESSIONS, "min_train_futures_rows": P18_MIN_TRAIN_F_ROWS,
                   "evening_definition": "행 d: 한국·달력 열 = 아침 행 d, 해외(us/london/cont) 열 = 아침 행 d−1, "
                                         "gdr_overnight_signal = gdr(d−1) − sam(d). 선물 열은 전 한국 세션 날짜의 마감 시각까지 끝난 시간봉만",
+                  "headline": "No macro ensemble", "window": BASELINE_WINDOW, "issue_min_prob": issue_min_prob()}
+    elif task == "P17":
+        config = {"task": "P17", "mode": mode, "reference": P17_CURRENT, "candidate": P17_CANDIDATE,
+                  "flag_asset": P17_FLAG_ASSET, "new_columns": list(P17_NEW_COLUMNS),
+                  "definition": "해외 *_ret_1·krwjpy_ret_1 = as-of 가격 수준(세션 d → 한국 d+1, 허용 7일)의 한국 행 사이 누적. "
+                                "gdr_overnight_signal 은 새 gdr 값으로. 5일 수익률·z 점수 그대로",
+                  "headline": "No macro ensemble", "window": BASELINE_WINDOW, "issue_min_prob": issue_min_prob()}
+    elif task == "P19":
+        config = {"task": "P19", "mode": mode, "reference": P19_CURRENT, "candidate": P19_CANDIDATE,
+                  "row_rule": "시세 열 + target/target_return/band 이 모두 있는 대상 종목 거래일",
+                  "folds": "make_walk_forward_folds(후보 날짜) — 같은 규칙", "evaluation": "두 판의 공통 날짜",
                   "headline": "No macro ensemble", "window": BASELINE_WINDOW, "issue_min_prob": issue_min_prob()}
     else:
         config = {"mode": mode}

@@ -1,0 +1,821 @@
+{
+ "samsung": {
+  "headline_model": "No macro ensemble",
+  "rows": {
+   "current_rows": 2758,
+   "candidate_rows": 2762,
+   "rows_added": 4,
+   "rows_only_in_current": 0,
+   "current_first": "2015-04-01",
+   "candidate_first": "2015-04-01",
+   "current_last": "2026-09-16",
+   "candidate_last": "2026-09-16",
+   "added_by_year": {
+    "2017": 1,
+    "2023": 1,
+    "2025": 2
+   }
+  },
+  "folds": [
+   {
+    "variant": "current (all-feature rows)",
+    "fold": 0,
+    "train_rows": 1203,
+    "test_rows": 123,
+    "train_first": "2016-01-04"
+   },
+   {
+    "variant": "current (all-feature rows)",
+    "fold": 1,
+    "train_rows": 1205,
+    "test_rows": 125,
+    "train_first": "2016-07-01"
+   },
+   {
+    "variant": "current (all-feature rows)",
+    "fold": 2,
+    "train_rows": 1205,
+    "test_rows": 108,
+    "train_first": "2017-01-02"
+   },
+   {
+    "variant": "current (all-feature rows)",
+    "fold": 3,
+    "train_rows": 1191,
+    "test_rows": 125,
+    "train_first": "2017-07-03"
+   },
+   {
+    "variant": "current (all-feature rows)",
+    "fold": 4,
+    "train_rows": 1214,
+    "test_rows": 123,
+    "train_first": "2018-01-02"
+   },
+   {
+    "variant": "current (all-feature rows)",
+    "fold": 5,
+    "train_rows": 1219,
+    "test_rows": 121,
+    "train_first": "2018-07-02"
+   },
+   {
+    "variant": "current (all-feature rows)",
+    "fold": 6,
+    "train_rows": 1217,
+    "test_rows": 121,
+    "train_first": "2019-01-02"
+   },
+   {
+    "variant": "current (all-feature rows)",
+    "fold": 7,
+    "train_rows": 1217,
+    "test_rows": 123,
+    "train_first": "2019-07-01"
+   },
+   {
+    "variant": "current (all-feature rows)",
+    "fold": 8,
+    "train_rows": 1215,
+    "test_rows": 117,
+    "train_first": "2020-01-02"
+   },
+   {
+    "variant": "current (all-feature rows)",
+    "fold": 9,
+    "train_rows": 1211,
+    "test_rows": 107,
+    "train_first": "2020-07-01"
+   },
+   {
+    "variant": "current (all-feature rows)",
+    "fold": 10,
+    "train_rows": 1193,
+    "test_rows": 120,
+    "train_first": "2021-01-04"
+   },
+   {
+    "variant": "current (all-feature rows)",
+    "fold": 11,
+    "train_rows": 1190,
+    "test_rows": 54,
+    "train_first": "2021-07-01"
+   },
+   {
+    "variant": "market-feature rows",
+    "fold": 0,
+    "train_rows": 1204,
+    "test_rows": 123,
+    "train_first": "2016-01-04"
+   },
+   {
+    "variant": "market-feature rows",
+    "fold": 1,
+    "train_rows": 1206,
+    "test_rows": 125,
+    "train_first": "2016-07-01"
+   },
+   {
+    "variant": "market-feature rows",
+    "fold": 2,
+    "train_rows": 1206,
+    "test_rows": 108,
+    "train_first": "2017-01-02"
+   },
+   {
+    "variant": "market-feature rows",
+    "fold": 3,
+    "train_rows": 1192,
+    "test_rows": 125,
+    "train_first": "2017-07-03"
+   },
+   {
+    "variant": "market-feature rows",
+    "fold": 4,
+    "train_rows": 1214,
+    "test_rows": 123,
+    "train_first": "2018-01-02"
+   },
+   {
+    "variant": "market-feature rows",
+    "fold": 5,
+    "train_rows": 1219,
+    "test_rows": 122,
+    "train_first": "2018-07-02"
+   },
+   {
+    "variant": "market-feature rows",
+    "fold": 6,
+    "train_rows": 1218,
+    "test_rows": 121,
+    "train_first": "2019-01-02"
+   },
+   {
+    "variant": "market-feature rows",
+    "fold": 7,
+    "train_rows": 1218,
+    "test_rows": 123,
+    "train_first": "2019-07-01"
+   },
+   {
+    "variant": "market-feature rows",
+    "fold": 8,
+    "train_rows": 1216,
+    "test_rows": 118,
+    "train_first": "2020-01-02"
+   },
+   {
+    "variant": "market-feature rows",
+    "fold": 9,
+    "train_rows": 1213,
+    "test_rows": 108,
+    "train_first": "2020-07-01"
+   },
+   {
+    "variant": "market-feature rows",
+    "fold": 10,
+    "train_rows": 1196,
+    "test_rows": 120,
+    "train_first": "2021-01-04"
+   },
+   {
+    "variant": "market-feature rows",
+    "fold": 11,
+    "train_rows": 1193,
+    "test_rows": 54,
+    "train_first": "2021-07-01"
+   }
+  ],
+  "common_evaluation_days": 1367,
+  "timing_seconds": {
+   "current (all-feature rows)": 32.7,
+   "market-feature rows": 30.9
+  },
+  "argmax_agreement_current_vs_notebook": 1.0,
+  "comparisons": [
+   {
+    "target": "samsung",
+    "comparison": "market-feature rows − current (all-feature rows)",
+    "metric": "log_loss",
+    "delta": 0.001095623955174263,
+    "ci_low": -0.0012138511299222999,
+    "ci_high": 0.0034948052473163676,
+    "common_n": 1367,
+    "verdict": "동률(CI가 0 포함)"
+   },
+   {
+    "target": "samsung",
+    "comparison": "market-feature rows − current (all-feature rows)",
+    "metric": "balanced_accuracy",
+    "delta": 0.011995793637528507,
+    "ci_low": 0.0020439837780650907,
+    "ci_high": 0.02246136245337473,
+    "common_n": 1367,
+    "verdict": "후보가 유의하게 우위"
+   },
+   {
+    "target": "samsung",
+    "comparison": "market-feature rows − current (all-feature rows)",
+    "metric": "accuracy",
+    "delta": 0.010972933430870524,
+    "ci_low": 0.000743883006742517,
+    "ci_high": 0.021091539832716312,
+    "common_n": 1367,
+    "verdict": "후보가 유의하게 우위"
+   },
+   {
+    "target": "samsung",
+    "comparison": "market-feature rows − 사전확률",
+    "metric": "log_loss",
+    "delta": -0.06699478243609325,
+    "ci_low": -0.08432392876110822,
+    "ci_high": -0.04881647574648679,
+    "common_n": 1367,
+    "verdict": "후보가 유의하게 우위"
+   },
+   {
+    "target": "samsung",
+    "comparison": "market-feature rows − 사전확률",
+    "metric": "balanced_accuracy",
+    "delta": 0.11151403058953402,
+    "ci_low": 0.08476780660401484,
+    "ci_high": 0.13696084004902137,
+    "common_n": 1367,
+    "verdict": "후보가 유의하게 우위"
+   },
+   {
+    "target": "samsung",
+    "comparison": "market-feature rows − 사전확률",
+    "metric": "accuracy",
+    "delta": 0.18288222384784197,
+    "ci_low": 0.14038372257322218,
+    "ci_high": 0.22490887062789716,
+    "common_n": 1367,
+    "verdict": "후보가 유의하게 우위"
+   },
+   {
+    "target": "samsung",
+    "comparison": "current (all-feature rows) − 노트북 OOF(재현 확인)",
+    "metric": "log_loss",
+    "delta": 0.0,
+    "ci_low": 0.0,
+    "ci_high": 0.0,
+    "common_n": 1367,
+    "verdict": "동률(CI가 0 포함)"
+   },
+   {
+    "target": "samsung",
+    "comparison": "current (all-feature rows) − 노트북 OOF(재현 확인)",
+    "metric": "balanced_accuracy",
+    "delta": 0.0,
+    "ci_low": 0.0,
+    "ci_high": 0.0,
+    "common_n": 1367,
+    "verdict": "동률(CI가 0 포함)"
+   },
+   {
+    "target": "samsung",
+    "comparison": "current (all-feature rows) − 노트북 OOF(재현 확인)",
+    "metric": "accuracy",
+    "delta": 0.0,
+    "ci_low": 0.0,
+    "ci_high": 0.0,
+    "common_n": 1367,
+    "verdict": "동률(CI가 0 포함)"
+   }
+  ],
+  "selective": [
+   {
+    "target": "samsung",
+    "model": "current (all-feature rows)",
+    "threshold": "none",
+    "selected": 1367,
+    "total": 1367,
+    "coverage": 1.0,
+    "selected_accuracy": 0.4542794440380395,
+    "overall_accuracy": 0.4542794440380395
+   },
+   {
+    "target": "samsung",
+    "model": "current (all-feature rows)",
+    "threshold": "0.5",
+    "selected": 334,
+    "total": 1367,
+    "coverage": 0.24433065106071689,
+    "selected_accuracy": 0.6796407185628742,
+    "overall_accuracy": 0.4542794440380395
+   },
+   {
+    "target": "samsung",
+    "model": "current (all-feature rows)",
+    "threshold": "0.6",
+    "selected": 80,
+    "total": 1367,
+    "coverage": 0.058522311631309436,
+    "selected_accuracy": 0.8,
+    "overall_accuracy": 0.4542794440380395
+   },
+   {
+    "target": "samsung",
+    "model": "current (all-feature rows)",
+    "threshold": "0.7",
+    "selected": 15,
+    "total": 1367,
+    "coverage": 0.010972933430870519,
+    "selected_accuracy": 0.8666666666666667,
+    "overall_accuracy": 0.4542794440380395
+   },
+   {
+    "target": "samsung",
+    "model": "market-feature rows",
+    "threshold": "none",
+    "selected": 1367,
+    "total": 1367,
+    "coverage": 1.0,
+    "selected_accuracy": 0.46525237746891,
+    "overall_accuracy": 0.46525237746891
+   },
+   {
+    "target": "samsung",
+    "model": "market-feature rows",
+    "threshold": "0.5",
+    "selected": 307,
+    "total": 1367,
+    "coverage": 0.22457937088514995,
+    "selected_accuracy": 0.6416938110749185,
+    "overall_accuracy": 0.46525237746891
+   },
+   {
+    "target": "samsung",
+    "model": "market-feature rows",
+    "threshold": "0.6",
+    "selected": 75,
+    "total": 1367,
+    "coverage": 0.0548646671543526,
+    "selected_accuracy": 0.7733333333333333,
+    "overall_accuracy": 0.46525237746891
+   },
+   {
+    "target": "samsung",
+    "model": "market-feature rows",
+    "threshold": "0.7",
+    "selected": 17,
+    "total": 1367,
+    "coverage": 0.012435991221653255,
+    "selected_accuracy": 0.8235294117647058,
+    "overall_accuracy": 0.46525237746891
+   },
+   {
+    "target": "samsung",
+    "model": "notebook OOF (No macro ensemble)",
+    "threshold": "none",
+    "selected": 1367,
+    "total": 1367,
+    "coverage": 1.0,
+    "selected_accuracy": 0.4542794440380395,
+    "overall_accuracy": 0.4542794440380395
+   },
+   {
+    "target": "samsung",
+    "model": "notebook OOF (No macro ensemble)",
+    "threshold": "0.5",
+    "selected": 334,
+    "total": 1367,
+    "coverage": 0.24433065106071689,
+    "selected_accuracy": 0.6796407185628742,
+    "overall_accuracy": 0.4542794440380395
+   },
+   {
+    "target": "samsung",
+    "model": "notebook OOF (No macro ensemble)",
+    "threshold": "0.6",
+    "selected": 80,
+    "total": 1367,
+    "coverage": 0.058522311631309436,
+    "selected_accuracy": 0.8,
+    "overall_accuracy": 0.4542794440380395
+   },
+   {
+    "target": "samsung",
+    "model": "notebook OOF (No macro ensemble)",
+    "threshold": "0.7",
+    "selected": 15,
+    "total": 1367,
+    "coverage": 0.010972933430870519,
+    "selected_accuracy": 0.8666666666666667,
+    "overall_accuracy": 0.4542794440380395
+   }
+  ],
+  "note": "후보는 시세 열·정답·밴드가 모두 있는 행으로 학습하고 폴드를 같은 규칙으로 다시 만든다. 평가는 두 판의 공통 날짜."
+ },
+ "sk_hynix": {
+  "headline_model": "No macro ensemble",
+  "rows": {
+   "current_rows": 2757,
+   "candidate_rows": 2763,
+   "rows_added": 6,
+   "rows_only_in_current": 0,
+   "current_first": "2015-04-01",
+   "candidate_first": "2015-04-01",
+   "current_last": "2026-09-16",
+   "candidate_last": "2026-09-16",
+   "added_by_year": {
+    "2017": 1,
+    "2022": 2,
+    "2023": 1,
+    "2025": 2
+   }
+  },
+  "folds": [
+   {
+    "variant": "current (all-feature rows)",
+    "fold": 0,
+    "train_rows": 1207,
+    "test_rows": 123,
+    "train_first": "2016-01-04"
+   },
+   {
+    "variant": "current (all-feature rows)",
+    "fold": 1,
+    "train_rows": 1209,
+    "test_rows": 125,
+    "train_first": "2016-07-01"
+   },
+   {
+    "variant": "current (all-feature rows)",
+    "fold": 2,
+    "train_rows": 1209,
+    "test_rows": 103,
+    "train_first": "2017-01-02"
+   },
+   {
+    "variant": "current (all-feature rows)",
+    "fold": 3,
+    "train_rows": 1190,
+    "test_rows": 125,
+    "train_first": "2017-07-03"
+   },
+   {
+    "variant": "current (all-feature rows)",
+    "fold": 4,
+    "train_rows": 1213,
+    "test_rows": 123,
+    "train_first": "2018-01-02"
+   },
+   {
+    "variant": "current (all-feature rows)",
+    "fold": 5,
+    "train_rows": 1215,
+    "test_rows": 121,
+    "train_first": "2018-07-02"
+   },
+   {
+    "variant": "current (all-feature rows)",
+    "fold": 6,
+    "train_rows": 1213,
+    "test_rows": 121,
+    "train_first": "2019-01-02"
+   },
+   {
+    "variant": "current (all-feature rows)",
+    "fold": 7,
+    "train_rows": 1213,
+    "test_rows": 123,
+    "train_first": "2019-07-01"
+   },
+   {
+    "variant": "current (all-feature rows)",
+    "fold": 8,
+    "train_rows": 1211,
+    "test_rows": 117,
+    "train_first": "2020-01-02"
+   },
+   {
+    "variant": "current (all-feature rows)",
+    "fold": 9,
+    "train_rows": 1206,
+    "test_rows": 107,
+    "train_first": "2020-07-01"
+   },
+   {
+    "variant": "current (all-feature rows)",
+    "fold": 10,
+    "train_rows": 1188,
+    "test_rows": 120,
+    "train_first": "2021-01-04"
+   },
+   {
+    "variant": "current (all-feature rows)",
+    "fold": 11,
+    "train_rows": 1185,
+    "test_rows": 54,
+    "train_first": "2021-07-01"
+   },
+   {
+    "variant": "market-feature rows",
+    "fold": 0,
+    "train_rows": 1208,
+    "test_rows": 123,
+    "train_first": "2016-01-04"
+   },
+   {
+    "variant": "market-feature rows",
+    "fold": 1,
+    "train_rows": 1210,
+    "test_rows": 125,
+    "train_first": "2016-07-01"
+   },
+   {
+    "variant": "market-feature rows",
+    "fold": 2,
+    "train_rows": 1210,
+    "test_rows": 105,
+    "train_first": "2017-01-02"
+   },
+   {
+    "variant": "market-feature rows",
+    "fold": 3,
+    "train_rows": 1193,
+    "test_rows": 125,
+    "train_first": "2017-07-03"
+   },
+   {
+    "variant": "market-feature rows",
+    "fold": 4,
+    "train_rows": 1215,
+    "test_rows": 123,
+    "train_first": "2018-01-02"
+   },
+   {
+    "variant": "market-feature rows",
+    "fold": 5,
+    "train_rows": 1217,
+    "test_rows": 122,
+    "train_first": "2018-07-02"
+   },
+   {
+    "variant": "market-feature rows",
+    "fold": 6,
+    "train_rows": 1216,
+    "test_rows": 121,
+    "train_first": "2019-01-02"
+   },
+   {
+    "variant": "market-feature rows",
+    "fold": 7,
+    "train_rows": 1216,
+    "test_rows": 123,
+    "train_first": "2019-07-01"
+   },
+   {
+    "variant": "market-feature rows",
+    "fold": 8,
+    "train_rows": 1214,
+    "test_rows": 118,
+    "train_first": "2020-01-02"
+   },
+   {
+    "variant": "market-feature rows",
+    "fold": 9,
+    "train_rows": 1210,
+    "test_rows": 108,
+    "train_first": "2020-07-01"
+   },
+   {
+    "variant": "market-feature rows",
+    "fold": 10,
+    "train_rows": 1193,
+    "test_rows": 120,
+    "train_first": "2021-01-04"
+   },
+   {
+    "variant": "market-feature rows",
+    "fold": 11,
+    "train_rows": 1190,
+    "test_rows": 54,
+    "train_first": "2021-07-01"
+   }
+  ],
+  "common_evaluation_days": 1362,
+  "timing_seconds": {
+   "current (all-feature rows)": 29.5,
+   "market-feature rows": 31.3
+  },
+  "argmax_agreement_current_vs_notebook": 1.0,
+  "comparisons": [
+   {
+    "target": "sk_hynix",
+    "comparison": "market-feature rows − current (all-feature rows)",
+    "metric": "log_loss",
+    "delta": 0.0003875900256462561,
+    "ci_low": -0.0009793160680144075,
+    "ci_high": 0.0017837096841887329,
+    "common_n": 1362,
+    "verdict": "동률(CI가 0 포함)"
+   },
+   {
+    "target": "sk_hynix",
+    "comparison": "market-feature rows − current (all-feature rows)",
+    "metric": "balanced_accuracy",
+    "delta": -0.0008959257706198098,
+    "ci_low": -0.008161512831325863,
+    "ci_high": 0.006770355453532022,
+    "common_n": 1362,
+    "verdict": "동률(CI가 0 포함)"
+   },
+   {
+    "target": "sk_hynix",
+    "comparison": "market-feature rows − current (all-feature rows)",
+    "metric": "accuracy",
+    "delta": -0.0022026431718061845,
+    "ci_low": -0.009672619047619015,
+    "ci_high": 0.005786005270088016,
+    "common_n": 1362,
+    "verdict": "동률(CI가 0 포함)"
+   },
+   {
+    "target": "sk_hynix",
+    "comparison": "market-feature rows − 사전확률",
+    "metric": "log_loss",
+    "delta": -0.07744505357454035,
+    "ci_low": -0.09318498231724455,
+    "ci_high": -0.0622221091633062,
+    "common_n": 1362,
+    "verdict": "후보가 유의하게 우위"
+   },
+   {
+    "target": "sk_hynix",
+    "comparison": "market-feature rows − 사전확률",
+    "metric": "balanced_accuracy",
+    "delta": 0.13093762126283404,
+    "ci_low": 0.11018628105839304,
+    "ci_high": 0.15115593638624208,
+    "common_n": 1362,
+    "verdict": "후보가 유의하게 우위"
+   },
+   {
+    "target": "sk_hynix",
+    "comparison": "market-feature rows − 사전확률",
+    "metric": "accuracy",
+    "delta": 0.22320117474302492,
+    "ci_low": 0.17953851838567242,
+    "ci_high": 0.2644023386004223,
+    "common_n": 1362,
+    "verdict": "후보가 유의하게 우위"
+   },
+   {
+    "target": "sk_hynix",
+    "comparison": "current (all-feature rows) − 노트북 OOF(재현 확인)",
+    "metric": "log_loss",
+    "delta": 0.0,
+    "ci_low": 0.0,
+    "ci_high": 0.0,
+    "common_n": 1362,
+    "verdict": "동률(CI가 0 포함)"
+   },
+   {
+    "target": "sk_hynix",
+    "comparison": "current (all-feature rows) − 노트북 OOF(재현 확인)",
+    "metric": "balanced_accuracy",
+    "delta": 0.0,
+    "ci_low": 0.0,
+    "ci_high": 0.0,
+    "common_n": 1362,
+    "verdict": "동률(CI가 0 포함)"
+   },
+   {
+    "target": "sk_hynix",
+    "comparison": "current (all-feature rows) − 노트북 OOF(재현 확인)",
+    "metric": "accuracy",
+    "delta": 0.0,
+    "ci_low": 0.0,
+    "ci_high": 0.0,
+    "common_n": 1362,
+    "verdict": "동률(CI가 0 포함)"
+   }
+  ],
+  "selective": [
+   {
+    "target": "sk_hynix",
+    "model": "current (all-feature rows)",
+    "threshold": "none",
+    "selected": 1362,
+    "total": 1362,
+    "coverage": 1.0,
+    "selected_accuracy": 0.49926578560939794,
+    "overall_accuracy": 0.49926578560939794
+   },
+   {
+    "target": "sk_hynix",
+    "model": "current (all-feature rows)",
+    "threshold": "0.5",
+    "selected": 386,
+    "total": 1362,
+    "coverage": 0.2834067547723935,
+    "selected_accuracy": 0.6398963730569949,
+    "overall_accuracy": 0.49926578560939794
+   },
+   {
+    "target": "sk_hynix",
+    "model": "current (all-feature rows)",
+    "threshold": "0.6",
+    "selected": 102,
+    "total": 1362,
+    "coverage": 0.07488986784140969,
+    "selected_accuracy": 0.7450980392156863,
+    "overall_accuracy": 0.49926578560939794
+   },
+   {
+    "target": "sk_hynix",
+    "model": "current (all-feature rows)",
+    "threshold": "0.7",
+    "selected": 29,
+    "total": 1362,
+    "coverage": 0.021292217327459617,
+    "selected_accuracy": 0.896551724137931,
+    "overall_accuracy": 0.49926578560939794
+   },
+   {
+    "target": "sk_hynix",
+    "model": "market-feature rows",
+    "threshold": "none",
+    "selected": 1362,
+    "total": 1362,
+    "coverage": 1.0,
+    "selected_accuracy": 0.49706314243759175,
+    "overall_accuracy": 0.49706314243759175
+   },
+   {
+    "target": "sk_hynix",
+    "model": "market-feature rows",
+    "threshold": "0.5",
+    "selected": 387,
+    "total": 1362,
+    "coverage": 0.2841409691629956,
+    "selected_accuracy": 0.6330749354005168,
+    "overall_accuracy": 0.49706314243759175
+   },
+   {
+    "target": "sk_hynix",
+    "model": "market-feature rows",
+    "threshold": "0.6",
+    "selected": 99,
+    "total": 1362,
+    "coverage": 0.07268722466960352,
+    "selected_accuracy": 0.7474747474747475,
+    "overall_accuracy": 0.49706314243759175
+   },
+   {
+    "target": "sk_hynix",
+    "model": "market-feature rows",
+    "threshold": "0.7",
+    "selected": 27,
+    "total": 1362,
+    "coverage": 0.019823788546255508,
+    "selected_accuracy": 0.9259259259259259,
+    "overall_accuracy": 0.49706314243759175
+   },
+   {
+    "target": "sk_hynix",
+    "model": "notebook OOF (No macro ensemble)",
+    "threshold": "none",
+    "selected": 1362,
+    "total": 1362,
+    "coverage": 1.0,
+    "selected_accuracy": 0.49926578560939794,
+    "overall_accuracy": 0.49926578560939794
+   },
+   {
+    "target": "sk_hynix",
+    "model": "notebook OOF (No macro ensemble)",
+    "threshold": "0.5",
+    "selected": 386,
+    "total": 1362,
+    "coverage": 0.2834067547723935,
+    "selected_accuracy": 0.6398963730569949,
+    "overall_accuracy": 0.49926578560939794
+   },
+   {
+    "target": "sk_hynix",
+    "model": "notebook OOF (No macro ensemble)",
+    "threshold": "0.6",
+    "selected": 102,
+    "total": 1362,
+    "coverage": 0.07488986784140969,
+    "selected_accuracy": 0.7450980392156863,
+    "overall_accuracy": 0.49926578560939794
+   },
+   {
+    "target": "sk_hynix",
+    "model": "notebook OOF (No macro ensemble)",
+    "threshold": "0.7",
+    "selected": 29,
+    "total": 1362,
+    "coverage": 0.021292217327459617,
+    "selected_accuracy": 0.896551724137931,
+    "overall_accuracy": 0.49926578560939794
+   }
+  ],
+  "note": "후보는 시세 열·정답·밴드가 모두 있는 행으로 학습하고 폴드를 같은 규칙으로 다시 만든다. 평가는 두 판의 공통 날짜."
+ }
+}

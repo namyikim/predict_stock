@@ -1,0 +1,48 @@
+{
+ "task_id": "P17",
+ "run_id": "20260924T0526Z_asof_cumulative",
+ "target": [
+  "samsung",
+  "sk_hynix"
+ ],
+ "code_commit": "9e2874ffe2fb33dc69ae15c6bbd50a4bd8063bab (+ 이 실험의 러너 변경, 같은 커밋에 포함)",
+ "data_hash": {
+  "samsung": "3d1a03863c448ec5d1aa",
+  "sk_hynix": "fa4dfc966108ea6024bb"
+ },
+ "config_hash": "4115898b1a756c79289d",
+ "seed": 42,
+ "mode": "full",
+ "target_mode": "close_to_close",
+ "classes": [
+  "down",
+  "flat",
+  "up"
+ ],
+ "status": "completed",
+ "completed_units": [
+  "samsung:asof_cumulative",
+  "sk_hynix:asof_cumulative"
+ ],
+ "failed_units": [],
+ "baseline_run": "experiments/model_improvement/P00/20260910T0100Z_baseline_full",
+ "source_runs": {
+  "samsung": "P17\\20260924T052607Z_samsung_p17",
+  "sk_hynix": "P17\\20260924T052608Z_sk_hynix_p17"
+ },
+ "config": {
+  "task": "P17",
+  "mode": "full",
+  "reference": "current (market only)",
+  "candidate": "asof cumulative",
+  "flag_asset": "sp500",
+  "new_columns": [
+   "us_new_session",
+   "us_obs_age_days"
+  ],
+  "definition": "해외 *_ret_1·krwjpy_ret_1 = as-of 가격 수준(세션 d → 한국 d+1, 허용 7일)의 한국 행 사이 누적. gdr_overnight_signal 은 새 gdr 값으로. 5일 수익률·z 점수 그대로",
+  "headline": "No macro ensemble",
+  "window": "5y",
+  "issue_min_prob": 0.0
+ }
+}

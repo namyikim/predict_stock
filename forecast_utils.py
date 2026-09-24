@@ -1642,6 +1642,57 @@ def snapshot_hash(raw):
 
 
 # ---------------------------------------------------------------------------
+# 해외 1일 수익률의 as-of 누적 — P17 운영 반영 (2026-09-24)
+# ---------------------------------------------------------------------------
+# 예전에는 해외 '수익률'을 as-of 로 붙여, 미국 휴장일에 직전 세션 수익률이 다음 한국 행에도 그대로 반복됐다
+# (두 종목 모두 88행 — 새 정보처럼 보인다). 한국 연휴에는 그 사이 미국 세션 여럿 중 마지막 하루만 들어갔다.
+# 이제 가격 **수준**을 같은 규칙(해외 세션 d → 한국 날짜 d+1 부터, 허용 7일)으로 붙이고 1일 수익률을 '직전 한국
+# 행 이후의 누적'으로 만든다. 새 세션이 없으면 정확히 0, 연휴면 그 사이 누적이다. 0 이 '휴장'인지 '보합'인지
+# 구분하도록 미국 세션 달력의 새 세션 여부·관측 나이를 특징으로 둔다. 5일 수익률·z 점수는 '지금 상태'라 그대로다.
+# P17 결과(12폴드 쌍체): sk_hynix log_loss −0.0079 [−0.0129, −0.0030] 우위, samsung 동률(−0.0017), 정확도 동률.
+# 노트북(특징 생성)과 실험 러너(P17)가 이 함수들을 같이 쓴다.
+US_SESSION_ASSET = "sp500"
+US_SESSION_COLUMNS = ("us_new_session", "us_obs_age_days")
+
+
+def asof_level_with_source(base_index, series, availability_days=1, tolerance_days=7):
+    """노트북 merge_latest_available 와 같은 as-of 결합(세션 d → base d+availability_days)에 원래 날짜를 함께.
+
+    돌려주는 틀: index = base_index 순서, 열 value·source_date. 허용 기간을 넘으면 둘 다 결측.
+    """
+    values = pd.Series(series).dropna().copy()
+    index = pd.DatetimeIndex(pd.to_datetime(values.index))
+    index = index.tz_localize(None) if index.tz is not None else index
+    values.index = index.normalize().as_unit("ns")
+    values = values.groupby(level=0).last().sort_index()
+    right = pd.DataFrame({"available_date": values.index + pd.Timedelta(days=availability_days),
+                          "source_date": values.index, "value": values.to_numpy(dtype=float)})
+    base = pd.DatetimeIndex(pd.to_datetime(base_index))
+    base = (base.tz_localize(None) if base.tz is not None else base).as_unit("ns")
+    left = pd.DataFrame({"date": base, "order": np.arange(len(base))}).sort_values("date")
+    merged = pd.merge_asof(left, right, left_on="date", right_on="available_date",
+                           direction="backward", tolerance=pd.Timedelta(days=tolerance_days))
+    merged = merged.sort_values("order")
+    return pd.DataFrame({"value": merged["value"].to_numpy(), "source_date": merged["source_date"].to_numpy()},
+                        index=pd.DatetimeIndex(pd.to_datetime(base_index)))
+
+
+def asof_cumulative_return(base_index, series, availability_days=1, tolerance_days=7):
+    """직전 base 행 이후 새로 알게 된 해외 가격 변화(누적 수익률). 새 세션이 없으면 0, 첫 행·결측이면 NaN."""
+    level = asof_level_with_source(base_index, series, availability_days, tolerance_days)["value"]
+    return level / level.shift(1) - 1
+
+
+def us_session_features(base_index, series, availability_days=1, tolerance_days=7):
+    """미국 세션 달력(US_SESSION_ASSET 종가)으로 us_new_session(0/1)·us_obs_age_days(마지막 세션 뒤 일수)."""
+    joined = asof_level_with_source(base_index, series, availability_days, tolerance_days)
+    source = pd.Series(pd.DatetimeIndex(joined["source_date"]), index=joined.index)
+    new = np.where(source.isna(), np.nan, (source != source.shift(1)).astype(float))
+    age = (pd.DatetimeIndex(joined.index).normalize() - pd.DatetimeIndex(source)).days.astype(float)
+    return pd.DataFrame({"us_new_session": new, "us_obs_age_days": np.asarray(age, dtype=float)}, index=joined.index)
+
+
+# ---------------------------------------------------------------------------
 # 시가 반영(09:37) 종가 방향 갱신 — P16 운영 반영 (2026-09-20)
 # ---------------------------------------------------------------------------
 # P16 이 보인 것: 09:00 시가가 확정된 뒤 같은 타깃(전일 종가→당일 종가)을 다시 물으면 정확도가

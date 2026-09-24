@@ -20,7 +20,7 @@ import forecast_utils as fu  # noqa: E402
 
 NB = json.loads((ROOT / "samsung_direction_model_colab.ipynb").read_text(encoding="utf-8"))
 SYNC_CELL = next("".join(c["source"]) for c in NB["cells"]
-                 if "def github_put(path, text, token, message, attempt=0):" in "".join(c["source"]))
+                 if "def github_put_expected(" in "".join(c["source"]))
 
 
 class MergeLedgerLogsTests(unittest.TestCase):
@@ -54,66 +54,50 @@ class MergeLedgerLogsTests(unittest.TestCase):
         self.assertEqual(calls, ["B"])
 
 
-class GithubPutExpectedTests(unittest.TestCase):
-    """노트북의 github_put_expected 를 셀 소스에서 꺼내 가짜 API 로 돌린다."""
+class EmbeddedPublisherTests(unittest.TestCase):
+    """노트북은 tools/github_pages.py 를 헬퍼 셀에 그대로 넣어 모듈로 쓴다(발행 묶기 ④, 2026-09-24).
 
-    def load(self, github_get):
-        body = SYNC_CELL[SYNC_CELL.index("def github_put_expected("):SYNC_CELL.index("# ---- 참고자료 보관본 갱신")]
-        namespace = {"json": json, "GITHUB_BRANCH": "main", "GITHUB_REPO": "o/r", "github_get": github_get,
-                     "time": type("T", (), {"sleep": staticmethod(lambda s: None)})}
-        exec(body, namespace)
-        return namespace["github_put_expected"]
+    예전에는 노트북에 따로 만든 github_put·github_put_expected 가 있었고 재시도 규칙이 도구와 달랐다.
+    """
 
-    def fake_urlopen(self, responses, bodies):
-        class Http(Exception):
-            def __init__(self, code):
-                super().__init__(code)
-                self.code = code
+    def test_the_cell_is_exactly_the_tool_source(self):
+        sys.path.insert(0, str(ROOT / "tools"))
+        import sync_notebook_helpers as sync
+        cell = next("".join(c["source"]) for c in NB["cells"] if "github_pages" in c.get("metadata", {}).get("tags", []))
+        self.assertEqual(cell, sync.helper_source("github_pages"), "tools/sync_notebook_helpers.py 를 다시 돌리세요")
 
-        class Response:
-            def __init__(self, sha): self.sha = sha
-            def __enter__(self): return self
-            def __exit__(self, *a): return False
-            def read(self): return json.dumps({"content": {"sha": self.sha}}).encode()
+    def load(self):
+        """헬퍼 셀과 원장 셀의 github_put·github_put_expected 를 노트북처럼 한 이름공간에서 실행한다."""
+        cell = next("".join(c["source"]) for c in NB["cells"] if "github_pages" in c.get("metadata", {}).get("tags", []))
+        namespace = {}
+        exec(cell, namespace)
+        defs = SYNC_CELL[SYNC_CELL.index("def github_put("):SYNC_CELL.index("# ---- 참고자료 보관본 갱신")]
+        exec(defs, namespace)
+        return namespace
 
-        def urlopen(request, timeout=60):
-            bodies.append(json.loads(request.data.decode()))
-            outcome = responses.pop(0)
-            if isinstance(outcome, int):
-                raise Http(outcome)
-            return Response(outcome)
-        return urlopen
-
-    def test_first_attempt_uses_the_sha_we_read_and_does_not_reread(self):
-        reads, bodies = [], []
-        put = self.load(lambda path, tok: reads.append(path) or ("x", "s9"))
-        with patch("urllib.request.urlopen", self.fake_urlopen(["abcdef123"], bodies)):
-            self.assertEqual(put("l.csv", "ours", "t", "m", "s1", merge=None), "abcdef1")
-        self.assertEqual([b.get("sha") for b in bodies], ["s1"])
-        self.assertEqual(reads, [], "성공하면 sha 를 다시 읽지 않는다")
-
-    def test_changed_file_is_merged_and_written_with_the_new_sha(self):
-        bodies, merged_from = [], []
-        put = self.load(lambda path, tok: ("theirs", "s2"))
+    def test_ledger_and_derived_files_become_one_commit_and_other_rows_survive(self):
+        sys.path.insert(0, str(ROOT / "tests"))
+        from test_publish_batch import FakeRepo
+        ns = self.load()
+        gp = ns["github_pages"]
+        repo = FakeRepo({"forecast_history/samsung/forecast_log.csv": "id\na\n"})
+        read_sha = gp.blob_sha("id\na\n")
+        repo.push_other({"forecast_history/samsung/forecast_log.csv": "id\na\nother\n"})   # 읽은 뒤 다른 실행
+        derived = {"text": "before"}
 
         def merge(latest):
-            merged_from.append(latest)
-            return "theirs+ours"
-        with patch("urllib.request.urlopen", self.fake_urlopen([409, "merged1234"], bodies)):
-            put("l.csv", "ours", "t", "m", "s1", merge)
-        self.assertEqual(merged_from, ["theirs"])
-        self.assertEqual([b.get("sha") for b in bodies], ["s1", "s2"])
-        import base64
-        self.assertEqual(base64.b64decode(bodies[-1]["content"]).decode(), "theirs+ours")
-
-    def test_unchanged_sha_after_422_is_not_contention(self):
-        bodies = []
-        put = self.load(lambda path, tok: ("same", "s1"))
-        with patch("urllib.request.urlopen", self.fake_urlopen([422], bodies)):
-            with self.assertRaises(RuntimeError) as caught:
-                put("l.csv", "ours", "t", "m", "s1", merge=lambda t: self.fail("합치면 안 된다"))
-        self.assertIn("경합이 아님", str(caught.exception))
-        self.assertEqual(len(bodies), 1)
+            derived["text"] = "after-merge"
+            return latest + "ours\n"
+        with patch.object(gp, "_repo_api", repo.api), patch("time.sleep"):
+            with gp.batch("data: samsung 원장 (r)", "t"):
+                ns["github_put_expected"]("forecast_history/samsung/forecast_log.csv", "id\na\nours\n", "t", "m",
+                                          read_sha, merge)
+                ns["github_put"]("forecast_history/samsung/daily_forecast_comparison.csv",
+                                 lambda: derived["text"], "t", "m")
+        files = repo.files()
+        self.assertEqual(files["forecast_history/samsung/forecast_log.csv"], "id\na\nother\nours\n")
+        self.assertEqual(files["forecast_history/samsung/daily_forecast_comparison.csv"], "after-merge")
+        self.assertEqual(repo.count("POST", "git/commits"), 1)
 
 
 class SyncWiringTests(unittest.TestCase):
@@ -123,6 +107,17 @@ class SyncWiringTests(unittest.TestCase):
         self.assertIn("github_put_expected(", SYNC_CELL)
         self.assertIn("remote_sha, _merge_ledger_with)", SYNC_CELL)
         self.assertNotIn('drop_duplicates("record_id", keep="last")', SYNC_CELL)
+
+    def test_ledger_report_and_caches_are_each_one_commit(self):
+        ledger = SYNC_CELL[SYNC_CELL.index('with github_pages.batch(f"data: {TARGET} 원장 ({RUN_ID})", token):'):]
+        self.assertLess(ledger.index("for name in LEDGER_FILES:"), ledger.index("post_open_grid.csv"))
+        self.assertIn("lambda name=name: (STORAGE_ROOT / name).read_text", ledger, "파생 파일은 합친 원장 뒤에 읽는다")
+        self.assertIn('with github_pages.batch(f"macro: 보관본 ({RUNTIME} {RUN_ID})", _cache_token):', SYNC_CELL)
+        report = next("".join(c["source"]) for c in NB["cells"] if "GitHub Pages 발행: {_path}" in "".join(c["source"]))
+        self.assertIn('with github_pages.batch(f"report: {prediction_date.date()} ({RUN_ID})", _token):', report)
+        # 노트북에 자기 PUT 사본이 남지 않는다.
+        for cell in NB["cells"]:
+            self.assertNotIn('method="PUT"', "".join(cell["source"]))
 
     def test_the_afternoon_tool_uses_the_same_merge_rule(self):
         source = (ROOT / "tools" / "build_afternoon_update.py").read_text(encoding="utf-8")

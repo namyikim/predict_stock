@@ -1,7 +1,8 @@
 """GitHub Contents API로 파일 하나를 저장소에 올린다.
 
-보고서 도구들이 같은 코드를 각자 갖고 있어서 여기로 모은다. 노트북은 Colab에서
-자립해야 하므로 자기 복사본을 그대로 둔다.
+보고서 도구들이 같은 코드를 각자 갖고 있어서 여기로 모은다. 노트북은 Colab에서 자립해야 하므로
+tools/sync_notebook_helpers.py 가 이 파일을 그대로 노트북 셀에 넣는다(모듈 github_pages, 2026-09-24).
+그래서 이 파일은 표준 라이브러리만 쓰고, 노트북에 없는 모듈은 함수 안에서만 import 한다.
 """
 import base64
 import contextlib

@@ -1368,32 +1368,34 @@ def main():
         print("phase:", result["current"]["phase"], "| similar:", result["similar"])
     if args.publish:
         tok = github_pages.token()
-        # 이번에 새로 받은 보조 자료를 '마지막 성공분'으로 남긴다(다음에 API가 막혀도 계속 돌 수 있게).
-        for name, key in (("cli_g20.csv", "cli_info"), ("news_sentiment.csv", None), ("term_spread.csv", None)):
-            cache = out_dir / "macro_cache" / name
-            info = result.get(key) if key else result.get("extra_info", {}).get(
-                "nsi" if name.startswith("news") else "term_spread", {})
-            if cache.exists() and (info or {}).get("fresh"):
+        # 이 블록의 발행은 모두 한 커밋으로 올라간다(발행 묶기 ①, 2026-09-23).
+        with github_pages.batch(f"longterm: {args.target} {result['as_of']}"):
+            # 이번에 새로 받은 보조 자료를 '마지막 성공분'으로 남긴다(다음에 API가 막혀도 계속 돌 수 있게).
+            for name, key in (("cli_g20.csv", "cli_info"), ("news_sentiment.csv", None), ("term_spread.csv", None)):
+                cache = out_dir / "macro_cache" / name
+                info = result.get(key) if key else result.get("extra_info", {}).get(
+                    "nsi" if name.startswith("news") else "term_spread", {})
+                if cache.exists() and (info or {}).get("fresh"):
+                    try:
+                        github_pages.publish(f"macro_history/{name}", cache.read_text(encoding="utf-8"), tok,
+                                             f"macro: {name} ({(info or {}).get('last', '')})")
+                    except Exception as exc:
+                        print(f"  사본 업로드 실패({name}):", exc, flush=True)
+            # 한국 수출(FRED)을 새로 받았으면 보관본으로 남긴다 — 다음에 FRED 가 막혀도 그림이 그려지게.
+            exports_cache = out_dir / "macro_cache" / "korea_exports.csv"
+            if (result.get("g20_outlook") or {}).get("exports_fresh") and exports_cache.exists():
                 try:
-                    github_pages.publish(f"macro_history/{name}", cache.read_text(encoding="utf-8"), tok,
-                                         f"macro: {name} ({(info or {}).get('last', '')})")
+                    github_pages.publish("macro_history/korea_exports.csv",
+                                         exports_cache.read_text(encoding="utf-8"), tok,
+                                         "macro: korea_exports (FRED)")
                 except Exception as exc:
-                    print(f"  사본 업로드 실패({name}):", exc, flush=True)
-        # 한국 수출(FRED)을 새로 받았으면 보관본으로 남긴다 — 다음에 FRED 가 막혀도 그림이 그려지게.
-        exports_cache = out_dir / "macro_cache" / "korea_exports.csv"
-        if (result.get("g20_outlook") or {}).get("exports_fresh") and exports_cache.exists():
-            try:
-                github_pages.publish("macro_history/korea_exports.csv",
-                                     exports_cache.read_text(encoding="utf-8"), tok,
-                                     "macro: korea_exports (FRED)")
-            except Exception as exc:
-                print("  사본 업로드 실패(korea_exports.csv):", exc, flush=True)
-        for name in ("longterm.html", "longterm.json"):
-            sha = github_pages.publish(f"docs/{args.target}/{name}", (out_dir / name).read_text(encoding="utf-8"),
-                                       tok, f"longterm: {args.target} {result['as_of']}")
-            print(f"발행 docs/{args.target}/{name} @ {sha}")
-        github_pages.publish(f"docs/{args.target}/valuation_history/{record_name}", record_text,
-                             tok, f"valuation: {args.target} reference snapshot")
+                    print("  사본 업로드 실패(korea_exports.csv):", exc, flush=True)
+            for name in ("longterm.html", "longterm.json"):
+                sha = github_pages.publish(f"docs/{args.target}/{name}", (out_dir / name).read_text(encoding="utf-8"),
+                                           tok, f"longterm: {args.target} {result['as_of']}")
+                print(f"발행 docs/{args.target}/{name} @ {sha}")
+            github_pages.publish(f"docs/{args.target}/valuation_history/{record_name}", record_text,
+                                 tok, f"valuation: {args.target} reference snapshot")
 
 
 if __name__ == "__main__":

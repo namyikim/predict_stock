@@ -59,21 +59,22 @@ def replace_sources(page, source_html):
 
 
 def publish_tab(target, content, sources, token, attempts=4):
-    """409 발생 시 최신 페이지에 다시 적용한다. 다른 실행의 일일 예측을 덮어쓰지 않는다."""
+    """장기 전망 탭 부분만 바꿔 올린다. 그 사이 페이지가 바뀌었으면 최신 페이지에 다시 적용한다 — 다른 실행의
+    일일 예측을 덮어쓰지 않는다. 공용 publish(expected_sha, merge) 를 써서 발행 묶음에도 들어간다(2026-09-23).
+    돌려주는 값은 올린 파일의 blob sha(묶음 안이면 '대기')이거나, 바뀐 것이 없으면 'unchanged'."""
     path = f'docs/{target}/index.html'
-    for attempt in range(attempts):
-        current = github_pages._api(path, token)
-        page = base64.b64decode(current['content']).decode('utf-8')
-        updated = replace_sources(replace_panel(page, content), sources)
-        if page == updated:
-            return 'unchanged'
-        body = {'message': f'report: {target} daily export refresh', 'branch': github_pages.GITHUB_BRANCH,
-                'sha': current['sha'], 'content': base64.b64encode(updated.encode()).decode()}
-        try:
-            return github_pages._api(path, token, 'PUT', body)['commit']['sha']
-        except Exception as exc:
-            if getattr(exc, 'code', None) not in (409, 422) or attempt == attempts - 1:
-                raise
+    page, sha = github_pages.fetch_with_sha(path, token)
+    if page is None:
+        raise RuntimeError(f'{path} 이 없습니다 — 일일 보고서가 먼저 발행돼야 탭을 바꿀 수 있습니다')
+
+    def apply(latest):
+        return replace_sources(replace_panel(latest, content), sources)
+
+    updated = apply(page)
+    if page == updated:
+        return 'unchanged'
+    return github_pages.publish(path, updated, token, f'report: {target} daily export refresh', attempts=attempts,
+                                expected_sha=sha, merge=apply)
 
 
 def main():
@@ -97,7 +98,8 @@ def main():
     content = summary + renumber_fragment((lt_dir / 'longterm.html').read_text()) + renumber_fragment((er_dir / 'earnings.html').read_text())
     (lt_dir / 'longterm_tab.html').write_text(content, encoding='utf-8')
     if args.publish:
-        print(publish_tab(args.target, content, fragment_sources_html(lt, er), github_pages.token()))
+        with github_pages.batch(f'report: {args.target} daily export refresh'):
+            print(publish_tab(args.target, content, fragment_sources_html(lt, er), github_pages.token()))
 
 
 if __name__ == '__main__':

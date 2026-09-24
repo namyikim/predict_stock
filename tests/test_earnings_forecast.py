@@ -32,6 +32,7 @@ class PublicationSafetyTests(unittest.TestCase):
                 patch.object(ef, "analyse", return_value=(result, pd.DataFrame(), pd.DataFrame(), profit)), \
                 patch.object(ef.github_pages, "token", return_value="token"), \
                 patch.object(ef.github_pages, "fetch", side_effect=RuntimeError("timeout")), \
+                patch.object(ef.github_pages, "fetch_with_sha", side_effect=RuntimeError("timeout")), \
                 patch.object(ef, "append_estimate", return_value=(pd.DataFrame(), False)), \
                 patch.object(ef, "score_ledger", return_value=(pd.DataFrame(), 0)), \
                 patch.object(ef, "render_ledger_block", return_value=""), \

@@ -4,8 +4,12 @@
 자립해야 하므로 자기 복사본을 그대로 둔다.
 """
 import base64
+import contextlib
+import contextvars
+import hashlib
 import json
 import os
+import urllib.parse
 import urllib.request
 
 GITHUB_REPO = "namyikim/predict_stock"
@@ -77,6 +81,9 @@ def publish(path, text, tok, message, attempts=4, expected_sha=_ANY, merge=None)
     """
     import random
     import time
+    pending = _BATCH.get()
+    if pending is not None:          # with batch(...) 안: 모았다가 블록이 끝날 때 한 커밋으로 올린다
+        return pending.add(path, text, tok, message, expected_sha, merge)
     if expected_sha is not _ANY:
         return _publish_expected(path, text, tok, message, attempts, expected_sha, merge)
     for attempt in range(attempts):
@@ -126,6 +133,166 @@ def _publish_expected(path, text, tok, message, attempts, sha, merge):
         text, sha = merge(latest_text), latest_sha
         time.sleep(1 + attempt + random.uniform(0, 1))
     raise RuntimeError(f"업로드 실패 — {path} 가 {attempts}번 연달아 바뀌어 합치기를 멈췄습니다")
+
+
+# ---- 발행 묶기: 도구 한 번 = 커밋 한 번 (2026-09-23, guides/publish-batching-plan.md ①) ----------------------
+# publish() 는 파일 하나마다 커밋을 하나 만든다. 하루 커밋 300~600개, 커밋마다 Pages 빌드가 시작됐다가 다음
+# 커밋에 취소됐다(최근 100건 중 성공 9). batch() 블록 안의 publish() 는 모았다가 블록이 끝날 때 Git Data API 로
+# 한 커밋에 올린다. 블록 밖 호출은 예전처럼 곧바로 커밋한다 — 도구를 하나씩 옮길 수 있다.
+_BATCH = contextvars.ContextVar("github_pages_batch", default=None)
+PENDING = "대기(묶음 발행)"
+
+
+def blob_sha(text):
+    """git 이 이 내용에 붙일 blob sha. Contents API 가 돌려주는 sha 와 같은 값이다."""
+    data = text.encode("utf-8")
+    return hashlib.sha1(b"blob %d\0" % len(data) + data).hexdigest()
+
+
+def _repo_api(suffix, tok, method="GET", body=None):
+    """/repos/{저장소}/{suffix} 호출. git 데이터·비교·ref 에 쓴다."""
+    request = urllib.request.Request(
+        f"https://api.github.com/repos/{GITHUB_REPO}/{suffix}", method=method,
+        data=json.dumps(body).encode() if body is not None else None,
+        headers={"Authorization": f"Bearer {tok}", "Accept": "application/vnd.github+json",
+                 "X-GitHub-Api-Version": "2022-11-28"})
+    with urllib.request.urlopen(request, timeout=60) as response:
+        return json.loads(response.read().decode())
+
+
+def _blob_sha_at(path, commit, tok):
+    """그 커밋에서 path 의 blob sha. 없으면 None."""
+    try:
+        return _repo_api(f"contents/{urllib.parse.quote(path)}?ref={commit}", tok)["sha"]
+    except Exception as exc:
+        if getattr(exc, "code", None) == 404:
+            return None
+        raise RuntimeError(f"조회 실패({type(exc).__name__} {getattr(exc, 'code', '')})") from None
+
+
+def _blob_text(sha, tok):
+    return base64.b64decode(_repo_api(f"git/blobs/{sha}", tok)["content"]).decode("utf-8")
+
+
+def _head(tok):
+    return _repo_api(f"git/ref/heads/{GITHUB_BRANCH}", tok)["object"]["sha"]
+
+
+def _landed(commit, tok):
+    """이 커밋이 이미 main 에 들어가 있는가(ref 갱신 응답만 유실된 경우). 확인하지 못하면 False."""
+    try:
+        return _repo_api(f"compare/{commit}...{GITHUB_BRANCH}", tok).get("status") in ("identical", "ahead")
+    except Exception:
+        return False
+
+
+def _mark_published():
+    """워크플로가 '이번 실행에서 실제로 커밋했는가'를 알 수 있게 표시 파일을 남긴다(Pages 재빌드 판단용)."""
+    flag = os.environ.get("PAGES_CHANGED_FLAG", "").strip()
+    if flag:
+        try:
+            os.makedirs(os.path.dirname(flag) or ".", exist_ok=True)
+            with open(flag, "a", encoding="utf-8") as handle:
+                handle.write("1\n")
+        except OSError:
+            pass
+
+
+class Batch:
+    """모아 둔 파일을 한 커밋으로 올린다. 안전 조건(계획 문서 '검토 보완 사항'):
+
+    - 같은 경로는 마지막 것만 쓴다. 내용이 이미 같은 파일은 건너뛰고, 바뀐 파일이 없으면 커밋하지 않는다.
+    - expected_sha 를 준 파일(원장·일부만 고치는 HTML)은 커밋할 main 에서 그 sha 가 그대로여야 한다. 바뀌었으면
+      merge(최신 텍스트) 로 다시 만들고, merge 가 없으면 **묶음 전체를 올리지 않는다**(덮어쓰지 않는다).
+    - main 이 그 사이 움직여 ref 갱신이 거절되면 최신 main 을 기준으로 다시 짠다(다른 파일의 변경은 보존된다).
+      ref 가 그대로인데 거절됐으면 경합이 아니라 다른 오류로 멈춘다.
+    - ref 갱신 응답이 유실돼도 그 커밋이 이미 main 에 있으면 성공으로 본다(중복 커밋을 만들지 않는다).
+    - 검증은 **만든 커밋**의 트리로 한다. 최신 main 과 비교하면 다른 실행의 정상적인 뒤 커밋을 오류로 본다.
+    """
+
+    def __init__(self, message, tok=None):
+        self.message, self.tok, self.items, self.commit_sha = message, tok, {}, None
+
+    def add(self, path, text, tok, message, expected_sha=_ANY, merge=None):
+        self.tok = self.tok or tok
+        self.items.pop(path, None)          # 같은 경로는 마지막 것만(순서도 마지막 위치로)
+        self.items[path] = {"text": text, "message": message, "expected_sha": expected_sha, "merge": merge}
+        return PENDING
+
+    def _message(self, entries):
+        lines = [f"- {e['path']} — {self.items[e['path']]['message']}" for e in entries]
+        return self.message + "\n\n" + "\n".join(lines)
+
+    def commit(self, attempts=4):
+        import random
+        import time
+        if not self.items:
+            return None
+        tok = self.tok
+        for attempt in range(attempts):
+            head = _head(tok)
+            base_tree = _repo_api(f"git/commits/{head}", tok)["tree"]["sha"]
+            entries, unchanged = [], []
+            for path, item in self.items.items():
+                current = _blob_sha_at(path, head, tok)
+                if item["expected_sha"] is not _ANY and current != item["expected_sha"]:
+                    if item["merge"] is None:
+                        raise RuntimeError(f"동시 변경 감지 — {path} 가 이 실행이 읽은 뒤 바뀌었습니다. "
+                                           "덮어쓰지 않고 묶음 전체를 올리지 않습니다")
+                    item["text"] = item["merge"](_blob_text(current, tok) if current else None)
+                    item["expected_sha"] = current
+                want = blob_sha(item["text"])
+                if want == current:
+                    unchanged.append(path)
+                    continue
+                created = _repo_api("git/blobs", tok, "POST", {
+                    "content": base64.b64encode(item["text"].encode("utf-8")).decode(), "encoding": "base64"})["sha"]
+                if created != want:
+                    raise RuntimeError(f"blob 불일치 — {path} (로컬 {want[:7]} · 서버 {created[:7]})")
+                entries.append({"path": path, "mode": "100644", "type": "blob", "sha": created})
+            if not entries:
+                print(f"발행 묶음: 바뀐 파일이 없어 커밋하지 않습니다({len(unchanged)}개 그대로).", flush=True)
+                return None
+            tree = _repo_api("git/trees", tok, "POST", {"base_tree": base_tree, "tree": entries})["sha"]
+            commit = _repo_api("git/commits", tok, "POST",
+                               {"message": self._message(entries), "tree": tree, "parents": [head]})["sha"]
+            try:
+                _repo_api(f"git/refs/heads/{GITHUB_BRANCH}", tok, "PATCH", {"sha": commit, "force": False})
+            except Exception as exc:
+                code = getattr(exc, "code", None)
+                if not _landed(commit, tok):
+                    moved = code in (409, 422) and _head(tok) != head
+                    if not moved:
+                        raise RuntimeError(f"발행 실패({type(exc).__name__} {code or ''})") from None
+                    if attempt == attempts - 1:
+                        break
+                    time.sleep(1 + attempt + random.uniform(0, 1))
+                    continue
+            if _repo_api(f"git/commits/{commit}", tok)["tree"]["sha"] != tree:
+                raise RuntimeError(f"검증 실패 — 만든 커밋 {commit[:7]} 의 트리가 올린 트리와 다릅니다")
+            self.commit_sha = commit
+            _mark_published()
+            print(f"발행 묶음: 커밋 {commit[:7]} · 파일 {len(entries)}개"
+                  + (f" · 그대로 {len(unchanged)}개" if unchanged else ""), flush=True)
+            return commit
+        raise RuntimeError(f"발행 실패 — main 이 {attempts}번 연달아 바뀌어 멈췄습니다")
+
+
+@contextlib.contextmanager
+def batch(message, tok=None):
+    """with batch("…"): 안의 publish() 를 모아 블록이 끝날 때 한 커밋으로 올린다. 블록 안에서 예외가 나면
+    아무것도 올리지 않는다(반쯤 만든 보고서를 올리지 않는다 — 실패하면 지난 조각이 그대로 남는다)."""
+    current = Batch(message, tok)
+    reset = _BATCH.set(current)
+    try:
+        yield current
+    except BaseException:
+        _BATCH.reset(reset)
+        if current.items:
+            print(f"⚠️ 발행 묶음 안에서 오류 — 모아 둔 {len(current.items)}개 파일을 올리지 않습니다.", flush=True)
+        raise
+    _BATCH.reset(reset)
+    current.commit()
 
 
 def _git_head():

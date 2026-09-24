@@ -1513,9 +1513,10 @@ def main():
     ledger_name = f"forecast_history/{args.target}/earnings_log.csv"
     ledger_path = out_dir / "earnings_log.csv"
     token = None
+    ledger_sha = None        # 처음 읽은 원장의 sha — 올릴 때 그 사이 바뀌었으면 덮어쓰지 않고 멈춘다
     try:
         token = github_pages.token()
-        remote = github_pages.fetch(ledger_name, token)
+        remote, ledger_sha = github_pages.fetch_with_sha(ledger_name, token)
         if remote:
             ledger_path.write_text(remote, encoding="utf-8")
     except Exception as exc:
@@ -1547,85 +1548,92 @@ def main():
         print(oof.tail(8).to_string())
     if args.publish:
         token = github_pages.token()
-        # D램 현물가는 첫 페이지가 당일 값만 주므로 매일 누적한다.
-        if (result.get("dram_info") or {}).get("fresh") and (out_dir / "dram_spot.csv").exists():
-            try:
-                github_pages.publish("macro_history/dram_spot.csv",
-                                     (out_dir / "dram_spot.csv").read_text(encoding="utf-8"),
-                                     token, f"macro: dram_spot ({result['dram_info'].get('last')})")
-            except Exception as exc:
-                print("  D램 현물가 사본 업로드 실패:", exc, flush=True)
+        # 이 블록의 발행은 모두 한 커밋으로 올라간다(발행 묶기 ①, 2026-09-23). 블록 안에서 예외가 나면 아무것도
+        # 올리지 않는다. 보조 자료 사본의 try/except 는 '모아 두기'만 감싸므로 남겨 둬도 해가 없다.
+        with github_pages.batch(f"earnings: {args.target} {result['quarter_code']}"):
+            # D램 현물가는 첫 페이지가 당일 값만 주므로 매일 누적한다.
+            if (result.get("dram_info") or {}).get("fresh") and (out_dir / "dram_spot.csv").exists():
+                try:
+                    github_pages.publish("macro_history/dram_spot.csv",
+                                         (out_dir / "dram_spot.csv").read_text(encoding="utf-8"),
+                                         token, f"macro: dram_spot ({result['dram_info'].get('last')})")
+                except Exception as exc:
+                    print("  D램 현물가 사본 업로드 실패:", exc, flush=True)
 
-        # TSMC 는 API 가 최근 공시월만 주므로, 받은 것을 보관본과 합쳐 매달 누적한다.
-        if (result.get("tsmc_info") or {}).get("fresh") and (out_dir / "tsmc_revenue.csv").exists():
-            try:
-                github_pages.publish("macro_history/tsmc_revenue.csv",
-                                     (out_dir / "tsmc_revenue.csv").read_text(encoding="utf-8"),
-                                     token, f"macro: tsmc_revenue ({result['tsmc_info'].get('last')})")
-            except Exception as exc:
-                print("  TSMC 사본 업로드 실패:", exc, flush=True)
+            # TSMC 는 API 가 최근 공시월만 주므로, 받은 것을 보관본과 합쳐 매달 누적한다.
+            if (result.get("tsmc_info") or {}).get("fresh") and (out_dir / "tsmc_revenue.csv").exists():
+                try:
+                    github_pages.publish("macro_history/tsmc_revenue.csv",
+                                         (out_dir / "tsmc_revenue.csv").read_text(encoding="utf-8"),
+                                         token, f"macro: tsmc_revenue ({result['tsmc_info'].get('last')})")
+                except Exception as exc:
+                    print("  TSMC 사본 업로드 실패:", exc, flush=True)
 
-        # 관세청 원본을 보관본으로 남긴다(해외 IP에서 막히는 날을 대비).
-        if (result.get("customs_info") or {}).get("source") == "customs_api" and (out_dir / "customs_exports.csv").exists():
-            try:
-                github_pages.publish("macro_history/customs_exports.csv",
-                                     (out_dir / "customs_exports.csv").read_text(encoding="utf-8"),
-                                     token, "macro: customs_exports")
-            except Exception as exc:
-                print("  관세청 사본 업로드 실패:", exc, flush=True)
+            # 관세청 원본을 보관본으로 남긴다(해외 IP에서 막히는 날을 대비).
+            if (result.get("customs_info") or {}).get("source") == "customs_api" and (out_dir / "customs_exports.csv").exists():
+                try:
+                    github_pages.publish("macro_history/customs_exports.csv",
+                                         (out_dir / "customs_exports.csv").read_text(encoding="utf-8"),
+                                         token, "macro: customs_exports")
+                except Exception as exc:
+                    print("  관세청 사본 업로드 실패:", exc, flush=True)
 
-        # 10일 잠정치도 같은 이유로 보관한다. 한국에서 한 번 받아 두면 해외에서 막힌 날에도
-        # 그 달을 계속 채울 수 있다 — 순별 자료는 확정치와 달리 뒤늦게 받아도 값이 바뀌지 않는다.
-        if (result.get("flash_info") or {}).get("source") == "customs_flash_api" and (out_dir / "customs_flash.csv").exists():
-            try:
-                github_pages.publish("macro_history/customs_flash.csv",
-                                     (out_dir / "customs_flash.csv").read_text(encoding="utf-8"),
-                                     token, f"macro: customs_flash ({result['flash_info'].get('last')})")
-            except Exception as exc:
-                print("  관세청 잠정치 사본 업로드 실패:", exc, flush=True)
-        # 단가·중량도 보관한다. 읽는 곳(macro_history)과 쓰는 곳(out_dir)이 이어지지 않아 매 실행이
-        # 전체 이력을 다시 받고 있었다(2026-09-20 검토 #3).
-        if (result.get("quantity_info") or {}).get("source") == "customs_api" and (out_dir / "customs_quantity.csv").exists():
-            try:
-                github_pages.publish("macro_history/customs_quantity.csv",
-                                     (out_dir / "customs_quantity.csv").read_text(encoding="utf-8"),
-                                     token, f"macro: customs_quantity ({result['quantity_info'].get('last')})")
-            except Exception as exc:
-                print("  관세청 단가·중량 사본 업로드 실패:", exc, flush=True)
-        # 다음 실행이 최근 2년만 다시 받으면 되도록 이력을 저장소에 남긴다.
-        if result["profit_source"].startswith("DART"):
-            series = pd.read_csv(out_dir / "earnings_profit.csv") if (out_dir / "earnings_profit.csv").exists() else None
-            if series is not None:
-                github_pages.publish(f"macro_history/operating_profit_{args.target}.csv",
-                                     series.to_csv(index=False), token,
-                                     f"earnings: {args.target} 영업이익 이력 ({result['profit_last']})")
-        cli_cache = out_dir / "macro_cache" / "cli_g20.csv"
-        if result.get("cli_info", {}).get("fresh") and cli_cache.exists():
-            github_pages.publish("macro_history/cli_g20.csv", cli_cache.read_text(encoding="utf-8"),
-                                 token, f"macro: cli_g20 ({result['cli_info'].get('last')})")
-            # 판본 보관(R09 0단계). 선행지수는 나중에 값이 바뀌는데 최신본만 덮어쓰면 '그때 보이던
-            # 값'이 남지 않아, 나중에 아무리 조심해도 개정을 미리 아는 백테스트밖에 할 수 없다.
-            # 오늘부터 쌓아 둔다. 실패해도 보고서를 멈추지 않는다.
-            try:
-                existing = github_pages.fetch(CLI_VINTAGE_PATH, token) or ""
-                series = pd.read_csv(cli_cache)
-                text = append_cli_vintage(existing, series, datetime.now(KST).date())
-                if text is None:
-                    print("  선행지수 판본: 바뀐 값이 없어 그대로 둡니다.", flush=True)
-                else:
-                    github_pages.publish(CLI_VINTAGE_PATH, text, token,
-                                         f"macro: cli_g20 판본 ({datetime.now(KST).date()})")
-                    print(f"  선행지수 판본 추가 {CLI_VINTAGE_PATH}", flush=True)
-            except Exception as exc:
-                print("  ⚠️ 선행지수 판본을 남기지 못했습니다(무시):", exc, flush=True)
-        github_pages.publish(ledger_name, ledger_path.read_text(encoding="utf-8"), token,
-                             f"earnings ledger: {args.target} ({result['quarter_code']})")
-        print(f"발행 {ledger_name}")
-        for name in ("earnings.html", "earnings.json", "exports_snapshot.json"):
-            sha = github_pages.publish(f"docs/{args.target}/{name}",
-                                       (out_dir / name).read_text(encoding="utf-8"),
-                                       token, f"earnings: {args.target} {result['quarter_code']}")
-            print(f"발행 docs/{args.target}/{name} @ {sha}")
+            # 10일 잠정치도 같은 이유로 보관한다. 한국에서 한 번 받아 두면 해외에서 막힌 날에도
+            # 그 달을 계속 채울 수 있다 — 순별 자료는 확정치와 달리 뒤늦게 받아도 값이 바뀌지 않는다.
+            if (result.get("flash_info") or {}).get("source") == "customs_flash_api" and (out_dir / "customs_flash.csv").exists():
+                try:
+                    github_pages.publish("macro_history/customs_flash.csv",
+                                         (out_dir / "customs_flash.csv").read_text(encoding="utf-8"),
+                                         token, f"macro: customs_flash ({result['flash_info'].get('last')})")
+                except Exception as exc:
+                    print("  관세청 잠정치 사본 업로드 실패:", exc, flush=True)
+            # 단가·중량도 보관한다. 읽는 곳(macro_history)과 쓰는 곳(out_dir)이 이어지지 않아 매 실행이
+            # 전체 이력을 다시 받고 있었다(2026-09-20 검토 #3).
+            if (result.get("quantity_info") or {}).get("source") == "customs_api" and (out_dir / "customs_quantity.csv").exists():
+                try:
+                    github_pages.publish("macro_history/customs_quantity.csv",
+                                         (out_dir / "customs_quantity.csv").read_text(encoding="utf-8"),
+                                         token, f"macro: customs_quantity ({result['quantity_info'].get('last')})")
+                except Exception as exc:
+                    print("  관세청 단가·중량 사본 업로드 실패:", exc, flush=True)
+            # 다음 실행이 최근 2년만 다시 받으면 되도록 이력을 저장소에 남긴다.
+            if result["profit_source"].startswith("DART"):
+                series = pd.read_csv(out_dir / "earnings_profit.csv") if (out_dir / "earnings_profit.csv").exists() else None
+                if series is not None:
+                    github_pages.publish(f"macro_history/operating_profit_{args.target}.csv",
+                                         series.to_csv(index=False), token,
+                                         f"earnings: {args.target} 영업이익 이력 ({result['profit_last']})")
+            cli_cache = out_dir / "macro_cache" / "cli_g20.csv"
+            if result.get("cli_info", {}).get("fresh") and cli_cache.exists():
+                github_pages.publish("macro_history/cli_g20.csv", cli_cache.read_text(encoding="utf-8"),
+                                     token, f"macro: cli_g20 ({result['cli_info'].get('last')})")
+                # 판본 보관(R09 0단계). 선행지수는 나중에 값이 바뀌는데 최신본만 덮어쓰면 '그때 보이던
+                # 값'이 남지 않아, 나중에 아무리 조심해도 개정을 미리 아는 백테스트밖에 할 수 없다.
+                # 오늘부터 쌓아 둔다. 실패해도 보고서를 멈추지 않는다.
+                try:
+                    existing, vintage_sha = github_pages.fetch_with_sha(CLI_VINTAGE_PATH, token)
+                    series = pd.read_csv(cli_cache)
+                    today = datetime.now(KST).date()
+                    text = append_cli_vintage(existing or "", series, today)
+                    if text is None:
+                        print("  선행지수 판본: 바뀐 값이 없어 그대로 둡니다.", flush=True)
+                    else:
+                        # 두 종목 실행이 같은 판본 파일에 덧붙인다. 그 사이 바뀌었으면 최신 판본에 다시 덧붙인다.
+                        github_pages.publish(CLI_VINTAGE_PATH, text, token, f"macro: cli_g20 판본 ({today})",
+                                             expected_sha=vintage_sha,
+                                             merge=lambda latest: append_cli_vintage(latest or "", series, today) or (latest or ""))
+                        print(f"  선행지수 판본 추가 {CLI_VINTAGE_PATH}", flush=True)
+                except Exception as exc:
+                    print("  ⚠️ 선행지수 판본을 남기지 못했습니다(무시):", exc, flush=True)
+            github_pages.publish(ledger_name, ledger_path.read_text(encoding="utf-8"), token,
+                                 f"earnings ledger: {args.target} ({result['quarter_code']})",
+                                 expected_sha=ledger_sha)       # 처음 읽은 뒤 바뀌었으면 묶음 전체를 멈춘다
+            print(f"발행 {ledger_name}")
+            for name in ("earnings.html", "earnings.json", "exports_snapshot.json"):
+                sha = github_pages.publish(f"docs/{args.target}/{name}",
+                                           (out_dir / name).read_text(encoding="utf-8"),
+                                           token, f"earnings: {args.target} {result['quarter_code']}")
+                print(f"발행 docs/{args.target}/{name} @ {sha}")
 
 
 if __name__ == "__main__":

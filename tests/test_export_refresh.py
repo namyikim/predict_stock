@@ -100,8 +100,9 @@ class ExportRefreshTests(unittest.TestCase):
                 error = RuntimeError('conflict')
                 error.code = 409
                 raise error
-            return {'commit': {'sha': 'success'}}
-        with patch.object(rt.github_pages, '_api', side_effect=api):
+            # 공용 publish(expected_sha, merge) 는 올린 파일의 blob sha 앞 7자를 돌려준다(2026-09-23).
+            return {'content': {'sha': 'success99'}, 'commit': {'sha': 'c'}}
+        with patch.object(rt.github_pages, '_api', side_effect=api), patch('time.sleep'):
             self.assertEqual(rt.publish_tab('samsung', 'NEW', '', 'test'), 'success')
         published = base64.b64decode(submitted[-1]['content']).decode()
         self.assertIn('LATEST', published)

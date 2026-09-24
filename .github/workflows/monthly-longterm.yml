@@ -27,6 +27,9 @@ concurrency:
 
 jobs:
   longterm:
+    # 발행 묶음이 실제로 커밋하면 이 파일이 생긴다. 없으면 Pages 재빌드를 요청하지 않는다(2026-09-23).
+    env:
+      PAGES_CHANGED_FLAG: runs/pages_changed.flag
     runs-on: ubuntu-latest
     timeout-minutes: 90
     strategy:
@@ -76,6 +79,10 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           REPO: ${{ github.repository }}
         run: |
+          if [ ! -f "$PAGES_CHANGED_FLAG" ]; then
+            echo "이번 실행에서 바뀐 파일이 없어 Pages 재빌드를 요청하지 않습니다."
+            exit 0
+          fi
           code=$(curl -sS -o /tmp/export-pages.json -w '%{http_code}' -X POST \
             -H "Authorization: Bearer $GH_TOKEN" \
             -H "Accept: application/vnd.github+json" \

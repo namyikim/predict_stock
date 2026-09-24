@@ -1149,6 +1149,12 @@ def analyse(target, out_dir, fetch=True):
     macro, macro_info = load_macro_data(out_dir, "2005-01-01",
                                         datetime.now(KST).date(), use_cache=not fetch,
                                         fallback_dir=fallback_dir)
+    # KOSIS 에서 받은 원본(관세청 환산을 더하기 전)을 보관본에 합쳐 둔다. 보관본은 노트북만 써서 2013년부터라,
+    # 러너에서 KOSIS 가 막힌 날 수출 계열이 8년 짧아졌다(2026-09-24 11:45 실행: 261→165개월).
+    if macro_info.get("sources", {}).get("semiconductor_exports") == "KOSIS_API":
+        macro["semiconductor_exports"].to_csv(out_dir / "semiconductor_exports_kosis.csv", index=False)
+    else:
+        (out_dir / "semiconductor_exports_kosis.csv").unlink(missing_ok=True)   # 지난 실행의 파일을 올리지 않는다
     # 관세청 원천에서 최근 달을 먼저 채운다. KOSIS 확정치는 그대로 두고 없는 달만 더한다.
     customs_info = {"enabled": False, "reason": "DATA_GO_KR_KEY 없음"}
     customs_cache = fallback_dir / "customs_exports.csv"
@@ -1603,6 +1609,11 @@ def main():
                     github_pages.publish(f"macro_history/operating_profit_{args.target}.csv",
                                          series.to_csv(index=False), token,
                                          f"earnings: {args.target} 영업이익 이력 ({result['profit_last']})")
+            kosis_exports = out_dir / "semiconductor_exports_kosis.csv"
+            if kosis_exports.exists():
+                github_pages.publish_history("macro_history/semiconductor_exports.csv",
+                                             kosis_exports.read_text(encoding="utf-8"), token,
+                                             "macro: semiconductor_exports (KOSIS)")
             cli_cache = out_dir / "macro_cache" / "cli_g20.csv"
             if result.get("cli_info", {}).get("fresh") and cli_cache.exists():
                 github_pages.publish_history("macro_history/cli_g20.csv", cli_cache.read_text(encoding="utf-8"),

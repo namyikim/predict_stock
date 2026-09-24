@@ -109,6 +109,10 @@ class WiringTests(unittest.TestCase):
         longterm = self.source("build_longterm_report.py")
         self.assertIn('github_pages.publish_history(f"macro_history/{name}"', longterm)
         self.assertIn('github_pages.publish_history("macro_history/korea_exports.csv"', longterm)
+        # KOSIS 원본(관세청 환산 전)을 수출액 보관본에 합친다 — 보관본이 2013년부터라 KOSIS 가 막히면 짧아졌다.
+        self.assertIn('github_pages.publish_history("macro_history/semiconductor_exports.csv"', earnings)
+        self.assertLess(earnings.index('"semiconductor_exports_kosis.csv", index=False'),
+                        earnings.index("merge_customs_exports("), "관세청 환산을 더하기 전에 저장한다")
         for text in (earnings, longterm):
             self.assertNotIn('github_pages.publish("macro_history/cli_g20.csv"', text)
 

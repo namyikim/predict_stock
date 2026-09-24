@@ -84,6 +84,8 @@ def publish(path, text, tok, message, attempts=4, expected_sha=_ANY, merge=None)
     pending = _BATCH.get()
     if pending is not None:          # with batch(...) 안: 모았다가 블록이 끝날 때 한 커밋으로 올린다
         return pending.add(path, text, tok, message, expected_sha, merge)
+    if callable(text):               # 묶음 밖에서는 곧바로 만든다(묶음 안에서는 커밋할 때 만든다)
+        text = text()
     if expected_sha is not _ANY:
         return _publish_expected(path, text, tok, message, attempts, expected_sha, merge)
     for attempt in range(attempts):
@@ -257,12 +259,15 @@ class Batch:
                                            "덮어쓰지 않고 묶음 전체를 올리지 않습니다")
                     item["text"] = item["merge"](_blob_text(current, tok) if current else None)
                     item["expected_sha"] = current
-                want = blob_sha(item["text"])
+                # 함수로 준 내용은 여기서(앞 파일의 합치기가 끝난 뒤) 만든다 — 원장을 합치면 원장에서 다시 계산하는
+                # 파생 파일도 합친 원장 기준이어야 한다. 넣은 순서대로 처리하므로 원장을 먼저 넣는다.
+                text = item["text"]() if callable(item["text"]) else item["text"]
+                want = blob_sha(text)
                 if want == current:
                     unchanged.append(path)
                     continue
                 created = _repo_api("git/blobs", tok, "POST", {
-                    "content": base64.b64encode(item["text"].encode("utf-8")).decode(), "encoding": "base64"})["sha"]
+                    "content": base64.b64encode(text.encode("utf-8")).decode(), "encoding": "base64"})["sha"]
                 if created != want:
                     raise RuntimeError(f"blob 불일치 — {path} (로컬 {want[:7]} · 서버 {created[:7]})")
                 entries.append({"path": path, "mode": "100644", "type": "blob", "sha": created})

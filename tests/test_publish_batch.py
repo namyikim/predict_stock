@@ -227,6 +227,34 @@ class BatchTests(unittest.TestCase):
         self.assertIn("422", str(caught.exception))
         self.assertNotIn("secret-token", str(caught.exception))
 
+    def test_derived_file_given_as_a_function_is_built_after_the_ledger_merge(self):
+        # 오후 갱신: 원장이 그 사이 바뀌면 합친 원장으로 파생 파일도 다시 만든다. 파생 파일을 미리 읽어 두면
+        # 합치기 전 원장 기준이 올라간다(2026-09-24, 발행 묶기 ②).
+        derived = {"text": "D-before"}
+        self.repo.push_other({"ledger.csv": "L0\nother\n"})
+
+        def merge(latest):
+            derived["text"] = "D-after-merge"
+            return latest + "ours\n"
+        with gp.batch("m"):
+            gp.publish("ledger.csv", "L0\nours\n", "tok", "ledger", expected_sha=gp.blob_sha("L0\n"), merge=merge)
+            gp.publish("daily.csv", lambda: derived["text"], "tok", "derived")
+        self.assertEqual(self.repo.files()["ledger.csv"], "L0\nother\nours\n")
+        self.assertEqual(self.repo.files()["daily.csv"], "D-after-merge")
+
+    def test_function_text_outside_a_batch_is_built_immediately(self):
+        self.legacy.stop()
+        sent = []
+
+        def fake(path, tok, method="GET", body=None):
+            if method == "PUT":
+                sent.append(base64.b64decode(body["content"]).decode())
+            return {"sha": "s1"} if method == "GET" else {"content": {"sha": "abcdef1234"}}
+        with patch.object(gp, "_api", fake):
+            gp.publish("docs/a.html", lambda: "built", "tok", "a")
+        self.assertEqual(sent, ["built"])
+        self.legacy.start()
+
     def test_blob_sha_matches_git(self):
         self.assertEqual(gp.blob_sha("hello\n"), "ce013625030ba8dba906f756967f9e9ca394464a")   # git hash-object
 
@@ -268,6 +296,35 @@ class ToolWiringTests(unittest.TestCase):
         self.assertIn("with github_pages.batch(", src)
         self.assertIn("expected_sha=sha, merge=apply", src)
         self.assertNotIn("github_pages._api(path, token, 'PUT'", src)
+
+    # ---- ②단계(2026-09-24): 금·은·중국·오후 갱신·세션 리뷰 ----
+    def test_metals_publishes_both_assets_in_one_batch_and_protects_ledgers(self):
+        src = self.source("build_metals_report.py")
+        block = src[src.index('with github_pages.batch(f"metals:'):]
+        self.assertEqual(block.count("github_pages.publish("), 2)        # 자산별 원장 3종 루프 + 보고서
+        self.assertIn("remote, ledger_sha = github_pages.fetch_with_sha(ledger_path, tok)", block)
+        self.assertIn('guard = {"expected_sha": ledger_sha} if name == "forecast_log.csv" else {}', block)
+
+    def test_china_publishes_inside_a_batch(self):
+        src = self.source("build_china_report.py")
+        self.assertIn('with github_pages.batch(f"china: {fetched}", tok):', src)
+
+    def test_afternoon_update_batches_and_merges_ledger_derived_files_and_pages(self):
+        src = self.source("build_afternoon_update.py")
+        block = src[src.index('with github_pages.batch(f"score:'):]
+        self.assertEqual(block.count("github_pages.publish("), 3)
+        self.assertIn("lambda name=name: (storage / name).read_text", block, "파생 파일은 커밋할 때 읽는다")
+        self.assertIn("page, page_sha = github_pages.fetch_with_sha(path, token)", block)
+        self.assertIn("expected_sha=page_sha, merge=lambda latest, ours=updated:", block)
+        self.assertLess(block.index("LEDGER_FILES"), block.index("pages = ["), "원장을 먼저 넣는다")
+
+    def test_session_review_batches_and_reinserts_into_the_latest_page(self):
+        src = self.source("build_session_review.py")
+        block = src[src.index('with github_pages.batch(f"review:'):]
+        self.assertEqual(block.count("github_pages.publish("), 2)
+        self.assertIn("page, page_sha = github_pages.fetch_with_sha(path, token)", block)
+        self.assertIn("expected_sha=page_sha", block)
+        self.assertIn("insert_section(latest, section) if latest else ours", block)
 
     def test_workflow_rebuilds_pages_only_after_a_commit(self):
         import yaml

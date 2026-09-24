@@ -270,47 +270,55 @@ def main():
         print("발행하지 않았습니다(--publish 없음). 조각:", storage / "ledger_section.html")
         return
 
-    for name in LEDGER_FILES:
-        remote_path = f"forecast_history/{args.target}/{name}"
-        message = f"score: {name} ({now:%Y-%m-%d %H:%M} KST)"
-        if name == "forecast_log.csv":
-            # 원장은 처음 읽은 sha 로만 올린다. 그 사이 다른 실행(아침 노트북·코드 반영 재실행)이 행을 더했으면
-            # 합쳐서 올리고, 지우지 않는다(2026-09-23). 원장이 첫 파일이라 합친 뒤의 파생 파일이 아래에서 올라간다.
-            sha = github_pages.publish(remote_path, ledger_path.read_text(encoding="utf-8"), token, message,
-                                       expected_sha=ledger_sha,
-                                       merge=lambda latest: merge_ledger(latest, ledger_path, bars, storage))
-        else:
-            # 파생 파일은 원장에서 매번 다시 계산하는 값이라 덮어써도 잃는 것이 없다.
-            sha = github_pages.publish(remote_path, (storage / name).read_text(encoding="utf-8"), token, message)
-        print(f"원장 저장 {remote_path} @ {sha}")
-
-    pages = [f"docs/{args.target}/index.html"]
-    latest = github_pages.fetch(pages[0], token)
-    if latest is None:
-        print("⚠️ 발행된 보고서가 없어 절 교체를 건너뜁니다.")
-        return
-    # 같은 내용의 날짜별 보관본도 함께 고친다(예측일은 보고서 제목에서 읽는다).
-    stamp = pd.Timestamp(now.date())
-    for candidate in (stamp, stamp + pd.Timedelta(days=1)):
-        path = f"docs/{args.target}/reports/{candidate.date()}.html"
-        if github_pages.fetch(path, token) is not None:
-            pages.append(path)
-    for path in pages:
-        page = github_pages.fetch(path, token)
-        updated = replace_section(page, section)
+    def apply(page):
+        """보고서에 이 실행의 절·카드를 넣는다. 표시가 없으면(옛 보고서) None."""
+        updated = replace_section(page, section) if page else None
         if updated is None:
-            print(f"⚠️ {path}: 교체 표시가 없어 건너뜁니다(옛 보고서).")
-            continue
+            return None
         # 표시가 없는 옛 보고서(2026-09-13 이전)는 절만 바꾼다.
         updated = replace_section(updated, card, SCORECARD_START, SCORECARD_END) or updated
         if post_open_card is not None:
-            replaced = replace_section(updated, post_open_card, POSTOPEN_START, POSTOPEN_END)
-            if replaced is None:
-                print(f"⚠️ {path}: 시가 반영 갱신 표시가 없어 카드를 넣지 못했습니다(옛 보고서).")
+            updated = replace_section(updated, post_open_card, POSTOPEN_START, POSTOPEN_END) or updated
+        return updated
+
+    # 원장·파생 파일·보고서를 한 커밋으로 올린다(발행 묶기 ②, 2026-09-24). 도중에 실패하면 아무것도 올리지 않는다.
+    with github_pages.batch(f"score: {args.target} {label} ({now:%Y-%m-%d %H:%M} KST)", token):
+        for name in LEDGER_FILES:
+            remote_path = f"forecast_history/{args.target}/{name}"
+            message = f"score: {name} ({now:%Y-%m-%d %H:%M} KST)"
+            if name == "forecast_log.csv":
+                # 원장은 처음 읽은 sha 로만 올린다. 그 사이 다른 실행(아침 노트북·코드 반영 재실행)이 행을 더했으면
+                # 합쳐서 올리고, 지우지 않는다(2026-09-23). 원장을 먼저 넣어야 합친 뒤의 파생 파일이 올라간다.
+                sha = github_pages.publish(remote_path, ledger_path.read_text(encoding="utf-8"), token, message,
+                                           expected_sha=ledger_sha,
+                                           merge=lambda latest: merge_ledger(latest, ledger_path, bars, storage))
             else:
-                updated = replaced
-        sha = github_pages.publish(path, updated, token, f"update: {path} {label} ({now:%Y-%m-%d %H:%M} KST)")
-        print(f"보고서 갱신 {path} @ {sha}")
+                # 파생 파일은 원장에서 매번 다시 계산하는 값이라 덮어써도 잃는 것이 없다. 내용은 커밋할 때 읽는다 —
+                # 원장이 합쳐졌으면 merge_ledger 가 다시 쓴 파일이 올라간다.
+                sha = github_pages.publish(remote_path, lambda name=name: (storage / name).read_text(encoding="utf-8"),
+                                           token, message)
+            print(f"원장 저장 {remote_path} @ {sha}")
+
+        pages = [f"docs/{args.target}/index.html"]
+        # 같은 내용의 날짜별 보관본도 함께 고친다(예측일은 보고서 제목에서 읽는다).
+        stamp = pd.Timestamp(now.date())
+        pages += [f"docs/{args.target}/reports/{candidate.date()}.html" for candidate in (stamp, stamp + pd.Timedelta(days=1))]
+        for path in pages:
+            page, page_sha = github_pages.fetch_with_sha(path, token)
+            if page is None:
+                if path == pages[0]:
+                    print("⚠️ 발행된 보고서가 없어 절 교체를 건너뜁니다.")
+                continue
+            updated = apply(page)
+            if updated is None:
+                print(f"⚠️ {path}: 교체 표시가 없어 건너뜁니다(옛 보고서).")
+                continue
+            if post_open_card is not None and POSTOPEN_START not in page:
+                print(f"⚠️ {path}: 시가 반영 갱신 표시가 없어 카드를 넣지 못했습니다(옛 보고서).")
+            # 보고서는 노트북도 다시 쓴다. 읽은 뒤 바뀌었으면 최신본에 이 절만 다시 넣는다(덮어쓰지 않는다).
+            sha = github_pages.publish(path, updated, token, f"update: {path} {label} ({now:%Y-%m-%d %H:%M} KST)",
+                                       expected_sha=page_sha, merge=lambda latest, ours=updated: apply(latest) or latest or ours)
+            print(f"보고서 갱신 {path} @ {sha}")
 
 
 if __name__ == "__main__":

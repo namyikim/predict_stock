@@ -707,63 +707,70 @@ def main():
     import sklearn
     versions_hash = hashlib.sha256(f"pandas={pd.__version__};sklearn={sklearn.__version__};numpy={np.__version__}".encode()).hexdigest()[:12]
     runtime = "github-actions" if os.environ.get("GITHUB_ACTIONS") == "true" else "local"
-    results = {}
-    for key, a in ASSETS.items():
-        bars = data[a["ticker"]]
-        f = build_features(key, bars, data)
-        cols = feature_cols(f)
-        print(f"■ {a['name']}: 행 {len(f.dropna(subset=cols)):,} · 특징 {len(cols)}", flush=True)
-        wf = walk_forward(f, cols)
-        live = live_direction(f, cols)
-        as_of = live["as_of"]
-        prediction_date = trading_days_ahead(as_of, 1)
-        price_rows, price_stats = price_forecasts(f, cols, bars["close"], as_of)
-        snapshot = hashlib.sha256(pd.util.hash_pandas_object(bars["close"]).values.tobytes()).hexdigest()[:20]
-        config = dict(schema_version=3, model_version="metals-logistic-ridge-v1", target_mode="close_to_close", band_mode="vol_scaled",
-                      vol_band_mult=VOL_BAND_MULT, training_years=TRAIN_YEARS, feature_cols=cols, seed=SEED)
-        config_hash = hashlib.sha256(json.dumps(config, sort_keys=True).encode()).hexdigest()[:20]
-        common = dict(schema_version=3, run_id=run_id, created_at_utc=datetime.now(timezone.utc).isoformat(), runtime=runtime,
-                      versions_hash=versions_hash, prediction_date=prediction_date.date().isoformat(), as_of_date=as_of.date().isoformat(),
-                      data_snapshot_hash=snapshot, config_hash=config_hash, target_mode="close_to_close", band=live["band"],
-                      imputed_features="{}", macro_snapshot_hash="", macro_history_mode="disabled")
+    # 두 자산의 원장·보고서를 한 커밋으로 올린다(발행 묶기 ②, 2026-09-24). 도중에 실패하면 아무것도 올리지 않는다 —
+    # 원장만 올라가고 보고서는 옛날 것인 상태를 만들지 않는다. 발행하지 않는 실행은 모인 파일이 없어 커밋도 없다.
+    with github_pages.batch(f"metals: {today.date()} ({run_id})", tok):
+        results = {}
+        for key, a in ASSETS.items():
+            bars = data[a["ticker"]]
+            f = build_features(key, bars, data)
+            cols = feature_cols(f)
+            print(f"■ {a['name']}: 행 {len(f.dropna(subset=cols)):,} · 특징 {len(cols)}", flush=True)
+            wf = walk_forward(f, cols)
+            live = live_direction(f, cols)
+            as_of = live["as_of"]
+            prediction_date = trading_days_ahead(as_of, 1)
+            price_rows, price_stats = price_forecasts(f, cols, bars["close"], as_of)
+            snapshot = hashlib.sha256(pd.util.hash_pandas_object(bars["close"]).values.tobytes()).hexdigest()[:20]
+            config = dict(schema_version=3, model_version="metals-logistic-ridge-v1", target_mode="close_to_close", band_mode="vol_scaled",
+                          vol_band_mult=VOL_BAND_MULT, training_years=TRAIN_YEARS, feature_cols=cols, seed=SEED)
+            config_hash = hashlib.sha256(json.dumps(config, sort_keys=True).encode()).hexdigest()[:20]
+            common = dict(schema_version=3, run_id=run_id, created_at_utc=datetime.now(timezone.utc).isoformat(), runtime=runtime,
+                          versions_hash=versions_hash, prediction_date=prediction_date.date().isoformat(), as_of_date=as_of.date().isoformat(),
+                          data_snapshot_hash=snapshot, config_hash=config_hash, target_mode="close_to_close", band=live["band"],
+                          imputed_features="{}", macro_snapshot_hash="", macro_history_mode="disabled")
 
-        storage = args.out / key
-        storage.mkdir(parents=True, exist_ok=True)
-        ledger_path = f"{LEDGER_ROOT}/{key}/forecast_log.csv"
-        if tok:
-            remote = github_pages.fetch(ledger_path, tok)
-            if remote:
-                (storage / "forecast_log.csv").write_text(remote, encoding="utf-8-sig")
-                print(f"  원장 불러옴: {ledger_path}")
-        evaluated, daily, scored = ledger_update(storage, key, bars, run_id, common, live, price_rows,
-                                                 record=not args.no_record)
-        print(f"  원장 {len(evaluated)}건 · 채점 {int((evaluated.status == 'scored').sum())}건")
-        review = review_ledger(daily, bars, ensemble_model="Logistic", windows=(20, 60))
-        for a_ in review["alerts"]:
-            print("  ⚠️", a_)
-        results[key] = dict(live=live, wf=wf, price_rows=price_rows, price_stats=price_stats, prediction_date=prediction_date,
-                            scored=scored, review=review, history=bars["close"])
-        if args.dump:
-            print(f"  방향: 하락 {live['p_down']:.3f} 보합 {live['p_flat']:.3f} 상승 {live['p_up']:.3f} · 밴드 ±{live['band']:.4f}")
-            print(f"  WF n={wf['n']} bal.acc {wf['balanced_accuracy']:.3f}/{wf['prior_balanced_accuracy']:.3f} logloss {wf['log_loss']:.4f}/{wf['prior_log_loss']:.4f} "
-                  f"diff CI [{wf['log_loss_diff_lo']:+.4f},{wf['log_loss_diff_hi']:+.4f}] AUC up {wf['auc_up']:.3f} up/down {wf['auc_up_vs_down']:.3f}")
-            for r in price_rows:
-                print(f"  {r['horizon']:<5} {r['target_date']} 신호 {r['signal']} 중심 {r['center_close']:,.2f} 구간 {r['low_close']:,.2f}~{r['high_close']:,.2f} 적중 {r['band_coverage']:.0%} "
-                      f"slope {r['oof_slope']:.3f} sel[{price_stats[r['horizon']]['selection_mae_diff_lo']:+.4f},{price_stats[r['horizon']]['selection_mae_diff_hi']:+.4f}]")
-        if tok:
-            for name in ["forecast_log.csv", "daily_forecast_comparison.csv", "forecast_accuracy_summary.csv"]:
-                sha = github_pages.publish(f"{LEDGER_ROOT}/{key}/{name}", (storage / name).read_text(encoding="utf-8-sig"), tok, f"data: {key}/{name} ({run_id})")
-                print(f"  GitHub 저장: {LEDGER_ROOT}/{key}/{name} @ {sha}")
+            storage = args.out / key
+            storage.mkdir(parents=True, exist_ok=True)
+            ledger_path = f"{LEDGER_ROOT}/{key}/forecast_log.csv"
+            ledger_sha = None
+            if tok:
+                remote, ledger_sha = github_pages.fetch_with_sha(ledger_path, tok)
+                if remote:
+                    (storage / "forecast_log.csv").write_text(remote, encoding="utf-8-sig")
+                    print(f"  원장 불러옴: {ledger_path}")
+            evaluated, daily, scored = ledger_update(storage, key, bars, run_id, common, live, price_rows,
+                                                     record=not args.no_record)
+            print(f"  원장 {len(evaluated)}건 · 채점 {int((evaluated.status == 'scored').sum())}건")
+            review = review_ledger(daily, bars, ensemble_model="Logistic", windows=(20, 60))
+            for a_ in review["alerts"]:
+                print("  ⚠️", a_)
+            results[key] = dict(live=live, wf=wf, price_rows=price_rows, price_stats=price_stats, prediction_date=prediction_date,
+                                scored=scored, review=review, history=bars["close"])
+            if args.dump:
+                print(f"  방향: 하락 {live['p_down']:.3f} 보합 {live['p_flat']:.3f} 상승 {live['p_up']:.3f} · 밴드 ±{live['band']:.4f}")
+                print(f"  WF n={wf['n']} bal.acc {wf['balanced_accuracy']:.3f}/{wf['prior_balanced_accuracy']:.3f} logloss {wf['log_loss']:.4f}/{wf['prior_log_loss']:.4f} "
+                      f"diff CI [{wf['log_loss_diff_lo']:+.4f},{wf['log_loss_diff_hi']:+.4f}] AUC up {wf['auc_up']:.3f} up/down {wf['auc_up_vs_down']:.3f}")
+                for r in price_rows:
+                    print(f"  {r['horizon']:<5} {r['target_date']} 신호 {r['signal']} 중심 {r['center_close']:,.2f} 구간 {r['low_close']:,.2f}~{r['high_close']:,.2f} 적중 {r['band_coverage']:.0%} "
+                          f"slope {r['oof_slope']:.3f} sel[{price_stats[r['horizon']]['selection_mae_diff_lo']:+.4f},{price_stats[r['horizon']]['selection_mae_diff_hi']:+.4f}]")
+            if tok:
+                for name in ["forecast_log.csv", "daily_forecast_comparison.csv", "forecast_accuracy_summary.csv"]:
+                    # 원장은 처음 읽은 sha 그대로여야 올린다(그 사이 바뀌었으면 묶음 전체를 멈춘다). 나머지는 원장에서 다시 만든다.
+                    guard = {"expected_sha": ledger_sha} if name == "forecast_log.csv" else {}
+                    sha = github_pages.publish(f"{LEDGER_ROOT}/{key}/{name}", (storage / name).read_text(encoding="utf-8-sig"), tok,
+                                               f"data: {key}/{name} ({run_id})", **guard)
+                    print(f"  GitHub 저장: {LEDGER_ROOT}/{key}/{name} @ {sha}")
 
-    inner, pred = render(results, usdkrw, today, quality)
-    doc = page(inner, pred, today)
-    out = args.out / "index.html"
-    out.write_text(doc, encoding="utf-8")
-    print("보고서:", out, f"{len(doc):,} bytes")
-    if tok:
-        sha = github_pages.publish(f"{PAGES_DIR}/index.html", doc, tok, f"report: metals {pred.date()} ({run_id})")
-        print(f"GitHub Pages 발행: {PAGES_DIR}/index.html @ {sha}")
-        print("→ https://namyikim.github.io/predict_stock/metals/")
+        inner, pred = render(results, usdkrw, today, quality)
+        doc = page(inner, pred, today)
+        out = args.out / "index.html"
+        out.write_text(doc, encoding="utf-8")
+        print("보고서:", out, f"{len(doc):,} bytes")
+        if tok:
+            sha = github_pages.publish(f"{PAGES_DIR}/index.html", doc, tok, f"report: metals {pred.date()} ({run_id})")
+            print(f"GitHub Pages 발행: {PAGES_DIR}/index.html @ {sha}")
+            print("→ https://namyikim.github.io/predict_stock/metals/")
 
 
 if __name__ == "__main__":

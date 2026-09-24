@@ -679,7 +679,9 @@ def main():
 
     if args.publish:
         tok = github_pages.token()
-        sha = github_pages.publish(f"{PAGES_DIR}/index.html", doc, tok, f"china: {fetched}")
+        # 파일 하나지만 다른 도구와 같은 경로(Git Data API)로 올린다 — 내용이 그대로면 커밋하지 않는다(발행 묶기 ②).
+        with github_pages.batch(f"china: {fetched}", tok):
+            sha = github_pages.publish(f"{PAGES_DIR}/index.html", doc, tok, f"china: {fetched}")
         print(f"GitHub Pages 발행: {PAGES_DIR}/index.html @ {sha}")
         print("→ https://namyikim.github.io/predict_stock/china/")
 

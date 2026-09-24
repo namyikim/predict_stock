@@ -475,18 +475,16 @@ class RunnerDelegationTests(unittest.TestCase):
 class ConcurrentLedgerWriteTests(unittest.TestCase):
     """09:37 도구가 원장을 읽은 직후 다른 실행이 행을 더해도 그 행이 살아남아야 한다(2026-09-23).
 
-    예전에는 저장 직전에 최신 sha 를 새로 읽어 덮어써서, 그 행이 오류 없이 사라졌다.
+    예전에는 저장 직전에 최신 sha 를 새로 읽어 덮어써서, 그 행이 오류 없이 사라졌다. 발행 묶기 ②(2026-09-24)부터
+    원장·파생 파일·보고서가 한 커밋(Git Data API)으로 올라가므로 작은 가짜 git 저장소로 확인한다.
     """
 
     def test_row_added_by_another_run_after_our_read_survives(self):
         import base64
         import yfinance
         from unittest.mock import patch
-
-        class HttpError(Exception):
-            def __init__(self, code):
-                super().__init__(f"HTTP {code}")
-                self.code = code
+        sys.path.insert(0, str(Path(__file__).resolve().parent))
+        from test_publish_batch import FakeRepo, HttpError
 
         fixed = pd.Timestamp("2026-09-21 09:40", tz="Asia/Seoul")
         real_now = pd.Timestamp.now
@@ -512,49 +510,55 @@ class ConcurrentLedgerWriteTests(unittest.TestCase):
         v2 = pd.concat([v1, other], ignore_index=True)
         page = (f"<html>{fu.SCORECARD_START}아침{fu.SCORECARD_END}{fu.POSTOPEN_START}자리{fu.POSTOPEN_END}"
                 f"{af.MARK_START}옛 표{af.MARK_END}</html>")
-        store = {ledger_path: [v1.to_csv(index=False), "s1"],
-                 "forecast_history/samsung/post_open_grid.csv": [_grid().to_csv(index=False), "g1"],
-                 "docs/samsung/index.html": [page, "p1"]}
-        state = {"ledger_reads": 0, "ledger_puts": []}
+        repo = FakeRepo({ledger_path: v1.to_csv(index=False),
+                         "forecast_history/samsung/post_open_grid.csv": _grid().to_csv(index=False),
+                         "docs/samsung/index.html": page})
+        state = {"ledger_reads": 0}
 
         def fake_api(path, tok, method="GET", body=None):
-            if method == "GET":
-                if path not in store:
-                    raise HttpError(404)
-                text, sha = store[path]
-                if path == ledger_path:
-                    state["ledger_reads"] += 1
-                    if state["ledger_reads"] == 1:            # 우리가 읽은 직후 다른 실행이 행을 더한다
-                        store[path] = [v2.to_csv(index=False), "s2"]
-                return {"content": base64.b64encode(text.encode()).decode(), "sha": sha}
-            current = store.get(path, [None, None])[1]
+            if method != "GET":
+                raise AssertionError(f"묶음 안에서 파일별 커밋을 만들면 안 된다: {method} {path}")
+            files = repo.files()
+            if path not in files:
+                raise HttpError(404)
+            text = files[path]
             if path == ledger_path:
-                state["ledger_puts"].append(body.get("sha"))
-            if current is not None and body.get("sha") != current:
-                raise HttpError(409)
-            new_sha = f"{path}-{len(state['ledger_puts'])}"
-            store[path] = [base64.b64decode(body["content"]).decode("utf-8"), new_sha]
-            return {"content": {"sha": new_sha}}
+                state["ledger_reads"] += 1
+                if state["ledger_reads"] == 1:            # 우리가 읽은 직후 다른 실행이 행을 더한다
+                    repo.push_other({ledger_path: v2.to_csv(index=False)})
+            return {"content": base64.b64encode(text.encode()).decode(), "sha": gp.blob_sha(text)}
 
         gp = af.github_pages
-        saved_gp = (gp.token, gp.code_version, gp._api, sys.argv)
+        saved_gp = (gp.token, gp.code_version, gp._api, gp._repo_api, sys.argv)
         gp.token = lambda: "t"
         gp.code_version = lambda tok=None: {"short": "abc1234"}
         gp._api = fake_api
+        gp._repo_api = repo.api
         sys.argv = ["x", "--target", "samsung", "--out", tempfile.mkdtemp(), "--scope", "open", "--publish"]
         try:
             with patch("time.sleep"):
                 af.main()
         finally:
             yfinance.Ticker, pd.Timestamp.now, af.datetime = saved
-            gp.token, gp.code_version, gp._api, sys.argv = saved_gp
+            gp.token, gp.code_version, gp._api, gp._repo_api, sys.argv = saved_gp
 
-        final = pd.read_csv(io.StringIO(store[ledger_path][0]))
+        files = repo.files()
+        final = pd.read_csv(io.StringIO(files[ledger_path]))
         self.assertIn("other-run:direction:No macro ensemble", set(final["record_id"]),
                       "다른 실행이 더한 행이 지워졌다")
         self.assertEqual(int((final["model"] == "Post-open").sum()), 1, "이 실행의 시가 반영 행도 있어야 한다")
         self.assertEqual(len(final), len(v2) + 1)
-        self.assertEqual(state["ledger_puts"], ["s1", "s2"], "처음 읽은 sha 로 시도 → 거절 → 최신 sha 로 합쳐서 저장")
+        # 한 커밋: 다른 실행의 커밋 바로 위에 원장·파생 파일·보고서가 함께 올라간다.
+        ours = repo.commits[repo.head]
+        other_commit = ours["parents"][0]
+        self.assertEqual(repo.commits[other_commit]["message"], "other run")
+        self.assertEqual(repo.count("POST", "git/commits"), 1)
+        for name in ("daily_forecast_comparison.csv", "forecast_accuracy_summary.csv"):
+            self.assertIn(f"forecast_history/samsung/{name}", files)
+        self.assertNotIn("옛 표", files["docs/samsung/index.html"])
+        # 파생 파일은 합친 원장으로 다시 만든 것이다(합치기 전 파일이 올라가지 않는다).
+        daily = pd.read_csv(io.StringIO(files["forecast_history/samsung/daily_forecast_comparison.csv"]))
+        self.assertGreater(len(daily), 0)
 
 
 if __name__ == "__main__":

@@ -547,22 +547,27 @@ def main():
         raise SystemExit("장 마감 전 결과는 발행하지 않습니다.")
 
     now = datetime.now(KST)
-    sha = github_pages.publish(f"forecast_history/{args.target}/reviews/{review['session_date']}.json", to_json(review), token,
-                               f"review: {args.target} {review['session_date']} ({now:%H:%M} KST)")
-    print(f"회고 기록 저장 forecast_history/{args.target}/reviews/{review['session_date']}.json @ {sha}")
-    pages = [f"docs/{args.target}/index.html"]
-    for candidate in (session_date, session_date + pd.Timedelta(days=1)):
-        path = f"docs/{args.target}/reports/{candidate.date()}.html"
-        if github_pages.fetch(path, token) is not None:
-            pages.append(path)
-    for path in pages:
-        page = github_pages.fetch(path, token)
-        if page is None:
-            print(f"⚠️ {path} 없음 — 건너뜁니다.")
-            continue
-        sha = github_pages.publish(path, insert_section(page, section), token,
-                                   f"review: {path} 장 마감 회고 ({now:%Y-%m-%d %H:%M} KST)")
-        print(f"보고서 갱신 {path} @ {sha}")
+    # 회고 기록과 보고서들을 한 커밋으로 올린다(발행 묶기 ②, 2026-09-24). 도중에 실패하면 아무것도 올리지 않는다.
+    with github_pages.batch(f"review: {args.target} {review['session_date']} ({now:%H:%M} KST)", token):
+        sha = github_pages.publish(f"forecast_history/{args.target}/reviews/{review['session_date']}.json", to_json(review), token,
+                                   f"review: {args.target} {review['session_date']} ({now:%H:%M} KST)")
+        print(f"회고 기록 저장 forecast_history/{args.target}/reviews/{review['session_date']}.json @ {sha}")
+        pages = [f"docs/{args.target}/index.html"]
+        pages += [f"docs/{args.target}/reports/{candidate.date()}.html"
+                  for candidate in (session_date, session_date + pd.Timedelta(days=1))]
+        for path in pages:
+            page, page_sha = github_pages.fetch_with_sha(path, token)
+            if page is None:
+                if path == pages[0]:
+                    print(f"⚠️ {path} 없음 — 건너뜁니다.")
+                continue
+            # 보고서는 노트북·오후 갱신도 다시 쓴다. 읽은 뒤 바뀌었으면 최신본에 회고 절만 다시 넣는다(덮어쓰지 않는다).
+            sha = github_pages.publish(path, insert_section(page, section), token,
+                                       f"review: {path} 장 마감 회고 ({now:%Y-%m-%d %H:%M} KST)",
+                                       expected_sha=page_sha,
+                                       merge=lambda latest, ours=insert_section(page, section):
+                                           insert_section(latest, section) if latest else ours)
+            print(f"보고서 갱신 {path} @ {sha}")
 
 
 if __name__ == "__main__":

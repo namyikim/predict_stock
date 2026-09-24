@@ -165,4 +165,26 @@
 | `macro_history/cli_g20_vintages.csv` | 두 종목 실행이 같은 파일에 덧붙인다. 바뀌었으면 최신 판본에 다시 덧붙인다 |
 | `docs/<종목>/index.html` | 장기 전망 영역만 교체. 바뀌었으면 최신 페이지에 다시 적용한다 |
 
-남은 확인: 다음 실제 실행에서 ① Actions 로그의 "발행 묶음: 커밋 …" 줄, ② 그 커밋의 파일 목록, ③ Pages 화면 갱신.
+### 실제 실행 확인 — 2026-09-24 10:16~10:28 KST (Actions run 35942173879, push 트리거, 두 종목 성공)
+
+| 종목 | 커밋 | 파일 |
+| --- | --- | --- |
+| samsung | `de7ad64d` earnings | earnings.html · earnings.json · exports_snapshot.json · macro_history/cli_g20.csv (원장은 그대로라 빠짐) |
+| samsung | `281e1726` longterm | longterm.html · longterm.json · valuation_history/… · macro_history/cli_g20.csv |
+| samsung | `c42c5dcb` 탭 갱신 | index.html |
+| sk_hynix | `ea71f245` · `84c29c20` · `c1cc2d8b` | 각 4 · 4 · 1 |
+
+종목당 3커밋(예전 방식이면 9~10). Pages 화면의 `earnings.json` 생성 시각이 이번 실행(10:18·10:26 KST)으로 바뀐 것을 확인했다.
+
+### 이 실행에서 드러난 별개 문제 — 보관본 핑퐁(묶기 이전부터, 2026-09-21~)
+
+같은 보관본을 두 도구가 서로 다른 기간으로 받아 **통째로 덮어써** 매 실행 두 번씩 바뀐다. 묶기와 무관하게 쓸데없는
+커밋이 생기고, 마지막에 짧은 쪽이 쓰면 오래된 이력이 빠진 채 남는다.
+
+| 파일 | 긴 쪽 | 짧은 쪽 | 매번 |
+| --- | --- | --- | --- |
+| `macro_history/cli_g20.csv` | 장기 전망(1998-01~) | 영업이익(2000-01~) | 24행 삭제 → 복구 |
+| `macro_history/news_sentiment.csv` | 장기 전망(2005-01~, 7,934행) | 일일 보고서 노트북(2014-07~, 4,466행) | 3,468행 삭제 → 복구. 2026-09-24 10:27 현재 짧은 쪽 상태 |
+
+대책 후보: 공용 이력 보관본은 덮어쓰지 않고 기존 파일과 날짜로 합친다(겹치는 날짜는 새 값). 같은 원천이라 겹치는
+값은 같다.

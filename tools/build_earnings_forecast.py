@@ -1572,7 +1572,7 @@ def main():
             # 관세청 원본을 보관본으로 남긴다(해외 IP에서 막히는 날을 대비).
             if (result.get("customs_info") or {}).get("source") == "customs_api" and (out_dir / "customs_exports.csv").exists():
                 try:
-                    github_pages.publish("macro_history/customs_exports.csv",
+                    github_pages.publish_history("macro_history/customs_exports.csv",
                                          (out_dir / "customs_exports.csv").read_text(encoding="utf-8"),
                                          token, "macro: customs_exports")
                 except Exception as exc:
@@ -1605,7 +1605,7 @@ def main():
                                          f"earnings: {args.target} 영업이익 이력 ({result['profit_last']})")
             cli_cache = out_dir / "macro_cache" / "cli_g20.csv"
             if result.get("cli_info", {}).get("fresh") and cli_cache.exists():
-                github_pages.publish("macro_history/cli_g20.csv", cli_cache.read_text(encoding="utf-8"),
+                github_pages.publish_history("macro_history/cli_g20.csv", cli_cache.read_text(encoding="utf-8"),
                                      token, f"macro: cli_g20 ({result['cli_info'].get('last')})")
                 # 판본 보관(R09 0단계). 선행지수는 나중에 값이 바뀌는데 최신본만 덮어쓰면 '그때 보이던
                 # 값'이 남지 않아, 나중에 아무리 조심해도 개정을 미리 아는 백테스트밖에 할 수 없다.

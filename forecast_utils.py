@@ -2880,3 +2880,47 @@ def insert_review_section(page, section):
         return page[:cut] + section + page[cut:]
     body_end = page.rfind("</body>")
     return page[:body_end] + section + page[body_end:] if body_end >= 0 else page + section
+
+
+# ---- 이력 보관본 합치기 (2026-09-24) ------------------------------------------------------------
+def merge_history_csv(existing, new):
+    """이력 보관본(macro_history/*.csv)을 덮어쓰지 않고 첫 열(날짜·월)로 합친다.
+
+    같은 보관본을 여러 실행이 서로 다른 기간으로 받아 통째로 덮어써, 매 실행 오래된 이력이 지워졌다가 되살아났다
+    (2026-09-21~: 선행지수 24행·뉴스심리 3,468행·관세청 122행). 합치면 이력이 줄지 않고, 바뀐 것이 없으면 결과가
+    기존과 글자 하나까지 같아 커밋이 생기지 않는다 — 값은 문자열 그대로 옮기고 정렬·따옴표·줄바꿈("\n")도 pandas
+    to_csv 와 같다. 같은 날짜는 new 의 값이 이긴다(같은 원천이라 보통 같다). new 에만 있는 열은 붙인다.
+    합칠 수 없으면(첫 열 이름이 다르거나 첫 열에 중복이 있으면) 예전처럼 new 를 돌려준다. new 가 비었으면 existing.
+    """
+    import csv
+    import io
+    if existing is None or not existing.strip():
+        return new
+    if new is None or not new.strip():
+        return existing
+    old_rows = [r for r in csv.reader(io.StringIO(existing)) if r]
+    new_rows = [r for r in csv.reader(io.StringIO(new)) if r]
+    if len(new_rows) < 2:
+        return existing
+    old_head, new_head = old_rows[0], new_rows[0]
+    if old_head[0] != new_head[0]:
+        return new
+
+    def keyed(head, rows):
+        keys = [r[0] for r in rows[1:]]
+        if len(set(keys)) != len(keys):
+            return None
+        return {r[0]: dict(zip(head, r)) for r in rows[1:]}
+
+    old_map, new_map = keyed(old_head, old_rows), keyed(new_head, new_rows)
+    if old_map is None or new_map is None:
+        return new
+    columns = old_head + [c for c in new_head if c not in old_head]
+    for key, record in new_map.items():
+        old_map[key] = {**old_map.get(key, {}), **record}
+    out = io.StringIO()
+    writer = csv.writer(out, lineterminator="\n")
+    writer.writerow(columns)
+    for key in sorted(old_map):
+        writer.writerow([old_map[key].get(c, "") for c in columns])
+    return out.getvalue()

@@ -1377,7 +1377,7 @@ def main():
                     "nsi" if name.startswith("news") else "term_spread", {})
                 if cache.exists() and (info or {}).get("fresh"):
                     try:
-                        github_pages.publish(f"macro_history/{name}", cache.read_text(encoding="utf-8"), tok,
+                        github_pages.publish_history(f"macro_history/{name}", cache.read_text(encoding="utf-8"), tok,
                                              f"macro: {name} ({(info or {}).get('last', '')})")
                     except Exception as exc:
                         print(f"  사본 업로드 실패({name}):", exc, flush=True)
@@ -1385,7 +1385,7 @@ def main():
             exports_cache = out_dir / "macro_cache" / "korea_exports.csv"
             if (result.get("g20_outlook") or {}).get("exports_fresh") and exports_cache.exists():
                 try:
-                    github_pages.publish("macro_history/korea_exports.csv",
+                    github_pages.publish_history("macro_history/korea_exports.csv",
                                          exports_cache.read_text(encoding="utf-8"), tok,
                                          "macro: korea_exports (FRED)")
                 except Exception as exc:

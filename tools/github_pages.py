@@ -108,6 +108,22 @@ def publish(path, text, tok, message, attempts=4, expected_sha=_ANY, merge=None)
             raise RuntimeError(f"업로드 실패({type(exc).__name__} {code or ''})") from None
 
 
+def publish_history(path, new_text, tok, message):
+    """이력 보관본(macro_history/*.csv)을 덮어쓰지 않고 날짜로 합쳐 올린다(2026-09-24).
+
+    같은 보관본을 여러 도구가 서로 다른 기간으로 받아 통째로 덮어써 매 실행 이력이 지워졌다 되살아났다. 여기서는
+    지금 저장소의 파일과 합쳐, 바뀐 것이 없으면 올리지 않고('unchanged'), 바뀌었으면 처음 읽은 sha 로 올린다 —
+    그 사이 다른 실행이 바꿨으면 그 최신본과 다시 합친다. 합치는 규칙은 forecast_utils.merge_history_csv(노트북과 같다).
+    """
+    from forecast_utils import merge_history_csv
+    existing, sha = fetch_with_sha(path, tok)
+    text = merge_history_csv(existing, new_text)
+    if existing is not None and text == existing:
+        return "unchanged"
+    return publish(path, text, tok, message, expected_sha=sha,
+                   merge=lambda latest: merge_history_csv(latest, new_text))
+
+
 def _publish_expected(path, text, tok, message, attempts, sha, merge):
     """publish(expected_sha=…) 의 본체. 처음 읽은 sha 로만 쓰고, 바뀌었으면 합치거나 멈춘다."""
     import random

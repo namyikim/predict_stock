@@ -252,7 +252,8 @@ class ToolWiringTests(unittest.TestCase):
     def test_earnings_publishes_in_one_batch_and_protects_its_ledger(self):
         src = self.source("build_earnings_forecast.py")
         block = src[src.index("with github_pages.batch(f\"earnings:"):]
-        self.assertGreaterEqual(block.count("github_pages.publish("), 9)
+        # 공용 이력 보관본은 publish_history(날짜로 합쳐 올림, 2026-09-24)도 같은 묶음에 들어간다.
+        self.assertGreaterEqual(block.count("github_pages.publish(") + block.count("github_pages.publish_history("), 9)
         self.assertIn("remote, ledger_sha = github_pages.fetch_with_sha(ledger_name, token)", src)
         self.assertIn("expected_sha=ledger_sha", src)
         self.assertIn("expected_sha=vintage_sha", src)
@@ -260,7 +261,7 @@ class ToolWiringTests(unittest.TestCase):
     def test_longterm_publishes_in_one_batch(self):
         src = self.source("build_longterm_report.py")
         block = src[src.index("with github_pages.batch(f\"longterm:"):]
-        self.assertGreaterEqual(block.count("github_pages.publish("), 3)
+        self.assertGreaterEqual(block.count("github_pages.publish(") + block.count("github_pages.publish_history("), 3)
 
     def test_tab_refresh_uses_the_shared_publisher_inside_a_batch(self):
         src = self.source("refresh_longterm_tab.py")

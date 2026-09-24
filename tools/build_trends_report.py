@@ -17,6 +17,8 @@ import xml.etree.ElementTree as ET
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
+import github_pages
+
 NS = {"ht": "https://trends.google.com/trending/rss"}
 FEED = "https://trends.google.com/trending/rss?geo={geo}"
 KST = timezone(timedelta(hours=9))
@@ -156,13 +158,6 @@ def build_html(items, geo, now):
         "</div></body></html>")
 
 
-# ---- GitHub 발행 -------------------------------------------------------------
-def publish(path, text, token, message):
-    """공용 발행기에 맡긴다 — 동시 커밋으로 sha 가 어긋나면 다시 읽어 재시도한다."""
-    import github_pages
-    return github_pages.publish(path, text, token, message)
-
-
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--out", type=Path, required=True, help="보고서를 저장할 폴더")
@@ -195,9 +190,11 @@ def main():
         print("⚠️ 수집된 항목이 없어 발행하지 않습니다(기존 보고서를 유지합니다).")
         return
     message = f"trends: {now:%Y-%m-%d %H:%M} KST ({args.geo})"
-    for path in (f"{PAGES_DIR}/index.html",
-                 f"{PAGES_DIR}/reports/{now:%Y-%m-%d}.html"):
-        print(f"GitHub Pages 발행: {path} @ {publish(path, page, token, message)}")
+    # 보고서와 날짜별 보관본을 한 커밋으로 올린다(발행 묶기 ③, 2026-09-24).
+    with github_pages.batch(message, token):
+        for path in (f"{PAGES_DIR}/index.html",
+                     f"{PAGES_DIR}/reports/{now:%Y-%m-%d}.html"):
+            print(f"GitHub Pages 발행: {path} @ {github_pages.publish(path, page, token, message)}")
     print(f"→ https://namyikim.github.io/predict_stock/trends/")
 
 

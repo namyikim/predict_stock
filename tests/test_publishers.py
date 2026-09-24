@@ -41,6 +41,16 @@ class DelegationTests(unittest.TestCase):
                 self.assertNotIn('_api(path, token, "PUT", body)', text,
                                  f"{name} 에 재시도 없는 PUT 사본이 남아 있다")
 
+    def test_page_tools_call_the_shared_publisher_directly_inside_a_batch(self):
+        # 발행 묶기 ③(2026-09-24): 위임만 하던 publish() 사본도 지우고, 보고서와 날짜별 보관본을 한 커밋으로 올린다.
+        for name in ("build_trends_report.py", "build_interest_report.py", "build_ai_news_report.py"):
+            text = (ROOT / "tools" / name).read_text(encoding="utf-8")
+            with self.subTest(tool=name):
+                self.assertNotIn("def publish(", text)
+                self.assertIn("with github_pages.batch(message, token):", text)
+                block = text[text.index("with github_pages.batch(message, token):"):]
+                self.assertIn("github_pages.publish(", block)
+
     def test_the_shared_publisher_is_the_only_one_that_talks_to_the_api(self):
         for name, text in self.sources():
             with self.subTest(tool=name):

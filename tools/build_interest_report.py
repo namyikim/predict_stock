@@ -22,6 +22,8 @@ import urllib.request
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
+import github_pages
+
 KST = timezone(timedelta(hours=9))
 UA = "predict-stock-interest/1.0 (https://github.com/namyikim/predict_stock)"
 API = ("https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article"
@@ -331,14 +333,6 @@ def build_html(rows, span, now):
         f'{counter}</div></div></body></html>')
 
 
-def publish(path, text, token, message):
-    """공용 발행기에 맡긴다. sha 를 읽고 쓰는 사이에 다른 잡이 같은 파일을 커밋하면 409 가 오는데,
-    자기 사본에는 재시도가 없어 2026-09-12 이 잡이 그대로 죽었다. 공용 쪽은 sha 를 다시 읽어 재시도한다.
-    """
-    import github_pages
-    return github_pages.publish(path, text, token, message)
-
-
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--out", type=Path, required=True)
@@ -405,9 +399,11 @@ def main():
         print("⚠️ 데이터를 하나도 받지 못해 발행하지 않습니다(기존 보고서 유지).")
         return
     message = f"interest: {end:%Y-%m} 기준 장기 관심도"
-    for path in (f"{PAGES_DIR}/index.html",
-                 f"{PAGES_DIR}/reports/{end:%Y-%m}.html"):
-        print(f"GitHub Pages 발행: {path} @ {publish(path, page, token, message)}")
+    # 보고서와 날짜별 보관본을 한 커밋으로 올린다(발행 묶기 ③, 2026-09-24).
+    with github_pages.batch(message, token):
+        for path in (f"{PAGES_DIR}/index.html",
+                     f"{PAGES_DIR}/reports/{end:%Y-%m}.html"):
+            print(f"GitHub Pages 발행: {path} @ {github_pages.publish(path, page, token, message)}")
     print("→ https://namyikim.github.io/predict_stock/interest/")
 
 

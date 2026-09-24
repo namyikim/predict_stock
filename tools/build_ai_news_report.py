@@ -23,6 +23,8 @@ from collections import Counter, defaultdict
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
+import github_pages
+
 KST = timezone(timedelta(hours=9))
 GITHUB_REPO = "namyikim/predict_stock"
 GITHUB_BRANCH = "main"
@@ -259,13 +261,6 @@ def build_html(ranked, now, total, failed):
         "</div></body></html>")
 
 
-# ---- GitHub 발행 -------------------------------------------------------------
-def publish(path, text, token, message):
-    """공용 발행기에 맡긴다 — 동시 커밋으로 sha 가 어긋나면 다시 읽어 재시도한다."""
-    import github_pages
-    return github_pages.publish(path, text, token, message)
-
-
 def main():
     parser = argparse.ArgumentParser(description=__doc__,
                                      formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -300,8 +295,10 @@ def main():
     if not items:
         print("⚠️ 받은 기사가 없어 발행하지 않습니다(기존 보고서를 유지합니다).")
         return
-    sha = publish(f"{PAGES_DIR}/index.html", page, token,
-                  f"ai-news: {now:%Y-%m-%d %H:%M} KST ({len(items)}건)")
+    # 파일 하나지만 다른 도구와 같은 경로(Git Data API)로 올린다 — 내용이 그대로면 커밋하지 않는다(발행 묶기 ③).
+    message = f"ai-news: {now:%Y-%m-%d %H:%M} KST ({len(items)}건)"
+    with github_pages.batch(message, token):
+        sha = github_pages.publish(f"{PAGES_DIR}/index.html", page, token, message)
     print(f"GitHub Pages 발행: {PAGES_DIR}/index.html @ {sha}")
 
 

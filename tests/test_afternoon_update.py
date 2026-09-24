@@ -1,4 +1,5 @@
 """장 마감 후 갱신: 보고서의 표시된 구간만 바꾸고, 예측은 새로 만들지 않는다."""
+import io
 import sys
 import unittest
 from pathlib import Path
@@ -340,6 +341,25 @@ class OpenScoringTimeTests(unittest.TestCase):
         self.assertEqual(by_kind.loc["open", "status"], "scored")
         self.assertEqual(by_kind.loc["open", "actual_open"], 104.)
         self.assertEqual(by_kind.loc["direction", "status"], "pending")   # 종가는 15:40 전이라 아직
+
+    def test_update_time_changes_only_when_the_score_changes(self):
+        # 매 실행 모든 행의 시각이 바뀌어 원장 파일 전체가 다시 쓰였다(금·은 3시간마다 ~1,450줄, 2026-09-24).
+        first = fu.evaluate_forecasts(self.log(), self.bars(), now="2026-09-08T00:30:00Z")      # 시가만 채점
+        # CSV 로 한 번 오간 원장이라야 실제와 같다(숫자·결측이 문자열에서 다시 읽힌다).
+        first = pd.read_csv(io.StringIO(first.to_csv(index=False)))
+        closed = self.bars()
+        closed.loc["2026-09-08", ["high", "low", "close", "adj_close"]] = [105., 103., 104.5, 104.5]
+        again = fu.evaluate_forecasts(first, self.bars(), now="2026-09-08T03:00:00Z")   # 12:00 KST, 시세 그대로
+        self.assertEqual(list(again["actual_updated_at_utc"]), list(first["actual_updated_at_utc"]),
+                         "채점이 그대로면 시각도 그대로")
+        second = fu.evaluate_forecasts(first, closed, now="2026-09-08T07:00:00Z")      # 16:00 KST, 종가도 채점
+        after, before = second.set_index("kind"), first.set_index("kind")
+        self.assertEqual(after.loc["direction", "status"], "scored")
+        self.assertNotEqual(after.loc["direction", "actual_updated_at_utc"],
+                            before.loc["direction", "actual_updated_at_utc"], "새로 채점된 행은 새 시각")
+        saved = second.to_csv(index=False)
+        third = fu.evaluate_forecasts(pd.read_csv(io.StringIO(saved)), closed, now="2026-09-08T10:00:00Z")
+        self.assertEqual(third.to_csv(index=False), saved, "바뀐 것이 없는 재실행은 원장을 글자까지 같게 둔다")
 
     def test_a_row_never_scored_is_not_fabricated_when_the_bar_is_missing(self):
         rerun = fu.evaluate_forecasts(self.log(), self.bars().iloc[:-1], now="2026-09-08T07:00:00Z")  # 16:00 KST

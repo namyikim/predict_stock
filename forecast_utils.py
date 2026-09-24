@@ -2042,6 +2042,15 @@ def evaluate_forecasts(log, bars, now=None):
                 result.loc[i, "brier"] = float(np.sum((p - np.eye(3)[actual_class]) ** 2))
         result.loc[i, "actual_return"] = actual_return
         result.loc[i, "status"] = "scored"
+    # 채점 결과가 그대로인 행은 갱신 시각도 그대로 둔다. 매 실행 모든 행의 시각이 바뀌어 원장 파일 전체가
+    # 다시 쓰였다(금·은 3시간마다 ~1,450줄, 2026-09-24). 시각은 '채점이 마지막으로 바뀐 때'가 된다.
+    if len(result) and previous["actual_updated_at_utc"].notna().any():
+        old = previous[numeric].apply(pd.to_numeric, errors="coerce").to_numpy(dtype=float)
+        new = result[numeric].apply(pd.to_numeric, errors="coerce").to_numpy(dtype=float)
+        same_values = np.isclose(old, new, rtol=1e-12, atol=0.0, equal_nan=True).all(axis=1)
+        same = (same_values & (previous["status"].astype(str).to_numpy() == result["status"].astype(str).to_numpy())
+                & previous["actual_updated_at_utc"].notna().to_numpy())
+        result.loc[same, "actual_updated_at_utc"] = previous.loc[same, "actual_updated_at_utc"]
     return result
 
 

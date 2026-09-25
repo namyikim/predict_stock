@@ -1,0 +1,90 @@
+{
+  "recorded_at": "2026-09-25T15:12:19.816944+09:00",
+  "target": "samsung",
+  "valuation": {
+    "status": "unavailable",
+    "reason": "재무 기준일 또는 시세 기준일을 확인하지 못했습니다.",
+    "scenarios": {
+      "per": [],
+      "pbr": []
+    },
+    "per": null,
+    "pbr": null,
+    "retrieved_on": "2026-09-25",
+    "cached": false
+  },
+  "model_as_of": "2026-08-31",
+  "model_forecast": {
+    "3": {
+      "raw": 0.23878323749506378,
+      "point": 0.06102706344425665
+    },
+    "6": {
+      "raw": 0.5771127994913644,
+      "point": 0.09358767182480042
+    },
+    "12": {
+      "raw": 0.5012527712279875,
+      "point": 0.16454428692308037
+    }
+  },
+  "live_exports": {
+    "as_of": "2026-09-25",
+    "price_last": "2026-08-31",
+    "exports_last_month": "2026-09",
+    "latest_period": {
+      "month": "2026-09",
+      "days": 20,
+      "yoy": 2.5941553685349685,
+      "observed_usd": 34128119000.0,
+      "monthly_usd": 59760314958.71869,
+      "basis": "partial_month_scenario"
+    },
+    "snapshot_hash": "360c84a6a8a06b43fe28",
+    "generated_at": "2026-09-25 15:11 KST",
+    "flash_info": {
+      "enabled": true,
+      "source": "customs_flash_api",
+      "rows": 44,
+      "first": "2025-07",
+      "last": "2026-09",
+      "last_days": 20,
+      "yoy_rows": 8
+    },
+    "current": {
+      "mom_12m": 1.3289521567452436,
+      "drawdown_36m": -0.22155688622754488,
+      "macro_leading_cycle": 3.799999999999997,
+      "macro_leading_change_3m": 2.0,
+      "macro_semiconductor_yoy": 2.5941553685349685,
+      "macro_semiconductor_yoy_change_3m": 0.6002264094081817,
+      "price_to_exports_z": 0.42598961951175474,
+      "exports_cycle": 2.157383860807471,
+      "exports_accel": 0.35097493047113315,
+      "cli_level": 0.3007000000000062,
+      "cli_change_3m": -0.03309999999999036,
+      "exports_daily_yoy": 2.594155368534968,
+      "cycle_score": 2.3228977955892622
+    },
+    "phase": "확장(YoY>0, 가속)",
+    "forecast": {
+      "3": {
+        "point": null,
+        "validated": false,
+        "interval": null
+      },
+      "6": {
+        "point": null,
+        "validated": false,
+        "interval": null
+      },
+      "12": {
+        "point": null,
+        "validated": false,
+        "interval": null
+      }
+    },
+    "validated": false
+  },
+  "evaluation_status": "참고 시나리오 보관 — 미래 성능 평가 결과 아님"
+}

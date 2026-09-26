@@ -3,7 +3,7 @@
   "name": "SK하이닉스",
   "peer_name": "삼성전자",
   "session_date": "2026-09-23",
-  "generated_at": "2026-09-23 17:28 KST",
+  "generated_at": "2026-09-27 05:52 KST",
   "summary": {
     "prev_close": 1840000.0,
     "open": 1899000.0,
@@ -15,13 +15,13 @@
     "c2c": 0.011956521739130421,
     "high_vs_open": 0.0005265929436546468,
     "low_vs_open": -0.033175355450236976,
-    "volume": 3010736.0,
-    "volume_ratio": 0.9134076842403744,
-    "kospi_c2c": 0.01044558070058188,
+    "volume": 2947714.0,
+    "volume_ratio": 0.8942878480686886,
+    "kospi_c2c": 0.008978422952434784,
     "peer_c2c": 0.032549728752260476,
-    "usdkrw_chg": -0.006995884810231945,
-    "sox_ret": 0.042903269062733784,
-    "nasdaq_ret": NaN
+    "usdkrw_chg": -0.016976346345262017,
+    "sox_ret": 0.02064239387362088,
+    "nasdaq_ret": 0.0045051636444291
   },
   "classification": {
     "labels": [
@@ -32,7 +32,7 @@
     "reasons": [
       "갭 +3.21%가 종가→종가 +1.20%의 268%",
       "09:00 봉 +2.66%(σ의 16.54배, 거래량 6.36배)가 세션 -1.95%의 110%",
-      "KOSPI +1.04% vs 종목 +1.20%, 5분 수익률 상관 0.87 — 종목 고유 요인이 약함"
+      "KOSPI +0.90% vs 종목 +1.20%, 5분 수익률 상관 0.87 — 종목 고유 요인이 약함"
     ]
   },
   "events": [
@@ -47,16 +47,10 @@
       "score": 18.53849387456366,
       "news": [
         {
-          "time": "2026-09-23T08:43:15+09:00",
-          "title": "반도체주 훈풍에 삼성전자·SK하이닉스 강세…코스피 상승 기대",
-          "source": "직썰",
-          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE9lWnRMallBOVZaY3ZzWEZQTGw2cEkzUC1RNnBrRTZFdFhLR0xtT05XUFB6UDJfcFFwb1lBdXVvLThTczFmeEhOcWwyZWpBQXAza252eERnUGJMYU5vVVR2a2VfZVpVc2hD0gFsQVVfeXFMTkQ4WmxGbndRNnB6WjNibVVFN0hSNjV6TVJSUEhPMV94UUxwYWlNdWlEbUdMUHNVTWpwU3lTQmVJRXVpVm9MbkU0dWJfYnRKaDdELTNGRlBPcVk1MGhVaHJNcG5LMzlydmdZMTFI?oc=5"
-        },
-        {
           "time": "2026-09-23T08:30:47+09:00",
           "title": "삼성·SK하이닉스, 3분기 영업이익 26% 급증 전망",
           "source": "파이낸셜투데이",
-          "link": "https://news.google.com/rss/articles/CBMia0FVX3lxTFBKT2VmRjdrbGo5MUtQcEZpTEdFZmloRnp2LVlURjl4cGNKVzI5U29wUDBBUDVYMUF3dXp6bHFkcG8tRWFJUjFqa2s5TnFCa19oRVNjZ01raENlOGhQdE5wV1paOU8xRGxrOUZv0gFuQVVfeXFMTVVfbDJzd2lNRUxOV0M4NmFuQ0haYnhCR2t0NjhnLTc3bVZpWkZ2a215YUpUdTRWb2VRcnZiaXpsSElyUDZzLUNjaG5nTzZPbEEzTlRmT0lTbUdXZUk5cENJSzlqTUpTRlNTdUhwUUE?oc=5"
+          "link": "https://news.google.com/rss/articles/CBMiakFVX3lxTFBiMjNRTHR5MXpEU29KaWpyeHBWSy0zTTVkdExKUnlEcHZEcHROclExcmF0WG85WW9udVV3WHFxTjZwUHRCdkVEd0ZON25ocG11T0M3S292Y2JRWVJlUGk5TDBjc0xsbEowYWfSAW5BVV95cUxNVV9sMnN3aU1FTE5XQzg2YW5DSFpieEJHa3Q2OGctNzdtVmlaRnZrbXlhSlR1NFZvZVFydmJpemxISXJQNnMtQ2NobmdPNk9sQTNOVGZPSVNtR1dlSTlwQ0lLOWpNSlNGU1N1SHBRQQ?oc=5"
         },
         {
           "time": "2026-09-23T08:34:00+09:00",
@@ -68,13 +62,19 @@
           "time": "2026-09-23T08:39:32+09:00",
           "title": "SK하이닉스, 영업이익 성장세 어디까지?",
           "source": "데이터뉴스",
-          "link": "https://news.google.com/rss/articles/CBMiX0FVX3lxTE9pM0R4M0VfejVqMWgzeXVGQ01EcWpWcWRSTnhxazFKR19TYlhPMkMtb0tQYmQ3dDNkOFRZSmozLUhfdURpQ0NDdXEyeWR1Nm85X3V3UklBVkk5QUhwal9J?oc=5"
+          "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE5POXBud3hSMG1CeHI2aWhZR0FJTnY4Z1Z5S2RTV0ppS0J0WGduZTdjM0tZbmN6dXN4bHR6UEdJVTZwQm9iRlg3T29saTdhVnRZamU2VG41MjFLQXQtLVZTVnFOTWs?oc=5"
         },
         {
           "time": "2026-09-23T08:48:00+09:00",
           "title": "삼성전자·SK하이닉스, 美 반도체주 강세에 프리마켓서 이틀째 상승[특징주]",
           "source": "v.daum.net",
-          "link": "https://news.google.com/rss/articles/CBMiT0FVX3lxTE1RYS1uZHlnc3V6eTJLTFVXTGVXc1htU0M0aklrTHBUdTB1cF9McEtma01Vc3pMNzVEekt6QTUtOHhQUFhKa1kwdUFjWnhpMDQ?oc=5"
+          "link": "https://news.google.com/rss/articles/CBMiS0FVX3lxTE5YeTFOVDVaOTBsM3I5R2U4enMyYi1sVEpDT0YtZlA0UC1GZHVfRXNrbHB2NFF1aXk2VjRwYlEwU1c1QWJtV2xFd2Rvaw?oc=5"
+        },
+        {
+          "time": "2026-09-23T09:01:00+09:00",
+          "title": "키움증권배 철권 스타즈컵…DRX '무릎' 출격해 SK하이닉스 주식 쏜다",
+          "source": "뉴스핌",
+          "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTFBqa2lKd3Vla0dkVXB4ZFFKWmpCTmg4clRxSUVoc2Z5ekh6V290OXgtcXowdHRhOUVCUVU3SmhBbVNwazNBV1E0N0hlWnBReEVGalRRdkpGOW9zam5F?oc=5"
         }
       ]
     },
@@ -95,21 +95,9 @@
           "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxPNjdieWtyTmduS3IzZTFKako4U3NyT2pUNU5lYVZmMVJNWHJVUndPWFZ1TlpnQzRKRVZzWVpwT283SG85OVZCdzhnZkRuTHVySlZtOVotV0xHMUxDQ1dXRERXWXp4WnR1aTBOQk5DTWlwRVZmSkg5cUw5dzgwcnRGaVBpYjhQSEpw?oc=5"
         },
         {
-          "time": "2026-09-23T09:45:41+09:00",
-          "title": "SK하이닉스 주가, 9월 23일 장중 1,870,000원 1.63% 상승",
-          "source": "톱스타뉴스",
-          "link": "https://news.google.com/rss/articles/CBMickFVX3lxTE0wUjgwc2YtOXVwS3J0b3BYQm9WWi15MDhnd3NzMF9UelBLU1h6bGhPeHgzNDRaT2ZiM2Y5eG5BeXNoODI2WmJqMjl1UUxqNlBZU3dLb0pZaFBpZTdjUkVHbjB3Q1NxNndJZFJ6N1dWYjVCQQ?oc=5"
-        },
-        {
-          "time": "2026-09-23T09:46:50+09:00",
-          "title": "코스피 7,100선 회복…삼성전자·SK하이닉스 강세",
-          "source": "v.daum.net",
-          "link": "https://news.google.com/rss/articles/CBMiRkFVX3lxTE0ybExQSHU0dDJBdWl5cEJUOW4wN0lPNUY5eThJUU55bGtORDN2WDdjVnRQUmZyT1FPYWJ0Z3BEVzRzODI5eXc?oc=5"
-        },
-        {
           "time": "2026-09-23T10:26:00+09:00",
           "title": "삼성전자, 8월 HBM 성장 SK하이닉스 추월…'점유율 선두' 노린다",
-          "source": "리드경제",
+          "source": "leadeconomy.co.kr",
           "link": "https://news.google.com/rss/articles/CBMib0FVX3lxTE4zaG5pYnREVU5tdm9SUzNnSHV4N0VYMi1BQWRxaGhOc1JldW9nUkZValBPMFppa3RuRkU2bkthZ3VyN3gtQWczTk5WVmhUdEszSDhsUElVWVJjaGJLb1FSU2l6Vm83Z1JNNE40c2Q2bw?oc=5"
         },
         {
@@ -117,6 +105,18 @@
           "title": "중국 CXMT 5세대 D램 \"삼성전자나 SK하이닉스와 비교 어렵다\" 평가, 기술력과 수율 불투명",
           "source": "비즈니스포스트",
           "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTE5rR05XLXVEOFVFVmh0QmhLVEt3Tk1LLW52cjBMWlJOdUJSMExybXZxaGF4ZUtXRUJKOWptaElfWWdDQnpDMTZKMVJNaElNcklYLTl3VzJEdkNkLVYyUVZoMV9WVFl5bFpRSVFUV3hmeUdkMnc?oc=5"
+        },
+        {
+          "time": "2026-09-23T11:07:00+09:00",
+          "title": "[EBN 데이터센터] 반도체 대표주(생산) 혼조...삼성전자 강세, SK하이닉스 숨 고르기",
+          "source": "ebn.co.kr",
+          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE5sRS10NmlyTlJVMzJWdjlDRFdfVDJoN0syc3Z0S0R2TXRPTnlJV0EzZ0g0NTNKMHlXN3Joc2l4M2hJTXVjVmI1V2VTMjMwcTNGYnk2U1otYjhkQ1o1ZzNic2hyTzNmNU5u?oc=5"
+        },
+        {
+          "time": "2026-09-23T11:17:00+09:00",
+          "title": "SK는 '넓은 부지'·삼성은 '속도전'…호남 반도체 투자의지",
+          "source": "연합뉴스",
+          "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTFBkLUhvQWNTSkF0V1NZT3l4VzhEUG16VDNOcFpCbW4zWHNCOGJVNlhHMHU5Yzd0a2tkSVhxMk9pbFJ4THBpalZSSXQxR2xZY0tYWTdzTW5EZ2dCbGPSAWBBVV95cUxNNkNZckJNOWY5QzhIV3pwUzVkR2xscTM4eGxiTUhNQ3ZwaUxlLTJWYnRfRGp2ZGtZNmc5MlNBcFlRdzAyNEhEa1k5OXNvbi1Takw5aXZmZ3ZLYWZJa3pCNXI?oc=5"
         }
       ]
     }
@@ -134,34 +134,34 @@
   "intraday_coverage": "09:00~14:55",
   "overnight_news": [
     {
+      "time": "2026-09-22T18:07:00+09:00",
+      "title": "[단독] SK하이닉스, 美 인디애나 HBM 공장 ‘인허가 리스크’ 비상 [AI 투자 골든타임의 덫]",
+      "source": "이투데이",
+      "link": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE11c1BBMU04U0JLZEJHS3NtZUlScFhUUzNDZ09UbC1pTjN2c29XOTdfVDctclVGNzlSOV9WR0VvaU1NV29nNzVmNjk2d09xQ3dqLTBleg?oc=5"
+    },
+    {
+      "time": "2026-09-22T16:10:21+09:00",
+      "title": "AI 훈풍에도 ‘팔자’에 뒷심 떨어진 코스피…SK하이닉스 하락 마감",
+      "source": "매일경제",
+      "link": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE9GRkFfVlM2YmpCNjF6VlEzcFByZ1ZmUjZJVmt1T0JmT19adGU1NXZpQ3oza2Z3UF9nMk9iaGg5c3JpQU5zNEdCVi1fQTJXNWxJNHc?oc=5"
+    },
+    {
+      "time": "2026-09-22T16:50:00+09:00",
+      "title": "AI 투자 늘자 eSSD도 '불티'…삼성·SK하이닉스 주도권 경쟁 가속 - 머니투데이",
+      "source": "머니투데이",
+      "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE5zRVc5ZTJoOHFoTWNINVdIZjdqc2M2cDk3RjdmUUYtTy01N0treS01WE9DVmhsRC1UbmZnazZZV1ZpX0l0QjJ1RXRqay05ZUUweG05M2MzMkRhMDRsaDh6bTN4U3NOamY2TVZ0MNIBckFVX3lxTE1JaHdZVVFzNmptR2h1ekUySHFHYThCaDhvTFNkVnZRT1JGQVpCQzV1NnBmQjZZdUxwUFRfa2dqME93Nm83bW51QkY0aG5oU0lnTHhRWDhUTTd4Y2F6dWlCWExYTklCVjY1YTAxWk95d3ZZZw?oc=5"
+    },
+    {
       "time": "2026-09-23T05:49:53+09:00",
       "title": "美 반도체주 일제히 상승…마이크론 5%·SK하이닉스 3.45% 급등",
       "source": "뉴스1",
       "link": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE44ZDJiX2JVXzJtSk0zd3V4Q1ZDMWpwdUt0S2ZvT1NnQkNycnNpNkpibVgtSkpTS1lIXy1kLVZWNGtqR09Vbk1KQkZiMVMtQ19qZm02OG5WaDMxbzJOWVJRMGRUbEM3dlXSAWxBVV95cUxOV2R4V0xiMnJHRFlvWVg5TEFMcThreWdGZGF6UFotTG5rM2gwak5kUmd3S3FrbVFBMGJSQVliSjVReTNKMm1pcXJxT3c3bmxPcm1OeWE2a0RQSGYwNjNJdXM3dGRBdUR4MU1EZ24?oc=5"
     },
     {
-      "time": "2026-09-23T07:06:41+09:00",
-      "title": "미국증시 혼조마감, 유가·금리 하락에 나스닥 상승…마이크론·SK하이닉스 강세",
-      "source": "톱스타뉴스",
-      "link": "https://news.google.com/rss/articles/CBMickFVX3lxTE9tSy1sZVhzNVpPc2JJMEUwcEJnLVVZNDgwUzYxalhHNGhYZlFsajVucHFRcjVOck55clhzLXFaOTl2TEd6bGwyWk1CTEMzOWI0RzFDNUxUWnJvS092VXRVSnFXQnFhc0lKeUxxaDlzeFdFUQ?oc=5"
-    },
-    {
-      "time": "2026-09-23T08:43:15+09:00",
-      "title": "반도체주 훈풍에 삼성전자·SK하이닉스 강세…코스피 상승 기대",
-      "source": "직썰",
-      "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE9lWnRMallBOVZaY3ZzWEZQTGw2cEkzUC1RNnBrRTZFdFhLR0xtT05XUFB6UDJfcFFwb1lBdXVvLThTczFmeEhOcWwyZWpBQXAza252eERnUGJMYU5vVVR2a2VfZVpVc2hD0gFsQVVfeXFMTkQ4WmxGbndRNnB6WjNibVVFN0hSNjV6TVJSUEhPMV94UUxwYWlNdWlEbUdMUHNVTWpwU3lTQmVJRXVpVm9MbkU0dWJfYnRKaDdELTNGRlBPcVk1MGhVaHJNcG5LMzlydmdZMTFI?oc=5"
-    },
-    {
-      "time": "2026-09-23T06:00:14+09:00",
-      "title": "‘삼전닉스’ 자사주도 끝난다…또 외국인 눈치보는 코스피 - 조선비즈",
-      "source": "Chosunbiz",
-      "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxOdmFvQ1FDRWJQN0xmcmFfWjlGZGoxeldHRHJuR1lzcDFLMl9OcE9WRU5NTmNNZWtwYWg1VmNhTERCUlZIQXk4ck5vVDZiZWFNd1dlMDhvQV9jTXNsUEdKaThnNGJHSDAyQXJyU05mUTUtUjhfdWxJQUd5WW1oNlhjREtpUXpteU9Z0gGcAUFVX3lxTE9kUlQ2UnI3RHEybWFYYW9CSjFCT2Y5TWtuTDFSMjduX2N4UnVJMzIzaWdKN201RGY0c09nLV9Gd0VpdHdnS2dGVS1kUWNiclYydWs1NWpQNTdQRXRUX1c5aHZJRXcxYzN3bjlodDNjN0NhRGhlY2Q1MzFIVUQ4N0szdmJzRFhqNTZOZXVLczFLekxha0l5NTFyUENlUQ?oc=5"
-    },
-    {
-      "time": "2026-09-22T17:18:36+09:00",
-      "title": "SK하이닉스 주가, 오늘 급등하는 이유는?",
-      "source": "Investing.com 한국어",
-      "link": "https://news.google.com/rss/articles/CBMid0FVX3lxTE90XzBTZUt1cnJWNVVXM2RrQ3UwRlJ3bklwZVdNR3FDTjhmX0NYRGptdEZ2cUVJRkY1cWJNeGtYM0NLc0pUT0tlWl9vaktpUFd5RzBxZFlfSXh6RHBmQmh0VFVoQ0RCMnVZcWNUeDdQdF9aZ1F1NG9V?oc=5"
+      "time": "2026-09-22T16:42:49+09:00",
+      "title": "서학개미 몰리는 반도체 3배 ETF 'SOXL'…SK하이닉스 담았다",
+      "source": "한국경제",
+      "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE9mTmxqdGsyYUdxSDJFMktnaG9MTV9qSWFGR3BJNXZiMV80OXh3UmNadEw5UGMwSzZZWGlfNEJGeXd0ZUxQT0pueWZUYnhNcElBNnZob2N3clh0UQ?oc=5"
     }
   ],
   "top_news": [
@@ -172,34 +172,34 @@
       "link": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE44ZDJiX2JVXzJtSk0zd3V4Q1ZDMWpwdUt0S2ZvT1NnQkNycnNpNkpibVgtSkpTS1lIXy1kLVZWNGtqR09Vbk1KQkZiMVMtQ19qZm02OG5WaDMxbzJOWVJRMGRUbEM3dlXSAWxBVV95cUxOV2R4V0xiMnJHRFlvWVg5TEFMcThreWdGZGF6UFotTG5rM2gwak5kUmd3S3FrbVFBMGJSQVliSjVReTNKMm1pcXJxT3c3bmxPcm1OeWE2a0RQSGYwNjNJdXM3dGRBdUR4MU1EZ24?oc=5"
     },
     {
-      "time": "2026-09-23T07:06:41+09:00",
-      "title": "미국증시 혼조마감, 유가·금리 하락에 나스닥 상승…마이크론·SK하이닉스 강세",
-      "source": "톱스타뉴스",
-      "link": "https://news.google.com/rss/articles/CBMickFVX3lxTE9tSy1sZVhzNVpPc2JJMEUwcEJnLVVZNDgwUzYxalhHNGhYZlFsajVucHFRcjVOck55clhzLXFaOTl2TEd6bGwyWk1CTEMzOWI0RzFDNUxUWnJvS092VXRVSnFXQnFhc0lKeUxxaDlzeFdFUQ?oc=5"
-    },
-    {
-      "time": "2026-09-23T08:43:15+09:00",
-      "title": "반도체주 훈풍에 삼성전자·SK하이닉스 강세…코스피 상승 기대",
-      "source": "직썰",
-      "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE9lWnRMallBOVZaY3ZzWEZQTGw2cEkzUC1RNnBrRTZFdFhLR0xtT05XUFB6UDJfcFFwb1lBdXVvLThTczFmeEhOcWwyZWpBQXAza252eERnUGJMYU5vVVR2a2VfZVpVc2hD0gFsQVVfeXFMTkQ4WmxGbndRNnB6WjNibVVFN0hSNjV6TVJSUEhPMV94UUxwYWlNdWlEbUdMUHNVTWpwU3lTQmVJRXVpVm9MbkU0dWJfYnRKaDdELTNGRlBPcVk1MGhVaHJNcG5LMzlydmdZMTFI?oc=5"
-    },
-    {
       "time": "2026-09-23T09:36:02+09:00",
       "title": "[특징주] 삼성전자·SK하이닉스, 메모리 반도체 수요 증가.. '강세\"",
       "source": "글로벌이코노믹",
       "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxPNjdieWtyTmduS3IzZTFKako4U3NyT2pUNU5lYVZmMVJNWHJVUndPWFZ1TlpnQzRKRVZzWVpwT283SG85OVZCdzhnZkRuTHVySlZtOVotV0xHMUxDQ1dXRERXWXp4WnR1aTBOQk5DTWlwRVZmSkg5cUw5dzgwcnRGaVBpYjhQSEpw?oc=5"
     },
     {
-      "time": "2026-09-23T06:00:14+09:00",
-      "title": "‘삼전닉스’ 자사주도 끝난다…또 외국인 눈치보는 코스피 - 조선비즈",
-      "source": "Chosunbiz",
-      "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxOdmFvQ1FDRWJQN0xmcmFfWjlGZGoxeldHRHJuR1lzcDFLMl9OcE9WRU5NTmNNZWtwYWg1VmNhTERCUlZIQXk4ck5vVDZiZWFNd1dlMDhvQV9jTXNsUEdKaThnNGJHSDAyQXJyU05mUTUtUjhfdWxJQUd5WW1oNlhjREtpUXpteU9Z0gGcAUFVX3lxTE9kUlQ2UnI3RHEybWFYYW9CSjFCT2Y5TWtuTDFSMjduX2N4UnVJMzIzaWdKN201RGY0c09nLV9Gd0VpdHdnS2dGVS1kUWNiclYydWs1NWpQNTdQRXRUX1c5aHZJRXcxYzN3bjlodDNjN0NhRGhlY2Q1MzFIVUQ4N0szdmJzRFhqNTZOZXVLczFLekxha0l5NTFyUENlUQ?oc=5"
+      "time": "2026-09-23T11:38:00+09:00",
+      "title": "코스피, 반도체 훈풍에 '반등'.. 삼성전자·SK하이닉스 강세 > 뉴스",
+      "source": "지데일리",
+      "link": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTFA0M0s4WXFURXVpaGFzOVVHa3VlTG5YZUltU3hzdGlrQUd0UWVWTG1qOUxXUzZ3TmtGUnpKUXg4eXJPWnlWbXZ1Q2tldjU1RkU4WEo1LUxNRHg5dmtELXhMUW5TUnFoNEE?oc=5"
     },
     {
-      "time": "2026-09-23T14:12:00+09:00",
-      "title": "AI가 HBM 이어 낸드 생산라인도 바꾼다…삼성·SK, eSSD 우선 배정",
-      "source": "뉴스핌",
-      "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE9ENkdnMWpSV0NWblRhSWZVUXhGRHJXSlVRV1ZWVTdqcmpwckFCcTJRcy16dXczRTBkc05yVWhLcUVfdVNzWUlMVno5T0w4aVJaT2NVa0JtSFNhSkdG?oc=5"
+      "time": "2026-09-23T16:07:34+09:00",
+      "title": "삼성전자 3%·SK하이닉스 1%대 상승…AI 훈풍에 반도체株 강세",
+      "source": "sankyungtoday.com",
+      "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE9ybm5ZVnVpc2JCSC1SV3JKQ0tTWnhoZEdrWmlBMkJjdlhyWGJteU9meEUweVpRVS1xSHBHQ2daMFBad2hMZEU0Yl9rNjF5OXlCY2dUdl9URGJ2NXhtM2lOTF9ySkxOemttLVFrNjRBMGjSAXRBVV95cUxPSnJVdW1KRWFDcnBuSzdUUmFkMElqNXoyS2lDLVo0dlFibExMMVcyVmpJQTNMTzdjdnJqMmRtZFNacDUydDNpNHV6N1Rpb0x6QUZseW95UzNFRTc0OGpwZ1doSE81VGxEMDU5OHpzTEpsMnM3ag?oc=5"
+    },
+    {
+      "time": "2026-09-23T16:17:17+09:00",
+      "title": "코스피, 추석 연휴 앞두고 0.90% 상승…삼성전자·SK하이닉스 반도체주 강세",
+      "source": "뉴스인",
+      "link": "https://news.google.com/rss/articles/CBMia0FVX3lxTE1ORnRHWUZzeEJxRjUwTERaOWZfUllRbnVKVl9rbGl2bDFqNWpReWk5aG5kQjgtRll6YmYwSU5HaEUxU2xRdG9KV2hYYkQ4aXNJbGtRcW9BN05GS2lwZ19xSjRRdVEzbWtLV0Rj?oc=5"
+    },
+    {
+      "time": "2026-09-23T17:53:36+09:00",
+      "title": "코스피, 추석연휴 앞두고 또 '전강후약', 0.9% 올라 7,080…美 반도체 랠리에 삼성전자 3%↑SK하이닉스 1%↑ [시티타임스 헤드라인 5]",
+      "source": "citytimes.co.kr",
+      "link": "https://news.google.com/rss/articles/CBMibkFVX3lxTE5xaG5meEdqLTFRa3FfLUxNc2dYYVo0a1RMLVhNRWFSZm9BWnp0VHZ1QWVRdDU3V2M1NDczT3pwUVE1dWEzVXVPTjFURl9pNGRjOGlZMV9DYnBGMnVLejlSeVRCemVyV3JHN1FVaVF30gFyQVVfeXFMTXFwMjE4Y0o5aHhEWExLMV9CWnNrbGlNRnJCRGtwdGlKOHZOX3JFNHE1WXNPNm02cnRhTlJhSzRsZHhmdktSQWhlZGxBMnJlYUw5SGVYb2E4bkNCamRKdFNEUW9ZNzE3SHF6Y3NjZVFsQUhn?oc=5"
     }
   ],
   "disclosures": [],

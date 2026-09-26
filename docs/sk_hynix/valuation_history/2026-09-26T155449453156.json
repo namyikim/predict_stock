@@ -1,0 +1,89 @@
+{
+  "recorded_at": "2026-09-26T15:54:49.453098+09:00",
+  "target": "sk_hynix",
+  "valuation": {
+    "status": "unavailable",
+    "reason": "재무 기준일 또는 시세 기준일을 확인하지 못했습니다.",
+    "scenarios": {
+      "per": [],
+      "pbr": []
+    },
+    "per": null,
+    "pbr": null,
+    "retrieved_on": "2026-09-26",
+    "cached": false
+  },
+  "model_as_of": "2026-08-31",
+  "model_forecast": {
+    "3": {
+      "raw": 0.2781166163798798,
+      "point": 0.05709136709553551
+    },
+    "6": {
+      "raw": 0.821309795310441,
+      "point": 0.09483564139912844
+    },
+    "12": {
+      "raw": 0.9329413067319179,
+      "point": 0.01788341512315427
+    }
+  },
+  "live_exports": {
+    "as_of": "2026-09-26",
+    "price_last": "2026-08-31",
+    "exports_last_month": "2026-09",
+    "latest_period": {
+      "month": "2026-09",
+      "days": 20,
+      "yoy": 2.5941553685349685,
+      "observed_usd": 34128119000.0,
+      "monthly_usd": 59760314958.71869,
+      "basis": "partial_month_scenario"
+    },
+    "snapshot_hash": "0abd5c64f618bd7adc7a",
+    "generated_at": "2026-09-26 15:44 KST",
+    "flash_info": {
+      "enabled": true,
+      "source": "customs_flash_cache",
+      "rows": 44,
+      "first": "2025-07",
+      "last": "2026-09",
+      "last_days": 20,
+      "yoy_rows": 8,
+      "fetch_error": "RuntimeError: RuntimeError <메시지 가림: 인증 정보가 포함될 수 있음>"
+    },
+    "current": {
+      "mom_12m": 1.8282598714475817,
+      "drawdown_36m": -0.3683018867924528,
+      "macro_leading_cycle": 3.799999999999997,
+      "macro_semiconductor_yoy": 2.5941553685349685,
+      "macro_semiconductor_yoy_change_3m": 0.6002264094081817,
+      "price_to_exports_z": 1.3583260924561187,
+      "exports_cycle": 2.157383860807471,
+      "exports_accel": 0.35097493047113315,
+      "cli_level": 0.3007000000000062,
+      "cli_change_3m": -0.03309999999999036,
+      "exports_daily_yoy": 2.594155368534968
+    },
+    "phase": "확장(YoY>0, 가속)",
+    "forecast": {
+      "3": {
+        "point": null,
+        "validated": false,
+        "interval": null
+      },
+      "6": {
+        "point": null,
+        "validated": false,
+        "interval": null
+      },
+      "12": {
+        "point": null,
+        "validated": false,
+        "interval": null
+      }
+    },
+    "validated": false
+  },
+  "evaluation_status": "참고 시나리오 보관 — 미래 성능 평가 결과 아님"
+}

@@ -879,7 +879,7 @@
     "exports_fresh": false
   },
   "chart_first": "2000-01-31",
-  "generated_at": "2026-09-26 15:54 KST",
+  "generated_at": "2026-09-27 06:38 KST",
   "macro_snapshot_hash": "618c126d956ed636aa99",
   "macro_sources": {
     "leading_cycle": "last_successful_fetch",
@@ -887,7 +887,7 @@
   },
   "frame_hash": "180af68bce2eadca",
   "live_exports": {
-    "as_of": "2026-09-26",
+    "as_of": "2026-09-27",
     "price_last": "2026-08-31",
     "exports_last_month": "2026-09",
     "latest_period": {
@@ -899,7 +899,7 @@
       "basis": "partial_month_scenario"
     },
     "snapshot_hash": "0abd5c64f618bd7adc7a",
-    "generated_at": "2026-09-26 15:44 KST",
+    "generated_at": "2026-09-27 06:28 KST",
     "flash_info": {
       "enabled": true,
       "source": "customs_flash_cache",
@@ -952,7 +952,7 @@
     },
     "per": null,
     "pbr": null,
-    "retrieved_on": "2026-09-26",
+    "retrieved_on": "2026-09-27",
     "cached": false
   }
 }

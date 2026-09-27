@@ -1,0 +1,9 @@
+record_id,series,label,unit,kind,issued_at_kst,info_as_of,target_period,horizon,detail,point,low,high,baseline,probability,baseline_probability,model,status,actual,actual_seen_kst,error,abs_error,baseline_abs_error,in_band,outcome,brier,baseline_brier,note
+bucket_return_12m|2026-08|2027-08|+30% 이상,bucket_return_12m,비슷했던 달의 1년 뒤 가격 중앙값,log_return,value,2026-09-28 00:09,2026-08,2027-08,12개월,+30% 이상,0.07747284309804939,-0.014164869085940402,0.20284265483453662,0.0,,,적정 가격 대비 괴리 +30% 이상 · 6개월,pending,,,,,,,,,,
+bucket_up_12m|2026-08|2027-08|+30% 이상,bucket_up_12m,비슷했던 달에서 1년 뒤 오를 확률,probability,probability,2026-09-28 00:09,2026-08,2027-08,12개월,+30% 이상,,,,,0.5,0.5,적정 가격 대비 괴리 +30% 이상 · 6개월,pending,,,,,,,,,,
+level_reach|2026-09|5000|5000@126d,level_reach,가격 도달 확률,probability,probability,2026-09-28 00:09,2026-09,5000,6개월,5000@126d,,,,,0.3058,,"기준일 2026-09-25 종가 4,321",pending,,,,,,,,,,issued=2026-09-25;days=126
+level_reach|2026-09|5000|5000@252d,level_reach,가격 도달 확률,probability,probability,2026-09-28 00:09,2026-09,5000,1년,5000@252d,,,,,0.47625,,"기준일 2026-09-25 종가 4,321",pending,,,,,,,,,,issued=2026-09-25;days=252
+level_reach|2026-09|5000|5000@504d,level_reach,가격 도달 확률,probability,probability,2026-09-28 00:09,2026-09,5000,2년,5000@504d,,,,,0.6129,,"기준일 2026-09-25 종가 4,321",pending,,,,,,,,,,issued=2026-09-25;days=504
+level_reach|2026-09|6000|6000@126d,level_reach,가격 도달 확률,probability,probability,2026-09-28 00:09,2026-09,6000,6개월,6000@126d,,,,,0.0236,,"기준일 2026-09-25 종가 4,321",pending,,,,,,,,,,issued=2026-09-25;days=126
+level_reach|2026-09|6000|6000@252d,level_reach,가격 도달 확률,probability,probability,2026-09-28 00:09,2026-09,6000,1년,6000@252d,,,,,0.11195,,"기준일 2026-09-25 종가 4,321",pending,,,,,,,,,,issued=2026-09-25;days=252
+level_reach|2026-09|6000|6000@504d,level_reach,가격 도달 확률,probability,probability,2026-09-28 00:09,2026-09,6000,2년,6000@504d,,,,,0.2632,,"기준일 2026-09-25 종가 4,321",pending,,,,,,,,,,issued=2026-09-25;days=504

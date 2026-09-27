@@ -233,7 +233,7 @@ def build_html(ranked, now, total, failed):
         "font-family:-apple-system,'Malgun Gothic',sans-serif;line-height:1.65;color:#1a1a1a;"
         '-webkit-font-smoothing:antialiased}'
         '.wrap{max-width:760px;margin:0 auto}a{color:#1a5490}'
-        '@media(max-width:640px){body{padding:16px 12px 32px}}</style><script>if(window.top!==window.self){document.documentElement.className+=" embedded";}</script><style>.embedded .back-to-index{display:none}</style></head><body>'
+        'html:not(.embedded) body{zoom:1.15}@media(max-width:640px){body{padding:16px 12px 32px}}</style><script>if(window.top!==window.self){document.documentElement.className+=" embedded";}</script><style>.embedded .back-to-index{display:none}</style></head><body>'
         '<div class="wrap">'
         '<div class="back-to-index" style="margin-bottom:10px"><a href="../" style="display:inline-block;font-size:12px;color:#1a5490;text-decoration:none;border:1px solid #cedff0;border-radius:5px;padding:5px 11px;background:#f0f6fc">← 보고서 목록</a></div>'
         '<div style="border-bottom:3px solid #1a1a1a;padding-bottom:11px;margin-bottom:18px">'

@@ -40,6 +40,7 @@ td{padding:7px 10px;border-top:1px solid #eee}
 .empty{border:1px dashed #d8dce1;border-radius:6px;padding:18px;color:#6b7178;font-size:13px;
        background:#fafbfc}
 @media(max-width:640px){body{padding:16px 12px 32px}}
+body{zoom:1.15}
 </style>"""
 
 BACK_BUTTON = ('<div class="back-to-index" style="margin-bottom:10px">'

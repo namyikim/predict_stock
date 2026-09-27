@@ -608,7 +608,7 @@ def page(inner, today):
         '<meta name="viewport" content="width=device-width, initial-scale=1">'
         f'<title>중국 5개년 계획과 주식 수익 {today.date()}</title>'
         '<style>html,body{overflow-x:hidden}body{margin:0;padding:24px 20px 48px;background:#fff;max-width:100%;'
-        '-webkit-font-smoothing:antialiased}img{max-width:100%}@media(max-width:640px){body{padding:16px 12px 32px}}</style>'
+        '-webkit-font-smoothing:antialiased}img{max-width:100%}body{zoom:1.15}@media(max-width:640px){body{padding:16px 12px 32px}}</style>'
         '</head><body>'
         f'{inner}'
         '<div style="max-width:980px;margin:28px auto 0;padding-top:14px;border-top:1px solid #e5e5e5;'

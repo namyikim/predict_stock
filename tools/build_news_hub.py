@@ -39,6 +39,7 @@ white-space:nowrap;border-bottom:3px solid transparent;margin-bottom:-1px}
 .hub-panel iframe{display:block;width:100%;height:80vh;border:0}
 .hub-on .hub-panel{display:none}
 .hub-on .hub-panel.is-active{display:block}
+body{zoom:1.15}
 </style>"""
 
 # 탭 안에 들어간 페이지에 넣는 스타일. 탭 이름이 이미 제목을 말하므로 페이지 자기 제목(.page-title)은 숨기고

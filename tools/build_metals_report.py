@@ -666,7 +666,7 @@ def page(inner, pred, today):
     return ('<!doctype html>\n<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">'
             f'<title>금·은 예측 보고서 {pred.date()}</title>'
             '<style>html,body{overflow-x:hidden}body{margin:0;padding:24px 20px 48px;background:#fff;max-width:100%;-webkit-font-smoothing:antialiased}'
-            'img{max-width:100%}@media(max-width:640px){body{padding:16px 12px 32px}}</style></head><body>'
+            'img{max-width:100%}body{zoom:1.15}@media(max-width:640px){body{padding:16px 12px 32px}}</style></head><body>'
             f'{stale}{inner}'
             '<div style="max-width:980px;margin:28px auto 0;padding-top:14px;border-top:1px solid #e5e5e5;font-family:-apple-system,\'Malgun Gothic\',sans-serif;font-size:12px;color:#8a9199">'
             f'생성 {datetime.now(KST).strftime("%Y-%m-%d %H:%M")} KST · <a href="https://github.com/{github_pages.GITHUB_REPO}" style="color:#1a5490">저장소</a> · '

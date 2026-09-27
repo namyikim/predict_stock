@@ -573,3 +573,35 @@ class TypographyScaleTests(unittest.TestCase):
         # 두 번 끼우면 주간 뉴스 탭에 같은 절이 두 번 나온다(2026-09-27 발행본에서 확인).
         import re
         self.assertEqual(len(re.findall(r"f'\{weekly_html\}'", self.source)), 1)
+
+
+class PageZoomTests(unittest.TestCase):
+    """모든 페이지를 1.15배로 본다(2026-09-27: 종목 보고서에 먼저 적용 후 '적당하다' — 나머지도 같게).
+
+    뉴스 허브는 AI 뉴스·검색어·관심도를 iframe 으로 품는다. 그 세 페이지까지 늘 확대하면 허브 안에서
+    1.15×1.15 로 두 번 커진다. 세 페이지는 iframe 밖에서만 확대한다(head 의 embedded 판정을 쓴다).
+    """
+
+    PAGES = ("tools/build_metals_report.py", "tools/build_china_report.py", "tools/build_macro_report.py",
+             "tools/build_news_hub.py", "docs/lab/index.html", "docs/index.html")
+    EMBEDDED = ("tools/build_ai_news_report.py", "tools/build_trends_report.py", "tools/build_interest_report.py")
+
+    def text(self, path):
+        return (ROOT / path).read_text(encoding="utf-8")
+
+    def test_every_page_zooms(self):
+        for path in self.PAGES:
+            self.assertIn("body{zoom:1.15}", self.text(path), path)
+
+    def test_embedded_pages_zoom_only_outside_the_hub(self):
+        for path in self.EMBEDDED:
+            text = self.text(path)
+            self.assertIn("html:not(.embedded) body{zoom:1.15}", text, path)
+            self.assertNotIn("}body{zoom:1.15}", text.replace("html:not(.embedded) body{zoom:1.15}", ""), path)
+            self.assertIn("window.top!==window.self", text, path)
+
+    def test_stock_report_zooms(self):
+        import json
+        nb = json.loads(self.text("samsung_direction_model_colab.ipynb"))
+        source = "\n".join("".join(c["source"]) for c in nb["cells"] if c["cell_type"] == "code")
+        self.assertIn("zoom:1.15", source)

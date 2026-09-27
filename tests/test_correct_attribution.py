@@ -63,3 +63,39 @@ class CorrectAttributionTests(unittest.TestCase):
         g=self.summary([self.attr(),a2],[self.ledger(),l2])[0]
         self.assertEqual(g['correct'],2)
         self.assertEqual([r['share'] for r in g['rows']],[.5,.5])
+
+
+class WriterAlignmentTests(unittest.TestCase):
+    """기여도는 원장이 그 실행을 기록한 이름·실행 ID 로 남아야 요약이 짝을 짓는다(2026-09-28: 연결 0건).
+
+    원인 둘: 저녁 실행은 원장에 'Candidate evening forecast' 로 기록되는데 기여도는 대표 이름으로 남았고,
+    기여도 중복 제거가 예측일 기준(첫 기록만)이라 전날 저녁 기록이 아침 대표 실행의 기여도를 밀어냈다.
+    """
+
+    ROOT = Path(__file__).resolve().parents[1]
+
+    def source(self):
+        import json
+        nb = json.loads((self.ROOT / "samsung_direction_model_colab.ipynb").read_text(encoding="utf-8"))
+        return "\n".join("".join(c["source"]) for c in nb["cells"] if c["cell_type"] == "code")
+
+    def test_writer_uses_the_ledger_label_and_keeps_every_run(self):
+        s = self.source()
+        self.assertIn("_attr_model = EVENING_MODEL if RECORD_EVENING_ONLY else _attr_source", s)
+        self.assertIn('drop_duplicates(["run_id", "model", "rank"]', s)
+        self.assertNotIn('drop_duplicates(["prediction_date", "model", "rank"]', s)
+        self.assertIn('"source_model": _attr_source', s)
+
+    def test_stored_attribution_matches_the_ledger_labels(self):
+        """저장소의 기여도 기록: 원장이 저녁 후보로 기록한 실행은 기여도도 저녁 후보 이름이어야 한다."""
+        import pandas as pd
+        for target in ("samsung", "sk_hynix"):
+            folder = self.ROOT / "forecast_history" / target
+            if not (folder / "attribution.csv").exists():
+                continue
+            attr = pd.read_csv(folder / "attribution.csv", low_memory=False)
+            ledger = pd.read_csv(folder / "forecast_log.csv", low_memory=False)
+            evening = set(ledger.loc[(ledger["kind"] == "direction")
+                                     & (ledger["model"] == "Candidate evening forecast"), "run_id"])
+            wrong = attr[attr["run_id"].isin(evening) & (attr["model"] != "Candidate evening forecast")]
+            self.assertEqual(len(wrong), 0, f"{target}: 저녁 실행 기여도가 대표 이름으로 남았습니다 {sorted(set(wrong['run_id']))[:3]}")

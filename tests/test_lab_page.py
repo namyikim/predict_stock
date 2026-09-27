@@ -225,8 +225,12 @@ class AttributionRecordingTests(unittest.TestCase):
     def test_only_recorded_for_prospective_runs(self):
         self.assertIn("if RECORD_FORECAST and live_contributions:", self.source)
 
-    def test_first_record_per_day_wins(self):
-        self.assertIn('drop_duplicates(["prediction_date", "model", "rank"], keep="first")', self.source)
+    def test_every_run_is_kept(self):
+        # 2026-09-28 부터 실행마다 남긴다. '예측일마다 첫 기록만'이던 옛 규칙은 전날 저녁 실행이 원장의 대표
+        # 예측을 만든 아침 실행의 기여도를 밀어내, /lab/ 요약이 원장과 한 건도 짝을 짓지 못했다.
+        # 어느 실행을 셀지는 요약(correct_attribution.js)이 원장의 '최초 사전 예측' 규칙으로 고른다.
+        self.assertIn('drop_duplicates(["run_id", "model", "rank"], keep="first")', self.source)
+        self.assertNotIn('drop_duplicates(["prediction_date", "model", "rank"]', self.source)
 
     def test_file_is_synced_with_the_ledger(self):
         self.assertIn('"attribution.csv"', self.source)

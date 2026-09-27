@@ -82,7 +82,7 @@ class WriterAlignmentTests(unittest.TestCase):
     def test_writer_uses_the_ledger_label_and_keeps_every_run(self):
         s = self.source()
         self.assertIn("_attr_model = EVENING_MODEL if RECORD_EVENING_ONLY else _attr_source", s)
-        self.assertIn('drop_duplicates(["run_id", "model", "rank"]', s)
+        self.assertIn('drop_duplicates(["run_id", "model", "kind", "horizon_days", "rank"]', s)
         self.assertNotIn('drop_duplicates(["prediction_date", "model", "rank"]', s)
         self.assertIn('"source_model": _attr_source', s)
 
@@ -99,3 +99,53 @@ class WriterAlignmentTests(unittest.TestCase):
                                      & (ledger["model"] == "Candidate evening forecast"), "run_id"])
             wrong = attr[attr["run_id"].isin(evening) & (attr["model"] != "Candidate evening forecast")]
             self.assertEqual(len(wrong), 0, f"{target}: 저녁 실행 기여도가 대표 이름으로 남았습니다 {sorted(set(wrong['run_id']))[:3]}")
+
+
+class PriceScopeTests(unittest.TestCase):
+    """가격 예측(1·5·20거래일)의 기여도 요약(2026-09-28). 방향과 다른 모델이라 따로 집계한다."""
+
+    def summary(self, attrs, ledger, scope):
+        script = ('const f=require(process.argv[1]); const a=JSON.parse(process.argv[2]);'
+                  'console.log(JSON.stringify(f(a[0], a[1], a[2])));')
+        r = subprocess.run(['node', '-e', script, str(MODULE), json.dumps([attrs, ledger, scope])],
+                           capture_output=True, text=True)
+        self.assertEqual(r.returncode, 0, r.stderr)
+        return json.loads(r.stdout)
+
+    def ledger(self, raw, actual, run='r1', h=5):
+        return dict(run_id=run, model='Ridge', kind='price', horizon_days=str(h), prediction_date='2026-09-14',
+                    target_date='2026-09-18', status='scored', is_prospective='True',
+                    raw_predicted_return=str(raw), actual_return=str(actual), created_at_utc='2026-09-13T22:00:00Z')
+
+    def attr(self, h=5, feature='micron_ret_5', value='0.4', run='r1'):
+        return dict(run_id=run, model='Ridge', kind='price', horizon_days=str(h), prediction_date='2026-09-14',
+                    feature=feature, contribution=value)
+
+    def test_price_is_correct_when_raw_sign_matches_actual(self):
+        g = self.summary([self.attr()], [self.ledger(0.01, 0.03)], {'kind': 'price', 'horizon': 5})[0]
+        self.assertEqual((g['matched'], g['correct']), (1, 1))
+        g = self.summary([self.attr()], [self.ledger(0.01, -0.03)], {'kind': 'price', 'horizon': 5})[0]
+        self.assertEqual((g['matched'], g['correct']), (1, 0))
+
+    def test_horizons_do_not_mix(self):
+        attrs = [self.attr(h=5), self.attr(h=20, feature='macro_leading_cycle')]
+        ledger = [self.ledger(0.01, 0.03, h=5), self.ledger(0.01, 0.03, h=20)]
+        five = self.summary(attrs, ledger, {'kind': 'price', 'horizon': 5})[0]
+        twenty = self.summary(attrs, ledger, {'kind': 'price', 'horizon': 20})[0]
+        self.assertEqual([r['feature'] for r in five['rows']], ['micron_ret_5'])
+        self.assertEqual([r['feature'] for r in twenty['rows']], ['macro_leading_cycle'])
+
+    def test_price_rows_join_on_prediction_date_not_maturity(self):
+        # 가격 원장의 target_date(만기 09-18)가 아니라 예측일(09-14)로 짝을 짓는다.
+        g = self.summary([self.attr()], [self.ledger(0.01, 0.03)], {'kind': 'price', 'horizon': 5})[0]
+        self.assertEqual(g['dates'], ['2026-09-14'])
+
+    def test_direction_scope_ignores_price_rows(self):
+        out = self.summary([self.attr()], [self.ledger(0.01, 0.03)], {'kind': 'direction', 'horizon': 1})
+        self.assertEqual(out, [])
+
+    def test_writer_records_price_horizons_in_the_morning_only(self):
+        s = WriterAlignmentTests().source()
+        self.assertIn('if not RECORD_EVENING_ONLY:', s)
+        self.assertIn('"kind": "price", "horizon_days": int(_h)', s)
+        self.assertIn('feature_contributions({"estimator": _fitted}, live_X, feature_cols)', s)

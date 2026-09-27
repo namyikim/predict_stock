@@ -124,6 +124,16 @@ body{zoom:1.15}
       <div class="field">종목
         <div class="stock-tabs" role="group" aria-label="종목"><button type="button" data-stock="samsung">삼성전자</button><button type="button" data-stock="sk_hynix">SK하이닉스</button></div>
       </div>
+      <!-- 예측마다 모델이 다르다(2026-09-28). 다음 거래일 방향은 분류 앙상블, 1·5·20거래일 종가는 기간마다
+           따로 학습한 Ridge 회귀다. 기여도도 예측별로 따로 본다. -->
+      <div class="field">예측
+        <div class="stock-tabs" role="group" aria-label="예측">
+          <button type="button" data-scope="direction:1">다음 거래일 방향</button>
+          <button type="button" data-scope="price:1">1일 종가</button>
+          <button type="button" data-scope="price:5">5일 종가</button>
+          <button type="button" data-scope="price:20">20일 종가</button>
+        </div>
+      </div>
       <label class="field">보기
         <select id="attr-view">
           <option value="correct" selected>맞힌 예측 누적 요약</option>
@@ -435,16 +445,39 @@ body{zoom:1.15}
     });
   }
 
+  var attrScope = {kind: "direction", horizon: 1};
+  function scopeOf(r) {
+    var h = parseInt(r.horizon_days, 10);
+    return {kind: r.kind ? String(r.kind) : "direction", horizon: Number.isFinite(h) ? h : 1};
+  }
+  function inScope(r) {
+    var s = scopeOf(r);
+    return s.kind === attrScope.kind && s.horizon === attrScope.horizon;
+  }
+  function scopedAttr() { return attrRows.filter(inScope); }
+  function scopeLabel() {
+    return attrScope.kind === "direction" ? "다음 거래일 방향" : attrScope.horizon + "거래일 뒤 종가";
+  }
   function outcomeByDate() {
-    // 방향 예측의 적중 여부를 예측일별로. 채점된 사전 예측만 본다.
+    // 예측일별 적중 여부. 채점된 사전 예측만, 같은 예측일에서는 먼저 기록된 것만 본다.
+    // 방향: direction_correct. 가격: 축소 전 원시 예측의 부호가 실제 수익률 부호와 같은가.
     var out = {};
     ledgerRows.forEach(function (r) {
-      if (r.kind !== "direction" || r.status !== "scored") return;
+      if (!inScope(r) || r.status !== "scored") return;
       if (String(r.is_prospective).toLowerCase() !== "true") return;
-      if (out[r.target_date] === undefined) out[r.target_date] = r.direction_correct;
+      var date = String(r.prediction_date || r.target_date || "").slice(0, 10);
+      if (!date || out[date] !== undefined) return;
+      if (attrScope.kind === "direction") {
+        out[date] = r.direction_correct;
+      } else {
+        var raw = parseFloat(r.raw_predicted_return), actual = parseFloat(r.actual_return);
+        if (!isFinite(raw) || !isFinite(actual) || raw === 0 || actual === 0) return;
+        out[date] = (raw > 0) === (actual > 0) ? "1" : "0";
+      }
     });
     return out;
   }
+
 
   function bar(value, scale) {
     var width = Math.min(100, Math.abs(value) / scale * 100);
@@ -468,14 +501,19 @@ body{zoom:1.15}
 
   // 원장의 모델 이름을 읽는 말로. 원래 이름은 옆에 작게 둔다.
   function modelLabel(model) {
-    var labels = {"No macro ensemble": "대표 예측 (아침 07:00)",
+    var labels = {"No macro ensemble": "대표 예측 (아침 07:00)", "Ridge": "가격 모델 (Ridge 회귀)",
                   "Candidate evening forecast": "전날 저녁 예측 (관찰 후보)"};
     return labels[model] || model;
   }
 
   function renderCorrectAttribution() {
-    var groups = summarizeCorrectAttribution(attrRows, ledgerRows);
-    var intro = '<div class="warn"><b>' + esc(stockName()) + '</b> — <b>맞힌 예측에서 모델이 크게 반응한 요소</b>를 모았습니다. ' +
+    var groups = summarizeCorrectAttribution(attrRows, ledgerRows, attrScope);
+    if (!scopedAttr().length) { renderScopeEmpty(); return; }
+    var intro = '<div class="warn"><b>' + esc(stockName()) + ' · ' + esc(scopeLabel()) + '</b> — ' +
+      '<b>맞힌 예측에서 모델이 크게 반응한 요소</b>를 모았습니다. ' +
+      (attrScope.kind === "price"
+        ? '가격 예측은 점 예측을 대부분 보류하므로, <b>축소 전 원시 예측의 방향(부호)이 실제와 같았던 날</b>을 맞힌 예측으로 셉니다. '
+        : '') +
       '요소가 정답의 원인이었다는 뜻이나 앞으로의 적중률을 뜻하지 않습니다.</div>';
     var body = groups.map(function(g) {
       var info = '<h2>' + esc(stockName()) + ' · ' + esc(modelLabel(g.model)) +
@@ -504,18 +542,47 @@ body{zoom:1.15}
       '저장된 상위 요소 안에서의 비중이며 전체 모델의 중요도가 아닙니다. 반대 방향으로 작용한 요소도 포함합니다.</p>';
   }
 
+  function renderScopeEmpty() {
+    $("attr-result").innerHTML = '<div class="empty">' + esc(stockName()) + ' · ' + esc(scopeLabel()) +
+      ' 기여도 기록이 아직 없습니다. ' +
+      (attrScope.kind === "price"
+        ? '가격 예측의 기여도는 2026-09-29 아침 실행부터 남깁니다. 그 예측의 만기(' + attrScope.horizon +
+          '거래일 뒤)가 지나 채점되면 요약에 나타납니다.'
+        : '아침 실행이 하루에 한 번 남깁니다.') + '</div>';
+  }
+
+  function paintScopeTabs() {
+    var current = attrScope.kind + ":" + attrScope.horizon;
+    Array.prototype.forEach.call(document.querySelectorAll("[data-scope]"), function (button) {
+      var on = button.getAttribute("data-scope") === current;
+      button.className = on ? "on" : "";
+      button.setAttribute("aria-pressed", on ? "true" : "false");
+    });
+  }
+  Array.prototype.forEach.call(document.querySelectorAll("[data-scope]"), function (button) {
+    button.addEventListener("click", function () {
+      var parts = button.getAttribute("data-scope").split(":");
+      attrScope = {kind: parts[0], horizon: parseInt(parts[1], 10)};
+      paintScopeTabs();
+      if (attrRows.length) renderAttribution();
+    });
+  });
+  paintScopeTabs();
+
   function renderAttribution() {
     var view = $("attr-view").value;
     if (view === "correct") { renderCorrectAttribution(); return; }
     var outcome = outcomeByDate();
+    var rows = scopedAttr();
+    if (!rows.length) { renderScopeEmpty(); return; }
     if (view === "recent") {
       var byDate = {};
-      attrRows.forEach(function (r) {
+      rows.forEach(function (r) {
         (byDate[r.prediction_date] = byDate[r.prediction_date] || []).push(r);
       });
       var dates = Object.keys(byDate).sort().reverse().slice(0, 20);
       var scale = 0;
-      attrRows.forEach(function (r) { scale = Math.max(scale, Math.abs(parseFloat(r.contribution) || 0)); });
+      rows.forEach(function (r) { scale = Math.max(scale, Math.abs(parseFloat(r.contribution) || 0)); });
       scale = scale || 1;
       var html = dates.map(function (d) {
         var hit = outcome[d];
@@ -529,7 +596,9 @@ body{zoom:1.15}
             "<td>" + bar(c, scale) + "</td></tr>";
         }).join("");
         return '<div style="margin-top:14px"><b>' + d + "</b> · " + mark +
-          ' <span class="muted">상승확률 ' + (parseFloat(byDate[d][0].p_up) * 100).toFixed(0) + "%</span>" +
+          (attrScope.kind === "direction"
+            ? ' <span class="muted">상승확률 ' + (parseFloat(byDate[d][0].p_up) * 100).toFixed(0) + "%</span>"
+            : ' <span class="muted">원시 예측 ' + (parseFloat(byDate[d][0].raw_predicted_return) * 100).toFixed(2) + "%</span>") +
           '<table style="margin-top:4px"><tr><th>특징</th><th class="num">값</th>' +
           '<th class="num">기여도</th><th>방향</th></tr>' + items + "</table></div>";
       }).join("");
@@ -540,7 +609,7 @@ body{zoom:1.15}
     }
     // 맞힌 날 vs 틀린 날: 특징별 평균 기여도와 등장 횟수
     var stats = {};
-    attrRows.forEach(function (r) {
+    rows.forEach(function (r) {
       var hit = outcome[r.prediction_date];
       if (hit === undefined) return;
       var key = r.feature, bucket = parseFloat(hit) === 1 ? "hit" : "miss";

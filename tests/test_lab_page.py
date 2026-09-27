@@ -111,7 +111,8 @@ class AttributionTabTests(PageSource):
         self.assertIn("function outcomeByDate()", self.script)
 
     def test_only_scored_prospective_rows_decide_hit_or_miss(self):
-        self.assertIn('r.kind !== "direction" || r.status !== "scored"', self.script)
+        # 선택한 예측(방향·1·5·20일 종가)의 채점된 행만 판정한다(2026-09-28 예측별 탭).
+        self.assertIn('if (!inScope(r) || r.status !== "scored") return;', self.script)
         self.assertIn('String(r.is_prospective).toLowerCase() !== "true"', self.script)
 
     def test_warns_that_large_contribution_is_not_usefulness(self):
@@ -223,13 +224,16 @@ class AttributionRecordingTests(unittest.TestCase):
         self.assertIn("live_X[:, market_feature_idx]", self.source)
 
     def test_only_recorded_for_prospective_runs(self):
-        self.assertIn("if RECORD_FORECAST and live_contributions:", self.source)
+        # 기록 창의 실행만 남긴다. 방향 기여도가 없어도 가격 기여도는 남기므로 live_contributions 는 조건이 아니다
+        # (2026-09-28). 저녁 실행은 원장에 가격 예측을 기록하지 않으니 가격 기여도도 남기지 않는다.
+        self.assertIn("if RECORD_FORECAST:\n    _attr_path", self.source)
+        self.assertIn("if not RECORD_EVENING_ONLY:", self.source)
 
     def test_every_run_is_kept(self):
         # 2026-09-28 부터 실행마다 남긴다. '예측일마다 첫 기록만'이던 옛 규칙은 전날 저녁 실행이 원장의 대표
         # 예측을 만든 아침 실행의 기여도를 밀어내, /lab/ 요약이 원장과 한 건도 짝을 짓지 못했다.
         # 어느 실행을 셀지는 요약(correct_attribution.js)이 원장의 '최초 사전 예측' 규칙으로 고른다.
-        self.assertIn('drop_duplicates(["run_id", "model", "rank"], keep="first")', self.source)
+        self.assertIn('drop_duplicates(["run_id", "model", "kind", "horizon_days", "rank"], keep="first")', self.source)
         self.assertNotIn('drop_duplicates(["prediction_date", "model", "rank"]', self.source)
 
     def test_file_is_synced_with_the_ledger(self):
@@ -315,3 +319,22 @@ class AttributionStockSelectorTests(unittest.TestCase):
 
     def test_buttons_are_easy_to_tap(self):
         self.assertIn("min-height:40px", self.page)
+
+
+class AttributionScopeTabTests(unittest.TestCase):
+    """기여도 탭을 예측별(다음 거래일 방향·1·5·20일 종가)로 나눠 본다(2026-09-28)."""
+
+    def setUp(self):
+        self.page = (ROOT / "docs" / "lab" / "index.html").read_text(encoding="utf-8")
+
+    def test_four_scope_tabs(self):
+        for scope, label in (("direction:1", "다음 거래일 방향"), ("price:1", "1일 종가"),
+                             ("price:5", "5일 종가"), ("price:20", "20일 종가")):
+            self.assertIn(f'data-scope="{scope}">{label}</button>', self.page)
+
+    def test_every_view_uses_the_selected_scope(self):
+        self.assertIn("var rows = scopedAttr();", self.page)
+        self.assertIn("summarizeCorrectAttribution(attrRows, ledgerRows, attrScope)", self.page)
+        body = self.page[self.page.index("function renderAttribution()"):]
+        body = body[:body.index("\n  }\n")]
+        self.assertNotIn("attrRows.forEach", body)

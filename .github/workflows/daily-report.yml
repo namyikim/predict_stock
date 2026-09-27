@@ -296,6 +296,8 @@ jobs:
       - name: 금·은 예측 보고서
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # 금 적정 가격(CPI·달러인덱스·10년물 회귀)의 미국 CPI. 없거나 막히면 BLS → 저장소 보관본 순으로 쓴다.
+          FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
         # 아침 본 실행(06:22)만 예측을 원장에 기록한다. 3시간 간격 회차는 시세·그림·채점만 새로 한다.
         run: python tools/build_metals_report.py --out runs/metals --publish ${{ github.event_name == 'schedule' && github.event.schedule != '22 21 * * 0-4' && '--no-record' || '' }}
 

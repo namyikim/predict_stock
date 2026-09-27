@@ -32,6 +32,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "tools"))
 import github_pages  # noqa: E402
+import gold_valuation  # noqa: E402
 from forecast_utils import (  # noqa: E402
     append_forecasts, atomic_csv, calibrate_price_forecast, daily_comparison, evaluate_forecasts,
     fit_direction_model, predict_direction_model, probability_loss, review_ledger, summarize_daily,
@@ -498,6 +499,10 @@ def render_asset(key, res, usdkrw):
 
     # 장기 가격 흐름 — 지금 가격이 긴 흐름의 어디쯤인지 먼저 보인다.
     parts.extend(render_long_term(key, res.get("history")))
+    # 금값 결정 요인과 평가(2026-09-27) — CPI·달러인덱스·10년물 금리 회귀식의 적정 가격과 괴리.
+    if res.get("valuation"):
+        out, fit, info = res["valuation"]
+        parts.extend(gold_valuation.render(out, fit, info, table, TD, TDR, TH, THR, note))
 
     # 다음 거래일 방향
     skill = wf["log_loss_diff_hi"] < 0
@@ -761,6 +766,25 @@ def main():
                     sha = github_pages.publish(f"{LEDGER_ROOT}/{key}/{name}", (storage / name).read_text(encoding="utf-8-sig"), tok,
                                                f"data: {key}/{name} ({run_id})", **guard)
                     print(f"  GitHub 저장: {LEDGER_ROOT}/{key}/{name} @ {sha}")
+
+        # 금값 결정 요인과 평가. 실패해도 보고서는 그대로 낸다(그 블록만 빠진다).
+        try:
+            frame, info = gold_valuation.load_inputs(args.out / "cache", fetch=not args.no_fetch)
+            if frame is not None and len(frame) >= 24:
+                out_v, fit = gold_valuation.evaluate(frame)
+                results["gold"]["valuation"] = (out_v, fit, info)
+                print(f"  금 적정 가격: {out_v.index[-1]} 금 ${out_v['gold'].iloc[-1]:,.0f} · 적정 ${out_v['fair'].iloc[-1]:,.0f}"
+                      f" · 괴리 {out_v['gap'].iloc[-1] * 100:+.1f}% · R² {fit['r2']:.3f} · CPI {info['cpi_source']}", flush=True)
+                # 새로 받은 CPI 는 보관본으로 남긴다(FRED·BLS 가 둘 다 막힌 날을 위해).
+                if tok and "보관본" not in info["cpi_source"]:
+                    cpi = info["cpi_raw"]            # 발표된 달만(보간·이월한 값은 올리지 않는다)
+                    text = pd.DataFrame({"month": cpi.index.to_timestamp().strftime("%Y-%m-%d"),
+                                         "value": cpi.round(3).to_numpy()}).to_csv(index=False, lineterminator="\n")
+                    github_pages.publish_history("macro_history/us_cpi.csv", text, tok, "macro: us_cpi (금 적정 가격)")
+            else:
+                print("  ⚠️ 금 적정 가격: " + str((info or {}).get("reason", "자료 부족")), flush=True)
+        except Exception as exc:
+            print(f"  ⚠️ 금 적정 가격 계산 실패(그 블록만 뺍니다): {type(exc).__name__}: {exc}", flush=True)
 
         inner, pred = render(results, usdkrw, today, quality)
         doc = page(inner, pred, today)

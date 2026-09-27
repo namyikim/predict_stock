@@ -173,8 +173,13 @@ def _nice_step(span):
     return next(m * magnitude for m in (1, 2, 2.5, 5, 10) if m * magnitude >= raw)
 
 
-def chart_svg(out, width=900, height=420):
-    left, right, top, bottom = 70, 62, 52, 44
+def chart_svg(out, width=900, height=420, *, title="금 가격과 적정 가격 괴리", price_label="금 가격(좌, 달러/온스)",
+              fair_label="적정 가격(좌, 회귀식)", money=None, gap_axis=None, axis_note="좌: 달러/온스 · 우: %",
+              price_color=None, price_col="gold", gap_label="적정 가격 대비 괴리(우, %)"):
+    """금값·적정 가격(좌)·괴리(우) 세 선. 주식 적정 주가(stock_valuation)도 같은 그림을 쓴다(인자로 이름·단위만 바꾼다)."""
+    money = money or (lambda v: f"${v:,.0f}")
+    gap_lo_hi = gap_axis or GAP_AXIS
+    left, right, top, bottom = 84, 62, 52, 44
     n = len(out)
     months = out.index
     first_year, last = months[0].year, months[-1]
@@ -184,14 +189,14 @@ def chart_svg(out, width=900, height=420):
     def x_of(period):
         return left + (width - left - right) * ((period - t0).n) / max(span_months - 1, 1)
 
-    high = float(max(out["gold"].max(), out["fair"].max()))
+    high = float(max(out[price_col].max(), out["fair"].max()))
     step = _nice_step(high)
     y_max = math.ceil(high * 1.05 / step) * step
 
     def y_left(v):
         return top + (height - top - bottom) * (1 - v / y_max)
 
-    g_lo, g_hi = GAP_AXIS
+    g_lo, g_hi = gap_lo_hi
 
     def y_right(g):
         g = min(max(g, g_lo), g_hi)
@@ -202,7 +207,7 @@ def chart_svg(out, width=900, height=420):
     while v <= y_max + 1e-9:
         grid += (f'<line x1="{left}" x2="{width - right}" y1="{y_left(v):.1f}" y2="{y_left(v):.1f}" stroke="#eee"/>'
                  f'<text x="{left - 8}" y="{y_left(v) + 4:.1f}" text-anchor="end" font-size="11" fill="#8a9199">'
-                 f'${v:,.0f}</text>')
+                 f'{money(v)}</text>')
         v += step
     right_ticks = ""
     for g in np.arange(g_lo, g_hi + 1e-9, 0.10):
@@ -223,28 +228,29 @@ def chart_svg(out, width=900, height=420):
     gap_points = poly(out["gap"].to_numpy(), y_right)
     zero_y = y_right(0)
     gap_area = f"{x_of(months[0]):.1f},{zero_y:.1f} {gap_points} {x_of(months[-1]):.1f},{zero_y:.1f}"
+    price_color = price_color or GOLD_COLOR
     lines = (f'<polygon points="{gap_area}" fill="{GAP_COLOR}" opacity="0.10"/>'
              f'<polyline points="{gap_points}" fill="none" stroke="{GAP_COLOR}" stroke-width="1.2" opacity="0.85"/>'
              f'<polyline points="{poly(out["fair"].to_numpy(), y_left)}" fill="none" stroke="{FAIR_COLOR}" '
              'stroke-width="1.8" stroke-dasharray="6,3"/>'
-             f'<polyline points="{poly(out["gold"].to_numpy(), y_left)}" fill="none" stroke="{GOLD_COLOR}" stroke-width="2.2"/>')
+             f'<polyline points="{poly(out[price_col].to_numpy(), y_left)}" fill="none" stroke="{price_color}" stroke-width="2.2"/>')
     end = out.iloc[-1]
     ex = x_of(months[-1])
-    marks = (f'<circle cx="{ex:.1f}" cy="{y_left(end["gold"]):.1f}" r="3.5" fill="{GOLD_COLOR}"/>'
+    marks = (f'<circle cx="{ex:.1f}" cy="{y_left(end[price_col]):.1f}" r="3.5" fill="{price_color}"/>'
              f'<circle cx="{ex:.1f}" cy="{y_left(end["fair"]):.1f}" r="3.5" fill="{FAIR_COLOR}"/>'
              f'<circle cx="{ex:.1f}" cy="{y_right(end["gap"]):.1f}" r="3" fill="{GAP_COLOR}"/>')
-    legend_items = [(GOLD_COLOR, "", "금 가격(좌, 달러/온스)"), (FAIR_COLOR, "6,3", "적정 가격(좌, 회귀식)"),
-                    (GAP_COLOR, "", "적정 가격 대비 괴리(우, %)")]
+    legend_items = [(price_color, "", price_label), (FAIR_COLOR, "6,3", fair_label),
+                    (GAP_COLOR, "", gap_label)]
     legend, lx = "", left
     for color, dash, label in legend_items:
         dash_attr = f' stroke-dasharray="{dash}"' if dash else ""
         legend += (f'<line x1="{lx}" x2="{lx + 22}" y1="36" y2="36" stroke="{color}" stroke-width="2.2"{dash_attr}/>'
                    f'<text x="{lx + 28}" y="40" font-size="11" fill="#3a4652">{html.escape(label)}</text>')
         lx += 28 + 11 * len(label) * 0.78 + 26
-    title = (f'<text x="{left}" y="20" font-size="13" font-weight="600" fill="#1a1a1a">금 가격과 적정 가격 괴리 '
+    title = (f'<text x="{left}" y="20" font-size="13" font-weight="600" fill="#1a1a1a">{html.escape(title)} '
              f'{months[0].year}.{months[0].month:02d}~{last.year}.{last.month:02d} (월평균)</text>'
              f'<text x="{width - right + 54}" y="20" text-anchor="end" font-size="11" fill="#8a9199">'
-             '좌: 달러/온스 · 우: %</text>')
+             f'{html.escape(axis_note)}</text>')
     return (f'<svg viewBox="0 0 {width} {height}" width="100%" xmlns="http://www.w3.org/2000/svg" '
             f'style="max-width:{width}px;font-family:-apple-system,\'Malgun Gothic\',sans-serif">'
             f'<rect width="{width}" height="{height}" fill="#fff"/>{title}{legend}{grid}{zero}{right_ticks}'

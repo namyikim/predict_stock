@@ -1058,6 +1058,8 @@ def render_fragment(result):
                          f'(상관 {ll["corr"]:+.2f}). 앞선다면 수출 지표로 주가를 <b>예측</b>하기는 어렵고, 사이클의 위치를 '
                          '가늠하는 용도로 읽어야 합니다.</div>')
 
+    import stock_valuation
+    parts.extend(stock_valuation.render(r.get("stock_value"), r.get("name", ""), table, TD, TDR, TH, THR))
     parts.extend(render_cli_outlook(r.get("cli_outlook")))
     parts.extend(render_g20_exports_outlook(r.get("g20_outlook")))
 
@@ -1293,6 +1295,18 @@ def analyse(target, out_dir, fetch=True):
     except Exception as exc:
         g20_outlook = None
         print("  ⚠️ G20·수출 증가율 전망을 내지 못했습니다(무시):", exc, flush=True)
+    # 주가 결정 요인과 평가(2026-09-28): 반도체 수출액·원/달러 회귀의 적정 주가와 괴리. 실패하면 뺀다.
+    try:
+        import stock_valuation
+        stock_value = stock_valuation.analyse(spec["ticker"], macro, cache, fetch=fetch)
+        if stock_value:
+            sv = stock_value["out"].iloc[-1]
+            print(f"  적정 주가: {stock_value['out'].index[-1]} 주가 {sv['price']:,.0f} · 적정 {sv['fair']:,.0f} · "
+                  f"괴리 {sv['gap'] * 100:+.1f}% · R² {stock_value['fit']['r2']:.3f} · 뒤 절반 R² {stock_value['fit']['oos_r2']:+.2f}",
+                  flush=True)
+    except Exception as exc:
+        stock_value = None
+        print("  ⚠️ 적정 주가를 내지 못했습니다(무시):", exc, flush=True)
 
     last = f.index[-1]
     current = {}
@@ -1320,6 +1334,7 @@ def analyse(target, out_dir, fetch=True):
         "cli_lead_lag": lead_lag(f, a="cli_change_3m", b="macro_semiconductor_yoy") if cli_active else None,
         "cli_outlook": cli_outlook,
         "g20_outlook": g20_outlook,
+        "stock_value": stock_value,
         "chart_first": f.index[0].date().isoformat(),
         "generated_at": datetime.now(KST).strftime("%Y-%m-%d %H:%M KST"),
         "macro_snapshot_hash": macro_info.get("snapshot_hash", ""),
@@ -1351,7 +1366,12 @@ def main():
     result["valuation"] = load_valuation(TARGETS[args.target]["ticker"], out_dir / "cache",
                                          fetch=not args.no_fetch)
     fragment = render_fragment(result)
-    (out_dir / "longterm.json").write_text(json.dumps(result, ensure_ascii=False, indent=2, default=str), encoding="utf-8")
+    saved = dict(result)
+    if result.get("stock_value"):        # 월별 틀 대신 식·적합도·마지막 달만 남긴다
+        sv_out = result["stock_value"]["out"]
+        saved["stock_value"] = {**result["stock_value"]["fit"], "month": str(sv_out.index[-1]),
+                                **{k: float(sv_out[k].iloc[-1]) for k in ("price", "fair", "gap", "exp12", "krw")}}
+    (out_dir / "longterm.json").write_text(json.dumps(saved, ensure_ascii=False, indent=2, default=str), encoding="utf-8")
     (out_dir / "longterm.html").write_text(fragment, encoding="utf-8")
     # 현재 재무정보를 과거 백테스트에 주입하지 않고 당시 자료와 모델 결과를 함께 보관한다.
     valuation_record = {

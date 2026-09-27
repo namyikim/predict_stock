@@ -182,7 +182,7 @@ function element(id) {{
   }};
   return elements[id];
 }}
-global.document = {{ getElementById: element }};
+global.document = {{ getElementById: element, querySelectorAll: function () {{ return []; }} }};
 let aiFetches = 0;
 global.fetch = function (url) {{
   if (String(url).includes("ai_daily_forecast/index.json")) aiFetches += 1;

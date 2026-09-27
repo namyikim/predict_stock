@@ -972,8 +972,28 @@
     "corr": 0.4421018401072354,
     "exports_fresh": false
   },
+  "stock_value": {
+    "coef": [
+      -28.21095529904049,
+      1.5733247177589285,
+      -0.0220334509167997
+    ],
+    "r2": 0.8091934921789132,
+    "oos_r2": -1.4913881329389227,
+    "n": 248,
+    "first": "2006-01",
+    "last": "2026-08",
+    "split": "2016-05",
+    "stable": false,
+    "month": "2026-08",
+    "price": 1599650.0,
+    "fair": 695488.6032994575,
+    "gap": 1.3000376892031351,
+    "exp12": 350483385056.0,
+    "krw": 1405.6209542410713
+  },
   "chart_first": "2000-01-31",
-  "generated_at": "2026-09-28 00:36 KST",
+  "generated_at": "2026-09-28 00:43 KST",
   "macro_snapshot_hash": "80bb3714ee750421109f",
   "macro_sources": {
     "leading_cycle": "KOSIS_API",
@@ -993,7 +1013,7 @@
       "basis": "partial_month_scenario"
     },
     "snapshot_hash": "360c84a6a8a06b43fe28",
-    "generated_at": "2026-09-28 00:35 KST",
+    "generated_at": "2026-09-28 00:42 KST",
     "flash_info": {
       "enabled": true,
       "source": "customs_flash_api",

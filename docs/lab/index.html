@@ -33,6 +33,12 @@
   .tab{border:0;background:none;padding:8px 14px;font-size:13px;color:#6b7178;cursor:pointer;
        border-bottom:2px solid transparent;font-family:inherit}
   .tab.active{color:#1a1a1a;font-weight:600;border-bottom-color:#1a5490}
+  /* 종목 선택 — 드롭다운 대신 한 번에 누르는 버튼 탭(2026-09-28 요청). */
+  .stock-tabs{display:inline-flex;border:1px solid #cedff0;border-radius:8px;overflow:hidden;margin-top:3px}
+  .stock-tabs button{border:0;background:#fff;padding:9px 18px;font-size:14px;color:#3a4652;cursor:pointer;
+    min-height:40px;font-family:inherit}
+  .stock-tabs button+button{border-left:1px solid #cedff0}
+  .stock-tabs button.on{background:#1a5490;color:#fff;font-weight:700}
   .bar{display:inline-block;height:9px;border-radius:2px;vertical-align:middle}
   details{margin-top:10px}
   summary{font-size:12px;color:#6b7178;cursor:pointer}
@@ -62,12 +68,14 @@ body{zoom:1.15}
 
   <div id="panel-sim">
   <div class="controls">
-    <label class="field">종목
-      <select id="target">
+    <div class="field">종목
+      <div class="stock-tabs" role="group" aria-label="종목"><button type="button" data-stock="samsung">삼성전자</button><button type="button" data-stock="sk_hynix">SK하이닉스</button></div>
+      <!-- 값은 이 숨은 상자에 둔다. 기존 코드가 모두 $("target").value 를 읽는다. -->
+      <select id="target" hidden>
         <option value="samsung">삼성전자</option>
         <option value="sk_hynix">SK하이닉스</option>
       </select>
-    </label>
+    </div>
     <label class="field">모델
       <select id="model"></select>
     </label>
@@ -112,14 +120,10 @@ body{zoom:1.15}
       지금은 기록만 보고 결론을 내지 마세요.
     </div>
     <div class="controls">
-      <!-- 종목 선택은 '가상 매매' 탭 안에 있어 이 탭에서는 숨겨졌다(2026-09-28 지적). 같은 값을 쓰는 상자를
-           여기에도 두고 두 상자를 서로 맞춘다. -->
-      <label class="field">종목
-        <select id="attr-target">
-          <option value="samsung">삼성전자</option>
-          <option value="sk_hynix">SK하이닉스</option>
-        </select>
-      </label>
+      <!-- 종목 선택은 '가상 매매' 탭 안에 있어 이 탭에서는 숨겨졌다(2026-09-28). 같은 버튼 탭을 여기에도 둔다. -->
+      <div class="field">종목
+        <div class="stock-tabs" role="group" aria-label="종목"><button type="button" data-stock="samsung">삼성전자</button><button type="button" data-stock="sk_hynix">SK하이닉스</button></div>
+      </div>
       <label class="field">보기
         <select id="attr-view">
           <option value="correct" selected>맞힌 예측 누적 요약</option>
@@ -380,16 +384,28 @@ body{zoom:1.15}
   ["model", "rule", "capital", "fee", "tax", "slip"].forEach(function (id) {
     $(id).addEventListener("change", run);
   });
+  // 종목 버튼 탭. 두 탭(가상 매매·기여도)의 버튼이 모두 숨은 #target 하나를 바꾸고, 그 값에 맞춰 함께 칠해진다.
+  function paintStockTabs() {
+    var current = $("target").value;
+    Array.prototype.forEach.call(document.querySelectorAll("[data-stock]"), function (button) {
+      var on = button.getAttribute("data-stock") === current;
+      button.className = on ? "on" : "";
+      button.setAttribute("aria-pressed", on ? "true" : "false");
+    });
+  }
+  Array.prototype.forEach.call(document.querySelectorAll("[data-stock]"), function (button) {
+    button.addEventListener("click", function () {
+      var stock = button.getAttribute("data-stock");
+      if ($("target").value === stock) return;
+      $("target").value = stock;
+      $("target").dispatchEvent(new Event("change"));
+    });
+  });
   $("target").addEventListener("change", function () {
-    $("attr-target").value = $("target").value;
+    paintStockTabs();
     load(); loadAttribution();
   });
-  // 기여도 탭의 종목 상자: 바꾸면 위 상자에 옮겨 같은 경로로 다시 읽는다.
-  $("attr-target").value = $("target").value;
-  $("attr-target").addEventListener("change", function () {
-    $("target").value = $("attr-target").value;
-    $("target").dispatchEvent(new Event("change"));
-  });
+  paintStockTabs();
   load();
 
   // ---- 무엇이 예측을 밀었나 ------------------------------------------------

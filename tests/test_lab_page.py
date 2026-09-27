@@ -290,17 +290,28 @@ class AttributionStockLabelTests(unittest.TestCase):
 
 
 class AttributionStockSelectorTests(unittest.TestCase):
-    """기여도 탭에서 종목을 고를 수 있어야 한다(2026-09-28: 종목 상자가 '가상 매매' 탭 안에만 있어 숨겨졌다)."""
+    """종목은 버튼 탭으로 고른다(2026-09-28). 가상 매매·기여도 두 탭 모두에 있고, 둘 다 숨은 #target 하나를 바꾼다.
+
+    처음엔 종목 드롭다운이 '가상 매매' 탭 안에만 있어 기여도 탭에서는 고를 수 없었다.
+    """
 
     def setUp(self):
         self.page = (ROOT / "docs" / "lab" / "index.html").read_text(encoding="utf-8")
 
-    def test_attribution_panel_has_its_own_selector(self):
-        panel = self.page[self.page.index('<div id="panel-attr"'):self.page.index('<div id="panel-ai"')]
-        self.assertIn('<select id="attr-target">', panel)
-        self.assertIn('<option value="sk_hynix">SK하이닉스</option>', panel)
+    def panel(self, name, until):
+        return self.page[self.page.index(f'<div id="panel-{name}"'):self.page.index(until)]
 
-    def test_the_two_selectors_stay_in_sync(self):
-        self.assertIn('$("attr-target").value = $("target").value;', self.page)
-        self.assertIn('$("target").value = $("attr-target").value;', self.page)
+    def test_both_panels_have_stock_button_tabs(self):
+        for panel in (self.panel("sim", '<div id="panel-attr"'), self.panel("attr", '<div id="panel-ai"')):
+            self.assertIn('class="stock-tabs"', panel)
+            self.assertIn('data-stock="samsung">삼성전자</button>', panel)
+            self.assertIn('data-stock="sk_hynix">SK하이닉스</button>', panel)
+
+    def test_hidden_select_keeps_the_value_and_buttons_follow_it(self):
+        self.assertIn('<select id="target" hidden>', self.page)
+        self.assertIn("function paintStockTabs()", self.page)
         self.assertIn('$("target").dispatchEvent(new Event("change"));', self.page)
+        self.assertNotIn("attr-target", self.page)
+
+    def test_buttons_are_easy_to_tap(self):
+        self.assertIn("min-height:40px", self.page)

@@ -301,6 +301,14 @@ jobs:
         # 아침 본 실행(06:22)만 예측을 원장에 기록한다. 3시간 간격 회차는 시세·그림·채점만 새로 한다.
         run: python tools/build_metals_report.py --out runs/metals --publish ${{ github.event_name == 'schedule' && github.event.schedule != '22 21 * * 0-4' && '--no-record' || '' }}
 
+      # 한국 정부 자료(KOSIS·관세청)의 보관본이 발표 일정보다 늦었는지 본다. 늦었으면 메인 목록·종목 보고서에
+      # 'Colab 업데이트가 필요합니다' 공지가 뜬다(docs/colab_status.json, 2026-09-28). 판정이 바뀐 날만 커밋된다.
+      - name: Colab 갱신 필요 여부
+        if: always()
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python tools/colab_freshness.py --publish
+
       - name: Pages 재빌드 요청
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

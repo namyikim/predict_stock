@@ -460,6 +460,45 @@ def renumber_fragment(html_text):
     return re.sub(r"<h3\b[^>]*>.*?</h3>", fix, html_text, flags=re.S)
 
 
+def colab_notice_html(prefix, show_ok=False):
+    """Colab(한국에서 실행)으로 갱신할 자료가 늦으면 띄우는 공지(2026-09-28). 관리자 페이지(docs/admin)에만 둔다.
+
+    tools/colab_freshness.py 가 발표 일정으로 판정해 docs/colab_status.json 에 남긴다. 페이지는 그 파일을 읽어
+    needed 일 때 공지를 보인다 — 페이지를 다시 만들지 않아도 공지가 켜지고 꺼진다. show_ok 면 필요 없을 때도
+    '정상'과 자료별 점검표를 보인다. 파일을 못 읽으면 아무것도 보이지 않는다. prefix: docs/ 까지의 상대 경로.
+    """
+    if show_ok:
+        return ('<div id="colab-notice" style="margin:0 0 18px;padding:12px 16px;border-radius:6px;font-size:13px;'
+                'line-height:1.6;background:#f5f6f8;border:1px solid #e1e4e8;color:#4a4f55">Colab 갱신 점검을 불러오는 중…</div>'
+                '<script>(function(){var el=document.getElementById("colab-notice");if(!el||!window.fetch)return;'
+                f'fetch("{prefix}colab_status.json",{{cache:"no-store"}}).then(function(r){{return r.ok?r.json():null;}})'
+                '.then(function(s){if(!s){el.textContent="Colab 갱신 점검 결과(colab_status.json)를 읽지 못했습니다.";return;}'
+                'var esc=function(t){return String(t).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",\'"\':"&quot;"}[c];});};'
+                'var rows=(s.checked||[]).map(function(i){return "<tr><td>"+(i.late?"⚠️ 늦음":"✅ 정상")+"</td><td>"+esc(i.label)+'
+                '"</td><td>"+esc(i.have)+"</td><td>"+esc(i.expected)+"</td></tr>";}).join("");'
+                'var head=s.needed?"<b>Colab 업데이트가 필요합니다.</b> 한국 정부 자료가 자동 실행(해외 서버)에서 막혀 발표 일정보다 늦었습니다. "'
+                '+esc(s.how)+" <a href=\\""+esc(s.colab_url)+"\\" style=\\"color:#1a5490\\">Colab 에서 노트북 열기</a>"'
+                ':"<b>Colab 업데이트 필요 없음.</b> 한국 정부 자료 보관본이 발표 일정에 맞게 들어와 있습니다.";'
+                'el.style.background=s.needed?"#fff4e5":"#eef7ee";el.style.borderColor=s.needed?"#f0c58a":"#b9ddb9";'
+                'el.style.color=s.needed?"#7a4b00":"#1e5b2a";'
+                'el.innerHTML=head+" · 점검 "+esc(s.as_of)+"<table style=\\"margin-top:8px;border-collapse:collapse;font-size:13px\\">'
+                '<tr><th style=\\"text-align:left;padding-right:12px\\">상태</th><th style=\\"text-align:left;padding-right:12px\\">자료</th>'
+                '<th style=\\"text-align:left;padding-right:12px\\">보관본</th><th style=\\"text-align:left\\">있어야 할 것</th></tr>"+rows+"</table>";'
+                '}).catch(function(){el.textContent="Colab 갱신 점검 결과를 읽지 못했습니다.";});})();</script>')
+    return ('<div id="colab-notice" hidden style="max-width:980px;margin:0 auto 18px;padding:12px 16px;'
+            'background:#fff4e5;border:1px solid #f0c58a;border-radius:6px;font-family:-apple-system,\'Malgun Gothic\','
+            'sans-serif;font-size:13px;line-height:1.6;color:#7a4b00"></div>'
+            '<script>(function(){var el=document.getElementById("colab-notice");if(!el||!window.fetch)return;'
+            f'fetch("{prefix}colab_status.json",{{cache:"no-store"}}).then(function(r){{return r.ok?r.json():null;}})'
+            '.then(function(s){if(!s||!s.needed||!s.late||!s.late.length)return;'
+            'var esc=function(t){return String(t).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",\'"\':"&quot;"}[c];});};'
+            'var items=s.late.map(function(i){return "<li>"+esc(i.label)+" — 보관본 "+esc(i.have)+", 있어야 할 것 "+esc(i.expected)+"</li>";}).join("");'
+            'el.innerHTML="<b>Colab 업데이트가 필요합니다.</b> 한국 정부 자료가 자동 실행(해외 서버)에서 막혀 아래 자료가 '
+            '발표 일정보다 늦었습니다.<ul style=\\"margin:6px 0 6px 18px;padding:0\\">"+items+"</ul>"+esc(s.how)+'
+            '" <a href=\\""+esc(s.colab_url)+"\\" style=\\"color:#1a5490\\">Colab 에서 노트북 열기</a> · 확인 "+esc(s.as_of);'
+            'el.hidden=false;}).catch(function(){});})();</script>')
+
+
 def event_notice_html(flags):
     flags = list(flags or [])
     if not flags:

@@ -2385,6 +2385,111 @@ def price_position(close, windows=(20, 60, 120), lookahead=20, band=0.10, min_sa
     return out
 
 
+def price_position_svg(close, pos, unit="원", width=900, height=392):
+    """'지금 가격은 어디쯤인가'를 한 그림으로(2026-09-28 요청: '단기 위치 62%'만으로는 이해하기 어렵다).
+
+    위: 최근 120거래일 종가와 60거래일(석 달) 최저~최고 범위(음영), 60일 평균(점선), 지금 위치(%).
+    가운데: 한 달(20일)·석 달(60일)·반년(120일) 범위 막대마다 지금이 어디쯤인지.
+    아래: 과거에 60일 범위의 같은 자리였던 날 한 달 뒤 오른 비율 vs 평소. 표본이 모자라면 그렇게 적는다.
+    """
+    from html import escape
+    prices = pd.Series(close).astype(float).dropna()
+    if not pos or len(prices) < 130:
+        return ""
+    recent = prices.iloc[-120:]
+    left, right = 78, 150
+    top, chart_h = 44, 150
+    lo_all, hi_all = float(recent.min()), float(recent.max())
+    pad = (hi_all - lo_all) * 0.08 or hi_all * 0.02
+    y_lo, y_hi = lo_all - pad, hi_all + pad
+    n = len(recent)
+
+    def money(v):
+        return f"{v:,.0f}{unit}" if unit == "원" else f"{unit}{v:,.2f}"
+
+    def x(i):
+        return left + (width - left - right) * i / (n - 1)
+
+    def y(v):
+        return top + chart_h * (y_hi - v) / (y_hi - y_lo)
+
+    r60 = pos["ranges"][60]
+    start60 = n - 60
+    band = (f'<rect x="{x(start60):.1f}" y="{y(r60["high"]):.1f}" width="{x(n - 1) - x(start60):.1f}" '
+            f'height="{y(r60["low"]) - y(r60["high"]):.1f}" fill="#1a5490" opacity="0.07"/>'
+            f'<line x1="{x(start60):.1f}" x2="{x(n - 1):.1f}" y1="{y(r60["high"]):.1f}" y2="{y(r60["high"]):.1f}" '
+            'stroke="#1a5490" stroke-dasharray="3,3" opacity="0.6"/>'
+            f'<line x1="{x(start60):.1f}" x2="{x(n - 1):.1f}" y1="{y(r60["low"]):.1f}" y2="{y(r60["low"]):.1f}" '
+            'stroke="#1a5490" stroke-dasharray="3,3" opacity="0.6"/>'
+            f'<text x="{x(n - 1) + 8:.1f}" y="{y(r60["high"]) + 4:.1f}" font-size="11" fill="#1a5490">석 달 최고 {money(r60["high"])}</text>'
+            f'<text x="{x(n - 1) + 8:.1f}" y="{y(r60["low"]) + 4:.1f}" font-size="11" fill="#1a5490">석 달 최저 {money(r60["low"])}</text>'
+            f'<text x="{x(start60) + 4:.1f}" y="{top - 6}" font-size="10" fill="#1a5490">← 최근 60거래일(석 달) 범위</text>')
+    ma = prices.rolling(60).mean().iloc[-120:].to_numpy()
+    ma_line = " ".join(f"{x(i):.1f},{y(v):.1f}" for i, v in enumerate(ma) if np.isfinite(v))
+    line = " ".join(f"{x(i):.1f},{y(v):.1f}" for i, v in enumerate(recent.to_numpy()))
+    last = float(recent.iloc[-1])
+    p60 = pos["position_60"]
+    months = ""
+    seen = set()
+    for i, d in enumerate(recent.index):
+        key = (d.year, d.month)
+        if key not in seen and i > 3:
+            months += (f'<text x="{x(i):.1f}" y="{top + chart_h + 14}" text-anchor="middle" font-size="10" '
+                       f'fill="#8a9199">{d.month}월</text>')
+        seen.add(key)
+    y_ticks = ""
+    for t in np.linspace(lo_all, hi_all, 3):
+        y_ticks += (f'<text x="{left - 8}" y="{y(t) + 4:.1f}" text-anchor="end" font-size="10" fill="#8a9199">'
+                    f'{money(t)}</text>')
+    price_part = (band + f'<polyline points="{ma_line}" fill="none" stroke="#8a9199" stroke-width="1.2" stroke-dasharray="5,3"/>'
+                  f'<polyline points="{line}" fill="none" stroke="#1a1a1a" stroke-width="1.8"/>'
+                  f'<circle cx="{x(n - 1):.1f}" cy="{y(last):.1f}" r="4.5" fill="#c0392b"/>'
+                  f'<text x="{x(n - 1) + 8:.1f}" y="{y(last) - 2:.1f}" font-size="12" font-weight="700" fill="#c0392b">'
+                  f'지금 {money(last)}</text>'
+                  f'<text x="{x(n - 1) + 8:.1f}" y="{y(last) + 12:.1f}" font-size="11" font-weight="700" fill="#c0392b">'
+                  f'석 달 범위 {p60:.0%} 지점</text>' + months + y_ticks)
+
+    # 가운데: 범위 막대 셋
+    gauges = ""
+    gy = top + chart_h + 40
+    bar_x0, bar_x1 = left + 150, width - right - 40
+    for label, w in (("한 달(20일)", 20), ("석 달(60일)", 60), ("반년(120일)", 120)):
+        r = pos["ranges"][w]
+        p = min(max(r["position"], 0.0), 1.0)
+        mx = bar_x0 + (bar_x1 - bar_x0) * p
+        bold = ' font-weight="700"' if w == 60 else ""
+        gauges += (f'<text x="{left}" y="{gy + 5}" font-size="12" fill="#3a4652"{bold}>{label}</text>'
+                   f'<rect x="{bar_x0}" y="{gy - 5}" width="{bar_x1 - bar_x0}" height="10" rx="5" fill="#eef1f4"/>'
+                   f'<rect x="{bar_x0}" y="{gy - 5}" width="{mx - bar_x0:.1f}" height="10" rx="5" fill="#1a5490" opacity="0.25"/>'
+                   f'<circle cx="{mx:.1f}" cy="{gy}" r="6" fill="#c0392b" stroke="#fff" stroke-width="1.5"/>'
+                   f'<text x="{bar_x0 - 6}" y="{gy + 4}" text-anchor="end" font-size="10" fill="#8a9199">최저</text>'
+                   f'<text x="{bar_x1 + 6}" y="{gy + 4}" font-size="10" fill="#8a9199">최고</text>'
+                   f'<text x="{bar_x1 + 36}" y="{gy + 5}" font-size="12" font-weight="700" fill="#c0392b">{r["position"]:.0%}</text>')
+        gy += 26
+
+    # 아래: 과거 같은 자리 → 한 달 뒤 오른 비율
+    sim, base = pos.get("similar"), pos.get("baseline")
+    cy = gy + 16
+    if sim and base:
+        def share_bar(yy, label, share, color):
+            return (f'<text x="{left}" y="{yy + 5}" font-size="12" fill="#3a4652">{escape(label)}</text>'
+                    f'<rect x="{bar_x0}" y="{yy - 6}" width="{(bar_x1 - bar_x0) * share:.1f}" height="12" fill="{color}"/>'
+                    f'<text x="{bar_x0 + (bar_x1 - bar_x0) * share + 6:.1f}" y="{yy + 5}" font-size="12" '
+                    f'font-weight="700" fill="{color}">{share:.0%}</text>')
+        compare = (f'<text x="{left}" y="{cy - 12}" font-size="11" fill="#6b7178">한 달(20거래일) 뒤 오른 비율</text>'
+                   + share_bar(cy + 6, f"같은 자리({sim['n']:,}번)", sim["up_share"], "#c0392b")
+                   + share_bar(cy + 26, f"평소({base['n']:,}일)", base["up_share"], "#8a9199"))
+    else:
+        compare = (f'<text x="{left}" y="{cy}" font-size="12" fill="#6b7178">과거에 같은 자리였던 날이 '
+                   f'{pos.get("similar_n", 0)}번뿐이라 한 달 뒤 비교는 하지 않습니다.</text>')
+    title = (f'<text x="{left}" y="18" font-size="13" font-weight="600" fill="#1a1a1a">지금 가격은 최근 범위의 어디쯤인가</text>'
+             f'<text x="{width - 10}" y="18" text-anchor="end" font-size="11" fill="#8a9199">'
+             '검은 선: 종가 · 점선: 60일 평균 · 빨간 점: 지금</text>')
+    return (f'<svg viewBox="0 0 {width} {height}" width="100%" xmlns="http://www.w3.org/2000/svg" '
+            f'style="max-width:{width}px;font-family:-apple-system,\'Malgun Gothic\',sans-serif">'
+            f'<rect width="{width}" height="{height}" fill="#fff"/>{title}{price_part}{gauges}{compare}</svg>')
+
+
 def price_position_text(pos, name):
     """일반인용 설명. 숫자를 일상어로 풀되, 의견은 만들지 않는다."""
     if not pos:

@@ -62,6 +62,40 @@ def calculate(info, price, price_date, observed_on, ticker, assumptions=None):
     return r
 
 
+def statement_basis(stock):
+    """분기 재무제표로 최근 12개월 EPS·BPS·분기말을 만든다(2026-09-28).
+
+    Yahoo 요약(get_info)이 한국 종목의 trailingEps·bookValue·lastFiscalQuarter 를 더 이상 주지 않아 '계산 보류'만
+    나왔다. 분기 손익계산서·재무상태표는 있다. 주식 수는 '보통주 수'가 아니라 **Yahoo 가 EPS 에 쓴 주식 수**
+    (분기 순이익 ÷ 기본 EPS 의 중앙값)를 쓴다 — 삼성전자는 우선주가 있어 보통주 수로 나누면 EPS 가 13% 부풀었다.
+    최근 네 분기 순이익이 모두 있어야 한다. 없으면 None.
+    """
+    inc, bal = stock.quarterly_income_stmt, stock.quarterly_balance_sheet
+    if inc is None or bal is None or inc.empty or bal.empty:
+        return None
+    ni_row = next((r for r in ('Net Income Common Stockholders', 'Net Income') if r in inc.index), None)
+    eq_row = next((r for r in ('Common Stock Equity', 'Stockholders Equity') if r in bal.index), None)
+    if ni_row is None or eq_row is None or 'Basic EPS' not in inc.index:
+        return None
+    income = inc.loc[ni_row].sort_index(ascending=False)
+    last4 = income.iloc[:4]
+    if len(last4) < 4 or last4.isna().any():
+        return None
+    eps = inc.loc['Basic EPS'].reindex(income.index)
+    implied = (income / eps).replace([float('inf'), float('-inf')], float('nan')).dropna()
+    implied = implied[implied > 0]
+    if implied.empty:
+        return None
+    shares = float(implied.median())
+    equity = bal.loc[eq_row].sort_index(ascending=False).dropna()
+    if equity.empty:
+        return None
+    period = income.index[0]
+    return {'trailingEps': float(last4.sum()) / shares, 'bookValue': float(equity.iloc[0]) / shares,
+            'lastFiscalQuarter': float(period.timestamp()), 'shares_used': shares,
+            'basis_note': f'분기 재무제표 최근 4분기 순이익({ni_row}) ÷ EPS 기준 주식 수 {shares:,.0f}주'}
+
+
 def load(ticker, cache_dir, fetch=True, ticker_factory=None, now=None):
     """실패 시 오류 유형만 기록. 오래된 자료를 최신으로 다시 표시하지 않는다."""
     now = now or datetime.now(KST)
@@ -79,8 +113,20 @@ def load(ticker, cache_dir, fetch=True, ticker_factory=None, now=None):
             completed = bars[[d.date().isoformat() < today for d in bars.index]]
             completed = completed[completed['Close'].notna() & (completed['Close'] > 0)]
             last = completed.iloc[-1]
-            raw = {'info': {k: info.get(k) for k in ('currency', 'financialCurrency',
-                    'trailingEps', 'bookValue', 'lastFiscalQuarter')},
+            fields = {k: info.get(k) for k in ('currency', 'financialCurrency',
+                      'trailingEps', 'bookValue', 'lastFiscalQuarter')}
+            # 요약값이 비면(2026-09 Yahoo 변경) 분기 재무제표로 직접 계산한다. 분기말 이름만 바뀐 경우도 받는다.
+            if fields['lastFiscalQuarter'] is None and info.get('mostRecentQuarter'):
+                fields['lastFiscalQuarter'] = info.get('mostRecentQuarter')
+            if number(fields['trailingEps']) is None or number(fields['bookValue']) is None:
+                try:
+                    basis = statement_basis(stock)
+                except Exception:
+                    basis = None
+                if basis:
+                    fields.update({k: basis[k] for k in ('trailingEps', 'bookValue', 'lastFiscalQuarter')})
+                    fields['basis_note'] = basis['basis_note']
+            raw = {'info': fields,
                    'price': float(last['Close']), 'price_date': completed.index[-1].date().isoformat(),
                    'observed_on': today, 'ticker': ticker}
             path.parent.mkdir(parents=True, exist_ok=True)
@@ -91,6 +137,8 @@ def load(ticker, cache_dir, fetch=True, ticker_factory=None, now=None):
                 datetime.fromisoformat(raw['observed_on']).date()).days <= 10:
             return unavailable('재무자료 보관본이 없거나 오래되어 계산을 보류합니다.')
         result = calculate(raw['info'], raw['price'], raw['price_date'], today, ticker)
+        if raw['info'].get('basis_note'):
+            result['basis_note'] = raw['info']['basis_note']
         result['retrieved_on'] = raw['observed_on']
         result['cached'] = not fetch
         return result
@@ -129,6 +177,8 @@ def render(r):
             '<p>PER = 주가 ÷ 최근 12개월 EPS, PBR = 주가 ÷ BPS. 영업이익을 순이익으로 대체하지 않습니다. '
             '반도체 경기와 자사주·주식수 변동에 따라 해석이 달라집니다. 두 범위를 평균내거나 기존 모델 예측에 섞지 않습니다.</p>',
             '<p><b>예측 성능 미검증.</b> 기존 3·6·12개월 모델의 백테스트 성적은 이 표의 성적이 아닙니다. '
-            'Yahoo 집계 EPS·BPS의 상세 산정 기간과 주식수 기준은 공시 원문으로 별도 확인해야 합니다.</p>',
+            'Yahoo 집계 EPS·BPS의 상세 산정 기간과 주식수 기준은 공시 원문으로 별도 확인해야 합니다.'
+            + (f' EPS·BPS 계산: {e(r["basis_note"])}(Yahoo 요약값이 비어 있어 분기 재무제표로 직접 계산).'
+               if r.get('basis_note') else '') + '</p>',
             f'<p><a href="{e(r["source"], quote=True)}">출처: Yahoo Finance (집계자료)</a></p></section>']
     return ''.join(out)

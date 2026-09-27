@@ -1,0 +1,58 @@
+{
+ "as_of": "2026-09-28",
+ "needed": false,
+ "late": [],
+ "checked": [
+  {
+   "file": "semiconductor_exports.csv",
+   "label": "반도체 수출액(KOSIS)",
+   "have": "2026-08",
+   "expected": "2026-08",
+   "late": false
+  },
+  {
+   "file": "customs_exports.csv",
+   "label": "반도체 수출액(관세청 품목별)",
+   "have": "2026-08",
+   "expected": "2026-08",
+   "late": false
+  },
+  {
+   "file": "customs_quantity.csv",
+   "label": "반도체 수출 단가·물량(관세청)",
+   "have": "2026-08",
+   "expected": "2026-08",
+   "late": false
+  },
+  {
+   "file": "leading_cycle.csv",
+   "label": "경기선행지수 순환변동치(KOSIS)",
+   "have": "2026-07",
+   "expected": "2026-07",
+   "late": false
+  },
+  {
+   "file": "customs_flash.csv",
+   "label": "수출 속보 1~10일·1~20일(관세청)",
+   "have": "2026-09 1~20일",
+   "expected": "2026-09 1~20일",
+   "late": false
+  },
+  {
+   "file": "investor_flows_005930.csv",
+   "label": "삼성전자 외국인·기관 수급",
+   "have": "2026-09-23",
+   "expected": "2026-09-18 이후",
+   "late": false
+  },
+  {
+   "file": "investor_flows_000660.csv",
+   "label": "SK하이닉스 외국인·기관 수급",
+   "have": "2026-09-23",
+   "expected": "2026-09-18 이후",
+   "late": false
+  }
+ ],
+ "colab_url": "https://colab.research.google.com/github/namyikim/predict_stock/blob/main/samsung_direction_model_colab.ipynb",
+ "how": "한국에서 Colab 으로 노트북을 열고 '런타임 → 모두 실행'을 한 번 누르세요. Colab 보안 비밀에 GITHUB_TOKEN(보관본 저장용)과 KOSIS_API_KEY·DATA_GO_KR_KEY 가 있어야 합니다. 예측 원장에는 기록하지 않고 참고자료 보관본만 새로 채웁니다."
+}

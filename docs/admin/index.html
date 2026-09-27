@@ -122,7 +122,10 @@ a{color:var(--accent)}
 </style></head><body><div class="wrap">
 
 <div class="eyebrow">PREDICT STOCK · ANALYTICS</div>
-<h1>방문 통계</h1>
+<h1>관리자</h1>
+<h2 style="margin-top:6px">Colab 갱신 점검</h2>
+<div id="colab-notice" style="margin:0 0 18px;padding:12px 16px;border-radius:6px;font-size:13px;line-height:1.6;background:#f5f6f8;border:1px solid #e1e4e8;color:#4a4f55">Colab 갱신 점검을 불러오는 중…</div><script>(function(){var el=document.getElementById("colab-notice");if(!el||!window.fetch)return;fetch("../colab_status.json",{cache:"no-store"}).then(function(r){return r.ok?r.json():null;}).then(function(s){if(!s){el.textContent="Colab 갱신 점검 결과(colab_status.json)를 읽지 못했습니다.";return;}var esc=function(t){return String(t).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];});};var rows=(s.checked||[]).map(function(i){return "<tr><td>"+(i.late?"⚠️ 늦음":"✅ 정상")+"</td><td>"+esc(i.label)+"</td><td>"+esc(i.have)+"</td><td>"+esc(i.expected)+"</td></tr>";}).join("");var head=s.needed?"<b>Colab 업데이트가 필요합니다.</b> 한국 정부 자료가 자동 실행(해외 서버)에서 막혀 발표 일정보다 늦었습니다. "+esc(s.how)+" <a href=\""+esc(s.colab_url)+"\" style=\"color:#1a5490\">Colab 에서 노트북 열기</a>":"<b>Colab 업데이트 필요 없음.</b> 한국 정부 자료 보관본이 발표 일정에 맞게 들어와 있습니다.";el.style.background=s.needed?"#fff4e5":"#eef7ee";el.style.borderColor=s.needed?"#f0c58a":"#b9ddb9";el.style.color=s.needed?"#7a4b00":"#1e5b2a";el.innerHTML=head+" · 점검 "+esc(s.as_of)+"<table style=\"margin-top:8px;border-collapse:collapse;font-size:13px\"><tr><th style=\"text-align:left;padding-right:12px\">상태</th><th style=\"text-align:left;padding-right:12px\">자료</th><th style=\"text-align:left;padding-right:12px\">보관본</th><th style=\"text-align:left\">있어야 할 것</th></tr>"+rows+"</table>";}).catch(function(){el.textContent="Colab 갱신 점검 결과를 읽지 못했습니다.";});})();</script>
+<h2>방문 통계</h2>
 <div class="sub">Cloudflare Worker에 쌓인 조회 기록을 읽어옵니다. 토큰은 이 브라우저 밖으로 나가지 않습니다.</div>
 <div class="sub" style="margin-top:4px">운영자용 다른 페이지: <a href="../lab/" style="color:#1a5490">가상 매매 시뮬레이션</a>
  — 원장에 기록된 예측만으로 돌린 실험이며, 랜딩에 링크하지 않습니다.</div>

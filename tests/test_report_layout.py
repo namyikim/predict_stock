@@ -90,12 +90,11 @@ class TabTests(unittest.TestCase):
 
     def test_conclusions_stay_in_the_first_tab_and_evidence_gets_its_own_tabs(self):
         panels = panel_titles(rh.tabify_sections(PAGE))
-        self.assertEqual(panels["rtab-0"], ["한눈에 보는 쉬운 요약", "1. 다음 거래일 방향",
-                                            "2026-09-11 (금) 예측 vs 실제"])
+        self.assertEqual(panels["rtab-0"], ["1. 한눈에 보는 쉬운 요약", "2. 다음 거래일 방향"])
         # 탭은 문서 순서다. 이 조각에서는 성적 절이 장기 전망보다 앞에 있다.
-        self.assertEqual(panels["rtab-1"], ["이 모델의 예측 성적"])
-        self.assertEqual(panels["rtab-2"], ["1. 장기 전망 (월간)"])
-        self.assertEqual(panels["rtab-3"], ["이 보고서의 데이터"])
+        self.assertEqual(panels["rtab-1"], ["1. 장기 전망 (월간)"])
+        self.assertEqual(panels["rtab-2"], ["1. 2026-09-11 (금) 예측 vs 실제", "2. 이 모델의 예측 성적"])
+        self.assertEqual(panels["rtab-3"], ["1. 이 보고서의 데이터"])
 
     def test_the_first_tab_is_the_one_selected_by_default(self):
         out = rh.tabify_sections(PAGE)
@@ -129,11 +128,11 @@ class TabTests(unittest.TestCase):
         """절 제목을 그대로 쓰면 휴대폰에서 탭 두 개도 한 줄에 안 들어간다."""
         out = rh.tabify_sections(PAGE)
         labels = tab_labels(out)
-        self.assertEqual(labels, ["오늘의 예측", "예측 성적", "장기 전망", "사용한 데이터"])
+        self.assertEqual(labels, ["오늘의 예측", "장기 전망", "예측 성적", "사용한 데이터"])
         self.assertTrue(all(len(label) <= 12 for label in labels))
         # 탭 이름에는 절 번호를 붙이지 않는다(2026-09-13).
         self.assertFalse(any(re.match(r"\d", label) for label in labels), labels)
-        self.assertIn(">이 모델의 예측 성적</h3>", out)
+        self.assertIn("2. 이 모델의 예측 성적</h3>", out)
 
     def test_links_into_another_tab_open_that_tab(self):
         """#sec10 같은 링크는 그 절이 든 탭을 연 뒤 그 절로 가야 한다."""
@@ -199,25 +198,26 @@ class TabArrangementTests(unittest.TestCase):
         """탭 순서는 그 탭의 첫 절이 문서에 나오는 순서다. TAB_GROUPS 만 고치면 안 바뀐다."""
         labels = tab_labels(self.out())
         self.assertEqual(labels[2], "주간 뉴스")
-        self.assertEqual(panel_titles(self.out())["rtab-2"], ["주간 반도체 뉴스"])
+        self.assertEqual(panel_titles(self.out())["rtab-2"], ["1. 주간 반도체 뉴스"])
 
     def test_first_tab_holds_today_and_ends_with_the_reading_guide(self):
         first = panel_titles(self.out())["rtab-0"]
-        self.assertEqual(first[-1], "3. 이 예측을 어떻게 읽어야 하는가")
+        self.assertTrue(first[-1].endswith("시초가예측과 종가예측"))
+        self.assertFalse(any("이 예측을 어떻게 읽어야" in t for t in first))
         self.assertNotIn("1. 장기 전망 (월간)", first)
         self.assertNotIn("2. 이번 분기 영업이익 추정", first)
 
     def test_long_term_tab_holds_the_outlook_and_the_quarterly_profit(self):
         # 장기 전망 탭도 오늘의 예측처럼 쉬운 요약이 맨 위에 온다(2026-09-13).
         self.assertEqual(panel_titles(self.out())["rtab-1"],
-                         ["한눈에 보는 장기 전망 요약", "1. 장기 전망 (월간)", "2. 이번 분기 영업이익 추정"])
+                         ["1. 한눈에 보는 장기 전망 요약", "2. 장기 전망 (월간)", "3. 이번 분기 영업이익 추정"])
 
     def test_numbers_restart_in_every_tab(self):
         """번호는 탭 안에서 1부터 이어진다. 절이 하나뿐인 탭은 번호가 없다."""
         for panel, titles in panel_titles(self.out()).items():
             numbers = [int(m.group(1)) for m in (re.match(r"(\d+)\. ", t) for t in titles) if m]
             if len(titles) == 1:
-                self.assertEqual(numbers, [], panel)
+                self.assertEqual(numbers, [1], panel)
             else:
                 self.assertEqual(numbers, list(range(1, len(numbers) + 1)), panel)
 
@@ -226,7 +226,7 @@ class TabArrangementTests(unittest.TestCase):
         page = ('<div><h3>한눈에 보는 쉬운 요약</h3><p>a</p><h3>1. 장기 전망 (월간)</h3><p>b</p>'
                 '<h3>1. 다음 거래일 방향</h3><p>c</p><h3>2. 이번 분기 영업이익 추정</h3><p>d</p></div>')
         panels = panel_titles(rh.tabify_sections(page))
-        self.assertEqual(panels["rtab-0"], ["한눈에 보는 쉬운 요약", "1. 다음 거래일 방향"])
+        self.assertEqual(panels["rtab-0"], ["1. 한눈에 보는 쉬운 요약", "2. 다음 거래일 방향"])
         self.assertEqual(panels["rtab-1"], ["1. 장기 전망 (월간)", "2. 이번 분기 영업이익 추정"])
 
     def test_order_inside_a_tab_follows_the_group_not_the_source(self):
@@ -286,9 +286,8 @@ class RealShapeTabTests(unittest.TestCase):
         self.assertEqual(rh.tab_structure_problems(out), [])
         first = panel_titles_raw(out, "rtab-0")
         self.assertIn('id="easy-summary"', first, "감싸개가 제목과 함께 첫 탭에 들어가야 한다")
-        self.assertIn("<!--SCORECARD_START-->", first)
-        self.assertEqual(panel_titles(out)["rtab-0"], ["한눈에 보는 쉬운 요약", "그 밖에 지금 알 수 있는 것",
-                                                       "2026-09-11 (금) 예측 vs 실제", "1. 다음 거래일 방향"])
+        self.assertNotIn("<!--SCORECARD_START-->", first)
+        self.assertEqual(panel_titles(out)["rtab-0"], ["1. 한눈에 보는 쉬운 요약", "2. 그 밖에 지금 알 수 있는 것", "3. 다음 거래일 방향"])
 
     def test_the_outer_wrapper_stays_outside_the_tabs(self):
         out = rh.tabify_sections(REAL_PAGE)
@@ -305,7 +304,8 @@ class RealShapeTabTests(unittest.TestCase):
 
     def test_ledger_markers_stay_in_one_tab_and_the_afternoon_update_still_splices(self):
         out = rh.tabify_sections(REAL_PAGE)
-        first = panel_titles_raw(out, "rtab-0")
+        performance = next(k for k,v in panel_titles(out).items() if any("예측 vs 실제" in t for t in v))
+        first = panel_titles_raw(out, performance)
         self.assertIn("<!--LEDGER_SECTION_START-->", first)
         self.assertIn("<!--LEDGER_SECTION_END-->", first)
         try:
@@ -318,8 +318,8 @@ class RealShapeTabTests(unittest.TestCase):
         spliced = ba.replace_section(spliced, "<div>오후 성적</div>", ba.SCORECARD_START, ba.SCORECARD_END)
         self.assertIsNotNone(spliced)
         self.assertEqual(rh.tab_structure_problems(spliced), [])
-        self.assertIn("새 채점", panel_titles_raw(spliced, "rtab-0"))
-        self.assertIn("오후 성적", panel_titles_raw(spliced, "rtab-0"))
+        self.assertIn("새 채점", panel_titles_raw(spliced, performance))
+        self.assertIn("오후 성적", panel_titles_raw(spliced, performance))
 
     def test_the_session_review_lands_in_the_first_tab(self):
         out = rh.tabify_sections(REAL_PAGE)
@@ -331,7 +331,8 @@ class RealShapeTabTests(unittest.TestCase):
         section = sr.MARK_START + '<h3 style="x">오늘 장 회고 — 2026-09-11</h3><div>회고</div>' + sr.MARK_END
         page = sr.insert_section(out, section)
         self.assertEqual(rh.tab_structure_problems(page), [])
-        self.assertIn("오늘 장 회고", panel_titles_raw(page, "rtab-0"))
+        self.assertNotIn("오늘 장 회고", panel_titles_raw(page, "rtab-0"))
+        self.assertIn("오늘 장 회고", page)
 
     def test_a_layout_that_cannot_be_split_safely_is_left_as_it_was(self):
         """감싸개 안에서 제목 앞에 다른 내용이 있으면 끌어올 수 없다. 깨진 탭 대신 원래 페이지를 둔다."""

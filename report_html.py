@@ -180,7 +180,7 @@ TAB_GROUPS = (
     # 주간 뉴스는 참고 자료지만 실제로 읽는 거리라 자주 본다. 성격별 묶음(모델 결과 → 참고
     # 자료)보다 '자주 보는 순서'를 따른다(2026-09-15 지적).
     ("주간 뉴스", ("주간 반도체 뉴스",)),               # 주 1회 브리핑. 예측에 쓰지 않는 참고 자료
-    ("예측 성적", ("이 모델의 예측 성적",)),             # 기준별 판정과 그 근거인 모델별 성능표
+    ("예측 성적", ("실제 발행 후 누적 성적", "예측 vs 실제", "직전 거래일 장 회고", "오늘 장 회고", "이 모델의 예측 성적", "이 예측을 어떻게 읽어야 하는가", "학습·검증 설정")),             # 기준별 판정과 그 근거인 모델별 성능표
     ("사용한 데이터", ("이 보고서의 데이터",)),           # 자산·티커·수집 기간
     ("공시·발표 일정", ("참고 정보",)),                 # 최근 공시와 다가오는 미국 발표·실적
 )
@@ -240,6 +240,11 @@ _TAB_SCRIPT = (
     'if(el===p){window.scrollTo(0,r.getBoundingClientRect().top+window.pageYOffset-4);}'
     'else{el.scrollIntoView();}});'
     'window.addEventListener("hashchange",route);window.addEventListener("popstate",route);'
+    'var hs,major,minor;for(var j=0;j<ps.length;j++){major=0;minor=0;hs=ps[j].querySelectorAll("h3,h4");'
+    'for(var n=0;n<hs.length;n++){var h=hs[n],t=h.firstChild;if(!t||t.nodeType!==3)continue;'
+    'var prefix;if(h.tagName==="H3"){major++;minor=0;prefix=major+". ";}'
+    'else{minor++;prefix=major+"."+minor+" ";}'
+    't.textContent=prefix+t.textContent.replace(/^\\s*(?:\\d+(?:-\\d+)?\\.\\s+|\\d+\\.\\d+\\s+)/,"");}}'
     'route();})();</script>')
 
 
@@ -257,6 +262,8 @@ def _tab_for(title, groups=TAB_GROUPS):
     번호를 뗀 제목의 앞부분으로 고른다. 탭 안 순서는 groups 에 적은 열쇠의 순서다.
     """
     bare = _SECTION_NUMBER.sub('', title)
+    if '예측 vs 실제' in bare:
+        bare = '예측 vs 실제'
     for label, keys in groups:
         for rank, key in enumerate(keys):
             if bare.startswith(key):
@@ -276,10 +283,17 @@ def tabify_sections(html_text, groups=TAB_GROUPS, default_label=DEFAULT_TAB_LABE
     탭 안 번호가 1·2 순서로 보이게 하려는 것이다. 기본 절이 탭 절 뒤에 나오면 첫 탭으로 끌어올려진다.
     """
     from html import escape
+    html_text = _prepare_report_layout(html_text)
     parts = list(_H3.finditer(html_text))
     if len(parts) < 2:
         return html_text
     starts = _section_starts(html_text, parts)
+    # Closing update markers belong to the previous block, not the next heading.
+    for i in range(1, len(parts)):
+        gap = html_text[starts[i]:parts[i].start()]
+        ends = list(re.finditer(r'<!--(?:LEDGER_SECTION_END|REVIEW_SECTION_END)-->', gap))
+        if ends:
+            starts[i] += ends[-1].end()
     head, tail, basic, tabbed = html_text[:starts[0]], "", [], {}
     for index, match in enumerate(parts):
         end = starts[index + 1] if index + 1 < len(parts) else len(html_text)
@@ -297,6 +311,7 @@ def tabify_sections(html_text, groups=TAB_GROUPS, default_label=DEFAULT_TAB_LABE
             tabbed.setdefault(label, []).append((rank, index, chunk))
     if not tabbed or not basic:
         return html_text
+    tabbed = {label: tabbed[label] for label, _ in groups if label in tabbed}
     names = [default_label] + list(tabbed)
     bar = ('<nav class="rtabs" aria-label="보고서 탭">'
            + "".join(f'<a href="#rtab-{i}" aria-selected="{"true" if i == 0 else "false"}">'
@@ -308,6 +323,9 @@ def tabify_sections(html_text, groups=TAB_GROUPS, default_label=DEFAULT_TAB_LABE
                         for i, chunks in enumerate(tabbed.values(), start=1)))
     out = (head + '<div id="rtabs-root">' + _TAB_STYLE + bar + panels + _TAB_SCRIPT + '</div>'
            + tail)
+    # All headings restart within their own tab, including dynamically inserted fragments.
+    for panel in reversed(panels_for_numbering(out)):
+        out = out[:panel['inner_start']] + number_headings(panel['inner']) + out[panel['inner_end']:]
     # 브라우저가 실제로 쌓을 모양으로 한 번 더 본다. 제목 하나라도 탭 밖에 떨어지거나 탭 안에 탭이
     # 생기면 쓰지 않고 원래 페이지를 돌려준다 — 탭 없이 모든 절이 보이는 쪽이 깨진 탭보다 낫다.
     if any(problem.startswith(BLOCKING_TAB_PROBLEMS) for problem in tab_structure_problems(out)):
@@ -785,3 +803,94 @@ def load_summary_data(name, target, repo, branch):
         return payload if isinstance(payload, dict) else {}
     except (TypeError, ValueError):
         return {}
+
+
+# Report layout uses source offsets so moved blocks preserve update markers and HTML.
+def _layout_elements(text, predicate):
+    from html.parser import HTMLParser
+    class Scan(HTMLParser):
+        def __init__(self):
+            super().__init__(convert_charrefs=False)
+            self.stack, self.found = [], []
+            self.lines = [0]
+            for line in text.splitlines(keepends=True):
+                self.lines.append(self.lines[-1] + len(line))
+        def pos(self):
+            line, col = self.getpos()
+            return self.lines[line - 1] + col
+        def handle_starttag(self, tag, attrs):
+            if tag not in ('div', 'section', 'details', 'nav'):
+                return
+            self.stack.append((tag, dict(attrs), self.pos(), self.pos()+len(self.get_starttag_text())))
+        def handle_endtag(self, tag):
+            if tag not in ('div', 'section', 'details', 'nav'):
+                return
+            for i in range(len(self.stack)-1, -1, -1):
+                name, attrs, start, inner_start = self.stack[i]
+                if name == tag:
+                    del self.stack[i:]
+                    end = text.find('>', self.pos())+1
+                    if predicate(name, attrs):
+                        self.found.append(dict(start=start, end=end, inner=text[inner_start:self.pos()],
+                                               attrs=attrs, inner_start=inner_start, inner_end=self.pos()))
+                    break
+    scanner=Scan(); scanner.feed(text)
+    return sorted(scanner.found, key=lambda x:x['start'])
+
+
+def panels(text):
+    return _layout_elements(text, lambda tag,a:'rtab-panel' in a.get('class','').split())
+
+
+def number_headings(text):
+    major, minor = 0, 0
+    def change(m):
+        nonlocal major, minor
+        if m.group(2) == '3':
+            major += 1; minor = 0
+            prefix = f'{major}. '
+        else:
+            minor += 1
+            prefix = f'{major}.{minor} ' if major else f'{minor}. '
+        inner = re.sub(r'^\s*(?:\d+(?:-\d+)?\.\s+|\d+\.\d+\s+)', '', m.group(3))
+        return m.group(1)+prefix+inner+m.group(4)
+    return re.sub(r'(<h([34])\b[^>]*>)(.*?)(</h[34]>)',change,text,flags=re.S)
+
+
+def _prepare_report_layout(text):
+    # Extract the mutable scorecard from the easy summary, retaining its markers.
+    score = re.search(r'<!--SCORECARD_START-->.*?<!--SCORECARD_END-->',text,re.S)
+    if score and 'id="performance-scorecard"' not in text:
+        block = score.group()
+        text = text[:score.start()] + '<p><a href="#performance-scorecard">지난 예측 결과·누적 성적 보기</a></p>' + text[score.end():]
+        # Insert ahead of a top-level h3, never inside the easy-summary wrapper.
+        starts = _section_starts(text,list(_H3.finditer(text)))
+        at = starts[0] if starts else 0
+        text = text[:at] + '<section id="performance-scorecard"><h3>실제 발행 후 누적 성적</h3>'+block+'</section>'+text[at:]
+    # Move the training metadata cards out of the current-decision section.
+    if 'id="performance-training"' not in text:
+        cards = [r for r in _layout_elements(text,lambda tag,a:tag=='div')
+                 if '학습 데이터' in r['inner'] and '워크포워드 폴드' in r['inner'] and '<h3' not in r['inner']]
+        if cards:
+            item=min(cards,key=lambda r:r['end']-r['start'])
+            content=text[item['start']:item['end']]
+            text=text[:item['start']]+text[item['end']:]
+            at=_section_starts(text,list(_H3.finditer(text)))[0]
+            text=text[:at]+'<section id="performance-training"><h3>학습·검증 설정</h3><details><summary>상세 설정 보기</summary>'+content+'</details></section>'+text[at:]
+    return text
+
+
+def refresh_layout(text):
+    """Reorganize an already published report without changing predictions or scores."""
+    roots=_layout_elements(text,lambda tag,a:a.get('id')=='rtabs-root')
+    if not roots:
+        return tabify_sections(text)
+    root=roots[0]
+    items=[p for p in panels(text) if root['start']<p['start']<root['end']]
+    flat='<div>'+''.join(p['inner'] for p in items)+'</div>'
+    rebuilt=tabify_sections(flat)
+    return text[:root['start']]+rebuilt[5:-6]+text[root['end']:]
+
+
+def panels_for_numbering(text):
+    return panels(text)

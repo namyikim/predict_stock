@@ -1105,7 +1105,7 @@ def easy_summary_html(*, name, prediction_date, data_date, summary, open_forecas
             confidence += " 실제 사전 예측 성적은 아직 확인되지 않았습니다."
     else:
         confidence += " 실제 사전 예측 성적은 아직 확인되지 않았습니다."
-    confidence += " 위 성적은 보고서 생성 시점 기준이며, 이후 채점 결과는 아래 ‘예측 vs 실제’에서 확인하세요."
+    confidence += " 위 성적은 보고서 생성 시점 기준이며, 이후 채점 결과는 ‘예측 성적’ 탭에서 확인하세요."
     sections.append(("얼마나 믿을 수 있나요?", confidence))
     warnings = ["‘예측하기 어렵다’는 가격이 그대로라는 뜻은 아닙니다",
                 "갑작스러운 뉴스나 시장 변화로 예측이 빗나갈 수 있습니다"]

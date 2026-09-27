@@ -392,7 +392,7 @@ body{zoom:1.15}
       if ($("target").value !== target) return;
       attrRows = texts[0] ? parseCsv(texts[0]) : [];
       ledgerRows = texts[1] ? parseCsv(texts[1]) : [];
-      $("attr-status").textContent = "";
+      $("attr-status").textContent = stockName() + " 기록";
       if (!attrRows.length) {
         $("attr-result").innerHTML = '<div class="empty">기여도 기록이 아직 없습니다. ' +
           '아침 실행이 하루에 한 줄씩 남깁니다(2026-09-11부터).</div>';
@@ -421,17 +421,33 @@ body{zoom:1.15}
 
   function attributionLabel(feature) {
     var labels = {micron_ret_1:"Micron 전일 수익률", us10y_level_z60:"미국 10년물 금리 수준(최근 60일 대비)",
-      sam_ret_1:"해당 종목 전일 수익률", sox_ret_1:"필라델피아 반도체지수 전일 수익률",
+      sam_ret_1:stockName() + " 전일 수익률", sox_ret_1:"필라델피아 반도체지수 전일 수익률",
       kospi_ret_1:"코스피 전일 수익률", nasdaq_ret_1:"나스닥 전일 수익률"};
     return labels[feature] || feature;
   }
 
+  // 종목 이름. 기여도 탭은 페이지 위 종목 선택을 따르는데 결과에 종목이 적혀 있지 않아 어느 종목인지
+  // 알 수 없었다(2026-09-28 지적). 제목마다 종목을 붙인다.
+  function stockName() {
+    var select = $("target");
+    return select.options[select.selectedIndex].text;
+  }
+
+  // 원장의 모델 이름을 읽는 말로. 원래 이름은 옆에 작게 둔다.
+  function modelLabel(model) {
+    var labels = {"No macro ensemble": "대표 예측 (아침 07:00)",
+                  "Candidate evening forecast": "전날 저녁 예측 (관찰 후보)"};
+    return labels[model] || model;
+  }
+
   function renderCorrectAttribution() {
     var groups = summarizeCorrectAttribution(attrRows, ledgerRows);
-    var intro = '<div class="warn"><b>맞힌 예측에서 모델이 크게 반응한 요소</b>를 모았습니다. ' +
+    var intro = '<div class="warn"><b>' + esc(stockName()) + '</b> — <b>맞힌 예측에서 모델이 크게 반응한 요소</b>를 모았습니다. ' +
       '요소가 정답의 원인이었다는 뜻이나 앞으로의 적중률을 뜻하지 않습니다.</div>';
     var body = groups.map(function(g) {
-      var info = '<h2>' + esc(g.model) + '</h2><div class="muted">채점된 최초 사전 예측 ' + g.scored +
+      var info = '<h2>' + esc(stockName()) + ' · ' + esc(modelLabel(g.model)) +
+        ' <span class="muted" style="font-size:12px;font-weight:400">' + esc(g.model) + '</span></h2>' +
+        '<div class="muted">채점된 최초 사전 예측 ' + g.scored +
         '건 · 기여도 연결 가능 ' + g.matched + '건 · 그중 적중 <b>' + g.correct + '건</b></div>';
       if (!g.correct) return info + '<div class="empty">동일 실행·모델의 기여도가 남아 있는 적중 기록이 아직 없습니다.</div>';
       var top = g.rows[0];

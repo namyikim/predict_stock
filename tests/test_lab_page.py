@@ -271,3 +271,19 @@ class AiForecastDateLabelTests(PageSource):
         self.assertIn('String(iso || "")', body)              # null 이어도 제목이 깨지지 않는다
         self.assertIn("/T(" + chr(92) + "d{2}:" + chr(92) + "d{2})/", body)   # ISO 에서 시:분만 꺼낸다
         self.assertIn('return match ? " " + match[1] : "";', body)
+
+
+class AttributionStockLabelTests(unittest.TestCase):
+    """기여도 탭 결과에 종목 이름이 보여야 한다(2026-09-28: 삼성인지 하이닉스인지 표시가 없었다)."""
+
+    def setUp(self):
+        self.page = (ROOT / "docs" / "lab" / "index.html").read_text(encoding="utf-8")
+
+    def test_headings_carry_the_stock_name(self):
+        self.assertIn("function stockName()", self.page)
+        self.assertIn("'<h2>' + esc(stockName()) + ' · ' + esc(modelLabel(g.model))", self.page)
+        self.assertIn('$("attr-status").textContent = stockName() + " 기록";', self.page)
+
+    def test_model_names_are_readable(self):
+        self.assertIn('"Candidate evening forecast": "전날 저녁 예측 (관찰 후보)"', self.page)
+        self.assertIn('"No macro ensemble": "대표 예측 (아침 07:00)"', self.page)

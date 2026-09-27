@@ -711,4 +711,5 @@ class StaleFragmentTests(unittest.TestCase):
 
     def test_every_fragment_is_checked(self):
         self.assertEqual(set(srt.FRAGMENTS),
-                         {"longterm.html", "longterm.json", "earnings.html", "earnings.json"})
+                         {"longterm.html", "longterm.json", "earnings.html", "earnings.json",
+                          "outlook.html"})     # 지난 전망 채점 조각(2026-09-27)

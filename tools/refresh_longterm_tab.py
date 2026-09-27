@@ -11,7 +11,8 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 import pandas as pd
 import github_pages
-from forecast_utils import longterm_easy_summary_html
+import outlook_ledger
+from forecast_utils import longterm_easy_summary_html, summary_level_odds
 from report_html import fragment_sources_html, renumber_fragment
 
 
@@ -92,14 +93,43 @@ def main():
         raise ValueError('실적 예상과 장기 전망의 수출 스냅샷이 달라 갱신을 중단합니다.')
     ticker = '005930_KS' if args.target == 'samsung' else '000660_KS'
     prices = pd.read_csv(lt_dir / 'cache' / f'{ticker}_daily.csv', index_col=0, parse_dates=True)['close']
+    levels = (300000, 400000) if args.target == 'samsung' else None
     summary = longterm_easy_summary_html(name=lt['name'], price_date=prices.index[-1], close=prices,
-                                        longterm=lt, earnings=er,
-                                        levels=(300000, 400000) if args.target == 'samsung' else None)
-    content = summary + renumber_fragment((lt_dir / 'longterm.html').read_text()) + renumber_fragment((er_dir / 'earnings.html').read_text())
+                                        longterm=lt, earnings=er, levels=levels)
+
+    # 전망 원장(2026-09-27): 이번에 화면에 나온 전망을 처음 값만 남기고, 발표된 값으로 채점해 3절에 보인다.
+    token = github_pages.token() if args.publish else None
+    ledger_path = f'forecast_history/{args.target}/{outlook_ledger.LEDGER_NAME}'
+    local = lt_dir / outlook_ledger.LEDGER_NAME
+    ledger_sha = None
+    if token:
+        remote, ledger_sha = github_pages.fetch_with_sha(ledger_path, token)
+        ledger = outlook_ledger.read_ledger_text(remote)
+    else:
+        ledger = outlook_ledger.read_ledger(ROOT / ledger_path if not local.exists() else local)
+    odds = summary_level_odds(prices, levels)
+    rows = outlook_ledger.collect_forecasts(lt, er, odds, prices.index[-1])
+    ledger, added = outlook_ledger.record(ledger, rows)
+    ledger, scored = outlook_ledger.score(ledger, outlook_ledger.actuals_from(lt_dir, er_dir, lt, prices))
+    print(f'전망 원장: {len(ledger)}행 (이번에 기록 {added}, 채점 {scored})')
+    local.write_text(outlook_ledger.to_csv(ledger), encoding='utf-8')
+
+    # 채점 절은 조각(docs/<종목>/outlook.html)으로도 올린다 — 일일 보고서 노트북이 탭을 다시 조립할 때 끼운다.
+    outlook_html = outlook_ledger.render(ledger)
+    (lt_dir / 'outlook.html').write_text(outlook_html, encoding='utf-8')
+    content = (summary + renumber_fragment((lt_dir / 'longterm.html').read_text())
+               + renumber_fragment((er_dir / 'earnings.html').read_text()) + outlook_html)
     (lt_dir / 'longterm_tab.html').write_text(content, encoding='utf-8')
     if args.publish:
         with github_pages.batch(f'report: {args.target} daily export refresh'):
-            print(publish_tab(args.target, content, fragment_sources_html(lt, er), github_pages.token()))
+            ours = ledger.copy()
+            # 원장은 처음 읽은 sha 로만 올리고, 그 사이 바뀌었으면 최신 원장에 이 실행의 기록·채점을 합친다.
+            github_pages.publish(ledger_path, outlook_ledger.to_csv(ledger), token,
+                                 f'outlook: {args.target} 전망 기록 {added} · 채점 {scored}', expected_sha=ledger_sha,
+                                 merge=lambda latest: outlook_ledger.to_csv(outlook_ledger.merge_ledgers(latest, ours)))
+            github_pages.publish(f'docs/{args.target}/outlook.html', outlook_html, token,
+                                 f'outlook: {args.target} 지난 전망 채점')
+            print(publish_tab(args.target, content, fragment_sources_html(lt, er), token))
 
 
 if __name__ == '__main__':

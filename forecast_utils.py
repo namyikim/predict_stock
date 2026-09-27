@@ -556,6 +556,25 @@ def _when(price_date, trading_days):
     return text if pd.isna(day) else f"{text} ({day.year}년 {day.month}월경)"
 
 
+LEVEL_ODDS_HORIZON = 2 * YEAR_TRADING_DAYS
+LEVEL_ODDS_LOOKBACK = 3 * YEAR_TRADING_DAYS
+
+
+def summary_prices(close):
+    """요약의 가격 도달 확률이 쓰는 종가(유효한 양수만)."""
+    prices = pd.Series(close if close is not None else [], dtype=float)
+    return prices[np.isfinite(prices) & (prices > 0)]
+
+
+def summary_level_odds(close, levels=None, n_paths=20000, seed=20260913):
+    """요약 카드의 '추세 없음' 가격 도달 확률과 같은 값(같은 입력·같은 seed). 전망 원장이 기록에 쓴다."""
+    prices = summary_prices(close)
+    current = float(prices.iloc[-1]) if len(prices) else None
+    levels = [float(level) for level in levels] if levels else round_price_levels(current)
+    return level_reach_odds(prices, levels, daily_drift=0.0, horizon_days=LEVEL_ODDS_HORIZON,
+                            lookback_days=LEVEL_ODDS_LOOKBACK, n_paths=n_paths, seed=seed)
+
+
 def longterm_easy_summary_html(*, name, price_date, close, longterm=None, earnings=None, levels=None,
                                n_paths=20000, seed=20260913):
     """장기 전망 탭 맨 위의 쉬운 요약: 이번 분기 영업이익 추정(강조), 앞으로의 흐름, 가격 도달 시점.
@@ -731,11 +750,10 @@ def longterm_easy_summary_html(*, name, price_date, close, longterm=None, earnin
         signals_html = '<div style="font-size:13px;color:#6b7178">장기 자료를 확인하지 못했습니다.</div>'
 
     # ---- 3) 딱 떨어지는 가격에는 언제쯤 ------------------------------------------------
-    prices = pd.Series(close if close is not None else [], dtype=float)
-    prices = prices[np.isfinite(prices) & (prices > 0)]
+    prices = summary_prices(close)
     current = float(prices.iloc[-1]) if len(prices) else None
     levels = [float(level) for level in levels] if levels else round_price_levels(current)
-    horizon = 2 * YEAR_TRADING_DAYS
+    horizon = LEVEL_ODDS_HORIZON
     scenarios = [("추세 없음", 0.0)]
     if phase_row and int(phase_row.get("n") or 0) >= 20:
         drift = np.zeros(horizon)
@@ -743,7 +761,7 @@ def longterm_easy_summary_html(*, name, price_date, close, longterm=None, earnin
         scenarios.append((f"과거 같은 국면의 1년 흐름({np.expm1(phase_row['median']):+.0%})이 이어지면", drift))
     # 등락은 최근 3년에서 뽑는다. 2026년처럼 1년 변동성이 이전의 2배를 넘는 해만 쓰면(삼성전자 74% vs 이전
     # 2년 30%) 2년 뒤까지의 도달 시점이 크게 앞당겨진다. 지평(2년)에 맞춰 더 긴 창을 쓰고 1년 값은 함께 적는다.
-    lookback = 3 * YEAR_TRADING_DAYS
+    lookback = LEVEL_ODDS_LOOKBACK
     used_days = min(lookback, max(len(prices) - 1, 0))
     recent = np.diff(np.log(prices.to_numpy()))[-YEAR_TRADING_DAYS:] if len(prices) > 21 else np.array([])
     recent_vol = float(recent.std(ddof=1) * np.sqrt(YEAR_TRADING_DAYS)) if recent.size > 20 else None

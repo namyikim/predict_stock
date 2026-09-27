@@ -97,7 +97,7 @@ def in_evening_window(now):
 
 # 3·4절(장기 전망·영업이익)은 월간 워크플로가 조각으로 만들어 두고, 일일 보고서가 그것을 읽어
 # 끼운다. 조각만 새로 만들어지면 보고서에는 반영되지 않는다.
-FRAGMENTS = ("longterm.html", "longterm.json", "earnings.html", "earnings.json")
+FRAGMENTS = ("longterm.html", "longterm.json", "earnings.html", "earnings.json", "outlook.html")
 
 
 def _commit_time(ref, path):

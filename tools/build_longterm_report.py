@@ -692,6 +692,9 @@ def korea_cli_outlook(out_dir, fallback_dir, fetch=True, chart_start="2011-01"):
         try:
             frame = oecd_module.fetch_oecd_cli("KOR", "1995-01-01")
             (fallback_dir / "cli_kor.csv").write_text(frame.to_csv(index=False), encoding="utf-8")
+            # 새로 받은 것은 macro_cache 에도 둔다 — 발행 때 보관본으로 올리고, 전망 원장이 실제 값으로 읽는다.
+            (out_dir / "macro_cache").mkdir(parents=True, exist_ok=True)
+            (out_dir / "macro_cache" / "cli_kor.csv").write_text(frame.to_csv(index=False), encoding="utf-8")
             cli = frame.set_index("month")["value"]
         except Exception as exc:
             print("  한국 선행지수 조회 실패 → 보관본:", exc, flush=True)
@@ -1381,6 +1384,15 @@ def main():
                                              f"macro: {name} ({(info or {}).get('last', '')})")
                     except Exception as exc:
                         print(f"  사본 업로드 실패({name}):", exc, flush=True)
+            # OECD 한국 선행지수도 새로 받았으면 보관본으로 남긴다(2026-09-27). 예전에는 올리는 곳이 없어 OECD 가
+            # 막힌 날 전망 그림과 전망 채점의 실제 값이 모두 빠졌다.
+            kor_cache = out_dir / "macro_cache" / "cli_kor.csv"
+            if kor_cache.exists():
+                try:
+                    github_pages.publish_history("macro_history/cli_kor.csv", kor_cache.read_text(encoding="utf-8"),
+                                                 tok, "macro: cli_kor (OECD)")
+                except Exception as exc:
+                    print("  사본 업로드 실패(cli_kor.csv):", exc, flush=True)
             # 한국 수출(FRED)을 새로 받았으면 보관본으로 남긴다 — 다음에 FRED 가 막혀도 그림이 그려지게.
             exports_cache = out_dir / "macro_cache" / "korea_exports.csv"
             if (result.get("g20_outlook") or {}).get("exports_fresh") and exports_cache.exists():

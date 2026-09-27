@@ -715,8 +715,26 @@ def read_ledger(path):
 
 
 def append_estimate(ledger, result, run_id):
-    """(분기, 반영 개월 수)마다 첫 추정만 남긴다. 같은 조합이 이미 있으면 그대로 둔다."""
-    key = (str(result["quarter_code"]), int(result["months_used"]))
+    """(분기, 반영 개월 수)마다 첫 추정만 남긴다. 같은 조합이 이미 있으면 그대로 둔다.
+
+    다음 분기 추정(result["next_quarter"])도 '반영 0개월' 행으로 남긴다(2026-09-27). 장기 전망 요약에 숫자로
+    나오는데 기록이 없어 채점할 수 없었다. 같은 분기의 실제가 나오면 score_ledger 가 함께 채점한다.
+    """
+    added = False
+    ledger, one = _append_one(ledger, result, int(result["months_used"]), run_id)
+    added |= one
+    nxt = result.get("next_quarter") or {}
+    if nxt.get("quarter_code"):
+        ledger, one = _append_one(ledger, {**nxt, "target": result["target"],
+                                           "months_included": "없음(분기 시작 전 추정)",
+                                           "estimate_basis": "next_quarter",
+                                           "last_actual": result.get("last_actual")}, 0, run_id)
+        added |= one
+    return ledger, added
+
+
+def _append_one(ledger, result, months_used, run_id):
+    key = (str(result["quarter_code"]), int(months_used))
     months = pd.to_numeric(ledger["months_used"], errors="coerce")
     existing = set(zip(ledger["quarter"].astype(str), months.where(months.notna(), -1).astype(int)))
     if key in existing:
@@ -786,7 +804,8 @@ def render_ledger_block(ledger, target):
         err = "—" if pd.isna(r["error"]) else f'{r["error"] / TRILLION:+,.2f}조원 ({r["ape"]:.0%})'
         source = "확정" if r["actual_source"] == "confirmed" else "잠정"
         body += (f'<tr><td {TD}>{html.escape(str(r["quarter"]))}</td>'
-                 f'<td {TDR}>{int(r["months_used"])}개월</td><td {TDR}>{point}</td>'
+                 f'<td {TDR}>{"분기 전" if int(r["months_used"]) == 0 else str(int(r["months_used"])) + "개월"}</td>'
+                 f'<td {TDR}>{point}</td>'
                  f'<td {TDR}>{jo(r["actual"])} <span style="color:#8a9199">({source})</span></td>'
                  f'<td {TDR}>{err}</td></tr>')
     parts.append('<div style="overflow-x:auto"><table style="width:100%;min-width:520px;'

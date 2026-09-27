@@ -287,3 +287,20 @@ class AttributionStockLabelTests(unittest.TestCase):
     def test_model_names_are_readable(self):
         self.assertIn('"Candidate evening forecast": "전날 저녁 예측 (관찰 후보)"', self.page)
         self.assertIn('"No macro ensemble": "대표 예측 (아침 07:00)"', self.page)
+
+
+class AttributionStockSelectorTests(unittest.TestCase):
+    """기여도 탭에서 종목을 고를 수 있어야 한다(2026-09-28: 종목 상자가 '가상 매매' 탭 안에만 있어 숨겨졌다)."""
+
+    def setUp(self):
+        self.page = (ROOT / "docs" / "lab" / "index.html").read_text(encoding="utf-8")
+
+    def test_attribution_panel_has_its_own_selector(self):
+        panel = self.page[self.page.index('<div id="panel-attr"'):self.page.index('<div id="panel-ai"')]
+        self.assertIn('<select id="attr-target">', panel)
+        self.assertIn('<option value="sk_hynix">SK하이닉스</option>', panel)
+
+    def test_the_two_selectors_stay_in_sync(self):
+        self.assertIn('$("attr-target").value = $("target").value;', self.page)
+        self.assertIn('$("target").value = $("attr-target").value;', self.page)
+        self.assertIn('$("target").dispatchEvent(new Event("change"));', self.page)

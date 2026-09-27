@@ -112,6 +112,14 @@ body{zoom:1.15}
       지금은 기록만 보고 결론을 내지 마세요.
     </div>
     <div class="controls">
+      <!-- 종목 선택은 '가상 매매' 탭 안에 있어 이 탭에서는 숨겨졌다(2026-09-28 지적). 같은 값을 쓰는 상자를
+           여기에도 두고 두 상자를 서로 맞춘다. -->
+      <label class="field">종목
+        <select id="attr-target">
+          <option value="samsung">삼성전자</option>
+          <option value="sk_hynix">SK하이닉스</option>
+        </select>
+      </label>
       <label class="field">보기
         <select id="attr-view">
           <option value="correct" selected>맞힌 예측 누적 요약</option>
@@ -372,7 +380,16 @@ body{zoom:1.15}
   ["model", "rule", "capital", "fee", "tax", "slip"].forEach(function (id) {
     $(id).addEventListener("change", run);
   });
-  $("target").addEventListener("change", function () { load(); loadAttribution(); });
+  $("target").addEventListener("change", function () {
+    $("attr-target").value = $("target").value;
+    load(); loadAttribution();
+  });
+  // 기여도 탭의 종목 상자: 바꾸면 위 상자에 옮겨 같은 경로로 다시 읽는다.
+  $("attr-target").value = $("target").value;
+  $("attr-target").addEventListener("change", function () {
+    $("target").value = $("attr-target").value;
+    $("target").dispatchEvent(new Event("change"));
+  });
   load();
 
   // ---- 무엇이 예측을 밀었나 ------------------------------------------------

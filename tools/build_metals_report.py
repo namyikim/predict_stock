@@ -33,6 +33,9 @@ sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "tools"))
 import github_pages  # noqa: E402
 import gold_valuation  # noqa: E402
+import metals_longterm  # noqa: E402
+import outlook_ledger  # noqa: E402
+from report_html import tabify_sections  # noqa: E402
 from forecast_utils import (  # noqa: E402
     append_forecasts, atomic_csv, calibrate_price_forecast, daily_comparison, evaluate_forecasts,
     fit_direction_model, predict_direction_model, probability_loss, review_ledger, summarize_daily,
@@ -493,16 +496,11 @@ def render_asset(key, res, usdkrw):
     live, wf, rows, st = res["live"], res["wf"], res["price_rows"], res["price_stats"]
     current = rows[0]["current_close"]
     krw_g = current * usdkrw * OZ_PER_GRAM if usdkrw else float("nan")
-    parts = [f'<h3 style="font-size:18px;margin:34px 0 10px;padding-bottom:6px;border-bottom:1px solid #ddd">{e(a["name"])} <span style="font-size:12px;color:#8a9199;font-weight:400">COMEX 선물 {a["ticker"]}</span></h3>']
+    # 금·은을 탭으로 나눈다(2026-09-27). 탭은 절 제목 앞부분으로 고르므로 '금 · 단기 예측' / '금 · 장기 전망'처럼 짓는다.
+    parts = [f'<h3 style="font-size:18px;margin:34px 0 10px;padding-bottom:6px;border-bottom:1px solid #ddd">{e(a["name"])} · 단기 예측 <span style="font-size:12px;color:#8a9199;font-weight:400">COMEX 선물 {a["ticker"]} · 다음 거래일 방향·1주일·1개월 구간</span></h3>']
     parts.append(f'<div style="font-size:13px;color:#6b7178">기준 봉 {live["as_of"].date()} · 종가 <b style="color:#1a1a1a">${current:,.2f}/온스</b>'
                  + (f' · 약 <b style="color:#1a1a1a">{krw_g:,.0f}원/g</b> (원/달러 {usdkrw:,.0f} 환산, 국내 KRX 금시장 가격과는 다를 수 있음)' if usdkrw else "") + '</div>')
-
-    # 장기 가격 흐름 — 지금 가격이 긴 흐름의 어디쯤인지 먼저 보인다.
-    parts.extend(render_long_term(key, res.get("history")))
-    # 금값 결정 요인과 평가(2026-09-27) — CPI·달러인덱스·10년물 금리 회귀식의 적정 가격과 괴리.
-    if res.get("valuation"):
-        out, fit, info = res["valuation"]
-        parts.extend(gold_valuation.render(out, fit, info, table, TD, TDR, TH, THR, note))
+    # 장기 가격 흐름·금 적정 가격은 '장기 전망' 탭으로 옮겼다(render_longterm_asset).
 
     # 다음 거래일 방향
     skill = wf["log_loss_diff_hi"] < 0
@@ -619,6 +617,26 @@ def render_asset(key, res, usdkrw):
     return "".join(parts)
 
 
+def render_longterm_asset(key, res):
+    """'<금속> · 장기 전망' 절: 장기 가격 흐름, (금) 적정 가격, 비슷했던 달의 1년 뒤, 가격 도달 확률, 지난 전망 채점."""
+    long_term = render_long_term(key, res.get("history"))
+    valuation = []
+    if res.get("valuation"):
+        out, fit, info = res["valuation"]
+        valuation = gold_valuation.render(out, fit, info, table, TD, TDR, TH, THR, note)
+    return "".join(metals_longterm.render(key, ASSETS[key]["name"], res.get("longterm") or {}, long_term, valuation,
+                                          res.get("outlook"), table, TD, TDR, TH, THR, note))
+
+
+# 탭(2026-09-27): 금 단기 · 금 장기 · 은 단기 · 은 장기 · 데이터와 방법. 첫 탭(금 단기)은 기본 탭이다.
+METAL_TABS = (
+    ("금 · 장기 전망", ("금 · 장기 전망",)),
+    ("은 · 단기 예측", ("은 · 단기 예측",)),
+    ("은 · 장기 전망", ("은 · 장기 전망",)),
+    ("데이터와 방법", ("이 보고서의 데이터와 방법",)),
+)
+
+
 def render(results, usdkrw, today, quality):
     e = html.escape
     pred = max(r["prediction_date"] for r in results.values())
@@ -636,6 +654,7 @@ def render(results, usdkrw, today, quality):
                       "연구·교육용이며 투자 자문이 아닙니다."))
     for key in ASSETS:
         parts.append(render_asset(key, results[key], usdkrw))
+        parts.append(render_longterm_asset(key, results[key]))
     parts.append('<h3 style="font-size:16px;margin:34px 0 10px;padding-bottom:6px;border-bottom:1px solid #ddd">이 보고서의 데이터와 방법</h3>')
     body = ""
     for q in quality:
@@ -653,7 +672,8 @@ def render(results, usdkrw, today, quality):
                  f'<b>원장</b> 예측은 불변으로 <code>{LEDGER_ROOT}/gold/</code>, <code>{LEDGER_ROOT}/silver/</code>에 쌓이고, 매 실행에서 확정된 봉으로 채점.<br>'
                  '<b>생성</b> <code>tools/build_metals_report.py</code>. 매일 07:00 KST 자동 실행.</div>')
     parts.append("</div>")
-    return "".join(parts), pred
+    # 절을 탭으로 나눈다(주식 보고서와 같은 함수). 탭 구조가 깨지면 함수가 원래 페이지를 돌려준다 — 탭 없이 모두 보인다.
+    return tabify_sections("".join(parts), groups=METAL_TABS, default_label="금 · 단기 예측"), pred
 
 
 def page(inner, pred, today):
@@ -785,6 +805,34 @@ def main():
                 print("  ⚠️ 금 적정 가격: " + str((info or {}).get("reason", "자료 부족")), flush=True)
         except Exception as exc:
             print(f"  ⚠️ 금 적정 가격 계산 실패(그 블록만 뺍니다): {type(exc).__name__}: {exc}", flush=True)
+
+        # 장기 전망(2026-09-27): 비슷했던 달의 1년 뒤·가격 도달 확률 + 처음 값만 남기는 전망 원장과 채점.
+        for key in ASSETS:
+            try:
+                res = results[key]
+                lt = metals_longterm.analyse(key, res["history"], args.out / "cache", fetch=not args.no_fetch,
+                                             valuation=res.get("valuation"))
+                res["longterm"] = lt
+                outlook_path = f"{LEDGER_ROOT}/{key}/{outlook_ledger.LEDGER_NAME}"
+                outlook_sha = None
+                if tok:
+                    remote, outlook_sha = github_pages.fetch_with_sha(outlook_path, tok)
+                    ledger = outlook_ledger.read_ledger_text(remote)
+                else:
+                    ledger = outlook_ledger.read_ledger(ROOT / outlook_path)
+                ledger, added = outlook_ledger.record(ledger, metals_longterm.collect(lt))
+                ledger, scored_n = outlook_ledger.score(ledger, metals_longterm.actuals(lt, res["history"]))
+                res["outlook"] = ledger
+                print(f"  {ASSETS[key]['name']} 장기 전망: 구간 {lt.get('now_bucket')} · 원장 {len(ledger)}행"
+                      f"(기록 {added}, 채점 {scored_n})", flush=True)
+                if tok:
+                    ours = ledger.copy()
+                    github_pages.publish(outlook_path, outlook_ledger.to_csv(ledger), tok,
+                                         f"outlook: {key} 장기 전망 기록 {added} · 채점 {scored_n}", expected_sha=outlook_sha,
+                                         merge=lambda latest, ours=ours: outlook_ledger.to_csv(
+                                             outlook_ledger.merge_ledgers(latest, ours)))
+            except Exception as exc:
+                print(f"  ⚠️ {ASSETS[key]['name']} 장기 전망 계산 실패(그 부분만 뺍니다): {type(exc).__name__}: {exc}", flush=True)
 
         inner, pred = render(results, usdkrw, today, quality)
         doc = page(inner, pred, today)

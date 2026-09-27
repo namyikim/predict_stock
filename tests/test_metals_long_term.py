@@ -102,22 +102,33 @@ class SectionTests(unittest.TestCase):
             out["history"] = history
         return out
 
-    def test_the_section_comes_before_the_direction_forecast(self):
-        html = mr.render_asset("gold", self.res(daily()), 1355.)
-        self.assertIn("장기 가격 흐름", html)
-        self.assertIn("<svg", html)
-        self.assertLess(html.index("장기 가격 흐름"), html.index("다음 거래일("))
+    def test_the_chart_lives_in_the_long_term_tab_not_the_short_term_one(self):
+        # 금·은을 탭으로 나누며(2026-09-27) 장기 가격 흐름은 '<금속> · 장기 전망' 절로 옮겼다.
+        short = mr.render_asset("gold", self.res(daily()), 1355.)
+        self.assertNotIn("장기 가격 흐름", short)
+        self.assertIn("금 · 단기 예측", short)
+        long_ = mr.render_longterm_asset("gold", self.res(daily()))
+        self.assertIn("금 · 장기 전망", long_)
+        self.assertIn("<svg", long_)
+        self.assertLess(long_.index("장기 가격 흐름"), long_.index("지난 장기 전망은 맞았나"))
 
     def test_the_summary_table_and_its_limits_are_shown(self):
-        html = mr.render_asset("silver", self.res(daily(first=4.0, last=45.0, spike=(3000, 3.0))), 1355.)
+        html = mr.render_longterm_asset("silver", self.res(daily(first=4.0, last=45.0, spike=(3000, 3.0))))
         for text in ("1년 전 대비", "5년 전 대비", "10년 전 대비", "연평균", "사상 최고 대비",
                      "로그 눈금", "앞으로의 방향을 알려 주지 않습니다"):
             self.assertIn(text, html)
 
     def test_no_history_means_no_section_and_no_crash(self):
-        html = mr.render_asset("gold", self.res(), 1355.)
+        html = mr.render_longterm_asset("gold", self.res())
         self.assertNotIn("장기 가격 흐름", html)
-        self.assertIn("다음 거래일(", html)
+        self.assertIn("금 · 장기 전망", html)
+        self.assertIn("다음 거래일(", mr.render_asset("gold", self.res(), 1355.))
+
+    def test_the_page_is_split_into_metal_tabs(self):
+        names = [label for label, _ in mr.METAL_TABS]
+        self.assertEqual(names, ["금 · 장기 전망", "은 · 단기 예측", "은 · 장기 전망", "데이터와 방법"])
+        source = (ROOT / "tools" / "build_metals_report.py").read_text(encoding="utf-8")
+        self.assertIn('tabify_sections("".join(parts), groups=METAL_TABS, default_label="금 · 단기 예측")', source)
 
     def test_main_passes_the_price_history(self):
         source = (ROOT / "tools" / "build_metals_report.py").read_text(encoding="utf-8")

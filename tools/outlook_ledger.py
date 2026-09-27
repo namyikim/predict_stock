@@ -47,6 +47,9 @@ SERIES = {
     "phase_up_12m": ("같은 국면에서 1년 뒤 오를 확률", "probability", "반반(50%)"),
     "level_reach": ("가격 도달 확률", "probability", "—"),
     "phase_end": ("수출 국면이 끝나는 달", "months", "—"),
+    # 금·은 장기 전망(tools/metals_longterm.py): 지금과 비슷했던 달(괴리·금은 비율 구간)의 1년 뒤
+    "bucket_return_12m": ("비슷했던 달의 1년 뒤 가격 중앙값", "log_return", "변화 없음(0%)"),
+    "bucket_up_12m": ("비슷했던 달에서 1년 뒤 오를 확률", "probability", "반반(50%)"),
 }
 
 
@@ -415,12 +418,17 @@ def next_due(rows):
     return months[0] if months else None
 
 
-def render(ledger):
-    """계열별 요약(채점 수·평균 오차 vs 기준·구간 적중·Brier)과 최근 채점 표."""
+def render(ledger, heading="h3", title="3. 지난 전망은 맞았나", footnote=None):
+    """계열별 요약(채점 수·평균 오차 vs 기준·구간 적중·Brier)과 최근 채점 표.
+
+    heading·title: 주식 장기 전망 탭은 h3 '3. 지난 전망은 맞았나', 금·은 장기 전망 탭은 절 안의 h4.
+    footnote: 주석 첫머리('장기 전망 탭에 숫자로 나온 전망을')를 바꿀 때.
+    """
     e = html.escape
-    parts = ['<h3 style="font-size:15px;margin:24px 0 9px;padding-bottom:6px;border-bottom:1px solid #ddd">'
-             '3. 지난 전망은 맞았나 <span style="font-weight:400;color:#8a9199;font-size:12px">'
-             '실제로 미리 낸 전망만 · 발표된 값으로 채점</span></h3>']
+    style = ("font-size:15px;margin:24px 0 9px;padding-bottom:6px;border-bottom:1px solid #ddd" if heading == "h3"
+             else "font-size:14px;margin:18px 0 6px")
+    parts = [f'<{heading} style="{style}">{e(title)} <span style="font-weight:400;color:#8a9199;font-size:12px">'
+             f'실제로 미리 낸 전망만 · 발표된 값으로 채점</span></{heading}>']
     if ledger is None or ledger.empty:
         parts.append('<div style="font-size:13px;color:#6b7178">아직 기록된 전망이 없습니다.</div>')
         return "".join(parts)
@@ -473,7 +481,8 @@ def render(ledger):
                 got, miss = fmt(r["actual"], unit), err_fmt(r["error"], unit)
                 if unit == "months":
                     got = f"{_f(r['actual']):.0f}개월 뒤 끝남"
-            target = r["target_period"] if r["series"] != "level_reach" else f"{int(float(r['target_period'])):,}원 · {r['horizon']}"
+            target = (r["target_period"] if r["series"] != "level_reach"
+                      else f"{float(r['target_period']):,.0f} 도달 · {r['horizon']}")     # 원·달러 둘 다 쓰인다
             rows_html += (f'<tr><td {TD}>{e(r["label"])}</td><td {TD}>{e(str(target))}</td>'
                           f'<td {TD}>{e(str(r["info_as_of"]))} 기준 · {e(str(r["horizon"]))}</td>'
                           f'<td {TDR}>{e(said)}</td><td {TDR}>{e(got)}</td><td {TDR}>{e(miss)}</td></tr>')
@@ -482,10 +491,10 @@ def render(ledger):
                      'font-size:13px;border:1px solid #e5e5e5">'
                      f'<tr><th {TH}>전망</th><th {TH}>대상</th><th {TH}>언제 낸 전망</th><th {THR}>전망</th>'
                      f'<th {THR}>실제</th><th {THR}>오차</th></tr>{rows_html}</table></div>')
+    tail = ('영업이익 추정의 성적은 위 2절 “지난 분기 추정 vs 실제”에 따로 있습니다. ' if footnote is None else '')
     parts.append('<div style="font-size:11px;color:#8a9199;margin-top:6px;line-height:1.5">'
-                 '장기 전망 탭에 숫자로 나온 전망을 <b>처음 낸 값 그대로</b> 남기고, 대상 시점의 값이 발표되면 '
+                 f'{e(footnote or "장기 전망 탭에 숫자로 나온 전망을")} <b>처음 낸 값 그대로</b> 남기고, 대상 시점의 값이 발표되면 '
                  '<b>처음 확인한 값</b>으로 채점합니다(선행지수처럼 나중에 수정되는 값도 발표 당시 값으로). '
-                 '같은 달 전망을 다시 내도 첫 값만 셉니다. 값 전망은 “마지막 값 그대로”, 주가는 “변화 없음”과 '
-                 '평균 오차를 견주고, 확률 전망은 Brier 점수(0에 가까울수록 좋음)로 봅니다. 영업이익 추정의 성적은 '
-                 '위 2절 “지난 분기 추정 vs 실제”에 따로 있습니다. 기록은 2026-09-27부터입니다.</div>')
+                 '같은 달 전망을 다시 내도 첫 값만 셉니다. 값 전망은 “마지막 값 그대로”, 가격은 “변화 없음”과 '
+                 f'평균 오차를 견주고, 확률 전망은 Brier 점수(0에 가까울수록 좋음)로 봅니다. {tail}기록은 2026-09-27부터입니다.</div>')
     return "".join(parts)

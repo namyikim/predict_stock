@@ -301,7 +301,9 @@ class ToolWiringTests(unittest.TestCase):
     def test_metals_publishes_both_assets_in_one_batch_and_protects_ledgers(self):
         src = self.source("build_metals_report.py")
         block = src[src.index('with github_pages.batch(f"metals:'):]
-        self.assertEqual(block.count("github_pages.publish("), 2)        # 자산별 원장 3종 루프 + 보고서
+        # 자산별 원장 3종 루프 + 장기 전망 원장(2026-09-27) + 보고서
+        self.assertEqual(block.count("github_pages.publish("), 3)
+        self.assertIn("expected_sha=outlook_sha", block)
         self.assertIn("remote, ledger_sha = github_pages.fetch_with_sha(ledger_path, tok)", block)
         self.assertIn('guard = {"expected_sha": ledger_sha} if name == "forecast_log.csv" else {}', block)
 

@@ -5,6 +5,7 @@ import tempfile
 import unittest
 from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
+from unittest.mock import patch
 
 import pandas as pd
 import yaml
@@ -20,6 +21,8 @@ MORNING_RETRY_CRONS = [
     "32,42,52 21 * * 0-4",
     "2,12,22,32,42,52 22 * * 0-4",
 ]
+# 주말(토·일 KST) 아침 보고서 갱신(2026-09-27). 기록은 하지 않는다.
+WEEKEND_MORNING_CRONS = ["22,52 21 * * 5,6", "22 22 * * 5,6"]
 THREE_HOUR_CRON = "22 0,3,6,9,12,15,18 * * *"
 RETRY_CRONS = [
     "37 0,3,6,9,12,15,18 * * *",
@@ -30,12 +33,12 @@ RETRY_CRONS = [
 class ScheduleTests(unittest.TestCase):
     def test_schedules_retry_every_ten_minutes_until_0752_and_every_three_hours(self):
         crons = [item["cron"] for item in WORKFLOW[True]["schedule"]]
-        self.assertEqual(crons, [MAIN_CRON, *MORNING_RETRY_CRONS, THREE_HOUR_CRON, *RETRY_CRONS])
+        self.assertEqual(crons, [MAIN_CRON, *MORNING_RETRY_CRONS, *WEEKEND_MORNING_CRONS, THREE_HOUR_CRON, *RETRY_CRONS])
         for cron in crons:
             for minute in map(int, cron.split()[0].split(",")):
                 self.assertNotIn(minute, (0, 30), "정각·30분은 GitHub cron이 가장 많이 밀리는 지점")
         # 3시간 간격 회차가 하루를 고르게 덮는지
-        for cron in crons[1 + len(MORNING_RETRY_CRONS):]:
+        for cron in crons[1 + len(MORNING_RETRY_CRONS) + len(WEEKEND_MORNING_CRONS):]:
             hours = sorted(int(h) for h in cron.split()[1].split(","))
             self.assertEqual(hours, [0, 3, 6, 9, 12, 15, 18])
 
@@ -99,6 +102,21 @@ class ScheduleTests(unittest.TestCase):
         run = steps["금·은 예측 보고서"]["run"]
         self.assertIn("--publish", run)
         self.assertIn(f"github.event.schedule != '{MAIN_CRON}' && '--no-record'", run)
+
+    def test_weekend_mornings_refresh_reports_like_weekdays_without_recording(self):
+        # 휴일에도 평일처럼 아침 보고서를 새로 만든다(2026-09-27). 토·일 KST 아침 = 금·토 UTC 21~22시.
+        crons = [s["cron"] for s in WORKFLOW[True]["schedule"]]
+        for cron in WEEKEND_MORNING_CRONS:
+            self.assertIn(cron, crons)
+            self.assertIn(cron, WORKFLOW["run-name"])
+            # 금속은 평일 본 실행 문자열일 때만 기록하므로 주말 줄은 자동으로 --no-record 다.
+            self.assertNotEqual(cron, MAIN_CRON)
+        # 원장 기록은 노트북이 막는다(예측일이 오늘이 아니면 참고 예측).
+        import json
+        nb = json.loads((ROOT / "samsung_direction_model_colab.ipynb").read_text(encoding="utf-8"))
+        source = "".join("".join(c["source"]) for c in nb["cells"])
+        self.assertIn("if prediction_date.normalize() != _today_kst:", source)
+        self.assertIn('if not RECORD_FORECAST and not globals().get("HOLIDAY_REFERENCE"):', source)
 
     def test_backup_run_is_gated_on_the_ledger(self):
         steps = {s.get("name"): s for s in WORKFLOW["jobs"]["report"]["steps"]}
@@ -250,6 +268,29 @@ class LedgerGateTests(unittest.TestCase):
         self.write([{"prediction_date": str(monday), "is_prospective": True,
                      "kind": "direction", "run_id": "friday"}])
         self.assertTrue(srt.already_recorded(self.path, "무시됨", now=saturday)[0])
+
+    def test_a_forecast_recorded_on_a_holiday_morning_does_not_skip_the_trading_morning(self):
+        # 2026-09-24(추석 연휴) 06:48 에 9/28 예측이 기록됐다. 9/28 아침 회차가 그것을 보고 건너뛰면 연휴 중 미국
+        # 장이 빠진 예측이 공식이 된다. 아침 회차는 오늘 아침에 만든 기록만 인정한다(2026-09-27).
+        monday = datetime(2026, 9, 28, 6, 30, tzinfo=timezone(timedelta(hours=9)))
+        self.write([{"prediction_date": "2026-09-28", "is_prospective": True, "kind": "direction",
+                     "run_id": "holiday", "created_at_utc": "2026-09-23T21:48:47+00:00"}])
+        self.assertFalse(srt.already_recorded(self.path, "무시됨", now=monday)[0])
+        self.write([{"prediction_date": "2026-09-28", "is_prospective": True, "kind": "direction",
+                     "run_id": "morning", "created_at_utc": "2026-09-27T21:25:00+00:00"}])      # 9/28 06:25 KST
+        self.assertTrue(srt.already_recorded(self.path, "무시됨", now=monday)[0])
+
+    def test_holiday_morning_refreshes_the_report_once_without_recording(self):
+        saturday = datetime(2026, 9, 26, 6, 30, tzinfo=timezone(timedelta(hours=9)))
+        self.write([{"prediction_date": "2026-09-28", "is_prospective": True, "kind": "direction",
+                     "run_id": "holiday", "created_at_utc": "2026-09-23T21:48:47+00:00"}])
+        with patch.object(srt, "report_refreshed_since", return_value=False):
+            recorded, reason = srt.already_recorded(self.path, "무시됨", now=saturday, target="samsung")
+        self.assertFalse(recorded, "휴장일 아침에도 보고서는 새로 만든다")
+        self.assertIn("휴장일", reason)
+        with patch.object(srt, "report_refreshed_since", return_value=True):
+            self.assertTrue(srt.already_recorded(self.path, "무시됨", now=saturday, target="samsung")[0],
+                            "오늘 아침 보고서가 이미 올라왔으면 재시도는 건너뛴다")
 
     def test_krx_holiday_uses_the_next_open_session(self):
         holiday = datetime(2026, 5, 5, 6, 30, tzinfo=timezone(timedelta(hours=9)))

@@ -394,7 +394,7 @@ _NULL_MEANS_NO_FORECAST = ("predicted_return", "predicted_open", "predicted_clos
 
 
 def official_forecast(ledger, prediction_date, evening_model="Candidate evening forecast"):
-    """원장에 기록된 그날의 공식 사전 예측 — 그 예측일에 가장 먼저 기록된 사전 예측 실행의 행들.
+    """원장에 기록된 그날의 공식 사전 예측 — 예측일 당일 아침 실행(없으면 가장 먼저 기록된 사전 예측 실행)의 행들.
 
     저녁 후보(evening_model)와 사전 예측이 아닌 행은 뺀다. 원장의 채점 규칙(날짜별 최초 사전 예측)과 같다.
     반환: 없으면 None, 있으면 {"run_id", "created_at_utc", "direction": {모델: 행},
@@ -411,8 +411,10 @@ def official_forecast(ledger, prediction_date, evening_model="Candidate evening 
     if direction.empty:
         return None
     if "created_at_utc" in direction:
-        direction = direction.assign(_created=pd.to_datetime(direction["created_at_utc"], utc=True, errors="coerce"))
-        direction = direction.sort_values("_created", kind="stable")
+        # 채점 규칙(daily_comparison)과 같다: 예측일 당일 아침 예측이 먼저, 그다음 가장 먼저 기록된 것.
+        direction = direction.assign(_created=pd.to_datetime(direction["created_at_utc"], utc=True, errors="coerce"),
+                                     _rank=same_day_rank(direction))
+        direction = direction.sort_values(["_rank", "_created"], kind="stable")
     first = direction.iloc[0]
     run = rows[rows["run_id"] == first["run_id"]]
     headline = is_headline_model(run["model"])
@@ -2105,8 +2107,34 @@ def evaluate_forecasts(log, bars, now=None):
     return result
 
 
+# 공식 예측은 '그 거래일 아침에 만든 예측'이다(2026-09-28 예측일부터). 평일에는 원래 그랬지만 연휴에는 휴장 첫날
+# 아침이 다음 개장일 예측을 먼저 기록해, 개장일 아침의 예측(연휴 중 미국 장을 다 본 것)이 중복으로 버려졌다
+# (2026-09-24 에 9/28 예측을 기록 → 9/24·9/25 미국 장이 빠진 예측이 공식이 될 뻔했다). 그래서 예측일 당일(KST)에
+# 만든 사전 예측을 먼저 고르고, 없을 때만 예전처럼 가장 먼저 기록된 사전 예측을 쓴다. 규칙은 미리 정한 것이고
+# 모두 09:00 전 예측이라 '결과를 보고 고르기'가 아니다. 이미 채점된 과거(9/28 이전 예측일)는 바꾸지 않는다.
+# 저녁 후보(Candidate evening …)는 '전날 저녁' 예측이 정의라 이 규칙을 따르지 않는다.
+SAME_DAY_OFFICIAL_FROM = "2026-09-28"
+
+
+def same_day_rank(frame):
+    """0 = 예측일 당일(KST)에 만든 사전 예측(규칙 적용 대상), 1 = 그 밖. 정렬 키로 쓴다."""
+    if frame.empty or "created_at_utc" not in frame:
+        return pd.Series(1, index=frame.index)
+    created = pd.to_datetime(frame["created_at_utc"], utc=True, errors="coerce")
+    created_day = created.dt.tz_convert("Asia/Seoul").dt.strftime("%Y-%m-%d")
+    column = "prediction_date" if "prediction_date" in frame else "target_date"
+    day = frame[column].astype(str).str[:10]
+    model = frame["model"].astype(str) if "model" in frame else pd.Series("", index=frame.index)
+    applies = (day >= SAME_DAY_OFFICIAL_FROM) & ~model.str.startswith("Candidate evening")
+    return (~(applies & (created_day == day))).astype(int)
+
+
 def daily_comparison(evaluated):
-    """동일 날짜/모델/설정의 최초 사전 예측만 선택하여 재실행으로 표본이 늘지 않게 한다."""
+    """동일 날짜/모델/설정의 사전 예측 하나만 선택하여 재실행으로 표본이 늘지 않게 한다.
+
+    고르는 규칙: 예측일 당일 아침에 만든 사전 예측이 있으면 그중 가장 먼저 것, 없으면 가장 먼저 기록된 사전 예측
+    (SAME_DAY_OFFICIAL_FROM 앞의 예측일은 예전 규칙 그대로 — 가장 먼저 기록된 것).
+    """
     if evaluated.empty:
         return evaluated.copy()
     eligible = evaluated.loc[evaluated["is_prospective"].eq(True)].copy()
@@ -2119,7 +2147,9 @@ def daily_comparison(evaluated):
     for key in keys:
         if key not in eligible:
             eligible[key] = "legacy"
-    return eligible.sort_values("created_at_utc").drop_duplicates(keys, keep="first")
+    eligible["_same_day_rank"] = same_day_rank(eligible)
+    chosen = eligible.sort_values(["_same_day_rank", "created_at_utc"], kind="stable").drop_duplicates(keys, keep="first")
+    return chosen.drop(columns="_same_day_rank").sort_values("created_at_utc", kind="stable")
 
 
 SUMMARY_COLUMNS = ["model", "kind", "horizon_days", "target_mode", "config_hash", "n", "accuracy",

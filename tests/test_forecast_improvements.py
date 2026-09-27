@@ -92,6 +92,30 @@ class ForecastLedgerTests(unittest.TestCase):
         self.assertEqual(got.record_id.tolist(), ["early"])
         self.assertFalse(self.score([late]).is_prospective.iloc[0])
 
+    def test_trading_morning_forecast_is_official_from_2026_09_28(self):
+        # 연휴 첫날(9/24) 아침에 기록된 9/28 예측보다 9/28 아침 예측이 공식이다. 9/28 전 예측일은 예전 규칙.
+        def row(rid, target, created, model="No macro ensemble"):
+            return {"record_id": rid, "target_date": target, "prediction_date": target, "model": model,
+                    "kind": "direction", "horizon_days": 1, "target_mode": "close_to_close", "config_hash": "c",
+                    "is_prospective": True, "created_at_utc": created}
+        frame = pd.DataFrame([
+            row("holiday", "2026-09-28", "2026-09-23T21:48:00Z"),              # 9/24 06:48 KST
+            row("monday", "2026-09-28", "2026-09-27T21:30:00Z"),               # 9/28 06:30 KST
+            row("old-first", "2026-09-14", "2026-09-11T00:23:00Z"),            # 9/28 전: 가장 먼저 것 그대로
+            row("old-same-day", "2026-09-14", "2026-09-13T22:50:00Z"),
+            row("eve-fri", "2026-09-28", "2026-09-25T10:00:00Z", "Candidate evening forecast"),
+            row("eve-sun", "2026-09-28", "2026-09-27T10:00:00Z", "Candidate evening forecast"),
+        ])
+        got = fu.daily_comparison(frame).set_index(["target_date", "model"])["record_id"]
+        self.assertEqual(got[("2026-09-28", "No macro ensemble")], "monday")
+        self.assertEqual(got[("2026-09-14", "No macro ensemble")], "old-first", "이미 채점된 과거는 바뀌지 않는다")
+        self.assertEqual(got[("2026-09-28", "Candidate evening forecast")], "eve-fri", "저녁 후보는 예전 규칙")
+        # 개장일 아침 실행이 실패했으면 연휴 중 기록이 그대로 공식이다(예측이 비지 않는다).
+        only_holiday = fu.daily_comparison(frame[frame.record_id == "holiday"])
+        self.assertEqual(only_holiday.record_id.tolist(), ["holiday"])
+        ledger = frame.assign(run_id=frame.record_id)
+        self.assertEqual(fu.official_forecast(ledger, "2026-09-28")["run_id"], "monday")
+
     def test_legacy_rows_survive_but_are_not_prospective_evidence(self):
         legacy = {k: v for k, v in self.record.items() if k not in ["created_at_utc", "record_id"]}
         with tempfile.TemporaryDirectory() as td:

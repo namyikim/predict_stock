@@ -128,7 +128,7 @@ class NotebookWiringTests(unittest.TestCase):
         ledger_cell = self.cell('"kind": "open", "horizon_days": 1')
         call = ledger_cell.index("official_forecast(daily, prediction_date")
         self.assertLess(ledger_cell.index("if SYNC_LEDGER_TO_GITHUB:"), call)     # 원격 원장과 합친 뒤
-        self.assertLess(ledger_cell.rindex("if not RECORD_FORECAST:"), call)
+        self.assertLess(ledger_cell.rindex('if not RECORD_FORECAST and not globals().get("HOLIDAY_REFERENCE"):'), call)
         self.assertIn("apply_official_forecast(", ledger_cell)
 
     def test_report_says_which_forecast_it_shows(self):

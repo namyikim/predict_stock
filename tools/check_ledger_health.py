@@ -51,6 +51,13 @@ def check_target(target, today, ledger_root, max_age_days=None):
     if "prediction_date" not in log.columns:
         return False, f"{target}: 원장에 prediction_date 열이 없습니다"
     prospective = log["is_prospective"].astype(str).str.strip().str.lower().isin(("true", "1", "yes"))
+    # 2026-09-28 예측일부터 공식 예측은 그 거래일 아침에 만든 것이다. 연휴 첫날 아침에 미리 기록된 예측이 있어도
+    # 개장일 아침 실행이 실패했으면 잡아야 한다 — 예측일 당일(KST)에 만든 행만 센다.
+    if "created_at_utc" in log.columns:
+        created_day = (pd.to_datetime(log["created_at_utc"], utc=True, errors="coerce")
+                       .dt.tz_convert("Asia/Seoul").dt.strftime("%Y-%m-%d"))
+        day = log["prediction_date"].astype(str).str[:10]
+        prospective &= (day < "2026-09-28") | (created_day == day)
     dates = pd.to_datetime(log.loc[prospective, "prediction_date"], errors="coerce").dropna()
     if dates.empty:
         return False, f"{target}: 사전 예측이 하나도 없습니다"

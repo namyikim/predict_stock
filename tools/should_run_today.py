@@ -156,14 +156,52 @@ def fragments_newer_than_report(target, ref="origin/main", fragments=FRAGMENTS):
     return stale
 
 
+def created_today(row, now):
+    """그 행이 오늘(KST) 만들어졌는가. created_at_utc 가 없거나 읽을 수 없으면 True(옛 원장 호환)."""
+    text = str(row.get("created_at_utc", "") or "").strip()
+    if not text:
+        return True
+    try:
+        created = datetime.fromisoformat(text.replace("Z", "+00:00"))
+    except ValueError:
+        return True
+    if created.tzinfo is None:
+        created = created.replace(tzinfo=timezone.utc)
+    return created.astimezone(KST).date() == now.date()
+
+
+def is_trading_day(day):
+    """KRX 거래일인가. 달력을 못 쓰면 주말만 휴장으로 본다."""
+    try:
+        import exchange_calendars as xc
+        return bool(xc.get_calendar("XKRX").is_session(day.isoformat()))
+    except Exception:
+        return day.weekday() < 5
+
+
+def report_refreshed_since(target, since, ref="origin/main"):
+    """docs/<종목>/index.html 이 since(aware datetime) 뒤에 커밋됐는가."""
+    made = _commit_time(ref, f"docs/{target}/index.html") if ref and target else None
+    return made is not None and made >= since.timestamp()
+
+
 def already_recorded(path, today, now=None, ref=None, target=None):
     """다시 돌 필요가 없으면 True.
 
-    15:40 KST 전에는 모델이 오늘을 예측하므로 '오늘의 사전 예측'이 있어야 넘어간다. 장 마감 뒤에는
-    모델이 다음 거래일을 예측하므로 그 날짜의 기록이 하나라도 있으면 넘어간다.
+    15:40 KST 전에는 모델이 오늘을 예측하므로 '오늘 아침에 만든 오늘의 사전 예측'이 있어야 넘어간다. 장 마감
+    뒤에는 모델이 다음 거래일을 예측하므로 그 날짜의 기록이 하나라도 있으면 넘어간다.
+
+    휴장일(주말·연휴) 아침에는 원장에 기록하지 않는다 — 공식 예측은 그 거래일 아침에 만든다(2026-09-27).
+    대신 평일처럼 보고서를 최신 해외 시세로 한 번 새로 만든다(오늘 06:00 뒤 보고서가 이미 올라왔으면 넘어간다).
     """
     now = now or datetime.now(KST)
     evening = in_evening_window(now)
+    if in_record_window(now) and not is_trading_day(now.date()):
+        since = now.replace(hour=RECORD_WINDOW_KST[0], minute=0, second=0, microsecond=0)
+        if report_refreshed_since(target, since, ref):
+            return True, f"{now:%H:%M} KST — 휴장일 아침 보고서를 이미 새로 만들었습니다"
+        return False, (f"{now:%H:%M} KST — 휴장일 아침입니다. 원장에는 기록하지 않고 보고서만 최신 해외 시세로 "
+                       "새로 만듭니다(공식 예측은 개장일 아침에 기록)")
     if not in_record_window(now) and not evening:
         # 두 창 밖에서는 원장에 남을 것이 없다. 다만 조각(3·4절)이 보고서보다 새로우면 보고서를
         # 다시 만들어야 한다 — 그러지 않으면 월간 워크플로를 돌려도 화면에 나오지 않는다.
@@ -199,12 +237,16 @@ def already_recorded(path, today, now=None, ref=None, target=None):
             continue
         if not evening and model == EVENING_MODEL:
             continue
+        # 아침 회차는 '오늘 아침에 만든' 기록만 인정한다. 연휴 첫날 아침이 다음 개장일 예측을 미리 기록해 두면
+        # 개장일 아침 회차가 그것을 보고 건너뛰어, 연휴 중 미국 장이 빠진 예측이 공식으로 남았다(2026-09-24 → 9/28).
+        if not evening and before_close and not created_today(row, now):
+            continue
         # 저녁 회차의 대상은 다음 거래일이고 그 기록은 사전 예측으로 남는다. before_close 가
         # False 라는 이유로 아무 기록이나 인정하면 안 된다 — 저녁 후보 자체가 있는지를 본다.
         if same_day and is_direction and (prospective or (not before_close and not evening)):
             hit.append(row)
     if not hit:
-        return False, (f"{today} 사전 예측이 원장에 없습니다" if before_close
+        return False, (f"오늘 아침에 만든 {today} 사전 예측이 원장에 없습니다" if before_close
                        else f"{today} 기록이 원장에 없습니다(장 마감 후 다음 거래일 대상)")
     run_id = hit[0].get("run_id", "?") if "run_id" in columns else "?"
     label = "사전 예측이" if before_close else "기록이"

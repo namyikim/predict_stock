@@ -139,8 +139,10 @@ class NotebookSmokeTests(unittest.TestCase):
             self.assertTrue(token in page, f"보고서에 '{token}' 이(가) 없습니다")
         prediction_date = self.namespace["prediction_date"]
         weekday = "월화수목금토일"[prediction_date.weekday()]
-        dated_heading = f"1. 다음 거래일 방향 ({prediction_date.date()} {weekday}요일)"
-        self.assertTrue(dated_heading in page, f"보고서에 '{dated_heading}' 이(가) 없습니다")
+        # 절 번호는 탭 구성에 따라 바뀐다(2026-09-27 성적 탭 재배치로 1 → 3). 확인할 것은 날짜와 요일이다.
+        import re
+        dated_heading = rf"\d+\. 다음 거래일 방향 \({prediction_date.date()} {weekday}요일\)"
+        self.assertTrue(re.search(dated_heading, page), f"보고서에 '{dated_heading}' 이(가) 없습니다")
 
     def test_offline_run_publishes_nothing(self):
         # 발행을 껐으므로 저장소로 나가는 흔적이 없어야 한다.

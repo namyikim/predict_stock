@@ -531,3 +531,31 @@ class AllReportsBackLinkTests(unittest.TestCase):
                                 self.source(name).count('href="../"') == 1
                                 for name in self.TOOLS),
                             f"{page.name}: 발행본이 중복인데 도구도 고쳐지지 않았습니다")
+
+class TypographyScaleTests(unittest.TestCase):
+    """보고서 전체 글자 크기 척도(2026-09-27 지적: 예측 성적 탭의 절마다 크기가 달랐다).
+
+    크기를 적지 않은 글이 브라우저 기본(본문 16px, h3 18.7px)으로 나왔다 — 읽는 법 본문 16px, 끼워 넣은
+    절 제목(누적 성적·학습 설정) 18.7px. 페이지 CSS 가 척도를 정한다: 본문 13 · 절 제목 15 · 소제목 14 · 표 13.
+    """
+
+    @classmethod
+    def setUpClass(cls):
+        import json
+        nb = json.loads((ROOT / "samsung_direction_model_colab.ipynb").read_text(encoding="utf-8"))
+        cls.source = "\n".join("".join(c["source"]) for c in nb["cells"] if c["cell_type"] == "code")
+
+    def test_page_css_sets_the_scale(self):
+        for rule in ("body{font-size:13px}", "h3{font-size:15px;", "h4{font-size:14px;", "table{font-size:13px}"):
+            self.assertIn(rule, self.source, rule)
+
+    def test_inserted_section_titles_rely_on_the_default_h3(self):
+        # report_html 이 끼워 넣는 절 제목은 스타일 없는 <h3> 다. 기본 규칙이 있어야 다른 절과 같아 보인다.
+        text = (ROOT / "report_html.py").read_text(encoding="utf-8")
+        self.assertIn('<h3>실제 발행 후 누적 성적</h3>', text)
+        self.assertIn('<h3>학습·검증 설정</h3>', text)
+
+    def test_weekly_news_is_inserted_once(self):
+        # 두 번 끼우면 주간 뉴스 탭에 같은 절이 두 번 나온다(2026-09-27 발행본에서 확인).
+        import re
+        self.assertEqual(len(re.findall(r"f'\{weekly_html\}'", self.source)), 1)

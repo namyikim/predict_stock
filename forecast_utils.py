@@ -30,9 +30,9 @@ def decision_inputs_html(*, name, cards, unknowns, caveat=""):
                  f'{escape(card["label"])}</td>'
                  f'<td style="padding:8px 11px;border-top:1px solid #eee;text-align:right;'
                  f'font-weight:600;color:{tone}">{escape(str(card["value"]))}</td>'
-                 f'<td style="padding:8px 11px;border-top:1px solid #eee;color:#6b7178;font-size:12px">'
+                 f'<td style="padding:8px 11px;border-top:1px solid #eee;color:#6b7178;font-size:13px">'
                  f'{escape(card.get("detail", ""))}</td>'
-                 f'<td style="padding:8px 11px;border-top:1px solid #eee;color:#8a9199;font-size:11px;'
+                 f'<td style="padding:8px 11px;border-top:1px solid #eee;color:#8a9199;font-size:13px;'
                  f'white-space:nowrap">{escape(card.get("source", ""))}</td></tr>')
     unknown_html = ""
     if unknowns:
@@ -2280,7 +2280,7 @@ def overnight_value_html(daily, headline_model, evening_model="Candidate evening
                 f'<th style="padding:8px 11px;text-align:right">표본</th></tr>{rows}</table></div>')
     if open_rows:
         out += ('<div style="overflow-x:auto;margin-top:6px"><table style="width:100%;min-width:380px;'
-                f'border-collapse:collapse;font-size:12px;border:1px solid #e5e5e5"><tr {head_style}>'
+                f'border-collapse:collapse;font-size:13px;border:1px solid #e5e5e5"><tr {head_style}>'
                 '<th style="padding:8px 11px;text-align:left">예측 시점</th>'
                 '<th style="padding:8px 11px;text-align:right">시초가 구간 적중률 · 갭 오차</th>'
                 f'<th style="padding:8px 11px;text-align:right">표본</th></tr>{open_rows}</table></div>')

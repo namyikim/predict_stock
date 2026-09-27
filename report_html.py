@@ -122,7 +122,7 @@ def fragment_sources_html(longterm, earnings):
                  f'<td style="padding:6px 10px;border-top:1px solid #eee;font-family:ui-monospace,monospace;'
                  f'font-size:12px;color:#6b7178;{warn}">{escape(source)}</td>'
                  f'<td style="padding:6px 10px;border-top:1px solid #eee;text-align:right;{warn}">{escape(period)}</td>'
-                 f'<td style="padding:6px 10px;border-top:1px solid #eee;color:#8a9199;font-size:11px">'
+                 f'<td style="padding:6px 10px;border-top:1px solid #eee;color:#8a9199;font-size:13px">'
                  f'{escape(note)}</td></tr>')
     return ('<div style="overflow-x:auto;-webkit-overflow-scrolling:touch;margin-top:12px">'
             '<table style="width:100%;min-width:560px;border-collapse:collapse;font-size:13px;'
@@ -730,7 +730,7 @@ def markdown_to_html(text):
                              for c in row) + "</tr>" for row in rows)
         html_parts.append(
             '<div style="overflow-x:auto;margin:10px 0"><table style="width:100%;min-width:480px;'
-            'border-collapse:collapse;font-size:12.5px;border:1px solid #e5e5e5">'
+            'border-collapse:collapse;font-size:13px;border:1px solid #e5e5e5">'
             '<tr style="background:#fafafa;font-size:11px;color:#6b7178">'
             + "".join(f'<th style="padding:7px 9px;text-align:left">{inline(c)}</th>' for c in header)
             + "</tr>" + body + "</table></div>")

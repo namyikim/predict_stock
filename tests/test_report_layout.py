@@ -546,8 +546,22 @@ class TypographyScaleTests(unittest.TestCase):
         cls.source = "\n".join("".join(c["source"]) for c in nb["cells"] if c["cell_type"] == "code")
 
     def test_page_css_sets_the_scale(self):
-        for rule in ("body{font-size:13px}", "h3{font-size:15px;", "h4{font-size:14px;", "table{font-size:13px}"):
+        for rule in ("body{font-size:13px;zoom:1.15}", "h3{font-size:15px;", "h4{font-size:14px;", "table{font-size:13px}"):
             self.assertIn(rule, self.source, rule)
+
+    def test_table_body_text_is_one_size(self):
+        """표 본문은 13px 하나(2026-09-27 통일 요청). 머리글 11px·고정폭 티커 12px·칸 안 주석 span 은 예외."""
+        import re
+        for name in ("forecast_utils.py", "report_html.py"):
+            text = (ROOT / name).read_text(encoding="utf-8")
+            self.assertIsNone(re.search(r"border-collapse:collapse;font-size:12(\.5)?px", text), name)
+            # 확률 막대(prob_bar)의 칸은 색 막대 위 흰 글씨라 표 본문이 아니다 — 제외한다.
+            for m in re.finditer(r"<td style=\"([^\"]*font-size:1[12]px[^\"]*)", text):
+                style = m.group(1)
+                if "monospace" in style or "background:{c}" in text[m.start() - 80:m.start() + 120]:
+                    continue
+                self.fail(f"{name}: 표 본문 칸이 13px 가 아닙니다 — {style[:80]}")
+        self.assertIsNone(re.search(r"<td style=\"[^\"]*color:#8a9199;font-size:12px\">'\s*\n\s*f'\{detail\}", self.source))
 
     def test_inserted_section_titles_rely_on_the_default_h3(self):
         # report_html 이 끼워 넣는 절 제목은 스타일 없는 <h3> 다. 기본 규칙이 있어야 다른 절과 같아 보인다.

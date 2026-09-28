@@ -181,7 +181,8 @@ TAB_GROUPS = (
     # 주간 뉴스는 참고 자료지만 실제로 읽는 거리라 자주 본다. 성격별 묶음(모델 결과 → 참고
     # 자료)보다 '자주 보는 순서'를 따른다(2026-09-15 지적).
     ("주간 뉴스", ("주간 반도체 뉴스",)),               # 주 1회 브리핑. 예측에 쓰지 않는 참고 자료
-    ("예측 성적", ("실제 발행 후 누적 성적", "예측 vs 실제", "직전 거래일 장 회고", "오늘 장 회고", "이 모델의 예측 성적", "이 예측을 어떻게 읽어야 하는가", "학습·검증 설정")),             # 기준별 판정과 그 근거인 모델별 성능표
+    # 장 회고(시간대별 뉴스)는 여기 넣지 않는다 — '오늘의 예측' 탭 맨 끝에 둔다(2026-09-28 요청).
+    ("예측 성적", ("실제 발행 후 누적 성적", "예측 vs 실제", "이 모델의 예측 성적", "이 예측을 어떻게 읽어야 하는가", "학습·검증 설정")),             # 기준별 판정과 그 근거인 모델별 성능표
     ("사용한 데이터", ("이 보고서의 데이터",)),           # 자산·티커·수집 기간
     ("공시·발표 일정", ("참고 정보",)),                 # 최근 공시와 다가오는 미국 발표·실적
 )
@@ -192,23 +193,36 @@ _SECTION_NUMBER = re.compile(r'^\d+(?:-\d+)?\.\s*')
 # 탭 막대는 해당 절로 건너뛰는 링크로 동작한다 — 무엇도 숨겨지지 않는 쪽으로 실패한다.
 _TAB_STYLE = (
     '<style>'
-    # 밑줄만 있는 글자 탭은 버튼으로 읽히지 않았다(2026-09-28 지적). 테두리·배경이 있는 알약 버튼으로 두고,
-    # 고른 탭은 파랗게 채운다. 줄바꿈해서 모든 탭이 한눈에 보이게 한다 — 옆으로 숨은 탭은 있는 줄 몰랐다.
+    # 탭 → 왼쪽 메뉴(2026-09-28 요청). 넓은 화면에서는 메뉴를 왼쪽 세로 목록으로 두고 본문을 오른쪽에 둔다.
+    # 메뉴는 따라 내려와(sticky) 긴 절을 읽다가도 바로 옮길 수 있다. 휴대폰 폭에서 왼쪽 메뉴를 두면 본문이
+    # 너무 좁아지므로 900px 미만에서는 예전처럼 위쪽에 줄바꿈되는 버튼 막대로 둔다.
+    # 버튼 모양은 목록 버튼(테두리 #cedff0·모서리 5px)을 따르고, 고른 메뉴는 파랗게 채운다.
     '#rtabs-root .rtabs{position:sticky;top:0;z-index:20;display:flex;flex-wrap:wrap;gap:6px;'
     'background:#fff;border-bottom:1px solid #d8dce0;margin:16px 0 12px;padding:8px 0 10px}'
-    '#rtabs-root .rtabs a{flex:0 0 auto;padding:8px 16px;min-height:36px;box-sizing:border-box;font-size:14px;'
-    'font-weight:600;line-height:1.3;color:#1a5490;background:#f0f6fc;border:1px solid #b9d3ec;'
-    'border-radius:999px;text-decoration:none;white-space:nowrap}'
-    '#rtabs-root .rtabs a:hover{background:#e0edf9;border-color:#7fa9d4}'
+    '#rtabs-root .rtabs a{flex:0 0 auto;padding:8px 14px;min-height:36px;box-sizing:border-box;font-size:14px;'
+    'font-weight:600;line-height:1.3;color:#1a5490;background:#fff;border:1px solid #cedff0;'
+    'border-radius:5px;text-decoration:none;white-space:nowrap}'
+    '#rtabs-root .rtabs a:hover{background:#f0f6fc;border-color:#7fa9d4}'
     '#rtabs-root .rtabs a[aria-selected="true"]{color:#fff;background:#1a5490;border-color:#1a5490;'
     'box-shadow:0 1px 4px rgba(26,84,144,.35)}'
     '#rtabs-root .rtabs a:focus-visible{outline:2px solid #1a5490;outline-offset:2px}'
     '@media (max-width:640px){#rtabs-root .rtabs{gap:5px}#rtabs-root .rtabs a{padding:7px 12px;font-size:13px;min-height:34px}}'
-    # 목차 링크로 절에 가면 붙어 있는 탭 막대가 제목을 가린다. 그만큼 띄워 멈춘다.
+    # 목차 링크로 절에 가면 위쪽에 붙은 버튼 막대가 제목을 가린다. 그만큼 띄워 멈춘다.
     '#rtabs-root h3{scroll-margin-top:110px}'
     '#rtabs-root.rtabs-on .rtab-panel{display:none}'
     '#rtabs-root.rtabs-on .rtab-panel.is-active{display:block}'
-    '@media print{#rtabs-root .rtabs{display:none}#rtabs-root .rtab-panel{display:block!important}}'
+    # 왼쪽 메뉴: 스크립트가 켜졌을 때만(rtabs-on) 두 칸으로 나눈다. 스크립트가 없으면 모든 절이 이어져 보인다.
+    '@media (min-width:900px){'
+    '#rtabs-root.rtabs-on{display:grid;grid-template-columns:168px minmax(0,1fr);column-gap:24px;align-items:start}'
+    '#rtabs-root.rtabs-on .rtabs{grid-column:1;grid-row:1;flex-direction:column;flex-wrap:nowrap;gap:6px;'
+    'top:12px;margin:16px 0 0;padding:0;border-bottom:none;max-height:calc(100vh - 24px);overflow-y:auto}'
+    '#rtabs-root.rtabs-on .rtabs a{display:block;white-space:normal;padding:9px 12px}'
+    '#rtabs-root.rtabs-on .rtab-panel{grid-column:2;grid-row:1;min-width:0}'
+    '#rtabs-root.rtabs-on h3{scroll-margin-top:16px}}'
+    # 메뉴는 본문 폭 안에 둔다. 본문 밖 왼쪽으로 내보내면 본문 폭이 페이지마다 달라(종목 980px, 금·은은 더 넓다)
+    # 어떤 화면 폭에서는 메뉴가 화면 밖으로 잘린다.
+    '@media print{#rtabs-root .rtabs{display:none}#rtabs-root .rtab-panel{display:block!important}'
+    '#rtabs-root.rtabs-on{display:block}}'
     '</style>')
 
 _TAB_SCRIPT = (
@@ -231,8 +245,9 @@ _TAB_SCRIPT = (
     'for(var k=0;k<tabs.length;k++){tabs[k].addEventListener("click",function(e){e.preventDefault();'
     'var id=this.getAttribute("href").slice(1);show(id);'
     'if(history.replaceState)history.replaceState(null,"","#"+id);'
-    # 한참 내려와 탭 막대가 붙어 있을 때 탭을 바꾸면 새 탭의 첫머리로 올린다.
-    'if(bar.getBoundingClientRect().top<=0){window.scrollTo(0,r.getBoundingClientRect().top+window.pageYOffset-4);}'
+    # 한참 내려와 있을 때 메뉴를 바꾸면 새 탭의 첫머리로 올린다. 왼쪽 메뉴는 top:12px 에 붙으므로 막대가 아니라
+    # 탭 묶음의 위치로 판단한다(2026-09-28).
+    'if(r.getBoundingClientRect().top<0){window.scrollTo(0,r.getBoundingClientRect().top+window.pageYOffset-4);}'
     '});}'
     # 목차처럼 탭 안의 절을 가리키는 링크는 여기서 직접 그 탭을 연다. hashchange 에만 기대면
     # #조각이 주소에 붙지 않는 환경(미리보기·일부 앱 안 브라우저)에서 목차가 먹통이 된다(2026-09-13 확인).
@@ -318,7 +333,7 @@ def tabify_sections(html_text, groups=TAB_GROUPS, default_label=DEFAULT_TAB_LABE
         return html_text
     tabbed = {label: tabbed[label] for label, _ in groups if label in tabbed}
     names = [default_label] + list(tabbed)
-    bar = ('<nav class="rtabs" aria-label="보고서 탭">'
+    bar = ('<nav class="rtabs" aria-label="보고서 메뉴">'
            + "".join(f'<a href="#rtab-{i}" aria-selected="{"true" if i == 0 else "false"}">'
                      f'{escape(name)}</a>' for i, name in enumerate(names))
            + '</nav>')

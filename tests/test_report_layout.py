@@ -331,8 +331,10 @@ class RealShapeTabTests(unittest.TestCase):
         section = sr.MARK_START + '<h3 style="x">오늘 장 회고 — 2026-09-11</h3><div>회고</div>' + sr.MARK_END
         page = sr.insert_section(out, section)
         self.assertEqual(rh.tab_structure_problems(page), [])
-        self.assertNotIn("오늘 장 회고", panel_titles_raw(page, "rtab-0"))
-        self.assertIn("오늘 장 회고", page)
+        # '오늘의 예측' 탭 맨 끝에 들어간다(2026-09-28 요청). 다시 넣어도 하나만 남고 자리가 같다.
+        self.assertIn("오늘 장 회고", panel_titles_raw(page, "rtab-0"))
+        self.assertEqual(sr.insert_section(page, section), page)
+        self.assertEqual(page.count(sr.MARK_START), 1)
 
     def test_a_layout_that_cannot_be_split_safely_is_left_as_it_was(self):
         """감싸개 안에서 제목 앞에 다른 내용이 있으면 끌어올 수 없다. 깨진 탭 대신 원래 페이지를 둔다."""

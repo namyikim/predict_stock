@@ -3011,10 +3011,10 @@ def review_section_html(review, carried=False):
     if carried:
         heading = f'직전 거래일 장 회고 — {e(r["session_date"])}'
         note = (f'<b>{e(r["session_date"])} 장 마감 후 생성 {e(r["generated_at"])}</b> — 다음 거래일 보고서를 새로 만들며 '
-                '이 회고를 다시 붙였습니다. 그날 장을 설명할 뿐 위 성능표·다음 거래일 예측을 바꾸지 않습니다.')
+                '이 회고를 다시 붙였습니다. 그날 장을 설명할 뿐 성능표·다음 거래일 예측을 바꾸지 않습니다.')
     else:
         heading = f'오늘 장 회고 — {e(r["session_date"])}'
-        note = (f'<b>장 마감 후 생성 {e(r["generated_at"])}</b> — 이 절은 오늘 장을 설명할 뿐 위 성능표·다음 거래일 '
+        note = (f'<b>장 마감 후 생성 {e(r["generated_at"])}</b> — 이 절은 오늘 장을 설명할 뿐 성능표·다음 거래일 '
                 '예측을 바꾸지 않습니다.')
     parts = [REVIEW_START,
              '<h3 style="font-size:15px;margin:24px 0 9px;padding-bottom:6px;border-bottom:1px solid #ddd">'
@@ -3082,11 +3082,22 @@ def review_section_html(review, carried=False):
     return "".join(parts)
 
 
+# 회고(시간대별 뉴스)는 '오늘의 예측' 탭 맨 끝에 둔다(2026-09-28 요청). 원장 절 뒤에 두면 '예측 성적' 탭 안으로
+# 들어가 첫 화면에서 찾을 수 없었다. 탭이 없는 페이지(탭 구조 검사에 걸려 모든 절을 펼친 경우)는 예전처럼 원장 절 뒤.
+_FIRST_TAB_OPEN = '<section class="rtab-panel" id="rtab-0">'
+_SECOND_TAB_OPEN = '<section class="rtab-panel" id="rtab-1">'
+
+
 def insert_review_section(page, section):
-    """회고 절을 넣는다. 이미 있으면 교체, 없으면 원장 절 뒤, 그것도 없으면 body 끝."""
+    """회고 절을 넣는다. 첫 탭이 있으면 그 끝, 없으면 원장 절 뒤, 그것도 없으면 body 끝. 이미 있으면 옮겨 교체."""
     start, end = page.find(REVIEW_START), page.find(REVIEW_END)
     if start >= 0 and end > start:
-        return page[:start] + section + page[end + len(REVIEW_END):]
+        page = page[:start] + page[end + len(REVIEW_END):]
+    first, second = page.find(_FIRST_TAB_OPEN), page.find(_SECOND_TAB_OPEN)
+    if 0 <= first < second:
+        close = page.rfind("</section>", first, second)
+        if close > first:
+            return page[:close] + section + page[close:]
     anchor = page.find(REVIEW_LEDGER_END)
     if anchor >= 0:
         cut = anchor + len(REVIEW_LEDGER_END)

@@ -1,0 +1,156 @@
+{
+  "target": "samsung",
+  "name": "삼성전자",
+  "peer_name": "SK하이닉스",
+  "session_date": "2026-09-28",
+  "generated_at": "2026-09-28 17:32 KST",
+  "summary": {
+    "prev_close": 285500.0,
+    "open": 284500.0,
+    "high": 285500.0,
+    "low": 270000.0,
+    "close": 270000.0,
+    "gap": -0.003502626970227629,
+    "session": -0.05096660808435849,
+    "c2c": -0.05429071803852892,
+    "high_vs_open": 0.0035149384885764245,
+    "low_vs_open": -0.05096660808435849,
+    "volume": 23166008.0,
+    "volume_ratio": 1.3875256153620223,
+    "kospi_c2c": -0.026999272638204896,
+    "peer_c2c": -0.050483351235230955,
+    "usdkrw_chg": -0.006391872168270196,
+    "sox_ret": 0.01411959840720578,
+    "nasdaq_ret": 0.00480158098078598
+  },
+  "classification": {
+    "labels": [
+      "지수 동조"
+    ],
+    "reasons": [
+      "KOSPI -2.70% vs 종목 -5.43%, 5분 수익률 상관 0.78 — 종목 고유 요인이 약함"
+    ]
+  },
+  "events": [
+    {
+      "time": "2026-09-28T09:40:00+09:00",
+      "ret": -0.0044802867383512135,
+      "z": 1.73,
+      "volume_ratio": 3.62,
+      "cum_before": -0.01846965699208447,
+      "cum_after": -0.022867194371152144,
+      "session_share": 0.09988403963735948,
+      "score": 3.4556228307743613,
+      "news": []
+    }
+  ],
+  "turning_point": {
+    "high_time": "2026-09-28T09:05:00+09:00",
+    "high": -0.0017590149516271136,
+    "low_time": "2026-09-28T14:50:00+09:00",
+    "low": -0.04573438874230429,
+    "pattern": "고점 후 반락"
+  },
+  "closing_share": 0.10840160030481977,
+  "intraday_corr_kospi": 0.7778473520897238,
+  "intraday_note": "장중 봉은 09:05~14:55까지만 있어 마감 구간(14:55~15:30)은 일봉 종가로만 봅니다(그 구간 -0.55%).",
+  "intraday_coverage": "09:05~14:55",
+  "overnight_news": [
+    {
+      "time": "2026-09-28T06:49:00+09:00",
+      "title": "“삼성전자 역대급 배당 막차타세요”…주당 4600원 배당금 오늘까지 - 조선비즈",
+      "source": "Chosunbiz",
+      "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxQRG80UnBQU19EZVQ1REhic2dkemtjQWZXTG1FWlBoVVk5RHFjUDdNUEFUV1gyTGtnZHNpY2VmM0lkSVlIbWhuX0hPSDRHZDhCSTV0YU4zNW1BdFVrOGFvWTJNQThQai0yUzdwRmo1aGVfek5fUHZTOHVTLVhTZkdObm9QSjBqdTgw0gGcAUFVX3lxTE1mblY5d2otVnFkRS1seDY5dlc5bUxtdHpMWVRZSzU0dkc1WXBIZTZKX2tKTGNCV0Fvb3YwOC02MDNvWHBHY0xzZm1ZREp5XzJXdUJhYm4yaTBzMWptQUZ1UlBrbHpua1NhMng2U2lZOW5jSjV3bEZVcnRLdC1kMEtCRDJ4VGRoVG1iQ21ZcFhIQ0hnRjdHdWFiS2tBcg?oc=5"
+    }
+  ],
+  "top_news": [
+    {
+      "time": "2026-09-28T15:45:00+09:00",
+      "title": "퀄컴과 길어진 협상…HBM4가 바꾼 삼성전자 파운드리 셈법",
+      "source": "v.daum.net",
+      "link": "https://news.google.com/rss/articles/CBMiT0FVX3lxTE1PYndhMnphdVJDTTRTLXBJZnFIc1k1emp3dGJQWHNPUjdlZ2pqTUI1SlNmOUcwaThPN0dPdTBMd1MzUVJSTTQyMU1zY21oMnc?oc=5"
+    },
+    {
+      "time": "2026-09-28T16:37:11+09:00",
+      "title": "\"서버 메모리도 공유한다\"…삼성전자, 차세대 AI 메모리 전략은 - 머니투데이",
+      "source": "머니투데이",
+      "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE1NVTdpMkF5RTRaRE0tbjRBUzd0bnJLaUFZUGRGNFBidFFOODh0SVJIU1lLUnJPUmQ0Qy04Ni1MZ19NZzlqTkIzVTBwSUxGdS1MUjRzTEt4NmJOX1dtMUlLckdkaDJPN2dqX2o1UNIBckFVX3lxTFBwN1ZEaUVWVzAtQV8zUHJDUkcyWjU0anJMYWRJMWxJUm8wY0ZTTVRHamoyR04wOXgzYm9feFBkdkJKSjlTaUdiSTJfMXB5ZmE3d05EYXRlR05VRm80R2tGNGt4eVdJaG1uNG5HUlZnM3lDUQ?oc=5"
+    },
+    {
+      "time": "2026-09-28T16:40:11+09:00",
+      "title": "[코스피 지수선물 옵션] 반도체주 선물에 매도 쏟아졌다…삼성전자·SK하이닉스 동반 급락",
+      "source": "핀포인트뉴스",
+      "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTE5BMnZjZDByelJmc0o1QzZQcm40d1llby1wUHZiT2FTNnFES3lvbmNtRGNicVE3NG9HM0EzSlNBLUM0Yjc4ZmlSaE5tQjJxSnBWb0N3NFRJbmxvUDRCUkZkUWJrNTNPcHZBT1ZNd0swQ3QwMWc?oc=5"
+    },
+    {
+      "time": "2026-09-28T15:58:00+09:00",
+      "title": "삼전 ‘역대급 배당’ 막차에도 주가 하락…자사주 실탄도 곧 소진",
+      "source": "미주중앙일보",
+      "link": "https://news.google.com/rss/articles/CBMiYkFVX3lxTE1kRmNZOENHRExIUHN5elhteWZkZzVRd3dFTGFFNnYyMnlveTBnWkRiTjF3eHBTQURGVEo2WU04RHR3a0d6STB0VkwtdDFISlkzT3g2NGxXaUdKTk1jb0VfSXBR?oc=5"
+    },
+    {
+      "time": "2026-09-28T16:08:31+09:00",
+      "title": "코스피 7000선 붕괴…외국인 3.2조 팔자에 반도체株 와르르",
+      "source": "아주경제",
+      "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTFB6cl9UVUxqbmgxOVhib1dTNC1LSmtHM1NLaW9lNlVPckVsR2wwNkxXdFROeXkyU0o2YXNubVRHT3FsT1NrbUFCLVNFdFZiVl9PSmtaSEtkVzRJUdIBWEFVX3lxTE05Rk03MXZIT3JWdVd1V1NqSEp1cjlGZEl5Unoxd0RxTnVzazk5dWJTUVVya05WU3FIUzhCc05ONDQ0ZThORnFjV2pFa3Nab2pTZExWdGV6R2w?oc=5"
+    },
+    {
+      "time": "2026-09-28T16:10:58+09:00",
+      "title": "美 금리 부담에 반도체株 '털썩'⋯코스피 '6900선' 붕괴",
+      "source": "아이뉴스24",
+      "link": "https://news.google.com/rss/articles/CBMiTEFVX3lxTE43MGRVSU15M2NBeVZscENsdDlsdUpfZ1FFY3VFMHlTeHAyN2NocnZFZ3gyYTRDdXBYc0FZZXRiTlRPS3QzSWRmdW1hZE0?oc=5"
+    }
+  ],
+  "disclosures": [],
+  "disclosure_note": null,
+  "flows": null,
+  "forecasts": [
+    {
+      "model": "No macro ensemble",
+      "hit": true,
+      "verdict": "맞음 — 예측 하락 47%, 실제 하락(-5.43%)",
+      "legs": "갭 -0.35%(보합) · 세션 -5.10%(하락)",
+      "where": "결과는 주로 장중에서 정해졌습니다.",
+      "band": 0.0082984734632896,
+      "probs": [
+        0.468504867336905,
+        0.2678297307535333,
+        0.2636654019095616
+      ],
+      "actual": "하락",
+      "predicted": "하락"
+    },
+    {
+      "model": "Mean ensemble",
+      "hit": true,
+      "verdict": "맞음 — 예측 하락 47%, 실제 하락(-5.43%)",
+      "legs": "갭 -0.35%(보합) · 세션 -5.10%(하락)",
+      "where": "결과는 주로 장중에서 정해졌습니다.",
+      "band": 0.0082984734632896,
+      "probs": [
+        0.4728608966582922,
+        0.264628051988521,
+        0.2625110513531868
+      ],
+      "actual": "하락",
+      "predicted": "하락"
+    },
+    {
+      "model": "Candidate expanding",
+      "hit": true,
+      "verdict": "맞음 — 예측 하락 45%, 실제 하락(-5.43%)",
+      "legs": "갭 -0.35%(보합) · 세션 -5.10%(하락)",
+      "where": "결과는 주로 장중에서 정해졌습니다.",
+      "band": 0.0082984734632896,
+      "probs": [
+        0.4467666078678448,
+        0.2741660619436263,
+        0.2790673301885288
+      ],
+      "actual": "하락",
+      "predicted": "하락"
+    }
+  ],
+  "price_check": "1거래일 예상 구간 274,231~294,151원 · 종가 270,000원 → 구간 밖",
+  "disclaimer": "시간이 맞는 것이지 원인 확정이 아닙니다. 뉴스 없이 움직이는 날(수급·프로그램·옵션 만기)이 많고, 기사 발행 시각은 실제 정보 유통보다 늦거나 앞섭니다. 이 절은 설명 도구이며 다음날 예측에 자동 반영되지 않습니다."
+}

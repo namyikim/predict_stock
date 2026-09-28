@@ -862,7 +862,8 @@ body{zoom:1.15}
   });
 
   // ?tab=sim|attr|ai 로 첫 탭을 고르고, ?embed=1 이면 머리말을 숨긴다 — 관리자 페이지의 탭이 이 페이지를 띄운다.
-  var params = new URLSearchParams(location.search);
+  // 테스트(node)에는 location 이 없다 — 없으면 주소 인자 없이 연 것으로 본다.
+  var params = new URLSearchParams(typeof location === "undefined" ? "" : location.search);
   if (params.get("embed") === "1") document.documentElement.classList.add("embed");
   var firstTab = params.get("tab");
   if (firstTab === "attr" || firstTab === "ai") $("tab-" + firstTab).click();

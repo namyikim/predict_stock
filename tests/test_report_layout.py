@@ -465,7 +465,19 @@ class SubscribeBarTests(unittest.TestCase):
 
     def test_page_key_is_one_the_worker_accepts(self):
         worker = (ROOT / "counter" / "worker.js").read_text(encoding="utf-8")
-        self.assertIn('const SUBSCRIBE_PAGES = ["samsung", "sk_hynix"];', worker)
+        self.assertIn('const SUBSCRIBE_PAGES = ["main", "samsung", "sk_hynix"];', worker)
+
+    def test_main_page_has_the_same_bar_without_back_link(self):
+        # 메인 페이지는 정적 파일이라 함수 출력을 붙여 둔다. 함수를 고치고 붙이는 것을 잊으면 여기서 걸린다.
+        import report_html
+        bar = report_html.report_top_bar_html("https://predict-stock-counter.kimname1.workers.dev", "main",
+                                              "전체 예측", back=False)
+        index = (ROOT / "docs" / "index.html").read_text(encoding="utf-8")
+        self.assertIn(bar, index)
+        self.assertNotIn("← 보고서 목록", bar)
+        self.assertIn("전체 예측 보고서 구독", bar)
+        self.assertNotIn("보고서 보고서", bar)
+        self.assertLess(index.index('id="sub-open"'), index.index("<h1>예측 보고서</h1>"))
 
     def test_admin_page_lists_subscribers(self):
         admin = (ROOT / "docs" / "admin" / "index.html").read_text(encoding="utf-8")

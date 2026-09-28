@@ -236,7 +236,7 @@ a{color:var(--accent)}
 
 <section class="admin-panel" id="panel-subscribers" data-tab="subscribers" hidden>
 <h2 class="panel-title">구독자</h2>
-<div class="sub">삼성전자·SK하이닉스 보고서 맨 위 <b>구독</b> 버튼으로 받은 이메일입니다. 카운터 Worker의 D1
+<div class="sub">메인·삼성전자·SK하이닉스 페이지 맨 위 <b>구독</b> 버튼으로 받은 이메일입니다. 카운터 Worker의 D1
   <code>subscribers</code> 표에 있고, 방문 통계와 같은 토큰으로 봅니다. 목록은 이 브라우저에서만 보이며 어디에도 저장하지 않습니다.</div>
 <form id="sub-f" autocomplete="off">
   <div class="field">
@@ -796,7 +796,7 @@ a{color:var(--accent)}
   "use strict";
   var ENDPOINT = "https://predict-stock-counter.kimname1.workers.dev";
   var STORE_KEY = "predict-stock-stats-token";
-  var NAMES = { samsung: "삼성전자", sk_hynix: "SK하이닉스" };
+  var NAMES = { main: "메인", samsung: "삼성전자", sk_hynix: "SK하이닉스" };
   var rows = [];
   function $(id) { return document.getElementById(id); }
   function esc(t) {
@@ -822,10 +822,10 @@ a{color:var(--accent)}
     });
   }
   function render() {
-    var by = { samsung: 0, sk_hynix: 0 };
+    var by = { main: 0, samsung: 0, sk_hynix: 0 };
     var people = {};
     rows.forEach(function (r) { by[r.page] = (by[r.page] || 0) + 1; people[r.email] = 1; });
-    $("sub-tiles").innerHTML = [["전체 주소", Object.keys(people).length], ["삼성전자", by.samsung], ["SK하이닉스", by.sk_hynix]]
+    $("sub-tiles").innerHTML = [["전체 주소", Object.keys(people).length], ["메인", by.main], ["삼성전자", by.samsung], ["SK하이닉스", by.sk_hynix]]
       .map(function (t) { return '<div class="tile"><div class="k">' + t[0] + '</div><div class="v">' + t[1] + "</div></div>"; }).join("");
     $("sub-list").innerHTML = rows.length
       ? '<table><thead><tr><th>이메일</th><th>보고서</th><th>신청 시각(KST)</th><th></th></tr></thead><tbody>' +

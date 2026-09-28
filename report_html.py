@@ -503,20 +503,22 @@ BACK_LINK_HTML = ('<a href="../" style="display:inline-block;font-size:12px;colo
                   'border:1px solid #cedff0;border-radius:5px;padding:5px 11px;background:#f0f6fc">← 보고서 목록</a>')
 
 
-def report_top_bar_html(endpoint, page, name):
+def report_top_bar_html(endpoint, page, name, back=True):
     """종목 보고서 맨 위 줄: 왼쪽 '보고서 목록', 오른쪽 '구독' 버튼(2026-09-28 요청).
 
     구독을 누르면 이메일 칸이 열리고, 신청은 조회수 카운터 Worker(counter/worker.js)의 POST /subscribe 로 가서
     D1 subscribers 표에 남는다. 목록은 관리자 페이지 '구독자' 메뉴에서 본다. 개인정보 보호법에 따라 수집 항목·목적·
     보관 기간을 칸 아래에 적고 동의를 받아야 보낸다. endpoint 가 비면 구독 버튼 없이 목록 링크만 둔다.
+    back=False 는 메인 페이지(docs/index.html)용 — 목록 자체라 '보고서 목록' 링크 없이 구독 버튼만 오른쪽에 둔다.
     """
+    back_html = BACK_LINK_HTML if back else "<span></span>"
     if not endpoint:
         return f'<div style="margin-bottom:10px">{BACK_LINK_HTML}</div>'
     e = lambda t: str(t).replace("&", "&amp;").replace("<", "&lt;").replace('"', "&quot;")
     btn = ('border-radius:5px;padding:7px 14px;font-size:13px;font-family:inherit;cursor:pointer;min-height:36px')
     return (
         '<div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:10px">'
-        f'{BACK_LINK_HTML}'
+        f'{back_html}'
         '<button type="button" id="sub-open" aria-expanded="false" aria-controls="sub-box" '
         f'style="{btn};border:1px solid #1a5490;background:#1a5490;color:#fff;font-weight:600">✉ 구독</button></div>'
         '<div id="sub-box" hidden style="border:1px solid #cedff0;background:#f7fafd;border-radius:6px;padding:12px 14px;'

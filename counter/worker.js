@@ -44,8 +44,8 @@ const RETENTION_DAYS = 400;
 const ALLOWED_PAGES = ["main", "samsung", "sk_hynix", "china", "metals", "ai_news",
                        "trends", "interest"];
 
-// 구독을 받는 페이지. 종목 보고서 두 곳에만 버튼이 있다(2026-09-28 요청).
-const SUBSCRIBE_PAGES = ["samsung", "sk_hynix"];
+// 구독을 받는 페이지. 종목 보고서 두 곳과 메인 페이지에 버튼이 있다(2026-09-28 요청).
+const SUBSCRIBE_PAGES = ["main", "samsung", "sk_hynix"];
 // 같은 방문자(하루 단위 해시)가 하루에 보낼 수 있는 신청·해지 수. 스크립트로 목록을 채우는 것을 막는다.
 const SUBSCRIBE_DAILY_LIMIT = 10;
 // 형식만 본다. 실제로 받을 수 있는 주소인지는 메일을 보내 보기 전에는 알 수 없다.

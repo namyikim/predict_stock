@@ -154,6 +154,7 @@ a{color:var(--accent)}
   <div class="group">운영</div>
   <a href="#visits" data-tab="visits">방문 통계</a>
   <a href="#notice" data-tab="notice">공지사항</a>
+  <a href="#subscribers" data-tab="subscribers">구독자</a>
   <div class="group">실험실</div>
   <a href="#sim" data-tab="sim">가상 매매</a>
   <a href="#attr" data-tab="attr">무엇이 예측을 밀었나</a>
@@ -231,6 +232,23 @@ a{color:var(--accent)}
 <h2 class="panel-title">공지사항</h2>
 <h2 style="margin-top:6px">Colab 갱신 점검</h2>
 <div id="colab-notice" style="margin:0 0 18px;padding:12px 16px;border-radius:6px;font-size:13px;line-height:1.6;background:#f5f6f8;border:1px solid #e1e4e8;color:#4a4f55">Colab 갱신 점검을 불러오는 중…</div><script>(function(){var el=document.getElementById("colab-notice");if(!el||!window.fetch)return;fetch("../colab_status.json",{cache:"no-store"}).then(function(r){return r.ok?r.json():null;}).then(function(s){if(!s){el.textContent="Colab 갱신 점검 결과(colab_status.json)를 읽지 못했습니다.";return;}var esc=function(t){return String(t).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];});};var rows=(s.checked||[]).map(function(i){return "<tr><td>"+(i.late?"⚠️ 늦음":"✅ 정상")+"</td><td>"+esc(i.label)+"</td><td>"+esc(i.have)+"</td><td>"+esc(i.expected)+"</td></tr>";}).join("");var head=s.needed?"<b>Colab 업데이트가 필요합니다.</b> 한국 정부 자료가 자동 실행(해외 서버)에서 막혀 발표 일정보다 늦었습니다. "+esc(s.how)+" <a href=\""+esc(s.colab_url)+"\" style=\"color:#1a5490\">Colab 에서 노트북 열기</a>":"<b>Colab 업데이트 필요 없음.</b> 한국 정부 자료 보관본이 발표 일정에 맞게 들어와 있습니다.";el.style.background=s.needed?"#fff4e5":"#eef7ee";el.style.borderColor=s.needed?"#f0c58a":"#b9ddb9";el.style.color=s.needed?"#7a4b00":"#1e5b2a";el.innerHTML=head+" · 점검 "+esc(s.as_of)+"<table style=\"margin-top:8px;border-collapse:collapse;font-size:13px\"><tr><th style=\"text-align:left;padding-right:12px\">상태</th><th style=\"text-align:left;padding-right:12px\">자료</th><th style=\"text-align:left;padding-right:12px\">보관본</th><th style=\"text-align:left\">있어야 할 것</th></tr>"+rows+"</table>";}).catch(function(){el.textContent="Colab 갱신 점검 결과를 읽지 못했습니다.";});})();</script>
+</section>
+
+<section class="admin-panel" id="panel-subscribers" data-tab="subscribers" hidden>
+<h2 class="panel-title">구독자</h2>
+<div class="sub">삼성전자·SK하이닉스 보고서 맨 위 <b>구독</b> 버튼으로 받은 이메일입니다. 카운터 Worker의 D1
+  <code>subscribers</code> 표에 있고, 방문 통계와 같은 토큰으로 봅니다. 목록은 이 브라우저에서만 보이며 어디에도 저장하지 않습니다.</div>
+<form id="sub-f" autocomplete="off">
+  <div class="field">
+    <label for="sub-token">STATS_TOKEN</label>
+    <input id="sub-token" type="password" placeholder="방문 통계와 같은 토큰" required>
+  </div>
+  <button id="sub-go" type="submit">불러오기</button>
+  <button id="sub-csv" type="button" disabled>CSV 받기</button>
+</form>
+<div id="sub-msg" class="msg"></div>
+<div id="sub-tiles" class="tiles" style="margin-top:14px"></div>
+<div id="sub-list" style="margin-top:14px"></div>
 </section>
 
 <section class="admin-panel" id="panel-sim" data-tab="sim" hidden>
@@ -770,6 +788,91 @@ a{color:var(--accent)}
   function route() { show((location.hash || "").slice(1)); }
   window.addEventListener("hashchange", route);
   route();
+})();
+</script>
+<script>
+// 구독자 목록. 토큰은 방문 통계와 같다(저장해 두었으면 그 값을 채운다). 삭제는 한 건씩, 확인을 받고 한다.
+(function () {
+  "use strict";
+  var ENDPOINT = "https://predict-stock-counter.kimname1.workers.dev";
+  var STORE_KEY = "predict-stock-stats-token";
+  var NAMES = { samsung: "삼성전자", sk_hynix: "SK하이닉스" };
+  var rows = [];
+  function $(id) { return document.getElementById(id); }
+  function esc(t) {
+    return String(t).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; });
+  }
+  function say(kind, text) { var m = $("sub-msg"); m.className = "msg " + kind; m.textContent = text; }
+  function kst(ts) {
+    var d = new Date(ts);
+    if (isNaN(d)) return ts;
+    return new Date(d.getTime() + 9 * 3600000).toISOString().slice(0, 16).replace("T", " ");
+  }
+  function token() { return $("sub-token").value.trim() || $("token").value.trim(); }
+  function call(path, init) {
+    init = init || {};
+    init.headers = Object.assign({ Authorization: "Bearer " + token() }, init.headers || {});
+    return fetch(ENDPOINT + path, init).then(function (r) {
+      if (r.status === 401) throw new Error("토큰이 올바르지 않습니다.");
+      if (r.status === 404) throw new Error("배포된 Worker에 구독 기능이 없습니다. counter/worker.js 를 다시 배포하세요.");
+      return r.json().catch(function () { return null; }).then(function (b) {
+        if (!r.ok || !b) throw new Error("조회 실패 (HTTP " + r.status + ")" + (b && b.error ? " " + b.error : ""));
+        return b;
+      });
+    });
+  }
+  function render() {
+    var by = { samsung: 0, sk_hynix: 0 };
+    var people = {};
+    rows.forEach(function (r) { by[r.page] = (by[r.page] || 0) + 1; people[r.email] = 1; });
+    $("sub-tiles").innerHTML = [["전체 주소", Object.keys(people).length], ["삼성전자", by.samsung], ["SK하이닉스", by.sk_hynix]]
+      .map(function (t) { return '<div class="tile"><div class="k">' + t[0] + '</div><div class="v">' + t[1] + "</div></div>"; }).join("");
+    $("sub-list").innerHTML = rows.length
+      ? '<table><thead><tr><th>이메일</th><th>보고서</th><th>신청 시각(KST)</th><th></th></tr></thead><tbody>' +
+        rows.map(function (r, i) {
+          return "<tr><td>" + esc(r.email) + "</td><td>" + esc(NAMES[r.page] || r.page) + "</td><td>" + esc(kst(r.ts)) +
+            '</td><td class="num"><button type="button" data-i="' + i + '" class="sub-del" ' +
+            'style="background:transparent;color:var(--danger);border:1px solid var(--border-strong);padding:4px 10px;font-weight:400">삭제</button></td></tr>';
+        }).join("") + "</tbody></table>"
+      : '<div class="empty">아직 구독자가 없습니다.</div>';
+    $("sub-csv").disabled = !rows.length;
+  }
+  function load() {
+    if (!token()) return;
+    $("sub-go").disabled = true;
+    say("info", "불러오는 중…");
+    call("/subscribers").then(function (b) {
+      rows = b.subscribers || [];
+      say("", "");
+      render();
+    }).catch(function (err) { say("err", err.message); }).finally(function () { $("sub-go").disabled = false; });
+  }
+  $("sub-f").addEventListener("submit", function (e) { e.preventDefault(); load(); });
+  $("sub-list").addEventListener("click", function (e) {
+    var b = e.target.closest ? e.target.closest(".sub-del") : null;
+    if (!b) return;
+    var r = rows[+b.dataset.i];
+    if (!r || !confirm(r.email + " (" + (NAMES[r.page] || r.page) + ") 구독을 지울까요? 되돌릴 수 없습니다.")) return;
+    b.disabled = true;
+    call("/subscribers/delete", { method: "POST", headers: { "Content-Type": "application/json" },
+                                  body: JSON.stringify({ email: r.email, page: r.page }) })
+      .then(load).catch(function (err) { say("err", err.message); b.disabled = false; });
+  });
+  $("sub-csv").addEventListener("click", function () {
+    var q = function (v) { return '"' + String(v).replace(/"/g, '""') + '"'; };
+    var csv = "email,page,subscribed_at_utc\n" + rows.map(function (r) { return [r.email, r.page, r.ts].map(q).join(","); }).join("\n") + "\n";
+    var a = document.createElement("a");
+    a.href = URL.createObjectURL(new Blob(["\ufeff" + csv], { type: "text/csv;charset=utf-8" }));
+    a.download = "subscribers-" + new Date().toISOString().slice(0, 10) + ".csv";
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(function () { URL.revokeObjectURL(a.href); }, 1000);
+  });
+  try { var saved = localStorage.getItem(STORE_KEY); if (saved) $("sub-token").value = saved; } catch (ignored) {}
+  // 메뉴로 처음 들어올 때 토큰이 있으면 바로 불러온다.
+  var loaded = false;
+  function maybe() { if (!loaded && location.hash === "#subscribers" && token()) { loaded = true; load(); } }
+  window.addEventListener("hashchange", maybe);
+  maybe();
 })();
 </script>
 </body></html>

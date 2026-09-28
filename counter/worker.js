@@ -10,6 +10,10 @@
 //                        헤더 `Authorization: Bearer <STATS_TOKEN>` 필요. URL에 토큰을
 //                        싣지 않는다 — 쿼리스트링은 로그와 브라우저 기록에 남는다.
 //   GET /geo             호출자 자신의 대략적인 위치만 돌려준다(점검용).
+//   POST /subscribe      종목 보고서 상단의 구독 신청. 본문 {email, page}. 허용 출처에서만 받는다.
+//   POST /unsubscribe    구독 해지. 본문 {email, page}. 신청과 같은 응답을 돌려준다(가입 여부를 알려 주지 않는다).
+//   GET /subscribers     구독자 목록(비공개, /stats 와 같은 STATS_TOKEN).
+//   POST /subscribers/delete  관리자가 한 건을 지운다(STATS_TOKEN). 본문 {email, page}.
 //
 // Cron Trigger(대시보드 Settings → Triggers → Cron Triggers, 예: `0 3 * * *`)를 걸면
 // 아래 scheduled()가 매일 오래된 조회 기록을 지운다(보관기간 관리).
@@ -39,6 +43,13 @@ const RETENTION_DAYS = 400;
 // 페이지 키도 화이트리스트로 고정한다. 임의 키를 허용하면 남이 테이블을 부풀릴 수 있다.
 const ALLOWED_PAGES = ["main", "samsung", "sk_hynix", "china", "metals", "ai_news",
                        "trends", "interest"];
+
+// 구독을 받는 페이지. 종목 보고서 두 곳에만 버튼이 있다(2026-09-28 요청).
+const SUBSCRIBE_PAGES = ["samsung", "sk_hynix"];
+// 같은 방문자(하루 단위 해시)가 하루에 보낼 수 있는 신청·해지 수. 스크립트로 목록을 채우는 것을 막는다.
+const SUBSCRIBE_DAILY_LIMIT = 10;
+// 형식만 본다. 실제로 받을 수 있는 주소인지는 메일을 보내 보기 전에는 알 수 없다.
+const EMAIL_PATTERN = /^[^\s@<>()\[\],;:"]{1,64}@[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?(?:\.[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?)+$/;
 
 // 크롤러는 사람의 조회가 아니므로 세지 않는다. 완벽한 판별은 불가능하고, 목적은
 // 검색엔진·모니터링 봇이 만드는 명백한 과다 집계를 걷어내는 것이다.
@@ -89,7 +100,8 @@ function corsHeaders(origin) {
   const allowed = ALLOWED_ORIGINS.includes(origin) ? origin : ALLOWED_ORIGINS[0];
   return {
     "Access-Control-Allow-Origin": allowed,
-    "Access-Control-Allow-Headers": "Authorization",
+    "Access-Control-Allow-Headers": "Authorization, Content-Type",
+    "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
     "Vary": "Origin",
     // 카운터 응답이 CDN이나 브라우저에 캐시되면 숫자가 멈춘 것처럼 보인다.
     "Cache-Control": "no-store",
@@ -280,6 +292,77 @@ async function handleStats(request, env, url, origin) {
   );
 }
 
+// 주소는 앞뒤 공백을 빼고 소문자로 둔다 — 같은 사람이 대소문자만 달리 두 번 신청해도 한 건이다.
+export function normalizeEmail(raw) {
+  const email = String(raw || "").trim().toLowerCase();
+  return email.length <= 254 && EMAIL_PATTERN.test(email) ? email : "";
+}
+
+function isAdmin(request, env) {
+  const auth = request.headers.get("Authorization") || "";
+  const token = auth.startsWith("Bearer ") ? auth.slice(7).trim() : "";
+  return Boolean(env.STATS_TOKEN && token && token === env.STATS_TOKEN);
+}
+
+async function readJson(request) {
+  // 본문이 크면 읽지 않는다. 신청 한 건은 수백 바이트면 충분하다.
+  const text = await request.text();
+  if (text.length > 2000) return null;
+  try { return JSON.parse(text); } catch { return null; }
+}
+
+// 신청과 해지. 두 경우 모두 결과와 상관없이 같은 응답을 준다 — 응답으로 어떤 주소가 목록에 있는지
+// 알아낼 수 없어야 한다. 원본 IP는 저장하지 않고, 하루 단위 방문자 해시로 신청 횟수만 제한한다.
+async function handleSubscribe(request, env, origin, action) {
+  if (!countable(request)) return json({ error: "forbidden" }, origin, 403);
+  if (!env.VISITOR_SALT) return json({ error: "VISITOR_SALT가 설정되지 않았습니다" }, origin, 500);
+  const body = await readJson(request);
+  if (!body) return json({ error: "bad request" }, origin, 400);
+  // 사람에게 보이지 않는 칸. 봇이 폼을 통째로 채우면 여기에 값이 들어온다. 조용히 받은 척한다.
+  if (body.website) return json({ ok: true }, origin);
+  const page = String(body.page || "");
+  if (!SUBSCRIBE_PAGES.includes(page)) return json({ error: "unknown page" }, origin, 400);
+  const email = normalizeEmail(body.email);
+  if (!email) return json({ error: "invalid email" }, origin, 400);
+
+  const now = new Date();
+  const day = now.toISOString().slice(0, 10);
+  const visitor = await visitorHash(request, env.VISITOR_SALT, day);
+  const used = await env.DB.prepare(
+    "SELECT COUNT(*) AS n FROM subscribe_log WHERE visitor = ? AND day = ?"
+  ).bind(visitor, day).first();
+  if (used && used.n >= SUBSCRIBE_DAILY_LIMIT) return json({ error: "too many requests" }, origin, 429);
+
+  const write = action === "subscribe"
+    ? env.DB.prepare(
+        "INSERT INTO subscribers (email, page, ts) VALUES (?, ?, ?) ON CONFLICT(email, page) DO NOTHING"
+      ).bind(email, page, now.toISOString())
+    : env.DB.prepare("DELETE FROM subscribers WHERE email = ? AND page = ?").bind(email, page);
+  await env.DB.batch([
+    write,
+    env.DB.prepare("INSERT INTO subscribe_log (visitor, day) VALUES (?, ?)").bind(visitor, day),
+  ]);
+  return json({ ok: true }, origin);
+}
+
+async function handleSubscribers(request, env, origin) {
+  if (!isAdmin(request, env)) return json({ error: "unauthorized" }, origin, 401);
+  const rows = await env.DB.prepare(
+    "SELECT email, page, ts FROM subscribers ORDER BY ts DESC LIMIT 10000"
+  ).all();
+  return json({ subscribers: rows.results }, origin);
+}
+
+async function handleSubscriberDelete(request, env, origin) {
+  if (!isAdmin(request, env)) return json({ error: "unauthorized" }, origin, 401);
+  const body = await readJson(request);
+  const email = normalizeEmail(body && body.email);
+  const page = String((body && body.page) || "");
+  if (!email || !SUBSCRIBE_PAGES.includes(page)) return json({ error: "bad request" }, origin, 400);
+  await env.DB.prepare("DELETE FROM subscribers WHERE email = ? AND page = ?").bind(email, page).run();
+  return json({ ok: true }, origin);
+}
+
 // 호출자 자신의 위치만 돌려준다. 다른 방문자 정보는 나오지 않으며, Cloudflare가
 // 이 계정에서 시/도·도시를 실제로 채워 주는지 확인하기 위한 점검용이다.
 function handleGeo(request, origin) {
@@ -301,11 +384,18 @@ export default {
     if (request.method === "OPTIONS") {
       return new Response(null, { status: 204, headers: corsHeaders(origin) });
     }
-    if (request.method !== "GET") {
-      return json({ error: "method not allowed" }, origin, 405);
-    }
 
     try {
+      if (request.method === "POST") {
+        if (url.pathname === "/subscribe") return await handleSubscribe(request, env, origin, "subscribe");
+        if (url.pathname === "/unsubscribe") return await handleSubscribe(request, env, origin, "unsubscribe");
+        if (url.pathname === "/subscribers/delete") return await handleSubscriberDelete(request, env, origin);
+        return json({ error: "not found" }, origin, 404);
+      }
+      if (request.method !== "GET") {
+        return json({ error: "method not allowed" }, origin, 405);
+      }
+      if (url.pathname === "/subscribers") return await handleSubscribers(request, env, origin);
       if (url.pathname === "/hit") return await handleHit(request, env, url, origin);
       if (url.pathname === "/stats") return await handleStats(request, env, url, origin);
       if (url.pathname === "/geo") return handleGeo(request, origin);
@@ -326,5 +416,8 @@ export default {
     }
     const cutoff = new Date(Date.now() - RETENTION_DAYS * 86400000).toISOString().slice(0, 10);
     await env.DB.prepare("DELETE FROM hits WHERE day < ?").bind(cutoff).run();
+    // 신청 횟수 제한용 기록은 그날만 쓰인다. 구독자 목록(subscribers)은 지우지 않는다.
+    const yesterday = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
+    await env.DB.prepare("DELETE FROM subscribe_log WHERE day < ?").bind(yesterday).run();
   },
 };

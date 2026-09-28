@@ -216,6 +216,42 @@ FROM hits WHERE day >= date('now', '-14 day')
 GROUP BY day, page ORDER BY day DESC;
 ```
 
+## 구독 신청 (2026-09-28)
+
+삼성전자·SK하이닉스 보고서 맨 위의 **구독** 버튼을 누르면 이메일 입력칸이 열린다. 신청은
+`POST /subscribe`로 이 Worker에 오고 D1의 `subscribers` 표에 (주소, 페이지)마다 한 행으로 남는다.
+목록은 관리자 페이지의 **구독자** 메뉴에서 `STATS_TOKEN`으로 보고, CSV로 받고, 한 건씩 지울 수 있다.
+
+### 켜는 법 (한 번)
+
+1. D1 Console에서 아래 세 문장을 한 문장씩 실행한다(`schema.sql` 끝부분과 같다).
+
+   ```sql
+   CREATE TABLE IF NOT EXISTS subscribers (email TEXT NOT NULL, page TEXT NOT NULL, ts TEXT NOT NULL, PRIMARY KEY (email, page));
+   ```
+
+   ```sql
+   CREATE TABLE IF NOT EXISTS subscribe_log (visitor TEXT NOT NULL, day TEXT NOT NULL);
+   ```
+
+   ```sql
+   CREATE INDEX IF NOT EXISTS idx_subscribe_log ON subscribe_log (visitor, day);
+   ```
+
+2. `worker.js`를 대시보드에 붙여넣고 Deploy 한다(아래 "Worker를 고친 뒤에는…" 참고). 배포 전에는
+   구독 버튼을 눌러도 "신청을 보내지 못했습니다"가 뜬다.
+
+### 지키는 것
+
+- **수집 항목은 이메일·신청한 페이지·신청 시각뿐이다.** IP·위치는 남기지 않는다. 입력칸 아래에
+  수집 항목·목적·보관 기간을 적고, 동의 체크를 해야 보낼 수 있다.
+- **응답으로 가입 여부를 알 수 없다.** 새 신청·중복 신청·해지·없는 주소 해지가 모두 같은 응답이다.
+- **남용 방지** — 허용 출처에서 온 요청만 받고, 하루 단위 방문자 해시마다 하루 10건까지 받는다.
+  사람에게 보이지 않는 칸(`website`)이 채워진 신청은 받은 척만 하고 저장하지 않는다.
+- **해지** — 같은 입력창의 "구독 해지"로 본인이 지울 수 있다. 관리자 페이지에서도 지울 수 있다.
+- **확인 메일은 보내지 않는다.** 메일 발송 서비스가 없어서, 남의 주소를 넣어도 막을 방법이 없다.
+  실제로 메일을 보내기 시작한다면 그 전에 확인 메일(더블 옵트인)을 붙이는 것이 좋다.
+
 ## 위치 정보
 
 `hits.region`(시/도)과 `hits.city`(시/군/구)는 Cloudflare가 IP로 추정해 붙여 주는 값이다.

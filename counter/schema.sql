@@ -35,3 +35,19 @@ INSERT OR IGNORE INTO counters (page, total) VALUES ('main', 0), ('samsung', 0),
 -- (새로 만든 DB라면 위 CREATE TABLE에 이미 들어 있으므로 실행하면 오류가 난다.)
 -- ALTER TABLE hits ADD COLUMN region TEXT NOT NULL DEFAULT '';
 -- ALTER TABLE hits ADD COLUMN city TEXT NOT NULL DEFAULT '';
+
+-- 종목 보고서 상단 구독(2026-09-28). 주소는 소문자로 맞춰 (주소, 페이지)마다 한 행.
+-- 수집 항목은 이메일·신청한 페이지·신청 시각뿐이다. IP·위치는 남기지 않는다.
+CREATE TABLE IF NOT EXISTS subscribers (
+  email TEXT NOT NULL,
+  page  TEXT NOT NULL,           -- samsung / sk_hynix
+  ts    TEXT NOT NULL,           -- 신청 시각 ISO8601 UTC
+  PRIMARY KEY (email, page)
+);
+
+-- 신청·해지 횟수 제한용. 하루 단위 방문자 해시만 두고, scheduled()가 지난 날짜 행을 지운다.
+CREATE TABLE IF NOT EXISTS subscribe_log (
+  visitor TEXT NOT NULL,
+  day     TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_subscribe_log ON subscribe_log (visitor, day);

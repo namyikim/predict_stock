@@ -499,6 +499,74 @@ def colab_notice_html(prefix, show_ok=False):
             'el.hidden=false;}).catch(function(){});})();</script>')
 
 
+BACK_LINK_HTML = ('<a href="../" style="display:inline-block;font-size:12px;color:#1a5490;text-decoration:none;'
+                  'border:1px solid #cedff0;border-radius:5px;padding:5px 11px;background:#f0f6fc">← 보고서 목록</a>')
+
+
+def report_top_bar_html(endpoint, page, name):
+    """종목 보고서 맨 위 줄: 왼쪽 '보고서 목록', 오른쪽 '구독' 버튼(2026-09-28 요청).
+
+    구독을 누르면 이메일 칸이 열리고, 신청은 조회수 카운터 Worker(counter/worker.js)의 POST /subscribe 로 가서
+    D1 subscribers 표에 남는다. 목록은 관리자 페이지 '구독자' 메뉴에서 본다. 개인정보 보호법에 따라 수집 항목·목적·
+    보관 기간을 칸 아래에 적고 동의를 받아야 보낸다. endpoint 가 비면 구독 버튼 없이 목록 링크만 둔다.
+    """
+    if not endpoint:
+        return f'<div style="margin-bottom:10px">{BACK_LINK_HTML}</div>'
+    e = lambda t: str(t).replace("&", "&amp;").replace("<", "&lt;").replace('"', "&quot;")
+    btn = ('border-radius:5px;padding:7px 14px;font-size:13px;font-family:inherit;cursor:pointer;min-height:36px')
+    return (
+        '<div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:10px">'
+        f'{BACK_LINK_HTML}'
+        '<button type="button" id="sub-open" aria-expanded="false" aria-controls="sub-box" '
+        f'style="{btn};border:1px solid #1a5490;background:#1a5490;color:#fff;font-weight:600">✉ 구독</button></div>'
+        '<div id="sub-box" hidden style="border:1px solid #cedff0;background:#f7fafd;border-radius:6px;padding:12px 14px;'
+        'margin-bottom:14px;font-size:13px;line-height:1.6;position:relative">'
+        '<form id="sub-form" novalidate>'
+        f'<div style="font-weight:600;margin-bottom:6px">{e(name)} 보고서 구독</div>'
+        '<div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">'
+        '<label for="sub-email" style="position:absolute;left:-9999px">이메일</label>'
+        '<input id="sub-email" type="email" required maxlength="254" autocomplete="email" inputmode="email" '
+        'placeholder="name@example.com" style="flex:1;min-width:200px;padding:8px 10px;font-size:14px;'
+        'border:1px solid #ccd2d9;border-radius:5px;font-family:inherit">'
+        f'<button type="submit" id="sub-send" style="{btn};border:1px solid #1a5490;background:#1a5490;color:#fff;'
+        'font-weight:600">구독 신청</button>'
+        f'<button type="button" id="sub-cancel" style="{btn};border:1px solid #ccd2d9;background:#fff;color:#3a4652">'
+        '구독 해지</button></div>'
+        # 사람에게 보이지 않는 칸. 봇이 폼을 통째로 채우면 값이 들어와 Worker 가 저장하지 않는다.
+        '<input id="sub-web" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" '
+        'style="position:absolute;left:-9999px;width:1px;height:1px">'
+        '<label style="display:flex;gap:6px;align-items:flex-start;margin-top:8px;font-size:12px;color:#3a4652">'
+        '<input id="sub-agree" type="checkbox" style="margin-top:3px"> '
+        '<span>개인정보 수집·이용에 동의합니다(필수).</span></label>'
+        '<div style="font-size:11px;color:#6b7178;margin-top:4px">'
+        f'수집 항목: 이메일 주소 · 목적: {e(name)} 보고서 소식 안내 · 보관 기간: 구독 해지 시까지(해지하면 바로 지웁니다). '
+        '동의하지 않으면 구독할 수 없습니다. 해지는 같은 주소를 넣고 "구독 해지"를 누르면 됩니다.</div>'
+        '<div id="sub-msg" role="status" aria-live="polite" style="margin-top:6px;font-size:12px"></div>'
+        '</form></div>'
+        '<script>(function(){'
+        f'var E="{e(endpoint)}",P="{e(page)}";'
+        'var $=function(i){return document.getElementById(i);};'
+        'var box=$("sub-box"),open=$("sub-open"),msg=$("sub-msg");if(!box||!open||!window.fetch)return;'
+        'open.addEventListener("click",function(){box.hidden=!box.hidden;open.setAttribute("aria-expanded",String(!box.hidden));'
+        'if(!box.hidden)$("sub-email").focus();});'
+        'function say(t,ok){msg.textContent=t;msg.style.color=ok?"#1e6b34":"#a8322a";}'
+        'function send(path,done){var email=$("sub-email").value.trim();'
+        'if(!/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email)){say("이메일 주소를 확인해 주세요.");$("sub-email").focus();return;}'
+        '$("sub-send").disabled=$("sub-cancel").disabled=true;say("보내는 중…",true);'
+        'fetch(E+path,{method:"POST",headers:{"Content-Type":"application/json"},'
+        'body:JSON.stringify({email:email,page:P,website:$("sub-web").value})})'
+        '.then(function(r){if(r.status===429)throw new Error("오늘은 더 보낼 수 없습니다. 내일 다시 시도해 주세요.");'
+        'if(r.status===400)throw new Error("이메일 주소를 확인해 주세요.");'
+        'if(!r.ok)throw new Error("신청을 보내지 못했습니다. 잠시 뒤 다시 시도해 주세요.");say(done,true);$("sub-email").value="";})'
+        '.catch(function(err){say(err&&err.message?err.message:"신청을 보내지 못했습니다.");})'
+        '.finally(function(){$("sub-send").disabled=$("sub-cancel").disabled=false;});}'
+        '$("sub-form").addEventListener("submit",function(ev){ev.preventDefault();'
+        'if(!$("sub-agree").checked){say("개인정보 수집·이용에 동의해야 구독할 수 있습니다.");return;}'
+        'send("/subscribe","구독 신청이 접수되었습니다.");});'
+        '$("sub-cancel").addEventListener("click",function(){send("/unsubscribe","구독 해지 요청이 처리되었습니다.");});'
+        '})();</script>')
+
+
 def event_notice_html(flags):
     flags = list(flags or [])
     if not flags:

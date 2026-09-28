@@ -420,15 +420,20 @@ class BackLinkTests(unittest.TestCase):
     def setUpClass(cls):
         import json
         nb = json.loads((ROOT / "samsung_direction_model_colab.ipynb").read_text(encoding="utf-8"))
-        cls.source = "\n".join("".join(c["source"]) for c in nb["cells"])
+        # 헬퍼 셀(report_html 등)을 빼고 본문 셀만 본다 — 버튼 HTML 은 헬퍼 함수에 있고, 본문은 그 함수를 부른다.
+        cls.source = "\n".join("".join(c["source"]) for c in nb["cells"] if "tags" not in c.get("metadata", {}))
+        cls.call = "report_top_bar_html(COUNTER_ENDPOINT, TARGET, TARGET_NAME)"
 
     def test_button_exists_and_points_to_the_index(self):
-        self.assertIn('<a href="../"', self.source)
-        self.assertIn("← 보고서 목록", self.source)
+        import report_html
+        bar = report_html.report_top_bar_html("", "samsung", "삼성전자")
+        self.assertIn('<a href="../"', bar)
+        self.assertIn("← 보고서 목록", bar)
+        self.assertIn(self.call, self.source)
 
     def test_button_comes_before_the_title(self):
         # 주석에도 '종합 보고서'가 나오므로 제목 태그로 찾는다.
-        button = self.source.index("← 보고서 목록")
+        button = self.source.index(self.call)
         # 제목에 종목 이름이 들어간다(2026-09-17): '삼성전자 종합 보고서'
         title = self.source.index("{TARGET_NAME} 종합 보고서</h2>")
         self.assertLess(button, title, "버튼이 제목보다 뒤에 있으면 상단 버튼이 아니다")
@@ -436,7 +441,36 @@ class BackLinkTests(unittest.TestCase):
     def test_button_is_inside_the_page_wrapper(self):
         # 바깥 래퍼 div 안에 있어야 가운데 정렬·폭 제한이 적용된다.
         wrapper = self.source.index("max-width:980px;margin:0 auto;")
-        self.assertLess(wrapper, self.source.index("← 보고서 목록"))
+        self.assertLess(wrapper, self.source.index(self.call))
+
+
+class SubscribeBarTests(unittest.TestCase):
+    """종목 보고서 상단 구독 버튼(2026-09-28): 동의 없이 보내지 않고, 카운터 Worker 로 보낸다."""
+
+    def test_subscribe_form_asks_consent_and_posts_to_the_worker(self):
+        import report_html
+        bar = report_html.report_top_bar_html("https://counter.example", "sk_hynix", "SK하이닉스")
+        self.assertIn("← 보고서 목록", bar)
+        self.assertLess(bar.index("← 보고서 목록"), bar.index("✉ 구독"))
+        self.assertIn('id="sub-box" hidden', bar, "처음에는 닫혀 있다")
+        self.assertIn('type="email"', bar)
+        self.assertIn("개인정보 수집·이용에 동의", bar)
+        for item in ("수집 항목: 이메일 주소", "목적: SK하이닉스 보고서 소식 안내", "보관 기간: 구독 해지 시까지"):
+            self.assertIn(item, bar)
+        self.assertIn('if(!$("sub-agree").checked)', bar)
+        self.assertIn('E="https://counter.example",P="sk_hynix"', bar)
+        self.assertIn('send("/subscribe"', bar)
+        self.assertIn('send("/unsubscribe"', bar)
+        self.assertIn('name="website"', bar, "봇 걸러내는 숨은 칸")
+
+    def test_page_key_is_one_the_worker_accepts(self):
+        worker = (ROOT / "counter" / "worker.js").read_text(encoding="utf-8")
+        self.assertIn('const SUBSCRIBE_PAGES = ["samsung", "sk_hynix"];', worker)
+
+    def test_admin_page_lists_subscribers(self):
+        admin = (ROOT / "docs" / "admin" / "index.html").read_text(encoding="utf-8")
+        self.assertIn('data-tab="subscribers"', admin)
+        self.assertIn('"/subscribers"', admin)
 
 
 class AllReportsBackLinkTests(unittest.TestCase):

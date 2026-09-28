@@ -1,0 +1,231 @@
+{
+  "target": "sk_hynix",
+  "name": "SK하이닉스",
+  "peer_name": "삼성전자",
+  "session_date": "2026-09-28",
+  "generated_at": "2026-09-28 17:31 KST",
+  "summary": {
+    "prev_close": 1862000.0,
+    "open": 1825000.0,
+    "high": 1840000.0,
+    "low": 1768000.0,
+    "close": 1768000.0,
+    "gap": -0.019871106337271738,
+    "session": -0.031232876712328772,
+    "c2c": -0.050483351235230955,
+    "high_vs_open": 0.008219178082191858,
+    "low_vs_open": -0.031232876712328772,
+    "volume": 3494830.0,
+    "volume_ratio": 1.0598895056175588,
+    "kospi_c2c": -0.026999272638204896,
+    "peer_c2c": -0.05429071803852892,
+    "usdkrw_chg": -0.00641383368330406,
+    "sox_ret": 0.01411959840720578,
+    "nasdaq_ret": 0.00480158098078598
+  },
+  "classification": {
+    "labels": [
+      "장중 급변 09:05 주도",
+      "지수 동조"
+    ],
+    "reasons": [
+      "09:05 봉 -2.20%(σ의 10.57배, 거래량 3.64배)가 세션 -3.12%의 92%",
+      "KOSPI -2.70% vs 종목 -5.05%, 5분 수익률 상관 0.85 — 종목 고유 요인이 약함"
+    ]
+  },
+  "events": [
+    {
+      "time": "2026-09-28T09:05:00+09:00",
+      "ret": -0.022019334049409256,
+      "z": 10.57,
+      "volume_ratio": 3.64,
+      "cum_before": 0.0,
+      "cum_after": -0.0013709898546750976,
+      "session_share": 0.9230403595194906,
+      "score": 12.300662486894494,
+      "news": [
+        {
+          "time": "2026-09-28T09:05:58+09:00",
+          "title": "하나증권 \"엔비디아 AI칩 중국 판매 가능성, 관련주 SK하이닉스 삼성전자\"",
+          "source": "비즈니스포스트",
+          "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTE94RFJGeU8tQXEzRWJzcUhyeWl2QVFOcHotVmw4ZXA3ckl4aHdmTE9zZ0JHeFRwY01qOHVjT3dGcjllWTROWkxvU1lDUXB4dlZSLXVTQzUxaW5POE53ZHdLX2JqbEEyRTFiWjNiVUxZQnFGUkE?oc=5"
+        },
+        {
+          "time": "2026-09-28T08:21:00+09:00",
+          "title": "대신證 “SK하이닉스, HBM4 품질 우려 과도…목표가 320만원 유지”",
+          "source": "이투데이",
+          "link": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE5STWdGTnZTOGVTMWJsUHJhTGdTdUlfZUN0YVZ3aHlPYVc1dTNnYXQzRFR3QlAzbWJJUklQMnB6LUV0MEx3bVZwbHFNSC1obEJZSjItcw?oc=5"
+        },
+        {
+          "time": "2026-09-28T09:20:00+09:00",
+          "title": "[특징주] 솔리다임 IPO추진설에…SK하이닉스, 장중 2%대 약세",
+          "source": "이투데이",
+          "link": "https://news.google.com/rss/articles/CBMiVEFVX3lxTFBoM1ZXUTl2Nmo0S085Q0ZHdjlOTUxYLUZOa2NUMW1vTkpnSTBtbjMzZlNxZFN0QlgtUGF0Zm1rb25UWlVLR01EdEhTV2xjRHdaRVh1bQ?oc=5"
+        }
+      ]
+    },
+    {
+      "time": "2026-09-28T10:25:00+09:00",
+      "ret": 0.008185153824442626,
+      "z": 3.93,
+      "volume_ratio": 2.23,
+      "cum_before": -0.02851658897724152,
+      "cum_after": -0.02056484782012613,
+      "session_share": -0.3431178850315207,
+      "score": 4.375871157911156,
+      "news": [
+        {
+          "time": "2026-09-28T09:05:58+09:00",
+          "title": "하나증권 \"엔비디아 AI칩 중국 판매 가능성, 관련주 SK하이닉스 삼성전자\"",
+          "source": "비즈니스포스트",
+          "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTE94RFJGeU8tQXEzRWJzcUhyeWl2QVFOcHotVmw4ZXA3ckl4aHdmTE9zZ0JHeFRwY01qOHVjT3dGcjllWTROWkxvU1lDUXB4dlZSLXVTQzUxaW5POE53ZHdLX2JqbEEyRTFiWjNiVUxZQnFGUkE?oc=5"
+        },
+        {
+          "time": "2026-09-28T09:58:00+09:00",
+          "title": "대신證 \"SK하이닉스, HBM4·해외 투자 이슈 타격 없어…목표가 320만원\"",
+          "source": "news1.kr",
+          "link": "https://news.google.com/rss/articles/CBMiX0FVX3lxTFB6VW8yQ0hOSWpvVDlmc1FiN1dzN1BOUkZVWmtPZ01vQS1NaTZMdGNrUEhtRGdvb2JvaFpncjc3ZlV4XzNraUVaREEtWWRzQjVlQVNQT0VwRmN6dzQ1MzNZ0gFkQVVfeXFMUHNpMVhwZVp2X2c1MGN1R2dHR3FmRHM2dDNIQnRDZUx5QnJYVng3OC1zTVV6T1M0d3RrMWNKQWc4dzh5NGVJZTAwUFQ3d21oMDdJaFhnVENKa2xyOEl1Z3F2M1dhaw?oc=5"
+        },
+        {
+          "time": "2026-09-28T09:30:06+09:00",
+          "title": "코스피, 연휴 뒤 7040선 약세 출발…SK하이닉스 2%대↓[개장시황]",
+          "source": "v.daum.net",
+          "link": "https://news.google.com/rss/articles/CBMiT0FVX3lxTE5rZ3dIZmI5TWlpVHVPemlhTTVhNjBhbDVxUEJnQmROSWxjWUVCdXBsNVpnZ0ZaU1hsMzE3Si0xQUcxTWJEdlRTc3NOcnZESVE?oc=5"
+        },
+        {
+          "time": "2026-09-28T09:37:58+09:00",
+          "title": "'美 국채금리 부담'…삼성전자·SK하이닉스 동반 하락[개장시황]",
+          "source": "news1.kr",
+          "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE9Bc3hEUE54T2pHak94bXU2TGh5Z1hEZXZ2b0pFWFhGWEd6UEk4TGtmQndvcENLd1FiT28tQjBmSWNJNTdINVNtVGtxWXd5aUtycTNwY3pwb29ja1nSAWBBVV95cUxONnlnajhHVFY3SzNwY3lrVVd5anppb1MxYUludTRTZjVIaE56VVVrQ1o2c3VwYzJPaFd1bWMwREdURUN1RkRWXzcxNzczOGMza3BLMVFtREFBNktEUnhiOWw?oc=5"
+        },
+        {
+          "time": "2026-09-28T09:44:00+09:00",
+          "title": "[리포트 브리핑]SK하이닉스, '소음보다 방향성에' 목표가 3,200,000원 - 대신증권",
+          "source": "뉴스핌",
+          "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE9YR0RiMHFrVlZWakNEMkpaeU5zNUhkOG9xeTJ2cVd3eHRzRmlPWDB3WUI1OUVKS2x3cGhneUdOcUlnVGxhV1J0M29aR2M2UUgzdDQ1LWgzN0llRDlO?oc=5"
+        }
+      ]
+    }
+  ],
+  "turning_point": {
+    "high_time": "2026-09-28T09:20:00+09:00",
+    "high": 0.00027419797093508613,
+    "low_time": "2026-09-28T11:45:00+09:00",
+    "low": -0.029339182890046667,
+    "pattern": "고점 후 반락"
+  },
+  "closing_share": 0.21584861028976773,
+  "intraday_corr_kospi": 0.849674333326833,
+  "intraday_note": "장중 봉은 09:05~14:55까지만 있어 마감 구간(14:55~15:30)은 일봉 종가로만 봅니다(그 구간 -0.67%).",
+  "intraday_coverage": "09:05~14:55",
+  "overnight_news": [
+    {
+      "time": "2026-09-28T08:21:00+09:00",
+      "title": "대신證 “SK하이닉스, HBM4 품질 우려 과도…목표가 320만원 유지”",
+      "source": "이투데이",
+      "link": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE5STWdGTnZTOGVTMWJsUHJhTGdTdUlfZUN0YVZ3aHlPYVc1dTNnYXQzRFR3QlAzbWJJUklQMnB6LUV0MEx3bVZwbHFNSC1obEJZSjItcw?oc=5"
+    },
+    {
+      "time": "2026-09-28T04:30:01+09:00",
+      "title": "“SK하이닉스 손자회사 솔리다임, 이르면 내년 미국 상장 검토”",
+      "source": "v.daum.net",
+      "link": "https://news.google.com/rss/articles/CBMiS0FVX3lxTE9vdW92Y2hwNUdwN2RFeUhlc296cFAzLWg4RG9SYl92RGN1UWRWLVZ1OEcxeTRONmNLNTAzLTQwV3lfak9ZT0ZkbUt2VQ?oc=5"
+    },
+    {
+      "time": "2026-09-28T05:45:20+09:00",
+      "title": "SK이노베이션은 세미콜론수송으로, SK서린빌딩은 SK하이닉스 입성 유력",
+      "source": "SPI - 상업용 부동산 콘텐츠 & 데이터 애널리틱스",
+      "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTFBQdHd0dTYyR0VxcXE3UlJmcVFLcGtRZFpaVUhqWWdGemNVUzdOZVdBN1h5M1Nkd0RJNHB4c1c0ZGtuNS1obkw2N0gwcy00WDZwT0txdGsxNGZWQTA?oc=5"
+    }
+  ],
+  "top_news": [
+    {
+      "time": "2026-09-28T16:45:09+09:00",
+      "title": "엔비디아 차세대 AI칩 겨냥한 SK하이닉스…TSMC와 HBM5 검증 돌입, 메모리 주도권 강화",
+      "source": "sisaworld.kr",
+      "link": "https://news.google.com/rss/articles/CBMiakFVX3lxTE1XNGw3d01wODlBX1FJLU1hUlNlcVBWNzJqNGlrSzlpZUVEaUtvYnlxRy1xRllXTThTR3dJaWw4NTkwT1YxLVdhQlBjeF9PaWhQTGtUd0hvLVB0VV9rODZiU01tTkJaeTRmV3c?oc=5"
+    },
+    {
+      "time": "2026-09-28T14:32:00+09:00",
+      "title": "SK하이닉스, TSMC와 AI 메모리 협력 강화…‘3D 패브릭-HBM’ 2년 연속 파트너상",
+      "source": "이투데이",
+      "link": "https://news.google.com/rss/articles/CBMiVEFVX3lxTFBEYTZvUXVjZ3RJZUg4blotY2sycVRoNUl1ZXZUOU5jZjNXMl8wLXRCSm0takdRNUd5ekE0MTdjOGRQTFJxZFlJaWR1YXhHdnRnTmRBRQ?oc=5"
+    },
+    {
+      "time": "2026-09-28T15:33:47+09:00",
+      "title": "SK하이닉스, TSMC와 HBM5까지 협력 확대…차세대 AI 메모리 '맞손'",
+      "source": "메트로신문",
+      "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE1kLUhqNjNTR2lnNm1qNmFEcXUyM1FOS3lnOUVUQkdlZWFpQ09sSklQWWlJRm1zVHFiMnZOV2FkNWZ0emIxMHVNX1Jaa3FKQzNwZHluTkVxc2gybFpvM182Rw?oc=5"
+    },
+    {
+      "time": "2026-09-28T16:46:17+09:00",
+      "title": "SK하이닉스, TSMC와 HBM5 협력 성과 인정…차세대 AI 메모리 공개",
+      "source": "뉴스저널리즘",
+      "link": "https://news.google.com/rss/articles/CBMia0FVX3lxTE5HamhiX25aVC1xYjVRLW51ZlloTVBEUDZvdjBCdWFqNTFFckk4Ry1GZzFlU3FtbUFtcl9IWWdQbXZtckktbFQzOHd5ZWtldzJRV0RJR3JKb1lGYnJyVHpZejd1Si1DV0FkUURJ?oc=5"
+    },
+    {
+      "time": "2026-09-28T09:05:58+09:00",
+      "title": "하나증권 \"엔비디아 AI칩 중국 판매 가능성, 관련주 SK하이닉스 삼성전자\"",
+      "source": "비즈니스포스트",
+      "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTE94RFJGeU8tQXEzRWJzcUhyeWl2QVFOcHotVmw4ZXA3ckl4aHdmTE9zZ0JHeFRwY01qOHVjT3dGcjllWTROWkxvU1lDUXB4dlZSLXVTQzUxaW5POE53ZHdLX2JqbEEyRTFiWjNiVUxZQnFGUkE?oc=5"
+    },
+    {
+      "time": "2026-09-28T11:30:15+09:00",
+      "title": "마이크론 실적 발표 앞두고 메모리 장기 호황 '낙관론', 삼성전자 SK하이닉스에 청신호",
+      "source": "비즈니스포스트",
+      "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTE1NZnp1M0VCSmZMN21qX2RvWGY0UGhtdGZmRGstV1JYTDdiSExjOFZKSDcwcU1mRnhtZUtlSW1nNjFoOTVJU2d6eUtXMklHZF9UM2lYa0hyVUxSeHNZNHN6X0hJVlNaRmlfMkR5aVVIckR6WUU?oc=5"
+    }
+  ],
+  "disclosures": [],
+  "disclosure_note": null,
+  "flows": null,
+  "forecasts": [
+    {
+      "model": "No macro ensemble",
+      "hit": true,
+      "verdict": "맞음 — 예측 하락 41%, 실제 하락(-5.05%)",
+      "legs": "갭 -1.99%(하락) · 세션 -3.12%(하락)",
+      "where": "결과는 주로 장중에서 정해졌습니다.",
+      "band": 0.0107723785153015,
+      "probs": [
+        0.4112492799986105,
+        0.3206563447928315,
+        0.2680943752085579
+      ],
+      "actual": "하락",
+      "predicted": "하락"
+    },
+    {
+      "model": "Mean ensemble",
+      "hit": true,
+      "verdict": "맞음 — 예측 하락 42%, 실제 하락(-5.05%)",
+      "legs": "갭 -1.99%(하락) · 세션 -3.12%(하락)",
+      "where": "결과는 주로 장중에서 정해졌습니다.",
+      "band": 0.0107723785153015,
+      "probs": [
+        0.4217665016667003,
+        0.2945214264046386,
+        0.2837120719286611
+      ],
+      "actual": "하락",
+      "predicted": "하락"
+    },
+    {
+      "model": "Candidate expanding",
+      "hit": true,
+      "verdict": "맞음 — 예측 하락 50%, 실제 하락(-5.05%)",
+      "legs": "갭 -1.99%(하락) · 세션 -3.12%(하락)",
+      "where": "결과는 주로 장중에서 정해졌습니다.",
+      "band": 0.0107723785153015,
+      "probs": [
+        0.497431823225957,
+        0.2540034515389613,
+        0.2485647252350816
+      ],
+      "actual": "하락",
+      "predicted": "하락"
+    }
+  ],
+  "price_check": "1거래일 예상 구간 1,776,017~1,942,412원 · 종가 1,768,000원 → 구간 밖",
+  "disclaimer": "시간이 맞는 것이지 원인 확정이 아닙니다. 뉴스 없이 움직이는 날(수급·프로그램·옵션 만기)이 많고, 기사 발행 시각은 실제 정보 유통보다 늦거나 앞섭니다. 이 절은 설명 도구이며 다음날 예측에 자동 반영되지 않습니다."
+}

@@ -797,6 +797,18 @@ def saving_investment_chart(frame, start_year=1990):
             '자료: 한국은행 ECOS(2.1.1.1 주요지표 연간지표, 2.5.1.1 국제수지).</div>')
 
 
+# 왼쪽 메뉴(2026-09-28 요청: 모든 그림이 한 페이지에 이어져 스크롤이 길다). 절(그림) 하나가 메뉴 하나다.
+# 열쇠는 절 제목의 앞부분이다. 목록에 없는 절(한눈에 보는 쉬운 요약)은 첫 메뉴 '한눈에'에 들어간다.
+MACRO_TABS = (
+    ("원/달러 결정 요인", ("원/달러 결정 요인",)),
+    ("원/달러 · 위안/달러", ("원/달러와 위안/달러",)),
+    ("한·미 실질금리차", ("원/달러와 한·미 실질금리차",)),
+    ("저축·투자·경상수지", ("총저축률",)),
+    ("미·일 금리차 · 엔/달러", ("미·일 금리차",)),
+    ("미국 신용·국채·나스닥", ("미국 신용위험",)),
+)
+
+
 def build_page(now=None, fx_frame=None, fx_info=None, us_jp_frame=None, us_jp_info=None,
                us_market_frame=None, us_market_info=None, saving_frame=None, saving_info=None):
     now = now or datetime.now(KST)
@@ -833,6 +845,10 @@ def build_page(now=None, fx_frame=None, fx_info=None, us_jp_frame=None, us_jp_in
     elif us_market_info and us_market_info.get("failed"):
         body += ('<div class="empty">미국 금융시장 자료를 받지 못했습니다 — '
                  + escape("; ".join(f"{k}: {v}" for k, v in us_market_info["failed"].items())) + '</div>')
+    # 메뉴 하나에 절 하나라 '1.' 같은 번호는 뜻이 없다 — 번호를 붙이지 않는다(data-nonum).
+    from report_html import tabify_sections
+    body = tabify_sections('<div>' + body.replace('<h3 ', '<h3 data-nonum ') + '</div>',
+                           groups=MACRO_TABS, default_label="한눈에")
     return (
         '<!doctype html>\n<html lang="ko"><head><meta charset="utf-8">'
         '<meta name="viewport" content="width=device-width, initial-scale=1">'

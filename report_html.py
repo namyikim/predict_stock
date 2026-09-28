@@ -192,16 +192,20 @@ _SECTION_NUMBER = re.compile(r'^\d+(?:-\d+)?\.\s*')
 # 탭 막대는 해당 절로 건너뛰는 링크로 동작한다 — 무엇도 숨겨지지 않는 쪽으로 실패한다.
 _TAB_STYLE = (
     '<style>'
-    '#rtabs-root .rtabs{position:sticky;top:0;z-index:20;display:flex;gap:2px;overflow-x:auto;'
-    'background:#fff;border-bottom:1px solid #d8dce0;margin:16px 0 10px;padding-top:6px;'
-    'scrollbar-width:none;-webkit-overflow-scrolling:touch}'
-    '#rtabs-root .rtabs::-webkit-scrollbar{display:none}'
-    '#rtabs-root .rtabs a{flex:0 0 auto;padding:9px 14px;font-size:13px;line-height:1.2;color:#5b6570;'
-    'text-decoration:none;white-space:nowrap;border-bottom:3px solid transparent;margin-bottom:-1px}'
-    '#rtabs-root .rtabs a[aria-selected="true"]{color:#1a1a1a;font-weight:700;border-bottom-color:#1a5490}'
-    '#rtabs-root .rtabs a:focus-visible{outline:2px solid #1a5490;outline-offset:-2px}'
+    # 밑줄만 있는 글자 탭은 버튼으로 읽히지 않았다(2026-09-28 지적). 테두리·배경이 있는 알약 버튼으로 두고,
+    # 고른 탭은 파랗게 채운다. 줄바꿈해서 모든 탭이 한눈에 보이게 한다 — 옆으로 숨은 탭은 있는 줄 몰랐다.
+    '#rtabs-root .rtabs{position:sticky;top:0;z-index:20;display:flex;flex-wrap:wrap;gap:6px;'
+    'background:#fff;border-bottom:1px solid #d8dce0;margin:16px 0 12px;padding:8px 0 10px}'
+    '#rtabs-root .rtabs a{flex:0 0 auto;padding:8px 16px;min-height:36px;box-sizing:border-box;font-size:14px;'
+    'font-weight:600;line-height:1.3;color:#1a5490;background:#f0f6fc;border:1px solid #b9d3ec;'
+    'border-radius:999px;text-decoration:none;white-space:nowrap}'
+    '#rtabs-root .rtabs a:hover{background:#e0edf9;border-color:#7fa9d4}'
+    '#rtabs-root .rtabs a[aria-selected="true"]{color:#fff;background:#1a5490;border-color:#1a5490;'
+    'box-shadow:0 1px 4px rgba(26,84,144,.35)}'
+    '#rtabs-root .rtabs a:focus-visible{outline:2px solid #1a5490;outline-offset:2px}'
+    '@media (max-width:640px){#rtabs-root .rtabs{gap:5px}#rtabs-root .rtabs a{padding:7px 12px;font-size:13px;min-height:34px}}'
     # 목차 링크로 절에 가면 붙어 있는 탭 막대가 제목을 가린다. 그만큼 띄워 멈춘다.
-    '#rtabs-root h3{scroll-margin-top:56px}'
+    '#rtabs-root h3{scroll-margin-top:110px}'
     '#rtabs-root.rtabs-on .rtab-panel{display:none}'
     '#rtabs-root.rtabs-on .rtab-panel.is-active{display:block}'
     '@media print{#rtabs-root .rtabs{display:none}#rtabs-root .rtab-panel{display:block!important}}'

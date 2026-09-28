@@ -29,10 +29,13 @@
   .muted{color:#8a9199;font-size:11px}
   .empty{border:1px solid #e5e5e5;border-radius:6px;padding:16px;color:#6b7178;font-size:13px}
   .up{color:#1e6b34}.down{color:#a8322a}
-  .tabs{display:flex;gap:8px;margin:14px 0 6px;border-bottom:1px solid #e5e5e5}
-  .tab{border:0;background:none;padding:8px 14px;font-size:13px;color:#6b7178;cursor:pointer;
-       border-bottom:2px solid transparent;font-family:inherit}
-  .tab.active{color:#1a1a1a;font-weight:600;border-bottom-color:#1a5490}
+  /* 알약 버튼 탭(2026-09-28): 밑줄 글자는 버튼으로 읽히지 않았다. 종목 보고서 탭과 같은 모양이다. */
+  .tabs{display:flex;flex-wrap:wrap;gap:6px;margin:14px 0 10px;padding-bottom:10px;border-bottom:1px solid #e5e5e5}
+  .tab{padding:8px 16px;min-height:36px;font-size:14px;font-weight:600;color:#1a5490;background:#f0f6fc;
+       border:1px solid #b9d3ec;border-radius:999px;cursor:pointer;font-family:inherit}
+  .tab:hover{background:#e0edf9;border-color:#7fa9d4}
+  .tab.active{color:#fff;background:#1a5490;border-color:#1a5490;box-shadow:0 1px 4px rgba(26,84,144,.35)}
+  .tab:focus-visible{outline:2px solid #1a5490;outline-offset:2px}
   /* 종목 선택 — 드롭다운 대신 한 번에 누르는 버튼 탭(2026-09-28 요청). */
   .stock-tabs{display:inline-flex;border:1px solid #cedff0;border-radius:8px;overflow:hidden;margin-top:3px}
   .stock-tabs button{border:0;background:#fff;padding:9px 18px;font-size:14px;color:#3a4652;cursor:pointer;

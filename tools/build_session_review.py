@@ -43,7 +43,7 @@ TARGETS = {
 # 절 그리기는 forecast_utils 로 옮겼다(2026-09-23) — 노트북이 페이지를 새로 만들 때 같은 함수로 직전 회고를 다시 붙인다.
 from forecast_utils import (  # noqa: E402
     REVIEW_DISCLAIMER as DISCLAIMER, REVIEW_END as MARK_END, REVIEW_LEDGER_END as LEDGER_END,
-    REVIEW_START as MARK_START, insert_review_section, review_section_html,
+    REVIEW_START as MARK_START, flow_story, insert_review_section, review_section_html,
 )
 # 전환점 판정 문턱. 그날 5분 수익률의 robust σ 배수.
 EVENT_Z, VOLUME_SPIKE, MERGE_MINUTES, MAX_EVENTS = 3.0, 3.0, 15, 3
@@ -440,23 +440,33 @@ def build_review(target, session_date, storage, token=None, use_news=True):
         top_news = sorted(day_items, key=lambda it: (-score_headline(it["title"], spec["name"]), it["time"]))[:6]
     disclosures, disclosure_note = fetch_disclosures(spec["corp_code"], session_date)
 
-    # 수급(장 마감 후 확정). 실패해도 회고는 낸다.
-    flows_text = None
+    # 수급 — 누가 팔고 샀나(2026-09-29 요청). 실패해도 회고는 낸다.
+    # 예전에는 이 작업의 pip 설치에 lxml 이 빠져 네이버 표를 읽지 못해 수급이 매일 비어 있었다(9/17~9/28 회고 모두 None).
+    # 저장소 보관본(macro_history)을 함께 넘겨 최근 20거래일 규모와 견줄 이력을 얻는다.
+    flows_text, flow_story_data = None, None
     try:
         from data_sources.flows import load_investor_flows
-        frame, _ = load_investor_flows(Path(storage), spec["ticker"], (session_date - pd.Timedelta(days=10)).date(),
-                                       session_date.date())
+        frame, flow_info = load_investor_flows(Path(storage), spec["ticker"], (session_date - pd.Timedelta(days=45)).date(),
+                                               session_date.date(), fallback_dir=Path("macro_history"))
+        frame = frame.copy()
+        frame["date"] = pd.to_datetime(frame["date"]).dt.normalize()
         row = frame[frame["date"] == session_date]
         if len(row):
             row = row.iloc[0]
-            cols = {c: row[c] for c in frame.columns if c != "date" and pd.notna(row[c])}
-            frg = next((v for k, v in cols.items() if "frgn" in k or "foreign" in k), None)
-            inst = next((v for k, v in cols.items() if "inst" in k), None)
-            if frg is not None or inst is not None:
-                flows_text = f"외국인 {frg:+,.0f} / 기관 {inst:+,.0f}" if frg is not None and inst is not None else str(cols)
+            history = frame[frame["date"] < session_date]
+            prior_5d = (float(daily["close"].iloc[pos - 1] / daily["close"].iloc[pos - 6] - 1) if pos >= 6 else None)
+            source = str((flow_info or {}).get("source") or "")
+            note = (f"출처 {source} · 장 마감 직후 잠정치라 저녁 확정치와 다를 수 있습니다"
+                    if source else "장 마감 직후 잠정치라 저녁 확정치와 다를 수 있습니다")
+            flow_story_data = flow_story(row.to_dict(), history, summary, summary["close"], prior_5d,
+                                         peer_name=spec.get("peer_name", "동종 종목"), source_note=note)
+            frg, inst = row.get("foreign_net"), row.get("inst_net")
+            if pd.notna(frg) and pd.notna(inst):
+                flows_text = f"외국인 {frg:+,.0f} / 기관 {inst:+,.0f}"
+        else:
+            print(f"  수급: {session_date.date()} 행이 아직 없습니다(최신 {frame['date'].max().date() if len(frame) else '없음'}).")
     except Exception as exc:
-        flows_text = None
-        print(f"  수급 미확인({type(exc).__name__})")
+        print(f"  수급 미확인({type(exc).__name__}: {str(exc)[:120]})")
 
     # 아침 예측
     ledger = load_ledger(target, storage, token)
@@ -489,6 +499,7 @@ def build_review(target, session_date, storage, token=None, use_news=True):
         "intraday_coverage": coverage,
         "overnight_news": overnight_news, "top_news": top_news,
         "disclosures": disclosures, "disclosure_note": disclosure_note, "flows": flows_text,
+        "flow_story": flow_story_data,
         "forecasts": forecasts, "price_check": price_check, "disclaimer": DISCLAIMER,
     }
 

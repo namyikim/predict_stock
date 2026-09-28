@@ -3114,6 +3114,160 @@ def _rv_news_list(items):
                       f' <span style="color:#8a9199">{e(it["source"])}</span></li>' for it in items) + "</ul>")
 
 
+# ---- 장 회고의 수급: 누가 팔고 샀나, 그날 함께 관찰된 것 (2026-09-29 요청) ---------------------------
+# 하락한 날은 누가 가장 많이 팔았는지, 상승한 날은 누가 가장 많이 샀는지와 그 이유를 보고 싶다는 요청.
+# 이유는 단정하지 않는다 — 매매 주체의 속마음은 자료로 알 수 없다. 대신 그날 확인할 수 있는 사실(시장 전체·업종·
+# 환율·전날 밤 미국 반도체·직전 5거래일 흐름·거래량)이 그 매매와 같은 방향이었는지만 적는다.
+FLOW_ACTORS = (("foreign_net", "외국인"), ("inst_net", "기관"), ("indiv_net", "개인"))
+
+
+def _won_text(won):
+    """원 금액을 읽기 쉽게. 1조 이상은 조, 그 아래는 억."""
+    if won is None or not np.isfinite(won):
+        return "—"
+    sign = "+" if won > 0 else "−" if won < 0 else ""
+    value = abs(won)
+    return f"{sign}{value / 1e12:,.2f}조원" if value >= 1e12 else f"{sign}{value / 1e8:,.0f}억원"
+
+
+def flow_story(today, history, summary, close, prior_5d=None, peer_name="동종 종목", source_note=""):
+    """그날 투자자별 순매수와 함께 관찰된 사실. 자료가 없으면 None.
+
+    today: {foreign_net, inst_net, indiv_net} 주식 수(순매수 +). 개인이 없으면 −(외국인+기관)으로 추정하고 그렇게 표시한다.
+    history: 오늘 이전 거래일들의 같은 열(DataFrame) — 최근 20일 평균 규모와 견주는 데만 쓴다.
+    summary: 회고의 summary(c2c·kospi_c2c·peer_c2c·usdkrw_chg·sox_ret·volume_ratio).
+    """
+    def num(value):
+        try:
+            value = float(value)
+        except (TypeError, ValueError):
+            return None
+        return value if np.isfinite(value) else None
+
+    shares = {key: num((today or {}).get(key)) for key, _ in FLOW_ACTORS}
+    if shares["foreign_net"] is None and shares["inst_net"] is None:
+        return None
+    close = num(close)
+    if close is None or close <= 0:
+        return None
+    estimated = False
+    if shares["indiv_net"] is None and shares["foreign_net"] is not None and shares["inst_net"] is not None:
+        shares["indiv_net"], estimated = -(shares["foreign_net"] + shares["inst_net"]), True
+    actors = []
+    for key, label in FLOW_ACTORS:
+        if shares[key] is None:
+            continue
+        usual = None
+        if isinstance(history, pd.DataFrame) and key in history and not (key == "indiv_net" and estimated):
+            past = pd.to_numeric(history[key], errors="coerce").dropna().tail(20).abs()
+            if len(past) >= 5 and past.mean() > 0:
+                usual = float(abs(shares[key]) / past.mean())
+        actors.append({"key": key, "name": label + ("(추정)" if key == "indiv_net" and estimated else ""),
+                       "shares": shares[key], "won": shares[key] * close, "vs_usual": usual})
+    summary = summary or {}
+    c2c = num(summary.get("c2c")) or 0.0
+    direction = "up" if c2c > 0.001 else "down" if c2c < -0.001 else "flat"
+    if direction == "down":
+        lead = min(actors, key=lambda a: a["won"])
+        counter = max(actors, key=lambda a: a["won"])
+    elif direction == "up":
+        lead = max(actors, key=lambda a: a["won"])
+        counter = min(actors, key=lambda a: a["won"])
+    else:
+        lead = max(actors, key=lambda a: abs(a["won"]))
+        counter = None
+
+    def pct(value):
+        return f"{value:+.2%}"
+
+    seen = []
+    kospi, peer = num(summary.get("kospi_c2c")), num(summary.get("peer_c2c"))
+    fx, sox, volume = num(summary.get("usdkrw_chg")), num(summary.get("sox_ret")), num(summary.get("volume_ratio"))
+    # 같은 방향·비슷한 크기 / 같은 방향이지만 이 종목이 더 큼 / 반대 방향 — 세 경우를 구분한다.
+    if kospi is not None and abs(c2c) > 0:
+        if np.sign(kospi) == np.sign(c2c) and abs(kospi) >= .5 * abs(c2c):
+            seen.append(f"코스피도 {pct(kospi)} — 시장 전체가 같은 방향이었습니다.")
+        elif np.sign(kospi) == np.sign(c2c):
+            seen.append(f"코스피도 {pct(kospi)}였지만 이 종목({pct(c2c)})이 훨씬 크게 움직였습니다.")
+        else:
+            seen.append(f"코스피는 반대로 {pct(kospi)} — 시장 전체와 다른 움직임이었습니다.")
+    if peer is not None and abs(c2c) > 0:
+        if np.sign(peer) == np.sign(c2c) and abs(peer) >= .5 * abs(c2c):
+            seen.append(f"{peer_name} {pct(peer)} — 반도체 업종이 함께 움직였습니다.")
+        elif np.sign(peer) == np.sign(c2c):
+            seen.append(f"{peer_name}도 {pct(peer)}였지만 이 종목이 더 크게 움직였습니다.")
+        else:
+            seen.append(f"{peer_name}는 반대로 {pct(peer)} — 업종 전체의 움직임은 아니었습니다.")
+    foreign = shares["foreign_net"]
+    if fx is not None and foreign is not None:
+        if foreign < 0 and fx >= .003:
+            seen.append(f"원/달러 {pct(fx)}(원화 약세) — 외국인 매도와 같은 방향의 환율 움직임입니다.")
+        elif foreign > 0 and fx <= -.003:
+            seen.append(f"원/달러 {pct(fx)}(원화 강세) — 외국인 매수와 같은 방향의 환율 움직임입니다.")
+        elif foreign < 0 and fx <= -.003:
+            seen.append(f"원화는 오히려 강세({pct(fx)})여서 외국인 매도가 환율로는 설명되지 않습니다.")
+    if sox is not None and direction != "flat":
+        same = (sox < -.01 and direction == "down") or (sox > .01 and direction == "up")
+        opposite = (sox > .005 and direction == "down") or (sox < -.005 and direction == "up")
+        if same:
+            seen.append(f"전날 밤 미국 반도체지수(SOX) {pct(sox)} — 미국 반도체 흐름과 같은 방향입니다.")
+        elif opposite:
+            seen.append(f"전날 밤 SOX는 {pct(sox)}로 반대 방향이어서 미국 반도체 흐름으로는 설명되지 않습니다.")
+    prior = num(prior_5d)
+    if prior is not None:
+        if direction == "down" and prior >= .08:
+            seen.append(f"직전 5거래일 {pct(prior)} 오른 뒤의 매도 — 차익 실현과 맞는 모양입니다.")
+        elif direction == "up" and prior <= -.08:
+            seen.append(f"직전 5거래일 {pct(prior)} 내린 뒤의 매수 — 저가 매수와 맞는 모양입니다.")
+    if lead.get("vs_usual") is not None and lead["vs_usual"] >= 2:
+        seen.append(f"{lead['name']}의 순{'매도' if lead['won'] < 0 else '매수'} 규모가 최근 20거래일 평균의 "
+                    f"{lead['vs_usual']:.1f}배로 컸습니다.")
+    if volume is not None and volume >= 1.5:
+        seen.append(f"거래량이 20일 평균의 {volume:.1f}배였습니다.")
+    return {"direction": direction, "c2c": c2c, "actors": actors, "lead": lead, "counter": counter,
+            "observations": seen, "estimated_indiv": estimated, "source_note": source_note}
+
+
+def flow_story_html(story):
+    """flow_story 결과를 한 줄 요약 + 투자자별 막대로. 막대는 순매도 왼쪽(빨강)·순매수 오른쪽(초록)."""
+    from html import escape as e
+    if not story:
+        return ""
+    lead, counter = story["lead"], story["counter"]
+    verb = {"down": "가장 많이 판 쪽", "up": "가장 많이 산 쪽", "flat": "가장 크게 움직인 쪽"}[story["direction"]]
+    head = f'{_rv_pct(story["c2c"])} — {verb}은 <b>{e(lead["name"])}</b> ({_won_text(lead["won"])})'
+    if lead.get("vs_usual") is not None:
+        head += f', 최근 20거래일 평균의 {lead["vs_usual"]:.1f}배'
+    if counter is not None and counter is not lead and np.sign(counter["won"]) != np.sign(lead["won"]):
+        head += f'. 반대편은 <b>{e(counter["name"])}</b> ({_won_text(counter["won"])})'
+    scale = max(abs(a["won"]) for a in story["actors"]) or 1.0
+    bars = ""
+    for a in story["actors"]:
+        width = abs(a["won"]) / scale * 50
+        color = "#1e6b34" if a["won"] > 0 else "#a8322a"
+        left = 50 - width if a["won"] < 0 else 50
+        bars += ('<div style="display:flex;align-items:center;gap:8px;margin:4px 0">'
+                 f'<div style="flex:0 0 72px;font-size:12px;color:#3a4652">{e(a["name"])}</div>'
+                 '<div style="flex:1;position:relative;height:16px;background:#f3f5f8;border-radius:3px">'
+                 '<div style="position:absolute;left:50%;top:0;bottom:0;width:1px;background:#c3c8cf"></div>'
+                 f'<div style="position:absolute;left:{left:.1f}%;width:{width:.1f}%;top:2px;bottom:2px;'
+                 f'background:{color};border-radius:2px"></div></div>'
+                 f'<div style="flex:0 0 120px;font-size:12px;text-align:right;color:{color}">{_won_text(a["won"])}</div></div>')
+    seen = "".join(f"<li>{e(x)}</li>" for x in story["observations"]) or "<li>함께 볼 만한 사실이 없습니다.</li>"
+    notes = []
+    if story.get("estimated_indiv"):
+        notes.append("개인은 자료가 없어 외국인·기관의 반대편으로 추정했습니다(기타 법인 포함)")
+    if story.get("source_note"):
+        notes.append(str(story["source_note"]))
+    return ('<div style="font-size:14px;margin:14px 0 6px"><b>누가 팔고 샀나</b></div>'
+            f'<div style="font-size:13px;margin:0 0 6px">{head}</div>'
+            f'<div style="margin:4px 0 8px">{bars}</div>'
+            '<div style="font-size:13px;margin:8px 0 2px"><b>그날 함께 관찰된 것</b> '
+            '<span style="color:#6b7178;font-size:12px">— 매매 이유를 단정하지 않습니다</span></div>'
+            f'<ul style="margin:0 0 6px;padding-left:20px;font-size:13px;color:#4a4f55">{seen}</ul>'
+            + (f'<div style="font-size:12px;color:#8a9199;margin:0 0 8px">{e(" · ".join(notes))}</div>' if notes else ""))
+
+
 def review_section_html(review, carried=False):
     """장 마감 회고 절 HTML. carried=True 면 새로 만든 다음 거래일 보고서에 다시 붙이는 직전 거래일 회고다."""
     from html import escape as e
@@ -3139,11 +3293,12 @@ def review_section_html(review, carried=False):
             (f'KOSPI / {e(r["peer_name"])}', f'{_rv_pct(s.get("kospi_c2c"))} / {_rv_pct(s.get("peer_c2c"))}'),
             ("원/달러", _rv_pct(s.get("usdkrw_chg"))),
             ("전날 밤 SOX / 나스닥", f'{_rv_pct(s.get("sox_ret"))} / {_rv_pct(s.get("nasdaq_ret"))}')]
-    if r.get("flows"):
+    if r.get("flows") and not r.get("flow_story"):
         rows.append(("외국인 / 기관 순매수", e(r["flows"])))
     body = "".join(f'<tr><td {_RV_TD}>{e(k)}</td><td {_RV_TDR}>{v}</td></tr>' for k, v in rows)
     parts.append('<div style="overflow-x:auto"><table style="width:100%;min-width:420px;border-collapse:collapse;font-size:13px;border:1px solid #e5e5e5">'
                  f'<tr><th {_RV_TH}>오늘 장</th><th {_RV_TH}></th></tr>{body}</table></div>')
+    parts.append(flow_story_html(r.get("flow_story")))
     c = r["classification"]
     badge = " · ".join(f'<b>{e(l)}</b>' for l in c["labels"])
     parts.append(f'<div style="margin:12px 0 4px;font-size:14px">흐름의 성격: {badge}</div>'

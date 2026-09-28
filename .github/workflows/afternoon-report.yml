@@ -100,7 +100,7 @@ jobs:
 
       - name: 의존성 설치
         if: steps.gate.outputs.run == 'true'
-        run: pip install pandas==3.0.5 numpy==2.5.2 yfinance==1.7.0
+        run: pip install pandas==3.0.5 numpy==2.5.2 yfinance==1.7.0 lxml  # lxml: 네이버 수급 표(회고의 '누가 팔고 샀나', 2026-09-29)
 
       - name: 채점·보고서 절 갱신
         if: steps.gate.outputs.score == 'true'

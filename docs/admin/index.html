@@ -53,7 +53,7 @@ html,body{overflow-x:hidden}
 body{margin:0;padding:32px 20px 64px;background:var(--surface);color:var(--text);
      font-family:-apple-system,BlinkMacSystemFont,'Malgun Gothic',sans-serif;
      line-height:1.6;-webkit-font-smoothing:antialiased}
-.wrap{max-width:1000px;margin:0 auto}
+.wrap{max-width:1240px;margin:0 auto}
 .eyebrow{font-size:11px;letter-spacing:2px;color:var(--text-3)}
 h1{font-size:24px;margin:6px 0 4px}
 .sub{font-size:13px;color:var(--text-2);margin-bottom:22px}
@@ -118,30 +118,51 @@ summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 #tip b{font-variant-numeric:tabular-nums}
 .foot{margin-top:34px;padding-top:14px;border-top:1px solid var(--border);
       font-size:12px;color:var(--text-3)}
-/* ---- 관리자 탭 ---- */
-.admin-tabs{display:flex;flex-wrap:wrap;gap:4px;margin:14px 0 18px;border-bottom:1px solid var(--border)}
-.admin-tabs a{padding:9px 14px;font-size:13px;color:var(--text-2);text-decoration:none;
-     border-bottom:2px solid transparent;margin-bottom:-1px}
-.admin-tabs a[aria-selected="true"]{color:var(--text);font-weight:600;border-bottom-color:var(--accent)}
-.admin-tabs a:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+/* ---- 관리자 왼쪽 메뉴 ---- */
+.admin-layout{display:grid;grid-template-columns:200px minmax(0,1fr);gap:28px;align-items:start;margin-top:18px}
+.admin-menu{position:sticky;top:16px;border:1px solid var(--border);border-radius:8px;padding:8px;
+     background:var(--surface-2)}
+.admin-menu .group{font-size:11px;letter-spacing:.6px;color:var(--text-3);padding:10px 10px 4px}
+.admin-menu .group:first-child{padding-top:4px}
+.admin-menu a{display:block;padding:8px 10px;border-radius:5px;font-size:13px;color:var(--text-2);
+     text-decoration:none;border-left:3px solid transparent}
+.admin-menu a:hover{background:var(--surface);color:var(--text)}
+.admin-menu a[aria-current="page"]{background:var(--surface);color:var(--text);font-weight:600;
+     border-left-color:var(--accent)}
+.admin-menu a:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.admin-main{min-width:0}
+.panel-title{font-size:18px;margin:0 0 12px;padding:0;border:0}
 .admin-panel iframe{display:block;width:100%;height:80vh;border:0;background:#fff;border-radius:6px}
+/* 좁은 화면에서는 메뉴를 위로 올려 가로로 넘긴다. */
+@media (max-width:760px){
+  .admin-layout{grid-template-columns:1fr;gap:14px}
+  .admin-menu{position:static;display:flex;gap:4px;overflow-x:auto;padding:6px;-webkit-overflow-scrolling:touch}
+  .admin-menu .group{display:none}
+  .admin-menu a{white-space:nowrap;border-left:0;border-bottom:3px solid transparent}
+  .admin-menu a[aria-current="page"]{border-bottom-color:var(--accent)}
+}
 a{color:var(--accent)}
 </style></head><body><div class="wrap">
 
 <div class="eyebrow">PREDICT STOCK · ADMIN</div>
 <h1>관리자</h1>
 
-<!-- 운영자용 화면을 한 페이지의 탭으로 모은다(2026-09-28 요청). 가상 매매·기여도·AI 일일예측은
-     실험실 페이지(../lab/)를 ?embed=1 로 띄운다 — 계산 코드는 그 페이지 한 곳에만 둔다. -->
-<nav class="admin-tabs" role="tablist" aria-label="관리자 탭">
-  <a href="#visits" data-tab="visits" role="tab">방문 통계</a>
-  <a href="#notice" data-tab="notice" role="tab">공지사항</a>
-  <a href="#sim" data-tab="sim" role="tab">가상 매매</a>
-  <a href="#attr" data-tab="attr" role="tab">무엇이 예측을 밀었나</a>
-  <a href="#ai" data-tab="ai" role="tab">AI 일일예측</a>
+<!-- 운영자용 화면을 한 페이지에 모으고 왼쪽 메뉴로 고른다(2026-09-28 요청: 탭 → 왼쪽 메뉴). 가상 매매·기여도·AI
+     일일예측은 실험실 페이지(../lab/)를 ?embed=1 로 띄운다 — 계산 코드는 그 페이지 한 곳에만 둔다. -->
+<div class="admin-layout">
+<nav class="admin-menu" aria-label="관리자 메뉴">
+  <div class="group">운영</div>
+  <a href="#visits" data-tab="visits">방문 통계</a>
+  <a href="#notice" data-tab="notice">공지사항</a>
+  <div class="group">실험실</div>
+  <a href="#sim" data-tab="sim">가상 매매</a>
+  <a href="#attr" data-tab="attr">무엇이 예측을 밀었나</a>
+  <a href="#ai" data-tab="ai">AI 일일예측</a>
 </nav>
+<main class="admin-main">
 
-<section class="admin-panel" id="panel-visits" data-tab="visits" role="tabpanel">
+<section class="admin-panel" id="panel-visits" data-tab="visits">
+<h2 class="panel-title">방문 통계</h2>
 <div class="sub">Cloudflare Worker에 쌓인 조회 기록을 읽어옵니다. 토큰은 이 브라우저 밖으로 나가지 않습니다.</div>
 
 <form id="f" autocomplete="off">
@@ -206,21 +227,27 @@ a{color:var(--accent)}
 </div>
 </section>
 
-<section class="admin-panel" id="panel-notice" data-tab="notice" role="tabpanel" hidden>
+<section class="admin-panel" id="panel-notice" data-tab="notice" hidden>
+<h2 class="panel-title">공지사항</h2>
 <h2 style="margin-top:6px">Colab 갱신 점검</h2>
 <div id="colab-notice" style="margin:0 0 18px;padding:12px 16px;border-radius:6px;font-size:13px;line-height:1.6;background:#f5f6f8;border:1px solid #e1e4e8;color:#4a4f55">Colab 갱신 점검을 불러오는 중…</div><script>(function(){var el=document.getElementById("colab-notice");if(!el||!window.fetch)return;fetch("../colab_status.json",{cache:"no-store"}).then(function(r){return r.ok?r.json():null;}).then(function(s){if(!s){el.textContent="Colab 갱신 점검 결과(colab_status.json)를 읽지 못했습니다.";return;}var esc=function(t){return String(t).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];});};var rows=(s.checked||[]).map(function(i){return "<tr><td>"+(i.late?"⚠️ 늦음":"✅ 정상")+"</td><td>"+esc(i.label)+"</td><td>"+esc(i.have)+"</td><td>"+esc(i.expected)+"</td></tr>";}).join("");var head=s.needed?"<b>Colab 업데이트가 필요합니다.</b> 한국 정부 자료가 자동 실행(해외 서버)에서 막혀 발표 일정보다 늦었습니다. "+esc(s.how)+" <a href=\""+esc(s.colab_url)+"\" style=\"color:#1a5490\">Colab 에서 노트북 열기</a>":"<b>Colab 업데이트 필요 없음.</b> 한국 정부 자료 보관본이 발표 일정에 맞게 들어와 있습니다.";el.style.background=s.needed?"#fff4e5":"#eef7ee";el.style.borderColor=s.needed?"#f0c58a":"#b9ddb9";el.style.color=s.needed?"#7a4b00":"#1e5b2a";el.innerHTML=head+" · 점검 "+esc(s.as_of)+"<table style=\"margin-top:8px;border-collapse:collapse;font-size:13px\"><tr><th style=\"text-align:left;padding-right:12px\">상태</th><th style=\"text-align:left;padding-right:12px\">자료</th><th style=\"text-align:left;padding-right:12px\">보관본</th><th style=\"text-align:left\">있어야 할 것</th></tr>"+rows+"</table>";}).catch(function(){el.textContent="Colab 갱신 점검 결과를 읽지 못했습니다.";});})();</script>
 </section>
 
-<section class="admin-panel" id="panel-sim" data-tab="sim" role="tabpanel" hidden>
+<section class="admin-panel" id="panel-sim" data-tab="sim" hidden>
+<h2 class="panel-title">가상 매매</h2>
 <iframe title="가상 매매" data-src="../lab/?tab=sim&amp;embed=1"></iframe>
 </section>
-<section class="admin-panel" id="panel-attr" data-tab="attr" role="tabpanel" hidden>
+<section class="admin-panel" id="panel-attr" data-tab="attr" hidden>
+<h2 class="panel-title">무엇이 예측을 밀었나</h2>
 <iframe title="무엇이 예측을 밀었나" data-src="../lab/?tab=attr&amp;embed=1"></iframe>
 </section>
-<section class="admin-panel" id="panel-ai" data-tab="ai" role="tabpanel" hidden>
+<section class="admin-panel" id="panel-ai" data-tab="ai" hidden>
+<h2 class="panel-title">AI 일일예측</h2>
 <iframe title="AI 일일예측" data-src="../lab/?tab=ai&amp;embed=1"></iframe>
 </section>
 
+</main>
+</div>
 
 <div class="foot">
   <a href="../">보고서로 돌아가기</a> ·
@@ -703,10 +730,10 @@ a{color:var(--accent)}
 })();
 </script>
 <script>
-// 탭 전환. 주소의 #visits·#notice·#sim·#attr·#ai 로 탭을 고르고, 실험실 iframe 은 처음 열 때만 불러온다.
+// 왼쪽 메뉴 전환. 주소의 #visits·#notice·#sim·#attr·#ai 로 화면을 고르고, 실험실 iframe 은 처음 열 때만 불러온다.
 (function () {
   "use strict";
-  var tabs = document.querySelectorAll(".admin-tabs a");
+  var tabs = document.querySelectorAll(".admin-menu a");
   var panels = document.querySelectorAll(".admin-panel");
 
   // 같은 출처라 iframe 문서 높이를 직접 읽어 맞춘다(뉴스 허브 docs/news 와 같은 방식).
@@ -728,7 +755,9 @@ a{color:var(--accent)}
 
   function show(name) {
     var hit = document.getElementById("panel-" + name) ? name : "visits";
-    tabs.forEach(function (t) { t.setAttribute("aria-selected", t.dataset.tab === hit ? "true" : "false"); });
+    tabs.forEach(function (t) {
+      if (t.dataset.tab === hit) t.setAttribute("aria-current", "page"); else t.removeAttribute("aria-current");
+    });
     panels.forEach(function (p) {
       p.hidden = p.dataset.tab !== hit;
       var frame = p.querySelector("iframe");

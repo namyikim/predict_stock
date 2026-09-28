@@ -19,7 +19,9 @@ class ReorganizationTests(unittest.TestCase):
         self.assertNotIn('실제 비교',ps[0]['inner'])
         score=next(p['inner'] for p in ps if '실제 비교' in p['inner'])
         self.assertLess(score.index('지금까지 성적'),score.index('실제 비교'))
-        self.assertLess(score.index('실제 비교'),score.index('지난 뉴스'))
+        # 장 회고는 '오늘의 예측' 탭에 둔다(2026-09-28 요청). 예측 성적 탭에는 없다.
+        self.assertIn('지난 뉴스',ps[0]['inner'])
+        self.assertNotIn('지난 뉴스',score)
         self.assertIn('1. 실제 발행 후 누적 성적',score)
         self.assertEqual(out.count('SCORECARD_START'),1)
         self.assertFalse(rh.tab_structure_problems(out))

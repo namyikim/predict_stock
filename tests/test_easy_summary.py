@@ -70,7 +70,8 @@ class TopOfSummaryTests(unittest.TestCase):
 
     def test_the_rest_of_the_summary_stays_below(self):
         html = self.render()
-        for label in ("전체 결론", "시초가예측 — 장이 시작할 때의 가격", "종가예측 — 장이 끝날 때의 가격",
+        # 2026-09-28: 글 목록 대신 가격 범위 그림·숫자 타일·작은 회색 주석으로 바꿨다. 순서는 그대로.
+        for label in ("전체 결론", "가격 전망 — 시초가예측과 종가예측",
                       "중장기 전망", "회사 실적 — 본업으로 번 이익", "얼마나 믿을 수 있나요?", "주의할 점"):
             self.assertGreater(html.index(label), html.index("지금까지 성적"), label)
 
@@ -157,10 +158,9 @@ class EasySummaryTests(unittest.TestCase):
     def test_open_and_close_have_distinct_prices_dates_and_meanings(self):
         html = self.render()
         self.assertIn("시초가예측", html)
-        self.assertIn("장이 시작할 때", html)
         self.assertIn("70,100원", html)
         self.assertIn("종가예측", html)
-        self.assertIn("장이 끝날 때", html)
+        self.assertIn("종가 · 다음 거래일", html)
         self.assertIn("71,000원", html)
         self.assertIn("2026-09-09", html)
         self.assertIn("60.0%", html)

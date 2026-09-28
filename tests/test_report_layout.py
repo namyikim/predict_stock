@@ -385,15 +385,35 @@ class EasySummaryHierarchyTests(unittest.TestCase):
         self.assertIn("background:#fff;border:1px solid #cedff0", html)
         self.assertIn("font-size:16px;line-height:1.6;font-weight:600", html)
 
-    def test_remaining_items_have_bold_titles_and_muted_bodies(self):
+    def test_explanations_are_small_and_muted(self):
+        """믿음 정도·주의할 점은 투자 판단에 덜 급한 설명이라 작은 회색 글로 내린다(2026-09-28 요청)."""
         html = self.summary()
-        self.assertIn("font-size:13px;font-weight:700;color:#1a1a1a", html)
-        self.assertIn("color:#3a4652", html)
-        # 옛 스타일(같은 크기, <b>제목</b><br>본문)이 남아 있으면 안 된다.
-        self.assertNotIn('<li style="margin:9px 0"><b>', html)
+        fine = html[html.index("얼마나 믿을 수 있나요?") - 200:]
+        self.assertIn("font-size:12px;line-height:1.6;color:#8a9199", fine)
+        # 옛 글 목록(같은 크기 제목+본문 여섯 줄)은 남아 있지 않다.
+        self.assertNotIn('<li style="margin:11px 0">', html)
 
-    def test_bullets_are_removed_because_titles_separate_items(self):
-        self.assertIn("list-style:none", self.summary())
+    def test_prices_are_a_range_chart_and_outlook_is_tiles(self):
+        import pandas as pd
+        import forecast_utils as fu
+        html = fu.easy_summary_html(
+            name="삼성전자", prediction_date=pd.Timestamp("2026-09-14"), data_date=pd.Timestamp("2026-09-11"),
+            summary={"live": {"p_up": .5, "p_flat": .3, "p_down": .2}},
+            open_forecast={"signal": "있음", "predicted_open": 70100, "predicted_return": .004,
+                           "current_close": 69820, "low_open": 69500, "high_open": 70700},
+            price_forecasts=[{"signal": "없음", "predicted_close": 71000, "center_close": 69820, "trading_days": 5,
+                              "current_close": 69820, "low_close": 66000, "high_close": 73000,
+                              "target_date": pd.Timestamp("2026-09-18")}],
+            review={}, longterm={"as_of": "2026-08-31", "forecast": {"3": {"point": .05}},
+                                 "evaluation": {"3": {"beats_zero": True}}})
+        self.assertEqual(html.count('class="pr-row"'), 2)
+        self.assertIn("69,500~70,700원", html)            # 구간은 보인다
+        self.assertIn("66,000~73,000원", html)
+        self.assertNotIn("71,000", html)                    # 검증을 못 통과한 예상가는 숫자·점 모두 없다
+        self.assertEqual(html.count("box-shadow:0 0 0 1px #1a5490"), 1)
+        self.assertIn("기준 가격(전일 종가) 69,820원", html)
+        self.assertIn(">+5.1%<", html)                       # 3개월 타일(로그수익률 0.05 → +5.1%)
+        self.assertEqual(html.count("<h3"), 1)
 
 
 class CaveatSpacingTests(unittest.TestCase):

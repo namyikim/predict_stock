@@ -29,17 +29,20 @@ def decision_inputs_html(*, name, cards, unknowns, caveat=""):
         rows += (f'<tr><td style="padding:8px 11px;border-top:1px solid #eee;white-space:nowrap">'
                  f'{escape(card["label"])}</td>'
                  f'<td style="padding:8px 11px;border-top:1px solid #eee;text-align:right;'
-                 f'font-weight:600;color:{tone}">{escape(str(card["value"]))}</td>'
-                 f'<td style="padding:8px 11px;border-top:1px solid #eee;color:#6b7178;font-size:13px">'
+                 f'font-size:15px;font-weight:700;color:{tone}">{escape(str(card["value"]))}</td>'
+                 # 값이 눈에 띄게, 읽는 법·출처는 옅은 회색으로 내린다(2026-09-28 요청). 크기는 표 본문 13px 그대로
+                 # (2026-09-27 통일 요청) — 색으로만 단계를 준다.
+                 f'<td style="padding:8px 11px;border-top:1px solid #eee;color:#8a9199;font-size:13px">'
                  f'{escape(card.get("detail", ""))}</td>'
-                 f'<td style="padding:8px 11px;border-top:1px solid #eee;color:#8a9199;font-size:13px;'
+                 f'<td style="padding:8px 11px;border-top:1px solid #eee;color:#a3a9b0;font-size:13px;'
                  f'white-space:nowrap">{escape(card.get("source", ""))}</td></tr>')
     unknown_html = ""
     if unknowns:
-        unknown_html = ('<div style="margin-top:10px;padding:10px 14px;background:#fdf8ec;'
-                        'border-left:4px solid #c8952a;border-radius:0 5px 5px 0;font-size:12px">'
-                        '<b>이 보고서가 답하지 못하는 것</b><ul style="margin:6px 0 0;padding-left:18px">'
-                        + "".join(f"<li>{escape(u)}</li>" for u in unknowns) + "</ul></div>")
+        # 한계 목록은 늘 같은 내용이라 매번 펼쳐 둘 필요가 없다. 접어 두고 제목만 보인다(2026-09-28 요청).
+        unknown_html = ('<details style="margin-top:10px;font-size:12px;color:#6b7178">'
+                        '<summary style="cursor:pointer;color:#7a8797">이 보고서가 답하지 못하는 것 '
+                        f'({len(unknowns)}가지)</summary><ul style="margin:6px 0 0;padding-left:18px;line-height:1.6">'
+                        + "".join(f"<li>{escape(u)}</li>" for u in unknowns) + "</ul></details>")
     return ('<h3 style="font-size:15px;margin:24px 0 9px;padding-bottom:6px;border-bottom:1px solid #ddd">'
             f'그 밖에 지금 알 수 있는 것 <span style="font-weight:400;color:#8a9199;font-size:12px">'
             f'&nbsp;{escape(name)} · 흩어진 값을 모은 것이며 매수·매도 의견이 아닙니다</span></h3>'
@@ -1053,56 +1056,50 @@ def easy_summary_html(*, name, prediction_date, data_date, summary, open_forecas
             "이번 실행의 예측은 원장에 기록되지 않는 참고값입니다. "
             "실제 성적은 별도로 저장된 장 시작 전 예측으로 평가합니다.")))
 
-    sections.append(("시초가예측 — 장이 시작할 때의 가격",
-                     f"{date_text(open_forecast.get('target_date', prediction_date))}: "
-                     + price_text(open_forecast, "predicted_open")))
-    close_parts = []
-    by_days = {r.get("trading_days"): r for r in price_forecasts}
-    for days, label in ((1, "다음 거래일"), (5, "5거래일 뒤"), (20, "20거래일 뒤")):
-        row = by_days.get(days, {})
-        stamp = f" ({date_text(row['target_date'])})" if row.get("target_date") is not None else ""
-        close_parts.append(f"{label}{stamp}: {price_text(row, 'predicted_close')}")
-    sections.append(("종가예측 — 장이 끝날 때의 가격", " / ".join(close_parts)))
+    # 2026-09-28 요청: 글이 많아 읽기 어렵다 — 가격은 범위 그림, 중장기·실적은 숫자 타일로 보이고,
+    # 믿음 정도·주의할 점처럼 투자 판단에 덜 급한 설명은 작은 회색 글로 내린다. 공개 기준(검증을 통과하지
+    # 못한 가격은 숫자를 내지 않음)은 그대로다 — 그림도 같은 문을 지난 값만 점으로 찍는다.
+    price_block = price_range_html(open_forecast, price_forecasts, prediction_date=prediction_date)
 
     longterm = mapping(longterm)
-    long_parts = []
+    long_tiles = []
     for months in ("3", "6", "12"):
         forecast = mapping(mapping(longterm.get("forecast")).get(months))
         evaluation = mapping(mapping(longterm.get("evaluation")).get(months))
         point = number(forecast.get("point"))
         if evaluation.get("beats_zero") and point is not None:
             # Monthly model targets log returns; match the detail report's ordinary returns.
-            long_parts.append(f"{months}개월 뒤 주가 변화 {np.expm1(point):+.1%} 예상")
+            change = float(np.expm1(point))
+            long_tiles.append((f"{months}개월 뒤", f"{change:+.1%}", "주가 변화 예상", "up" if change > 0 else "down"))
         else:
-            long_parts.append(f"{months}개월: 판단 근거 부족")
-    long_stamp = f"{date_text(longterm.get('as_of'))} 기준. " if longterm else "장기 자료 미확인. "
-    sections.append(("중장기 전망", long_stamp + " / ".join(long_parts)
-                     + ". 장기 전망은 매일 계산하는 단기 전망과 기준일이 다릅니다."))
+            long_tiles.append((f"{months}개월 뒤", "근거 부족", "판단 근거 부족", "muted"))
+    long_note = (f"{date_text(longterm.get('as_of'))} 기준. " if longterm else "장기 자료 미확인. ") + \
+        "장기 전망은 매일 계산하는 단기 전망과 기준일이 다릅니다."
 
     earnings = mapping(earnings)
-    earnings_parts = []
+    earning_tiles, earning_notes = [], []
     for item in (earnings, mapping(earnings.get("next_quarter"))):
         if not item:
             continue
-        quarter = item.get("quarter", "분기 미확인")
+        quarter = str(item.get("quarter", "분기 미확인"))
         point = number(item.get("point"))
         if (mapping(item.get("evaluation")).get("beats_baselines") and point is not None
                 and not item.get("no_point_reason")):
-            label = "속보 기반 시나리오" if item.get("estimate_basis") == "partial_month_scenario" else "예상"
-            earnings_parts.append(f"{quarter} 영업이익 약 {point / 1e12:,.1f}조 원 {label}")
+            label = "속보 기반 시나리오" if item.get("estimate_basis") == "partial_month_scenario" else "자체 모델 예상"
+            earning_tiles.append((f"{quarter} 영업이익", f"약 {point / 1e12:,.1f}조 원", label, ""))
         else:
-            earnings_parts.append(f"{quarter} 영업이익은 예측하기 어렵습니다")
-    earnings_text = " / ".join(earnings_parts) if earnings_parts else "실적 추정 자료를 확인하지 못했습니다"
+            earning_tiles.append((f"{quarter} 영업이익", "예측 어려움", "영업이익은 예측하기 어렵습니다", "muted"))
     if earnings:
-        earnings_text += ". 회사 발표나 증권사 전망 평균이 아닌 자체 모델의 추정입니다."
+        earning_notes.append("회사 발표나 증권사 전망 평균이 아닌 자체 모델의 추정입니다.")
         if earnings.get("interval_note"):
-            earnings_text += " " + str(earnings["interval_note"])
+            earning_notes.append(str(earnings["interval_note"]))
         months_used = number(earnings.get("months_used"))
         if months_used is not None:
-            earnings_text += f" 분기 3개월 중 {months_used:.0f}개월 자료 반영."
+            earning_notes.append(f"분기 3개월 중 {months_used:.0f}개월 자료 반영.")
         if earnings.get("exports_last_month"):
-            earnings_text += f" 수출 자료 기준 {date_text(earnings['exports_last_month'])}."
-    sections.append(("회사 실적 — 본업으로 번 이익", earnings_text))
+            earning_notes.append(f"수출 자료 기준 {date_text(earnings['exports_last_month'])}.")
+    else:
+        earning_notes.append("실적 추정 자료를 확인하지 못했습니다.")
 
     confidence = ("과거 검증에서는 거래비용을 빼도 수익 가능성이 나타났지만, "
                   "앞으로의 수익을 보장하지 않습니다." if summary.get("session_tradeable") else
@@ -1126,18 +1123,16 @@ def easy_summary_html(*, name, prediction_date, data_date, summary, open_forecas
     else:
         confidence += " 실제 사전 예측 성적은 아직 확인되지 않았습니다."
     confidence += " 위 성적은 보고서 생성 시점 기준이며, 이후 채점 결과는 ‘예측 성적’ 탭에서 확인하세요."
-    sections.append(("얼마나 믿을 수 있나요?", confidence))
     warnings = ["‘예측하기 어렵다’는 가격이 그대로라는 뜻은 아닙니다",
                 "갑작스러운 뉴스나 시장 변화로 예측이 빗나갈 수 있습니다"]
     if not macro_active:
         warnings.append("단기 예측에 월별 경제지표가 빠져 있습니다")
     if not nsi_active:
         warnings.append("단기 예측에 뉴스 분위기 지표가 빠져 있습니다")
-    sections.append(("주의할 점", ". ".join(warnings) + ". 매수·매도 권유가 아닌 참고 자료입니다."))
-    # 항목이 여섯 개인데 글자 크기가 모두 같으면 무엇이 결론인지 알 수 없다. 첫 항목
-    # (전체 결론)은 흰 박스로 크게 띄우고, 나머지는 굵은 소제목 + 눌린 본문으로 단계를 준다.
+    warning_text = ". ".join(warnings) + ". 매수·매도 권유가 아닌 참고 자료입니다."
+
+    # 전체 결론은 흰 박스로 크게 띄운다. 예측 상태(기록하지 않는 재실행)는 눈에 띄는 한 줄로 둔다.
     headline = sections[0] if sections else None
-    rest = sections[1:] if sections else []
     lead = ""
     if headline:
         lead = ('<div style="background:#fff;border:1px solid #cedff0;border-radius:6px;'
@@ -1146,13 +1141,25 @@ def easy_summary_html(*, name, prediction_date, data_date, summary, open_forecas
                 f'{escape(headline[0])}</div>'
                 f'<div style="font-size:16px;line-height:1.6;font-weight:600">{escape(headline[1])}</div>'
                 '</div>')
-    body = "".join(
-        f'<li style="margin:11px 0">'
-        f'<div style="font-size:13px;font-weight:700;color:#1a1a1a">{escape(label)}</div>'
-        f'<div style="font-size:13px;line-height:1.65;color:#3a4652;margin-top:1px">{escape(text)}</div>'
-        f'</li>' for label, text in rest)
+    status = "".join(
+        f'<div style="margin:8px 0 0;padding:7px 12px;background:#fff4e5;border:1px solid #f0c58a;border-radius:5px;'
+        f'font-size:12px;color:#7a4b00"><b>{escape(label)}</b> · {escape(text)}</div>' for label, text in sections[1:])
+    outlook = (f'<div style="{_BOX}">'
+               '<div style="font-size:14px;font-weight:700;margin-bottom:8px">중장기 전망</div>'
+               # 세 기간 모두 근거가 없으면 빈 타일 셋 대신 한 줄로 줄인다 — 정보가 없는 칸이 자리를 차지했다.
+               + (_tiles_html(long_tiles) if any(t[3] != "muted" for t in long_tiles) else
+                  '<div style="font-size:13px;color:#8a9199">3개월·6개월·12개월 모두 ‘변화 없음’보다 낫다는 근거가 없어 '
+                  '방향을 말하지 않습니다(판단 근거 부족).</div>')
+               + f'<div style="font-size:11px;color:#8a9199;margin-top:6px">{escape(long_note)}</div>'
+               '<div style="font-size:14px;font-weight:700;margin:14px 0 8px">회사 실적 — 본업으로 번 이익</div>'
+               + (_tiles_html(earning_tiles) if earning_tiles else "")
+               + f'<div style="font-size:11px;color:#8a9199;margin-top:6px">{escape(" ".join(earning_notes))}</div>'
+               '</div>')
+    fine_print = ('<div style="margin:14px 0 0;font-size:12px;line-height:1.6;color:#8a9199">'
+                  f'<div><b style="color:#6b7178">얼마나 믿을 수 있나요?</b> {escape(confidence)}</div>'
+                  f'<div style="margin-top:4px"><b style="color:#6b7178">주의할 점</b> {escape(warning_text)}</div>'
+                  '</div>')
     # 맨 위: 다음 거래일 시초가·방향·종가, 지난 예측 결과와 지금까지 성적(2026-09-13 재구성).
-    # 나머지 요약(전체 결론부터 주의할 점까지)은 그 아래에 예전 그대로 둔다.
     # 세 카드 바로 아래에 시가 반영 갱신 블록(P16 운영 반영). 아침에는 자리 표시, 09:37 회차가 카드로 바꾼다.
     # 다시 만든 보고서에 그날 Post-open 행이 이미 있으면 카드를 그대로 그린다(자리 표시로 되돌리지 않는다).
     top = (next_day_forecast_html(prediction_date=prediction_date, summary=summary,
@@ -1167,8 +1174,111 @@ def easy_summary_html(*, name, prediction_date, data_date, summary, open_forecas
             '<h3 style="margin:0 0 6px;font-size:19px">한눈에 보는 쉬운 요약</h3>'
             f'<div style="font-size:12px;color:#586575">단기 데이터 기준 {escape(date_text(data_date))} · '
             '보고서 생성 시점의 계산 결과를 쉬운 말로 풀었습니다.</div>'
-            f'{top}{lead}'
-            f'<ul style="list-style:none;padding:0;margin:6px 0 0">{body}</ul></section>')
+            f'{top}{lead}{status}{price_block}{outlook}{fine_print}</section>')
+
+
+_TILE_COLORS = {"up": "#1e6b34", "down": "#a8322a", "": "#1a1a1a", "muted": "#8a9199"}
+
+
+def _tiles_html(tiles):
+    """(이름, 값, 한 줄 설명, 색) 목록을 가로로 줄바꿈되는 숫자 타일로. 색은 up·down·''·muted."""
+    from html import escape
+    body = ""
+    for label, value, note, tone in tiles:
+        muted = tone == "muted"
+        body += (f'<div style="{_CARD}">'
+                 f'<div style="font-size:11px;color:#7a8797">{escape(label)}</div>'
+                 f'<div style="font-size:{15 if muted else 19}px;font-weight:700;line-height:1.35;'
+                 f'color:{_TILE_COLORS.get(tone, "#1a1a1a")}">{escape(value)}</div>'
+                 f'<div style="font-size:11px;color:#8a9199;line-height:1.45">{escape(note)}</div></div>')
+    return f'<div style="display:flex;gap:8px;flex-wrap:wrap">{body}</div>'
+
+
+# 가격 범위 그림(2026-09-28 요청: 글 대신 그림). 시초가·다음 거래일·1주·1개월 종가의 예상 구간을 한 눈금 위에
+# 막대로 놓아, 기간이 길수록 불확실성이 커지는 모양이 바로 보이게 한다. 점선은 기준 가격(전일 종가).
+# 검증을 통과한 기간만 예상가를 점으로 찍는다 — 통과하지 못한 기간은 구간 막대만 두고 숫자를 내지 않는다.
+_PRICE_RANGE_STYLE = (
+    '<style>.pr-row{display:grid;grid-template-columns:108px minmax(90px,1fr) 124px;gap:10px;align-items:center;'
+    'padding:8px 0;border-top:1px solid #eef1f4}'
+    '@media (max-width:560px){.pr-row{grid-template-columns:1fr auto;row-gap:4px}'
+    '.pr-row .pr-bar{grid-column:1/-1;grid-row:2}}</style>')
+
+
+def price_range_html(open_forecast, price_forecasts, prediction_date=None):
+    from html import escape
+    open_forecast = open_forecast if hasattr(open_forecast, "get") else {}
+    by_days = {r.get("trading_days"): r for r in (price_forecasts or []) if hasattr(r, "get")}
+    specs = [("시초가", "장이 시작할 때", open_forecast, "predicted_open", "low_open", "high_open"),
+             ("종가 · 다음 거래일", "장이 끝날 때", by_days.get(1, {}), "predicted_close", "low_close", "high_close"),
+             ("종가 · 1주 뒤", "5거래일", by_days.get(5, {}), "predicted_close", "low_close", "high_close"),
+             ("종가 · 1개월 뒤", "20거래일", by_days.get(20, {}), "predicted_close", "low_close", "high_close")]
+    rows = []
+    for label, hint, row, point_key, low_key, high_key in specs:
+        if not row:
+            continue
+        low, high = _finite(row.get(low_key)), _finite(row.get(high_key))
+        passed = row.get("signal") == "있음"
+        point = _finite(row.get(point_key)) if passed else None
+        if point is not None and point <= 0:
+            point = None
+        when = row.get("target_date", prediction_date if point_key == "predicted_open" else None)
+        day = _day_label(when) if when is not None else None
+        rows.append(dict(label=label, hint=hint, day=day, low=low, high=high, point=point,
+                         change=_finite(row.get("predicted_return")) if point is not None else None))
+    if not rows:
+        return ""
+    base = next((_finite(r.get("current_close")) for r in [open_forecast] + list(by_days.values())
+                 if hasattr(r, "get") and _finite(r.get("current_close"))), None)
+    values = [v for r in rows for v in (r["low"], r["high"], r["point"]) if v is not None]
+    if base is not None:
+        values.append(base)
+    lo, hi = (min(values), max(values)) if values else (0.0, 1.0)
+    pad = (hi - lo) * .04 or max(abs(hi), 1.0) * .01
+    lo, hi = lo - pad, hi + pad
+
+    def at(value):
+        return f"{(value - lo) / (hi - lo) * 100:.2f}%"
+
+    body = ""
+    for r in rows:
+        bar = '<div style="position:absolute;left:0;right:0;top:9px;height:2px;background:#e6ebf0"></div>'
+        if r["low"] is not None and r["high"] is not None and r["high"] > r["low"]:
+            bar += (f'<div style="position:absolute;left:{at(r["low"])};width:calc({at(r["high"])} - {at(r["low"])});'
+                    'top:4px;height:12px;background:#cfe0f3;border:1px solid #9fc0e3;border-radius:6px;'
+                    'box-sizing:border-box"></div>')
+        if base is not None:
+            bar += (f'<div style="position:absolute;left:{at(base)};top:-2px;bottom:-2px;'
+                    'border-left:2px dashed #8a9199"></div>')
+        if r["point"] is not None:
+            bar += (f'<div style="position:absolute;left:calc({at(r["point"])} - 7px);top:3px;width:14px;height:14px;'
+                    'border-radius:50%;background:#1a5490;border:2px solid #fff;box-sizing:border-box;'
+                    'box-shadow:0 0 0 1px #1a5490"></div>')
+        band = (f'{r["low"]:,.0f}~{r["high"]:,.0f}원' if r["low"] is not None and r["high"] is not None else "")
+        if r["point"] is not None:
+            tone = "#1e6b34" if (r["change"] or 0) > 0 else ("#a8322a" if (r["change"] or 0) < 0 else "#1a1a1a")
+            value = (f'<div style="font-size:15px;font-weight:700;color:{tone}">{r["point"]:,.0f}원'
+                     + (f' <span style="font-size:12px">{r["change"]:+.2%}</span>' if r["change"] is not None else "")
+                     + '</div>')
+        else:
+            value = '<div style="font-size:12px;font-weight:600;color:#8a9199">예측하기 어렵습니다</div>'
+        body += ('<div class="pr-row">'
+                 f'<div><div style="font-size:13px;font-weight:700">{escape(r["label"])}</div>'
+                 f'<div style="font-size:11px;color:#8a9199">{escape(r["day"] or r["hint"])}</div></div>'
+                 f'<div class="pr-bar" style="position:relative;height:20px">{bar}</div>'
+                 f'<div style="text-align:right">{value}'
+                 f'<div style="font-size:11px;color:#8a9199">{escape(band)}</div></div></div>')
+    legend = ('<span style="display:inline-block;width:14px;height:8px;background:#cfe0f3;border:1px solid #9fc0e3;'
+              'border-radius:4px;vertical-align:middle"></span> 예상 구간 · '
+              '<span style="display:inline-block;width:9px;height:9px;border-radius:50%;background:#1a5490;'
+              'vertical-align:middle"></span> 예상가 · '
+              '<span style="display:inline-block;height:10px;border-left:2px dashed #8a9199;vertical-align:middle"></span> '
+              + (f'기준 가격(전일 종가) {base:,.0f}원' if base is not None else "기준 가격"))
+    return (_PRICE_RANGE_STYLE + f'<div style="{_BOX}">'
+            '<div style="font-size:14px;font-weight:700;margin-bottom:2px">가격 전망 — 시초가예측과 종가예측</div>'
+            f'<div style="font-size:11px;color:#8a9199;margin-bottom:6px">{legend}</div>'
+            f'{body}'
+            '<div style="font-size:11px;color:#8a9199;margin-top:6px">검증을 통과하지 못한 기간은 예상가(점) 없이 '
+            '구간만 보입니다. 기간이 길수록 구간이 넓어집니다.</div></div>')
 
 
 def rolling_train_indices(date_index, before, years=5):

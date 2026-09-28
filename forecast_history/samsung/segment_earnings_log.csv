@@ -1,0 +1,2 @@
+recorded_at_kst,quarter,method,estimate_low_krw_tn,estimate_high_krw_tn,prev_ds_krw_tn,one_off_addback_krw_tn,prev_ds_underlying_krw_tn,exports_ratio,elasticity_high,other_segments_krw_tn,exports_basis,actual_krw_tn,note
+2026-09-29,2026Q3,segment_split_v1,116.4,122.0,89.2,5~6,94~95,1.238,1.17,0.3,"7·8월 확정 + 9월 1~20일 관세청 속보",,"대화 중 116~121조로 반올림해 알렸으나 상한 계산값은 122.0조(95×1.284). 하한=94×1.238(마진 고정), 상한=95×1.238^1.17(1→2분기 탄력성)."

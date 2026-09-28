@@ -152,8 +152,8 @@ a{color:var(--accent)}
 <div class="admin-layout">
 <nav class="admin-menu" aria-label="관리자 메뉴">
   <div class="group">운영</div>
-  <a href="#visits" data-tab="visits">방문 통계</a>
   <a href="#notice" data-tab="notice">공지사항</a>
+  <a href="#visits" data-tab="visits">방문 통계</a>
   <a href="#subscribers" data-tab="subscribers">구독자</a>
   <div class="group">실험실</div>
   <a href="#sim" data-tab="sim">가상 매매</a>
@@ -772,6 +772,7 @@ a{color:var(--accent)}
   }
 
   function show(name) {
+    // 메뉴 순서는 공지사항이 먼저지만, 주소에 # 없이 들어오면 방문 통계를 연다(2026-09-28 요청).
     var hit = document.getElementById("panel-" + name) ? name : "visits";
     tabs.forEach(function (t) {
       if (t.dataset.tab === hit) t.setAttribute("aria-current", "page"); else t.removeAttribute("aria-current");

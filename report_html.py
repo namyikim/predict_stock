@@ -261,7 +261,8 @@ _TAB_SCRIPT = (
     'else{el.scrollIntoView();}});'
     'window.addEventListener("hashchange",route);window.addEventListener("popstate",route);'
     'var hs,major,minor;for(var j=0;j<ps.length;j++){major=0;minor=0;hs=ps[j].querySelectorAll("h3,h4");'
-    'for(var n=0;n<hs.length;n++){var h=hs[n],t=h.firstChild;if(!t||t.nodeType!==3)continue;'
+    # data-nonum 제목은 번호를 붙이지 않는다 — 중국 보고서처럼 탭 하나에 절 하나면 '1.'이 뜻 없이 붙는다(2026-09-28).
+    'for(var n=0;n<hs.length;n++){var h=hs[n],t=h.firstChild;if(!t||t.nodeType!==3||h.hasAttribute("data-nonum"))continue;'
     'var prefix;if(h.tagName==="H3"){major++;minor=0;prefix=major+". ";}'
     'else{minor++;prefix=major+"."+minor+" ";}'
     't.textContent=prefix+t.textContent.replace(/^\\s*(?:\\d+(?:-\\d+)?\\.\\s+|\\d+\\.\\d+\\s+)/,"");}}'
@@ -975,6 +976,8 @@ def number_headings(text):
     major, minor = 0, 0
     def change(m):
         nonlocal major, minor
+        if 'data-nonum' in m.group(1):      # 번호를 붙이지 않는 제목(2026-09-28, 중국 보고서)
+            return m.group(0)
         if m.group(2) == '3':
             major += 1; minor = 0
             prefix = f'{major}. '

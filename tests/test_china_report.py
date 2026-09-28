@@ -13,26 +13,14 @@ SOURCE = (ROOT / "tools" / "build_china_report.py").read_text(encoding="utf-8")
 
 
 class SectionOrderTests(unittest.TestCase):
-    def test_section_titles_are_numbered_with_the_current_plan_first(self):
-        for title in ('h3("1. 한눈에")', 'h3("2. 15차 계획(2026~2030)과 후보 종목")',
-                      'h3("3. 계획별: 정책 업종 대표 종목의 계획 기간 수익률")',
-                      'h3("4. CSI 300(沪深300) 분석")', 'h3("5. 데이터와 방법")'):
-            self.assertIn(title, SOURCE)
-
-    def test_parts_are_reordered_before_returning(self):
-        self.assertIn("parts[_i_15:_i_data]", SOURCE)
-        # 재배치가 5절(데이터와 방법) 뒤가 아니라 그 앞의 세 절만 옮기는지
-        self.assertIn("parts[:_i_plans] + parts[_i_15:_i_data]", SOURCE)
-
     def test_past_plans_stay_newest_first(self):
         self.assertIn("for pr in reversed(plan_results):", SOURCE)
         self.assertIn('(2026, 2030, "15차(진행 중)"), (2021, 2025, "14차")', SOURCE)
 
-    def test_cross_references_match_the_new_numbers(self):
-        self.assertIn("지수 자체가 약했다(4절)", SOURCE)
-        self.assertIn("3절의 교훈을 그대로 적용하면", SOURCE)
-        self.assertNotIn("2절의 교훈", SOURCE)
-        self.assertNotIn("약했다(3절)", SOURCE)
+    def test_cross_references_use_menu_names_not_section_numbers(self):
+        # 절마다 메뉴가 되어 번호가 없다(2026-09-28). 'n절' 참조가 남으면 가리킬 곳이 없다.
+        self.assertIn("지수 자체가 약했다(CSI 300 메뉴)", SOURCE)
+        self.assertNotRegex(SOURCE, r"[1-5]절(의|이|:|\))")
 
 
 if __name__ == "__main__":
@@ -70,16 +58,35 @@ def fake_render_inputs():
 
 
 class RenderSmokeTests(unittest.TestCase):
-    """절 재배치는 모든 절을 만든 뒤에 해야 한다(경계값이 마지막 절에서 정해진다)."""
+    """8차~15차가 한 페이지에 모두 있어 보기 힘들었다 — 차수마다 왼쪽 메뉴 하나(2026-09-28 요청)."""
 
-    def test_render_runs_and_orders_sections(self):
+    def render(self):
         plan_results, csi, rows15 = fake_render_inputs()
-        html = cr.render(plan_results, csi, rows15, "2026-09-08", "2026-09-08")
-        titles = re.findall(r'border-bottom:1px solid #ddd">([^<]+)</h3>', html)
-        self.assertEqual([t[:2] for t in titles], ["1.", "2.", "3.", "4.", "5."])
-        self.assertIn("15차", titles[1])
-        self.assertIn("계획별", titles[2])
-        self.assertIn("CSI", titles[3])
-        # 잘라 붙이는 과정에서 조각이 사라지거나 중복되지 않아야 한다.
-        self.assertEqual(html.count("5. 데이터와 방법"), 1)
-        self.assertEqual(html.count("14차 (2021~2025)"), 1)
+        return cr.render(plan_results, csi, rows15, "2026-09-08", "2026-09-08")
+
+    def test_each_plan_is_its_own_menu_newest_first(self):
+        html = self.render()
+        menu = re.findall(r'<a href="#rtab-\d+" aria-selected="\w+">([^<]+)</a>', html)
+        self.assertEqual(menu[0], "한눈에")
+        self.assertEqual(menu[1], "15차 (진행 중)")
+        self.assertEqual([m.split("차")[0] for m in menu[2:9]], ["14", "13", "12", "11", "10", "9", "8"])
+        self.assertEqual(menu[9:], ["CSI 300", "데이터와 방법"])
+
+    def test_one_section_per_menu_without_numbers(self):
+        import report_html as rh
+        html = self.render()
+        self.assertEqual(rh.tab_structure_problems(html), [])
+        titles = [re.findall(r"<h3[^>]*>([^<]+)</h3>", p["inner"]) for p in rh.panels(html)]
+        self.assertEqual([len(t) for t in titles], [1] * 11)
+        self.assertEqual(titles[2], ["14차 (2021~2025)"])        # '1. 14차'처럼 번호가 붙지 않는다
+        self.assertEqual(html.count("14차 (2021~2025)</h3>"), 1)
+
+    def test_overview_links_to_every_plan(self):
+        html = self.render()
+        for n in range(8, 16):
+            self.assertIn(f'href="#plan-{n}"', html)
+            self.assertIn(f'id="plan-{n}"', html)
+
+
+if __name__ == "__main__":
+    unittest.main()

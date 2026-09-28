@@ -34,6 +34,9 @@ import pandas as pd
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import github_pages  # noqa: E402
 
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from report_html import tabify_sections  # noqa: E402
+
 warnings.filterwarnings("ignore")
 KST = timezone(timedelta(hours=9))
 PAGES_DIR = "docs/china"
@@ -240,7 +243,7 @@ COMMENT = {
     "csi": "2012년 5월부터 14년간 +113%, 연 5.4%. 같은 기간 KOSPI 8.8%, S&P 500 12.8%에 못 미치고, 홍콩의 H주 지수는 "
            "-21%다. 변동성 22%에 최대 낙폭 -45%라 위험 대비 보상이 나빴다. 연도별로 +54%(2014)·+39%(2019)와 "
            "-24%(2018)·-20%(2022)가 번갈아 나오는데, 이는 추세가 아니라 정책·유동성 사이클이다. 14차 5년간은 -3%였고, "
-           "현재는 2021년 2월 고점 대비 -12%. <b>중국은 지수를 사서 기다리는 시장이 아니었다</b>. 2절이 보여 주듯 "
+           "현재는 2021년 2월 고점 대비 -12%. <b>중국은 지수를 사서 기다리는 시장이 아니었다</b>. 계획별 메뉴가 보여 주듯 "
            "성과는 정책 테마 안의 종목 선택에서 갈렸다. 원화 투자자는 위안/원 환율 변동을 따로 얹어야 한다.",
     "15": "후보를 현재 상태로 나누면 셋이다. <b>(가) 정책 정합성이 가장 높고 이미 많이 오른 것</b> — 반도체 장비"
           "(북방화창 5년 +164%, AMEC +226%, 캠브리콘 +1,649%). 가격이 정책을 상당 부분 반영했고, 지금은 5년 고점 대비 "
@@ -248,7 +251,7 @@ COMMENT = {
           "텐센트·알리바바(올해 -25%·-23%), 선그로우(올해 -48%, 반내권 정리 국면), 이노밴스(-21%), 항서(-22%), "
           "마인드레이(5년 고점 대비 -53%). 정책이 다시 수요를 만들면 회복 여지가 큰 쪽이지만, 눌린 데는 이유가 있다. "
           "<b>(다) 꾸준한 것</b> — 창장전력, 메이디, CNOOC, 즈진광업. 배당과 실적이 받쳐 준다. "
-          "3절의 교훈을 15차에 적용하면: 정책이 <i>수요</i>를 만드는 곳은 반도체 국산화 조달·전력망·AI 인프라이고, "
+          "과거 계획(14차~8차)의 교훈을 15차에 적용하면: 정책이 <i>수요</i>를 만드는 곳은 반도체 국산화 조달·전력망·AI 인프라이고, "
           "<i>공급</i>을 정리하는 곳(반내권)은 태양광·배터리·전기차다. 후자는 설비가 줄어드는 국면에서 살아남는 "
           "1~2위(CATL·BYD)만 의미가 있다. 이 목록은 연구·교육용이며 개인의 상황을 고려한 투자 자문이 아니다.",
 }
@@ -423,8 +426,23 @@ def table(head, body):
             f'<tr>{head}</tr>{body}</table></div>')
 
 
-def h3(text):
-    return f'<h3 style="font-size:16px;margin:32px 0 10px;padding-bottom:6px;border-bottom:1px solid #ddd">{text}</h3>'
+def h3(text, anchor=""):
+    # 절마다 왼쪽 메뉴 하나가 된다(2026-09-28 요청). 탭 하나에 절 하나라 번호는 붙이지 않는다(data-nonum).
+    ident = f' id="{anchor}"' if anchor else ""
+    return (f'<h3{ident} data-nonum style="font-size:16px;margin:32px 0 10px;padding-bottom:6px;'
+            f'border-bottom:1px solid #ddd">{text}</h3>')
+
+
+def h4(text, margin="18px 0 6px"):
+    return f'<h4 data-nonum style="font-size:14px;margin:{margin}">{text}</h4>'
+
+
+# 왼쪽 메뉴(2026-09-28 요청: 8차~15차가 한 페이지에 모두 있어 보기 힘들다). 차수마다 메뉴 하나.
+# 첫 메뉴 '한눈에'는 groups 에 없는 절(한눈에)이 들어가는 기본 탭이다.
+def china_tabs(plans):
+    groups = [("15차 (진행 중)", ("15차 계획",))]
+    groups += [(f'{p["n"]}차 ({p["years"][0]}~{p["years"][1]})', (p["title"],)) for p in sorted(plans, key=lambda p: -p["n"])]
+    return groups + [("CSI 300", ("CSI 300",)), ("데이터와 방법", ("데이터와 방법",))]
 
 
 def note(text):
@@ -447,113 +465,56 @@ def render(plan_results, csi, rows15, today, fetched):
         + github_pages.version_line(os.environ.get("GITHUB_TOKEN"),
                                     generated_at=datetime.now(KST).strftime("%Y-%m-%d %H:%M KST")))
 
-    # ---- 요약
+    # ---- 한눈에: 전체 결론 + 계획별 성적표(각 행을 누르면 그 차수 메뉴로 간다)
     with_b = [r for pr in plan_results for r in pr["rows"] if not r["missing"] and not math.isnan(r["bench_ret"])]
     beat = sum(r["ret"] > r["bench_ret"] for r in with_b)
     excess = pd.Series([r["ret"] - r["bench_ret"] for r in with_b])
-    parts.append(h3("1. 한눈에"))
+    parts.append(h3("한눈에"))
+    rows = (f'<tr><td {TD}><a href="#plan-15"><b>15차 (2026~2030)</b></a> '
+            '<span style="font-size:11px;color:#8a9199">진행 중</span></td>'
+            f'<td colspan="4" style="padding:6px 10px;border-top:1px solid #eee;color:#6b7178;font-size:13px">'
+            '후보 종목과 올해·1년·5년 수익률 → 15차 메뉴</td></tr>')
+    for pr in reversed(plan_results):
+        plan, agg = pr["plan"], pr["agg"]
+        score = f'{agg["beat"]}/{agg["n_b"]}' if agg["n_b"] else "—"
+        rows += (f'<tr><td {TD}><a href="#plan-{plan["n"]}"><b>{e(plan["title"])}</b></a></td>'
+                 f'<td {TDR}>{score}</td>'
+                 f'<td {TDR} class="{cls(agg["median_excess"]) if agg["n_b"] else ""}">'
+                 f'{pct(agg["median_excess"]) if agg["n_b"] else "—"}</td>'
+                 f'<td {TDR} class="{cls(agg["basket"])}"><b>{pct(agg["basket"])}</b></td>'
+                 f'<td {TDR}>{pct(agg["bench_ret"]) if agg["n_b"] else "—"}</td></tr>')
+    parts.append('<div style="display:flex;gap:8px;flex-wrap:wrap;margin:4px 0 12px">'
+                 + "".join(f'<div style="flex:1 1 140px;border:1px solid #e3e8ee;border-radius:6px;padding:9px 12px;background:#fbfdff">'
+                           f'<div style="font-size:11px;color:#7a8797">{label}</div>'
+                           f'<div style="font-size:20px;font-weight:700">{value}</div></div>'
+                           for label, value in (("정책 종목이 지수를 이긴 비율", f"{beat / len(with_b):.0%}" if with_b else "—"),
+                                                ("초과수익 중앙값", pct(excess.median()) if len(excess) else "—"),
+                                                ("비교한 종목", f"{len(with_b)}건")))
+                 + '</div>')
+    parts.append(table(f'<th {TH}>계획</th><th {THR}>지수 이긴 종목</th><th {THR}>초과수익 중앙값</th>'
+                       f'<th {THR}>정책 종목 바구니</th><th {THR}>상해종합</th>', rows))
+    parts.append('<div style="font-size:12px;color:#8a9199;margin:6px 0 0">계획 이름을 누르면 그 차수의 종목별 수익률로 갑니다. '
+                 '바구니는 정책 종목 동일가중, 기간은 계획 첫 거래일 → 마지막 거래일.</div>')
     parts.append(note(
-        f"9차~14차에서 지수 비교가 가능한 정책 종목 <b>{len(with_b)}건</b> 중 계획 기간에 상해종합을 이긴 것은 "
-        f"<b>{beat}건({beat / len(with_b):.0%})</b>, 초과수익의 중앙값은 <b>{pct(excess.median())}</b>였다. "
         "숫자만 보면 '계획을 따라 사면 된다'지만, <b>종목을 뒤에서 골랐기 때문에 이 적중률은 부풀려져 있다</b> — "
         "망한 정책 종목은 이 표에 없다. 믿을 만한 것은 실패의 패턴이다. "
         "① 정책이 <i>공급</i>(설비 증설)을 부추긴 업종은 과잉으로 끝났다 — 태양광 두 차례, 풍력, 철강, 고속철 시공. "
         "② 정책 수혜주라도 거품 꼭대기에 상장한 종목은 10년 넘게 공모가를 회복하지 못했다(중국중철·철건, 신화). "
         "③ 정책이 억누른 쪽(부동산·플랫폼)은 지수 이하였다. "
         "통한 쪽은 정책이 <i>수요</i>를 만들어 준 업종이다 — 부양기의 건설기계, 배터리·전기차 초기, 반도체 국산화 조달, "
-        "에너지 안보와 배당. 그리고 지수 자체가 약했다(4절): 중국에서 수익은 지수가 아니라 종목 선택에서 나왔다."))
+        "에너지 안보와 배당. 그리고 지수 자체가 약했다(CSI 300 메뉴): 중국에서 수익은 지수가 아니라 종목 선택에서 나왔다."))
 
-    # ---- 계획별
-    _i_plans = len(parts)   # 아래에서 절 순서를 바꾸기 위한 경계
-    parts.append(h3("3. 계획별: 정책 업종 대표 종목의 계획 기간 수익률"))
-    parts.append('<div style="font-size:13px;color:#6b7178;margin-bottom:8px">수익률은 계획 첫 거래일 → 마지막 거래일'
-                 '(배당 재투자 반영). "상장 후"는 계획 시작 뒤에 상장해 상장일부터 계산한 것. 지수는 같은 구간의 상해종합. '
-                 '"지금까지"는 그 시작점에서 시세 기준일까지의 누적.</div>')
-    # 최신 계획이 위로 오게 역순으로 보여 준다(읽는 사람은 지금에 가까운 것부터 본다).
-    for pr in reversed(plan_results):
-        plan, agg = pr["plan"], pr["agg"]
-        parts.append(f'<h4 style="font-size:15px;margin:26px 0 6px">{e(plan["title"])}</h4>')
-        parts.append(f'<div style="font-size:13px;margin-bottom:8px">{e(plan["summary"])}</div>')
-        parts.append('<div style="font-size:12px;color:#6b7178;margin-bottom:8px">계획의 우선순위: ' +
-                     " · ".join(e(p) for p in plan["priorities"]) + "</div>")
-        body = ""
-        for r in pr["rows"]:
-            if r["missing"]:
-                body += f'<tr><td {TD}>{e(r["name"])}<br><code>{r["ticker"]}</code></td><td {TD}>{e(r["sector"])}</td>' \
-                        f'<td {TDR} colspan="6">데이터 없음</td></tr>'
-                continue
-            span = f'{r["start"]} ~ {r["end"]}' + (' <span style="color:#a8322a;font-size:11px">상장 후</span>' if r["late"] else "")
-            body += (f'<tr><td {TD}>{e(r["name"])}<br><code>{r["ticker"]}</code></td>'
-                     f'<td {TD}>{e(r["sector"])}' + (f'<br><span style="font-size:11px;color:#8a9199">{e(r["why"])}</span>' if r["why"] else "") + '</td>'
-                     f'<td {TDR}><span style="font-size:11px;color:#8a9199">{span}</span></td>'
-                     f'<td {TDR} class="{cls(r["ret"])}"><b>{pct(r["ret"])}</b></td>'
-                     f'<td {TDR}>{pct(r["cagr"], 1)}</td>'
-                     f'<td {TDR}>{pct(r["bench_ret"])}</td>'
-                     f'<td {TDR} class="{cls(r["ret"] - r["bench_ret"]) if not math.isnan(r["bench_ret"]) else ""}">'
-                     f'{pct(r["ret"] - r["bench_ret"]) if not math.isnan(r["bench_ret"]) else "—"}</td>'
-                     f'<td {TDR}>{pct(r["mdd"])}</td>'
-                     f'<td {TDR} class="{cls(r["to_today"])}">{pct(r["to_today"])}</td></tr>')
-        head = (f'<th {TH}>종목</th><th {TH}>정책 업종</th><th {THR}>구간</th><th {THR}>수익률</th><th {THR}>연환산</th>'
-                f'<th {THR}>상해종합</th><th {THR}>초과</th><th {THR}>최대낙폭</th><th {THR}>지금까지</th>')
-        parts.append(table(head, body))
-        if agg["n_b"]:
-            parts.append(f'<div style="font-size:13px;margin-top:8px">이 계획: 종목 {agg["n"]}개 중 지수를 이긴 것 '
-                         f'<b>{agg["beat"]}/{agg["n_b"]}</b> · 초과수익 중앙값 <b class="{cls(agg["median_excess"])}">'
-                         f'{pct(agg["median_excess"])}</b> · 동일가중 바구니 {pct(agg["basket"])} vs 상해종합 {pct(agg["bench_ret"])}</div>')
-        elif agg["n"]:
-            parts.append(f'<div style="font-size:13px;margin-top:8px">이 구간은 Yahoo에 상해종합 지수가 없어(1997-07부터) '
-                         f'종목 수익률만 보인다. 동일가중 바구니 {pct(agg["basket"])}.</div>')
-        if plan["n"] in COMMENT:
-            parts.append(note(COMMENT[plan["n"]]))
-
-    # ---- CSI 300
-    _i_csi = len(parts)
-    parts.append(h3("4. CSI 300(沪深300) 분석"))
-    parts.append(f'<div style="font-size:13px;margin-bottom:8px">상해·심천 양 시장 대형주 300종목 지수. 시가총액 상위에 금융·'
-                 f'제조·소비·IT가 고루 들어 있어 "중국 본토 대형주"의 대표다. 원지수의 Yahoo 데이터가 2021년부터라 '
-                 f'여기서는 <b>화타이 CSI300 ETF(510300, 2012-05 상장, 배당 포함)</b>를 대리로 쓴다. '
-                 f'원지수 현재값 <b>{csi["index_level"]:,.0f}</b> ({csi["index_date"]}).</div>')
-    body = (f'<tr><td {TD}>구간</td><td {TDR}>{csi["start"]} ~ {csi["end"]} ({csi["years"]:.1f}년)</td></tr>'
-            f'<tr><td {TD}>누적 수익률</td><td {TDR} class="{cls(csi["ret"])}"><b>{pct(csi["ret"])}</b></td></tr>'
-            f'<tr><td {TD}>연환산(CAGR)</td><td {TDR}>{pct(csi["cagr"], 1)}</td></tr>'
-            f'<tr><td {TD}>연환산 변동성</td><td {TDR}>{csi["vol"] * 100:.0f}%</td></tr>'
-            f'<tr><td {TD}>최대 낙폭</td><td {TDR}>{pct(csi["mdd"])}</td></tr>'
-            f'<tr><td {TD}>고점({csi["peak_date"]}) 대비 현재</td><td {TDR} class="{cls(csi["from_peak"])}">{pct(csi["from_peak"])}</td></tr>'
-            f'<tr><td {TD}>200일 이동평균 대비</td><td {TDR}>{pct(csi["series"].iloc[-1] / csi["ma200"] - 1, 1)}</td></tr>')
-    parts.append(table(f'<th {TH}>CSI 300 (ETF 대리)</th><th {THR}></th>', body))
-
-    parts.append('<h4 style="font-size:14px;margin:18px 0 6px">연도별 수익률</h4>')
-    cells = "".join(f'<td {TDR} class="{cls(v)}">{y}{"*" if partial else ""}<br><b>{pct(v)}</b></td>'
-                    for y, v, partial in csi["yearly"])
-    parts.append('<div style="overflow-x:auto"><table style="border-collapse:collapse;font-size:12px;border:1px solid #e5e5e5">'
-                 f'<tr>{cells}</tr></table></div><div style="font-size:11px;color:#8a9199">* 부분 연도(첫 해는 2012-05부터, 마지막 해는 기준일까지)</div>')
-
-    parts.append('<h4 style="font-size:14px;margin:18px 0 6px">같은 구간의 다른 지수와 비교 (각 현지 통화, 2012-05 ~ 기준일)</h4>')
-    body = "".join(f'<tr><td {TD}>{e(p["name"])} <code>{p["ticker"]}</code></td><td {TDR} class="{cls(p["ret"])}">{pct(p["ret"])}</td>'
-                   f'<td {TDR}>{pct(p["cagr"], 1)}</td><td {TDR}>{p["vol"] * 100:.0f}%</td><td {TDR}>{pct(p["mdd"])}</td></tr>'
-                   for p in [dict(name="CSI 300 (ETF)", ticker=CSI_ETF, **{k: csi[k] for k in ("ret", "cagr", "vol", "mdd")})] + csi["peers"])
-    parts.append(table(f'<th {TH}>지수</th><th {THR}>누적</th><th {THR}>연환산</th><th {THR}>변동성</th><th {THR}>최대낙폭</th>', body))
-
-    parts.append('<h4 style="font-size:14px;margin:18px 0 6px">계획 구간별</h4>')
-    body = "".join(f'<tr><td {TD}>{e(p["label"])}</td><td {TDR}>{p["start"]} ~ {p["end"]}</td>'
-                   f'<td {TDR} class="{cls(p["ret"])}"><b>{pct(p["ret"])}</b></td><td {TDR}>{pct(p["cagr"], 1)}</td>'
-                   f'<td {TDR}>{pct(p["bench"])}</td><td {TDR}>{pct(p["mdd"])}</td></tr>' for p in csi["plans"])
-    parts.append(table(f'<th {TH}>계획</th><th {THR}>구간</th><th {THR}>CSI 300</th><th {THR}>연환산</th><th {THR}>상해종합</th><th {THR}>최대낙폭</th>', body))
-    if "csi" in COMMENT:
-        parts.append(note(COMMENT["csi"]))
-
-    # ---- 15차 (진행 중인 계획이므로 아래에서 2절 자리로 옮긴다)
-    _i_15 = len(parts)
-    parts.append(h3("2. 15차 계획(2026~2030)과 후보 종목"))
+    # ---- 15차 (진행 중인 계획이 첫 차수 메뉴)
+    parts.append(h3("15차 계획(2026~2030)과 후보 종목", "plan-15"))
     parts.append(f'<div style="font-size:13px;margin-bottom:8px">{e(PLAN15["summary"])}</div>')
-    parts.append(note("아래는 <b>추천 목록이 아니라 계획이 지목한 산업과 겹치는 상장사 목록</b>이다. 3절의 교훈을 그대로 적용하면: "
+    parts.append(note("아래는 <b>추천 목록이 아니라 계획이 지목한 산업과 겹치는 상장사 목록</b>이다. 과거 계획의 교훈을 그대로 적용하면: "
                       "정책이 <i>수요</i>를 만드는 쪽(반도체 국산화 조달, 전력망 투자, AI 인프라 지출)은 통할 확률이 높았고, "
                       "정책이 <i>공급</i>을 부추기는 쪽(설비 증설 보조)은 과잉으로 끝나는 일이 많았다. 15차의 '반내권'은 "
                       "그 과잉을 정부가 직접 정리하겠다는 뜻이라, 이미 과잉인 업종(태양광·일부 배터리)은 <i>설비가 줄어드는 국면</i>에서 "
                       "살아남는 1~2위만 의미가 있다. 이 페이지는 연구·교육용이며 투자 자문이 아니다."))
     for theme, why, tickers in PLAN15["themes"]:
-        parts.append(f'<h4 style="font-size:14px;margin:18px 0 4px">{e(theme)}</h4>'
-                     f'<div style="font-size:12px;color:#6b7178;margin-bottom:6px">{e(why)}</div>')
+        parts.append(h4(e(theme), "18px 0 4px")
+                     + f'<div style="font-size:12px;color:#6b7178;margin-bottom:6px">{e(why)}</div>')
         body = ""
         for r in [x for x in rows15 if x["theme"] == theme]:
             if r["missing"]:
@@ -571,9 +532,84 @@ def render(plan_results, csi, rows15, today, fetched):
     if "15" in COMMENT:
         parts.append(note(COMMENT["15"]))
 
+    # ---- 계획별: 최신 계획이 위(메뉴에서도 14차 → 8차). 차수마다 절 하나 = 메뉴 하나.
+    for pr in reversed(plan_results):
+        plan, agg = pr["plan"], pr["agg"]
+        parts.append(h3(e(plan["title"]), f'plan-{plan["n"]}'))
+        parts.append(f'<div style="font-size:13px;margin-bottom:8px">{e(plan["summary"])}</div>')
+        parts.append('<div style="font-size:12px;color:#6b7178;margin-bottom:8px">계획의 우선순위: ' +
+                     " · ".join(e(p) for p in plan["priorities"]) + "</div>")
+        if agg["n_b"]:
+            parts.append(f'<div style="font-size:13px;margin:0 0 8px">이 계획: 종목 {agg["n"]}개 중 지수를 이긴 것 '
+                         f'<b>{agg["beat"]}/{agg["n_b"]}</b> · 초과수익 중앙값 <b class="{cls(agg["median_excess"])}">'
+                         f'{pct(agg["median_excess"])}</b> · 동일가중 바구니 <b class="{cls(agg["basket"])}">{pct(agg["basket"])}</b>'
+                         f' vs 상해종합 {pct(agg["bench_ret"])}</div>')
+        elif agg["n"]:
+            parts.append(f'<div style="font-size:13px;margin:0 0 8px">이 구간은 Yahoo에 상해종합 지수가 없어(1997-07부터) '
+                         f'종목 수익률만 보인다. 동일가중 바구니 {pct(agg["basket"])}.</div>')
+        body = ""
+        for r in pr["rows"]:
+            if r["missing"]:
+                body += f'<tr><td {TD}>{e(r["name"])}<br><code>{r["ticker"]}</code></td><td {TD}>{e(r["sector"])}</td>' \
+                        f'<td {TDR} colspan="7">데이터 없음</td></tr>'
+                continue
+            span = f'{r["start"]} ~ {r["end"]}' + (' <span style="color:#a8322a;font-size:11px">상장 후</span>' if r["late"] else "")
+            body += (f'<tr><td {TD}>{e(r["name"])}<br><code>{r["ticker"]}</code></td>'
+                     f'<td {TD}>{e(r["sector"])}' + (f'<br><span style="font-size:11px;color:#8a9199">{e(r["why"])}</span>' if r["why"] else "") + '</td>'
+                     f'<td {TDR}><span style="font-size:11px;color:#8a9199">{span}</span></td>'
+                     f'<td {TDR} class="{cls(r["ret"])}"><b>{pct(r["ret"])}</b></td>'
+                     f'<td {TDR}>{pct(r["cagr"], 1)}</td>'
+                     f'<td {TDR}>{pct(r["bench_ret"])}</td>'
+                     f'<td {TDR} class="{cls(r["ret"] - r["bench_ret"]) if not math.isnan(r["bench_ret"]) else ""}">'
+                     f'{pct(r["ret"] - r["bench_ret"]) if not math.isnan(r["bench_ret"]) else "—"}</td>'
+                     f'<td {TDR}>{pct(r["mdd"])}</td>'
+                     f'<td {TDR} class="{cls(r["to_today"])}">{pct(r["to_today"])}</td></tr>')
+        head = (f'<th {TH}>종목</th><th {TH}>정책 업종</th><th {THR}>구간</th><th {THR}>수익률</th><th {THR}>연환산</th>'
+                f'<th {THR}>상해종합</th><th {THR}>초과</th><th {THR}>최대낙폭</th><th {THR}>지금까지</th>')
+        parts.append(table(head, body))
+        parts.append('<div style="font-size:11px;color:#8a9199;margin:6px 0 0">수익률은 계획 첫 거래일 → 마지막 거래일'
+                     '(배당 재투자 반영). "상장 후"는 계획 시작 뒤에 상장해 상장일부터 계산한 것. 지수는 같은 구간의 상해종합. '
+                     '"지금까지"는 그 시작점에서 시세 기준일까지의 누적.</div>')
+        if plan["n"] in COMMENT:
+            parts.append(note(COMMENT[plan["n"]]))
+
+    # ---- CSI 300
+    parts.append(h3("CSI 300(沪深300) 분석"))
+    parts.append(f'<div style="font-size:13px;margin-bottom:8px">상해·심천 양 시장 대형주 300종목 지수. 시가총액 상위에 금융·'
+                 f'제조·소비·IT가 고루 들어 있어 "중국 본토 대형주"의 대표다. 원지수의 Yahoo 데이터가 2021년부터라 '
+                 f'여기서는 <b>화타이 CSI300 ETF(510300, 2012-05 상장, 배당 포함)</b>를 대리로 쓴다. '
+                 f'원지수 현재값 <b>{csi["index_level"]:,.0f}</b> ({csi["index_date"]}).</div>')
+    body = (f'<tr><td {TD}>구간</td><td {TDR}>{csi["start"]} ~ {csi["end"]} ({csi["years"]:.1f}년)</td></tr>'
+            f'<tr><td {TD}>누적 수익률</td><td {TDR} class="{cls(csi["ret"])}"><b>{pct(csi["ret"])}</b></td></tr>'
+            f'<tr><td {TD}>연환산(CAGR)</td><td {TDR}>{pct(csi["cagr"], 1)}</td></tr>'
+            f'<tr><td {TD}>연환산 변동성</td><td {TDR}>{csi["vol"] * 100:.0f}%</td></tr>'
+            f'<tr><td {TD}>최대 낙폭</td><td {TDR}>{pct(csi["mdd"])}</td></tr>'
+            f'<tr><td {TD}>고점({csi["peak_date"]}) 대비 현재</td><td {TDR} class="{cls(csi["from_peak"])}">{pct(csi["from_peak"])}</td></tr>'
+            f'<tr><td {TD}>200일 이동평균 대비</td><td {TDR}>{pct(csi["series"].iloc[-1] / csi["ma200"] - 1, 1)}</td></tr>')
+    parts.append(table(f'<th {TH}>CSI 300 (ETF 대리)</th><th {THR}></th>', body))
+
+    parts.append(h4("연도별 수익률"))
+    cells = "".join(f'<td {TDR} class="{cls(v)}">{y}{"*" if partial else ""}<br><b>{pct(v)}</b></td>'
+                    for y, v, partial in csi["yearly"])
+    parts.append('<div style="overflow-x:auto"><table style="border-collapse:collapse;font-size:12px;border:1px solid #e5e5e5">'
+                 f'<tr>{cells}</tr></table></div><div style="font-size:11px;color:#8a9199">* 부분 연도(첫 해는 2012-05부터, 마지막 해는 기준일까지)</div>')
+
+    parts.append(h4("같은 구간의 다른 지수와 비교 (각 현지 통화, 2012-05 ~ 기준일)"))
+    body = "".join(f'<tr><td {TD}>{e(p["name"])} <code>{p["ticker"]}</code></td><td {TDR} class="{cls(p["ret"])}">{pct(p["ret"])}</td>'
+                   f'<td {TDR}>{pct(p["cagr"], 1)}</td><td {TDR}>{p["vol"] * 100:.0f}%</td><td {TDR}>{pct(p["mdd"])}</td></tr>'
+                   for p in [dict(name="CSI 300 (ETF)", ticker=CSI_ETF, **{k: csi[k] for k in ("ret", "cagr", "vol", "mdd")})] + csi["peers"])
+    parts.append(table(f'<th {TH}>지수</th><th {THR}>누적</th><th {THR}>연환산</th><th {THR}>변동성</th><th {THR}>최대낙폭</th>', body))
+
+    parts.append(h4("계획 구간별"))
+    body = "".join(f'<tr><td {TD}>{e(p["label"])}</td><td {TDR}>{p["start"]} ~ {p["end"]}</td>'
+                   f'<td {TDR} class="{cls(p["ret"])}"><b>{pct(p["ret"])}</b></td><td {TDR}>{pct(p["cagr"], 1)}</td>'
+                   f'<td {TDR}>{pct(p["bench"])}</td><td {TDR}>{pct(p["mdd"])}</td></tr>' for p in csi["plans"])
+    parts.append(table(f'<th {TH}>계획</th><th {THR}>구간</th><th {THR}>CSI 300</th><th {THR}>연환산</th><th {THR}>상해종합</th><th {THR}>최대낙폭</th>', body))
+    if "csi" in COMMENT:
+        parts.append(note(COMMENT["csi"]))
+
     # ---- 데이터·방법
-    _i_data = len(parts)
-    parts.append(h3("5. 데이터와 방법"))
+    parts.append(h3("데이터와 방법"))
     parts.append(
         '<div style="font-size:13px;line-height:1.7">'
         f'<b>시세</b> Yahoo Finance, 배당 재투자 반영 조정 종가(auto_adjust). 기준일 {fetched}. A주 위안, 홍콩 홍콩달러 — 환율 효과는 빠져 있다.<br>'
@@ -586,11 +622,8 @@ def render(plan_results, csi, rows15, today, fetched):
         '<b>생성</b> <code>tools/build_china_report.py</code>가 매 실행마다 시세를 새로 받아 만든다.'
         '</div>')
     parts.append("</div>")
-    # 진행 중인 계획을 맨 앞에 둔다: 1 한눈에 → 2 15차 → 3 계획별(14차→8차) → 4 CSI 300 → 5 데이터.
-    # 모든 절을 다 만든 뒤에 자른다 — 경계값(_i_data)이 마지막 절에서 정해지기 때문이다.
-    parts = (parts[:_i_plans] + parts[_i_15:_i_data]
-             + parts[_i_plans:_i_csi] + parts[_i_csi:_i_15] + parts[_i_data:])
-    return "".join(parts)
+    # 절 순서대로 만든 뒤 왼쪽 메뉴로 나눈다: 한눈에 → 15차 → 14차…8차 → CSI 300 → 데이터와 방법.
+    return tabify_sections("".join(parts), groups=china_tabs(PLANS), default_label="한눈에")
 
 
 def page(inner, today):

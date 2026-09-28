@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 """금값 결정 요인과 평가(2026-09-27): 회귀식의 적정 가격·괴리와 그림."""
+import re
 import sys
 import unittest
 from pathlib import Path
@@ -49,6 +50,16 @@ class ChartTests(unittest.TestCase):
         self.assertIn(">2000<", svg, "가로축은 2000년부터")
         for label in ("금 가격(좌, 달러/온스)", "적정 가격(좌, 회귀식)", "적정 가격 대비 괴리(우, %)"):
             self.assertIn(label, svg)
+
+    def test_wide_gap_axis_thins_right_ticks(self):
+        # SK하이닉스 괴리는 +360%까지 가서, 10%p 간격이면 오른쪽 눈금 40여 개가 겹쳤다(2026-09-28).
+        out, _ = gv.evaluate(frame())
+        svg = gv.chart_svg(out, gap_axis=(-0.6, 3.7))
+        ticks = re.findall(r'fill="#c0392b">([+-]\d+)%</text>', svg)
+        self.assertLessEqual(len(ticks), 12)
+        self.assertIn("+0", ticks)
+        self.assertIn("+350", ticks)
+        self.assertNotIn("-0%", gv.chart_svg(out))
 
     def test_gap_outside_the_axis_is_clipped_not_drawn_off_chart(self):
         out, _ = gv.evaluate(frame())

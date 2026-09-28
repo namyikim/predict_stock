@@ -210,9 +210,11 @@ def chart_svg(out, width=900, height=420, *, title="금 가격과 적정 가격 
                  f'{money(v)}</text>')
         v += step
     right_ticks = ""
-    for g in np.arange(g_lo, g_hi + 1e-9, 0.10):
+    # 괴리 폭이 크면(SK하이닉스 +360%) 10%p 간격은 글자가 겹친다. 눈금이 12개 이하가 되는 간격을 고르고 0 에 맞춘다.
+    g_step = next((s for s in (0.10, 0.20, 0.25, 0.50, 1.00, 2.00) if (g_hi - g_lo) / s <= 12), 5.00)
+    for g in np.arange(math.ceil(g_lo / g_step - 1e-9) * g_step, g_hi + 1e-9, g_step):
         right_ticks += (f'<text x="{width - right + 8}" y="{y_right(g) + 4:.1f}" font-size="11" '
-                        f'fill="{GAP_COLOR}">{g * 100:+.0f}%</text>')
+                        f'fill="{GAP_COLOR}">{round(g * 100):+d}%</text>')
     zero = (f'<line x1="{left}" x2="{width - right}" y1="{y_right(0):.1f}" y2="{y_right(0):.1f}" '
             f'stroke="{GAP_COLOR}" stroke-width="0.8" stroke-dasharray="2,3" opacity="0.7"/>')
     years = ""

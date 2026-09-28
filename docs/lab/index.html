@@ -43,10 +43,14 @@
   details{margin-top:10px}
   summary{font-size:12px;color:#6b7178;cursor:pointer}
 body{zoom:1.15}
+  .embed .lab-head{display:none}
+  .embed body{padding-top:4px}
 </style>
 </head>
 <body>
 <div class="wrap">
+  <!-- 관리자 페이지(docs/admin)가 ?embed=1 로 탭 안에 띄울 때는 이 머리말과 탭 줄을 숨긴다(2026-09-28). -->
+  <div class="lab-head">
   <div style="margin-bottom:10px"><a href="../" style="display:inline-block;font-size:12px;color:#1a5490;text-decoration:none;border:1px solid #cedff0;border-radius:5px;padding:5px 11px;background:#f0f6fc">← 보고서 목록</a></div>
   <h1>실험실 <span class="muted">검증 전 분석 · 공개 보고서에 띄우지 않습니다</span></h1>
   <div class="muted">predict_stock</div>
@@ -55,7 +59,9 @@ body{zoom:1.15}
     <button id="tab-attr" class="tab">무엇이 예측을 밀었나</button>
     <button id="tab-ai" class="tab">AI 일일예측</button>
   </div>
+  </div>
 
+  <div id="panel-sim">
   <div class="warn">
     <b>실제 거래는 하지 않았습니다.</b> 원장(<code>forecast_history/…/forecast_log.csv</code>)에
     <b>실제로 미리 기록한 예측</b>만으로 가상 매매를 돌린 결과입니다. 백테스트가 아닙니다.
@@ -65,8 +71,6 @@ body{zoom:1.15}
     못하는 것이 정상</b>이며, 이 페이지는 그 사실을 금액으로 확인하려는 것입니다.
     <br>결과는 <b>보유 전략과 비교해서만</b> 읽으세요. 거래비용은 끌 수 없습니다.
   </div>
-
-  <div id="panel-sim">
   <div class="controls">
     <div class="field">종목
       <div class="stock-tabs" role="group" aria-label="종목"><button type="button" data-stock="samsung">삼성전자</button><button type="button" data-stock="sk_hynix">SK하이닉스</button></div>
@@ -856,6 +860,12 @@ body{zoom:1.15}
       if (name === "ai") loadAiForecasts();
     });
   });
+
+  // ?tab=sim|attr|ai 로 첫 탭을 고르고, ?embed=1 이면 머리말을 숨긴다 — 관리자 페이지의 탭이 이 페이지를 띄운다.
+  var params = new URLSearchParams(location.search);
+  if (params.get("embed") === "1") document.documentElement.classList.add("embed");
+  var firstTab = params.get("tab");
+  if (firstTab === "attr" || firstTab === "ai") $("tab-" + firstTab).click();
 })();
 </script>
 </body>

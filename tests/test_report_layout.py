@@ -331,8 +331,12 @@ class RealShapeTabTests(unittest.TestCase):
         section = sr.MARK_START + '<h3 style="x">오늘 장 회고 — 2026-09-11</h3><div>회고</div>' + sr.MARK_END
         page = sr.insert_section(out, section)
         self.assertEqual(rh.tab_structure_problems(page), [])
-        # '오늘의 예측' 탭 맨 끝에 들어간다(2026-09-28 요청). 다시 넣어도 하나만 남고 자리가 같다.
-        self.assertIn("오늘 장 회고", panel_titles_raw(page, "rtab-0"))
+        # 2026-09-30 요청: '오늘의 예측' 바로 다음의 '오늘의 장 회고' 탭에 들어간다. 다시 넣어도 하나만 남고 자리가 같다.
+        self.assertNotIn("오늘 장 회고", panel_titles_raw(page, "rtab-0"))
+        self.assertIn("오늘 장 회고", panel_titles_raw(page, "rtab-review"))
+        nav = page[page.find('<nav class="rtabs"'):page.find("</nav>")]
+        self.assertLess(nav.find("#rtab-0"), nav.find("#rtab-review"))
+        self.assertLess(nav.find("#rtab-review"), nav.find("#rtab-1"))
         self.assertEqual(sr.insert_section(page, section), page)
         self.assertEqual(page.count(sr.MARK_START), 1)
 

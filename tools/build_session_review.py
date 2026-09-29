@@ -43,7 +43,7 @@ TARGETS = {
 # 절 그리기는 forecast_utils 로 옮겼다(2026-09-23) — 노트북이 페이지를 새로 만들 때 같은 함수로 직전 회고를 다시 붙인다.
 from forecast_utils import (  # noqa: E402
     REVIEW_DISCLAIMER as DISCLAIMER, REVIEW_END as MARK_END, REVIEW_LEDGER_END as LEDGER_END,
-    REVIEW_START as MARK_START, flow_story, insert_review_section, review_section_html,
+    REVIEW_START as MARK_START, flow_story, insert_review_section, review_section_html, review_tab_html,
 )
 # 전환점 판정 문턱. 그날 5분 수익률의 robust σ 배수.
 EVENT_Z, VOLUME_SPIKE, MERGE_MINUTES, MAX_EVENTS = 3.0, 3.0, 15, 3
@@ -343,9 +343,28 @@ def _pct(x, d=2):
     return "—" if x is None or not np.isfinite(x) else f"{x * 100:+.{d}f}%"
 
 
-def render_section(review):
-    """오늘 장 회고 절. 본체는 forecast_utils.review_section_html."""
-    return review_section_html(review)
+def recent_reviews(target, review, days=4):
+    """오늘 회고 + 저장소에 있는 그 전 회고들(최근 것부터). 날짜 단추로 지난 회고를 고를 수 있게 한다(2026-09-30).
+
+    회고 작업은 저장소를 받아 둔 채 돌므로 forecast_history/<종목>/reviews/*.json 을 그대로 읽는다.
+    """
+    folder = ROOT / "forecast_history" / target / "reviews"
+    older = []
+    for path in sorted(folder.glob("*.json"), reverse=True):
+        if path.stem >= str(review["session_date"])[:10]:
+            continue
+        try:
+            older.append(json.loads(path.read_text(encoding="utf-8")))
+        except (OSError, ValueError):
+            continue
+        if len(older) >= days - 1:
+            break
+    return [review] + older
+
+
+def render_section(review, target=None):
+    """장 회고 탭의 내용. 본체는 forecast_utils.review_tab_html(최근 거래일 날짜 단추 포함)."""
+    return review_tab_html(recent_reviews(target, review) if target else [review])
 
 
 def insert_section(page, section):
@@ -538,7 +557,7 @@ def main():
                          "마감(15:30) 뒤에 실행하거나 --allow-partial 을 붙이세요(장중 점검용).")
 
     review = build_review(args.target, session_date, storage, token=token, use_news=not args.no_news)
-    section = render_section(review)
+    section = render_section(review, args.target)
     (storage / f"review_{review['session_date']}.html").write_text(section, encoding="utf-8")
     (storage / f"review_{review['session_date']}.json").write_text(to_json(review), encoding="utf-8")
     s = review["summary"]

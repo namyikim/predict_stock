@@ -77,7 +77,8 @@ class ToolDelegatesTests(unittest.TestCase):
         self.assertEqual(R.MARK_START, fu.REVIEW_START)
         self.assertEqual(R.MARK_END, fu.REVIEW_END)
         self.assertEqual(R.DISCLAIMER, fu.REVIEW_DISCLAIMER)
-        self.assertEqual(R.render_section(stored_review()), fu.review_section_html(stored_review()))
+        # 2026-09-30부터 회고는 '오늘의 장 회고' 탭 전체(날짜 단추 포함)로 그린다. 종목을 안 주면 그날 하나만.
+        self.assertEqual(R.render_section(stored_review()), fu.review_tab_html([stored_review()]))
 
     def test_afternoon_review_replaces_the_carried_one(self):
         page = "<html><body><p>x</p><!--LEDGER_SECTION_END--><p>y</p></body></html>"
@@ -85,7 +86,7 @@ class ToolDelegatesTests(unittest.TestCase):
         fresh = dict(stored_review(), session_date="2026-09-28", generated_at="2026-09-28 17:28 KST")
         replaced = R.insert_section(carried, R.render_section(fresh))
         self.assertEqual(replaced.count(fu.REVIEW_START), 1)
-        self.assertIn("오늘 장 회고 — 2026-09-28", replaced)
+        self.assertIn("장 회고 — 2026-09-28", replaced)   # 탭 안에서는 날짜로 부른다(2026-09-30)
         self.assertNotIn("직전 거래일 장 회고", replaced)
         self.assertLess(replaced.find("<!--LEDGER_SECTION_END-->"), replaced.find(fu.REVIEW_START))
 
@@ -94,8 +95,9 @@ class NotebookWiringTests(unittest.TestCase):
     def test_report_cell_reattaches_the_latest_review_after_tabs(self):
         nb = json.loads((ROOT / "samsung_direction_model_colab.ipynb").read_text(encoding="utf-8"))
         cell = next("".join(c["source"]) for c in nb["cells"] if "html = tabify_sections(html)" in "".join(c["source"]))
-        self.assertIn("_review = _latest_review(last_samsung_date)", cell)
-        self.assertIn("review_section_html(_review, carried=True)", cell)
+        # 최근 거래일 회고를 모아(최대 4개) 장 회고 탭으로 붙인다(2026-09-30).
+        self.assertIn("pd.bdate_range(end=last_samsung_date, periods=12)", cell)
+        self.assertIn("html = insert_review_section(html, review_tab_html(_reviews))", cell)
         self.assertLess(cell.index("html = tabify_sections(html)"), cell.index("insert_review_section(html"))
         self.assertLess(cell.index("insert_review_section(html"), cell.index("_page = ("))
         self.assertIn('Path(GITHUB_LEDGER_DIR) / "reviews"', cell)   # 체크아웃에 있으면 그것부터

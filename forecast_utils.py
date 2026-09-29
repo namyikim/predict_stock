@@ -3358,22 +3358,120 @@ _FIRST_TAB_OPEN = '<section class="rtab-panel" id="rtab-0">'
 _SECOND_TAB_OPEN = '<section class="rtab-panel" id="rtab-1">'
 
 
+# ---- 장 회고 탭(2026-09-30 요청) ----------------------------------------------------------------
+# 회고는 '오늘의 예측' 탭 끝에 있었다. 왼쪽 메뉴에 '오늘의 장 회고' 탭을 따로 두고(오늘의 예측 바로 다음),
+# 최근 거래일 3~4일을 날짜 단추로 골라 볼 수 있게 한다. 장이 끝나기 전에는 직전 거래일 회고가 보이므로
+# 그 사실을 맨 위에 적는다(브라우저 시각 기준 — 평일·시각만 보고 공휴일은 모른다).
+REVIEW_TAB_ID, REVIEW_TAB_LABEL, REVIEW_TAB_DAYS = "rtab-review", "오늘의 장 회고", 4
+_WEEKDAYS_KO = "월화수목금토일"
+
+
+def _review_body(review):
+    """review_section_html 에서 표시·제목(h3)을 뺀 본문. 탭 나누기가 h3 로 절을 자르므로 h4 로 낮춘다."""
+    import re
+    body = review_section_html(review).replace(REVIEW_START, "").replace(REVIEW_END, "")
+    # 날짜 단추로 지난 날도 보므로 '오늘'이라 부르지 않는다.
+    body = body.replace("오늘 장 회고 — ", "장 회고 — ", 1)
+    return re.sub(r"<h3\b([^>]*)>(.*?)</h3>", r'<h4\1>\2</h4>', body, count=1, flags=re.S)
+
+
+def review_tab_html(reviews, days=REVIEW_TAB_DAYS):
+    """장 회고 탭의 내용. reviews 는 회고 기록(dict) 목록 — 날짜가 겹치면 뒤의 것이 이긴다. 비면 빈 문자열."""
+    from html import escape as e
+    latest = {}
+    for review in reviews or []:
+        if review and review.get("session_date"):
+            latest[str(review["session_date"])[:10]] = review
+    dates = sorted(latest, reverse=True)[:days]
+    if not dates:
+        return ""
+
+    def label(day):
+        stamp = pd.Timestamp(day)
+        return f"{stamp.month}/{stamp.day}({_WEEKDAYS_KO[stamp.weekday()]})"
+
+    pill = ("border:1px solid #b9d3ec;background:#f0f6fc;color:#1a5490;border-radius:999px;padding:7px 14px;"
+            "font-size:13px;cursor:pointer;font-family:inherit")
+    buttons = "".join(
+        f'<button type="button" data-review-day="{day}" aria-pressed="{"true" if i == 0 else "false"}" '
+        f'style="{pill}">{label(day)}</button>' for i, day in enumerate(dates))
+    panels = "".join(
+        f'<div data-review-panel="{day}"{"" if i == 0 else " hidden"}>{_review_body(latest[day])}</div>'
+        for i, day in enumerate(dates))
+    script = (
+        "<script>(function(){var box=document.getElementById('review-days');if(!box)return;"
+        "var latest=box.getAttribute('data-latest'),ll=box.getAttribute('data-latest-label');var bs=box.querySelectorAll('[data-review-day]'),"
+        "ps=box.querySelectorAll('[data-review-panel]');"
+        "function pick(d){for(var i=0;i<bs.length;i++){var on=bs[i].getAttribute('data-review-day')===d;"
+        "bs[i].setAttribute('aria-pressed',on?'true':'false');bs[i].style.background=on?'#1a5490':'#f0f6fc';"
+        "bs[i].style.color=on?'#fff':'#1a5490';bs[i].style.fontWeight=on?'700':'400';}"
+        "for(var j=0;j<ps.length;j++){ps[j].hidden=ps[j].getAttribute('data-review-panel')!==d;}}"
+        "for(var k=0;k<bs.length;k++){bs[k].addEventListener('click',function(){pick(this.getAttribute('data-review-day'));});}"
+        "pick(latest);"
+        # 한국 시각으로 오늘이 최신 회고보다 뒤면: 주말은 휴장, 15:30 전은 마감 전, 그 뒤는 회고 준비 중.
+        "var now=new Date(Date.now()+9*3600*1000),today=now.toISOString().slice(0,10),"
+        "wd=now.getUTCDay(),mins=now.getUTCHours()*60+now.getUTCMinutes(),msg='';"
+        "if(today>latest){if(wd===0||wd===6){msg='오늘은 휴장일입니다. 가장 최근 회고는 '+ll+'입니다.';}"
+        "else if(mins<15*60+30){msg='아직 오늘 장이 마감되지 않았습니다. 가장 최근 회고는 '+ll+'이며, 오늘 회고는 장 마감 뒤(16:10 무렵) 올라옵니다.';}"
+        "else{msg='오늘 장은 마감됐고 회고를 만드는 중입니다(보통 16:10 무렵). 가장 최근 회고는 '+ll+'입니다.';}}"
+        "var st=document.getElementById('review-status');if(st){st.textContent=msg;st.hidden=!msg;}"
+        "})();</script>")
+    return (REVIEW_START
+            + '<h3 style="font-size:15px;margin:24px 0 9px;padding-bottom:6px;border-bottom:1px solid #ddd">'
+            + f'{REVIEW_TAB_LABEL}</h3>'
+            + '<div id="review-status" hidden style="background:#fdf6e3;border-left:4px solid #c79a2b;padding:9px 12px;'
+            + 'font-size:13px;margin:6px 0 10px"></div>'
+            + f'<div id="review-days" data-latest="{e(dates[0])}" data-latest-label="{e(label(dates[0]))}">'
+            + f'<div role="group" aria-label="회고 날짜" style="display:flex;flex-wrap:wrap;gap:8px;margin:4px 0 12px">{buttons}</div>'
+            + panels + '</div>' + script + REVIEW_END)
+
+
+_RTABS_NAV = '<nav class="rtabs"'
+
+
 def insert_review_section(page, section):
-    """회고 절을 넣는다. 첫 탭이 있으면 그 끝, 없으면 원장 절 뒤, 그것도 없으면 body 끝. 이미 있으면 옮겨 교체."""
+    """회고 절을 넣는다. 이미 있으면 교체.
+
+    왼쪽 메뉴(탭)가 있는 페이지는 '오늘의 장 회고' 탭(오늘의 예측 바로 다음)에 넣는다 — 탭이 없으면 메뉴 단추와
+    칸을 만든다. 메뉴가 없는 옛 페이지는 원장 절 뒤, 그것도 없으면 body 끝.
+    """
     start, end = page.find(REVIEW_START), page.find(REVIEW_END)
     if start >= 0 and end > start:
         page = page[:start] + page[end + len(REVIEW_END):]
-    first, second = page.find(_FIRST_TAB_OPEN), page.find(_SECOND_TAB_OPEN)
-    if 0 <= first < second:
-        close = page.rfind("</section>", first, second)
-        if close > first:
-            return page[:close] + section + page[close:]
+    nav = page.find(_RTABS_NAV)
+    first_panel = page.find(_FIRST_TAB_OPEN)
+    if nav >= 0 and first_panel >= 0:
+        panel_open = f'<section class="rtab-panel" id="{REVIEW_TAB_ID}">'
+        where = page.find(panel_open)
+        if where < 0:
+            # 메뉴: 첫 단추(오늘의 예측) 바로 뒤에 새 단추
+            first_link_end = page.find("</a>", nav)
+            link = f'<a href="#{REVIEW_TAB_ID}" aria-selected="false">{REVIEW_TAB_LABEL}</a>'
+            page = page[:first_link_end + 4] + link + page[first_link_end + 4:]
+            # 칸: 첫 칸 바로 뒤에 새 칸(빈 칸을 먼저 만들고 아래에서 채운다)
+            first_panel = page.find(_FIRST_TAB_OPEN)
+            close = _section_close(page, first_panel)
+            page = page[:close] + panel_open + "</section>" + page[close:]
+            where = page.find(panel_open)
+        inner = where + len(panel_open)
+        return page[:inner] + section + page[inner:]
     anchor = page.find(REVIEW_LEDGER_END)
     if anchor >= 0:
         cut = anchor + len(REVIEW_LEDGER_END)
         return page[:cut] + section + page[cut:]
     body_end = page.rfind("</body>")
     return page[:body_end] + section + page[body_end:] if body_end >= 0 else page + section
+
+
+def _section_close(page, open_at):
+    """open_at 에서 열린 <section> 의 닫는 태그 바로 뒤 위치. 안에 든 section 도 센다."""
+    import re
+    depth, i = 0, open_at
+    for match in re.finditer(r"<(/?)section\b[^>]*>", page[open_at:]):
+        depth += -1 if match.group(1) else 1
+        if depth == 0:
+            return open_at + match.end()
+    return len(page)
 
 
 # ---- 이력 보관본 합치기 (2026-09-24) ------------------------------------------------------------

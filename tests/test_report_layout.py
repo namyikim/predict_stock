@@ -210,7 +210,7 @@ class TabArrangementTests(unittest.TestCase):
     def test_long_term_tab_holds_the_outlook_and_the_quarterly_profit(self):
         # 장기 전망 탭도 오늘의 예측처럼 쉬운 요약이 맨 위에 온다(2026-09-13).
         self.assertEqual(panel_titles(self.out())["rtab-1"],
-                         ["1. 한눈에 보는 장기 전망 요약", "2. 장기 전망 (월간)", "3. 이번 분기 영업이익 추정"])
+                         ["1. 한눈에 보는 장기 전망 요약", "2. 이번 분기 영업이익 추정", "3. 장기 전망 (월간)"])
 
     def test_numbers_restart_in_every_tab(self):
         """번호는 탭 안에서 1부터 이어진다. 절이 하나뿐인 탭은 번호가 없다."""
@@ -227,14 +227,14 @@ class TabArrangementTests(unittest.TestCase):
                 '<h3>1. 다음 거래일 방향</h3><p>c</p><h3>2. 이번 분기 영업이익 추정</h3><p>d</p></div>')
         panels = panel_titles(rh.tabify_sections(page))
         self.assertEqual(panels["rtab-0"], ["1. 한눈에 보는 쉬운 요약", "2. 다음 거래일 방향"])
-        self.assertEqual(panels["rtab-1"], ["1. 장기 전망 (월간)", "2. 이번 분기 영업이익 추정"])
+        self.assertEqual(panels["rtab-1"], ["1. 이번 분기 영업이익 추정", "2. 장기 전망 (월간)"])
 
     def test_order_inside_a_tab_follows_the_group_not_the_source(self):
-        """옛 발행본은 영업이익 절이 장기 전망보다 앞에 있다. 탭 안에서는 1·2 순서로 놓는다."""
+        """탭 안 순서는 원문 순서가 아니라 TAB_GROUPS 열쇠 순서(2026-09-29부터 영업이익 → 장기 전망)를 따른다."""
         page = ('<div><h3>한눈에 보는 쉬운 요약</h3><p>a</p><h3>2. 이번 분기 영업이익 추정</h3><p>d</p>'
                 '<h3>1. 장기 전망 (월간)</h3><p>b</p></div>')
         out = rh.tabify_sections(page)
-        self.assertEqual(panel_titles(out)["rtab-1"], ["1. 장기 전망 (월간)", "2. 이번 분기 영업이익 추정"])
+        self.assertEqual(panel_titles(out)["rtab-1"], ["1. 이번 분기 영업이익 추정", "2. 장기 전망 (월간)"])
         self.assertEqual(rh.tab_structure_problems(out), [])
 
     def test_the_structure_stays_sound(self):

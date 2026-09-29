@@ -50,8 +50,25 @@ class SegmentSplitTests(unittest.TestCase):
         seg["recorded"] = {"recorded_at": "2026-09-29", "low": 116.4 * T, "high": 122.0 * T}
         html = b.render_segment_split({"segment_split": seg, "point": 120.7 * T, "last_actual": 89.5 * T})
         self.assertIn("116.9 ~ 122.2조 원", html)
-        self.assertIn("기존 모델 120.7", html)
+        # 세 줄로 나눠 그린다(2026-09-29 요청): 지금 계산 · 발표 전 기록 · 기존 모델. 직전 분기는 넣지 않는다.
+        for label in (">부문 분리 추정</text>", ">발표 전 기록</text>", ">기존 모델</text>"):
+            self.assertIn(label, html)
+        self.assertIn(">120.7</text>", html)
+        self.assertNotIn("직전 분기 89.5", html)
         self.assertIn("발표 전에 기록한 값(2026-09-29, 116.4~122.0조)", html)
+
+    def test_chart_positions_match_the_axis(self):
+        import re
+        svg = b.segment_split_svg(115.6 * T, 123.5 * T, {"recorded_at": "d", "low": 116.4 * T, "high": 122.0 * T},
+                                  120.7 * T)
+        ticks = [(float(t), float(x)) for x, t in re.findall(
+            r'<text x="([\d.]+)" y="\d+" font-size="11" text-anchor="middle" fill="#6b7178">([\d.]+)</text>', svg)]
+        (v0, x0), (v1, x1) = ticks[0], ticks[-1]
+        scale = (x1 - x0) / (v1 - v0)
+        start = float(re.search(r'<rect x="([\d.]+)"', svg).group(1))
+        point = float(re.search(r'<circle cx="([\d.]+)"', svg).group(1))
+        self.assertAlmostEqual(start, x0 + (115.6 - v0) * scale, delta=0.2)
+        self.assertAlmostEqual(point, x0 + (120.7 - v0) * scale, delta=0.2)
 
     def test_recorded_estimate_is_read_from_the_log(self):
         rec = b.recorded_segment_estimate("samsung", "2026Q3")

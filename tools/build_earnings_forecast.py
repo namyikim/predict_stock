@@ -29,6 +29,7 @@ import sys
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
+import math
 import numpy as np
 import pandas as pd
 
@@ -965,6 +966,51 @@ def recorded_segment_estimate(target, quarter_code):
             "high": float(first["estimate_high_krw_tn"]) * 1e12}
 
 
+def segment_split_svg(low, high, recorded=None, model_point=None):
+    """이번 분기 추정만 세 줄로(2026-09-29 요청): 지금 계산 범위 · 발표 전 기록 범위 · 기존 모델 점.
+
+    값마다 줄을 나눠 겹치지 않게 하고, 축은 5조 단위 눈금으로 값 범위에 맞춘다.
+    """
+    tn = 1e12
+    rows = [("부문 분리 추정", "지금 계산", (low, high), "#b5d4f4", "#1a5490")]
+    if recorded and recorded.get("low") is not None and recorded.get("high") is not None:
+        rows.append(("발표 전 기록", str(recorded.get("recorded_at", "")), (recorded["low"], recorded["high"]),
+                     "#d3d1c7", "#5f5e5a"))
+    if model_point is not None and np.isfinite(model_point):
+        rows.append(("기존 모델", "점 추정", (model_point, None), None, "#1a5490"))
+    values = [v / tn for _, _, pair, _, _ in rows for v in pair if v is not None]
+    step = 5
+    lo_axis = step * math.floor((min(values) - 1) / step)
+    hi_axis = step * math.ceil((max(values) + 1) / step)
+    left, right, row_h, top = 150, 650, 44, 14
+    def x(v):
+        return left + (v / tn - lo_axis) / (hi_axis - lo_axis) * (right - left)
+    parts = []
+    for i, (title, sub, (a, b), fill, stroke) in enumerate(rows):
+        y = top + i * row_h
+        parts.append(f'<text x="10" y="{y + 15}" font-size="13" font-weight="700" fill="#1a1a1a">{title}</text>'
+                     f'<text x="10" y="{y + 31}" font-size="11" fill="#6b7178">{html.escape(sub)}</text>')
+        if b is None:
+            parts.append(f'<circle cx="{x(a):.1f}" cy="{y + 14}" r="7" fill="{stroke}"/>'
+                         f'<text x="{x(a) + 12:.1f}" y="{y + 18}" font-size="12" fill="{stroke}">{a / tn:,.1f}</text>')
+        else:
+            parts.append(f'<rect x="{x(a):.1f}" y="{y + 2}" width="{max(x(b) - x(a), 2):.1f}" height="22" rx="4" '
+                         f'fill="{fill}" stroke="{stroke}"/>'
+                         f'<text x="{x(a):.1f}" y="{y + 38}" font-size="11" text-anchor="middle" fill="#3a4652">{a / tn:,.1f}</text>'
+                         f'<text x="{x(b):.1f}" y="{y + 38}" font-size="11" text-anchor="middle" fill="#3a4652">{b / tn:,.1f}</text>')
+    axis_y = top + len(rows) * row_h + 6
+    ticks = "".join(f'<line x1="{left + (t - lo_axis) / (hi_axis - lo_axis) * (right - left):.1f}" y1="{axis_y - 4}" '
+                    f'x2="{left + (t - lo_axis) / (hi_axis - lo_axis) * (right - left):.1f}" y2="{axis_y + 4}" stroke="#c3c2b7"/>'
+                    f'<text x="{left + (t - lo_axis) / (hi_axis - lo_axis) * (right - left):.1f}" y="{axis_y + 18}" '
+                    f'font-size="11" text-anchor="middle" fill="#6b7178">{t:g}</text>'
+                    for t in range(int(lo_axis), int(hi_axis) + 1, step))
+    height = axis_y + 26
+    return (f'<svg viewBox="0 0 660 {height}" width="100%" style="max-width:660px;min-width:420px" role="img" '
+            f'aria-label="이번 분기 영업이익 추정 범위">{"".join(parts)}'
+            f'<line x1="{left}" y1="{axis_y}" x2="{right}" y2="{axis_y}" stroke="#c3c2b7"/>{ticks}'
+            f'<text x="10" y="{axis_y + 18}" font-size="11" fill="#6b7178">단위: 조 원</text></svg>')
+
+
 def render_segment_split(result):
     """부문 분리 추정 블록 — 범위 막대 하나(검증 전 시나리오). 삼성전자에만 있다."""
     e = html.escape
@@ -976,38 +1022,20 @@ def render_segment_split(result):
     if seg.get("reason"):
         return head + f'<div style="font-size:13px;color:#6b7178">{e(seg["reason"])}</div>'
     low, high = seg["low"], seg["high"]
-    marks = [("부문 분리 범위", None)]
-    points = {"기존 모델": result.get("point"), "직전 분기 실적": result.get("last_actual")}
     recorded = seg.get("recorded")
-    values = [low, high] + [v for v in points.values() if v is not None]
-    if recorded:
-        values += [recorded["low"], recorded["high"]]
-    lo_axis, hi_axis = min(values) * .95, max(values) * 1.03
-    def x(v):
-        return 4 + (v - lo_axis) / (hi_axis - lo_axis) * 92
-    bar = (f'<div style="position:absolute;left:{x(low):.1f}%;width:{x(high) - x(low):.1f}%;top:12px;height:18px;'
-           'background:#b5d4f4;border:1px solid #1a5490;border-radius:4px"></div>')
-    if recorded:
-        bar += (f'<div style="position:absolute;left:{x(recorded["low"]):.1f}%;width:{x(recorded["high"]) - x(recorded["low"]):.1f}%;'
-                'top:34px;height:5px;background:#8a9199;border-radius:2px" title="발표 전 기록"></div>')
-    for label, value, color in (("기존 모델", points["기존 모델"], "#1a5490"), ("직전 분기", points["직전 분기 실적"], "#5f5e5a")):
-        if value is None:
-            continue
-        bar += (f'<div style="position:absolute;left:{x(value):.1f}%;top:6px;height:30px;width:2px;background:{color}"></div>'
-                f'<div style="position:absolute;left:{x(value):.1f}%;top:42px;transform:translateX(-50%);font-size:11px;'
-                f'color:{color};white-space:nowrap">{e(label)} {value / 1e12:,.1f}</div>')
+    svg = segment_split_svg(low, high, recorded, result.get("point"))
     elasticity = seg.get("elasticity")
     basis = (f'직전 분기({e(seg["previous_quarter"])}) DS {seg["ds_previous"] / 1e12:,.1f}조 + 그 분기에만 몰린 일회성 비용 '
              f'{seg["addback_low"] / 1e12:,.0f}~{seg["addback_high"] / 1e12:,.0f}조를 되돌린 값에 반도체 수출 배율 '
              f'×{seg["exports_ratio"]:.3f}'
              + (f'(상한은 탄력성 {elasticity:.2f} 적용)' if elasticity is not None else '')
              + f'을 곱하고, DX·디스플레이·기타 {seg["other_previous"] / 1e12:+,.1f}조를 더했습니다.')
-    recorded_text = (f' 회색 선은 발표 전에 기록한 값({e(str(recorded["recorded_at"]))}, '
+    recorded_text = (f' \'발표 전 기록\' 줄은 발표 전에 기록한 값({e(str(recorded["recorded_at"]))}, '
                      f'{recorded["low"] / 1e12:,.1f}~{recorded["high"] / 1e12:,.1f}조)입니다 — 그 뒤 수출 속보가 들어오면 '
-                     '위 막대는 움직이지만 기록은 고치지 않습니다.' if recorded else '')
+                     '맨 윗줄은 움직이지만 기록은 고치지 않습니다.' if recorded else '')
     return (head
             + f'<div style="font-size:22px;font-weight:700">{low / 1e12:,.1f} ~ {high / 1e12:,.1f}조 원</div>'
-            + f'<div style="position:relative;height:60px;margin:6px 0 4px">{bar}</div>'
+            + f'<div style="margin:6px 0 4px;overflow-x:auto">{svg}</div>'
             + f'<div style="font-size:12px;color:#6b7178;line-height:1.6">{basis}{recorded_text} '
             + '과거 분기로 검증하지 않은 계산입니다. 방법: guides/segment-earnings-method.md.</div>')
 

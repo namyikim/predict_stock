@@ -3,7 +3,7 @@
   "name": "SK하이닉스",
   "peer_name": "삼성전자",
   "session_date": "2026-09-29",
-  "generated_at": "2026-09-29 16:50 KST",
+  "generated_at": "2026-09-29 18:38 KST",
   "summary": {
     "prev_close": 1768000.0,
     "open": 1755000.0,
@@ -15,11 +15,11 @@
     "c2c": -0.0016968325791855143,
     "high_vs_open": 0.018803418803418737,
     "low_vs_open": -0.010826210826210825,
-    "volume": 3131113.0,
-    "volume_ratio": 0.9490267515106173,
+    "volume": 3172741.0,
+    "volume_ratio": 0.9616440175153523,
     "kospi_c2c": -0.0027475891887478454,
     "peer_c2c": 0.0092592592592593,
-    "usdkrw_chg": 0.002155793552103491,
+    "usdkrw_chg": 0.0016020877879581175,
     "sox_ret": -0.01607787383380721,
     "nasdaq_ret": -0.00917442115102729
   },
@@ -49,34 +49,28 @@
       "score": 3.795074175716213,
       "news": [
         {
-          "time": "2026-09-29T08:49:00+09:00",
-          "title": "DS투자증권, SK하이닉스 4분기 실적 기대감에도 목표주가 ‘264만원’ 하향",
-          "source": "v.daum.net",
-          "link": "https://news.google.com/rss/articles/CBMiT0FVX3lxTE9GZkRpSjZKdzBkRzdfa25nMWtBVHpSajBZUkRiLWVwNGppdHJCbDRmTEhKS2JZUnUzT1k1OHY2amE4VXA0WGExSnktUHZlU2c?oc=5"
-        },
-        {
-          "time": "2026-09-29T08:45:14+09:00",
-          "title": "\"SK하이닉스, 환율 하락으로 실적 추정치 하향…목표가↓\"-DS - 머니투데이",
-          "source": "머니투데이",
-          "link": "https://news.google.com/rss/articles/CBMibkFVX3lxTE81dk0wSEhuTmpReUI5S0pyZWVwbDBjdlI0T3VCZ0RmNXhyZkY2aXI5ekVHZHlxU25XZnhQNFdycDBld3p3S3pMcWhUNWx4OTNZRUMtVVgyWTBrdDVBaldWXzlSUDNMRXB4WFI5aTZB0gFuQVVfeXFMTzV2TTBISG5OalF5QjlLSnJlZXBsMGN2UjRPdUJnRGY1eHJmRjZpcjl6RUdkeXFTbldmeFA0V3JwMGV3endLekxxaFQ1bHg5M1lFQy1VWDJZMGt0NUFqV1ZfOVJQM0xFcHhYUjlpNkE?oc=5"
-        },
-        {
           "time": "2026-09-29T09:53:30+09:00",
           "title": "SK하이닉스, TSMC 행사서 '차세대 메모리' 솔루션 공개",
           "source": "한국경제",
           "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE9DcE5Td0NZRnNzS1dibTJ3aTBvQnozWUZCMTNEd2otNGJGbEhpR3poWjBYTzZUeGtvSWYydVNDQjFGTUMyNGdqcHZBeWJOLXo1bkFWUDhuaVdkZw?oc=5"
         },
         {
-          "time": "2026-09-29T09:45:27+09:00",
-          "title": "[전혜은 시선] 삼성전자·SK하이닉스, 반도체 슈퍼사이클 넘어 ‘수익 폭증’ 국면 오나",
-          "source": "weeklytoday.com",
-          "link": "https://news.google.com/rss/articles/CBMib0FVX3lxTE1wT1B3SEp1cDdZVGpydzB0R1RlNk1haFlXYl9NVVhhR3E5V0Y0ZmFLdGQ1N0VzYnQ4NGRCN2FEampLdG5zSjFQeFEtSllHOTlxc0hPMXZXS3RWVnZQeUNaQURtUzJLM3JZazRxeUJjOA?oc=5"
-        },
-        {
           "time": "2026-09-29T09:06:36+09:00",
           "title": "확산되는 솔리다임 美 상장 추진설 … SK하이닉스, 중복상장 논란 해소 고심",
           "source": "뉴데일리",
           "link": "https://news.google.com/rss/articles/CBMie0FVX3lxTFA3VGNvYTBRX0ZVYk0tWUFHOWlpcmVhVTZ2WHdnQk5DOTBBS0VrN0ExRG1xdjFadnM4NU9ZLUM1dy12dHN3UC00alVvYlNDbjRpNXhTMzVOZG1fNUI0VmtlVUJQM29WX2xDbkRzeXNiR05HVWpubTh1eEtLSdIBgAFBVV95cUxQNk5yQldvc0xmU2pxYmxPN2UxdEFiSlhzYVpfQThXX2g2U1BLRG9TVGkzRVZBOGREZ0RMZFdLUUZmTDIzNjlCd3B3SVBxT2RkM2lXZlJRQ2gxdGtsUmVmbmZvNFhQV0RweGZrRUl6U0pwZ1pTNnBxS29OZHpXTGJoRA?oc=5"
+        },
+        {
+          "time": "2026-09-29T09:11:00+09:00",
+          "title": "LPDDR6는 같은 선상…CXMT, 삼성전자·SK하이닉스 턱밑 추격",
+          "source": "KB Think",
+          "link": "https://news.google.com/rss/articles/CBMickFVX3lxTFBmZDM0Z29KSjV2WTJhZ2RXTG43QnlRZmhBamY2SDhPd1F5cjhxanBlUG1Ec05KUHZyTWpJdlE4Y2VIbU9WcUtfZ2JNOEQyM0RQT2RMblRIcTNHNUh4R3V1d3BJc3VEYUNIZ292ZjVGOG1ZQQ?oc=5"
+        },
+        {
+          "time": "2026-09-29T09:50:15+09:00",
+          "title": "[특징주] 전날 5%대 급락했던 삼전닉스, 1% 안팎 상승세",
+          "source": "연합뉴스",
+          "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE8wOVpQXzBUODRWb183SHRYTzR2dzRac25Mc0ctck9Ga3VNQ1c3YlRkYjM4d3IwV21ES2w1TTlVcGxvdkF0Q05YS1JaODROaF9yQUNDMDI4RFJ2bVVkWGdQR9IBYEFVX3lxTE8wOVpQXzBUODRWb183SHRYTzR2dzRac25Mc0ctck9Ga3VNQ1c3YlRkYjM4d3IwV21ES2w1TTlVcGxvdkF0Q05YS1JaODROaF9yQUNDMDI4RFJ2bVVkWGdQRw?oc=5"
         }
       ]
     },
@@ -91,18 +85,6 @@
       "score": 3.1903049076271914,
       "news": [
         {
-          "time": "2026-09-29T08:49:00+09:00",
-          "title": "DS투자증권, SK하이닉스 4분기 실적 기대감에도 목표주가 ‘264만원’ 하향",
-          "source": "v.daum.net",
-          "link": "https://news.google.com/rss/articles/CBMiT0FVX3lxTE9GZkRpSjZKdzBkRzdfa25nMWtBVHpSajBZUkRiLWVwNGppdHJCbDRmTEhKS2JZUnUzT1k1OHY2amE4VXA0WGExSnktUHZlU2c?oc=5"
-        },
-        {
-          "time": "2026-09-29T08:45:14+09:00",
-          "title": "\"SK하이닉스, 환율 하락으로 실적 추정치 하향…목표가↓\"-DS - 머니투데이",
-          "source": "머니투데이",
-          "link": "https://news.google.com/rss/articles/CBMibkFVX3lxTE81dk0wSEhuTmpReUI5S0pyZWVwbDBjdlI0T3VCZ0RmNXhyZkY2aXI5ekVHZHlxU25XZnhQNFdycDBld3p3S3pMcWhUNWx4OTNZRUMtVVgyWTBrdDVBaldWXzlSUDNMRXB4WFI5aTZB0gFuQVVfeXFMTzV2TTBISG5OalF5QjlLSnJlZXBsMGN2UjRPdUJnRGY1eHJmRjZpcjl6RUdkeXFTbldmeFA0V3JwMGV3endLekxxaFQ1bHg5M1lFQy1VWDJZMGt0NUFqV1ZfOVJQM0xFcHhYUjlpNkE?oc=5"
-        },
-        {
           "time": "2026-09-29T09:06:36+09:00",
           "title": "확산되는 솔리다임 美 상장 추진설 … SK하이닉스, 중복상장 논란 해소 고심",
           "source": "뉴데일리",
@@ -111,7 +93,7 @@
         {
           "time": "2026-09-29T09:11:00+09:00",
           "title": "LPDDR6는 같은 선상…CXMT, 삼성전자·SK하이닉스 턱밑 추격",
-          "source": "kbthink.com",
+          "source": "KB Think",
           "link": "https://news.google.com/rss/articles/CBMickFVX3lxTFBmZDM0Z29KSjV2WTJhZ2RXTG43QnlRZmhBamY2SDhPd1F5cjhxanBlUG1Ec05KUHZyTWpJdlE4Y2VIbU9WcUtfZ2JNOEQyM0RQT2RMblRIcTNHNUh4R3V1d3BJc3VEYUNIZ292ZjVGOG1ZQQ?oc=5"
         }
       ]
@@ -128,62 +110,43 @@
   "intraday_corr_kospi": 0.8530702341889355,
   "intraday_note": "장중 봉은 09:00~14:55까지만 있어 마감 구간(14:55~15:30)은 일봉 종가로만 봅니다(그 구간 +0.46%).",
   "intraday_coverage": "09:00~14:55",
-  "overnight_news": [
-    {
-      "time": "2026-09-29T08:49:00+09:00",
-      "title": "DS투자증권, SK하이닉스 4분기 실적 기대감에도 목표주가 ‘264만원’ 하향",
-      "source": "v.daum.net",
-      "link": "https://news.google.com/rss/articles/CBMiT0FVX3lxTE9GZkRpSjZKdzBkRzdfa25nMWtBVHpSajBZUkRiLWVwNGppdHJCbDRmTEhKS2JZUnUzT1k1OHY2amE4VXA0WGExSnktUHZlU2c?oc=5"
-    },
-    {
-      "time": "2026-09-29T08:45:14+09:00",
-      "title": "\"SK하이닉스, 환율 하락으로 실적 추정치 하향…목표가↓\"-DS - 머니투데이",
-      "source": "머니투데이",
-      "link": "https://news.google.com/rss/articles/CBMibkFVX3lxTE81dk0wSEhuTmpReUI5S0pyZWVwbDBjdlI0T3VCZ0RmNXhyZkY2aXI5ekVHZHlxU25XZnhQNFdycDBld3p3S3pMcWhUNWx4OTNZRUMtVVgyWTBrdDVBaldWXzlSUDNMRXB4WFI5aTZB0gFuQVVfeXFMTzV2TTBISG5OalF5QjlLSnJlZXBsMGN2UjRPdUJnRGY1eHJmRjZpcjl6RUdkeXFTbldmeFA0V3JwMGV3endLekxxaFQ1bHg5M1lFQy1VWDJZMGt0NUFqV1ZfOVJQM0xFcHhYUjlpNkE?oc=5"
-    },
-    {
-      "time": "2026-09-28T22:00:03+09:00",
-      "title": "하이닉스 돌연 5% 급락…주주들 놀란 '204조 상장설' 정체 [분석+]",
-      "source": "한국경제",
-      "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE9WLW5PS2I3Mnh1ZjY0S05nY0FzX2toZGNoZmprcGduRVBnelliMkxxQlN1eXhYVlRURHRNT0dHbmotVlR3b3BWTGpTd2piZHNkWXc5R0U2c0VQdw?oc=5"
-    }
-  ],
+  "overnight_news": [],
   "top_news": [
     {
-      "time": "2026-09-29T08:49:00+09:00",
-      "title": "DS투자증권, SK하이닉스 4분기 실적 기대감에도 목표주가 ‘264만원’ 하향",
-      "source": "v.daum.net",
-      "link": "https://news.google.com/rss/articles/CBMiT0FVX3lxTE9GZkRpSjZKdzBkRzdfa25nMWtBVHpSajBZUkRiLWVwNGppdHJCbDRmTEhKS2JZUnUzT1k1OHY2amE4VXA0WGExSnktUHZlU2c?oc=5"
-    },
-    {
-      "time": "2026-09-29T12:50:54+09:00",
-      "title": "​​​​​​​SK하이닉스, HBM4 넘어 HBM5까지…TSMC와 차세대 AI 메모리 협력 확대",
-      "source": "Korea IT Times",
-      "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTFBURWdBZHR5cXRpV29YdGdfYzZ3MG1lcjJXNVNKc0FMS3NOX3lDdDR2YmJ4cEpTVWtKTDVWOGlwQTQyQ3NtakxiN0dnbmhTbmM4YlRzdVgzdEtqTEFlNm5QeFBDUGFoWFYzZWRCZFJXLWI?oc=5"
-    },
-    {
-      "time": "2026-09-29T15:31:02+09:00",
-      "title": "D램 가격 4분기도 최대 20% 상승 전망, 해외 투자기관 \"SK하이닉스 내년 HBM 이익률 80%\"",
-      "source": "비즈니스포스트",
-      "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTE01bzdEa0hCZXRCcjZ5MmVnUy1wRl82MEYxTWk1NUR3Ylk1X0R3bWtGYmJlZ0p3SHduUHRMcHo0X0xOalRxQlY4dE1FbFIxdlNndHV3ci1ab3kyajFUV3dPNHBBY1o1WDZveFlELS1Oejd2OVU?oc=5"
+      "time": "2026-09-29T15:03:32+09:00",
+      "title": "[현장] AI가 바꾼 메모리 사이클…삼성전자·SK하이닉스, HBM이 만든 '새로운 호황'",
+      "source": "ebn.co.kr",
+      "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE5wbGdOTHNSVC14Z3N3enlTRTlxOG1mdWRPazNmaEQ5cXUyUzFvTnkwejl3M0hWWmtweWRlNWw1dlZiSnJvZExxT0hkcHhVNW9QZDh6M2lnUDA4UENtbVM2SmdlUTNFbW43?oc=5"
     },
     {
       "time": "2026-09-29T16:23:04+09:00",
       "title": "SK하이닉스, TSMC ‘올해의 파트너’ 낙점…차세대 AI 메모리 솔루션 고도화",
       "source": "CEO스코어데일리",
-      "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE9WbUhHeWVVWWxiS1hwa2R5UkxTdl8tQXd6TzRsV09XMF9mNlctSUNzOTZSbjZnWS1pc0ttQmpnbHhBYXd3Y1hUckc2WVZBVlY5YXZHVmVTcUgwazJWcU10MEVvajctb3B0?oc=5"
+      "link": "https://news.google.com/rss/articles/CBMiakFVX3lxTE9qM0lLREdMN1Fna3dFSk5zT09PQUxnSEJydjVVUDRlS0h0U3A1dFVRQTRWR0RZaVd4LUJZZHlsazFqSl9lZUhHSHdSLXJDYTY5eU1NeXdkU0c3SlNQYWNYZTVZcHBzdTJZVUE?oc=5"
     },
     {
-      "time": "2026-09-29T16:00:10+09:00",
-      "title": "마이크론 실적에 삼성·SK 촉각…'D램 몸값·HBM 세대교체' 관건",
-      "source": "bloter.net",
-      "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE5adUh5ZXExMFl0REZnRjVJZTBJVzhtclRzTDRWOHhPdmVpUlBaUmtmNmYtMDBoSmlEeDZGLXFEQzYtVUExdmI1bzhlX25PelNWNjRDbFFnYVUycmptZUFIZGszWkQtSUJwV25WR9IBbEFVX3lxTE5adUh5ZXExMFl0REZnRjVJZTBJVzhtclRzTDRWOHhPdmVpUlBaUmtmNmYtMDBoSmlEeDZGLXFEQzYtVUExdmI1bzhlX25PelNWNjRDbFFnYVUycmptZUFIZGszWkQtSUJwV25WRw?oc=5"
+      "time": "2026-09-29T09:53:30+09:00",
+      "title": "SK하이닉스, TSMC 행사서 '차세대 메모리' 솔루션 공개",
+      "source": "한국경제",
+      "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE9DcE5Td0NZRnNzS1dibTJ3aTBvQnozWUZCMTNEd2otNGJGbEhpR3poWjBYTzZUeGtvSWYydVNDQjFGTUMyNGdqcHZBeWJOLXo1bkFWUDhuaVdkZw?oc=5"
     },
     {
-      "time": "2026-09-29T08:45:14+09:00",
-      "title": "\"SK하이닉스, 환율 하락으로 실적 추정치 하향…목표가↓\"-DS - 머니투데이",
-      "source": "머니투데이",
-      "link": "https://news.google.com/rss/articles/CBMibkFVX3lxTE81dk0wSEhuTmpReUI5S0pyZWVwbDBjdlI0T3VCZ0RmNXhyZkY2aXI5ekVHZHlxU25XZnhQNFdycDBld3p3S3pMcWhUNWx4OTNZRUMtVVgyWTBrdDVBaldWXzlSUDNMRXB4WFI5aTZB0gFuQVVfeXFMTzV2TTBISG5OalF5QjlLSnJlZXBsMGN2UjRPdUJnRGY1eHJmRjZpcjl6RUdkeXFTbldmeFA0V3JwMGV3endLekxxaFQ1bHg5M1lFQy1VWDJZMGt0NUFqV1ZfOVJQM0xFcHhYUjlpNkE?oc=5"
+      "time": "2026-09-29T10:36:37+09:00",
+      "title": "솔리다임 미국 상장설에 SK하이닉스 주가 '흔들'... '투자금 확보' vs '중복 상장'",
+      "source": "법률방송뉴스",
+      "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE1Qc0s5X05UMFNwOTF6X09kWW5DaklueUxlTno4Nms0bVljR0JNazh5eFkxVFh3NXhBRHhXUDVLdWNWWUJYLXhvdGRrX0xGaWpWbVVGZjZWRS1WVmY2SWhHc1FRejQ?oc=5"
+    },
+    {
+      "time": "2026-09-29T13:33:37+09:00",
+      "title": "SK하이닉스, AI 반도체 경쟁력 ‘협력사와 함께’…상생 생태계 강화",
+      "source": "Korea IT Times",
+      "link": "https://news.google.com/rss/articles/CBMib0FVX3lxTE1mNVRFTEZLcFBHTmJWZlNtUWtUSExMd3hDckc0czRWUHMtenBudmZtLVRUOFlvRUN5aTZiVUFST0Z4dVhLWnFid19HNlJhMzhnRFZoYlhqcWh2aVEzeHI3MlJUZ3JiSmpnY05YQlplSQ?oc=5"
+    },
+    {
+      "time": "2026-09-29T15:02:06+09:00",
+      "title": "심텍 SK하이닉스 '우수협력사'상 수상, AI 반도체용 소캠2 대응력 입증",
+      "source": "비즈니스포스트",
+      "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTE1wS2JjMjNPYndvcm1HMzhkUlRmdGhQY1RmMGdEOWZxTkZNNVZzY3FYa09XdkJ4TVlVT2oySzNUQ3R4ZUJrZFB4UG5EY0ROazNLQ3ctMjdHQUI1bDV6TGlfd3NobUM0azA0dHZyeHhvVWtqWkk?oc=5"
     }
   ],
   "disclosures": [],

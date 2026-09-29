@@ -3,7 +3,7 @@
   "name": "삼성전자",
   "peer_name": "SK하이닉스",
   "session_date": "2026-09-29",
-  "generated_at": "2026-09-29 18:38 KST",
+  "generated_at": "2026-09-29 23:02 KST",
   "summary": {
     "prev_close": 270000.0,
     "open": 266000.0,
@@ -15,11 +15,11 @@
     "c2c": 0.0092592592592593,
     "high_vs_open": 0.03759398496240607,
     "low_vs_open": 0.0,
-    "volume": 17320491.0,
-    "volume_ratio": 1.0235639851657872,
+    "volume": 17870919.0,
+    "volume_ratio": 1.0560918319356527,
     "kospi_c2c": -0.0027475891887478454,
     "peer_c2c": -0.0016968325791855143,
-    "usdkrw_chg": 0.0017497066098446368,
+    "usdkrw_chg": 0.0001402288686540576,
     "sox_ret": -0.01607787383380721,
     "nasdaq_ret": -0.00917442115102729
   },
@@ -41,14 +41,7 @@
       "cum_after": 0.020676691729323293,
       "session_share": 0.32839506172839256,
       "score": 4.040332826952593,
-      "news": [
-        {
-          "time": "2026-09-29T09:11:11+09:00",
-          "title": "LPDDR6는 같은 선상…CXMT, 삼성전자·SK하이닉스 턱밑 추격",
-          "source": "연합인포맥스",
-          "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE9tTEN2bGtHdFBJRHdGekZYWFpONE1JOXJvTXdvZ3VKUEQ4UU5KWU1NTEJoWGE4bkQxYmhRdmV1ckMxX29PRWtDT2t5eFBqSElfR29FNThjUmR6bC1jQlZ2ZEtTWnNiRFAwZ1hweDJxaTU?oc=5"
-        }
-      ]
+      "news": []
     }
   ],
   "turning_point": {
@@ -69,12 +62,6 @@
       "title": "배당 끝, 자사주도 90% 소진⋯삼성전자, 다음 수급은 '외국인'",
       "source": "아이뉴스24",
       "link": "https://news.google.com/rss/articles/CBMiS0FVX3lxTE1QR3pudWJqZk9hUWx0YklIbDRkRVVYZk9NdTJ4eV9ETFpkMU5MQXVNbllOZkY5WmVlZzliZHBFcEJ4U3R2NGZ1THp1VQ?oc=5"
-    },
-    {
-      "time": "2026-09-29T14:47:36+09:00",
-      "title": "자사주 매입 90% 채운 삼성전자…배당락·실적 맞물려 수급 시험대",
-      "source": "ebn.co.kr",
-      "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE1hSDB1TloySHgxSXBGR29UNGlBRy1hVXdTLXNUcFZleU90Q1dVeGRXZndodXN1ZV9iRmlOVi1jeW5IVFZZam12MHB2YkZsa0ZhLU9QUHdQQnM3b0dvRTRfZWZkdlBnV2Fl?oc=5"
     },
     {
       "time": "2026-09-29T15:03:32+09:00",
@@ -99,12 +86,65 @@
       "title": "엔비디아 이어 삼성도 합류… 삼성전자 등, KKR ‘AI 인프라 기업’에 1.36조 베팅 - 조선비즈",
       "source": "Chosunbiz",
       "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxPVTYweGhtTlVLQl9wSWoteUpJbHdDR3F2R2FHZmJrLVozZk9IT0lXZ3VicHFMSlVsSTV6dk15dmVrUE1FVW9VeXZQZ0tva1pib1BweFhkVlRJdGNBU1QzdTc3dDRqZnZSc0JrVTRMZlN4WEw0SkRxQk1DNWxQY0NKODhDQ3d1S0l50gGcAUFVX3lxTE9ONktZNTA3M3VqY25iWmxrTnNzeTdjaGtYRjBUVWlGSk5oMk90YU44c2FSbk1Wb3pRQnA4SEpOdk9mUy05eWFGWk5UcmhVR3dpUjU0TTBQVHZiaDZ6R2JqY2Nsa1A5N0hpT1EtcDdJSlR3UEo5ZkNEWElwc0x5dVJQMllPVkhQS0RWbThCWjdiNGZZcWQ2c1hlUmV0TA?oc=5"
+    },
+    {
+      "time": "2026-09-29T10:07:33+09:00",
+      "title": "삼성전자 등 6개사, 美 AI 인프라 기업 헬릭스에 10억 달러 투자",
+      "source": "중앙일보",
+      "link": "https://news.google.com/rss/articles/CBMiVkFVX3lxTE1xWV8xVHNRVGl6WXdjR3ExWnJkaGpZdXUxTzBQUUxUWEFEMFl2ODZvdWZVa3lhNk00dWdhUXYyaHZpaEh2LUVOTDhfQmNCZXZnWTVpMlRn?oc=5"
     }
   ],
   "disclosures": [],
   "disclosure_note": null,
-  "flows": null,
-  "flow_story": null,
+  "flows": "외국인 -2,409,735 / 기관 +69,364",
+  "flow_story": {
+    "direction": "up",
+    "c2c": 0.0092592592592593,
+    "actors": [
+      {
+        "key": "foreign_net",
+        "name": "외국인",
+        "shares": -2409735.0,
+        "won": -656652787500.0,
+        "vs_usual": 1.01486365997301
+      },
+      {
+        "key": "inst_net",
+        "name": "기관",
+        "shares": 69364.0,
+        "won": 18901690000.0,
+        "vs_usual": 0.03242326410801597
+      },
+      {
+        "key": "indiv_net",
+        "name": "개인",
+        "shares": 308422.0,
+        "won": 84044995000.0,
+        "vs_usual": 0.08990987687933476
+      }
+    ],
+    "lead": {
+      "key": "indiv_net",
+      "name": "개인",
+      "shares": 308422.0,
+      "won": 84044995000.0,
+      "vs_usual": 0.08990987687933476
+    },
+    "counter": {
+      "key": "foreign_net",
+      "name": "외국인",
+      "shares": -2409735.0,
+      "won": -656652787500.0,
+      "vs_usual": 1.01486365997301
+    },
+    "observations": [
+      "코스피는 반대로 -0.27% — 시장 전체와 다른 움직임이었습니다.",
+      "SK하이닉스는 반대로 -0.17% — 업종 전체의 움직임은 아니었습니다.",
+      "전날 밤 SOX는 -1.61%로 반대 방향이어서 미국 반도체 흐름으로는 설명되지 않습니다."
+    ],
+    "estimated_indiv": false,
+    "source_note": "출처 last_successful_fetch · 장 마감 직후 잠정치라 저녁 확정치와 다를 수 있습니다"
+  },
   "forecasts": [
     {
       "model": "No macro ensemble",

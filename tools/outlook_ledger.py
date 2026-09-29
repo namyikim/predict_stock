@@ -491,7 +491,7 @@ def render(ledger, heading="h3", title="3. 지난 전망은 맞았나", footnote
                      'font-size:13px;border:1px solid #e5e5e5">'
                      f'<tr><th {TH}>전망</th><th {TH}>대상</th><th {TH}>언제 낸 전망</th><th {THR}>전망</th>'
                      f'<th {THR}>실제</th><th {THR}>오차</th></tr>{rows_html}</table></div>')
-    tail = ('영업이익 추정의 성적은 위 2절 “지난 분기 추정 vs 실제”에 따로 있습니다. ' if footnote is None else '')
+    tail = ('영업이익 추정의 성적은 위 1절 “지난 분기 추정 vs 실제”에 따로 있습니다. ' if footnote is None else '')
     parts.append('<div style="font-size:11px;color:#8a9199;margin-top:6px;line-height:1.5">'
                  f'{e(footnote or "장기 전망 탭에 숫자로 나온 전망을")} <b>처음 낸 값 그대로</b> 남기고, 대상 시점의 값이 발표되면 '
                  '<b>처음 확인한 값</b>으로 채점합니다(선행지수처럼 나중에 수정되는 값도 발표 당시 값으로). '

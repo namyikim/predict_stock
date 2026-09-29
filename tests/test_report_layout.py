@@ -249,12 +249,12 @@ class FragmentNumberTests(unittest.TestCase):
             with self.subTest(old=old):
                 out = rh.renumber_fragment(f'<h3 style="font-size:15px">{old}. 장기 전망 (월간) '
                                            '<span>3·6·12개월</span></h3><p>3. 장기 전망 본문</p>')
-                self.assertIn(">1. 장기 전망 (월간)", out)
+                self.assertIn(">2. 장기 전망 (월간)", out)   # 2026-09-29: 영업이익을 1절로 올렸다
                 self.assertIn("<p>3. 장기 전망 본문</p>", out)      # 제목 밖은 건드리지 않는다
         for old in ("8", "4"):
             with self.subTest(old=old):
                 out = rh.renumber_fragment(f'<h3 style="x">{old}. 이번 분기 영업이익 추정</h3>')
-                self.assertIn(">2. 이번 분기 영업이익 추정", out)
+                self.assertIn(">1. 이번 분기 영업이익 추정", out)
 
     def test_empty_fragment_is_returned_as_is(self):
         self.assertEqual(rh.renumber_fragment(""), "")

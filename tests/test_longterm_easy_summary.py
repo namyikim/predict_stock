@@ -204,8 +204,9 @@ class NotebookWiringTests(unittest.TestCase):
                       if "def build_summary():" in "".join(c.get("source", [])))
         self.assertIn("longterm_easy_html = longterm_easy_summary_html(", report)
         self.assertIn('PRICE_LEVELS = {"samsung": (300_000, 400_000)}.get(TARGET)', report)
-        self.assertLess(report.index("f'{longterm_easy_html}'"), report.index("f'{longterm_html}'"))
-        self.assertLess(report.index("f'{longterm_html}'"), report.index("f'{earnings_html}'"))
+        # 요약 → 1. 이번 분기 영업이익 → 2. 장기 전망(2026-09-29: 영업이익을 위로)
+        self.assertLess(report.index("f'{longterm_easy_html}'"), report.index("f'{earnings_html}'"))
+        self.assertLess(report.index("f'{earnings_html}'"), report.index("f'{longterm_html}'"))
 
 
 if __name__ == "__main__":

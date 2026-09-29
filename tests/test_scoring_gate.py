@@ -3,6 +3,7 @@
 GitHub cron이 4~5시간 밀려 09:37 회차가 14:10에, 16:10 회차가 21:10에 도착한다(2026-09-08~10).
 어느 시각에 도착하든 그 시점에 맞는 일을 하고, 백업 회차가 같은 일을 반복하지 않아야 한다.
 """
+import json
 import os
 import sys
 import tempfile
@@ -57,6 +58,12 @@ class PhaseTests(unittest.TestCase):
 
 class DelayedScheduleTests(unittest.TestCase):
     """도착 시각이 무엇이든 그 시점에 맞는 일을 한다."""
+
+    def test_review_without_flow_story_is_incomplete_and_retried(self):
+        incomplete = json.dumps({"session_date": "2026-09-29", "flow_story": None})
+        complete = json.dumps({"session_date": "2026-09-29", "flow_story": {"actors": []}})
+        self.assertFalse(gate.review_complete(incomplete))
+        self.assertTrue(gate.review_complete(complete))
 
     def test_morning_cron_arriving_midsession_scores_only_the_open(self):
         r = gate.decide(at(10, 14, 10), trading=True)
@@ -144,7 +151,8 @@ class MainTests(unittest.TestCase):
         root = Path(tempfile.mkdtemp())
         (root / "samsung" / "reviews").mkdir(parents=True)
         (root / "samsung" / "forecast_log.csv").write_text(ledger(("2026-09-10", "direction", "scored")), encoding="utf-8")
-        (root / "samsung" / "reviews" / "2026-09-10.json").write_text("{}", encoding="utf-8")
+        (root / "samsung" / "reviews" / "2026-09-10.json").write_text(
+            json.dumps({"flow_story": {"actors": []}}), encoding="utf-8")
         out = root / "out.txt"
         fixed = at(10, 21, 10)
 

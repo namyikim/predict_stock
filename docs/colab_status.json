@@ -27,7 +27,7 @@
   {
    "file": "leading_cycle.csv",
    "label": "경기선행지수 순환변동치(KOSIS)",
-   "have": "2026-07",
+   "have": "2026-08",
    "expected": "2026-07",
    "late": false
   },

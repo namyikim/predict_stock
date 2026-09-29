@@ -993,7 +993,7 @@
     "krw": 1405.6209542410713
   },
   "chart_first": "2000-01-31",
-  "generated_at": "2026-09-29 10:19 KST",
+  "generated_at": "2026-09-29 11:01 KST",
   "macro_snapshot_hash": "80bb3714ee750421109f",
   "macro_sources": {
     "leading_cycle": "KOSIS_API",
@@ -1013,7 +1013,7 @@
       "basis": "partial_month_scenario"
     },
     "snapshot_hash": "360c84a6a8a06b43fe28",
-    "generated_at": "2026-09-29 10:18 KST",
+    "generated_at": "2026-09-29 10:59 KST",
     "flash_info": {
       "enabled": true,
       "source": "customs_flash_api",

@@ -22,6 +22,7 @@ GitHub의 cron은 이 저장소에서 예정보다 4~5시간 늦게 실행을 �
 import argparse
 import csv
 import io
+import json
 import os
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
@@ -81,6 +82,20 @@ def scored_rows(ledger_text, session, kind):
     return n
 
 
+def review_complete(review_text):
+    """회고가 발행됐고 투자자 수급 회고까지 들어갔는지 확인한다.
+
+    장 마감 직후에는 네이버 투자자별 매매동향이 아직 올라오지 않을 수 있다. 그 상태의 JSON을
+    완료로 취급하면 뒤의 백업 회차가 건너뛰어 '누가 팔고 샀나'가 하루 종일 비어 있게 된다.
+    """
+    if not review_text:
+        return False
+    try:
+        return bool(json.loads(review_text).get("flow_story"))
+    except (TypeError, ValueError, json.JSONDecodeError):
+        return False
+
+
 def decide(now, event="schedule", requested="auto", trading=None, ledger_text=None, review_published=False):
     """이번 실행이 할 일. trading / ledger_text / review_published 는 테스트에서 주입한다.
 
@@ -128,7 +143,8 @@ def main():
     session = session_for(now)
     root = Path(args.ledger_root) / args.target
     ledger_text = published_ledger((root / "forecast_log.csv").as_posix(), ref)
-    review_published = published_ledger((root / "reviews" / f"{session}.json").as_posix(), ref) is not None
+    review_text = published_ledger((root / "reviews" / f"{session}.json").as_posix(), ref)
+    review_published = review_complete(review_text)
     result = decide(now, event=args.event, requested=args.requested,
                     ledger_text=ledger_text, review_published=review_published)
     print(f"{args.target}: 지금 {now:%Y-%m-%d %H:%M} KST({result['phase']}) · {result['reason']} → "

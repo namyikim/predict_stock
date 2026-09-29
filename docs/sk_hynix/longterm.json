@@ -686,11 +686,11 @@
       "fresh": true,
       "fetch_error": null,
       "first": "2005-01-01",
-      "last": "2026-09-20",
-      "rows": 7933,
+      "last": "2026-09-27",
+      "rows": 7940,
       "release_lag_days": 14,
       "note": "뉴스심리지수는 일별 지수이지만 주 1회, 약 1주 지연 공개되므로 지수 날짜+14일 이후에만 사용. 2026-09 신지수로 과거치가 재계산되어 백테스트는 재계산 이력 기준",
-      "snapshot_hash": "3bb6fe570c9bc3f44db9",
+      "snapshot_hash": "e338eb740fa4af1d970c",
       "enabled": true
     },
     "term_spread": {
@@ -698,9 +698,9 @@
       "fresh": true,
       "fetch_error": null,
       "first": "2000-12-18",
-      "last": "2026-09-23",
-      "rows": 6381,
-      "snapshot_hash": "1a9cd1a5a6a74ede139e",
+      "last": "2026-09-28",
+      "rows": 6382,
+      "snapshot_hash": "d5ede79d6c4e24bee536",
       "enabled": true
     }
   },
@@ -993,7 +993,7 @@
     "krw": 1405.6209542410713
   },
   "chart_first": "2000-01-31",
-  "generated_at": "2026-09-28 15:57 KST",
+  "generated_at": "2026-09-29 09:39 KST",
   "macro_snapshot_hash": "80bb3714ee750421109f",
   "macro_sources": {
     "leading_cycle": "KOSIS_API",
@@ -1001,7 +1001,7 @@
   },
   "frame_hash": "76eeb79f57536308",
   "live_exports": {
-    "as_of": "2026-09-28",
+    "as_of": "2026-09-29",
     "price_last": "2026-08-31",
     "exports_last_month": "2026-09",
     "latest_period": {
@@ -1013,7 +1013,7 @@
       "basis": "partial_month_scenario"
     },
     "snapshot_hash": "360c84a6a8a06b43fe28",
-    "generated_at": "2026-09-28 15:55 KST",
+    "generated_at": "2026-09-29 09:38 KST",
     "flash_info": {
       "enabled": true,
       "source": "customs_flash_api",
@@ -1061,14 +1061,14 @@
   "valuation": {
     "status": "available",
     "ticker": "000660.KS",
-    "price": 1862000.0,
-    "price_date": "2026-09-23",
-    "observed_on": "2026-09-28",
+    "price": 1768000.0,
+    "price_date": "2026-09-28",
+    "observed_on": "2026-09-29",
     "financial_period": "2026-06-30",
     "eps_ttm": 232070.09450008773,
     "bps": 375948.7934903294,
-    "per": 8.023437935900423,
-    "pbr": 4.952802169447304,
+    "per": 7.618387900468286,
+    "pbr": 4.702768117928482,
     "source": "https://finance.yahoo.com/quote/000660.KS/key-statistics/",
     "assumptions": {
       "version": 1,
@@ -1089,40 +1089,40 @@
         {
           "multiple": 8,
           "price": 1856560.7560007018,
-          "upside": -0.0029211836730924645
+          "upside": 0.05009092533976345
         },
         {
           "multiple": 12,
           "price": 2784841.134001053,
-          "upside": 0.4956182244903613
+          "upside": 0.5751363880096454
         },
         {
           "multiple": 16,
           "price": 3713121.5120014036,
-          "upside": 0.9941576326538151
+          "upside": 1.100181850679527
         }
       ],
       "pbr": [
         {
           "multiple": 1,
           "price": 375948.7934903294,
-          "upside": -0.7980940958698552
+          "upside": -0.7873592797000399
         },
         {
           "multiple": 1.5,
           "price": 563923.1902354942,
-          "upside": -0.697141143804783
+          "upside": -0.6810389195500599
         },
         {
           "multiple": 2,
           "price": 751897.5869806588,
-          "upside": -0.5961881917397106
+          "upside": -0.5747185594000799
         }
       ]
     },
     "evaluation_status": "예측 성능 미검증 — 현재 가치 시나리오이며 도달 시점을 예측하지 않음",
     "basis_note": "분기 재무제표 최근 4분기 순이익(Net Income Common Stockholders) ÷ EPS 기준 주식 수 697,915,819주",
-    "retrieved_on": "2026-09-28",
+    "retrieved_on": "2026-09-29",
     "cached": false
   }
 }

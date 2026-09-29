@@ -642,6 +642,11 @@ def longterm_easy_summary_html(*, name, price_date, close, longterm=None, earnin
         if last is not None:
             cards.append(card(f"직전 분기 실제 · {earnings.get('last_actual_quarter') or ''}", _trillion(last),
                               f"이번 분기 추정은 이보다 {change:+.1%}" if change is not None else "비교할 추정 없음"))
+        # 부문 분리 추정(삼성전자, 2026-09-29 사용자 결정). 검증 전이라 기존 추정 옆에 따로 둔다.
+        segment = mapping(earnings.get("segment_split"))
+        if _finite(segment.get("low")) is not None and _finite(segment.get("high")) is not None:
+            cards.append(card(f"{quarter} 부문 분리 추정", f"{segment['low'] / 1e12:,.1f}~{segment['high'] / 1e12:,.1f}조 원",
+                              "DS 이익을 따로 늘려 잡은 값 · 검증 전 시나리오"))
         if next_q:
             cards.append(card(f"{next_label} 추정", _trillion(next_q.get("point")),
                               (f"이번 분기 추정 대비 {next_change:+.1%} · " if next_change is not None else "")

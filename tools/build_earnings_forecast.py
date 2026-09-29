@@ -895,6 +895,123 @@ def render_chart(f, oof, name):
     return "".join(out)
 
 
+# ---- 부문 분리 추정(segment_split_v1, 2026-09-29 사용자 결정) ---------------------------------------
+# 전사 이익을 수출로 직접 회귀하면 완제품(DX)이 수조 원을 벌던 과거 관계가 섞이고, 한 분기에 몰린 일회성 비용이
+# 다음 추정을 끌어내린다. 그래서 삼성전자는 DS 이익을 따로 늘려 잡는다. 방법: guides/segment-earnings-method.md.
+# 직전 분기 부문 실적은 매 분기 확정실적 발표 뒤 macro_history/samsung_segments.csv 에 사람이 넣는다.
+SEGMENTS_PATH = ROOT / "macro_history" / "samsung_segments.csv"
+SEGMENT_METHOD = "segment_split_v1"
+
+
+def segment_split_estimate(frame, profit, quarter_code, segments_path=SEGMENTS_PATH):
+    """이번 분기 전사 영업이익 범위(원). 입력이 모자라면 {"reason": ...} 만 돌려준다.
+
+    DS 실질 = 직전 분기 DS + 그 분기에만 몰린 일회성 비용(하한·상한).
+    하한 = DS 실질(하한) × 수출 배율 — 마진이 그대로라면.
+    상한 = DS 실질(상한) × 수출 배율^탄력성 — 직전 분기처럼 이익이 수출보다 빨리 늘면.
+    탄력성 = log(직전 분기 실질 전사 이익 / 그 전 분기) / log(직전 분기 수출 / 그 전 분기 수출).
+    전사 = DS + 직전 분기 DX·디스플레이·기타 합.
+    """
+    import math
+    quarter = pd.Period(quarter_code, freq="Q")
+    previous, before = quarter - 1, quarter - 2
+    path = Path(segments_path)
+    if not path.exists():
+        return {"method": SEGMENT_METHOD, "reason": "부문 실적 입력 파일이 없습니다"}
+    seg = pd.read_csv(path, dtype={"quarter": str}).set_index("quarter")
+    if str(previous) not in seg.index:
+        return {"method": SEGMENT_METHOD, "reason": f"{previous} 부문 실적이 아직 입력되지 않았습니다(확정실적 발표 뒤 입력)"}
+    row = seg.loc[str(previous)]
+    tn = 1e12
+    ds, other = float(row["ds_krw_tn"]) * tn, float(row["other_krw_tn"]) * tn
+    add_low, add_high = float(row["one_off_addback_low_krw_tn"]) * tn, float(row["one_off_addback_high_krw_tn"]) * tn
+    exports = frame["exports_krw_k"] if "exports_krw_k" in frame else None
+    index = pd.PeriodIndex(frame.index, freq="Q") if exports is not None else None
+    series = pd.Series(exports.to_numpy(dtype=float), index=index) if exports is not None else pd.Series(dtype=float)
+    profits = pd.Series(profit)
+    profits.index = pd.PeriodIndex(profits.index, freq="Q")
+    needed = [quarter, previous, before]
+    if any(q not in series.index or not np.isfinite(series.get(q, np.nan)) for q in needed):
+        return {"method": SEGMENT_METHOD, "reason": "수출 자료가 세 분기 모두 있어야 합니다"}
+    if previous not in profits.index or before not in profits.index:
+        return {"method": SEGMENT_METHOD, "reason": "직전 두 분기 전사 영업이익이 필요합니다"}
+    ratio = float(series[quarter] / series[previous])
+    past_ratio = float(series[previous] / series[before])
+    underlying = float(profits[previous]) + (add_low + add_high) / 2
+    elasticity = None
+    if past_ratio > 0 and abs(math.log(past_ratio)) > 1e-6 and underlying > 0 and float(profits[before]) > 0:
+        elasticity = math.log(underlying / float(profits[before])) / math.log(past_ratio)
+        elasticity = float(min(max(elasticity, .5), 2.5))
+    margin_fixed = (ds + add_low) * ratio
+    leveraged = (ds + add_high) * ratio ** (elasticity if elasticity is not None else 1.0)
+    low, high = sorted((margin_fixed + other, leveraged + other))
+    return {"method": SEGMENT_METHOD, "quarter": str(quarter), "low": low, "high": high,
+            "ds_previous": ds, "other_previous": other, "addback_low": add_low, "addback_high": add_high,
+            "exports_ratio": ratio, "elasticity": elasticity, "previous_quarter": str(previous),
+            "source": str(row.get("source", "")), "note": str(row.get("note", ""))}
+
+
+def recorded_segment_estimate(target, quarter_code):
+    """발표 전에 기록해 둔 부문 분리 추정(forecast_history/<종목>/segment_earnings_log.csv). 없으면 None."""
+    path = ROOT / "forecast_history" / target / "segment_earnings_log.csv"
+    if not path.exists():
+        return None
+    log = pd.read_csv(path, dtype=str)
+    rows = log[log["quarter"] == str(quarter_code)]
+    if rows.empty:
+        return None
+    first = rows.iloc[0]
+    return {"recorded_at": first["recorded_at_kst"], "low": float(first["estimate_low_krw_tn"]) * 1e12,
+            "high": float(first["estimate_high_krw_tn"]) * 1e12}
+
+
+def render_segment_split(result):
+    """부문 분리 추정 블록 — 범위 막대 하나(검증 전 시나리오). 삼성전자에만 있다."""
+    e = html.escape
+    seg = result.get("segment_split")
+    if not seg:
+        return ""
+    head = ('<h4 style="font-size:14px;margin:18px 0 6px">부문 분리 추정 '
+            '<span style="font-weight:400;color:#a8322a;font-size:12px">검증 전 시나리오</span></h4>')
+    if seg.get("reason"):
+        return head + f'<div style="font-size:13px;color:#6b7178">{e(seg["reason"])}</div>'
+    low, high = seg["low"], seg["high"]
+    marks = [("부문 분리 범위", None)]
+    points = {"기존 모델": result.get("point"), "직전 분기 실적": result.get("last_actual")}
+    recorded = seg.get("recorded")
+    values = [low, high] + [v for v in points.values() if v is not None]
+    if recorded:
+        values += [recorded["low"], recorded["high"]]
+    lo_axis, hi_axis = min(values) * .95, max(values) * 1.03
+    def x(v):
+        return 4 + (v - lo_axis) / (hi_axis - lo_axis) * 92
+    bar = (f'<div style="position:absolute;left:{x(low):.1f}%;width:{x(high) - x(low):.1f}%;top:12px;height:18px;'
+           'background:#b5d4f4;border:1px solid #1a5490;border-radius:4px"></div>')
+    if recorded:
+        bar += (f'<div style="position:absolute;left:{x(recorded["low"]):.1f}%;width:{x(recorded["high"]) - x(recorded["low"]):.1f}%;'
+                'top:34px;height:5px;background:#8a9199;border-radius:2px" title="발표 전 기록"></div>')
+    for label, value, color in (("기존 모델", points["기존 모델"], "#1a5490"), ("직전 분기", points["직전 분기 실적"], "#5f5e5a")):
+        if value is None:
+            continue
+        bar += (f'<div style="position:absolute;left:{x(value):.1f}%;top:6px;height:30px;width:2px;background:{color}"></div>'
+                f'<div style="position:absolute;left:{x(value):.1f}%;top:42px;transform:translateX(-50%);font-size:11px;'
+                f'color:{color};white-space:nowrap">{e(label)} {value / 1e12:,.1f}</div>')
+    elasticity = seg.get("elasticity")
+    basis = (f'직전 분기({e(seg["previous_quarter"])}) DS {seg["ds_previous"] / 1e12:,.1f}조 + 그 분기에만 몰린 일회성 비용 '
+             f'{seg["addback_low"] / 1e12:,.0f}~{seg["addback_high"] / 1e12:,.0f}조를 되돌린 값에 반도체 수출 배율 '
+             f'×{seg["exports_ratio"]:.3f}'
+             + (f'(상한은 탄력성 {elasticity:.2f} 적용)' if elasticity is not None else '')
+             + f'을 곱하고, DX·디스플레이·기타 {seg["other_previous"] / 1e12:+,.1f}조를 더했습니다.')
+    recorded_text = (f' 회색 선은 발표 전에 기록한 값({e(str(recorded["recorded_at"]))}, '
+                     f'{recorded["low"] / 1e12:,.1f}~{recorded["high"] / 1e12:,.1f}조)입니다 — 그 뒤 수출 속보가 들어오면 '
+                     '위 막대는 움직이지만 기록은 고치지 않습니다.' if recorded else '')
+    return (head
+            + f'<div style="font-size:22px;font-weight:700">{low / 1e12:,.1f} ~ {high / 1e12:,.1f}조 원</div>'
+            + f'<div style="position:relative;height:60px;margin:6px 0 4px">{bar}</div>'
+            + f'<div style="font-size:12px;color:#6b7178;line-height:1.6">{basis}{recorded_text} '
+            + '과거 분기로 검증하지 않은 계산입니다. 방법: guides/segment-earnings-method.md.</div>')
+
+
 def render_fragment(result):
     e = html.escape
     r = result
@@ -928,6 +1045,7 @@ def render_fragment(result):
     if r.get("chart_svg"):
         parts.append(f'<div style="border:1px solid #e5e5e5;border-radius:6px;padding:8px;margin-top:10px">{r["chart_svg"]}</div>')
 
+    parts.append(render_segment_split(r))
     parts.append('<h4 style="font-size:14px;margin:18px 0 6px">추정</h4>')
     if r["point"] is not None:
         interval_text = ("속보 기반 시나리오 · 구간 미검증" if r.get("interval_note") else
@@ -1519,6 +1637,13 @@ def analyse(target, out_dir, fetch=True):
     }
     apply_flash_interval_policy(result)
     result["chart_svg"] = render_chart(f, oof, spec["name"])
+    # 부문 분리 추정(삼성전자만, 2026-09-29). 실패해도 기존 추정은 그대로 낸다.
+    if target == "samsung" and result.get("quarter_code"):
+        try:
+            result["segment_split"] = segment_split_estimate(f, profit, result["quarter_code"])
+            result["segment_split"]["recorded"] = recorded_segment_estimate(target, result["quarter_code"])
+        except Exception as exc:
+            result["segment_split"] = {"method": SEGMENT_METHOD, "reason": f"계산 실패({type(exc).__name__})"}
     return result, f, oof, profit
 
 

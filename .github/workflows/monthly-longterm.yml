@@ -15,6 +15,7 @@ on:
       - "tools/valuation_reference.py"
       - "valuation_assumptions.json"
       - "tools/build_earnings_forecast.py"
+      - "macro_history/samsung_segments.csv"   # 부문 실적을 넣으면 바로 다시 계산(2026-09-29)
 
 permissions:
   contents: write

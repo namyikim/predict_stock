@@ -1,0 +1,170 @@
+{
+  "target": "samsung",
+  "name": "삼성전자",
+  "peer_name": "SK하이닉스",
+  "session_date": "2026-09-29",
+  "generated_at": "2026-09-29 16:50 KST",
+  "summary": {
+    "prev_close": 270000.0,
+    "open": 266000.0,
+    "high": 276000.0,
+    "low": 266000.0,
+    "close": 272500.0,
+    "gap": -0.014814814814814836,
+    "session": 0.02443609022556381,
+    "c2c": 0.0092592592592593,
+    "high_vs_open": 0.03759398496240607,
+    "low_vs_open": 0.0,
+    "volume": 16976151.0,
+    "volume_ratio": 1.003215022618941,
+    "kospi_c2c": -0.0027475891887478454,
+    "peer_c2c": -0.0016968325791855143,
+    "usdkrw_chg": 0.002155793552103491,
+    "sox_ret": -0.01607787383380721,
+    "nasdaq_ret": -0.00917442115102729
+  },
+  "classification": {
+    "labels": [
+      "마감 구간 쏠림(14:55~종가)"
+    ],
+    "reasons": [
+      "14:55~종가 구간이 세션 +2.44%의 30% (5분봉이 없는 구간, 일봉 종가 기준)"
+    ]
+  },
+  "events": [
+    {
+      "time": "2026-09-29T09:05:00+09:00",
+      "ret": 0.005555555555555536,
+      "z": 2.04,
+      "volume_ratio": 5.64,
+      "cum_before": 0.015037593984962516,
+      "cum_after": 0.020676691729323293,
+      "session_share": 0.32839506172839256,
+      "score": 4.040332826952593,
+      "news": [
+        {
+          "time": "2026-09-29T08:04:10+09:00",
+          "title": "[속보]삼성전자·삼성물산 등 6개사, 美 AI 인프라 기업 '헬릭스'에 1.3조 투자",
+          "source": "뉴시스",
+          "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE1HWHcwVjkyVnI3bzY3OHBoSjVaRWNxaW9sLXQzTl9mcGVUY29xSzNLZG94V2pwV1FWVk9OVTdCU19fanpzcWxtd0J4TzZyNlQ3Smt4NXlMWHJhbWdubTNpdNIBeEFVX3lxTE1SUkUzdGFSVGU5M3pFMEM0UXpzZklpaVFhS2FTTDBOTzNtVzlPMHd1N1B1Nnd0bGdqVnNfUWtWOXM4UDR5OTZXcTlKMFFMclRIQWJoeFNOLW5UdFdUMWxRWmZycHZlS2tYYlFvWlcta05QbWpaTUZ2cA?oc=5"
+        },
+        {
+          "time": "2026-09-29T09:11:11+09:00",
+          "title": "LPDDR6는 같은 선상…CXMT, 삼성전자·SK하이닉스 턱밑 추격",
+          "source": "연합인포맥스",
+          "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE9tTEN2bGtHdFBJRHdGekZYWFpONE1JOXJvTXdvZ3VKUEQ4UU5KWU1NTEJoWGE4bkQxYmhRdmV1ckMxX29PRWtDT2t5eFBqSElfR29FNThjUmR6bC1jQlZ2ZEtTWnNiRFAwZ1hweDJxaTU?oc=5"
+        }
+      ]
+    }
+  ],
+  "turning_point": {
+    "high_time": "2026-09-29T10:40:00+09:00",
+    "high": 0.03571428571428581,
+    "low_time": "2026-09-29T14:30:00+09:00",
+    "low": 0.011278195488721776,
+    "pattern": "고점 후 반락"
+  },
+  "closing_share": 0.3025735816863409,
+  "intraday_corr_kospi": 0.795859722759671,
+  "intraday_note": "장중 봉은 09:00~14:55까지만 있어 마감 구간(14:55~15:30)은 일봉 종가로만 봅니다(그 구간 +0.74%).",
+  "intraday_coverage": "09:00~14:55",
+  "overnight_news": [
+    {
+      "time": "2026-09-29T08:04:10+09:00",
+      "title": "[속보]삼성전자·삼성물산 등 6개사, 美 AI 인프라 기업 '헬릭스'에 1.3조 투자",
+      "source": "뉴시스",
+      "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE1HWHcwVjkyVnI3bzY3OHBoSjVaRWNxaW9sLXQzTl9mcGVUY29xSzNLZG94V2pwV1FWVk9OVTdCU19fanpzcWxtd0J4TzZyNlQ3Smt4NXlMWHJhbWdubTNpdNIBeEFVX3lxTE1SUkUzdGFSVGU5M3pFMEM0UXpzZklpaVFhS2FTTDBOTzNtVzlPMHd1N1B1Nnd0bGdqVnNfUWtWOXM4UDR5OTZXcTlKMFFMclRIQWJoeFNOLW5UdFdUMWxRWmZycHZlS2tYYlFvWlcta05QbWpaTUZ2cA?oc=5"
+    }
+  ],
+  "top_news": [
+    {
+      "time": "2026-09-29T14:13:59+09:00",
+      "title": "배당 끝, 자사주도 90% 소진⋯삼성전자, 다음 수급은 '외국인'",
+      "source": "아이뉴스24",
+      "link": "https://news.google.com/rss/articles/CBMiS0FVX3lxTE1QR3pudWJqZk9hUWx0YklIbDRkRVVYZk9NdTJ4eV9ETFpkMU5MQXVNbllOZkY5WmVlZzliZHBFcEJ4U3R2NGZ1THp1VQ?oc=5"
+    },
+    {
+      "time": "2026-09-29T14:47:36+09:00",
+      "title": "자사주 매입 90% 채운 삼성전자…배당락·실적 맞물려 수급 시험대",
+      "source": "ebn.co.kr",
+      "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE1hSDB1TloySHgxSXBGR29UNGlBRy1hVXdTLXNUcFZleU90Q1dVeGRXZndodXN1ZV9iRmlOVi1jeW5IVFZZam12MHB2YkZsa0ZhLU9QUHdQQnM3b0dvRTRfZWZkdlBnV2Fl?oc=5"
+    },
+    {
+      "time": "2026-09-29T15:03:32+09:00",
+      "title": "[현장] AI가 바꾼 메모리 사이클…삼성전자·SK하이닉스, HBM이 만든 '새로운 호황'",
+      "source": "ebn.co.kr",
+      "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE5wbGdOTHNSVC14Z3N3enlTRTlxOG1mdWRPazNmaEQ5cXUyUzFvTnkwejl3M0hWWmtweWRlNWw1dlZiSnJvZExxT0hkcHhVNW9QZDh6M2lnUDA4UENtbVM2SmdlUTNFbW43?oc=5"
+    },
+    {
+      "time": "2026-09-29T08:04:10+09:00",
+      "title": "[속보]삼성전자·삼성물산 등 6개사, 美 AI 인프라 기업 '헬릭스'에 1.3조 투자",
+      "source": "뉴시스",
+      "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE1HWHcwVjkyVnI3bzY3OHBoSjVaRWNxaW9sLXQzTl9mcGVUY29xSzNLZG94V2pwV1FWVk9OVTdCU19fanpzcWxtd0J4TzZyNlQ3Smt4NXlMWHJhbWdubTNpdNIBeEFVX3lxTE1SUkUzdGFSVGU5M3pFMEM0UXpzZklpaVFhS2FTTDBOTzNtVzlPMHd1N1B1Nnd0bGdqVnNfUWtWOXM4UDR5OTZXcTlKMFFMclRIQWJoeFNOLW5UdFdUMWxRWmZycHZlS2tYYlFvWlcta05QbWpaTUZ2cA?oc=5"
+    },
+    {
+      "time": "2026-09-29T09:40:00+09:00",
+      "title": "삼성전자, 뉴욕서 젠슨 황 수상 축하…AI·반도체 협력 강조",
+      "source": "글로벌이코노믹",
+      "link": "https://news.google.com/rss/articles/CBMihgFBVV95cUxOa29LNUw3V21KcTR0QzNsWHFDTFFSeEZkQVhUbHQyS0dDbFdKaU9DYTdhVGN0WXNQY2RuWnF0OUVkZE0tSzM1TmRxUFBGcTFIeF9PcU5zWnJ2Q1hPYnctaVV2ZVdheU4zN3RzQWYwMDhjV1prT21VSVFWejIxVF9mUmxKZktvdw?oc=5"
+    },
+    {
+      "time": "2026-09-29T09:42:00+09:00",
+      "title": "삼성전자 등 6개사, AI 인프라 기업 ‘헬릭스’에 10억달러 투자… 데이터센터·전력 협력 - 조선비즈",
+      "source": "Chosunbiz",
+      "link": "https://news.google.com/rss/articles/CBMiggFBVV95cUxPdHE2TVRhMjdBcGNmbk1MbkZfWUo4U242OWk5VW1oaWpqdjEtX2lXUlNMUTBJSU50VERhdlA2ZnJ6VWdMTUpreGdJSDk1WmRBa1dvWHJHdTY1aTdyOUIxTVBHMkY5N2hCZWZvYllyb2lrS0k0bWlPY0xpWjBSUkJTVDln0gGWAUFVX3lxTE9waXFoWVZkUnQtSlFkekZfQlZOV3lvaHg0LTdIMXkxVWV2b1J4bEtqMF95bG5kR1hCMDNnYU54VFNjY3JaSGFjSng2bTJSSE9KSHdGbnZpRDl5RkNMSkV6SFJ1dmF5end5dVh3ZnM4cmhaS0VZbGhpYVZvNVJ4WjZXaTI2NHhzQ05QaXBuWldtWWpjbHhJQQ?oc=5"
+    }
+  ],
+  "disclosures": [],
+  "disclosure_note": null,
+  "flows": null,
+  "flow_story": null,
+  "forecasts": [
+    {
+      "model": "No macro ensemble",
+      "hit": false,
+      "verdict": "틀림 — 예측 하락 46%, 실제 상승(+0.93%)",
+      "legs": "갭 -1.48%(하락) · 세션 +2.44%(상승)",
+      "where": "갭은 예측 방향이었으나 장중에 반대로 움직여 결과가 뒤집혔습니다.",
+      "band": 0.009134481343091,
+      "probs": [
+        0.4649671904488986,
+        0.2447635065279377,
+        0.2902693030231635
+      ],
+      "actual": "상승",
+      "predicted": "하락"
+    },
+    {
+      "model": "Mean ensemble",
+      "hit": false,
+      "verdict": "틀림 — 예측 하락 44%, 실제 상승(+0.93%)",
+      "legs": "갭 -1.48%(하락) · 세션 +2.44%(상승)",
+      "where": "갭은 예측 방향이었으나 장중에 반대로 움직여 결과가 뒤집혔습니다.",
+      "band": 0.009134481343091,
+      "probs": [
+        0.4408022940633833,
+        0.2645795652163209,
+        0.2946181407202958
+      ],
+      "actual": "상승",
+      "predicted": "하락"
+    },
+    {
+      "model": "Candidate expanding",
+      "hit": false,
+      "verdict": "틀림 — 예측 하락 49%, 실제 상승(+0.93%)",
+      "legs": "갭 -1.48%(하락) · 세션 +2.44%(상승)",
+      "where": "갭은 예측 방향이었으나 장중에 반대로 움직여 결과가 뒤집혔습니다.",
+      "band": 0.009134481343091,
+      "probs": [
+        0.4906379988797277,
+        0.235317461647079,
+        0.2740445394731933
+      ],
+      "actual": "상승",
+      "predicted": "하락"
+    }
+  ],
+  "price_check": "1거래일 예상 구간 257,833~278,472원 · 종가 272,500원 → 구간 안",
+  "disclaimer": "시간이 맞는 것이지 원인 확정이 아닙니다. 뉴스 없이 움직이는 날(수급·프로그램·옵션 만기)이 많고, 기사 발행 시각은 실제 정보 유통보다 늦거나 앞섭니다. 이 절은 설명 도구이며 다음날 예측에 자동 반영되지 않습니다."
+}

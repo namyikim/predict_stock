@@ -4,7 +4,7 @@ Candidate IV interval,price,1,close_to_close,04645af6d68aa70051a9,1,,,,1,13459.2
 Candidate IV interval,price,5,close_to_close,01a15a32dfbfbe7a4a16,4,,,,0,,,0.75
 Candidate evening forecast,direction,1,close_to_close,01a15a32dfbfbe7a4a16,9,0.5555555555555556,1.0454337994382263,0.6242876427948764,0,,,
 Candidate evening open,open,1,close_to_close,01a15a32dfbfbe7a4a16,6,,,,6,4710.1316914479,0.017359979439904093,0.6666666666666666
-Candidate evening open,open,1,close_to_close,04645af6d68aa70051a9,1,,,,1,5808.8151819504565,0.021837651059964124,1.0
+Candidate evening open,open,1,close_to_close,04645af6d68aa70051a9,1,,,,1,5808.8151819504565,0.0218376510599641,1.0
 Candidate expanding,direction,1,close_to_close,01a15a32dfbfbe7a4a16,8,0.75,0.8359585558730213,0.4814630407785679,0,,,
 Candidate expanding,direction,1,close_to_close,04645af6d68aa70051a9,1,1.0,0.6913571337372469,0.37365845475737164,0,,,
 Candidate expanding,direction,1,close_to_close,fcf9a52b1a6a87f3bd29,1,0.0,1.1978514022617497,0.7366310234911683,0,,,
@@ -65,7 +65,7 @@ No macro price ensemble,direction,1,close_to_close,92f57958414c79f097af,1,1.0,0.
 No macro price ensemble,direction,1,close_to_close,fcf9a52b1a6a87f3bd29,1,0.0,1.2569918371377933,0.7812547543185786,0,,,
 Post-open,direction,1,close_to_close,post-open-grid-v1,3,1.0,0.48663897990429605,0.22609795247179196,0,,,
 Ridge,open,1,close_to_close,01a15a32dfbfbe7a4a16,8,,,,8,3159.888317951678,0.011950218663952152,1.0
-Ridge,open,1,close_to_close,04645af6d68aa70051a9,2,,,,2,1635.3444881816977,0.005973028768833458,1.0
+Ridge,open,1,close_to_close,04645af6d68aa70051a9,2,,,,2,1635.3444881816977,0.005973028768833432,1.0
 Ridge,open,1,close_to_close,2eb5adc74ae8d1ff1953,1,,,,1,2009.8444744944572,0.007389134097406093,1.0
 Ridge,open,1,close_to_close,7cfdc5ba38f87fc3691f,1,,,,1,1960.9529171139002,0.007209385724683457,1.0
 Ridge,open,1,close_to_close,92f57958414c79f097af,1,,,,1,1637.2739251962048,0.006086520168015632,1.0

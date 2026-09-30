@@ -354,7 +354,7 @@ class TrendsRetryGateTests(unittest.TestCase):
         steps = WORKFLOW["jobs"]["trends"]["steps"]
         gate = next(step for step in steps if step.get("id") == "trends_due")
         self.assertIn("should_run_trends.py", gate["run"])
-        for name in ("인기 급상승 검색어 보고서", "Pages 재빌드 요청"):
+        for name in ("인기 급상승 검색어 보고서",):   # Pages 재빌드 요청 단계는 2026-09-30 제거
             step = next(step for step in steps if step.get("name") == name)
             self.assertIn("steps.trends_due.outputs.run == 'true'", step["if"])
 

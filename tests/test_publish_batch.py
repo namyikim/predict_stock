@@ -331,10 +331,11 @@ class ToolWiringTests(unittest.TestCase):
     def test_workflow_rebuilds_pages_only_after_a_commit(self):
         import yaml
         wf = yaml.safe_load((ROOT / ".github" / "workflows" / "monthly-longterm.yml").read_text(encoding="utf-8"))
+        # 2026-09-30: Pages 재빌드를 따로 요청하지 않는다 — 커밋마다 빌드가 저절로 돌고, 요청이 겹쳐 대부분 취소됐다.
+        # 커밋이 없으면 빌드도 없으므로 '커밋이 있을 때만' 규칙은 저절로 지켜진다.
         job = wf["jobs"]["longterm"]
-        self.assertEqual(job["env"]["PAGES_CHANGED_FLAG"], "runs/pages_changed.flag")
-        pages = next(s for s in job["steps"] if "Pages" in (s.get("name") or ""))
-        self.assertIn('if [ ! -f "$PAGES_CHANGED_FLAG" ]', pages["run"])
+        self.assertNotIn("PAGES_CHANGED_FLAG", job.get("env") or {})
+        self.assertFalse(any("Pages" in (s.get("name") or "") for s in job["steps"]))
 
 
 if __name__ == "__main__":

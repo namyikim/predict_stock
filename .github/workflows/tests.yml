@@ -13,6 +13,18 @@ on:
       - "macro_history/**"
       - "runs/**"
       - "**.md"
+      # 아래는 일일 보고서가 push 로 도는 경로다. 그 실행의 validation 작업이 이 워크플로를 불러 같은 테스트를
+      # 같은 동시성 그룹(tests-<ref>)에서 돌리므로, 여기서 따로 돈 실행은 매번 취소됐다(2026-09-28~30: 13회 중 12회).
+      # 이 경로만 바뀐 push 는 그쪽에 맡긴다. 테스트 파일 등 다른 파일이 함께 바뀌면 여기서도 돈다.
+      # 일일 보고서의 push 경로를 바꾸면 여기도 같이 바꾼다(tests/test_workflow_triggers.py 가 확인한다).
+      - "samsung_direction_model_colab.ipynb"
+      - "forecast_utils.py"
+      - "macro_utils.py"
+      - "data_sources/**"
+      - "report_html.py"
+      - "tools/**"
+      - "requirements.txt"
+      - ".github/workflows/daily-report.yml"
   pull_request:
   workflow_dispatch:
 

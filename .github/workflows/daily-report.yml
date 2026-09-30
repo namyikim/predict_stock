@@ -166,28 +166,6 @@ jobs:
           MPLBACKEND: Agg
         run: python tools/run_notebook.py --storage "runs/${{ matrix.target }}"
 
-      - name: Pages 재빌드 요청
-        if: steps.gate.outputs.run == 'true' && steps.recorded.outputs.run != 'false'
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          REPO: ${{ github.repository }}
-        run: |
-          # 보고서는 git push가 아니라 Contents API로 커밋된다. GITHUB_TOKEN이
-          # 만든 커밋은 다른 워크플로를 트리거하지 않으므로, Pages 빌드가 자동으로
-          # 돌지 않을 수 있다. 그래서 명시적으로 한 번 요청한다.
-          # 이미 빌드가 걸려 있으면 409가 오는데 그건 실패가 아니다.
-          code=$(curl -sS -o /tmp/pages.json -w '%{http_code}' -X POST \
-            -H "Authorization: Bearer $GH_TOKEN" \
-            -H "Accept: application/vnd.github+json" \
-            -H "X-GitHub-Api-Version: 2022-11-28" \
-            "https://api.github.com/repos/$REPO/pages/builds")
-          echo "HTTP $code"
-          cat /tmp/pages.json || true
-          case "$code" in
-            200|201|409) echo "Pages 재빌드 요청 완료" ;;
-            *) echo "::warning::Pages 재빌드 요청이 거부되었습니다($code). 브랜치 배포 설정이면 잠시 뒤 자동으로 반영될 수 있습니다." ;;
-          esac
-
   # 수출 통계·실적 예상·장기 전망은 monthly-longterm.yml에서 하루 한 번 함께 갱신한다.
 
   # 검색어는 하루 사이에 실제로 바뀌는 유일한 보고서라 3시간 간격 회차에도 돌린다.
@@ -210,22 +188,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: python tools/build_ai_news_report.py --out runs/ai_news --publish
-      - name: Pages 재빌드 요청
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          REPO: ${{ github.repository }}
-        run: |
-          code=$(curl -sS -o /dev/null -w '%{http_code}' -X POST \
-            -H "Authorization: Bearer $GH_TOKEN" \
-            -H "Accept: application/vnd.github+json" \
-            -H "X-GitHub-Api-Version: 2022-11-28" \
-            "https://api.github.com/repos/$REPO/pages/builds")
-          echo "HTTP $code"
-          case "$code" in
-            200|201|409) echo "Pages 재빌드 요청 완료" ;;
-            *) echo "::warning::Pages 재빌드 요청 실패 ($code)" ;;
-          esac
-
   trends:
     runs-on: ubuntu-latest
     if: >-
@@ -252,25 +214,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: python tools/build_trends_report.py --out runs/trends --geo KR --publish
-
-      - name: Pages 재빌드 요청
-        if: github.event_name != 'schedule' || steps.trends_due.outputs.run == 'true'
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          REPO: ${{ github.repository }}
-        run: |
-          # 예측 보고서 잡이 실패해도 이 커밋은 반영되어야 하므로 여기서도 요청한다.
-          # 이미 빌드가 걸려 있으면 409가 오는데 그건 실패가 아니다.
-          code=$(curl -sS -o /tmp/pages.json -w '%{http_code}' -X POST \
-            -H "Authorization: Bearer $GH_TOKEN" \
-            -H "Accept: application/vnd.github+json" \
-            -H "X-GitHub-Api-Version: 2022-11-28" \
-            "https://api.github.com/repos/$REPO/pages/builds")
-          echo "HTTP $code"
-          case "$code" in
-            200|201|409) echo "Pages 재빌드 요청 완료" ;;
-            *) echo "::warning::Pages 재빌드 요청 실패 ($code)" ;;
-          esac
 
   # 금·은 예측. 노트북과 같은 forecast_utils를 쓰지만 LightGBM·torch는 필요 없다.
   # 종목 보고서(report)와 독립적으로 돈다. 원장은 forecast_history/gold, silver.
@@ -309,22 +252,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: python tools/colab_freshness.py --publish
 
-      - name: Pages 재빌드 요청
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          REPO: ${{ github.repository }}
-        run: |
-          code=$(curl -sS -o /dev/null -w '%{http_code}' -X POST \
-            -H "Authorization: Bearer $GH_TOKEN" \
-            -H "Accept: application/vnd.github+json" \
-            -H "X-GitHub-Api-Version: 2022-11-28" \
-            "https://api.github.com/repos/$REPO/pages/builds")
-          echo "HTTP $code"
-          case "$code" in
-            200|201|409) echo "Pages 재빌드 요청 완료" ;;
-            *) echo "::warning::Pages 재빌드 요청 실패 ($code)" ;;
-          esac
-
   # 5개년 계획 분석은 시세만 새로 받는다. 종목 56개라 몇 분이면 끝난다.
   china:
     runs-on: ubuntu-latest
@@ -351,22 +278,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: python tools/build_china_report.py --out runs/china --publish
 
-      - name: Pages 재빌드 요청
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          REPO: ${{ github.repository }}
-        run: |
-          code=$(curl -sS -o /dev/null -w '%{http_code}' -X POST \
-            -H "Authorization: Bearer $GH_TOKEN" \
-            -H "Accept: application/vnd.github+json" \
-            -H "X-GitHub-Api-Version: 2022-11-28" \
-            "https://api.github.com/repos/$REPO/pages/builds")
-          echo "HTTP $code"
-          case "$code" in
-            200|201|409) echo "Pages 재빌드 요청 완료" ;;
-            *) echo "::warning::Pages 재빌드 요청 실패 ($code)" ;;
-          esac
-
   # 위키백과 조회수는 월 단위로만 갱신되지만, 매일 돌려도 API 호출 40회로 가볍다.
   interest:
     runs-on: ubuntu-latest
@@ -389,19 +300,3 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: python tools/build_interest_report.py --out runs/interest --publish
-
-      - name: Pages 재빌드 요청
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          REPO: ${{ github.repository }}
-        run: |
-          code=$(curl -sS -o /dev/null -w '%{http_code}' -X POST \
-            -H "Authorization: Bearer $GH_TOKEN" \
-            -H "Accept: application/vnd.github+json" \
-            -H "X-GitHub-Api-Version: 2022-11-28" \
-            "https://api.github.com/repos/$REPO/pages/builds")
-          echo "HTTP $code"
-          case "$code" in
-            200|201|409) echo "Pages 재빌드 요청 완료" ;;
-            *) echo "::warning::Pages 재빌드 요청 실패 ($code)" ;;
-          esac

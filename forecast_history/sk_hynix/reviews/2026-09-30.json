@@ -3,7 +3,7 @@
   "name": "SK하이닉스",
   "peer_name": "삼성전자",
   "session_date": "2026-09-30",
-  "generated_at": "2026-09-30 19:08 KST",
+  "generated_at": "2026-09-30 19:13 KST",
   "summary": {
     "prev_close": 1765000.0,
     "open": 1789000.0,
@@ -19,7 +19,7 @@
     "volume_ratio": 1.0333054364845518,
     "kospi_c2c": -0.0047694550208475794,
     "peer_c2c": -0.014678899082568808,
-    "usdkrw_chg": -0.003633575026962932,
+    "usdkrw_chg": NaN,
     "us_nights": 1,
     "sox_ret": 0.013150161472457178,
     "nasdaq_ret": -0.0008516581846754745,
@@ -108,7 +108,7 @@
         {
           "time": "2026-09-30T14:08:10+09:00",
           "title": "솔리다임 美 상장 루머에 출렁인 SK하이닉스…증권가는 \"단기 우려 과도\"",
-          "source": "newsworker.co.kr",
+          "source": "뉴스워커",
           "link": "https://news.google.com/rss/articles/CBMidEFVX3lxTE5mVlAyZ2Z3Q0hJdU1oVlR2bmNWdHhjRDMtb0o4Q1ZEYXdrQ0FURml6VElnOHlHQk04MnJpam1hWVM5X2l3cGJNSjIzcDhibl83RU5lSjQtenpiUzh5NTF2S1REQVdtNDF1bTVXZXV4SjY1Rlhm0gF0QVVfeXFMTmZWUDJnZndDSEl1TWhWVHZuY1Z0eGNEMy1vSjhDVkRhd2tDQVRGaXpUSWc4eUdCTTgycmlqbWFZUzlfaXdwYk1KMjNwOGJuXzdFTmVKNC16emJTOHk1MXZLVERBV200MXVtNVdldXhKNjVGWGY?oc=5"
         },
         {
@@ -569,7 +569,7 @@
         {
           "time": "2026-09-30T14:08:10+09:00",
           "title": "솔리다임 美 상장 루머에 출렁인 SK하이닉스…증권가는 \"단기 우려 과도\"",
-          "source": "newsworker.co.kr",
+          "source": "뉴스워커",
           "link": "https://news.google.com/rss/articles/CBMidEFVX3lxTE5mVlAyZ2Z3Q0hJdU1oVlR2bmNWdHhjRDMtb0o4Q1ZEYXdrQ0FURml6VElnOHlHQk04MnJpam1hWVM5X2l3cGJNSjIzcDhibl83RU5lSjQtenpiUzh5NTF2S1REQVdtNDF1bTVXZXV4SjY1Rlhm0gF0QVVfeXFMTmZWUDJnZndDSEl1TWhWVHZuY1Z0eGNEMy1vSjhDVkRhd2tDQVRGaXpUSWc4eUdCTTgycmlqbWFZUzlfaXdwYk1KMjNwOGJuXzdFTmVKNC16emJTOHk1MXZLVERBV200MXVtNVdldXhKNjVGWGY?oc=5"
         },
         {
@@ -712,7 +712,6 @@
     "observations": [
       "코스피는 반대로 -0.48% — 시장 전체와 다른 움직임이었습니다.",
       "삼성전자는 반대로 -1.47% — 업종 전체의 움직임은 아니었습니다.",
-      "원화는 오히려 강세(-0.36%)여서 외국인 매도가 환율로는 설명되지 않습니다.",
       "전날 밤 미국 반도체지수(SOX) +1.32% — 미국 반도체 흐름과 같은 방향입니다."
     ],
     "estimated_indiv": false,

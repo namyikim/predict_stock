@@ -3356,19 +3356,31 @@ def flow_story(today, history, summary, close, prior_5d=None, peer_name="동종 
             seen.append(f"원/달러 {pct(fx)}(원화 강세) — 외국인 매수와 같은 방향의 환율 움직임입니다.")
         elif foreign < 0 and fx <= -.003:
             seen.append(f"원화는 오히려 강세({pct(fx)})여서 외국인 매도가 환율로는 설명되지 않습니다.")
+    nights = num(summary.get("us_nights")) or 1
+    us_when = f"휴장 기간({int(nights)}거래일 누적) " if nights > 1 else "전날 밤 "
     if sox is not None and direction != "flat":
         same = (sox < -.01 and direction == "down") or (sox > .01 and direction == "up")
         opposite = (sox > .005 and direction == "down") or (sox < -.005 and direction == "up")
         if same:
-            seen.append(f"전날 밤 미국 반도체지수(SOX) {pct(sox)} — 미국 반도체 흐름과 같은 방향입니다.")
+            seen.append(f"{us_when}미국 반도체지수(SOX) {pct(sox)} — 미국 반도체 흐름과 같은 방향입니다.")
         elif opposite:
-            seen.append(f"전날 밤 SOX는 {pct(sox)}로 반대 방향이어서 미국 반도체 흐름으로는 설명되지 않습니다.")
+            seen.append(f"{us_when}SOX는 {pct(sox)}로 반대 방향이어서 미국 반도체 흐름으로는 설명되지 않습니다.")
     micron = num(summary.get("micron_ret"))
     if micron is not None and direction != "flat":
         if (micron < -.02 and direction == "down") or (micron > .02 and direction == "up"):
-            seen.append(f"전날 밤 마이크론 {pct(micron)} — 미국 메모리 회사와 같은 방향입니다.")
+            seen.append(f"{us_when}마이크론 {pct(micron)} — 미국 메모리 회사와 같은 방향입니다.")
         elif (micron > .02 and direction == "down") or (micron < -.02 and direction == "up"):
-            seen.append(f"전날 밤 마이크론은 {pct(micron)}로 반대 방향이었습니다.")
+            seen.append(f"{us_when}마이크론은 {pct(micron)}로 반대 방향이었습니다.")
+    streak = num(summary.get("prior_streak"))
+    if streak is not None and abs(streak) >= 3 and direction != "flat":
+        if streak > 0 and direction == "down":
+            seen.append(f"직전 {int(streak)}거래일 연속 상승 뒤의 하락입니다 — 차익 실현과 맞는 모양입니다.")
+        elif streak < 0 and direction == "up":
+            seen.append(f"직전 {int(-streak)}거래일 연속 하락 뒤의 반등입니다.")
+        elif streak > 0:
+            seen.append(f"{int(streak) + 1}거래일 연속 상승이 이어졌습니다.")
+        else:
+            seen.append(f"{int(-streak) + 1}거래일 연속 하락이 이어졌습니다.")
     prior = num(prior_5d)
     if prior is not None:
         if direction == "down" and prior >= .08:
@@ -3437,6 +3449,26 @@ def flow_story_html(story, number=None):
 #    휴장일로 당겨지는 경우는 모른다.
 # ③ 다가오는 주요 일정 — 미국 발표 일정표(data_sources/us_calendar)를 그대로 쓴다.
 CORPORATE_ACTIONS_PATH = "macro_inputs/corporate_actions.csv"
+KRX_HOLIDAYS_PATH = "macro_inputs/krx_holidays.csv"      # 사람이 확인해 적는 휴장일(주말 제외)
+
+
+def _krx_holidays(path=KRX_HOLIDAYS_PATH):
+    import os
+    if not os.path.exists(path):
+        return set()
+    try:
+        return set(pd.to_datetime(pd.read_csv(path, dtype=str)["date"]).dt.normalize())
+    except (OSError, ValueError, KeyError):
+        return set()
+
+
+def next_krx_session(day, holidays=None):
+    """다음 거래일(주말·파일의 휴장일 건너뜀)."""
+    holidays = _krx_holidays() if holidays is None else holidays
+    nxt = pd.Timestamp(day).normalize() + pd.Timedelta(days=1)
+    while nxt.weekday() >= 5 or nxt in holidays:
+        nxt += pd.Timedelta(days=1)
+    return nxt
 
 
 def _dividend_from_file(day, target, path=CORPORATE_ACTIONS_PATH):
@@ -3473,7 +3505,14 @@ def review_context(review):
                            "gap_ex": (open_ + float(per_share)) / prev - 1,
                            "c2c_ex": (close + float(per_share)) / prev - 1}
     # ② 달력
-    nxt = day + pd.offsets.BDay(1)
+    nxt = next_krx_session(day)
+    tomorrow_div, _ = _dividend_from_file(nxt.date().isoformat(), r.get("target"))
+    if tomorrow_div:
+        out["calendar"].append(f"내일({nxt:%m/%d})이 배당락일 — 주당 {tomorrow_div:,.0f}원. 락 전에 팔려는 선반영 매도가 "
+                               "나올 수 있는 날입니다.")
+    if (nxt - day).days >= 4:
+        out["calendar"].append(f"연휴 전 마지막 거래일 — 다음 거래일이 {nxt:%m/%d}({(nxt - day).days}일 뒤). 연휴 위험을 "
+                               "피하려는 매물이 나올 수 있는 날입니다.")
     if nxt.month != day.month:
         if day.month in (3, 6, 9, 12):
             out["calendar"].append(f"{(day.month - 1) // 3 + 1}분기 마지막 거래일 — 기관이 분기말에 주식·현금 비중을 "
@@ -3589,7 +3628,8 @@ def review_section_html(review, carried=False):
             ("거래량 (20일 평균 대비)", f'{float(s["volume_ratio"]):.2f}배' if _rv_finite(s.get("volume_ratio")) else "—"),
             (f'KOSPI / {e(r["peer_name"])}', f'{_rv_pct(s.get("kospi_c2c"))} / {_rv_pct(s.get("peer_c2c"))}'),
             ("원/달러", _rv_pct(s.get("usdkrw_chg"))),
-            ("전날 밤 SOX / 나스닥 / 마이크론",
+            (("휴장 기간 미국 누적(" + str(int(s["us_nights"])) + "거래일) SOX / 나스닥 / 마이크론")
+             if _rv_finite(s.get("us_nights")) and float(s["us_nights"]) > 1 else "전날 밤 SOX / 나스닥 / 마이크론",
              f'{_rv_pct(s.get("sox_ret"))} / {_rv_pct(s.get("nasdaq_ret"))} / {_rv_pct(s.get("micron_ret"))}')]
     if _rv_finite(s.get("range")):
         rows.insert(4, (f'장중 변동폭 저점→고점 · 이 종목 / {e(r["peer_name"])}',

@@ -172,3 +172,40 @@ class ReviewContextTests(unittest.TestCase):
     def test_review_run_stores_yahoo_dividends(self):
         text = (ROOT / "tools" / "build_session_review.py").read_text(encoding="utf-8")
         self.assertIn('"context": session_context(spec["ticker"], session_date)', text)
+
+
+class MondayVideoAdditionsTests(unittest.TestCase):
+    """9/28 회고 영상 검토(2026-09-30)로 더한 것: 배당락 전일, 연휴 전, 연속 일수, 휴장 기간 미국 누적."""
+
+    def setUp(self):
+        import os
+        self._cwd = os.getcwd(); os.chdir(ROOT)
+
+    def tearDown(self):
+        import os
+        os.chdir(self._cwd)
+
+    def test_day_before_ex_dividend_and_pre_holiday_flags(self):
+        flags = lambda day: " ".join(fu.review_context(review(day))["calendar"])
+        self.assertIn("내일(09/29)이 배당락일 — 주당 4,600원", flags("2026-09-28"))
+        self.assertIn("연휴 전 마지막 거래일 — 다음 거래일이 10/06(4일 뒤)", flags("2026-10-02"))
+        self.assertNotIn("연휴 전", flags("2026-09-25") if False else flags("2026-09-29"))
+
+    def test_next_session_skips_weekends_and_listed_holidays(self):
+        import pandas as pd
+        self.assertEqual(fu.next_krx_session(pd.Timestamp("2026-10-02")), pd.Timestamp("2026-10-06"))
+        self.assertEqual(fu.next_krx_session(pd.Timestamp("2026-10-08")), pd.Timestamp("2026-10-12"))
+
+    def test_streak_and_holiday_window_wording(self):
+        story = fu.flow_story({"foreign_net": -1000, "inst_net": 500, "indiv_net": 500}, None,
+                              {"c2c": -.05, "sox_ret": .04, "us_nights": 3, "prior_streak": 4}, 1000)
+        text = " ".join(story["observations"])
+        self.assertIn("휴장 기간(3거래일 누적) SOX는 +4.00%로 반대 방향", text)
+        self.assertIn("직전 4거래일 연속 상승 뒤의 하락", text)
+        r = review("2026-09-28"); r["summary"].update(us_nights=3)
+        self.assertIn("휴장 기간 미국 누적(3거래일) SOX / 나스닥 / 마이크론", fu.review_section_html(r))
+
+    def test_review_run_uses_the_previous_korean_session_as_the_window_start(self):
+        text = (ROOT / "tools" / "build_session_review.py").read_text(encoding="utf-8")
+        self.assertIn('summary["us_nights"] = int(len(window))', text)
+        self.assertIn('summary["prior_streak"] = int(streak * sign)', text)

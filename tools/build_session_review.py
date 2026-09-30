@@ -453,10 +453,19 @@ def build_review(target, session_date, storage, token=None, use_news=True):
         i = frame.index.get_loc(session_date)
         return float(frame["close"].iloc[i] / frame["close"].iloc[i - 1] - 1) if i > 0 else float("nan")
 
+    # 미국 '밤사이' 창: 직전 한국 거래일 마감 뒤 ~ 오늘 개장 전. 연휴 뒤 첫날은 하루가 아니라 휴장 기간 전체다
+    # (2026-09-28: 추석 뒤 첫날인데 전날 밤 하루치만 봐서 '미국은 올랐는데'를 놓쳤다).
+    prev_kr = daily.index[pos - 1] if pos >= 1 else session_date - pd.Timedelta(days=1)
+
     def overnight_of(ticker):
         frame = load_daily(ticker)
-        frame = frame[frame.index < session_date]
-        return float(frame["close"].iloc[-1] / frame["close"].iloc[-2] - 1) if len(frame) >= 2 else float("nan")
+        window = frame[(frame.index >= prev_kr) & (frame.index < session_date)]
+        before = frame[frame.index < prev_kr]
+        if window.empty or before.empty:
+            frame = frame[frame.index < session_date]
+            return float(frame["close"].iloc[-1] / frame["close"].iloc[-2] - 1) if len(frame) >= 2 else float("nan")
+        summary["us_nights"] = int(len(window))
+        return float(window["close"].iloc[-1] / before["close"].iloc[-1] - 1)
 
     def range_of(ticker):
         """그날 저점→고점 폭. 동종 종목과 견주면 어느 쪽이 더 탄력적으로 움직였는지 보인다(2026-09-30)."""
@@ -470,7 +479,18 @@ def build_review(target, session_date, storage, token=None, use_news=True):
     summary["peer_c2c"] = c2c_of(spec["peer"])
     summary["usdkrw_chg"] = c2c_of("KRW=X")
     summary["sox_ret"], summary["nasdaq_ret"] = overnight_of("^SOX"), overnight_of("^IXIC")
-    summary["micron_ret"] = overnight_of("MU")          # 전날 밤 마이크론 — 두 종목과 서로 영향을 주고받는 미국 메모리 회사
+    summary["micron_ret"] = overnight_of("MU")
+    # 직전 연속 상승·하락 일수(오늘 제외). 연속 상승 뒤 하락은 차익 실현과 맞는 모양이다(2026-09-30).
+    streak, sign = 0, 0
+    for k in range(pos - 1, 0, -1):
+        move = float(daily["close"].iloc[k] / daily["close"].iloc[k - 1] - 1)
+        s_ = 1 if move > 0 else -1 if move < 0 else 0
+        if streak == 0:
+            sign = s_
+        if s_ == 0 or s_ != sign:
+            break
+        streak += 1
+    summary["prior_streak"] = int(streak * sign)          # 전날 밤 마이크론 — 두 종목과 서로 영향을 주고받는 미국 메모리 회사
     summary["range"] = float(today["high"]) / float(today["low"]) - 1 if float(today["low"]) > 0 else float("nan")
     summary["peer_range"] = range_of(spec["peer"])
 

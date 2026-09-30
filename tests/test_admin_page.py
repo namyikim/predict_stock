@@ -1,0 +1,26 @@
+"""관리 페이지(docs/admin) 첫 화면."""
+import unittest
+from pathlib import Path
+
+PAGE = Path(__file__).resolve().parents[1] / "docs" / "admin" / "index.html"
+
+
+class AdminLandingTabTests(unittest.TestCase):
+    """처음 들어올 때 항상 방문 통계를 연다(2026-09-30: #subscribers 가 주소에 남아 구독자 탭이 먼저 떴다)."""
+
+    def test_first_load_ignores_the_hash_and_clears_it(self):
+        page = PAGE.read_text(encoding="utf-8")
+        tail = page[page.index('window.addEventListener("hashchange", route);'):]
+        tail = tail[:tail.index("})();")]
+        self.assertIn('show("visits");', tail)
+        self.assertNotIn("\n  route();", tail)
+        self.assertIn('history.replaceState(null, "", location.pathname + location.search)', tail)
+
+    def test_tab_clicks_still_route_by_hash(self):
+        page = PAGE.read_text(encoding="utf-8")
+        self.assertIn('window.addEventListener("hashchange", route);', page)
+        self.assertIn('<a href="#subscribers" data-tab="subscribers">구독자</a>', page)
+
+
+if __name__ == "__main__":
+    unittest.main()

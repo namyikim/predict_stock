@@ -788,7 +788,12 @@ a{color:var(--accent)}
   }
   function route() { show((location.hash || "").slice(1)); }
   window.addEventListener("hashchange", route);
-  route();
+  // 처음 들어올 때는 주소의 #과 관계없이 방문 통계를 연다(2026-09-30 요청). 탭을 누르면 주소에 #subscribers
+  // 등이 남아, 다음에 방문 기록·즐겨찾기로 들어오면 그 탭이 먼저 떴다. 남은 #은 주소에서 지운다.
+  if (location.hash && history.replaceState) {
+    history.replaceState(null, "", location.pathname + location.search);
+  }
+  show("visits");
 })();
 </script>
 <script>

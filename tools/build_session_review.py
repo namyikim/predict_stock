@@ -458,10 +458,21 @@ def build_review(target, session_date, storage, token=None, use_news=True):
         frame = frame[frame.index < session_date]
         return float(frame["close"].iloc[-1] / frame["close"].iloc[-2] - 1) if len(frame) >= 2 else float("nan")
 
+    def range_of(ticker):
+        """그날 저점→고점 폭. 동종 종목과 견주면 어느 쪽이 더 탄력적으로 움직였는지 보인다(2026-09-30)."""
+        frame = load_daily(ticker)
+        if frame.empty or session_date not in frame.index:
+            return float("nan")
+        row = frame.loc[session_date]
+        return float(row["high"] / row["low"] - 1) if float(row["low"]) > 0 else float("nan")
+
     summary["kospi_c2c"] = c2c_of("^KS11")
     summary["peer_c2c"] = c2c_of(spec["peer"])
     summary["usdkrw_chg"] = c2c_of("KRW=X")
     summary["sox_ret"], summary["nasdaq_ret"] = overnight_of("^SOX"), overnight_of("^IXIC")
+    summary["micron_ret"] = overnight_of("MU")          # 전날 밤 마이크론 — 두 종목과 서로 영향을 주고받는 미국 메모리 회사
+    summary["range"] = float(today["high"]) / float(today["low"]) - 1 if float(today["low"]) > 0 else float("nan")
+    summary["peer_range"] = range_of(spec["peer"])
 
     bars = load_intraday(spec["ticker"], session_date)
     intraday_note, coverage = None, None

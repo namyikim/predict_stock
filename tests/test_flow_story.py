@@ -81,3 +81,29 @@ class ReviewJobDependencyTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class MicronAndRangeTests(unittest.TestCase):
+    """장 마감 회고 영상 검토(2026-09-30)에서 더한 것: 전날 밤 마이크론, 동종 종목과의 장중 변동폭 비교."""
+
+    def test_micron_same_or_opposite_direction(self):
+        same = fu.flow_story({"foreign_net": -1000, "inst_net": 500, "indiv_net": 500}, None,
+                             {"c2c": -.02, "micron_ret": -.03}, 1000)
+        opposite = fu.flow_story({"foreign_net": -1000, "inst_net": 500, "indiv_net": 500}, None,
+                                 {"c2c": -.02, "micron_ret": .03}, 1000)
+        self.assertTrue(any("마이크론 -3.00% — 미국 메모리 회사와 같은 방향" in o for o in same["observations"]))
+        self.assertTrue(any("마이크론은 +3.00%로 반대 방향" in o for o in opposite["observations"]))
+
+    def test_review_table_shows_range_vs_peer_and_micron(self):
+        import json
+        review = json.loads((ROOT / "forecast_history" / "samsung" / "reviews" / "2026-09-29.json").read_text(encoding="utf-8"))
+        review["summary"].update(range=.0376, peer_range=.028, micron_ret=-.021)
+        html = fu.review_section_html(review)
+        self.assertIn("장중 변동폭 저점→고점 · 이 종목 / SK하이닉스", html)
+        self.assertIn("+3.76% / +2.80%", html)
+        self.assertIn("전날 밤 SOX / 나스닥 / 마이크론", html)
+
+    def test_review_run_collects_both(self):
+        text = (ROOT / "tools" / "build_session_review.py").read_text(encoding="utf-8")
+        self.assertIn('summary["micron_ret"] = overnight_of("MU")', text)
+        self.assertIn('summary["peer_range"] = range_of(spec["peer"])', text)

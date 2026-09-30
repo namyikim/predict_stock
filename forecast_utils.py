@@ -3363,6 +3363,12 @@ def flow_story(today, history, summary, close, prior_5d=None, peer_name="동종 
             seen.append(f"전날 밤 미국 반도체지수(SOX) {pct(sox)} — 미국 반도체 흐름과 같은 방향입니다.")
         elif opposite:
             seen.append(f"전날 밤 SOX는 {pct(sox)}로 반대 방향이어서 미국 반도체 흐름으로는 설명되지 않습니다.")
+    micron = num(summary.get("micron_ret"))
+    if micron is not None and direction != "flat":
+        if (micron < -.02 and direction == "down") or (micron > .02 and direction == "up"):
+            seen.append(f"전날 밤 마이크론 {pct(micron)} — 미국 메모리 회사와 같은 방향입니다.")
+        elif (micron > .02 and direction == "down") or (micron < -.02 and direction == "up"):
+            seen.append(f"전날 밤 마이크론은 {pct(micron)}로 반대 방향이었습니다.")
     prior = num(prior_5d)
     if prior is not None:
         if direction == "down" and prior >= .08:
@@ -3583,7 +3589,11 @@ def review_section_html(review, carried=False):
             ("거래량 (20일 평균 대비)", f'{float(s["volume_ratio"]):.2f}배' if _rv_finite(s.get("volume_ratio")) else "—"),
             (f'KOSPI / {e(r["peer_name"])}', f'{_rv_pct(s.get("kospi_c2c"))} / {_rv_pct(s.get("peer_c2c"))}'),
             ("원/달러", _rv_pct(s.get("usdkrw_chg"))),
-            ("전날 밤 SOX / 나스닥", f'{_rv_pct(s.get("sox_ret"))} / {_rv_pct(s.get("nasdaq_ret"))}')]
+            ("전날 밤 SOX / 나스닥 / 마이크론",
+             f'{_rv_pct(s.get("sox_ret"))} / {_rv_pct(s.get("nasdaq_ret"))} / {_rv_pct(s.get("micron_ret"))}')]
+    if _rv_finite(s.get("range")):
+        rows.insert(4, (f'장중 변동폭 저점→고점 · 이 종목 / {e(r["peer_name"])}',
+                        f'{_rv_pct(s["range"])} / {_rv_pct(s.get("peer_range"))}'))
     if r.get("flows") and not story:
         rows.append(("외국인 / 기관 순매수", e(r["flows"])))
     body = "".join(f'<tr><td {_RV_TD}>{e(k)}</td><td {_RV_TDR}>{v}</td></tr>' for k, v in rows)

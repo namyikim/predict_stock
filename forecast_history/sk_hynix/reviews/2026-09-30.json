@@ -3,7 +3,7 @@
   "name": "SK하이닉스",
   "peer_name": "삼성전자",
   "session_date": "2026-09-30",
-  "generated_at": "2026-09-30 16:45 KST",
+  "generated_at": "2026-09-30 19:08 KST",
   "summary": {
     "prev_close": 1765000.0,
     "open": 1789000.0,
@@ -15,13 +15,18 @@
     "c2c": 0.006232294617563694,
     "high_vs_open": 0.019564002235886058,
     "low_vs_open": -0.008943543879262106,
-    "volume": 3362488.0,
-    "volume_ratio": 1.0283893356149947,
+    "volume": 3378562.0,
+    "volume_ratio": 1.0333054364845518,
     "kospi_c2c": -0.0047694550208475794,
     "peer_c2c": -0.014678899082568808,
-    "usdkrw_chg": -0.005803358666330971,
+    "usdkrw_chg": -0.003633575026962932,
+    "us_nights": 1,
     "sox_ret": 0.013150161472457178,
-    "nasdaq_ret": -0.0008516581846754745
+    "nasdaq_ret": -0.0008516581846754745,
+    "micron_ret": 0.01053148616826749,
+    "prior_streak": -2,
+    "range": 0.02876480541455151,
+    "peer_range": 0.031775700934579376
   },
   "classification": {
     "labels": [
@@ -67,7 +72,7 @@
         {
           "time": "2026-09-30T08:09:34+09:00",
           "title": "\"SK하이닉스, AI 메모리 수요 오히려 늘어날 것\"-NH",
-          "source": "hankyung.com",
+          "source": "한국경제",
           "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE9iYktkQVNqemR0a3Bycmw5dXR1V3owc3dWekpKYzJFUnIwcV83bHhZcnJ1STVwY1BIZHRiajNUakJ1UnhaNlFSUGRPWHUzczZuVlc4ME4yRzFKUQ?oc=5"
         },
         {
@@ -109,7 +114,7 @@
         {
           "time": "2026-09-30T13:46:21+09:00",
           "title": "삼성전자DS, 직원에게 ‘명품 의자’ 쏜다...SK하이닉스, 이미 교체",
-          "source": "insightkorea.co.kr",
+          "source": "인사이트코리아",
           "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTE1OMDBiZXFvci10dHFZUE5uUnBrRUpKb19nMWdfaXlNNm1RbDVGN1hJMm1jSDhLelQ1TkxtamZkakNJck1jMUNhTDdneXpRTy05dklSZmo4Si1JUDFINTEweFp5cExNaDdaWFlKc2kteWh5bTTSAXdBVV95cUxPMmQyYnQzMEVPaW9sbDVGSWczTnMzaDBBbm5mU01iTG05WnhjWFNJYjNOQ0psTlhNUDA4SklOMVZRZ0hUb2Y2SS1nM3A0aDVQOGFTZDRfNGNUa19KRkpMVUNONXJTUDJUVFY4d180T3hJMTVzSVI4VQ?oc=5"
         },
         {
@@ -526,7 +531,7 @@
         {
           "time": "2026-09-30T08:09:34+09:00",
           "title": "\"SK하이닉스, AI 메모리 수요 오히려 늘어날 것\"-NH",
-          "source": "hankyung.com",
+          "source": "한국경제",
           "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE9iYktkQVNqemR0a3Bycmw5dXR1V3owc3dWekpKYzJFUnIwcV83bHhZcnJ1STVwY1BIZHRiajNUakJ1UnhaNlFSUGRPWHUzczZuVlc4ME4yRzFKUQ?oc=5"
         },
         {
@@ -570,7 +575,7 @@
         {
           "time": "2026-09-30T13:46:21+09:00",
           "title": "삼성전자DS, 직원에게 ‘명품 의자’ 쏜다...SK하이닉스, 이미 교체",
-          "source": "insightkorea.co.kr",
+          "source": "인사이트코리아",
           "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTE1OMDBiZXFvci10dHFZUE5uUnBrRUpKb19nMWdfaXlNNm1RbDVGN1hJMm1jSDhLelQ1TkxtamZkakNJck1jMUNhTDdneXpRTy05dklSZmo4Si1JUDFINTEweFp5cExNaDdaWFlKc2kteWh5bTTSAXdBVV95cUxPMmQyYnQzMEVPaW9sbDVGSWczTnMzaDBBbm5mU01iTG05WnhjWFNJYjNOQ0psTlhNUDA4SklOMVZRZ0hUb2Y2SS1nM3A0aDVQOGFTZDRfNGNUa19KRkpMVUNONXJTUDJUVFY4d180T3hJMTVzSVI4VQ?oc=5"
         },
         {
@@ -654,9 +659,16 @@
       "link": "https://news.google.com/rss/articles/CBMickFVX3lxTE14M1BIbm5aMmFBVEV2RF9aQXgwMTk5c0lnUFl1SGhhRFViT1BZakZEQjVWR1FOTFlQLV91X1ppLXdERWlxcFVQOGdXTjFfOWMyQTZNbTM2MVNxaEtHNGRiYklFT2hhelF0VXdpTDQ3YWRuQQ?oc=5"
     }
   ],
-  "disclosures": [],
+  "disclosures": [
+    {
+      "report_nm": "임원ㆍ주요주주특정증권등소유상황보고서",
+      "rcept_dt": "20260930",
+      "rcept_no": "20260930000861",
+      "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260930000861"
+    }
+  ],
   "disclosure_note": null,
-  "flows": "외국인 -342,050 / 기관 -134,628",
+  "flows": "외국인 -342,291 / 기관 -135,888",
   "flow_story": {
     "direction": "up",
     "c2c": 0.006232294617563694,
@@ -664,48 +676,49 @@
       {
         "key": "foreign_net",
         "name": "외국인",
-        "shares": -342050.0,
-        "won": -607480800000.0,
-        "vs_usual": 0.6482663636559189
+        "shares": -342291.0,
+        "won": -607908816000.0,
+        "vs_usual": 0.6487231161588896
       },
       {
         "key": "inst_net",
         "name": "기관",
-        "shares": -134628.0,
-        "won": -239099328000.0,
-        "vs_usual": 0.7587197998207855
+        "shares": -135888.0,
+        "won": -241337088000.0,
+        "vs_usual": 0.7658207516864761
       },
       {
         "key": "indiv_net",
         "name": "개인",
-        "shares": -108194.0,
-        "won": -192152544000.0,
-        "vs_usual": 0.20530365563240638
+        "shares": -106743.0,
+        "won": -189575568000.0,
+        "vs_usual": 0.20255030882645944
       }
     ],
     "lead": {
       "key": "indiv_net",
       "name": "개인",
-      "shares": -108194.0,
-      "won": -192152544000.0,
-      "vs_usual": 0.20530365563240638
+      "shares": -106743.0,
+      "won": -189575568000.0,
+      "vs_usual": 0.20255030882645944
     },
     "counter": {
       "key": "foreign_net",
       "name": "외국인",
-      "shares": -342050.0,
-      "won": -607480800000.0,
-      "vs_usual": 0.6482663636559189
+      "shares": -342291.0,
+      "won": -607908816000.0,
+      "vs_usual": 0.6487231161588896
     },
     "observations": [
       "코스피는 반대로 -0.48% — 시장 전체와 다른 움직임이었습니다.",
       "삼성전자는 반대로 -1.47% — 업종 전체의 움직임은 아니었습니다.",
-      "원화는 오히려 강세(-0.58%)여서 외국인 매도가 환율로는 설명되지 않습니다.",
+      "원화는 오히려 강세(-0.36%)여서 외국인 매도가 환율로는 설명되지 않습니다.",
       "전날 밤 미국 반도체지수(SOX) +1.32% — 미국 반도체 흐름과 같은 방향입니다."
     ],
     "estimated_indiv": false,
     "source_note": "출처 last_successful_fetch · 장 마감 직후 잠정치라 저녁 확정치와 다를 수 있습니다"
   },
+  "context": {},
   "forecasts": [
     {
       "model": "No macro ensemble",

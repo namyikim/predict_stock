@@ -74,6 +74,25 @@ def load_daily(ticker, days=60):
     return frame[~frame.index.duplicated()].sort_index()
 
 
+def session_context(ticker, session_date):
+    """그날이 배당락일이면 주당 배당(원). Yahoo 배당 이력에서 찾고, 실패하거나 없으면 빈 dict.
+
+    macro_inputs/corporate_actions.csv 에 사람이 확인해 적은 값이 있으면 렌더링 때 그쪽을 쓴다(2026-09-30).
+    """
+    try:
+        import yfinance as yf
+        dividends = yf.Ticker(ticker).dividends
+        if dividends is None or dividends.empty:
+            return {}
+        dividends.index = pd.to_datetime(dividends.index).tz_localize(None).normalize()
+        hit = dividends[dividends.index == pd.Timestamp(session_date).normalize()]
+        if len(hit) and float(hit.iloc[0]) > 0:
+            return {"dividend_krw": float(hit.iloc[0]), "dividend_source": "Yahoo 배당 이력"}
+    except Exception as exc:
+        print(f"  배당 이력 미확인({type(exc).__name__})")
+    return {}
+
+
 def load_intraday(ticker, session_date):
     """그 날짜(KST)의 5분봉. 없으면 빈 프레임."""
     frame = _yf(ticker, period="5d", interval="5m")
@@ -553,6 +572,7 @@ def build_review(target, session_date, storage, token=None, use_news=True):
         "overnight_news": overnight_news, "top_news": top_news,
         "disclosures": disclosures, "disclosure_note": disclosure_note, "flows": flows_text,
         "flow_story": flow_story_data,
+        "context": session_context(spec["ticker"], session_date),
         "forecasts": forecasts, "price_check": price_check, "disclaimer": DISCLAIMER,
     }
 

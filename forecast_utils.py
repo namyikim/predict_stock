@@ -3424,6 +3424,99 @@ def flow_story_html(story, number=None):
             + (f'<div style="font-size:12px;color:#8a9199;margin:0 0 8px">{e(" · ".join(notes))}</div>' if notes else ""))
 
 
+# ---- 장 회고의 '그날의 맥락'(2026-09-30: 장 마감 회고 영상 검토에서 나온 항목) -------------------------------
+# ① 배당락일 — 시가가 배당만큼 기계적으로 낮게 출발한다(9/29 삼성전자 4,600원 ≈ 1.7%). 회고가 이를 '밤사이 하락'으로
+#    읽지 않게, 배당을 되돌린 갭·등락률을 함께 보인다.
+# ② 달력 — 분기말·월말(기관 리밸런싱), 옵션 만기일(매월 둘째 목요일), 선물·옵션 동시 만기일(3·6·9·12월).
+#    휴장일로 당겨지는 경우는 모른다.
+# ③ 다가오는 주요 일정 — 미국 발표 일정표(data_sources/us_calendar)를 그대로 쓴다.
+CORPORATE_ACTIONS_PATH = "macro_inputs/corporate_actions.csv"
+
+
+def _dividend_from_file(day, target, path=CORPORATE_ACTIONS_PATH):
+    """사람이 확인해 적은 배당락(원/주). 없으면 None."""
+    import os
+    if not target or not os.path.exists(path):
+        return None, None
+    try:
+        table = pd.read_csv(path, dtype=str)
+    except (OSError, ValueError):
+        return None, None
+    rows = table[(table["date"] == str(day)) & (table["target"] == str(target))]
+    if rows.empty:
+        return None, None
+    value = pd.to_numeric(rows.iloc[0]["dividend_krw"], errors="coerce")
+    return (float(value), str(rows.iloc[0].get("source", ""))) if np.isfinite(value) and value > 0 else (None, None)
+
+
+def review_context(review):
+    """회고 한 건의 '그날의 맥락'. {'dividend': {...} | None, 'calendar': [str], 'next_events': [dict]}."""
+    r = review or {}
+    day = pd.Timestamp(str(r.get("session_date", ""))[:10])
+    saved = dict(r.get("context") or {})
+    s = r.get("summary") or {}
+    out = {"dividend": None, "calendar": [], "next_events": []}
+    # ① 배당락
+    # 사람이 확인해 적은 값이 먼저, 없으면 회고 실행이 Yahoo 에서 받아 둔 값.
+    per_share, source = _dividend_from_file(day.date().isoformat(), r.get("target"))
+    if not per_share:
+        per_share, source = saved.get("dividend_krw"), saved.get("dividend_source")
+    prev, open_, close = (_rv_finite(s.get(k)) and float(s[k]) for k in ("prev_close", "open", "close"))
+    if per_share and prev and open_ and close:
+        out["dividend"] = {"per_share": float(per_share), "pct": float(per_share) / prev, "source": source or "",
+                           "gap_ex": (open_ + float(per_share)) / prev - 1,
+                           "c2c_ex": (close + float(per_share)) / prev - 1}
+    # ② 달력
+    nxt = day + pd.offsets.BDay(1)
+    if nxt.month != day.month:
+        if day.month in (3, 6, 9, 12):
+            out["calendar"].append(f"{(day.month - 1) // 3 + 1}분기 마지막 거래일 — 기관이 분기말에 주식·현금 비중을 "
+                                   "맞추는 물량(리밸런싱)이 오후에 나올 수 있는 날입니다.")
+        else:
+            out["calendar"].append("월 마지막 거래일 — 월말 비중 조정 물량이 나올 수 있는 날입니다.")
+    thursdays = pd.date_range(day.replace(day=1), day + pd.offsets.MonthEnd(0), freq="W-THU")
+    if len(thursdays) >= 2 and day == thursdays[1]:
+        out["calendar"].append("선물·옵션 동시 만기일 — 만기 청산 물량으로 마감 무렵 변동이 커질 수 있습니다."
+                               if day.month in (3, 6, 9, 12) else
+                               "옵션 만기일 — 만기 청산 물량으로 마감 무렵 변동이 커질 수 있습니다.")
+    # ③ 다가오는 일정(그날 밤 ~ 나흘)
+    try:
+        from data_sources.us_calendar import upcoming_us_events
+        out["next_events"] = upcoming_us_events(day, days=4)
+    except Exception:
+        out["next_events"] = []
+    return out
+
+
+def review_context_html(context):
+    """맨 위 '그날의 맥락' 상자. 적을 것이 없으면 빈 문자열."""
+    from html import escape as e
+    items = []
+    d = (context or {}).get("dividend")
+    if d:
+        items.append(f'<b>배당락일</b> — 주당 {d["per_share"]:,.0f}원(전일 종가의 {d["pct"]:.2%})만큼 시가가 기계적으로 낮게 '
+                     f'출발합니다. 배당을 되돌려 보면 갭 {_rv_pct(d["gap_ex"])}, 하루 {_rv_pct(d["c2c_ex"])}입니다.'
+                     + (f' <span style="color:#8a9199;font-size:12px">출처: {e(d["source"])}</span>' if d.get("source") else ""))
+    items += [e(x) for x in (context or {}).get("calendar", [])]
+    if not items:
+        return ""
+    return ('<div style="background:#fdf6e3;border-left:4px solid #c79a2b;padding:9px 12px;margin:8px 0 10px;font-size:13px">'
+            '<div style="font-weight:700;margin-bottom:4px">그날의 맥락</div>'
+            '<ul style="margin:0;padding-left:18px;line-height:1.7">' + "".join(f"<li>{x}</li>" for x in items) + "</ul></div>")
+
+
+def review_next_events_html(context, number):
+    """회고 끝 '다가오는 주요 일정'(그날부터 나흘). 일정이 없으면 빈 문자열."""
+    from html import escape as e
+    events = (context or {}).get("next_events") or []
+    if not events:
+        return ""
+    rows = "".join(f'<li><b>{e(ev["date"])}</b> {e(ev["label"])}</li>' for ev in events)
+    return (f'<div style="font-size:14px;margin:16px 0 6px"><b>{number}. 다가오는 주요 일정</b> '
+            '<span style="color:#6b7178;font-size:12px">— 미국 발표 일정(한국 시각으로는 대개 다음 날 새벽)</span></div>'
+            f'<ul style="margin:0 0 6px;padding-left:20px;font-size:13px;line-height:1.7">{rows}</ul>')
+
+
 def review_section_html(review, carried=False):
     """장 마감 회고 절 HTML. carried=True 면 새로 만든 다음 거래일 보고서에 다시 붙이는 직전 거래일 회고다."""
     from html import escape as e
@@ -3449,6 +3542,8 @@ def review_section_html(review, carried=False):
     def sub(title, extra=""):
         return (f'<div style="font-size:14px;margin:16px 0 6px"><b>{next(counter)}. {title}</b>{extra}</div>')
 
+    context = review_context(r)
+    parts.append(review_context_html(context))
     story = r.get("flow_story")
     if story:
         parts.append(flow_story_html(story, number=next(counter)))
@@ -3514,6 +3609,9 @@ def review_section_html(review, carried=False):
             parts.append(f'<div style="font-size:12px;color:#6b7178;margin:2px 0 8px">{e(r["price_check"])}</div>')
     else:
         parts.append('<div style="font-size:13px;color:#6b7178">오늘 예측일의 아침 예측 기록이 원장에 없습니다.</div>')
+
+    # 6. 다가오는 주요 일정(있을 때만)
+    parts.append(review_next_events_html(context, next(counter)))
     parts.append('<div style="margin:12px 0 0;padding:10px 14px;background:#fff4e5;border:1px solid #f0c58a;border-radius:6px;'
                  f'font-size:12px;color:#7a4b00">{e(REVIEW_DISCLAIMER)}</div>')
     parts.append(REVIEW_END)

@@ -105,11 +105,12 @@ class ReviewOrderTests(unittest.TestCase):
     def test_order_and_numbers_with_flows(self):
         self.assertEqual(self.titles(review("2026-09-29")),
                          ["1. 누가 팔고 샀나", "2. 그날 함께 관찰된 것", "3. 흐름이 바뀐 시각과 그 전후의 뉴스",
-                          "4. 오늘 장", "5. 아침 예측과 비교"])
+                          "4. 오늘 장", "5. 아침 예측과 비교", "6. 다가오는 주요 일정"])
 
     def test_numbers_close_up_when_flows_are_missing(self):
         self.assertEqual(self.titles(review("2026-09-29", flow_story=None)),
-                         ["1. 흐름이 바뀐 시각과 그 전후의 뉴스", "2. 오늘 장", "3. 아침 예측과 비교"])
+                         ["1. 흐름이 바뀐 시각과 그 전후의 뉴스", "2. 오늘 장", "3. 아침 예측과 비교",
+                          "4. 다가오는 주요 일정"])
 
     def test_source_codes_are_shown_in_words(self):
         r = review("2026-09-29")
@@ -129,3 +130,45 @@ class ReviewDateLineTests(unittest.TestCase):
         self.assertNotIn("장 회고 —", html)
         self.assertIn(">2026-09-29 (화)</div>", html)
         self.assertIn(">2026-09-28 (월)</div>", html)
+
+
+class ReviewContextTests(unittest.TestCase):
+    """'그날의 맥락'과 '다가오는 주요 일정'(2026-09-30: 장 마감 회고 영상 검토에서 나온 항목)."""
+
+    def setUp(self):
+        import os
+        self._cwd = os.getcwd()
+        os.chdir(ROOT)     # macro_inputs/corporate_actions.csv 를 저장소 기준으로 읽는다
+
+    def tearDown(self):
+        import os
+        os.chdir(self._cwd)
+
+    def test_ex_dividend_day_adds_the_dividend_back(self):
+        ctx = fu.review_context(review("2026-09-29"))
+        d = ctx["dividend"]
+        self.assertEqual(d["per_share"], 4600.0)
+        self.assertAlmostEqual(d["pct"], 4600 / 270000, places=6)
+        self.assertAlmostEqual(d["gap_ex"], (266000 + 4600) / 270000 - 1, places=6)
+        self.assertIn("배당락일", fu.review_context_html(ctx))
+
+    def test_no_dividend_on_other_days(self):
+        self.assertIsNone(fu.review_context(review("2026-09-28"))["dividend"])
+
+    def test_calendar_flags(self):
+        flags = lambda day: " ".join(fu.review_context(review(day))["calendar"])
+        self.assertIn("3분기 마지막 거래일", flags("2026-09-30"))
+        self.assertIn("옵션 만기일", flags("2026-10-08"))
+        self.assertIn("선물·옵션 동시 만기일", flags("2026-12-10"))
+        self.assertIn("월 마지막 거래일", flags("2026-10-30"))
+        self.assertEqual(flags("2026-09-29"), "")
+
+    def test_upcoming_events_close_the_review(self):
+        import re
+        titles = re.findall(r'<b>(\d+\. [^<]+)</b>', fu.review_section_html(review("2026-09-29")))
+        self.assertEqual(titles[-1], "6. 다가오는 주요 일정")
+        self.assertIn("마이크론 실적", fu.review_section_html(review("2026-09-29")))
+
+    def test_review_run_stores_yahoo_dividends(self):
+        text = (ROOT / "tools" / "build_session_review.py").read_text(encoding="utf-8")
+        self.assertIn('"context": session_context(spec["ticker"], session_date)', text)

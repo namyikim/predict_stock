@@ -560,6 +560,62 @@ def _when(price_date, trading_days):
 
 
 LEVEL_ODDS_HORIZON = 2 * YEAR_TRADING_DAYS
+
+
+def level_odds_svg(base, months_per_tick=6):
+    """가격 도달 확률 곡선(2026-09-30 요청: '30만·40만 원은 언제쯤?'을 그림으로).
+
+    가로축은 지금부터 2년, 세로축은 '그때까지 한 번이라도 닿았을 확률'. 50% 선을 점선으로 긋고 곡선이 그 선을
+    넘는 때에 점을 찍는다. 이미 넘은 가격은 그리지 않는다. base 는 level_reach_odds 결과.
+    """
+    from html import escape
+    rows = [row for row in (base or {}).get("levels", []) if row.get("change", 0) > 0 and len(row.get("curve", [])) > 1]
+    if not rows:
+        return ""
+    colors = ("#1a5490", "#b3541e", "#2f7d4f")
+    left, right, top, bottom = 58, 610, 34, 214
+    days = max(len(row["curve"]) for row in rows)
+    def x(day):
+        return left + day / days * (right - left)
+    def y(prob):
+        return bottom - prob * (bottom - top)
+    grid = ""
+    for prob in (0, .25, .5, .75, 1):
+        dash = ' stroke-dasharray="5 4"' if prob == .5 else ""
+        color = "#8a9199" if prob == .5 else "#e5e7eb"
+        grid += (f'<line x1="{left}" y1="{y(prob):.1f}" x2="{right}" y2="{y(prob):.1f}" stroke="{color}"{dash}/>'
+                 f'<text x="{left - 8}" y="{y(prob) + 4:.1f}" font-size="11" text-anchor="end" fill="#6b7178">{prob:.0%}</text>')
+    labels = {0: "지금", 6: "6개월", 12: "1년", 18: "18개월", 24: "2년"}
+    months = round(days / MONTH_TRADING_DAYS)
+    for month in range(0, months + 1, months_per_tick):
+        day = min(month * MONTH_TRADING_DAYS, days)
+        grid += (f'<line x1="{x(day):.1f}" y1="{bottom}" x2="{x(day):.1f}" y2="{bottom + 4}" stroke="#c3c8cf"/>'
+                 f'<text x="{x(day):.1f}" y="{bottom + 18}" font-size="11" text-anchor="middle" fill="#6b7178">'
+                 f'{labels.get(month, f"{month}개월")}</text>')
+    lines, legend = "", ""
+    for index, row in enumerate(rows):
+        color = colors[index % len(colors)]
+        curve = np.asarray(row["curve"], dtype=float)
+        step = max(1, len(curve) // 120)
+        points = [(0, 0.0)] + [(d + 1, float(curve[d])) for d in range(0, len(curve), step)]
+        if points[-1][0] != len(curve):
+            points.append((len(curve), float(curve[-1])))
+        path = " ".join(f"{x(d):.1f},{y(p):.1f}" for d, p in points)
+        lines += f'<polyline points="{path}" fill="none" stroke="{color}" stroke-width="2.5"/>'
+        end = float(curve[-1])
+        lines += (f'<text x="{right + 6}" y="{y(end) + 4:.1f}" font-size="12" font-weight="700" fill="{color}">'
+                  f'{end:.0%}</text>')
+        if row.get("half_day"):
+            half = int(row["half_day"])
+            lines += (f'<circle cx="{x(half):.1f}" cy="{y(.5):.1f}" r="5" fill="{color}" stroke="#fff" stroke-width="1.5"/>'
+                      f'<text x="{x(half):.1f}" y="{y(.5) - 9:.1f}" font-size="11" text-anchor="middle" fill="{color}">'
+                      f'약 {max(1, round(half / MONTH_TRADING_DAYS))}개월</text>')
+        legend += (f'<rect x="{left + index * 190}" y="6" width="14" height="4" rx="2" fill="{color}" transform="translate(0,4)"/>'
+                   f'<text x="{left + index * 190 + 20}" y="14" font-size="12" fill="#1a1a1a">'
+                   f'{escape(_man_won(row["level"]))} (지금보다 {row["change"]:+.0%})</text>')
+    return (f'<svg viewBox="0 0 660 {bottom + 30}" width="100%" style="max-width:660px;min-width:360px;display:block;margin:4px 0 10px" '
+            'role="img" aria-label="가격 도달 확률 곡선">'
+            f'{legend}{grid}<line x1="{left}" y1="{top}" x2="{left}" y2="{bottom}" stroke="#c3c8cf"/>{lines}</svg>')
 LEVEL_ODDS_LOOKBACK = 3 * YEAR_TRADING_DAYS
 
 
@@ -814,7 +870,8 @@ def longterm_easy_summary_html(*, name, price_date, close, longterm=None, earnin
                        else f"최근 {used_days:,}거래일")
         recent_text = (f", 최근 1년만 보면 {recent_vol:.0%}"
                        if recent_vol is not None and abs(recent_vol - base["annual_vol"]) >= .05 else "")
-        level_html = (f'<div style="display:flex;gap:8px;flex-wrap:wrap">{level_cards}</div>'
+        level_html = ('<div style="overflow-x:auto">' + level_odds_svg(base) + '</div>'
+                      f'<div style="display:flex;gap:8px;flex-wrap:wrap">{level_cards}</div>'
                       '<div style="font-size:11px;color:#8a9199;margin-top:6px;line-height:1.5">'
                       f'{window_text} 일간 등락(연 변동성 {base["annual_vol"]:.0%}{recent_text})에서 평균을 빼고 다시 뽑아 '
                       f'{int(n_paths):,}개 경로로 2년을 모의실험했습니다. 종가가 한 번이라도 그 가격에 닿을 확률이며, '

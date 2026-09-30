@@ -211,3 +211,37 @@ class NotebookWiringTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class LevelOddsChartTests(unittest.TestCase):
+    """'30만·40만 원은 언제쯤?'을 도달 확률 곡선으로 그린다(2026-09-30 요청)."""
+
+    def base(self):
+        import numpy as np
+        curve_a = np.linspace(.2, .88, 504)
+        curve_b = np.linspace(.0, .56, 504)
+        return {"levels": [
+            {"level": 300000.0, "change": .10, "curve": curve_a, "half_day": int(np.argmax(curve_a >= .5)) + 1},
+            {"level": 400000.0, "change": .47, "curve": curve_b, "half_day": int(np.argmax(curve_b >= .5)) + 1},
+            {"level": 250000.0, "change": -.08, "curve": curve_a, "half_day": 1}]}
+
+    def test_draws_one_line_per_level_not_yet_reached(self):
+        import forecast_utils as fu
+        svg = fu.level_odds_svg(self.base())
+        self.assertEqual(svg.count("<polyline"), 2)          # 이미 넘은 25만 원은 그리지 않는다
+        self.assertIn("30만원 (지금보다 +10%)", svg)
+        self.assertIn(">88%</text>", svg)
+        self.assertIn('stroke-dasharray="5 4"', svg)           # 50% 점선
+
+    def test_half_markers_sit_on_the_50_percent_line(self):
+        import re
+        import forecast_utils as fu
+        svg = fu.level_odds_svg(self.base())
+        line = float(re.search(r'<line x1="58" y1="([\d.]+)" x2="610" y2="[\d.]+" stroke="#8a9199"', svg).group(1))
+        for cy in re.findall(r'<circle cx="[\d.]+" cy="([\d.]+)"', svg):
+            self.assertAlmostEqual(float(cy), line, delta=.2)
+
+    def test_nothing_to_draw_returns_empty(self):
+        import forecast_utils as fu
+        self.assertEqual(fu.level_odds_svg(None), "")
+        self.assertEqual(fu.level_odds_svg({"levels": []}), "")

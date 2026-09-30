@@ -137,6 +137,38 @@ def detect_events(bars, prev_close=None, z_threshold=EVENT_Z, volume_spike=VOLUM
     return sorted(merged, key=lambda e: -e["score"])
 
 
+def timeline_data(bars, events, session_date):
+    """회고 재렌더링용 최소 경로. 결측 구간을 보간하지 않는다(2026-09-30 요청)."""
+    if bars is None or bars.empty or 'close' not in bars:
+        return [], []
+    day = pd.Timestamp(session_date).date()
+
+    def stamp(value):
+        t = pd.Timestamp(value)
+        return t.tz_localize('Asia/Seoul') if t.tzinfo is None else t.tz_convert('Asia/Seoul')
+
+    points = {}
+    for raw_time, row in bars.iterrows():
+        t = stamp(raw_time)
+        price = pd.to_numeric(row['close'], errors='coerce')
+        if pd.isna(t) or t.date() != day or not 540 <= t.hour * 60 + t.minute <= 930:
+            continue
+        if not np.isfinite(price) or price <= 0:
+            continue
+        volume = pd.to_numeric(row.get('volume'), errors='coerce')
+        points[t.isoformat()] = {'time': t.isoformat(), 'price': float(price),
+                                'volume': float(volume) if pd.notna(volume) and np.isfinite(volume) and volume >= 0 else None}
+    path = [points[k] for k in sorted(points)]
+    items = []
+    for ev in events:
+        t = stamp(ev['time']).isoformat()
+        if t not in points:
+            continue
+        kind = 'volume' if ev['z'] < EVENT_Z else ('turn_up' if ev['ret'] > 0 else 'turn_down')
+        items.append({**ev, 'time': t, 'price': points[t]['price'], 'kind': kind})
+    return path, sorted(items, key=lambda item: item['time'])
+
+
 def turning_point(bars):
     """시가 대비 누적 수익률의 고점·저점 시각과 어느 쪽이 먼저였는지."""
     if bars is None or len(bars) < 3:
@@ -509,6 +541,7 @@ def build_review(target, session_date, storage, token=None, use_news=True):
                     price_check = (f"1거래일 예상 구간 {lo:,.0f}~{hi:,.0f}원 · 종가 {summary['close']:,.0f}원 → "
                                    + ("구간 안" if inside else "구간 밖"))
 
+    intraday_path, timeline_items = timeline_data(bars, events, session_date)
     return {
         "target": target, "name": spec["name"], "peer_name": spec["peer_name"],
         "session_date": session_date.date().isoformat(),
@@ -516,6 +549,7 @@ def build_review(target, session_date, storage, token=None, use_news=True):
         "summary": summary, "classification": classification, "events": events, "turning_point": tp,
         "closing_share": cshare, "intraday_corr_kospi": corr, "intraday_note": intraday_note,
         "intraday_coverage": coverage,
+        "intraday_path": intraday_path, "timeline_items": timeline_items,
         "overnight_news": overnight_news, "top_news": top_news,
         "disclosures": disclosures, "disclosure_note": disclosure_note, "flows": flows_text,
         "flow_story": flow_story_data,

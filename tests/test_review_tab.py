@@ -93,3 +93,27 @@ class ReviewRunTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class ReviewOrderTests(unittest.TestCase):
+    """회고 본문 순서(2026-09-30 요청): 누가 팔고 샀나 → 그날 함께 관찰된 것 → 흐름이 바뀐 시각과 뉴스 → 오늘 장 → 아침 예측과 비교."""
+
+    def titles(self, r):
+        import re
+        return re.findall(r'<b>(\d+\. [^<]+)</b>', fu.review_section_html(r))
+
+    def test_order_and_numbers_with_flows(self):
+        self.assertEqual(self.titles(review("2026-09-29")),
+                         ["1. 누가 팔고 샀나", "2. 그날 함께 관찰된 것", "3. 흐름이 바뀐 시각과 그 전후의 뉴스",
+                          "4. 오늘 장", "5. 아침 예측과 비교"])
+
+    def test_numbers_close_up_when_flows_are_missing(self):
+        self.assertEqual(self.titles(review("2026-09-29", flow_story=None)),
+                         ["1. 흐름이 바뀐 시각과 그 전후의 뉴스", "2. 오늘 장", "3. 아침 예측과 비교"])
+
+    def test_source_codes_are_shown_in_words(self):
+        r = review("2026-09-29")
+        r["flow_story"] = dict(r["flow_story"], source_note="출처 last_successful_fetch · 잠정치")
+        html = fu.review_section_html(r)
+        self.assertNotIn("last_successful_fetch", html)
+        self.assertIn("저장소 보관본(마지막 성공분)", html)

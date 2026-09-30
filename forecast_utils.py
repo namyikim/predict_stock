@@ -3233,7 +3233,7 @@ def flow_story(today, history, summary, close, prior_5d=None, peer_name="동종 
             "observations": seen, "estimated_indiv": estimated, "source_note": source_note}
 
 
-def flow_story_html(story):
+def flow_story_html(story, number=None):
     """flow_story 결과를 한 줄 요약 + 투자자별 막대로. 막대는 순매도 왼쪽(빨강)·순매수 오른쪽(초록)."""
     from html import escape as e
     if not story:
@@ -3263,11 +3263,17 @@ def flow_story_html(story):
     if story.get("estimated_indiv"):
         notes.append("개인은 자료가 없어 외국인·기관의 반대편으로 추정했습니다(기타 법인 포함)")
     if story.get("source_note"):
-        notes.append(str(story["source_note"]))
-    return ('<div style="font-size:14px;margin:14px 0 6px"><b>누가 팔고 샀나</b></div>'
+        # 수집기가 남긴 출처 코드를 읽는 말로(2026-09-30: '출처 last_successful_fetch'가 그대로 보였다).
+        note = str(story["source_note"])
+        for code, words in (("+cache", " + 보관본"), ("last_successful_fetch", "저장소 보관본(마지막 성공분)"), ("explicit_cache_replay", "캐시"),
+                            ("KRX(pykrx)", "KRX"), ("user_csv", "직접 넣은 CSV"), ("naver", "네이버 금융")):
+            note = note.replace(code, words)
+        notes.append(note)
+    n1, n2 = (f"{number}. ", f"{number + 1}. ") if number else ("", "")
+    return (f'<div style="font-size:14px;margin:16px 0 6px"><b>{n1}누가 팔고 샀나</b></div>'
             f'<div style="font-size:13px;margin:0 0 6px">{head}</div>'
             f'<div style="margin:4px 0 8px">{bars}</div>'
-            '<div style="font-size:13px;margin:8px 0 2px"><b>그날 함께 관찰된 것</b> '
+            f'<div style="font-size:14px;margin:16px 0 6px"><b>{n2}그날 함께 관찰된 것</b> '
             '<span style="color:#6b7178;font-size:12px">— 매매 이유를 단정하지 않습니다</span></div>'
             f'<ul style="margin:0 0 6px;padding-left:20px;font-size:13px;color:#4a4f55">{seen}</ul>'
             + (f'<div style="font-size:12px;color:#8a9199;margin:0 0 8px">{e(" · ".join(notes))}</div>' if notes else ""))
@@ -3291,37 +3297,20 @@ def review_section_html(review, carried=False):
              '<div style="font-size:12px;color:#6b7178;margin:4px 0 8px;padding:8px 12px;background:#f7f8fa;border-radius:5px">'
              f'{note}</div>']
     s = r["summary"]
-    rows = [("전일 종가 → 시가 (갭)", _rv_pct(s["gap"])), ("시가 → 종가 (세션)", _rv_pct(s["session"])),
-            ("전일 종가 → 종가", _rv_pct(s["c2c"])),
-            ("고가 / 저가 (시가 대비)", f'{_rv_pct(s.get("high_vs_open"))} / {_rv_pct(s.get("low_vs_open"))}'),
-            ("거래량 (20일 평균 대비)", f'{float(s["volume_ratio"]):.2f}배' if _rv_finite(s.get("volume_ratio")) else "—"),
-            (f'KOSPI / {e(r["peer_name"])}', f'{_rv_pct(s.get("kospi_c2c"))} / {_rv_pct(s.get("peer_c2c"))}'),
-            ("원/달러", _rv_pct(s.get("usdkrw_chg"))),
-            ("전날 밤 SOX / 나스닥", f'{_rv_pct(s.get("sox_ret"))} / {_rv_pct(s.get("nasdaq_ret"))}')]
-    if r.get("flows") and not r.get("flow_story"):
-        rows.append(("외국인 / 기관 순매수", e(r["flows"])))
-    body = "".join(f'<tr><td {_RV_TD}>{e(k)}</td><td {_RV_TDR}>{v}</td></tr>' for k, v in rows)
-    parts.append('<div style="overflow-x:auto"><table style="width:100%;min-width:420px;border-collapse:collapse;font-size:13px;border:1px solid #e5e5e5">'
-                 f'<tr><th {_RV_TH}>오늘 장</th><th {_RV_TH}></th></tr>{body}</table></div>')
-    parts.append(flow_story_html(r.get("flow_story")))
-    c = r["classification"]
-    badge = " · ".join(f'<b>{e(l)}</b>' for l in c["labels"])
-    parts.append(f'<div style="margin:12px 0 4px;font-size:14px">흐름의 성격: {badge}</div>'
-                 '<ul style="margin:0 0 10px;padding-left:20px;font-size:13px;color:#4a4f55">'
-                 + "".join(f"<li>{e(x)}</li>" for x in c["reasons"]) + "</ul>")
-    parts.append('<div style="font-size:14px;margin:14px 0 6px"><b>아침 예측과 비교</b></div>')
-    if r["forecasts"]:
-        for f in r["forecasts"]:
-            color = "#1a7f37" if f["hit"] else "#a8322a"
-            band = f'±{float(f["band"]) * 100:.2f}%' if _rv_finite(f.get("band")) else "—"
-            parts.append(f'<div style="font-size:13px;margin:4px 0 8px;padding:8px 12px;border-left:3px solid {color};background:#fafafa">'
-                         f'<b>{e(str(f["model"]))}</b> · {e(f["verdict"])}<br>'
-                         f'<span style="color:#6b7178">{e(f["legs"])} · 보합 밴드 {band} · {e(f["where"])}</span></div>')
-        if r.get("price_check"):
-            parts.append(f'<div style="font-size:12px;color:#6b7178;margin:2px 0 8px">{e(r["price_check"])}</div>')
-    else:
-        parts.append('<div style="font-size:13px;color:#6b7178">오늘 예측일의 아침 예측 기록이 원장에 없습니다.</div>')
-    parts.append('<div style="font-size:14px;margin:14px 0 6px"><b>흐름이 바뀐 시각과 그 전후의 뉴스</b></div>')
+    # 순서(2026-09-30 요청): 1 누가 팔고 샀나 → 2 그날 함께 관찰된 것 → 3 흐름이 바뀐 시각과 뉴스 → 4 오늘 장(표와
+    # 흐름의 성격) → 5 아침 예측과 비교. 번호는 실제로 나오는 소제목에만 차례로 붙인다(수급이 없는 날은 1·2가 빠진다).
+    counter = iter(range(1, 20))
+
+    def sub(title, extra=""):
+        return (f'<div style="font-size:14px;margin:16px 0 6px"><b>{next(counter)}. {title}</b>{extra}</div>')
+
+    story = r.get("flow_story")
+    if story:
+        parts.append(flow_story_html(story, number=next(counter)))
+        next(counter)   # flow_story_html 이 두 소제목(누가 팔고 샀나 · 그날 함께 관찰된 것)을 쓴다
+
+    # 3. 흐름이 바뀐 시각과 그 전후의 뉴스(공시·관련 헤드라인 포함)
+    parts.append(sub("흐름이 바뀐 시각과 그 전후의 뉴스"))
     if r.get("intraday_note"):
         parts.append(f'<div style="font-size:13px;color:#a8322a">{e(r["intraday_note"])}</div>')
     if r.get("overnight_news") is not None:
@@ -3346,6 +3335,40 @@ def review_section_html(review, carried=False):
         parts.append(f'<div style="font-size:12px;color:#6b7178;margin:6px 0">{e(r["disclosure_note"])}</div>')
     if r.get("top_news"):
         parts.append('<div style="font-size:13px;margin:10px 0 2px"><b>오늘의 관련 헤드라인 (관련도 순)</b></div>' + _rv_news_list(r["top_news"]))
+
+    # 4. 오늘 장 — 숫자 표와 흐름의 성격
+    rows = [("전일 종가 → 시가 (갭)", _rv_pct(s["gap"])), ("시가 → 종가 (세션)", _rv_pct(s["session"])),
+            ("전일 종가 → 종가", _rv_pct(s["c2c"])),
+            ("고가 / 저가 (시가 대비)", f'{_rv_pct(s.get("high_vs_open"))} / {_rv_pct(s.get("low_vs_open"))}'),
+            ("거래량 (20일 평균 대비)", f'{float(s["volume_ratio"]):.2f}배' if _rv_finite(s.get("volume_ratio")) else "—"),
+            (f'KOSPI / {e(r["peer_name"])}', f'{_rv_pct(s.get("kospi_c2c"))} / {_rv_pct(s.get("peer_c2c"))}'),
+            ("원/달러", _rv_pct(s.get("usdkrw_chg"))),
+            ("전날 밤 SOX / 나스닥", f'{_rv_pct(s.get("sox_ret"))} / {_rv_pct(s.get("nasdaq_ret"))}')]
+    if r.get("flows") and not story:
+        rows.append(("외국인 / 기관 순매수", e(r["flows"])))
+    body = "".join(f'<tr><td {_RV_TD}>{e(k)}</td><td {_RV_TDR}>{v}</td></tr>' for k, v in rows)
+    parts.append(sub("오늘 장"))
+    parts.append('<div style="overflow-x:auto"><table style="width:100%;min-width:420px;border-collapse:collapse;font-size:13px;border:1px solid #e5e5e5">'
+                 f'<tr><th {_RV_TH}>항목</th><th {_RV_TH}>값</th></tr>{body}</table></div>')
+    c = r["classification"]
+    badge = " · ".join(f'<b>{e(l)}</b>' for l in c["labels"])
+    parts.append(f'<div style="margin:12px 0 4px;font-size:14px">흐름의 성격: {badge}</div>'
+                 '<ul style="margin:0 0 10px;padding-left:20px;font-size:13px;color:#4a4f55">'
+                 + "".join(f"<li>{e(x)}</li>" for x in c["reasons"]) + "</ul>")
+
+    # 5. 아침 예측과 비교
+    parts.append(sub("아침 예측과 비교"))
+    if r["forecasts"]:
+        for f in r["forecasts"]:
+            color = "#1a7f37" if f["hit"] else "#a8322a"
+            band = f'±{float(f["band"]) * 100:.2f}%' if _rv_finite(f.get("band")) else "—"
+            parts.append(f'<div style="font-size:13px;margin:4px 0 8px;padding:8px 12px;border-left:3px solid {color};background:#fafafa">'
+                         f'<b>{e(str(f["model"]))}</b> · {e(f["verdict"])}<br>'
+                         f'<span style="color:#6b7178">{e(f["legs"])} · 보합 밴드 {band} · {e(f["where"])}</span></div>')
+        if r.get("price_check"):
+            parts.append(f'<div style="font-size:12px;color:#6b7178;margin:2px 0 8px">{e(r["price_check"])}</div>')
+    else:
+        parts.append('<div style="font-size:13px;color:#6b7178">오늘 예측일의 아침 예측 기록이 원장에 없습니다.</div>')
     parts.append('<div style="margin:12px 0 0;padding:10px 14px;background:#fff4e5;border:1px solid #f0c58a;border-radius:6px;'
                  f'font-size:12px;color:#7a4b00">{e(REVIEW_DISCLAIMER)}</div>')
     parts.append(REVIEW_END)

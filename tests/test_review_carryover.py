@@ -86,7 +86,7 @@ class ToolDelegatesTests(unittest.TestCase):
         fresh = dict(stored_review(), session_date="2026-09-28", generated_at="2026-09-28 17:28 KST")
         replaced = R.insert_section(carried, R.render_section(fresh))
         self.assertEqual(replaced.count(fu.REVIEW_START), 1)
-        self.assertIn("장 회고 — 2026-09-28", replaced)   # 탭 안에서는 날짜로 부른다(2026-09-30)
+        self.assertIn("2026-09-28 (월)</div>", replaced)   # 탭 안에서는 제목 없이 날짜만 보인다(2026-09-30)
         self.assertNotIn("직전 거래일 장 회고", replaced)
         self.assertLess(replaced.find("<!--LEDGER_SECTION_END-->"), replaced.find(fu.REVIEW_START))
 

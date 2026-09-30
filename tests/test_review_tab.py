@@ -117,3 +117,15 @@ class ReviewOrderTests(unittest.TestCase):
         html = fu.review_section_html(r)
         self.assertNotIn("last_successful_fetch", html)
         self.assertIn("저장소 보관본(마지막 성공분)", html)
+
+
+class ReviewDateLineTests(unittest.TestCase):
+    """날짜별 회고는 제목('장 회고 — 날짜') 없이 날짜만 보인다(2026-09-30: '1.1 장 회고 — …'로 번호까지 붙었다)."""
+
+    def test_date_only_and_no_heading_tag(self):
+        import re
+        html = fu.review_tab_html([review("2026-09-29"), review("2026-09-28")])
+        self.assertEqual(re.findall(r"<h4\b", html), [])
+        self.assertNotIn("장 회고 —", html)
+        self.assertIn(">2026-09-29 (화)</div>", html)
+        self.assertIn(">2026-09-28 (월)</div>", html)

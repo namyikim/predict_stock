@@ -3538,9 +3538,16 @@ def _review_body(review):
     """review_section_html 에서 표시·제목(h3)을 뺀 본문. 탭 나누기가 h3 로 절을 자르므로 h4 로 낮춘다."""
     import re
     body = review_section_html(review).replace(REVIEW_START, "").replace(REVIEW_END, "")
-    # 날짜 단추로 지난 날도 보므로 '오늘'이라 부르지 않는다.
-    body = body.replace("오늘 장 회고 — ", "장 회고 — ", 1)
-    return re.sub(r"<h3\b([^>]*)>(.*?)</h3>", r'<h4\1>\2</h4>', body, count=1, flags=re.S)
+    # 제목은 빼고 날짜만 보인다(2026-09-30 요청: '1.1 장 회고 — 날짜'처럼 번호까지 붙었다). 제목 태그가
+    # 아니라 일반 글자로 둬서 탭 번호 매기기에도 걸리지 않는다.
+    day = str(review.get("session_date", ""))[:10]
+    try:
+        stamp = pd.Timestamp(day)
+        label = f"{stamp:%Y-%m-%d} ({_WEEKDAYS_KO[stamp.weekday()]})"
+    except (TypeError, ValueError):
+        label = day
+    date_line = f'<div style="font-size:15px;font-weight:700;margin:14px 0 8px">{label}</div>'
+    return re.sub(r"<h3\b[^>]*>.*?</h3>", lambda _m: date_line, body, count=1, flags=re.S)
 
 
 def review_tab_html(reviews, days=REVIEW_TAB_DAYS):

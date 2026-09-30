@@ -56,6 +56,8 @@ body{zoom:1.15}
   <div class="lab-head">
   <div style="margin-bottom:10px"><a href="../" style="display:inline-block;font-size:12px;color:#1a5490;text-decoration:none;border:1px solid #cedff0;border-radius:5px;padding:5px 11px;background:#f0f6fc">← 보고서 목록</a></div>
   <h1>실험실 <span class="muted">검증 전 분석 · 공개 보고서에 띄우지 않습니다</span></h1>
+  <!-- 제목 아래 자료 시각(2026-09-30 요청). 이 페이지는 브라우저가 원장을 그때그때 읽으므로, 읽은 원장의 가장 최근 기록 시각을 보인다. -->
+  <div id="lab-stamp" class="muted" style="font-size:12px;margin:-4px 0 10px"></div>
   <div class="muted">predict_stock</div>
   <div class="tabs">
     <button id="tab-sim" class="tab active">가상 매매</button>
@@ -213,6 +215,19 @@ body{zoom:1.15}
 
   function num(v) { var x = parseFloat(v); return isFinite(x) ? x : null; }
 
+  // 제목 아래 자료 시각: 읽은 원장에서 가장 최근 기록 시각(2026-09-30).
+  function showLabStamp(rows) {
+    var latest = "";
+    rows.forEach(function (r) { var t = String(r.created_at_utc || ""); if (t > latest) latest = t; });
+    var box = $("lab-stamp");
+    if (!box) return;
+    if (!latest) { box.textContent = ""; return; }
+    var d = new Date(latest.replace(" ", "T") + (/[zZ]|[+-]\d\d:?\d\d$/.test(latest) ? "" : "Z"));
+    if (isNaN(d)) { box.textContent = "자료 기준 " + latest; return; }
+    var k = new Date(d.getTime() + 9 * 3600 * 1000).toISOString();
+    box.textContent = "자료 기준 " + k.slice(0, 10) + " " + k.slice(11, 16) + " KST (원장의 가장 최근 기록)";
+  }
+
   function load() {
     var target = $("target").value;
     $("status").textContent = "원장을 불러오는 중…";
@@ -221,6 +236,7 @@ body{zoom:1.15}
       .then(function (r) { if (!r.ok) throw new Error("HTTP " + r.status); return r.text(); })
       .then(function (text) {
         var all = parseCsv(text);
+        showLabStamp(all);
         rows = all.filter(function (r) {
           return r.kind === "direction" && String(r.is_prospective).toLowerCase() === "true" &&
                  r.status === "scored" && num(r.actual_open) && num(r.actual_close);

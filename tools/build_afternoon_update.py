@@ -37,7 +37,7 @@ from forecast_utils import (  # noqa: E402
     POST_OPEN_MODEL, POSTOPEN_END, POSTOPEN_START, SCORECARD_END, SCORECARD_START, append_forecasts,
     atomic_csv, daily_comparison, evaluate_forecasts, is_headline_model, ledger_section_html, merge_ledger_logs,
     post_open_card_html, post_open_ledger_row, post_open_row_for, review_ledger, scorecard_html,
-    summarize_daily,
+    summarize_daily, kst_stamp, stamp_changed_panels,
 )
 
 KST = timezone(timedelta(hours=9))
@@ -279,7 +279,8 @@ def main():
         updated = replace_section(updated, card, SCORECARD_START, SCORECARD_END) or updated
         if post_open_card is not None:
             updated = replace_section(updated, post_open_card, POSTOPEN_START, POSTOPEN_END) or updated
-        return updated
+        # 바뀐 탭에만 '갱신 … KST'(2026-09-30). 내용이 같으면 시각도 그대로 둔다.
+        return stamp_changed_panels(page, updated, kst_stamp(now, "갱신"))
 
     # 원장·파생 파일·보고서를 한 커밋으로 올린다(발행 묶기 ②, 2026-09-24). 도중에 실패하면 아무것도 올리지 않는다.
     with github_pages.batch(f"score: {args.target} {label} ({now:%Y-%m-%d %H:%M} KST)", token):

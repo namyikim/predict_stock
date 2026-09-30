@@ -12,7 +12,7 @@ sys.path.insert(0, str(ROOT))
 import pandas as pd
 import github_pages
 import outlook_ledger
-from forecast_utils import longterm_easy_summary_html, summary_level_odds
+from forecast_utils import kst_stamp, longterm_easy_summary_html, stamp_panel, summary_level_odds
 from report_html import fragment_sources_html, renumber_fragment
 
 
@@ -59,6 +59,18 @@ def replace_sources(page, source_html):
                   page, flags=re.S)
 
 
+def longterm_panel_id(page):
+    """장기 전망 요약이 든 탭의 id(없으면 None)."""
+    at = page.find('id="longterm-summary"')
+    panels = list(re.finditer(r'<section class="rtab-panel" id="([\w-]+)">', page[:at])) if at >= 0 else []
+    return panels[-1].group(1) if panels else None
+
+
+def without_stamps(page):
+    """생성 시각 줄을 뺀 페이지 — 내용이 바뀌었는지 볼 때 시각 차이는 무시한다."""
+    return re.sub(r'<div class="gen-stamp"[^>]*>.*?</div>', '', page, flags=re.S)
+
+
 def publish_tab(target, content, sources, token, attempts=4):
     """장기 전망 탭 부분만 바꿔 올린다. 그 사이 페이지가 바뀌었으면 최신 페이지에 다시 적용한다 — 다른 실행의
     일일 예측을 덮어쓰지 않는다. 공용 publish(expected_sha, merge) 를 써서 발행 묶음에도 들어간다(2026-09-23).
@@ -68,12 +80,18 @@ def publish_tab(target, content, sources, token, attempts=4):
     if page is None:
         raise RuntimeError(f'{path} 이 없습니다 — 일일 보고서가 먼저 발행돼야 탭을 바꿀 수 있습니다')
 
-    def apply(latest):
+    def plain(latest):
         return replace_sources(replace_panel(latest, content), sources)
 
-    updated = apply(page)
-    if page == updated:
+    def apply(latest):
+        # 탭 제목 아래 생성 시각(2026-09-30). 내용이 바뀐 때만 찍는다 — 시각만 달라진 페이지를 올리면 커밋만 는다.
+        out = plain(latest)
+        panel = longterm_panel_id(out)
+        return stamp_panel(out, panel, kst_stamp()) if panel else out
+
+    if without_stamps(plain(page)) == without_stamps(page):
         return 'unchanged'
+    updated = apply(page)
     return github_pages.publish(path, updated, token, f'report: {target} daily export refresh', attempts=attempts,
                                 expected_sha=sha, merge=apply)
 

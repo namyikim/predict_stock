@@ -3587,6 +3587,9 @@ def review_tab_html(reviews, days=REVIEW_TAB_DAYS):
     return (REVIEW_START
             + '<h3 style="font-size:15px;margin:24px 0 9px;padding-bottom:6px;border-bottom:1px solid #ddd">'
             + f'{REVIEW_TAB_LABEL}</h3>'
+            # 제목 바로 아래 생성 시각(2026-09-30): 가장 최근 회고를 만든 시각.
+            + (f'<div class="gen-stamp" data-for="{REVIEW_TAB_ID}" style="font-size:12px;color:#6b7178;margin:-4px 0 10px">'
+               f'생성 {e(str(latest[dates[0]].get("generated_at")))}</div>' if latest[dates[0]].get("generated_at") else "")
             + '<div id="review-status" hidden style="background:#fdf6e3;border-left:4px solid #c79a2b;padding:9px 12px;'
             + 'font-size:13px;margin:6px 0 10px"></div>'
             + f'<div id="review-days" data-latest="{e(dates[0])}" data-latest-label="{e(label(dates[0]))}">'
@@ -3595,6 +3598,72 @@ def review_tab_html(reviews, days=REVIEW_TAB_DAYS):
 
 
 _RTABS_NAV = '<nav class="rtabs"'
+
+
+# ---- 탭마다 생성 시각(2026-09-30 요청) --------------------------------------------------------------------
+# 각 탭의 제목(첫 h3) 바로 아래, 실제 내용이 시작하기 전에 '생성 2026-09-30 15:04 KST' 한 줄을 둔다. 탭마다
+# 갱신하는 주체와 시각이 다르다: 노트북(모든 탭), 장 회고(16:10~), 장기 전망 갱신(오전), 채점 갱신(09:37·16:10).
+# 같은 탭을 다시 찍으면 앞의 줄을 바꾼다.
+_STAMP_RE_TEMPLATE = r'<div class="gen-stamp" data-for="{panel}"[^>]*>.*?</div>'
+
+
+def kst_stamp(now=None, verb="생성"):
+    """'생성 2026-09-30 15:04 KST'. now 는 tz 가 있거나 없는 시각(없으면 KST 로 본다)."""
+    stamp = pd.Timestamp.now(tz="Asia/Seoul") if now is None else pd.Timestamp(now)
+    if stamp.tzinfo is None:
+        stamp = stamp.tz_localize("Asia/Seoul")
+    stamp = stamp.tz_convert("Asia/Seoul")
+    return f"{verb} {stamp:%Y-%m-%d %H:%M} KST"
+
+
+def stamp_panel(page, panel_id, text):
+    """탭 panel_id 의 첫 제목(h3) 바로 뒤에 생성 시각 줄을 넣거나 바꾼다. 탭이 없으면 그대로."""
+    import re
+    from html import escape
+    opener = f'<section class="rtab-panel" id="{panel_id}">'
+    start = page.find(opener)
+    if start < 0:
+        return page
+    end = _section_close(page, start)
+    inner = page[start:end]
+    line = (f'<div class="gen-stamp" data-for="{panel_id}" style="font-size:12px;color:#6b7178;margin:-4px 0 10px">'
+            f'{escape(text)}</div>')
+    inner, count = re.subn(_STAMP_RE_TEMPLATE.format(panel=re.escape(panel_id)), line, inner, count=1, flags=re.S)
+    if not count:
+        heading = re.search(r"<h3\b[^>]*>.*?</h3>", inner, re.S)
+        if not heading:
+            return page
+        inner = inner[:heading.end()] + line + inner[heading.end():]
+    return page[:start] + inner + page[end:]
+
+
+def _panel_inner(page, panel_id):
+    """탭 안쪽 HTML(생성 시각 줄 제외). 탭이 없으면 None."""
+    import re
+    opener = f'<section class="rtab-panel" id="{panel_id}">'
+    start = page.find(opener)
+    if start < 0:
+        return None
+    inner = page[start:_section_close(page, start)]
+    return re.sub(r'<div class="gen-stamp"[^>]*>.*?</div>', '', inner, flags=re.S)
+
+
+def stamp_changed_panels(before, after, text):
+    """after 에서 내용이 before 와 달라진 탭에만 시각 줄을 찍는다(부분 갱신용: '갱신 … KST')."""
+    import re
+    for panel_id in re.findall(r'<section class="rtab-panel" id="([\w-]+)">', after):
+        if _panel_inner(before or "", panel_id) != _panel_inner(after, panel_id):
+            after = stamp_panel(after, panel_id, text)
+    return after
+
+
+def stamp_all_panels(page, text, skip=()):
+    """페이지의 모든 탭에 같은 생성 시각을 찍는다(skip 에 든 탭은 건너뜀)."""
+    import re
+    for panel_id in re.findall(r'<section class="rtab-panel" id="([\w-]+)">', page):
+        if panel_id not in skip:
+            page = stamp_panel(page, panel_id, text)
+    return page
 
 
 def insert_review_section(page, section):

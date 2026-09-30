@@ -306,7 +306,8 @@ def build_html(rows, span, now):
         '<div class="page-title" style="font-size:11px;letter-spacing:2px;color:#8a9199">'
         'WIKIPEDIA + GOOGLE TRENDS · LONG-TERM INTEREST</div>'
         '<h2 class="page-title" style="margin:6px 0 5px;font-size:27px">장기 관심도</h2>'
-        f'<div style="font-size:12px;color:#8a9199">{e(span)} · 연평균 증가율 순</div></div>'
+        # 제목 바로 아래 생성 시각(2026-09-30 요청: 모든 페이지 제목 아래·내용 위).
+        f'<div style="font-size:12px;color:#8a9199">{e(span)} · 연평균 증가율 순 · 생성 {now:%Y-%m-%d %H:%M} KST</div></div>'
         '<div style="background:#f5f6f8;border-radius:6px;padding:12px 16px;margin-bottom:18px;'
         'font-size:13px;color:#6b7178">'
         '위키백과 문서의 <b>월별 조회수</b>로 본 관심도입니다. 구글 트렌드와 달리 '

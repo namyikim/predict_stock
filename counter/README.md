@@ -167,8 +167,12 @@ GitHub의 cron은 이 저장소에서 예정보다 4~5시간 늦게 실행을 �
    이름 `GH_DISPATCH_TOKEN` 또는 `GITHUB_DISPATCH_TOKEN`(둘 중 있는 쪽을 읽는다), 값은 위 토큰.
 3. **Cron Trigger 두 개 추가** — Worker → **Settings → Triggers → Cron Triggers** → Add. 입력 방식에서
    "Execute worker every"(간격) 대신 **Cron** 식(custom expression)을 고르고 UTC로 넣는다.
-   - `37 0 * * 1-5` — 09:37 KST 시가 채점
-   - `10 7 * * 1-5` — 16:10 KST 마감 채점·회고
+   - `37 0 * * MON-FRI` — 09:37 KST 시가 채점
+   - `10 7 * * MON-FRI` — 16:10 KST 마감 채점·회고
+
+   **요일은 반드시 이름(MON-FRI)으로 적는다.** Cloudflare는 요일 숫자를 표준 cron과 다르게 세어 `1-5`를 **일~목**으로
+   해석한다(2026-09-30 확인: 예정 목록에 일요일이 있고 금요일이 없었다). 저장한 뒤 "Estimated upcoming events"에
+   금요일이 들어오고 일요일이 빠졌는지 확인한다.
 
    기존의 보관기간 정리 트리거는 그대로 둔다(그 시각에는 정리만 한다).
 4. **Worker 다시 배포** — Edit code에 `worker.js`의 최신 내용을 붙여넣고 Deploy. 배포하지 않으면

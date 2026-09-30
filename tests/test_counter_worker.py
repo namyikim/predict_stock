@@ -74,10 +74,16 @@ const withoutToken = fetches.length;
 await worker.default.scheduled({ scheduledTime: closeTime, cron: '10 7 * * 1-5' }, { DB, GH_DISPATCH_TOKEN: 'tok-secret' });
 await worker.default.scheduled({ scheduledTime: closeTime, cron: '10 7 * * 1-5' }, { DB, GITHUB_DISPATCH_TOKEN: 'tok-secret' });
 await worker.default.scheduled({ scheduledTime: Date.parse('2026-09-10T03:00:00Z'), cron: '0 3 * * *' }, { DB, GH_DISPATCH_TOKEN: 'tok-secret' });
-process.stdout.write(JSON.stringify({ withoutToken, fetches, deletes, logs }));
+const beforeForce = fetches.length;
+// DISPATCH_FORCE=1 이면 정리 트리거 시각에도 GitHub 를 부른다(시험용, 2026-09-30)
+await worker.default.scheduled({ scheduledTime: Date.parse('2026-09-10T03:00:00Z'), cron: '0 3 * * *' }, { DB, GH_DISPATCH_TOKEN: 'tok-secret', DISPATCH_FORCE: '1' });
+const forcedCalls = fetches.length - beforeForce;
+process.stdout.write(JSON.stringify({ withoutToken, fetches, deletes, logs, forcedCalls }));
 """)
         self.assertEqual(result["withoutToken"], 0, "토큰이 없으면 GitHub를 부르지 않는다")
-        self.assertEqual(len(result["fetches"]), 2, "GH_ / GITHUB_ 어느 이름이든 읽는다")
+        self.assertEqual(len(result["fetches"]) - result["forcedCalls"], 2, "GH_ / GITHUB_ 어느 이름이든 읽는다")
+        self.assertEqual(result["forcedCalls"], 1, "DISPATCH_FORCE=1 이면 아무 트리거에서나 부른다")
+        self.assertTrue(any('"forced":true' in line for line in result["logs"]))
         call = result["fetches"][0]
         self.assertTrue(call["url"].endswith("/repos/namyikim/predict_stock/actions/workflows/afternoon-report.yml/dispatches"))
         self.assertEqual(call["method"], "POST")

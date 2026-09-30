@@ -17,7 +17,7 @@
 //
 // Cron Trigger(대시보드 Settings → Triggers → Cron Triggers, 예: `0 3 * * *`)를 걸면
 // 아래 scheduled()가 매일 오래된 조회 기록을 지운다(보관기간 관리).
-// `37 0 * * 1-5`·`10 7 * * 1-5`(UTC) 트리거를 더 걸고 GH_DISPATCH_TOKEN(또는 GITHUB_DISPATCH_TOKEN)을 넣으면 같은
+// `37 0 * * MON-FRI`·`10 7 * * MON-FRI`(UTC · 요일은 이름으로 — 숫자 1-5 는 Cloudflare 에서 일~목) 트리거를 더 걸고 GH_DISPATCH_TOKEN(또는 GITHUB_DISPATCH_TOKEN)을 넣으면 같은
 // scheduled()가 그 시각에 GitHub의 채점 워크플로를 정시에 깨운다(README "채점 워크플로 정시 호출").
 //
 // 바인딩(대시보드 Settings에서 설정)
@@ -409,9 +409,12 @@ export default {
   // Cron Trigger가 부른다. 채점 회차 시각이면 GitHub 워크플로를 깨우고, 그 밖의 트리거(보관기간 정리)는
   // 누적 조회수(counters)는 그대로 두고 일별 통계에 더는 쓰이지 않는 오래된 조회 기록만 지운다.
   async scheduled(event, env) {
-    if (dispatchDue(event.scheduledTime)) {
+    // DISPATCH_FORCE=1 (Worker 변수)이면 어느 트리거든 올 때마다 GitHub 를 부른다 — 정시 호출이 되는지 시험할 때만
+    // 잠깐 켠다(2026-09-30: 정시 호출이 한 번도 성공한 적이 없어 원인을 가르려고). 시험이 끝나면 변수를 지운다.
+    const forced = String(env.DISPATCH_FORCE || "") === "1";
+    if (forced || dispatchDue(event.scheduledTime)) {
       const result = await dispatchScoring(env);
-      console.log(`workflow_dispatch ${JSON.stringify(result)}`);
+      console.log(`workflow_dispatch ${JSON.stringify({ ...result, forced, cron: event.cron || null })}`);
       return;
     }
     const cutoff = new Date(Date.now() - RETENTION_DAYS * 86400000).toISOString().slice(0, 10);

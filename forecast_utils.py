@@ -523,9 +523,15 @@ def level_reach_odds(close, levels, *, daily_drift=0.0, horizon_days=2 * YEAR_TR
     targets = np.log(np.asarray(levels))[:, None]
     position = np.full(int(n_paths), np.log(prices.iloc[-1]))
     first_hit = np.where(position[None, :] >= targets, 0, horizon + 1)
+    # 날짜별 가격 분포(2026-09-30: 가로 시간·세로 주가 그래프용). 5거래일마다 분위수만 적는다 — 난수를 더 쓰지
+    # 않으므로 도달 확률은 전과 같다.
+    band_days, band_rows = [0], [np.full(5, float(prices.iloc[-1]))]
     for day in range(1, horizon + 1):
         position += drift[day - 1] + shocks[rng.integers(0, shocks.size, position.size)]
         first_hit[(first_hit > horizon) & (position[None, :] >= targets)] = day
+        if day % 5 == 0 or day == horizon:
+            band_days.append(day)
+            band_rows.append(np.exp(np.quantile(position, [.1, .25, .5, .75, .9])))
     days = np.arange(1, horizon + 1)
     current = float(prices.iloc[-1])
     rows = []
@@ -533,8 +539,11 @@ def level_reach_odds(close, levels, *, daily_drift=0.0, horizon_days=2 * YEAR_TR
         curve = np.searchsorted(np.sort(hits), days, side="right") / hits.size
         rows.append({"level": level, "change": level / current - 1, "curve": curve,
                      "half_day": int(days[np.argmax(curve >= .5)]) if curve[-1] >= .5 else None})
+    bands = np.vstack(band_rows)
     return {"current": current, "annual_vol": float(shocks.std(ddof=1) * np.sqrt(YEAR_TRADING_DAYS)),
-            "horizon_days": horizon, "levels": rows}
+            "horizon_days": horizon, "levels": rows,
+            "bands": {"days": band_days, **{name: bands[:, i].tolist()
+                                             for i, name in enumerate(("p10", "p25", "p50", "p75", "p90"))}}}
 
 
 def _trillion(value):
@@ -561,6 +570,85 @@ def _when(price_date, trading_days):
 
 LEVEL_ODDS_HORIZON = 2 * YEAR_TRADING_DAYS
 
+
+
+def level_fan_svg(base, price_date=None):
+    """가로 시간·세로 주가인 예측 부채꼴(2026-09-30 요청: 30만·40만 원을 한 그래프에).
+
+    모의실험 경로의 날짜별 분포를 띠로 그린다 — 옅은 띠 10~90%, 진한 띠 25~75%, 선은 가운데 값. 30만·40만 원은
+    가로 점선이고, 선 옆에 '한 번이라도 닿을 확률'(2년 안)을 적는다. 띠는 '그 날의 가격'이고 닿을 확률은
+    '그때까지 한 번이라도'라서 닿을 확률이 더 높다. base 는 level_reach_odds 결과(bands 포함).
+    """
+    import math
+    from html import escape
+    bands = (base or {}).get("bands")
+    if not bands or len(bands.get("days", [])) < 2:
+        return ""
+    days = [int(d) for d in bands["days"]]
+    horizon = max(days)
+    levels = [row for row in base.get("levels", []) if row.get("change", 0) > 0]
+    top_values = bands["p90"] + [row["level"] for row in levels]
+    lo_raw, hi_raw = min(bands["p10"]) * .95, max(top_values) * 1.04
+    span = hi_raw - lo_raw
+    step = next(s for s in (10_000, 20_000, 50_000, 100_000, 200_000, 500_000, 1_000_000, 2_000_000, 5_000_000)
+                if span / s <= 6)
+    lo, hi = step * math.floor(lo_raw / step), step * math.ceil(hi_raw / step)
+    left, right, top, bottom = 70, 600, 30, 226
+    def x(day):
+        return left + day / horizon * (right - left)
+    def y(price):
+        return bottom - (price - lo) / (hi - lo) * (bottom - top)
+    grid = ""
+    tick = lo
+    while tick <= hi + 1:
+        grid += (f'<line x1="{left}" y1="{y(tick):.1f}" x2="{right}" y2="{y(tick):.1f}" stroke="#eceef1"/>'
+                 f'<text x="{left - 8}" y="{y(tick) + 4:.1f}" font-size="11" text-anchor="end" fill="#6b7178">'
+                 f'{escape(_man_won(tick))}</text>')
+        tick += step
+    for month, name in ((0, "지금"), (6, "6개월"), (12, "1년"), (18, "18개월"), (24, "2년")):
+        day = min(month * MONTH_TRADING_DAYS, horizon)
+        when = ""
+        if price_date is not None and month:
+            try:
+                stamp = pd.Timestamp(price_date) + pd.Timedelta(days=round(day * 365.25 / YEAR_TRADING_DAYS))
+                when = f"{stamp.year % 100:02d}.{stamp.month}"
+            except (TypeError, ValueError):
+                when = ""
+        grid += (f'<text x="{x(day):.1f}" y="{bottom + 16}" font-size="11" text-anchor="middle" fill="#6b7178">{name}</text>'
+                 + (f'<text x="{x(day):.1f}" y="{bottom + 29}" font-size="10" text-anchor="middle" fill="#a3a9b0">{when}</text>'
+                    if when else ""))
+    def band(upper, lower, color, opacity):
+        points = [f"{x(d):.1f},{y(v):.1f}" for d, v in zip(days, bands[upper])]
+        points += [f"{x(d):.1f},{y(v):.1f}" for d, v in zip(reversed(days), reversed(bands[lower]))]
+        return f'<polygon points="{" ".join(points)}" fill="{color}" opacity="{opacity}"/>'
+    median = " ".join(f"{x(d):.1f},{y(v):.1f}" for d, v in zip(days, bands["p50"]))
+    shapes = (band("p90", "p10", "#b5d4f4", .55) + band("p75", "p25", "#7fb0e0", .6)
+              + f'<polyline points="{median}" fill="none" stroke="#1a5490" stroke-width="2"/>'
+              + f'<circle cx="{x(0):.1f}" cy="{y(base["current"]):.1f}" r="4.5" fill="#1a1a1a"/>'
+              + f'<text x="{x(0) + 8:.1f}" y="{y(base["current"]) + 18:.1f}" font-size="11" fill="#1a1a1a">'
+              f'지금 {base["current"]:,.0f}원</text>')
+    colors = ("#b3541e", "#7a3f9d", "#2f7d4f")
+    for index, row in enumerate(levels):
+        color = colors[index % len(colors)]
+        line_y = y(row["level"])
+        reach = float(row["curve"][-1]) if len(row.get("curve", [])) else None
+        shapes += (f'<line x1="{left}" y1="{line_y:.1f}" x2="{right}" y2="{line_y:.1f}" stroke="{color}" '
+                   'stroke-width="1.6" stroke-dasharray="6 4"/>'
+                   f'<text x="{right + 6}" y="{line_y + 4:.1f}" font-size="12" font-weight="700" fill="{color}">'
+                   f'{escape(_man_won(row["level"]))}</text>')
+        if reach is not None:
+            shapes += (f'<text x="{right - 4}" y="{line_y - 6:.1f}" font-size="11" text-anchor="end" fill="{color}">'
+                       f'2년 안 한 번이라도 닿을 확률 {reach:.0%}</text>')
+        if row.get("half_day"):
+            shapes += (f'<circle cx="{x(int(row["half_day"])):.1f}" cy="{line_y:.1f}" r="4.5" fill="{color}" '
+                       'stroke="#fff" stroke-width="1.5"/>')
+    legend = ('<text x="70" y="14" font-size="11" fill="#3a4652">'
+              '<tspan fill="#7fb0e0">■</tspan> 50% 범위  <tspan fill="#b5d4f4">■</tspan> 80% 범위  '
+              '<tspan fill="#1a5490">━</tspan> 가운데 값  <tspan fill="#8a9199">●</tspan> 닿을 확률이 절반을 넘는 때</text>')
+    return (f'<svg viewBox="0 0 660 {bottom + 36}" width="100%" style="max-width:660px;min-width:380px;display:block;margin:4px 0 10px" '
+            f'role="img" aria-label="주가 예측 범위와 목표 가격">{legend}{grid}'
+            f'<line x1="{left}" y1="{top}" x2="{left}" y2="{bottom}" stroke="#c3c8cf"/>'
+            f'<line x1="{left}" y1="{bottom}" x2="{right}" y2="{bottom}" stroke="#c3c8cf"/>{shapes}</svg>')
 
 def level_odds_svg(base, months_per_tick=6):
     """가격 도달 확률 곡선(2026-09-30 요청: '30만·40만 원은 언제쯤?'을 그림으로).
@@ -870,7 +958,7 @@ def longterm_easy_summary_html(*, name, price_date, close, longterm=None, earnin
                        else f"최근 {used_days:,}거래일")
         recent_text = (f", 최근 1년만 보면 {recent_vol:.0%}"
                        if recent_vol is not None and abs(recent_vol - base["annual_vol"]) >= .05 else "")
-        level_html = ('<div style="overflow-x:auto">' + level_odds_svg(base) + '</div>'
+        level_html = ('<div style="overflow-x:auto">' + level_fan_svg(base, price_date) + '</div>'
                       f'<div style="display:flex;gap:8px;flex-wrap:wrap">{level_cards}</div>'
                       '<div style="font-size:11px;color:#8a9199;margin-top:6px;line-height:1.5">'
                       f'{window_text} 일간 등락(연 변동성 {base["annual_vol"]:.0%}{recent_text})에서 평균을 빼고 다시 뽑아 '

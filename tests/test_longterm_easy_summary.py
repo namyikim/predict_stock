@@ -245,3 +245,62 @@ class LevelOddsChartTests(unittest.TestCase):
         import forecast_utils as fu
         self.assertEqual(fu.level_odds_svg(None), "")
         self.assertEqual(fu.level_odds_svg({"levels": []}), "")
+
+
+class LevelFanChartTests(unittest.TestCase):
+    """가로 시간·세로 주가 예측 부채꼴에 30만·40만 원을 함께 그린다(2026-09-30 요청)."""
+
+    @classmethod
+    def setUpClass(cls):
+        import numpy as np
+        import pandas as pd
+        import forecast_utils as fu
+        rng = np.random.default_rng(3)
+        r = rng.normal(0, .49 / np.sqrt(252), 400)
+        prices = pd.Series(272500 * np.exp(np.cumsum(r) - np.cumsum(r)[-1]),
+                           index=pd.bdate_range(end="2026-09-29", periods=400))
+        cls.fu = fu
+        cls.base = fu.level_reach_odds(prices, [300000.0, 400000.0], horizon_days=504, lookback_days=252,
+                                       n_paths=2000, seed=0)
+
+    def test_simulation_keeps_price_bands_without_changing_reach_odds(self):
+        bands = self.base["bands"]
+        self.assertEqual(bands["days"][0], 0)
+        self.assertEqual(bands["days"][-1], 504)
+        for i in range(len(bands["days"])):
+            self.assertLessEqual(bands["p10"][i], bands["p50"][i])
+            self.assertLessEqual(bands["p50"][i], bands["p90"][i])
+        import numpy as np
+        import pandas as pd
+        rng = np.random.default_rng(3)
+        r = rng.normal(0, .49 / np.sqrt(252), 400)
+        prices = pd.Series(272500 * np.exp(np.cumsum(r) - np.cumsum(r)[-1]),
+                           index=pd.bdate_range(end="2026-09-29", periods=400))
+        again = self.fu.level_reach_odds(prices, [300000.0], horizon_days=504, lookback_days=252,
+                                         n_paths=2000, seed=0)
+        self.assertTrue(np.allclose(again["levels"][0]["curve"], self.base["levels"][0]["curve"]))
+
+    def test_fan_draws_bands_median_and_both_levels(self):
+        svg = self.fu.level_fan_svg(self.base, "2026-09-29")
+        self.assertEqual(svg.count("<polygon"), 2)
+        self.assertIn(">30만원</text>", svg)
+        self.assertIn(">40만원</text>", svg)
+        self.assertIn("2년 안 한 번이라도 닿을 확률", svg)
+        self.assertIn("지금 272,500원", svg)
+
+    def test_level_line_sits_on_the_price_axis(self):
+        import re
+        svg = self.fu.level_fan_svg(self.base, "2026-09-29")
+        ticks = [(float(t.replace(",", "")) * 1e4, float(y) - 4) for y, t in re.findall(
+            r'<text x="62" y="([\d.]+)" font-size="11" text-anchor="end" fill="#6b7178">([\d,]+)만원</text>', svg)]
+        (p0, y0), (p1, y1) = ticks[0], ticks[-1]
+        line = float(re.search(r'<line x1="70" y1="([\d.]+)" x2="600" y2="[\d.]+" stroke="#b3541e"', svg).group(1))
+        self.assertAlmostEqual(line, y0 + (300000 - p0) / (p1 - p0) * (y1 - y0), delta=.2)
+
+    def test_summary_uses_the_fan_chart(self):
+        import pandas as pd
+        close = pd.Series(range(200000, 272500, 100), dtype=float,
+                          index=pd.bdate_range(end="2026-09-29", periods=len(range(200000, 272500, 100))))
+        html = self.fu.longterm_easy_summary_html(name="삼성전자", price_date="2026-09-29", close=close,
+                                                  levels=(300000, 400000))
+        self.assertIn('aria-label="주가 예측 범위와 목표 가격"', html)

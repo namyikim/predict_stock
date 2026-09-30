@@ -3,7 +3,7 @@
   "name": "삼성전자",
   "peer_name": "SK하이닉스",
   "session_date": "2026-09-30",
-  "generated_at": "2026-09-30 16:45 KST",
+  "generated_at": "2026-09-30 19:12 KST",
   "summary": {
     "prev_close": 272500.0,
     "open": 274500.0,
@@ -15,13 +15,18 @@
     "c2c": -0.014678899082568808,
     "high_vs_open": 0.005464480874316946,
     "low_vs_open": -0.025500910746812377,
-    "volume": 18176751.0,
-    "volume_ratio": 1.071451592050509,
+    "volume": 18333040.0,
+    "volume_ratio": 1.0806642449536588,
     "kospi_c2c": -0.0047694550208475794,
     "peer_c2c": 0.006232294617563694,
-    "usdkrw_chg": -0.005943156445297193,
+    "usdkrw_chg": -0.003795370529658504,
+    "us_nights": 1,
     "sox_ret": 0.013150161472457178,
-    "nasdaq_ret": -0.0008516581846754745
+    "nasdaq_ret": -0.0008516581846754745,
+    "micron_ret": 0.01053148616826749,
+    "prior_streak": 1,
+    "range": 0.031775700934579376,
+    "peer_range": 0.02876480541455151
   },
   "classification": {
     "labels": [
@@ -408,10 +413,10 @@
   "timeline_items": [],
   "overnight_news": [
     {
-      "time": "2026-09-30T08:35:01+09:00",
-      "title": "KB증권 \"삼성전자, AI 인프라 투자로 전략적 가치 재평가\"",
-      "source": "yna.co.kr",
-      "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTFBVRXVseWIxdnFFTHA2WDZvVnE3R2wybFctOXlhXzJCVTFPMFFQRS00OVJob3lJeHRyOTc4T2I4SjNxcFNNeV9RMmpKVDZ1TWF6MnRYb3ZqY1RsSDBYbW44S9IBYEFVX3lxTFBVRXVseWIxdnFFTHA2WDZvVnE3R2wybFctOXlhXzJCVTFPMFFQRS00OVJob3lJeHRyOTc4T2I4SjNxcFNNeV9RMmpKVDZ1TWF6MnRYb3ZqY1RsSDBYbW44Sw?oc=5"
+      "time": "2026-09-30T08:50:52+09:00",
+      "title": "“삼성전자, 메모리 사업의 가치 재평가 기대”…증권가 분석 보니",
+      "source": "매일경제 마켓",
+      "link": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE1RNzAxelpxbnRRdVkwNlJXU3hDeVpWMHJqVFNzWHducnFVQzFhQlVzVkd6OFhvekg4OXkyTnR2dnBSM2RoYU4zQURjMFdidDBMdnc?oc=5"
     },
     {
       "time": "2026-09-30T09:00:00+09:00",
@@ -420,22 +425,16 @@
       "link": "https://news.google.com/rss/articles/CBMihgFBVV95cUxOMlBwMDFWQ3F2TFktZ2FEQmVFRXpPc2swR3VhVFpUZDM3c0F6azZ1T0dXRzRyRmFtRTh1V3FYYkRzRm5VcDhlSzBJRWtXRl8td3RRdUZzWDQ1OTRyb01BSlB0dFRpVWJPZWFQbUdvekdGWXhiWUlwXzJwWlp6TXJpamloOEZjQQ?oc=5"
     },
     {
-      "time": "2026-09-30T09:00:00+09:00",
-      "title": "AI를 실제 성과로…삼성전자, '삼성 AI 포럼 2026' 개최",
-      "source": "asiae.co.kr",
-      "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE9qRTNEbENsdFVLNFBOa3ZNUmV0WmNaRUxieEQ3OWRCbTJuSHlfbXhQRmNvLVRsazB1emF5Xzh6dnRGQUJWWnM3TmRlU3dpa2lTS3RLbllVNkhVZklDdWlERg?oc=5"
-    },
-    {
-      "time": "2026-09-30T09:00:00+09:00",
-      "title": "[Tech & Now] 삼성전자, '에이전틱 시프트' 주제로 AI 포럼 개최 등",
-      "source": "ebn.co.kr",
-      "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE95bWIza0NEbWRvT0tJR1RfRUs3dWFGeHRJWnZsVmpISFdGX2dScWpGb2drSFpBTFBIUHI4QnNhczhtWmF1Q0h2d3BSZmRrTlJvY08yb0hib3lzWmFYb2ZLc1JBenl4RGUt?oc=5"
-    },
-    {
       "time": "2026-09-30T07:40:00+09:00",
       "title": "\"삼성전자 장투, 더 기다려볼까\"…큰손들은 벌써 내년 물량 잡는다",
       "source": "v.daum.net",
       "link": "https://news.google.com/rss/articles/CBMiRkFVX3lxTE4tNTV2NzZnTENQOFhyZktSTGh6Z2QzWVVOV3hFY3RKWFduLXFxVkctVlVhelNHSllIX21MWEhSQzBHczdMblE?oc=5"
+    },
+    {
+      "time": "2026-09-30T08:41:08+09:00",
+      "title": "평택 포승지구에 삼성전자 첨단 자동화 물류센터 들어서",
+      "source": "물류신문",
+      "link": "https://news.google.com/rss/articles/CBMia0FVX3lxTE1CaXBkXzBwdXIwd2JHMW4wcDI4bHpkUS1NaUFmc1lYanRjQndsdzZtaDBxc2d1RjRfYndvVk9PU2JzTkt3bVpWazNwSWlKdkVZdUptYkN2S1luN0FoNktwOFI3YlBwcjhhelVN?oc=5"
     }
   ],
   "top_news": [
@@ -446,39 +445,39 @@
       "link": "https://news.google.com/rss/articles/CBMickFVX3lxTFB3Tzc5N05CWDJFVWVLWVJJdll3MFY0bi1SdFJFWHpOWnJxd21WcHVSdWc5eHpUamNUQ0pfcUZoVVlJZlgyLUYxb1d5c0NYSElZNTlzZFhpa0JLcDVLSlByWEtmNVdVMktEcHdNVW1nY3Q0QdIBckFVX3lxTFB3Tzc5N05CWDJFVWVLWVJJdll3MFY0bi1SdFJFWHpOWnJxd21WcHVSdWc5eHpUamNUQ0pfcUZoVVlJZlgyLUYxb1d5c0NYSElZNTlzZFhpa0JLcDVLSlByWEtmNVdVMktEcHdNVW1nY3Q0QQ?oc=5"
     },
     {
-      "time": "2026-09-30T08:35:01+09:00",
-      "title": "KB증권 \"삼성전자, AI 인프라 투자로 전략적 가치 재평가\"",
-      "source": "yna.co.kr",
-      "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTFBVRXVseWIxdnFFTHA2WDZvVnE3R2wybFctOXlhXzJCVTFPMFFQRS00OVJob3lJeHRyOTc4T2I4SjNxcFNNeV9RMmpKVDZ1TWF6MnRYb3ZqY1RsSDBYbW44S9IBYEFVX3lxTFBVRXVseWIxdnFFTHA2WDZvVnE3R2wybFctOXlhXzJCVTFPMFFQRS00OVJob3lJeHRyOTc4T2I4SjNxcFNNeV9RMmpKVDZ1TWF6MnRYb3ZqY1RsSDBYbW44Sw?oc=5"
-    },
-    {
       "time": "2026-09-30T12:31:00+09:00",
       "title": "KB증권 “삼성전자, 헬릭스 투자로 AI 밸류체인 진입”",
-      "source": "viva100.com",
+      "source": "브릿지경제",
       "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE5SVDRpTmpIRU5qNDBZTl9TdHBUX3poXzctWTVsV3VuTVZUcE4wUkFZaDZoejdEZnUtOThWNzgwZGV6cG03TzFtSnNvcDVKTTFRMFJzUUxHUFBGQQ?oc=5"
     },
     {
       "time": "2026-09-30T16:30:00+09:00",
       "title": "HBM 우려에도 꺾이지 않은 낙관론…삼성전자·하이닉스 증권가 전망은? [주가동향]",
       "source": "조세일보",
-      "link": "https://news.google.com/rss/articles/CBMib0FVX3lxTE1KY2FlekY3NEFRQ3F1TlMyWnM1Tm5sVXNzaXB5ek93UEhkLVBITlBnb3VGZVd2OG5sQXZVdDl6TUV2SDdiRlA0S01fTjRaclBGMFZxdGFIYWhwOXAtTFZlSXNaWVFmeUJPd1g3LWVqOA?oc=5"
+      "link": "https://news.google.com/rss/articles/CBMiX0FVX3lxTE1OcC15eVdIZ0ctNE15bmRNV3c5QmhCM094Z2lES01yWlFnREh2Uk1VOGxqMVhRV3VWZ1k2Q2RxS3JWS1FaV0NBdlBtWXZyV2h0Tk9zLXJpRmw5T3RPZV9v?oc=5"
+    },
+    {
+      "time": "2026-09-30T17:25:32+09:00",
+      "title": "한화투자증권 “코스피 이익 전망 견조”...삼성전자·대덕전자 성장률 두각",
+      "source": "이지경제",
+      "link": "https://news.google.com/rss/articles/CBMibkFVX3lxTE8yQlI0dUxXQm5odVhPLXM0OHBERDdmM21abFM0TXdSaF9PaEtucHB1SUZRcFhCNjRNNm92S1ZlSnVjaDVxTXFBMWh2dXhXUGNrd2FxVEVDVExJUUFDZDdqdlBYOWFaZDMzdi1fVGZn?oc=5"
+    },
+    {
+      "time": "2026-09-30T08:50:52+09:00",
+      "title": "“삼성전자, 메모리 사업의 가치 재평가 기대”…증권가 분석 보니",
+      "source": "매일경제 마켓",
+      "link": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE1RNzAxelpxbnRRdVkwNlJXU3hDeVpWMHJqVFNzWHducnFVQzFhQlVzVkd6OFhvekg4OXkyTnR2dnBSM2RoYU4zQURjMFdidDBMdnc?oc=5"
     },
     {
       "time": "2026-09-30T11:19:09+09:00",
       "title": "삼성전자, 에이전틱AI 성과 수준은…반도체 설계·제조 적용사례 공개",
       "source": "서울이코노미뉴스",
       "link": "https://news.google.com/rss/articles/CBMibkFVX3lxTFBESjJKazFSM2tEYWNFTERzXy1tclZnQkpPTVc0c0s4ZG5CM0ptTHp3U3FCbkVBakpiZVZGWGd5b2ZTdHdfcFZQQUZmTlVaNnd6YlQyOWlNTGliNmRvdXgwM3RjM3VVVFVUTk0tdkFB?oc=5"
-    },
-    {
-      "time": "2026-09-30T11:22:10+09:00",
-      "title": "삼성전자, AI 자율화 속도···제품·반도체 적용 확대",
-      "source": "서울파이낸스",
-      "link": "https://news.google.com/rss/articles/CBMiakFVX3lxTE9nOTViVWdmTVlhZG52US1ES3hjUnFQOFQwaWVCVHp6Uk13TmhNV25iUjMwNjZpbFczZ0cybGNkMVBUQmllN2Z5ZTBldDA1NUp5TmVad0RoeWxmNi1Cc3IyRlVMT1RrZ0VBaVE?oc=5"
     }
   ],
   "disclosures": [],
   "disclosure_note": null,
-  "flows": "외국인 -3,187,974 / 기관 -1,311,622",
+  "flows": "외국인 -3,168,838 / 기관 -1,370,378",
   "flow_story": {
     "direction": "down",
     "c2c": -0.014678899082568808,
@@ -486,48 +485,49 @@
       {
         "key": "foreign_net",
         "name": "외국인",
-        "shares": -3187974.0,
-        "won": -855971019000.0,
-        "vs_usual": 1.3263866387008163
+        "shares": -3168838.0,
+        "won": -850833003000.0,
+        "vs_usual": 1.3184249254879172
       },
       {
         "key": "inst_net",
         "name": "기관",
-        "shares": -1311622.0,
-        "won": -352170507000.0,
-        "vs_usual": 0.6368970059253347
+        "shares": -1370378.0,
+        "won": -367946493000.0,
+        "vs_usual": 0.6654277262701818
       },
       {
         "key": "indiv_net",
         "name": "개인",
-        "shares": 2448740.0,
-        "won": 657486690000.0,
-        "vs_usual": 0.7261977682068385
+        "shares": 2487359.0,
+        "won": 667855891500.0,
+        "vs_usual": 0.7376506099174243
       }
     ],
     "lead": {
       "key": "foreign_net",
       "name": "외국인",
-      "shares": -3187974.0,
-      "won": -855971019000.0,
-      "vs_usual": 1.3263866387008163
+      "shares": -3168838.0,
+      "won": -850833003000.0,
+      "vs_usual": 1.3184249254879172
     },
     "counter": {
       "key": "indiv_net",
       "name": "개인",
-      "shares": 2448740.0,
-      "won": 657486690000.0,
-      "vs_usual": 0.7261977682068385
+      "shares": 2487359.0,
+      "won": 667855891500.0,
+      "vs_usual": 0.7376506099174243
     },
     "observations": [
       "코스피도 -0.48%였지만 이 종목(-1.47%)이 훨씬 크게 움직였습니다.",
       "SK하이닉스는 반대로 +0.62% — 업종 전체의 움직임은 아니었습니다.",
-      "원화는 오히려 강세(-0.59%)여서 외국인 매도가 환율로는 설명되지 않습니다.",
+      "원화는 오히려 강세(-0.38%)여서 외국인 매도가 환율로는 설명되지 않습니다.",
       "전날 밤 SOX는 +1.32%로 반대 방향이어서 미국 반도체 흐름으로는 설명되지 않습니다."
     ],
     "estimated_indiv": false,
     "source_note": "출처 last_successful_fetch · 장 마감 직후 잠정치라 저녁 확정치와 다를 수 있습니다"
   },
+  "context": {},
   "forecasts": [
     {
       "model": "No macro ensemble",

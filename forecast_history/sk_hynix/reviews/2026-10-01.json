@@ -3,7 +3,7 @@
   "name": "SK하이닉스",
   "peer_name": "삼성전자",
   "session_date": "2026-10-01",
-  "generated_at": "2026-10-01 22:01 KST",
+  "generated_at": "2026-10-02 08:25 KST",
   "summary": {
     "prev_close": 1776000.0,
     "open": 1762000.0,
@@ -15,11 +15,11 @@
     "c2c": 0.03209459459459452,
     "high_vs_open": 0.040295119182746975,
     "low_vs_open": -0.007377979568671922,
-    "volume": 2375195.0,
-    "volume_ratio": 0.7342963976088573,
-    "kospi_c2c": 0.01949536092684645,
+    "volume": 2205296.0,
+    "volume_ratio": 0.6817717738801331,
+    "kospi_c2c": NaN,
     "peer_c2c": 0.027932960893854775,
-    "usdkrw_chg": 0.008374719432617583,
+    "usdkrw_chg": 0.00469453226235661,
     "us_nights": 1,
     "sox_ret": -4.27612807042399e-05,
     "nasdaq_ret": 0.0023704223073188757,
@@ -85,14 +85,15 @@
         "after_high": -0.0009567061281743339
       }
     },
-    "from_high": 0.0016393442622950616
+    "from_high": 0.0016393442622950616,
+    "buyback": []
   },
   "classification": {
     "labels": [
-      "지수 동조"
+      "완만한 추세"
     ],
     "reasons": [
-      "KOSPI +1.95% vs 종목 +3.21%, 5분 수익률 상관 0.87 — 종목 고유 요인이 약함"
+      "특정 시각·갭·지수로 설명되는 큰 구간 없음"
     ]
   },
   "events": [
@@ -106,12 +107,6 @@
       "session_share": -0.30064155064155035,
       "score": 6.582688718666128,
       "news": [
-        {
-          "time": "2026-10-01T08:55:13+09:00",
-          "title": "SK하이닉스, 환율 하락에도 3Q 영업익 74조 역대최대 전망 |",
-          "source": "연합인포맥스",
-          "link": "https://news.google.com/rss/articles/CBMidEFVX3lxTE9zbTRJWXZCcVVKa2VZRFIyaGF4enoxcURFU3I3ajBzRTdVM1J0eHMxNkRLenBaWUstaU9jeDA0MXpkT1dNVmdsZmpXQ2ZhcTAtUGhBYVBacFF6LTdENnB2dFZZVlhnVVVBckZBUXU0dkpNLU1n?oc=5"
-        },
         {
           "time": "2026-10-01T08:58:24+09:00",
           "title": "\"자회사 상장 땐 ADR 가치 하락\"…SK하이닉스는 이미 경고했다",
@@ -130,18 +125,6 @@
       "session_share": 0.21176066615159983,
       "score": 3.628884852671117,
       "news": [
-        {
-          "time": "2026-10-01T08:55:13+09:00",
-          "title": "SK하이닉스, 환율 하락에도 3Q 영업익 74조 역대최대 전망 |",
-          "source": "연합인포맥스",
-          "link": "https://news.google.com/rss/articles/CBMidEFVX3lxTE9zbTRJWXZCcVVKa2VZRFIyaGF4enoxcURFU3I3ajBzRTdVM1J0eHMxNkRLenBaWUstaU9jeDA0MXpkT1dNVmdsZmpXQ2ZhcTAtUGhBYVBacFF6LTdENnB2dFZZVlhnVVVBckZBUXU0dkpNLU1n?oc=5"
-        },
-        {
-          "time": "2026-10-01T09:29:06+09:00",
-          "title": "“솔리다임 IPO, SK하이닉스 지분 희석 우려”…사측 “주주가치 제고 최우선”",
-          "source": "디지털데일리",
-          "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTFB6amEtWkdaT2xTZXNYb0JtOUlabW5kbHZXYWV5NFVxZFZMYUhwNVVOYldnS1NnUS1DbHY0T1c4S3VkQTN4QlBTMzRhakZwLUF4dktYTXZ0ZUl6MWxKQWU0c3RUVnk?oc=5"
-        },
         {
           "time": "2026-10-01T08:58:24+09:00",
           "title": "\"자회사 상장 땐 ADR 가치 하락\"…SK하이닉스는 이미 경고했다",
@@ -536,12 +519,6 @@
       "score": 6.582688718666128,
       "news": [
         {
-          "time": "2026-10-01T08:55:13+09:00",
-          "title": "SK하이닉스, 환율 하락에도 3Q 영업익 74조 역대최대 전망 |",
-          "source": "연합인포맥스",
-          "link": "https://news.google.com/rss/articles/CBMidEFVX3lxTE9zbTRJWXZCcVVKa2VZRFIyaGF4enoxcURFU3I3ajBzRTdVM1J0eHMxNkRLenBaWUstaU9jeDA0MXpkT1dNVmdsZmpXQ2ZhcTAtUGhBYVBacFF6LTdENnB2dFZZVlhnVVVBckZBUXU0dkpNLU1n?oc=5"
-        },
-        {
           "time": "2026-10-01T08:58:24+09:00",
           "title": "\"자회사 상장 땐 ADR 가치 하락\"…SK하이닉스는 이미 경고했다",
           "source": "연합인포맥스",
@@ -562,18 +539,6 @@
       "score": 3.628884852671117,
       "news": [
         {
-          "time": "2026-10-01T08:55:13+09:00",
-          "title": "SK하이닉스, 환율 하락에도 3Q 영업익 74조 역대최대 전망 |",
-          "source": "연합인포맥스",
-          "link": "https://news.google.com/rss/articles/CBMidEFVX3lxTE9zbTRJWXZCcVVKa2VZRFIyaGF4enoxcURFU3I3ajBzRTdVM1J0eHMxNkRLenBaWUstaU9jeDA0MXpkT1dNVmdsZmpXQ2ZhcTAtUGhBYVBacFF6LTdENnB2dFZZVlhnVVVBckZBUXU0dkpNLU1n?oc=5"
-        },
-        {
-          "time": "2026-10-01T09:29:06+09:00",
-          "title": "“솔리다임 IPO, SK하이닉스 지분 희석 우려”…사측 “주주가치 제고 최우선”",
-          "source": "디지털데일리",
-          "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTFB6amEtWkdaT2xTZXNYb0JtOUlabW5kbHZXYWV5NFVxZFZMYUhwNVVOYldnS1NnUS1DbHY0T1c4S3VkQTN4QlBTMzRhakZwLUF4dktYTXZ0ZUl6MWxKQWU0c3RUVnk?oc=5"
-        },
-        {
           "time": "2026-10-01T08:58:24+09:00",
           "title": "\"자회사 상장 땐 ADR 가치 하락\"…SK하이닉스는 이미 경고했다",
           "source": "연합인포맥스",
@@ -585,12 +550,6 @@
     }
   ],
   "overnight_news": [
-    {
-      "time": "2026-10-01T08:55:13+09:00",
-      "title": "SK하이닉스, 환율 하락에도 3Q 영업익 74조 역대최대 전망 |",
-      "source": "연합인포맥스",
-      "link": "https://news.google.com/rss/articles/CBMidEFVX3lxTE9zbTRJWXZCcVVKa2VZRFIyaGF4enoxcURFU3I3ajBzRTdVM1J0eHMxNkRLenBaWUstaU9jeDA0MXpkT1dNVmdsZmpXQ2ZhcTAtUGhBYVBacFF6LTdENnB2dFZZVlhnVVVBckZBUXU0dkpNLU1n?oc=5"
-    },
     {
       "time": "2026-10-01T08:58:24+09:00",
       "title": "\"자회사 상장 땐 ADR 가치 하락\"…SK하이닉스는 이미 경고했다",
@@ -612,12 +571,6 @@
       "link": "https://news.google.com/rss/articles/CBMib0FVX3lxTFBtakNMRzJTWFJLWng2bmw1SWppX2ZzTkdUc0VYWUJkRENaa0p0QlRreUwzNC1BRGVLMS12cS1kY1dTVk5TUmVPVnhtcDdZOHdXSy1lTGpiRG5zc2ozaGhiTHNWXzhhb2llR0tpcExkMA?oc=5"
     },
     {
-      "time": "2026-10-01T18:08:00+09:00",
-      "title": "자사주 다 샀고 외국인 떠나고… 반도체 실적만 보는 코스피",
-      "source": "부산파이낸셜뉴스",
-      "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE55RFRFVVBMd01GRS0xN2pwTjlzcWJQMVViTHlNUlpnZlpXOFBRVDQ5OTEybndEOE8zZWlyNVQyWUN5aldOcXplVFlNdTg5T05MX2JjOVVfU0xlTTNE?oc=5"
-    },
-    {
       "time": "2026-10-01T13:47:33+09:00",
       "title": "[조호진의 PICK] SK하이닉스 – 엔비디아에 16단 HBM4 첫 납품…주가 탄력?",
       "source": "데일리인베스트",
@@ -626,14 +579,20 @@
     {
       "time": "2026-10-01T14:14:00+09:00",
       "title": "마이크론 호실적 발표 : 삼성전자와 SK하이닉스 주가 상승 전망",
-      "source": "네이버 프리미엄콘텐츠",
+      "source": "contents.premium.naver.com",
       "link": "https://news.google.com/rss/articles/CBMigwFBVV95cUxQbGZoQTJqdzFfN3JmZ2RBSWpxakxHajh6RHNwT3NmV09yVzZva3dnSUNtYVk0YUJYTTRTcXEtSl9zbkVXVTdWVDhCMHQ2UmxCYWxtcDVHaS1tZWhpZ1BBd0Y2Y0VBMU9mclVTbTh6Y1lRWE5mQmpzUXBOOTl1dFNrMlpiZw?oc=5"
     },
     {
       "time": "2026-10-01T16:11:42+09:00",
       "title": "마이크론 훈풍에 반도체株 날았다…코스피 6970선·코스닥 4%대 급등 [투자360]",
-      "source": "헤럴드경제",
-      "link": "https://news.google.com/rss/articles/CBMiV0FVX3lxTE9PMFd3Sk9rZGNERXVtTHlxREIwMDM1ckhRMmN4OThzMTE1VWdZQm5ZOWhJbUdJMzg1RjJjYlY0UFBXRUFxVXVCMThvZ1cwcjhPdEpUVlFPdw?oc=5"
+      "source": "biz.heraldcorp.com",
+      "link": "https://news.google.com/rss/articles/CBMiVkFVX3lxTE81MWtTNHFlNzFRM1Iyb0syOWMzV3FNd3VLS2VEWjdNRmg4a2pFX2FfaDRYdVBad2hjYWhaU1JFaHVzLWZ0QWFnX0tuWEhLaDFyZGRiak9n?oc=5"
+    },
+    {
+      "time": "2026-10-01T16:56:11+09:00",
+      "title": "[오늘의 주목주] '반도체 투자심리 회복' 삼성전자우 주가 4%대 반등, 코스피 기관 매수세에 6830선 상승 마감",
+      "source": "비즈니스포스트",
+      "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTFBwejA4N0ZGN2Y3SVUzRXZNWXdZdzN1X3RVU1hyZzdEN2dZdjFCM0hDM1RqVk5jWGNhUEVqdDcxdlFKUDVVcDh1X3dWRHdwcXl3NW5UcVVNdHV0M3RnMmVxV3dtZDVpZk1Ha2U5YzgxRU50a2c?oc=5"
     }
   ],
   "disclosures": [],
@@ -688,9 +647,8 @@
     },
     "all_one_side": false,
     "observations": [
-      "코스피도 +1.95% — 시장 전체가 같은 방향이었습니다.",
       "삼성전자 +2.79% — 반도체 업종이 함께 움직였습니다.",
-      "원/달러 +0.84%(원화 약세) — 외국인 매도와 같은 방향의 환율 움직임입니다.",
+      "원/달러 +0.47%(원화 약세) — 외국인 매도와 같은 방향의 환율 움직임입니다.",
       "장중 5일선(1,802,200원) 아래로 빠졌다가 그 위로 되돌아와 마감했습니다.",
       "20일선(1,763,650원) 부근까지 내려왔다가 그 위에서 마감 — 20일선 지지 후 반등의 모양입니다.",
       "60일선(1,754,326원) 부근까지 내려왔다가 그 위에서 마감 — 60일선 지지 후 반등의 모양입니다.",
@@ -698,11 +656,12 @@
       "우리 장중(09:00~15:30) 나스닥100 선물 +1.00% · 미 10년물 국채 선물 +0.03% · 원/달러 -0.07%."
     ],
     "estimated_indiv": false,
-    "source_note": "출처 naver+cache · 장 마감 직후 잠정치라 저녁 확정치와 다를 수 있습니다"
+    "source_note": "출처 naver+cache · 장 마감 직후 잠정치라 저녁 확정치와 다를 수 있습니다 · KRX는 받지 못함(pykrx 미설치)"
   },
   "flow_status": {
     "state": "ok",
-    "detail": "naver+cache"
+    "detail": "naver+cache",
+    "krx_error": "pykrx 미설치"
   },
   "context": {},
   "earnings_reactions": null,

@@ -37,5 +37,5 @@ class DispatchTestTests(unittest.TestCase):
     def test_admin_page_has_the_button(self):
         page = PAGE.read_text(encoding="utf-8")
         self.assertIn('id="dispatch-test"', page)
-        self.assertIn('ENDPOINT + "/dispatch/test"', page)
+        self.assertIn('WORKER + "/dispatch/test"', page)
         self.assertIn("토큰에 Actions 쓰기 권한 없음", page)

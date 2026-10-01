@@ -43,8 +43,9 @@ TARGETS = {
 # 절 그리기는 forecast_utils 로 옮겼다(2026-09-23) — 노트북이 페이지를 새로 만들 때 같은 함수로 직전 회고를 다시 붙인다.
 from forecast_utils import (  # noqa: E402
     REVIEW_DISCLAIMER as DISCLAIMER, REVIEW_END as MARK_END, REVIEW_LEDGER_END as LEDGER_END,
-    REVIEW_START as MARK_START, flow_story, insert_review_section, review_section_html, review_tab_html,
+    REVIEW_START as MARK_START, _kr_events, flow_story, insert_review_section, review_section_html, review_tab_html,
 )
+PROVISIONAL_RE = re.compile(r"영업\s*\(?\s*잠정\s*\)?\s*실적")
 # 전환점 판정 문턱. 그날 5분 수익률의 robust σ 배수.
 EVENT_Z, VOLUME_SPIKE, MERGE_MINUTES, MAX_EVENTS = 3.0, 3.0, 15, 3
 NEWS_BEFORE_MIN, NEWS_AFTER_MIN = 90, 15
@@ -91,6 +92,158 @@ def session_context(ticker, session_date):
     except Exception as exc:
         print(f"  배당 이력 미확인({type(exc).__name__})")
     return {}
+
+
+# ---------------------------------------------------------------------------
+# 그날의 맥락 보강(2026-10-01, 장 회고 영상과 비교해 빠진 것)
+# ---------------------------------------------------------------------------
+def ma_touches(daily, pos):
+    """장중 고가·저가가 이동평균선(전일까지로 계산 — 장중에 보이던 선)에 닿고 어떻게 끝났나.
+
+    support: 저가가 선 부근(−1%~+0.5%)까지 내려왔다가 선 위(+0.5% 넘게)에서 마감 — '20일선 지지 후 반등'.
+    resistance: 고가가 선 부근(−0.5%~+1%)까지 올랐다가 선 아래에서 마감 — '5일선 넘으려다 밀림'.
+    reclaim: 장중 선 아래로 1% 넘게 빠졌다가 선 위에서 마감. fail: 장중 선 위로 1% 넘게 올랐다가 선 아래에서 마감.
+    """
+    closes = daily["close"].iloc[:pos]
+    today = daily.iloc[pos]
+    low, high, close = float(today["low"]), float(today["high"]), float(today["close"])
+    out = []
+    for n in (5, 20, 60):
+        if len(closes) < n:
+            continue
+        ma = float(closes.tail(n).mean())
+        if ma * 0.99 <= low <= ma * 1.005 and close > ma * 1.005:
+            out.append({"ma": n, "level": ma, "kind": "support", "price": low})
+        elif ma * 0.995 <= high <= ma * 1.01 and close < ma * 0.995:
+            out.append({"ma": n, "level": ma, "kind": "resistance", "price": high})
+        elif low < ma * 0.99 and close > ma:
+            out.append({"ma": n, "level": ma, "kind": "reclaim", "price": low})
+        elif high > ma * 1.01 and close < ma:
+            out.append({"ma": n, "level": ma, "kind": "fail", "price": high})
+    return out
+
+
+def after_hours(ticker, session_date):
+    """직전 미국 정규장 종가 → 오늘 09:00 KST 직전까지의 시간외 가격. 실적처럼 장 마감 뒤 소식의 반응이 여기 먼저 나온다.
+
+    {regular_close, last, ret, low_ret, high_ret, last_time} 또는 None. (2026-10-01: 마이크론 '깜짝 실적' 뒤 정규장은 +0.00%였지만
+    시간외에서 +1.8%까지 올랐다가 −1.3%까지 밀리고 보합으로 돌아왔다 — 회고에는 +0.00%만 보였다.)
+    """
+    try:
+        bars = _yf(ticker, period="5d", interval="5m", prepost=True)
+        if bars.empty:
+            return None
+        bars.index = pd.DatetimeIndex(bars.index).tz_convert("America/New_York")
+        open_kst = pd.Timestamp(session_date).tz_localize("Asia/Seoul") + pd.Timedelta(hours=9)
+        before = bars[bars.index < open_kst.tz_convert("America/New_York")]
+        regular = before[(before.index.time >= pd.Timestamp("09:30").time()) & (before.index.time < pd.Timestamp("16:00").time())]
+        if regular.empty:
+            return None
+        close_time = regular.index[-1]
+        regular_close = float(regular["close"].iloc[-1])
+        after = before[before.index > close_time]
+        if after.empty or regular_close <= 0:
+            return None
+        last = float(after["close"].iloc[-1])
+        return {"regular_close": regular_close, "last": last, "ret": last / regular_close - 1,
+                # 범위는 종가로 — 시간외 봉의 저가·고가에는 체결이 드문 틈의 튀는 값이 섞인다(10/1 MU 저가 −28%).
+                "low_ret": float(after["close"].min()) / regular_close - 1, "high_ret": float(after["close"].max()) / regular_close - 1,
+                "last_time": after.index[-1].tz_convert("Asia/Seoul").isoformat()}
+    except Exception as exc:
+        print(f"  시간외 가격 미확인({ticker}: {type(exc).__name__})")
+        return None
+
+
+SESSION_CROSS = (("NQ=F", "나스닥100 선물"), ("ZN=F", "미 10년물 국채 선물"), ("KRW=X", "원/달러"))
+
+
+def session_cross(session_date, high_time=None):
+    """한국 장중(09:00~15:30 KST) 해외 선물·환율의 움직임. 고점 시각이 있으면 고점 이후 구간도.
+
+    국채 선물은 가격이라 오르면 금리가 내린 것이다(영상의 '오후 미국 금리 급등' 같은 말을 자료로 확인한다).
+    """
+    out = {}
+    start = pd.Timestamp(session_date).tz_localize("Asia/Seoul") + pd.Timedelta(hours=9)
+    end = start + pd.Timedelta(hours=6, minutes=30)
+    for ticker, label in SESSION_CROSS:
+        try:
+            bars = _yf(ticker, period="5d", interval="5m")
+            if bars.empty:
+                continue
+            bars.index = pd.DatetimeIndex(bars.index).tz_convert("Asia/Seoul")
+            seg = bars[(bars.index >= start) & (bars.index <= end)]["close"].dropna()
+            if len(seg) < 10:
+                continue
+            row = {"label": label, "ret": float(seg.iloc[-1] / seg.iloc[0] - 1)}
+            if high_time is not None:
+                high_at = pd.Timestamp(high_time)
+                high_at = high_at.tz_localize("Asia/Seoul") if high_at.tzinfo is None else high_at
+                after = seg[seg.index >= high_at]
+                if len(after) >= 3:
+                    row["after_high"] = float(after.iloc[-1] / after.iloc[0] - 1)
+            out[ticker] = row
+        except Exception as exc:
+            print(f"  장중 {label} 미확인({type(exc).__name__})")
+    return out
+
+
+def earnings_reactions(target, corp_code, cache_dir, since=2015):
+    """과거 잠정실적(영업실적 공정공시) 발표일의 주가 반응. 발표 전 20거래일 등락으로 나눠 센다.
+
+    영상의 규칙('발표 전 오르면 발표날 떨어지고, 발표 전 내렸으면 발표 뒤 반등')을 이 종목 기록으로 잰다.
+    발표일은 DART 공시 목록에서 찾고(분기 끝 다음 날 ~ 45일), 장 시작 전 공시라 그날 종가/전일 종가가 반응이다.
+    {n, down, mean, rows:[{date, ret, prior20, next5}], prior_up:{n, down}, prior_down:{n, up_next5}} 또는 None.
+    """
+    try:
+        from data_sources.dart import dart_key_optional, fetch_dart_disclosures
+        key = dart_key_optional()
+        if not key:
+            return None
+        cache = Path(cache_dir) / f"earnings_dates_{target}.csv"
+        known = set(pd.read_csv(cache, dtype=str)["date"]) if cache.exists() else set()
+        dates = set(known)
+        today = pd.Timestamp.now(tz="Asia/Seoul").tz_localize(None).normalize()
+        for quarter_end in pd.date_range(f"{since}-03-31", today, freq="QE"):
+            start, stop = quarter_end + pd.Timedelta(days=1), quarter_end + pd.Timedelta(days=45)
+            if any(start <= pd.Timestamp(d) <= stop for d in known) or start > today:
+                continue                                   # 이미 찾은 분기는 다시 묻지 않는다
+            rows = fetch_dart_disclosures(corp_code, key, start, min(stop, today), max_pages=3)
+            hits = [r["rcept_dt"] for r in rows if re.search(r"영업\s*\(?\s*잠정\s*\)?\s*실적", r["report_nm"])]
+            if hits:
+                dates.add(pd.Timestamp(min(hits)).date().isoformat())
+        if not dates:
+            return None
+        cache.parent.mkdir(parents=True, exist_ok=True)
+        pd.DataFrame({"date": sorted(dates)}).to_csv(cache, index=False)
+        daily = load_daily(TARGETS[target]["ticker"], days=4400)
+        close = daily["close"]
+        rows = []
+        for d in sorted(dates):
+            day = pd.Timestamp(d)
+            if day not in close.index:
+                continue
+            i = close.index.get_loc(day)
+            if i < 21:
+                continue
+            rows.append({"date": d, "ret": float(close.iloc[i] / close.iloc[i - 1] - 1),
+                         "prior20": float(close.iloc[i - 1] / close.iloc[i - 21] - 1),
+                         "next5": float(close.iloc[i + 5] / close.iloc[i] - 1) if i + 5 < len(close) else None})
+        if len(rows) < 8:
+            return None
+        frame = pd.DataFrame(rows)
+        up, down = frame[frame["prior20"] > 0], frame[frame["prior20"] <= 0]
+        nxt = down["next5"].dropna()
+        return {"n": int(len(frame)), "down": int((frame["ret"] < 0).sum()), "mean": float(frame["ret"].mean()),
+                "first": frame["date"].iloc[0], "last": frame["date"].iloc[-1],
+                "prior_up": {"n": int(len(up)), "down": int((up["ret"] < 0).sum()),
+                             "mean": float(up["ret"].mean()) if len(up) else None},
+                "prior_down": {"n": int(len(down)), "down": int((down["ret"] < 0).sum()),
+                               "mean": float(down["ret"].mean()) if len(down) else None,
+                               "next5_n": int(len(nxt)), "next5_up": int((nxt > 0).sum())},
+                "rows": rows[-8:]}
+    except Exception as exc:
+        print(f"  실적 발표일 반응 미확인({type(exc).__name__}: {str(exc)[:100]})")
+        return None
 
 
 def load_intraday(ticker, session_date):
@@ -503,6 +656,14 @@ def build_review(target, session_date, storage, token=None, use_news=True):
             summary["high252"] = float(highs.tail(252).max())          # 전날 밤 마이크론 — 두 종목과 서로 영향을 주고받는 미국 메모리 회사
     summary["range"] = float(today["high"]) / float(today["low"]) - 1 if float(today["low"]) > 0 else float("nan")
     summary["peer_range"] = range_of(spec["peer"])
+    # 직전 5거래일 등락(수급 자료가 없는 날에도 '그날 함께 관찰된 것'에 쓴다, 2026-10-01).
+    summary["prior_5d"] = (float(daily["close"].iloc[pos - 1] / daily["close"].iloc[pos - 6] - 1) if pos >= 6 else None)
+    # 장중 고가·저가가 이동평균선에 닿았는가('20일선 지지 후 반등', '5일선 넘으려다 밀림').
+    if not long.empty and session_date in long.index:
+        summary["ma_touches"] = ma_touches(long, long.index.get_loc(session_date))
+    # 전날 밤 미국 메모리·AI 대표주의 시간외 반응(실적 발표는 장 마감 뒤라 정규장 등락에 안 보인다).
+    summary["micron_ah"] = after_hours("MU", session_date)
+    summary["nvidia_ah"] = after_hours("NVDA", session_date)
 
     bars = load_intraday(spec["ticker"], session_date)
     intraday_note, coverage = None, None
@@ -532,6 +693,11 @@ def build_review(target, session_date, storage, token=None, use_news=True):
             joined = pd.concat([a, b], axis=1, join="inner").dropna()
             corr = float(joined.iloc[:, 0].corr(joined.iloc[:, 1])) if len(joined) >= 20 else None
     classification = classify_session(c2c, gap, session, events, summary["kospi_c2c"], cshare, corr, close_label)
+    # 한국 장중의 해외 선물·환율(고점 이후 구간 포함) — '오후에 미국 금리가 올라 상승을 막았다' 같은 설명을 자료로 본다.
+    summary["session_cross"] = session_cross(session_date, tp["high_time"] if tp else None)
+    if tp and summary["close"] > 0:
+        high_price = summary["open"] * (1 + float(tp["high"]))
+        summary["from_high"] = summary["close"] / high_price - 1 if high_price > 0 else None
 
     # 뉴스
     overnight_news, top_news = None, []
@@ -550,6 +716,12 @@ def build_review(target, session_date, storage, token=None, use_news=True):
         day_items = [it for it in items if it["time"].date() == session_date.date()]
         top_news = sorted(day_items, key=lambda it: (-score_headline(it["title"], spec["name"]), it["time"]))[:6]
     disclosures, disclosure_note = fetch_disclosures(spec["corp_code"], session_date)
+    # 실적 발표가 열흘 안에 있거나 오늘이 발표일이면, 과거 발표일의 반응 통계를 붙인다.
+    upcoming = [ev for ev in _kr_events(session_date, target, days=10)
+                if "실적" in ev.get("label", "") and spec["name"] in ev.get("label", "")]
+    today_is_earnings = any(PROVISIONAL_RE.search(d.get("report_nm", "")) for d in (disclosures or []))
+    earnings_stats = (earnings_reactions(target, spec["corp_code"], Path(storage))
+                      if upcoming or today_is_earnings else None)
 
     # 수급 — 누가 팔고 샀나(2026-09-29 요청). 실패해도 회고는 낸다.
     # 예전에는 이 작업의 pip 설치에 lxml 이 빠져 네이버 표를 읽지 못해 수급이 매일 비어 있었다(9/17~9/28 회고 모두 None).
@@ -614,6 +786,7 @@ def build_review(target, session_date, storage, token=None, use_news=True):
         "disclosures": disclosures, "disclosure_note": disclosure_note, "flows": flows_text,
         "flow_story": flow_story_data,
         "context": session_context(spec["ticker"], session_date),
+        "earnings_reactions": earnings_stats,
         "forecasts": forecasts, "price_check": price_check, "disclaimer": DISCLAIMER,
     }
 

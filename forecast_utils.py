@@ -3365,9 +3365,41 @@ def flow_story(today, history, summary, close, prior_5d=None, peer_name="동종 
         lead = max(actors, key=lambda a: abs(a["won"]))
         counter = None
 
+    seen = market_observations(summary, prior_5d=prior_5d, peer_name=peer_name, foreign=shares["foreign_net"])
+    if lead.get("vs_usual") is not None and lead["vs_usual"] >= 2:
+        seen.append(f"{lead['name']}의 순{'매도' if lead['won'] < 0 else '매수'} 규모가 최근 20거래일 평균의 "
+                    f"{lead['vs_usual']:.1f}배로 컸습니다.")
+    return {"direction": direction, "c2c": c2c, "actors": actors, "lead": lead, "counter": counter,
+            "all_one_side": all_one_side, "observations": seen, "estimated_indiv": estimated,
+            "source_note": source_note}
+
+
+_MA_KIND = {"support": "{n}일선({lv}) 부근까지 내려왔다가 그 위에서 마감 — {n}일선 지지 후 반등의 모양입니다.",
+            "resistance": "{n}일선({lv}) 부근까지 올랐다가 그 아래에서 마감 — {n}일선을 넘지 못하고 밀린 모양입니다.",
+            "reclaim": "장중 {n}일선({lv}) 아래로 빠졌다가 그 위로 되돌아와 마감했습니다.",
+            "fail": "장중 {n}일선({lv}) 위로 올랐다가 그 아래로 밀려 마감했습니다."}
+
+
+def market_observations(summary, prior_5d=None, peer_name="동종 종목", foreign=None):
+    """그날 함께 관찰된 사실(수급 자료가 없어도 쓸 수 있는 것). 매매 이유를 단정하지 않는다.
+
+    2026-10-01: 장 회고 영상과 비교해 더한 것 — 이동평균선 지지·저항, 전날 밤 미국 대표주의 시간외 반응(실적 발표는 장
+    마감 뒤라 정규장 등락에 안 보인다), 한국 장중의 나스닥 선물·미 국채 선물·원/달러(고점 이후 구간 포함).
+    예전에는 이 목록이 수급 자료가 있을 때만 나와, 수급이 늦은 날(10/1 16:10)에는 통째로 빠졌다.
+    """
+    def num(value):
+        try:
+            value = float(value)
+        except (TypeError, ValueError):
+            return None
+        return value if np.isfinite(value) else None
+
     def pct(value):
         return f"{value:+.2%}"
 
+    summary = summary or {}
+    c2c = num(summary.get("c2c")) or 0.0
+    direction = "up" if c2c > 0.001 else "down" if c2c < -0.001 else "flat"
     seen = []
     kospi, peer = num(summary.get("kospi_c2c")), num(summary.get("peer_c2c"))
     fx, sox, volume = num(summary.get("usdkrw_chg")), num(summary.get("sox_ret")), num(summary.get("volume_ratio"))
@@ -3386,7 +3418,6 @@ def flow_story(today, history, summary, close, prior_5d=None, peer_name="동종 
             seen.append(f"{peer_name}도 {pct(peer)}였지만 이 종목이 더 크게 움직였습니다.")
         else:
             seen.append(f"{peer_name}는 반대로 {pct(peer)} — 업종 전체의 움직임은 아니었습니다.")
-    foreign = shares["foreign_net"]
     if fx is not None and foreign is not None:
         if foreign < 0 and fx >= .003:
             seen.append(f"원/달러 {pct(fx)}(원화 약세) — 외국인 매도와 같은 방향의 환율 움직임입니다.")
@@ -3425,14 +3456,44 @@ def flow_story(today, history, summary, close, prior_5d=None, peer_name="동종 
             seen.append(f"직전 5거래일 {pct(prior)} 오른 뒤의 매도 — 차익 실현과 맞는 모양입니다.")
         elif direction == "up" and prior <= -.08:
             seen.append(f"직전 5거래일 {pct(prior)} 내린 뒤의 매수 — 저가 매수와 맞는 모양입니다.")
-    if lead.get("vs_usual") is not None and lead["vs_usual"] >= 2:
-        seen.append(f"{lead['name']}의 순{'매도' if lead['won'] < 0 else '매수'} 규모가 최근 20거래일 평균의 "
-                    f"{lead['vs_usual']:.1f}배로 컸습니다.")
     if volume is not None and volume >= 1.5:
         seen.append(f"거래량이 20일 평균의 {volume:.1f}배였습니다.")
-    return {"direction": direction, "c2c": c2c, "actors": actors, "lead": lead, "counter": counter,
-            "all_one_side": all_one_side, "observations": seen, "estimated_indiv": estimated,
-            "source_note": source_note}
+    for touch in summary.get("ma_touches") or []:
+        text = _MA_KIND.get(touch.get("kind"))
+        level = num(touch.get("level"))
+        if text and level is not None:
+            seen.append(text.format(n=int(touch.get("ma", 0)), lv=f"{level:,.0f}원"))
+    for key, name in (("micron_ah", "마이크론은"), ("nvidia_ah", "엔비디아는")):
+        ah = summary.get(key) or {}
+        ret, low, high = num(ah.get("ret")), num(ah.get("low_ret")), num(ah.get("high_ret"))
+        if ret is None:
+            continue
+        swing = max(abs(low or 0), abs(high or 0))
+        if abs(ret) >= .01 or swing >= .015:
+            span = f"(장중 {pct(low)}~{pct(high)})" if low is not None and high is not None else ""
+            seen.append(f"{name} 미국 정규장 마감 뒤 시간외에서 {pct(ret)}{span} — 정규장 등락에 안 보이는 반응입니다.")
+    cross = summary.get("session_cross") or {}
+    parts = []
+    for ticker, row in cross.items():
+        ret = num((row or {}).get("ret"))
+        if ret is None:
+            continue
+        label = row.get("label", ticker)
+        note = ""
+        if ticker == "ZN=F" and abs(ret) >= .001:
+            note = "(금리 하락)" if ret > 0 else "(금리 상승)"
+        elif ticker == "KRW=X" and abs(ret) >= .001:
+            note = "(원화 약세)" if ret > 0 else "(원화 강세)"
+        after = num(row.get("after_high"))
+        tail = f", 이 종목 고점 이후 {pct(after)}" if after is not None and num(summary.get("from_high")) is not None \
+            and num(summary.get("from_high")) <= -.01 else ""
+        parts.append(f"{label} {pct(ret)}{note}{tail}")
+    if parts:
+        seen.append("우리 장중(09:00~15:30) " + " · ".join(parts) + ".")
+    from_high = num(summary.get("from_high"))
+    if from_high is not None and from_high <= -.02:
+        seen.append(f"마감가가 장중 고가보다 {pct(from_high)} 아래 — 오른 폭을 장중에 꽤 반납했습니다.")
+    return seen
 
 
 def flow_story_html(story, number=None):
@@ -3528,6 +3589,27 @@ def _krx_holidays(path=KRX_HOLIDAYS_PATH):
         return set()
 
 
+def _krx_holiday_events(day, days=7, path=KRX_HOLIDAYS_PATH):
+    """그날 다음부터 days 일 안의 한국 증시 휴장일(사람이 확인해 적은 파일). 장 회고 영상처럼 '다음 주 휴장'을 미리 보인다."""
+    import os
+    if not os.path.exists(path):
+        return []
+    try:
+        table = pd.read_csv(path, dtype=str)
+    except (OSError, ValueError):
+        return []
+    start = pd.Timestamp(day).normalize()
+    out = []
+    for _, row in table.iterrows():
+        when = pd.to_datetime(row.get("date"), errors="coerce")
+        if pd.isna(when) or not (start < when <= start + pd.Timedelta(days=days)) or when.weekday() >= 5:
+            continue
+        name = str(row.get("name") or "").strip()
+        out.append({"date": when.date().isoformat(), "event": "KRX",
+                    "label": "한국 증시 휴장" + (f"({name})" if name and name != "nan" else "")})
+    return out
+
+
 def next_krx_session(day, holidays=None):
     """다음 거래일(주말·파일의 휴장일 건너뜀)."""
     holidays = _krx_holidays() if holidays is None else holidays
@@ -3596,7 +3678,8 @@ def review_context(review):
         out["next_events"] = upcoming_us_events(day, days=4)
     except Exception:
         out["next_events"] = []
-    out["next_events"] = sorted(out["next_events"] + _kr_events(day, r.get("target")), key=lambda ev: ev["date"])
+    out["next_events"] = sorted(out["next_events"] + _kr_events(day, r.get("target")) + _krx_holiday_events(day),
+                                key=lambda ev: ev["date"])
     return out
 
 
@@ -3627,6 +3710,36 @@ def review_next_events_html(context, number):
     return (f'<div style="font-size:14px;margin:16px 0 6px"><b>{number}. 다가오는 주요 일정</b> '
             '<span style="color:#6b7178;font-size:12px">— 미국 발표는 한국 시각으로 대개 다음 날 새벽 · 국내 잠정실적은 회사 공지 전이면 예상일</span></div>'
             f'<ul style="margin:0 0 6px;padding-left:20px;font-size:13px;line-height:1.7">{rows}</ul>')
+
+
+def earnings_reactions_html(stats, name=""):
+    """과거 잠정실적 발표일의 주가 반응(2026-10-01). '발표 전에 오르면 발표날 내리고, 내렸으면 발표 뒤 반등'이라는
+    흔한 말을 이 종목의 기록으로 확인해 보인다. 예측이 아니라 과거 빈도이며 표본이 작다는 것을 함께 적는다."""
+    from html import escape as e
+    if not stats or not stats.get("n"):
+        return ""
+
+    def rate(k, n):
+        return f"{k}/{n}번" if n else "사례 없음"
+
+    lines = [f'{e(str(stats.get("first", "")))}~{e(str(stats.get("last", "")))} 잠정실적 발표일 {stats["n"]}번 중 '
+             f'발표날 하락 {rate(stats.get("down", 0), stats["n"])}, 평균 {_rv_pct(stats.get("mean", 0))}.']
+    up, down = stats.get("prior_up") or {}, stats.get("prior_down") or {}
+    if up.get("n"):
+        lines.append(f'발표 전 20거래일 오른 뒤: 발표날 하락 {rate(up.get("down", 0), up["n"])}, 평균 {_rv_pct(up.get("mean", 0))}.')
+    if down.get("n"):
+        line = f'발표 전 20거래일 내린 뒤: 발표날 하락 {rate(down.get("down", 0), down["n"])}, 평균 {_rv_pct(down.get("mean", 0))}'
+        if down.get("next5_n"):
+            line += f' · 그 뒤 5거래일 상승 {rate(down.get("next5_up", 0), down["next5_n"])}'
+        lines.append(line + ".")
+    rows = stats.get("rows") or []
+    recent = " · ".join(f'{e(str(x.get("date", "")))} {_rv_pct(x.get("ret", 0))}' for x in rows if x.get("ret") is not None)
+    return ('<div style="background:#f3f7fb;border-left:4px solid #5b7fa6;padding:9px 12px;margin:8px 0 10px;font-size:13px">'
+            f'<div style="font-weight:700;margin-bottom:4px">{e(name)} 실적 발표일, 과거에는 어땠나</div>'
+            '<ul style="margin:0;padding-left:18px;line-height:1.7">' + "".join(f"<li>{x}</li>" for x in lines) + "</ul>"
+            + (f'<div style="font-size:12px;color:#6b7178;margin-top:4px">최근: {recent}</div>' if recent else "")
+            + '<div style="font-size:12px;color:#8a9199;margin-top:4px">과거 빈도일 뿐 이번 발표의 예측이 아닙니다. '
+            '표본이 수십 번이라 한두 번의 차이는 우연과 구별되지 않습니다. 출처: DART 잠정실적 공시일 · 종가.</div></div>')
 
 
 def review_section_html(review, carried=False):
@@ -3667,6 +3780,15 @@ def review_section_html(review, carried=False):
     if story:
         parts.append(flow_story_html(story, number=next(counter)))
         next(counter)   # flow_story_html 이 두 소제목(누가 팔고 샀나 · 그날 함께 관찰된 것)을 쓴다
+    else:
+        # 수급이 늦은 날(2026-10-01 16:10)에도 시장·업종·이동평균선·시간외·장중 해외 지표는 보인다.
+        seen = market_observations(s, prior_5d=s.get("prior_5d"), peer_name=r.get("peer_name") or "동종 종목")
+        if seen:
+            parts.append(sub("그날 함께 관찰된 것",
+                             ' <span style="color:#6b7178;font-size:12px">— 매매 이유를 단정하지 않습니다 · 투자자별 수급은 '
+                             '아직 집계 전이라 뺐습니다</span>'))
+            parts.append('<ul style="margin:0 0 6px;padding-left:20px;font-size:13px;color:#4a4f55">'
+                         + "".join(f"<li>{e(x)}</li>" for x in seen) + "</ul>")
 
     # 3. 흐름이 바뀐 시각과 그 전후의 뉴스(공시·관련 헤드라인 포함)
     parts.append(sub("흐름이 바뀐 시각과 그 전후의 뉴스"))
@@ -3742,8 +3864,9 @@ def review_section_html(review, carried=False):
     else:
         parts.append('<div style="font-size:13px;color:#6b7178">오늘 예측일의 아침 예측 기록이 원장에 없습니다.</div>')
 
-    # 6. 다가오는 주요 일정(있을 때만)
+    # 6. 다가오는 주요 일정(있을 때만) + 실적 발표일 반응 통계(발표가 가까울 때만)
     parts.append(review_next_events_html(context, next(counter)))
+    parts.append(earnings_reactions_html(r.get("earnings_reactions"), r.get("name") or ""))
     parts.append('<div style="margin:12px 0 0;padding:10px 14px;background:#fff4e5;border:1px solid #f0c58a;border-radius:6px;'
                  f'font-size:12px;color:#7a4b00">{e(REVIEW_DISCLAIMER)}</div>')
     parts.append(REVIEW_END)

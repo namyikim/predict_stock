@@ -108,9 +108,10 @@ class ReviewOrderTests(unittest.TestCase):
                           "4. 오늘 장", "5. 아침 예측과 비교", "6. 다가오는 주요 일정"])
 
     def test_numbers_close_up_when_flows_are_missing(self):
+        # 수급이 없어도 시장·업종 등 '그날 함께 관찰된 것'은 남는다(2026-10-01). '누가 팔고 샀나'만 빠진다.
         self.assertEqual(self.titles(review("2026-09-29", flow_story=None)),
-                         ["1. 흐름이 바뀐 시각과 그 전후의 뉴스", "2. 오늘 장", "3. 아침 예측과 비교",
-                          "4. 다가오는 주요 일정"])
+                         ["1. 그날 함께 관찰된 것", "2. 흐름이 바뀐 시각과 그 전후의 뉴스", "3. 오늘 장",
+                          "4. 아침 예측과 비교", "5. 다가오는 주요 일정"])
 
     def test_source_codes_are_shown_in_words(self):
         r = review("2026-09-29")

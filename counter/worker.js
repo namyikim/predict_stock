@@ -14,6 +14,8 @@
 //   POST /unsubscribe    구독 해지. 본문 {email, page}. 신청과 같은 응답을 돌려준다(가입 여부를 알려 주지 않는다).
 //   GET /subscribers     구독자 목록(비공개, /stats 와 같은 STATS_TOKEN).
 //   POST /subscribers/delete  관리자가 한 건을 지운다(STATS_TOKEN). 본문 {email, page}.
+//   POST /dispatch/test  관리자가 GitHub 채점 워크플로 호출을 한 번 시험한다(STATS_TOKEN). 결과 JSON 을 바로 돌려줘
+//                        Cloudflare 로그를 열지 않아도 토큰·권한 문제를 알 수 있다(2026-10-01).
 //
 // Cron Trigger(대시보드 Settings → Triggers → Cron Triggers, 예: `0 3 * * *`)를 걸면
 // 아래 scheduled()가 매일 오래된 조회 기록을 지운다(보관기간 관리).
@@ -345,6 +347,14 @@ async function handleSubscribe(request, env, origin, action) {
   return json({ ok: true }, origin);
 }
 
+// 정시 호출 시험(관리자). GitHub 를 실제로 한 번 부르고 결과를 그대로 돌려준다. 토큰 값은 돌려주지 않는다.
+async function handleDispatchTest(request, env, origin) {
+  if (!isAdmin(request, env)) return json({ error: "unauthorized" }, origin, 401);
+  const result = await dispatchScoring(env);
+  return json({ ...result, token_present: Boolean(env.GH_DISPATCH_TOKEN || env.GITHUB_DISPATCH_TOKEN),
+                force: String(env.DISPATCH_FORCE || "") === "1", at: new Date().toISOString() }, origin);
+}
+
 async function handleSubscribers(request, env, origin) {
   if (!isAdmin(request, env)) return json({ error: "unauthorized" }, origin, 401);
   const rows = await env.DB.prepare(
@@ -390,6 +400,7 @@ export default {
         if (url.pathname === "/subscribe") return await handleSubscribe(request, env, origin, "subscribe");
         if (url.pathname === "/unsubscribe") return await handleSubscribe(request, env, origin, "unsubscribe");
         if (url.pathname === "/subscribers/delete") return await handleSubscriberDelete(request, env, origin);
+        if (url.pathname === "/dispatch/test") return await handleDispatchTest(request, env, origin);
         return json({ error: "not found" }, origin, 404);
       }
       if (request.method !== "GET") {

@@ -186,6 +186,13 @@ a{color:var(--accent)}
 
 <div id="msg" class="msg"></div>
 
+<!-- 정시 호출 시험(2026-10-01): Worker 가 GitHub 채점 워크플로를 한 번 부르고 결과를 보여 준다. 위 토큰 칸을 쓴다. -->
+<div style="margin:6px 0 14px;padding:10px 14px;border:1px solid #e1e4e8;border-radius:6px;background:#f5f6f8;font-size:13px">
+  <b>정시 호출 시험</b> — Worker가 GitHub 채점 워크플로를 한 번 깨웁니다. 결과가 <code>dispatched</code>면 Actions에 "채점 갱신 · cloudflare-cron" 실행이 생깁니다.
+  <button id="dispatch-test" type="button" style="margin-left:8px;padding:5px 10px">지금 호출</button>
+  <span id="dispatch-result" style="margin-left:8px"></span>
+</div>
+
 <div id="report">
   <h2>요약</h2>
   <div class="tiles" id="tiles"></div>
@@ -786,6 +793,25 @@ a{color:var(--accent)}
       }
     });
   }
+  // 정시 호출 시험 버튼(2026-10-01)
+  var dt = document.getElementById("dispatch-test");
+  if (dt) dt.addEventListener("click", function () {
+    var out = document.getElementById("dispatch-result"), tok = document.getElementById("token").value.trim();
+    if (!tok) { out.textContent = "위 STATS_TOKEN 칸을 먼저 채우세요."; return; }
+    out.textContent = "호출 중…"; dt.disabled = true;
+    fetch(ENDPOINT + "/dispatch/test", { method: "POST", headers: { "Authorization": "Bearer " + tok, "Content-Type": "application/json" }, body: "{}" })
+      .then(function (r) { return r.json().then(function (j) { return { ok: r.ok, status: r.status, body: j }; }); })
+      .then(function (r) {
+        var b = r.body || {};
+        if (!r.ok) { out.textContent = "실패 " + r.status + " " + (b.error || ""); return; }
+        var why = b.status === "dispatched" ? "성공 — Actions 에 실행이 생깁니다"
+          : b.status === "skipped" ? "토큰 시크릿을 읽지 못함(이름 확인)"
+          : b.code === 401 ? "토큰 만료·무효" : b.code === 403 ? "토큰에 Actions 쓰기 권한 없음" : b.code === 404 ? "토큰이 이 저장소에 접근 못 함" : "";
+        out.innerHTML = "<b>" + b.status + (b.code ? " " + b.code : "") + "</b> · " + why + (b.force ? " · 시험 모드(DISPATCH_FORCE) 켜짐" : "");
+      })
+      .catch(function (e) { out.textContent = "오류: " + e.message + " — Worker 에 /dispatch/test 가 배포됐는지 확인하세요."; })
+      .then(function () { dt.disabled = false; });
+  });
   function route() { show((location.hash || "").slice(1)); }
   window.addEventListener("hashchange", route);
   // 처음 들어올 때는 주소의 #과 관계없이 방문 통계를 연다(2026-09-30 요청). 탭을 누르면 주소에 #subscribers

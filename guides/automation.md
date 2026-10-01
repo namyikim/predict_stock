@@ -52,7 +52,7 @@
 
 GitHub의 cron은 이 저장소에서 예정보다 4~5시간 늦게 실행을 만듭니다(2026-09-08~10 사흘 모두 09:37 회차가 14:10에, 16:10 회차가 21:06~21:18에 실행). 같은 기간 일일 보고서는 하루 23개 cron 중 11~13개만 실행됐습니다. 설정이 빠진 것이 아니라 GitHub 쪽 대기열의 문제이므로 다음 세 가지로 대응합니다.
 
-1. **정시 호출은 Cloudflare Worker가 맡습니다.** 조회수 카운터 Worker의 Cron Trigger(`37 0 * * MON-FRI`, `10 7 * * MON-FRI`, UTC — 요일은 이름으로. 숫자 `1-5`는 Cloudflare에서 일~목이라 금요일이 빠진다)가 GitHub `workflow_dispatch` API로 채점 워크플로를 깨웁니다. 설정 방법은 [counter/README.md](../counter/README.md)의 "채점 워크플로 정시 호출"을 보세요. 이 경로가 설정되면 Actions 목록에 `채점 갱신 · cloudflare-cron` 실행이 09:37·16:10 직후에 생깁니다.
+1. **정시 호출은 Cloudflare Worker가 맡습니다.** 조회수 카운터 Worker의 Cron Trigger(`37 0`, `10 7`, `45 7`, `30 8 * * MON-FRI`, UTC — 요일은 이름으로. 숫자 `1-5`는 Cloudflare에서 일~목이라 금요일이 빠진다)가 GitHub `workflow_dispatch` API로 채점 워크플로를 깨웁니다. 설정 방법은 [counter/README.md](../counter/README.md)의 "채점 워크플로 정시 호출"을 보세요. 이 경로가 설정되면 Actions 목록에 `채점 갱신 · cloudflare-cron` 실행이 09:37·16:10 직후에 생깁니다.
 2. **범위는 도착 시각으로 정합니다.** `tools/should_score_now.py`가 실행 시점의 KST 시각으로 시가만 채점할지(09:05~15:40), 종가까지 채점하고 회고할지(15:40 이후) 정합니다. 자정을 넘겨 도착한 회차는 전 거래일을 대상으로 합니다. 09:37 cron이 장 마감 뒤에 도착해도 종가 채점과 회고를 수행합니다.
 3. **이미 한 일은 건너뜁니다.** 예약 실행은 `origin/main`의 원장에 그날 채점이 있고 회고 JSON이 있으면 몇 초 만에 끝납니다. 그래서 GitHub cron을 여러 개 걸어도(16:10·16:25·17:52·22:52) 중복 커밋이 생기지 않습니다. 수동 실행과 Cloudflare 호출은 건너뛰지 않습니다.
 

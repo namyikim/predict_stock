@@ -45,12 +45,14 @@ console.log(JSON.stringify({
   open: worker.dispatchDue(t('2026-09-10T00:37:00Z')),        // 09:37 KST 목요일
   close: worker.dispatchDue(t('2026-09-10T07:10:30Z')),       // 16:10 KST
   slightlyLate: worker.dispatchDue(t('2026-09-10T07:12:00Z')),
+  retry1: worker.dispatchDue(t('2026-09-10T07:45:00Z')),      // 16:45 KST 재시도(2026-10-01)
+  retry2: worker.dispatchDue(t('2026-09-10T08:30:00Z')),      // 17:30 KST 재시도
   tooLate: worker.dispatchDue(t('2026-09-10T07:14:00Z')),
   retention: worker.dispatchDue(t('2026-09-10T03:00:00Z')),   // 보관기간 정리 cron
   saturday: worker.dispatchDue(t('2026-09-12T07:10:00Z')),
 }));
 """)
-        self.assertEqual(result, {"open": True, "close": True, "slightlyLate": True,
+        self.assertEqual(result, {"open": True, "close": True, "slightlyLate": True, "retry1": True, "retry2": True,
                                   "tooLate": False, "retention": False, "saturday": False})
 
     def test_scheduled_calls_github_only_with_a_token_and_never_logs_it(self):

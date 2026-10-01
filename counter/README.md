@@ -169,6 +169,8 @@ GitHub의 cron은 이 저장소에서 예정보다 4~5시간 늦게 실행을 �
    "Execute worker every"(간격) 대신 **Cron** 식(custom expression)을 고르고 UTC로 넣는다.
    - `37 0 * * MON-FRI` — 09:37 KST 시가 채점
    - `10 7 * * MON-FRI` — 16:10 KST 마감 채점·회고
+   - `45 7 * * MON-FRI` — 16:45 KST 회고 재시도(네이버 투자자별 매매가 16:10 에는 아직 없다)
+   - `30 8 * * MON-FRI` — 17:30 KST 회고 재시도
 
    **요일은 반드시 이름(MON-FRI)으로 적는다.** Cloudflare는 요일 숫자를 표준 cron과 다르게 세어 `1-5`를 **일~목**으로
    해석한다(2026-09-30 확인: 예정 목록에 일요일이 있고 금요일이 없었다). 저장한 뒤 "Estimated upcoming events"에

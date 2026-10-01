@@ -19,7 +19,7 @@
 //
 // Cron Trigger(대시보드 Settings → Triggers → Cron Triggers, 예: `0 3 * * *`)를 걸면
 // 아래 scheduled()가 매일 오래된 조회 기록을 지운다(보관기간 관리).
-// `37 0 * * MON-FRI`·`10 7 * * MON-FRI`(UTC · 요일은 이름으로 — 숫자 1-5 는 Cloudflare 에서 일~목) 트리거를 더 걸고 GH_DISPATCH_TOKEN(또는 GITHUB_DISPATCH_TOKEN)을 넣으면 같은
+// `37 0`·`10 7`·`45 7`·`30 8 * * MON-FRI`(UTC · 요일은 이름으로 — 숫자 1-5 는 Cloudflare 에서 일~목) 트리거를 더 걸고 GH_DISPATCH_TOKEN(또는 GITHUB_DISPATCH_TOKEN)을 넣으면 같은
 // scheduled()가 그 시각에 GitHub의 채점 워크플로를 정시에 깨운다(README "채점 워크플로 정시 호출").
 //
 // 바인딩(대시보드 Settings에서 설정)
@@ -64,7 +64,9 @@ const BOT_PATTERN = /bot|crawler|spider|crawling|slurp|facebookexternalhit|previ
 // 정하고 이미 한 일은 건너뛰므로(tools/should_score_now.py) GitHub cron과 겹쳐도 해가 없다.
 const DISPATCH_REPO = "namyikim/predict_stock";
 const DISPATCH_WORKFLOW = "afternoon-report.yml";
-const DISPATCH_TIMES_UTC = [[0, 37], [7, 10]];   // 09:37 KST 시가 채점 · 16:10 KST 마감 채점+회고
+// 09:37 KST 시가 채점 · 16:10 KST 마감 채점+회고 · 16:45·17:30 KST 재시도(네이버 투자자별 매매가 16:10 에는
+// 아직 없어 회고의 '누가 팔고 샀나'가 비었다 — 2026-10-01). 이미 끝난 회차는 워크플로가 몇 초 만에 건너뛴다.
+const DISPATCH_TIMES_UTC = [[0, 37], [7, 10], [7, 45], [8, 30]];
 const DISPATCH_TOLERANCE_MINUTES = 3;            // 트리거가 몇 분 밀려 와도 같은 회차로 본다
 
 // 이 트리거 시각이 채점 회차인가. 워크플로의 cron과 같이 월~금(UTC)만.

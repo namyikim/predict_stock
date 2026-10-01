@@ -3,7 +3,7 @@
   "name": "SK하이닉스",
   "peer_name": "삼성전자",
   "session_date": "2026-10-01",
-  "generated_at": "2026-10-01 16:12 KST",
+  "generated_at": "2026-10-01 21:26 KST",
   "summary": {
     "prev_close": 1776000.0,
     "open": 1762000.0,
@@ -15,11 +15,11 @@
     "c2c": 0.03209459459459452,
     "high_vs_open": 0.040295119182746975,
     "low_vs_open": -0.007377979568671922,
-    "volume": 2262973.0,
-    "volume_ratio": 0.6996027365273625,
+    "volume": 2375195.0,
+    "volume_ratio": 0.7342963976088573,
     "kospi_c2c": 0.01949536092684645,
     "peer_c2c": 0.027932960893854775,
-    "usdkrw_chg": 0.006708669821362534,
+    "usdkrw_chg": 0.008352483744446415,
     "us_nights": 1,
     "sox_ret": -4.27612807042399e-05,
     "nasdaq_ret": 0.0023704223073188757,
@@ -58,10 +58,16 @@
           "link": "https://news.google.com/rss/articles/CBMidEFVX3lxTE9zbTRJWXZCcVVKa2VZRFIyaGF4enoxcURFU3I3ajBzRTdVM1J0eHMxNkRLenBaWUstaU9jeDA0MXpkT1dNVmdsZmpXQ2ZhcTAtUGhBYVBacFF6LTdENnB2dFZZVlhnVVVBckZBUXU0dkpNLU1n?oc=5"
         },
         {
-          "time": "2026-10-01T08:58:16+09:00",
+          "time": "2026-10-01T08:48:00+09:00",
+          "title": "삼성전자·SK하이닉스 3분기 영업익 190조 전망…“눈높이 너무 높다” 경계도 - 조선비즈",
+          "source": "Chosunbiz",
+          "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxPaWh5QjUwRG9tdkJYdUx1TDZfeTFFZDhSbWFkOXprSGg5c1F3OEVMZXBVbGloaW92NUtoWEVZTW5vUHMyeml6VmJiQU11M25XZkM0eUJVdHktdGVZRFE4V3JkQTVveXNVNzR3SFJJV1hWZHFiMGZ4cU0yaFJZXzlnUXJraVNJNW1G0gGcAUFVX3lxTE4yZEZpTi1oZXZKa2gwNWRJNzZHQnlKdkgxeHptVXJLbmJDaVp6b1A1SEMxUVJiay1SYVFoTGFnWS1mdHdtS3dGcVhZYjBUMWV3bC1BNGRBZFBweDhybEY1enpzMnNlUFNyYktLM0doUDlEN2Exc2gydUpHSk9PYmhTakFwVUJQa0gtc3czYl8tWTZiMGtwdFNiMHJndg?oc=5"
+        },
+        {
+          "time": "2026-10-01T08:58:24+09:00",
           "title": "\"자회사 상장 땐 ADR 가치 하락\"…SK하이닉스는 이미 경고했다",
-          "source": "KB Think",
-          "link": "https://news.google.com/rss/articles/CBMickFVX3lxTE5wcEVqSEY1X3kxVzFpRFFqQnpZdC14TlEzTGpZMTR3eGhmTXdaZlM1LWwzRDVtR1JscFpWRVByU0FScEpUZFVSWmExMUF5Y2lFNi1hTW5nVzRVaEN5Rk9XRjItZXo3ZkZibnNVbzdrMFFvQQ?oc=5"
+          "source": "연합인포맥스",
+          "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE1Rd0hpaGtkd2FScjRwYlhTTHl6ZkFHQ2hUaTA2cGNvVVN2Yl9Eek1HSGpnSkdhc3pHeURVUHJWZHdQRkxxUWZnRnRpZTVCdGN2V05NdUk2OEwtVk1OYnYyV2sxeTBVMXRIOS1mQXRhcXY?oc=5"
         }
       ]
     },
@@ -76,34 +82,22 @@
       "score": 3.628884852671117,
       "news": [
         {
-          "time": "2026-10-01T09:39:16+09:00",
-          "title": "마이크론 ‘깜짝 실적’에도…삼성전자·SK하이닉스 동반 약세",
-          "source": "진일보",
-          "link": "https://news.google.com/rss/articles/CBMib0FVX3lxTE0ybzRTcmJIdFIxVXFBTUJiOHFVWC0yTnhzUWxPdlJQTDh0YVh0ekVHTl9oUWs4YmZtTTh3Tk55LUtTVWVkRXdWdnFOTnl2aFNzMnJfZmVaMzVwOWVVN3Q2WngzYVZXMmtuUzJWMm1sOA?oc=5"
-        },
-        {
           "time": "2026-10-01T08:55:13+09:00",
           "title": "SK하이닉스, 환율 하락에도 3Q 영업익 74조 역대최대 전망 |",
           "source": "연합인포맥스",
           "link": "https://news.google.com/rss/articles/CBMidEFVX3lxTE9zbTRJWXZCcVVKa2VZRFIyaGF4enoxcURFU3I3ajBzRTdVM1J0eHMxNkRLenBaWUstaU9jeDA0MXpkT1dNVmdsZmpXQ2ZhcTAtUGhBYVBacFF6LTdENnB2dFZZVlhnVVVBckZBUXU0dkpNLU1n?oc=5"
         },
         {
-          "time": "2026-10-01T09:29:06+09:00",
-          "title": "“솔리다임 IPO, SK하이닉스 지분 희석 우려”…사측 “주주가치 제고 최우선”",
-          "source": "디지털데일리",
-          "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTFB6amEtWkdaT2xTZXNYb0JtOUlabW5kbHZXYWV5NFVxZFZMYUhwNVVOYldnS1NnUS1DbHY0T1c4S3VkQTN4QlBTMzRhakZwLUF4dktYTXZ0ZUl6MWxKQWU0c3RUVnk?oc=5"
+          "time": "2026-10-01T08:48:00+09:00",
+          "title": "삼성전자·SK하이닉스 3분기 영업익 190조 전망…“눈높이 너무 높다” 경계도 - 조선비즈",
+          "source": "Chosunbiz",
+          "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxPaWh5QjUwRG9tdkJYdUx1TDZfeTFFZDhSbWFkOXprSGg5c1F3OEVMZXBVbGloaW92NUtoWEVZTW5vUHMyeml6VmJiQU11M25XZkM0eUJVdHktdGVZRFE4V3JkQTVveXNVNzR3SFJJV1hWZHFiMGZ4cU0yaFJZXzlnUXJraVNJNW1G0gGcAUFVX3lxTE4yZEZpTi1oZXZKa2gwNWRJNzZHQnlKdkgxeHptVXJLbmJDaVp6b1A1SEMxUVJiay1SYVFoTGFnWS1mdHdtS3dGcVhZYjBUMWV3bC1BNGRBZFBweDhybEY1enpzMnNlUFNyYktLM0doUDlEN2Exc2gydUpHSk9PYmhTakFwVUJQa0gtc3czYl8tWTZiMGtwdFNiMHJndg?oc=5"
         },
         {
-          "time": "2026-10-01T08:58:16+09:00",
+          "time": "2026-10-01T08:58:24+09:00",
           "title": "\"자회사 상장 땐 ADR 가치 하락\"…SK하이닉스는 이미 경고했다",
-          "source": "KB Think",
-          "link": "https://news.google.com/rss/articles/CBMickFVX3lxTE5wcEVqSEY1X3kxVzFpRFFqQnpZdC14TlEzTGpZMTR3eGhmTXdaZlM1LWwzRDVtR1JscFpWRVByU0FScEpUZFVSWmExMUF5Y2lFNi1hTW5nVzRVaEN5Rk9XRjItZXo3ZkZibnNVbzdrMFFvQQ?oc=5"
-        },
-        {
-          "time": "2026-10-01T09:40:00+09:00",
-          "title": "삼성전자·하이닉스, 곧 자사주 매입 종료...10월 증시 ‘수급 시험대’",
-          "source": "조세일보",
-          "link": "https://news.google.com/rss/articles/CBMib0FVX3lxTE1IbzhwVkdieHJScGRpOWFHbjdLRDlfckdKY1ZzX1JxcjRWdVZQY2tnRHMxdUo4RnJGbURudFh4X3lDRmpTTlZMakd5WF9pZU5BdTVDZC1rX0F3MXlEM2FWWm5vYmVfVklNMjN5aV9uNA?oc=5"
+          "source": "연합인포맥스",
+          "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE1Rd0hpaGtkd2FScjRwYlhTTHl6ZkFHQ2hUaTA2cGNvVVN2Yl9Eek1HSGpnSkdhc3pHeURVUHJWZHdQRkxxUWZnRnRpZTVCdGN2V05NdUk2OEwtVk1OYnYyV2sxeTBVMXRIOS1mQXRhcXY?oc=5"
         }
       ]
     }
@@ -499,10 +493,16 @@
           "link": "https://news.google.com/rss/articles/CBMidEFVX3lxTE9zbTRJWXZCcVVKa2VZRFIyaGF4enoxcURFU3I3ajBzRTdVM1J0eHMxNkRLenBaWUstaU9jeDA0MXpkT1dNVmdsZmpXQ2ZhcTAtUGhBYVBacFF6LTdENnB2dFZZVlhnVVVBckZBUXU0dkpNLU1n?oc=5"
         },
         {
-          "time": "2026-10-01T08:58:16+09:00",
+          "time": "2026-10-01T08:48:00+09:00",
+          "title": "삼성전자·SK하이닉스 3분기 영업익 190조 전망…“눈높이 너무 높다” 경계도 - 조선비즈",
+          "source": "Chosunbiz",
+          "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxPaWh5QjUwRG9tdkJYdUx1TDZfeTFFZDhSbWFkOXprSGg5c1F3OEVMZXBVbGloaW92NUtoWEVZTW5vUHMyeml6VmJiQU11M25XZkM0eUJVdHktdGVZRFE4V3JkQTVveXNVNzR3SFJJV1hWZHFiMGZ4cU0yaFJZXzlnUXJraVNJNW1G0gGcAUFVX3lxTE4yZEZpTi1oZXZKa2gwNWRJNzZHQnlKdkgxeHptVXJLbmJDaVp6b1A1SEMxUVJiay1SYVFoTGFnWS1mdHdtS3dGcVhZYjBUMWV3bC1BNGRBZFBweDhybEY1enpzMnNlUFNyYktLM0doUDlEN2Exc2gydUpHSk9PYmhTakFwVUJQa0gtc3czYl8tWTZiMGtwdFNiMHJndg?oc=5"
+        },
+        {
+          "time": "2026-10-01T08:58:24+09:00",
           "title": "\"자회사 상장 땐 ADR 가치 하락\"…SK하이닉스는 이미 경고했다",
-          "source": "KB Think",
-          "link": "https://news.google.com/rss/articles/CBMickFVX3lxTE5wcEVqSEY1X3kxVzFpRFFqQnpZdC14TlEzTGpZMTR3eGhmTXdaZlM1LWwzRDVtR1JscFpWRVByU0FScEpUZFVSWmExMUF5Y2lFNi1hTW5nVzRVaEN5Rk9XRjItZXo3ZkZibnNVbzdrMFFvQQ?oc=5"
+          "source": "연합인포맥스",
+          "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE1Rd0hpaGtkd2FScjRwYlhTTHl6ZkFHQ2hUaTA2cGNvVVN2Yl9Eek1HSGpnSkdhc3pHeURVUHJWZHdQRkxxUWZnRnRpZTVCdGN2V05NdUk2OEwtVk1OYnYyV2sxeTBVMXRIOS1mQXRhcXY?oc=5"
         }
       ],
       "price": 1756000.0,
@@ -519,34 +519,22 @@
       "score": 3.628884852671117,
       "news": [
         {
-          "time": "2026-10-01T09:39:16+09:00",
-          "title": "마이크론 ‘깜짝 실적’에도…삼성전자·SK하이닉스 동반 약세",
-          "source": "진일보",
-          "link": "https://news.google.com/rss/articles/CBMib0FVX3lxTE0ybzRTcmJIdFIxVXFBTUJiOHFVWC0yTnhzUWxPdlJQTDh0YVh0ekVHTl9oUWs4YmZtTTh3Tk55LUtTVWVkRXdWdnFOTnl2aFNzMnJfZmVaMzVwOWVVN3Q2WngzYVZXMmtuUzJWMm1sOA?oc=5"
-        },
-        {
           "time": "2026-10-01T08:55:13+09:00",
           "title": "SK하이닉스, 환율 하락에도 3Q 영업익 74조 역대최대 전망 |",
           "source": "연합인포맥스",
           "link": "https://news.google.com/rss/articles/CBMidEFVX3lxTE9zbTRJWXZCcVVKa2VZRFIyaGF4enoxcURFU3I3ajBzRTdVM1J0eHMxNkRLenBaWUstaU9jeDA0MXpkT1dNVmdsZmpXQ2ZhcTAtUGhBYVBacFF6LTdENnB2dFZZVlhnVVVBckZBUXU0dkpNLU1n?oc=5"
         },
         {
-          "time": "2026-10-01T09:29:06+09:00",
-          "title": "“솔리다임 IPO, SK하이닉스 지분 희석 우려”…사측 “주주가치 제고 최우선”",
-          "source": "디지털데일리",
-          "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTFB6amEtWkdaT2xTZXNYb0JtOUlabW5kbHZXYWV5NFVxZFZMYUhwNVVOYldnS1NnUS1DbHY0T1c4S3VkQTN4QlBTMzRhakZwLUF4dktYTXZ0ZUl6MWxKQWU0c3RUVnk?oc=5"
+          "time": "2026-10-01T08:48:00+09:00",
+          "title": "삼성전자·SK하이닉스 3분기 영업익 190조 전망…“눈높이 너무 높다” 경계도 - 조선비즈",
+          "source": "Chosunbiz",
+          "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxPaWh5QjUwRG9tdkJYdUx1TDZfeTFFZDhSbWFkOXprSGg5c1F3OEVMZXBVbGloaW92NUtoWEVZTW5vUHMyeml6VmJiQU11M25XZkM0eUJVdHktdGVZRFE4V3JkQTVveXNVNzR3SFJJV1hWZHFiMGZ4cU0yaFJZXzlnUXJraVNJNW1G0gGcAUFVX3lxTE4yZEZpTi1oZXZKa2gwNWRJNzZHQnlKdkgxeHptVXJLbmJDaVp6b1A1SEMxUVJiay1SYVFoTGFnWS1mdHdtS3dGcVhZYjBUMWV3bC1BNGRBZFBweDhybEY1enpzMnNlUFNyYktLM0doUDlEN2Exc2gydUpHSk9PYmhTakFwVUJQa0gtc3czYl8tWTZiMGtwdFNiMHJndg?oc=5"
         },
         {
-          "time": "2026-10-01T08:58:16+09:00",
+          "time": "2026-10-01T08:58:24+09:00",
           "title": "\"자회사 상장 땐 ADR 가치 하락\"…SK하이닉스는 이미 경고했다",
-          "source": "KB Think",
-          "link": "https://news.google.com/rss/articles/CBMickFVX3lxTE5wcEVqSEY1X3kxVzFpRFFqQnpZdC14TlEzTGpZMTR3eGhmTXdaZlM1LWwzRDVtR1JscFpWRVByU0FScEpUZFVSWmExMUF5Y2lFNi1hTW5nVzRVaEN5Rk9XRjItZXo3ZkZibnNVbzdrMFFvQQ?oc=5"
-        },
-        {
-          "time": "2026-10-01T09:40:00+09:00",
-          "title": "삼성전자·하이닉스, 곧 자사주 매입 종료...10월 증시 ‘수급 시험대’",
-          "source": "조세일보",
-          "link": "https://news.google.com/rss/articles/CBMib0FVX3lxTE1IbzhwVkdieHJScGRpOWFHbjdLRDlfckdKY1ZzX1JxcjRWdVZQY2tnRHMxdUo4RnJGbURudFh4X3lDRmpTTlZMakd5WF9pZU5BdTVDZC1rX0F3MXlEM2FWWm5vYmVfVklNMjN5aV9uNA?oc=5"
+          "source": "연합인포맥스",
+          "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE1Rd0hpaGtkd2FScjRwYlhTTHl6ZkFHQ2hUaTA2cGNvVVN2Yl9Eek1HSGpnSkdhc3pHeURVUHJWZHdQRkxxUWZnRnRpZTVCdGN2V05NdUk2OEwtVk1OYnYyV2sxeTBVMXRIOS1mQXRhcXY?oc=5"
         }
       ],
       "price": 1779000.0,
@@ -561,52 +549,58 @@
       "link": "https://news.google.com/rss/articles/CBMidEFVX3lxTE9zbTRJWXZCcVVKa2VZRFIyaGF4enoxcURFU3I3ajBzRTdVM1J0eHMxNkRLenBaWUstaU9jeDA0MXpkT1dNVmdsZmpXQ2ZhcTAtUGhBYVBacFF6LTdENnB2dFZZVlhnVVVBckZBUXU0dkpNLU1n?oc=5"
     },
     {
-      "time": "2026-10-01T08:58:16+09:00",
+      "time": "2026-10-01T08:48:00+09:00",
+      "title": "삼성전자·SK하이닉스 3분기 영업익 190조 전망…“눈높이 너무 높다” 경계도 - 조선비즈",
+      "source": "Chosunbiz",
+      "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxPaWh5QjUwRG9tdkJYdUx1TDZfeTFFZDhSbWFkOXprSGg5c1F3OEVMZXBVbGloaW92NUtoWEVZTW5vUHMyeml6VmJiQU11M25XZkM0eUJVdHktdGVZRFE4V3JkQTVveXNVNzR3SFJJV1hWZHFiMGZ4cU0yaFJZXzlnUXJraVNJNW1G0gGcAUFVX3lxTE4yZEZpTi1oZXZKa2gwNWRJNzZHQnlKdkgxeHptVXJLbmJDaVp6b1A1SEMxUVJiay1SYVFoTGFnWS1mdHdtS3dGcVhZYjBUMWV3bC1BNGRBZFBweDhybEY1enpzMnNlUFNyYktLM0doUDlEN2Exc2gydUpHSk9PYmhTakFwVUJQa0gtc3czYl8tWTZiMGtwdFNiMHJndg?oc=5"
+    },
+    {
+      "time": "2026-10-01T08:58:24+09:00",
       "title": "\"자회사 상장 땐 ADR 가치 하락\"…SK하이닉스는 이미 경고했다",
-      "source": "KB Think",
-      "link": "https://news.google.com/rss/articles/CBMickFVX3lxTE5wcEVqSEY1X3kxVzFpRFFqQnpZdC14TlEzTGpZMTR3eGhmTXdaZlM1LWwzRDVtR1JscFpWRVByU0FScEpUZFVSWmExMUF5Y2lFNi1hTW5nVzRVaEN5Rk9XRjItZXo3ZkZibnNVbzdrMFFvQQ?oc=5"
+      "source": "연합인포맥스",
+      "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE1Rd0hpaGtkd2FScjRwYlhTTHl6ZkFHQ2hUaTA2cGNvVVN2Yl9Eek1HSGpnSkdhc3pHeURVUHJWZHdQRkxxUWZnRnRpZTVCdGN2V05NdUk2OEwtVk1OYnYyV2sxeTBVMXRIOS1mQXRhcXY?oc=5"
     }
   ],
   "top_news": [
     {
+      "time": "2026-10-01T16:08:05+09:00",
+      "title": "반도체 수출·마이크론 호실적에 코스피 7000선 눈앞…코스닥 4%대 급등 [이런국장 저런주식]",
+      "source": "서울경제",
+      "link": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE9Kcy14Y3c5dDFLeUxiZjNPTGw4MzA0cjhqWXAzOHRSQ3dpZXJLUmhfQjgtWjMzNHE1WTdVYS1YdVNwcktxSjBzWkZaNmk1VHFJTXfSAVNBVV95cUxOLWo4Z3k5dDZQMC1oZWRjSzdNeWh1NEoxWmxHRUJYQzBBbjRjRFJxYU1Mem9JME5ISU41X3dWMDdsOFpSUmJ5NUttT1VfcHkxemFiYw?oc=5"
+    },
+    {
+      "time": "2026-10-01T16:16:56+09:00",
+      "title": "[전혜은 시선] 반도체 2차 랠리 시작되나…반도체 수출과 마이크론 실적이 입증한 메모리 슈퍼사이클",
+      "source": "위클리오늘",
+      "link": "https://news.google.com/rss/articles/CBMib0FVX3lxTFBtakNMRzJTWFJLWng2bmw1SWppX2ZzTkdUc0VYWUJkRENaa0p0QlRreUwzNC1BRGVLMS12cS1kY1dTVk5TUmVPVnhtcDdZOHdXSy1lTGpiRG5zc2ozaGhiTHNWXzhhb2llR0tpcExkMA?oc=5"
+    },
+    {
+      "time": "2026-10-01T18:08:00+09:00",
+      "title": "자사주 다 샀고 외국인 떠나고… 반도체 실적만 보는 코스피",
+      "source": "busan.fnnews.com",
+      "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE55RFRFVVBMd01GRS0xN2pwTjlzcWJQMVViTHlNUlpnZlpXOFBRVDQ5OTEybndEOE8zZWlyNVQyWUN5aldOcXplVFlNdTg5T05MX2JjOVVfU0xlTTNE?oc=5"
+    },
+    {
+      "time": "2026-10-01T13:47:33+09:00",
+      "title": "[조호진의 PICK] SK하이닉스 – 엔비디아에 16단 HBM4 첫 납품…주가 탄력?",
+      "source": "데일리인베스트",
+      "link": "https://news.google.com/rss/articles/CBMib0FVX3lxTFBROFdCUk1kdml6REhZN0JtYkFCcktjek5RTXNXNW1jd2hyLWgyVEQxNXVXQ3MzdHJ0YlZxaER6czk1SlFiR3dkRVppdUFpbGloek0tclBXcFRHRWkyODEyaTRlRXM5LWdVWURQRGFfMNIBb0FVX3lxTFBROFdCUk1kdml6REhZN0JtYkFCcktjek5RTXNXNW1jd2hyLWgyVEQxNXVXQ3MzdHJ0YlZxaER6czk1SlFiR3dkRVppdUFpbGloek0tclBXcFRHRWkyODEyaTRlRXM5LWdVWURQRGFfMA?oc=5"
+    },
+    {
+      "time": "2026-10-01T14:14:00+09:00",
+      "title": "마이크론 호실적 발표 : 삼성전자와 SK하이닉스 주가 상승 전망",
+      "source": "네이버 프리미엄콘텐츠",
+      "link": "https://news.google.com/rss/articles/CBMigwFBVV95cUxQbGZoQTJqdzFfN3JmZ2RBSWpxakxHajh6RHNwT3NmV09yVzZva3dnSUNtYVk0YUJYTTRTcXEtSl9zbkVXVTdWVDhCMHQ2UmxCYWxtcDVHaS1tZWhpZ1BBd0Y2Y0VBMU9mclVTbTh6Y1lRWE5mQmpzUXBOOTl1dFNrMlpiZw?oc=5"
+    },
+    {
       "time": "2026-10-01T15:47:47+09:00",
       "title": "마이크론 '어닝서프' 코스피 6970대로 반도체 수요 견조…SK하이닉스 3%↑",
-      "source": "smedaily.co.kr",
-      "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTFBsMnVvSmlEdkZBUkdKR2pNeTNjdkxFSFBoeGJaMGlaSkxTeUlNR0duVDQyTTZRT0VmS185eWgxTDJxbFRFUExLaEhyQW80MGZSSXRSdE5OTmtuTWpsa1pURVRxRTZfcjNxUEdBMg?oc=5"
-    },
-    {
-      "time": "2026-10-01T09:39:16+09:00",
-      "title": "마이크론 ‘깜짝 실적’에도…삼성전자·SK하이닉스 동반 약세",
-      "source": "진일보",
-      "link": "https://news.google.com/rss/articles/CBMib0FVX3lxTE0ybzRTcmJIdFIxVXFBTUJiOHFVWC0yTnhzUWxPdlJQTDh0YVh0ekVHTl9oUWs4YmZtTTh3Tk55LUtTVWVkRXdWdnFOTnl2aFNzMnJfZmVaMzVwOWVVN3Q2WngzYVZXMmtuUzJWMm1sOA?oc=5"
-    },
-    {
-      "time": "2026-10-01T10:05:22+09:00",
-      "title": "[특징주] 삼성전자·SK하이닉스, 마이크론 호실적에도 영향 미미",
-      "source": "글로벌이코노믹",
-      "link": "https://news.google.com/rss/articles/CBMihwFBVV95cUxNamFDM1NBcGpFb2ptelVqVjFhRG5rQWl0azJtcl9yd1g1R0pxN2hGLTJCLTEtQnJDX28wRmsyMk0tZnYyUDdaZWJJdnlLYjRSakFKR1ZvM0hiRGNXbzctY1VneUNheUFyVGRLdUZNQWhCUE1IOU1ia051djFQXzAyYk9uZndzMlk?oc=5"
-    },
-    {
-      "time": "2026-10-01T10:49:40+09:00",
-      "title": "SK하이닉스 \"솔리다임 투자재원 결정된 것 없어…판단 기준은 주주가치\"",
-      "source": "글로벌이코노믹",
-      "link": "https://news.google.com/rss/articles/CBMihgFBVV95cUxPZUtTZlJWRWdtSGQtVHM4bkRqclcwMDRlZlVEUEFCVE5Sc1ZuVTg3LUhRNGdoUkRvR0tFLWtJNmV1TVhPdjZTVjFDU00zT3phWktNTjRmaW5FeWtJa0p2ZGdkWkl2UExBUDZ0M1RSY1B0aGN1QWZFMFl4cnZMS05Jamt5enU1Zw?oc=5"
-    },
-    {
-      "time": "2026-10-01T11:17:58+09:00",
-      "title": "SK하이닉스 \"솔리다임 투자 재원 결정된 바 없어…외부 자본 활용 시 주주가치 최우선\"",
-      "source": "아시아경제",
-      "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE9nR2J3OUduU2hkMEtRUGdQaDg1X1hGZjNrVk5WUEs0eXl6S0c4MzJCeThqRVBOUTlnY3BCS0RTUHJLdFFiUFNtODZxTGQwblNWemQxeVpsZmJLMUxkM2ZPZw?oc=5"
-    },
-    {
-      "time": "2026-10-01T11:35:13+09:00",
-      "title": "SK하이닉스 \"솔리다임 투자재원 방안 미정…주주가치 최우선\"",
-      "source": "서울파이낸스",
-      "link": "https://news.google.com/rss/articles/CBMiakFVX3lxTE1BZ2VjVktoVFhZWlZmdm44Z00wclRsZ3B5VXBqaHQwaGdsNlh1amQtRWtmM25NdFowOFVLTjVpTGhkQXpFS3FlM2xfYzJadl83MEsxblluTGNtWHhMblVmejdzbGE2RzJaNWc?oc=5"
+      "source": "중소기업신문",
+      "link": "https://news.google.com/rss/articles/CBMibkFVX3lxTE1LWTVLeHFReDBGRU9jb2wzRWFEMmtIWjI1Y2hSRm56TWdVQV9WenlXR1B1a09TQ1dLcXFDTW5zeWhCSUpRR1hIRDZLWG5BOVo5R0FEMllhYkxzNXVYZkg1d3J6YWpickZiaXlVeU9R?oc=5"
     }
   ],
-  "disclosures": null,
-  "disclosure_note": "DART 조회 실패(URLError)",
+  "disclosures": [],
+  "disclosure_note": null,
   "flows": null,
   "flow_story": null,
   "context": {},

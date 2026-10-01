@@ -95,7 +95,7 @@ jobs:
         target: [samsung, sk_hynix]
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: 이번 종목이 대상인지 확인
         id: gate
@@ -113,7 +113,7 @@ jobs:
             echo "$THIS 은(는) 이번 실행 대상이 아닙니다."
           fi
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v6
         if: steps.gate.outputs.run == 'true'
         with:
           python-version: "3.13"
@@ -179,8 +179,8 @@ jobs:
        github.event.schedule != '2,12,22,32,42,52 22 * * 0-4')
     timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
         with:
           python-version: "3.13"
         # 표준 라이브러리만 쓰므로 pip install이 필요 없다.
@@ -196,14 +196,14 @@ jobs:
        github.event.schedule != '2,12,22,32,42,52 22 * * 0-4')
     timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: 최근 검색어 보고서가 이미 있는지 확인
         id: trends_due
         if: github.event_name == 'schedule'
         run: python tools/should_run_trends.py
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v6
         if: github.event_name != 'schedule' || steps.trends_due.outputs.run == 'true'
         with:
           python-version: "3.13"
@@ -227,9 +227,9 @@ jobs:
        github.event.schedule != '2,12,22,32,42,52 22 * * 0-4')
     timeout-minutes: 30
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v6
         with:
           python-version: "3.13"
 
@@ -263,9 +263,9 @@ jobs:
        github.event.schedule != '2,12,22,32,42,52 22 * * 0-4')
     timeout-minutes: 20
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v6
         with:
           python-version: "3.13"
 
@@ -289,9 +289,9 @@ jobs:
        github.event.schedule != '2,12,22,32,42,52 22 * * 0-4')
     timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v6
         with:
           python-version: "3.13"
         # 표준 라이브러리만 쓴다.

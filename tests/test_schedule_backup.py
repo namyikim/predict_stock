@@ -54,7 +54,7 @@ class ScheduleTests(unittest.TestCase):
         gate_index = next(i for i, step in enumerate(steps)
                           if step.get("name") == "오늘 예측이 이미 기록됐는지 확인")
         setup_index = next(i for i, step in enumerate(steps)
-                           if step.get("uses") == "actions/setup-python@v5")
+                           if step.get("uses") == "actions/setup-python@v6")
         calendar_index = next(i for i, step in enumerate(steps)
                               if step.get("name") == "거래일 달력 설치")
         install_index = next(i for i, step in enumerate(steps)

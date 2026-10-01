@@ -7,7 +7,7 @@ Candidate IV interval,price,5,close_to_close,53c9db3770b61e827785,7,,,,0,,,1.0
 Candidate evening forecast,direction,1,close_to_close,53c9db3770b61e827785,9,0.2222222222222222,1.1833116240191164,0.7178249557674484,0,,,
 Candidate evening forecast,direction,1,close_to_close,c3efc95d08e699a31d4f,2,0.5,1.0753158870243187,0.6674462401932075,0,,,
 Candidate evening open,open,1,close_to_close,53c9db3770b61e827785,6,,,,6,37718.08858353571,0.020531910471687224,0.6666666666666666
-Candidate evening open,open,1,close_to_close,c3efc95d08e699a31d4f,2,,,,2,22318.61746392667,0.012597110056802958,1.0
+Candidate evening open,open,1,close_to_close,c3efc95d08e699a31d4f,3,,,,3,20648.932970982587,0.011672678741064708,1.0
 Candidate expanding,direction,1,close_to_close,53c9db3770b61e827785,9,0.6666666666666666,0.8837866327358305,0.5154053670142072,0,,,
 Candidate expanding,direction,1,close_to_close,c3efc95d08e699a31d4f,3,0.3333333333333333,0.9446997672517363,0.5653316726823375,0,,,
 Candidate expanding,direction,1,close_to_close,ebdbaad363d27a26ad73,1,0.0,1.4300778425746752,0.8822236430489339,0,,,

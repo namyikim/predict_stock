@@ -1,17 +1,17 @@
 ﻿model,kind,horizon_days,target_mode,config_hash,n,accuracy,mean_log_loss,mean_brier,point_forecasts,price_mae,price_mape,interval_coverage
-Candidate HAR interval,price,5,close_to_close,53c9db3770b61e827785,7,,,,0,,,1.0
+Candidate HAR interval,price,5,close_to_close,53c9db3770b61e827785,8,,,,0,,,1.0
 Candidate HAR interval,price,5,close_to_close,ebdbaad363d27a26ad73,1,,,,0,,,1.0
 Candidate IV interval,price,1,close_to_close,53c9db3770b61e827785,9,,,,9,47568.12870208264,0.026841251220830486,0.7777777777777778
 Candidate IV interval,price,1,close_to_close,c3efc95d08e699a31d4f,3,,,,3,32168.13765711671,0.018191090871879766,0.6666666666666666
-Candidate IV interval,price,5,close_to_close,53c9db3770b61e827785,7,,,,0,,,1.0
+Candidate IV interval,price,5,close_to_close,53c9db3770b61e827785,8,,,,0,,,1.0
 Candidate evening forecast,direction,1,close_to_close,53c9db3770b61e827785,9,0.2222222222222222,1.1833116240191164,0.7178249557674484,0,,,
-Candidate evening forecast,direction,1,close_to_close,c3efc95d08e699a31d4f,2,0.5,1.0753158870243187,0.6674462401932075,0,,,
+Candidate evening forecast,direction,1,close_to_close,c3efc95d08e699a31d4f,3,0.3333333333333333,1.1091461903273008,0.6845350529183936,0,,,
 Candidate evening open,open,1,close_to_close,53c9db3770b61e827785,6,,,,6,37718.08858353571,0.020531910471687224,0.6666666666666666
 Candidate evening open,open,1,close_to_close,c3efc95d08e699a31d4f,3,,,,3,20648.932970982587,0.011672678741064708,1.0
 Candidate expanding,direction,1,close_to_close,53c9db3770b61e827785,9,0.6666666666666666,0.8837866327358305,0.5154053670142072,0,,,
 Candidate expanding,direction,1,close_to_close,c3efc95d08e699a31d4f,3,0.3333333333333333,0.9446997672517363,0.5653316726823375,0,,,
 Candidate expanding,direction,1,close_to_close,ebdbaad363d27a26ad73,1,0.0,1.4300778425746752,0.8822236430489339,0,,,
-Candidate strict gate,price,5,close_to_close,53c9db3770b61e827785,7,,,,0,,,1.0
+Candidate strict gate,price,5,close_to_close,53c9db3770b61e827785,8,,,,0,,,1.0
 Candidate strict gate,price,5,close_to_close,ebdbaad363d27a26ad73,1,,,,0,,,1.0
 LightGBM,direction,1,close_to_close,0464a8f5fe0430d37f44,1,1.0,0.569929491312034,0.2872606937071314,0,,,
 LightGBM,direction,1,close_to_close,15c2fee718d49a56adee,1,1.0,0.6520208785168105,0.3525353059206737,0,,,
@@ -78,7 +78,7 @@ Ridge,price,1,close_to_close,ebdbaad363d27a26ad73,1,,,,1,47589.27359376964,0.026
 Ridge,price,5,close_to_close,0464a8f5fe0430d37f44,1,,,,0,,,1.0
 Ridge,price,5,close_to_close,15c2fee718d49a56adee,1,,,,0,,,1.0
 Ridge,price,5,close_to_close,4f89248afed926b75d78,1,,,,0,,,1.0
-Ridge,price,5,close_to_close,53c9db3770b61e827785,7,,,,0,,,1.0
+Ridge,price,5,close_to_close,53c9db3770b61e827785,8,,,,0,,,1.0
 Ridge,price,5,close_to_close,a5cc2a709bb33ff3d7f7,1,,,,0,,,1.0
 Ridge,price,5,close_to_close,cb6a70d1f50a0681a9bb,1,,,,0,,,1.0
 Ridge,price,5,close_to_close,ebdbaad363d27a26ad73,1,,,,0,,,1.0

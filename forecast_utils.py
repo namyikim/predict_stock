@@ -722,6 +722,37 @@ def summary_level_odds(close, levels=None, n_paths=20000, seed=20260913):
                             lookback_days=LEVEL_ODDS_LOOKBACK, n_paths=n_paths, seed=seed)
 
 
+def leading_cycle_phase_line(path="macro_history/leading_cycle.csv", window=24):
+    """통계청 선행지수 순환변동치의 국면 한 줄(2026-10-01). 규칙은 tools/cycle_phase.py 와 같다:
+    최근 24개월 고점 뒤 1개월 하락이면 '정점 가능성', 2개월 이상이면 '하락 국면 전환'(저점 쪽도 같음). 없으면 ''."""
+    import os
+    if not os.path.exists(path):
+        return ""
+    try:
+        frame = pd.read_csv(path)
+        stamps = pd.to_datetime(frame.iloc[:, 0], errors="coerce")
+        cycle = pd.Series(pd.to_numeric(frame.iloc[:, -1], errors="coerce").to_numpy(dtype=float), index=stamps)
+        cycle = cycle[cycle.index.notna()].dropna().sort_index()
+    except (OSError, ValueError):
+        return ""
+    if len(cycle) < 6:
+        return ""
+    recent = cycle.tail(window)
+    last_month, last = cycle.index[-1], float(cycle.iloc[-1])
+    peak_month, trough_month = recent.idxmax(), recent.idxmin()
+    down = int((cycle.index > peak_month).sum())
+    up = int((cycle.index > trough_month).sum())
+    if peak_month > trough_month:
+        state = ("상승 중(최근 고점 경신)" if down == 0 else "정점 가능성(고점 뒤 1개월 하락)" if down == 1
+                 else f"하락 국면 전환(고점 뒤 {down}개월 연속)")
+    else:
+        state = ("하락 중(최근 저점 경신)" if up == 0 else "저점 가능성(저점 뒤 1개월 상승)" if up == 1
+                 else f"상승 국면 전환(저점 뒤 {up}개월 연속)")
+    return (f"경기 국면(통계청 선행지수 순환변동치) — {last_month.year}년 {last_month.month}월 {last:.1f}, {state}. "
+            f"최근 고점 {float(recent.max()):.1f}({peak_month.year}년 {peak_month.month}월). "
+            "자세한 판정과 국면별 코스피 성과는 거시 경제 보고서의 '경기 국면' 절에 있습니다.")
+
+
 def longterm_easy_summary_html(*, name, price_date, close, longterm=None, earnings=None, levels=None,
                                n_paths=20000, seed=20260913):
     """장기 전망 탭 맨 위의 쉬운 요약: 이번 분기 영업이익 추정(강조), 앞으로의 흐름, 가격 도달 시점.
@@ -874,6 +905,10 @@ def longterm_easy_summary_html(*, name, price_date, close, longterm=None, earnin
                      f"{float(phase_row.get('positive_share') or 0):.0%}({int(phase_row.get('n') or 0)}개월)")
             tone = "down" if median < 0 else ("up" if median > .05 and tone != "down" else tone)
         signals.append((tone, text + "."))
+    # 통계청 선행지수 순환변동치의 국면(2026-10-01: 거시 영상의 판단 방식). 보관본이 있을 때만.
+    cycle_line = leading_cycle_phase_line() if longterm else ""   # 장기 자료가 없으면 '확인하지 못함' 안내를 남긴다
+    if cycle_line:
+        signals.append(("down" if ("하락" in cycle_line or "정점" in cycle_line) else "", cycle_line))
     change_6m = _finite(mapping(longterm.get("cli_outlook")).get("change_6m"))
     if change_6m is not None:
         signals.append(("up" if change_6m >= .3 else "down" if change_6m <= -.3 else "",

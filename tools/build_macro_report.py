@@ -583,7 +583,57 @@ def us_jp_chart(frame, start="1980-01-01", fx=None):
     return chart + us_jp_commentary(frame, fx) if chart else ""
 
 
-def us_market_chart(frame):
+def credit_risk_gauge(frame):
+    """하이일드 스프레드가 저점을 치고 올라오는가(2026-10-01, 거시 영상의 판단 방식을 우리 자료로).
+
+    기준: 최근 60거래일 저점 대비 현재 폭(bp)과 20거래일 추세(앞 10일 평균 → 뒤 10일 평균). 둘 다 오르면
+    '위험 상승 중', 둘 다 아니면 '안정', 그 사이는 '혼조'. 원인은 단정하지 않는다.
+    """
+    if frame is None or "high_yield_spread" not in frame:
+        return None
+    hy = frame["high_yield_spread"].dropna()
+    if len(hy) < 60:
+        return None
+    recent = hy.tail(60)
+    low, now = float(recent.min()), float(hy.iloc[-1])
+    low_day = recent.idxmin()
+    tail = hy.tail(20)
+    trend = float(tail.tail(10).mean() - tail.head(10).mean())
+    off_low_bp = (now - low) * 100
+    if off_low_bp >= 15 and trend > 0:
+        label, color = "신용위험 상승 중", "#a8322a"
+    elif off_low_bp < 5 and trend <= 0:
+        label, color = "안정", "#1e6b34"
+    else:
+        label, color = "혼조", "#b3541e"
+    return {"label": label, "color": color, "now": now, "low": low, "low_day": low_day, "off_low_bp": off_low_bp,
+            "trend_bp": trend * 100, "as_of": hy.index[-1]}
+
+
+def us_market_status(frame, info=None, today=None):
+    """계열별 마지막 관측일. 5영업일 넘게 오래됐으면 경고(2026-10-01: 9/14 에서 멈춘 것을 아무도 몰랐다)."""
+    today = pd.Timestamp(today or pd.Timestamp.now(tz="Asia/Seoul").date())
+    names = {"high_yield_spread": "하이일드 스프레드", "us10y": "미국 10년물", "nasdaq": "나스닥"}
+    parts, stale = [], []
+    for key, name in names.items():
+        if frame is None or key not in frame or frame[key].dropna().empty:
+            parts.append(f"{name}: 없음"); stale.append(name); continue
+        last = frame[key].dropna().index.max()
+        age = len(pd.bdate_range(last, today)) - 1
+        parts.append(f"{name} {last:%m/%d}" + (f" (<b style=\"color:#a8322a\">{age}영업일 전</b>)" if age > 5 else ""))
+        if age > 5:
+            stale.append(name)
+    fallback = (info or {}).get("fallback") or {}
+    note = " · ".join(parts)
+    if fallback:
+        note += " · Yahoo 대체: " + ", ".join(names.get(k, k) for k in fallback)
+    if stale:
+        note += ("<br><b style=\"color:#a8322a\">자료가 오래됐습니다</b> — FRED 조회가 실패해 보관본을 그대로 쓰고 있을 수 "
+                 "있습니다(실행 로그의 '미국 금융시장' 경고를 확인하세요).")
+    return note
+
+
+def us_market_chart(frame, info=None):
     """미국 하이일드 OAS·10년물 금리(왼쪽 %)와 나스닥(오른쪽)을 일별로 겹친다."""
     columns = ["high_yield_spread", "us10y", "nasdaq"]
     if frame is None or frame.empty or any(name not in frame for name in columns):
@@ -650,7 +700,19 @@ def us_market_chart(frame):
             '세 계열이 모두 관측되는 날짜만 그렸으며 결측값을 보간하지 않았습니다. '
             'FRED는 ICE 라이선스에 따라 2026년 4월부터 이 스프레드의 최근 3년만 제공하므로, '
             '현재 공식 공개 경로에서 받을 수 있는 최대 기간을 표시합니다. '
-            '자료: FRED(BAMLH0A0HYM2, DGS10, NASDAQCOM).</div>')
+            '자료: FRED(BAMLH0A0HYM2, DGS10, NASDAQCOM).</div>'
+            + credit_risk_html(credit_risk_gauge(frame))
+            + f'<div style="font-size:12px;color:#6b7178;margin-top:6px">자료 상태: {us_market_status(frame, info)}</div>')
+
+
+def credit_risk_html(gauge):
+    if not gauge:
+        return ""
+    return (f'<div style="margin:10px 0 4px;padding:9px 12px;border-left:4px solid {gauge["color"]};background:#fafafa;font-size:13px">'
+            f'<b>신용위험 판정: <span style="color:{gauge["color"]}">{gauge["label"]}</span></b> — '
+            f'하이일드 스프레드 {gauge["now"]:.2f}%p({gauge["as_of"]:%m/%d}) · 최근 60거래일 저점 {gauge["low"]:.2f}%p'
+            f'({gauge["low_day"]:%m/%d}) 대비 {gauge["off_low_bp"]:+.0f}bp · 20거래일 추세 {gauge["trend_bp"]:+.0f}bp. '
+            '스프레드가 저점을 치고 올라오면 미국 금융시장의 위험 선호가 줄어드는 신호로 봅니다(원인은 단정하지 않습니다).</div>')
 
 
 # 국내총투자율이 파랑, 총저축률이 주황(2026-09-16 요청).
@@ -810,7 +872,8 @@ MACRO_TABS = (
 
 
 def build_page(now=None, fx_frame=None, fx_info=None, us_jp_frame=None, us_jp_info=None,
-               us_market_frame=None, us_market_info=None, saving_frame=None, saving_info=None):
+               us_market_frame=None, us_market_info=None, saving_frame=None, saving_info=None,
+               cycle_fetch=True):
     now = now or datetime.now(KST)
     from macro_summary import summary_html
     # 판정 아래 '이 페이지를 한 문단으로': 그림마다 자료로 다시 쓴 결론 한 문장(2026-09-16 요청).
@@ -823,6 +886,15 @@ def build_page(now=None, fx_frame=None, fx_info=None, us_jp_frame=None, us_jp_in
             insights.append({"title": title, "short": insight.get("short") or insight["summary"],
                              "summary": insight["summary"], "won": insight.get("won")})
     body = summary_html(fx_frame, us_jp_frame, us_market_frame, now, insights=insights)
+    # 경기 국면(2026-10-01): 요약 바로 다음. 실패해도 나머지 보고서는 낸다.
+    try:
+        from cycle_phase import build_cycle_phase, cycle_phase_html
+        cycle = build_cycle_phase(fetch=cycle_fetch)
+        if cycle and cycle.get("coincident_info", {}).get("failed"):
+            print(f"  ⚠️ 동행지수: {cycle['coincident_info']['failed']}", flush=True)
+        body += cycle_phase_html(cycle)
+    except Exception as exc:
+        print(f"  ⚠️ 경기 국면 절 실패({type(exc).__name__}: {str(exc)[:120]})", flush=True)
     if fx_frame is not None:
         body += fx_decomposition_section(fx_frame, fx_info)
         body += fx_overlay_chart(fx_frame)
@@ -841,7 +913,7 @@ def build_page(now=None, fx_frame=None, fx_info=None, us_jp_frame=None, us_jp_in
         body += ('<div class="empty">미·일 금리차 자료를 받지 못했습니다 — '
                  + escape("; ".join(f"{k}: {v}" for k, v in us_jp_info["failed"].items())) + '</div>')
     if us_market_frame is not None:
-        body += us_market_chart(us_market_frame)
+        body += us_market_chart(us_market_frame, us_market_info)
     elif us_market_info and us_market_info.get("failed"):
         body += ('<div class="empty">미국 금융시장 자료를 받지 못했습니다 — '
                  + escape("; ".join(f"{k}: {v}" for k, v in us_market_info["failed"].items())) + '</div>')
@@ -994,6 +1066,7 @@ def main():
               f"{saving_info.get('last')} ({saving_info.get('rows')}년)", flush=True)
     page = build_page(fx_frame=frame, fx_info=info, us_jp_frame=us_jp, us_jp_info=us_jp_info,
                       us_market_frame=us_market, us_market_info=us_market_info,
+                      cycle_fetch=not args.no_fetch,
                       saving_frame=saving, saving_info=saving_info)
     if args.write:
         OUT.parent.mkdir(parents=True, exist_ok=True)

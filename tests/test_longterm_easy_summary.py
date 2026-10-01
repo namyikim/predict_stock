@@ -143,6 +143,12 @@ class LongtermSummaryTests(unittest.TestCase):
         self.assertIn("구간이 추정보다 위에 있습니다", html)
 
     def test_outlook_lists_the_signals_already_computed(self):
+        # 통계청 선행지수 국면 줄(2026-10-01)은 저장소 보관본에 따라 달라지므로 여기서는 뺀다.
+        from unittest import mock
+        with mock.patch.object(fu, "leading_cycle_phase_line", return_value=""):
+            self._outlook_lists_the_signals_already_computed()
+
+    def _outlook_lists_the_signals_already_computed(self):
         html = self.render()
         for text in ("이익 — 2026년 3분기 추정이 직전 분기보다 +37%, 2026년 4분기 추정은 그보다 +33%",
                      "3·6·12개월 모두 &#x27;변화 없음&#x27;보다 낫다는 근거가 없어",

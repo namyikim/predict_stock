@@ -43,6 +43,22 @@ def fetch_fred(series_id, retries=3):
     return fetch_fred_daily(series_id, retries=retries).resample('MS').mean().dropna().rename(series_id)
 
 
+def _yahoo_daily(ticker, years=4):
+    """Yahoo 일별 종가(^TNX 는 10년물 수익률 %, ^IXIC 는 나스닥). 실패하면 None."""
+    if not ticker:
+        return None
+    try:
+        import yfinance as yf
+        frame = yf.Ticker(ticker).history(period=f'{years}y', auto_adjust=False)
+        if frame is None or frame.empty:
+            return None
+        series = frame['Close'].astype(float)
+        series.index = pd.to_datetime(series.index).tz_localize(None).normalize()
+        return series[~series.index.duplicated(keep='last')].sort_index()
+    except Exception:
+        return None
+
+
 def build_us_market_inputs(fetch=True, cache_path=None):
     """하이일드 OAS·미국 10년물·나스닥의 일별 자료와 진단을 돌려준다.
 
@@ -64,6 +80,12 @@ def build_us_market_inputs(fetch=True, cache_path=None):
                 fresh[name] = fetch_fred_daily(sid)
             except Exception as exc:
                 info['failed'][name] = str(exc)[:120]
+                # FRED 가 막히면 10년물·나스닥은 Yahoo 로 받는다(2026-10-01: 보관본이 9/14 에서 멈춰 있었다).
+                # 하이일드 스프레드는 FRED 외 무료 출처가 없다.
+                fallback = _yahoo_daily({'us10y': '^TNX', 'nasdaq': '^IXIC'}.get(name))
+                if fallback is not None:
+                    fresh[name] = fallback
+                    info.setdefault('fallback', {})[name] = 'yahoo'
         fresh = pd.DataFrame(fresh)
         if base is None:
             frame = fresh

@@ -10,6 +10,8 @@ on:
       - "data_sources/fx_inputs.py"
       - "data_sources/ecos.py"
       - "data_sources/fred.py"
+      - "tools/cycle_phase.py"       # 경기 국면 절(2026-10-01)
+      - "data_sources/kosis.py"
   schedule:
     # 평일 07:40 KST. 야후 환율은 전일 종가가 확정된 뒤여야 월평균이 흔들리지 않는다.
     - cron: "40 22 * * 0-4"
@@ -47,6 +49,7 @@ jobs:
       - name: 보고서 생성
         env:
           ECOS_API_KEY: ${{ secrets.ECOS_API_KEY }}
+          KOSIS_API_KEY: ${{ secrets.KOSIS_API_KEY }}   # 경기 국면 절: 동행지수 순환변동치(2026-10-01)
         run: python tools/build_macro_report.py --write
       - name: 발행
         run: |

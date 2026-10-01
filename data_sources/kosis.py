@@ -25,6 +25,17 @@ MACRO_SERIES = {
 }
 
 
+# 거시 보고서의 '경기 국면' 절에만 쓰는 KOSIS 계열(2026-10-01). 노트북 특징(MACRO_SERIES)에는 넣지 않는다.
+EXTRA_KOSIS_SERIES = {
+    'coincident_cycle': {'orgId': '101', 'tblId': 'DT_1C8015', 'name': '동행지수 순환변동치',
+                         'itmId': 'T1', 'unit': '2020=100'},
+}
+
+
+def kosis_spec(series):
+    return {**MACRO_SERIES, **EXTRA_KOSIS_SERIES}[series]
+
+
 OPTIONAL_MACRO_SERIES = {
     'daily_exports': {'name': '한국 일평균 수출액', 'unit': 'USD per working day'},
     'oecd_g20_cli': {'name': 'OECD Major G20 CLI (amplitude adjusted)', 'unit': 'long-term average=100'},
@@ -81,7 +92,7 @@ def _kosis_request(key, params, retries=4):
 def _series_rows(rows, series):
     if not isinstance(rows, list):
         raise ValueError('KOSIS가 통계 배열을 반환하지 않았습니다.')
-    target = MACRO_SERIES[series]['name'].replace(' ', '')
+    target = kosis_spec(series)['name'].replace(' ', '')
     selected = [r for r in rows if str(r.get('C1_NM', '')).replace(' ', '') == target]
     if not selected:
         raise ValueError(f'KOSIS 통계표에서 정확한 {target} 합계 항목을 찾지 못했습니다.')
@@ -111,7 +122,7 @@ def parse_kosis_rows(rows, series):
 
 
 def fetch_kosis_monthly(series, start, end, key):
-    spec = MACRO_SERIES[series]
+    spec = kosis_spec(series)
     params = {k: spec[k] for k in ('orgId', 'tblId', 'itmId')}
     # Resolve exact aggregate by official classification name; never guess a component code.
     latest = _kosis_request(key, {**params, 'objL1': 'ALL', 'newEstPrdCnt': '1'})
@@ -139,7 +150,7 @@ def read_macro_csv(path, series):
     if series in OPTIONAL_MACRO_SERIES:
         raise ValueError(f'{path.name}: month,value와 선택적 released_at 형식이 필요합니다.')
     month_cols = [c for c in frame if re.fullmatch(r'\d{4}[./-]\d{1,2}|\d{6}', c.strip())]
-    target = MACRO_SERIES[series]['name'].replace(' ', '')
+    target = kosis_spec(series)['name'].replace(' ', '')
     mask = frame.apply(lambda col: col.fillna('').str.replace(' ', '').eq(target)).any(axis=1)
     selected = frame.loc[mask]
     if len(selected) != 1 or not month_cols:

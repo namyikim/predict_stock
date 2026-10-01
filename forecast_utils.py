@@ -3349,17 +3349,26 @@ def flow_story(today, history, summary, close, prior_5d=None, peer_name="동종 
                 usual = float(abs(shares[key]) / past.mean())
         actors.append({"key": key, "name": label + ("(추정)" if key == "indiv_net" and estimated else ""),
                        "shares": shares[key], "won": shares[key] * close, "vs_usual": usual})
+    # 외국인·기관·개인의 합이 0에서 크게 벗어나면 나머지(기타 법인 등)가 반대편이다. 2026-10-01 삼성전자는 외국인·개인이
+    # 함께 팔고 기관은 +127억뿐이었는데, 회고가 기관을 '가장 많이 산 쪽'이라 불렀다(실제로는 기타 법인 등 약 +5,500억).
+    if not estimated and all(shares[k] is not None for k, _ in FLOW_ACTORS):
+        rest = -sum(shares[k] for k, _ in FLOW_ACTORS)
+        if abs(rest) * close >= .3 * max(abs(a["won"]) for a in actors):
+            actors.append({"key": "other_net", "name": "기타 법인 등(추정)", "shares": rest, "won": rest * close,
+                           "vs_usual": None})
     summary = summary or {}
     c2c = num(summary.get("c2c")) or 0.0
     direction = "up" if c2c > 0.001 else "down" if c2c < -0.001 else "flat"
     # 세 주체가 모두 한쪽이면(예: 상승한 날 셋 다 순매도) 반대편은 기타 법인 등 — 가장 덜 판 쪽을 '산 쪽'이라
     # 부르지 않는다(2026-09-30 SK하이닉스 회고의 오류). all_one_side 를 세우고 counter 는 None.
-    all_one_side = all(a["won"] < 0 for a in actors) or all(a["won"] > 0 for a in actors)
+    # '모두 한쪽'은 외국인·기관·개인 셋으로 판정한다 — 그때 반대편은 늘 기타 법인 등이라 따로 부르지 않는다.
+    main = [a for a in actors if a["key"] != "other_net"]
+    all_one_side = all(a["won"] < 0 for a in main) or all(a["won"] > 0 for a in main)
     if direction == "down":
-        lead = min(actors, key=lambda a: a["won"])
+        lead = min(main if all_one_side else actors, key=lambda a: a["won"])
         counter = None if all_one_side else max(actors, key=lambda a: a["won"])
     elif direction == "up":
-        lead = max(actors, key=lambda a: a["won"]) if not all_one_side else min(actors, key=lambda a: a["won"])
+        lead = max(actors, key=lambda a: a["won"]) if not all_one_side else min(main, key=lambda a: a["won"])
         counter = None if all_one_side else min(actors, key=lambda a: a["won"])
     else:
         lead = max(actors, key=lambda a: abs(a["won"]))
@@ -3509,7 +3518,7 @@ def flow_story_html(story, number=None):
     else:
         verb = {"down": "가장 많이 판 쪽", "up": "가장 많이 산 쪽", "flat": "가장 크게 움직인 쪽"}[story["direction"]]
         head = f'{_rv_pct(story["c2c"])} — {verb}은 <b>{e(lead["name"])}</b> ({_won_text(lead["won"])})'
-        if lead.get("vs_usual") is not None:
+        if lead.get("vs_usual") is not None and lead["vs_usual"] >= .1:
             head += f', 최근 20거래일 평균의 {lead["vs_usual"]:.1f}배'
         if counter is not None and counter is not lead and np.sign(counter["won"]) != np.sign(lead["won"]):
             head += f'. 반대편은 <b>{e(counter["name"])}</b> ({_won_text(counter["won"])})'
@@ -3520,7 +3529,7 @@ def flow_story_html(story, number=None):
         color = "#1e6b34" if a["won"] > 0 else "#a8322a"
         left = 50 - width if a["won"] < 0 else 50
         bars += ('<div style="display:flex;align-items:center;gap:8px;margin:4px 0">'
-                 f'<div style="flex:0 0 72px;font-size:12px;color:#3a4652">{e(a["name"])}</div>'
+                 f'<div style="flex:0 0 100px;font-size:12px;color:#3a4652">{e(a["name"])}</div>'
                  '<div style="flex:1;position:relative;height:16px;background:#f3f5f8;border-radius:3px">'
                  '<div style="position:absolute;left:50%;top:0;bottom:0;width:1px;background:#c3c8cf"></div>'
                  f'<div style="position:absolute;left:{left:.1f}%;width:{width:.1f}%;top:2px;bottom:2px;'
@@ -3528,6 +3537,8 @@ def flow_story_html(story, number=None):
                  f'<div style="flex:0 0 120px;font-size:12px;text-align:right;color:{color}">{_won_text(a["won"])}</div></div>')
     seen = "".join(f"<li>{e(x)}</li>" for x in story["observations"]) or "<li>함께 볼 만한 사실이 없습니다.</li>"
     notes = []
+    if any(a.get("key") == "other_net" for a in story["actors"]):
+        notes.append("기타 법인 등은 외국인·기관·개인 합계의 반대편으로 추정했습니다")
     if story.get("estimated_indiv"):
         notes.append("개인은 자료가 없어 외국인·기관의 반대편으로 추정했습니다(기타 법인 포함)")
     if story.get("source_note"):
@@ -3783,10 +3794,19 @@ def review_section_html(review, carried=False):
     else:
         # 수급이 늦은 날(2026-10-01 16:10)에도 시장·업종·이동평균선·시간외·장중 해외 지표는 보인다.
         seen = market_observations(s, prior_5d=s.get("prior_5d"), peer_name=r.get("peer_name") or "동종 종목")
+        status = r.get("flow_status") or {}
+        if status.get("state") == "failed":
+            # 받기에 실패한 것은 '아직 집계 전'과 구별해 눈에 띄게 적는다(2026-10-01 요청).
+            parts.append('<div style="font-size:13px;margin:10px 0 6px;padding:8px 12px;background:#fdecea;'
+                         'border-left:4px solid #a8322a;color:#7a2318"><b>투자자별 수급을 받지 못했습니다</b> — '
+                         f'{e(status.get("detail") or "")}. 다음 회고 재시도에서 다시 받습니다.</div>')
+            why = "투자자별 수급은 받지 못해 뺐습니다"
+        else:
+            why = "투자자별 수급은 아직 집계 전이라 뺐습니다"
         if seen:
             parts.append(sub("그날 함께 관찰된 것",
-                             ' <span style="color:#6b7178;font-size:12px">— 매매 이유를 단정하지 않습니다 · 투자자별 수급은 '
-                             '아직 집계 전이라 뺐습니다</span>'))
+                             ' <span style="color:#6b7178;font-size:12px">— 매매 이유를 단정하지 않습니다 · '
+                             f'{why}</span>'))
             parts.append('<ul style="margin:0 0 6px;padding-left:20px;font-size:13px;color:#4a4f55">'
                          + "".join(f"<li>{e(x)}</li>" for x in seen) + "</ul>")
 

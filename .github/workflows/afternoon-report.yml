@@ -100,7 +100,10 @@ jobs:
 
       - name: 의존성 설치
         if: steps.gate.outputs.run == 'true'
-        run: pip install pandas==3.0.5 numpy==2.5.2 yfinance==1.7.0 lxml  # lxml: 네이버 수급 표(회고의 '누가 팔고 샀나', 2026-09-29)
+        run: |
+          pip install pandas==3.0.5 numpy==2.5.2 yfinance==1.7.0 lxml  # lxml: 네이버 수급 표(회고의 '누가 팔고 샀나', 2026-09-29)
+          # 회고의 수급도 종목 보고서처럼 KRX를 먼저 쓴다(2026-10-01). 실패하면 네이버 증권 JSON으로 받는다.
+          pip install --no-deps pykrx==1.2.8 deprecated multipledispatch || echo "::warning::pykrx 설치 실패 — 수급은 네이버 경로로 받습니다"
 
       - name: 채점·보고서 절 갱신
         if: steps.gate.outputs.score == 'true'
@@ -116,5 +119,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DART_API_KEY: ${{ secrets.DART_API_KEY }}
+          # 외국인·기관·개인 수급. KRX 정보데이터시스템 계정(종목 보고서와 같은 비밀값).
+          KRX_ID: ${{ secrets.KRX_ID }}
+          KRX_PW: ${{ secrets.KRX_PW }}
           SESSION: ${{ steps.gate.outputs.session }}
         run: python tools/build_session_review.py --target ${{ matrix.target }} --date "$SESSION" --out runs/review --publish

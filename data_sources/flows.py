@@ -92,8 +92,71 @@ def parse_naver_frgn_html(html_text):
 
 
 
+NAVER_TREND_URL = 'https://m.stock.naver.com/api/stock/{code}/trend'
+
+
+def parse_naver_trend_json(rows):
+    """네이버 증권 투자자별 매매동향 JSON(m.stock.naver.com/api/stock/<코드>/trend) → FLOW_COLUMNS.
+    옛 페이지와 달리 개인 순매수도 들어 있다."""
+    def num(value):
+        text = str(value if value is not None else '').replace(',', '').replace('+', '').rstrip('%').strip()
+        return pd.to_numeric(text, errors='coerce')
+
+    out = pd.DataFrame([{
+        'date': pd.to_datetime(str(r.get('bizdate', '')), format='%Y%m%d', errors='coerce'),
+        'foreign_net': num(r.get('foreignerPureBuyQuant')),
+        'inst_net': num(r.get('organPureBuyQuant')),
+        'indiv_net': num(r.get('individualPureBuyQuant')),
+        'volume': num(r.get('accumulatedTradingVolume')),
+        'foreign_ratio': num(r.get('foreignerHoldRatio')),
+    } for r in rows or []], columns=FLOW_COLUMNS)
+    out = out.dropna(subset=['date', 'foreign_net'])
+    return out[FLOW_COLUMNS].sort_values('date').reset_index(drop=True)
+
+
+def _flows_from_naver_json(ticker, start, max_pages=80, page_size=60):
+    """bizdate 는 '그 날짜보다 앞선' 거래일부터 돌려준다 — 받은 것 중 가장 이른 날짜를 다음 요청의 기준으로 쓴다.
+    pageSize 는 60까지 받는다(100이면 400 오류, 2026-10-01 확인)."""
+    code = ticker.split('.')[0]
+    frames, start, cursor = [], pd.Timestamp(start), None
+    for _ in range(max_pages):
+        query = {'pageSize': page_size}
+        if cursor is not None:
+            query['bizdate'] = cursor.strftime('%Y%m%d')
+        with open_url(NAVER_TREND_URL.format(code=code) + '?' + urlencode(query), timeout=30,
+                      accept='application/json') as response:
+            frame = parse_naver_trend_json(json.loads(response.read().decode('utf-8')))
+        if frame.empty:
+            break
+        frames.append(frame)
+        if frame['date'].min() <= start or (cursor is not None and frame['date'].min() >= cursor):
+            break
+        cursor = frame['date'].min()
+        time.sleep(0.3 + random.uniform(0, 0.3))
+    if not frames:
+        raise RuntimeError('네이버 매매동향 JSON이 비어 있습니다.')
+    out = pd.concat(frames).drop_duplicates('date').sort_values('date')
+    return out[out['date'] >= start].reset_index(drop=True)
+
+
 def _flows_from_naver(ticker, start, max_pages=200):
-    """finance.naver.com/item/frgn.naver?code=... 을 페이지 단위로 읽는다. 계정이 필요 없다."""
+    """네이버 증권 JSON을 먼저 읽고, 실패하면 옛 finance.naver.com 표를 읽는다. 계정이 필요 없다.
+
+    2026-10-01: finance.naver.com/item/frgn.naver 가 새 사이트(stock.naver.com, 화면을 스크립트로 그림)로 넘어가
+    표가 사라졌다. 그 뒤 수급이 매일 보관본(전날까지)에 머물러 장 회고의 '누가 팔고 샀나'가 비었다.
+    """
+    try:
+        return _flows_from_naver_json(ticker, start)
+    except Exception as exc:
+        json_error = f'{type(exc).__name__}: {exc}'
+    try:
+        return _flows_from_naver_html(ticker, start, max_pages=max_pages)
+    except Exception as exc:
+        raise RuntimeError(f'JSON {json_error} / 표 {type(exc).__name__}: {exc}') from None
+
+
+def _flows_from_naver_html(ticker, start, max_pages=200):
+    """finance.naver.com/item/frgn.naver?code=... 을 페이지 단위로 읽는다(옛 페이지)."""
     code = ticker.split('.')[0]
     frames, start = [], pd.Timestamp(start)
     for page in range(1, max_pages + 1):

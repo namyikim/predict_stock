@@ -87,6 +87,38 @@ class MarketObservationTests(unittest.TestCase):
         self.assertNotIn("누가 팔고 샀나", html)
 
 
+class FlowStatusTests(unittest.TestCase):
+    def _review(self, status):
+        import json
+        review = json.loads((ROOT / "forecast_history" / "samsung" / "reviews" / "2026-09-29.json").read_text(encoding="utf-8"))
+        review.update(flow_story=None, flow_status=status)
+        return F.review_section_html(review)
+
+    def test_failed_fetch_is_shown_apart_from_pending(self):
+        failed = self._review({"state": "failed", "detail": "KRX·naver에서 받지 못해 저장소 보관본(최신 2026-09-30)을 썼습니다"})
+        self.assertIn("투자자별 수급을 받지 못했습니다", failed)
+        self.assertIn("KRX·naver에서 받지 못해", failed)
+        pending = self._review({"state": "pending", "detail": "최신 2026-09-30"})
+        self.assertNotIn("받지 못했습니다", pending)
+        self.assertIn("아직 집계 전", pending)
+
+
+class OtherCorporatesTests(unittest.TestCase):
+    def test_up_day_buyer_is_other_corporates_when_three_sum_far_from_zero(self):
+        # 2026-10-01 삼성전자(네이버 증권): 외국인·개인 매도, 기관 +46,127주뿐 — 산 쪽은 기타 법인 등이다.
+        story = F.flow_story({"foreign_net": -758236, "inst_net": 46127, "indiv_net": -1292880}, None,
+                             {"c2c": .0279}, 274500)
+        self.assertEqual(story["lead"]["key"], "other_net")
+        self.assertEqual(story["counter"]["key"], "indiv_net")
+        html = F.flow_story_html(story)
+        self.assertIn("가장 많이 산 쪽은 <b>기타 법인 등(추정)</b>", html)
+        self.assertIn("합계의 반대편으로 추정", html)
+
+    def test_balanced_day_adds_no_other_bar(self):
+        story = F.flow_story({"foreign_net": -1000, "inst_net": 400, "indiv_net": 590}, None, {"c2c": -.01}, 70000)
+        self.assertEqual(len(story["actors"]), 3)
+
+
 class EarningsReactionHtmlTests(unittest.TestCase):
     def test_box_states_frequency_not_forecast(self):
         stats = {"n": 40, "down": 22, "mean": -.003, "first": "2016-01-08", "last": "2026-07-07",

@@ -615,24 +615,58 @@ def event_notice_html(flags):
             '구간이 실제보다 좁을 수 있습니다. 원장에 표시가 남으므로 나중에 평일과 나눠 채점됩니다.</div>')
 
 
-def upcoming_events_html(events, pending=None):
+def upcoming_events_html(events, pending=None, today=None):
     """다가오는 미국 지표·실적 일정. 예측에 쓰지 않고, 며칠 안에 변동성이 커질 날을 미리 알린다.
 
+    날짜별 한 줄(날짜·요일·남은 날·발표 이름)로 세로로 놓는다 — 한 줄에 이어 쓰면 날짜를 찾기 어렵다(2026-10-01 요청).
     pending 은 아직 회사가 공지하지 않은 실적(추정 날짜를 넣지 않는 이유를 함께 적는다).
     """
+    import html as _html
+    import pandas as pd
     if not events and not pending:
         return ""
+    weekdays = "월화수목금토일"
+    base = (pd.Timestamp(today) if today is not None
+            else pd.Timestamp.now(tz="Asia/Seoul").tz_localize(None)).normalize()
+
+    def kind_chip(label):
+        kind, color, bg = (("실적", "#7a4b00", "#fff4e5") if "실적" in label else
+                           ("금리", "#8a1f3d", "#fbeaf0") if "FOMC" in label or "금리" in label else
+                           ("지표", "#1a5490", "#eaf2fb"))
+        return (f'<span style="display:inline-block;min-width:30px;text-align:center;font-size:11px;padding:1px 6px;'
+                f'border-radius:9px;background:{bg};color:{color};margin-right:6px">{kind}</span>')
+
+    rows = []
+    by_day = {}
+    for ev in (events or [])[:10]:
+        by_day.setdefault(str(ev["date"]), []).append(str(ev["label"]))
+    for day, labels in by_day.items():
+        when = pd.Timestamp(day)
+        left = (when - base).days
+        due = "오늘" if left == 0 else f"D-{left}" if left > 0 else f"D+{-left}"
+        strong = left <= 3
+        names = "".join(f'<div style="margin:1px 0">{kind_chip(x)}{_html.escape(x)}</div>' for x in labels)
+        rows.append('<div style="display:flex;gap:10px;align-items:flex-start;padding:7px 0;border-top:1px solid #e6e9ee">'
+                    f'<div style="flex:0 0 108px;white-space:nowrap"><b style="font-size:13px;color:#1f2933">'
+                    f'{when.month}/{when.day}({weekdays[when.weekday()]})</b> '
+                    f'<span style="font-size:11px;padding:1px 6px;border-radius:9px;'
+                    f'{"background:#1a5490;color:#fff" if strong else "background:#f0f6fc;color:#1a5490;border:1px solid #b9d3ec"}">'
+                    f'{due}</span></div>'
+                    f'<div style="flex:1;min-width:0;font-size:13px;color:#3a4652">{names}</div></div>')
     parts = []
-    if events:
-        items = " · ".join(f'<b>{e["date"]}</b> {e["label"]}' for e in events[:6])
-        parts.append(f'다가오는 발표 — {items}. 발표 자체는 예측에 쓰지 않지만, 그 다음 거래일은 '
-                     '방향과 무관하게 변동폭이 커지는 경향이 있습니다.')
+    if rows:
+        parts.append('<div style="font-weight:700;font-size:13px;color:#1f2933;margin-bottom:2px">다가오는 발표</div>'
+                     + "".join(rows)
+                     + '<div style="font-size:12px;color:#6b7178;margin:6px 0 0">미국 발표는 한국 시각으로 대개 다음 날 새벽입니다. '
+                       '발표 자체는 예측에 쓰지 않지만, 그 다음 거래일은 방향과 무관하게 변동폭이 커지는 경향이 있습니다.</div>')
     if pending:
-        parts.append('날짜 미확정 — ' + " · ".join(pending.values())
-                     + '. 회사가 공지하면 <code>macro_inputs/us_calendar.csv</code>에 적어 주세요. '
-                       '제3자 캘린더의 추정 날짜는 서로 어긋나 넣지 않습니다.')
-    return ('<div style="font-size:12px;color:#6b7178;margin:8px 0 0;padding:8px 12px;'
-            'background:#f7f8fa;border-radius:5px">' + "<br>".join(parts) + '</div>')
+        items = "".join(f'<li>{_html.escape(str(v))}</li>' for v in pending.values())
+        parts.append('<div style="font-weight:700;font-size:13px;color:#1f2933;margin:10px 0 2px">날짜 미확정</div>'
+                     f'<ul style="margin:0;padding-left:18px;font-size:13px;color:#3a4652;line-height:1.7">{items}</ul>'
+                     '<div style="font-size:12px;color:#6b7178;margin:4px 0 0">회사가 공지하면 '
+                     '<code>macro_inputs/us_calendar.csv</code>에 적어 주세요. 제3자 캘린더의 추정 날짜는 서로 어긋나 넣지 않습니다.</div>')
+    return ('<div style="margin:10px 0 0;padding:10px 14px;background:#f7f8fa;border:1px solid #e6e9ee;border-radius:6px">'
+            + "".join(parts) + '</div>')
 
 
 def disclosure_section_html(disclosures, disclosure_info, classify):

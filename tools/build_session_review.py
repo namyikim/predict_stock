@@ -727,6 +727,9 @@ def build_review(target, session_date, storage, token=None, use_news=True):
     # 예전에는 이 작업의 pip 설치에 lxml 이 빠져 네이버 표를 읽지 못해 수급이 매일 비어 있었다(9/17~9/28 회고 모두 None).
     # 저장소 보관본(macro_history)을 함께 넘겨 최근 20거래일 규모와 견줄 이력을 얻는다.
     flows_text, flow_story_data = None, None
+    # 수급 상태(2026-10-01): ok / pending(받기는 했지만 그날 행이 아직 없음) / failed(KRX·네이버 모두 실패).
+    # 예전에는 실패해도 로그 한 줄뿐이라 회고에서 '늦은 것'과 '못 받은 것'을 구별할 수 없었다.
+    flow_status = {"state": "failed", "detail": "수급 자료를 읽지 못했습니다"}
     try:
         from data_sources.flows import load_investor_flows
         frame, flow_info = load_investor_flows(Path(storage), spec["ticker"], (session_date - pd.Timedelta(days=45)).date(),
@@ -734,7 +737,15 @@ def build_review(target, session_date, storage, token=None, use_news=True):
         frame = frame.copy()
         frame["date"] = pd.to_datetime(frame["date"]).dt.normalize()
         row = frame[frame["date"] == session_date]
+        failed_sources = [part.split(":")[0].strip() for part in str((flow_info or {}).get("fetch_error") or "").split(" / ")
+                          if part.strip()]
+        if failed_sources:
+            flow_status = {"state": "failed",
+                           "detail": f"{'·'.join(failed_sources)}에서 받지 못해 저장소 보관본"
+                                     f"(최신 {frame['date'].max().date() if len(frame) else '없음'})을 썼습니다"}
+            print(f"::warning::수급 받기 실패({'·'.join(failed_sources)}) — 보관본 사용")
         if len(row):
+            flow_status = {"state": "ok", "detail": str((flow_info or {}).get("source") or "")}
             row = row.iloc[0]
             history = frame[frame["date"] < session_date]
             prior_5d = (float(daily["close"].iloc[pos - 1] / daily["close"].iloc[pos - 6] - 1) if pos >= 6 else None)
@@ -747,9 +758,12 @@ def build_review(target, session_date, storage, token=None, use_news=True):
             if pd.notna(frg) and pd.notna(inst):
                 flows_text = f"외국인 {frg:+,.0f} / 기관 {inst:+,.0f}"
         else:
+            if not failed_sources:
+                flow_status = {"state": "pending", "detail": f"최신 {frame['date'].max().date() if len(frame) else '없음'}"}
             print(f"  수급: {session_date.date()} 행이 아직 없습니다(최신 {frame['date'].max().date() if len(frame) else '없음'}).")
     except Exception as exc:
-        print(f"  수급 미확인({type(exc).__name__}: {str(exc)[:120]})")
+        flow_status = {"state": "failed", "detail": "KRX·네이버·보관본 모두에서 받지 못했습니다"}
+        print(f"::warning::수급 미확인({type(exc).__name__})")
 
     # 아침 예측
     ledger = load_ledger(target, storage, token)
@@ -784,7 +798,7 @@ def build_review(target, session_date, storage, token=None, use_news=True):
         "intraday_path": intraday_path, "timeline_items": timeline_items,
         "overnight_news": overnight_news, "top_news": top_news,
         "disclosures": disclosures, "disclosure_note": disclosure_note, "flows": flows_text,
-        "flow_story": flow_story_data,
+        "flow_story": flow_story_data, "flow_status": flow_status,
         "context": session_context(spec["ticker"], session_date),
         "earnings_reactions": earnings_stats,
         "forecasts": forecasts, "price_check": price_check, "disclaimer": DISCLAIMER,

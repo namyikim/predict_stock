@@ -72,7 +72,14 @@ class PageTests(unittest.TestCase):
                                      us_market_frame=us_market, us_market_info=us_market_info,
                                      saving_frame=saving, saving_info=saving_info)
         committed = (ROOT / "docs" / "macro" / "index.html").read_text(encoding="utf-8")
-        strip = lambda text: re.sub(r"\d{4}-\d{2}-\d{2} \d{2}:\d{2}", "", text)
+        made_from = re.search(r'<meta name="macro-inputs" content="([0-9a-f]+)">', committed)
+        if not made_from or made_from.group(1) != macro.inputs_fingerprint():
+            # 페이지를 만든 뒤 다른 작업이 보관본만 갱신했다 — 다음 거시 실행이 다시 만든다. 코드 변경 누락이 아니다.
+            self.skipTest("보관본이 발행본을 만든 뒤 바뀌었습니다(다음 거시 보고서 실행에서 다시 만듭니다)")
+        # '자료 상태' 줄은 실행 순간의 기록이라 시각처럼 뺀다(2026-10-01): 그 실행에서 Yahoo로 대체했는지는 보관본에
+        # 남지 않고, 'n영업일 전'은 실행한 날짜에 따라 바뀐다. 이 줄 때문에 테스트가 실패해 push 실행의 보고서가 건너뛰어졌다.
+        strip = lambda text: re.sub(r"자료 상태: .*?</div>", "",
+                                    re.sub(r"\d{4}-\d{2}-\d{2} \d{2}:\d{2}", "", text), flags=re.S)
         self.assertEqual(strip(committed), strip(generated),
                          "docs/macro/index.html 을 python tools/build_macro_report.py --write --no-fetch 로 다시 만드세요")
 
@@ -138,3 +145,26 @@ class ReadOnlyRunDoesNotRewriteCacheTests(unittest.TestCase):
     def test_us_jp_cache_is_written_only_when_fetching(self):
         self.assertFalse(self.run_loader(macro.load_us_jp, "US_JP_CACHE", "data_sources.fred", "build_us_jp_inputs", False))
         self.assertTrue(self.run_loader(macro.load_us_jp, "US_JP_CACHE", "data_sources.fred", "build_us_jp_inputs", True))
+
+
+class InputsFingerprintTests(unittest.TestCase):
+    """발행본에 남기는 보관본 지문(2026-10-01). 줄바꿈 차이는 무시하고, 페이지가 읽는 파일이 바뀌면 달라진다."""
+
+    def test_fingerprint_ignores_line_endings_and_tracks_inputs(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as tmp:
+            folder = Path(tmp)
+            (folder / "term_spread.csv").write_bytes(b"date,value\n2026-09-01,1.0\n")
+            lf = macro.inputs_fingerprint(folder)
+            (folder / "term_spread.csv").write_bytes(b"date,value\r\n2026-09-01,1.0\r\n")
+            self.assertEqual(macro.inputs_fingerprint(folder), lf)
+            (folder / "term_spread.csv").write_bytes(b"date,value\n2026-09-01,1.0\n2026-10-01,1.1\n")
+            self.assertNotEqual(macro.inputs_fingerprint(folder), lf)
+            (folder / "investor_flows_005930.csv").write_bytes(b"date\n2026-10-01\n")   # 페이지가 읽지 않는 파일
+            before = macro.inputs_fingerprint(folder)
+            (folder / "investor_flows_005930.csv").write_bytes(b"date\n2026-10-02\n")
+            self.assertEqual(macro.inputs_fingerprint(folder), before)
+
+    def test_page_carries_the_fingerprint(self):
+        page = macro.build_page(datetime(2026, 9, 15, 9, 0, tzinfo=timezone(timedelta(hours=9))), cycle_fetch=False)
+        self.assertIn(f'<meta name="macro-inputs" content="{macro.inputs_fingerprint()}">', page)

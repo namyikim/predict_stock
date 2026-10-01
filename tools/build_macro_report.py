@@ -871,6 +871,26 @@ MACRO_TABS = (
 )
 
 
+# 페이지가 읽는 보관본(경기 국면 절의 cycle_phase 포함). 페이지에 이 파일들의 지문을 남겨, 다른 작업이 페이지를 만든 뒤
+# 보관본만 갱신한 경우(2026-10-01: 장기 전망 작업이 term_spread 에 10월 값을 더함)와 코드가 바뀌었는데 페이지를 다시
+# 만들지 않은 경우를 테스트가 구별한다. 앞의 경우까지 실패로 보면 push 실행의 일일 보고서가 건너뛰어진다.
+PAGE_INPUTS = ("fx_inputs.csv", "us_jp_rates.csv", "us_market_daily.csv", "korea_saving_investment.csv",
+               "leading_cycle.csv", "coincident_cycle.csv", "news_sentiment.csv", "term_spread.csv", "kospi_monthly.csv")
+
+
+def inputs_fingerprint(history=None):
+    """PAGE_INPUTS 내용의 지문(줄바꿈 차이는 무시 — Windows 체크아웃은 CRLF)."""
+    import hashlib
+    history = Path(history) if history else ROOT / "macro_history"
+    digest = hashlib.sha256()
+    for name in PAGE_INPUTS:
+        path = history / name
+        digest.update(name.encode())
+        if path.exists():
+            digest.update(path.read_bytes().replace(b"\r\n", b"\n"))
+    return digest.hexdigest()[:16]
+
+
 def build_page(now=None, fx_frame=None, fx_info=None, us_jp_frame=None, us_jp_info=None,
                us_market_frame=None, us_market_info=None, saving_frame=None, saving_info=None,
                cycle_fetch=True):
@@ -924,6 +944,7 @@ def build_page(now=None, fx_frame=None, fx_info=None, us_jp_frame=None, us_jp_in
     return (
         '<!doctype html>\n<html lang="ko"><head><meta charset="utf-8">'
         '<meta name="viewport" content="width=device-width, initial-scale=1">'
+        f'<meta name="macro-inputs" content="{inputs_fingerprint()}">'
         f'<title>{escape(TITLE)}</title>{_STYLE}</head><body>'
         '<div class="wrap">'
         + BACK_BUTTON +

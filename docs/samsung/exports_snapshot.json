@@ -1042,28 +1042,28 @@
     },
     {
       "month": "2026-09",
-      "value": 59760314958.71869
+      "value": 60503641000.0
     }
   ],
   "applied": [
     {
       "month": "2026-09",
-      "days": 20,
-      "yoy": 2.5941553685349685,
-      "observed_usd": 34128119000.0,
-      "monthly_usd": 59760314958.71869,
-      "basis": "partial_month_scenario"
+      "days": 31,
+      "yoy": 2.6027376419244344,
+      "observed_usd": 60503641000.0,
+      "monthly_usd": 60503641000.0,
+      "basis": "full_month_preliminary"
     }
   ],
   "flash_info": {
     "enabled": true,
     "source": "customs_flash_api",
-    "rows": 44,
-    "first": "2025-07",
+    "rows": 42,
+    "first": "2025-08",
     "last": "2026-09",
-    "last_days": 20,
-    "yoy_rows": 8
+    "last_days": 31,
+    "yoy_rows": 6
   },
-  "snapshot_hash": "360c84a6a8a06b43fe28",
-  "generated_at": "2026-09-30 16:33 KST"
+  "snapshot_hash": "8c3c6f24b1b6b90a81c8",
+  "generated_at": "2026-10-01 16:17 KST"
 }

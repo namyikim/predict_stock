@@ -34,7 +34,7 @@
   {
    "file": "customs_flash.csv",
    "label": "수출 속보 1~10일·1~20일(관세청)",
-   "have": "2026-09 1~20일",
+   "have": "2026-09 1~31일",
    "expected": "2026-09 1~20일",
    "late": false
   },

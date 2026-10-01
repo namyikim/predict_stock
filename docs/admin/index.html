@@ -799,7 +799,9 @@ a{color:var(--accent)}
     var out = document.getElementById("dispatch-result"), tok = document.getElementById("token").value.trim();
     if (!tok) { out.textContent = "위 STATS_TOKEN 칸을 먼저 채우세요."; return; }
     out.textContent = "호출 중…"; dt.disabled = true;
-    fetch(ENDPOINT + "/dispatch/test", { method: "POST", headers: { "Authorization": "Bearer " + tok, "Content-Type": "application/json" }, body: "{}" })
+    // 이 스크립트 블록에는 ENDPOINT 가 없다(다른 블록의 지역 변수). 여기서 따로 둔다 — 2026-10-01 '호출 중…'에서 멈춘 원인.
+    var WORKER = "https://predict-stock-counter.kimname1.workers.dev";
+    fetch(WORKER + "/dispatch/test", { method: "POST", headers: { "Authorization": "Bearer " + tok, "Content-Type": "application/json" }, body: "{}" })
       .then(function (r) { return r.json().then(function (j) { return { ok: r.ok, status: r.status, body: j }; }); })
       .then(function (r) {
         var b = r.body || {};

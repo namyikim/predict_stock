@@ -3,7 +3,7 @@
   "name": "삼성전자",
   "peer_name": "SK하이닉스",
   "session_date": "2026-10-01",
-  "generated_at": "2026-10-01 22:02 KST",
+  "generated_at": "2026-10-02 08:26 KST",
   "summary": {
     "prev_close": 268500.0,
     "open": 266500.0,
@@ -15,11 +15,11 @@
     "c2c": 0.027932960893854775,
     "high_vs_open": 0.03564727954971847,
     "low_vs_open": -0.007504690431519689,
-    "volume": 14765604.0,
-    "volume_ratio": 0.8750021959345601,
-    "kospi_c2c": 0.01949536092684645,
+    "volume": 13741073.0,
+    "volume_ratio": 0.8142890090711558,
+    "kospi_c2c": NaN,
     "peer_c2c": 0.03209459459459452,
-    "usdkrw_chg": 0.008396864731812226,
+    "usdkrw_chg": 0.00469453226235661,
     "us_nights": 1,
     "sox_ret": -4.27612807042399e-05,
     "nasdaq_ret": 0.0023704223073188757,
@@ -79,14 +79,15 @@
         "after_high": -0.001984939265471053
       }
     },
-    "from_high": 0.001814882032667775
+    "from_high": 0.001814882032667775,
+    "buyback": []
   },
   "classification": {
     "labels": [
-      "지수 동조"
+      "완만한 추세"
     ],
     "reasons": [
-      "KOSPI +1.95% vs 종목 +2.79%, 5분 수익률 상관 0.89 — 종목 고유 요인이 약함"
+      "특정 시각·갭·지수로 설명되는 큰 구간 없음"
     ]
   },
   "events": [
@@ -101,16 +102,22 @@
       "score": 5.3780762468863035,
       "news": [
         {
-          "time": "2026-10-01T09:05:51+09:00",
-          "title": "[단독] 삼성전자, AI 웨어러블 로봇 특허 글로벌 공개…'인공신경망'으로 데이터 정밀 제어",
-          "source": "더구루",
-          "link": "https://news.google.com/rss/articles/CBMiY0FVX3lxTFBjVFg1aGY0VGdxVVBwNFNiN3NUTHQ3SHpadGpCdVdlUWxjbE9PUnlnazV6OEtLc1lCM25BUlkyUlE4UDExSU1jR0lpTkRHUlVxdTBQZ01jZEZKYlZYbXpibzV5bw?oc=5"
+          "time": "2026-10-01T08:47:06+09:00",
+          "title": "KB증권 “삼성전자, 하반기 70조 현금배당 가능”",
+          "source": "매일경제 마켓",
+          "link": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE5LQXd5NVFJbmNDd1JtZzNUSFhpSnVmZkpaLXpqWXUzQjhmX0NFWTRWYllmZTd2TGlxZkNyVVBTMGxXT2c1UHp0SHdkMTFXMk1faVE?oc=5"
         },
         {
           "time": "2026-10-01T08:00:00+09:00",
           "title": "삼성전자, JBL 80주년 기념 특별 기획전 진행",
           "source": "Samsung Global Newsroom",
           "link": "https://news.google.com/rss/articles/CBMihAJBVV95cUxOaWJmV2hZaVpqc3VmT3BMYlo1V011a2xCTXI5X00tQndYNlNNamM2Rno4Zmlhd3VINmRRYS0waFFIWnlQTDNJaHFNQzQyaFVPTGZ4OXd1TWhoS3FvbmNDMTBhZ1dqby1mczZTT0xrdUFfVlFydFZLSFluNzZEZGs0d2FzeW9HOG56MkN0S0YwR29fWjl0WkE0NzVqbGNEaWxsTEtJNTN2QkI5MDBWcV85WkJENFRQYl9ZOUZvNEE4Sk5FOWJDLWZfaWJBNWEyQUZJMjh5cEFxQXg5X1FvS24tUDBWTXpqeHZOblNkaGwxOEpyV0Y5dS0tX044eC02b2JZbTJHWg?oc=5"
+        },
+        {
+          "time": "2026-10-01T08:00:00+09:00",
+          "title": "삼성전자, ‘갤럭시 탭 S12 시리즈’ 공개",
+          "source": "Samsung Global Newsroom",
+          "link": "https://news.google.com/rss/articles/CBMi6AFBVV95cUxOOVU5WHowVGdiRHRNeTdDanVuSlRFWENEM3pBbUNwS0w2LUtjb0NIQnIxNGhwekhSVEU1ZGJ4VlhhZzIzSEJLN3RvM1NBeDNJa0kzLWNGcElKQUliUE9LN1Y3bGN0M2puTHdHak9vRmY2ODdfdDF5X1l1S3cwOTFoaVFaUkVkNldibzlzUG9ibUIxS3E1YUJLM29yUnRPZ1ZEZXU3SlZ0TER2ZjJZal80V1RKZEVraUhnaWZvbGtuZVdkYmVSdjdBektxWHdaS2pCZjRJbkdCTFlEZ25CVzNkT0ZuYy1acm5k?oc=5"
         },
         {
           "time": "2026-10-01T08:00:00+09:00",
@@ -123,12 +130,6 @@
           "title": "삼성전자, 더 작고 정교해진 ‘갤럭시 스마트태그3’ 공개",
           "source": "Samsung Global Newsroom",
           "link": "https://news.google.com/rss/articles/CBMiuwJBVV95cUxQS1h4bEtMMTBhaDc1Y2Q0eWszSlZjdUtKNWdVT3pwRXBTeHlUVVRzNkJ6M09RUUFsSUlfOGU5R1dFQ0d3cUJBN2FOdzN4ZXdmRnNwUTNrdDhaN094WEE1UFFvS08yd2otVmZaN0ZfbUhBUnIxR25pbjlMWEdGZmtUY1NaTlZQalpscmRJNDJTRWdPNHZZcEVqQnMwR1MyelBiNktPbXh1NTNmdV9kZVFTWmxoUDRncEp2dW5tQVBIRE9OcFktNWtKc1YtamozUDM5c1Q1c3FrYngwdkhxX2d2OUxuSUZfTGZuNlQzYzNtUHYzUUNnV18yTl93TmpiU0JGdzNycXdiVTlKNUg2QjNaa09YeEQtMG1uTjd5Skc3SUNjWnhkVnZpVVMxZks1cEV6eF9pdmFFZjd2cHc?oc=5"
-        },
-        {
-          "time": "2026-10-01T08:00:00+09:00",
-          "title": "삼성전자, ‘갤럭시 탭 S12 시리즈’ 공개",
-          "source": "Samsung Global Newsroom",
-          "link": "https://news.google.com/rss/articles/CBMi6AFBVV95cUxOOVU5WHowVGdiRHRNeTdDanVuSlRFWENEM3pBbUNwS0w2LUtjb0NIQnIxNGhwekhSVEU1ZGJ4VlhhZzIzSEJLN3RvM1NBeDNJa0kzLWNGcElKQUliUE9LN1Y3bGN0M2puTHdHak9vRmY2ODdfdDF5X1l1S3cwOTFoaVFaUkVkNldibzlzUG9ibUIxS3E1YUJLM29yUnRPZ1ZEZXU3SlZ0TER2ZjJZal80V1RKZEVraUhnaWZvbGtuZVdkYmVSdjdBektxWHdaS2pCZjRJbkdCTFlEZ25CVzNkT0ZuYy1acm5k?oc=5"
         }
       ]
     }
@@ -518,16 +519,22 @@
       "score": 5.3780762468863035,
       "news": [
         {
-          "time": "2026-10-01T09:05:51+09:00",
-          "title": "[단독] 삼성전자, AI 웨어러블 로봇 특허 글로벌 공개…'인공신경망'으로 데이터 정밀 제어",
-          "source": "더구루",
-          "link": "https://news.google.com/rss/articles/CBMiY0FVX3lxTFBjVFg1aGY0VGdxVVBwNFNiN3NUTHQ3SHpadGpCdVdlUWxjbE9PUnlnazV6OEtLc1lCM25BUlkyUlE4UDExSU1jR0lpTkRHUlVxdTBQZ01jZEZKYlZYbXpibzV5bw?oc=5"
+          "time": "2026-10-01T08:47:06+09:00",
+          "title": "KB증권 “삼성전자, 하반기 70조 현금배당 가능”",
+          "source": "매일경제 마켓",
+          "link": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE5LQXd5NVFJbmNDd1JtZzNUSFhpSnVmZkpaLXpqWXUzQjhmX0NFWTRWYllmZTd2TGlxZkNyVVBTMGxXT2c1UHp0SHdkMTFXMk1faVE?oc=5"
         },
         {
           "time": "2026-10-01T08:00:00+09:00",
           "title": "삼성전자, JBL 80주년 기념 특별 기획전 진행",
           "source": "Samsung Global Newsroom",
           "link": "https://news.google.com/rss/articles/CBMihAJBVV95cUxOaWJmV2hZaVpqc3VmT3BMYlo1V011a2xCTXI5X00tQndYNlNNamM2Rno4Zmlhd3VINmRRYS0waFFIWnlQTDNJaHFNQzQyaFVPTGZ4OXd1TWhoS3FvbmNDMTBhZ1dqby1mczZTT0xrdUFfVlFydFZLSFluNzZEZGs0d2FzeW9HOG56MkN0S0YwR29fWjl0WkE0NzVqbGNEaWxsTEtJNTN2QkI5MDBWcV85WkJENFRQYl9ZOUZvNEE4Sk5FOWJDLWZfaWJBNWEyQUZJMjh5cEFxQXg5X1FvS24tUDBWTXpqeHZOblNkaGwxOEpyV0Y5dS0tX044eC02b2JZbTJHWg?oc=5"
+        },
+        {
+          "time": "2026-10-01T08:00:00+09:00",
+          "title": "삼성전자, ‘갤럭시 탭 S12 시리즈’ 공개",
+          "source": "Samsung Global Newsroom",
+          "link": "https://news.google.com/rss/articles/CBMi6AFBVV95cUxOOVU5WHowVGdiRHRNeTdDanVuSlRFWENEM3pBbUNwS0w2LUtjb0NIQnIxNGhwekhSVEU1ZGJ4VlhhZzIzSEJLN3RvM1NBeDNJa0kzLWNGcElKQUliUE9LN1Y3bGN0M2puTHdHak9vRmY2ODdfdDF5X1l1S3cwOTFoaVFaUkVkNldibzlzUG9ibUIxS3E1YUJLM29yUnRPZ1ZEZXU3SlZ0TER2ZjJZal80V1RKZEVraUhnaWZvbGtuZVdkYmVSdjdBektxWHdaS2pCZjRJbkdCTFlEZ25CVzNkT0ZuYy1acm5k?oc=5"
         },
         {
           "time": "2026-10-01T08:00:00+09:00",
@@ -540,12 +547,6 @@
           "title": "삼성전자, 더 작고 정교해진 ‘갤럭시 스마트태그3’ 공개",
           "source": "Samsung Global Newsroom",
           "link": "https://news.google.com/rss/articles/CBMiuwJBVV95cUxQS1h4bEtMMTBhaDc1Y2Q0eWszSlZjdUtKNWdVT3pwRXBTeHlUVVRzNkJ6M09RUUFsSUlfOGU5R1dFQ0d3cUJBN2FOdzN4ZXdmRnNwUTNrdDhaN094WEE1UFFvS08yd2otVmZaN0ZfbUhBUnIxR25pbjlMWEdGZmtUY1NaTlZQalpscmRJNDJTRWdPNHZZcEVqQnMwR1MyelBiNktPbXh1NTNmdV9kZVFTWmxoUDRncEp2dW5tQVBIRE9OcFktNWtKc1YtamozUDM5c1Q1c3FrYngwdkhxX2d2OUxuSUZfTGZuNlQzYzNtUHYzUUNnV18yTl93TmpiU0JGdzNycXdiVTlKNUg2QjNaa09YeEQtMG1uTjd5Skc3SUNjWnhkVnZpVVMxZks1cEV6eF9pdmFFZjd2cHc?oc=5"
-        },
-        {
-          "time": "2026-10-01T08:00:00+09:00",
-          "title": "삼성전자, ‘갤럭시 탭 S12 시리즈’ 공개",
-          "source": "Samsung Global Newsroom",
-          "link": "https://news.google.com/rss/articles/CBMi6AFBVV95cUxOOVU5WHowVGdiRHRNeTdDanVuSlRFWENEM3pBbUNwS0w2LUtjb0NIQnIxNGhwekhSVEU1ZGJ4VlhhZzIzSEJLN3RvM1NBeDNJa0kzLWNGcElKQUliUE9LN1Y3bGN0M2puTHdHak9vRmY2ODdfdDF5X1l1S3cwOTFoaVFaUkVkNldibzlzUG9ibUIxS3E1YUJLM29yUnRPZ1ZEZXU3SlZ0TER2ZjJZal80V1RKZEVraUhnaWZvbGtuZVdkYmVSdjdBektxWHdaS2pCZjRJbkdCTFlEZ25CVzNkT0ZuYy1acm5k?oc=5"
         }
       ],
       "price": 266000.0,
@@ -553,6 +554,12 @@
     }
   ],
   "overnight_news": [
+    {
+      "time": "2026-10-01T08:47:06+09:00",
+      "title": "KB증권 “삼성전자, 하반기 70조 현금배당 가능”",
+      "source": "매일경제 마켓",
+      "link": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE5LQXd5NVFJbmNDd1JtZzNUSFhpSnVmZkpaLXpqWXUzQjhmX0NFWTRWYllmZTd2TGlxZkNyVVBTMGxXT2c1UHp0SHdkMTFXMk1faVE?oc=5"
+    },
     {
       "time": "2026-10-01T07:27:47+09:00",
       "title": "\"삼성전자, 내년 HBM 판매가 100% 넘게 오를 듯\"-KB",
@@ -567,21 +574,15 @@
     },
     {
       "time": "2026-10-01T08:00:00+09:00",
-      "title": "삼성전자, 갤럭시 최초 클립형 무선 이어폰 ‘갤럭시 버즈 온’ 공개",
-      "source": "Samsung Global Newsroom",
-      "link": "https://news.google.com/rss/articles/CBMixwJBVV95cUxOSE5BbzJraEhFQ2tmcENoQlZKMlF4bzM5Nk41OUN4ZzQzTTJnWjNsNWM0T3VBQ010LU1HYUtLQk5sSjNuRThuZTJnTDZOdTk4NVg0eXE2MzVlV0pTb0xEQllFREdEWndlZEhjSVFWcXFqYmhFSk9JRU5abVJZWHl5OWw2ZVJMV19FMWVMQjVCdUxKUTdFYjNjLWJpd0xqd3dZUndPaDNubzhKYUlnYUNaN1dRb3R5YmxvczFWU0FSNldyNll1U1pjWGdjbmQxUWNwV0pHWmQtTndhNURUZk5XaHZTYVZ1clFVcE1nUDNLa01yMkNwcmhFZ3hfQnlvWGFQZXBCbUJWRUpBdm9SX3RycWZRWE5ndWI3OU5QaU1oQWszYXZmdzZpMTZTMkZZeHFfU1ZlT3ZmRC1CWHVkSnJJUEw0SXRSQUk?oc=5"
-    },
-    {
-      "time": "2026-10-01T08:00:00+09:00",
-      "title": "삼성전자, 더 작고 정교해진 ‘갤럭시 스마트태그3’ 공개",
-      "source": "Samsung Global Newsroom",
-      "link": "https://news.google.com/rss/articles/CBMiuwJBVV95cUxQS1h4bEtMMTBhaDc1Y2Q0eWszSlZjdUtKNWdVT3pwRXBTeHlUVVRzNkJ6M09RUUFsSUlfOGU5R1dFQ0d3cUJBN2FOdzN4ZXdmRnNwUTNrdDhaN094WEE1UFFvS08yd2otVmZaN0ZfbUhBUnIxR25pbjlMWEdGZmtUY1NaTlZQalpscmRJNDJTRWdPNHZZcEVqQnMwR1MyelBiNktPbXh1NTNmdV9kZVFTWmxoUDRncEp2dW5tQVBIRE9OcFktNWtKc1YtamozUDM5c1Q1c3FrYngwdkhxX2d2OUxuSUZfTGZuNlQzYzNtUHYzUUNnV18yTl93TmpiU0JGdzNycXdiVTlKNUg2QjNaa09YeEQtMG1uTjd5Skc3SUNjWnhkVnZpVVMxZks1cEV6eF9pdmFFZjd2cHc?oc=5"
-    },
-    {
-      "time": "2026-10-01T08:00:00+09:00",
       "title": "삼성전자, ‘갤럭시 탭 S12 시리즈’ 공개",
       "source": "Samsung Global Newsroom",
       "link": "https://news.google.com/rss/articles/CBMi6AFBVV95cUxOOVU5WHowVGdiRHRNeTdDanVuSlRFWENEM3pBbUNwS0w2LUtjb0NIQnIxNGhwekhSVEU1ZGJ4VlhhZzIzSEJLN3RvM1NBeDNJa0kzLWNGcElKQUliUE9LN1Y3bGN0M2puTHdHak9vRmY2ODdfdDF5X1l1S3cwOTFoaVFaUkVkNldibzlzUG9ibUIxS3E1YUJLM29yUnRPZ1ZEZXU3SlZ0TER2ZjJZal80V1RKZEVraUhnaWZvbGtuZVdkYmVSdjdBektxWHdaS2pCZjRJbkdCTFlEZ25CVzNkT0ZuYy1acm5k?oc=5"
+    },
+    {
+      "time": "2026-10-01T08:00:00+09:00",
+      "title": "삼성전자, 갤럭시 최초 클립형 무선 이어폰 ‘갤럭시 버즈 온’ 공개",
+      "source": "Samsung Global Newsroom",
+      "link": "https://news.google.com/rss/articles/CBMixwJBVV95cUxOSE5BbzJraEhFQ2tmcENoQlZKMlF4bzM5Nk41OUN4ZzQzTTJnWjNsNWM0T3VBQ010LU1HYUtLQk5sSjNuRThuZTJnTDZOdTk4NVg0eXE2MzVlV0pTb0xEQllFREdEWndlZEhjSVFWcXFqYmhFSk9JRU5abVJZWHl5OWw2ZVJMV19FMWVMQjVCdUxKUTdFYjNjLWJpd0xqd3dZUndPaDNubzhKYUlnYUNaN1dRb3R5YmxvczFWU0FSNldyNll1U1pjWGdjbmQxUWNwV0pHWmQtTndhNURUZk5XaHZTYVZ1clFVcE1nUDNLa01yMkNwcmhFZ3hfQnlvWGFQZXBCbUJWRUpBdm9SX3RycWZRWE5ndWI3OU5QaU1oQWszYXZmdzZpMTZTMkZZeHFfU1ZlT3ZmRC1CWHVkSnJJUEw0SXRSQUk?oc=5"
     }
   ],
   "top_news": [
@@ -604,15 +605,9 @@
       "link": "https://news.google.com/rss/articles/CBMib0FVX3lxTFBtakNMRzJTWFJLWng2bmw1SWppX2ZzTkdUc0VYWUJkRENaa0p0QlRreUwzNC1BRGVLMS12cS1kY1dTVk5TUmVPVnhtcDdZOHdXSy1lTGpiRG5zc2ozaGhiTHNWXzhhb2llR0tpcExkMA?oc=5"
     },
     {
-      "time": "2026-10-01T18:08:00+09:00",
-      "title": "자사주 다 샀고 외국인 떠나고… 반도체 실적만 보는 코스피",
-      "source": "부산파이낸셜뉴스",
-      "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE55RFRFVVBMd01GRS0xN2pwTjlzcWJQMVViTHlNUlpnZlpXOFBRVDQ5OTEybndEOE8zZWlyNVQyWUN5aldOcXplVFlNdTg5T05MX2JjOVVfU0xlTTNE?oc=5"
-    },
-    {
       "time": "2026-10-01T14:14:00+09:00",
       "title": "마이크론 호실적 발표 : 삼성전자와 SK하이닉스 주가 상승 전망",
-      "source": "네이버 프리미엄콘텐츠",
+      "source": "contents.premium.naver.com",
       "link": "https://news.google.com/rss/articles/CBMigwFBVV95cUxQbGZoQTJqdzFfN3JmZ2RBSWpxakxHajh6RHNwT3NmV09yVzZva3dnSUNtYVk0YUJYTTRTcXEtSl9zbkVXVTdWVDhCMHQ2UmxCYWxtcDVHaS1tZWhpZ1BBd0Y2Y0VBMU9mclVTbTh6Y1lRWE5mQmpzUXBOOTl1dFNrMlpiZw?oc=5"
     },
     {
@@ -620,6 +615,12 @@
       "title": "마이크론 메모리반도체 장기공급계약으로 수요 선점 총력, 삼성전자 SK하이닉스 전략에 변수",
       "source": "비즈니스포스트",
       "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTE54U0ZBNEc0dE5pdzVNbFM4aDdiTUNyQWJ0MHlBN1lSVk9KVkZOaEwzRFJrZG8yR3dLUUs2cnFoZkkzU0VyTm5icE1xTThRMmFnRGtqX2tlZ2IwOG9KOU9CWTRrNlY3QlQ3S19iWXBSOGZndXc?oc=5"
+    },
+    {
+      "time": "2026-10-01T16:11:42+09:00",
+      "title": "마이크론 훈풍에 반도체株 날았다…코스피 6970선·코스닥 4%대 급등 [투자360]",
+      "source": "biz.heraldcorp.com",
+      "link": "https://news.google.com/rss/articles/CBMiVkFVX3lxTE81MWtTNHFlNzFRM1Iyb0syOWMzV3FNd3VLS2VEWjdNRmg4a2pFX2FfaDRYdVBad2hjYWhaU1JFaHVzLWZ0QWFnX0tuWEhLaDFyZGRiak9n?oc=5"
     }
   ],
   "disclosures": [
@@ -687,75 +688,75 @@
     },
     "all_one_side": false,
     "observations": [
-      "코스피도 +1.95% — 시장 전체가 같은 방향이었습니다.",
       "SK하이닉스 +3.21% — 반도체 업종이 함께 움직였습니다.",
-      "원/달러 +0.84%(원화 약세) — 외국인 매도와 같은 방향의 환율 움직임입니다.",
+      "원/달러 +0.47%(원화 약세) — 외국인 매도와 같은 방향의 환율 움직임입니다.",
       "장중 5일선(274,600원) 아래로 빠졌다가 그 위로 되돌아와 마감했습니다.",
       "20일선(263,300원) 부근까지 내려왔다가 그 위에서 마감 — 20일선 지지 후 반등의 모양입니다.",
       "마이크론은 미국 정규장 마감 뒤 시간외에서 +0.14%(장중 -1.55%~+1.62%) — 정규장 등락에 안 보이는 반응입니다.",
       "우리 장중(09:00~15:30) 나스닥100 선물 +1.00% · 미 10년물 국채 선물 +0.03% · 원/달러 -0.07%."
     ],
     "estimated_indiv": false,
-    "source_note": "출처 naver+cache · 장 마감 직후 잠정치라 저녁 확정치와 다를 수 있습니다"
+    "source_note": "출처 naver+cache · 장 마감 직후 잠정치라 저녁 확정치와 다를 수 있습니다 · KRX는 받지 못함(pykrx 미설치)"
   },
   "flow_status": {
     "state": "ok",
-    "detail": "naver+cache"
+    "detail": "naver+cache",
+    "krx_error": "pykrx 미설치"
   },
   "context": {},
   "earnings_reactions": {
     "n": 44,
     "down": 24,
-    "mean": 0.005143988832064559,
+    "mean": 0.005144010874099219,
     "first": "2015-04-07",
     "last": "2026-07-30",
     "prior_up": {
       "n": 26,
       "down": 15,
-      "mean": 0.006803935188248144
+      "mean": 0.006803906876376771
     },
     "prior_down": {
       "n": 18,
       "down": 9,
-      "mean": 0.0027462885397993822,
+      "mean": 0.0027463833152538667,
       "next5_n": 18,
       "next5_up": 8
     },
     "rows": [
       {
         "date": "2024-04-05",
-        "ret": -0.009378753176508159,
-        "prior20": 0.18680931015556013,
-        "next5": -0.02721887230649289
+        "ret": -0.009378468601555334,
+        "prior20": 0.18680908358147907,
+        "next5": -0.027219062401412808
       },
       {
         "date": "2024-07-05",
         "ret": 0.029550818588921057,
-        "prior20": 0.09789829164793273,
+        "prior20": 0.09789817615126295,
         "next5": -0.030998790775496055
       },
       {
         "date": "2024-10-08",
-        "ret": -0.011475407561411965,
-        "prior20": -0.175507291900577,
-        "next5": -0.013267062521606143
+        "ret": -0.011475539707954785,
+        "prior20": -0.17550720206890336,
+        "next5": -0.013266997454855045
       },
       {
         "date": "2025-01-08",
-        "ret": 0.03429585084089393,
-        "prior20": 0.03869183120664155,
-        "next5": -0.06282712673685709
+        "ret": 0.03429607257566447,
+        "prior20": 0.038691759055365926,
+        "next5": -0.06282726207437195
       },
       {
         "date": "2025-04-08",
         "ret": 0.0056390392516327825,
-        "prior20": -0.0034250616708649817,
+        "prior20": -0.0034249873791928342,
         "next5": 0.057943897843741654
       },
       {
         "date": "2025-10-14",
         "ret": -0.01822079386417541,
-        "prior20": 0.348435443402201,
+        "prior20": 0.3484355968820865,
         "next5": 0.06441047284052348
       },
       {

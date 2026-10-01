@@ -490,7 +490,17 @@ def build_review(target, session_date, storage, token=None, use_news=True):
         if s_ == 0 or s_ != sign:
             break
         streak += 1
-    summary["prior_streak"] = int(streak * sign)          # 전날 밤 마이크론 — 두 종목과 서로 영향을 주고받는 미국 메모리 회사
+    summary["prior_streak"] = int(streak * sign)
+    # 이동평균선·고점 대비(2026-09-30 회고 영상: '5일선 돌파 못함', '20일선 지지', '전고점 근처').
+    long = load_daily(spec["ticker"], days=420)
+    if not long.empty and session_date in long.index:
+        upto = long[long.index <= session_date]["close"]
+        highs = long[long.index <= session_date]["high"]
+        if len(upto) >= 20:
+            summary["ma5"], summary["ma20"] = float(upto.tail(5).mean()), float(upto.tail(20).mean())
+            summary["high20"] = float(highs.tail(20).max())
+        if len(upto) >= 120:
+            summary["high252"] = float(highs.tail(252).max())          # 전날 밤 마이크론 — 두 종목과 서로 영향을 주고받는 미국 메모리 회사
     summary["range"] = float(today["high"]) / float(today["low"]) - 1 if float(today["low"]) > 0 else float("nan")
     summary["peer_range"] = range_of(spec["peer"])
 

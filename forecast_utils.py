@@ -3317,12 +3317,15 @@ def flow_story(today, history, summary, close, prior_5d=None, peer_name="동종 
     summary = summary or {}
     c2c = num(summary.get("c2c")) or 0.0
     direction = "up" if c2c > 0.001 else "down" if c2c < -0.001 else "flat"
+    # 세 주체가 모두 한쪽이면(예: 상승한 날 셋 다 순매도) 반대편은 기타 법인 등 — 가장 덜 판 쪽을 '산 쪽'이라
+    # 부르지 않는다(2026-09-30 SK하이닉스 회고의 오류). all_one_side 를 세우고 counter 는 None.
+    all_one_side = all(a["won"] < 0 for a in actors) or all(a["won"] > 0 for a in actors)
     if direction == "down":
         lead = min(actors, key=lambda a: a["won"])
-        counter = max(actors, key=lambda a: a["won"])
+        counter = None if all_one_side else max(actors, key=lambda a: a["won"])
     elif direction == "up":
-        lead = max(actors, key=lambda a: a["won"])
-        counter = min(actors, key=lambda a: a["won"])
+        lead = max(actors, key=lambda a: a["won"]) if not all_one_side else min(actors, key=lambda a: a["won"])
+        counter = None if all_one_side else min(actors, key=lambda a: a["won"])
     else:
         lead = max(actors, key=lambda a: abs(a["won"]))
         counter = None
@@ -3393,7 +3396,8 @@ def flow_story(today, history, summary, close, prior_5d=None, peer_name="동종 
     if volume is not None and volume >= 1.5:
         seen.append(f"거래량이 20일 평균의 {volume:.1f}배였습니다.")
     return {"direction": direction, "c2c": c2c, "actors": actors, "lead": lead, "counter": counter,
-            "observations": seen, "estimated_indiv": estimated, "source_note": source_note}
+            "all_one_side": all_one_side, "observations": seen, "estimated_indiv": estimated,
+            "source_note": source_note}
 
 
 def flow_story_html(story, number=None):
@@ -3402,12 +3406,17 @@ def flow_story_html(story, number=None):
     if not story:
         return ""
     lead, counter = story["lead"], story["counter"]
-    verb = {"down": "가장 많이 판 쪽", "up": "가장 많이 산 쪽", "flat": "가장 크게 움직인 쪽"}[story["direction"]]
-    head = f'{_rv_pct(story["c2c"])} — {verb}은 <b>{e(lead["name"])}</b> ({_won_text(lead["won"])})'
-    if lead.get("vs_usual") is not None:
-        head += f', 최근 20거래일 평균의 {lead["vs_usual"]:.1f}배'
-    if counter is not None and counter is not lead and np.sign(counter["won"]) != np.sign(lead["won"]):
-        head += f'. 반대편은 <b>{e(counter["name"])}</b> ({_won_text(counter["won"])})'
+    if story.get("all_one_side"):
+        side = "순매도" if lead["won"] < 0 else "순매수"
+        head = (f'{_rv_pct(story["c2c"])} — 외국인·기관·개인이 <b>모두 {side}</b>'
+                f'(가장 큰 쪽 {e(lead["name"])} {_won_text(lead["won"])}). 반대편은 기타 법인 등입니다')
+    else:
+        verb = {"down": "가장 많이 판 쪽", "up": "가장 많이 산 쪽", "flat": "가장 크게 움직인 쪽"}[story["direction"]]
+        head = f'{_rv_pct(story["c2c"])} — {verb}은 <b>{e(lead["name"])}</b> ({_won_text(lead["won"])})'
+        if lead.get("vs_usual") is not None:
+            head += f', 최근 20거래일 평균의 {lead["vs_usual"]:.1f}배'
+        if counter is not None and counter is not lead and np.sign(counter["won"]) != np.sign(lead["won"]):
+            head += f'. 반대편은 <b>{e(counter["name"])}</b> ({_won_text(counter["won"])})'
     scale = max(abs(a["won"]) for a in story["actors"]) or 1.0
     bars = ""
     for a in story["actors"]:
@@ -3450,6 +3459,28 @@ def flow_story_html(story, number=None):
 # ③ 다가오는 주요 일정 — 미국 발표 일정표(data_sources/us_calendar)를 그대로 쓴다.
 CORPORATE_ACTIONS_PATH = "macro_inputs/corporate_actions.csv"
 KRX_HOLIDAYS_PATH = "macro_inputs/krx_holidays.csv"      # 사람이 확인해 적는 휴장일(주말 제외)
+KR_CALENDAR_PATH = "macro_inputs/kr_calendar.csv"        # 국내 일정(잠정실적 등). confirmed=N 이면 '(예상·미확정)'
+
+
+def _kr_events(day, target, days=7, path=KR_CALENDAR_PATH):
+    import os
+    if not os.path.exists(path):
+        return []
+    try:
+        table = pd.read_csv(path, dtype=str)
+    except (OSError, ValueError):
+        return []
+    start, end = pd.Timestamp(day).normalize(), pd.Timestamp(day).normalize() + pd.Timedelta(days=days)
+    out = []
+    for _, row in table.iterrows():
+        when = pd.to_datetime(row.get("date"), errors="coerce")
+        if pd.isna(when) or not (start <= when <= end) or str(row.get("target", "")) not in ("", str(target)):
+            continue
+        label = str(row.get("label", ""))
+        if str(row.get("confirmed", "")).upper() != "Y":
+            label += " · 미확정"
+        out.append({"date": when.date().isoformat(), "event": "KR", "label": label})
+    return out
 
 
 def _krx_holidays(path=KRX_HOLIDAYS_PATH):
@@ -3530,6 +3561,7 @@ def review_context(review):
         out["next_events"] = upcoming_us_events(day, days=4)
     except Exception:
         out["next_events"] = []
+    out["next_events"] = sorted(out["next_events"] + _kr_events(day, r.get("target")), key=lambda ev: ev["date"])
     return out
 
 
@@ -3558,7 +3590,7 @@ def review_next_events_html(context, number):
         return ""
     rows = "".join(f'<li><b>{e(ev["date"])}</b> {e(ev["label"])}</li>' for ev in events)
     return (f'<div style="font-size:14px;margin:16px 0 6px"><b>{number}. 다가오는 주요 일정</b> '
-            '<span style="color:#6b7178;font-size:12px">— 미국 발표 일정(한국 시각으로는 대개 다음 날 새벽)</span></div>'
+            '<span style="color:#6b7178;font-size:12px">— 미국 발표는 한국 시각으로 대개 다음 날 새벽 · 국내 잠정실적은 회사 공지 전이면 예상일</span></div>'
             f'<ul style="margin:0 0 6px;padding-left:20px;font-size:13px;line-height:1.7">{rows}</ul>')
 
 
@@ -3590,6 +3622,13 @@ def review_section_html(review, carried=False):
     context = review_context(r)
     parts.append(review_context_html(context))
     story = r.get("flow_story")
+    if story and any("마지막 거래일" in x for x in context.get("calendar", [])):
+        inst = next((a for a in story.get("actors", []) if a.get("key") == "inst_net"), None)
+        if inst and inst.get("won", 0) < 0:
+            when = "분기" if any("분기 마지막" in x for x in context["calendar"]) else "월"
+            line = (f"{when} 마지막 거래일에 기관이 {_won_text(inst['won'])} 순매도 — {when}말 리밸런싱(주식·현금 비중 "
+                    "맞추기)과 맞는 모양입니다.")
+            story = dict(story, observations=list(story.get("observations", [])) + [line])
     if story:
         parts.append(flow_story_html(story, number=next(counter)))
         next(counter)   # flow_story_html 이 두 소제목(누가 팔고 샀나 · 그날 함께 관찰된 것)을 쓴다
@@ -3631,6 +3670,14 @@ def review_section_html(review, carried=False):
             (("휴장 기간 미국 누적(" + str(int(s["us_nights"])) + "거래일) SOX / 나스닥 / 마이크론")
              if _rv_finite(s.get("us_nights")) and float(s["us_nights"]) > 1 else "전날 밤 SOX / 나스닥 / 마이크론",
              f'{_rv_pct(s.get("sox_ret"))} / {_rv_pct(s.get("nasdaq_ret"))} / {_rv_pct(s.get("micron_ret"))}')]
+    if _rv_finite(s.get("ma5")) and _rv_finite(s.get("ma20")):
+        close = float(s["close"])
+        rows.append(("종가의 5일선 / 20일선 대비",
+                     f'{"위" if close >= float(s["ma5"]) else "아래"} ({close / float(s["ma5"]) - 1:+.2%}) / '
+                     f'{"위" if close >= float(s["ma20"]) else "아래"} ({close / float(s["ma20"]) - 1:+.2%})'))
+    if _rv_finite(s.get("high20")) and _rv_finite(s.get("high252")):
+        rows.append(("20일 고점 / 52주 고점 대비",
+                     f'{float(s["close"]) / float(s["high20"]) - 1:+.2%} / {float(s["close"]) / float(s["high252"]) - 1:+.2%}'))
     if _rv_finite(s.get("range")):
         rows.insert(4, (f'장중 변동폭 저점→고점 · 이 종목 / {e(r["peer_name"])}',
                         f'{_rv_pct(s["range"])} / {_rv_pct(s.get("peer_range"))}'))

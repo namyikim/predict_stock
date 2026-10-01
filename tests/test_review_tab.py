@@ -209,3 +209,49 @@ class MondayVideoAdditionsTests(unittest.TestCase):
         text = (ROOT / "tools" / "build_session_review.py").read_text(encoding="utf-8")
         self.assertIn('summary["us_nights"] = int(len(window))', text)
         self.assertIn('summary["prior_streak"] = int(streak * sign)', text)
+
+
+class WednesdayVideoAdditionsTests(unittest.TestCase):
+    """9/30 회고 영상 검토(2026-10-01)로 고친 것: 모두 순매도인 날, 분기말 기관 매도=리밸런싱, 이동평균·고점, 국내 잠정실적."""
+
+    def setUp(self):
+        import os
+        self._cwd = os.getcwd(); os.chdir(ROOT)
+
+    def tearDown(self):
+        import os
+        os.chdir(self._cwd)
+
+    def test_all_three_selling_on_an_up_day_is_not_called_buying(self):
+        story = fu.flow_story({"foreign_net": -3.4e5, "inst_net": -1.35e5, "indiv_net": -1.06e5}, None,
+                              {"c2c": .0062}, 1781000)
+        self.assertTrue(story["all_one_side"])
+        self.assertIsNone(story["counter"])
+        html = fu.flow_story_html(story)
+        self.assertIn("모두 순매도", html)
+        self.assertNotIn("가장 많이 산 쪽", html)
+
+    def test_quarter_end_institution_selling_is_tied_to_rebalancing(self):
+        import json
+        real = json.loads((ROOT / "forecast_history" / "samsung" / "reviews" / "2026-09-30.json").read_text(encoding="utf-8"))
+        html = fu.review_section_html(real)   # 9/30 실제 기록: 기관 -3,679억 순매도
+        self.assertIn("분기 마지막 거래일에 기관이", html)
+        self.assertIn("리밸런싱(주식·현금 비중 맞추기)과 맞는 모양", html)
+        self.assertNotIn("마지막 거래일에 기관이", fu.review_section_html(review("2026-09-29")))
+
+    def test_moving_average_and_high_rows(self):
+        r = review("2026-09-29"); r["summary"].update(close=272500.0, ma5=275000.0, ma20=268000.0, high20=283000.0, high252=283000.0)
+        html = fu.review_section_html(r)
+        self.assertIn("종가의 5일선 / 20일선 대비", html)
+        self.assertIn("아래 (-0.91%) / 위 (+1.68%)", html)
+        self.assertIn("20일 고점 / 52주 고점 대비", html)
+
+    def test_korean_expected_earnings_show_as_unconfirmed(self):
+        ctx = fu.review_context(review("2026-10-01"))
+        labels = [ev["label"] for ev in ctx["next_events"]]
+        self.assertTrue(any("삼성전자 3분기 잠정실적(예상) · 미확정" in x for x in labels))
+
+    def test_review_run_computes_ma_and_highs(self):
+        text = (ROOT / "tools" / "build_session_review.py").read_text(encoding="utf-8")
+        self.assertIn('summary["ma5"], summary["ma20"]', text)
+        self.assertIn('summary["high252"]', text)

@@ -42,6 +42,9 @@ def _flows_from_pykrx(ticker, start, end):
     out['foreign_net'] = vol['외국인합계'].to_numpy(dtype=float) if '외국인합계' in vol else np.nan
     out['inst_net'] = vol['기관합계'].to_numpy(dtype=float) if '기관합계' in vol else np.nan
     out['indiv_net'] = vol['개인'].to_numpy(dtype=float) if '개인' in vol else np.nan
+    # 기타 법인(자사주를 사는 회사 자신·일반 기업 등). KRX가 따로 주므로 추정하지 않고 그대로 둔다(2026-10-01).
+    # FLOW_COLUMNS 밖의 선택 열이라 보관본(macro_history) 형식은 그대로다.
+    out['other_net'] = vol['기타법인'].to_numpy(dtype=float) if '기타법인' in vol else np.nan
     out['volume'] = np.nan
     try:
         ratio = krx.get_exhaustion_rates_of_foreign_investment_by_date(s, e, code)
@@ -195,7 +198,7 @@ def load_investor_flows(storage, ticker, start, end, use_cache=False, fallback_d
             frame[col] = pd.to_numeric(frame.get(col), errors='coerce')
         return frame[FLOW_COLUMNS].drop_duplicates('date').sort_values('date').reset_index(drop=True)
 
-    error, source = None, None
+    error, source, krx_error = None, None, None
     if use_cache and cached.exists():
         frame, source = read(cached), 'explicit_cache_replay'
     elif local.exists():
@@ -205,13 +208,26 @@ def load_investor_flows(storage, ticker, start, end, use_cache=False, fallback_d
         fetch_start = (base['date'].max() - pd.Timedelta(days=60)) if base is not None and len(base) else pd.Timestamp(start)
         fresh = None
         errors = []
+        krx_error = None
         if os.environ.get('KRX_ID') and os.environ.get('KRX_PW'):
             try:
                 fresh, source = _flows_from_pykrx(ticker, fetch_start, end), 'KRX(pykrx)'
             except ImportError:
-                errors.append('KRX: pykrx 미설치')
+                krx_error = 'pykrx 미설치'
             except Exception as exc:
-                errors.append(f'KRX: {type(exc).__name__}: {exc}')
+                # 계정 값이 오류 문구에 섞여 나오지 않게 지운다.
+                text = str(exc)
+                for secret in (os.environ.get('KRX_ID'), os.environ.get('KRX_PW')):
+                    if secret:
+                        text = text.replace(secret, '***')
+                krx_error = f'{type(exc).__name__}: {text[:100]}'
+            if krx_error:
+                errors.append(f'KRX: {krx_error}')
+        else:
+            krx_error = 'KRX 계정 없음'
+        if fresh is not None and len(fresh) and fresh['foreign_net'].notna().sum() == 0:
+            krx_error, fresh = 'KRX가 빈 수급을 돌려줌', None
+            errors.append(f'KRX: {krx_error}')
         if fresh is None:
             try:
                 fresh, source = _flows_from_naver(ticker, fetch_start), 'naver'
@@ -230,7 +246,9 @@ def load_investor_flows(storage, ticker, start, end, use_cache=False, fallback_d
     info = {'source': source, 'fresh': error is None and source not in ('explicit_cache_replay',),
             'fetch_error': error, 'first': frame['date'].min().date().isoformat(),
             'last': frame['date'].max().date().isoformat(), 'rows': int(len(frame)),
-            'snapshot_hash': hashlib.sha256(frame.to_csv(index=False).encode()).hexdigest()[:20]}
+            'snapshot_hash': hashlib.sha256(frame.to_csv(index=False).encode()).hexdigest()[:20],
+            # 네이버로 받아 성공했어도 KRX가 왜 빠졌는지 남긴다(2026-10-01: 회고가 '네이버'로만 찍혀 이유를 몰랐다).
+            'krx_error': krx_error}
     return frame, info
 
 

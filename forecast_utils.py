@@ -3351,7 +3351,11 @@ def flow_story(today, history, summary, close, prior_5d=None, peer_name="동종 
                        "shares": shares[key], "won": shares[key] * close, "vs_usual": usual})
     # 외국인·기관·개인의 합이 0에서 크게 벗어나면 나머지(기타 법인 등)가 반대편이다. 2026-10-01 삼성전자는 외국인·개인이
     # 함께 팔고 기관은 +127억뿐이었는데, 회고가 기관을 '가장 많이 산 쪽'이라 불렀다(실제로는 기타 법인 등 약 +5,500억).
-    if not estimated and all(shares[k] is not None for k, _ in FLOW_ACTORS):
+    # KRX가 기타 법인을 따로 준 날은 그 값을 그대로 쓴다(추정 아님).
+    other = num((today or {}).get("other_net"))
+    if other is not None and other != 0:
+        actors.append({"key": "other_net", "name": "기타 법인", "shares": other, "won": other * close, "vs_usual": None})
+    elif not estimated and all(shares[k] is not None for k, _ in FLOW_ACTORS):
         rest = -sum(shares[k] for k, _ in FLOW_ACTORS)
         if abs(rest) * close >= .3 * max(abs(a["won"]) for a in actors):
             actors.append({"key": "other_net", "name": "기타 법인 등(추정)", "shares": rest, "won": rest * close,
@@ -3375,6 +3379,10 @@ def flow_story(today, history, summary, close, prior_5d=None, peer_name="동종 
         counter = None
 
     seen = market_observations(summary, prior_5d=prior_5d, peer_name=peer_name, foreign=shares["foreign_net"])
+    other_actor = next((a for a in actors if a["key"] == "other_net"), None)
+    if other_actor and other_actor["won"] > 0 and summary.get("buyback"):
+        seen.append(f"{other_actor['name']} 순매수 {_won_text(other_actor['won'])} — 회사의 자사주 매입 기간이라 "
+                    "회사 매입과 맞는 모양입니다.")
     if lead.get("vs_usual") is not None and lead["vs_usual"] >= 2:
         seen.append(f"{lead['name']}의 순{'매도' if lead['won'] < 0 else '매수'} 규모가 최근 20거래일 평균의 "
                     f"{lead['vs_usual']:.1f}배로 컸습니다.")
@@ -3499,6 +3507,10 @@ def market_observations(summary, prior_5d=None, peer_name="동종 종목", forei
         parts.append(f"{label} {pct(ret)}{note}{tail}")
     if parts:
         seen.append("우리 장중(09:00~15:30) " + " · ".join(parts) + ".")
+    for buy in summary.get("buyback") or []:
+        amount = f", {buy['amount']}" if buy.get("amount") else ""
+        seen.append(f"자사주 매입 기간 중({buy.get('kind', '')} {buy.get('start', '')}~{buy.get('end', '')}{amount}, DART 공시) — "
+                    "회사 자신의 매수는 기타 법인으로 잡힙니다.")
     from_high = num(summary.get("from_high"))
     if from_high is not None and from_high <= -.02:
         seen.append(f"마감가가 장중 고가보다 {pct(from_high)} 아래 — 오른 폭을 장중에 꽤 반납했습니다.")
@@ -3537,7 +3549,7 @@ def flow_story_html(story, number=None):
                  f'<div style="flex:0 0 120px;font-size:12px;text-align:right;color:{color}">{_won_text(a["won"])}</div></div>')
     seen = "".join(f"<li>{e(x)}</li>" for x in story["observations"]) or "<li>함께 볼 만한 사실이 없습니다.</li>"
     notes = []
-    if any(a.get("key") == "other_net" for a in story["actors"]):
+    if any(a.get("key") == "other_net" and "추정" in a.get("name", "") for a in story["actors"]):
         notes.append("기타 법인 등은 외국인·기관·개인 합계의 반대편으로 추정했습니다")
     if story.get("estimated_indiv"):
         notes.append("개인은 자료가 없어 외국인·기관의 반대편으로 추정했습니다(기타 법인 포함)")

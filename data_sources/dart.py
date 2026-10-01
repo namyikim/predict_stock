@@ -81,6 +81,58 @@ def fetch_dart_disclosures(corp_code, key, start, end, max_pages=3):
 
 
 
+# 자기주식 취득(2026-10-01): 기타 법인 순매수가 클 때 '회사의 자사주 매입 기간인가'를 보려고 매입 기간을 읽는다.
+# 주요사항보고서 API 두 가지 — 직접 취득 결정(취득예상기간)과 신탁계약 체결 결정(계약기간).
+BUYBACK_ENDPOINTS = (
+    ("tsstkAqDecsn", "직접 취득", "aq_expd_bgd", "aq_expd_edd", ("aqpln_prc_ostk", "aqpln_stk_ostk"), "aq_pp"),
+    ("tsstkAqTrctrCnsDecsn", "신탁계약", "ctr_pd_bgd", "ctr_pd_edd", ("ctr_prc",), "ctr_pp"),
+)
+
+
+def _dart_date(text):
+    """'2024년 11월 18일', '2024-11-18', '20241118' → Timestamp. 못 읽으면 None."""
+    digits = re.findall(r"\d+", str(text or ""))
+    if len(digits) == 1 and len(digits[0]) == 8:
+        digits = [digits[0][:4], digits[0][4:6], digits[0][6:]]
+    if len(digits) < 3:
+        return None
+    try:
+        return pd.Timestamp(year=int(digits[0]), month=int(digits[1]), day=int(digits[2]))
+    except ValueError:
+        return None
+
+
+def parse_buyback_rows(rows, kind, start_key, end_key, amount_keys, purpose_key):
+    out = []
+    for row in rows or []:
+        start, end = _dart_date(row.get(start_key)), _dart_date(row.get(end_key))
+        if start is None or end is None:
+            continue
+        amount = next((str(row.get(k)).strip() for k in amount_keys if str(row.get(k) or "").strip() not in ("", "-")), "")
+        out.append({"kind": kind, "start": start.date().isoformat(), "end": end.date().isoformat(),
+                    "amount": amount, "purpose": str(row.get(purpose_key) or "").strip()[:80],
+                    "rcept_no": str(row.get("rcept_no", ""))})
+    return out
+
+
+def fetch_buyback_periods(corp_code, key, start, end):
+    """기간 안에 공시된 자기주식 취득·신탁계약의 매입 기간 목록. 공시가 없으면 빈 목록."""
+    out = []
+    for endpoint, kind, start_key, end_key, amount_keys, purpose_key in BUYBACK_ENDPOINTS:
+        url = (f"https://opendart.fss.or.kr/api/{endpoint}.json?" + urlencode({
+            "crtfc_key": key, "corp_code": corp_code,
+            "bgn_de": pd.Timestamp(start).strftime("%Y%m%d"), "end_de": pd.Timestamp(end).strftime("%Y%m%d")}))
+        with open_url(url, accept="application/json") as response:
+            payload = json.loads(response.read().decode("utf-8"))
+        status = payload.get("status")
+        if status == "013":            # 조회된 데이터 없음
+            continue
+        if status != "000":
+            raise RuntimeError(f"DART {kind} 오류 {status}: {payload.get('message', '')}")
+        out += parse_buyback_rows(payload.get("list", []), kind, start_key, end_key, amount_keys, purpose_key)
+    return sorted(out, key=lambda r: r["start"])
+
+
 def classify_disclosure(report_nm):
     for pattern, label in EVENT_PATTERNS:
         if pattern.search(report_nm):

@@ -246,6 +246,24 @@ def earnings_reactions(target, corp_code, cache_dir, since=2015):
         return None
 
 
+def buyback_on(corp_code, session_date, lookback_days=400):
+    """그날이 회사의 자기주식 취득(직접·신탁) 기간 안인가. [{kind, start, end, amount, purpose}] 또는 빈 목록.
+
+    기타 법인 순매수가 클 때 회사의 자사주 매입과 맞는 모양인지 보려고 쓴다(2026-10-01). 공시는 그날까지 나온 것만.
+    """
+    try:
+        from data_sources.dart import dart_key_optional, fetch_buyback_periods
+        key = dart_key_optional()
+        if not key:
+            return []
+        day = pd.Timestamp(session_date).normalize()
+        rows = fetch_buyback_periods(corp_code, key, day - pd.Timedelta(days=lookback_days), day)
+        return [r for r in rows if pd.Timestamp(r["start"]) <= day <= pd.Timestamp(r["end"])]
+    except Exception as exc:
+        print(f"  자사주 매입 기간 미확인({type(exc).__name__})")
+        return []
+
+
 def load_intraday(ticker, session_date):
     """그 날짜(KST)의 5분봉. 없으면 빈 프레임."""
     frame = _yf(ticker, period="5d", interval="5m")
@@ -716,6 +734,7 @@ def build_review(target, session_date, storage, token=None, use_news=True):
         day_items = [it for it in items if it["time"].date() == session_date.date()]
         top_news = sorted(day_items, key=lambda it: (-score_headline(it["title"], spec["name"]), it["time"]))[:6]
     disclosures, disclosure_note = fetch_disclosures(spec["corp_code"], session_date)
+    summary["buyback"] = buyback_on(spec["corp_code"], session_date)
     # 실적 발표가 열흘 안에 있거나 오늘이 발표일이면, 과거 발표일의 반응 통계를 붙인다.
     upcoming = [ev for ev in _kr_events(session_date, target, days=10)
                 if "실적" in ev.get("label", "") and spec["name"] in ev.get("label", "")]
@@ -744,14 +763,19 @@ def build_review(target, session_date, storage, token=None, use_news=True):
                            "detail": f"{'·'.join(failed_sources)}에서 받지 못해 저장소 보관본"
                                      f"(최신 {frame['date'].max().date() if len(frame) else '없음'})을 썼습니다"}
             print(f"::warning::수급 받기 실패({'·'.join(failed_sources)}) — 보관본 사용")
+        krx_error = (flow_info or {}).get("krx_error")
+        if krx_error and krx_error != "KRX 계정 없음":
+            print(f"::notice::수급을 KRX에서 받지 못해 다른 경로를 썼습니다 — {krx_error}")
         if len(row):
-            flow_status = {"state": "ok", "detail": str((flow_info or {}).get("source") or "")}
+            flow_status = {"state": "ok", "detail": str((flow_info or {}).get("source") or ""), "krx_error": krx_error}
             row = row.iloc[0]
             history = frame[frame["date"] < session_date]
             prior_5d = (float(daily["close"].iloc[pos - 1] / daily["close"].iloc[pos - 6] - 1) if pos >= 6 else None)
             source = str((flow_info or {}).get("source") or "")
             note = (f"출처 {source} · 장 마감 직후 잠정치라 저녁 확정치와 다를 수 있습니다"
                     if source else "장 마감 직후 잠정치라 저녁 확정치와 다를 수 있습니다")
+            if krx_error and "KRX" not in source:
+                note += f" · KRX는 받지 못함({krx_error[:60]})"
             flow_story_data = flow_story(row.to_dict(), history, summary, summary["close"], prior_5d,
                                          peer_name=spec.get("peer_name", "동종 종목"), source_note=note)
             frg, inst = row.get("foreign_net"), row.get("inst_net")

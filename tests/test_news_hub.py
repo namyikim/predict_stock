@@ -16,16 +16,17 @@ class HubPageTests(unittest.TestCase):
     def setUp(self):
         self.page = hub.build_hub()
 
-    def test_three_tabs_in_this_order(self):
+    def test_tabs_in_this_order(self):
+        # 2026-10-02: '최신 로봇 뉴스'를 AI 뉴스 바로 다음에 더했다.
         labels = re.findall(r'<a href="#\w+" data-tab="\w+" aria-selected="(?:true|false)">(.*?)</a>', self.page)
-        self.assertEqual(labels, ["최신 AI 뉴스", "인기 급상승 검색어", "장기 관심도"])
+        self.assertEqual(labels, ["최신 AI 뉴스", "최신 로봇 뉴스", "인기 급상승 검색어", "장기 관심도"])
 
     def test_the_first_tab_is_selected_by_default(self):
         self.assertEqual(re.findall(r'data-tab="(\w+)" aria-selected="true"', self.page), ["ai_news"])
 
     def test_each_tab_shows_the_existing_page(self):
         """틀만 둔다. 세 페이지를 다시 조립하면 갱신 주기가 다른 잡들이 같은 파일을 쓰게 된다."""
-        self.assertEqual(re.findall(r'data-src="([^"]+)"', self.page), ["../ai_news/", "../trends/", "../interest/"])
+        self.assertEqual(re.findall(r'data-src="([^"]+)"', self.page), ["../ai_news/", "../robot_news/", "../trends/", "../interest/"])
 
     def test_tabs_load_their_page_only_when_first_opened(self):
         self.assertNotIn('<iframe title="최신 AI 뉴스" src=', self.page)
@@ -35,7 +36,7 @@ class HubPageTests(unittest.TestCase):
         for panel in re.findall(r'<section class="hub-panel"[^>]*>', self.page):
             self.assertNotIn("hidden", panel)
         self.assertIn(".hub-on .hub-panel{display:none}", self.page)
-        self.assertEqual(self.page.count("<noscript>"), 3, "스크립트가 없으면 각 페이지로 가는 링크를 보여야 한다")
+        self.assertEqual(self.page.count("<noscript>"), 4, "스크립트가 없으면 각 페이지로 가는 링크를 보여야 한다")
 
     def test_deep_links_and_clicks_select_a_tab(self):
         self.assertIn('addEventListener("hashchange",route)', self.page)
@@ -132,4 +133,4 @@ class EmbeddedButtonTests(unittest.TestCase):
 
     def test_hub_embeds_exactly_those_pages(self):
         import build_news_hub as hub
-        self.assertEqual({key for key, _, _ in hub.TABS}, {"ai_news", "trends", "interest"})
+        self.assertEqual({key for key, _, _ in hub.TABS}, {"ai_news", "robot_news", "trends", "interest"})

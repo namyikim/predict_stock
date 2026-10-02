@@ -188,6 +188,12 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: python tools/build_ai_news_report.py --out runs/ai_news --publish
+      # 로봇 뉴스(2026-10-02): 같은 도구에 주제만 바꾼 것이라 같은 잡에서 이어 만든다. AI 뉴스가 실패해도 시도한다.
+      - name: 최신 로봇 트렌드 및 뉴스
+        if: ${{ !cancelled() }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python tools/build_robot_news_report.py --out runs/robot_news --publish
   trends:
     runs-on: ubuntu-latest
     if: >-

@@ -529,6 +529,9 @@ class AllReportsBackLinkTests(unittest.TestCase):
     TOOLS = ("build_metals_report.py", "build_china_report.py",
              "build_trends_report.py", "build_interest_report.py",
              "build_news_hub.py", "build_ai_news_report.py", "build_macro_report.py")
+    # 다른 도구의 페이지 틀을 그대로 쓰는 도구(2026-10-02: 로봇 뉴스는 AI 뉴스 도구에 주제만 바꾼다).
+    # 버튼 글자가 제 소스에는 없으므로 만들어진 페이지로 확인한다(test_reusing_tools_inherit_the_button).
+    REUSING = {"build_robot_news_report.py": "build_ai_news_report.py"}
 
     def source(self, name):
         return (ROOT / "tools" / name).read_text(encoding="utf-8")
@@ -573,9 +576,20 @@ class AllReportsBackLinkTests(unittest.TestCase):
         pages = {p.name for p in (ROOT / "docs").iterdir()
                  if p.is_dir() and p.name != "admin" and (p / "index.html").exists()}
         # 종목 둘은 노트북이, lab 은 정적 파일이 만든다. 나머지는 TOOLS 가 만든다.
-        by_tool = len(self.TOOLS)
+        by_tool = len(self.TOOLS) + len(self.REUSING)
         self.assertGreaterEqual(by_tool + 3, len(pages),
                                 f"검사하지 않는 페이지가 있습니다: {sorted(pages)}")
+
+    def test_reusing_tools_inherit_the_button(self):
+        from datetime import datetime, timedelta, timezone
+        sys.path.insert(0, str(ROOT / "tools"))
+        for name, base in self.REUSING.items():
+            self.assertIn(base, self.TOOLS, name)
+            self.assertIn(f"import {base[:-3]} as base", self.source(name), name)
+            module = __import__(name[:-3])
+            page = module.build_html([], datetime(2026, 10, 2, 11, 0, tzinfo=timezone(timedelta(hours=9))), 0, [])
+            self.assertEqual(page.count("← 보고서 목록"), 1, name)
+            self.assertLess(page.index("← 보고서 목록"), page.index('<h2 class="page-title"'), name)
 
     def test_only_one_back_link_per_generator(self):
         """목록 링크는 맨 위 버튼 하나만. 하단에도 있으면 같은 버튼이 두 번 보인다.

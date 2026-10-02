@@ -44,7 +44,7 @@ const RETENTION_DAYS = 400;
 
 // 페이지 키도 화이트리스트로 고정한다. 임의 키를 허용하면 남이 테이블을 부풀릴 수 있다.
 const ALLOWED_PAGES = ["main", "samsung", "sk_hynix", "china", "metals", "ai_news",
-                       "trends", "interest"];
+                       "trends", "interest", "robot_news"];   // robot_news: 최신 로봇 뉴스(2026-10-02)
 
 // 구독을 받는 페이지. 종목 보고서 두 곳과 메인 페이지에 버튼이 있다(2026-09-28 요청).
 const SUBSCRIBE_PAGES = ["main", "samsung", "sk_hynix"];

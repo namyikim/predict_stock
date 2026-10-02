@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
-"""'최신 뉴스 및 트렌드' 한 페이지 — AI 뉴스 · 인기 급상승 검색어 · 장기 관심도를 탭으로 묶는다.
+"""'최신 뉴스 및 트렌드' 한 페이지 — AI 뉴스 · 로봇 뉴스 · 인기 급상승 검색어 · 장기 관심도를 탭으로 묶는다.
 
-세 페이지는 따로 만들어지고 갱신 주기도 다르다(AI 뉴스·검색어는 3시간마다, 관심도는 하루 한 번).
+각 페이지는 따로 만들어지고 갱신 주기도 다르다(AI·로봇 뉴스·검색어는 3시간마다, 관심도는 하루 한 번).
 하나의 파일로 다시 조립하면 한쪽이 갱신될 때마다 나머지를 받아 붙여야 하고, 서로 다른 잡이 같은
 파일을 동시에 쓰게 된다. 그래서 이 페이지는 **틀만** 두고, 각 탭이 기존 페이지를 그대로 불러 보인다.
-세 페이지의 주소(/ai_news/, /trends/, /interest/)도 그대로 살아 있다.
+각 페이지의 주소(/ai_news/, /robot_news/, /trends/, /interest/)도 그대로 살아 있다.
 
 조회수는 탭 안의 각 페이지가 스스로 센다(탭을 처음 열 때 한 번). 이 틀은 세지 않는다 — 세면
 같은 방문이 두 번 잡힌다.
@@ -19,7 +19,9 @@ ROOT = Path(__file__).resolve().parents[1]
 HUB_PATH = ROOT / "docs" / "news" / "index.html"
 TITLE = "최신 뉴스 및 트렌드"
 # (주소 조각, 탭 이름, 불러올 페이지). 첫 탭이 기본으로 열린다.
+# 로봇 뉴스는 AI 뉴스 바로 다음에 둔다(2026-10-02 요청). 같은 도구로 만드는 같은 모양의 페이지다.
 TABS = (("ai_news", "최신 AI 뉴스", "../ai_news/"),
+        ("robot_news", "최신 로봇 뉴스", "../robot_news/"),
         ("trends", "인기 급상승 검색어", "../trends/"),
         ("interest", "장기 관심도", "../interest/"))
 
@@ -101,7 +103,7 @@ def build_hub():
         '<div style="padding-bottom:8px;margin-bottom:6px">'
         '<div style="font-size:11px;letter-spacing:2px;color:#8a9199">NEWS &amp; TRENDS</div>'
         f'<h2 style="margin:6px 0 4px;font-size:27px">{escape(TITLE)}</h2>'
-        '<div style="font-size:12px;color:#8a9199">세 탭은 따로 갱신됩니다 — AI 뉴스와 검색어는 약 3시간마다, '
+        '<div style="font-size:12px;color:#8a9199">탭마다 따로 갱신됩니다 — AI 뉴스·로봇 뉴스와 검색어는 약 3시간마다, '
         '장기 관심도는 하루 한 번. 각 탭 안에 기준 시각이 적혀 있습니다.</div></div>'
         f'<nav class="hub-tabs" aria-label="뉴스와 트렌드 탭">{buttons}</nav>'
         f'{panels}'

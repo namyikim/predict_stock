@@ -5,6 +5,7 @@
 | 보고서 | 생성 도구 | 발행 위치 |
 | --- | --- | --- |
 | 인기 급상승 검색어 | `tools/build_trends_report.py` | `docs/trends/` |
+| 최신 로봇 뉴스 | `tools/build_robot_news_report.py`(AI 뉴스 도구에 주제만 바꾼 것) | `docs/robot_news/` |
 | 금·은 예측 | `tools/build_metals_report.py` | `docs/metals/` |
 | 중국 5개년 계획 | `tools/build_china_report.py` | `docs/china/` |
 | 장기 관심도 | `tools/build_interest_report.py` | `docs/interest/` |

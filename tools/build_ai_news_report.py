@@ -54,6 +54,13 @@ STOPWORDS = set((
     "발표 출시 도입 추진 확대 강화 지원 계획 이유 산업 기술 서비스 전략 혁신 미래 세계 국내 한국 정부 활용 "
     "기반 분야 성장 필요 가능 전망 대응 역할 가속 본격 선언 개최 포럼 행사 교육 센터 사업 플랫폼 솔루션 모델 "
     "기능 무엇 어떻게 승부수 한목소리 신규 공동 주요 핵심 수요 규모 역대 국가 지역").split())
+# 주제 설정(2026-10-02: '최신 로봇 뉴스'를 같은 도구로 만든다 — tools/build_robot_news_report.py).
+# key 는 조회수 카운터의 페이지 키이자 docs/ 아래 폴더 이름이다. stopwords 는 그 주제에서 어느 헤드라인에나 나와
+# 순위에 올라도 알려 주는 것이 없는 말(공통 STOPWORDS 에 더한다).
+AI_TOPIC = {
+    "key": "ai_news", "title": "최신 AI 트렌드 및 뉴스", "eyebrow": "AI TRENDS &amp; NEWS", "subject": "AI",
+    "queries": QUERIES, "stopwords": (), "commit": "ai-news", "label": "AI 뉴스",
+}
 WINDOW_HOURS = 36          # 이 시간 안에 나온 기사만 '오늘'로 본다
 RANK_LIMIT = 10            # 인기 급상승 검색어와 같은 열 개
 NEWS_PER_TERM = 3          # 순위마다 보여 줄 기사 수
@@ -109,13 +116,13 @@ def collect(queries=QUERIES, now=None, window_hours=WINDOW_HOURS, fetch=fetch_rs
     return merged, failed
 
 
-def _base_term(word, vocab):
+def _base_term(word, vocab, extra_stopwords=()):
     """낱말 하나를 순위에 쓸 꼴로 바꾼다. 순위에 쓰지 않을 말이면 None.
 
     조사는 **떼어 낸 꼴이 같은 헤드라인 묶음에 따로 나올 때만** 뗀다. '엔비디아가'는 '엔비디아'가 따로
     나오니 떼지만, '마이크로'처럼 우연히 조사처럼 끝나는 이름은 자르지 않는다.
     """
-    if len(word) < 2 or word in STOPWORDS or word.endswith(VERBISH):
+    if len(word) < 2 or word in STOPWORDS or word in extra_stopwords or word.endswith(VERBISH):
         return None
     if "가" <= word[-1] <= "힣":
         for particle in PARTICLES:
@@ -123,12 +130,12 @@ def _base_term(word, vocab):
             if word.endswith(particle) and len(stem) >= 2 and vocab.get(stem):
                 word = stem
                 break
-    if word in STOPWORDS:
+    if word in STOPWORDS or word in extra_stopwords:
         return None
     return word
 
 
-def rank_terms(items, limit=RANK_LIMIT, per_term=NEWS_PER_TERM, min_sources=2, min_articles=2):
+def rank_terms(items, limit=RANK_LIMIT, per_term=NEWS_PER_TERM, min_sources=2, min_articles=2, stopwords=()):
     """헤드라인에 나온 말의 순위. [{term, sources, articles, latest, news:[기사, ...]}]
 
     순위는 **다룬 매체 수**가 먼저이고 기사 수, 가장 최근 시각이 그 다음이다. 한 매체가 같은 기사를
@@ -141,7 +148,7 @@ def rank_terms(items, limit=RANK_LIMIT, per_term=NEWS_PER_TERM, min_sources=2, m
     for index, words in enumerate(raw):
         seen = set()
         for word in words:
-            term = _base_term(word, vocab)
+            term = _base_term(word, vocab, stopwords)
             if not term or term in seen:
                 continue                      # 한 헤드라인에서 같은 말은 한 번만 센다
             seen.add(term)
@@ -170,9 +177,10 @@ def _safe_url(url):
     return url if parsed.scheme in ("http", "https") and parsed.netloc else ""
 
 
-def build_html(ranked, now, total, failed):
-    """순위표 한 장. 인기 급상승 검색어 페이지와 같은 모양(순위 · 말 · 기사 세 건)."""
+def build_html(ranked, now, total, failed, topic=None):
+    """순위표 한 장. 인기 급상승 검색어 페이지와 같은 모양(순위 · 말 · 기사 세 건). topic 을 안 주면 AI 뉴스다."""
     e = html.escape
+    topic = topic or AI_TOPIC
     rows = []
     for rank, row in enumerate(ranked, 1):
         news = []
@@ -201,7 +209,7 @@ def build_html(ranked, now, total, failed):
         counter = ('<div style="margin-top:10px;font-variant-numeric:tabular-nums">'
                    '조회 <span id="view-count">—</span></div>'
                    '<script>(function(){'
-                   f'var E="{COUNTER_ENDPOINT}",P="ai_news";'
+                   f'var E="{COUNTER_ENDPOINT}",P="{topic["key"]}";'
                    'var el=document.getElementById("view-count");if(!el||!E)return;'
                    'fetch(E+"/hit?page="+encodeURIComponent(P))'
                    '.then(function(r){return r.ok?r.json():null;})'
@@ -227,7 +235,7 @@ def build_html(ranked, now, total, failed):
     return (
         '<!doctype html>\n<html lang="ko"><head><meta charset="utf-8">'
         '<meta name="viewport" content="width=device-width, initial-scale=1">'
-        f'<title>최신 AI 트렌드 및 뉴스 {now:%Y-%m-%d}</title>'
+        f'<title>{topic["title"]} {now:%Y-%m-%d}</title>'
         '<style>html,body{overflow-x:hidden}'
         'body{margin:0;padding:24px 20px 48px;background:#fff;max-width:100%;'
         "font-family:-apple-system,'Malgun Gothic',sans-serif;line-height:1.65;color:#1a1a1a;"
@@ -237,14 +245,14 @@ def build_html(ranked, now, total, failed):
         '<div class="wrap">'
         '<div class="back-to-index" style="margin-bottom:10px"><a href="../" style="display:inline-block;font-size:12px;color:#1a5490;text-decoration:none;border:1px solid #cedff0;border-radius:5px;padding:5px 11px;background:#f0f6fc">← 보고서 목록</a></div>'
         '<div style="border-bottom:3px solid #1a1a1a;padding-bottom:11px;margin-bottom:18px">'
-        '<div class="page-title" style="font-size:11px;letter-spacing:2px;color:#8a9199">AI TRENDS &amp; NEWS</div>'
-        '<h2 class="page-title" style="margin:6px 0 5px;font-size:27px">최신 AI 트렌드 및 뉴스</h2>'
+        '<div class="page-title" style="font-size:11px;letter-spacing:2px;color:#8a9199">' + topic["eyebrow"] + '</div>'
+        '<h2 class="page-title" style="margin:6px 0 5px;font-size:27px">' + topic["title"] + '</h2>'
         f'<div style="font-size:12px;color:#8a9199">{now:%Y-%m-%d %H:%M} KST 기준 · '
         f'최근 {WINDOW_HOURS}시간 헤드라인 {total}건</div></div>'
         + warn +
         '<div style="background:#f5f6f8;border-radius:6px;padding:12px 16px;margin-bottom:18px;'
         'font-size:13px;color:#6b7178">'
-        f'구글 뉴스에서 AI 관련 검색어로 받은 최근 {WINDOW_HOURS}시간 헤드라인에서 '
+        f'구글 뉴스에서 {topic["subject"]} 관련 검색어로 받은 최근 {WINDOW_HOURS}시간 헤드라인에서 '
         '<b>가장 많은 매체가 다룬 말</b>을 순서대로 보여 줍니다. <b>검색량 순위가 아니라 헤드라인 언급 순위</b>이며, '
         '한 매체가 여러 번 쓴 것보다 여러 매체가 함께 다룬 말이 위로 올라갑니다. '
         '기사 내용을 요약하거나 해석하지 않았고 제목·출처·시각을 그대로 옮겨 원문으로 링크합니다. '
@@ -261,7 +269,8 @@ def build_html(ranked, now, total, failed):
         "</div></body></html>")
 
 
-def main():
+def main(topic=None):
+    topic = topic or AI_TOPIC
     parser = argparse.ArgumentParser(description=__doc__,
                                      formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--out", type=Path, required=True, help="보고서를 저장할 폴더")
@@ -270,15 +279,15 @@ def main():
     args = parser.parse_args()
 
     now = datetime.now(KST)
-    items, failed = collect(now=now, window_hours=args.hours)
-    ranked = rank_terms(items)
-    print(f"AI 뉴스 {len(items)}건 · 순위 {len(ranked)}개" + (f" · 실패 {failed}" if failed else ""))
+    items, failed = collect(queries=topic["queries"], now=now, window_hours=args.hours)
+    ranked = rank_terms(items, stopwords=topic["stopwords"])
+    print(f"{topic['label']} {len(items)}건 · 순위 {len(ranked)}개" + (f" · 실패 {failed}" if failed else ""))
     for rank, row in enumerate(ranked, 1):
         print(f"  {rank:2}. {row['term']} (매체 {row['sources']} · 기사 {row['articles']})")
         for item in row["news"][:2]:
             print(f"        {item['time']:%m-%d %H:%M} {item['title'][:60]}")
 
-    page = build_html(ranked, now, len(items), failed)
+    page = build_html(ranked, now, len(items), failed, topic)
     args.out.mkdir(parents=True, exist_ok=True)
     local = args.out / "report.html"
     local.write_text(page, encoding="utf-8")
@@ -296,10 +305,11 @@ def main():
         print("⚠️ 받은 기사가 없어 발행하지 않습니다(기존 보고서를 유지합니다).")
         return
     # 파일 하나지만 다른 도구와 같은 경로(Git Data API)로 올린다 — 내용이 그대로면 커밋하지 않는다(발행 묶기 ③).
-    message = f"ai-news: {now:%Y-%m-%d %H:%M} KST ({len(items)}건)"
+    message = f"{topic['commit']}: {now:%Y-%m-%d %H:%M} KST ({len(items)}건)"
+    pages_dir = f"docs/{topic['key']}"
     with github_pages.batch(message, token):
-        sha = github_pages.publish(f"{PAGES_DIR}/index.html", page, token, message)
-    print(f"GitHub Pages 발행: {PAGES_DIR}/index.html @ {sha}")
+        sha = github_pages.publish(f"{pages_dir}/index.html", page, token, message)
+    print(f"GitHub Pages 발행: {pages_dir}/index.html @ {sha}")
 
 
 if __name__ == "__main__":

@@ -57,10 +57,19 @@
     });
     first.forEach(function (r) {
       if (!groups.has(r.model)) groups.set(r.model, {model: r.model, kind: kind, horizon: horizon,
-        selected: 0, scored: 0, matched: 0, correct: 0, dates: [], stats: new Map()});
+        selected: 0, scored: 0, matched: 0, correct: 0, pending: 0, pendingFrom: '', dates: [], stats: new Map()});
       var g = groups.get(r.model); g.selected++;
       var ok = correctness(r, kind);
-      if (ok === null) return;
+      if (ok === null) {
+        // 기여도는 남아 있지만 아직 채점 전인 예측(2026-10-02): 비어 있는 이유와 언제 채워지는지 알리려고 센다.
+        // 5·20거래일 종가는 만기가 지나야 채점되므로 한동안 '기록은 있는데 요약은 빈' 상태가 이어진다.
+        var waiting = byRun.get(key(r, predictionDate(r)));
+        if (r.status !== 'scored' && waiting && waiting.size) {
+          g.pending++;
+          if (!g.pendingFrom || predictionDate(r) < g.pendingFrom) g.pendingFrom = predictionDate(r);
+        }
+        return;
+      }
       g.scored++;
       var features = byRun.get(key(r, predictionDate(r)));
       if (!features || !features.size) return;

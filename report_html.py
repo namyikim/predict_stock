@@ -726,6 +726,27 @@ def disclosure_section_html(disclosures, disclosure_info, classify):
                    f'font-size:13px;border:1px solid #e5e5e5">{rows}</table></div>')
 
 
+_DISCLOSURE_HEAD = re.compile(r'<h3\b[^>]*>(?:(?!</h3>).)*참고 정보: 최근 공시와 예정 발표(?:(?!</h3>).)*</h3>', re.S)
+_DISCLOSURE_BLOCK = re.compile(r'((?:\s*<div class="gen-stamp"[^>]*>.*?</div>)?\s*)(<div\b[^>]*>.*?</div>)', re.S)
+
+
+def replace_disclosure_block(page, disclosures, disclosure_info, classify):
+    """발행된 보고서의 '최근 공시' 목록만 새로 바꾼다. 제목·예정 발표·다른 절은 그대로 둔다.
+
+    공시 목록은 보고서를 만들 때만 받아 장중에 나온 공시가 저녁이나 다음 날 아침에야 보였다(2026-09-28 지적).
+    장 마감 회고 실행이 이 함수로 목록만 다시 채운다. 절을 찾지 못하면 페이지를 그대로 돌려준다.
+    목록 칸은 '없음' 한 줄이거나 표를 감싼 div 하나다(안에 다른 div 가 없다) — 제목 뒤 첫 div 만 바꾼다.
+    """
+    head = _DISCLOSURE_HEAD.search(page)
+    if not head:
+        return page
+    block = _DISCLOSURE_BLOCK.match(page, head.end())
+    if not block:
+        return page
+    body = disclosure_section_html(disclosures, disclosure_info, classify).split('</h3>', 1)[1]
+    return page[:block.start(2)] + body + page[block.end(2):]
+
+
 def flow_section_html(flow_frame, flow_info, active, close_series, last_date, comparison):
     """외국인·기관 수급 절. close_series 는 종가(원화 환산용), comparison 은 쌍체 비교표(DataFrame)."""
     head = ('<h3 style="font-size:15px;margin:24px 0 9px;padding-bottom:6px;border-bottom:1px solid #ddd">'

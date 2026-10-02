@@ -43,7 +43,8 @@ TARGETS = {
 # 절 그리기는 forecast_utils 로 옮겼다(2026-09-23) — 노트북이 페이지를 새로 만들 때 같은 함수로 직전 회고를 다시 붙인다.
 from forecast_utils import (  # noqa: E402
     REVIEW_DISCLAIMER as DISCLAIMER, REVIEW_END as MARK_END, REVIEW_LEDGER_END as LEDGER_END,
-    REVIEW_START as MARK_START, _kr_events, flow_story, insert_review_section, review_section_html, review_tab_html,
+    REVIEW_START as MARK_START, _kr_events, flow_story, insert_review_section, kst_stamp, review_section_html,
+    review_tab_html, stamp_changed_panels,
 )
 PROVISIONAL_RE = re.compile(r"영업\s*\(?\s*잠정\s*\)?\s*실적")
 # 전환점 판정 문턱. 그날 5분 수익률의 robust σ 배수.
@@ -568,6 +569,32 @@ def fetch_disclosures(corp_code, session_date):
         return None, f"DART 조회 실패({type(exc).__name__})"
 
 
+def refresh_recent_disclosures(page, corp_code, now, fetch=None, days=10):
+    """'공시·발표 일정' 탭의 최근 공시 목록을 지금 기준으로 다시 채운다(2026-10-02).
+
+    종목 보고서는 아침에 한 번 공시를 받는다. 장중 공시는 회고의 '오늘 공시'에는 나오지만 이 탭에는 다음 보고서가
+    만들어질 때까지 없었다. 회고를 발행하면서 최근 10일 목록을 다시 받아 바꾼다. 키가 없거나 조회에 실패하면
+    페이지를 그대로 둔다 — 아침에 받은 목록을 '없음'으로 덮어쓰지 않는다. 바뀐 탭에만 '갱신 … KST'를 찍는다.
+    """
+    try:
+        from data_sources.dart import classify_disclosure, dart_key_optional, fetch_dart_disclosures
+        from report_html import replace_disclosure_block
+        if fetch is None:
+            key = dart_key_optional()
+            if not key:
+                return page
+            fetch = lambda start, stop: fetch_dart_disclosures(corp_code, key, start, stop)
+        today = pd.Timestamp(now).tz_localize(None).normalize() if pd.Timestamp(now).tzinfo else pd.Timestamp(now).normalize()
+        since = today - pd.Timedelta(days=days)
+        rows = fetch(since, today)
+        info = {"enabled": True, "count": len(rows), "since": since.date().isoformat()}
+        updated = replace_disclosure_block(page, rows, info, classify_disclosure)
+        return stamp_changed_panels(page, updated, kst_stamp(now, "갱신")) if updated != page else page
+    except Exception as exc:
+        print(f"  최근 공시 목록 갱신 건너뜀({type(exc).__name__}: {str(exc)[:80]})")
+        return page
+
+
 # ---------------------------------------------------------------------------
 # 아침 예측과 비교
 # ---------------------------------------------------------------------------
@@ -956,6 +983,7 @@ def main():
                                                   dates_cache.read_text(encoding="utf-8"), token,
                                                   f"macro: 실적 발표일 보관본 {args.target}")
             print(f"실적 발표일 보관본 macro_history/{earnings_dates_name(args.target)} → {result}")
+        spec_corp = TARGETS[args.target]["corp_code"]
         pages = [f"docs/{args.target}/index.html"]
         pages += [f"docs/{args.target}/reports/{candidate.date()}.html"
                   for candidate in (session_date, session_date + pd.Timedelta(days=1))]
@@ -966,11 +994,15 @@ def main():
                     print(f"⚠️ {path} 없음 — 건너뜁니다.")
                 continue
             # 보고서는 노트북·오후 갱신도 다시 쓴다. 읽은 뒤 바뀌었으면 최신본에 회고 절만 다시 넣는다(덮어쓰지 않는다).
-            sha = github_pages.publish(path, insert_section(page, section), token,
+            # 회고를 넣으면서 '공시·발표 일정' 탭의 최근 공시 목록도 지금 기준으로 다시 채운다(2026-10-02).
+            def finish(html_text):
+                return refresh_recent_disclosures(html_text, spec_corp, now)
+            ours = insert_section(page, section)
+            sha = github_pages.publish(path, finish(ours), token,
                                        f"review: {path} 장 마감 회고 ({now:%Y-%m-%d %H:%M} KST)",
                                        expected_sha=page_sha,
-                                       merge=lambda latest, ours=insert_section(page, section):
-                                           insert_section(latest, section) if latest else ours)
+                                       merge=lambda latest, ours=ours:
+                                           finish(insert_section(latest, section) if latest else ours))
             print(f"보고서 갱신 {path} @ {sha}")
 
 

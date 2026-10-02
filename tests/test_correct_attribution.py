@@ -127,6 +127,15 @@ class PriceScopeTests(unittest.TestCase):
         g = self.summary([self.attr()], [self.ledger(0.01, -0.03)], {'kind': 'price', 'horizon': 5})[0]
         self.assertEqual((g['matched'], g['correct']), (1, 0))
 
+    def test_unscored_predictions_with_attribution_are_counted_as_pending(self):
+        """기여도는 남았지만 만기 전이라 채점되지 않은 예측: 요약이 빈 이유를 화면이 말할 수 있게 센다(2026-10-02)."""
+        waiting = dict(self.ledger(.01, .02), status='pending', actual_return='')
+        g = self.summary([self.attr()], [waiting], dict(kind='price', horizon=5))[0]
+        self.assertEqual((g['scored'], g['matched'], g['correct']), (0, 0, 0))
+        self.assertEqual((g['pending'], g['pendingFrom']), (1, '2026-09-14'))
+        scored = self.summary([self.attr()], [self.ledger(.01, .02)], dict(kind='price', horizon=5))[0]
+        self.assertEqual((scored['pending'], scored['pendingFrom']), (0, ''))
+
     def test_horizons_do_not_mix(self):
         attrs = [self.attr(h=5), self.attr(h=20, feature='macro_leading_cycle')]
         ledger = [self.ledger(0.01, 0.03, h=5), self.ledger(0.01, 0.03, h=20)]

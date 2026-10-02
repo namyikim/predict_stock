@@ -595,6 +595,24 @@ body{zoom:1.15}
     return labels[model] || model;
   }
 
+  // 요약이 비었을 때 이유와 언제 채워지는지 적는다(2026-10-02). 예전 문구('동일 실행·모델의 기여도가 남아 있는
+  // 적중 기록이 아직 없습니다')만으로는 오류인지 기다리면 되는지 알 수 없었다.
+  function emptyReason(g) {
+    if (g.matched > 0) {
+      return '기여도가 연결된 채점 ' + g.matched + '건 가운데 적중이 아직 없습니다.';
+    }
+    if (g.pending > 0) {
+      return '기여도가 기록된 최초 사전 예측 ' + g.pending + '건이 아직 채점 전입니다(가장 이른 예측일 ' +
+        esc(g.pendingFrom) + '). ' +
+        (attrScope.kind === 'price'
+          ? '그 예측의 만기(' + attrScope.horizon + '거래일 뒤)가 지나 채점되면 여기에 나타납니다.'
+          : '다음 장 마감 채점 뒤에 여기에 나타납니다.');
+    }
+    return '채점된 최초 사전 예측에는 기여도 기록이 붙어 있지 않습니다. 기여도는 예측일마다 최초 사전 실행의 것만 세고, ' +
+      (attrScope.kind === 'price' ? '가격 예측의 기여도는 2026-09-28 아침 실행부터 남기 시작했습니다. ' : '') +
+      '새 예측이 채점되면 채워집니다.';
+  }
+
   function renderCorrectAttribution() {
     var groups = summarizeCorrectAttribution(attrRows, ledgerRows, attrScope);
     if (!scopedAttr().length) { renderScopeEmpty(); return; }
@@ -608,8 +626,9 @@ body{zoom:1.15}
       var info = '<h2>' + esc(stockName()) + ' · ' + esc(modelLabel(g.model)) +
         ' <span class="muted" style="font-size:12px;font-weight:400">' + esc(g.model) + '</span></h2>' +
         '<div class="muted">채점된 최초 사전 예측 ' + g.scored +
-        '건 · 기여도 연결 가능 ' + g.matched + '건 · 그중 적중 <b>' + g.correct + '건</b></div>';
-      if (!g.correct) return info + '<div class="empty">동일 실행·모델의 기여도가 남아 있는 적중 기록이 아직 없습니다.</div>';
+        '건 · 기여도 연결 가능 ' + g.matched + '건 · 그중 적중 <b>' + g.correct + '건</b>' +
+        (g.pending ? ' · 채점 대기 ' + g.pending + '건' : '') + '</div>';
+      if (!g.correct) return info + '<div class="empty">' + emptyReason(g) + '</div>';
       var top = g.rows[0];
       var summary = '<p>맞힌 예측에서 비중이 가장 컸던 요소는 <b>' + esc(attributionLabel(top.feature)) + '</b>입니다. ' +
         '기록된 요소 중 평균 비중은 <b>' + (top.share*100).toFixed(1) + '%</b>, ' +
@@ -638,7 +657,7 @@ body{zoom:1.15}
     $("attr-result").innerHTML = '<div class="empty">' + esc(stockName()) + ' · ' + esc(scopeLabel()) +
       ' 기여도 기록이 아직 없습니다. ' +
       (attrScope.kind === "price"
-        ? '가격 예측의 기여도는 2026-09-29 아침 실행부터 남깁니다. 그 예측의 만기(' + attrScope.horizon +
+        ? '가격 예측의 기여도는 2026-09-28 아침 실행부터 하루에 한 번 남깁니다. 그 예측의 만기(' + attrScope.horizon +
           '거래일 뒤)가 지나 채점되면 요약에 나타납니다.'
         : '아침 실행이 하루에 한 번 남깁니다.') + '</div>';
   }

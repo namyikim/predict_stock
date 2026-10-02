@@ -38,7 +38,7 @@ import outlook_ledger  # noqa: E402
 from report_html import tabify_sections  # noqa: E402
 from forecast_utils import (  # noqa: E402
     append_forecasts, atomic_csv, calibrate_price_forecast, daily_comparison, evaluate_forecasts,
-    fit_direction_model, predict_direction_model, probability_loss, review_ledger, summarize_daily,
+    fit_direction_model, predict_direction_model, probability_loss, review_ledger, summarize_daily, price_rows_range_html,
 )
 
 warnings.filterwarnings("ignore")
@@ -525,6 +525,8 @@ def render_asset(key, res, usdkrw):
 
     # 1주·1개월
     parts.append('<h4 style="font-size:14px;margin:18px 0 6px">1주일·1개월 뒤 예상 가격 (달러/온스)</h4>')
+    # 표만으로는 구간이 얼마나 넓은지 한눈에 안 들어왔다 — 종목 보고서와 같은 범위 막대 그림을 표 위에 둔다(2026-10-02).
+    parts.append(price_rows_range_html(rows, "예상 구간 한눈에 (달러/온스)", money=lambda v: f"${v:,.2f}"))
     body = ""
     for r in rows:
         sig = r["signal"] == "있음"

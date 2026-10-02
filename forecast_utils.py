@@ -1414,6 +1414,36 @@ def price_range_html(open_forecast, price_forecasts, prediction_date=None):
         return ""
     base = next((_finite(r.get("current_close")) for r in [open_forecast] + list(by_days.values())
                  if hasattr(r, "get") and _finite(r.get("current_close"))), None)
+    return _range_chart_html(rows, base, title="가격 전망 — 시초가예측과 종가예측")
+
+
+def price_rows_range_html(price_rows, title, money=None, base_label="기준 가격(기준 봉 종가)"):
+    """기간별 종가 예측 행(horizon·target_date·signal·predicted_close·low_close·high_close)을 같은 범위 그림으로.
+
+    금·은 보고서의 1주일·1개월 예상 가격처럼 원화가 아닌 값에도 쓴다(2026-10-02). money 는 값을 글자로 바꾸는 함수.
+    """
+    rows = []
+    for row in price_rows or []:
+        if not hasattr(row, "get"):
+            continue
+        point = _finite(row.get("predicted_close")) if row.get("signal") == "있음" else None
+        if point is not None and point <= 0:
+            point = None
+        when = row.get("target_date")
+        rows.append(dict(label=str(row.get("horizon") or ""), hint="", day=_day_label(when) if when is not None else None,
+                         low=_finite(row.get("low_close")), high=_finite(row.get("high_close")), point=point,
+                         change=_finite(row.get("predicted_return")) if point is not None else None))
+    if not rows:
+        return ""
+    base = next((_finite(r.get("current_close")) for r in price_rows
+                 if hasattr(r, "get") and _finite(r.get("current_close"))), None)
+    return _range_chart_html(rows, base, title=title, money=money, base_label=base_label)
+
+
+def _range_chart_html(rows, base, title, money=None, base_label="기준 가격(전일 종가)"):
+    """예상 구간(막대)·예상가(점)·기준 가격(점선)을 한 눈금 위에 그린다. rows: label·hint·day·low·high·point·change."""
+    from html import escape
+    money = money or (lambda value: f"{value:,.0f}원")
     values = [v for r in rows for v in (r["low"], r["high"], r["point"]) if v is not None]
     if base is not None:
         values.append(base)
@@ -1438,10 +1468,11 @@ def price_range_html(open_forecast, price_forecasts, prediction_date=None):
             bar += (f'<div style="position:absolute;left:calc({at(r["point"])} - 7px);top:3px;width:14px;height:14px;'
                     'border-radius:50%;background:#1a5490;border:2px solid #fff;box-sizing:border-box;'
                     'box-shadow:0 0 0 1px #1a5490"></div>')
-        band = (f'{r["low"]:,.0f}~{r["high"]:,.0f}원' if r["low"] is not None and r["high"] is not None else "")
+        band = (f'{money(r["low"])[:-1] if money(r["low"]).endswith("원") else money(r["low"])}~{money(r["high"])}'
+                if r["low"] is not None and r["high"] is not None else "")
         if r["point"] is not None:
             tone = "#1e6b34" if (r["change"] or 0) > 0 else ("#a8322a" if (r["change"] or 0) < 0 else "#1a1a1a")
-            value = (f'<div style="font-size:15px;font-weight:700;color:{tone}">{r["point"]:,.0f}원'
+            value = (f'<div style="font-size:15px;font-weight:700;color:{tone}">{money(r["point"])}'
                      + (f' <span style="font-size:12px">{r["change"]:+.2%}</span>' if r["change"] is not None else "")
                      + '</div>')
         else:
@@ -1457,9 +1488,9 @@ def price_range_html(open_forecast, price_forecasts, prediction_date=None):
               '<span style="display:inline-block;width:9px;height:9px;border-radius:50%;background:#1a5490;'
               'vertical-align:middle"></span> 예상가 · '
               '<span style="display:inline-block;height:10px;border-left:2px dashed #8a9199;vertical-align:middle"></span> '
-              + (f'기준 가격(전일 종가) {base:,.0f}원' if base is not None else "기준 가격"))
+              + (f'{escape(base_label)} {money(base)}' if base is not None else "기준 가격"))
     return (_PRICE_RANGE_STYLE + f'<div style="{_BOX}">'
-            '<div style="font-size:14px;font-weight:700;margin-bottom:2px">가격 전망 — 시초가예측과 종가예측</div>'
+            f'<div style="font-size:14px;font-weight:700;margin-bottom:2px">{escape(title)}</div>'
             f'<div style="font-size:11px;color:#8a9199;margin-bottom:6px">{legend}</div>'
             f'{body}'
             '<div style="font-size:11px;color:#8a9199;margin-top:6px">검증을 통과하지 못한 기간은 예상가(점) 없이 '
@@ -3234,9 +3265,13 @@ def ledger_section_html(review, ensemble_name, updated_note=""):
                       'font-size:12px;border:1px solid #e5e5e5"><tr style="background:#fafafa;font-size:11px;color:#6b7178">'
                       '<th style="padding:8px 11px;text-align:left">구간</th><th style="padding:8px 11px;text-align:right">이벤트일</th>'
                       '<th style="padding:8px 11px;text-align:right">평일</th></tr>' + rows_e + '</table></div>')
-    rtable = (gauges + event_html + (review.get("overnight_html") or "")
+    # 이벤트일 구간·밤사이 정보의 값은 모델을 고치는 쪽이 보는 표다. 적중률 그림만 밖에 두고 이 둘은 창별 누적 수치와
+    # 함께 접는다(2026-10-02, 글이 많아 읽기 어렵다는 요청의 2단계). 내용은 그대로이고 누르면 펼쳐진다.
+    extras = event_html + (review.get("overnight_html") or "")
+    rtable = (gauges
               + '<details style="margin-top:6px"><summary style="font-size:12px;color:#6b7178;cursor:pointer">'
-              '자세한 수치 보기</summary>'
+              '자세한 수치 보기' + (' — 이벤트일 구간 · 밤사이 정보의 값 · 창별 누적' if extras else '') + '</summary>'
+              + extras +
               '<div style="overflow-x:auto;margin-top:6px"><table style="width:100%;min-width:520px;border-collapse:collapse;'
               'font-size:12px;border:1px solid #e5e5e5"><tr style="background:#fafafa;font-size:11px;color:#6b7178">'
               '<th style="padding:8px 11px;text-align:left">창</th><th style="padding:8px 11px;text-align:right">n</th>'

@@ -3645,6 +3645,26 @@ def market_observations(summary, prior_5d=None, peer_name="동종 종목", forei
     c2c = num(summary.get("c2c")) or 0.0
     direction = "up" if c2c > 0.001 else "down" if c2c < -0.001 else "flat"
     seen = []
+    # 회고 영상의 비교 방법을 당시 가격·수급으로 재현한다(2026-10-02). 예측이나 인과로 해석하지 않는다.
+    context = summary.get("price_context") or {}
+    for window, item in context.get("breakouts", {}).items():
+        state = ("종가 돌파" if item["close_breakout"] else
+                 "장중 돌파 후 종가는 고점 이하" if item["intraday_breakout"] else "종가 돌파 없음")
+        seen.append(f"전일까지 {window}거래일 고점: {state} · 종가 위치 {item['distance']:+.2%}.")
+    for window, item in context.get("relative", {}).items():
+        seen.append(f"같은 {window}거래일 수익률: 이 종목 {item['own']:+.2%}, {peer_name} {item['peer']:+.2%} "
+                    f"· 차이 {item['excess'] * 100:+.2f}%p.")
+    transition = summary.get("buyback_transition")
+    if transition:
+        seen.append(f"자사주 공시상 예정 종료일 {transition['scheduled_end']} 이후 "
+                    f"{transition['sessions_after']}거래일 — 실제 매입 완료 여부는 별도 확인이 필요합니다.")
+        labels = {"foreign_net": "외국인", "inst_net": "기관", "indiv_net": "개인", "other_net": "기타 법인"}
+        for window, actors in transition.get("windows", {}).items():
+            parts = [f"{labels[k]} {v['before']:+,.0f}주 → {v['after']:+,.0f}주" for k, v in actors.items()]
+            seen.append(f"예정 종료 직전·직후 각 {window}거래일 누적 순매수: " + " / ".join(parts) +
+                        " (기타 법인 전체를 자사주 매입으로 볼 수 없습니다).")
+        if not transition.get("windows"):
+            seen.append("종료 전후 같은 길이의 수급 자료가 아직 부족해 비교를 보류합니다.")
     kospi, peer = num(summary.get("kospi_c2c")), num(summary.get("peer_c2c"))
     fx, sox, volume = num(summary.get("usdkrw_chg")), num(summary.get("sox_ret")), num(summary.get("volume_ratio"))
     # 같은 방향·비슷한 크기 / 같은 방향이지만 이 종목이 더 큼 / 반대 방향 — 세 경우를 구분한다.

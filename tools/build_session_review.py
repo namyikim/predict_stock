@@ -32,6 +32,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "tools"))
 import github_pages  # noqa: E402
+from review_context import price_context, buyback_transition
 
 KST = timezone(timedelta(hours=9))
 TARGETS = {
@@ -308,10 +309,11 @@ def earnings_reactions(target, corp_code, cache_dir, since=2015):
         return None
 
 
-def buyback_on(corp_code, session_date, lookback_days=400):
+def buyback_on(corp_code, session_date, lookback_days=400, include_ended=False):
     """그날이 회사의 자기주식 취득(직접·신탁) 기간 안인가. [{kind, start, end, amount, purpose}] 또는 빈 목록.
 
     기타 법인 순매수가 클 때 회사의 자사주 매입과 맞는 모양인지 보려고 쓴다(2026-10-01). 공시는 그날까지 나온 것만.
+    include_ended=True이면 예정 종료 전후 비교를 위해 조회된 종료 기간도 반환한다.
     """
     try:
         from data_sources.dart import dart_key_optional, fetch_buyback_periods
@@ -320,6 +322,8 @@ def buyback_on(corp_code, session_date, lookback_days=400):
             return []
         day = pd.Timestamp(session_date).normalize()
         rows = fetch_buyback_periods(corp_code, key, day - pd.Timedelta(days=lookback_days), day)
+        if include_ended:
+            return rows
         return [r for r in rows if pd.Timestamp(r["start"]) <= day <= pd.Timestamp(r["end"])]
     except Exception as exc:
         print(f"  자사주 매입 기간 미확인({type(exc).__name__})")
@@ -760,6 +764,7 @@ def build_review(target, session_date, storage, token=None, use_news=True):
             summary["high20"] = float(highs.tail(20).max())
         if len(upto) >= 120:
             summary["high252"] = float(highs.tail(252).max())          # 전날 밤 마이크론 — 두 종목과 서로 영향을 주고받는 미국 메모리 회사
+    summary["price_context"] = price_context(long, load_daily(spec["peer"], days=420), session_date)
     summary["range"] = float(today["high"]) / float(today["low"]) - 1 if float(today["low"]) > 0 else float("nan")
     summary["peer_range"] = range_of(spec["peer"])
     # 직전 5거래일 등락(수급 자료가 없는 날에도 '그날 함께 관찰된 것'에 쓴다, 2026-10-01).
@@ -822,7 +827,9 @@ def build_review(target, session_date, storage, token=None, use_news=True):
         day_items = [it for it in items if it["time"].date() == session_date.date()]
         top_news = sorted(day_items, key=lambda it: (-score_headline(it["title"], spec["name"]), it["time"]))[:6]
     disclosures, disclosure_note = fetch_disclosures(spec["corp_code"], session_date)
-    summary["buyback"] = buyback_on(spec["corp_code"], session_date)
+    buyback_periods = buyback_on(spec["corp_code"], session_date, include_ended=True)
+    summary["buyback"] = [r for r in buyback_periods
+                          if pd.Timestamp(r["start"]) <= session_date <= pd.Timestamp(r["end"])]
     # 실적 발표가 열흘 안에 있거나 오늘이 발표일이면, 과거 발표일의 반응 통계를 붙인다.
     upcoming = [ev for ev in _kr_events(session_date, target, days=10)
                 if "실적" in ev.get("label", "") and spec["name"] in ev.get("label", "")]
@@ -839,7 +846,7 @@ def build_review(target, session_date, storage, token=None, use_news=True):
     flow_status = {"state": "failed", "detail": "수급 자료를 읽지 못했습니다"}
     try:
         from data_sources.flows import load_investor_flows
-        frame, flow_info = load_investor_flows(Path(storage), spec["ticker"], (session_date - pd.Timedelta(days=45)).date(),
+        frame, flow_info = load_investor_flows(Path(storage), spec["ticker"], (session_date - pd.Timedelta(days=100)).date(),
                                                session_date.date(), fallback_dir=Path("macro_history"))
         frame = frame.copy()
         frame["date"] = pd.to_datetime(frame["date"]).dt.normalize()
@@ -864,6 +871,8 @@ def build_review(target, session_date, storage, token=None, use_news=True):
                     if source else "장 마감 직후 잠정치라 저녁 확정치와 다를 수 있습니다")
             if krx_error and "KRX" not in source:
                 note += f" · KRX는 받지 못함({krx_error[:60]})"
+            summary["buyback_transition"] = buyback_transition(
+                buyback_periods, frame, long.index, session_date)
             flow_story_data = flow_story(row.to_dict(), history, summary, summary["close"], prior_5d,
                                          peer_name=spec.get("peer_name", "동종 종목"), source_note=note)
             frg, inst = row.get("foreign_net"), row.get("inst_net")

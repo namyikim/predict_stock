@@ -3,7 +3,7 @@
   "name": "삼성전자",
   "peer_name": "SK하이닉스",
   "session_date": "2026-10-02",
-  "generated_at": "2026-10-02 16:12 KST",
+  "generated_at": "2026-10-02 16:46 KST",
   "summary": {
     "prev_close": 276000.0,
     "open": 273500.0,
@@ -15,11 +15,11 @@
     "c2c": 0.0,
     "high_vs_open": 0.01279707495429605,
     "low_vs_open": -0.007312614259597838,
-    "volume": 12028377.0,
-    "volume_ratio": 0.7161450529441475,
+    "volume": 12041837.0,
+    "volume_ratio": 0.7169464339128875,
     "kospi_c2c": 0.004646178468305617,
     "peer_c2c": 0.004364429896344779,
-    "usdkrw_chg": -0.005144291622136921,
+    "usdkrw_chg": -0.007605868450980768,
     "us_nights": 1,
     "sox_ret": 0.015867124115942266,
     "nasdaq_ret": 0.0003923546682607082,
@@ -131,10 +131,10 @@
           "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxPVUhIYmVQdU9taVotbEJQQ01TUGxINVV0bENndDhxQ2tsTEtHMm5hc2lON3BGRGZobHhMOXQzVVBsSWNmUnBkZnZQbTVhWnJTWDd5c3hMQWZOYVlHMHpGVGpILS1teDVacHktejZjLWpkZEJCTXJ5S21tTHVWNWkxYXBIVzVYb0FH?oc=5"
         },
         {
-          "time": "2026-10-02T09:07:00+09:00",
-          "title": "주형철 경기도 경제부지사 반도체산업 현장행보…삼성전자 평택캠퍼스·방류수 관리현장 점검",
-          "source": "경기도뉴스포털",
-          "link": "https://news.google.com/rss/articles/CBMihAFBVV95cUxQSTNzdUFKQWlvWEF5d0NPQWdJeThveEZJR2Yydlpjak1fUkNKN0dNWE9iM3FpM3dVWm9wY1NoYTRrd3lJb0E3Y1dMTW5hd3RsSDNJc0NBSVRuQ0llWklvSF9NTWxPM3hpWGxwbGs3cExBOWVuQWxnbTRJQ0xMM2dnY0E2aFU?oc=5"
+          "time": "2026-10-02T08:37:35+09:00",
+          "title": "[단독] 삼성전자 3분기 영업익 110조 돌파 유력…환율·충당금 악재 뚫었다",
+          "source": "알파경제",
+          "link": "https://news.google.com/rss/articles/CBMibkFVX3lxTE1wVWNUSDNEN2NYSmZsMTNHMWU5Qk5yckc4NmJzWE9qWkhYMDBBUHo3OEVnYVpXelpYTHdxZDJVa3dKTFJrZHl1TGxjaXpaUHhjaVF4di0xalVQQktRaDlrTTByd1RvVnNuV2hmckJB?oc=5"
         }
       ]
     },
@@ -173,10 +173,10 @@
           "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxPVUhIYmVQdU9taVotbEJQQ01TUGxINVV0bENndDhxQ2tsTEtHMm5hc2lON3BGRGZobHhMOXQzVVBsSWNmUnBkZnZQbTVhWnJTWDd5c3hMQWZOYVlHMHpGVGpILS1teDVacHktejZjLWpkZEJCTXJ5S21tTHVWNWkxYXBIVzVYb0FH?oc=5"
         },
         {
-          "time": "2026-10-02T09:07:00+09:00",
-          "title": "주형철 경기도 경제부지사 반도체산업 현장행보…삼성전자 평택캠퍼스·방류수 관리현장 점검",
-          "source": "경기도뉴스포털",
-          "link": "https://news.google.com/rss/articles/CBMihAFBVV95cUxQSTNzdUFKQWlvWEF5d0NPQWdJeThveEZJR2Yydlpjak1fUkNKN0dNWE9iM3FpM3dVWm9wY1NoYTRrd3lJb0E3Y1dMTW5hd3RsSDNJc0NBSVRuQ0llWklvSF9NTWxPM3hpWGxwbGs3cExBOWVuQWxnbTRJQ0xMM2dnY0E2aFU?oc=5"
+          "time": "2026-10-02T08:37:35+09:00",
+          "title": "[단독] 삼성전자 3분기 영업익 110조 돌파 유력…환율·충당금 악재 뚫었다",
+          "source": "알파경제",
+          "link": "https://news.google.com/rss/articles/CBMibkFVX3lxTE1wVWNUSDNEN2NYSmZsMTNHMWU5Qk5yckc4NmJzWE9qWkhYMDBBUHo3OEVnYVpXelpYTHdxZDJVa3dKTFJrZHl1TGxjaXpaUHhjaVF4di0xalVQQktRaDlrTTByd1RvVnNuV2hmckJB?oc=5"
         }
       ]
     },
@@ -215,10 +215,10 @@
           "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTFBpdW1qdDNDWTlqNFEtWUk0UFZQa002RU15NTlIM1l0WE5QUjhPU01CLWRQYnBJSVBJbnIwNHRMT25uVEtfaC1BQm9SSk9YaDdHLTB5aElzMzhuUlN5?oc=5"
         },
         {
-          "time": "2026-10-02T09:59:00+09:00",
-          "title": "신한운용, 삼성전자·SK하이닉스·마이크론 담은 ETF 7일 상장",
-          "source": "브릿지경제",
-          "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE5YeEw2U3dLMXdIZ2JST2xvSGx4MEl0OXU1MXV2cUdDa240bE9MQThLRmtZaHNlZ1R1NmhtTHZKYTc3anoxYzhlZ3NQM0xONUc3WGQyWDVjM3dqUQ?oc=5"
+          "time": "2026-10-02T10:01:38+09:00",
+          "title": "삼성證 \"삼성전자, 3분기 영업익 100조 돌파…내년 HBM 가격 80%↑\"",
+          "source": "뉴스1",
+          "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTFBVYVBRYTZtUWpUMmFmd3RQU2Ffc3dhbzNEQmZhd1VtejVMajVDbllNTEdnSmlHWVVJSVpJSk8xVmM1QXE1b0RibnJBUG1Md0d5cWdUVWFMaHBTVENoSkpacXB6MlDSAWRBVV95cUxQVWFQUWE2bVFqVDJhZnd0UFNhX3N3YW8zREJmYXdVbXo1TGo1Q25ZTUxHZ0ppR1lVSUlaSUpPMVZjNUFxNW9EYm5yQVBtTHdHeXFnVFVhTGhwU1RDaEpKWnFwejJQ?oc=5"
         }
       ]
     }
@@ -632,10 +632,10 @@
           "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxPVUhIYmVQdU9taVotbEJQQ01TUGxINVV0bENndDhxQ2tsTEtHMm5hc2lON3BGRGZobHhMOXQzVVBsSWNmUnBkZnZQbTVhWnJTWDd5c3hMQWZOYVlHMHpGVGpILS1teDVacHktejZjLWpkZEJCTXJ5S21tTHVWNWkxYXBIVzVYb0FH?oc=5"
         },
         {
-          "time": "2026-10-02T09:07:00+09:00",
-          "title": "주형철 경기도 경제부지사 반도체산업 현장행보…삼성전자 평택캠퍼스·방류수 관리현장 점검",
-          "source": "경기도뉴스포털",
-          "link": "https://news.google.com/rss/articles/CBMihAFBVV95cUxQSTNzdUFKQWlvWEF5d0NPQWdJeThveEZJR2Yydlpjak1fUkNKN0dNWE9iM3FpM3dVWm9wY1NoYTRrd3lJb0E3Y1dMTW5hd3RsSDNJc0NBSVRuQ0llWklvSF9NTWxPM3hpWGxwbGs3cExBOWVuQWxnbTRJQ0xMM2dnY0E2aFU?oc=5"
+          "time": "2026-10-02T08:37:35+09:00",
+          "title": "[단독] 삼성전자 3분기 영업익 110조 돌파 유력…환율·충당금 악재 뚫었다",
+          "source": "알파경제",
+          "link": "https://news.google.com/rss/articles/CBMibkFVX3lxTE1wVWNUSDNEN2NYSmZsMTNHMWU5Qk5yckc4NmJzWE9qWkhYMDBBUHo3OEVnYVpXelpYTHdxZDJVa3dKTFJrZHl1TGxjaXpaUHhjaVF4di0xalVQQktRaDlrTTByd1RvVnNuV2hmckJB?oc=5"
         }
       ],
       "price": 272000.0,
@@ -676,10 +676,10 @@
           "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxPVUhIYmVQdU9taVotbEJQQ01TUGxINVV0bENndDhxQ2tsTEtHMm5hc2lON3BGRGZobHhMOXQzVVBsSWNmUnBkZnZQbTVhWnJTWDd5c3hMQWZOYVlHMHpGVGpILS1teDVacHktejZjLWpkZEJCTXJ5S21tTHVWNWkxYXBIVzVYb0FH?oc=5"
         },
         {
-          "time": "2026-10-02T09:07:00+09:00",
-          "title": "주형철 경기도 경제부지사 반도체산업 현장행보…삼성전자 평택캠퍼스·방류수 관리현장 점검",
-          "source": "경기도뉴스포털",
-          "link": "https://news.google.com/rss/articles/CBMihAFBVV95cUxQSTNzdUFKQWlvWEF5d0NPQWdJeThveEZJR2Yydlpjak1fUkNKN0dNWE9iM3FpM3dVWm9wY1NoYTRrd3lJb0E3Y1dMTW5hd3RsSDNJc0NBSVRuQ0llWklvSF9NTWxPM3hpWGxwbGs3cExBOWVuQWxnbTRJQ0xMM2dnY0E2aFU?oc=5"
+          "time": "2026-10-02T08:37:35+09:00",
+          "title": "[단독] 삼성전자 3분기 영업익 110조 돌파 유력…환율·충당금 악재 뚫었다",
+          "source": "알파경제",
+          "link": "https://news.google.com/rss/articles/CBMibkFVX3lxTE1wVWNUSDNEN2NYSmZsMTNHMWU5Qk5yckc4NmJzWE9qWkhYMDBBUHo3OEVnYVpXelpYTHdxZDJVa3dKTFJrZHl1TGxjaXpaUHhjaVF4di0xalVQQktRaDlrTTByd1RvVnNuV2hmckJB?oc=5"
         }
       ],
       "price": 276500.0,
@@ -720,10 +720,10 @@
           "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTFBpdW1qdDNDWTlqNFEtWUk0UFZQa002RU15NTlIM1l0WE5QUjhPU01CLWRQYnBJSVBJbnIwNHRMT25uVEtfaC1BQm9SSk9YaDdHLTB5aElzMzhuUlN5?oc=5"
         },
         {
-          "time": "2026-10-02T09:59:00+09:00",
-          "title": "신한운용, 삼성전자·SK하이닉스·마이크론 담은 ETF 7일 상장",
-          "source": "브릿지경제",
-          "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE5YeEw2U3dLMXdIZ2JST2xvSGx4MEl0OXU1MXV2cUdDa240bE9MQThLRmtZaHNlZ1R1NmhtTHZKYTc3anoxYzhlZ3NQM0xONUc3WGQyWDVjM3dqUQ?oc=5"
+          "time": "2026-10-02T10:01:38+09:00",
+          "title": "삼성證 \"삼성전자, 3분기 영업익 100조 돌파…내년 HBM 가격 80%↑\"",
+          "source": "뉴스1",
+          "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTFBVYVBRYTZtUWpUMmFmd3RQU2Ffc3dhbzNEQmZhd1VtejVMajVDbllNTEdnSmlHWVVJSVpJSk8xVmM1QXE1b0RibnJBUG1Md0d5cWdUVWFMaHBTVENoSkpacXB6MlDSAWRBVV95cUxQVWFQUWE2bVFqVDJhZnd0UFNhX3N3YW8zREJmYXdVbXo1TGo1Q25ZTUxHZ0ppR1lVSUlaSUpPMVZjNUFxNW9EYm5yQVBtTHdHeXFnVFVhTGhwU1RDaEpKWnFwejJQ?oc=5"
         }
       ],
       "price": 275500.0,
@@ -750,16 +750,16 @@
       "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTFA0VXZ0Rm9hLXprQ0dVZ3RsQmJuSW1RMURoak95anNDM1RZeG1TVTFVU2h2NEdPekZ0LVNsTWRpbEo1cGlkNng2dDVpazIzellOeHhBTlpKQzBGbXFVRFllUHROYk02NElS0gFuQVVfeXFMUFJUYjdFdERET2tpZmVqSFhVUTlhWTVyLVlBWmplV0VNYkFKbkdFSFR0NEVCdndIMFZWaTkxaGU2blp2YTRqU1UyaE0zLVdlN2ZvQ1FfN005eUI3U0RlbUI0a3lkS2RSbFBwZHJONkE?oc=5"
     },
     {
+      "time": "2026-10-02T08:37:35+09:00",
+      "title": "[단독] 삼성전자 3분기 영업익 110조 돌파 유력…환율·충당금 악재 뚫었다",
+      "source": "알파경제",
+      "link": "https://news.google.com/rss/articles/CBMibkFVX3lxTE1wVWNUSDNEN2NYSmZsMTNHMWU5Qk5yckc4NmJzWE9qWkhYMDBBUHo3OEVnYVpXelpYTHdxZDJVa3dKTFJrZHl1TGxjaXpaUHhjaVF4di0xalVQQktRaDlrTTByd1RvVnNuV2hmckJB?oc=5"
+    },
+    {
       "time": "2026-10-02T08:50:26+09:00",
       "title": "SG, 삼성전자 온양캠퍼스에 에코스틸아스콘 1차 시공 완료 - 머니투데이",
       "source": "머니투데이",
       "link": "https://news.google.com/rss/articles/CBMibkFVX3lxTE9WaXdpdU1ocVdoUGpYNzlaWGhQSjFDTnR2TU5BSWhEWTRTTjAyM2tYbnlnSkxsVkU2Y3dIRy01SEJheVVONWU4c2M2bmU0RlJ2Nk85OEpPS3VfaHVVQ1VyY01WNG9IN3ZXOFJsOGFn0gFuQVVfeXFMT1Zpd2l1TWhxV2hQalg3OVpYaFBKMUNOdHZNTkFJaERZNFNOMDIza1hueWdKTGxWRTZjd0hHLTVIQmF5VU41ZThzYzZuZTRGUnY2Tzk4Sk9LdV9odVVDVXJjTVY0b0g3dlc4Umw4YWc?oc=5"
-    },
-    {
-      "time": "2026-10-02T08:57:22+09:00",
-      "title": "삼성전자, 3분기 영업익 100조 넘는다…목표가 46만원",
-      "source": "v.daum.net",
-      "link": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE9rUGszQ1JEdTQ0T0pTQWtLcVdlcmI4WTNjM2hqZVFMZ3QwaW5IZTB1bHJoTnNJSVhmbzN2WnF0Z2w5cmJvSXFmV3hCNzVlaS1LcFJyZg?oc=5"
     }
   ],
   "top_news": [
@@ -768,6 +768,12 @@
       "title": "마이크론이 연 반도체 실적시즌…'삼성전자 HBM4·범용D램'에 쏠린 눈",
       "source": "뉴시스",
       "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE1KclJYUVU3ZjlVYndQNFFmTlBTNVdKd3JNWm9SSlBmNk91d01OSW4tQnlETEx5UnBuR0laWDRpcmloTHlzVTJtbWYtWGNxYmpJZXltZmV1ME9WZDZEUmtuZ9IBeEFVX3lxTE8xNzlsSXFoV2VkZ0drVktrYk1TOUlTRDFwMTF5YklROERJWTl1aWRHdDFTUVBHZGhjZmV0WE5PLWN5Y0p6eERmRnN0dk1ySmdUVEt4eVV3cWkzWkxaQW1sdGhBcjFKX3RTN2ZZOExQcTRSak1SQnFKUQ?oc=5"
+    },
+    {
+      "time": "2026-10-02T16:00:33+09:00",
+      "title": "삼성전자 반도체 수익성 75% 고지 넘기고 하반기 영업이익 200조 본다, 전영현 '실적 사과' 2년 만에 HBM 앞세워 고마진 체제",
+      "source": "허프포스트코리아",
+      "link": "https://news.google.com/rss/articles/CBMiV0FVX3lxTE1fLXo5cGMtN0NQNDRoRXNPVjRwTml5bzVsWm5RSEVRN2xZZC1Zc2hDRExWQjVjcWdhV1FsVzFOTWtMN2VDOVN0R096UjE2Y3F6cXhZVHNQUQ?oc=5"
     },
     {
       "time": "2026-10-02T09:00:14+09:00",
@@ -792,12 +798,6 @@
       "title": "삼성전자, 분기 영업이익 100조 시대…\"주주환원 주가 올릴 것\"-IBK - 머니투데이",
       "source": "머니투데이",
       "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTFA0VXZ0Rm9hLXprQ0dVZ3RsQmJuSW1RMURoak95anNDM1RZeG1TVTFVU2h2NEdPekZ0LVNsTWRpbEo1cGlkNng2dDVpazIzellOeHhBTlpKQzBGbXFVRFllUHROYk02NElS0gFuQVVfeXFMUFJUYjdFdERET2tpZmVqSFhVUTlhWTVyLVlBWmplV0VNYkFKbkdFSFR0NEVCdndIMFZWaTkxaGU2blp2YTRqU1UyaE0zLVdlN2ZvQ1FfN005eUI3U0RlbUI0a3lkS2RSbFBwZHJONkE?oc=5"
-    },
-    {
-      "time": "2026-10-02T09:14:11+09:00",
-      "title": "IBK투자증권 \"삼성전자, 안정적 성장.. 현저히 저평가 국면\"",
-      "source": "글로벌이코노믹",
-      "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxPVUhIYmVQdU9taVotbEJQQ01TUGxINVV0bENndDhxQ2tsTEtHMm5hc2lON3BGRGZobHhMOXQzVVBsSWNmUnBkZnZQbTVhWnJTWDd5c3hMQWZOYVlHMHpGVGpILS1teDVacHktejZjLWpkZEJCTXJ5S21tTHVWNWkxYXBIVzVYb0FH?oc=5"
     }
   ],
   "disclosures": [],
@@ -812,51 +812,51 @@
   "earnings_reactions": {
     "n": 44,
     "down": 24,
-    "mean": 0.0051440256210394586,
+    "mean": 0.005144013119058993,
     "first": "2015-04-07",
     "last": "2026-07-30",
     "prior_up": {
       "n": 26,
       "down": 15,
-      "mean": 0.006803903486761853
+      "mean": 0.006803930005946945
     },
     "prior_down": {
       "n": 18,
       "down": 9,
-      "mean": 0.0027464242594404447,
+      "mean": 0.0027463553935541734,
       "next5_n": 18,
       "next5_up": 8
     },
     "rows": [
       {
         "date": "2024-04-05",
-        "ret": -0.00937865772137525,
-        "prior20": 0.18680917570546107,
-        "next5": -0.027219062401412808
+        "ret": -0.009378658616616353,
+        "prior20": 0.18680946576878354,
+        "next5": -0.02721887230649289
       },
       {
         "date": "2024-07-05",
-        "ret": 0.02955091723801906,
-        "prior20": 0.09789830194663618,
-        "next5": -0.030998790775496055
+        "ret": 0.02955071993984193,
+        "prior20": 0.09789828134923129,
+        "next5": -0.030998697708113365
       },
       {
         "date": "2024-10-08",
-        "ret": -0.011475342246353937,
-        "prior20": -0.17550725654583976,
-        "next5": -0.013267129361897112
+        "ret": -0.011475473634683375,
+        "prior20": -0.17550711223721005,
+        "next5": -0.013267063408380464
       },
       {
         "date": "2025-01-08",
-        "ret": 0.03429607257566447,
-        "prior20": 0.03869183701469603,
-        "next5": -0.06282733193778833
+        "ret": 0.03429607009744906,
+        "prior20": 0.03869191207000444,
+        "next5": -0.06282739741186805
       },
       {
         "date": "2025-04-08",
-        "ret": 0.005639189279862844,
-        "prior20": -0.003424987634515375,
-        "next5": 0.057943819149915754
+        "ret": 0.0056390392516327825,
+        "prior20": -0.0034249130875095846,
+        "next5": 0.05794397222748904
       },
       {
         "date": "2025-10-14",

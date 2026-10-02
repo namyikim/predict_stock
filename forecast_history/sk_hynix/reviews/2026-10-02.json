@@ -3,7 +3,7 @@
   "name": "SK하이닉스",
   "peer_name": "삼성전자",
   "session_date": "2026-10-02",
-  "generated_at": "2026-10-02 16:46 KST",
+  "generated_at": "2026-10-02 17:32 KST",
   "summary": {
     "prev_close": 1833000.0,
     "open": 1830000.0,
@@ -15,11 +15,11 @@
     "c2c": 0.004364429896344779,
     "high_vs_open": 0.013661202185792254,
     "low_vs_open": -0.002732240437158473,
-    "volume": 2080346.0,
-    "volume_ratio": 0.6483792015970913,
+    "volume": 2090996.0,
+    "volume_ratio": 0.6516984756491043,
     "kospi_c2c": 0.004646178468305617,
     "peer_c2c": 0.0,
-    "usdkrw_chg": NaN,
+    "usdkrw_chg": -0.006780424665861706,
     "us_nights": 1,
     "sox_ret": 0.015867124115942266,
     "nasdaq_ret": 0.0003923546682607082,
@@ -108,12 +108,6 @@
           "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE9EcFpTVG1PT3I3QS1TaFF4bUtoeEVNcjV5ZFNmMW5seHBTdUk5aDZCc1h6WTJ0RzVrNF92ci1EaFZIYVI1dzd0MzcwVEgzLU5rNHlzUzNyQTZOQ1ctSDVWVDUxRjd4alNOQVNBWtIBb0FVX3lxTE9NbzU4MURhY3dxb0M2SnM1dXlsMExIZE9nV3dQNnZJUlc1aXZvckxQVl9PNWlYck80OWRuaEdaSkYyLWh0VHVqM0ZjZ2VSWVA0UjlDMDBrZ1RhQWY0dDRoel9UcFg3ZEcyOWc1N3VQTQ?oc=5"
         },
         {
-          "time": "2026-10-02T09:29:18+09:00",
-          "title": "뉴욕증시 강보합…마이크론 3%·SK하이닉스 ADR 5% 뛰며 반도체가 견인",
-          "source": "콕스뉴스",
-          "link": "https://news.google.com/rss/articles/CBMiakFVX3lxTE9kZHAxdkJvd1BLLWJuYXB3bk1OckxzX1R0ZFBsT3lLUGJEY05tcmwyNnVTLU1HeXYyNzdFYW9RUzBuTmZoU3FrM25JMXNHREo1RVZtSkVkYzhNcWhjWWlMVjN1aDRUc185cVE?oc=5"
-        },
-        {
           "time": "2026-10-02T08:19:54+09:00",
           "title": "SK하이닉스, '솔리다임 상장설'에 \"확정 바 없다\"…주주가치 보호 방침",
           "source": "서울경제TV",
@@ -130,6 +124,12 @@
           "title": "한전, SK하이닉스와 'K-반도체 초격차' 강화 전력공급 파트너십 구축",
           "source": "일간투데이",
           "link": "https://news.google.com/rss/articles/CBMia0FVX3lxTFBOc1laUVZVXzFtMGhQaW1CRU5MOXBDMEFyN0p5TlRMc0RiTGZHUjJfSTJGalZPUWx2aUlITFNNMkl1aXVnQlIwbkJST08xYy0yQzFRa19FbXN1OFhocjA0WEt1d3hXeTVOSHRR?oc=5"
+        },
+        {
+          "time": "2026-10-02T09:32:42+09:00",
+          "title": "삼성전자·SK하이닉스 장초반 희비…美 반도체 훈풍에도 엇갈려[핫스탁]",
+          "source": "뉴시스",
+          "link": "https://news.google.com/rss/articles/CBMieEFVX3lxTE03N3pLbWxWdmpmZ2tuQjJ5emFmRHFlWHhFV3h4UXhQN09aajBtUnRWbEdlbk52S0tvWGhWRDhYbU0xZ1JkaTlTdE1hV3VWbXJDMm84cnp3Y0Q4R0J1bzNheFpYLUI5QXJFOGJVcWY0SnFMS2N4REVDSNIBeEFVX3lxTE03N3pLbWxWdmpmZ2tuQjJ5emFmRHFlWHhFV3h4UXhQN09aajBtUnRWbEdlbk52S0tvWGhWRDhYbU0xZ1JkaTlTdE1hV3VWbXJDMm84cnp3Y0Q4R0J1bzNheFpYLUI5QXJFOGJVcWY0SnFMS2N4REVDSA?oc=5"
         }
       ]
     }
@@ -525,12 +525,6 @@
           "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE9EcFpTVG1PT3I3QS1TaFF4bUtoeEVNcjV5ZFNmMW5seHBTdUk5aDZCc1h6WTJ0RzVrNF92ci1EaFZIYVI1dzd0MzcwVEgzLU5rNHlzUzNyQTZOQ1ctSDVWVDUxRjd4alNOQVNBWtIBb0FVX3lxTE9NbzU4MURhY3dxb0M2SnM1dXlsMExIZE9nV3dQNnZJUlc1aXZvckxQVl9PNWlYck80OWRuaEdaSkYyLWh0VHVqM0ZjZ2VSWVA0UjlDMDBrZ1RhQWY0dDRoel9UcFg3ZEcyOWc1N3VQTQ?oc=5"
         },
         {
-          "time": "2026-10-02T09:29:18+09:00",
-          "title": "뉴욕증시 강보합…마이크론 3%·SK하이닉스 ADR 5% 뛰며 반도체가 견인",
-          "source": "콕스뉴스",
-          "link": "https://news.google.com/rss/articles/CBMiakFVX3lxTE9kZHAxdkJvd1BLLWJuYXB3bk1OckxzX1R0ZFBsT3lLUGJEY05tcmwyNnVTLU1HeXYyNzdFYW9RUzBuTmZoU3FrM25JMXNHREo1RVZtSkVkYzhNcWhjWWlMVjN1aDRUc185cVE?oc=5"
-        },
-        {
           "time": "2026-10-02T08:19:54+09:00",
           "title": "SK하이닉스, '솔리다임 상장설'에 \"확정 바 없다\"…주주가치 보호 방침",
           "source": "서울경제TV",
@@ -547,6 +541,12 @@
           "title": "한전, SK하이닉스와 'K-반도체 초격차' 강화 전력공급 파트너십 구축",
           "source": "일간투데이",
           "link": "https://news.google.com/rss/articles/CBMia0FVX3lxTFBOc1laUVZVXzFtMGhQaW1CRU5MOXBDMEFyN0p5TlRMc0RiTGZHUjJfSTJGalZPUWx2aUlITFNNMkl1aXVnQlIwbkJST08xYy0yQzFRa19FbXN1OFhocjA0WEt1d3hXeTVOSHRR?oc=5"
+        },
+        {
+          "time": "2026-10-02T09:32:42+09:00",
+          "title": "삼성전자·SK하이닉스 장초반 희비…美 반도체 훈풍에도 엇갈려[핫스탁]",
+          "source": "뉴시스",
+          "link": "https://news.google.com/rss/articles/CBMieEFVX3lxTE03N3pLbWxWdmpmZ2tuQjJ5emFmRHFlWHhFV3h4UXhQN09aajBtUnRWbEdlbk52S0tvWGhWRDhYbU0xZ1JkaTlTdE1hV3VWbXJDMm84cnp3Y0Q4R0J1bzNheFpYLUI5QXJFOGJVcWY0SnFMS2N4REVDSNIBeEFVX3lxTE03N3pLbWxWdmpmZ2tuQjJ5emFmRHFlWHhFV3h4UXhQN09aajBtUnRWbEdlbk52S0tvWGhWRDhYbU0xZ1JkaTlTdE1hV3VWbXJDMm84cnp3Y0Q4R0J1bzNheFpYLUI5QXJFOGJVcWY0SnFMS2N4REVDSA?oc=5"
         }
       ],
       "price": 1851000.0,
@@ -557,13 +557,13 @@
     {
       "time": "2026-10-02T07:05:59+09:00",
       "title": "[속보]SK하이닉스ADR 5%급등, 마이크론도 3%↑…금리 상승에도 반도체 강세",
-      "source": "문화일보",
+      "source": "munhwa.com",
       "link": "https://news.google.com/rss/articles/CBMiUEFVX3lxTFA5bnNfeWdERHdjV3FnZXhQYlZoU3k1Y3pHQnpBNVpOQkFjd2d5UG1OUTZFc3FzUG8tcTBjQXFfcmRoTTMzX0tvdW5LbThWa2d1?oc=5"
     },
     {
       "time": "2026-10-02T07:47:11+09:00",
       "title": "마이크론, ‘깜짝 실적’에도 주가 잠잠···삼성전자·SK하이닉스에 쏠린 시선",
-      "source": "스마트비즈",
+      "source": "smartbizn.com",
       "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE93WlV1VldGX29EVnNNbkcyYlE2R2VfTlF2cFlidHM1SWVxb0J0eEl4ZWZOV3E5YTAtZTY4OWtOY01qR2VadlJnbm9qeVRpWWZhenpuWkM3dzZYT3g0Q252bEQyRlp6amRrQ2hhZw?oc=5"
     },
     {
@@ -595,13 +595,13 @@
     {
       "time": "2026-10-02T07:05:59+09:00",
       "title": "[속보]SK하이닉스ADR 5%급등, 마이크론도 3%↑…금리 상승에도 반도체 강세",
-      "source": "문화일보",
+      "source": "munhwa.com",
       "link": "https://news.google.com/rss/articles/CBMiUEFVX3lxTFA5bnNfeWdERHdjV3FnZXhQYlZoU3k1Y3pHQnpBNVpOQkFjd2d5UG1OUTZFc3FzUG8tcTBjQXFfcmRoTTMzX0tvdW5LbThWa2d1?oc=5"
     },
     {
       "time": "2026-10-02T07:47:11+09:00",
       "title": "마이크론, ‘깜짝 실적’에도 주가 잠잠···삼성전자·SK하이닉스에 쏠린 시선",
-      "source": "스마트비즈",
+      "source": "smartbizn.com",
       "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE93WlV1VldGX29EVnNNbkcyYlE2R2VfTlF2cFlidHM1SWVxb0J0eEl4ZWZOV3E5YTAtZTY4OWtOY01qR2VadlJnbm9qeVRpWWZhenpuWkM3dzZYT3g0Q252bEQyRlp6amRrQ2hhZw?oc=5"
     },
     {
@@ -619,7 +619,7 @@
     {
       "time": "2026-10-02T11:40:33+09:00",
       "title": "마이크론, 사상 최대 실적 썼다…D램 시장서 2위 SK하이닉스와 1%P 차",
-      "source": "ezyeconomy.com",
+      "source": "이지경제",
       "link": "https://news.google.com/rss/articles/CBMibkFVX3lxTE83bU1sNHhZUm1nWkctbkRCZW1ZazVlVkcxVmxFRzdqS0FtRFUxNlBkRWpIQTRYa1hzYmNLREVOZXdSTDR0NURQS192QXY2dG5Qb1JsdjFBODM0Tm9oUmtGUURBRklBZWpTQjdjLVhB?oc=5"
     }
   ],

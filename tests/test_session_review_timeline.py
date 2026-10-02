@@ -72,19 +72,23 @@ def chart_review(**changes):
 
 
 class TimelineChartTests(unittest.TestCase):
-    def test_time_runs_down_and_price_runs_right(self):
+    def test_time_runs_right_and_price_runs_up(self):
+        """가로 시간축(2026-10-02 요청): 처음에는 시간을 세로로 그렸는데 주가 그림은 가로가 익숙하다."""
         html = fu.review_timeline_html(chart_review())
         points = [tuple(map(float, p.split(','))) for p in
                   re.search(r'<polyline points="([^"]+)"', html).group(1).split()]
         self.assertEqual(len(points), 72)
-        ys = [y for _, y in points]
-        self.assertEqual(ys, sorted(ys))                              # 시간은 위에서 아래로
-        self.assertAlmostEqual(ys[0], fu._TL_PRE, places=1)           # 09:00 은 개장 전 띠 바로 아래
-        self.assertAlmostEqual(ys[12] - ys[0], 60 * fu._TL_PX_PER_MIN, places=1)   # 10:00 은 60분 아래
         xs = [x for x, _ in points]
-        self.assertEqual(xs.index(min(xs)), 12)                       # 가장 낮은 가격이 가장 왼쪽
-        self.assertEqual(xs.index(max(xs)), 71)
-        self.assertTrue(all(0 <= x <= 100 for x in xs))
+        self.assertEqual(xs, sorted(xs))                              # 시간은 왼쪽에서 오른쪽으로
+        self.assertAlmostEqual(xs[0], fu._TL_PRE, places=2)           # 09:00 은 개장 전 띠 바로 오른쪽
+        hour = 60 / fu._TL_MINUTES * (100 - fu._TL_PRE)
+        self.assertAlmostEqual(xs[12] - xs[0], hour, places=1)        # 10:00 은 한 시간만큼 오른쪽
+        self.assertTrue(all(fu._TL_PRE <= x <= 100 for x in xs))
+        ys = [y for _, y in points]
+        self.assertEqual(ys.index(max(ys)), 12)                       # 가장 낮은 가격이 가장 아래(y 가 가장 큼)
+        self.assertEqual(ys.index(min(ys)), 71)                       # 가장 높은 가격이 가장 위
+        self.assertTrue(all(0 <= y <= fu._TL_HEIGHT for y in ys))
+        self.assertIn("시간은 왼쪽에서 오른쪽으로, 가격은 위가 높습니다", html)
 
     def test_event_markers_sit_on_their_bar(self):
         html = fu.review_timeline_html(chart_review())
@@ -94,6 +98,12 @@ class TimelineChartTests(unittest.TestCase):
         self.assertIn('10:00 ▼ 급락', html)
         self.assertIn('-1.20%', html)
         self.assertIn('12:20 ▲ 급등', html)
+
+    def test_hour_labels_do_not_collide(self):
+        html = fu.review_timeline_html(chart_review())
+        for label in ('09:00', '12:00', '14:00', '15:30', '개장 전'):
+            self.assertIn(f'>{label}</div>', html)
+        self.assertNotIn('>15:00</div>', html)                        # 15:30 과 겹쳐서 눈금선만 둔다
 
     def test_same_article_is_shown_once_and_text_is_escaped(self):
         html = fu.review_timeline_html(chart_review())
@@ -133,8 +143,9 @@ class TimelineChartTests(unittest.TestCase):
     def test_no_script_and_phone_layout_stacks(self):
         html = fu.review_timeline_html(chart_review())
         self.assertNotIn('<script', html)
-        self.assertIn('@media (max-width:640px)', html)
-        self.assertIn('.tl-card{position:static!important', html)
+        # 카드는 그림 아래에 줄바꿈되며 놓인다 — 좁은 화면에서는 저절로 한 줄에 하나씩 쌓인다.
+        self.assertIn('.tl-cards{display:flex;flex-wrap:wrap', html)
+        self.assertNotIn('position:absolute;left:0;right:0;box-sizing', html)      # 옛 세로 배치의 절대 위치 카드가 없다
         self.assertIn('role="img"', html)
 
 
@@ -150,15 +161,15 @@ class SectionWiringTests(unittest.TestCase):
 
     def test_review_with_a_path_shows_the_chart_above_the_folded_list(self):
         html = fu.review_section_html(self.stored('2026-10-01.json'))
-        self.assertIn('class="tl"', html)
+        self.assertIn('class="tl-plot"', html)
         self.assertIn('시점별 뉴스 전체 목록', html)
-        self.assertLess(html.index('class="tl"'), html.index('시점별 뉴스 전체 목록'))
-        self.assertLess(html.index('흐름이 바뀐 시각과 그 전후의 뉴스'), html.index('class="tl"'))
+        self.assertLess(html.index('class="tl-plot"'), html.index('시점별 뉴스 전체 목록'))
+        self.assertLess(html.index('흐름이 바뀐 시각과 그 전후의 뉴스'), html.index('class="tl-plot"'))
         self.assertEqual(html.count('<h3'), 1)
 
     def test_old_review_keeps_the_plain_list(self):
         html = fu.review_section_html(self.stored('2026-09-23.json'))
-        self.assertNotIn('class="tl"', html)
+        self.assertNotIn('class="tl-plot"', html)
         self.assertNotIn('시점별 뉴스 전체 목록', html)
         self.assertIn('밤사이 (전일 15:30 ~ 09:00)', html)
 

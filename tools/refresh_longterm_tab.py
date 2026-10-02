@@ -54,7 +54,7 @@ def replace_panel(page, content):
 def replace_tab_sections(page, content):
     """새 내용을 절별로 나눠 맞는 메뉴(탭)에 넣는다. (바뀐 페이지, 내용을 넣은 탭 id 목록).
 
-    2026-10-02 부터 장기 전망 내용은 메뉴 셋(요약·영업이익 / 장기 전망 / 지난 전망 성적)에 나뉜다. 기준은 요약
+    2026-10-02 부터 장기 전망 내용은 메뉴 둘(요약·영업이익 / 장기 전망과 그 아래 지난 전망 성적)에 나뉜다. 기준은 요약
     (id="longterm-summary")이 든 탭이다. 새 내용 가운데 페이지에 제 탭이 없는 절은 그 기준 탭에 함께 넣는다 —
     아직 탭 하나짜리인 옛 페이지에서는 예전처럼 모두 한 탭에 들어가고, 내용이 빠지거나 두 번 들어가지 않는다.
     기준 탭을 하나로 찾지 못하면 replace_panel 과 같이 ValueError 로 멈춘다(기존 보고서를 보존).
@@ -64,11 +64,14 @@ def replace_tab_sections(page, content):
         return replace_panel(page, content), []          # 옛 방식(중첩 section 을 직접 센다). 못 찾으면 ValueError
     anchor = found[0]
     anchor_label = panel_tab_label(anchor['inner'])
-    by_label = {}
+    by_label, leftovers = {}, []
     for panel in panels(page):
         label = panel_tab_label(panel['inner'])
         if label and panel is not anchor and label != anchor_label:
-            by_label.setdefault(label, panel)
+            if label in by_label:
+                leftovers.append((label, panel))      # 같은 메뉴 이름의 탭이 둘 — 옛 구조에서 따로 있던 탭이다
+            else:
+                by_label[label] = panel
     placed, anchor_html = [], ""
     for label, chunk in sections_by_tab(content):
         target = by_label.get(label)
@@ -79,6 +82,15 @@ def replace_tab_sections(page, content):
     # 메뉴가 나뉜 페이지에서는 기준 탭도 그 탭 안에서 1부터 번호를 맞춘다 — 일일 보고서가 탭을 나눌 때와 같은 모양이라야
     # 바뀐 것이 없을 때 '바뀜'으로 보이지 않는다. 탭 하나짜리 옛 페이지는 예전처럼 번호를 건드리지 않는다.
     placed.append((anchor, number_headings(anchor_html) if len(placed) else anchor_html))
+    # 메뉴를 합친 뒤에도 옛 페이지에는 합쳐지기 전의 탭이 남아 있다(2026-10-02: '지난 전망 성적'을 '장기 전망' 아래로
+    # 되돌렸다). 새 내용은 앞 탭에 들어갔으므로 옛 탭에는 낡은 사본 대신 옮겼다는 안내만 남긴다 — 일일 보고서가
+    # 페이지를 다시 만들면 그 탭은 사라진다.
+    labels_in_content = {label for label, _ in sections_by_tab(content)}
+    for label, panel in leftovers:
+        if label in labels_in_content:
+            heading = re.search(r'<h3\b[^>]*>.*?</h3>', panel['inner'], re.S)
+            placed.append((panel, (heading.group(0) if heading else '')
+                           + f'<div style="font-size:13px;color:#6b7178">이 내용은 ‘{label}’ 메뉴 맨 아래로 옮겼습니다.</div>'))
     out = page
     for panel, html_text in sorted(placed, key=lambda item: -item[0]['inner_start']):
         out = out[:panel['inner_start']] + html_text + out[panel['inner_end']:]

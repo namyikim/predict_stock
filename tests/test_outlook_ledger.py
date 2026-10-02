@@ -261,7 +261,7 @@ class WiringTests(unittest.TestCase):
 
     def test_notebook_and_tabs_include_the_scorecard(self):
         import report_html
-        self.assertIn("지난 전망은 맞았나", dict(report_html.TAB_GROUPS)["지난 전망 성적"])
+        self.assertIn("지난 전망은 맞았나", dict(report_html.TAB_GROUPS)["장기 전망"])
         nb = json.loads((ROOT / "samsung_direction_model_colab.ipynb").read_text(encoding="utf-8"))
         source = "".join("".join(c["source"]) for c in nb["cells"])
         self.assertIn('_outlook = _load_fragment("outlook.html")', source)

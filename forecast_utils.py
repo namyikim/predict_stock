@@ -3335,21 +3335,22 @@ def _rv_news_list(items):
 
 
 # ---- 장중 가격·뉴스 타임라인 차트 (guides/intraday-news-timeline-plan.md 2단계, 2026-10-02) -----------------
-# 시간은 위에서 아래로(09:00 → 15:30), 가격은 왼쪽이 낮고 오른쪽이 높다. 가격선은 5분봉 종가를 이은 것이고,
-# 급변 시점(detect_events)은 가격선 위의 동그라미, 그 전후 뉴스는 옆 카드에 둔다. 뉴스는 기사 발행 시각이라
-# 실제로 알려진 시각과 다를 수 있다 — 원인을 말하는 그림이 아니라 전후 관계를 보는 그림이다.
+# 시간은 왼쪽에서 오른쪽으로(09:00 → 15:30), 가격은 위가 높다. 처음에는 계획대로 시간을 세로로 그렸는데, 주가
+# 그림은 가로 시간축이 익숙해 같은 날 가로로 바꿨다(2026-10-02 요청). 가격선은 5분봉 종가를 이은 것이고,
+# 급변 시점(detect_events)은 가격선 위의 동그라미, 그 전후 뉴스는 그림 아래 카드에 시간순으로 둔다.
+# 뉴스는 기사 발행 시각이라 실제로 알려진 시각과 다를 수 있다 — 원인을 말하는 그림이 아니라 전후 관계를 보는 그림이다.
 # 스크립트를 쓰지 않는다(GitHub Pages 에서 그대로 보이고 생성 결과가 결정적이어야 한다).
-_TL_PRE, _TL_PX_PER_MIN, _TL_MINUTES = 56, 1.2, 390          # 개장 전 띠 높이 · 1분당 px · 09:00~15:30
+_TL_PRE, _TL_HEIGHT, _TL_MINUTES = 8.0, 230, 390             # 개장 전 띠 폭(%) · 그림 높이(px) · 09:00~15:30
+_TL_TOP, _TL_BOTTOM, _TL_GUTTER = 16, 10, 82                 # 위·아래 여백(px) · 오른쪽 가격 글자 칸(px)
 _TL_KINDS = {"turn_up": ("▲", "#1e6b34", "급등"), "turn_down": ("▼", "#a8322a", "급락"),
              "volume": ("●", "#1a5490", "거래량 급증")}
 _TL_STYLE = (
-    '<style>.tl{display:flex;gap:10px;align-items:flex-start;margin:8px 0 4px}'
-    '.tl-plot{position:relative;flex:0 0 58%;min-width:0}.tl-news{position:relative;flex:1 1 0;min-width:0}'
-    '.tl-card{position:absolute;left:0;right:0;box-sizing:border-box;overflow:hidden;border:1px solid #e3e8ee;'
-    'border-radius:6px;background:#fbfdff;padding:5px 9px;font-size:12px;line-height:1.4}'
+    '<style>.tl-plot{position:relative;margin:8px 0 2px}'
+    '.tl-cards{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 4px}'
+    '.tl-card{flex:1 1 230px;min-width:0;box-sizing:border-box;border:1px solid #e3e8ee;border-radius:6px;'
+    'background:#fbfdff;padding:6px 10px;font-size:12px;line-height:1.45}'
     '.tl-title{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;color:#3a4652}'
-    '@media (max-width:640px){.tl{display:block}.tl-news{height:auto!important;margin-top:8px}'
-    '.tl-card{position:static!important;height:auto!important;margin:6px 0}.tl-lead{display:none}}</style>')
+    '</style>')
 
 
 def _tl_minutes(value):
@@ -3365,11 +3366,11 @@ def _tl_minutes(value):
     return stamp.hour * 60 + stamp.minute - 540
 
 
-def _tl_y(minutes):
-    """분 → 세로 px. 09:00 전은 개장 전 띠 안, 15:30 뒤는 맨 아래에 붙인다."""
+def _tl_x(minutes):
+    """분 → 가로 위치(%). 09:00 전은 개장 전 띠 가운데, 15:30 뒤는 오른쪽 끝에 붙인다."""
     if minutes is None or minutes < 0:
-        return _TL_PRE - 16.0
-    return _TL_PRE + min(minutes, _TL_MINUTES) * _TL_PX_PER_MIN
+        return _TL_PRE / 2
+    return _TL_PRE + min(minutes, _TL_MINUTES) / _TL_MINUTES * (100 - _TL_PRE)
 
 
 def _tl_link(item, text):
@@ -3382,7 +3383,7 @@ def _tl_link(item, text):
 
 
 def review_timeline_html(review):
-    """장중 가격 경로와 급변 시점·뉴스를 세로 시간축에 그린다. 자료가 없으면 빈 문자열(기존 글 목록만 보인다)."""
+    """장중 가격 경로와 급변 시점·뉴스를 가로 시간축에 그린다. 자료가 없으면 빈 문자열(기존 글 목록만 보인다)."""
     from html import escape as e
     r = review if isinstance(review, dict) else {}
     points = []
@@ -3404,47 +3405,49 @@ def review_timeline_html(review):
     lo, hi = min(prices), max(prices)
     pad = (hi - lo) * .05 or max(hi * .001, 1.0)                     # 고가=저가여도 0으로 나누지 않는다
     lo, hi = lo - pad, hi + pad
-    height = _TL_PRE + _TL_MINUTES * _TL_PX_PER_MIN + 8
+    height, bottom = _TL_HEIGHT, _TL_HEIGHT - _TL_BOTTOM
 
-    def x(price):
-        return (price - lo) / (hi - lo) * 100
+    def y(price):
+        return _TL_TOP + (hi - price) / (hi - lo) * (bottom - _TL_TOP)
 
     # ---- 가격 영역(SVG: 선만. 가로로 늘어나도 선 굵기는 그대로 둔다)
-    svg = [f'<svg viewBox="0 0 100 {height:.0f}" preserveAspectRatio="none" width="100%" height="{height:.0f}" '
+    svg = [f'<svg viewBox="0 0 100 {height}" preserveAspectRatio="none" width="100%" height="{height}" '
            'style="position:absolute;inset:0;display:block" aria-hidden="true">',
-           f'<rect x="0" y="0" width="100" height="{_TL_PRE}" fill="#f7f8fa"/>']
-    labels = ""
+           f'<rect x="0" y="0" width="{_TL_PRE}" height="{height}" fill="#f7f8fa"/>']
+    # '개장 전'은 띠 안 위쪽에 적는다 — 아래 시각 줄에 두면 바로 옆 09:00 과 글자가 붙는다.
+    labels = ('<div style="position:absolute;left:2px;top:2px;font-size:10px;color:#8a9199;white-space:nowrap">'
+              '개장 전</div>')
     for hour in range(9, 16):
-        y = _tl_y((hour - 9) * 60)
-        svg.append(f'<line x1="0" x2="100" y1="{y:.1f}" y2="{y:.1f}" stroke="#eef1f4" vector-effect="non-scaling-stroke"/>')
-        labels += (f'<div style="position:absolute;left:0;top:{y - 8:.0f}px;font-size:11px;color:#8a9199">'
-                   f'{hour:02d}:00</div>')
-    end_y = _tl_y(_TL_MINUTES)
-    svg.append(f'<line x1="0" x2="100" y1="{end_y:.1f}" y2="{end_y:.1f}" stroke="#d8dce0" vector-effect="non-scaling-stroke"/>')
-    labels += (f'<div style="position:absolute;left:0;top:{end_y - 8:.0f}px;font-size:11px;color:#8a9199">15:30</div>'
-               f'<div style="position:absolute;left:0;top:{_TL_PRE / 2 - 8:.0f}px;font-size:11px;color:#8a9199">개장 전</div>')
-    marks = ""
+        x = _tl_x((hour - 9) * 60)
+        svg.append(f'<line x1="{x:.2f}" x2="{x:.2f}" y1="0" y2="{height}" stroke="#eef1f4" vector-effect="non-scaling-stroke"/>')
+        if hour < 15:                              # 15:00 글자는 바로 옆 15:30 과 겹쳐서 눈금선만 둔다
+            labels += (f'<div style="position:absolute;left:{x:.2f}%;top:{height + 2}px;transform:translateX(-50%);'
+                       f'font-size:10px;color:#8a9199">{hour:02d}:00</div>')
+    labels += (f'<div style="position:absolute;right:0;top:{height + 2}px;font-size:10px;color:#8a9199">15:30</div>')
+    marks, gutter, taken = "", "", []
     for value, name, dash in ((prev_close, "전일 종가", "4 3"), (open_price, "시가", "1 3")):
         if not value:
             continue
-        svg.append(f'<line x1="{x(value):.2f}" x2="{x(value):.2f}" y1="{_TL_PRE}" y2="{end_y:.1f}" stroke="#b9c0c8" '
+        svg.append(f'<line x1="{_TL_PRE}" x2="100" y1="{y(value):.1f}" y2="{y(value):.1f}" stroke="#b9c0c8" '
                    f'stroke-dasharray="{dash}" vector-effect="non-scaling-stroke"/>')
-        side = "left" if x(value) < 60 else "right"
-        offset = f"{x(value):.2f}%" if side == "left" else f"{100 - x(value):.2f}%"
-        marks += (f'<div style="position:absolute;{side}:{offset};top:{_TL_PRE - (28 if name == "전일 종가" else 15)}px;'
-                  f'font-size:10px;color:#6b7178;white-space:nowrap;padding:0 3px">{name} {value:,.0f}</div>')
-    line = " ".join(f"{x(price):.2f},{_tl_y(minutes):.1f}" for minutes, price in points)
+        top = y(value) - 7
+        while any(abs(top - other) < 12 for other in taken):          # 두 글자가 겹치면 아래로 민다
+            top += 12
+        taken.append(top)
+        gutter += (f'<div style="position:absolute;left:4px;top:{top:.0f}px;font-size:10px;color:#6b7178;'
+                   f'white-space:nowrap">{name} {value:,.0f}</div>')
+    line = " ".join(f"{_tl_x(minutes):.2f},{y(price):.1f}" for minutes, price in points)
     svg.append(f'<polyline points="{line}" fill="none" stroke="#3a4652" stroke-width="2" stroke-linejoin="round" '
                'vector-effect="non-scaling-stroke"/>')
     if show_close:
         # 5분봉이 없는 구간은 실제 경로처럼 잇지 않는다 — 옅은 띠와 점선으로 일봉 종가만 가리킨다.
-        y0 = _tl_y(last_minutes)
-        svg.append(f'<rect x="0" y="{y0:.1f}" width="100" height="{end_y - y0:.1f}" fill="#f7f8fa"/>')
-        svg.append(f'<line x1="{x(points[-1][1]):.2f}" y1="{y0:.1f}" x2="{x(close_price):.2f}" y2="{end_y:.1f}" '
+        x0 = _tl_x(last_minutes)
+        svg.insert(2, f'<rect x="{x0:.2f}" y="0" width="{100 - x0:.2f}" height="{height}" fill="#f7f8fa"/>')
+        svg.append(f'<line x1="{x0:.2f}" y1="{y(points[-1][1]):.1f}" x2="100" y2="{y(close_price):.1f}" '
                    'stroke="#8a9199" stroke-dasharray="3 3" vector-effect="non-scaling-stroke"/>')
-        marks += (f'<div style="position:absolute;left:4px;top:{y0 + 3:.0f}px;font-size:10px;color:#8a9199">'
+        marks += (f'<div style="position:absolute;right:2px;top:2px;font-size:10px;color:#8a9199;white-space:nowrap">'
                   f'5분봉 미수집 구간({last_minutes // 60 + 9:02d}:{last_minutes % 60:02d}~15:30)</div>'
-                  f'<div style="position:absolute;left:calc({x(close_price):.2f}% - 5px);top:{end_y - 5:.0f}px;width:10px;'
+                  f'<div style="position:absolute;left:calc(100% - 5px);top:{y(close_price) - 5:.0f}px;width:10px;'
                   'height:10px;box-sizing:border-box;border:2px solid #3a4652;border-radius:50%;background:#fff" '
                   f'title="일봉 종가 {close_price:,.0f}"></div>')
 
@@ -3462,22 +3465,24 @@ def review_timeline_html(review):
 
     overnight = fresh(r.get("overnight_news"))
     if r.get("overnight_news") is not None:
-        cards.append({"y": 0.0, "head": f'<b>개장 전</b> · 밤사이 뉴스 {len(overnight)}건 · 갭 {_rv_pct(s.get("gap"))}',
+        cards.append({"head": f'<b>개장 전</b> · 밤사이 뉴스 {len(overnight)}건 · 갭 {_rv_pct(s.get("gap"))}',
                       "news": overnight, "color": "#6b7178"})
+    events = 0
     for item in sorted(r.get("timeline_items") or [], key=lambda it: _tl_minutes(it.get("time")) or 0):
         minutes, price = _tl_minutes(item.get("time")), _finite(item.get("price"))
         if minutes is None or price is None or not 0 <= minutes <= _TL_MINUTES:
             continue
+        events += 1
         symbol, color, word = _TL_KINDS.get(item.get("kind"), _TL_KINDS["volume"])
-        y = _tl_y(minutes)
-        marks += (f'<div style="position:absolute;left:calc({x(price):.2f}% - 9px);top:{y - 9:.0f}px;width:18px;height:18px;'
-                  f'border-radius:50%;background:{color};color:#fff;font-size:10px;line-height:18px;text-align:center;'
-                  f'box-shadow:0 0 0 2px #fff" title="{_rv_hhmm(item["time"])} {word}">{symbol}</div>')
+        marks += (f'<div style="position:absolute;left:calc({_tl_x(minutes):.2f}% - 9px);top:{y(price) - 9:.0f}px;'
+                  f'width:18px;height:18px;border-radius:50%;background:{color};color:#fff;font-size:10px;'
+                  f'line-height:18px;text-align:center;box-shadow:0 0 0 2px #fff" '
+                  f'title="{_rv_hhmm(item["time"])} {word}">{symbol}</div>')
         volume = (f' · 거래량 {float(item["volume_ratio"]):.1f}배' if _rv_finite(item.get("volume_ratio")) else "")
-        cards.append({"y": y, "color": color, "news": fresh(item.get("news")),
+        cards.append({"color": color, "news": fresh(item.get("news")),
                       "head": f'<b style="color:{color}">{_rv_hhmm(item["time"])} {symbol} {word}</b> '
                               f'{_rv_pct(item.get("ret"))}{volume} · {price:,.0f}원'})
-    news_html, bottom = "", 0.0
+    news_html = ""
     for card in cards:
         shown, rest = card["news"][:2], len(card["news"]) - 2
         body = "".join(f'<div class="tl-title">{_rv_hhmm(n.get("time"))} · {_tl_link(n, e(str(n.get("title") or "")))}</div>'
@@ -3486,41 +3491,30 @@ def review_timeline_html(review):
             body = '<div style="color:#8a9199">관련 뉴스 없음</div>'
         elif rest > 0:
             body += f'<div style="color:#8a9199">외 {rest}건 — 아래 전체 목록</div>'
-        # 높이를 정해 두어야 카드끼리 겹치지 않게 밀 수 있다: 머리 18 + 기사마다 두 줄(34) + '외 N건'(17) + 안팎 여백 12.
-        size = 30 + (34 * len(shown) if shown else 17) + (17 if rest > 0 else 0)
-        top = max(card["y"] - 12 if card["y"] else 0.0, bottom + 6 if bottom else 0.0)
-        bottom = top + size
-        news_html += (f'<div class="tl-card" style="top:{top:.0f}px;height:{size}px;border-left:3px solid {card["color"]}">'
+        news_html += (f'<div class="tl-card" style="border-left:3px solid {card["color"]}">'
                       f'<div>{card["head"]}</div>{body}</div>')
-        # 뉴스 발행 시각을 가격 영역 오른쪽 끝에 작은 표시로 남긴다(카드는 급변 시점 높이에 있다).
-        # 개장 전 기사는 띠 안의 카드가 이미 말해 주므로 표시를 따로 두지 않는다(긴 사선이 그림을 가렸다).
+        # 장중에 나온 기사는 발행 시각을 그림 아래쪽 끝에 작은 ◆ 로 남긴다. 개장 전 기사는 카드가 이미 말해 준다.
         for n in shown:
             minutes = _tl_minutes(n.get("time"))
             if minutes is None or not 0 <= minutes <= _TL_MINUTES:
                 continue
-            ny = _tl_y(minutes)
-            svg.append(f'<line class="tl-lead" x1="97" y1="{ny:.1f}" x2="100" y2="{top + 12:.1f}" stroke="#c5ccd3" '
-                       'vector-effect="non-scaling-stroke"/>')
-            marks += (f'<div style="position:absolute;right:calc(3% - 3px);top:{ny - 3:.0f}px;width:6px;height:6px;'
-                      f'background:{card["color"]};transform:rotate(45deg)" title="기사 발행 {_rv_hhmm(n.get("time"))}"></div>')
+            marks += (f'<div style="position:absolute;left:calc({_tl_x(minutes):.2f}% - 3px);top:{height - 9}px;width:6px;'
+                      f'height:6px;background:{card["color"]};transform:rotate(45deg)" '
+                      f'title="기사 발행 {_rv_hhmm(n.get("time"))}"></div>')
     svg.append("</svg>")
-    total = max(height, bottom)
     high, low = _finite(s.get("high")), _finite(s.get("low"))
     head = " · ".join(f"{name} <b>{value:,.0f}</b>" for name, value in
                       (("시가", open_price), ("종가", close_price), ("고가", high), ("저가", low)) if value)
     label = (f'{r.get("session_date", "")} 장중 가격 경로. 시가 {open_price or 0:,.0f}원, 종가 {close_price or 0:,.0f}원, '
-             f'급변 시점 {max(len(cards) - (1 if r.get("overnight_news") is not None else 0), 0)}곳.')
+             f'급변 시점 {events}곳.')
     return (_TL_STYLE
             + f'<div style="font-size:12px;color:#6b7178;margin:6px 0 0">{e(str(r.get("session_date", "")))} · {head} '
-              '<span style="color:#8a9199">· 시간은 위에서 아래로, 가격은 오른쪽이 높습니다</span></div>'
-            + '<div class="tl">'
-            + f'<div class="tl-plot" style="height:{height + 18:.0f}px" role="img" aria-label="{e(label)}">'
-            + labels
-            + f'<div style="position:absolute;left:44px;right:4px;top:0;height:{height:.0f}px">{"".join(svg)}{marks}</div>'
-            + f'<div style="position:absolute;left:44px;right:4px;top:{height + 2:.0f}px;display:flex;'
-              'justify-content:space-between;font-size:10px;color:#8a9199">'
-              f'<span>← 낮은 가격 {lo + pad:,.0f}</span><span>{hi - pad:,.0f} 높은 가격 →</span></div></div>'
-            + f'<div class="tl-news" style="height:{total:.0f}px">{news_html}</div></div>'
+              '<span style="color:#8a9199">· 시간은 왼쪽에서 오른쪽으로, 가격은 위가 높습니다</span></div>'
+            + f'<div class="tl-plot" style="height:{height + 18}px" role="img" aria-label="{e(label)}">'
+            + f'<div style="position:absolute;left:0;right:{_TL_GUTTER}px;top:0;height:{height}px">'
+            + f'{"".join(svg)}{marks}{labels}</div>'
+            + f'<div style="position:absolute;right:0;top:0;width:{_TL_GUTTER}px;height:{height}px">{gutter}</div></div>'
+            + (f'<div class="tl-cards">{news_html}</div>' if news_html else "")
             + '<div style="font-size:11px;color:#8a9199;margin:2px 0 8px">가격선은 5분봉 종가를 이은 것입니다. ▲ 급등 · ▼ 급락 · '
               '● 거래량 급증은 급변을 찾은 표시이며 추세 반전을 확정하지 않습니다. 뉴스는 기사 발행 시각(◆) 기준이라 '
               '실제로 알려진 시각과 다를 수 있고, 가격 변동의 원인이라는 뜻이 아닙니다.</div>')

@@ -192,7 +192,7 @@ class TabArrangementTests(unittest.TestCase):
 
     def test_tabs_are_in_this_order(self):
         # 2026-10-02: 장기 전망 탭 하나가 너무 길어 메뉴 둘(요약·영업이익 / 월간 장기 전망)로 나눴다.
-        # '지난 전망 성적'은 그 절이 있을 때 세 번째로 붙는다(이 견본에는 없다).
+        # '지난 전망은 맞았나'는 그 절이 있을 때 '장기 전망' 메뉴 맨 아래에 붙는다(이 견본에는 없다).
         self.assertEqual(tab_labels(self.out()), ["오늘의 예측", "장기 요약 · 영업이익", "장기 전망", "주간 뉴스",
                                                   "예측 성적", "사용한 데이터", "공시·발표 일정"])
 

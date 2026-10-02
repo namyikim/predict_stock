@@ -122,6 +122,71 @@ class MergeAndRenderTests(unittest.TestCase):
         self.assertEqual(len(merged), len(ours))
         self.assertEqual(merged.set_index("record_id").loc["cli_kor|2026-08|2026-09", "status"], "scored")
 
+    def test_merge_rescores_remote_first_forecast_with_local_observation(self):
+        remote, _ = ol.record(ol.read_ledger_text(""), ol.collect_forecasts(longterm()), stamp="2026-09-01 07:00")
+        remote = remote.iloc[[0]].copy()
+        remote.loc[:, "point"] = 100.
+        remote.loc[:, "baseline"] = 105.
+        remote.loc[:, "low"] = 95.
+        remote.loc[:, "high"] = 108.
+        ours = remote.copy()
+        ours.loc[:, "point"] = 120.
+        ours.loc[:, "baseline"] = 110.
+        ours.loc[:, "high"] = 125.
+        ours.loc[:, "issued_at_kst"] = "2026-09-02 07:00"
+        ours, _ = ol.score(ours, {"cli_kor": lambda row: 110.}, stamp="2026-10-01 09:00")
+        got = ol.merge_ledgers(ol.to_csv(remote), ours).iloc[0]
+        self.assertEqual(got["point"], 100.)
+        self.assertEqual(got["issued_at_kst"], "2026-09-01 07:00")
+        self.assertEqual(got["actual_seen_kst"], "2026-10-01 09:00")
+        self.assertEqual(got["actual"], 110.)
+        self.assertEqual(got["error"], -10.)
+        self.assertEqual(got["abs_error"], 10.)
+        self.assertEqual(got["baseline_abs_error"], 5.)
+        self.assertEqual(got["in_band"], 0.)
+
+    def test_merge_rescores_probability_for_stock_and_metals(self):
+        for series in ("phase_up_12m", "bucket_up_12m", "level_reach"):
+            with self.subTest(series=series):
+                row = {"record_id": series + "|2026-09|2027-09", "series": series,
+                       "kind": "probability", "probability": .2, "baseline_probability": .5,
+                       "info_as_of": "2026-09", "target_period": "2027-09"}
+                remote, _ = ol.record(ol.read_ledger_text(""), [row], stamp="2026-09-01 07:00")
+                ours = remote.copy()
+                ours.loc[:, "probability"] = .8
+                ours.loc[:, "baseline_probability"] = .9
+                ours, _ = ol.score(ours, {series: lambda row: 1.})
+                got = ol.merge_ledgers(ol.to_csv(remote), ours).iloc[0]
+                self.assertEqual(got["probability"], .2)
+                self.assertAlmostEqual(got["brier"], .64)
+                self.assertAlmostEqual(got["baseline_brier"], .25)
+                self.assertEqual(got["outcome"], 1.)
+                again = ol.merge_ledgers(ol.to_csv(got.to_frame().T), ours).iloc[0]
+                pd.testing.assert_series_equal(again, got, check_names=False)
+
+    def test_merge_does_not_transfer_outcome_from_a_different_observation_window(self):
+        row = {"record_id": "level_reach|2026-09|110|110@126d", "series": "level_reach",
+               "kind": "probability", "probability": .2, "target_period": "110",
+               "note": "issued=2026-09-01;days=126"}
+        remote, _ = ol.record(ol.read_ledger_text(""), [row])
+        ours = remote.copy()
+        ours.loc[:, "note"] = "issued=2026-09-02;days=126"
+        ours, _ = ol.score(ours, {"level_reach": lambda row: 1.})
+        got = ol.merge_ledgers(ol.to_csv(remote), ours).iloc[0]
+        self.assertEqual(got["status"], "pending")
+        self.assertEqual(got["note"], "issued=2026-09-01;days=126")
+        self.assertTrue(pd.isna(got["actual"]))
+
+    def test_remote_score_is_immutable_even_when_local_score_differs(self):
+        remote, _ = ol.record(ol.read_ledger_text(""), ol.collect_forecasts(longterm()))
+        ours = remote.copy()
+        remote, _ = ol.score(remote, {"cli_kor": lambda row: 100.}, stamp="2026-10-01 09:00")
+        ours.loc[:, "point"] = 120.
+        ours, _ = ol.score(ours, {"cli_kor": lambda row: 110.}, stamp="2026-10-02 09:00")
+        got = ol.merge_ledgers(ol.to_csv(remote), ours)
+        expected = ol.read_ledger_text(ol.to_csv(remote))
+        pd.testing.assert_frame_equal(got, expected, check_dtype=False)
+
     def test_render_explains_pending_rows_and_shows_scores(self):
         ledger, _ = ol.record(ol.read_ledger_text(""), ol.collect_forecasts(longterm(), EARNINGS))
         html = ol.render(ledger)

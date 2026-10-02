@@ -69,7 +69,7 @@ def to_csv(frame):
 
 
 def merge_ledgers(latest_text, ours):
-    """원격 최신 원장 + 이 실행에만 있는 record_id. 같은 record_id 는 채점이 앞선 쪽(원격이 채점했으면 원격)을 남긴다."""
+    """원격 최초 예측을 보존하고, 같은 관측 대상의 로컬 실제 값만 가져와 재채점한다."""
     remote = read_ledger_text(latest_text)
     if remote.empty:
         return ours
@@ -79,7 +79,21 @@ def merge_ledgers(latest_text, ours):
         if rid not in keep.index:
             keep.loc[rid] = mine.loc[rid]
         elif keep.loc[rid, "status"] != "scored" and mine.loc[rid, "status"] == "scored":
-            keep.loc[rid] = mine.loc[rid]
+            first, local = keep.loc[rid], mine.loc[rid]
+            # 최초 예측·확률·발행 시각은 원격 것을 지킨다(2026-10-02 검토 3번).
+            # 같은 월의 가격 도달 전망도 기준일이 다르면 0/1 결과를 재사용할 수 없다.
+            observation_keys = ["series", "kind", "info_as_of", "target_period", "detail"]
+            if first["series"] == "level_reach":
+                observation_keys.append("note")
+            if any(str(first[key]) != str(local[key]) for key in observation_keys):
+                continue
+            actual = _f(local["actual"])
+            if actual is None:
+                continue
+            rescored, _ = score(keep.loc[[rid]].copy(),
+                                {first["series"]: lambda row, value=actual: value},
+                                stamp=local["actual_seen_kst"])
+            keep.loc[rid] = rescored.loc[rid]
     return keep.reset_index()[COLUMNS]
 
 

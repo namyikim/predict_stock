@@ -155,11 +155,10 @@ def key_variants(key):
 def parse_customs_xml(text, with_weight=False):
     """<item> 목록 → DataFrame(month, value=수출 달러). HS 세부 코드를 월별로 합산한다.
 
-    with_weight=True 면 weight(수출 중량, kg) 열도 함께 돌려준다. 수출액은 가격×물량이라
-    그 자체로는 이익과의 관계가 국면마다 달라진다 — 가격이 올라 늘어난 수출액은 거의 그대로
-    이익이 되지만 물량이 늘어난 것은 원가도 따라 늘기 때문이다. 단가(수출액÷중량)와 물량을
-    나누면 그 둘을 구분할 수 있다. 기본값을 False 로 둔 것은 기존 호출부의 열 구성을 바꾸지
-    않기 위해서다.
+    with_weight=True 면 weight(수출 중량, kg) 열도 함께 돌려준다.
+    수출액÷중량은 중량당 금액이며 제품 가격과 제품 구성 변화가 함께 반영된다(2026-10-02 회고).
+    이를 메모리 개당·비트당 가격이나 이익 기여로 해석하지 않는다.
+    기본값 False 는 기존 호출부의 열 구성을 유지한다.
     """
     import xml.etree.ElementTree as ET
     root = ET.fromstring(text)
@@ -568,9 +567,8 @@ def fetch_customs_quantity(start, end, key, hs_codes=CUSTOMS_HS, retries=3,
                            span=CUSTOMS_MAX_MONTHS):
     """반도체 월별 수출액과 중량. DataFrame(month, value=달러, weight=kg).
 
-    수출액은 가격×물량이라 그 자체로는 이익과의 관계가 국면마다 달라진다. 가격이 올라 늘어난
-    수출액은 거의 그대로 이익이 되지만, 물량이 늘어난 것은 원가도 따라 늘어 이익 기여가 작다.
-    단가(value/weight)와 물량을 나누면 그 둘을 구분할 수 있다.
+    중량당 금액(value/weight)과 수출 중량을 분리한다. 제품 가격·제품 구성 효과는
+    이 두 값만으로 분리할 수 없고, 이익 기여 역시 별도 검증이 필요하다(2026-10-02 회고).
 
     중량은 관세청에만 있고 KOSIS 에는 없다. 그래서 이 계열은 관세청 단독으로 쌓는다.
     """
@@ -593,7 +591,7 @@ def fetch_customs_quantity(start, end, key, hs_codes=CUSTOMS_HS, retries=3,
 
 
 def customs_unit_price(frame):
-    """월별 단가(달러/kg)와 물량(kg). 중량이 없거나 0인 달은 NaN."""
+    """월별 수출 중량당 금액(달러/kg)과 중량(kg). 중량이 없거나 0인 달은 NaN."""
     out = pd.DataFrame({'month': pd.to_datetime(frame['month'])})
     weight = pd.to_numeric(frame['weight'], errors='coerce').replace(0, np.nan)
     out['unit_price'] = pd.to_numeric(frame['value'], errors='coerce') / weight

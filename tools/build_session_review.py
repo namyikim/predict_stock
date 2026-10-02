@@ -32,7 +32,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "tools"))
 import github_pages  # noqa: E402
-from review_context import price_context, buyback_transition
+from review_context import price_context, buyback_transition, foreign_pressure
 
 KST = timezone(timedelta(hours=9))
 TARGETS = {
@@ -938,6 +938,7 @@ def build_review(target, session_date, storage, token=None, use_news=True):
                     if source else "장 마감 직후 잠정치라 저녁 확정치와 다를 수 있습니다")
             if krx_error and "KRX" not in source:
                 note += f" · KRX는 받지 못함({krx_error[:60]})"
+            summary["foreign_pressure"] = foreign_pressure(frame, long, session_date)
             summary["buyback_transition"] = buyback_transition(
                 buyback_periods, frame, long.index, session_date)
             flow_story_data = flow_story(row.to_dict(), history, summary, summary["close"], prior_5d,

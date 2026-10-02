@@ -473,8 +473,8 @@ def build_frame(profit, exports, usdkrw, k, cli=None, tsmc=None, quantity=None):
 FEATURES = ["exports_krw_k", "exports_yoy", "exports_qoq", "profit_lag1", "profit_lag4"]
 # TSMC 월매출. 한국 수출 확정치보다 빠르고 AI·HBM 수요를 직접 반영한다. 넣을지는 쌍체 비교로 정한다.
 TSMC_FEATURES = ["tsmc_yoy", "tsmc_qoq"]
-# 수출 단가와 물량. 수출액 하나만 보면 '가격이 올라서'와 '물량이 늘어서'를 구분하지 못한다.
-# 가격이 올라 늘어난 수출액은 거의 그대로 이익이 되지만 물량은 원가도 따라 늘기 때문이다.
+# 수출액을 중량당 금액과 중량으로 분리한 후보 특징.
+# 중량당 금액에는 제품 가격과 제품 구성 변화가 섞인다. 이익 기여는 별도 검증한다(2026-10-02).
 # 넣을지는 TSMC 와 같은 방식으로 쌍체 비교해 정한다.
 UNIT_PRICE_FEATURES = ["unit_price_yoy", "volume_yoy"]
 # 영업 레버리지. 많이 팔면서 빠르게 늘 때 이익은 비례 이상으로 늘어난다(고정비는 그대로다).
@@ -1165,30 +1165,30 @@ def render_fragment(result):
                          + f' 평가 {ab.get("n", "?")}개 분기. 발행 모델은 쌍체 비교가 확실할 때만 바꿉니다 — '
                            '지금은 관찰만 합니다.</div>')
 
-    # 수출 단가·물량 효과
+    # 수출 중량당 금액·중량 효과
     if r.get("price_active") and r.get("price_ablation"):
         ab = r["price_ablation"]
         if ab.get("mae_with") is not None and ab.get("mae_without") is not None:
             better = ab["mae_with"] < ab["mae_without"]
-            parts.append('<h4 style="font-size:14px;margin:18px 0 6px">수출 단가·물량을 나누면 나아지는가</h4>')
+            parts.append('<h4 style="font-size:14px;margin:18px 0 6px">수출 중량당 금액·중량을 나누면 나아지는가</h4>')
             parts.append('<div style="font-size:12px;color:#6b7178;margin-bottom:6px">'
-                         '수출액은 가격 × 물량입니다. 가격이 올라 늘어난 수출액은 거의 그대로 이익이 되지만, '
-                         '물량이 늘어난 것은 원가도 따라 늘어 이익 기여가 작습니다. 관세청 중량으로 단가'
-                         '(달러/kg)와 물량을 나눠 각각의 전년 대비를 넣어 봤습니다. 지금처럼 가격이 급변하는 '
-                         '국면에서 수출액 하나만 보는 것보다 나은지가 판단 기준입니다.</div>')
+                         '관세청 수출액을 중량으로 나눈 중량당 금액(달러/kg)과 수출 중량의 전년 대비를 넣어 봤습니다. '
+                         '중량당 금액에는 제품 가격과 고가 제품 비중 등 제품 구성 변화가 함께 반영됩니다. '
+                         '메모리 개당·비트당 가격이나 HBM 비중을 직접 측정한 값이 아니며, 이익 기여도 단정할 수 없습니다. '
+                         '수출액 하나만 쓸 때보다 예측 오차가 줄어드는지가 판단 기준입니다.</div>')
             parts.append('<div style="overflow-x:auto"><table style="width:100%;min-width:420px;'
                          'border-collapse:collapse;font-size:13px;border:1px solid #e5e5e5">'
                          f'<tr><th {TH}>모델</th><th {THR}>MAE</th></tr>'
                          f'<tr><td {TD}>수출액만</td><td {TDR}>{ab["mae_without"] / TRILLION:,.2f}조원</td></tr>'
-                         f'<tr><td {TD}>단가·물량 포함</td><td {TDR}>{ab["mae_with"] / TRILLION:,.2f}조원</td></tr>'
+                         f'<tr><td {TD}>중량당 금액·중량 포함</td><td {TDR}>{ab["mae_with"] / TRILLION:,.2f}조원</td></tr>'
                          '</table></div>')
             parts.append(f'<div style="font-size:13px;margin-top:8px">'
-                         + ("<b style='color:#1e6b34'>단가·물량을 나누면 오차가 줄었습니다.</b>" if better
+                         + ("<b style='color:#1e6b34'>중량당 금액·중량을 나누면 오차가 줄었습니다.</b>" if better
                             else "<b>수출액만 쓰는 것보다 낫지 않습니다.</b>")
                          + f' 평가 {ab.get("n", "?")}개 분기. 발행 모델은 쌍체 비교에서 확실히 나을 때만 '
                            '바꿉니다 — 지금은 관찰만 합니다.</div>')
     elif (r.get("quantity_info") or {}).get("enabled") is False:
-        parts.append('<div style="font-size:11px;color:#8a9199;margin-top:8px">수출 단가·물량 미포함 — '
+        parts.append('<div style="font-size:11px;color:#8a9199;margin-top:8px">수출 중량당 금액·중량 미포함 — '
                      f'{e(str((r.get("quantity_info") or {}).get("reason", ""))[:120])}</div>')
 
     # TSMC 효과
@@ -1426,7 +1426,7 @@ def analyse(target, out_dir, fetch=True):
             print("  관세청 속보로 잠정 추정한 달:", flash_applied, flush=True)
     except Exception as exc:
         print("  ⚠️ 수출 속보를 읽지 못했습니다(무시):", exc, flush=True)
-    # 수출 단가·물량(중량). 중량은 관세청에만 있어 이 계열은 관세청 단독으로 쌓는다.
+    # 수출 중량당 금액·중량(중량). 중량은 관세청에만 있어 이 계열은 관세청 단독으로 쌓는다.
     # 보관본이 짧으면 전체 이력을 한 번 받고(창이 많아 호출이 늘지만 한 번뿐이다), 그 뒤로는
     # 최근 18개월만 받아 합친다.
     # 읽기는 보관본(macro_history → fallback_dir), 쓰기는 out_dir 이고 발행 단계가 그 파일을 저장소에
@@ -1458,7 +1458,7 @@ def analyse(target, out_dir, fetch=True):
                                  "rows": int(len(quantity)),
                                  "first": f'{quantity["month"].min():%Y-%m}',
                                  "last": f'{quantity["month"].max():%Y-%m}'}
-                print(f"  수출 단가·물량: {quantity_info['first']}~{quantity_info['last']} "
+                print(f"  수출 중량당 금액·중량: {quantity_info['first']}~{quantity_info['last']} "
                       f"({quantity_info['rows']}개월)", flush=True)
             except Exception as exc:
                 if base is not None:
@@ -1467,10 +1467,10 @@ def analyse(target, out_dir, fetch=True):
                                      "rows": int(len(quantity)), "reason": str(exc)[:120],
                                      "first": f'{quantity["month"].min():%Y-%m}',
                                      "last": f'{quantity["month"].max():%Y-%m}'}
-                    print(f"  수출 단가·물량 조회 실패 → 보관본 사용: {str(exc)[:100]}", flush=True)
+                    print(f"  수출 중량당 금액·중량 조회 실패 → 보관본 사용: {str(exc)[:100]}", flush=True)
                 else:
                     quantity_info = {"enabled": False, "reason": str(exc)[:160]}
-                    print(f"  ⚠️ 수출 단가·물량을 받지 못했습니다(무시): {str(exc)[:100]}", flush=True)
+                    print(f"  ⚠️ 수출 중량당 금액·중량을 받지 못했습니다(무시): {str(exc)[:100]}", flush=True)
         elif base is not None:
             quantity = customs_unit_price(base)
             quantity_info = {"enabled": True, "source": "customs_cache", "fresh": False,

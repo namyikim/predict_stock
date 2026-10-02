@@ -76,3 +76,29 @@ def buyback_transition(periods, flows, sessions, session_date):
         if actors:
             out['windows'][str(n)] = actors
     return out
+
+
+def foreign_pressure(flows, prices, session_date):
+    """최근·직전 각 5거래일 외국인 순매수/거래량 비교(2026-10-02 회고). 결측은 보간하지 않는다."""
+    day = pd.Timestamp(session_date).normalize()
+    prices = _dated(prices)
+    window = prices.loc[prices.index <= day].tail(10)
+    if len(window) != 10 or window.index[-1] != day or 'volume' not in window or 'foreign_net' not in flows:
+        return None
+    net = pd.to_numeric(_dated(flows.set_index('date')).reindex(window.index)['foreign_net'], errors='coerce')
+    volume = pd.to_numeric(window['volume'], errors='coerce')
+    if not np.isfinite(net).all() or not _valid(volume):
+        return None
+    before, after = float(net.iloc[:5].sum()), float(net.iloc[5:].sum())
+    previous_ratio = before / float(volume.iloc[:5].sum())
+    recent_ratio = after / float(volume.iloc[5:].sum())
+    state = 'other'
+    if before < 0 and after < 0:
+        state = ('selling_unchanged' if np.isclose(previous_ratio, recent_ratio, rtol=1e-9, atol=1e-12)
+                 else 'selling_eased' if recent_ratio > previous_ratio else 'selling_intensified')
+    elif before <= 0 and after > 0:
+        state = 'turned_buying'
+    elif before >= 0 and after < 0:
+        state = 'turned_selling'
+    return {'state': state, 'previous_ratio': previous_ratio, 'recent_ratio': recent_ratio,
+            'previous_daily_net': before / 5, 'recent_daily_net': after / 5}

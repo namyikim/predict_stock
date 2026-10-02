@@ -109,5 +109,32 @@ class BuildReviewIntegrationTests(unittest.TestCase):
         self.assertEqual(review['summary']['buyback_transition']['windows']['5']['foreign_net']['after'], 50.)
         self.assertIn('예정 종료', ' '.join(review['flow_story']['observations']))
         page = R.review_section_html(review)
+        self.assertIn('외국인 5일 수급 비교', page)
         self.assertIn('종가 돌파', page)
         self.assertIn('예정 종료', page)
+
+
+class ForeignPressureTests(unittest.TestCase):
+    def test_normalizes_by_each_windows_volume(self):
+        days = pd.bdate_range('2026-01-01', periods=11)
+        prices = pd.DataFrame({'volume': [100.] * 5 + [200.] * 6}, index=days)
+        flows = pd.DataFrame({'date': days, 'foreign_net': [-10.] * 5 + [-10.] * 5 + [999.]})
+        got = C.foreign_pressure(flows, prices, days[9])
+        self.assertEqual(got['state'], 'selling_eased')
+        self.assertAlmostEqual(got['previous_ratio'], -.1)
+        self.assertAlmostEqual(got['recent_ratio'], -.05)
+        self.assertEqual(got['recent_daily_net'], -10.)
+
+    def test_missing_day_or_zero_volume_is_unknown(self):
+        days = pd.bdate_range('2026-01-01', periods=10)
+        prices = pd.DataFrame({'volume': 100.}, index=days)
+        flows = pd.DataFrame({'date': days, 'foreign_net': -10.})
+        self.assertIsNone(C.foreign_pressure(flows.drop(4), prices, days[-1]))
+        prices.iloc[4, 0] = 0
+        self.assertIsNone(C.foreign_pressure(flows, prices, days[-1]))
+
+    def test_net_buying_is_not_called_weaker_selling(self):
+        days = pd.bdate_range('2026-01-01', periods=10)
+        prices = pd.DataFrame({'volume': 100.}, index=days)
+        flows = pd.DataFrame({'date': days, 'foreign_net': [-10.] * 5 + [10.] * 5})
+        self.assertEqual(C.foreign_pressure(flows, prices, days[-1])['state'], 'turned_buying')

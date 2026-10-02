@@ -3648,6 +3648,17 @@ def market_observations(summary, prior_5d=None, peer_name="동종 종목", forei
     for window, item in context.get("relative", {}).items():
         seen.append(f"같은 {window}거래일 수익률: 이 종목 {item['own']:+.2%}, {peer_name} {item['peer']:+.2%} "
                     f"· 차이 {item['excess'] * 100:+.2f}%p.")
+    pressure = summary.get("foreign_pressure")
+    if pressure:
+        labels = {"selling_eased": "순매도 지속·거래량 대비 강도 약화",
+                  "selling_intensified": "순매도 지속·거래량 대비 강도 강화",
+                  "selling_unchanged": "순매도 지속·거래량 대비 강도 유지",
+                  "turned_buying": "5일 합계 순매수 전환", "turned_selling": "5일 합계 순매도 전환",
+                  "other": "5일 수급 비교"}
+        seen.append(f"외국인 {labels[pressure['state']]}: 직전 5일 → 최근 5일 순매수/거래량 "
+                    f"{pressure['previous_ratio']:+.2%} → {pressure['recent_ratio']:+.2%} "
+                    f"(일평균 {pressure['previous_daily_net']:+,.0f}주 → {pressure['recent_daily_net']:+,.0f}주). "
+                    "향후 상승을 뜻하는 신호는 아닙니다.")
     transition = summary.get("buyback_transition")
     if transition:
         seen.append(f"자사주 공시상 예정 종료일 {transition['scheduled_end']} 이후 "

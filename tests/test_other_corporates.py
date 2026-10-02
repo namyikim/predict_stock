@@ -53,7 +53,7 @@ class DartBuybackTests(unittest.TestCase):
 
     def test_fetch_reads_both_endpoints(self):
         replies = {
-            "tsstkAqDecsn": {"status": "000", "list": [{"aq_expd_bgd": "2026년 09월 01일", "aq_expd_edd": "2026년 11월 30일",
+            "tsstkAqDecsn": {"status": "000", "list": [{"aqexpd_bgd": "2026년 09월 01일", "aqexpd_edd": "2026년 11월 30일",
                                                          "aqpln_prc_ostk": "3,000,000,000,000", "aq_pp": "주주가치 제고",
                                                          "rcept_no": "1"}]},
             "tsstkAqTrctrCnsDecsn": {"status": "013", "message": "조회된 데이타가 없습니다."},
@@ -80,6 +80,38 @@ class DartBuybackTests(unittest.TestCase):
             got = dart.fetch_buyback_periods("00126380", "k", "2025-09-01", "2026-10-01")
         self.assertEqual(got, [{"kind": "직접 취득", "start": "2026-09-01", "end": "2026-11-30",
                                 "amount": "3,000,000,000,000", "purpose": "주주가치 제고", "rcept_no": "1"}])
+
+    def test_invalid_dates_are_excluded(self):
+        for endpoint in dart.BUYBACK_ENDPOINTS:
+            _, kind, start_key, end_key, amounts, purpose = endpoint
+            for start, end in (("-", "2026-11-30"), ("2026-09-01", "2026-02-30")):
+                with self.subTest(kind=kind, start=start, end=end):
+                    self.assertEqual(dart.parse_buyback_rows(
+                        [{start_key: start, end_key: end}], kind,
+                        start_key, end_key, amounts, purpose), [])
+
+    def test_trust_contract_is_preserved(self):
+        got = dart.parse_buyback_rows(
+            [{"ctr_pd_bgd": "20260901", "ctr_pd_edd": "20261130",
+              "ctr_prc": "100,000,000", "ctr_pp": "주가 안정", "rcept_no": "2"}],
+            *dart.BUYBACK_ENDPOINTS[1][1:])
+        self.assertEqual(got, [{"kind": "신탁계약", "start": "2026-09-01",
+                               "end": "2026-11-30", "amount": "100,000,000",
+                               "purpose": "주가 안정", "rcept_no": "2"}])
+
+    def test_api_error_is_not_treated_as_no_disclosures(self):
+        import io
+        for status in ("013", "010", "020"):
+            with self.subTest(status=status), mock.patch.object(
+                    dart, "open_url", side_effect=lambda *a, **k: io.BytesIO(
+                        json.dumps({"status": status, "message": "응답"}).encode())):
+                if status == "013":
+                    self.assertEqual(dart.fetch_buyback_periods(
+                        "00126380", "k", "2025-09-01", "2026-10-01"), [])
+                else:
+                    with self.assertRaisesRegex(RuntimeError, status):
+                        dart.fetch_buyback_periods(
+                            "00126380", "k", "2025-09-01", "2026-10-01")
 
 
 class KrxErrorTests(unittest.TestCase):

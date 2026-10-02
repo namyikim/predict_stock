@@ -55,6 +55,47 @@ console.log(JSON.stringify({
         self.assertEqual(result, {"open": True, "close": True, "slightlyLate": True, "retry1": True, "retry2": True,
                                   "tooLate": False, "retention": False, "saturday": False})
 
+    def test_morning_report_is_dispatched_on_time_with_retries(self):
+        """GitHub cron 이 아침 회차(06:22~07:52 KST)를 통째로 빠뜨린 날이 있었다(2026-10-02). Worker 가 정시에 부른다."""
+        result = self.run_node(r"""
+import fs from 'node:fs';
+const source = fs.readFileSync('counter/worker.js');
+const worker = await import('data:text/javascript;base64,' + source.toString('base64'));
+const t = (s) => Date.parse(s);
+const due = {
+  main: worker.morningDue(t('2026-10-04T21:20:00Z')),          // 월요일 06:20 KST (UTC 일요일)
+  slightlyLate: worker.morningDue(t('2026-10-04T21:22:30Z')),
+  retry1: worker.morningDue(t('2026-10-04T22:00:00Z')),        // 07:00 KST
+  retry2: worker.morningDue(t('2026-10-08T22:40:00Z')),        // 금요일 07:40 KST (UTC 목요일)
+  between: worker.morningDue(t('2026-10-04T21:40:00Z')),       // 같은 트리거의 다른 발화 — 부르지 않는다
+  saturday: worker.morningDue(t('2026-10-02T21:20:00Z')),      // 토요일 아침(UTC 금요일)
+  sunday: worker.morningDue(t('2026-10-03T21:20:00Z')),
+  scoringTime: worker.morningDue(t('2026-10-05T07:10:00Z')),
+  notScoring: worker.dispatchDue(t('2026-10-04T21:20:00Z')),
+};
+const fetches = [];
+globalThis.fetch = async (url, init) => { fetches.push({url, body: JSON.parse(init.body)}); return { status: 204 }; };
+const deletes = [];
+const DB = { prepare: (sql) => ({ bind: () => ({ run: async () => { deletes.push(sql); } }) }) };
+const logs = [];
+console.log = (line) => logs.push(String(line));
+const env = { DB, GH_DISPATCH_TOKEN: 'tok-secret' };
+await worker.default.scheduled({ scheduledTime: t('2026-10-04T21:20:00Z'), cron: '*/20 21-22 * * SUN-THU' }, env);
+await worker.default.scheduled({ scheduledTime: t('2026-10-04T22:00:00Z'), cron: '*/20 21-22 * * SUN-THU' }, env);
+await worker.default.scheduled({ scheduledTime: t('2026-10-04T21:40:00Z'), cron: '*/20 21-22 * * SUN-THU' }, env);
+await worker.default.scheduled({ scheduledTime: t('2026-10-04T21:20:00Z'), cron: 'x' }, { DB });
+process.stdout.write(JSON.stringify({ due, fetches, deletes: deletes.length, logs }));
+""")
+        self.assertEqual(result["due"], {"main": {"retry": False}, "slightlyLate": {"retry": False},
+                                         "retry1": {"retry": True}, "retry2": {"retry": True}, "between": None,
+                                         "saturday": None, "sunday": None, "scoringTime": None, "notScoring": False})
+        self.assertEqual(len(result["fetches"]), 2, "본 호출과 재시도만 부른다. 토큰이 없으면 부르지 않는다")
+        for call, retry in zip(result["fetches"], ("false", "true")):
+            self.assertTrue(call["url"].endswith("/actions/workflows/daily-report.yml/dispatches"))
+            self.assertEqual(call["body"], {"ref": "main", "inputs": {"caller": "cloudflare-cron", "retry": retry}})
+        self.assertGreater(result["deletes"], 0, "회차가 아닌 발화는 보관기간 정리만 한다")
+        self.assertFalse(any("tok-secret" in line for line in result["logs"]))
+
     def test_scheduled_calls_github_only_with_a_token_and_never_logs_it(self):
         result = self.run_node(r"""
 import fs from 'node:fs';

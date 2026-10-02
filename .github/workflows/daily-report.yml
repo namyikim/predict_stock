@@ -1,6 +1,7 @@
 name: 일일 보고서
 run-name: >-
-  ${{ github.event_name == 'workflow_dispatch' && '일일 보고서 · 수동'
+  ${{ github.event_name == 'workflow_dispatch' && inputs.caller == 'cloudflare-cron' && '일일 보고서 · 정시 호출'
+      || github.event_name == 'workflow_dispatch' && '일일 보고서 · 수동'
       || github.event_name == 'push' && '일일 보고서 · 코드 반영'
       || (github.event.schedule == '22 21 * * 0-4' || github.event.schedule == '22 0,3,6,9,12,15,18 * * *') && '일일 보고서 · 자동 정규'
       || (github.event.schedule == '22,52 21 * * 5,6' || github.event.schedule == '22 22 * * 5,6') && '일일 보고서 · 주말 아침'
@@ -64,6 +65,19 @@ on:
           - "samsung,sk_hynix"
           - "samsung"
           - "sk_hynix"
+      # 아침 정시 호출(2026-10-02). GitHub 의 cron 은 아침 회차(06:22~07:52)를 통째로 빠뜨리는 날이 있다
+      # (2026-10-02: 11개 회차가 하나도 만들어지지 않아 08:23 에 손으로 돌렸다. 9/30 은 08:17, 10/1 은 아침 기록 없음).
+      # Cloudflare Worker 의 Cron Trigger 가 06:20 KST 에 이 워크플로를 부르고 07:00·07:40 에 다시 부른다
+      # (counter/worker.js, counter/README.md '아침 보고서 정시 호출'). 이 호출은 예약 실행처럼 다룬다 — 오늘 예측이
+      # 이미 기록됐으면 종목 보고서를 건너뛰고, 재시도(retry=true)는 보조 보고서를 다시 만들지 않는다.
+      caller:
+        description: "누가 불렀는지(실행 이름에 표시). Cloudflare cron 은 cloudflare-cron 을 넘긴다."
+        type: string
+        default: "수동"
+      retry:
+        description: "정시 호출의 재시도 회차인가(true 면 보조 보고서를 건너뛴다)."
+        type: string
+        default: "false"
 
 permissions:
   contents: write   # 원장·보고서를 Contents API로 커밋한다
@@ -121,14 +135,14 @@ jobs:
 
       # 휴장일에도 평일 규칙으로 잘못 실행하지 않도록, 빠른 게이트에 필요한 달력만 먼저 설치한다.
       - name: 거래일 달력 설치
-        if: github.event_name == 'schedule' && steps.gate.outputs.run == 'true'
+        if: (github.event_name == 'schedule' || inputs.caller == 'cloudflare-cron') && steps.gate.outputs.run == 'true'
         run: pip install exchange_calendars==4.13.2
 
       # 10분 간격 재시도는 본 실행이 이미 성공했으면 돌 필요가 없다.
-      # 수동 실행은 사람이 의도한 것이므로 이 검사를 하지 않는다.
+      # 수동 실행은 사람이 의도한 것이므로 이 검사를 하지 않는다. Cloudflare 정시 호출은 예약 실행과 같이 검사한다.
       - name: 오늘 예측이 이미 기록됐는지 확인
         id: recorded
-        if: github.event_name == 'schedule' && steps.gate.outputs.run == 'true'
+        if: (github.event_name == 'schedule' || inputs.caller == 'cloudflare-cron') && steps.gate.outputs.run == 'true'
         run: python tools/should_run_today.py --target ${{ matrix.target }}
 
       - name: 의존성 설치
@@ -174,9 +188,10 @@ jobs:
     runs-on: ubuntu-latest
     # 검색어와 같은 회차에 돈다. 뉴스는 하루에도 바뀌므로 3시간 간격 회차에도 갱신한다.
     if: >-
-      github.event_name != 'schedule' ||
-      (github.event.schedule != '32,42,52 21 * * 0-4' &&
-       github.event.schedule != '2,12,22,32,42,52 22 * * 0-4')
+      inputs.retry != 'true' &&
+      (github.event_name != 'schedule' ||
+       (github.event.schedule != '32,42,52 21 * * 0-4' &&
+        github.event.schedule != '2,12,22,32,42,52 22 * * 0-4'))
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v5
@@ -197,9 +212,10 @@ jobs:
   trends:
     runs-on: ubuntu-latest
     if: >-
-      github.event_name != 'schedule' ||
-      (github.event.schedule != '32,42,52 21 * * 0-4' &&
-       github.event.schedule != '2,12,22,32,42,52 22 * * 0-4')
+      inputs.retry != 'true' &&
+      (github.event_name != 'schedule' ||
+       (github.event.schedule != '32,42,52 21 * * 0-4' &&
+        github.event.schedule != '2,12,22,32,42,52 22 * * 0-4'))
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v5
@@ -228,9 +244,10 @@ jobs:
     # 검색어·뉴스처럼 3시간 간격 회차에도 돌아 페이지를 최신으로 유지한다(2026-09-16 요청).
     # 아침 10분 재시도는 본 실행 직후라 새 자료가 없어 건너뛴다.
     if: >-
-      github.event_name != 'schedule' ||
-      (github.event.schedule != '32,42,52 21 * * 0-4' &&
-       github.event.schedule != '2,12,22,32,42,52 22 * * 0-4')
+      inputs.retry != 'true' &&
+      (github.event_name != 'schedule' ||
+       (github.event.schedule != '32,42,52 21 * * 0-4' &&
+        github.event.schedule != '2,12,22,32,42,52 22 * * 0-4'))
     timeout-minutes: 30
     steps:
       - uses: actions/checkout@v5
@@ -264,9 +281,10 @@ jobs:
     # 검색어·뉴스처럼 3시간 간격 회차에도 돌아 페이지를 최신으로 유지한다(2026-09-16 요청).
     # 아침 10분 재시도는 본 실행 직후라 새 자료가 없어 건너뛴다.
     if: >-
-      github.event_name != 'schedule' ||
-      (github.event.schedule != '32,42,52 21 * * 0-4' &&
-       github.event.schedule != '2,12,22,32,42,52 22 * * 0-4')
+      inputs.retry != 'true' &&
+      (github.event_name != 'schedule' ||
+       (github.event.schedule != '32,42,52 21 * * 0-4' &&
+        github.event.schedule != '2,12,22,32,42,52 22 * * 0-4'))
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v5
@@ -290,9 +308,10 @@ jobs:
     # 검색어·뉴스처럼 3시간 간격 회차에도 돌아 페이지를 최신으로 유지한다(2026-09-16 요청).
     # 아침 10분 재시도는 본 실행 직후라 새 자료가 없어 건너뛴다.
     if: >-
-      github.event_name != 'schedule' ||
-      (github.event.schedule != '32,42,52 21 * * 0-4' &&
-       github.event.schedule != '2,12,22,32,42,52 22 * * 0-4')
+      inputs.retry != 'true' &&
+      (github.event_name != 'schedule' ||
+       (github.event.schedule != '32,42,52 21 * * 0-4' &&
+        github.event.schedule != '2,12,22,32,42,52 22 * * 0-4'))
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v5

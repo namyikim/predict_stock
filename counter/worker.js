@@ -78,14 +78,36 @@ export function dispatchDue(scheduledTime, times = DISPATCH_TIMES_UTC) {
   return times.some(([h, m]) => Math.abs(minuteOfDay - (h * 60 + m)) <= DISPATCH_TOLERANCE_MINUTES);
 }
 
+// 아침 종목 보고서 정시 호출(2026-10-02). GitHub 의 cron 이 아침 회차(06:22~07:52 KST, 11개)를 하나도 만들지 않은
+// 날이 있었다 — 그날 보고서는 08:23 에 손으로 돌려서야 나왔다(9/30 은 08:17, 10/1 은 아침 기록 없음).
+// 장 시작 전 예측은 09:00 을 넘기면 사전 예측으로 인정되지 않으므로, 채점처럼 이 Worker 가 정시에 깨운다.
+// 06:20 KST 본 호출 · 07:00·07:40 KST 재시도. 워크플로는 오늘 예측이 이미 기록됐으면 몇 초 만에 건너뛰고,
+// 재시도 회차에는 보조 보고서(뉴스·금은·중국 등)를 다시 만들지 않는다. GitHub cron 은 백업으로 그대로 둔다.
+const MORNING_WORKFLOW = "daily-report.yml";
+const MORNING_TIMES_UTC = [[21, 20], [22, 0], [22, 40]];   // 06:20 · 07:00 · 07:40 KST. 첫 시각이 본 호출이다.
+
+// 이 트리거 시각이 아침 보고서 회차인가. 아니면 null, 맞으면 { retry }. KST 월~금 아침은 UTC 로 일~목 저녁이다.
+export function morningDue(scheduledTime, times = MORNING_TIMES_UTC) {
+  const t = new Date(scheduledTime);
+  const weekday = t.getUTCDay();                 // 0=일 … 6=토
+  if (weekday > 4) return null;                  // UTC 금·토 저녁 = KST 토·일 아침
+  const minuteOfDay = t.getUTCHours() * 60 + t.getUTCMinutes();
+  const slot = times.findIndex(([h, m]) => Math.abs(minuteOfDay - (h * 60 + m)) <= DISPATCH_TOLERANCE_MINUTES);
+  return slot < 0 ? null : { retry: slot > 0 };
+}
+
 // GitHub에 workflow_dispatch 를 보낸다. 토큰이 없으면 아무것도 하지 않는다 — 조회수 카운터만 쓰는
 // 배포도 그대로 동작해야 한다. 응답 본문은 기록하지 않는다(오류 문구에 토큰 정보가 섞일 수 있다).
 async function dispatchScoring(env) {
+  return dispatchWorkflow(env, DISPATCH_WORKFLOW, { caller: "cloudflare-cron" });
+}
+
+async function dispatchWorkflow(env, workflow, inputs) {
   // 시크릿 이름은 두 가지를 다 받는다. 대시보드가 이름을 받아 주는 규칙이 화면마다 달라 한쪽만 고정하면
   // 이름 불일치로 조용히 skipped 가 된다(2026-09-10 실제로 그랬다).
   const token = env.GH_DISPATCH_TOKEN || env.GITHUB_DISPATCH_TOKEN;
   if (!token) return { status: "skipped", reason: "GH_DISPATCH_TOKEN/GITHUB_DISPATCH_TOKEN 없음" };
-  const url = `https://api.github.com/repos/${DISPATCH_REPO}/actions/workflows/${DISPATCH_WORKFLOW}/dispatches`;
+  const url = `https://api.github.com/repos/${DISPATCH_REPO}/actions/workflows/${workflow}/dispatches`;
   const response = await fetch(url, {
     method: "POST",
     headers: {
@@ -95,7 +117,7 @@ async function dispatchScoring(env) {
       "Content-Type": "application/json",
       "User-Agent": "predict-stock-counter",   // GitHub API는 User-Agent 없는 요청을 거절한다
     },
-    body: JSON.stringify({ ref: "main", inputs: { caller: "cloudflare-cron" } }),
+    body: JSON.stringify({ ref: "main", inputs }),
   });
   return { status: response.status === 204 ? "dispatched" : "failed", code: response.status };
 }
@@ -425,6 +447,15 @@ export default {
     // DISPATCH_FORCE=1 (Worker 변수)이면 어느 트리거든 올 때마다 GitHub 를 부른다 — 정시 호출이 되는지 시험할 때만
     // 잠깐 켠다(2026-09-30: 정시 호출이 한 번도 성공한 적이 없어 원인을 가르려고). 시험이 끝나면 변수를 지운다.
     const forced = String(env.DISPATCH_FORCE || "") === "1";
+    // 아침 종목 보고서 회차(06:20·07:00·07:40 KST)인지 먼저 본다. 채점 회차와 시각이 겹치지 않는다.
+    const morning = morningDue(event.scheduledTime);
+    if (morning) {
+      const result = await dispatchWorkflow(env, MORNING_WORKFLOW,
+                                            { caller: "cloudflare-cron", retry: morning.retry ? "true" : "false" });
+      console.log(`workflow_dispatch ${JSON.stringify({ ...result, workflow: MORNING_WORKFLOW, retry: morning.retry,
+                                                        cron: event.cron || null })}`);
+      return;
+    }
     if (forced || dispatchDue(event.scheduledTime)) {
       const result = await dispatchScoring(env);
       console.log(`workflow_dispatch ${JSON.stringify({ ...result, forced, cron: event.cron || null })}`);

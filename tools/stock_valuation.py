@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""주가 결정 요인과 평가 — 반도체 수출액·원/달러 회귀의 '적정 주가'와 실제 주가의 괴리(2026-09-28 요청).
+"""과거 수출·환율 관계와 주가 — 반도체 수출액·원/달러 회귀의 '회귀 기준값'와 실제 주가의 괴리(2026-09-28 요청).
 
 금 적정 가격(gold_valuation)과 같은 방식이다. 금은 사용자가 준 식을 그대로 썼지만 주식은 식이 없어, 같은 자료로
 후보를 비교해 골랐다(2026-09-28, 2006~2026 월평균):
@@ -9,7 +9,7 @@
 - 삼성전자: R² 0.912. 앞 절반(2006~2016)으로 맞춘 식이 뒤 절반을 R² +0.43 으로 설명 — 후보 중 가장 안정적.
   수출만 쓰면 R² 0.907 · 뒤 절반 +0.33. 미 10년물 금리를 더하면 R² 는 0.914 로 거의 같고 뒤 절반이 −3.5 로 무너졌다.
 - SK하이닉스: 같은 식이 R² 0.84 이지만 뒤 절반은 −1.1 로 설명하지 못한다(2023~2026 급등이 이전 관계를 벗어났다).
-  그래서 식은 같게 두고 **안정성 판정을 함께 적는다** — 불안정하면 적정 주가를 참고로만 읽으라고 쓴다.
+  그래서 식은 같게 두고 **안정성 판정을 함께 적는다** — 불안정하면 회귀 기준값를 참고로만 읽으라고 쓴다.
 
 수출은 달러로 벌고 원화가 약하면 원화 이익이 커진다 — 두 변수 모두 경제적으로 읽힌다. 계수는 매 실행 2006년~지난달
 자료로 다시 맞춘다(금과 달리 고정된 식이 아니다). 두 계열 모두 우상향하는 수준끼리의 회귀라 높은 R² 가 곧 예측력은
@@ -87,18 +87,18 @@ def render(result, name, table, TD, TDR, TH, THR):
     out, f = result["out"], result["fit"]
     end, last = out.iloc[-1], out.index[-1]
     svg = gold_valuation.chart_svg(
-        out, price_col="price", title=f"{name} 주가와 적정 주가 괴리", price_label="주가(좌, 원, 월평균)",
-        fair_label="적정 주가(좌, 회귀식)", money=lambda v: f"{v:,.0f}원", gap_axis=gap_axis(out["gap"]),
+        out, price_col="price", title=f"{name} 주가와 회귀 기준값 괴리", price_label="주가(좌, 원, 월평균)",
+        fair_label="회귀 기준값(좌, 회귀식)", money=lambda v: f"{v:,.0f}원", gap_axis=gap_axis(out["gap"]),
         axis_note="좌: 원 · 우: %", price_color=PRICE_COLOR,
-        gap_label="적정 주가 대비 괴리(우, %)")
-    parts = ['<h4 style="font-size:14px;margin:18px 0 6px">주가 결정 요인과 평가 '
-             '<span style="font-size:11px;color:#8a9199;font-weight:400">반도체 수출액 · 원/달러로 본 적정 주가</span></h4>',
+        gap_label="회귀 기준값 대비 괴리(우, %)")
+    parts = ['<h4 style="font-size:14px;margin:18px 0 6px">과거 수출·환율 관계와 주가 '
+             '<span style="font-size:11px;color:#8a9199;font-weight:400">과거 수출·환율 관계에 따른 기준값</span></h4>',
              f'<div style="border:1px solid #e5e5e5;border-radius:6px;padding:8px">{svg}</div>']
-    state = ("적정 주가보다 비쌉니다" if end["gap"] > 0.05 else "적정 주가보다 쌉니다" if end["gap"] < -0.05
-             else "적정 주가 부근입니다")
+    state = ("과거 관계의 기준값보다 높습니다" if end["gap"] > 0.05 else "과거 관계의 기준값보다 낮습니다" if end["gap"] < -0.05
+             else "과거 관계의 기준값 부근입니다")
     gap = out["gap"]
     body = (f'<tr><td {TD}>{last.year}년 {last.month}월 주가(월평균)</td><td {TDR}>{end["price"]:,.0f}원</td></tr>'
-            f'<tr><td {TD}>적정 주가</td><td {TDR}>{end["fair"]:,.0f}원</td></tr>'
+            f'<tr><td {TD}>회귀 기준값</td><td {TDR}>{end["fair"]:,.0f}원</td></tr>'
             f'<tr><td {TD}>괴리</td><td {TDR}><b>{end["gap"] * 100:+.1f}%</b> · {state}</td></tr>'
             f'<tr><td {TD}>{out.index[0].year}년 이후 괴리 범위</td><td {TDR}>{gap.min() * 100:+.0f}% ({gap.idxmin()}) ~ '
             f'{gap.max() * 100:+.0f}% ({gap.idxmax()})</td></tr>'
@@ -115,18 +115,18 @@ def render(result, name, table, TD, TDR, TH, THR):
     effects = [("반도체 수출이 늘수록" if c[1] > 0 else "반도체 수출이 줄수록")]
     if abs(c[2]) >= 0.05:
         effects.append("원화가 약할수록(원/달러가 높을수록)" if c[2] > 0 else "원화가 강할수록(원/달러가 낮을수록)")
-    direction = (" · ".join(effects) + " 적정 주가가 올라갑니다."
-                 + ("" if abs(c[2]) >= 0.05 else " 원/달러의 영향은 거의 없습니다(계수 ±0.05 안)."))
+    direction = (" · ".join(effects) + " 회귀 기준값가 올라갑니다."
+                 + ("" if abs(c[2]) >= 0.05 else " 이 식의 원/달러 계수는 ±0.05 안입니다."))
     stability = (f'앞 절반({f["first"]}~{f["split"]})으로 맞춘 식이 뒤 절반을 R² {f["oos_r2"]:+.2f}로 설명해, 관계가 기간에 걸쳐 '
                  '어느 정도 유지됐습니다.' if f["stable"] else
                  f'<b>다만 앞 절반({f["first"]}~{f["split"]})으로 맞춘 식은 뒤 절반을 설명하지 못합니다(R² {f["oos_r2"]:+.2f}).</b> '
-                 '최근 주가가 과거의 수출·환율 관계를 크게 벗어났다는 뜻이라, 이 적정 주가는 참고로만 읽어 주세요.')
+                 '최근 주가가 과거의 수출·환율 관계를 크게 벗어났다는 뜻이라, 이 회귀 기준값는 참고로만 읽어 주세요.')
     parts.append(
         '<div style="margin:10px 0 0;padding:12px 16px;background:#f5f6f8;border-radius:6px;font-size:13px;color:#4a4f55;line-height:1.65">'
         f'식: ln(주가) = {c[0]:.2f} {term(c[1], "ln(반도체 수출액 12개월 합, 달러)")} {term(c[2], "ln(원/달러)")} · '
         f'{f["first"]}~{f["last"]} {f["n"]}개월 월평균, R² {f["r2"]:.3f}. 계수는 매 실행 최신 자료로 다시 맞춥니다. '
         f'{stability} {direction} '
         '두 계열 모두 우상향하는 수준끼리의 회귀라 높은 R²가 곧 예측력은 아니고, 괴리가 크다고 곧 되돌아온다는 보장도 없습니다. '
-        '식은 전체 기간으로 맞춘 것이라 과거 구간의 괴리는 사후적으로 본 것입니다. 목표가나 매수·매도 의견이 아닙니다. '
+        '식은 전체 기간으로 맞춘 것이라 과거 구간의 괴리는 사후적으로 본 것입니다. 기업의 내재가치를 추정한 값은 아니며, 시점별 순차 검증과 단순 기준 모델 비교로 예측력을 확인한 결과도 아닙니다. 목표가나 매수·매도 의견이 아닙니다. '
         '자료: 주가 Yahoo Finance 월평균, 반도체 수출액 KOSIS(최근 달은 관세청 자료로 보완), 원/달러 Yahoo 월평균.</div>')
     return parts

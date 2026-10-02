@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""주가 결정 요인과 평가(2026-09-28): 반도체 수출액·원/달러 회귀의 적정 주가."""
+"""과거 수출·환율 관계와 주가(2026-09-28): 반도체 수출액·원/달러 회귀의 회귀 기준값."""
 import sys
 import unittest
 from pathlib import Path
@@ -50,7 +50,7 @@ class RenderTests(unittest.TestCase):
 
     def test_block_shows_the_chart_formula_and_limits(self):
         html = self.render(0.5)
-        for text in ("주가 결정 요인과 평가", "적정 주가 대비 괴리(우, %)", "식: ln(주가) =", "목표가나 매수·매도 의견이 아닙니다",
+        for text in ("과거 수출·환율 관계와 주가", "회귀 기준값 대비 괴리(우, %)", "식: ln(주가) =", "목표가나 매수·매도 의견이 아닙니다",
                      "원화가 약할수록"):
             self.assertIn(text, html)
         self.assertNotIn("+ -", html)

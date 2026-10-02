@@ -52,6 +52,15 @@ ARTIFACTS = {"comparison": ("metrics.csv", "comparisons.csv", "decision.md"), "f
              "tcn:summary": ("metrics.csv", "comparisons.csv", "decision.md")}
 
 
+def snapshot_display_path(path):
+    """같은 드라이브는 기존 상대 경로, 다른 드라이브는 절대 경로로 기록한다."""
+    try:
+        return os.path.relpath(path, ROOT)
+    except ValueError:
+        # Windows 임시 폴더와 저장소의 드라이브가 다를 수 있다(2026-10-02 검토 6번).
+        return os.path.abspath(path)
+
+
 def torch_available():
     if os.environ.get("WEEKLY_SEQ_NO_TORCH"):          # 테스트용: torch 부재를 흉내 낸다
         return False
@@ -193,7 +202,7 @@ def main(argv=None):
     identity = {"task_id": args.task, "target": args.target, "mode": args.mode,
                 "data_hash": dhash, "config_hash": config_hash(config)}
     extra = {"seed": SEED, "versions": versions(), "dirty": is_dirty(),
-             "snapshot": {"path": os.path.relpath(snapshot.path, ROOT), "sha256": snapshot.sha256,
+             "snapshot": {"path": snapshot_display_path(snapshot.path), "sha256": snapshot.sha256,
                           "ticker": snapshot.ticker, "adjusted": snapshot.adjusted,
                           "fetched_at": str(snapshot.fetched_at)},
              "availability_policy": None, "corporate_actions": None, "date_range": None,

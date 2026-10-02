@@ -625,7 +625,8 @@ def render_longterm_asset(key, res):
         out, fit, info = res["valuation"]
         valuation = gold_valuation.render(out, fit, info, table, TD, TDR, TH, THR, note)
     return "".join(metals_longterm.render(key, ASSETS[key]["name"], res.get("longterm") or {}, long_term, valuation,
-                                          res.get("outlook"), table, TD, TDR, TH, THR, note, prices=res.get("history")))
+                                          (res["outlook_state"].frame if "outlook_state" in res else res.get("outlook")),
+                                          table, TD, TDR, TH, THR, note, prices=res.get("history")))
 
 
 # 탭(2026-09-27): 금 단기 · 금 장기 · 은 단기 · 은 장기 · 데이터와 방법. 첫 탭(금 단기)은 기본 탭이다.
@@ -826,11 +827,11 @@ def main():
                 print(f"  {ASSETS[key]['name']} 장기 전망: 구간 {lt.get('now_bucket')} · 원장 {len(ledger)}행"
                       f"(기록 {added}, 채점 {scored_n})", flush=True)
                 if tok:
-                    ours = ledger.copy()
+                    state = outlook_ledger.PendingLedger(ledger)
+                    res["outlook_state"] = state
                     github_pages.publish(outlook_path, outlook_ledger.to_csv(ledger), tok,
                                          f"outlook: {key} 장기 전망 기록 {added} · 채점 {scored_n}", expected_sha=outlook_sha,
-                                         merge=lambda latest, ours=ours: outlook_ledger.to_csv(
-                                             outlook_ledger.merge_ledgers(latest, ours)))
+                                         merge=state.merge)
             except Exception as exc:
                 print(f"  ⚠️ {ASSETS[key]['name']} 장기 전망 계산 실패(그 부분만 뺍니다): {type(exc).__name__}: {exc}", flush=True)
 
@@ -840,7 +841,14 @@ def main():
         out.write_text(doc, encoding="utf-8")
         print("보고서:", out, f"{len(doc):,} bytes")
         if tok:
-            sha = github_pages.publish(f"{PAGES_DIR}/index.html", doc, tok, f"report: metals {pred.date()} ({run_id})")
+            def final_report():
+                # 두 금속 원장의 병합이 모두 끝난 뒤 전체 보고서를 다시 만든다.
+                final_inner, final_pred = render(results, usdkrw, today, quality)
+                final_doc = page(final_inner, final_pred, today)
+                out.write_text(final_doc, encoding="utf-8")
+                return final_doc
+
+            sha = github_pages.publish(f"{PAGES_DIR}/index.html", final_report, tok, f"report: metals {pred.date()} ({run_id})")
             print(f"GitHub Pages 발행: {PAGES_DIR}/index.html @ {sha}")
             print("→ https://namyikim.github.io/predict_stock/metals/")
 

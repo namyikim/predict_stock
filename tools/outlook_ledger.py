@@ -97,6 +97,19 @@ def merge_ledgers(latest_text, ours):
     return keep.reset_index()[COLUMNS]
 
 
+class PendingLedger:
+    """재시도마다 원장과 파생 화면이 공유할 최종 병합본(2026-10-02 검토 5번)."""
+
+    def __init__(self, frame):
+        self.ours = frame.copy(deep=True)
+        self.frame = frame.copy(deep=True)
+
+    def merge(self, latest):
+        # 이전 시도의 원격 행을 다시 이식하지 않고 이번 실행의 기록만 합친다.
+        self.frame = merge_ledgers(latest, self.ours)
+        return to_csv(self.frame)
+
+
 def read_ledger_text(text):
     import io
     if not text:

@@ -81,14 +81,21 @@ def publish_tab(target, content, sources, token, attempts=4):
         raise RuntimeError(f'{path} 이 없습니다 — 일일 보고서가 먼저 발행돼야 탭을 바꿀 수 있습니다')
 
     def plain(latest):
-        return replace_sources(replace_panel(latest, content), sources)
+        return replace_sources(replace_panel(latest, content() if callable(content) else content), sources)
 
     def apply(latest):
         # 탭 제목 아래 생성 시각(2026-09-30). 내용이 바뀐 때만 찍는다 — 시각만 달라진 페이지를 올리면 커밋만 는다.
         out = plain(latest)
+        if without_stamps(out) == without_stamps(latest):
+            return latest
         panel = longterm_panel_id(out)
         return stamp_panel(out, panel, kst_stamp()) if panel else out
 
+    if callable(content):
+        # 원장 병합 뒤에 만들고, 페이지 충돌 때도 최신 페이지를 잡은 함수로 남긴다.
+        return github_pages.publish(path, lambda: apply(page), token,
+                                    f'report: {target} daily export refresh', attempts=attempts,
+                                    expected_sha=sha, merge=lambda latest: lambda: apply(latest))
     if without_stamps(plain(page)) == without_stamps(page):
         return 'unchanged'
     updated = apply(page)
@@ -136,19 +143,31 @@ def main():
     outlook_html = outlook_ledger.render(ledger, prices=prices)
     (lt_dir / 'outlook.html').write_text(outlook_html, encoding='utf-8')
     # 순서: 요약 → 1. 이번 분기 영업이익 → 2. 장기 전망 → 3. 지난 전망(2026-09-29). 노트북의 조립 순서와 같아야 한다.
-    content = (summary + renumber_fragment((er_dir / 'earnings.html').read_text())
-               + renumber_fragment((lt_dir / 'longterm.html').read_text()) + outlook_html)
+    prefix = (summary + renumber_fragment((er_dir / 'earnings.html').read_text())
+              + renumber_fragment((lt_dir / 'longterm.html').read_text()))
+    content = prefix + outlook_html
     (lt_dir / 'longterm_tab.html').write_text(content, encoding='utf-8')
     if args.publish:
         with github_pages.batch(f'report: {args.target} daily export refresh'):
-            ours = ledger.copy()
+            state = outlook_ledger.PendingLedger(ledger)
+
+            def final_outlook():
+                result = outlook_ledger.render(state.frame, prices=prices)
+                local.write_text(outlook_ledger.to_csv(state.frame), encoding='utf-8')
+                (lt_dir / 'outlook.html').write_text(result, encoding='utf-8')
+                return result
+
+            def final_content():
+                result = prefix + final_outlook()
+                (lt_dir / 'longterm_tab.html').write_text(result, encoding='utf-8')
+                return result
             # 원장은 처음 읽은 sha 로만 올리고, 그 사이 바뀌었으면 최신 원장에 이 실행의 기록·채점을 합친다.
             github_pages.publish(ledger_path, outlook_ledger.to_csv(ledger), token,
                                  f'outlook: {args.target} 전망 기록 {added} · 채점 {scored}', expected_sha=ledger_sha,
-                                 merge=lambda latest: outlook_ledger.to_csv(outlook_ledger.merge_ledgers(latest, ours)))
-            github_pages.publish(f'docs/{args.target}/outlook.html', outlook_html, token,
+                                 merge=state.merge)
+            github_pages.publish(f'docs/{args.target}/outlook.html', final_outlook, token,
                                  f'outlook: {args.target} 지난 전망 채점')
-            print(publish_tab(args.target, content, fragment_sources_html(lt, er), token))
+            print(publish_tab(args.target, final_content, fragment_sources_html(lt, er), token))
 
 
 if __name__ == '__main__':

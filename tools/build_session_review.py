@@ -187,6 +187,76 @@ def session_cross(session_date, high_time=None):
     return out
 
 
+# 실적 발표일 보관본(2026-10-02, 검토 후속 B). 예전 캐시는 runs/ 아래에만 있어 Actions 의 새 실행마다 비었고,
+# 그때마다 2015년 이후 모든 분기(40여 개)를 DART 에 다시 물었다. 수급 보관본처럼 저장소(macro_history/)에 두고
+# 회고를 발행할 때 함께 올린다. 다음 실행은 보관본에 없는 분기만 묻는다.
+EARNINGS_DATES_ARCHIVE = Path("macro_history")
+
+
+def earnings_dates_name(target):
+    return f"earnings_dates_{target}.csv"
+
+
+def read_earnings_dates(path):
+    """{분기 말일: 발표일 또는 ''}. ''는 조회 창(분기 말 다음 날~45일)이 지났는데 공시를 찾지 못한 분기다.
+
+    옛 캐시(date 열만 있는 파일)도 읽는다 — 발표일 직전 분기 말을 열쇠로 삼는다. 못 읽으면 빈 사전.
+    """
+    try:
+        frame = pd.read_csv(path, dtype=str, keep_default_na=False)
+    except Exception:
+        return {}
+    out = {}
+    for row in frame.to_dict("records"):
+        date = str(row.get("date", "") or "").strip()
+        quarter = str(row.get("quarter_end", "") or "").strip()
+        try:
+            if not quarter and date:
+                quarter = (pd.Timestamp(date) - pd.offsets.QuarterEnd(1)).date().isoformat()
+            if quarter:
+                out[pd.Timestamp(quarter).date().isoformat()] = pd.Timestamp(date).date().isoformat() if date else ""
+        except (TypeError, ValueError):
+            continue
+    return out
+
+
+def earnings_dates_csv(known):
+    return pd.DataFrame({"quarter_end": sorted(known), "date": [known[q] for q in sorted(known)]}).to_csv(index=False)
+
+
+def collect_earnings_dates(target, corp_code, cache_dir, fetch, today, since=2015, archive_dir=None):
+    """잠정실적 발표일을 모은다. (발표일 목록, 이번에 DART 에 물은 분기 수).
+
+    저장소 보관본과 로컬 캐시에 이미 있는 분기는 다시 묻지 않는다. 조회 창이 끝났는데 공시가 없던 분기도 ''로 남겨
+    다시 묻지 않는다 — 창이 아직 열려 있는 최근 분기만 발표가 나올 때까지 매번 묻는다.
+    fetch(corp_code, start, stop) → 공시 행 목록([{rcept_dt, report_nm}]).
+    """
+    archive_dir = EARNINGS_DATES_ARCHIVE if archive_dir is None else archive_dir
+    cache = Path(cache_dir) / earnings_dates_name(target)
+    known = read_earnings_dates(Path(archive_dir) / earnings_dates_name(target))
+    for quarter, date in read_earnings_dates(cache).items():
+        if date or quarter not in known:
+            known[quarter] = date
+    today = pd.Timestamp(today).normalize()
+    asked = 0
+    for quarter_end in pd.date_range(f"{since}-03-31", today, freq="QE"):
+        start, stop = quarter_end + pd.Timedelta(days=1), quarter_end + pd.Timedelta(days=45)
+        quarter = quarter_end.date().isoformat()
+        if start > today or known.get(quarter) or (quarter in known and stop < today):
+            continue                                   # 이미 찾았거나 끝난 창에서 없다고 확인한 분기
+        rows = fetch(corp_code, start, min(stop, today))
+        asked += 1
+        hits = [r["rcept_dt"] for r in rows if PROVISIONAL_RE.search(r["report_nm"])]
+        if hits:
+            known[quarter] = pd.Timestamp(min(hits)).date().isoformat()
+        elif stop < today:
+            known[quarter] = ""
+    if known:
+        cache.parent.mkdir(parents=True, exist_ok=True)
+        cache.write_text(earnings_dates_csv(known), encoding="utf-8")
+    return sorted(date for date in known.values() if date), asked
+
+
 def earnings_reactions(target, corp_code, cache_dir, since=2015):
     """과거 잠정실적(영업실적 공정공시) 발표일의 주가 반응. 발표 전 20거래일 등락으로 나눠 센다.
 
@@ -199,22 +269,13 @@ def earnings_reactions(target, corp_code, cache_dir, since=2015):
         key = dart_key_optional()
         if not key:
             return None
-        cache = Path(cache_dir) / f"earnings_dates_{target}.csv"
-        known = set(pd.read_csv(cache, dtype=str)["date"]) if cache.exists() else set()
-        dates = set(known)
         today = pd.Timestamp.now(tz="Asia/Seoul").tz_localize(None).normalize()
-        for quarter_end in pd.date_range(f"{since}-03-31", today, freq="QE"):
-            start, stop = quarter_end + pd.Timedelta(days=1), quarter_end + pd.Timedelta(days=45)
-            if any(start <= pd.Timestamp(d) <= stop for d in known) or start > today:
-                continue                                   # 이미 찾은 분기는 다시 묻지 않는다
-            rows = fetch_dart_disclosures(corp_code, key, start, min(stop, today), max_pages=3)
-            hits = [r["rcept_dt"] for r in rows if re.search(r"영업\s*\(?\s*잠정\s*\)?\s*실적", r["report_nm"])]
-            if hits:
-                dates.add(pd.Timestamp(min(hits)).date().isoformat())
+        dates, asked = collect_earnings_dates(
+            target, corp_code, cache_dir,
+            lambda corp, start, stop: fetch_dart_disclosures(corp, key, start, stop, max_pages=3), today, since=since)
+        print(f"  실적 발표일 {len(dates)}건 · 이번에 DART 에 물은 분기 {asked}개")
         if not dates:
             return None
-        cache.parent.mkdir(parents=True, exist_ok=True)
-        pd.DataFrame({"date": sorted(dates)}).to_csv(cache, index=False)
         daily = load_daily(TARGETS[target]["ticker"], days=4400)
         close = daily["close"]
         rows = []
@@ -888,6 +949,13 @@ def main():
         sha = github_pages.publish(f"forecast_history/{args.target}/reviews/{review['session_date']}.json", to_json(review), token,
                                    f"review: {args.target} {review['session_date']} ({now:%H:%M} KST)")
         print(f"회고 기록 저장 forecast_history/{args.target}/reviews/{review['session_date']}.json @ {sha}")
+        # 실적 발표일 보관본(후속 B): 이번 실행이 만들었을 때만 날짜로 합쳐 올린다. 바뀐 것이 없으면 올리지 않는다.
+        dates_cache = storage / earnings_dates_name(args.target)
+        if dates_cache.exists():
+            result = github_pages.publish_history(f"macro_history/{earnings_dates_name(args.target)}",
+                                                  dates_cache.read_text(encoding="utf-8"), token,
+                                                  f"macro: 실적 발표일 보관본 {args.target}")
+            print(f"실적 발표일 보관본 macro_history/{earnings_dates_name(args.target)} → {result}")
         pages = [f"docs/{args.target}/index.html"]
         pages += [f"docs/{args.target}/reports/{candidate.date()}.html"
                   for candidate in (session_date, session_date + pd.Timedelta(days=1))]

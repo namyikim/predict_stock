@@ -3722,6 +3722,15 @@ def market_observations(summary, prior_5d=None, peer_name="동종 종목", forei
             seen.append(f"직전 5거래일 {pct(prior)} 내린 뒤의 매수 — 저가 매수와 맞는 모양입니다.")
     if volume is not None and volume >= 1.5:
         seen.append(f"거래량이 20일 평균의 {volume:.1f}배였습니다.")
+    # 종가가 당일 범위의 어디였나(2026-10-02, 회고 영상의 '종가가 고가 부근에서 마무리'). 장 막판에 밀렸는지
+    # 끌어올렸는지를 등락률만으로는 알 수 없다. 범위가 거의 없던 날은 말하지 않는다.
+    high, low, close = num(summary.get("high")), num(summary.get("low")), num(summary.get("close"))
+    if high and low and close and high > low and (high - low) / close >= .005:
+        position = (close - low) / (high - low)
+        if position >= .8:
+            seen.append(f"종가가 당일 범위(저가 {low:,.0f}~고가 {high:,.0f}원)의 위쪽 {position:.0%} 지점 — 고가 부근에서 마감했습니다.")
+        elif position <= .2:
+            seen.append(f"종가가 당일 범위(저가 {low:,.0f}~고가 {high:,.0f}원)의 아래쪽 {position:.0%} 지점 — 저가 부근에서 마감했습니다.")
     for touch in summary.get("ma_touches") or []:
         text = _MA_KIND.get(touch.get("kind"))
         level = num(touch.get("level"))
@@ -4012,6 +4021,64 @@ def earnings_reactions_html(stats, name=""):
             '표본이 수십 번이라 한두 번의 차이는 우연과 구별되지 않습니다. 출처: DART 잠정실적 공시일 · 종가.</div></div>')
 
 
+def review_market_html(market):
+    """시장 전체(코스피) 한 칸: 오른·내린 종목 수, 시장 전체 투자자별 순매수, 지수의 당일 범위와 종가 위치.
+
+    2026-10-02: 장 마감 회고 영상은 종목보다 먼저 시장 전체를 본다. 회고에는 이 종목의 수급만 있었다.
+    시장 분위기를 보는 숫자이지 이 종목이 움직인 이유를 말하는 것이 아니다. 자료가 없으면 빈 문자열.
+    """
+    m = market if isinstance(market, dict) else {}
+    rise, fall = _finite(m.get("rise")), _finite(m.get("fall"))
+    if rise is None or fall is None:
+        return ""
+    steady = _finite(m.get("steady")) or 0
+    total = rise + fall + steady
+    if total <= 0:
+        return ""
+    lean = "오른 종목이 더 많았습니다" if rise > fall else "내린 종목이 더 많았습니다" if fall > rise else "오른 종목과 내린 종목 수가 같았습니다"
+    limits = " · ".join(text for text, value in ((f"상한가 {int(_finite(m.get('upper')) or 0)}", _finite(m.get("upper"))),
+                                                 (f"하한가 {int(_finite(m.get('lower')) or 0)}", _finite(m.get("lower")))) if value)
+    segments = "".join(
+        f'<div style="flex:{value:.0f} 1 0;min-width:0;background:{color};height:10px"></div>'
+        for value, color in ((rise, "#1e6b34"), (steady, "#c5ccd3"), (fall, "#a8322a")) if value > 0)
+    out = ['<div style="margin:10px 0 6px;padding:10px 14px;border:1px solid #e3e8ee;border-radius:6px;background:#fbfdff">'
+           '<div style="font-size:13px;font-weight:700;margin-bottom:6px">시장 전체 (코스피) '
+           f'<span style="font-weight:400;color:#8a9199;font-size:12px">— {lean}</span></div>'
+           f'<div style="display:flex;gap:2px;border-radius:5px;overflow:hidden">{segments}</div>'
+           '<div style="display:flex;justify-content:space-between;font-size:12px;margin:3px 0 0">'
+           f'<span style="color:#1e6b34"><b>상승 {rise:,.0f}</b></span>'
+           f'<span style="color:#6b7178">보합 {steady:,.0f}</span>'
+           f'<span style="color:#a8322a"><b>하락 {fall:,.0f}</b></span></div>']
+    if limits:
+        out.append(f'<div style="font-size:11px;color:#8a9199">{limits}</div>')
+    flows = [(name, _finite(m.get(key))) for name, key in (("개인", "individual"), ("외국인", "foreign"), ("기관", "institution"))]
+    if any(value is not None for _, value in flows):
+        chips = "".join(
+            '<div style="flex:1 1 90px;min-width:0;border:1px solid #e3e8ee;border-radius:5px;padding:5px 9px;background:#fff">'
+            f'<div style="font-size:11px;color:#7a8797">{name} 순매수</div>'
+            f'<div style="font-size:14px;font-weight:700;color:{"#1e6b34" if value > 0 else "#a8322a" if value < 0 else "#1a1a1a"}">'
+            f'{_won_text(value * 1e8)}</div></div>'
+            for name, value in flows if value is not None)
+        out.append(f'<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px">{chips}</div>')
+    high, low, close, prev = (_finite(m.get(k)) for k in ("high", "low", "close", "prev_close"))
+    if high and low and close and high > low:
+        position = min(max((close - low) / (high - low), 0.0), 1.0)
+        change = f" · 전일 대비 {close - prev:+,.2f}p({close / prev - 1:+.2%})" if prev else ""
+        where = "고가 부근 마감" if position >= .8 else "저가 부근 마감" if position <= .2 else "범위 중간 마감"
+        out.append(
+            '<div style="font-size:12px;color:#4a4f55;margin-top:8px">'
+            f'지수 종가 <b>{close:,.2f}</b>{change} · 장중 저점 대비 {close - low:+,.2f}p — {where}</div>'
+            '<div style="position:relative;height:14px;margin:4px 0 0">'
+            '<div style="position:absolute;left:0;right:0;top:6px;height:2px;background:#e6ebf0"></div>'
+            f'<div style="position:absolute;left:calc({position * 100:.1f}% - 5px);top:2px;width:10px;height:10px;'
+            'border-radius:50%;background:#1a5490"></div></div>'
+            '<div style="display:flex;justify-content:space-between;font-size:11px;color:#8a9199">'
+            f'<span>저가 {low:,.2f}</span><span>고가 {high:,.2f}</span></div>')
+    out.append('<div style="font-size:11px;color:#8a9199;margin-top:6px">출처 네이버 증권(순매수는 억원 단위 집계, 장 마감 뒤 '
+               '잠정치) · 시장 분위기를 보는 숫자이며 이 종목이 움직인 이유를 말하지 않습니다.</div></div>')
+    return "".join(out)
+
+
 def review_section_html(review, carried=False):
     """장 마감 회고 절 HTML. carried=True 면 새로 만든 다음 거래일 보고서에 다시 붙이는 직전 거래일 회고다."""
     from html import escape as e
@@ -4039,6 +4106,7 @@ def review_section_html(review, carried=False):
 
     context = review_context(r)
     parts.append(review_context_html(context))
+    parts.append(review_market_html(r.get("market")))      # 시장 전체 숫자(없으면 빈 문자열, 2026-10-02)
     story = r.get("flow_story")
     if story and any("마지막 거래일" in x for x in context.get("calendar", [])):
         inst = next((a for a in story.get("actors", []) if a.get("key") == "inst_net"), None)

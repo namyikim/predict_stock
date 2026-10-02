@@ -557,6 +557,73 @@ def news_in_window(items, start, end, name, limit=5):
     return hits[:limit]
 
 
+# 시장 전체 숫자(2026-10-02, 장 마감 회고 영상과 비교해 더한 것). 영상은 종목보다 먼저 시장 전체를 본다 —
+# 오른 종목이 내린 종목보다 많았는지, 외국인·개인·기관이 시장 전체에서 얼마나 사고팔았는지, 지수가 장 막판에
+# 어디서 끝났는지. 회고에는 이 종목의 수급만 있고 시장 전체가 없었다. 네이버 증권의 지수 API 가 세 가지를 한 번에
+# 준다(인증 없음). 최신 거래일 값만 주므로 날짜가 회고 대상일과 같을 때만 쓴다 — 지난 날짜 회고를 다시 만들 때
+# 오늘 숫자를 끼워 넣지 않는다. 받지 못하면 이 칸만 빠지고 회고는 그대로 나온다.
+NAVER_INDEX_URL = "https://m.stock.naver.com/api/index/{index}/{kind}"
+
+
+def _market_number(text):
+    """'-17,725' · '+3,987' · '7,003.74' → float. 읽을 수 없으면 None."""
+    try:
+        value = float(str(text).replace(",", "").replace("+", "").strip())
+    except (TypeError, ValueError):
+        return None
+    return value if np.isfinite(value) else None
+
+
+def parse_market_overview(integration, basic=None):
+    """네이버 지수 API 응답 → {date, rise, fall, steady, upper, lower, individual, foreign, institution, open, high,
+    low, prev_close, close}. 순매수는 억원. 종목 수나 날짜를 읽지 못하면 None."""
+    if not isinstance(integration, dict):
+        return None
+    breadth = integration.get("upDownStockInfo") or {}
+    deal = integration.get("dealTrendInfo") or {}
+    date = str(deal.get("bizdate") or "")
+    counts = {name: _market_number(breadth.get(key)) for name, key in
+              (("rise", "riseCount"), ("fall", "fallCount"), ("steady", "steadyCount"),
+               ("upper", "upperCount"), ("lower", "lowerCount"))}
+    if len(date) != 8 or not date.isdigit() or counts["rise"] is None or counts["fall"] is None:
+        return None
+    out = {"index": "KOSPI", "date": f"{date[:4]}-{date[4:6]}-{date[6:]}"}
+    out.update({name: int(value) if value is not None else None for name, value in counts.items()})
+    for name, key in (("individual", "personalValue"), ("foreign", "foreignValue"), ("institution", "institutionalValue")):
+        out[name] = _market_number(deal.get(key))
+    prices = {str(item.get("code")): _market_number(item.get("value"))
+              for item in integration.get("totalInfos") or [] if isinstance(item, dict)}
+    for name, key in (("prev_close", "lastClosePrice"), ("open", "openPrice"), ("high", "highPrice"), ("low", "lowPrice")):
+        out[name] = prices.get(key)
+    out["close"] = _market_number((basic or {}).get("closePrice")) if isinstance(basic, dict) else None
+    return out
+
+
+def fetch_market_overview(session_date, fetch=None, index="KOSPI"):
+    """회고 대상일의 시장 전체 숫자. 날짜가 다르거나 받지 못하면 None(회고는 계속 만든다)."""
+    def get(kind):
+        request = urllib.request.Request(NAVER_INDEX_URL.format(index=index, kind=kind),
+                                         headers={"User-Agent": "Mozilla/5.0"})
+        with urllib.request.urlopen(request, timeout=20) as response:
+            return json.loads(response.read().decode("utf-8"))
+    fetch = fetch or get
+    try:
+        integration = fetch("integration")
+        try:
+            basic = fetch("basic")
+        except Exception:
+            basic = None                      # 종가를 못 받아도 종목 수·수급은 보인다
+        overview = parse_market_overview(integration, basic)
+    except Exception as exc:
+        print(f"  시장 전체 숫자 미확인({type(exc).__name__})")
+        return None
+    if not overview or overview["date"] != pd.Timestamp(session_date).date().isoformat():
+        if overview:
+            print(f"  시장 전체 숫자는 {overview['date']} 기준이라 {pd.Timestamp(session_date).date()} 회고에 쓰지 않습니다")
+        return None
+    return overview
+
+
 def fetch_disclosures(corp_code, session_date):
     try:
         from data_sources.dart import dart_key_optional, fetch_dart_disclosures
@@ -921,6 +988,7 @@ def build_review(target, session_date, storage, token=None, use_news=True):
         "disclosures": disclosures, "disclosure_note": disclosure_note, "flows": flows_text,
         "flow_story": flow_story_data, "flow_status": flow_status,
         "context": session_context(spec["ticker"], session_date),
+        "market": fetch_market_overview(session_date) if use_news else None,
         "earnings_reactions": earnings_stats,
         "forecasts": forecasts, "price_check": price_check, "disclaimer": DISCLAIMER,
     }

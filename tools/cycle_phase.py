@@ -3,7 +3,7 @@
 거시 경제 유튜브(선행지수 순환변동치)의 판단 방식을 우리 자료로 자동화한 것이다. 숫자·전망·자산배분 조언은
 가져오지 않는다(CLAUDE.md '외부 자료로 개선할 때').
 
-  ① 선행지수 순환변동치의 국면 — 최근 24개월 고점과 그 뒤 하락 개월 수. 1개월이면 '정점 가능성', 2개월 이상이면
+  ① 선행지수 순환변동치의 국면 — 최근 24개월 고점과 그 뒤 연속 하락 개월 수. 1개월이면 '정점 가능성', 2개월 이상이면
      '하락 국면 전환'(저점 쪽도 같은 규칙).
   ② 선행-동행 격차 — 선행지수에는 주가 등 금융 변수가 들어가므로 둘의 차이는 금융과 실물의 괴리로 읽는다.
   ③ 선행의 선행 — 뉴스심리지수(3개월 이동평균)·장단기 금리차가 선행지수에 앞서는지. 상관은 매번 우리 자료로 다시
@@ -52,30 +52,53 @@ def load_coincident(fetch=True, start="2013-01-01"):
 
 
 def phase_of(cycle, window=24):
-    """최근 고점·저점 기준 국면. {'state','since','months','level','peak'/'trough'...}"""
-    cycle = cycle.dropna()
-    if len(cycle) < 6:
+    """최근 고점·저점 기준 국면. months는 직전 연속 변화, since는 그 시작 달.
+
+    months_since_peak/trough는 달력상 경과 기간이며 연속 변화와 구분한다.
+    """
+    # 경과 개월을 연속 변화로 오인하지 않도록 빠진 달도 남긴다(2026-10-02 검토 2번).
+    cycle = cycle.sort_index().replace([np.inf, -np.inf], np.nan)
+    if cycle.count() < 6:
+        return None
+    cycle = cycle.resample("MS").last()
+    if pd.isna(cycle.iloc[-1]):
         return None
     recent = cycle.tail(window)
     last_month, last = cycle.index[-1], float(cycle.iloc[-1])
-    peak_month, trough_month = recent.idxmax(), recent.idxmin()
-    down = int(((cycle.index > peak_month) & (cycle.index <= last_month)).sum())
-    up = int(((cycle.index > trough_month) & (cycle.index <= last_month)).sum())
-    if peak_month > trough_month:        # 저점 뒤 상승해 고점을 찍은 쪽이 최근
-        if down == 0:
-            state, since, months = "상승 중(최근 고점 경신)", trough_month, up
-        elif down == 1:
-            state, since, months = "정점 가능성(고점 뒤 1개월 하락)", peak_month, down
+    # 같은 고점·저점에 다시 도달했다면 가장 최근 달부터 변화를 센다.
+    peak_month = recent[recent == recent.max()].index[-1]
+    trough_month = recent[recent == recent.min()].index[-1]
+    direction = np.sign(cycle.diff().iloc[-1])
+    months = 0
+    if pd.notna(direction) and direction != 0:
+        for change in cycle.diff().iloc[::-1]:
+            if pd.isna(change) or np.sign(change) != direction:
+                break
+            months += 1
+    since = cycle.index[-1 - months]
+    if pd.isna(direction):
+        state = "판정 보류(전월 자료 없음)"
+    elif direction == 0:
+        state = "횡보(전월과 같음)"
+    elif direction > 0:
+        if last_month == peak_month:
+            state = "상승 중(최근 고점 도달)"
+        elif since == trough_month:
+            state = ("저점 가능성(저점 뒤 1개월 상승)" if months == 1 else
+                     f"상승 국면 전환(저점 뒤 {months}개월 연속 상승)")
         else:
-            state, since, months = f"하락 국면 전환(고점 뒤 {down}개월 연속)", peak_month, down
+            state = f"반등(최근 {months}개월 연속 상승)"
     else:
-        if up == 0:
-            state, since, months = "하락 중(최근 저점 경신)", peak_month, down
-        elif up == 1:
-            state, since, months = "저점 가능성(저점 뒤 1개월 상승)", trough_month, up
+        if last_month == trough_month:
+            state = "하락 중(최근 저점 도달)"
+        elif since == peak_month:
+            state = ("정점 가능성(고점 뒤 1개월 하락)" if months == 1 else
+                     f"하락 국면 전환(고점 뒤 {months}개월 연속 하락)")
         else:
-            state, since, months = f"상승 국면 전환(저점 뒤 {up}개월 연속)", trough_month, up
+            state = f"재하락(최근 {months}개월 연속 하락)"
     return {"state": state, "since": since, "months": months, "last_month": last_month, "level": last,
+            "months_since_peak": last_month.to_period("M").ordinal - peak_month.to_period("M").ordinal,
+            "months_since_trough": last_month.to_period("M").ordinal - trough_month.to_period("M").ordinal,
             "peak_month": peak_month, "peak": float(recent.max()), "trough_month": trough_month,
             "trough": float(recent.min())}
 
@@ -197,13 +220,14 @@ def cycle_phase_html(data):
     e = escape
     head = ('<h3 style="font-size:15px;margin:24px 0 9px;padding-bottom:6px;border-bottom:1px solid #ddd">경기 국면 — 선행지수 순환변동치 '
             f'<span style="font-weight:400;color:#8a9199;font-size:12px">&nbsp;{_fmt_month(phase["last_month"])}까지 · 월별 · 통계청 경기종합지수</span></h3>')
-    color = "#a8322a" if "하락" in phase["state"] or "정점" in phase["state"] else "#1e6b34"
+    color = ("#6b7178" if "횡보" in phase["state"] or "판정 보류" in phase["state"] else
+             "#a8322a" if "하락" in phase["state"] or "정점" in phase["state"] else "#1e6b34")
     verdict = (f'<div style="margin:6px 0 10px;padding:9px 12px;border-left:4px solid {color};background:#fafafa;font-size:13px">'
                f'<b>국면 판정: <span style="color:{color}">{e(phase["state"])}</span></b> — '
                f'{_fmt_month(phase["last_month"])} {phase["level"]:.1f}. 최근 24개월 고점 {phase["peak"]:.1f}({_fmt_month(phase["peak_month"])}), '
                f'저점 {phase["trough"]:.1f}({_fmt_month(phase["trough_month"])}). '
-               '규칙: 고점 뒤 1개월 하락이면 "정점 가능성", 2개월 이상 연속이면 "하락 국면 전환"(저점 쪽도 같음). '
-               '정점·저점은 지나고 나서야 확정되므로 판정은 매달 바뀔 수 있습니다.</div>')
+               '규칙: 최근 고점부터 끊김 없이 1개월 하락이면 "정점 가능성", 2개월 이상 연속이면 "하락 국면 전환"(저점 쪽도 같음). '
+               '방향 전환·횡보·자료가 빠진 달은 연속 기간을 끊습니다. 고점·저점 이후 경과 개월과는 다릅니다. 정점·저점은 지나고 나서야 확정되므로 판정은 매달 바뀔 수 있습니다.</div>')
     items = []
     gap = data.get("gap")
     if gap:

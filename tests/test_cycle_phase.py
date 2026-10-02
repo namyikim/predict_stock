@@ -30,6 +30,57 @@ class PhaseRuleTests(unittest.TestCase):
         self.assertIn("저점 가능성", C.phase_of(monthly(base + [99.3]))["state"])
         self.assertIn("상승 국면 전환", C.phase_of(monthly(base + [99.3, 99.6]))["state"])
 
+    def test_rebound_does_not_count_elapsed_months_as_declines(self):
+        p = C.phase_of(monthly([98, 99, 100, 103, 99, 100, 101, 102]))
+        self.assertIn("반등", p["state"])
+        self.assertNotIn("하락 국면", p["state"])
+        self.assertEqual(p["months"], 3)
+        self.assertEqual(p["since"], pd.Timestamp("2024-05-01"))
+        self.assertEqual(p["months_since_peak"], 4)
+
+    def test_pullback_does_not_count_elapsed_months_as_rises(self):
+        p = C.phase_of(monthly([104, 103, 102, 97, 101, 100, 99, 98]))
+        self.assertIn("재하락", p["state"])
+        self.assertNotIn("상승 국면", p["state"])
+        self.assertEqual(p["months"], 3)
+        self.assertEqual(p["since"], pd.Timestamp("2024-05-01"))
+
+    def test_flat_month_breaks_the_direction_streak(self):
+        for values in ([98, 99, 100, 103, 102, 102], [100] * 6):
+            with self.subTest(values=values):
+                p = C.phase_of(monthly(values))
+                self.assertIn("횡보", p["state"])
+                self.assertEqual(p["months"], 0)
+        p = C.phase_of(monthly([98, 99, 100, 103, 102, 102, 101]))
+        self.assertEqual(p["months"], 1)
+        self.assertNotIn("국면 전환", p["state"])
+
+    def test_missing_month_breaks_the_direction_streak(self):
+        for values in ([98, 99, 100, 103, np.nan, 102, 101],
+                       [98, 99, 100, 103, np.nan, 102, 103]):
+            series = monthly(values)
+            for input_series in (series, series.dropna()):
+                with self.subTest(values=values, size=len(input_series)):
+                    p = C.phase_of(input_series)
+                    self.assertEqual(p["months"], 1)
+                    self.assertNotIn("국면 전환", p["state"])
+        p = C.phase_of(monthly([98, 99, 100, 101, 103, np.nan, 102]))
+        self.assertIn("판정 보류", p["state"])
+        self.assertEqual(p["months"], 0)
+
+    def test_missing_latest_value_does_not_reuse_an_old_verdict(self):
+        self.assertIsNone(C.phase_of(monthly([98, 99, 100, 103, 102, 101, np.nan])))
+
+    def test_input_order_does_not_change_monthly_direction(self):
+        series = monthly([98, 99, 100, 103, 99, 100, 101, 102])
+        self.assertEqual(C.phase_of(series), C.phase_of(series.iloc[::-1]))
+
+    def test_latest_equal_extreme_starts_a_new_streak(self):
+        p = C.phase_of(monthly([98, 99, 103, 102, 103, 102]))
+        self.assertEqual(p["peak_month"], pd.Timestamp("2024-05-01"))
+        self.assertEqual(p["months"], 1)
+        self.assertIn("정점 가능성", p["state"])
+
     def test_lead_lag_reports_level_and_change_separately(self):
         target = monthly(np.sin(np.linspace(0, 6, 60)) + 100, start="2021-01-01")
         candidate = target.shift(-2)          # 2개월 앞선 계열

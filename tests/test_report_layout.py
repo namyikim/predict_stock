@@ -191,16 +191,15 @@ class TabArrangementTests(unittest.TestCase):
         return rh.tabify_sections('<div class="wrap">' + REPORT_ORDER + '</div>')
 
     def test_tabs_are_in_this_order(self):
-        # 2026-10-02: 장기 전망 탭 하나가 너무 길어 메뉴 둘(요약·영업이익 / 월간 장기 전망)로 나눴다.
-        # '지난 전망은 맞았나'는 그 절이 있을 때 '장기 전망' 메뉴 맨 아래에 붙는다(이 견본에는 없다).
-        self.assertEqual(tab_labels(self.out()), ["오늘의 예측", "장기 요약 · 영업이익", "장기 전망", "주간 뉴스",
+        # 2026-10-02: 장기 전망을 둘·셋으로 나눠 봤다가 같은 날 메뉴 하나로 되돌렸다(무엇이 다른지 헷갈렸다).
+        self.assertEqual(tab_labels(self.out()), ["오늘의 예측", "장기 전망", "주간 뉴스",
                                                   "예측 성적", "사용한 데이터", "공시·발표 일정"])
 
     def test_weekly_news_is_the_third_tab(self):
         """탭 순서는 그 탭의 첫 절이 문서에 나오는 순서다. TAB_GROUPS 만 고치면 안 바뀐다."""
         labels = tab_labels(self.out())
-        self.assertEqual(labels[3], "주간 뉴스")
-        self.assertEqual(panel_titles(self.out())["rtab-3"], ["1. 주간 반도체 뉴스"])
+        self.assertEqual(labels[2], "주간 뉴스")
+        self.assertEqual(panel_titles(self.out())["rtab-2"], ["1. 주간 반도체 뉴스"])
 
     def test_first_tab_holds_today_and_ends_with_the_reading_guide(self):
         first = panel_titles(self.out())["rtab-0"]
@@ -212,8 +211,7 @@ class TabArrangementTests(unittest.TestCase):
     def test_long_term_tab_holds_the_outlook_and_the_quarterly_profit(self):
         # 장기 전망 탭도 오늘의 예측처럼 쉬운 요약이 맨 위에 온다(2026-09-13).
         self.assertEqual(panel_titles(self.out())["rtab-1"],
-                         ["1. 한눈에 보는 장기 전망 요약", "2. 이번 분기 영업이익 추정"])
-        self.assertEqual(panel_titles(self.out())["rtab-2"], ["1. 장기 전망 (월간)"])
+                         ["1. 한눈에 보는 장기 전망 요약", "2. 이번 분기 영업이익 추정", "3. 장기 전망 (월간)"])
 
     def test_numbers_restart_in_every_tab(self):
         """번호는 탭 안에서 1부터 이어진다. 절이 하나뿐인 탭은 번호가 없다."""
@@ -230,17 +228,14 @@ class TabArrangementTests(unittest.TestCase):
                 '<h3>1. 다음 거래일 방향</h3><p>c</p><h3>2. 이번 분기 영업이익 추정</h3><p>d</p></div>')
         panels = panel_titles(rh.tabify_sections(page))
         self.assertEqual(panels["rtab-0"], ["1. 한눈에 보는 쉬운 요약", "2. 다음 거래일 방향"])
-        # 메뉴 순서는 TAB_GROUPS 순서다 — 원문에서 장기 전망이 먼저 나와도 요약·영업이익 메뉴가 앞이다.
-        self.assertEqual(panels["rtab-1"], ["1. 이번 분기 영업이익 추정"])
-        self.assertEqual(panels["rtab-2"], ["1. 장기 전망 (월간)"])
+        self.assertEqual(panels["rtab-1"], ["1. 이번 분기 영업이익 추정", "2. 장기 전망 (월간)"])
 
     def test_order_inside_a_tab_follows_the_group_not_the_source(self):
         """탭 안 순서는 원문 순서가 아니라 TAB_GROUPS 열쇠 순서(2026-09-29부터 영업이익 → 장기 전망)를 따른다."""
         page = ('<div><h3>한눈에 보는 쉬운 요약</h3><p>a</p><h3>2. 이번 분기 영업이익 추정</h3><p>d</p>'
                 '<h3>1. 장기 전망 (월간)</h3><p>b</p></div>')
         out = rh.tabify_sections(page)
-        self.assertEqual(panel_titles(out)["rtab-1"], ["1. 이번 분기 영업이익 추정"])
-        self.assertEqual(panel_titles(out)["rtab-2"], ["1. 장기 전망 (월간)"])
+        self.assertEqual(panel_titles(out)["rtab-1"], ["1. 이번 분기 영업이익 추정", "2. 장기 전망 (월간)"])
         self.assertEqual(rh.tab_structure_problems(out), [])
 
     def test_the_structure_stays_sound(self):

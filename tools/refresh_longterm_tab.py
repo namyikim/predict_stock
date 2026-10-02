@@ -54,9 +54,10 @@ def replace_panel(page, content):
 def replace_tab_sections(page, content):
     """새 내용을 절별로 나눠 맞는 메뉴(탭)에 넣는다. (바뀐 페이지, 내용을 넣은 탭 id 목록).
 
-    2026-10-02 부터 장기 전망 내용은 메뉴 둘(요약·영업이익 / 장기 전망과 그 아래 지난 전망 성적)에 나뉜다. 기준은 요약
-    (id="longterm-summary")이 든 탭이다. 새 내용 가운데 페이지에 제 탭이 없는 절은 그 기준 탭에 함께 넣는다 —
-    아직 탭 하나짜리인 옛 페이지에서는 예전처럼 모두 한 탭에 들어가고, 내용이 빠지거나 두 번 들어가지 않는다.
+    장기 전망 내용은 '장기 전망' 메뉴 하나에 들어간다(2026-10-02: 둘·셋으로 나눠 봤다가 같은 날 되돌렸다).
+    기준은 요약(id="longterm-summary")이 든 탭이다. 절을 TAB_GROUPS 로 나눠 제 메뉴의 탭에 넣고, 페이지에 제 탭이
+    없는 절은 기준 탭에 함께 넣는다. 나뉘어 있던 때 발행된 페이지에는 같은 메뉴에 속한 탭이 더 남아 있는데,
+    거기에는 낡은 사본 대신 합쳤다는 안내만 남긴다 — 내용이 빠지거나 두 번 들어가지 않는다.
     기준 탭을 하나로 찾지 못하면 replace_panel 과 같이 ValueError 로 멈춘다(기존 보고서를 보존).
     """
     found = [p for p in panels(page) if 'id="longterm-summary"' in p['inner']]
@@ -67,9 +68,9 @@ def replace_tab_sections(page, content):
     by_label, leftovers = {}, []
     for panel in panels(page):
         label = panel_tab_label(panel['inner'])
-        if label and panel is not anchor and label != anchor_label:
-            if label in by_label:
-                leftovers.append((label, panel))      # 같은 메뉴 이름의 탭이 둘 — 옛 구조에서 따로 있던 탭이다
+        if label and panel['start'] != anchor['start']:      # 객체가 아니라 위치로 견준다(목록을 새로 만들어도 같게)
+            if label == anchor_label or label in by_label:
+                leftovers.append((label, panel))      # 같은 메뉴에 속한 탭이 또 있다 — 옛 구조에서 따로 있던 탭이다
             else:
                 by_label[label] = panel
     placed, anchor_html = [], ""
@@ -82,15 +83,15 @@ def replace_tab_sections(page, content):
     # 메뉴가 나뉜 페이지에서는 기준 탭도 그 탭 안에서 1부터 번호를 맞춘다 — 일일 보고서가 탭을 나눌 때와 같은 모양이라야
     # 바뀐 것이 없을 때 '바뀜'으로 보이지 않는다. 탭 하나짜리 옛 페이지는 예전처럼 번호를 건드리지 않는다.
     placed.append((anchor, number_headings(anchor_html) if len(placed) else anchor_html))
-    # 메뉴를 합친 뒤에도 옛 페이지에는 합쳐지기 전의 탭이 남아 있다(2026-10-02: '지난 전망 성적'을 '장기 전망' 아래로
-    # 되돌렸다). 새 내용은 앞 탭에 들어갔으므로 옛 탭에는 낡은 사본 대신 옮겼다는 안내만 남긴다 — 일일 보고서가
+    # 메뉴를 합친 뒤에도 옛 페이지에는 합쳐지기 전의 탭이 남아 있다(2026-10-02: 나눴던 메뉴를 하나로 되돌렸다).
+    # 새 내용은 기준 탭에 들어갔으므로 옛 탭에는 낡은 사본 대신 합쳤다는 안내만 남긴다 — 일일 보고서가
     # 페이지를 다시 만들면 그 탭은 사라진다.
     labels_in_content = {label for label, _ in sections_by_tab(content)}
     for label, panel in leftovers:
         if label in labels_in_content:
             heading = re.search(r'<h3\b[^>]*>.*?</h3>', panel['inner'], re.S)
             placed.append((panel, (heading.group(0) if heading else '')
-                           + f'<div style="font-size:13px;color:#6b7178">이 내용은 ‘{label}’ 메뉴 맨 아래로 옮겼습니다.</div>'))
+                           + f'<div style="font-size:13px;color:#6b7178">이 내용은 ‘{label}’ 메뉴로 합쳤습니다. 보고서가 다시 만들어지면 이 메뉴는 사라집니다.</div>'))
     out = page
     for panel, html_text in sorted(placed, key=lambda item: -item[0]['inner_start']):
         out = out[:panel['inner_start']] + html_text + out[panel['inner_end']:]

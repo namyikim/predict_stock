@@ -958,7 +958,7 @@
     "krw": 1405.6209542410713
   },
   "chart_first": "2000-01-31",
-  "generated_at": "2026-10-01 22:19 KST",
+  "generated_at": "2026-10-02 10:21 KST",
   "macro_snapshot_hash": "064717b64854b17df0da",
   "macro_sources": {
     "leading_cycle": "KOSIS_API",
@@ -966,7 +966,7 @@
   },
   "frame_hash": "a558305b597f7c78",
   "live_exports": {
-    "as_of": "2026-10-01",
+    "as_of": "2026-10-02",
     "price_last": "2026-09-30",
     "exports_last_month": "2026-09",
     "latest_period": {
@@ -978,7 +978,7 @@
       "basis": "full_month_preliminary"
     },
     "snapshot_hash": "8c3c6f24b1b6b90a81c8",
-    "generated_at": "2026-10-01 22:17 KST",
+    "generated_at": "2026-10-02 10:20 KST",
     "flash_info": {
       "enabled": true,
       "source": "customs_flash_api",
@@ -1026,14 +1026,14 @@
   "valuation": {
     "status": "available",
     "ticker": "000660.KS",
-    "price": 1776000.0,
-    "price_date": "2026-09-30",
-    "observed_on": "2026-10-01",
+    "price": 1833000.0,
+    "price_date": "2026-10-01",
+    "observed_on": "2026-10-02",
     "financial_period": "2026-06-30",
     "eps_ttm": 232070.09450008773,
     "bps": 375948.7934903294,
-    "per": 7.652860243909319,
-    "pbr": 4.724047611674765,
+    "per": 7.898475690926679,
+    "pbr": 4.875664004617029,
     "source": "https://finance.yahoo.com/quote/000660.KS/key-statistics/",
     "assumptions": {
       "version": 1,
@@ -1054,40 +1054,40 @@
         {
           "multiple": 8,
           "price": 1856560.7560007018,
-          "upside": 0.04536078603643112
+          "upside": 0.012853658483743535
         },
         {
           "multiple": 12,
           "price": 2784841.134001053,
-          "upside": 0.5680411790546469
+          "upside": 0.5192804877256154
         },
         {
           "multiple": 16,
           "price": 3713121.5120014036,
-          "upside": 1.0907215720728622
+          "upside": 1.025707316967487
         }
       ],
       "pbr": [
         {
           "multiple": 1,
           "price": 375948.7934903294,
-          "upside": -0.7883171207824722
+          "upside": -0.7948997307745066
         },
         {
           "multiple": 1.5,
           "price": 563923.1902354942,
-          "upside": -0.6824756811737083
+          "upside": -0.6923495961617598
         },
         {
           "multiple": 2,
           "price": 751897.5869806588,
-          "upside": -0.5766342415649444
+          "upside": -0.5897994615490132
         }
       ]
     },
     "evaluation_status": "예측 성능 미검증 — 현재 가치 시나리오이며 도달 시점을 예측하지 않음",
     "basis_note": "분기 재무제표 최근 4분기 순이익(Net Income Common Stockholders) ÷ EPS 기준 주식 수 697,915,819주",
-    "retrieved_on": "2026-10-01",
+    "retrieved_on": "2026-10-02",
     "cached": false
   }
 }

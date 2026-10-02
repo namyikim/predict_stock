@@ -1,5 +1,5 @@
 {
- "as_of": "2026-10-02",
+ "as_of": "2026-10-03",
  "needed": false,
  "late": [],
  "checked": [
@@ -42,14 +42,14 @@
    "file": "investor_flows_005930.csv",
    "label": "삼성전자 외국인·기관 수급",
    "have": "2026-10-02",
-   "expected": "2026-09-28 이후",
+   "expected": "2026-09-29 이후",
    "late": false
   },
   {
    "file": "investor_flows_000660.csv",
    "label": "SK하이닉스 외국인·기관 수급",
    "have": "2026-10-02",
-   "expected": "2026-09-28 이후",
+   "expected": "2026-09-29 이후",
    "late": false
   }
  ],

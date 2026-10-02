@@ -13,7 +13,7 @@ import pandas as pd
 import github_pages
 import outlook_ledger
 from forecast_utils import kst_stamp, longterm_easy_summary_html, stamp_panel, summary_level_odds
-from report_html import fragment_sources_html, renumber_fragment
+from report_html import fold_detail_sections, fragment_sources_html, renumber_fragment
 
 
 def replace_panel(page, content):
@@ -81,7 +81,9 @@ def publish_tab(target, content, sources, token, attempts=4):
         raise RuntimeError(f'{path} 이 없습니다 — 일일 보고서가 먼저 발행돼야 탭을 바꿀 수 있습니다')
 
     def plain(latest):
-        return replace_sources(replace_panel(latest, content() if callable(content) else content), sources)
+        # 검증·방법 소제목은 접어서 넣는다(2026-10-02) — 일일 보고서가 탭을 만들 때와 같은 모양이어야 한다.
+        body = content() if callable(content) else content
+        return replace_sources(replace_panel(latest, fold_detail_sections(body)), sources)
 
     def apply(latest):
         # 탭 제목 아래 생성 시각(2026-09-30). 내용이 바뀐 때만 찍는다 — 시각만 달라진 페이지를 올리면 커밋만 는다.

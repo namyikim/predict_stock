@@ -3,7 +3,7 @@
   "name": "SK하이닉스",
   "peer_name": "삼성전자",
   "session_date": "2026-10-02",
-  "generated_at": "2026-10-02 16:11 KST",
+  "generated_at": "2026-10-02 16:46 KST",
   "summary": {
     "prev_close": 1833000.0,
     "open": 1830000.0,
@@ -15,11 +15,11 @@
     "c2c": 0.004364429896344779,
     "high_vs_open": 0.013661202185792254,
     "low_vs_open": -0.002732240437158473,
-    "volume": 2075869.0,
-    "volume_ratio": 0.6469838598195455,
+    "volume": 2080346.0,
+    "volume_ratio": 0.6483792015970913,
     "kospi_c2c": 0.004646178468305617,
     "peer_c2c": 0.0,
-    "usdkrw_chg": -0.005217974288078353,
+    "usdkrw_chg": NaN,
     "us_nights": 1,
     "sox_ret": 0.015867124115942266,
     "nasdaq_ret": 0.0003923546682607082,
@@ -611,15 +611,15 @@
       "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE9EcFpTVG1PT3I3QS1TaFF4bUtoeEVNcjV5ZFNmMW5seHBTdUk5aDZCc1h6WTJ0RzVrNF92ci1EaFZIYVI1dzd0MzcwVEgzLU5rNHlzUzNyQTZOQ1ctSDVWVDUxRjd4alNOQVNBWtIBb0FVX3lxTE9NbzU4MURhY3dxb0M2SnM1dXlsMExIZE9nV3dQNnZJUlc1aXZvckxQVl9PNWlYck80OWRuaEdaSkYyLWh0VHVqM0ZjZ2VSWVA0UjlDMDBrZ1RhQWY0dDRoel9UcFg3ZEcyOWc1N3VQTQ?oc=5"
     },
     {
-      "time": "2026-10-02T10:56:25+09:00",
+      "time": "2026-10-02T11:10:41+09:00",
       "title": "사상 최대 실적 낸 마이크론… D램 시장서 SK하이닉스 바짝 추격",
       "source": "핀포인트뉴스",
-      "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTFBfYXdBLWxvY2MzTmtLSGp6VTVHWUJxeXFjd3l3SkFxM1JtbnpFSi12WUZlaEc2ZGcyRHNhSENpeWRRWXlPbF8yU3RZZ2xNbGVMV2NDcEh4ZHdLdXpvUGIxRUNtajh1RTN1dFhITlV0cGF1T1XSAXdBVV95cUxOVlpnLTZfekR0Y2UzMXFuZ05TZjRia2tuLXVDdHo0cElXQklBeVdUSkJjM09KR241dC1EY0pOdjdkUHM4OGNGS0RSSTkwVW5WRGFsRjFMdU5QdHdOSGpiTnpta2g1QmdoeHplbnBzQWdUckFqTGZaMA?oc=5"
+      "link": "https://news.google.com/rss/articles/CBMid0FVX3lxTE5WWmctNl96RHRjZTMxcW5nTlNmNGJra24tdUN0ejRwSVdCSUF5V1RKQmMzT0pHbjV0LURjSk52N2RQczg4Y0ZLRFJJOTBVblZEYWxGMUx1TlB0d05IamJOem1raDVCZ2h4emVucHNBZ1RyQWpMZlow0gF3QVVfeXFMTlZaZy02X3pEdGNlMzFxbmdOU2Y0Ymtrbi11Q3R6NHBJV0JJQXlXVEpCYzNPSkduNXQtRGNKTnY3ZFBzODhjRktEUkk5MFVuVkRhbEYxTHVOUHR3TkhqYk56bWtoNUJnaHh6ZW5wc0FnVHJBakxmWjA?oc=5"
     },
     {
       "time": "2026-10-02T11:40:33+09:00",
       "title": "마이크론, 사상 최대 실적 썼다…D램 시장서 2위 SK하이닉스와 1%P 차",
-      "source": "이지경제",
+      "source": "ezyeconomy.com",
       "link": "https://news.google.com/rss/articles/CBMibkFVX3lxTE83bU1sNHhZUm1nWkctbkRCZW1ZazVlVkcxVmxFRzdqS0FtRFUxNlBkRWpIQTRYa1hzYmNLREVOZXdSTDR0NURQS192QXY2dG5Qb1JsdjFBODM0Tm9oUmtGUURBRklBZWpTQjdjLVhB?oc=5"
     }
   ],

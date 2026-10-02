@@ -176,7 +176,11 @@ TAB_GROUPS = (
     # 쉬운 요약(이번 분기 영업이익·앞으로의 흐름·가격 도달 시점) → 1. 이번 분기 영업이익 → 2. 장기 전망
     # → 3. 지난 전망은 맞았나(장기 전망 탭의 전망을 발표된 값으로 채점, 2026-09-27)
     # 탭 안 순서는 이 열쇠 순서를 따른다 — 조립 순서를 바꿔도 여기가 옛 순서면 되돌아간다(2026-09-29 발견).
-    ("장기 전망", ("한눈에 보는 장기 전망 요약", "이번 분기 영업이익", "장기 전망", "지난 전망은 맞았나")),
+    # 2026-10-02: '장기 전망' 탭 하나가 화면 열 장 분량이라 메뉴 셋으로 나눈다 — 요약·영업이익 / 월간 장기 전망 /
+    # 지난 전망 성적. 매일 이 내용을 바꿔 끼우는 tools/refresh_longterm_tab.py 도 같은 표로 절을 메뉴에 나눠 넣는다.
+    ("장기 요약 · 영업이익", ("한눈에 보는 장기 전망 요약", "이번 분기 영업이익")),
+    ("장기 전망", ("장기 전망",)),
+    ("지난 전망 성적", ("지난 전망은 맞았나",)),
     # '성적'만으로는 무엇에 대한 성적인지 알 수 없다(2026-09-14 지적). 무엇을 맞히려 한 성적인지
     # 탭 이름에 넣는다.
     # 주간 뉴스는 참고 자료지만 실제로 읽는 거리라 자주 본다. 성격별 묶음(모델 결과 → 참고
@@ -292,6 +296,37 @@ def _tab_for(title, groups=TAB_GROUPS):
             if bare.startswith(key):
                 return label, rank
     return None, 0
+
+
+def sections_by_tab(html_text, groups=TAB_GROUPS):
+    """감싸개 없는 조각(h3 절들의 나열)을 메뉴별로 나눈다. [(메뉴 이름 또는 None, HTML)] — groups 순서.
+
+    None 은 groups 에 없는 절(과 h3 가 하나도 없는 조각)이다. 메뉴 안 순서는 tabify_sections 와 같이 열쇠 순서다.
+    매일 장기 전망 내용을 바꿔 끼우는 도구가 새 내용을 어느 메뉴에 넣을지 정할 때 쓴다(2026-10-02).
+    """
+    parts = list(_H3.finditer(html_text))
+    if not parts:
+        return [(None, html_text)]
+    starts = _section_starts(html_text, parts)
+    starts[0] = 0                       # 첫 제목 앞의 글은 첫 절에 붙인다
+    for i in range(1, len(parts)):
+        gap = html_text[starts[i]:parts[i].start()]
+        ends = list(re.finditer(r'<!--(?:LEDGER_SECTION_END|REVIEW_SECTION_END)-->', gap))
+        if ends:
+            starts[i] += ends[-1].end()
+    buckets = {}
+    for index, match in enumerate(parts):
+        end = starts[index + 1] if index + 1 < len(parts) else len(html_text)
+        label, rank = _tab_for(_section_title(match.group(2)), groups)
+        buckets.setdefault(label, []).append((rank, index, html_text[starts[index]:end]))
+    order = [None] + [label for label, _ in groups]
+    return [(label, "".join(chunk for _, _, chunk in sorted(buckets[label]))) for label in order if label in buckets]
+
+
+def panel_tab_label(inner, groups=TAB_GROUPS):
+    """탭 안쪽 HTML 의 첫 절 제목으로 그 탭의 메뉴 이름을 찾는다(없으면 None)."""
+    match = _H3.search(inner)
+    return _tab_for(_section_title(match.group(2)), groups)[0] if match else None
 
 
 def tabify_sections(html_text, groups=TAB_GROUPS, default_label=DEFAULT_TAB_LABEL):

@@ -69,7 +69,7 @@ class FoldTests(unittest.TestCase):
 class WiringTests(unittest.TestCase):
     def test_daily_tab_refresh_folds_too(self):
         source = (ROOT / "tools" / "refresh_longterm_tab.py").read_text(encoding="utf-8")
-        self.assertIn("replace_panel(latest, fold_detail_sections(body))", source)
+        self.assertIn("replace_tab_sections(latest, fold_detail_sections(body))", source)
 
     def test_listed_titles_exist_in_the_generators(self):
         """접을 제목이 만드는 쪽에서 바뀌면 조용히 안 접힌다. 제목이 실제로 있는지 본다."""

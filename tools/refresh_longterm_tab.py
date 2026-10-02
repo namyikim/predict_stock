@@ -13,7 +13,8 @@ import pandas as pd
 import github_pages
 import outlook_ledger
 from forecast_utils import kst_stamp, longterm_easy_summary_html, stamp_panel, summary_level_odds
-from report_html import fold_detail_sections, fragment_sources_html, renumber_fragment
+from report_html import (fold_detail_sections, fragment_sources_html, number_headings, panel_tab_label, panels,
+                         renumber_fragment, sections_by_tab)
 
 
 def replace_panel(page, content):
@@ -50,6 +51,40 @@ def replace_panel(page, content):
     return page[:a] + content + page[b:]
 
 
+def replace_tab_sections(page, content):
+    """새 내용을 절별로 나눠 맞는 메뉴(탭)에 넣는다. (바뀐 페이지, 내용을 넣은 탭 id 목록).
+
+    2026-10-02 부터 장기 전망 내용은 메뉴 셋(요약·영업이익 / 장기 전망 / 지난 전망 성적)에 나뉜다. 기준은 요약
+    (id="longterm-summary")이 든 탭이다. 새 내용 가운데 페이지에 제 탭이 없는 절은 그 기준 탭에 함께 넣는다 —
+    아직 탭 하나짜리인 옛 페이지에서는 예전처럼 모두 한 탭에 들어가고, 내용이 빠지거나 두 번 들어가지 않는다.
+    기준 탭을 하나로 찾지 못하면 replace_panel 과 같이 ValueError 로 멈춘다(기존 보고서를 보존).
+    """
+    found = [p for p in panels(page) if 'id="longterm-summary"' in p['inner']]
+    if len(found) != 1:
+        return replace_panel(page, content), []          # 옛 방식(중첩 section 을 직접 센다). 못 찾으면 ValueError
+    anchor = found[0]
+    anchor_label = panel_tab_label(anchor['inner'])
+    by_label = {}
+    for panel in panels(page):
+        label = panel_tab_label(panel['inner'])
+        if label and panel is not anchor and label != anchor_label:
+            by_label.setdefault(label, panel)
+    placed, anchor_html = [], ""
+    for label, chunk in sections_by_tab(content):
+        target = by_label.get(label)
+        if target is None:
+            anchor_html += chunk                          # 요약·영업이익, 그리고 제 탭이 없는 절
+        else:
+            placed.append((target, number_headings(chunk)))
+    # 메뉴가 나뉜 페이지에서는 기준 탭도 그 탭 안에서 1부터 번호를 맞춘다 — 일일 보고서가 탭을 나눌 때와 같은 모양이라야
+    # 바뀐 것이 없을 때 '바뀜'으로 보이지 않는다. 탭 하나짜리 옛 페이지는 예전처럼 번호를 건드리지 않는다.
+    placed.append((anchor, number_headings(anchor_html) if len(placed) else anchor_html))
+    out = page
+    for panel, html_text in sorted(placed, key=lambda item: -item[0]['inner_start']):
+        out = out[:panel['inner_start']] + html_text + out[panel['inner_end']:]
+    return out, [panel['attrs'].get('id') for panel, _ in placed if panel['attrs'].get('id')]
+
+
 def replace_sources(page, source_html):
     pattern = r'<table\b[^>]*>(?:(?!<table\b).)*?</table>'
     new = re.search(pattern, source_html, flags=re.S)
@@ -80,18 +115,26 @@ def publish_tab(target, content, sources, token, attempts=4):
     if page is None:
         raise RuntimeError(f'{path} 이 없습니다 — 일일 보고서가 먼저 발행돼야 탭을 바꿀 수 있습니다')
 
-    def plain(latest):
+    def replaced(latest):
         # 검증·방법 소제목은 접어서 넣는다(2026-10-02) — 일일 보고서가 탭을 만들 때와 같은 모양이어야 한다.
         body = content() if callable(content) else content
-        return replace_sources(replace_panel(latest, fold_detail_sections(body)), sources)
+        out, touched = replace_tab_sections(latest, fold_detail_sections(body))
+        return replace_sources(out, sources), touched
+
+    def plain(latest):
+        return replaced(latest)[0]
 
     def apply(latest):
         # 탭 제목 아래 생성 시각(2026-09-30). 내용이 바뀐 때만 찍는다 — 시각만 달라진 페이지를 올리면 커밋만 는다.
-        out = plain(latest)
+        out, touched = replaced(latest)
         if without_stamps(out) == without_stamps(latest):
             return latest
-        panel = longterm_panel_id(out)
-        return stamp_panel(out, panel, kst_stamp()) if panel else out
+        # 내용을 넣은 메뉴마다 생성 시각을 찍는다(메뉴가 셋으로 나뉘었다, 2026-10-02).
+        stamp = kst_stamp()
+        for panel in touched or [longterm_panel_id(out)]:
+            if panel:
+                out = stamp_panel(out, panel, stamp)
+        return out
 
     if callable(content):
         # 원장 병합 뒤에 만들고, 페이지 충돌 때도 최신 페이지를 잡은 함수로 남긴다.

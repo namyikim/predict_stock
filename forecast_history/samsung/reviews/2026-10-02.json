@@ -3,7 +3,7 @@
   "name": "삼성전자",
   "peer_name": "SK하이닉스",
   "session_date": "2026-10-02",
-  "generated_at": "2026-10-02 17:32 KST",
+  "generated_at": "2026-10-02 22:50 KST",
   "summary": {
     "prev_close": 276000.0,
     "open": 273500.0,
@@ -15,11 +15,11 @@
     "c2c": 0.0,
     "high_vs_open": 0.01279707495429605,
     "low_vs_open": -0.007312614259597838,
-    "volume": 12141545.0,
-    "volume_ratio": 0.7228828450296121,
+    "volume": 11501250.0,
+    "volume_ratio": 0.6847609856403634,
     "kospi_c2c": 0.004646178468305617,
     "peer_c2c": 0.004364429896344779,
-    "usdkrw_chg": -0.0066772329468937075,
+    "usdkrw_chg": -0.00815124613222229,
     "us_nights": 1,
     "sox_ret": 0.015867124115942266,
     "nasdaq_ret": 0.0003923546682607082,
@@ -29,6 +29,45 @@
     "ma20": 265325.0,
     "high20": 285500.0,
     "high252": 374087.44831391243,
+    "price_context": {
+      "breakouts": {
+        "20": {
+          "prior_high": 285500.0,
+          "distance": -0.03327495621716292,
+          "close_breakout": false,
+          "intraday_breakout": false
+        },
+        "60": {
+          "prior_high": 325000.0,
+          "distance": -0.15076923076923077,
+          "close_breakout": false,
+          "intraday_breakout": false
+        }
+      },
+      "relative": {
+        "5": {
+          "start": "2026-09-23",
+          "end": "2026-10-02",
+          "own": -0.03327495621716292,
+          "peer": -0.011278195488721776,
+          "excess": -0.021996760728441145
+        },
+        "20": {
+          "start": "2026-09-02",
+          "end": "2026-10-02",
+          "own": 0.10179640718562877,
+          "peer": 0.14135151890886544,
+          "excess": -0.03955511172323667
+        },
+        "60": {
+          "start": "2026-07-06",
+          "end": "2026-10-02",
+          "own": -0.13207547169811318,
+          "peer": -0.21408482931852058,
+          "excess": 0.0820093576204074
+        }
+      }
+    },
     "range": 0.0202578268876612,
     "peer_range": 0.016438356164383494,
     "prior_5d": -0.001808318264014508,
@@ -83,7 +122,15 @@
         "purpose": "임직원 주식보상",
         "rcept_no": "20260821000616"
       }
-    ]
+    ],
+    "foreign_pressure": {
+      "state": "turned_selling",
+      "previous_ratio": 0.059712936915953405,
+      "recent_ratio": -0.1494212229809779,
+      "previous_daily_net": 1082003.6,
+      "recent_daily_net": -2361746.8
+    },
+    "buyback_transition": null
   },
   "classification": {
     "labels": [
@@ -191,34 +238,34 @@
       "score": 3.664227130241788,
       "news": [
         {
-          "time": "2026-10-02T10:30:00+09:00",
-          "title": "“삼성전자 메모리 없어서 못 판다\"...증권가 \"주주환원 주가 올릴 것\" [주가동향]",
-          "source": "조세일보",
-          "link": "https://news.google.com/rss/articles/CBMiX0FVX3lxTFBRTUw0bUNJalpGNjBiRTdmbFVNMG1iS01WOGpWaDlaal81NXVab3FiazQ2TjRmWW1jZzdpaFlacVdGVUZoNFdfWFVBcnprNkJOSjVNVlVJdjJUMXZMaWdj?oc=5"
-        },
-        {
-          "time": "2026-10-02T10:58:04+09:00",
-          "title": "[더테크 픽] 삼성전자, 15조 자사주 왜 샀나…‘주가 방어’ 아닌 임직원 보상이 핵심",
-          "source": "the-tech.co.kr",
-          "link": "https://news.google.com/rss/articles/CBMiY0FVX3lxTE1sM0ZNb0lWa2tZVGlENGtsd1FiYXpuUkpkNlpFVU5FYjJRVWp6b1pCZjFRN1phaDZqblNaeWR5UG5sYnJzbmpDaVgwUGQ4bS1WMDlFZkxiZEYzTGk4dTEyVTJmOA?oc=5"
-        },
-        {
-          "time": "2026-10-02T09:49:00+09:00",
-          "title": "[리포트 브리핑]삼성전자, '모멘텀 플레이에서 밸류 플레이로' 목표가 400,000원 - 삼성증권",
-          "source": "뉴스핌",
-          "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTFBpdW1qdDNDWTlqNFEtWUk0UFZQa002RU15NTlIM1l0WE5QUjhPU01CLWRQYnBJSVBJbnIwNHRMT25uVEtfaC1BQm9SSk9YaDdHLTB5aElzMzhuUlN5?oc=5"
-        },
-        {
-          "time": "2026-10-02T10:01:38+09:00",
+          "time": "2026-10-02T10:03:24+09:00",
           "title": "삼성證 \"삼성전자, 3분기 영업익 100조 돌파…내년 HBM 가격 80%↑\"",
-          "source": "뉴스1",
-          "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTFBVYVBRYTZtUWpUMmFmd3RQU2Ffc3dhbzNEQmZhd1VtejVMajVDbllNTEdnSmlHWVVJSVpJSk8xVmM1QXE1b0RibnJBUG1Md0d5cWdUVWFMaHBTVENoSkpacXB6MlDSAWRBVV95cUxQVWFQUWE2bVFqVDJhZnd0UFNhX3N3YW8zREJmYXdVbXo1TGo1Q25ZTUxHZ0ppR1lVSUlaSUpPMVZjNUFxNW9EYm5yQVBtTHdHeXFnVFVhTGhwU1RDaEpKWnFwejJQ?oc=5"
+          "source": "v.daum.net",
+          "link": "https://news.google.com/rss/articles/CBMiT0FVX3lxTE1DLWMxcVFLeXBjVGJLNFo1elpweU84enJpRkpoU1J0aVo0ZTl6cnBlVHo2ZUxwSk1qY3Bvc0JGbGNLekt5bGRqOGtKcTViMkU?oc=5"
         },
         {
           "time": "2026-10-02T10:07:00+09:00",
           "title": "“메모리 부족 장기화” 삼성전자 뜻밖의 전망",
           "source": "한경매거진&북",
           "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE40QkozZVFpVldJV0ZOSktZSU5Fa2hIaHFheVJMcGRtNkNON2RrU1RrSndnV2NDaVNKa1ktMVhyNVpLTGVCZnZ5ZzhodG1CUVJQN0RZQ2RXVlE4NFFPckIyMGNaaVQ2WTJqWXZEbA?oc=5"
+        },
+        {
+          "time": "2026-10-02T10:21:05+09:00",
+          "title": "삼성전자, 자사주 계획 물량 모두 매입…9천억 여유, 300만 주 더 살 듯",
+          "source": "v.daum.net",
+          "link": "https://news.google.com/rss/articles/CBMiRkFVX3lxTFBXSWg0LXdrZzJaSUN2UVVORXg1OWtwNmZBQmFvM3pDSTFIODlpd3BObUZOcWNZdXlnOTI4ZHd1ajlhWU0zanc?oc=5"
+        },
+        {
+          "time": "2026-10-02T10:30:45+09:00",
+          "title": "삼성전자, 자사주 계획물량 모두 매입…수급우려 커지나(종합)",
+          "source": "연합뉴스",
+          "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTFBOSER5LXNacmRiNEZBVjh4TUZYOEgyVnBkWEV4bkFZZk9GSFdfWEpOY1hQUDhQSHdyd01tSkRSVjhFc0h5TW1pT3VQcC1FZ0xKYl8tck5EZW1ZNkXSAWBBVV95cUxNSU1QREFfalY2a3BkNnEwM0RPcmdNR2RZNWxpYXJPbkUyRVZkZmI5RVdSRFlycmxKejNXUnQwR2ljLS1kXzZaSkphLTBYamloOGNfblg3UVR2MnJxWTc1NGc?oc=5"
+        },
+        {
+          "time": "2026-10-02T10:30:58+09:00",
+          "title": "\"약속한 5380만주 다 샀다\"…삼성전자 '자사주' 뜻밖의 상황",
+          "source": "v.daum.net",
+          "link": "https://news.google.com/rss/articles/CBMiVEFVX3lxTFBiM0w1WHktcDVJRU81VWdjcVFpUVdrMmdrRW8tUjkyWUNYVUZJcC1ab3VPRFNyMXI5X0JIMnNVOHViRmgyb0RiSDlSME5FYzRmbUVMWg?oc=5"
         }
       ]
     }
@@ -696,34 +743,34 @@
       "score": 3.664227130241788,
       "news": [
         {
-          "time": "2026-10-02T10:30:00+09:00",
-          "title": "“삼성전자 메모리 없어서 못 판다\"...증권가 \"주주환원 주가 올릴 것\" [주가동향]",
-          "source": "조세일보",
-          "link": "https://news.google.com/rss/articles/CBMiX0FVX3lxTFBRTUw0bUNJalpGNjBiRTdmbFVNMG1iS01WOGpWaDlaal81NXVab3FiazQ2TjRmWW1jZzdpaFlacVdGVUZoNFdfWFVBcnprNkJOSjVNVlVJdjJUMXZMaWdj?oc=5"
-        },
-        {
-          "time": "2026-10-02T10:58:04+09:00",
-          "title": "[더테크 픽] 삼성전자, 15조 자사주 왜 샀나…‘주가 방어’ 아닌 임직원 보상이 핵심",
-          "source": "the-tech.co.kr",
-          "link": "https://news.google.com/rss/articles/CBMiY0FVX3lxTE1sM0ZNb0lWa2tZVGlENGtsd1FiYXpuUkpkNlpFVU5FYjJRVWp6b1pCZjFRN1phaDZqblNaeWR5UG5sYnJzbmpDaVgwUGQ4bS1WMDlFZkxiZEYzTGk4dTEyVTJmOA?oc=5"
-        },
-        {
-          "time": "2026-10-02T09:49:00+09:00",
-          "title": "[리포트 브리핑]삼성전자, '모멘텀 플레이에서 밸류 플레이로' 목표가 400,000원 - 삼성증권",
-          "source": "뉴스핌",
-          "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTFBpdW1qdDNDWTlqNFEtWUk0UFZQa002RU15NTlIM1l0WE5QUjhPU01CLWRQYnBJSVBJbnIwNHRMT25uVEtfaC1BQm9SSk9YaDdHLTB5aElzMzhuUlN5?oc=5"
-        },
-        {
-          "time": "2026-10-02T10:01:38+09:00",
+          "time": "2026-10-02T10:03:24+09:00",
           "title": "삼성證 \"삼성전자, 3분기 영업익 100조 돌파…내년 HBM 가격 80%↑\"",
-          "source": "뉴스1",
-          "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTFBVYVBRYTZtUWpUMmFmd3RQU2Ffc3dhbzNEQmZhd1VtejVMajVDbllNTEdnSmlHWVVJSVpJSk8xVmM1QXE1b0RibnJBUG1Md0d5cWdUVWFMaHBTVENoSkpacXB6MlDSAWRBVV95cUxQVWFQUWE2bVFqVDJhZnd0UFNhX3N3YW8zREJmYXdVbXo1TGo1Q25ZTUxHZ0ppR1lVSUlaSUpPMVZjNUFxNW9EYm5yQVBtTHdHeXFnVFVhTGhwU1RDaEpKWnFwejJQ?oc=5"
+          "source": "v.daum.net",
+          "link": "https://news.google.com/rss/articles/CBMiT0FVX3lxTE1DLWMxcVFLeXBjVGJLNFo1elpweU84enJpRkpoU1J0aVo0ZTl6cnBlVHo2ZUxwSk1qY3Bvc0JGbGNLekt5bGRqOGtKcTViMkU?oc=5"
         },
         {
           "time": "2026-10-02T10:07:00+09:00",
           "title": "“메모리 부족 장기화” 삼성전자 뜻밖의 전망",
           "source": "한경매거진&북",
           "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE40QkozZVFpVldJV0ZOSktZSU5Fa2hIaHFheVJMcGRtNkNON2RrU1RrSndnV2NDaVNKa1ktMVhyNVpLTGVCZnZ5ZzhodG1CUVJQN0RZQ2RXVlE4NFFPckIyMGNaaVQ2WTJqWXZEbA?oc=5"
+        },
+        {
+          "time": "2026-10-02T10:21:05+09:00",
+          "title": "삼성전자, 자사주 계획 물량 모두 매입…9천억 여유, 300만 주 더 살 듯",
+          "source": "v.daum.net",
+          "link": "https://news.google.com/rss/articles/CBMiRkFVX3lxTFBXSWg0LXdrZzJaSUN2UVVORXg1OWtwNmZBQmFvM3pDSTFIODlpd3BObUZOcWNZdXlnOTI4ZHd1ajlhWU0zanc?oc=5"
+        },
+        {
+          "time": "2026-10-02T10:30:45+09:00",
+          "title": "삼성전자, 자사주 계획물량 모두 매입…수급우려 커지나(종합)",
+          "source": "연합뉴스",
+          "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTFBOSER5LXNacmRiNEZBVjh4TUZYOEgyVnBkWEV4bkFZZk9GSFdfWEpOY1hQUDhQSHdyd01tSkRSVjhFc0h5TW1pT3VQcC1FZ0xKYl8tck5EZW1ZNkXSAWBBVV95cUxNSU1QREFfalY2a3BkNnEwM0RPcmdNR2RZNWxpYXJPbkUyRVZkZmI5RVdSRFlycmxKejNXUnQwR2ljLS1kXzZaSkphLTBYamloOGNfblg3UVR2MnJxWTc1NGc?oc=5"
+        },
+        {
+          "time": "2026-10-02T10:30:58+09:00",
+          "title": "\"약속한 5380만주 다 샀다\"…삼성전자 '자사주' 뜻밖의 상황",
+          "source": "v.daum.net",
+          "link": "https://news.google.com/rss/articles/CBMiVEFVX3lxTFBiM0w1WHktcDVJRU81VWdjcVFpUVdrMmdrRW8tUjkyWUNYVUZJcC1ab3VPRFNyMXI5X0JIMnNVOHViRmgyb0RiSDlSME5FYzRmbUVMWg?oc=5"
         }
       ],
       "price": 275500.0,
@@ -744,19 +791,13 @@
       "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTFA0VXZ0Rm9hLXprQ0dVZ3RsQmJuSW1RMURoak95anNDM1RZeG1TVTFVU2h2NEdPekZ0LVNsTWRpbEo1cGlkNng2dDVpazIzellOeHhBTlpKQzBGbXFVRFllUHROYk02NElS0gFuQVVfeXFMUFJUYjdFdERET2tpZmVqSFhVUTlhWTVyLVlBWmplV0VNYkFKbkdFSFR0NEVCdndIMFZWaTkxaGU2blp2YTRqU1UyaE0zLVdlN2ZvQ1FfN005eUI3U0RlbUI0a3lkS2RSbFBwZHJONkE?oc=5"
     },
     {
-      "time": "2026-10-02T08:50:26+09:00",
-      "title": "SG, 삼성전자 온양캠퍼스에 에코스틸아스콘 1차 시공 완료 - 머니투데이",
-      "source": "머니투데이",
-      "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE5UVnk4Y3ZsUTlINFYwYm00Z0hCSWNRcllJTlVBYW9fRS16cGlOdkd3TkZQWm10UHdpZ0NTeE1VS2swamstVl82VThWcDR6VDgzSUtaSzdxYWd5ZDBTNUNwUFhxdHNjX2lh0gFuQVVfeXFMT1Zpd2l1TWhxV2hQalg3OVpYaFBKMUNOdHZNTkFJaERZNFNOMDIza1hueWdKTGxWRTZjd0hHLTVIQmF5VU41ZThzYzZuZTRGUnY2Tzk4Sk9LdV9odVVDVXJjTVY0b0g3dlc4Umw4YWc?oc=5"
+      "time": "2026-10-01T16:35:35+09:00",
+      "title": "삼성전자, 갤럭시S26 가격 인상...메모리 급등 여파",
+      "source": "조선일보",
+      "link": "https://news.google.com/rss/articles/CBMigwFBVV95cUxQMUZlREZpVGhRa2ZKcjhmWERsRUZqQ1BRcE4yUEUzSGhpekpyR3NjT0FtQWtfSFk1Vmo2RWNnQ1o4WFJmak1pV1FCXzBjMUpGLTFoZURWMTU3SUdVVHRPcGNmMFFSUURxUGVnWjFvY0pGQUJRbGRvYm5vZHVkSll6UVdhVQ?oc=5"
     }
   ],
   "top_news": [
-    {
-      "time": "2026-10-02T16:00:33+09:00",
-      "title": "삼성전자 반도체 수익성 75% 고지 넘기고 하반기 영업이익 200조 본다, 전영현 '실적 사과' 2년 만에 HBM 앞세워 고마진 체제",
-      "source": "허프포스트코리아",
-      "link": "https://news.google.com/rss/articles/CBMiV0FVX3lxTE1fLXo5cGMtN0NQNDRoRXNPVjRwTml5bzVsWm5RSEVRN2xZZC1Zc2hDRExWQjVjcWdhV1FsVzFOTWtMN2VDOVN0R096UjE2Y3F6cXhZVHNQUQ?oc=5"
-    },
     {
       "time": "2026-10-02T09:00:14+09:00",
       "title": "“삼성전자 현저한 저평가 상태…목표주가 46만원 유지” 증권사 전망",
@@ -764,10 +805,22 @@
       "link": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE5kVThOaUx0RzluSVpIcTVNSlg1S2dFS0doOEhlUFcyVkNXVFJObkRmdmF3N0RkNzlpcVNoVHJPTVlPRVBkMndCMHM4ejlNWGdJMHc?oc=5"
     },
     {
-      "time": "2026-10-02T10:30:00+09:00",
-      "title": "“삼성전자 메모리 없어서 못 판다\"...증권가 \"주주환원 주가 올릴 것\" [주가동향]",
-      "source": "조세일보",
-      "link": "https://news.google.com/rss/articles/CBMiX0FVX3lxTFBRTUw0bUNJalpGNjBiRTdmbFVNMG1iS01WOGpWaDlaal81NXVab3FiazQ2TjRmWW1jZzdpaFlacVdGVUZoNFdfWFVBcnprNkJOSjVNVlVJdjJUMXZMaWdj?oc=5"
+      "time": "2026-10-02T17:14:04+09:00",
+      "title": "美 마이크론 깜짝 호실적 ‘바통’ 넘겨받는 삼성전자‧SK하이닉스…코스피 ‘박스권’ 뚫을까",
+      "source": "더퍼블릭",
+      "link": "https://news.google.com/rss/articles/CBMia0FVX3lxTE9BR0wtXy1mTExQVzlGaHhlS0ZSTnBzVlZoQ2QwLVlQdWhfMGI3eC1oTnJPQXZURmF4ZTNzN1BHLXBPX3BTTGg3MnEyOXl4Tk5kRmNmUTRXeXVYVkw2X045Yk9Hb3A3bFhUSjlr0gFvQVVfeXFMUEZHWmY5and1R0QtZEI1cElKc1gweWswaTdYRFlSNTJGUkJtcGNISlVteUZLYmFmbHdLVGJTMHByaG1CUEI2ZVNLVWxWU01QOGlZRjA5M3lVTW5MZWNtWVctNVhGWTQwQjQyd093dUxR?oc=5"
+    },
+    {
+      "time": "2026-10-02T20:40:18+09:00",
+      "title": "마이크론, 호실적에 목표주가 상향…펀더멘털 고점 우려 해소-DA데이비슨",
+      "source": "edaily.co.kr",
+      "link": "https://news.google.com/rss/articles/CBMigAFBVV95cUxNT09BVzk3eHlKV3R5MU8yLTNGRnJLS2lDdUZIYUdsR2NyaGlWYlphU3lDLUtNN2Q3Z1BlT2s0aXg1TlpFZ1czLUR5WFRkSlNqQzVlRHUwZHdqRXBsbF9XWlBXRVFFUnBxTDNiR3llb0lqS2dYX1hzdWVQWHpxdEFMWQ?oc=5"
+    },
+    {
+      "time": "2026-10-02T21:06:00+09:00",
+      "title": "“HBM은 없어서 못 파는데 주가는 왜?”…마이크론 최대 실적 뒤 숨은 경고 [플러스 관심종목]",
+      "source": "v.daum.net",
+      "link": "https://news.google.com/rss/articles/CBMiT0FVX3lxTE9XalNFZk9NRXJPX0JwcFYwVlFxZFR5ZV9HNTF6M3E1U2tfcUJXSk9COThCZzNYZTUwVWNYbGd5c2pOSE45V0Yxb1VfbTYwWG8?oc=5"
     },
     {
       "time": "2026-10-02T08:24:00+09:00",
@@ -780,12 +833,6 @@
       "title": "삼성전자, 분기 영업이익 100조 시대…\"주주환원 주가 올릴 것\"-IBK - 머니투데이",
       "source": "머니투데이",
       "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTFA0VXZ0Rm9hLXprQ0dVZ3RsQmJuSW1RMURoak95anNDM1RZeG1TVTFVU2h2NEdPekZ0LVNsTWRpbEo1cGlkNng2dDVpazIzellOeHhBTlpKQzBGbXFVRFllUHROYk02NElS0gFuQVVfeXFMUFJUYjdFdERET2tpZmVqSFhVUTlhWTVyLVlBWmplV0VNYkFKbkdFSFR0NEVCdndIMFZWaTkxaGU2blp2YTRqU1UyaE0zLVdlN2ZvQ1FfN005eUI3U0RlbUI0a3lkS2RSbFBwZHJONkE?oc=5"
-    },
-    {
-      "time": "2026-10-02T09:14:11+09:00",
-      "title": "IBK투자증권 \"삼성전자, 안정적 성장.. 현저히 저평가 국면\"",
-      "source": "글로벌이코노믹",
-      "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxPVUhIYmVQdU9taVotbEJQQ01TUGxINVV0bENndDhxQ2tsTEtHMm5hc2lON3BGRGZobHhMOXQzVVBsSWNmUnBkZnZQbTVhWnJTWDd5c3hMQWZOYVlHMHpGVGpILS1teDVacHktejZjLWpkZEJCTXJ5S21tTHVWNWkxYXBIVzVYb0FH?oc=5"
     }
   ],
   "disclosures": [
@@ -797,48 +844,124 @@
     }
   ],
   "disclosure_note": null,
-  "flows": null,
-  "flow_story": null,
+  "flows": "외국인 -350,942 / 기관 +614,278",
+  "flow_story": {
+    "direction": "flat",
+    "c2c": 0.0,
+    "actors": [
+      {
+        "key": "foreign_net",
+        "name": "외국인",
+        "shares": -350942.0,
+        "won": -96859992000.0,
+        "vs_usual": 0.13679350241192964
+      },
+      {
+        "key": "inst_net",
+        "name": "기관",
+        "shares": 614278.0,
+        "won": 169540728000.0,
+        "vs_usual": 0.30749640306928744
+      },
+      {
+        "key": "indiv_net",
+        "name": "개인",
+        "shares": -2217946.0,
+        "won": -612153096000.0,
+        "vs_usual": 0.6336102331743856
+      },
+      {
+        "key": "other_net",
+        "name": "기타 법인 등(추정)",
+        "shares": 1954610.0,
+        "won": 539472360000.0,
+        "vs_usual": null
+      }
+    ],
+    "lead": {
+      "key": "indiv_net",
+      "name": "개인",
+      "shares": -2217946.0,
+      "won": -612153096000.0,
+      "vs_usual": 0.6336102331743856
+    },
+    "counter": null,
+    "all_one_side": false,
+    "observations": [
+      "전일까지 20거래일 고점: 종가 돌파 없음 · 종가 위치 -3.33%.",
+      "전일까지 60거래일 고점: 종가 돌파 없음 · 종가 위치 -15.08%.",
+      "같은 5거래일 수익률: 이 종목 -3.33%, SK하이닉스 -1.13% · 차이 -2.20%p.",
+      "같은 20거래일 수익률: 이 종목 +10.18%, SK하이닉스 +14.14% · 차이 -3.96%p.",
+      "같은 60거래일 수익률: 이 종목 -13.21%, SK하이닉스 -21.41% · 차이 +8.20%p.",
+      "외국인 5일 합계 순매도 전환: 직전 5일 → 최근 5일 순매수/거래량 +5.97% → -14.94% (일평균 +1,082,004주 → -2,361,747주). 향후 상승을 뜻하는 신호는 아닙니다.",
+      "원화는 오히려 강세(-0.82%)여서 외국인 매도가 환율로는 설명되지 않습니다.",
+      "종가가 당일 범위(저가 271,500~고가 277,000원)의 위쪽 82% 지점 — 고가 부근에서 마감했습니다.",
+      "장중 5일선(274,500원) 아래로 빠졌다가 그 위로 되돌아와 마감했습니다.",
+      "우리 장중(09:00~15:30) 나스닥100 선물 +0.13% · 미 10년물 국채 선물 +0.06% · 원/달러 -0.85%(원화 강세).",
+      "자사주 매입 기간 중(직접 취득 2026-08-24~2026-11-21, 14,999,999,992,000, DART 공시) — 회사 자신의 매수는 기타 법인으로 잡힙니다.",
+      "기타 법인 등(추정) 순매수 +5,395억원 — 회사의 자사주 매입 기간이라 회사 매입과 맞는 모양입니다."
+    ],
+    "estimated_indiv": false,
+    "source_note": "출처 naver+cache · 장 마감 직후 잠정치라 저녁 확정치와 다를 수 있습니다 · KRX는 받지 못함(pykrx 미설치)"
+  },
   "flow_status": {
-    "state": "pending",
-    "detail": "최신 2026-10-01"
+    "state": "ok",
+    "detail": "naver+cache",
+    "krx_error": "pykrx 미설치"
   },
   "context": {},
+  "market": {
+    "index": "KOSPI",
+    "date": "2026-10-02",
+    "rise": 500,
+    "fall": 362,
+    "steady": 56,
+    "upper": 1,
+    "lower": 0,
+    "individual": -17897.0,
+    "foreign": -1080.0,
+    "institution": 4155.0,
+    "prev_close": 6971.35,
+    "open": 6938.27,
+    "high": 7011.04,
+    "low": 6927.88,
+    "close": 7003.74
+  },
   "earnings_reactions": {
     "n": 44,
     "down": 24,
-    "mean": 0.0051439843434574395,
+    "mean": 0.005144003550211099,
     "first": "2015-04-07",
     "last": "2026-07-30",
     "prior_up": {
       "n": 26,
       "down": 15,
-      "mean": 0.00680389415220602
+      "mean": 0.006803934619254894
     },
     "prior_down": {
       "n": 18,
       "down": 9,
-      "mean": 0.002746336841931713,
+      "mean": 0.002746325339370063,
       "next5_n": 18,
       "next5_up": 8
     },
     "rows": [
       {
         "date": "2024-04-05",
-        "ret": -0.009378658616616353,
+        "ret": -0.00937856316147434,
         "prior20": 0.1868093313186363,
-        "next5": -0.027218968665351784
+        "next5": -0.027219062401412808
       },
       {
         "date": "2024-07-05",
-        "ret": 0.029550818588921057,
-        "prior20": 0.09789817615126295,
-        "next5": -0.030998790775496055
+        "ret": 0.029550624122250957,
+        "prior20": 0.09789851234261726,
+        "next5": -0.030998700593081296
       },
       {
         "date": "2024-10-08",
-        "ret": -0.011475473634683375,
-        "prior20": -0.17550720206890336,
+        "ret": -0.011475408319629787,
+        "prior20": -0.17550725654583976,
         "next5": -0.013267063408380464
       },
       {
@@ -849,20 +972,20 @@
       },
       {
         "date": "2025-04-08",
-        "ret": 0.0056390392516327825,
-        "prior20": -0.0034249873791928342,
-        "next5": 0.057943897843741654
+        "ret": 0.005639189279862844,
+        "prior20": -0.0034250619261930737,
+        "next5": 0.05794389353365759
       },
       {
         "date": "2025-10-14",
-        "ret": -0.01822079386417541,
+        "ret": -0.018220878273630836,
         "prior20": 0.3484355968820865,
-        "next5": 0.06441047284052348
+        "next5": 0.06441047837827907
       },
       {
         "date": "2026-04-07",
         "ret": 0.017607433616103174,
-        "prior20": 0.11527187357539503,
+        "prior20": 0.11527197433303193,
         "next5": 0.05089058828005988
       },
       {

@@ -625,7 +625,7 @@ def render_longterm_asset(key, res):
         out, fit, info = res["valuation"]
         valuation = gold_valuation.render(out, fit, info, table, TD, TDR, TH, THR, note)
     return "".join(metals_longterm.render(key, ASSETS[key]["name"], res.get("longterm") or {}, long_term, valuation,
-                                          res.get("outlook"), table, TD, TDR, TH, THR, note))
+                                          res.get("outlook"), table, TD, TDR, TH, THR, note, prices=res.get("history")))
 
 
 # 탭(2026-09-27): 금 단기 · 금 장기 · 은 단기 · 은 장기 · 데이터와 방법. 첫 탭(금 단기)은 기본 탭이다.

@@ -198,6 +198,60 @@ class MergeAndRenderTests(unittest.TestCase):
         self.assertIn("더 가까운 비율 100%", html)
 
 
+class MatureReachTests(unittest.TestCase):
+    def ledger(self):
+        rows = [{"record_id": f"reach-{level}-{days}", "series": "level_reach",
+                 "label": "가격 도달 확률", "unit": "probability", "kind": "probability",
+                 "info_as_of": "2026-09", "target_period": str(level), "horizon": label,
+                 "probability": .7, "note": f"issued=2026-09-25;days={days}"}
+                for days, label in ((3, "3거래일"), (5, "5거래일")) for level in (110, 120)]
+        return ol.record(ol.read_ledger_text(""), rows)[0]
+
+    def test_early_hit_is_recorded_but_not_in_performance(self):
+        prices = pd.Series([100., 105., 111.], index=pd.bdate_range("2026-09-25", periods=3))
+        ledger, _ = ol.score(self.ledger(), {"level_reach": lambda r: ol.level_reach_outcome(prices, r)})
+        self.assertEqual((ledger.status == "scored").sum(), 2)
+        output = ol.render(ledger, prices=prices)
+        self.assertNotIn("실제 100%", output)
+        self.assertNotIn("Brier 0.090", output)
+        self.assertIn("조기 도달 1건", output)
+        self.assertIn("만기 완료 0건", output)
+
+    def test_mature_cohort_includes_both_hit_and_miss_and_splits_horizons(self):
+        prices = pd.Series([100., 105., 111., 108.], index=pd.bdate_range("2026-09-25", periods=4))
+        ledger, _ = ol.score(self.ledger(), {"level_reach": lambda r: ol.level_reach_outcome(prices, r)})
+        output = ol.render(ledger, prices=prices)
+        self.assertIn("Brier 0.290 · 예상 70% / 실제 50%", output)
+        self.assertIn("가격 도달 확률 · 3거래일", output)
+        self.assertIn("가격 도달 확률 · 5거래일", output)
+        self.assertIn("만기 완료 2건", output)
+        self.assertIn("조기 도달 1건", output)
+        self.assertNotIn("실제 100%", output)
+
+    def test_already_scored_hit_enters_performance_only_after_maturity(self):
+        prices = pd.Series([100., 105., 111., 108.], index=pd.bdate_range("2026-09-25", periods=4))
+        ledger, _ = ol.score(self.ledger(), {"level_reach": lambda r: ol.level_reach_outcome(prices.iloc[:3], r)})
+        before = ledger.copy(deep=True)
+        self.assertNotIn("Brier 0.090", ol.render(ledger, prices=prices.iloc[:3]))
+        self.assertIn("Brier 0.090", ol.render(ledger, prices=prices))
+        pd.testing.assert_frame_equal(ledger, before)
+
+    def test_duplicate_and_missing_prices_do_not_count_as_extra_sessions(self):
+        prices = pd.Series([100., 111., 111., np.nan],
+                           index=pd.to_datetime(["2026-09-25", "2026-09-28", "2026-09-28", "2026-09-29"]))
+        row = {"note": "issued=2026-09-25;days=3"}
+        self.assertFalse(ol.level_reach_matured(prices, row))
+        for note in ("", "issued=bad;days=3", "issued=2026-09-25;days=0"):
+            self.assertFalse(ol.level_reach_matured(prices, {"note": note}))
+
+    def test_no_prices_or_truncated_history_cannot_establish_maturity(self):
+        prices = pd.Series([100., 111., 112., 113., 114., 115.],
+                           index=pd.bdate_range("2026-09-25", periods=6))
+        ledger, _ = ol.score(self.ledger(), {"level_reach": lambda r: ol.level_reach_outcome(prices, r)})
+        for history in (None, prices.iloc[1:]):
+            self.assertNotIn("Brier 0.090", ol.render(ledger, prices=history))
+
+
 class WiringTests(unittest.TestCase):
     def test_tab_tool_records_scores_and_publishes_the_fragment(self):
         src = (ROOT / "tools" / "refresh_longterm_tab.py").read_text(encoding="utf-8")

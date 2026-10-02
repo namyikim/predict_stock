@@ -341,6 +341,22 @@ def level_reach_outcome(prices, row):
     return 0.0 if len(after) >= days else None
 
 
+def level_reach_matured(prices, row):
+    """기준일을 포함한 가격 자료에서 N거래일 관측 완료를 확인한다(2026-10-02 검토 4번)."""
+    if prices is None or len(prices) == 0:
+        return False
+    try:
+        note = dict(part.split("=", 1) for part in str(row.get("note") or "").split(";") if "=" in part)
+        issued, days = pd.Timestamp(note["issued"]), int(note["days"])
+        valid = prices.replace([np.inf, -np.inf], np.nan).dropna().sort_index()
+        valid = valid[~valid.index.duplicated(keep="last")]
+        # 중간부터 받은 자료만으로는 기준일 이후 전체 기간을 확인할 수 없다.
+        return bool(days > 0 and len(valid) and valid.index.min() <= issued
+                    and (valid.index > issued).sum() >= days)
+    except (KeyError, TypeError, ValueError):
+        return False
+
+
 # ---------------------------------------------------------------------------
 # 3) 채점
 # ---------------------------------------------------------------------------
@@ -432,10 +448,11 @@ def next_due(rows):
     return months[0] if months else None
 
 
-def render(ledger, heading="h3", title="3. 지난 전망은 맞았나", footnote=None):
+def render(ledger, heading="h3", title="3. 지난 전망은 맞았나", footnote=None, prices=None):
     """계열별 요약(채점 수·평균 오차 vs 기준·구간 적중·Brier)과 최근 채점 표.
 
     heading·title: 주식 장기 전망 탭은 h3 '3. 지난 전망은 맞았나', 금·은 장기 전망 탭은 절 안의 h4.
+    prices: 가격 도달 확률의 만기 확인용 일별 종가. 없으면 해당 성적은 보류한다.
     footnote: 주석 첫머리('장기 전망 탭에 숫자로 나온 전망을')를 바꿀 때.
     """
     e = html.escape
@@ -446,15 +463,30 @@ def render(ledger, heading="h3", title="3. 지난 전망은 맞았나", footnote
     if ledger is None or ledger.empty:
         parts.append('<div style="font-size:13px;color:#6b7178">아직 기록된 전망이 없습니다.</div>')
         return "".join(parts)
-    body = ""
+    # 조기 성공만 먼저 들어오는 편향을 막고 각 전망 기간을 따로 비교한다.
+    eligible = ledger["status"] == "scored"
+    reach = ledger["series"] == "level_reach"
+    mature = pd.Series(False, index=ledger.index)
+    for i, row in ledger[reach].iterrows():
+        mature.loc[i] = level_reach_matured(prices, row)
+    eligible = eligible & (~reach | mature)
+    groups = []
     for series, (label, unit, base_label) in SERIES.items():
         rows = ledger[ledger["series"] == series]
         if rows.empty:
             continue
-        done = rows[rows["status"] == "scored"]
+        if series == "level_reach":
+            for horizon, subset in rows.groupby("horizon", sort=False):
+                groups.append((series, f"{label} · {horizon}", unit, base_label, subset))
+        else:
+            groups.append((series, label, unit, base_label, rows))
+    body = ""
+    for series, label, unit, base_label, rows in groups:
+        done = rows[eligible.loc[rows.index]]
         due = next_due(rows)
         if done.empty:
-            score_text = "아직 채점 전" + (f" — 첫 결과 {e(due)} 발표 뒤" if due else "")
+            score_text = ("만기 성적 집계 대기" if series == "level_reach" else
+                          "아직 채점 전" + (f" — 첫 결과 {e(due)} 발표 뒤" if due else ""))
             base_text = band_text = "—"
         elif unit == "probability":
             brier = done["brier"].mean()
@@ -474,6 +506,11 @@ def render(ledger, heading="h3", title="3. 지난 전망은 맞았나", footnote
                 base_text = "—"
             band = done["in_band"].dropna()
             band_text = f"{band.mean():.0%}({len(band)}건)" if len(band) else "—"
+        if series == "level_reach":
+            early = ((rows["status"] == "scored") & (rows["outcome"] == 1)
+                     & ~mature.loc[rows.index]).sum()
+            score_text += (f" · 만기 완료 {int(mature.loc[rows.index].sum())}건"
+                           f" · 만기 전·확인 불가 중 조기 도달 {int(early)}건(성적 제외)")
         body += (f'<tr><td {TD}>{e(label)}</td><td {TDR}>{len(rows)}</td><td {TDR}>{len(done)}</td>'
                  f'<td {TD}>{score_text}</td><td {TD}>{base_text}</td><td {TDR}>{band_text}</td></tr>')
     parts.append('<div style="overflow-x:auto"><table style="width:100%;min-width:640px;border-collapse:collapse;'
@@ -481,7 +518,7 @@ def render(ledger, heading="h3", title="3. 지난 전망은 맞았나", footnote
                  f'<tr><th {TH}>전망</th><th {THR}>기록</th><th {THR}>채점</th><th {TH}>성적</th>'
                  f'<th {TH}>비교 기준</th><th {THR}>구간 안</th></tr>{body}</table></div>')
 
-    recent = ledger[ledger["status"] == "scored"].sort_values("actual_seen_kst", ascending=False).head(12)
+    recent = ledger[eligible].sort_values("actual_seen_kst", ascending=False).head(12)
     if len(recent):
         rows_html = ""
         for _, r in recent.iterrows():
@@ -509,6 +546,6 @@ def render(ledger, heading="h3", title="3. 지난 전망은 맞았나", footnote
     parts.append('<div style="font-size:11px;color:#8a9199;margin-top:6px;line-height:1.5">'
                  f'{e(footnote or "장기 전망 탭에 숫자로 나온 전망을")} <b>처음 낸 값 그대로</b> 남기고, 대상 시점의 값이 발표되면 '
                  '<b>처음 확인한 값</b>으로 채점합니다(선행지수처럼 나중에 수정되는 값도 발표 당시 값으로). '
-                 '같은 달 전망을 다시 내도 첫 값만 셉니다. 값 전망은 “마지막 값 그대로”, 가격은 “변화 없음”과 '
+                 '같은 달 전망을 다시 내도 첫 값만 셉니다. 가격 도달 확률은 기준일 다음부터 해당 거래일 수의 가격 자료가 확보된 전망만 기간별 성적과 최근 채점에 포함합니다. 조기 도달은 만기 전까지 성적에서 제외하며, 자료 부족은 만기 미확인으로 남깁니다. 값 전망은 “마지막 값 그대로”, 가격은 “변화 없음”과 '
                  f'평균 오차를 견주고, 확률 전망은 Brier 점수(0에 가까울수록 좋음)로 봅니다. {tail}기록은 2026-09-27부터입니다.</div>')
     return "".join(parts)

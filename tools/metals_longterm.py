@@ -173,7 +173,7 @@ def actuals(lt, daily_close, today=None):
 # ---------------------------------------------------------------------------
 # 절
 # ---------------------------------------------------------------------------
-def render(key, name, lt, long_term_parts, valuation_parts, ledger, table, TD, TDR, TH, THR, note):
+def render(key, name, lt, long_term_parts, valuation_parts, ledger, table, TD, TDR, TH, THR, note, prices=None):
     """'<금속> · 장기 전망' h3 절."""
     e = html.escape
     spec = SPECS[key]
@@ -242,5 +242,5 @@ def render(key, name, lt, long_term_parts, valuation_parts, ledger, table, TD, T
                           '추세를 넣지 않았으므로 오르내림의 크기만 반영한 확률이고, 그 가격을 지킨다는 뜻이 아닙니다. 목표가가 아닙니다.'))
 
     parts.append(outlook_ledger.render(ledger, heading="h4", title="지난 장기 전망은 맞았나",
-                                       footnote=f"{name} 장기 전망 탭에 숫자로 나온 전망을"))
+                                       footnote=f"{name} 장기 전망 탭에 숫자로 나온 전망을", prices=prices))
     return parts

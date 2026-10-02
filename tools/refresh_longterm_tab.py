@@ -133,7 +133,7 @@ def main():
     local.write_text(outlook_ledger.to_csv(ledger), encoding='utf-8')
 
     # 채점 절은 조각(docs/<종목>/outlook.html)으로도 올린다 — 일일 보고서 노트북이 탭을 다시 조립할 때 끼운다.
-    outlook_html = outlook_ledger.render(ledger)
+    outlook_html = outlook_ledger.render(ledger, prices=prices)
     (lt_dir / 'outlook.html').write_text(outlook_html, encoding='utf-8')
     # 순서: 요약 → 1. 이번 분기 영업이익 → 2. 장기 전망 → 3. 지난 전망(2026-09-29). 노트북의 조립 순서와 같아야 한다.
     content = (summary + renumber_fragment((er_dir / 'earnings.html').read_text())

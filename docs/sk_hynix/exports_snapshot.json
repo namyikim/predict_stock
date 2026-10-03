@@ -1057,14 +1057,13 @@
   ],
   "flash_info": {
     "enabled": true,
-    "source": "customs_flash_cache",
+    "source": "customs_flash_api",
     "rows": 42,
     "first": "2025-08",
     "last": "2026-09",
     "last_days": 31,
-    "yoy_rows": 6,
-    "fetch_error": "RuntimeError: RuntimeError <메시지 가림: 인증 정보가 포함될 수 있음>"
+    "yoy_rows": 6
   },
-  "snapshot_hash": "f013d1f99876c575c260",
-  "generated_at": "2026-10-02 23:37 KST"
+  "snapshot_hash": "8c3c6f24b1b6b90a81c8",
+  "generated_at": "2026-10-03 15:39 KST"
 }

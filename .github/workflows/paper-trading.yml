@@ -1,0 +1,99 @@
+name: 자동 모의운용
+
+on:
+  schedule:
+    # KST 평일 09:00~15:45. 실제 거래일은 XKRX 달력으로 다시 확인한다.
+    - cron: '*/15 0-6 * * 1-5'
+  workflow_dispatch:
+    inputs:
+      halt:
+        description: 신규 모의 매수를 중지합니다 (청산 관측은 유지)
+        type: boolean
+        default: false
+
+      recovery_confirmed:
+        description: 이전 실패 원장을 대조·복구한 뒤에만 체크하여 재개
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+  actions: read
+
+concurrency:
+  group: paper-trading-ledger
+  cancel-in-progress: false
+
+jobs:
+  observe:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: main
+          fetch-depth: 0
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.13'
+          cache: pip
+      - name: 관측 의존성 설치
+        if: inputs.halt != true
+        run: pip install yfinance==1.7.0 exchange_calendars==4.13.2
+      - name: 최신 원장 읽기
+        run: git pull --ff-only origin main
+      - name: 이전 실패 원장의 복구 확인
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RECOVERY_CONFIRMED: ${{ inputs.recovery_confirmed }}
+        run: |
+          gh api "repos/${GITHUB_REPOSITORY}/actions/workflows/paper-trading.yml/runs?branch=main&per_page=20" | python tools/persist_paper_trading.py --check-run "$GITHUB_RUN_ID"
+      - name: 시세 관측 또는 신규 매수 중지
+        id: observe
+        env:
+          HALT: ${{ inputs.halt }}
+        run: |
+          if [ "$HALT" = "true" ]; then
+            python tools/run_paper_trading.py --halt
+          else
+            python tools/run_paper_trading.py
+          fi
+      - name: 저장 실패에 대비한 원본 보존
+        if: always() && steps.observe.outcome != 'skipped'
+        run: |
+          mkdir -p "$RUNNER_TEMP/paper-recovery"
+          cp paper_history/account.sqlite docs/lab/paper_status.json macro_inputs/paper_trading.json "$RUNNER_TEMP/paper-recovery/"
+          git rev-parse HEAD > "$RUNNER_TEMP/paper-recovery/source-revision.txt"
+      - name: 원장 저장
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add paper_history/account.sqlite docs/lab/paper_status.json
+          if ! git diff --cached --quiet; then
+            git commit -m 'data: 모의운용 관측과 원장 갱신'
+            # 충돌 시 덮어쓰지 않고 실패시켜 이중 장부를 방지한다.
+            python tools/persist_paper_trading.py
+          fi
+      - name: 실패 원장 복구용 아티팩트
+        if: always() && (failure() || cancelled()) && steps.observe.outcome != 'skipped'
+        uses: actions/upload-artifact@v4
+        with:
+          name: paper-recovery-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/paper-recovery/
+          retention-days: 30
+          if-no-files-found: error
+      - name: 실행 요약
+        if: always()
+        run: |
+          if [ -f docs/lab/paper_status.json ]; then
+            python - <<'PY' >> "$GITHUB_STEP_SUMMARY"
+          import json
+          from pathlib import Path
+          r=json.loads(Path('docs/lab/paper_status.json').read_text())
+          print('### 모의운용 (실주문 없음)')
+          print('관측 시각:', r.get('last_tick') or '아직 없음')
+          print('\n중지 사유:', r.get('halt_reason') or '없음')
+          print('\n수집 오류:', ', '.join(r.get('collection_errors', [])) or '없음')
+          PY
+          fi

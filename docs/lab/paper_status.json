@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "mode": "paper_only",
+  "config_hash": "704f2258dd2180d06d817976bf0cb17d5f2809db631feaa88ad710b3b500ce64",
+  "config": {
+    "version": "observation-v1",
+    "capital": 10000000,
+    "fee": 0.00015,
+    "tax": 0.0018,
+    "slip": 0.0005,
+    "max_symbol_weight": 0.3,
+    "max_sector_weight": 0.5,
+    "max_daily_loss": 0.03,
+    "max_quote_age_seconds": 120,
+    "max_order_age_seconds": 1200,
+    "max_price_move": 0.02,
+    "targets": [
+      "samsung",
+      "sk_hynix"
+    ],
+    "model": "No macro ensemble"
+  },
+  "cash": 10000000.0,
+  "halt_reason": "",
+  "last_tick": null,
+  "last_equity": 10000000.0,
+  "positions": {},
+  "decisions": [],
+  "fresh_targets": [],
+  "orders": [],
+  "fills": [],
+  "quote_count": 0,
+  "generated_at_utc": "2026-10-04T09:36:08.485772+00:00",
+  "collection_errors": [],
+  "trading_day": false,
+  "initialized_only": true,
+  "notice": "수익성 미검증 관찰 전략. 다음 실행에서 결정 이후의 신선한 1분봉 종가로 가상 체결합니다. 실제 체결·호가를 보장하지 않습니다.",
+  "order_count": 0,
+  "fill_count": 0,
+  "decision_count": 0
+}

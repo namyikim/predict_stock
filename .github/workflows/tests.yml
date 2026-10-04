@@ -11,6 +11,7 @@ on:
       - "docs/**"
       - "forecast_history/**"
       - "macro_history/**"
+      - "paper_history/**"
       - "runs/**"
       - "**.md"
       # 아래는 일일 보고서가 push 로 도는 경로다. 그 실행의 validation 작업이 이 워크플로를 불러 같은 테스트를

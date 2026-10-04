@@ -120,6 +120,9 @@ body{zoom:1.15}
   <div id="status" class="muted">원장을 불러오는 중…</div>
   <div id="result"></div>
 
+  <h2>자동 모의운용 원장 · 두 종목 통합 계좌</h2>
+  <div id="paper-status" class="muted">모의계좌를 불러오는 중…</div>
+
   <h2>기간을 나눈 전략 검증</h2>
   <div id="validation-result" class="muted">검증 결과를 불러오는 중…</div>
 
@@ -272,6 +275,47 @@ body{zoom:1.15}
         $("status").textContent = "";
         $("result").innerHTML = '<div class="empty">원장을 불러오지 못했습니다 (' + e.message + ').</div>';
       });
+  }
+
+  function loadPaper() {
+    var box = $("paper-status");
+    var url = typeof location !== "undefined" && /^(localhost|127\.0\.0\.1)$/.test(location.hostname) ? "paper_status.json" : "https://raw.githubusercontent.com/namyikim/predict_stock/main/docs/lab/paper_status.json";
+    fetch(url, {cache:"no-store"})
+      .then(function(response) {
+        if (!response.ok) throw new Error("모의원장 없음");
+        return response.json();
+      }).then(renderPaper).catch(function() {
+        box.textContent = "모의운용 원장을 읽지 못했습니다. 자동 실행 상태와 저장 결과를 확인하세요.";
+      });
+  }
+
+  function renderPaper(r) {
+    if (r.schema_version !== 1 || r.mode !== "paper_only") throw new Error("모의원장 형식 미지원");
+    var c=r.config, names={samsung:"삼성전자",sk_hynix:"SK하이닉스"};
+    var labels={pending:"대기",filled:"체결",expired:"만료",halted:"중지",rejected:"거절"};
+    var reasons={expired:"유효 시간 초과",halted:"신규 매수 중지",price_moved:"결정 이후 가격 변동 초과",risk_changed:"투자 한도 초과"};
+    function time(t) { return t ? esc(new Date(t).toLocaleString("ko-KR",{timeZone:"Asia/Seoul"})) + " KST" : "아직 없음"; }
+    var positions=Object.keys(r.positions).map(function(t) { return names[t]+" "+r.positions[t]+"주"; }).join(" · ");
+    var stale=Object.keys(r.positions).some(function(t) { return r.fresh_targets.indexOf(t)<0; });
+    var old=!r.last_tick || Date.now()-new Date(r.last_tick).getTime()>30*60*1000;
+    var body=r.orders.slice(-10).reverse().map(function(o) {
+      return "<tr><td>"+time(o.decision_at)+"</td><td>"+esc(names[o.target]||o.target)+"</td><td>모의 "+(o.side==="buy"?"매수":"청산")+
+        '</td><td class="num">'+o.qty+"주</td><td>"+esc(labels[o.status]||o.status)+" "+esc(reasons[o.reason]||o.reason)+"</td></tr>";
+    }).join("");
+    $("paper-status").innerHTML='<div class="warn"><b>실주문 없는 관찰용 계좌 · 수익성 미검증</b><br>'+esc(r.notice)+"</div>"+
+      '<p>전략 '+esc(c.version)+" · "+esc(c.model)+" · 상승 확률 &gt; 하락 확률일 때만 모의 진입</p>"+
+      '<p>마지막 실행: '+time(r.last_tick)+(old?' <b>최근 30분 내 관측 없음 (휴장·장외 포함)</b>':"")+"</p>"+
+      '<p>신규 매수 상태: <b>'+esc(r.halt_reason||"관측 대기/조건 충족 시 허용")+"</b></p>"+
+      '<div class="tiles"><div class="tile">가상 현금<br><b>'+nf.format(Math.round(r.cash))+"원</b></div>"+
+      '<div class="tile">마지막 관측 평가액<br><b>'+nf.format(Math.round(r.last_equity))+"원</b></div>"+
+      '<div class="tile">누적 가상 체결<br><b>'+r.fill_count+"건</b></div></div>"+
+      '<p>보유: '+(positions||"없음")+" · 시세 관측 "+r.quote_count+"건 · 결정 "+r.decision_count+"건</p>"+
+      '<p class="muted">가상 초기 자금 '+nf.format(c.capital)+"원 · 종목 한도 "+(c.max_symbol_weight*100)+"% · 반도체 합산 "+(c.max_sector_weight*100)+"% · 일일 손실 "+(c.max_daily_loss*100)+"%에서 신규 매수 중지. 비용은 고정 가정입니다.</p>"+
+      '<p class="muted">09:45부터 관측 후 결정하고 다음 실행에서 체결합니다. 14:30부터 신규 진입 중지, 15:00부터 청산을 시도합니다. 예약 실행 지연·시세 누락으로 당일 청산되지 않을 수 있습니다. '+
+      ((stale||old)?"평가액에 이전 시세가 포함될 수 있습니다. ":"")+"실험실의 위 입력값은 이 계좌 설정을 바꾸지 않습니다.</p>"+
+      (r.collection_errors.length?'<p class="warn">'+esc(r.collection_errors.join(" · "))+"</p>":"")+
+      (body?'<div style="overflow-x:auto"><table><tr><th>결정 시각</th><th>종목</th><th>구분</th><th>수량</th><th>상태</th></tr>'+body+"</table></div>":'<p class="muted">아직 모의 주문이 없습니다.</p>')+
+      '<p><a href="https://raw.githubusercontent.com/namyikim/predict_stock/main/docs/lab/paper_status.json">전체 설정·최근 체결 JSON</a> · <a href="https://github.com/namyikim/predict_stock/actions/workflows/paper-trading.yml">실행 내역·신규 매수 중지</a></p>';
   }
 
   function loadValidation(target) {
@@ -457,10 +501,12 @@ body{zoom:1.15}
   });
   $("target").addEventListener("change", function () {
     paintStockTabs();
-    load(); loadAttribution();
+    load();
+  loadPaper(); loadAttribution();
   });
   paintStockTabs();
   load();
+  loadPaper();
 
   // ---- 무엇이 예측을 밀었나 ------------------------------------------------
   var attrRows = [], ledgerRows = [];

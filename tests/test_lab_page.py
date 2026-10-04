@@ -332,3 +332,28 @@ class AttributionScopeTabTests(unittest.TestCase):
         body = self.page[self.page.index("function renderAttribution()"):]
         body = body[:body.index("\n  }\n")]
         self.assertNotIn("attrRows.forEach", body)
+
+
+class PaperStatusTests(PageSource):
+    def test_saved_paper_book_renders_and_escapes_collection_errors(self):
+        data=json.loads((ROOT/'docs/lab/paper_status.json').read_text())
+        data.update(collection_errors=['<script>잘못된 응답</script>'],last_tick='2026-10-06T01:00:00+00:00',
+                    orders=[{'decision_at':'2026-10-06T00:45:00+00:00','target':'samsung','side':'buy','qty':10,
+                             'status':'rejected','reason':'price_moved'}])
+        script=self.script.replace('  loadPaper();','  global.renderPaperForTest=renderPaper;')
+        harness=f'''
+const elements={{}};
+global.document={{getElementById:(id)=>elements[id]||(elements[id]={{value:'samsung',addEventListener:()=>{{}}}}),querySelectorAll:()=>[]}};
+global.fetch=()=>new Promise(()=>{{}});
+eval({json.dumps(script)});
+renderPaperForTest({json.dumps(data)});
+const html=elements['paper-status'].innerHTML;
+const assert=require('node:assert/strict');
+assert.ok(html.includes('10,000,000원'));
+assert.ok(html.includes('실주문 없는 관찰용 계좌'));
+assert.ok(html.includes('결정 이후 가격 변동 초과'));
+assert.ok(html.includes('&lt;script&gt;'));
+assert.ok(!html.includes('<script>잘못된 응답'));
+'''
+        done=subprocess.run(['node'],input=harness,text=True,capture_output=True)
+        self.assertEqual(done.returncode,0,done.stderr)

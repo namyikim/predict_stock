@@ -1,0 +1,15 @@
+{
+  "version": "observation-v1",
+  "capital": 10000000,
+  "fee": 0.00015,
+  "tax": 0.0018,
+  "slip": 0.0005,
+  "max_symbol_weight": 0.3,
+  "max_sector_weight": 0.5,
+  "max_daily_loss": 0.03,
+  "max_quote_age_seconds": 120,
+  "max_order_age_seconds": 1200,
+  "max_price_move": 0.02,
+  "targets": ["samsung", "sk_hynix"],
+  "model": "No macro ensemble"
+}

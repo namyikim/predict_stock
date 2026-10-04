@@ -958,7 +958,7 @@
     "krw": 1405.6209542410713
   },
   "chart_first": "2000-01-31",
-  "generated_at": "2026-10-03 22:57 KST",
+  "generated_at": "2026-10-04 15:59 KST",
   "macro_snapshot_hash": "064717b64854b17df0da",
   "macro_sources": {
     "leading_cycle": "KOSIS_API",
@@ -966,7 +966,7 @@
   },
   "frame_hash": "a558305b597f7c78",
   "live_exports": {
-    "as_of": "2026-10-03",
+    "as_of": "2026-10-04",
     "price_last": "2026-09-30",
     "exports_last_month": "2026-09",
     "latest_period": {
@@ -978,7 +978,7 @@
       "basis": "full_month_preliminary"
     },
     "snapshot_hash": "8c3c6f24b1b6b90a81c8",
-    "generated_at": "2026-10-03 22:56 KST",
+    "generated_at": "2026-10-04 15:58 KST",
     "flash_info": {
       "enabled": true,
       "source": "customs_flash_api",
@@ -1028,7 +1028,7 @@
     "ticker": "000660.KS",
     "price": 1841000.0,
     "price_date": "2026-10-02",
-    "observed_on": "2026-10-03",
+    "observed_on": "2026-10-04",
     "financial_period": "2026-06-30",
     "eps_ttm": 232070.09450008773,
     "bps": 375948.7934903294,
@@ -1087,7 +1087,7 @@
     },
     "evaluation_status": "예측 성능 미검증 — 현재 가치 시나리오이며 도달 시점을 예측하지 않음",
     "basis_note": "분기 재무제표 최근 4분기 순이익(Net Income Common Stockholders) ÷ EPS 기준 주식 수 697,915,819주",
-    "retrieved_on": "2026-10-03",
+    "retrieved_on": "2026-10-04",
     "cached": false
   }
 }

@@ -602,31 +602,46 @@ export async function mailPayload(env, event, email) {
     (r.as_of?'<p style="font-size:12px;color:#667085">게시 자료 기준: '+mailEscape(r.as_of)+'</p>':'')+
     '<ul style="padding-left:20px">'+r.lines.map(x=>'<li style="margin:7px 0">'+mailEscape(x)+'</li>').join('')+'</ul><p><a href="'+mailEscape(r.url)+'">전체 보고서 보기</a></p></section>').join('');
   return {from:env.MAIL_FROM,to:[email],subject,
-    text:subject+'\n\n'+(site.length?'전체 메뉴의 최신 게시본을 모았습니다. 메뉴마다 자료 기준일과 갱신 주기가 다릅니다.\n\n':'')+text+'\n\n'+note+'\n전체 구독 해지: '+url,
+    text:subject+'\n\n'+(site.length?'전체 메뉴의 최신 게시본을 모았습니다. 메뉴마다 자료 기준일과 갱신 주기가 다릅니다.\n\n':'')+text+'\n\n'+note+
+      '\n\n메일 수신을 원하지 않으시면 아래 링크에서 구독을 취소할 수 있습니다. 이 이메일 주소로 신청한 모든 보고서 구독이 취소됩니다.\n구독 취소: '+url,
     html:'<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"></head><body style="margin:0;padding:20px 12px;font-family:Arial,sans-serif;line-height:1.7;color:#243447;overflow-wrap:anywhere"><div style="max-width:760px;margin:auto"><h2>'+mailEscape(subject)+
       '</h2>'+(site.length?'<p style="padding:12px;background:#f0f6fc">전체 메뉴의 최신 게시본입니다. 메뉴마다 자료 기준일과 갱신 주기가 다르므로 아래 기준 시각을 함께 확인하세요.</p>':'')+html+'<p>'+note+
-      '</p><hr><p>신청한 보고서를 하루 최대 두 통으로 안내합니다. <a href="'+mailEscape(url)+'">전체 구독 해지</a></p></div></body></html>',
+      '</p><footer style="margin-top:28px;padding:20px;background:#f0f6fc;border:1px solid #cedff0;border-radius:8px;font-size:14px">'+
+      '<p style="margin:0 0 10px">메일 수신을 원하지 않으시면 아래 링크에서 구독을 취소할 수 있습니다.</p>'+
+      '<p style="margin:0 0 14px">이 이메일 주소로 신청한 모든 보고서 구독이 취소됩니다.</p>'+
+      '<a href="'+mailEscape(url)+'" style="display:inline-block;padding:10px 18px;color:#1a5490;background:#fff;border:1px solid #b9d3ec;border-radius:5px;font-weight:bold">구독 취소</a>'+
+      '</footer></div></body></html>',
     headers:{'List-Unsubscribe':'<'+url+'>','List-Unsubscribe-Post':'List-Unsubscribe=One-Click','X-Report-Topics':c.reports.map(r=>r.target).join(','),
       'X-Report-Provider':env.MAIL_PROVIDER || 'resend',...(site.length?{'X-Report-Scope':'main'}:{})}};
+}
+// 메일 하단에서 이어지는 취소 화면도 휴대폰에서 읽고 누를 수 있게 한다(2026-10-04 요청).
+function mailUnsubscribePage(title, message, confirm = false) {
+  return '<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">'+
+    '<title>'+mailEscape(title)+' · 예측 보고서</title><style>body{margin:0;padding:32px 16px;background:#f0f6fc;color:#243447;font-family:Arial,sans-serif;line-height:1.8;overflow-wrap:anywhere}'+
+    'main{max-width:540px;margin:32px auto;padding:24px;background:#fff;border:1px solid #cedff0;border-radius:12px}h1{font-size:24px;color:#1a5490;line-height:1.4}'+
+    'button{max-width:100%;padding:12px 18px;border:0;border-radius:5px;background:#1a5490;color:#fff;font:inherit;font-weight:bold;cursor:pointer}a{color:#1a5490}</style></head><body><main>'+
+    '<h1>'+mailEscape(title)+'</h1><p>'+mailEscape(message)+'</p>'+
+    (confirm?'<form method="post"><button name="confirm" value="1">모든 보고서 구독 취소</button></form>':'')+
+    '<p><a href="https://namyikim.github.io/predict_stock/">보고서 사이트로 돌아가기</a></p></main></body></html>';
 }
 // GET 링크 미리보기로 해지되지 않게 확인 화면과 실제 POST 처리를 나눈다.
 async function handleMailUnsubscribe(request, env, url) {
   const token = url.searchParams.get('token') || '';
   const row = token.length <= 100 ? await env.DB.prepare('SELECT email FROM mail_unsubscribe WHERE token=?').bind(token).first() : null;
   const headers = {'Content-Type':'text/html; charset=utf-8','Cache-Control':'no-store','Referrer-Policy':'no-referrer',
-    'Content-Security-Policy':"default-src 'none'; form-action 'self'; frame-ancestors 'none'"};
-  if (!row) return new Response('<html lang="ko"><meta charset="utf-8"><p>이미 해지되었거나 유효하지 않은 링크입니다.</p></html>',{headers});
+    'Content-Security-Policy':"default-src 'none'; style-src 'unsafe-inline'; form-action 'self'; frame-ancestors 'none'; base-uri 'none'"};
+  if (!row) return new Response(mailUnsubscribePage('구독 취소 링크 안내','이미 구독을 취소했거나 유효하지 않은 링크입니다. 구독 중이라면 가장 최근에 받은 보고서 메일의 링크를 이용해 주세요.'),{headers});
   if (request.method === 'POST') {
     const text = await request.text();
-    if (!['confirm=1','List-Unsubscribe=One-Click'].includes(text)) return new Response('확인이 필요합니다.',{status:400,headers});
+    if (!['confirm=1','List-Unsubscribe=One-Click'].includes(text)) return new Response(mailUnsubscribePage('구독 취소 확인이 필요합니다','메일의 구독 취소 링크에서 다시 진행해 주세요.'),{status:400,headers});
     await env.DB.batch([
       env.DB.prepare('DELETE FROM subscribers WHERE email=?').bind(row.email),
       env.DB.prepare('DELETE FROM mail_deliveries WHERE email=?').bind(row.email),
       env.DB.prepare('DELETE FROM mail_unsubscribe WHERE email=?').bind(row.email),
     ]);
-    return new Response('<html lang="ko"><meta charset="utf-8"><p>전체 보고서 구독을 해지했습니다.</p></html>',{headers});
+    return new Response(mailUnsubscribePage('구독 취소가 완료되었습니다','이 이메일 주소로 신청한 모든 보고서 구독을 취소했습니다. 앞으로 보고서 이메일을 받지 않습니다.'),{headers});
   }
-  return new Response('<html lang="ko"><meta charset="utf-8"><h1>보고서 구독 해지</h1><p>모든 보고서 이메일 수신을 중지합니다.</p><form method="post"><button name="confirm" value="1">전체 구독 해지</button></form></html>',{headers});
+  return new Response(mailUnsubscribePage('보고서 메일 구독 취소','아래 버튼을 누르면 이 이메일 주소로 신청한 모든 보고서 구독이 취소됩니다.',true),{headers});
 }
 function subscriberMailCleanup(env, email) {
   return [env.DB.prepare(`DELETE FROM mail_deliveries WHERE email=? AND NOT EXISTS (

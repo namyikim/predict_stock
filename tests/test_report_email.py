@@ -61,6 +61,14 @@ class MailWorkerTests(unittest.TestCase):
         self.assertEqual(run.returncode,0,run.stderr[-4000:])
 
 
+class GmailTransportTests(unittest.TestCase):
+    def test_tls_mime_auth_failure_and_uncertain_acceptance(self):
+        import subprocess
+        from pathlib import Path
+        run=subprocess.run(['node','tests/gmail_smtp_cases.mjs'],cwd=Path(__file__).resolve().parents[1],text=True,capture_output=True)
+        self.assertEqual(run.returncode,0,run.stderr[-4000:])
+
+
 class AutomaticMailTests(unittest.TestCase):
     def test_only_schedule_or_signed_cloudflare_first_attempt_can_notify(self):
         from tools.notify_report_update import automatic_run

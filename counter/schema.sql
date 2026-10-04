@@ -79,3 +79,8 @@ CREATE TABLE IF NOT EXISTS mail_editions (
 CREATE TABLE IF NOT EXISTS mail_settings (
   id INTEGER PRIMARY KEY CHECK (id=1), from_email TEXT NOT NULL, updated_at TEXT NOT NULL
 );
+
+-- 자동 발송 일시 중지와 회차 취소. 취소 표식을 남겨 Cron의 재생성을 막는다.
+CREATE TABLE IF NOT EXISTS mail_controls (
+  id TEXT PRIMARY KEY, value TEXT NOT NULL, updated_at TEXT NOT NULL
+);

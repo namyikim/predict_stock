@@ -262,9 +262,16 @@ a{color:var(--accent)}
   <input id="mail-from" type="email" autocomplete="email" placeholder="본인 발신 주소" style="flex:1;min-width:160px;max-width:100%;box-sizing:border-box">
   <button id="mail-save" type="submit">저장</button>
 </form>
-<p class="sub">발송 서비스에서 인증한 도메인의 이메일 주소를 입력하세요. 빈 값으로 저장하면 발송을 중지합니다. 저장해도 시험 메일은 보내지 않습니다.</p>
+<p class="sub">Gmail 발송은 인증한 Gmail 계정과 같은 주소를 입력하세요. 다른 발송 서비스는 인증한 도메인 주소를 사용합니다. 빈 값 저장은 발송 중지이며, 설정 저장은 시험 메일을 보내지 않습니다.</p>
 <div id="mail-settings-msg" class="msg" role="status"></div>
+<div style="display:flex;gap:8px;flex-wrap:wrap;margin:12px 0">
+  <button id="mail-refresh" type="button">발송 결과 새로고침</button>
+  <button id="mail-pause" type="button" disabled>자동 발송 일시 중지</button>
+</div>
+<p class="sub">일시 중지는 다음 전송부터 적용됩니다. 재개하면 취소하지 않은 당일 대기를 처리합니다. 회차 취소는 되돌릴 수 없으며, 이미 전송 중이거나 발송된 메일은 회수하지 못합니다.</p>
+<div id="mail-action-msg" class="msg" role="status"></div>
 <div id="mail-status" class="sub">구독자를 불러오면 발송 설정과 최근 결과도 확인합니다.</div>
+<div id="mail-deliveries" style="overflow-x:auto;margin-top:16px" aria-live="polite"></div>
 </section>
 
 <section class="admin-panel" id="panel-sim" data-tab="sim" hidden>
@@ -881,16 +888,71 @@ a{color:var(--accent)}
       : '<div class="empty">아직 구독자가 없습니다.</div>';
     $("sub-csv").disabled = !rows.length;
   }
+  var mailPaused = false, mailBusy = false, mailEvents = [], selectedMail = "", mailOffset = 0;
+  var mailLabels = {sent:"발송 완료 (서비스 접수)",pending:"대기",sending:"전송 중 / 결과 확인 중",failed:"실패 / 접수 불확실",cancelled:"취소",expired:"만료"};
+  function mailError(code) {
+    if (!code) return "—";
+    if (code === "gmail_send_failed_or_uncertain" || code === "gmail_uncertain") return "Gmail 실패 또는 접수 불확실 · 중복 방지를 위해 재시도하지 않음";
+    if (code === "provider_changed") return "발송 서비스 변경으로 중지";
+    if (code === "admin_cancelled") return "관리자 취소";
+    return "서비스 오류 ("+code+")";
+  }
+  function loadMailDetails(id, offset) {
+    selectedMail = id; mailOffset = offset;
+    $("mail-deliveries").textContent = "수신자별 발송 이력을 불러오는 중…";
+    return call("/mail/deliveries?event_id="+encodeURIComponent(id)+"&offset="+offset).then(function(r) {
+      if (id !== selectedMail || offset !== mailOffset) return;
+      $("mail-deliveries").innerHTML = '<h4>수신자별 발송 이력 · '+esc(id.replace("digest/", "").replace("/pre_open", " · 개장 전").replace("/post_close", " · 마감 후"))+'</h4><p class="sub">발송 시각은 한국시간입니다. 수신함 도착·읽음 여부는 확인하지 않습니다. 개인정보를 포함한 발송 기록은 30일 보관하며 구독 해지 시 삭제됩니다.</p>' +
+        (r.deliveries.length ? '<table><thead><tr><th>수신 이메일</th><th>상태</th><th>발송 시각(KST)</th><th>시도</th><th>처리 사유</th></tr></thead><tbody>'+r.deliveries.map(function(d) {
+          return '<tr><td>'+esc(d.email)+'</td><td>'+esc(mailLabels[d.status]||d.status)+'</td><td>'+esc(d.sent_at?kst(d.sent_at):"—")+'</td><td>'+Number(d.attempts)+'</td><td>'+esc(mailError(d.error_code))+'</td></tr>';
+        }).join('')+'</tbody></table>' : '<p>표시할 수신자가 없습니다.</p>')+
+        '<p><button type="button" data-mail-offset="'+Math.max(0,offset-50)+'" '+(offset?'':'disabled')+'>이전 50명</button> '+
+        '<button type="button" data-mail-offset="'+Number(r.next_offset||0)+'" '+(r.next_offset===null?'disabled':'')+'>다음 50명</button></p>';
+    }).catch(function(error) { $("mail-deliveries").textContent = "이력 조회 실패: "+error.message; });
+  }
   function loadMailStatus() {
     return call("/mail/status").then(function (r) {
       if (document.activeElement !== $("mail-from")) $("mail-from").value = r.from_email || "";
-      var text = !r.enabled ? "자동 발송 꺼짐" : !r.configured ? "발송 설정 미완료" : "보고서 갱신 후 자동 발송 켜짐";
-      $("mail-status").innerHTML = '<p><b>' + esc(text) + '</b>' + (r.missing.length ? ' · 필요한 설정: '+esc(r.missing.join(", ")) : '') + '</p>' +
+      mailPaused = !!r.paused; mailEvents = r.events;
+      $("mail-pause").textContent = mailPaused ? "자동 발송 재개" : "자동 발송 일시 중지";
+      $("mail-pause").disabled = mailBusy;
+      var text = !r.enabled ? "자동 발송 꺼짐 (운영 설정)" : mailPaused ? "자동 발송 일시 중지" : !r.configured ? "발송 설정 미완료" : "보고서 갱신 후 자동 발송 켜짐";
+      $("mail-status").innerHTML = '<p><b>' + esc(text) + '</b> · '+esc(r.provider==='gmail'?'Gmail':'Resend')+(r.missing.length ? ' · 필요한 설정: '+esc(r.missing.join(", ")) : '') + '</p>' +
         '<p>시스템이 갱신한 보고서를 개장 전 한 통·마감 후 한 통, 주소별 하루 최대 두 통 보냅니다. 두 종목 구독자는 한 통에 묶어 받으며, 메인 구독자는 금·은·중국·거시·뉴스·트렌드 요약도 함께 받습니다. 수동 실행은 발송하지 않습니다.</p>' +
-        '<p>'+esc(r.notice)+'</p>' + (r.events.length ? '<div style="overflow-x:auto"><table><tr><th>보고서</th><th>대상일</th><th>갱신 접수(KST)</th><th>발송 서비스 접수</th><th>실패</th><th>대기/만료</th></tr>'+
-        r.events.map(function(e) { return '<tr><td>'+esc(e.target === "digest" ? "구독 보고서 묶음" : NAMES[e.target])+' · '+(e.phase==='pre_open'?'개장 전':'마감 후')+'</td><td>'+esc(e.session_date)+'</td><td>'+esc(kst(e.created_at))+'</td><td>'+Number(e.accepted||0)+'</td><td>'+Number(e.failed||0)+'</td><td>'+Number(e.remaining||0)+(e.expired?' (만료)':' (대기)')+'</td></tr>'; }).join('')+'</table></div>' : '<p>아직 접수된 보고서 갱신이 없습니다.</p>');
-    }).catch(function () { $("mail-status").textContent = "발송 상태를 읽지 못했습니다. 이메일 기능의 Worker 배포와 D1 표 생성을 확인하세요."; });
+        '<p>'+esc(r.notice)+'</p>' + (r.events.length ? '<div style="overflow-x:auto"><table><thead><tr><th>보고서</th><th>대상일</th><th>최근 발송(KST)</th><th>발송 완료</th><th>전송 중</th><th>실패/불확실</th><th>취소</th><th>대기/만료</th><th>관리</th></tr></thead><tbody>'+
+        r.events.map(function(e,i) { return '<tr><td>구독 보고서 묶음 · '+(e.phase==='pre_open'?'개장 전':'마감 후')+'</td><td>'+esc(e.session_date)+'</td><td>'+esc(e.last_sent_at?kst(e.last_sent_at):"—")+'</td><td>'+Number(e.accepted||0)+'</td><td>'+Number(e.sending||0)+'</td><td>'+Number(e.failed||0)+'</td><td>'+Number(e.cancelled||0)+'</td><td>'+Number(e.remaining||0)+(e.expired?' (만료)':' (대기)')+'</td><td><button type="button" data-mail-detail="'+i+'">상세</button> <button type="button" data-mail-cancel="'+i+'" '+(mailBusy||e.stopped||e.expired||!e.remaining?'disabled':'')+'>'+(e.stopped?'회차 취소됨':'대기 취소')+'</button></td></tr>'; }).join('')+'</tbody></table></div>' : '<p>아직 접수된 보고서 갱신이 없습니다.</p>');
+    }).catch(function (error) { $("mail-pause").disabled = true; $("mail-status").textContent = "발송 상태 조회 실패: "+error.message+" 이메일 기능의 Worker 배포와 D1 표 생성을 확인하세요."; });
   }
+  function mailAction(path, body, message) {
+    if (mailBusy) return;
+    mailBusy = true; $("mail-pause").disabled = true;
+    $("mail-action-msg").textContent = "처리 중…";
+    call(path, {method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)})
+      .then(function() { $("mail-action-msg").textContent = message; })
+      .catch(function(error) { $("mail-action-msg").textContent = "처리 실패: "+error.message; })
+      .finally(function() { mailBusy = false; loadMailStatus(); if (selectedMail) loadMailDetails(selectedMail,mailOffset); });
+  }
+  $("mail-refresh").addEventListener("click",function() {
+    if (!token()) { $("mail-action-msg").textContent = "관리자 토큰을 먼저 입력하세요."; return; }
+    loadMailStatus(); if (selectedMail) loadMailDetails(selectedMail,mailOffset);
+  });
+  $("mail-pause").addEventListener("click",function() {
+    if (!confirm(mailPaused ? "자동 발송을 재개할까요? 취소하지 않은 당일 대기가 다음 자동 실행에서 발송됩니다." : "자동 발송을 일시 중지할까요? 이미 전송 중인 메일은 회수할 수 없습니다.")) return;
+    mailAction("/mail/control",{paused:!mailPaused},mailPaused?"일시 중지를 해제했습니다. 운영 설정이 켜져 있으면 다음 자동 실행에서 처리합니다.":"자동 발송을 일시 중지했습니다. 대기 메일은 유지됩니다.");
+  });
+  $("mail-status").addEventListener("click",function(event) {
+    var detail = event.target.getAttribute("data-mail-detail"), cancel = event.target.getAttribute("data-mail-cancel");
+    if (detail !== null && mailEvents[Number(detail)]) loadMailDetails(mailEvents[Number(detail)].id,0);
+    if (cancel !== null && mailEvents[Number(cancel)] && !mailBusy) {
+      var e = mailEvents[Number(cancel)];
+      if (confirm(e.session_date+" "+(e.phase==='pre_open'?"개장 전":"마감 후")+" 회차의 남은 대기를 취소할까요? 다시 발송하지 않으며 이미 전송 중인 메일은 회수할 수 없습니다."))
+        mailAction("/mail/cancel",{event_id:e.id},"이 회차의 대기 발송을 취소했습니다. 다음 회차는 기존 설정에 따라 발송됩니다.");
+    }
+  });
+  $("mail-deliveries").addEventListener("click",function(event) {
+    var offset = event.target.getAttribute("data-mail-offset");
+    if (offset !== null && !event.target.disabled && selectedMail) loadMailDetails(selectedMail,Number(offset));
+  });
   $("mail-settings-f").addEventListener("submit", function (event) {
     event.preventDefault();
     var msg = $("mail-settings-msg");

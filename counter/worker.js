@@ -17,6 +17,8 @@
 //   POST /mail/events    보고서 게시 완료 요약 등록(MAIL_PUBLISH_TOKEN).
 //   GET/POST /mail/settings  발신 주소 조회·변경(STATS_TOKEN).
 //   GET /mail/status     발송 설정·집계(STATS_TOKEN). 수신 주소는 포함하지 않는다.
+//   GET /mail/deliveries  관리자 수신자별 이력(50명씩). 본문·토큰 제외.
+//   POST /mail/control, /mail/cancel  자동 발송 일시 중지·회차 대기 취소(STATS_TOKEN).
 //   GET/POST /mail/unsubscribe  메일 내 토큰 링크. GET 확인 후 POST로 전체 해지.
 //   POST /dispatch/test  관리자가 GitHub 채점 워크플로 호출을 한 번 시험한다(STATS_TOKEN). 결과 JSON 을 바로 돌려줘
 //                        Cloudflare 로그를 열지 않아도 토큰·권한 문제를 알 수 있다(2026-10-01).
@@ -420,17 +422,92 @@ function handleGeo(request, origin) {
 const MAIL_NAMES = { samsung: '삼성전자', sk_hynix: 'SK하이닉스' };
 const MAIL_SITE_NAMES = {metals:'금·은 예측',china:'중국 주식·5개년 계획',macro:'거시 경제',ai_news:'AI 뉴스',robot_news:'로봇 뉴스',trends:'인기 급상승 검색어',interest:'장기 관심도'};
 const MAIL_BATCH_SIZE = 5;
+// Gmail은 제공자 중복 요청 키가 없어 회차당 한 번만 시도한다(2026-10-04 Gmail 발신 요청).
+function mailBase64(value) {
+  return btoa(Array.from(new TextEncoder().encode(value),b=>String.fromCharCode(b)).join(''));
+}
+function gmailMime(payload,id) {
+  const clean=value=>{if (typeof value!=='string' || /[\r\n]/.test(value)) throw new Error('mail_header');return value;};
+  const subject=[];let word='';
+  for (const c of clean(payload.subject)) {
+    if (new TextEncoder().encode(word+c).length>42) {subject.push('=?UTF-8?B?'+mailBase64(word)+'?=');word='';}
+    word+=c;
+  }
+  if (word) subject.push('=?UTF-8?B?'+mailBase64(word)+'?=');
+  const boundary='report_'+crypto.randomUUID().replaceAll('-','');
+  const headers=[`From: ${clean(payload.from)}`,`To: ${clean(payload.to[0])}`,'Subject: '+subject.join('\r\n '),
+    'Date: '+new Date().toUTCString(),`Message-ID: <${clean(id)}@gmail.com>`,'MIME-Version: 1.0',`Content-Type: multipart/alternative; boundary="${boundary}"`];
+  for (const [key,value] of Object.entries(payload.headers || {})) {
+    if (!/^[A-Za-z0-9-]+$/.test(key)) throw new Error('mail_header');
+    headers.push(key+': '+clean(value));
+  }
+  const part=(type,body)=>`--${boundary}\r\nContent-Type: ${type}; charset=UTF-8\r\nContent-Transfer-Encoding: base64\r\n\r\n`+
+    (mailBase64(body || '').match(/.{1,76}/g) || ['']).join('\r\n')+'\r\n';
+  return headers.join('\r\n')+'\r\n\r\n'+part('text/plain',payload.text)+part('text/html',payload.html)+`--${boundary}--\r\n.\r\n`;
+}
+export async function sendGmailSmtp(env,payload,id,connectSocket) {
+  const user=normalizeEmail(env.GMAIL_USER),password=String(env.GMAIL_APP_PASSWORD || '').replace(/\s/g,'');
+  if (!user.endsWith('@gmail.com') || payload.from!==user || payload.to.length!==1 || !normalizeEmail(payload.to[0])) throw new Error('gmail_sender');
+  if (!password) throw new Error('gmail_password');
+  const mime=gmailMime(payload,id);
+  const connect=connectSocket || (await import('cloudflare:sockets')).connect;
+  const socket=connect({hostname:'smtp.gmail.com',port:465},{secureTransport:'on'});
+  socket.closed.catch(()=>{});
+  const reader=socket.readable.getReader(),writer=socket.writable.getWriter();
+  let buffer='',timer;
+  const response=async expected=>{
+    let code;
+    for(let lines=0;lines<100;lines++) {
+      while(!buffer.includes('\r\n')) {
+        const r=await reader.read();if(r.done)throw new Error('smtp_closed');
+        buffer+=new TextDecoder().decode(r.value);
+        if(buffer.length>65536)throw new Error('smtp_response');
+      }
+      const end=buffer.indexOf('\r\n'),line=buffer.slice(0,end);buffer=buffer.slice(end+2);
+      const match=/^(\d{3})([ -])/.exec(line);
+      if(!match || (code && code!==match[1]))throw new Error('smtp_response');
+      code=match[1];
+      if(match[2]===' ') {
+        if(!expected.includes(Number(code)))throw new Error('smtp_'+code);
+        return;
+      }
+    }
+    throw new Error('smtp_response');
+  };
+  const write=text=>writer.write(new TextEncoder().encode(text));
+  const command=async(text,codes)=>{await write(text+'\r\n');await response(codes);};
+  const work=async()=>{
+    await socket.opened;await response([220]);
+    await command('EHLO predict-stock.invalid',[250]);
+    await command('AUTH LOGIN',[334]);await command(mailBase64(user),[334]);await command(mailBase64(password),[235]);
+    await command('MAIL FROM:<'+user+'>',[250]);await command('RCPT TO:<'+payload.to[0]+'>',[250,251]);
+    await command('DATA',[354]);await write(mime);await response([250]);
+    // DATA 접수가 끝난 뒤 QUIT 연결 종료 오류는 성공을 실패로 바꾸지 않는다.
+    return id;
+  };
+  try {
+    return await Promise.race([work(),new Promise((_,reject)=>{timer=setTimeout(()=>reject(new Error('smtp_timeout')),30000);})]);
+  } finally {
+    clearTimeout(timer);
+    try {await socket.close();} catch {}
+  }
+}
+
 async function mailConfig(env) {
   const row = await env.DB.prepare('SELECT from_email,updated_at FROM mail_settings WHERE id=1').first();
+  const control = await env.DB.prepare("SELECT value FROM mail_controls WHERE id='paused'").first();
   // 빈 값 저장은 발송 중지를 뜻한다. 과거 환경변수 주소로 되돌리지 않는다.
   const from = row ? row.from_email : String(env.MAIL_FROM || '');
-  const missing = ['RESEND_API_KEY','MAIL_PUBLIC_URL'].filter(k => !env[k]);
+  const provider=String(env.MAIL_PROVIDER || 'resend');
+  const missing=(provider==='gmail'?['GMAIL_USER','GMAIL_APP_PASSWORD','MAIL_PUBLIC_URL','MAIL_PUBLISH_TOKEN']:['RESEND_API_KEY','MAIL_PUBLIC_URL','MAIL_PUBLISH_TOKEN']).filter(k=>!env[k]);
+  if (!['resend','gmail'].includes(provider)) missing.push('MAIL_PROVIDER 형식');
+  if (provider==='gmail' && (!normalizeEmail(env.GMAIL_USER).endsWith('@gmail.com') || from!==normalizeEmail(env.GMAIL_USER))) missing.push('발신 주소와 Gmail 인증 계정 일치');
   if (!from) missing.push('관리자 발신 이메일');
   let validUrl = false;
   try { const u = new URL(env.MAIL_PUBLIC_URL); validUrl = u.protocol === 'https:' && u.pathname === '/' && !u.search && !u.hash && !u.username && !u.password; } catch {}
   if (env.MAIL_PUBLIC_URL && !validUrl) missing.push('MAIL_PUBLIC_URL 형식');
-  return { enabled:String(env.MAIL_ENABLED || '')==='1', configured:missing.length===0, missing,
-    from_email:from, max_per_day:2, updated_at:row ? row.updated_at : null };
+  return { paused:control?.value==='1', enabled:String(env.MAIL_ENABLED || '')==='1', configured:missing.length===0, missing,
+    from_email:from, provider, max_per_day:2, updated_at:row ? row.updated_at : null };
 }
 async function handleMailSettings(request,env,origin) {
   if (!isAdmin(request,env)) return json({error:'unauthorized'},origin,401);
@@ -439,6 +516,7 @@ async function handleMailSettings(request,env,origin) {
     if (!body || typeof body.from_email!=='string') return json({error:'발신 이메일을 입력하세요.'},origin,400);
     const raw=body.from_email.trim(), email=normalizeEmail(raw);
     if (raw && !email) return json({error:'올바른 이메일 주소를 입력하세요.'},origin,400);
+    if (email && env.MAIL_PROVIDER==='gmail' && email!==normalizeEmail(env.GMAIL_USER)) return json({error:'Gmail 인증 계정과 같은 발신 주소를 입력하세요.'},origin,400);
     await env.DB.prepare('INSERT INTO mail_settings (id,from_email,updated_at) VALUES (1,?,?) ON CONFLICT(id) DO UPDATE SET from_email=excluded.from_email,updated_at=excluded.updated_at')
       .bind(email,new Date().toISOString()).run();
   }
@@ -529,7 +607,7 @@ export async function mailPayload(env, event, email) {
       '</h2>'+(site.length?'<p style="padding:12px;background:#f0f6fc">전체 메뉴의 최신 게시본입니다. 메뉴마다 자료 기준일과 갱신 주기가 다르므로 아래 기준 시각을 함께 확인하세요.</p>':'')+html+'<p>'+note+
       '</p><hr><p>신청한 보고서를 하루 최대 두 통으로 안내합니다. <a href="'+mailEscape(url)+'">전체 구독 해지</a></p></div></body></html>',
     headers:{'List-Unsubscribe':'<'+url+'>','List-Unsubscribe-Post':'List-Unsubscribe=One-Click','X-Report-Topics':c.reports.map(r=>r.target).join(','),
-      ...(site.length?{'X-Report-Scope':'main'}:{})}};
+      'X-Report-Provider':env.MAIL_PROVIDER || 'resend',...(site.length?{'X-Report-Scope':'main'}:{})}};
 }
 // GET 링크 미리보기로 해지되지 않게 확인 화면과 실제 POST 처리를 나눈다.
 async function handleMailUnsubscribe(request, env, url) {
@@ -563,7 +641,7 @@ async function cleanupSubscriberMail(env, email) {
 // 원자적 임대와 제공자의 같은 요청 키를 함께 쓴다. 접수 응답 유실 뒤 재시도해도 같은 본문이다.
 export async function processMail(env, now = new Date(), pause = ms => new Promise(resolve => setTimeout(resolve,ms))) {
   const config = await mailConfig(env);
-  if (!config.enabled || !config.configured) return {status:'disabled',...config};
+  if (!config.enabled || !config.configured || config.paused) return {status:'disabled',...config};
   const phase=phaseOpen('pre_open',now)?'pre_open':phaseOpen('post_close',now)?'post_close':'';
   if (!phase) return {status:'outside_session'};
   const stamp=now.toISOString(),day=mailDay(now);
@@ -571,7 +649,9 @@ export async function processMail(env, now = new Date(), pause = ms => new Promi
   const due = await env.DB.prepare(`SELECT DISTINCT e.id,e.day,e.phase,e.created_at,s.email FROM mail_editions e
     JOIN subscribers s ON s.ts<=e.created_at
     LEFT JOIN mail_deliveries d ON d.event_id=e.id AND d.email=s.email
-    WHERE e.day=? AND e.phase=? AND (d.event_id IS NULL OR
+    WHERE e.day=? AND e.phase=?
+    AND NOT EXISTS (SELECT 1 FROM mail_controls c WHERE c.id=e.id AND c.value='1')
+    AND (d.event_id IS NULL OR
       (d.attempts<5 AND ((d.status='pending' AND d.next_attempt<=?) OR (d.status='sending' AND d.lease_until<=?))))
     AND NOT EXISTS (SELECT 1 FROM subscribers need WHERE need.email=s.email AND need.ts<=e.created_at AND
       ((need.page IN ('main','samsung') AND NOT EXISTS (SELECT 1 FROM mail_events m WHERE m.id=e.id||'/samsung')) OR
@@ -595,10 +675,20 @@ export async function processMail(env, now = new Date(), pause = ms => new Promi
       await env.DB.prepare('INSERT OR IGNORE INTO mail_deliveries (event_id,email,payload,created_at) VALUES (?,?,?,?)')
         .bind(event.id,event.email,JSON.stringify(payload),stamp).run();
     }
+    // Gmail은 접수 응답이 유실되어도 재시도하지 않는다. 오래된 임대도 중복 전송하지 않는다.
+    delivery=await env.DB.prepare('SELECT * FROM mail_deliveries WHERE event_id=? AND email=?').bind(event.id,event.email).first();
+    if (!delivery || ['sent','failed','cancelled'].includes(delivery.status)) continue;
+    const transport=JSON.parse(delivery.payload).headers['X-Report-Provider'] || 'resend';
+    if (transport!==config.provider || (transport==='gmail' && delivery.attempts>0)) {
+      await env.DB.prepare("UPDATE mail_deliveries SET status='failed',error_code=? WHERE event_id=? AND email=? AND (status='pending' OR (status='sending' AND lease_until<=?))")
+        .bind(transport!==config.provider?'provider_changed':'gmail_uncertain',event.id,event.email,stamp).run();
+      continue;
+    }
     delivery=await env.DB.prepare(`UPDATE mail_deliveries SET status='sending',attempts=attempts+1,lease_until=?
-      WHERE event_id=? AND email=? AND attempts<5 AND
+      WHERE event_id=? AND email=? AND attempts<?
+      AND NOT EXISTS (SELECT 1 FROM mail_controls c WHERE c.id IN ('paused',mail_deliveries.event_id) AND c.value='1') AND
       ((status='pending' AND next_attempt<=?) OR (status='sending' AND lease_until<=?)) RETURNING *`)
-      .bind(new Date(now.getTime()+5*60000).toISOString(),event.id,event.email,stamp,stamp).first();
+      .bind(new Date(now.getTime()+5*60000).toISOString(),event.id,event.email,transport==='gmail'?1:5,stamp,stamp).first();
     if (!delivery) continue;
     const active=await env.DB.prepare('SELECT page FROM subscribers WHERE email=? AND ts<=?').bind(event.email,event.created_at).all();
     const pages=active.results.map(s=>s.page), frozenHeaders=JSON.parse(delivery.payload).headers, topics=frozenHeaders['X-Report-Topics'].split(',');
@@ -611,6 +701,18 @@ export async function processMail(env, now = new Date(), pause = ms => new Promi
     // DB 처리·이전 수신자 발송 중 자정이나 개장 시각을 넘겼으면 여기서 멈춘다.
     const sendingAt=new Date();
     if (mailDay(sendingAt)!==day || !phaseOpen(phase,sendingAt)) break;
+    if (transport==='gmail') {
+      try {
+        const providerId=await sendGmailSmtp(env,JSON.parse(delivery.payload),idempotency);
+        await env.DB.prepare("UPDATE mail_deliveries SET status='sent',sent_at=?,provider_id=?,error_code=NULL WHERE event_id=? AND email=?")
+          .bind(new Date().toISOString(),providerId,event.id,event.email).run();
+        accepted++;
+      } catch {
+        await env.DB.prepare("UPDATE mail_deliveries SET status='failed',error_code='gmail_send_failed_or_uncertain' WHERE event_id=? AND email=?").bind(event.id,event.email).run();
+        failed++;
+      }
+      await pause(600);continue;
+    }
     let code='network',response;
     try {
       response=await fetch('https://api.resend.com/emails',{method:'POST',headers:{Authorization:'Bearer '+env.RESEND_API_KEY,
@@ -634,17 +736,65 @@ export async function processMail(env, now = new Date(), pause = ms => new Promi
   }
   return {status:'processed',accepted,failed};
 }
+// 회차 취소는 아직 배송 행을 만들지 않은 주소에도 적용한다(2026-10-04 요청).
+async function handleMailControl(request,env,origin) {
+  if (!isAdmin(request,env)) return json({error:'unauthorized'},origin,401);
+  const body=await readJson(request);
+  if (!body || typeof body.paused!=='boolean') return json({error:'일시 중지 여부를 선택하세요.'},origin,400);
+  await env.DB.prepare("INSERT INTO mail_controls (id,value,updated_at) VALUES ('paused',?,?) ON CONFLICT(id) DO UPDATE SET value=excluded.value,updated_at=excluded.updated_at")
+    .bind(body.paused?'1':'0',new Date().toISOString()).run();
+  return json(await mailConfig(env),origin);
+}
+async function handleMailCancel(request,env,origin) {
+  if (!isAdmin(request,env)) return json({error:'unauthorized'},origin,401);
+  const body=await readJson(request);
+  if (!body || typeof body.event_id!=='string' || body.event_id.length>100) return json({error:'취소할 회차를 선택하세요.'},origin,400);
+  const edition=await env.DB.prepare('SELECT id FROM mail_editions WHERE id=?').bind(body.event_id).first();
+  if (!edition) return json({error:'회차를 찾을 수 없습니다.'},origin,404);
+  await env.DB.batch([
+    env.DB.prepare("INSERT OR IGNORE INTO mail_controls (id,value,updated_at) VALUES (?,'1',?)").bind(edition.id,new Date().toISOString()),
+    env.DB.prepare("UPDATE mail_deliveries SET status='cancelled',payload='',error_code='admin_cancelled' WHERE event_id=? AND status='pending'").bind(edition.id)
+  ]);
+  return json({cancelled:true,notice:'이 회차의 대기를 취소했습니다. 이미 전송 중이거나 접수된 메일은 회수하지 못합니다.'},origin);
+}
+// 발송 이력은 구독이 유지되는 주소와 저장된 배송 기록을 합쳐 표시한다. 본문·인증 값은 반환하지 않는다.
+function mailHistorySQL(filter) {
+  return `WITH editions AS (SELECT * FROM mail_editions ${filter}),
+    recipients AS (SELECT e.id,s.email FROM editions e JOIN subscribers s ON s.ts<=e.created_at
+      UNION SELECT d.event_id,d.email FROM mail_deliveries d JOIN editions e ON e.id=d.event_id),
+    history AS (SELECT e.id,e.phase,e.day AS session_date,e.created_at,r.email,d.sent_at,COALESCE(d.attempts,0) AS attempts,
+      d.error_code,d.next_attempt,d.lease_until,
+      CASE WHEN d.status IN ('sent','sending','failed','cancelled') THEN d.status
+        WHEN c.value='1' THEN 'cancelled' ELSE 'pending' END AS status,
+      CASE WHEN c.value='1' THEN 1 ELSE 0 END AS stopped
+      FROM editions e LEFT JOIN recipients r ON r.id=e.id
+      LEFT JOIN mail_deliveries d ON d.event_id=e.id AND d.email=r.email
+      LEFT JOIN mail_controls c ON c.id=e.id) `;
+}
+async function handleMailDeliveries(request,env,origin) {
+  if (!isAdmin(request,env)) return json({error:'unauthorized'},origin,401);
+  const url=new URL(request.url), id=url.searchParams.get('event_id'), raw=url.searchParams.get('offset')||'0';
+  if (!id || id.length>100 || !/^\d{1,7}$/.test(raw)) return json({error:'올바른 회차와 페이지를 선택하세요.'},origin,400);
+  const offset=Number(raw), limit=50;
+  const rows=await env.DB.prepare(mailHistorySQL('WHERE id=?')+`SELECT email,status,attempts,created_at,sent_at,error_code,session_date,phase
+    FROM history WHERE email IS NOT NULL ORDER BY email LIMIT ? OFFSET ?`).bind(id,limit+1,offset).all();
+  const now=new Date();
+  return json({deliveries:rows.results.slice(0,limit).map(d=>({...d,status:d.status==='pending' && (d.session_date!==mailDay(now)||!phaseOpen(d.phase,now))?'expired':d.status})),
+    offset,next_offset:rows.results.length>limit?offset+limit:null},origin);
+}
 async function handleMailStatus(request,env,origin) {
   if (!isAdmin(request,env)) return json({error:'unauthorized'},origin,401);
-  const recent=await env.DB.prepare(`SELECT e.phase,e.day AS session_date,e.created_at,
-    (SELECT COUNT(DISTINCT s.email) FROM subscribers s WHERE s.ts<=e.created_at) AS eligible,
-    COUNT(d.email) AS attempted,SUM(CASE WHEN d.status='sent' THEN 1 ELSE 0 END) AS accepted,
-    SUM(CASE WHEN d.status IN ('failed','cancelled') THEN 1 ELSE 0 END) AS failed
-    FROM mail_editions e LEFT JOIN mail_deliveries d ON d.event_id=e.id
-    GROUP BY e.id ORDER BY e.created_at DESC LIMIT 20`).all();
+  const recent=await env.DB.prepare(mailHistorySQL('ORDER BY created_at DESC LIMIT 20')+`SELECT id,phase,session_date,created_at,stopped,
+    COUNT(email) AS eligible,SUM(CASE WHEN attempts>0 THEN 1 ELSE 0 END) AS attempted,
+    SUM(CASE WHEN email IS NOT NULL AND status='sent' THEN 1 ELSE 0 END) AS accepted,
+    SUM(CASE WHEN email IS NOT NULL AND status='failed' THEN 1 ELSE 0 END) AS failed,
+    SUM(CASE WHEN email IS NOT NULL AND status='cancelled' THEN 1 ELSE 0 END) AS cancelled,
+    SUM(CASE WHEN email IS NOT NULL AND status='sending' THEN 1 ELSE 0 END) AS sending,
+    SUM(CASE WHEN email IS NOT NULL AND status='pending' THEN 1 ELSE 0 END) AS remaining,MAX(sent_at) AS last_sent_at
+    FROM history GROUP BY id ORDER BY created_at DESC`).all();
   const now=new Date();
-  return json({...await mailConfig(env),events:recent.results.map(e=>({...e,target:'digest',remaining:Math.max(0,e.eligible-e.accepted-e.failed),expired:e.session_date!==mailDay(now) || !phaseOpen(e.phase,now)})),
-    notice:'수신자별 하루 최대 두 통입니다. 접수 완료는 발송 서비스 접수 기준이며 수신함 도착을 보장하지 않습니다.'},origin);
+  return json({...await mailConfig(env),events:recent.results.map(e=>({...e,target:'digest',expired:e.session_date!==mailDay(now) || !phaseOpen(e.phase,now)})),
+    notice:'수신자별 하루 최대 두 통입니다. 발송 완료는 발송 서비스 접수 기준이며 수신함 도착을 보장하지 않습니다. 전송 중인 메일은 취소할 수 없습니다.'},origin);
 }
 
 export default {
@@ -660,6 +810,9 @@ export default {
       if (url.pathname === '/mail/unsubscribe' && ['GET','POST'].includes(request.method)) return await handleMailUnsubscribe(request,env,url);
       if (request.method === 'POST' && url.pathname === '/mail/events') return await handleMailEvent(request,env,origin);
       if (['GET','POST'].includes(request.method) && url.pathname === '/mail/settings') return await handleMailSettings(request,env,origin);
+      if (request.method === 'POST' && url.pathname === '/mail/control') return await handleMailControl(request,env,origin);
+      if (request.method === 'POST' && url.pathname === '/mail/cancel') return await handleMailCancel(request,env,origin);
+      if (request.method === 'GET' && url.pathname === '/mail/deliveries') return await handleMailDeliveries(request,env,origin);
       if (request.method === 'GET' && url.pathname === '/mail/status') return await handleMailStatus(request,env,origin);
       if (request.method === "POST") {
         if (url.pathname === "/subscribe") return await handleSubscribe(request, env, origin, "subscribe");
@@ -690,6 +843,8 @@ export default {
       try { const result = await processMail(env); console.log('report_mail ' + JSON.stringify({status:result.status,accepted:result.accepted})); }
       catch { console.log('report_mail 처리 실패: 관리자 발송 상태와 D1을 확인하세요.'); }
     }
+    // 메일 전용 주기가 보고서 정시와 겹쳐도 GitHub 작업을 두 번 시작하지 않는다.
+    if (event.cron === '*/5 * * * *') return;
     // DISPATCH_FORCE=1 (Worker 변수)이면 어느 트리거든 올 때마다 GitHub 를 부른다 — 정시 호출이 되는지 시험할 때만
     // 잠깐 켠다(2026-09-30: 정시 호출이 한 번도 성공한 적이 없어 원인을 가르려고). 시험이 끝나면 변수를 지운다.
     const forced = String(env.DISPATCH_FORCE || "") === "1";

@@ -362,7 +362,7 @@ Cloudflare에 다시 배포해야 화면에 나온다.
 
 ### 한 번 필요한 설정
 
-1. 아래 SQL을 D1 Console에서 **한 문장씩** 실행한다. 기존 구독자는 유지된다. 이전 이메일 기능을 설치했다면 마지막 두 표(`mail_editions`, `mail_settings`)만 추가한다.
+1. 아래 SQL을 D1 Console에서 **한 문장씩** 실행한다. 기존 구독자는 유지된다. 이전 이메일 기능을 설치했다면 없는 표만 추가한다. 발송 관리 기능에는 `mail_controls`도 필요하다.
 
 ```sql
 CREATE TABLE IF NOT EXISTS mail_events (id TEXT PRIMARY KEY, target TEXT NOT NULL, phase TEXT NOT NULL, session_date TEXT NOT NULL, content TEXT NOT NULL, source_revision TEXT NOT NULL, created_at TEXT NOT NULL);
@@ -392,12 +392,20 @@ CREATE TABLE IF NOT EXISTS mail_editions (id TEXT PRIMARY KEY, day TEXT NOT NULL
 CREATE TABLE IF NOT EXISTS mail_settings (id INTEGER PRIMARY KEY CHECK(id=1), from_email TEXT NOT NULL, updated_at TEXT NOT NULL);
 ```
 
-2. 발송 서비스는 Resend다. 발신 도메인을 인증하고 API 키를 준비한다. 관리자에 입력할 본인 주소도 인증한 도메인의 주소여야 한다. 주소 저장만으로 발신 도메인이 인증되지는 않는다.
+```sql
+CREATE TABLE IF NOT EXISTS mail_controls (id TEXT PRIMARY KEY, value TEXT NOT NULL, updated_at TEXT NOT NULL);
+```
+
+2. Gmail 발송은 Google 계정의 2단계 인증과 앱 비밀번호를 준비한다. 비밀번호는 Cloudflare Secret에 직접 입력하며 채팅이나 저장소에 남기지 않는다. Resend를 사용할 때는 발신 도메인을 인증한다.
+
 3. Cloudflare Worker에 다음을 넣는다. **키와 토큰은 코드·GitHub Pages·채팅에 쓰지 않는다.**
 
 | 종류 | 이름 | 값 |
 | --- | --- | --- |
-| Secret | `RESEND_API_KEY` | Resend 발송 API 키 |
+| Variable | `MAIL_PROVIDER` | Gmail은 `gmail`, Resend는 `resend`(기본값) |
+| Variable | `GMAIL_USER` | 발신 Gmail 주소 |
+| Secret | `GMAIL_APP_PASSWORD` | Gmail 앱 비밀번호 (Gmail 사용 시) |
+| Secret | `RESEND_API_KEY` | Resend 발송 API 키 (Resend 사용 시) |
 | Secret | `MAIL_PUBLISH_TOKEN` | 보고서 발행 전용의 긴 임의 토큰. `STATS_TOKEN`과 분리 |
 | Variable | `MAIL_PUBLIC_URL` | `https://predict-stock-counter.kimname1.workers.dev` |
 | Variable | `MAIL_ENABLED` | 준비 중 `0`, 준비 완료 후 `1` |
@@ -416,10 +424,12 @@ CREATE TABLE IF NOT EXISTS mail_settings (id INTEGER PRIMARY KEY CHECK(id=1), fr
 ### 신뢰성과 개인정보
 
 - `POST /mail/events`는 발행 전용 토큰과 자동 실행 정보를 요구한다. Cloudflare 서명은 워크플로별로 검증하며 유효시간은 4시간이다. `caller=cloudflare-cron`만 입력한 수동 실행은 허용하지 않는다. 보고서 HTML과 원장의 게시 시각도 확인한다.
-- `GET/POST /mail/settings` 및 `GET /mail/status`는 기존 `STATS_TOKEN`이 필요하다. 발신 주소는 관리자에게만 반환하며 API 키나 구독자 주소는 응답에 포함하지 않는다. 설정은 D1에 영구 저장한다.
+- `GET/POST /mail/settings`, `GET /mail/status`, `GET /mail/deliveries`, `POST /mail/control`, `POST /mail/cancel`은 기존 `STATS_TOKEN`이 필요하다. 집계에는 구독자 주소가 없으며 상세 조회에만 수신 주소·상태·시도 횟수·처리 시각을 50명씩 반환한다. 인증 값·본문은 반환하지 않는다. 설정은 D1에 영구 저장한다.
 - 발송 요청을 시작하는 한국 날짜·회차·수신 주소로 발송 기록을 고정한다. 배치 중 날짜나 시간창이 바뀌면 남은 발송을 중단한다. 서비스 내부 처리·수신함 도착 지연은 별개다. D1 원자적 임대와 Resend의 `Idempotency-Key`를 함께 사용해 동시 실행과 접수 응답 유실에 대비한다. 같은 본문으로 최대 5회 재시도하고 해당 날짜·시간창 종료 시 만료한다. 따라서 제공자의 24시간 키 유효기간을 넘겨 재시도하지 않는다.
-- 네트워크 오류·429·5xx 등만 재시도한다. 영구 오류는 실패로 남으며 주소를 고쳐도 실패한 회차를 다시 발송하지 않는다. 이전 버전에서 당일 같은 회차의 메일을 이미 시도한 주소는 새 묶음 메일을 보내지 않는다.
-- ‘접수 완료’는 Resend가 요청을 받고 ID를 준 상태다. 실제 수신함 도착·반송은 Resend 콘솔에서 확인한다. 실패·대기·만료는 관리자에 표시한다.
+- Resend는 네트워크 오류·429·5xx 등만 재시도한다. 영구 오류는 실패로 남으며 주소를 고쳐도 실패한 회차를 다시 발송하지 않는다. 이전 버전에서 당일 같은 회차의 메일을 이미 시도한 주소는 새 묶음 메일을 보내지 않는다.
+- Gmail은 TLS로 `smtp.gmail.com:465`에 연결한다. 발신 주소는 인증 계정과 같아야 한다. SMTP에는 중복 요청 제거 키가 없어 한 회차에 한 번만 시도한다. 접수 응답 유실·작업 중단도 자동 재시도하지 않고 실패/접수 불확실로 남긴다. Gmail의 별도 발송 한도는 Google 정책을 따른다.
+- ‘발송 완료’는 Gmail의 DATA 접수 성공 또는 Resend의 ID 응답을 받은 상태다. 실제 수신함 도착·읽음 여부는 확인하지 않는다. 관리자 → 구독자에서 회차별 집계, 수신자별 이력과 한국시간 발송 시각을 확인하고 새로고침할 수 있다.
+- **대기 취소**는 선택 회차의 미전송 대기를 취소한다. 아직 배송 행이 없는 주소에도 적용하며 다음 Cron에서 재생성하지 않는다. 다음 회차의 구독은 유지한다. **자동 발송 일시 중지/재개**는 발신 주소와 독립적으로 저장한다. 재개해도 `MAIL_ENABLED=0` 또는 설정 미완료면 보내지 않는다. 재개 시 취소하지 않은 당일 유효한 대기만 처리한다. 전송 임대 확보와 중지·취소 판정을 하나의 SQL로 처리하며 이미 임대한 전송은 회수할 수 없다.
 - 발송 수신 주소·본문은 D1에 보관하며 활성화된 발송 작업이 30일 초과 기록을 정리한다. 장기간 기능을 끌 때는 운영자가 정리한다. 개인정보가 없는 날짜별 회차와 공개 요약은 중복 방지를 위해 유지한다.
 - 메일의 전체 해지 링크는 주소 대신 임의 토큰을 쓴다. GET은 확인 화면만, POST는 해지를 수행하며 One-Click POST도 지원한다. 웹 폼·관리자 삭제도 관련 기록과 토큰을 정리한다. 구독 종목이 달라지면 재시도 직전 다시 검사한다. 이미 전송 중이거나 서비스에 접수된 메일은 회수하지 못한다.
 - 수신 목록·본문·API 오류 원문을 로그에 쓰지 않는다. 실제 구독자에게 테스트 메일을 보내지 않는다. 이메일 소유 확인·반송 webhook 자동 정리는 아직 없다.
@@ -436,8 +446,12 @@ python -m unittest tests.test_report_email tests.test_mail_site_reports tests.te
 [이메일 전송 API](https://resend.com/docs/api-reference/emails/send-email),
 [중복 요청 키와 24시간 보관](https://resend.com/docs/dashboard/emails/idempotency-keys).
 
-운영 D1 변경·Worker 배포·실제 이메일 전송은 수행하지 않았다.
+최초 구현 검증 당시에는 운영 D1 변경·Worker 배포·실제 이메일 전송을 수행하지 않았다.
 
 검증 기록(2026-10-04): 관련 테스트 19개 통과(내부 Node/SQLite 계약 포함). 관리자 주소 저장·빈 값 중지 안내를 로컬 가짜 서버에서 확인했으며, 모바일 375px에서 가로 넘침이 없다. 수동 CLI 외부 호출 차단, 자동 Cron 서명, 자정·개장 경계, 부분 해지·신규 가입, 중복·동시 실행·재시도를 검증했다. 전체 테스트와 실제 서비스 접수·수신함 도착은 이번 변경에서 확인하지 않았다.
 
 전체 메뉴 확장 검증(2026-10-04): 관련 테스트 23개 통과. 7개 공개 메뉴 요약·기준 시각, 고정 URL 검증, 중복 섹션 제외, 종목 구독 범위, 메인 구독 해지 후 재시도 취소를 확인했다. 샘플은 종목 2개와 추가 메뉴 7개로 구성했다. 실제 이메일을 보내지 않았고, 이번 샘플의 자동 브라우저 화면 검증은 로컬 파일 URL 제한으로 수행하지 못했다.
+
+Gmail 및 발송 관리 검증(2026-10-04): 가짜 SMTP의 TLS·한글 MIME·인증 오류·응답 유실, 관리자 권한, 대기 취소 후 재생성 차단, 배치 중 일시 중지·재개 및 취소, 전송 중 결과 보존, 수신자 상세 페이지 나눔을 로컬에서 검증했다(관련 테스트 24개 통과). 운영 수신함 도착 검증은 Gmail Secret 설정 후 별도로 필요하다. [Google 앱 비밀번호](https://support.google.com/accounts/answer/185833), [Gmail SMTP](https://developers.google.com/workspace/gmail/imap/imap-smtp).
+
+운영 준비(2026-10-04): Cloudflare에 Gmail 발송 변수(`MAIL_ENABLED=0`)를 저장하고 D1 메일 표 6개·인덱스 2개와 발신 주소를 준비했다. GitHub의 `REPORT_MAIL_ENDPOINT`도 저장했다. Worker 편집기 초기화 오류로 새 코드 배포는 미완료다. Gmail 앱 비밀번호, 양쪽 `MAIL_PUBLISH_TOKEN`, Worker 배포 후 메일 전용 5분 Cron과 활성화가 남아 있다. 실제 이메일은 발송하지 않았다.

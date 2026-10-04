@@ -153,4 +153,104 @@ assert.ok(!dispatches.at(-1).inputs.mail_proof);
 // 발신 주소를 비우면 환경변수의 옛 주소로 돌아가지 않고 발송을 중단한다.
 await call('/mail/settings',{from_email:''},'admin-secret');
 settings=await (await call('/mail/status',undefined,'admin-secret','GET')).json();assert.equal(settings.configured,false);
+// Gmail 인증 계정과 발신 주소가 같아야 하며, 응답 유실된 회차는 재시도하지 않는다.
+Object.assign(env,{MAIL_PROVIDER:'gmail',GMAIL_USER:'owner@gmail.com',GMAIL_APP_PASSWORD:'fake-app-password'});
+assert.equal((await call('/mail/settings',{from_email:'other@gmail.com'},'admin-secret')).status,400);
+await call('/mail/settings',{from_email:'owner@gmail.com'},'admin-secret');
+settings=await (await call('/mail/status',undefined,'admin-secret','GET')).json();
+assert.equal(settings.provider,'gmail');assert.equal(settings.configured,true);
+assert.ok(!JSON.stringify(settings).includes('fake-app-password'));
+clock=Date.parse('2026-10-11T22:00:00Z');
+await call('/mail/events',{...event,session_date:'2026-10-12'});
+// Node에는 cloudflare:sockets가 없다. 이 확정적인 전송 실패에서도 회차당 최초 시도만 허용한다.
+await Promise.all([worker.processMail(env,new Date(),async()=>{}),worker.processMail(env,new Date(),async()=>{})]);
+let gmailRows=db.prepare("SELECT * FROM mail_deliveries WHERE event_id='digest/2026-10-12/pre_open'").all();
+assert.ok(gmailRows.length>0);assert.ok(gmailRows.every(r=>r.attempts===1 && r.status==='failed'));
+clock+=10*60000;await worker.processMail(env,new Date(),async()=>{});
+assert.ok(db.prepare("SELECT attempts FROM mail_deliveries WHERE event_id='digest/2026-10-12/pre_open'").all().every(r=>r.attempts===1));
+// 중단된 sending 임대도 Gmail에서는 자동 재전송하지 않는다.
+db.prepare("UPDATE mail_deliveries SET status='sending',lease_until='' WHERE event_id='digest/2026-10-12/pre_open'").run();
+await worker.processMail(env,new Date(),async()=>{});
+assert.ok(db.prepare("SELECT attempts,status FROM mail_deliveries WHERE event_id='digest/2026-10-12/pre_open'").all().every(r=>r.attempts===1 && r.status==='failed'));
 console.log('관리자 발신 주소·하루 두 회차·종목 묶음·수동 차단·동시 실행·재시도·해지 통과');
+
+// 관리자 발송 이력·회차 취소·일시 중지(2026-10-04).
+Object.assign(env,{MAIL_PROVIDER:'resend'});
+clock=Date.parse('2026-10-13T23:00:00Z');
+db.prepare('DELETE FROM subscribers').run();
+add('a-admin@example.com','samsung');add('b-admin@example.com','samsung');
+const edition='digest/2026-10-14/pre_open';
+await call('/mail/events',{...event,session_date:'2026-10-14'});
+assert.equal((await call('/mail/control',{paused:true},'wrong')).status,401);
+assert.equal((await call('/mail/cancel',{event_id:edition},'wrong')).status,401);
+assert.equal((await call('/mail/deliveries?event_id='+encodeURIComponent(edition),undefined,'wrong','GET')).status,401);
+assert.equal((await call('/mail/control',{paused:'true'},'admin-secret')).status,400);
+assert.equal((await call('/mail/control',{paused:true},'admin-secret')).status,200);
+let history=await (await call('/mail/status',undefined,'admin-secret','GET')).json();
+assert.equal(history.paused,true);
+let adminSent=[];
+globalThis.fetch=async(url,init)=>{adminSent.push(JSON.parse(init.body).to[0]);return new Response(JSON.stringify({id:'admin-test'}),{status:200});};
+await worker.processMail(env,new Date(),async()=>{});assert.equal(adminSent.length,0);
+assert.equal((await call('/mail/cancel',{event_id:'missing'},'admin-secret')).status,404);
+assert.equal((await call('/mail/cancel',{event_id:edition},'admin-secret')).status,200);
+await call('/mail/control',{paused:false},'admin-secret');
+await worker.processMail(env,new Date(),async()=>{});assert.equal(adminSent.length,0,'아직 만들지 않은 배송도 회차 취소 후 다시 생성하지 않는다');
+await call('/mail/events',{...event,session_date:'2026-10-14'});
+await worker.processMail(env,new Date(),async()=>{});assert.equal(adminSent.length,0);
+history=await (await call('/mail/status',undefined,'admin-secret','GET')).json();
+let cancelled=history.events.find(e=>e.id===edition);
+assert.equal(cancelled.cancelled,2);assert.equal(cancelled.remaining,0);assert.equal(cancelled.failed,0);
+let details=await (await call('/mail/deliveries?event_id='+encodeURIComponent(edition),undefined,'admin-secret','GET')).json();
+assert.equal(details.deliveries.length,2);assert.ok(details.deliveries.every(d=>d.status==='cancelled'));
+assert.ok(details.deliveries.every(d=>!('payload' in d) && !('provider_id' in d)));
+// 배치 도중 첫 주소를 전송한 뒤 취소하면 다음 주소는 보내지 않는다.
+clock=Date.parse('2026-10-14T07:00:00Z');
+const afternoon='digest/2026-10-14/post_close';
+await call('/mail/events',{...event,session_date:'2026-10-14',phase:'post_close'});
+await worker.processMail(env,new Date(),async()=>{await call('/mail/cancel',{event_id:afternoon},'admin-secret');});
+assert.equal(adminSent.length,1);
+await worker.processMail(env,new Date(),async()=>{});assert.equal(adminSent.length,1);
+details=await (await call('/mail/deliveries?event_id='+encodeURIComponent(afternoon),undefined,'admin-secret','GET')).json();
+assert.equal(details.deliveries.find(d=>d.email==='a-admin@example.com').status,'sent');
+assert.ok(details.deliveries.find(d=>d.email==='a-admin@example.com').sent_at);
+assert.equal(details.deliveries.find(d=>d.email==='b-admin@example.com').status,'cancelled');
+// 일시 중지는 배치 중에도 적용되며 재개할 때 취소하지 않은 당일 대기만 처리한다.
+clock=Date.parse('2026-10-14T23:00:00Z');
+await call('/mail/events',{...event,session_date:'2026-10-15'});
+await worker.processMail(env,new Date(),async()=>{await call('/mail/control',{paused:true},'admin-secret');});
+assert.equal(adminSent.length,2);
+await worker.processMail(env,new Date(),async()=>{});assert.equal(adminSent.length,2);
+await call('/mail/control',{paused:false},'admin-secret');
+await worker.processMail(env,new Date(),async()=>{});assert.equal(adminSent.length,3);
+assert.equal((await call('/mail/deliveries?event_id='+encodeURIComponent(edition)+'&offset=-1',undefined,'admin-secret','GET')).status,400);
+// 서버에 접수 중인 요청은 취소 완료라고 표시하지 않으며 결과를 보존한다.
+clock=Date.parse('2026-10-15T07:00:00Z');
+const inflight='digest/2026-10-15/post_close';
+await call('/mail/events',{...event,session_date:'2026-10-15',phase:'post_close'});
+globalThis.fetch=async()=>{
+ await call('/mail/cancel',{event_id:inflight},'admin-secret');
+ const current=await (await call('/mail/status',undefined,'admin-secret','GET')).json();
+ assert.equal(current.events.find(e=>e.id===inflight).sending,1);
+ return new Response(JSON.stringify({id:'already-in-flight'}),{status:200});
+};
+await worker.processMail(env,new Date(),async()=>{});
+details=await (await call('/mail/deliveries?event_id='+encodeURIComponent(inflight),undefined,'admin-secret','GET')).json();
+assert.deepEqual(details.deliveries.map(d=>d.status),['sent','cancelled']);
+// 수신자 상세는 50명씩, 본문·토큰 없이 조회한다.
+for(let i=0;i<51;i++) add('paging'+String(i).padStart(2,'0')+'@example.com','samsung');
+clock=Date.parse('2026-10-15T23:00:00Z');
+const paged='digest/2026-10-16/pre_open';
+await call('/mail/events',{...event,session_date:'2026-10-16'});
+let page1=await (await call('/mail/deliveries?event_id='+encodeURIComponent(paged),undefined,'admin-secret','GET')).json();
+let page2=await (await call('/mail/deliveries?event_id='+encodeURIComponent(paged)+'&offset='+page1.next_offset,undefined,'admin-secret','GET')).json();
+assert.equal(page1.deliveries.length,50);assert.equal(page2.deliveries.length,3);assert.equal(page2.next_offset,null);
+assert.equal(new Set([...page1.deliveries,...page2.deliveries].map(d=>d.email)).size,53);
+clock=Date.parse('2026-10-16T01:00:00Z');
+page1=await (await call('/mail/deliveries?event_id='+encodeURIComponent(paged),undefined,'admin-secret','GET')).json();
+assert.ok(page1.deliveries.every(d=>d.status==='expired'));
+console.log('발송 이력·관리자 권한·대기 취소·일시 중지/재개·배치 경쟁·상세 페이지 나눔 통과');
+// 메일 전용 5분 Cron은 기존 보고서 생성 작업을 중복 호출하지 않는다.
+let cronDispatches=0;
+globalThis.fetch=async()=>{cronDispatches++;return new Response('',{status:200});};
+await worker.default.scheduled({cron:'*/5 * * * *',scheduledTime:Date.parse('2026-10-18T21:20:00Z')},{...env,MAIL_ENABLED:'0',GITHUB_DISPATCH_TOKEN:'fake-dispatch'});
+assert.equal(cronDispatches,0,'메일 전용 Cron은 보고서 워크플로를 시작하지 않는다');

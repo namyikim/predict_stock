@@ -16,6 +16,8 @@ globalThis.Date=class extends RealDate {constructor(...args){super(...(args.leng
 const env={DB,MAIL_ENABLED:'1',RESEND_API_KEY:'fake-key',MAIL_FROM:'legacy@example.com',MAIL_PUBLIC_URL:'https://counter.example',MAIL_PUBLISH_TOKEN:'publish-secret',STATS_TOKEN:'admin-secret'};
 const day='2026-10-06';
 const event={target:'samsung',phase:'pre_open',session_date:day,lines:['상승 60% · 보합 20% · 하락 20%','<script>원문</script>'],source_revision:'a'.repeat(40),url:'https://namyikim.github.io/predict_stock/samsung/',automation:{event:'schedule',attempt:1}};
+const siteReport={key:'macro',title:'거시 경제',as_of:'2026-10-06 07:00 KST',lines:['원화 요약 <script>텍스트</script>'],url:'https://namyikim.github.io/predict_stock/macro/'};
+event.site_reports=[siteReport];
 async function call(path,body,token='publish-secret',method='POST') {
  return worker.default.fetch(new Request('https://counter.example'+path,{method,headers:{Authorization:'Bearer '+token,'Content-Type':'application/json'},...(body===undefined?{}:{body:JSON.stringify(body)})}),env);
 }
@@ -30,6 +32,8 @@ assert.ok(!JSON.stringify(settings).includes('fake-key'));
 assert.equal((await call('/mail/events',event,'wrong')).status,401);
 assert.equal((await call('/mail/events',{...event,automation:{event:'workflow_dispatch',attempt:1,caller:'cloudflare-cron'}})).status,403);
 assert.equal((await call('/mail/events',{...event,automation:{event:'schedule',attempt:2}})).status,403);
+assert.equal((await call('/mail/events',{...event,site_reports:[{...siteReport,url:'javascript:alert(1)'}]})).status,400);
+assert.equal((await call('/mail/events',{...event,site_reports:[siteReport,siteReport]})).status,400);
 let a=await call('/mail/events',event);assert.equal(a.status,202);
 const first=await a.json();
 const second=await (await call('/mail/events',{...event,lines:['보완된 내용']})).json();
@@ -45,6 +49,10 @@ await Promise.all([worker.processMail(env,new Date(),async()=>{}),worker.process
 assert.equal(sent.length,2);
 let morning=sent.find(x=>x.body.to[0]==='one@example.com');
 assert.equal(morning.body.from,'owner@example.com');
+assert.equal((morning.body.html.match(/거시 경제/g)||[]).length,1,'두 종목 메일에서 사이트 메뉴는 한 번만 표시');
+assert.ok(morning.body.text.includes('2026-10-06 07:00 KST'));
+assert.ok(morning.body.html.includes('&lt;script&gt;텍스트&lt;/script&gt;'));
+assert.ok(!sent.find(x=>x.body.to[0]==='two@example.com').body.html.includes('거시 경제'),'종목 구독자는 구독한 범위만 받는다');
 assert.ok(morning.body.html.includes('삼성전자')&&morning.body.html.includes('SK하이닉스'));
 assert.ok(morning.body.html.includes('&lt;script&gt;'));assert.ok(!morning.body.html.includes('<script>'));
 await call('/mail/events',{...peer,lines:['나중 보완']});
@@ -111,20 +119,25 @@ boundary=[];await worker.processMail(env,new Date(),async()=>{});assert.equal(bo
 // 새 가입은 다음 회차부터, 부분 해지는 재시도 전에 반영한다.
 clock=Date.parse('2026-10-08T22:00:00Z');
 add('partial@example.com','samsung');add('partial@example.com','sk_hynix');
+add('scope@example.com','main');add('scope@example.com','samsung');add('scope@example.com','sk_hynix');
 await call('/mail/events',{...event,session_date:'2026-10-09'});
 await call('/mail/events',{...peer,session_date:'2026-10-09'});
 clock+=2000;add('late@example.com','samsung');
-let partialAttempts=0,lateAttempts=0;
+let partialAttempts=0,lateAttempts=0,scopeAttempts=0;
 globalThis.fetch=async(url,init)=>{
  const to=JSON.parse(init.body).to[0];
  if(to==='late@example.com')lateAttempts++;
+ if(to==='scope@example.com'){scopeAttempts++;throw new Error('응답 유실');}
  if(to==='partial@example.com'){partialAttempts++;throw new Error('응답 유실');}
  return new Response(JSON.stringify({id:'ok'}),{status:200});
 };
 await worker.processMail(env,new Date(),async()=>{});
 assert.equal(partialAttempts,1);assert.equal(lateAttempts,0);
 assert.equal((await call('/subscribers/delete',{email:'partial@example.com',page:'samsung'},'admin-secret')).status,200);
+assert.equal(scopeAttempts,1);
+assert.equal((await call('/subscribers/delete',{email:'scope@example.com',page:'main'},'admin-secret')).status,200);
 clock+=6*60000;await worker.processMail(env,new Date(),async()=>{});
+assert.equal(scopeAttempts,1,'종목 구독이 남아도 메인 해지 후 전체 메뉴 재시도는 취소');
 assert.equal(partialAttempts,1,'부분 해지 후 동결된 묶음 메일은 재시도하지 않는다');
 assert.equal(db.prepare("SELECT status FROM mail_deliveries WHERE email='partial@example.com'").get().status,'cancelled');
 // 수동 관리자 시험에는 메일용 서명을 붙이지 않고 실제 Cron에만 붙인다.

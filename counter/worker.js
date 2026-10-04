@@ -418,6 +418,7 @@ function handleGeo(request, origin) {
 
 // 보고서 발행 완료 알림(2026-10-04). 공개 요약과 비공개 수신 정보를 분리하며 기본은 발송 중지다.
 const MAIL_NAMES = { samsung: '삼성전자', sk_hynix: 'SK하이닉스' };
+const MAIL_SITE_NAMES = {metals:'금·은 예측',china:'중국 주식·5개년 계획',macro:'거시 경제',ai_news:'AI 뉴스',robot_news:'로봇 뉴스',trends:'인기 급상승 검색어',interest:'장기 관심도'};
 const MAIL_BATCH_SIZE = 5;
 async function mailConfig(env) {
   const row = await env.DB.prepare('SELECT from_email,updated_at FROM mail_settings WHERE id=1').first();
@@ -479,18 +480,25 @@ async function mailHash(value) {
 async function handleMailEvent(request, env, origin) {
   if (!env.MAIL_PUBLISH_TOKEN || request.headers.get('Authorization') !== 'Bearer ' + env.MAIL_PUBLISH_TOKEN)
     return json({error:'unauthorized'}, origin, 401);
-  const body = await readJson(request, 16000);
+  const body = await readJson(request, 100000);
   if (!body || !MAIL_NAMES[body.target] || !['pre_open','post_close'].includes(body.phase) ||
       !/^\d{4}-\d{2}-\d{2}$/.test(body.session_date || '') || !/^[a-f0-9]{40}$/.test(body.source_revision || '') ||
       body.url !== `https://namyikim.github.io/predict_stock/${body.target}/` ||
       !Array.isArray(body.lines) || !body.lines.length || body.lines.length > 12 ||
       body.lines.some(line => typeof line !== 'string' || line.length > 1500))
     return json({error:'invalid report event'}, origin, 400);
+  const site=body.site_reports===undefined?[]:body.site_reports;
+  if (!Array.isArray(site) || site.length>7 || new Set(site.map(r=>r && r.key)).size!==site.length ||
+      site.some(r=>!r || !Object.hasOwn(MAIL_SITE_NAMES,r.key) || typeof r.as_of!=='string' || r.as_of.length>260 ||
+        r.url!==`https://namyikim.github.io/predict_stock/${r.key}/` || !Array.isArray(r.lines) ||
+        !r.lines.length || r.lines.length>5 || r.lines.some(x=>typeof x!=='string' || x.length>700)))
+    return json({error:'invalid site reports'},origin,400);
+  const siteReports=site.map(r=>({key:r.key,title:MAIL_SITE_NAMES[r.key],as_of:r.as_of,lines:r.lines,url:r.url}));
   const now=new Date(), day=mailDay(now);
   if (!await automaticMail(env,body.automation,body.phase,now)) return json({error:'자동 실행만 이메일을 등록할 수 있습니다.'},origin,403);
   if (body.session_date!==day || !phaseOpen(body.phase,now)) return json({status:'outside_session',enabled:false},origin,200);
   const edition='digest/'+day+'/'+body.phase, id=edition+'/'+body.target;
-  const content = JSON.stringify({target:body.target,phase:body.phase,session_date:body.session_date,lines:body.lines,url:body.url});
+  const content = JSON.stringify({target:body.target,phase:body.phase,session_date:body.session_date,lines:body.lines,url:body.url,site_reports:siteReports});
   // 회차별 최초 자동 게시본을 고정한다. 수급 보완·재실행은 세 번째 메일을 만들지 않는다.
   await env.DB.batch([
     env.DB.prepare('INSERT OR IGNORE INTO mail_editions (id,day,phase,created_at) VALUES (?,?,?,?)').bind(edition,day,body.phase,now.toISOString()),
@@ -508,12 +516,20 @@ export async function mailPayload(env, event, email) {
   const c = JSON.parse(event.content);
   const subject = `[일일 보고서] ${c.day} · ${c.phase === 'pre_open' ? '개장 전 예측' : '마감 후 회고'}`;
   const note = '연구·교육용 판단 자료이며 투자 자문이 아닙니다. 예측은 실제 결과와 다를 수 있습니다.';
+  const site=c.site_reports || [];
+  const stocks=c.reports.map(r=>({title:MAIL_NAMES[r.target],lines:r.lines,url:r.url}));
+  const sections=[...stocks,...site];
+  const text=sections.map(r=>r.title+'\n'+(r.as_of?'게시 자료 기준: '+r.as_of+'\n':'')+r.lines.join('\n')+'\n전체 보고서: '+r.url).join('\n\n');
+  const html=sections.map(r=>'<section style="margin:24px 0;padding:0 0 18px;border-bottom:1px solid #e3eaf1"><h3 style="margin:0 0 8px;color:#1a5490">'+mailEscape(r.title)+'</h3>'+
+    (r.as_of?'<p style="font-size:12px;color:#667085">게시 자료 기준: '+mailEscape(r.as_of)+'</p>':'')+
+    '<ul style="padding-left:20px">'+r.lines.map(x=>'<li style="margin:7px 0">'+mailEscape(x)+'</li>').join('')+'</ul><p><a href="'+mailEscape(r.url)+'">전체 보고서 보기</a></p></section>').join('');
   return {from:env.MAIL_FROM,to:[email],subject,
-    text:subject+'\n\n'+c.reports.map(r=>MAIL_NAMES[r.target]+'\n'+r.lines.join('\n')+'\n전체 보고서: '+r.url).join('\n\n')+'\n\n'+note+'\n전체 구독 해지: '+url,
-    html:'<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"></head><body style="font-family:Arial,sans-serif;line-height:1.7;color:#243447"><h2>'+mailEscape(subject)+
-      '</h2>'+c.reports.map(r=>'<h3>'+MAIL_NAMES[r.target]+'</h3><ul>'+r.lines.map(x=>'<li>'+mailEscape(x)+'</li>').join('')+'</ul><p><a href="'+mailEscape(r.url)+'">전체 보고서 보기</a></p>').join('')+'<p>'+note+
-      '</p><hr><p>신청한 보고서를 하루 최대 두 통으로 안내합니다. <a href="'+mailEscape(url)+'">전체 구독 해지</a></p></body></html>',
-    headers:{'List-Unsubscribe':'<'+url+'>','List-Unsubscribe-Post':'List-Unsubscribe=One-Click','X-Report-Topics':c.reports.map(r=>r.target).join(',')}};
+    text:subject+'\n\n'+(site.length?'전체 메뉴의 최신 게시본을 모았습니다. 메뉴마다 자료 기준일과 갱신 주기가 다릅니다.\n\n':'')+text+'\n\n'+note+'\n전체 구독 해지: '+url,
+    html:'<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"></head><body style="margin:0;padding:20px 12px;font-family:Arial,sans-serif;line-height:1.7;color:#243447;overflow-wrap:anywhere"><div style="max-width:760px;margin:auto"><h2>'+mailEscape(subject)+
+      '</h2>'+(site.length?'<p style="padding:12px;background:#f0f6fc">전체 메뉴의 최신 게시본입니다. 메뉴마다 자료 기준일과 갱신 주기가 다르므로 아래 기준 시각을 함께 확인하세요.</p>':'')+html+'<p>'+note+
+      '</p><hr><p>신청한 보고서를 하루 최대 두 통으로 안내합니다. <a href="'+mailEscape(url)+'">전체 구독 해지</a></p></div></body></html>',
+    headers:{'List-Unsubscribe':'<'+url+'>','List-Unsubscribe-Post':'List-Unsubscribe=One-Click','X-Report-Topics':c.reports.map(r=>r.target).join(','),
+      ...(site.length?{'X-Report-Scope':'main'}:{})}};
 }
 // GET 링크 미리보기로 해지되지 않게 확인 화면과 실제 POST 처리를 나눈다.
 async function handleMailUnsubscribe(request, env, url) {
@@ -573,7 +589,9 @@ export async function processMail(env, now = new Date(), pause = ms => new Promi
       const reports=await env.DB.prepare('SELECT content FROM mail_events WHERE id IN (?,?) ORDER BY target').bind(event.id+'/samsung',event.id+'/sk_hynix').all();
       const selected=reports.results.map(r=>JSON.parse(r.content)).filter(r=>pages.includes('main') || pages.includes(r.target));
       if (!selected.length) continue;
-      const payload=await mailPayload({...env,MAIL_FROM:config.from_email},{content:JSON.stringify({day,phase,reports:selected})},event.email);
+      // 메인 구독자에게만 전체 메뉴를 한 번 넣는다. 종목별 등록에 실린 같은 자료를 중복하지 않는다.
+      const site_reports=pages.includes('main')?(selected.find(r=>r.site_reports && r.site_reports.length)?.site_reports || []):[];
+      const payload=await mailPayload({...env,MAIL_FROM:config.from_email},{content:JSON.stringify({day,phase,reports:selected,site_reports})},event.email);
       await env.DB.prepare('INSERT OR IGNORE INTO mail_deliveries (event_id,email,payload,created_at) VALUES (?,?,?,?)')
         .bind(event.id,event.email,JSON.stringify(payload),stamp).run();
     }
@@ -583,8 +601,8 @@ export async function processMail(env, now = new Date(), pause = ms => new Promi
       .bind(new Date(now.getTime()+5*60000).toISOString(),event.id,event.email,stamp,stamp).first();
     if (!delivery) continue;
     const active=await env.DB.prepare('SELECT page FROM subscribers WHERE email=? AND ts<=?').bind(event.email,event.created_at).all();
-    const pages=active.results.map(s=>s.page), topics=JSON.parse(delivery.payload).headers['X-Report-Topics'].split(',');
-    if (!topics.every(t=>pages.includes('main') || pages.includes(t))) {
+    const pages=active.results.map(s=>s.page), frozenHeaders=JSON.parse(delivery.payload).headers, topics=frozenHeaders['X-Report-Topics'].split(',');
+    if ((frozenHeaders['X-Report-Scope']==='main' && !pages.includes('main')) || !topics.every(t=>pages.includes('main') || pages.includes(t))) {
       await env.DB.prepare("UPDATE mail_deliveries SET status='cancelled',payload='' WHERE event_id=? AND email=?").bind(event.id,event.email).run();
       await cleanupSubscriberMail(env,event.email);
       continue;

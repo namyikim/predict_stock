@@ -15,6 +15,12 @@ from pathlib import Path
 from urllib.error import HTTPError
 from urllib.request import Request, urlopen
 
+# CLI 직접 실행과 tests의 패키지 import를 모두 지원한다.
+if __package__:
+    from .mail_site_reports import build_site_report, read_site_reports
+else:
+    from mail_site_reports import build_site_report, read_site_reports
+
 ROOT = Path(__file__).resolve().parents[1]
 REPO = 'namyikim/predict_stock'
 KST = timezone(timedelta(hours=9))
@@ -191,6 +197,8 @@ def main():
     if not payload:
         print('발송할 새 개장 전 예측 없음')
         return
+    # 같은 게시 리비전에서 공개 메뉴를 함께 읽는다(2026-10-04 전체 메뉴 요청).
+    payload['site_reports']=read_site_reports(read)
     payload['source_revision']=revision
     if args.preview:
         print(json.dumps(payload,ensure_ascii=False,indent=2))

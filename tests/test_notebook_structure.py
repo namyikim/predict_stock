@@ -124,7 +124,7 @@ class NotebookStructureTests(unittest.TestCase):
         self.assertIn('1. 다음 거래일 방향 ({_prediction_date_label})', self.source)
 
     def test_conclusions_come_first_and_evidence_last(self):
-        """원문 순서가 탭 순서와 같다: 오늘의 예측 → 장기 전망 탭 → 예측 성적 → 데이터 → 공시.
+        """원문 순서가 탭 순서와 같다: 오늘의 장 예측 → 장기 전망 탭 → 예측 성적 → 데이터 → 공시.
 
         2026-09-13 재구성: 절 번호를 탭마다 새로 매긴다. 첫 탭은 1~3절(방향·가격·읽는 법), 장기 전망 탭은
         1·2절(영업이익·장기 전망 — 2026-09-29 영업이익을 위로)이고, 절이 하나뿐인 탭은 번호가 없다. 공시는 참고 자료라 맨 뒤다.

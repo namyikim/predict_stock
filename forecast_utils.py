@@ -474,7 +474,7 @@ def official_forecast_note(official):
 # ---------------------------------------------------------------------------
 # 장기 전망 탭의 쉬운 요약
 # ---------------------------------------------------------------------------
-# 오늘의 예측 탭처럼 장기 전망 탭에도 맨 위 요약을 둔다(2026-09-13 요청). 이번 분기 영업이익 추정을 크게,
+# 오늘의 장 예측 탭처럼 장기 전망 탭에도 맨 위 요약을 둔다(2026-09-13 요청). 이번 분기 영업이익 추정을 크게,
 # 앞으로의 흐름을 짧게, 30만·40만 원 같은 딱 떨어지는 가격에 언제쯤 닿을 수 있는지를 확률로 보인다.
 # 새 모델을 만들지 않는다. 월간 도구가 계산해 둔 값(longterm.json·earnings.json)과 오늘까지의 종가만 쓴다.
 # 가격 도달 시점은 예측이 아니라 변동성 모의실험이다. 장기 주가 모델이 '변화 없음'을 이긴다는 근거가 없으므로
@@ -4234,14 +4234,14 @@ def review_section_html(review, carried=False):
     return "".join(parts)
 
 
-# 회고(시간대별 뉴스)는 '오늘의 예측' 탭 맨 끝에 둔다(2026-09-28 요청). 원장 절 뒤에 두면 '예측 성적' 탭 안으로
+# 회고(시간대별 뉴스)는 '오늘의 장 예측' 탭 맨 끝에 둔다(2026-09-28 요청). 원장 절 뒤에 두면 '예측 성적' 탭 안으로
 # 들어가 첫 화면에서 찾을 수 없었다. 탭이 없는 페이지(탭 구조 검사에 걸려 모든 절을 펼친 경우)는 예전처럼 원장 절 뒤.
 _FIRST_TAB_OPEN = '<section class="rtab-panel" id="rtab-0">'
 _SECOND_TAB_OPEN = '<section class="rtab-panel" id="rtab-1">'
 
 
 # ---- 장 회고 탭(2026-09-30 요청) ----------------------------------------------------------------
-# 회고는 '오늘의 예측' 탭 끝에 있었다. 왼쪽 메뉴에 '오늘의 장 회고' 탭을 따로 두고(오늘의 예측 바로 다음),
+# 회고는 '오늘의 장 예측' 탭 끝에 있었다. 왼쪽 메뉴에 '오늘의 장 회고' 탭을 따로 두고(오늘의 장 예측 바로 다음),
 # 최근 거래일 3~4일을 날짜 단추로 골라 볼 수 있게 한다. 장이 끝나기 전에는 직전 거래일 회고가 보이므로
 # 그 사실을 맨 위에 적는다(브라우저 시각 기준 — 평일·시각만 보고 공휴일은 모른다).
 REVIEW_TAB_ID, REVIEW_TAB_LABEL, REVIEW_TAB_DAYS = "rtab-review", "오늘의 장 회고", 4
@@ -4390,7 +4390,7 @@ def stamp_all_panels(page, text, skip=()):
 def insert_review_section(page, section):
     """회고 절을 넣는다. 이미 있으면 교체.
 
-    왼쪽 메뉴(탭)가 있는 페이지는 '오늘의 장 회고' 탭(오늘의 예측 바로 다음)에 넣는다 — 탭이 없으면 메뉴 단추와
+    왼쪽 메뉴(탭)가 있는 페이지는 '오늘의 장 회고' 탭(오늘의 장 예측 바로 다음)에 넣는다 — 탭이 없으면 메뉴 단추와
     칸을 만든다. 메뉴가 없는 옛 페이지는 원장 절 뒤, 그것도 없으면 body 끝.
     """
     start, end = page.find(REVIEW_START), page.find(REVIEW_END)
@@ -4402,7 +4402,7 @@ def insert_review_section(page, section):
         panel_open = f'<section class="rtab-panel" id="{REVIEW_TAB_ID}">'
         where = page.find(panel_open)
         if where < 0:
-            # 메뉴: 첫 단추(오늘의 예측) 바로 뒤에 새 단추
+            # 메뉴: 첫 단추(오늘의 장 예측) 바로 뒤에 새 단추
             first_link_end = page.find("</a>", nav)
             link = f'<a href="#{REVIEW_TAB_ID}" aria-selected="false">{REVIEW_TAB_LABEL}</a>'
             page = page[:first_link_end + 4] + link + page[first_link_end + 4:]

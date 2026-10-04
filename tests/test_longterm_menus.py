@@ -49,7 +49,7 @@ def panel_text(text):
 
 class OneMenuTests(unittest.TestCase):
     def test_everything_long_term_is_in_one_menu_in_this_order(self):
-        self.assertEqual(labels(page()), ["오늘의 예측", "장기 전망", "예측 성적"])
+        self.assertEqual(labels(page()), ["오늘의 장 예측", "장기 전망", "예측 성적"])
         titles = [re.findall(r"<h3[^>]*>([^<]+)</h3>", p["inner"]) for p in rh.panels(page())]
         self.assertEqual(titles[1], ["1. 한눈에 보는 장기 전망 요약", "2. 이번 분기 영업이익 추정",
                                      "3. 장기 전망 (월간)", "4. 지난 전망은 맞았나"])

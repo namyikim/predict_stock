@@ -128,7 +128,7 @@ class TabTests(unittest.TestCase):
         """절 제목을 그대로 쓰면 휴대폰에서 탭 두 개도 한 줄에 안 들어간다."""
         out = rh.tabify_sections(PAGE)
         labels = tab_labels(out)
-        self.assertEqual(labels, ["오늘의 예측", "장기 전망", "예측 성적", "사용한 데이터"])
+        self.assertEqual(labels, ["오늘의 장 예측", "장기 전망", "예측 성적", "사용한 데이터"])
         self.assertTrue(all(len(label) <= 12 for label in labels))
         # 탭 이름에는 절 번호를 붙이지 않는다(2026-09-13).
         self.assertFalse(any(re.match(r"\d", label) for label in labels), labels)
@@ -192,7 +192,7 @@ class TabArrangementTests(unittest.TestCase):
 
     def test_tabs_are_in_this_order(self):
         # 2026-10-02: 장기 전망을 둘·셋으로 나눠 봤다가 같은 날 메뉴 하나로 되돌렸다(무엇이 다른지 헷갈렸다).
-        self.assertEqual(tab_labels(self.out()), ["오늘의 예측", "장기 전망", "주간 뉴스",
+        self.assertEqual(tab_labels(self.out()), ["오늘의 장 예측", "장기 전망", "주간 뉴스",
                                                   "예측 성적", "사용한 데이터", "공시·발표 일정"])
 
     def test_weekly_news_is_the_third_tab(self):
@@ -209,7 +209,7 @@ class TabArrangementTests(unittest.TestCase):
         self.assertNotIn("2. 이번 분기 영업이익 추정", first)
 
     def test_long_term_tab_holds_the_outlook_and_the_quarterly_profit(self):
-        # 장기 전망 탭도 오늘의 예측처럼 쉬운 요약이 맨 위에 온다(2026-09-13).
+        # 장기 전망 탭도 오늘의 장 예측처럼 쉬운 요약이 맨 위에 온다(2026-09-13).
         self.assertEqual(panel_titles(self.out())["rtab-1"],
                          ["1. 한눈에 보는 장기 전망 요약", "2. 이번 분기 영업이익 추정", "3. 장기 전망 (월간)"])
 
@@ -332,7 +332,7 @@ class RealShapeTabTests(unittest.TestCase):
         section = sr.MARK_START + '<h3 style="x">오늘 장 회고 — 2026-09-11</h3><div>회고</div>' + sr.MARK_END
         page = sr.insert_section(out, section)
         self.assertEqual(rh.tab_structure_problems(page), [])
-        # 2026-09-30 요청: '오늘의 예측' 바로 다음의 '오늘의 장 회고' 탭에 들어간다. 다시 넣어도 하나만 남고 자리가 같다.
+        # 2026-09-30 요청: '오늘의 장 예측' 바로 다음의 '오늘의 장 회고' 탭에 들어간다. 다시 넣어도 하나만 남고 자리가 같다.
         self.assertNotIn("오늘 장 회고", panel_titles_raw(page, "rtab-0"))
         self.assertIn("오늘 장 회고", panel_titles_raw(page, "rtab-review"))
         nav = page[page.find('<nav class="rtabs"'):page.find("</nav>")]

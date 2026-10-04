@@ -57,6 +57,10 @@ on:
       - ".github/workflows/daily-report.yml"
   workflow_dispatch:
     inputs:
+      mail_proof:
+        description: "시스템 자동 발송 서명(수동 실행은 비워 둠)"
+        type: string
+        default: ""
       targets:
         description: "실행할 종목"
         type: choice
@@ -180,13 +184,15 @@ jobs:
           MPLBACKEND: Agg
         run: python tools/run_notebook.py --storage "runs/${{ matrix.target }}"
 
-      # 게시된 원장을 읽어 발송 대기를 등록한다. 생성 시각만 바뀐 재실행은 Worker가 중복 제외한다.
+      # 시스템 실행의 게시 완료만 등록한다. Worker는 하루 두 회차로 묶어 중복을 제외한다.
       - name: 개장 전 보고서 이메일 알림
-        if: success() && steps.gate.outputs.run == 'true' && github.event_name != 'push'
+        if: success() && steps.gate.outputs.run == 'true' && github.run_attempt == 1 && (github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.caller == 'cloudflare-cron' && inputs.mail_proof != ''))
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           REPORT_MAIL_ENDPOINT: ${{ vars.REPORT_MAIL_ENDPOINT }}
           MAIL_PUBLISH_TOKEN: ${{ secrets.MAIL_PUBLISH_TOKEN }}
+          MAIL_CALLER: ${{ inputs.caller }}
+          MAIL_AUTOMATION_PROOF: ${{ inputs.mail_proof }}
         run: python tools/notify_report_update.py --target ${{ matrix.target }} --phase pre_open
 
 

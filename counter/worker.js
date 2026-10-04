@@ -15,6 +15,7 @@
 //   GET /subscribers     구독자 목록(비공개, /stats 와 같은 STATS_TOKEN).
 //   POST /subscribers/delete  관리자가 한 건을 지운다(STATS_TOKEN). 본문 {email, page}.
 //   POST /mail/events    보고서 게시 완료 요약 등록(MAIL_PUBLISH_TOKEN).
+//   GET/POST /mail/settings  발신 주소 조회·변경(STATS_TOKEN).
 //   GET /mail/status     발송 설정·집계(STATS_TOKEN). 수신 주소는 포함하지 않는다.
 //   GET/POST /mail/unsubscribe  메일 내 토큰 링크. GET 확인 후 POST로 전체 해지.
 //   POST /dispatch/test  관리자가 GitHub 채점 워크플로 호출을 한 번 시험한다(STATS_TOKEN). 결과 JSON 을 바로 돌려줘
@@ -101,15 +102,16 @@ export function morningDue(scheduledTime, times = MORNING_TIMES_UTC) {
 
 // GitHub에 workflow_dispatch 를 보낸다. 토큰이 없으면 아무것도 하지 않는다 — 조회수 카운터만 쓰는
 // 배포도 그대로 동작해야 한다. 응답 본문은 기록하지 않는다(오류 문구에 토큰 정보가 섞일 수 있다).
-async function dispatchScoring(env) {
-  return dispatchWorkflow(env, DISPATCH_WORKFLOW, { caller: "cloudflare-cron" });
+async function dispatchScoring(env, automatic = false) {
+  return dispatchWorkflow(env, DISPATCH_WORKFLOW, { caller: "cloudflare-cron" }, automatic);
 }
 
-async function dispatchWorkflow(env, workflow, inputs) {
+async function dispatchWorkflow(env, workflow, inputs, automatic = false) {
   // 시크릿 이름은 두 가지를 다 받는다. 대시보드가 이름을 받아 주는 규칙이 화면마다 달라 한쪽만 고정하면
   // 이름 불일치로 조용히 skipped 가 된다(2026-09-10 실제로 그랬다).
   const token = env.GH_DISPATCH_TOKEN || env.GITHUB_DISPATCH_TOKEN;
   if (!token) return { status: "skipped", reason: "GH_DISPATCH_TOKEN/GITHUB_DISPATCH_TOKEN 없음" };
+  if (automatic && env.MAIL_PUBLISH_TOKEN) inputs = { ...inputs, mail_proof: await mailAutomationProof(env, workflow) };
   const url = `https://api.github.com/repos/${DISPATCH_REPO}/actions/workflows/${workflow}/dispatches`;
   const response = await fetch(url, {
     method: "POST",
@@ -417,12 +419,55 @@ function handleGeo(request, origin) {
 // 보고서 발행 완료 알림(2026-10-04). 공개 요약과 비공개 수신 정보를 분리하며 기본은 발송 중지다.
 const MAIL_NAMES = { samsung: '삼성전자', sk_hynix: 'SK하이닉스' };
 const MAIL_BATCH_SIZE = 5;
-function mailConfig(env) {
-  const missing = ['RESEND_API_KEY', 'MAIL_FROM', 'MAIL_PUBLIC_URL'].filter(k => !env[k]);
+async function mailConfig(env) {
+  const row = await env.DB.prepare('SELECT from_email,updated_at FROM mail_settings WHERE id=1').first();
+  // 빈 값 저장은 발송 중지를 뜻한다. 과거 환경변수 주소로 되돌리지 않는다.
+  const from = row ? row.from_email : String(env.MAIL_FROM || '');
+  const missing = ['RESEND_API_KEY','MAIL_PUBLIC_URL'].filter(k => !env[k]);
+  if (!from) missing.push('관리자 발신 이메일');
   let validUrl = false;
   try { const u = new URL(env.MAIL_PUBLIC_URL); validUrl = u.protocol === 'https:' && u.pathname === '/' && !u.search && !u.hash && !u.username && !u.password; } catch {}
   if (env.MAIL_PUBLIC_URL && !validUrl) missing.push('MAIL_PUBLIC_URL 형식');
-  return { enabled: String(env.MAIL_ENABLED || '') === '1', configured: missing.length === 0, missing };
+  return { enabled:String(env.MAIL_ENABLED || '')==='1', configured:missing.length===0, missing,
+    from_email:from, max_per_day:2, updated_at:row ? row.updated_at : null };
+}
+async function handleMailSettings(request,env,origin) {
+  if (!isAdmin(request,env)) return json({error:'unauthorized'},origin,401);
+  if (request.method==='POST') {
+    const body=await readJson(request);
+    if (!body || typeof body.from_email!=='string') return json({error:'발신 이메일을 입력하세요.'},origin,400);
+    const raw=body.from_email.trim(), email=normalizeEmail(raw);
+    if (raw && !email) return json({error:'올바른 이메일 주소를 입력하세요.'},origin,400);
+    await env.DB.prepare('INSERT INTO mail_settings (id,from_email,updated_at) VALUES (1,?,?) ON CONFLICT(id) DO UPDATE SET from_email=excluded.from_email,updated_at=excluded.updated_at')
+      .bind(email,new Date().toISOString()).run();
+  }
+  return json(await mailConfig(env),origin);
+}
+function mailDay(now) { return new Date(now.getTime()+9*3600000).toISOString().slice(0,10); }
+function phaseOpen(phase,now) {
+  const h=new Date(now.getTime()+9*3600000).getUTCHours();
+  const minute=new Date(now.getTime()+9*3600000).getUTCMinutes();
+  return phase==='pre_open' ? h<9 : h*60+minute>=15*60+30;
+}
+export async function mailAutomationProof(env,workflow,now=Date.now()) {
+  if (!env.MAIL_PUBLISH_TOKEN) return '';
+  const raw=Math.floor(now/1000)+':'+crypto.randomUUID();
+  const key=await crypto.subtle.importKey('raw',new TextEncoder().encode(env.MAIL_PUBLISH_TOKEN),{name:'HMAC',hash:'SHA-256'},false,['sign']);
+  const bytes=await crypto.subtle.sign('HMAC',key,new TextEncoder().encode(workflow+'|'+raw));
+  return raw+':'+[...new Uint8Array(bytes)].map(x=>x.toString(16).padStart(2,'0')).join('');
+}
+async function automaticMail(env,a,phase,now) {
+  if (!a || a.attempt!==1) return false;
+  if (a.event==='schedule') return true;
+  if (a.event!=='workflow_dispatch' || a.caller!=='cloudflare-cron' || !env.MAIL_PUBLISH_TOKEN) return false;
+  const parts=String(a.proof || '').split(':');
+  if (parts.length!==3 || !/^\d+$/.test(parts[0]) || !/^[a-f0-9]{64}$/.test(parts[2])) return false;
+  const age=now.getTime()/1000-Number(parts[0]);
+  if (age<0 || age>4*3600) return false;
+  const key=await crypto.subtle.importKey('raw',new TextEncoder().encode(env.MAIL_PUBLISH_TOKEN),{name:'HMAC',hash:'SHA-256'},false,['verify']);
+  const bytes=Uint8Array.from(parts[2].match(/../g),x=>parseInt(x,16));
+  const workflow=phase==='pre_open'?'daily-report.yml':'afternoon-report.yml';
+  return crypto.subtle.verify('HMAC',key,bytes,new TextEncoder().encode(workflow+'|'+parts.slice(0,2).join(':')));
 }
 function mailEscape(text) {
   return String(text).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -436,18 +481,24 @@ async function handleMailEvent(request, env, origin) {
     return json({error:'unauthorized'}, origin, 401);
   const body = await readJson(request, 16000);
   if (!body || !MAIL_NAMES[body.target] || !['pre_open','post_close'].includes(body.phase) ||
-      !/^\d{4}-\d{2}-\d{2}$/.test(body.session_date || '') ||
-      !/^[a-f0-9]{40}$/.test(body.source_revision || '') ||
+      !/^\d{4}-\d{2}-\d{2}$/.test(body.session_date || '') || !/^[a-f0-9]{40}$/.test(body.source_revision || '') ||
       body.url !== `https://namyikim.github.io/predict_stock/${body.target}/` ||
       !Array.isArray(body.lines) || !body.lines.length || body.lines.length > 12 ||
       body.lines.some(line => typeof line !== 'string' || line.length > 1500))
     return json({error:'invalid report event'}, origin, 400);
-  // 리비전·수집 시각만 바뀐 재발행은 새 내용이 아니다. 본문은 최초 수신 값으로 동결한다.
+  const now=new Date(), day=mailDay(now);
+  if (!await automaticMail(env,body.automation,body.phase,now)) return json({error:'자동 실행만 이메일을 등록할 수 있습니다.'},origin,403);
+  if (body.session_date!==day || !phaseOpen(body.phase,now)) return json({status:'outside_session',enabled:false},origin,200);
+  const edition='digest/'+day+'/'+body.phase, id=edition+'/'+body.target;
   const content = JSON.stringify({target:body.target,phase:body.phase,session_date:body.session_date,lines:body.lines,url:body.url});
-  const id = await mailHash(content);
-  await env.DB.prepare('INSERT OR IGNORE INTO mail_events (id,target,phase,session_date,content,source_revision,created_at) VALUES (?,?,?,?,?,?,?)')
-    .bind(id,body.target,body.phase,body.session_date,content,body.source_revision,new Date().toISOString()).run();
-  return json({status:'queued',event_id:id,...mailConfig(env)}, origin, 202);
+  // 회차별 최초 자동 게시본을 고정한다. 수급 보완·재실행은 세 번째 메일을 만들지 않는다.
+  await env.DB.batch([
+    env.DB.prepare('INSERT OR IGNORE INTO mail_editions (id,day,phase,created_at) VALUES (?,?,?,?)').bind(edition,day,body.phase,now.toISOString()),
+    env.DB.prepare('INSERT OR IGNORE INTO mail_events (id,target,phase,session_date,content,source_revision,created_at) VALUES (?,?,?,?,?,?,?)')
+      .bind(id,body.target,body.phase,day,content,body.source_revision,now.toISOString()),
+  ]);
+  const config=await mailConfig(env);
+  return json({status:'queued',event_id:id,enabled:config.enabled,configured:config.configured},origin,202);
 }
 export async function mailPayload(env, event, email) {
   await env.DB.prepare('INSERT OR IGNORE INTO mail_unsubscribe (email,token) VALUES (?,?)')
@@ -455,14 +506,14 @@ export async function mailPayload(env, event, email) {
   const token = (await env.DB.prepare('SELECT token FROM mail_unsubscribe WHERE email=?').bind(email).first()).token;
   const url = env.MAIL_PUBLIC_URL.replace(/\/$/,'') + '/mail/unsubscribe?token=' + encodeURIComponent(token);
   const c = JSON.parse(event.content);
-  const subject = `[보고서 갱신] ${MAIL_NAMES[c.target]} · ${c.session_date} ${c.phase === 'pre_open' ? '개장 전 예측' : '마감 후 회고'}`;
+  const subject = `[일일 보고서] ${c.day} · ${c.phase === 'pre_open' ? '개장 전 예측' : '마감 후 회고'}`;
   const note = '연구·교육용 판단 자료이며 투자 자문이 아닙니다. 예측은 실제 결과와 다를 수 있습니다.';
   return {from:env.MAIL_FROM,to:[email],subject,
-    text:subject+'\n\n'+c.lines.join('\n')+'\n\n전체 보고서: '+c.url+'\n\n'+note+'\n전체 구독 해지: '+url,
+    text:subject+'\n\n'+c.reports.map(r=>MAIL_NAMES[r.target]+'\n'+r.lines.join('\n')+'\n전체 보고서: '+r.url).join('\n\n')+'\n\n'+note+'\n전체 구독 해지: '+url,
     html:'<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"></head><body style="font-family:Arial,sans-serif;line-height:1.7;color:#243447"><h2>'+mailEscape(subject)+
-      '</h2><ul>'+c.lines.map(x=>'<li>'+mailEscape(x)+'</li>').join('')+'</ul><p><a href="'+mailEscape(c.url)+'">전체 보고서 보기</a></p><p>'+note+
-      '</p><hr><p>직접 신청한 보고서의 갱신 안내입니다. <a href="'+mailEscape(url)+'">전체 구독 해지</a></p></body></html>',
-    headers:{'List-Unsubscribe':'<'+url+'>','List-Unsubscribe-Post':'List-Unsubscribe=One-Click'}};
+      '</h2>'+c.reports.map(r=>'<h3>'+MAIL_NAMES[r.target]+'</h3><ul>'+r.lines.map(x=>'<li>'+mailEscape(x)+'</li>').join('')+'</ul><p><a href="'+mailEscape(r.url)+'">전체 보고서 보기</a></p>').join('')+'<p>'+note+
+      '</p><hr><p>신청한 보고서를 하루 최대 두 통으로 안내합니다. <a href="'+mailEscape(url)+'">전체 구독 해지</a></p></body></html>',
+    headers:{'List-Unsubscribe':'<'+url+'>','List-Unsubscribe-Post':'List-Unsubscribe=One-Click','X-Report-Topics':c.reports.map(r=>r.target).join(',')}};
 }
 // GET 링크 미리보기로 해지되지 않게 확인 화면과 실제 POST 처리를 나눈다.
 async function handleMailUnsubscribe(request, env, url) {
@@ -484,11 +535,10 @@ async function handleMailUnsubscribe(request, env, url) {
   return new Response('<html lang="ko"><meta charset="utf-8"><h1>보고서 구독 해지</h1><p>모든 보고서 이메일 수신을 중지합니다.</p><form method="post"><button name="confirm" value="1">전체 구독 해지</button></form></html>',{headers});
 }
 function subscriberMailCleanup(env, email) {
-  // 여전히 구독 중인 종목의 접수 이력은 보존한다. 지우면 같은 메일을 다시 보낼 수 있다.
   return [env.DB.prepare(`DELETE FROM mail_deliveries WHERE email=? AND NOT EXISTS (
-    SELECT 1 FROM subscribers s JOIN mail_events e ON e.id=mail_deliveries.event_id
-    WHERE s.email=mail_deliveries.email AND (s.page='main' OR s.page=e.target) AND s.ts<=e.created_at)`)
-    .bind(email),
+    SELECT 1 FROM subscribers s LEFT JOIN mail_editions ed ON ed.id=mail_deliveries.event_id
+    LEFT JOIN mail_events e ON e.id=mail_deliveries.event_id WHERE s.email=mail_deliveries.email AND
+    ((ed.id IS NOT NULL AND s.ts<=ed.created_at) OR ((s.page='main' OR s.page=e.target) AND s.ts<=e.created_at)))`).bind(email),
     env.DB.prepare('DELETE FROM mail_unsubscribe WHERE email=? AND NOT EXISTS (SELECT 1 FROM subscribers WHERE email=?)').bind(email,email)];
 }
 async function cleanupSubscriberMail(env, email) {
@@ -496,70 +546,87 @@ async function cleanupSubscriberMail(env, email) {
 }
 // 원자적 임대와 제공자의 같은 요청 키를 함께 쓴다. 접수 응답 유실 뒤 재시도해도 같은 본문이다.
 export async function processMail(env, now = new Date(), pause = ms => new Promise(resolve => setTimeout(resolve,ms))) {
-  const config = mailConfig(env);
+  const config = await mailConfig(env);
   if (!config.enabled || !config.configured) return {status:'disabled',...config};
-  const stamp = now.toISOString();
+  const phase=phaseOpen('pre_open',now)?'pre_open':phaseOpen('post_close',now)?'post_close':'';
+  if (!phase) return {status:'outside_session'};
+  const stamp=now.toISOString(),day=mailDay(now);
   await env.DB.prepare('DELETE FROM mail_deliveries WHERE created_at<?').bind(new Date(now.getTime()-30*86400000).toISOString()).run();
-  // Resend 요청 키는 24시간 유효하므로 23시간 안에서만 자동 재시도한다.
-  const cutoff = new Date(now.getTime()-23*3600000).toISOString();
-  const due = await env.DB.prepare(`SELECT DISTINCT e.id,e.content,e.created_at,s.email FROM mail_events e
-    JOIN subscribers s ON (s.page='main' OR s.page=e.target) AND s.ts<=e.created_at
+  const due = await env.DB.prepare(`SELECT DISTINCT e.id,e.day,e.phase,e.created_at,s.email FROM mail_editions e
+    JOIN subscribers s ON s.ts<=e.created_at
     LEFT JOIN mail_deliveries d ON d.event_id=e.id AND d.email=s.email
-    WHERE e.created_at>=? AND (d.event_id IS NULL OR
+    WHERE e.day=? AND e.phase=? AND (d.event_id IS NULL OR
       (d.attempts<5 AND ((d.status='pending' AND d.next_attempt<=?) OR (d.status='sending' AND d.lease_until<=?))))
-    ORDER BY e.created_at,e.id,s.email LIMIT ?`).bind(cutoff,stamp,stamp,MAIL_BATCH_SIZE).all();
+    AND NOT EXISTS (SELECT 1 FROM subscribers need WHERE need.email=s.email AND need.ts<=e.created_at AND
+      ((need.page IN ('main','samsung') AND NOT EXISTS (SELECT 1 FROM mail_events m WHERE m.id=e.id||'/samsung')) OR
+       (need.page IN ('main','sk_hynix') AND NOT EXISTS (SELECT 1 FROM mail_events m WHERE m.id=e.id||'/sk_hynix'))))
+    AND NOT EXISTS (SELECT 1 FROM mail_deliveries old JOIN mail_events legacy ON legacy.id=old.event_id
+      WHERE old.email=s.email AND old.attempts>0 AND legacy.phase=e.phase AND date(COALESCE(old.sent_at,old.created_at),'+9 hours')=e.day)
+    ORDER BY e.created_at,s.email LIMIT ?`).bind(day,phase,stamp,stamp,MAIL_BATCH_SIZE).all();
   let accepted=0,failed=0;
   for (const event of due.results) {
-    let delivery = await env.DB.prepare('SELECT * FROM mail_deliveries WHERE event_id=? AND email=?').bind(event.id,event.email).first();
+    if (mailDay(new Date())!==day || !phaseOpen(phase,new Date())) break;
+    let delivery=await env.DB.prepare('SELECT * FROM mail_deliveries WHERE event_id=? AND email=?').bind(event.id,event.email).first();
     if (!delivery) {
-      const payload = await mailPayload(env,event,event.email);
+      const subscriptions=await env.DB.prepare('SELECT page FROM subscribers WHERE email=? AND ts<=?').bind(event.email,event.created_at).all();
+      const pages=subscriptions.results.map(s=>s.page);
+      const reports=await env.DB.prepare('SELECT content FROM mail_events WHERE id IN (?,?) ORDER BY target').bind(event.id+'/samsung',event.id+'/sk_hynix').all();
+      const selected=reports.results.map(r=>JSON.parse(r.content)).filter(r=>pages.includes('main') || pages.includes(r.target));
+      if (!selected.length) continue;
+      const payload=await mailPayload({...env,MAIL_FROM:config.from_email},{content:JSON.stringify({day,phase,reports:selected})},event.email);
       await env.DB.prepare('INSERT OR IGNORE INTO mail_deliveries (event_id,email,payload,created_at) VALUES (?,?,?,?)')
         .bind(event.id,event.email,JSON.stringify(payload),stamp).run();
     }
-    delivery = await env.DB.prepare(`UPDATE mail_deliveries SET status='sending',attempts=attempts+1,lease_until=?
+    delivery=await env.DB.prepare(`UPDATE mail_deliveries SET status='sending',attempts=attempts+1,lease_until=?
       WHERE event_id=? AND email=? AND attempts<5 AND
       ((status='pending' AND next_attempt<=?) OR (status='sending' AND lease_until<=?)) RETURNING *`)
       .bind(new Date(now.getTime()+5*60000).toISOString(),event.id,event.email,stamp,stamp).first();
     if (!delivery) continue;
-    const active = await env.DB.prepare(`SELECT 1 AS active FROM subscribers s JOIN mail_events e ON e.id=?
-      WHERE s.email=? AND (s.page='main' OR s.page=e.target) AND s.ts<=e.created_at LIMIT 1`).bind(event.id,event.email).first();
-    if (!active) { await cleanupSubscriberMail(env,event.email); continue; }
-    const idempotency = 'report-'+await mailHash(event.id+'|'+event.email);
+    const active=await env.DB.prepare('SELECT page FROM subscribers WHERE email=? AND ts<=?').bind(event.email,event.created_at).all();
+    const pages=active.results.map(s=>s.page), topics=JSON.parse(delivery.payload).headers['X-Report-Topics'].split(',');
+    if (!topics.every(t=>pages.includes('main') || pages.includes(t))) {
+      await env.DB.prepare("UPDATE mail_deliveries SET status='cancelled',payload='' WHERE event_id=? AND email=?").bind(event.id,event.email).run();
+      await cleanupSubscriberMail(env,event.email);
+      continue;
+    }
+    const idempotency='report-'+await mailHash(event.id+'|'+event.email);
+    // DB 처리·이전 수신자 발송 중 자정이나 개장 시각을 넘겼으면 여기서 멈춘다.
+    const sendingAt=new Date();
+    if (mailDay(sendingAt)!==day || !phaseOpen(phase,sendingAt)) break;
     let code='network',response;
     try {
-      response = await fetch('https://api.resend.com/emails',{method:'POST',headers:{Authorization:'Bearer '+env.RESEND_API_KEY,
+      response=await fetch('https://api.resend.com/emails',{method:'POST',headers:{Authorization:'Bearer '+env.RESEND_API_KEY,
         'Content-Type':'application/json','Idempotency-Key':idempotency},body:delivery.payload,signal:AbortSignal.timeout(15000)});
       code='http_'+response.status;
     } catch { /* 주소·토큰·응답 본문은 로그에 남기지 않는다. */ }
     if (response && response.ok) {
       let result;
-      try { result = await response.json(); } catch {}
-      if (result && typeof result.id === 'string' && result.id.length <= 200) {
+      try {result=await response.json();} catch {}
+      if (result && typeof result.id==='string' && result.id.length<=200) {
         await env.DB.prepare("UPDATE mail_deliveries SET status='sent',sent_at=?,provider_id=?,error_code=NULL WHERE event_id=? AND email=?")
-          .bind(stamp,result.id,event.id,event.email).run();
-        accepted++;
-        await pause(600);
-        continue;
+          .bind(new Date().toISOString(),result.id,event.id,event.email).run();
+        accepted++;await pause(600);continue;
       }
       code='invalid_response';
     }
-    const retry = !response || response.status===429 || response.status>=500 || response.status===409 || code==='invalid_response';
+    const retry=!response || response.status===429 || response.status>=500 || response.status===409 || code==='invalid_response';
     await env.DB.prepare('UPDATE mail_deliveries SET status=?,next_attempt=?,error_code=? WHERE event_id=? AND email=?')
       .bind(retry && delivery.attempts<5?'pending':'failed',new Date(now.getTime()+Math.min(60,5*2**(delivery.attempts-1))*60000).toISOString(),code,event.id,event.email).run();
-    failed++;
-    await pause(600);
+    failed++;await pause(600);
   }
   return {status:'processed',accepted,failed};
 }
 async function handleMailStatus(request,env,origin) {
   if (!isAdmin(request,env)) return json({error:'unauthorized'},origin,401);
-  const recent = await env.DB.prepare(`SELECT e.target,e.phase,e.session_date,e.created_at,
-    (SELECT COUNT(DISTINCT s.email) FROM subscribers s WHERE (s.page='main' OR s.page=e.target) AND s.ts<=e.created_at) AS eligible,
+  const recent=await env.DB.prepare(`SELECT e.phase,e.day AS session_date,e.created_at,
+    (SELECT COUNT(DISTINCT s.email) FROM subscribers s WHERE s.ts<=e.created_at) AS eligible,
     COUNT(d.email) AS attempted,SUM(CASE WHEN d.status='sent' THEN 1 ELSE 0 END) AS accepted,
-    SUM(CASE WHEN d.status='failed' THEN 1 ELSE 0 END) AS failed
-    FROM mail_events e LEFT JOIN mail_deliveries d ON d.event_id=e.id
+    SUM(CASE WHEN d.status IN ('failed','cancelled') THEN 1 ELSE 0 END) AS failed
+    FROM mail_editions e LEFT JOIN mail_deliveries d ON d.event_id=e.id
     GROUP BY e.id ORDER BY e.created_at DESC LIMIT 20`).all();
-  return json({...mailConfig(env),events:recent.results.map(e => ({...e,remaining:Math.max(0,e.eligible-e.accepted-e.failed),expired:Date.now()-Date.parse(e.created_at)>23*3600000})),notice:'접수 완료는 발송 서비스 접수 기준이며 수신함 도착을 보장하지 않습니다.'},origin);
+  const now=new Date();
+  return json({...await mailConfig(env),events:recent.results.map(e=>({...e,target:'digest',remaining:Math.max(0,e.eligible-e.accepted-e.failed),expired:e.session_date!==mailDay(now) || !phaseOpen(e.phase,now)})),
+    notice:'수신자별 하루 최대 두 통입니다. 접수 완료는 발송 서비스 접수 기준이며 수신함 도착을 보장하지 않습니다.'},origin);
 }
 
 export default {
@@ -574,6 +641,7 @@ export default {
     try {
       if (url.pathname === '/mail/unsubscribe' && ['GET','POST'].includes(request.method)) return await handleMailUnsubscribe(request,env,url);
       if (request.method === 'POST' && url.pathname === '/mail/events') return await handleMailEvent(request,env,origin);
+      if (['GET','POST'].includes(request.method) && url.pathname === '/mail/settings') return await handleMailSettings(request,env,origin);
       if (request.method === 'GET' && url.pathname === '/mail/status') return await handleMailStatus(request,env,origin);
       if (request.method === "POST") {
         if (url.pathname === "/subscribe") return await handleSubscribe(request, env, origin, "subscribe");
@@ -601,7 +669,7 @@ export default {
   async scheduled(event, env) {
     // 기존 보고서 정시 호출과 함께 실행한다. 별도 */5 * * * * 트리거는 발송 재시도용이다.
     if (String(env.MAIL_ENABLED || '') === '1') {
-      try { console.log('report_mail ' + JSON.stringify(await processMail(env))); }
+      try { const result = await processMail(env); console.log('report_mail ' + JSON.stringify({status:result.status,accepted:result.accepted})); }
       catch { console.log('report_mail 처리 실패: 관리자 발송 상태와 D1을 확인하세요.'); }
     }
     // DISPATCH_FORCE=1 (Worker 변수)이면 어느 트리거든 올 때마다 GitHub 를 부른다 — 정시 호출이 되는지 시험할 때만
@@ -611,13 +679,13 @@ export default {
     const morning = morningDue(event.scheduledTime);
     if (morning) {
       const result = await dispatchWorkflow(env, MORNING_WORKFLOW,
-                                            { caller: "cloudflare-cron", retry: morning.retry ? "true" : "false" });
+                                            { caller: "cloudflare-cron", retry: morning.retry ? "true" : "false" }, !forced);
       console.log(`workflow_dispatch ${JSON.stringify({ ...result, workflow: MORNING_WORKFLOW, retry: morning.retry,
                                                         cron: event.cron || null })}`);
       return;
     }
     if (forced || dispatchDue(event.scheduledTime)) {
-      const result = await dispatchScoring(env);
+      const result = await dispatchScoring(env, !forced);
       console.log(`workflow_dispatch ${JSON.stringify({ ...result, forced, cron: event.cron || null })}`);
       return;
     }

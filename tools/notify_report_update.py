@@ -1,4 +1,7 @@
 """게시된 개장 전 예측·마감 회고를 요약하여 구독 Worker의 발송 대기에 넣는다."""
+import hashlib
+import hmac
+import time
 import argparse
 import csv
 import io
@@ -126,6 +129,26 @@ def download(path, revision):
         return response.read().decode('utf-8-sig')
 
 
+def automatic_run(env, key, phase, now=None):
+    """예약 실행 또는 서명된 Cron 호출의 첫 시도만 허용한다."""
+    if env.get('GITHUB_ACTIONS') != 'true' or env.get('GITHUB_RUN_ATTEMPT') != '1':
+        return False
+    event=env.get('GITHUB_EVENT_NAME')
+    if event=='schedule':
+        return True
+    if event!='workflow_dispatch' or env.get('MAIL_CALLER')!='cloudflare-cron' or not key:
+        return False
+    parts=env.get('MAIL_AUTOMATION_PROOF','').split(':')
+    if len(parts)!=3 or not re.fullmatch(r'[0-9]+',parts[0]) or not re.fullmatch(r'[a-f0-9]{64}',parts[2]):
+        return False
+    age=(time.time() if now is None else now)-int(parts[0])
+    if not 0<=age<=4*3600:
+        return False
+    workflow='daily-report.yml' if phase=='pre_open' else 'afternoon-report.yml'
+    expected=hmac.new(key.encode(),(workflow+'|'+':'.join(parts[:2])).encode(),hashlib.sha256).hexdigest()
+    return hmac.compare_digest(expected,parts[2])
+
+
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--target',choices=NAMES,required=True)
@@ -135,6 +158,9 @@ def main():
     args=parser.parse_args()
     endpoint=os.environ.get('REPORT_MAIL_ENDPOINT','').rstrip('/')
     token=os.environ.get('MAIL_PUBLISH_TOKEN','')
+    if not args.preview and not automatic_run(os.environ,token,args.phase):
+        print('수동 실행·재실행은 이메일을 발송하지 않습니다.')
+        return
     if not args.preview and (not endpoint or not token):
         print('이메일 발송 연동 미설정: REPORT_MAIL_ENDPOINT / MAIL_PUBLISH_TOKEN 필요')
         return
@@ -169,6 +195,9 @@ def main():
     if args.preview:
         print(json.dumps(payload,ensure_ascii=False,indent=2))
         return
+    payload['automation']={'event':os.environ['GITHUB_EVENT_NAME'],'attempt':1,
+                           'caller':os.environ.get('MAIL_CALLER',''),
+                           'proof':os.environ.get('MAIL_AUTOMATION_PROOF','')}
     page=read(f'docs/{args.target}/index.html')
     if not publication_matches(payload,page):
         raise RuntimeError('보고서 HTML과 알림 원장의 실행/생성 시각이 다릅니다. 게시 완료 후 다시 실행하세요.')

@@ -1,4 +1,4 @@
-"""메일에는 발행된 보고서 내용만 담고 같은 내용은 같은 알림으로 식별한다."""
+"""시스템이 게시한 요약만 하루 두 회차로 발송하고 수동 실행을 차단한다."""
 import unittest
 from datetime import datetime, timezone
 from tools.notify_report_update import build_pre_open, build_post_close
@@ -59,3 +59,35 @@ class MailWorkerTests(unittest.TestCase):
         root=Path(__file__).resolve().parents[1]
         run=subprocess.run(['node','tests/report_mail_cases.mjs'],cwd=root,text=True,capture_output=True)
         self.assertEqual(run.returncode,0,run.stderr[-4000:])
+
+
+class AutomaticMailTests(unittest.TestCase):
+    def test_only_schedule_or_signed_cloudflare_first_attempt_can_notify(self):
+        from tools.notify_report_update import automatic_run
+        import hashlib,hmac
+        key='private-publish-key'
+        now=1800000000
+        raw=f'{now}:nonce'
+        signature=hmac.new(key.encode(),('daily-report.yml|'+raw).encode(),hashlib.sha256).hexdigest()
+        proof=raw+':'+signature
+        def env(event,attempt='1',caller='',p=''):
+            return {'GITHUB_ACTIONS':'true','GITHUB_EVENT_NAME':event,'GITHUB_RUN_ATTEMPT':attempt,'MAIL_CALLER':caller,'MAIL_AUTOMATION_PROOF':p}
+        self.assertTrue(automatic_run(env('schedule'),key,'pre_open',now))
+        self.assertFalse(automatic_run(env('push'),key,'pre_open',now))
+        self.assertFalse(automatic_run(env('workflow_dispatch',caller='cloudflare-cron'),key,'pre_open',now))
+        self.assertFalse(automatic_run(env('schedule','2'),key,'pre_open',now))
+        self.assertTrue(automatic_run(env('workflow_dispatch',caller='cloudflare-cron',p=proof),key,'pre_open',now))
+        self.assertFalse(automatic_run(env('workflow_dispatch',caller='cloudflare-cron',p=proof),key,'post_close',now))
+        self.assertFalse(automatic_run(env('workflow_dispatch',caller='cloudflare-cron',p=proof),key,'pre_open',now+14401))
+        self.assertFalse(automatic_run({},key,'pre_open',now))
+
+    def test_manual_cli_does_not_contact_publisher_or_email_service(self):
+        import os
+        from unittest.mock import patch
+        from tools.notify_report_update import main
+        env={'REPORT_MAIL_ENDPOINT':'https://counter.example','MAIL_PUBLISH_TOKEN':'secret',
+             'GITHUB_ACTIONS':'true','GITHUB_EVENT_NAME':'workflow_dispatch','GITHUB_RUN_ATTEMPT':'1'}
+        with patch.dict(os.environ,env,clear=True), patch('sys.argv',['notify','--target','samsung','--phase','pre_open']), \
+             patch('tools.notify_report_update.urlopen') as network, patch('builtins.print'):
+            main()
+            network.assert_not_called()

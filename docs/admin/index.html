@@ -256,7 +256,14 @@ a{color:var(--accent)}
 <div id="sub-msg" class="msg"></div>
 <div id="sub-tiles" class="tiles" style="margin-top:14px"></div>
 <div id="sub-list" style="margin-top:14px"></div>
-<h3>보고서 이메일 발송</h3>
+<h3>보고서 이메일 발송 설정</h3>
+<form id="mail-settings-f" style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+  <label for="mail-from">발신 이메일</label>
+  <input id="mail-from" type="email" autocomplete="email" placeholder="본인 발신 주소" style="flex:1;min-width:160px;max-width:100%;box-sizing:border-box">
+  <button id="mail-save" type="submit">저장</button>
+</form>
+<p class="sub">발송 서비스에서 인증한 도메인의 이메일 주소를 입력하세요. 빈 값으로 저장하면 발송을 중지합니다. 저장해도 시험 메일은 보내지 않습니다.</p>
+<div id="mail-settings-msg" class="msg" role="status"></div>
 <div id="mail-status" class="sub">구독자를 불러오면 발송 설정과 최근 결과도 확인합니다.</div>
 </section>
 
@@ -875,14 +882,30 @@ a{color:var(--accent)}
     $("sub-csv").disabled = !rows.length;
   }
   function loadMailStatus() {
-    call("/mail/status").then(function (r) {
+    return call("/mail/status").then(function (r) {
+      if (document.activeElement !== $("mail-from")) $("mail-from").value = r.from_email || "";
       var text = !r.enabled ? "자동 발송 꺼짐" : !r.configured ? "발송 설정 미완료" : "보고서 갱신 후 자동 발송 켜짐";
       $("mail-status").innerHTML = '<p><b>' + esc(text) + '</b>' + (r.missing.length ? ' · 필요한 설정: '+esc(r.missing.join(", ")) : '') + '</p>' +
-        '<p>개장 전 예측·마감 회고의 내용이 바뀌면 구독한 종목별로 요약을 보냅니다. 메인 구독자는 두 종목 모두 받습니다.</p>' +
+        '<p>시스템이 갱신한 보고서를 개장 전 한 통·마감 후 한 통, 주소별 하루 최대 두 통 보냅니다. 두 종목 구독자는 한 통에 묶어 받으며 수동 실행은 발송하지 않습니다.</p>' +
         '<p>'+esc(r.notice)+'</p>' + (r.events.length ? '<div style="overflow-x:auto"><table><tr><th>보고서</th><th>대상일</th><th>갱신 접수(KST)</th><th>발송 서비스 접수</th><th>실패</th><th>대기/만료</th></tr>'+
-        r.events.map(function(e) { return '<tr><td>'+esc(NAMES[e.target])+' · '+(e.phase==='pre_open'?'개장 전':'마감 후')+'</td><td>'+esc(e.session_date)+'</td><td>'+esc(kst(e.created_at))+'</td><td>'+Number(e.accepted||0)+'</td><td>'+Number(e.failed||0)+'</td><td>'+Number(e.remaining||0)+(e.expired?' (만료)':' (대기)')+'</td></tr>'; }).join('')+'</table></div>' : '<p>아직 접수된 보고서 갱신이 없습니다.</p>');
+        r.events.map(function(e) { return '<tr><td>'+esc(e.target === "digest" ? "구독 보고서 묶음" : NAMES[e.target])+' · '+(e.phase==='pre_open'?'개장 전':'마감 후')+'</td><td>'+esc(e.session_date)+'</td><td>'+esc(kst(e.created_at))+'</td><td>'+Number(e.accepted||0)+'</td><td>'+Number(e.failed||0)+'</td><td>'+Number(e.remaining||0)+(e.expired?' (만료)':' (대기)')+'</td></tr>'; }).join('')+'</table></div>' : '<p>아직 접수된 보고서 갱신이 없습니다.</p>');
     }).catch(function () { $("mail-status").textContent = "발송 상태를 읽지 못했습니다. 이메일 기능의 Worker 배포와 D1 표 생성을 확인하세요."; });
   }
+  $("mail-settings-f").addEventListener("submit", function (event) {
+    event.preventDefault();
+    var msg = $("mail-settings-msg");
+    msg.className = "msg info";
+    if (!token()) { msg.className = "msg err"; msg.textContent = "구독자 목록의 관리자 토큰을 먼저 입력하세요."; return; }
+    $("mail-save").disabled = true;
+    msg.textContent = "저장 중…";
+    call("/mail/settings", { method:"POST", headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({from_email:$("mail-from").value.trim()}) }).then(function (r) {
+        $("mail-from").value = r.from_email || "";
+        msg.textContent = r.from_email ? "발신 주소를 저장했습니다. 새 발송부터 적용하며 이미 시도한 메일의 재시도는 기존 주소를 유지합니다." : "발신 주소를 비웠습니다. 자동 발송이 중지됩니다.";
+        return loadMailStatus();
+      }).catch(function (error) { msg.className = "msg err"; msg.textContent = "저장 실패: " + error.message; })
+      .then(function () { $("mail-save").disabled = false; });
+  });
   function load() {
     if (!token()) return;
     loadMailStatus();

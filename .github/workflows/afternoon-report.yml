@@ -30,6 +30,10 @@ on:
     - cron: "52 13 * * 1-5"  # 22:52 KST — 마감 후 백업 3. 자정을 넘겨 도착해도 전 거래일을 대상으로 한다.
   workflow_dispatch:
     inputs:
+      mail_proof:
+        description: "시스템 자동 발송 서명(수동 실행은 비워 둠)"
+        type: string
+        default: ""
       scope:
         description: "채점 범위 (auto: 지금 KST 시각으로 정함)"
         type: choice
@@ -126,10 +130,12 @@ jobs:
         run: python tools/build_session_review.py --target ${{ matrix.target }} --date "$SESSION" --out runs/review --publish
 
       - name: 마감 회고 이메일 알림
-        if: success() && steps.gate.outputs.scope == 'all' && steps.gate.outputs.session != ''
+        if: success() && steps.gate.outputs.scope == 'all' && steps.gate.outputs.session != '' && github.run_attempt == 1 && (github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.caller == 'cloudflare-cron' && inputs.mail_proof != ''))
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           REPORT_MAIL_ENDPOINT: ${{ vars.REPORT_MAIL_ENDPOINT }}
           MAIL_PUBLISH_TOKEN: ${{ secrets.MAIL_PUBLISH_TOKEN }}
+          MAIL_CALLER: ${{ inputs.caller }}
+          MAIL_AUTOMATION_PROOF: ${{ inputs.mail_proof }}
           SESSION: ${{ steps.gate.outputs.session }}
         run: python tools/notify_report_update.py --target ${{ matrix.target }} --phase post_close --session "$SESSION"

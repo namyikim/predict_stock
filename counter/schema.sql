@@ -70,3 +70,12 @@ CREATE TABLE IF NOT EXISTS mail_unsubscribe (
 );
 CREATE INDEX IF NOT EXISTS idx_mail_events_created ON mail_events(created_at);
 CREATE INDEX IF NOT EXISTS idx_mail_deliveries_email ON mail_deliveries(email);
+
+-- 하루 두 회차 묶음과 관리자 발신 주소(2026-10-04). 기존 표는 그대로 두고 추가한다.
+CREATE TABLE IF NOT EXISTS mail_editions (
+  id TEXT PRIMARY KEY, day TEXT NOT NULL, phase TEXT NOT NULL, created_at TEXT NOT NULL,
+  UNIQUE(day, phase)
+);
+CREATE TABLE IF NOT EXISTS mail_settings (
+  id INTEGER PRIMARY KEY CHECK (id=1), from_email TEXT NOT NULL, updated_at TEXT NOT NULL
+);

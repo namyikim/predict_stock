@@ -347,19 +347,21 @@ Cloudflare에 다시 배포해야 화면에 나온다.
 
 ## 보고서 갱신 이메일 (2026-10-04)
 
-고정 시각에 링크만 보내는 방식이 아니다. **개장 전 보고서와 마감 후 회고의 게시가 끝나면**
-Actions가 공개 원장·회고를 요약하여 Worker에 등록한다. Worker의 다음 Cron 실행(추가 트리거 기준 최대 약 5분 후)이 메일을 보낸다.
+**시스템이 개장 전 보고서와 마감 후 회고를 게시하면, 수신 주소별 하루 최대 두 통**을 보낸다.
+한국시간을 기준으로 개장 전 한 통(09:00 전), 마감 후 한 통(15:30 이후)이다.
+등록된 갱신은 Worker의 다음 Cron 실행에서 발송하며, 설정 저장은 메일을 보내지 않는다.
 
 - 개장 전: 대표 모델 방향·상승/보합/하락 확률, 같은 실행의 예상 시초가·종가.
 - 마감 후: 종가·등락률·시초가 갭·장중 변화, 장 흐름·수급, 아침 예측 검증과 예상 구간 평가.
-- 메인 구독자는 두 종목 모두, 종목 구독자는 신청한 종목만 받는다. 한 주소가 메인과 종목에 동시에 있어도 **같은 갱신은 한 통**이다. 두 종목이 갱신되면 각각 한 통씩 받는다.
-- 발행 리비전만 바뀌고 메일 요약이 같으면 재발송하지 않는다. 마감 수급 등 요약 내용이 실제로 보완되면 같은 날짜에도 새 갱신 메일이 간다.
-- 새로 가입한 사람에게 가입 전 갱신 알림을 소급 발송하지 않는다. 휴장일에도 보고서 내용이 새로 게시되면 대상일을 명시해 알릴 수 있다.
-- 현재 메일에 담는 요약이 동일한 본문 하단·디자인 변경은 발송하지 않는다. 장중 시가 채점만 하는 회차는 대상이 아니다.
+- 메인 구독자는 두 종목을 **한 통에 묶어** 받는다. 종목 구독자는 신청한 종목만 받으며, 두 종목을 각각 구독한 주소도 한 통이다. 메인·종목 중복 신청도 추가 발송하지 않는다.
+- 한 회차에서 구독한 모든 종목이 준비되어야 보낸다. 한 종목이 끝내 준비되지 않으면 묶음 메일은 만료된다. 내용 보완·소스 리비전 변경으로 세 번째 메일을 보내지 않는다.
+- 회차의 첫 자동 게시 당시 구독한 사람만 대상이다. 이후 가입은 다음 회차부터 적용한다. 해당 한국 날짜의 보고서만 등록하며 지난 날짜 대기를 다음 날 이월하지 않는다.
+- GitHub `schedule` 또는 Worker Cron이 서명한 자동 호출의 **첫 시도**만 등록한다. 수동 Run workflow·Re-run jobs·push·관리자 ‘지금 호출’·`DISPATCH_FORCE` 시험 호출에서는 등록하지 않는다. 장중 시가 채점도 대상이 아니다.
+- 발신 주소는 **관리자 → 구독자 → 보고서 이메일 발송 설정**에서 변경한다. 새 메일에 적용하며, 이미 시도한 메일의 재시도는 중복 접수 방지를 위해 기존 발신 주소와 본문을 유지한다. 빈 값 저장은 발송 중지다.
 
 ### 한 번 필요한 설정
 
-1. 아래 SQL을 D1 Console에서 **한 문장씩** 실행한다. 기존 구독자는 유지된다.
+1. 아래 SQL을 D1 Console에서 **한 문장씩** 실행한다. 기존 구독자는 유지된다. 이전 이메일 기능을 설치했다면 마지막 두 표(`mail_editions`, `mail_settings`)만 추가한다.
 
 ```sql
 CREATE TABLE IF NOT EXISTS mail_events (id TEXT PRIMARY KEY, target TEXT NOT NULL, phase TEXT NOT NULL, session_date TEXT NOT NULL, content TEXT NOT NULL, source_revision TEXT NOT NULL, created_at TEXT NOT NULL);
@@ -381,39 +383,50 @@ CREATE INDEX IF NOT EXISTS idx_mail_events_created ON mail_events(created_at);
 CREATE INDEX IF NOT EXISTS idx_mail_deliveries_email ON mail_deliveries(email);
 ```
 
-2. 발송 서비스는 Resend다. 계정에서 발신 도메인을 인증하고 API 키를 준비한다. 발신 주소는 인증한 도메인의 주소를 쓴다. 서비스 가입·도메인/DNS 설정·요금 선택은 코드에서 수행하지 않는다.
-3. Cloudflare Worker에 다음을 넣는다. **키와 토큰 값은 코드·GitHub Pages·채팅에 쓰지 않는다.**
+```sql
+CREATE TABLE IF NOT EXISTS mail_editions (id TEXT PRIMARY KEY, day TEXT NOT NULL, phase TEXT NOT NULL, created_at TEXT NOT NULL, UNIQUE(day,phase));
+```
+
+```sql
+CREATE TABLE IF NOT EXISTS mail_settings (id INTEGER PRIMARY KEY CHECK(id=1), from_email TEXT NOT NULL, updated_at TEXT NOT NULL);
+```
+
+2. 발송 서비스는 Resend다. 발신 도메인을 인증하고 API 키를 준비한다. 관리자에 입력할 본인 주소도 인증한 도메인의 주소여야 한다. 주소 저장만으로 발신 도메인이 인증되지는 않는다.
+3. Cloudflare Worker에 다음을 넣는다. **키와 토큰은 코드·GitHub Pages·채팅에 쓰지 않는다.**
 
 | 종류 | 이름 | 값 |
 | --- | --- | --- |
 | Secret | `RESEND_API_KEY` | Resend 발송 API 키 |
-| Secret | `MAIL_PUBLISH_TOKEN` | 보고서 발행 전용으로 새로 만든 긴 임의 토큰. `STATS_TOKEN`과 분리 |
-| Variable | `MAIL_FROM` | 인증한 발신 주소(예: `보고서 <report@본인도메인>`) |
+| Secret | `MAIL_PUBLISH_TOKEN` | 보고서 발행 전용의 긴 임의 토큰. `STATS_TOKEN`과 분리 |
 | Variable | `MAIL_PUBLIC_URL` | `https://predict-stock-counter.kimname1.workers.dev` |
-| Variable | `MAIL_ENABLED` | 처음에는 `0`. 설정·배포 확인을 마치면 `1` |
+| Variable | `MAIL_ENABLED` | 준비 중 `0`, 준비 완료 후 `1` |
 
-4. GitHub 저장소 Settings → Secrets and variables → Actions에 설정한다.
-   - **Secret** `MAIL_PUBLISH_TOKEN`: Worker에 넣은 것과 같은 값.
+기존 `MAIL_FROM`은 관리자 저장 전까지만 호환용으로 읽는다. 새 설치에서는 필요 없다.
+관리자에서 한 번 저장하면 그 값이 우선하며, 빈 값으로 저장해도 환경변수 주소로 되돌아가지 않는다.
+
+4. GitHub 저장소 Settings → Secrets and variables → Actions에 다음을 설정한다.
+   - **Secret** `MAIL_PUBLISH_TOKEN`: Worker와 같은 값. Cloudflare 자동 호출의 서명 검증에도 사용한다.
    - **Variable** `REPORT_MAIL_ENDPOINT`: `https://predict-stock-counter.kimname1.workers.dev`.
-   - 이 두 설정이 없으면 기존 보고서 작업은 그대로 성공하고 이메일 단계는 건너뛴다.
-5. `counter/worker.js` **전체**를 Worker 편집기에 붙여넣고 Deploy 한다. 이 파일은 git push만으로 배포되지 않는다.
-6. 기존 Cron Trigger는 유지하고 `*/5 * * * *`(UTC)를 추가한다. 발송 대기를 최대 5명씩 처리한다. 정상 시 배치당 5명으로 약 60명/시간이며, 두 종목과 재시도는 별도 작업이다. 규모가 커지면 Queue 기반으로 확장한다.
-7. 관리자 → 구독자 → 불러오기에서 발송 설정 상태를 확인한다. 준비가 끝나면 Worker의 `MAIL_ENABLED=1`로 켠다. 다음 보고서 갱신부터 발송 대기가 등록된다. 켜기 직전 23시간 내 등록된 대기도 처리되므로 상태를 확인한 뒤 켠다.
+   - 연동 설정이 없으면 기존 보고서 작업은 그대로 성공하고 이메일 단계는 건너뛴다.
+5. `counter/worker.js` **전체**를 Worker 편집기에 붙여넣고 Deploy 한다. git push만으로 Worker는 배포되지 않는다. 워크플로 변경도 저장소에 반영해야 한다.
+6. 기존 Cron Trigger를 유지하고 `*/5 * * * *`(UTC)를 추가한다. 발송 대기를 최대 5명씩 처리하므로 이 트리거만 기준으로 약 60명/시간이다. 수신자 수가 많으면 시간창 내 처리 가능량을 확인하고 Queue 기반 확장을 고려한다.
+7. 관리자 → 구독자에서 관리자 토큰으로 불러온 뒤, **발신 이메일**에 본인 주소를 저장한다. 설정·최근 결과를 확인하고 `MAIL_ENABLED=1`로 켠다. 켜는 시점에 해당 날짜·시간창의 기존 대기가 있다면 함께 처리된다.
 
 ### 신뢰성과 개인정보
 
-- `POST /mail/events`: 발행 전용 토큰 필요. 공개 요약만 받으며 수신 주소는 Actions로 보내지 않는다. `GET /mail/status`는 기존 `STATS_TOKEN` 필요, 주소·비밀키 없이 설정과 최근 집계를 돌려준다.
-- D1의 원자적 임대로 동시에 같은 수신자를 처리하지 않는다. Resend의 `Idempotency-Key`와 동결한 본문을 함께 써 접수 응답 유실 시 중복을 억제한다. 제공자의 키 유효기간은 24시간이므로 **이벤트 접수 후 23시간 내·최대 5회**만 자동 시도한다. 네트워크 오류·429·5xx 등만 재시도하고 영구 오류는 실패로 남긴다.
-- `접수 완료`는 Resend가 요청을 받아 ID를 준 상태다. 실제 수신함 도착·반송은 Resend 콘솔에서 확인한다. 실패·대기·23시간 만료 수는 관리자에 표시된다.
-- 발송 주소·본문은 D1에 보관하며 활성화된 발송 작업이 30일 초과 기록을 정리한다. 기능을 장기간 끌 때는 운영자가 정리해야 한다. 공개 이벤트 해시는 남겨 같은 과거 본문이 새 이벤트로 중복 등록되지 않게 한다.
-- 메일의 전체 구독 해지 링크는 이메일 주소 대신 임의 토큰을 쓴다. GET은 확인 화면만 열고 POST에서 해지한다. 이메일 서비스의 One-Click POST도 지원한다. 기존 웹 폼·관리자 삭제 역시 관련 발송 기록과 토큰을 함께 정리한다. 이미 서비스에 접수되거나 전송 중인 메일까지 회수하지는 못한다.
-- 수신 목록·본문·원본 API 오류는 로그에 쓰지 않는다. 실제 구독자에게 테스트 메일을 보내지 말고 로컬 가짜 발송 서버로 검증한다.
-- 현재 구독에는 이메일 소유 확인·반송 webhook 자동 정리 기능이 없다. 수신함 도착 상태를 관리자 수치와 동일시하지 않는다.
+- `POST /mail/events`는 발행 전용 토큰과 자동 실행 정보를 요구한다. Cloudflare 서명은 워크플로별로 검증하며 유효시간은 4시간이다. `caller=cloudflare-cron`만 입력한 수동 실행은 허용하지 않는다. 보고서 HTML과 원장의 게시 시각도 확인한다.
+- `GET/POST /mail/settings` 및 `GET /mail/status`는 기존 `STATS_TOKEN`이 필요하다. 발신 주소는 관리자에게만 반환하며 API 키나 구독자 주소는 응답에 포함하지 않는다. 설정은 D1에 영구 저장한다.
+- 발송 요청을 시작하는 한국 날짜·회차·수신 주소로 발송 기록을 고정한다. 배치 중 날짜나 시간창이 바뀌면 남은 발송을 중단한다. 서비스 내부 처리·수신함 도착 지연은 별개다. D1 원자적 임대와 Resend의 `Idempotency-Key`를 함께 사용해 동시 실행과 접수 응답 유실에 대비한다. 같은 본문으로 최대 5회 재시도하고 해당 날짜·시간창 종료 시 만료한다. 따라서 제공자의 24시간 키 유효기간을 넘겨 재시도하지 않는다.
+- 네트워크 오류·429·5xx 등만 재시도한다. 영구 오류는 실패로 남으며 주소를 고쳐도 실패한 회차를 다시 발송하지 않는다. 이전 버전에서 당일 같은 회차의 메일을 이미 시도한 주소는 새 묶음 메일을 보내지 않는다.
+- ‘접수 완료’는 Resend가 요청을 받고 ID를 준 상태다. 실제 수신함 도착·반송은 Resend 콘솔에서 확인한다. 실패·대기·만료는 관리자에 표시한다.
+- 발송 수신 주소·본문은 D1에 보관하며 활성화된 발송 작업이 30일 초과 기록을 정리한다. 장기간 기능을 끌 때는 운영자가 정리한다. 개인정보가 없는 날짜별 회차와 공개 요약은 중복 방지를 위해 유지한다.
+- 메일의 전체 해지 링크는 주소 대신 임의 토큰을 쓴다. GET은 확인 화면만, POST는 해지를 수행하며 One-Click POST도 지원한다. 웹 폼·관리자 삭제도 관련 기록과 토큰을 정리한다. 구독 종목이 달라지면 재시도 직전 다시 검사한다. 이미 전송 중이거나 서비스에 접수된 메일은 회수하지 못한다.
+- 수신 목록·본문·API 오류 원문을 로그에 쓰지 않는다. 실제 구독자에게 테스트 메일을 보내지 않는다. 이메일 소유 확인·반송 webhook 자동 정리는 아직 없다.
 
 ### 로컬 점검
 
 ```sh
-# 예전 회고를 내용 미리보기로만 출력한다. 외부 호출이나 발송 없음.
+# 로컬 내용 미리보기만 허용한다. 실제 발송은 시스템 호출에서만 등록된다.
 python tools/notify_report_update.py --target samsung --phase post_close --session 2026-10-02 --preview
 python -m unittest tests.test_report_email tests.test_counter_worker tests.test_admin_page -v
 ```
@@ -422,6 +435,6 @@ python -m unittest tests.test_report_email tests.test_counter_worker tests.test_
 [이메일 전송 API](https://resend.com/docs/api-reference/emails/send-email),
 [중복 요청 키와 24시간 보관](https://resend.com/docs/dashboard/emails/idempotency-keys).
 
-검증 기록(2026-10-04): 중복 구독·동시 실행·부분 실패·접수 응답 유실 뒤 동일 요청 재시도·소급 발송 제외·만료·GET/POST 해지를 실제 SQLite와 가짜 발송 서버로 검증했다. 게시 HTML과 원장 실행/회고 생성 시각의 일치, 공식 사전 예측 여부를 확인한 뒤 등록하며 휴장일의 회고 부재는 정상 건너뛰기다. 운영 D1 변경·Worker 배포·실제 이메일 전송은 수행하지 않았다.
+운영 D1 변경·Worker 배포·실제 이메일 전송은 수행하지 않았다.
 
-검증 결과: 관련 Python 테스트 17개(내부 Node/SQLite 계약 포함) 통과. 관리자 발송 상태와 한글 메일 본문을 브라우저에서 확인했으며 관리자 모바일 375px에 가로 넘침이 없다. 전체 1,719개 실행은 assertion 실패 0, 기존 로컬 의존성 누락 오류 161, 건너뜀 15로 전체 통과는 아니다. Resend 접수·수신함 도착·Cloudflare Cron의 실제 운영 실행은 아직 확인하지 않았다.
+검증 기록(2026-10-04): 관련 테스트 19개 통과(내부 Node/SQLite 계약 포함). 관리자 주소 저장·빈 값 중지 안내를 로컬 가짜 서버에서 확인했으며, 모바일 375px에서 가로 넘침이 없다. 수동 CLI 외부 호출 차단, 자동 Cron 서명, 자정·개장 경계, 부분 해지·신규 가입, 중복·동시 실행·재시도를 검증했다. 전체 테스트와 실제 서비스 접수·수신함 도착은 이번 변경에서 확인하지 않았다.

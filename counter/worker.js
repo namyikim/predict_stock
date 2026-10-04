@@ -14,6 +14,9 @@
 //   POST /unsubscribe    구독 해지. 본문 {email, page}. 신청과 같은 응답을 돌려준다(가입 여부를 알려 주지 않는다).
 //   GET /subscribers     구독자 목록(비공개, /stats 와 같은 STATS_TOKEN).
 //   POST /subscribers/delete  관리자가 한 건을 지운다(STATS_TOKEN). 본문 {email, page}.
+//   POST /mail/events    보고서 게시 완료 요약 등록(MAIL_PUBLISH_TOKEN).
+//   GET /mail/status     발송 설정·집계(STATS_TOKEN). 수신 주소는 포함하지 않는다.
+//   GET/POST /mail/unsubscribe  메일 내 토큰 링크. GET 확인 후 POST로 전체 해지.
 //   POST /dispatch/test  관리자가 GitHub 채점 워크플로 호출을 한 번 시험한다(STATS_TOKEN). 결과 JSON 을 바로 돌려줘
 //                        Cloudflare 로그를 열지 않아도 토큰·권한 문제를 알 수 있다(2026-10-01).
 //
@@ -330,10 +333,10 @@ function isAdmin(request, env) {
   return Boolean(env.STATS_TOKEN && token && token === env.STATS_TOKEN);
 }
 
-async function readJson(request) {
+async function readJson(request, limit = 2000) {
   // 본문이 크면 읽지 않는다. 신청 한 건은 수백 바이트면 충분하다.
   const text = await request.text();
-  if (text.length > 2000) return null;
+  if (text.length > limit) return null;
   try { return JSON.parse(text); } catch { return null; }
 }
 
@@ -367,6 +370,7 @@ async function handleSubscribe(request, env, origin, action) {
   await env.DB.batch([
     write,
     env.DB.prepare("INSERT INTO subscribe_log (visitor, day) VALUES (?, ?)").bind(visitor, day),
+    ...(action === "unsubscribe" ? subscriberMailCleanup(env, email) : []),
   ]);
   return json({ ok: true }, origin);
 }
@@ -393,7 +397,7 @@ async function handleSubscriberDelete(request, env, origin) {
   const email = normalizeEmail(body && body.email);
   const page = String((body && body.page) || "");
   if (!email || !SUBSCRIBE_PAGES.includes(page)) return json({ error: "bad request" }, origin, 400);
-  await env.DB.prepare("DELETE FROM subscribers WHERE email = ? AND page = ?").bind(email, page).run();
+  await env.DB.batch([env.DB.prepare("DELETE FROM subscribers WHERE email = ? AND page = ?").bind(email, page), ...subscriberMailCleanup(env, email)]);
   return json({ ok: true }, origin);
 }
 
@@ -410,6 +414,154 @@ function handleGeo(request, origin) {
   }, origin);
 }
 
+// 보고서 발행 완료 알림(2026-10-04). 공개 요약과 비공개 수신 정보를 분리하며 기본은 발송 중지다.
+const MAIL_NAMES = { samsung: '삼성전자', sk_hynix: 'SK하이닉스' };
+const MAIL_BATCH_SIZE = 5;
+function mailConfig(env) {
+  const missing = ['RESEND_API_KEY', 'MAIL_FROM', 'MAIL_PUBLIC_URL'].filter(k => !env[k]);
+  let validUrl = false;
+  try { const u = new URL(env.MAIL_PUBLIC_URL); validUrl = u.protocol === 'https:' && u.pathname === '/' && !u.search && !u.hash && !u.username && !u.password; } catch {}
+  if (env.MAIL_PUBLIC_URL && !validUrl) missing.push('MAIL_PUBLIC_URL 형식');
+  return { enabled: String(env.MAIL_ENABLED || '') === '1', configured: missing.length === 0, missing };
+}
+function mailEscape(text) {
+  return String(text).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+async function mailHash(value) {
+  const digest = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(value));
+  return [...new Uint8Array(digest)].map(b => b.toString(16).padStart(2,'0')).join('');
+}
+async function handleMailEvent(request, env, origin) {
+  if (!env.MAIL_PUBLISH_TOKEN || request.headers.get('Authorization') !== 'Bearer ' + env.MAIL_PUBLISH_TOKEN)
+    return json({error:'unauthorized'}, origin, 401);
+  const body = await readJson(request, 16000);
+  if (!body || !MAIL_NAMES[body.target] || !['pre_open','post_close'].includes(body.phase) ||
+      !/^\d{4}-\d{2}-\d{2}$/.test(body.session_date || '') ||
+      !/^[a-f0-9]{40}$/.test(body.source_revision || '') ||
+      body.url !== `https://namyikim.github.io/predict_stock/${body.target}/` ||
+      !Array.isArray(body.lines) || !body.lines.length || body.lines.length > 12 ||
+      body.lines.some(line => typeof line !== 'string' || line.length > 1500))
+    return json({error:'invalid report event'}, origin, 400);
+  // 리비전·수집 시각만 바뀐 재발행은 새 내용이 아니다. 본문은 최초 수신 값으로 동결한다.
+  const content = JSON.stringify({target:body.target,phase:body.phase,session_date:body.session_date,lines:body.lines,url:body.url});
+  const id = await mailHash(content);
+  await env.DB.prepare('INSERT OR IGNORE INTO mail_events (id,target,phase,session_date,content,source_revision,created_at) VALUES (?,?,?,?,?,?,?)')
+    .bind(id,body.target,body.phase,body.session_date,content,body.source_revision,new Date().toISOString()).run();
+  return json({status:'queued',event_id:id,...mailConfig(env)}, origin, 202);
+}
+export async function mailPayload(env, event, email) {
+  await env.DB.prepare('INSERT OR IGNORE INTO mail_unsubscribe (email,token) VALUES (?,?)')
+    .bind(email,crypto.randomUUID()+crypto.randomUUID()).run();
+  const token = (await env.DB.prepare('SELECT token FROM mail_unsubscribe WHERE email=?').bind(email).first()).token;
+  const url = env.MAIL_PUBLIC_URL.replace(/\/$/,'') + '/mail/unsubscribe?token=' + encodeURIComponent(token);
+  const c = JSON.parse(event.content);
+  const subject = `[보고서 갱신] ${MAIL_NAMES[c.target]} · ${c.session_date} ${c.phase === 'pre_open' ? '개장 전 예측' : '마감 후 회고'}`;
+  const note = '연구·교육용 판단 자료이며 투자 자문이 아닙니다. 예측은 실제 결과와 다를 수 있습니다.';
+  return {from:env.MAIL_FROM,to:[email],subject,
+    text:subject+'\n\n'+c.lines.join('\n')+'\n\n전체 보고서: '+c.url+'\n\n'+note+'\n전체 구독 해지: '+url,
+    html:'<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"></head><body style="font-family:Arial,sans-serif;line-height:1.7;color:#243447"><h2>'+mailEscape(subject)+
+      '</h2><ul>'+c.lines.map(x=>'<li>'+mailEscape(x)+'</li>').join('')+'</ul><p><a href="'+mailEscape(c.url)+'">전체 보고서 보기</a></p><p>'+note+
+      '</p><hr><p>직접 신청한 보고서의 갱신 안내입니다. <a href="'+mailEscape(url)+'">전체 구독 해지</a></p></body></html>',
+    headers:{'List-Unsubscribe':'<'+url+'>','List-Unsubscribe-Post':'List-Unsubscribe=One-Click'}};
+}
+// GET 링크 미리보기로 해지되지 않게 확인 화면과 실제 POST 처리를 나눈다.
+async function handleMailUnsubscribe(request, env, url) {
+  const token = url.searchParams.get('token') || '';
+  const row = token.length <= 100 ? await env.DB.prepare('SELECT email FROM mail_unsubscribe WHERE token=?').bind(token).first() : null;
+  const headers = {'Content-Type':'text/html; charset=utf-8','Cache-Control':'no-store','Referrer-Policy':'no-referrer',
+    'Content-Security-Policy':"default-src 'none'; form-action 'self'; frame-ancestors 'none'"};
+  if (!row) return new Response('<html lang="ko"><meta charset="utf-8"><p>이미 해지되었거나 유효하지 않은 링크입니다.</p></html>',{headers});
+  if (request.method === 'POST') {
+    const text = await request.text();
+    if (!['confirm=1','List-Unsubscribe=One-Click'].includes(text)) return new Response('확인이 필요합니다.',{status:400,headers});
+    await env.DB.batch([
+      env.DB.prepare('DELETE FROM subscribers WHERE email=?').bind(row.email),
+      env.DB.prepare('DELETE FROM mail_deliveries WHERE email=?').bind(row.email),
+      env.DB.prepare('DELETE FROM mail_unsubscribe WHERE email=?').bind(row.email),
+    ]);
+    return new Response('<html lang="ko"><meta charset="utf-8"><p>전체 보고서 구독을 해지했습니다.</p></html>',{headers});
+  }
+  return new Response('<html lang="ko"><meta charset="utf-8"><h1>보고서 구독 해지</h1><p>모든 보고서 이메일 수신을 중지합니다.</p><form method="post"><button name="confirm" value="1">전체 구독 해지</button></form></html>',{headers});
+}
+function subscriberMailCleanup(env, email) {
+  // 여전히 구독 중인 종목의 접수 이력은 보존한다. 지우면 같은 메일을 다시 보낼 수 있다.
+  return [env.DB.prepare(`DELETE FROM mail_deliveries WHERE email=? AND NOT EXISTS (
+    SELECT 1 FROM subscribers s JOIN mail_events e ON e.id=mail_deliveries.event_id
+    WHERE s.email=mail_deliveries.email AND (s.page='main' OR s.page=e.target) AND s.ts<=e.created_at)`)
+    .bind(email),
+    env.DB.prepare('DELETE FROM mail_unsubscribe WHERE email=? AND NOT EXISTS (SELECT 1 FROM subscribers WHERE email=?)').bind(email,email)];
+}
+async function cleanupSubscriberMail(env, email) {
+  await env.DB.batch(subscriberMailCleanup(env,email));
+}
+// 원자적 임대와 제공자의 같은 요청 키를 함께 쓴다. 접수 응답 유실 뒤 재시도해도 같은 본문이다.
+export async function processMail(env, now = new Date(), pause = ms => new Promise(resolve => setTimeout(resolve,ms))) {
+  const config = mailConfig(env);
+  if (!config.enabled || !config.configured) return {status:'disabled',...config};
+  const stamp = now.toISOString();
+  await env.DB.prepare('DELETE FROM mail_deliveries WHERE created_at<?').bind(new Date(now.getTime()-30*86400000).toISOString()).run();
+  // Resend 요청 키는 24시간 유효하므로 23시간 안에서만 자동 재시도한다.
+  const cutoff = new Date(now.getTime()-23*3600000).toISOString();
+  const due = await env.DB.prepare(`SELECT DISTINCT e.id,e.content,e.created_at,s.email FROM mail_events e
+    JOIN subscribers s ON (s.page='main' OR s.page=e.target) AND s.ts<=e.created_at
+    LEFT JOIN mail_deliveries d ON d.event_id=e.id AND d.email=s.email
+    WHERE e.created_at>=? AND (d.event_id IS NULL OR
+      (d.attempts<5 AND ((d.status='pending' AND d.next_attempt<=?) OR (d.status='sending' AND d.lease_until<=?))))
+    ORDER BY e.created_at,e.id,s.email LIMIT ?`).bind(cutoff,stamp,stamp,MAIL_BATCH_SIZE).all();
+  let accepted=0,failed=0;
+  for (const event of due.results) {
+    let delivery = await env.DB.prepare('SELECT * FROM mail_deliveries WHERE event_id=? AND email=?').bind(event.id,event.email).first();
+    if (!delivery) {
+      const payload = await mailPayload(env,event,event.email);
+      await env.DB.prepare('INSERT OR IGNORE INTO mail_deliveries (event_id,email,payload,created_at) VALUES (?,?,?,?)')
+        .bind(event.id,event.email,JSON.stringify(payload),stamp).run();
+    }
+    delivery = await env.DB.prepare(`UPDATE mail_deliveries SET status='sending',attempts=attempts+1,lease_until=?
+      WHERE event_id=? AND email=? AND attempts<5 AND
+      ((status='pending' AND next_attempt<=?) OR (status='sending' AND lease_until<=?)) RETURNING *`)
+      .bind(new Date(now.getTime()+5*60000).toISOString(),event.id,event.email,stamp,stamp).first();
+    if (!delivery) continue;
+    const active = await env.DB.prepare(`SELECT 1 AS active FROM subscribers s JOIN mail_events e ON e.id=?
+      WHERE s.email=? AND (s.page='main' OR s.page=e.target) AND s.ts<=e.created_at LIMIT 1`).bind(event.id,event.email).first();
+    if (!active) { await cleanupSubscriberMail(env,event.email); continue; }
+    const idempotency = 'report-'+await mailHash(event.id+'|'+event.email);
+    let code='network',response;
+    try {
+      response = await fetch('https://api.resend.com/emails',{method:'POST',headers:{Authorization:'Bearer '+env.RESEND_API_KEY,
+        'Content-Type':'application/json','Idempotency-Key':idempotency},body:delivery.payload,signal:AbortSignal.timeout(15000)});
+      code='http_'+response.status;
+    } catch { /* 주소·토큰·응답 본문은 로그에 남기지 않는다. */ }
+    if (response && response.ok) {
+      let result;
+      try { result = await response.json(); } catch {}
+      if (result && typeof result.id === 'string' && result.id.length <= 200) {
+        await env.DB.prepare("UPDATE mail_deliveries SET status='sent',sent_at=?,provider_id=?,error_code=NULL WHERE event_id=? AND email=?")
+          .bind(stamp,result.id,event.id,event.email).run();
+        accepted++;
+        await pause(600);
+        continue;
+      }
+      code='invalid_response';
+    }
+    const retry = !response || response.status===429 || response.status>=500 || response.status===409 || code==='invalid_response';
+    await env.DB.prepare('UPDATE mail_deliveries SET status=?,next_attempt=?,error_code=? WHERE event_id=? AND email=?')
+      .bind(retry && delivery.attempts<5?'pending':'failed',new Date(now.getTime()+Math.min(60,5*2**(delivery.attempts-1))*60000).toISOString(),code,event.id,event.email).run();
+    failed++;
+    await pause(600);
+  }
+  return {status:'processed',accepted,failed};
+}
+async function handleMailStatus(request,env,origin) {
+  if (!isAdmin(request,env)) return json({error:'unauthorized'},origin,401);
+  const recent = await env.DB.prepare(`SELECT e.target,e.phase,e.session_date,e.created_at,
+    (SELECT COUNT(DISTINCT s.email) FROM subscribers s WHERE (s.page='main' OR s.page=e.target) AND s.ts<=e.created_at) AS eligible,
+    COUNT(d.email) AS attempted,SUM(CASE WHEN d.status='sent' THEN 1 ELSE 0 END) AS accepted,
+    SUM(CASE WHEN d.status='failed' THEN 1 ELSE 0 END) AS failed
+    FROM mail_events e LEFT JOIN mail_deliveries d ON d.event_id=e.id
+    GROUP BY e.id ORDER BY e.created_at DESC LIMIT 20`).all();
+  return json({...mailConfig(env),events:recent.results.map(e => ({...e,remaining:Math.max(0,e.eligible-e.accepted-e.failed),expired:Date.now()-Date.parse(e.created_at)>23*3600000})),notice:'접수 완료는 발송 서비스 접수 기준이며 수신함 도착을 보장하지 않습니다.'},origin);
+}
+
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
@@ -420,6 +572,9 @@ export default {
     }
 
     try {
+      if (url.pathname === '/mail/unsubscribe' && ['GET','POST'].includes(request.method)) return await handleMailUnsubscribe(request,env,url);
+      if (request.method === 'POST' && url.pathname === '/mail/events') return await handleMailEvent(request,env,origin);
+      if (request.method === 'GET' && url.pathname === '/mail/status') return await handleMailStatus(request,env,origin);
       if (request.method === "POST") {
         if (url.pathname === "/subscribe") return await handleSubscribe(request, env, origin, "subscribe");
         if (url.pathname === "/unsubscribe") return await handleSubscribe(request, env, origin, "unsubscribe");
@@ -437,13 +592,18 @@ export default {
       return json({ error: "not found" }, origin, 404);
     } catch (err) {
       // 카운터가 실패해도 보고서 페이지는 그대로 보여야 하므로, 오류를 조용히 JSON으로 돌려준다.
-      return json({ error: String(err && err.message ? err.message : err) }, origin, 500);
+      return json({ error: url.pathname.startsWith('/mail/') ? '메일 처리 실패: 설정과 D1 스키마를 확인하세요.' : String(err && err.message ? err.message : err) }, origin, 500);
     }
   },
 
   // Cron Trigger가 부른다. 채점 회차 시각이면 GitHub 워크플로를 깨우고, 그 밖의 트리거(보관기간 정리)는
   // 누적 조회수(counters)는 그대로 두고 일별 통계에 더는 쓰이지 않는 오래된 조회 기록만 지운다.
   async scheduled(event, env) {
+    // 기존 보고서 정시 호출과 함께 실행한다. 별도 */5 * * * * 트리거는 발송 재시도용이다.
+    if (String(env.MAIL_ENABLED || '') === '1') {
+      try { console.log('report_mail ' + JSON.stringify(await processMail(env))); }
+      catch { console.log('report_mail 처리 실패: 관리자 발송 상태와 D1을 확인하세요.'); }
+    }
     // DISPATCH_FORCE=1 (Worker 변수)이면 어느 트리거든 올 때마다 GitHub 를 부른다 — 정시 호출이 되는지 시험할 때만
     // 잠깐 켠다(2026-09-30: 정시 호출이 한 번도 성공한 적이 없어 원인을 가르려고). 시험이 끝나면 변수를 지운다.
     const forced = String(env.DISPATCH_FORCE || "") === "1";

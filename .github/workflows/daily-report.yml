@@ -180,6 +180,16 @@ jobs:
           MPLBACKEND: Agg
         run: python tools/run_notebook.py --storage "runs/${{ matrix.target }}"
 
+      # 게시된 원장을 읽어 발송 대기를 등록한다. 생성 시각만 바뀐 재실행은 Worker가 중복 제외한다.
+      - name: 개장 전 보고서 이메일 알림
+        if: success() && steps.gate.outputs.run == 'true' && github.event_name != 'push'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPORT_MAIL_ENDPOINT: ${{ vars.REPORT_MAIL_ENDPOINT }}
+          MAIL_PUBLISH_TOKEN: ${{ secrets.MAIL_PUBLISH_TOKEN }}
+        run: python tools/notify_report_update.py --target ${{ matrix.target }} --phase pre_open
+
+
   # 수출 통계·실적 예상·장기 전망은 monthly-longterm.yml에서 하루 한 번 함께 갱신한다.
 
   # 검색어는 하루 사이에 실제로 바뀌는 유일한 보고서라 3시간 간격 회차에도 돌린다.

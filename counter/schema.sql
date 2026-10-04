@@ -51,3 +51,22 @@ CREATE TABLE IF NOT EXISTS subscribe_log (
   day     TEXT NOT NULL
 );
 CREATE INDEX IF NOT EXISTS idx_subscribe_log ON subscribe_log (visitor, day);
+
+-- 보고서 갱신 알림(2026-10-04). 이벤트에는 공개 요약만, 수신 정보는 비공개 발송 표에 둔다.
+CREATE TABLE IF NOT EXISTS mail_events (
+  id TEXT PRIMARY KEY, target TEXT NOT NULL, phase TEXT NOT NULL,
+  session_date TEXT NOT NULL, content TEXT NOT NULL, source_revision TEXT NOT NULL,
+  created_at TEXT NOT NULL
+);
+CREATE TABLE IF NOT EXISTS mail_deliveries (
+  event_id TEXT NOT NULL, email TEXT NOT NULL, payload TEXT NOT NULL,
+  status TEXT NOT NULL DEFAULT 'pending', attempts INTEGER NOT NULL DEFAULT 0,
+  created_at TEXT NOT NULL, lease_until TEXT NOT NULL DEFAULT '',
+  next_attempt TEXT NOT NULL DEFAULT '', sent_at TEXT, provider_id TEXT, error_code TEXT,
+  PRIMARY KEY (event_id, email)
+);
+CREATE TABLE IF NOT EXISTS mail_unsubscribe (
+  email TEXT PRIMARY KEY, token TEXT NOT NULL UNIQUE
+);
+CREATE INDEX IF NOT EXISTS idx_mail_events_created ON mail_events(created_at);
+CREATE INDEX IF NOT EXISTS idx_mail_deliveries_email ON mail_deliveries(email);

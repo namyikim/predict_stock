@@ -124,3 +124,12 @@ jobs:
           KRX_PW: ${{ secrets.KRX_PW }}
           SESSION: ${{ steps.gate.outputs.session }}
         run: python tools/build_session_review.py --target ${{ matrix.target }} --date "$SESSION" --out runs/review --publish
+
+      - name: 마감 회고 이메일 알림
+        if: success() && steps.gate.outputs.scope == 'all' && steps.gate.outputs.session != ''
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPORT_MAIL_ENDPOINT: ${{ vars.REPORT_MAIL_ENDPOINT }}
+          MAIL_PUBLISH_TOKEN: ${{ secrets.MAIL_PUBLISH_TOKEN }}
+          SESSION: ${{ steps.gate.outputs.session }}
+        run: python tools/notify_report_update.py --target ${{ matrix.target }} --phase post_close --session "$SESSION"

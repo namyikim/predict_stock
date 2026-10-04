@@ -17,7 +17,8 @@ class WorkflowTriggerTests(unittest.TestCase):
     def test_tests_skip_pushes_the_daily_report_validates(self):
         """일일 보고서 validation 이 tests.yml 을 같은 동시성 그룹에서 부르므로, 그 경로만 바뀐 push 에서
         tests.yml 이 따로 돌면 매번 취소된다. 반대로 tests.yml 이 무시하는 경로는 일일 보고서가 반드시 돌아야 한다."""
-        base = {"docs/**", "forecast_history/**", "macro_history/**", "runs/**", "**.md"}
+        # 모의운용 원장도 자동 생성 결과이므로 보고서 재실행 대상에서 제외한다(2026-10-04).
+        base = {"docs/**", "forecast_history/**", "macro_history/**", "paper_history/**", "runs/**", "**.md"}
         ignored = set(load("tests.yml")["push"]["paths-ignore"]) - base
         daily = set(load("daily-report.yml")["push"]["paths"])
         self.assertEqual(ignored, daily)

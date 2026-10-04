@@ -418,7 +418,9 @@ CREATE TABLE IF NOT EXISTS mail_controls (id TEXT PRIMARY KEY, value TEXT NOT NU
    - **Variable** `REPORT_MAIL_ENDPOINT`: `https://predict-stock-counter.kimname1.workers.dev`.
    - 연동 설정이 없으면 기존 보고서 작업은 그대로 성공하고 이메일 단계는 건너뛴다.
 5. `counter/worker.js` **전체**를 Worker 편집기에 붙여넣고 Deploy 한다. git push만으로 Worker는 배포되지 않는다. 워크플로 변경도 저장소에 반영해야 한다.
-6. 기존 Cron Trigger를 유지하고 `*/5 * * * *`(UTC)를 추가한다. 발송 대기를 최대 5명씩 처리하므로 이 트리거만 기준으로 약 60명/시간이다. 수신자 수가 많으면 시간창 내 처리 가능량을 확인하고 Queue 기반 확장을 고려한다.
+6. 기존 보고서 호출 시각을 유지하고 `*/5 * * * *`(UTC)를 추가한다. 발송 대기를 최대 5명씩 처리하므로 이 트리거만 기준으로 약 60명/시간이다. 수신자 수가 많으면 시간창 내 처리 가능량을 확인하고 Queue 기반 확장을 고려한다.
+   - 운영 계정의 무료 Cron 제한은 5개다. `37 0 * * MON-FRI`와 `30 8 * * MON-FRI`를 `30,37 0,8 * * MON-FRI` 하나로 합쳐 메일 예약 자리를 확보했다. 추가되는 00:30·08:37 UTC에는 `dispatchDue`가 보고서 호출을 하지 않고 기존 보관기간 정리만 수행한다(메일 대기 처리는 다른 예약과 동일).
+   - 현재 5개 예약: `30,37 0,8 * * MON-FRI`, `*/20 21-22 * * SUN-THU`, `10,45 7 * * MON-FRI`, `0 3 * * *`, `*/5 * * * *`.
 7. 관리자 → 구독자에서 관리자 토큰으로 불러온 뒤, **발신 이메일**에 본인 주소를 저장한다. 설정·최근 결과를 확인하고 `MAIL_ENABLED=1`로 켠다. 켜는 시점에 해당 날짜·시간창의 기존 대기가 있다면 함께 처리된다.
 
 ### 신뢰성과 개인정보
@@ -454,4 +456,4 @@ python -m unittest tests.test_report_email tests.test_mail_site_reports tests.te
 
 Gmail 및 발송 관리 검증(2026-10-04): 가짜 SMTP의 TLS·한글 MIME·인증 오류·응답 유실, 관리자 권한, 대기 취소 후 재생성 차단, 배치 중 일시 중지·재개 및 취소, 전송 중 결과 보존, 수신자 상세 페이지 나눔을 로컬에서 검증했다(관련 테스트 24개 통과). 운영 수신함 도착 검증은 Gmail Secret 설정 후 별도로 필요하다. [Google 앱 비밀번호](https://support.google.com/accounts/answer/185833), [Gmail SMTP](https://developers.google.com/workspace/gmail/imap/imap-smtp).
 
-운영 준비(2026-10-04): Cloudflare에 Gmail 발송 변수(`MAIL_ENABLED=0`)를 저장하고 D1 메일 표 6개·인덱스 2개와 발신 주소를 준비했다. GitHub의 `REPORT_MAIL_ENDPOINT`도 저장했다. Worker 편집기 초기화 오류로 새 코드 배포는 미완료다. Gmail 앱 비밀번호, 양쪽 `MAIL_PUBLISH_TOKEN`, Worker 배포 후 메일 전용 5분 Cron과 활성화가 남아 있다. 실제 이메일은 발송하지 않았다.
+운영 설정 완료(2026-10-04): D1 메일 표 6개·인덱스 2개와 발신 주소, Gmail 앱 비밀번호, Cloudflare·GitHub 양쪽 `MAIL_PUBLISH_TOKEN`, GitHub `REPORT_MAIL_ENDPOINT`를 등록했다. 대시보드 편집기 초기화 오류를 피하기 위해 사용자 승인 후 공식 Wrangler로 배포했다. 기존 환경변수·Secret·DB를 유지하고 미리보기 URL은 끔, 운영 로그는 켬 상태를 유지했다. 메일 전용 5분 Cron을 포함한 예약 5개를 적용하고 `MAIL_ENABLED=1`로 활성화했다. 활성화 버전은 `f51d81c1-785a-48a5-b236-2272219ef983`이다. 10월 4일 야간(KST) 조회에서 구독자 2명, 일시 중지 아님, 등록 보고서·발송·실패·대기 모두 0건이었다. 실제 Gmail 수신과 GitHub에서 Worker까지의 자동 발행 연동은 다음 자동 보고서 갱신에서 확인해야 한다. 설정용 임시 토큰 파일은 삭제했다.

@@ -1,0 +1,602 @@
+{
+  "schema_version": 1,
+  "scope": "pre_open_intraday",
+  "method": "retrospective_split",
+  "automatic_promotion": false,
+  "evidence": "insufficient",
+  "selected": {
+    "id": "up_third",
+    "model": "No macro ensemble",
+    "rule": "up_over_third"
+  },
+  "selection": {
+    "dates": [
+      "2026-09-07",
+      "2026-09-08",
+      "2026-09-09",
+      "2026-09-10",
+      "2026-09-11",
+      "2026-09-14",
+      "2026-09-15",
+      "2026-09-16",
+      "2026-09-17",
+      "2026-09-18"
+    ],
+    "metrics": [
+      {
+        "id": "up_vs_down",
+        "total": 0.12414356308999985,
+        "mdd": -0.005665553986032301,
+        "cost_won": 178564.3691,
+        "final_cash": 11241435.6309,
+        "trades": 6,
+        "held_days": 6,
+        "observed_days": 10,
+        "exposure": 0.6,
+        "unfilled": 0,
+        "curve": [
+          {
+            "date": "2026-09-07",
+            "value": 1.020252104075,
+            "equity": 10202521.04075,
+            "cash": 10202521.04075,
+            "shares": 0,
+            "held": true
+          },
+          {
+            "date": "2026-09-08",
+            "value": 1.0144718107000001,
+            "equity": 10144718.107,
+            "cash": 10144718.107,
+            "shares": 0,
+            "held": true
+          },
+          {
+            "date": "2026-09-09",
+            "value": 1.0421156731875,
+            "equity": 10421156.731875,
+            "cash": 10421156.731875,
+            "shares": 0,
+            "held": true
+          },
+          {
+            "date": "2026-09-10",
+            "value": 1.0421156731875,
+            "equity": 10421156.731875,
+            "cash": 10421156.731875,
+            "shares": 0,
+            "held": false
+          },
+          {
+            "date": "2026-09-11",
+            "value": 1.05882056505,
+            "equity": 10588205.6505,
+            "cash": 10588205.6505,
+            "shares": 0,
+            "held": true
+          },
+          {
+            "date": "2026-09-14",
+            "value": 1.05882056505,
+            "equity": 10588205.6505,
+            "cash": 10588205.6505,
+            "shares": 0,
+            "held": false
+          },
+          {
+            "date": "2026-09-15",
+            "value": 1.05882056505,
+            "equity": 10588205.6505,
+            "cash": 10588205.6505,
+            "shares": 0,
+            "held": false
+          },
+          {
+            "date": "2026-09-16",
+            "value": 1.099378248195,
+            "equity": 10993782.48195,
+            "cash": 10993782.48195,
+            "shares": 0,
+            "held": true
+          },
+          {
+            "date": "2026-09-17",
+            "value": 1.099378248195,
+            "equity": 10993782.48195,
+            "cash": 10993782.48195,
+            "shares": 0,
+            "held": false
+          },
+          {
+            "date": "2026-09-18",
+            "value": 1.1241435630899999,
+            "equity": 11241435.6309,
+            "cash": 11241435.6309,
+            "shares": 0,
+            "held": true
+          }
+        ]
+      },
+      {
+        "id": "up_third",
+        "total": 0.12414356308999985,
+        "mdd": -0.005665553986032301,
+        "cost_won": 178564.3691,
+        "final_cash": 11241435.6309,
+        "trades": 6,
+        "held_days": 6,
+        "observed_days": 10,
+        "exposure": 0.6,
+        "unfilled": 0,
+        "curve": [
+          {
+            "date": "2026-09-07",
+            "value": 1.020252104075,
+            "equity": 10202521.04075,
+            "cash": 10202521.04075,
+            "shares": 0,
+            "held": true
+          },
+          {
+            "date": "2026-09-08",
+            "value": 1.0144718107000001,
+            "equity": 10144718.107,
+            "cash": 10144718.107,
+            "shares": 0,
+            "held": true
+          },
+          {
+            "date": "2026-09-09",
+            "value": 1.0421156731875,
+            "equity": 10421156.731875,
+            "cash": 10421156.731875,
+            "shares": 0,
+            "held": true
+          },
+          {
+            "date": "2026-09-10",
+            "value": 1.0421156731875,
+            "equity": 10421156.731875,
+            "cash": 10421156.731875,
+            "shares": 0,
+            "held": false
+          },
+          {
+            "date": "2026-09-11",
+            "value": 1.05882056505,
+            "equity": 10588205.6505,
+            "cash": 10588205.6505,
+            "shares": 0,
+            "held": true
+          },
+          {
+            "date": "2026-09-14",
+            "value": 1.05882056505,
+            "equity": 10588205.6505,
+            "cash": 10588205.6505,
+            "shares": 0,
+            "held": false
+          },
+          {
+            "date": "2026-09-15",
+            "value": 1.05882056505,
+            "equity": 10588205.6505,
+            "cash": 10588205.6505,
+            "shares": 0,
+            "held": false
+          },
+          {
+            "date": "2026-09-16",
+            "value": 1.099378248195,
+            "equity": 10993782.48195,
+            "cash": 10993782.48195,
+            "shares": 0,
+            "held": true
+          },
+          {
+            "date": "2026-09-17",
+            "value": 1.099378248195,
+            "equity": 10993782.48195,
+            "cash": 10993782.48195,
+            "shares": 0,
+            "held": false
+          },
+          {
+            "date": "2026-09-18",
+            "value": 1.1241435630899999,
+            "equity": 11241435.6309,
+            "cash": 11241435.6309,
+            "shares": 0,
+            "held": true
+          }
+        ]
+      },
+      {
+        "id": "predicted_up",
+        "total": 0.07945832746249981,
+        "mdd": -0.005665553986032301,
+        "cost_won": 140416.725375,
+        "final_cash": 10794583.274624998,
+        "trades": 5,
+        "held_days": 5,
+        "observed_days": 10,
+        "exposure": 0.5,
+        "unfilled": 0,
+        "curve": [
+          {
+            "date": "2026-09-07",
+            "value": 1.020252104075,
+            "equity": 10202521.04075,
+            "cash": 10202521.04075,
+            "shares": 0,
+            "held": true
+          },
+          {
+            "date": "2026-09-08",
+            "value": 1.0144718107000001,
+            "equity": 10144718.107,
+            "cash": 10144718.107,
+            "shares": 0,
+            "held": true
+          },
+          {
+            "date": "2026-09-09",
+            "value": 1.0421156731875,
+            "equity": 10421156.731875,
+            "cash": 10421156.731875,
+            "shares": 0,
+            "held": true
+          },
+          {
+            "date": "2026-09-10",
+            "value": 1.0421156731875,
+            "equity": 10421156.731875,
+            "cash": 10421156.731875,
+            "shares": 0,
+            "held": false
+          },
+          {
+            "date": "2026-09-11",
+            "value": 1.05882056505,
+            "equity": 10588205.6505,
+            "cash": 10588205.6505,
+            "shares": 0,
+            "held": true
+          },
+          {
+            "date": "2026-09-14",
+            "value": 1.05882056505,
+            "equity": 10588205.6505,
+            "cash": 10588205.6505,
+            "shares": 0,
+            "held": false
+          },
+          {
+            "date": "2026-09-15",
+            "value": 1.05882056505,
+            "equity": 10588205.6505,
+            "cash": 10588205.6505,
+            "shares": 0,
+            "held": false
+          },
+          {
+            "date": "2026-09-16",
+            "value": 1.05882056505,
+            "equity": 10588205.6505,
+            "cash": 10588205.6505,
+            "shares": 0,
+            "held": false
+          },
+          {
+            "date": "2026-09-17",
+            "value": 1.05882056505,
+            "equity": 10588205.6505,
+            "cash": 10588205.6505,
+            "shares": 0,
+            "held": false
+          },
+          {
+            "date": "2026-09-18",
+            "value": 1.0794583274624998,
+            "equity": 10794583.274624998,
+            "cash": 10794583.274624998,
+            "shares": 0,
+            "held": true
+          }
+        ]
+      }
+    ]
+  },
+  "evaluation": {
+    "dates": [
+      "2026-09-21",
+      "2026-09-22",
+      "2026-09-23",
+      "2026-09-28",
+      "2026-09-29",
+      "2026-09-30",
+      "2026-10-02"
+    ],
+    "strategy": {
+      "total": -0.07027212004999983,
+      "mdd": -0.0729229739124998,
+      "cost_won": 142721.20049999998,
+      "final_cash": 9297278.799500002,
+      "trades": 5,
+      "held_days": 5,
+      "observed_days": 7,
+      "exposure": 0.7142857142857143,
+      "unfilled": 0,
+      "curve": [
+        {
+          "date": "2026-09-21",
+          "value": 0.9951041404500001,
+          "equity": 9951041.4045,
+          "cash": 9951041.4045,
+          "shares": 0,
+          "held": true
+        },
+        {
+          "date": "2026-09-22",
+          "value": 0.9577305408625001,
+          "equity": 9577305.408625001,
+          "cash": 9577305.408625001,
+          "shares": 0,
+          "held": true
+        },
+        {
+          "date": "2026-09-23",
+          "value": 0.9363332523750002,
+          "equity": 9363332.523750002,
+          "cash": 9363332.523750002,
+          "shares": 0,
+          "held": true
+        },
+        {
+          "date": "2026-09-28",
+          "value": 0.9363332523750002,
+          "equity": 9363332.523750002,
+          "cash": 9363332.523750002,
+          "shares": 0,
+          "held": false
+        },
+        {
+          "date": "2026-09-29",
+          "value": 0.9363332523750002,
+          "equity": 9363332.523750002,
+          "cash": 9363332.523750002,
+          "shares": 0,
+          "held": false
+        },
+        {
+          "date": "2026-09-30",
+          "value": 0.9270770260875002,
+          "equity": 9270770.260875002,
+          "cash": 9270770.260875002,
+          "shares": 0,
+          "held": true
+        },
+        {
+          "date": "2026-10-02",
+          "value": 0.9297278799500002,
+          "equity": 9297278.799500002,
+          "cash": 9297278.799500002,
+          "shares": 0,
+          "held": true
+        }
+      ]
+    },
+    "buy_hold": {
+      "total": -0.018362797712500045,
+      "mdd": -0.05410847019999998,
+      "cost_won": 28627.977124999998,
+      "final_cash": 9816372.022875,
+      "trades": 1,
+      "held_days": 7,
+      "observed_days": 7,
+      "exposure": 1,
+      "unfilled": 0,
+      "curve": [
+        {
+          "date": "2026-09-21",
+          "value": 0.9973915298,
+          "equity": 9973915.298,
+          "cash": 633915.2980000004,
+          "shares": 5,
+          "held": true
+        },
+        {
+          "date": "2026-09-22",
+          "value": 0.9833915298,
+          "equity": 9833915.298,
+          "cash": 633915.2980000004,
+          "shares": 5,
+          "held": true
+        },
+        {
+          "date": "2026-09-23",
+          "value": 0.9943915298,
+          "equity": 9943915.298,
+          "cash": 633915.2980000004,
+          "shares": 5,
+          "held": true
+        },
+        {
+          "date": "2026-09-28",
+          "value": 0.9473915298000001,
+          "equity": 9473915.298,
+          "cash": 633915.2980000004,
+          "shares": 5,
+          "held": true
+        },
+        {
+          "date": "2026-09-29",
+          "value": 0.9458915298,
+          "equity": 9458915.298,
+          "cash": 633915.2980000004,
+          "shares": 5,
+          "held": true
+        },
+        {
+          "date": "2026-09-30",
+          "value": 0.9513915298000001,
+          "equity": 9513915.298,
+          "cash": 633915.2980000004,
+          "shares": 5,
+          "held": true
+        },
+        {
+          "date": "2026-10-02",
+          "value": 0.9816372022875,
+          "equity": 9816372.022875,
+          "cash": 9816372.022875,
+          "shares": 0,
+          "held": true
+        }
+      ]
+    },
+    "daily_session": {
+      "total": -0.09979212773499968,
+      "mdd": -0.10191281082499981,
+      "cost_won": 191921.27735,
+      "final_cash": 9002078.722650003,
+      "trades": 7,
+      "held_days": 7,
+      "observed_days": 7,
+      "exposure": 1,
+      "unfilled": 0,
+      "curve": [
+        {
+          "date": "2026-09-21",
+          "value": 0.9951041404500001,
+          "equity": 9951041.4045,
+          "cash": 9951041.4045,
+          "shares": 0,
+          "held": true
+        },
+        {
+          "date": "2026-09-22",
+          "value": 0.9577305408625001,
+          "equity": 9577305.408625001,
+          "cash": 9577305.408625001,
+          "shares": 0,
+          "held": true
+        },
+        {
+          "date": "2026-09-23",
+          "value": 0.9363332523750002,
+          "equity": 9363332.523750002,
+          "cash": 9363332.523750002,
+          "shares": 0,
+          "held": true
+        },
+        {
+          "date": "2026-09-28",
+          "value": 0.9050751208375003,
+          "equity": 9050751.208375003,
+          "cash": 9050751.208375003,
+          "shares": 0,
+          "held": true
+        },
+        {
+          "date": "2026-09-29",
+          "value": 0.9073434154625002,
+          "equity": 9073434.154625002,
+          "cash": 9073434.154625002,
+          "shares": 0,
+          "held": true
+        },
+        {
+          "date": "2026-09-30",
+          "value": 0.8980871891750002,
+          "equity": 8980871.891750002,
+          "cash": 8980871.891750002,
+          "shares": 0,
+          "held": true
+        },
+        {
+          "date": "2026-10-02",
+          "value": 0.9002078722650003,
+          "equity": 9002078.722650003,
+          "cash": 9002078.722650003,
+          "shares": 0,
+          "held": true
+        }
+      ]
+    }
+  },
+  "coverage": [
+    {
+      "id": "up_vs_down",
+      "eligible_days": 17,
+      "excluded": {
+        "duplicate": 21
+      },
+      "selection_days": 10,
+      "evaluation_days": 7
+    },
+    {
+      "id": "up_third",
+      "eligible_days": 17,
+      "excluded": {
+        "duplicate": 21
+      },
+      "selection_days": 10,
+      "evaluation_days": 7
+    },
+    {
+      "id": "predicted_up",
+      "eligible_days": 17,
+      "excluded": {
+        "duplicate": 21
+      },
+      "selection_days": 10,
+      "evaluation_days": 7
+    }
+  ],
+  "limitations": [
+    "설정은 사후 선택입니다. 사전에 고정한 미사용 기간의 운영 실적이 아닙니다.",
+    "예측이 있는 공통 관측일만 비교합니다. 기업행사·배당과 실제 체결은 반영하지 않습니다."
+  ],
+  "target": "sk_hynix",
+  "generated_at_utc": "2026-10-04T08:20:02.387807+00:00",
+  "config": {
+    "capital": 10000000,
+    "cost": {
+      "fee": 0.00015,
+      "tax": 0.0018,
+      "slip": 0.0005
+    },
+    "selection": {
+      "start": "2026-09-07",
+      "end": "2026-09-18"
+    },
+    "evaluation": {
+      "start": "2026-09-21",
+      "end": "2026-10-02"
+    },
+    "min_days": 60,
+    "min_trades": 20,
+    "candidates": [
+      {
+        "id": "up_vs_down",
+        "model": "No macro ensemble",
+        "rule": "up_over_flat"
+      },
+      {
+        "id": "up_third",
+        "model": "No macro ensemble",
+        "rule": "up_over_third"
+      },
+      {
+        "id": "predicted_up",
+        "model": "No macro ensemble",
+        "rule": "predicted_up"
+      }
+    ]
+  },
+  "source_revision": "cd3c3beb251ea586904c12fe324ba8cccf8397e8",
+  "input_sha256": "db9e0d1a9b7cecca4830b20c94858eb94a4ead5add65a6d39b7f1b532e1ca044",
+  "config_sha256": "c98e49afa18954b73d84179baf8b3702e32f097c23a88537b344c4d877086f42",
+  "engine_sha256": "8736cc0c0cf3e3a31ac2a7866b4328830b044d64cd11ad8f5841f5268ad7ff9a"
+}

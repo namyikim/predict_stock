@@ -120,6 +120,9 @@ body{zoom:1.15}
   <div id="status" class="muted">원장을 불러오는 중…</div>
   <div id="result"></div>
 
+  <h2>기간을 나눈 전략 검증</h2>
+  <div id="validation-result" class="muted">검증 결과를 불러오는 중…</div>
+
   <h2>규칙별 비교</h2>
   <div id="compare"></div>
 
@@ -182,7 +185,7 @@ body{zoom:1.15}
   </div>
 
   <div class="muted" style="margin-top:18px">
-    이 페이지는 원장 CSV를 브라우저에서 직접 읽어 계산합니다. 서버도 저장도 없습니다.
+    가상매매는 원장 CSV를 브라우저에서 직접 읽어 계산하며 입력을 저장하지 않습니다. 기간 분리 검증은 별도로 생성해 저장한 결과입니다.
     같은 날짜·모델의 예측이 여러 건이면 <b>2026-09-28부터 당일 아침 기록을 우선하고, 없으면 최초 기록</b>을 씁니다. 저녁 후보는 최초 기록을 유지합니다.
     연구·교육용이며 투자 자문이 아닙니다.
   </div>
@@ -239,6 +242,7 @@ body{zoom:1.15}
 
   function load() {
     var target = $("target").value;
+    loadValidation(target);
     $("status").textContent = "원장을 불러오는 중…";
     $("result").innerHTML = ""; $("trades").innerHTML = "";
     fetch(BASE + target + "/forecast_log.csv", { cache: "no-store" })
@@ -268,6 +272,40 @@ body{zoom:1.15}
         $("status").textContent = "";
         $("result").innerHTML = '<div class="empty">원장을 불러오지 못했습니다 (' + e.message + ').</div>';
       });
+  }
+
+  function loadValidation(target) {
+    var box = $("validation-result");
+    box.textContent = "저장된 기간 분리 검증을 불러오는 중…";
+    fetch("validation_" + target + ".json", {cache:"no-store"}).then(function(response) {
+      if (!response.ok) throw new Error("검증 결과 없음");
+      return response.json();
+    }).then(function(r) {
+      if ($("target").value !== target) return;
+      var c=r.config, ev=r.evaluation;
+      if (!c || !ev || !r.selection || r.schema_version !== 1) throw new Error("검증 형식 미지원");
+      var title = r.evidence === "insufficient" ? "자료 부족 — 실거래 적합 판정 불가" : "최소 표본 충족 — 수익성 입증은 별도";
+      var rows = [["선택 기간에서 고른 전략", ev.strategy], ["매수 후 보유", ev.buy_hold], ["매일 장중 보유", ev.daily_session]];
+      var body = rows.filter(function(x) { return x[1]; }).map(function(x) {
+        var m=x[1];
+        return "<tr><td>" + x[0] + '</td><td class="num">' + pct(m.total) + '</td><td class="num">' +
+          pct(m.mdd) + '</td><td class="num">' + m.trades + '</td><td class="num">' +
+          nf.format(Math.round(m.cost_won)) + "원</td></tr>";
+      }).join("");
+      box.innerHTML = '<div class="warn"><b>' + title + '</b><br>기존 자료를 사후에 나눈 검증입니다. 앞으로의 모의운용 성적과 다릅니다. '
+        + '평가 성과로 전략을 다시 고르거나 실거래를 자동 활성화하지 않습니다.</div>'
+        + '<p class="muted">저장된 결과 생성 시각: ' + esc(r.generated_at_utc) + ' (UTC)</p>'
+        + '<p>선택: ' + esc(c.selection.start) + ' ~ ' + esc(c.selection.end) + ' (' + r.selection.dates.length + '일)'
+        + ' · 평가: ' + esc(c.evaluation.start) + ' ~ ' + esc(c.evaluation.end) + ' (' + ev.dates.length + '일)</p>'
+        + '<p>선택된 규칙: ' + esc(r.selected ? r.selected.id : '없음') + ' · 초기 자금 ' + nf.format(c.capital) + '원'
+        + ' · 편도 수수료 ' + (c.cost.fee*100).toFixed(3)+"%" + ' / 매도세 ' + (c.cost.tax*100).toFixed(3)+"%" + ' / 편도 슬리피지 ' + (c.cost.slip*100).toFixed(3)+"%" + '</p>'
+        + '<p class="muted">위 가상매매 입력과 별도로 고정된 설정입니다. 최소 기준: 각 기간 ' + c.min_days + '일·선택 전략 각 ' + c.min_trades + '거래. '
+        + '같은 예측 관측일만 비교하며, 낙폭은 관측일 종가 기준입니다.</p>'
+        + '<div style="overflow-x:auto"><table><tr><th>평가 기간 결과</th><th>수익률</th><th>낙폭</th><th>청산 거래</th><th>비용</th></tr>' + body + '</table></div>'
+        + '<p><a href="validation_' + target + '.json">설정·데이터 지문·상세 결과 JSON</a></p>';
+    }).catch(function() {
+      if ($("target").value === target) box.textContent = "저장된 기간 분리 검증 결과를 읽지 못했습니다. 가상매매 계산은 계속 사용할 수 있습니다.";
+    });
   }
 
   function simulate(picked, rule, cost, capital) {

@@ -1,0 +1,13 @@
+{
+  "capital": 10000000,
+  "cost": {"fee": 0.00015, "tax": 0.0018, "slip": 0.0005},
+  "selection": {"start": "2026-09-07", "end": "2026-09-18"},
+  "evaluation": {"start": "2026-09-21", "end": "2026-10-02"},
+  "min_days": 60,
+  "min_trades": 20,
+  "candidates": [
+    {"id": "up_vs_down", "model": "No macro ensemble", "rule": "up_over_flat"},
+    {"id": "up_third", "model": "No macro ensemble", "rule": "up_over_third"},
+    {"id": "predicted_up", "model": "No macro ensemble", "rule": "predicted_up"}
+  ]
+}

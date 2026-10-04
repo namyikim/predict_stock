@@ -48,6 +48,7 @@
 body{zoom:1.15}
   .embed .lab-head{display:none}
   .embed body{padding-top:4px}
+#compare, #trades { overflow-x:auto; max-width:100%; }
 </style>
 </head>
 <body>
@@ -68,13 +69,15 @@ body{zoom:1.15}
 
   <div id="panel-sim">
   <div class="warn">
-    <b>실제 거래는 하지 않았습니다.</b> 원장(<code>forecast_history/…/forecast_log.csv</code>)에
-    <b>실제로 미리 기록한 예측</b>만으로 가상 매매를 돌린 결과입니다. 백테스트가 아닙니다.
-    <br>매수·매도는 <b>09:00 시가</b>에 실행합니다 — 예측을 볼 수 있는 가장 이른 시점이고, 그 전에
-    이미 밤사이 갭이 지나갔습니다. 이 저장소의 측정으로 예측력은 갭 구간(AUC 0.80)에 있고
-    시가 이후 장중은 무작위에 가깝습니다(AUC 0.50). 그래서 <b>이 시뮬레이션이 보유 전략을 이기지
-    못하는 것이 정상</b>이며, 이 페이지는 그 사실을 금액으로 확인하려는 것입니다.
-    <br>결과는 <b>보유 전략과 비교해서만</b> 읽으세요. 거래비용은 끌 수 없습니다.
+    <b>실제 거래는 하지 않았습니다.</b> 개장 전 예측으로 계산한 가상 계좌입니다.
+    <details><summary>계산 기준과 제외 조건</summary>
+    장 시작 후 예측은 시가에 거래할 수 없어 제외하며, 대체 진입 가격이 확보되기 전에는 성과를 내지 않습니다.
+    <br>예측 기반 전략과 매일 장중 보유는 시가 매수·종가 청산, <b>매수 후 보유</b>는 첫날 시가 매수·마지막 날 종가 청산입니다.
+    정수 주식 수와 잔여 현금, 체결 금액별 수수료·매도세·슬리피지를 반영합니다.
+    <br>관측된 날짜만 평가하므로 최대 낙폭은 <b>관측일 종가 기준</b>입니다. 배당·기업행사·실제 호가·미체결은 반영하지 않습니다.
+    비용은 가정값이며 실제 계좌 요율을 입력해야 합니다. 비용을 0으로 낮추는 실험은 별도 민감도 모드에서만 가능합니다.
+    실제 시가·종가 체결을 보장하지 않으며, 과거 예측에 지금 선택한 규칙을 적용한 결과는 자동 모의운용 실적과 다릅니다.
+    </details>
   </div>
   <div class="controls">
     <div class="field">종목
@@ -93,11 +96,15 @@ body{zoom:1.15}
         <option value="up_over_flat">상승 확률이 하락보다 높으면 보유</option>
         <option value="up_over_third">상승 확률 &gt; 1/3 이면 보유</option>
         <option value="predicted_up">예측이 '상승'일 때만 보유</option>
-        <option value="always">항상 보유(=보유 전략)</option>
+        <option value="always">매일 장중 보유</option>
+        <option value="buy_hold">매수 후 보유</option>
       </select>
     </label>
     <label class="field">초기 자금(원)
       <input id="capital" type="number" value="10000000" step="1000000" min="100000">
+    </label>
+    <label class="field">비용 모드
+      <select id="cost-mode"><option value="standard">계좌 비용 적용</option><option value="sensitivity">비용 민감도 실험</option></select>
     </label>
     <label class="field">수수료(%)
       <input id="fee" type="number" value="0.015" step="0.005" min="0">
@@ -176,12 +183,13 @@ body{zoom:1.15}
 
   <div class="muted" style="margin-top:18px">
     이 페이지는 원장 CSV를 브라우저에서 직접 읽어 계산합니다. 서버도 저장도 없습니다.
-    같은 날짜·모델의 예측이 여러 건이면 <b>가장 먼저 기록된 것</b>만 씁니다(원장의 집계 규칙과 같습니다).
+    같은 날짜·모델의 예측이 여러 건이면 <b>2026-09-28부터 당일 아침 기록을 우선하고, 없으면 최초 기록</b>을 씁니다. 저녁 후보는 최초 기록을 유지합니다.
     연구·교육용이며 투자 자문이 아닙니다.
   </div>
 </div>
 
 <script src="correct_attribution.js"></script>
+<script src="trading_sim.js"></script>
 <script>
 (function () {
   "use strict";
@@ -189,6 +197,7 @@ body{zoom:1.15}
   var $ = function (id) { return document.getElementById(id); };
   var nf = new Intl.NumberFormat("ko-KR");
   var rows = [];
+  var simExcluded = {};
 
   function parseCsv(text) {
     // 원장은 따옴표 안에 쉼표가 들어갈 수 있다. 최소한의 파서를 직접 둔다.
@@ -237,18 +246,8 @@ body{zoom:1.15}
       .then(function (text) {
         var all = parseCsv(text);
         showLabStamp(all);
-        rows = all.filter(function (r) {
-          return r.kind === "direction" && String(r.is_prospective).toLowerCase() === "true" &&
-                 r.status === "scored" && num(r.actual_open) && num(r.actual_close);
-        });
-        // 같은 (날짜, 모델)은 가장 먼저 기록된 것만.
-        var seen = {}, unique = [];
-        rows.sort(function (a, b) { return String(a.created_at_utc).localeCompare(String(b.created_at_utc)); });
-        rows.forEach(function (r) {
-          var key = r.target_date + "|" + r.model;
-          if (!seen[key]) { seen[key] = true; unique.push(r); }
-        });
-        rows = unique;
+        // 모델 목록은 유지하고, 진입할 수 없는 예측의 제외 이유를 보여 준다.
+        rows = all.filter(function (r) { return r.kind === "direction"; });
         var models = Object.keys(rows.reduce(function (acc, r) { acc[r.model] = 1; return acc; }, {})).sort();
         // 기본 모델은 보고서 대표와 같게 둔다. 이전 선택이 유효하면 유지한다.
         var pick = models.indexOf($("model").value) >= 0 ? $("model").value
@@ -271,37 +270,8 @@ body{zoom:1.15}
       });
   }
 
-  function decide(rule, r) {
-    var up = num(r.p_up), down = num(r.p_down);
-    if (rule === "always") return true;
-    if (rule === "predicted_up") return r.prediction === "상승";
-    if (rule === "up_over_third") return up !== null && up > 1 / 3;
-    return up !== null && down !== null && up > down;   // up_over_flat
-  }
-
-  function simulate(picked, rule, cost) {
-    // 09:00 시가 매수 → 15:30 종가 청산. 보유하지 않는 날은 현금.
-    var cash = 1, position = false, curve = [], trades = [], fees = 0;
-    picked.forEach(function (r) {
-      var open = num(r.actual_open), close = num(r.actual_close);
-      var want = decide(rule, r);
-      var ret = 0, paid = 0;
-      if (want) {
-        var buy = open * (1 + cost.slip), sell = close * (1 - cost.slip);
-        var gross = sell / buy - 1;
-        paid = cost.fee * 2 + cost.tax;          // 매수·매도 수수료 + 매도 거래세
-        ret = gross - paid;
-        fees += paid;
-        trades.push({ date: r.target_date, open: open, close: close, gross: gross, net: ret,
-                      p_up: num(r.p_up), p_down: num(r.p_down), prediction: r.prediction });
-      }
-      cash *= (1 + ret);
-      curve.push({ date: r.target_date, value: cash, held: want });
-      position = want;
-    });
-    var peak = 1, mdd = 0;
-    curve.forEach(function (p) { peak = Math.max(peak, p.value); mdd = Math.min(mdd, p.value / peak - 1); });
-    return { curve: curve, trades: trades, total: cash - 1, mdd: mdd, fees: fees, days: picked.length };
+  function simulate(picked, rule, cost, capital) {
+    return TradingSim.simulate(picked, rule, cost, capital);
   }
 
   function sparkline(curve, hold) {
@@ -323,7 +293,7 @@ body{zoom:1.15}
       '<text x="' + L + '" y="' + (H - 4) + '" font-size="10" fill="#8a9199">' + curve[0].date + "</text>" +
       '<text x="' + (W - R) + '" y="' + (H - 4) + '" font-size="10" fill="#8a9199" text-anchor="end">' +
       curve[curve.length - 1].date + "</text></svg>" +
-      '<div class="muted">파랑 = 규칙대로 매매 · 회색 = 보유 전략 · 점선 = 원금</div>';
+      '<div class="muted">파랑 = 규칙대로 매매 · 회색 = 매수 후 보유 · 점선 = 원금</div>';
   }
 
   function pct(v) { return (v * 100).toFixed(2) + "%"; }
@@ -332,89 +302,102 @@ body{zoom:1.15}
     { id: "up_over_flat", name: "상승 확률 > 하락 확률" },
     { id: "up_over_third", name: "상승 확률 > 1/3" },
     { id: "predicted_up", name: "예측이 '상승'일 때만" },
-    { id: "always", name: "항상 보유(보유 전략)" }
+    { id: "always", name: "매일 장중 보유" },
+    { id: "buy_hold", name: "매수 후 보유" }
   ];
 
-  function compareTable(picked, cost, current) {
-    // 네 규칙을 같은 자료·같은 비용으로 동시에 돌린다. 규칙마다 따로 보면 비교가 어렵다.
-    var hold = simulate(picked, "always", cost);
+  function compareTable(picked, cost, current, capital) {
+    // 다섯 규칙을 같은 자료·같은 비용으로 동시에 돌린다. 규칙마다 따로 보면 비교가 어렵다.
+    var hold = simulate(picked, "buy_hold", cost, capital);
     var body = RULES.map(function (rule) {
-      var sim = simulate(picked, rule.id, cost);
+      var sim = simulate(picked, rule.id, cost, capital);
       var diff = sim.total - hold.total;
       var tone = function (v) { return v > 0 ? "up" : (v < 0 ? "down" : ""); };
       var mark = rule.id === current ? ' style="background:#f3f7fb"' : "";
       var wins = sim.trades.filter(function (t) { return t.net > 0; }).length;
       return "<tr" + mark + "><td>" + rule.name + (rule.id === current ? " ←" : "") + "</td>" +
         '<td class="num ' + tone(sim.total) + '">' + pct(sim.total) + "</td>" +
-        '<td class="num ' + tone(diff) + '">' + (rule.id === "always" ? "—" : pct(diff)) + "</td>" +
+        '<td class="num ' + tone(diff) + '">' + (rule.id === "buy_hold" ? "—" : pct(diff)) + "</td>" +
         '<td class="num down">' + pct(sim.mdd) + "</td>" +
-        '<td class="num">' + sim.trades.length + " / " + sim.days + "</td>" +
+        '<td class="num">' + sim.heldDays + " / " + sim.days + "</td>" +
         '<td class="num">' + (sim.trades.length ? Math.round(100 * wins / sim.trades.length) + "%" : "—") + "</td>" +
         '<td class="num down">-' + pct(sim.fees) + "</td></tr>";
     }).join("");
     return '<table><tr><th>규칙</th><th class="num">수익률</th><th class="num">보유 대비</th>' +
-      '<th class="num">최대 낙폭</th><th class="num">보유일</th><th class="num">이익 낸 날</th>' +
+      '<th class="num">관측일 낙폭</th><th class="num">보유일</th><th class="num">이익 낸 거래</th>' +
       '<th class="num">누적 비용</th></tr>' + body + "</table>" +
       '<div class="warn" style="margin-top:10px"><b>이 표에서 제일 좋은 규칙을 고르지 마세요.</b> ' +
       picked.length + '일 자료에 규칙을 맞추는 것(과적합)이고, 그렇게 고른 규칙은 다음 달에 같은 성적을 ' +
       '내지 않습니다. 규칙은 미리 정해 두고 바꾸지 않아야 결과가 의미를 가집니다. ' +
-      '여기서 볼 것은 <b>어느 규칙이 이겼나</b>가 아니라 <b>네 규칙이 보유 전략과 얼마나 다른가</b>입니다.</div>';
+      '여기서 볼 것은 <b>어느 규칙이 이겼나</b>가 아니라 <b>다섯 규칙이 보유 전략과 얼마나 다른가</b>입니다.</div>';
   }
 
   function run() {
     var model = $("model").value, rule = $("rule").value;
-    var capital = Math.max(0, num($("capital").value) || 0);
-    var cost = { fee: (num($("fee").value) || 0) / 100, tax: (num($("tax").value) || 0) / 100,
-                 slip: (num($("slip").value) || 0) / 100 };
-    var picked = rows.filter(function (r) { return r.model === model; })
-                     .sort(function (a, b) { return a.target_date.localeCompare(b.target_date); });
-    $("status").textContent = "";
-    if (!picked.length) {
-      $("result").innerHTML = '<div class="empty">이 모델의 채점된 사전 예측이 없습니다.</div>';
+    var capital = Number($("capital").value);
+    var cost = { fee: Number($("fee").value) / 100, tax: Number($("tax").value) / 100,
+                 slip: Number($("slip").value) / 100 };
+    var prepared = TradingSim.prepare(rows, model), picked = prepared.rows;
+    simExcluded = prepared.excluded;
+    var reasonNames = {duplicate:"중복 기록", invalid_time:"기록 시각 미확인", unavailable_at_open:"개장 시점 이용 불가",
+                       not_scored_prospective:"미채점·사후 기록", missing_price:"시세 누락"};
+    var notes = Object.keys(simExcluded).map(function(k) { return reasonNames[k]+" "+simExcluded[k]+"건"; });
+    $("status").textContent = "시가 진입 가능 예측 " + picked.length + "일" + (notes.length ? " · 제외: "+notes.join(" / ") : "");
+    $("compare").innerHTML = "";
+    if (!Number.isFinite(capital) || capital<=0 || [cost.fee,cost.tax,cost.slip].some(function(v) {
+      return !Number.isFinite(v) || v<0 || v>=1;
+    }) || cost.fee+cost.tax>=1 || ($("cost-mode").value === "standard" && [cost.fee,cost.tax,cost.slip].some(function(v) { return v<=0; }))) {
+      $("result").textContent = "초기 자금과 비용을 확인하세요. 비용은 100% 미만이어야 하며, 0%는 민감도 실험에서만 허용합니다.";
       $("trades").innerHTML = ""; return;
     }
-    var sim = simulate(picked, rule, cost);
-    var hold = simulate(picked, "always", cost);
+    if (!picked.length) {
+      $("result").innerHTML = '<div class="empty">이 모델에는 개장 전에 이용할 수 있었던 채점 예측이 없습니다. 장 시작 후 예측은 시가 매매에서 제외합니다.</div>';
+      $("trades").innerHTML = ""; return;
+    }
+    var sim = simulate(picked, rule, cost, capital);
+    var hold = simulate(picked, "buy_hold", cost, capital);
     var diff = sim.total - hold.total;
     var few = picked.length < 60;
     var tone = function (v) { return v > 0 ? "up" : (v < 0 ? "down" : ""); };
     $("result").innerHTML =
+      ($("cost-mode").value === "sensitivity" ? '<div class="warn">비용 민감도 실험 — 실제 비용 적용 성과와 구분해서 보세요.</div>' : "") +
       (few ? '<div class="warn">채점된 예측이 <b>' + picked.length + '일</b>뿐입니다. 하루 등락이 2~3%인 것에 비해 ' +
-             '표본이 턱없이 적어 <b>이 결과는 잡음입니다.</b> 60일이 쌓인 뒤에 보세요.</div>' : "") +
+             '표본이 적어 <b>수익성을 판단하기 어렵습니다.</b> 60일이 넘어도 다른 기간과 장세에서 별도 검증해야 합니다.</div>' : "") +
       '<div class="tiles">' +
         '<div class="tile">규칙대로 매매<b class="' + tone(sim.total) + '">' + pct(sim.total) + "</b>" +
           '<span class="muted">' + nf.format(Math.round(capital * (1 + sim.total))) + "원</span></div>" +
-        '<div class="tile">보유 전략<b class="' + tone(hold.total) + '">' + pct(hold.total) + "</b>" +
+        '<div class="tile">매수 후 보유<b class="' + tone(hold.total) + '">' + pct(hold.total) + "</b>" +
           '<span class="muted">' + nf.format(Math.round(capital * (1 + hold.total))) + "원</span></div>" +
         '<div class="tile">보유 대비<b class="' + tone(diff) + '">' + pct(diff) + "</b>" +
           '<span class="muted">이 값이 핵심입니다</span></div>' +
-        '<div class="tile">최대 낙폭<b class="down">' + pct(sim.mdd) + "</b>" +
+        '<div class="tile">관측일 최대 낙폭<b class="down">' + pct(sim.mdd) + "</b>" +
           '<span class="muted">규칙대로 매매</span></div>' +
-        '<div class="tile">거래 일수<b>' + sim.trades.length + " / " + sim.days + "</b>" +
+        '<div class="tile">보유 일수<b>' + sim.heldDays + " / " + sim.days + "</b>" +
           '<span class="muted">보유한 날 / 전체</span></div>' +
         '<div class="tile">누적 비용<b class="down">-' + pct(sim.fees) + "</b>" +
-          '<span class="muted">' + nf.format(Math.round(capital * sim.fees)) + "원</span></div>" +
-      "</div>" + sparkline(sim.curve, hold.curve);
-    $("compare").innerHTML = compareTable(picked, cost, rule);
+          '<span class="muted">' + nf.format(Math.round(sim.costWon)) + "원</span></div>" +
+      "</div>" + '<div class="muted">비용 합계는 수수료·거래세·슬리피지이며 초기 자금 대비 비율입니다. 최소 1주 매수 불가 ' + sim.unfilled + '회.</div>' + sparkline(sim.curve, hold.curve);
+    $("compare").innerHTML = compareTable(picked, cost, rule, capital);
     $("trades-rule").textContent = "· " + (RULES.filter(function (r) { return r.id === rule; })[0] || {}).name;
 
     var body = sim.trades.map(function (t) {
-      return "<tr><td>" + t.date + "</td>" +
+      return "<tr><td>" + t.entry_date + (t.entry_date !== t.date ? " → " + t.date : "") + "</td>" +
         '<td class="num">' + nf.format(t.open) + "</td>" +
         '<td class="num">' + nf.format(t.close) + "</td>" +
+        '<td class="num">' + t.shares + '</td><td class="num">' + nf.format(Math.round(t.pnl)) + '</td>' +
         '<td class="num ' + tone(t.gross) + '">' + pct(t.gross) + "</td>" +
         '<td class="num ' + tone(t.net) + '">' + pct(t.net) + "</td>" +
-        '<td class="num">' + (t.p_up === null ? "—" : (t.p_up * 100).toFixed(0) + "%") + "</td>" +
+        '<td class="num">' + (!Number.isFinite(t.p_up) ? "—" : (t.p_up * 100).toFixed(0) + "%") + "</td>" +
         "<td>" + (t.prediction || "") + "</td></tr>";
     }).join("");
     $("trades").innerHTML = sim.trades.length
       ? '<table><tr><th>날짜</th><th class="num">시가</th><th class="num">종가</th>' +
-        '<th class="num">총수익</th><th class="num">비용 차감</th><th class="num">상승확률</th>' +
+        '<th class="num">주식 수</th><th class="num">순손익(원)</th><th class="num">비용 전</th><th class="num">비용 차감</th><th class="num">상승확률</th>' +
         "<th>예측</th></tr>" + body + "</table>"
       : '<div class="empty">이 규칙으로는 매수한 날이 없습니다.</div>';
   }
 
-  ["model", "rule", "capital", "fee", "tax", "slip"].forEach(function (id) {
+  ["model", "rule", "capital", "fee", "tax", "slip", "cost-mode"].forEach(function (id) {
     $(id).addEventListener("change", run);
   });
   // 종목 버튼 탭. 두 탭(가상 매매·기여도)의 버튼이 모두 숨은 #target 하나를 바꾸고, 그 값에 맞춰 함께 칠해진다.

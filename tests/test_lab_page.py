@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """가상 매매 시뮬레이션 페이지.
 
-이 페이지의 위험은 '검증 안 된 수익 곡선을 결론처럼 읽는 것'이다. 그래서 백테스트를 쓰지 않고
-원장의 사전 예측만 쓰는지, 비용을 끌 수 없는지, 보유 전략과 나란히 보여 주는지를 테스트로 고정한다.
+개장 시점에 이용 가능한 원장 예측, 정수 수량·비용, 보유 기준선 및 민감도 모드의 계약을 확인한다.
+실제 계좌 계산은 Node에서 브라우저와 동일한 엔진을 실행해 검증한다.
 """
 import json
 import re
@@ -34,41 +34,35 @@ class LabPageTests(PageSource):
             done = subprocess.run(["node", "--check", str(tmp)], capture_output=True, text=True)
         self.assertEqual(done.returncode, 0, done.stderr)
 
-    def test_uses_only_prospective_scored_ledger_rows(self):
-        # 백테스트가 아니라 실제로 미리 낸 예측만 쓴다.
-        self.assertIn('r.kind === "direction"', self.script)
-        self.assertIn('String(r.is_prospective).toLowerCase() === "true"', self.script)
-        self.assertIn('r.status === "scored"', self.script)
-        self.assertIn("forecast_history/", self.script)
+    def test_account_contracts_in_node(self):
+        done = subprocess.run(["node", str(ROOT / "tests/trading_sim_cases.cjs")], cwd=ROOT,
+                              capture_output=True, text=True)
+        self.assertEqual(done.returncode, 0, done.stderr)
 
-    def test_first_record_per_day_wins(self):
-        # 원장 집계 규칙과 같아야 한다(같은 날 여러 번 돌린 것 중 첫 기록만).
-        self.assertIn('var key = r.target_date + "|" + r.model;', self.script)
+    def test_page_uses_shared_engine_and_prepares_rows_before_trading(self):
+        self.assertIn('src="trading_sim.js"', self.html)
+        self.assertIn('TradingSim.prepare(rows, model)', self.script)
+        self.assertIn('TradingSim.simulate(picked, rule, cost, capital)', self.script)
+        self.assertIn('개장 시점 이용 불가', self.script)
 
-    def test_entry_is_at_the_open_not_the_previous_close(self):
-        # 예측을 볼 수 있는 가장 이른 실행 시점은 09:00 시가다. 전일 종가로 사면 갭을 공짜로 먹는다.
-        self.assertIn("var buy = open * (1 + cost.slip)", self.script)
-        self.assertIn("sell = close * (1 - cost.slip)", self.script)
-        self.assertIn("var gross = sell / buy - 1", self.script)
-        # 전일 종가(current_close)로 진입하면 밤사이 갭을 공짜로 먹는다. 쓰지 않는다.
-        self.assertNotIn("current_close", self.script)
+    def test_zero_cost_is_only_allowed_as_sensitivity_experiment(self):
+        self.assertIn('$("cost-mode").value === "standard"', self.script)
+        self.assertIn('v<=0', self.script)
+        self.assertIn('비용 민감도 실험', self.html)
 
-    def test_costs_are_always_applied(self):
-        self.assertIn("cost.fee * 2 + cost.tax", self.script)
-        self.assertIn("거래비용은 끌 수 없습니다", self.html)
+    def test_buy_and_hold_and_daily_session_are_distinct(self):
+        self.assertIn('simulate(picked, "buy_hold", cost, capital)', self.script)
+        self.assertIn('매일 장중 보유', self.html)
+        self.assertIn('매수 후 보유', self.html)
 
-    def test_buy_and_hold_is_shown_alongside(self):
-        self.assertIn('simulate(picked, "always", cost)', self.script)
-        self.assertIn("보유 대비", self.script)
+    def test_small_sample_warning_does_not_claim_60_days_prove_profit(self):
+        self.assertIn('picked.length < 60', self.script)
+        self.assertIn('60일이 넘어도 다른 기간과 장세에서 별도 검증', self.script)
 
-    def test_small_sample_warning(self):
-        self.assertIn("picked.length < 60", self.script)
-        self.assertIn("이 결과는 잡음입니다", self.script)
-
-    def test_page_states_the_session_limitation(self):
-        self.assertIn("AUC 0.80", self.html)
-        self.assertIn("AUC 0.50", self.html)
-        self.assertIn("실제 거래는 하지 않았습니다", self.html)
+    def test_page_states_execution_and_observation_limitations(self):
+        self.assertIn('실제 거래는 하지 않았습니다', self.html)
+        self.assertIn('관측일 종가 기준', self.html)
+        self.assertIn('장 시작 후 예측은 시가에 거래할 수 없어 제외', self.html)
         self.assertIn('name="robots" content="noindex,nofollow"', self.html)
 
     def test_not_linked_from_the_landing_page(self):
@@ -85,7 +79,7 @@ class LabPageTests(PageSource):
         for rule in ("up_over_flat", "up_over_third", "predicted_up", "always"):
             self.assertIn(f'id: "{rule}"', self.script)
         self.assertIn("function compareTable(", self.script)
-        self.assertIn('$("compare").innerHTML = compareTable(picked, cost, rule)', self.script)
+        self.assertIn('$("compare").innerHTML = compareTable(picked, cost, rule, capital)', self.script)
 
     def test_comparison_warns_against_picking_the_winner(self):
         # 표에서 제일 좋은 규칙을 고르면 그 표본에 맞춘 것이다. 화면에 그 함정을 적는다.
@@ -95,7 +89,7 @@ class LabPageTests(PageSource):
 
     def test_comparison_shows_relative_to_buy_and_hold(self):
         self.assertIn("보유 대비", self.script)
-        self.assertIn('simulate(picked, "always", cost)', self.script)
+        self.assertIn('simulate(picked, "buy_hold", cost, capital)', self.script)
 
 
 class AttributionTabTests(PageSource):

@@ -15,6 +15,6 @@ level_reach|2026-10|70|70@504d,level_reach,가격 도달 확률,probability,prob
 level_reach|2026-10|80|80@126d,level_reach,가격 도달 확률,probability,probability,2026-10-02 08:24,2026-10,80,6개월,80@126d,,,,,0.37555,,기준일 2026-10-01 종가 61,pending,,,,,,,,,,issued=2026-10-01;days=126
 level_reach|2026-10|80|80@252d,level_reach,가격 도달 확률,probability,probability,2026-10-02 08:24,2026-10,80,1년,80@252d,,,,,0.5401,,기준일 2026-10-01 종가 61,pending,,,,,,,,,,issued=2026-10-01;days=252
 level_reach|2026-10|80|80@504d,level_reach,가격 도달 확률,probability,probability,2026-10-02 08:24,2026-10,80,2년,80@504d,,,,,0.66765,,기준일 2026-10-01 종가 61,pending,,,,,,,,,,issued=2026-10-01;days=504
-level_reach|2026-10|60|60@126d,level_reach,가격 도달 확률,probability,probability,2026-10-03 14:28,2026-10,60,6개월,60@126d,,,,,0.9543,,기준일 2026-10-02 종가 60,pending,,,,,,,,,,issued=2026-10-02;days=126
-level_reach|2026-10|60|60@252d,level_reach,가격 도달 확률,probability,probability,2026-10-03 14:28,2026-10,60,1년,60@252d,,,,,0.96875,,기준일 2026-10-02 종가 60,pending,,,,,,,,,,issued=2026-10-02;days=252
-level_reach|2026-10|60|60@504d,level_reach,가격 도달 확률,probability,probability,2026-10-03 14:28,2026-10,60,2년,60@504d,,,,,0.9789,,기준일 2026-10-02 종가 60,pending,,,,,,,,,,issued=2026-10-02;days=504
+level_reach|2026-10|60|60@126d,level_reach,가격 도달 확률,probability,probability,2026-10-03 14:28,2026-10,60,6개월,60@126d,,,,,0.9543,,기준일 2026-10-02 종가 60,scored,1.0,2026-10-06 06:27,,,,,1.0,0.0020884899999999967,,issued=2026-10-02;days=126
+level_reach|2026-10|60|60@252d,level_reach,가격 도달 확률,probability,probability,2026-10-03 14:28,2026-10,60,1년,60@252d,,,,,0.96875,,기준일 2026-10-02 종가 60,scored,1.0,2026-10-06 06:27,,,,,1.0,0.0009765625,,issued=2026-10-02;days=252
+level_reach|2026-10|60|60@504d,level_reach,가격 도달 확률,probability,probability,2026-10-03 14:28,2026-10,60,2년,60@504d,,,,,0.9789,,기준일 2026-10-02 종가 60,scored,1.0,2026-10-06 06:27,,,,,1.0,0.0004452100000000003,,issued=2026-10-02;days=504

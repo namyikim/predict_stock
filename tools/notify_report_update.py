@@ -209,8 +209,10 @@ def main():
     page=read(f'docs/{args.target}/index.html')
     if not publication_matches(payload,page):
         raise RuntimeError('보고서 HTML과 알림 원장의 실행/생성 시각이 다릅니다. 게시 완료 후 다시 실행하세요.')
+    # Python 기본 UA는 Cloudflare에서 403/1010으로 차단된다(2026-10-06 확인).
     request=Request(endpoint+'/mail/events',data=json.dumps(payload).encode(),method='POST',
-                    headers={'Authorization':'Bearer '+token,'Content-Type':'application/json'})
+                    headers={'Authorization':'Bearer '+token,'Content-Type':'application/json',
+                             'User-Agent':'predict-stock-report-email'})
     with urlopen(request,timeout=30) as response:
         result=json.load(response)
     print('이메일 발송 대기 등록:',result.get('status'),result.get('event_id',''))

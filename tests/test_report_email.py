@@ -70,6 +70,47 @@ class GmailTransportTests(unittest.TestCase):
 
 
 class AutomaticMailTests(unittest.TestCase):
+    def test_publisher_request_identifies_client_before_registering_event(self):
+        """Python 기본 UA로 Worker 앞단에서 403/1010이 나던 회귀를 막는다."""
+        import io
+        import json
+        import os
+        from unittest.mock import patch
+        from tools.notify_report_update import main
+
+        env={'REPORT_MAIL_ENDPOINT':'https://counter.example','MAIL_PUBLISH_TOKEN':'secret',
+             'GITHUB_ACTIONS':'true','GITHUB_EVENT_NAME':'schedule','GITHUB_RUN_ATTEMPT':'1'}
+        review={'session_date':'2026-10-06','generated_at':'2026-10-06T08:00:00+00:00',
+                'summary':{'close':100000,'c2c':.01,'gap':.02,'session':-.01}}
+        output=io.StringIO()
+
+        def network(request,timeout):
+            url=request if isinstance(request,str) else request.full_url
+            if url=='https://counter.example/mail/events':
+                # 외부 호출만 대체하고 CLI의 원장·게시본 검증 및 요청 조립은 실제 실행한다.
+                ua=request.get_header('User-agent','')
+                self.assertTrue(ua and not ua.startswith('Python-urllib/'),
+                                'Worker 요청에 애플리케이션 User-Agent가 필요합니다')
+                self.assertEqual(request.get_method(),'POST')
+                self.assertEqual(request.get_header('Authorization'),'Bearer secret')
+                body=json.loads(request.data)
+                self.assertEqual(body['automation'],{'event':'schedule','attempt':1,'caller':'','proof':''})
+                self.assertEqual(body['session_date'],'2026-10-06')
+                return io.BytesIO(b'{"status":"queued","event_id":"test-event","enabled":true,"configured":true}')
+            if url.endswith('/commits/main'):
+                return io.BytesIO(json.dumps({'sha':'a'*40}).encode())
+            if url.endswith('/reviews/2026-10-06.json'):
+                return io.BytesIO(json.dumps(review).encode())
+            if url.endswith('/index.html'):
+                return io.BytesIO(b'<p>2026-10-06 2026-10-06T08:00:00+00:00</p>')
+            self.fail('예상하지 않은 외부 요청: '+url)
+
+        with patch.dict(os.environ,env,clear=True), \
+             patch('sys.argv',['notify','--target','samsung','--phase','post_close','--session','2026-10-06']), \
+             patch('tools.notify_report_update.urlopen',side_effect=network), patch('sys.stdout',output):
+            main()
+        self.assertIn('queued test-event',output.getvalue())
+
     def test_only_schedule_or_signed_cloudflare_first_attempt_can_notify(self):
         from tools.notify_report_update import automatic_run
         import hashlib,hmac

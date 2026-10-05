@@ -39,3 +39,9 @@ class DispatchTestTests(unittest.TestCase):
         self.assertIn('id="dispatch-test"', page)
         self.assertIn('WORKER + "/dispatch/test"', page)
         self.assertIn("토큰에 Actions 쓰기 권한 없음", page)
+
+class AdminMailButtonTests(unittest.TestCase):
+    def test_real_script_sends_authenticated_request_and_displays_acceptance_not_delivery(self):
+        import subprocess
+        run=subprocess.run(['node','tests/admin_mail_cases.mjs'],cwd=PAGE.parents[2],capture_output=True,text=True)
+        self.assertEqual(run.returncode,0,run.stderr[-3000:])

@@ -266,6 +266,7 @@ a{color:var(--accent)}
 <div id="mail-settings-msg" class="msg" role="status"></div>
 <div style="display:flex;gap:8px;flex-wrap:wrap;margin:12px 0">
   <button id="mail-refresh" type="button">발송 결과 새로고침</button>
+  <button id="mail-send-today" type="button" disabled>오늘 보고서 발송</button>
   <button id="mail-pause" type="button" disabled>자동 발송 일시 중지</button>
 </div>
 <p class="sub">일시 중지는 다음 전송부터 적용됩니다. 재개하면 취소하지 않은 당일 대기를 처리합니다. 회차 취소는 되돌릴 수 없으며, 이미 전송 중이거나 발송된 메일은 회수하지 못합니다.</p>
@@ -865,7 +866,7 @@ a{color:var(--accent)}
     init.headers = Object.assign({ Authorization: "Bearer " + token() }, init.headers || {});
     return fetch(ENDPOINT + path, init).then(function (r) {
       if (r.status === 401) throw new Error("토큰이 올바르지 않습니다.");
-      if (r.status === 404) throw new Error("배포된 Worker에 구독 기능이 없습니다. counter/worker.js 를 다시 배포하세요.");
+      if (r.status === 404) throw new Error("배포된 Worker에 요청한 기능이 없습니다. 최신 counter/worker.js 전체를 다시 배포하세요.");
       return r.json().catch(function () { return null; }).then(function (b) {
         if (!r.ok || !b) throw new Error("조회 실패 (HTTP " + r.status + ")" + (b && b.error ? " " + b.error : ""));
         return b;
@@ -916,25 +917,35 @@ a{color:var(--accent)}
       mailPaused = !!r.paused; mailEvents = r.events;
       $("mail-pause").textContent = mailPaused ? "자동 발송 재개" : "자동 발송 일시 중지";
       $("mail-pause").disabled = mailBusy;
+      $("mail-send-today").disabled = mailBusy || !r.enabled || !r.configured || mailPaused;
       var text = !r.enabled ? "자동 발송 꺼짐 (운영 설정)" : mailPaused ? "자동 발송 일시 중지" : !r.configured ? "발송 설정 미완료" : "보고서 갱신 후 자동 발송 켜짐";
       $("mail-status").innerHTML = '<p><b>' + esc(text) + '</b> · '+esc(r.provider==='gmail'?'Gmail':'Resend')+(r.missing.length ? ' · 필요한 설정: '+esc(r.missing.join(", ")) : '') + '</p>' +
-        '<p>시스템이 갱신한 보고서를 개장 전 한 통·마감 후 한 통, 주소별 하루 최대 두 통 보냅니다. 두 종목 구독자는 한 통에 묶어 받으며, 메인 구독자는 금·은·중국·거시·뉴스·트렌드 요약도 함께 받습니다. 수동 실행은 발송하지 않습니다.</p>' +
+        '<p>시스템이 갱신한 보고서를 개장 전 한 통·마감 후 한 통, 주소별 하루 최대 두 통 보냅니다. 두 종목 구독자는 한 통에 묶어 받으며, 메인 구독자는 금·은·중국·거시·뉴스·트렌드 요약도 함께 받습니다. 일반 수동 실행은 발송하지 않습니다. 누락 시 아래 오늘 보고서 발송 버튼으로 당일 회차를 요청할 수 있습니다.</p>' +
         '<p>'+esc(r.notice)+'</p>' + (r.events.length ? '<div style="overflow-x:auto"><table><thead><tr><th>보고서</th><th>대상일</th><th>최근 발송(KST)</th><th>발송 완료</th><th>전송 중</th><th>실패/불확실</th><th>취소</th><th>대기/만료</th><th>관리</th></tr></thead><tbody>'+
         r.events.map(function(e,i) { return '<tr><td>구독 보고서 묶음 · '+(e.phase==='pre_open'?'개장 전':'마감 후')+'</td><td>'+esc(e.session_date)+'</td><td>'+esc(e.last_sent_at?kst(e.last_sent_at):"—")+'</td><td>'+Number(e.accepted||0)+'</td><td>'+Number(e.sending||0)+'</td><td>'+Number(e.failed||0)+'</td><td>'+Number(e.cancelled||0)+'</td><td>'+Number(e.remaining||0)+(e.expired?' (만료)':' (대기)')+'</td><td><button type="button" data-mail-detail="'+i+'">상세</button> <button type="button" data-mail-cancel="'+i+'" '+(mailBusy||e.stopped||e.expired||!e.remaining?'disabled':'')+'>'+(e.stopped?'회차 취소됨':'대기 취소')+'</button></td></tr>'; }).join('')+'</tbody></table></div>' : '<p>아직 접수된 보고서 갱신이 없습니다.</p>');
-    }).catch(function (error) { $("mail-pause").disabled = true; $("mail-status").textContent = "발송 상태 조회 실패: "+error.message+" 이메일 기능의 Worker 배포와 D1 표 생성을 확인하세요."; });
+    }).catch(function (error) { $("mail-send-today").disabled = true; $("mail-pause").disabled = true; $("mail-status").textContent = "발송 상태 조회 실패: "+error.message+" 이메일 기능의 Worker 배포와 D1 표 생성을 확인하세요."; });
   }
   function mailAction(path, body, message) {
     if (mailBusy) return;
-    mailBusy = true; $("mail-pause").disabled = true;
+    mailBusy = true; $("mail-pause").disabled = true; $("mail-send-today").disabled = true;
     $("mail-action-msg").textContent = "처리 중…";
     call(path, {method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)})
-      .then(function() { $("mail-action-msg").textContent = message; })
+      .then(function(result) { $("mail-action-msg").textContent = typeof message === "function" ? message(result) : message; })
       .catch(function(error) { $("mail-action-msg").textContent = "처리 실패: "+error.message; })
       .finally(function() { mailBusy = false; loadMailStatus(); if (selectedMail) loadMailDetails(selectedMail,mailOffset); });
   }
   $("mail-refresh").addEventListener("click",function() {
     if (!token()) { $("mail-action-msg").textContent = "관리자 토큰을 먼저 입력하세요."; return; }
     loadMailStatus(); if (selectedMail) loadMailDetails(selectedMail,mailOffset);
+  });
+  $("mail-send-today").addEventListener("click",function() {
+    if (!token()) { $("mail-action-msg").textContent = "관리자 토큰을 먼저 입력하세요."; return; }
+    if (!confirm("오늘 게시된 보고서를 기존 구독자에게 발송 요청할까요? 오전 9시 전은 개장 전 예측, 오후 3시 30분 이후는 마감 회고입니다. 이미 발송한 수신자에게는 중복 발송하지 않으며, 취소·실패/접수 불확실 건은 다시 보내지 않습니다.")) return;
+    mailAction("/mail/send-today",{},function(r) {
+      if (r.status === "already_registered") return "오늘 회차는 이미 등록됐습니다. 아래 발송 이력을 확인하세요. 발송 대기는 다음 처리 주기에 처리됩니다.";
+      if (r.status === "already_requested") return "최근 10분 이내 등록 작업을 요청했습니다. GitHub Actions의 보고서 이메일 등록 복구 결과를 확인하세요.";
+      return "GitHub에 이메일 등록 작업을 요청했습니다. 아직 발송 완료는 아닙니다. 작업 완료 후 발송 결과를 새로고침하세요.";
+    });
   });
   $("mail-pause").addEventListener("click",function() {
     if (!confirm(mailPaused ? "자동 발송을 재개할까요? 취소하지 않은 당일 대기가 다음 자동 실행에서 발송됩니다." : "자동 발송을 일시 중지할까요? 이미 전송 중인 메일은 회수할 수 없습니다.")) return;

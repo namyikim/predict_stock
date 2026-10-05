@@ -535,17 +535,61 @@ export async function mailAutomationProof(env,workflow,now=Date.now()) {
   const bytes=await crypto.subtle.sign('HMAC',key,new TextEncoder().encode(workflow+'|'+raw));
   return raw+':'+[...new Uint8Array(bytes)].map(x=>x.toString(16).padStart(2,'0')).join('');
 }
+// 보고서 생성과 메일 등록을 분리한다. 관리자는 명시적으로, Cron은 누락 회차만 요청한다.
+// 서명은 용도·날짜·회차에 묶고 15분만 유효하다. 구독/발송 원장은 기존 것을 그대로 쓴다.
+async function requestMailRecovery(env, caller, now=new Date()) {
+  const config=await mailConfig(env);
+  if (!config.enabled || !config.configured || config.paused)
+    return {status:'unavailable',error:'메일 설정과 일시 중지 상태를 확인하세요.'};
+  const phase=phaseOpen('pre_open',now)?'pre_open':phaseOpen('post_close',now)?'post_close':null;
+  if (!phase) return {status:'outside_session',error:'발송 시간은 개장 전 09:00 이전 또는 마감 후 15:30 이후입니다.'};
+  const day=mailDay(now), edition='digest/'+day+'/'+phase;
+  const stopped=await env.DB.prepare('SELECT value FROM mail_controls WHERE id=?').bind(edition).first();
+  if (stopped?.value==='1') return {status:'cancelled',error:'취소한 회차는 다시 발송하지 않습니다.'};
+  const registered=await env.DB.prepare('SELECT COUNT(*) AS n FROM mail_events WHERE id IN (?,?)')
+    .bind(edition+'/samsung',edition+'/sk_hynix').first();
+  if (registered.n===2) return {status:'already_registered',session:day,phase};
+  const subscribers=await env.DB.prepare('SELECT COUNT(*) AS n FROM subscribers').first();
+  if (!subscribers.n) return {status:'no_subscribers',error:'등록된 구독자가 없습니다.'};
+  if (!(env.GH_DISPATCH_TOKEN || env.GITHUB_DISPATCH_TOKEN))
+    return {status:'unavailable',error:'GitHub 호출 토큰 설정이 없습니다.'};
+  const stamp=now.toISOString(), seconds=Math.floor(now.getTime()/1000), id='request/'+edition;
+  // 동시에 버튼을 누르거나 Cron과 겹쳐도 10분에 한 번만 작업을 만든다.
+  const lock=await env.DB.prepare(`INSERT INTO mail_controls(id,value,updated_at) VALUES (?,?,?)
+    ON CONFLICT(id) DO UPDATE SET value=excluded.value,updated_at=excluded.updated_at
+    WHERE CAST(mail_controls.value AS INTEGER)<=? RETURNING id`)
+    .bind(id,String(seconds),stamp,seconds-600).first();
+  if (!lock) return {status:'already_requested',session:day,phase};
+  try {
+    const proof=await mailAutomationProof(env,'report-email.yml|'+caller+'|'+phase+'|'+day);
+    const result=await dispatchWorkflow(env,'report-email.yml',{caller,phase,session:day,mail_proof:proof});
+    if (result.status==='dispatched') return {...result,session:day,phase};
+    await env.DB.prepare('DELETE FROM mail_controls WHERE id=? AND updated_at=?').bind(id,stamp).run();
+    return {...result,error:'GitHub 메일 등록 작업 호출 실패: '+(result.code || result.status)};
+  } catch {
+    await env.DB.prepare('DELETE FROM mail_controls WHERE id=? AND updated_at=?').bind(id,stamp).run();
+    return {status:'failed',error:'GitHub 메일 등록 작업 호출 중 통신 오류가 발생했습니다.'};
+  }
+}
+async function handleMailSendToday(request,env,origin) {
+  if (!isAdmin(request,env)) return json({error:'unauthorized'},origin,401);
+  const result=await requestMailRecovery(env,'admin-mail');
+  return json(result,origin,result.status==='dispatched'?202:
+    ['already_requested','already_registered'].includes(result.status)?200:result.status==='failed'?502:409);
+}
 async function automaticMail(env,a,phase,now) {
   if (!a || a.attempt!==1) return false;
   if (a.event==='schedule') return true;
-  if (a.event!=='workflow_dispatch' || a.caller!=='cloudflare-cron' || !env.MAIL_PUBLISH_TOKEN) return false;
+  if (a.event!=='workflow_dispatch' || !['cloudflare-cron','admin-mail','cloudflare-mail'].includes(a.caller) || !env.MAIL_PUBLISH_TOKEN) return false;
   const parts=String(a.proof || '').split(':');
   if (parts.length!==3 || !/^\d+$/.test(parts[0]) || !/^[a-f0-9]{64}$/.test(parts[2])) return false;
   const age=now.getTime()/1000-Number(parts[0]);
-  if (age<0 || age>4*3600) return false;
+  const recovery=a.caller==='admin-mail' || a.caller==='cloudflare-mail';
+  if (age<0 || age>(recovery?900:4*3600)) return false;
   const key=await crypto.subtle.importKey('raw',new TextEncoder().encode(env.MAIL_PUBLISH_TOKEN),{name:'HMAC',hash:'SHA-256'},false,['verify']);
   const bytes=Uint8Array.from(parts[2].match(/../g),x=>parseInt(x,16));
-  const workflow=phase==='pre_open'?'daily-report.yml':'afternoon-report.yml';
+  const workflow=recovery?'report-email.yml|'+a.caller+'|'+phase+'|'+mailDay(now):
+    phase==='pre_open'?'daily-report.yml':'afternoon-report.yml';
   return crypto.subtle.verify('HMAC',key,bytes,new TextEncoder().encode(workflow+'|'+parts.slice(0,2).join(':')));
 }
 function mailEscape(text) {
@@ -573,7 +617,7 @@ async function handleMailEvent(request, env, origin) {
     return json({error:'invalid site reports'},origin,400);
   const siteReports=site.map(r=>({key:r.key,title:MAIL_SITE_NAMES[r.key],as_of:r.as_of,lines:r.lines,url:r.url}));
   const now=new Date(), day=mailDay(now);
-  if (!await automaticMail(env,body.automation,body.phase,now)) return json({error:'자동 실행만 이메일을 등록할 수 있습니다.'},origin,403);
+  if (!await automaticMail(env,body.automation,body.phase,now)) return json({error:'자동 실행 또는 서명된 관리자 요청만 이메일을 등록할 수 있습니다.'},origin,403);
   if (body.session_date!==day || !phaseOpen(body.phase,now)) return json({status:'outside_session',enabled:false},origin,200);
   const edition='digest/'+day+'/'+body.phase, id=edition+'/'+body.target;
   const content = JSON.stringify({target:body.target,phase:body.phase,session_date:body.session_date,lines:body.lines,url:body.url,site_reports:siteReports});
@@ -823,6 +867,7 @@ export default {
 
     try {
       if (url.pathname === '/mail/unsubscribe' && ['GET','POST'].includes(request.method)) return await handleMailUnsubscribe(request,env,url);
+      if (request.method === 'POST' && url.pathname === '/mail/send-today') return await handleMailSendToday(request,env,origin);
       if (request.method === 'POST' && url.pathname === '/mail/events') return await handleMailEvent(request,env,origin);
       if (['GET','POST'].includes(request.method) && url.pathname === '/mail/settings') return await handleMailSettings(request,env,origin);
       if (request.method === 'POST' && url.pathname === '/mail/control') return await handleMailControl(request,env,origin);
@@ -859,7 +904,18 @@ export default {
       catch { console.log('report_mail 처리 실패: 관리자 발송 상태와 D1을 확인하세요.'); }
     }
     // 메일 전용 주기가 보고서 정시와 겹쳐도 GitHub 작업을 두 번 시작하지 않는다.
-    if (event.cron === '*/5 * * * *') return;
+    if (event.cron === '*/5 * * * *') {
+      const local=new Date(Date.now()+9*3600000), hour=local.getUTCHours(), minute=local.getUTCMinutes();
+      const tick=new Date(event.scheduledTime).getUTCMinutes();
+      // 아침 06:30~08:50, 오후 15:40~23:50: 모델을 돌리지 않고 누락된 등록만 10분 간격 복구.
+      if (String(env.MAIL_ENABLED || '')==='1' && local.getUTCDay()>0 && local.getUTCDay()<6 && tick%10===0 &&
+          ((hour*60+minute>=390 && hour<9) || hour*60+minute>=940)) {
+        try { const result=await requestMailRecovery(env,'cloudflare-mail');
+          console.log('mail_recovery '+JSON.stringify({status:result.status,code:result.code})); }
+        catch { console.log('mail_recovery 실패: 메일 설정과 D1을 확인하세요.'); }
+      }
+      return;
+    }
     // DISPATCH_FORCE=1 (Worker 변수)이면 어느 트리거든 올 때마다 GitHub 를 부른다 — 정시 호출이 되는지 시험할 때만
     // 잠깐 켠다(2026-09-30: 정시 호출이 한 번도 성공한 적이 없어 원인을 가르려고). 시험이 끝나면 변수를 지운다.
     const forced = String(env.DISPATCH_FORCE || "") === "1";

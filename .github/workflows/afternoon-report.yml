@@ -130,7 +130,7 @@ jobs:
         run: python tools/build_session_review.py --target ${{ matrix.target }} --date "$SESSION" --out runs/review --publish
 
       - name: 마감 회고 이메일 알림
-        if: success() && steps.gate.outputs.scope == 'all' && steps.gate.outputs.session != '' && github.run_attempt == 1 && (github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.caller == 'cloudflare-cron' && inputs.mail_proof != ''))
+        if: always() && !cancelled() && steps.gate.outputs.scope == 'all' && steps.gate.outputs.session != '' && github.run_attempt == 1 && (github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.caller == 'cloudflare-cron' && inputs.mail_proof != ''))
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           REPORT_MAIL_ENDPOINT: ${{ vars.REPORT_MAIL_ENDPOINT }}

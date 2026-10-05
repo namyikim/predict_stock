@@ -99,6 +99,10 @@ class AutomaticMailTests(unittest.TestCase):
         review={'session_date':'2026-10-06','generated_at':'2026-10-06T08:00:00+00:00',
                 'summary':{'close':100000,'c2c':.01,'gap':.02,'session':-.01}}
         output=io.StringIO()
+        class Clock(datetime):
+            @classmethod
+            def now(cls,tz=None):
+                return cls(2026,10,6,8,tzinfo=timezone.utc)
 
         def network(request,timeout):
             url=request if isinstance(request,str) else request.full_url
@@ -123,7 +127,8 @@ class AutomaticMailTests(unittest.TestCase):
 
         with patch.dict(os.environ,env,clear=True), \
              patch('sys.argv',['notify','--target','samsung','--phase','post_close','--session','2026-10-06']), \
-             patch('tools.notify_report_update.urlopen',side_effect=network), patch('sys.stdout',output):
+             patch('tools.notify_report_update.urlopen',side_effect=network), patch('sys.stdout',output), \
+             patch('tools.notify_report_update.datetime',Clock):
             main()
         self.assertIn('queued test-event',output.getvalue())
 
@@ -155,4 +160,58 @@ class AutomaticMailTests(unittest.TestCase):
         with patch.dict(os.environ,env,clear=True), patch('sys.argv',['notify','--target','samsung','--phase','pre_open']), \
              patch('tools.notify_report_update.urlopen') as network, patch('builtins.print'):
             main()
+            network.assert_not_called()
+
+class MailRecoveryTests(unittest.TestCase):
+    def test_scoped_admin_and_recovery_signatures_expire_and_do_not_authorize_other_editions(self):
+        import hashlib, hmac
+        from tools.notify_report_update import authorized_run
+        now=int(datetime(2026,10,5,23,tzinfo=timezone.utc).timestamp())
+        for caller in ('admin-mail','cloudflare-mail'):
+            raw=f'{now}:nonce'
+            sig=hmac.new(b'key',f'report-email.yml|{caller}|pre_open|2026-10-06|{raw}'.encode(),hashlib.sha256).hexdigest()
+            env={'GITHUB_ACTIONS':'true','GITHUB_EVENT_NAME':'workflow_dispatch','GITHUB_RUN_ATTEMPT':'1',
+                 'MAIL_CALLER':caller,'MAIL_AUTOMATION_PROOF':raw+':'+sig,'MAIL_SESSION':'2026-10-06'}
+            self.assertTrue(authorized_run(env,'key','pre_open',now))
+            self.assertFalse(authorized_run(env,'key','post_close',now))
+            self.assertFalse(authorized_run(dict(env,MAIL_SESSION='2026-10-07'),'key','pre_open',now))
+            self.assertFalse(authorized_run(dict(env,GITHUB_RUN_ATTEMPT='2'),'key','pre_open',now))
+            self.assertFalse(authorized_run(env,'key','pre_open',now+901))
+            self.assertFalse(authorized_run(dict(env,MAIL_CALLER='cloudflare-cron'),'key','pre_open',now))
+
+    def test_recovery_cli_skips_expired_session_before_reading_network(self):
+        import os
+        from unittest.mock import patch
+        from tools.notify_report_update import main
+        class Clock(datetime):
+            @classmethod
+            def now(cls,tz=None):
+                return cls(2026,10,6,0,0,tzinfo=timezone.utc)
+        env={'REPORT_MAIL_ENDPOINT':'https://counter.example','MAIL_PUBLISH_TOKEN':'secret',
+             'GITHUB_ACTIONS':'true','GITHUB_EVENT_NAME':'schedule','GITHUB_RUN_ATTEMPT':'1'}
+        with patch.dict(os.environ,env,clear=True), patch('sys.argv',['notify','--target','samsung','--phase','pre_open']), \
+             patch('tools.notify_report_update.datetime',Clock), patch('tools.notify_report_update.urlopen') as net, \
+             patch('builtins.print'):
+            main()
+            net.assert_not_called()
+
+    def test_todays_prediction_is_not_hidden_by_another_future_target(self):
+        row=dict(kind='direction',model='No macro ensemble',horizon_days='1',target_date='2026-10-06',
+                 prediction_date='2026-10-06',created_at_utc='2026-10-05T22:00:00Z',is_prospective='True',
+                 run_id='today',p_up='.6',p_flat='.3',p_down='.1')
+        rows=[row,dict(row,target_date='2026-10-07',prediction_date='2026-10-07',run_id='tomorrow')]
+        result=build_pre_open('samsung',rows,datetime(2026,10,5,23,tzinfo=timezone.utc))
+        self.assertEqual(result['session_date'],'2026-10-06')
+        self.assertEqual(result['report_run_id'],'today')
+
+    def test_invalid_recovery_signature_is_failure_not_a_silent_success(self):
+        import os
+        from unittest.mock import patch
+        from tools.notify_report_update import main
+        env={'GITHUB_ACTIONS':'true','GITHUB_EVENT_NAME':'workflow_dispatch','GITHUB_RUN_ATTEMPT':'1',
+             'MAIL_CALLER':'admin-mail','MAIL_PUBLISH_TOKEN':'key','MAIL_AUTOMATION_PROOF':'invalid'}
+        with patch.dict(os.environ,env,clear=True), patch('sys.argv',['notify','--target','samsung','--phase','pre_open']), \
+             patch('tools.notify_report_update.urlopen') as network:
+            with self.assertRaisesRegex(RuntimeError,'서명'):
+                main()
             network.assert_not_called()

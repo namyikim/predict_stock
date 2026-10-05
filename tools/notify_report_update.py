@@ -60,7 +60,7 @@ def build_pre_open(target, rows, now):
             opening=datetime.fromisoformat((r.get('prediction_date') or r['target_date'])+'T09:00:00+09:00')
         except (KeyError,ValueError):
             continue
-        if (today <= r['target_date'] and made <= now and made < opening and
+        if (today == r['target_date'] and made <= now and made < opening and
                 str(r.get('is_prospective','')).lower()=='true' and r.get('information_cutoff','pre_open') in ('','pre_open')):
             eligible.append((r,made))
     if not eligible:
@@ -167,6 +167,28 @@ def automatic_run(env, key, phase, now=None):
     return hmac.compare_digest(expected,parts[2])
 
 
+def authorized_run(env, key, phase, now=None):
+    """기존 자동 호출 또는 관리자가 요청한 당일 회차 서명을 확인한다(2026-10-06)."""
+    if automatic_run(env,key,phase,now):
+        return True
+    if (env.get('GITHUB_ACTIONS')!='true' or env.get('GITHUB_RUN_ATTEMPT')!='1' or
+            env.get('GITHUB_EVENT_NAME')!='workflow_dispatch' or
+            env.get('MAIL_CALLER') not in ('admin-mail','cloudflare-mail') or not key):
+        return False
+    now=time.time() if now is None else now
+    session=env.get('MAIL_SESSION','')
+    if session!=datetime.fromtimestamp(now,KST).date().isoformat():
+        return False
+    parts=env.get('MAIL_AUTOMATION_PROOF','').split(':')
+    if len(parts)!=3 or not re.fullmatch(r'[0-9]+',parts[0]) or not re.fullmatch(r'[a-f0-9]{64}',parts[2]):
+        return False
+    if not 0<=now-int(parts[0])<=900:
+        return False
+    purpose='report-email.yml|'+env['MAIL_CALLER']+'|'+phase+'|'+session
+    expected=hmac.new(key.encode(),(purpose+'|'+':'.join(parts[:2])).encode(),hashlib.sha256).hexdigest()
+    return hmac.compare_digest(expected,parts[2])
+
+
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--target',choices=NAMES,required=True)
@@ -176,12 +198,22 @@ def main():
     args=parser.parse_args()
     endpoint=os.environ.get('REPORT_MAIL_ENDPOINT','').rstrip('/')
     token=os.environ.get('MAIL_PUBLISH_TOKEN','')
-    if not args.preview and not automatic_run(os.environ,token,args.phase):
-        print('수동 실행·재실행은 이메일을 발송하지 않습니다.')
+    if not args.preview and not authorized_run(os.environ,token,args.phase):
+        if os.environ.get('MAIL_CALLER') in ('admin-mail','cloudflare-mail'):
+            raise RuntimeError('메일 등록 서명이 없거나 만료/불일치했습니다. 관리자에서 다시 요청하세요.')
+        print('서명 없는 수동 실행·재실행은 이메일을 발송하지 않습니다.')
         return
     if not args.preview and (not endpoint or not token):
         print('이메일 발송 연동 미설정: REPORT_MAIL_ENDPOINT / MAIL_PUBLISH_TOKEN 필요')
         return
+    now=datetime.now(timezone.utc)
+    local=now.astimezone(KST)
+    session=args.session or local.date().isoformat()
+    if not args.preview:
+        allowed=(local.hour<9 if args.phase=='pre_open' else (local.hour,local.minute)>=(15,30))
+        if session!=local.date().isoformat() or not allowed:
+            print('당일 발송 시간 밖: 이메일 등록 건너뜀')
+            return
     if args.preview:
         revision='0'*40
         read=lambda p:(ROOT/p).read_text(encoding='utf-8-sig')
@@ -194,19 +226,16 @@ def main():
         with urlopen(Request(f'https://api.github.com/repos/{REPO}/commits/main',headers=headers),timeout=30) as response:
             revision=json.load(response)['sha']
         read=lambda p:download(p,revision)
-    now=datetime.now(timezone.utc)
     if args.phase=='pre_open':
         rows=list(csv.DictReader(io.StringIO(read(f'forecast_history/{args.target}/forecast_log.csv'))))
         payload=build_pre_open(args.target,rows,now)
     else:
-        if not args.session:
-            parser.error('마감 회고는 --session 날짜가 필요합니다')
-        review=read_review(read,args.target,args.session)
+        review=read_review(read,args.target,session)
         if review is None:
             print('게시된 해당 날짜 회고 없음: 이메일 알림 건너뜀')
             return
         payload=build_post_close(args.target,review)
-    if not payload:
+    if not payload or (not args.preview and payload['session_date']!=session):
         print('발송할 새 개장 전 예측 없음')
         return
     # 같은 게시 리비전에서 공개 메뉴를 함께 읽는다(2026-10-04 전체 메뉴 요청).

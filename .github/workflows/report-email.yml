@@ -1,0 +1,56 @@
+name: 보고서 이메일 등록 복구
+run-name: 보고서 이메일 · ${{ inputs.session }} · ${{ inputs.phase }} · ${{ inputs.caller }}
+
+# 모델·원장을 다시 만들지 않고 main에 게시된 당일 보고서만 검증·등록한다.
+# 관리자 버튼과 누락 복구 Cron은 용도·날짜·회차에 묶인 15분 서명이 필요하다.
+on:
+  workflow_dispatch:
+    inputs:
+      caller:
+        description: "요청 주체(admin-mail 또는 cloudflare-mail)"
+        type: string
+        required: true
+      phase:
+        description: "발송 회차"
+        type: choice
+        options: [pre_open, post_close]
+        required: true
+      session:
+        description: "대상 한국 날짜(YYYY-MM-DD)"
+        type: string
+        required: true
+      mail_proof:
+        description: "Worker가 발급한 회차 서명(직접 입력하지 않음)"
+        type: string
+        required: true
+
+permissions:
+  contents: read
+concurrency:
+  group: report-email-${{ inputs.session }}-${{ inputs.phase }}
+  cancel-in-progress: false
+jobs:
+  register:
+    if: github.ref == 'refs/heads/main' && github.run_attempt == 1
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        target: [samsung, sk_hynix]
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+      - name: 게시 보고서 확인 및 누락 이메일 등록
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPORT_MAIL_ENDPOINT: ${{ vars.REPORT_MAIL_ENDPOINT }}
+          MAIL_PUBLISH_TOKEN: ${{ secrets.MAIL_PUBLISH_TOKEN }}
+          MAIL_CALLER: ${{ inputs.caller }}
+          MAIL_AUTOMATION_PROOF: ${{ inputs.mail_proof }}
+          MAIL_SESSION: ${{ inputs.session }}
+          MAIL_PHASE: ${{ inputs.phase }}
+          MAIL_TARGET: ${{ matrix.target }}
+        run: python tools/notify_report_update.py --target "$MAIL_TARGET" --phase "$MAIL_PHASE" --session "$MAIL_SESSION"

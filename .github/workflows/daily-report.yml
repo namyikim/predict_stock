@@ -186,7 +186,7 @@ jobs:
 
       # 시스템 실행의 게시 완료만 등록한다. Worker는 하루 두 회차로 묶어 중복을 제외한다.
       - name: 개장 전 보고서 이메일 알림
-        if: success() && steps.gate.outputs.run == 'true' && github.run_attempt == 1 && (github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.caller == 'cloudflare-cron' && inputs.mail_proof != ''))
+        if: always() && !cancelled() && steps.gate.outputs.run == 'true' && github.run_attempt == 1 && (github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.caller == 'cloudflare-cron' && inputs.mail_proof != ''))
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           REPORT_MAIL_ENDPOINT: ${{ vars.REPORT_MAIL_ENDPOINT }}

@@ -17,9 +17,9 @@ from urllib.request import Request, urlopen
 
 # CLI 직접 실행과 tests의 패키지 import를 모두 지원한다.
 if __package__:
-    from .mail_site_reports import build_site_report, read_site_reports
+    from .mail_site_reports import PublishedHTML, build_site_report, read_site_reports
 else:
-    from mail_site_reports import build_site_report, read_site_reports
+    from mail_site_reports import PublishedHTML, build_site_report, read_site_reports
 
 ROOT = Path(__file__).resolve().parents[1]
 REPO = 'namyikim/predict_stock'
@@ -111,6 +111,18 @@ def build_post_close(target, review):
 def publication_matches(payload, page):
     if payload['phase']=='pre_open':
         run_id=payload.get('report_run_id')
+        if not run_id:
+            return False
+        # 코드 반영으로 다시 만든 페이지는 하단 RUN_ID만 바뀐다(2026-10-06).
+        # 쉬운 요약에 명시된 공식 예측을 먼저 확인한다. 뉴스·과거 표의 실행번호는 인정하지 않는다.
+        for node in PublishedHTML(page).root.nodes():
+            if node.tag!='section' or node.attrs.get('id')!='easy-summary':
+                continue
+            text=node.text()
+            official=re.search(r'공식 사전 예측\([^()]* 실행 ([^()\s]+)\)을 그대로 보여 줍니다\.',text)
+            if official:
+                return bool(official.group(1)==run_id and
+                            re.search(r'다음 거래일\s+'+re.escape(payload['session_date'])+r'\b',text))
         return bool(run_id and payload['session_date'] in page and 'run_id <code>'+html.escape(run_id)+'</code>' in page)
     made=payload.get('review_generated_at')
     return bool(made and payload['session_date'] in page and html.escape(str(made)) in page)

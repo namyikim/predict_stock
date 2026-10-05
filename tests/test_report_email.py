@@ -40,6 +40,22 @@ class ReportEmailTests(unittest.TestCase):
         self.assertFalse(publication_matches(payload,'<title>2026-10-06</title>run_id <code>old-run</code>'))
         self.assertTrue(publication_matches(payload,'<title>2026-10-06</title>run_id <code>new-run</code>'))
 
+    def test_rebuilt_page_uses_official_forecast_identity_not_render_identity(self):
+        from tools.notify_report_update import publication_matches
+        payload={'phase':'pre_open','session_date':'2026-10-06','report_run_id':'morning-run'}
+        note=('보고서는 다시 만들었지만 예측은 원장에 기록된 공식 사전 예측'
+              '(10-06 06:41 KST 실행 morning-run)을 그대로 보여 줍니다.')
+        summary='<section id="easy-summary"><div>다음 거래일 2026-10-06 (화) 예측</div><p>'+note+'</p></section>'
+        footer='run_id <code>render-run</code>'
+        self.assertTrue(publication_matches(payload,summary+footer))
+        # 다른 예측일·실행, 뉴스에 인용된 문장, 문자열 일부 일치는 증거가 아니다.
+        self.assertFalse(publication_matches(payload,summary.replace('2026-10-06','2026-10-07')+footer))
+        self.assertFalse(publication_matches(payload,summary.replace('morning-run','morning-run-extra')+footer))
+        self.assertFalse(publication_matches(payload,summary.replace('easy-summary','news')+footer))
+        # 재생성 실행이 우연히 같아도 공식 예측의 불일치를 무시하지 않는다.
+        self.assertFalse(publication_matches(payload,summary.replace('morning-run','other-run')+
+                                            'run_id <code>morning-run</code>'))
+
     def test_missing_review_is_normal_skip(self):
         from tools.notify_report_update import read_review
         from urllib.error import HTTPError

@@ -677,6 +677,17 @@ async function handleMailEvent(request, env, origin) {
   const config=await mailConfig(env);
   return json({status:'queued',event_id:id,enabled:config.enabled,configured:config.configured},origin,202);
 }
+// 알림 수신 이벤트의 URL 검증은 유지하고 메일 출력 링크만 표시한다(2026-10-07).
+export function emailReportUrl(rawUrl, day, phase) {
+  const url=new URL(rawUrl);
+  if(url.origin!=='https://namyikim.github.io'||!url.pathname.startsWith('/predict_stock/')||url.username||url.password)
+    throw new Error('보고서 사이트 URL이 필요합니다');
+  for(const [key,value] of Object.entries({utm_source:'email',utm_medium:'report',edition_day:day,edition_phase:phase}))
+    url.searchParams.set(key,value);
+  if(!parseEmailAttribution(url))throw new Error('유효한 메일 발행 회차가 필요합니다');
+  return url.toString();
+}
+
 export async function mailPayload(env, event, email) {
   await env.DB.prepare('INSERT OR IGNORE INTO mail_unsubscribe (email,token) VALUES (?,?)')
     .bind(email,crypto.randomUUID()+crypto.randomUUID()).run();
@@ -687,7 +698,7 @@ export async function mailPayload(env, event, email) {
   const note = '연구·교육용 판단 자료이며 투자 자문이 아닙니다. 예측은 실제 결과와 다를 수 있습니다.';
   const site=c.site_reports || [];
   const stocks=c.reports.map(r=>({title:MAIL_NAMES[r.target],lines:r.lines,url:r.url}));
-  const sections=[...stocks,...site];
+  const sections=[...stocks,...site].map(r=>({...r,url:emailReportUrl(r.url,c.day,c.phase)}));
   const text=sections.map(r=>r.title+'\n'+(r.as_of?'게시 자료 기준: '+r.as_of+'\n':'')+r.lines.join('\n')+'\n전체 보고서: '+r.url).join('\n\n');
   const html=sections.map(r=>'<section style="margin:24px 0;padding:0 0 18px;border-bottom:1px solid #e3eaf1"><h3 style="margin:0 0 8px;color:#1a5490">'+mailEscape(r.title)+'</h3>'+
     (r.as_of?'<p style="font-size:12px;color:#667085">게시 자료 기준: '+mailEscape(r.as_of)+'</p>':'')+

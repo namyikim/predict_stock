@@ -11,3 +11,8 @@ class EmailTrafficTests(unittest.TestCase):
         result = subprocess.run(['node', 'tests/email_traffic_cases.mjs'], cwd=ROOT,
                                 text=True, capture_output=True)
         self.assertEqual(result.returncode, 0, result.stderr[-6000:])
+
+    def test_report_links_in_text_and_html(self):
+        result = subprocess.run(['node', 'tests/email_link_cases.mjs'], cwd=ROOT,
+                                text=True, capture_output=True)
+        self.assertEqual(result.returncode, 0, result.stderr[-6000:])

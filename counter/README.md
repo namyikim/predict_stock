@@ -486,8 +486,8 @@ Gmail 실제 수신 확인(2026-10-04): 사용자가 앱 비밀번호를 갱신�
 
 ## 이메일 링크 유입 집계 — 1단계 API (2026-10-07)
 
-이 단계는 저장·조회 API만 추가한다. 이메일 링크·사이트 요청 코드·관리자 화면 연결은
-`guides/email-traffic-tracking-plan.md`의 2~4단계다. 이 코드 push만으로 운영 집계가 시작되지는 않는다.
+저장·조회 API와 이메일 링크 표시는 구현했다. 사이트 요청 코드·관리자 화면 연결은
+`guides/email-traffic-tracking-plan.md`의 3~4단계다. 이 코드 push만으로 운영 집계가 시작되지는 않는다.
 
 ### 기존 DB 이행
 
@@ -524,3 +524,12 @@ DB 변경 전/도중에는 새 Worker도 기존 방문 집계로 동작하고 `e
 
 검증: `python -m unittest discover -s tests -p 'test_email_traffic.py' -v`.
 Node의 내장 SQLite로 실제 SQL과 Worker 응답을 확인한다(Node 22.13 이상 또는 24).
+
+
+### 2단계: 이메일 본문 링크 표시
+
+`mailPayload`는 HTML·일반 텍스트의 모든 보고서 링크에 이메일 출처와 발행 회차를 붙인다.
+기존 알림 이벤트와 중복 발송 ID는 유지하고, 구독 취소 링크 및 List-Unsubscribe 헤더는 변경하지 않는다.
+사이트 방문 요청 연결(계획 3단계)과 관리자 화면(4단계)은 아직 필요하다.
+Worker는 수동 Deploy 전까지 운영 코드가 바뀌지 않는다. 이번 구현에서 실발송하지 않았다.
+검증: `node tests/email_link_cases.mjs` 또는 `python -m unittest discover -s tests -p 'test_email_traffic.py' -v`.

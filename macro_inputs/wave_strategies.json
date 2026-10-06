@@ -22,5 +22,11 @@
     "tax": 0.0018,
     "slip": 0.0005,
     "max_holding_sessions": 5
+  },
+  "paper": {
+    "capital": 10000000,
+    "max_symbol_weight": 0.3,
+    "max_sector_weight": 0.5,
+    "max_quote_age_seconds": 120
   }
 }

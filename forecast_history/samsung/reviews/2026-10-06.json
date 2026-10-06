@@ -3,7 +3,7 @@
   "name": "삼성전자",
   "peer_name": "SK하이닉스",
   "session_date": "2026-10-06",
-  "generated_at": "2026-10-06 17:35 KST",
+  "generated_at": "2026-10-06 23:09 KST",
   "summary": {
     "prev_close": 276000.0,
     "open": 278500.0,
@@ -15,11 +15,11 @@
     "c2c": -0.01449275362318836,
     "high_vs_open": 0.0017953321364452268,
     "low_vs_open": -0.030520646319569078,
-    "volume": 14185428.0,
-    "volume_ratio": 0.8539148905200971,
+    "volume": 14340821.0,
+    "volume_ratio": 0.8632690246768239,
     "kospi_c2c": -0.008902400084776163,
     "peer_c2c": -0.03693644758283543,
-    "usdkrw_chg": -0.0031954168716992193,
+    "usdkrw_chg": -0.002517581884830422,
     "us_nights": 2,
     "sox_ret": 0.026794000652817784,
     "nasdaq_ret": 0.022540933413159214,
@@ -113,7 +113,24 @@
       }
     },
     "from_high": -0.02773473038506724,
-    "buyback": []
+    "buyback": [
+      {
+        "kind": "직접 취득",
+        "start": "2026-08-24",
+        "end": "2026-11-21",
+        "amount": "14,999,999,992,000",
+        "purpose": "임직원 주식보상",
+        "rcept_no": "20260821000616"
+      }
+    ],
+    "foreign_pressure": {
+      "state": "turned_selling",
+      "previous_ratio": 0.025777349078971876,
+      "recent_ratio": -0.1231941097670701,
+      "previous_daily_net": 516160.4,
+      "recent_daily_net": -1774601.0
+    },
+    "buyback_transition": null
   },
   "classification": {
     "labels": [
@@ -135,34 +152,16 @@
       "score": 4.387745645675473,
       "news": [
         {
-          "time": "2026-10-06T08:00:00+09:00",
-          "title": "[영상] 세계 무대에서 빛난 기술 국가대표들… 삼성전자와 함께한 ‘2026 상하이 국제기능올림픽’ 도전기",
-          "source": "Samsung Global Newsroom",
-          "link": "https://news.google.com/rss/articles/CBMiugJBVV95cUxQNGFUcF90OS1LSVFXN3NIeHJMZlNGUGtlZG5HUHBBVDBGUGp1SERnMGFsdG1GTUxYdHVJMDZlNzVEX3kxcVRDYzB0WHozd3hsUjJzZm4zMHhreUVPQVY5cXdvZEZoOFhLLTItcWFfeFd2TE1yelBST1FUYUNzWUMxbVZ4TlpCXzhBd3VETkRiY3doQ3MzTVV3dDQ2OFV6VFNsOWZNamVBRnRvMTVoay14WF9KYlBldUJoQVR4MmxwNGpVRzhYR3hXZGV3OGRySjdOdUhkbDVYemg4ckUtSjNWNlBjMGp5TlBTdmRsV0xqb1pueFJWaFlNamVIYWJjR0ZlMUQ0NGgwcEFOWmJSY0tKNkJHcXBrdTBwaWFZVHpxU1piLWJ0amVwbEVLT2lveF9ubUtIQWZXb2Qxdw?oc=5"
-        },
-        {
-          "time": "2026-10-06T08:32:11+09:00",
-          "title": "신보, 삼성전자 평택 P5 팹 전기공사 수주",
-          "source": "전기신문",
-          "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE50TjRTYWZwdGtISFRwdGpwMXpSSW1IbE5TZFBMLU8wd2hydkFmS3BDVkgzZnhJU0F3bGFlT2hzYzNtQVloRnRXLUFicDhBc3pSUU9IRkRaWW5GOTc5TTdSNzkwMDBHRm5EXzhvVNIBcEFVX3lxTE9TNHBId2NFVzk2VWhvWFpYWVVmV3R6Q1ZrT2Y0MG5oQkY1U1ZkaG9ua1NKR3JZeDVEX3dyWHRjQWZ5Nmo5LVlpWm8zWmQwRG1HWEstVjF4WkViRXczUDNhZEdsQ3ZHWllrWTh3LUFfTEI?oc=5"
-        },
-        {
-          "time": "2026-10-06T08:41:25+09:00",
-          "title": "삼성바이오 노조, 삼성전자에 첫 단체교섭 요구",
-          "source": "연합뉴스",
-          "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE52NFpQQVVjMVJnZ242RlVndXdWZktmTU1td3F4NWEtcm8zMnREMzItd0Ewd1VzR0VmYXU4OERtcjhPdk5Ua3Frc3JWUTRLbE1MQWthT2NNcmhrcm1xb0hwa9IBYEFVX3lxTE52NFpQQVVjMVJnZ242RlVndXdWZktmTU1td3F4NWEtcm8zMnREMzItd0Ewd1VzR0VmYXU4OERtcjhPdk5Ua3Frc3JWUTRLbE1MQWthT2NNcmhrcm1xb0hwaw?oc=5"
-        },
-        {
           "time": "2026-10-06T09:19:42+09:00",
           "title": "삼성전자 보합·SK하이닉스 하락… 검색 상위 15개는 올랐다",
-          "source": "서울신문",
+          "source": "seoul.co.kr",
           "link": "https://news.google.com/rss/articles/CBMifkFVX3lxTFBuNEFtb29fVXlrbV9HVGRHWGd0eVZZZWFpS3A0dk9YLXhVQ2VVdm9ZcDB3MnBTbkhYNzBVdkNKWURydG1vRGhPRE5sbXU1TkJPV1otc0VycjdBQndadkRVNVpWQlhMRXNfaGxfUmRzMGJjU01neVNoS1JxR2owUQ?oc=5"
         },
         {
-          "time": "2026-10-06T08:28:37+09:00",
-          "title": "삼성전자, 갤럭시 탭 S12·스마트태그3 국내 출시…대화면 AI·위치 탐색 강화",
-          "source": "인공지능신문",
-          "link": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE1IRlJtQk5GMlg5WlA3ZEdJZFYzT0dNM0lkaEIzV1dEc29QbFlKajNhclBLZ1VpaGRiZDRNYTV3N3ctVWlPVFdlcnd2TjFiSXRpQ0JlU0JQYTdoeTJFYU45S3laa281RjA?oc=5"
+          "time": "2026-10-06T08:00:00+09:00",
+          "title": "삼성전자, ‘갤럭시 탭 S12 시리즈·스마트태그3’ 국내 출시",
+          "source": "Samsung Global Newsroom",
+          "link": "https://news.google.com/rss/articles/CBMiuwJBVV95cUxPWlRtTDFVbTI5dVVRNTR6d1ZuZ1BDYWw0R2tpZV9VRlhxNWhPeFVtd05URldQYjdDVnUzNXl5ZW9JSjM4bGdNTVRQOU00YU1Bd0dWQkZCNjRmVzBJSW9qcUoyU19odHFiR1daTWdHSnVOMjgwb1RwcFN5V3hOODdTWjNHYUxIeVBSNy1lOTdEVW8tZHlOMmpXbTJ2M0J6UnBEd2pjc2J6WVBKeUhEUW0zcktoOU5RYmcyYl9pMnhmWlhqbmVMYmt5RUoxVkZYMDFDbFlxMWM5eVY4dW9iODNoaEpvWUJrVm53OTN1amlhZjhtSF9KaVpnM0lKbl9PZERITy1iQWZEZXVXTlV5SHVUajNya212cHY1MWlnV3pHSFFSU2w4OWJPN2ZFWTNocDd6eGMwRFRnUEcyWlE?oc=5"
         }
       ]
     },
@@ -177,22 +176,22 @@
       "score": 4.2473906320119115,
       "news": [
         {
+          "time": "2026-10-06T10:06:54+09:00",
+          "title": "엔비디아, 삼성전자·SK하이닉스에 ‘HBM 더 얇게’ 주문했다",
+          "source": "시사저널e",
+          "link": "https://news.google.com/rss/articles/CBMickFVX3lxTFBrdnFNa2d2dko3Uy13c2NSaGdxT092SnhCVVFEeWVrYXJIbUJhcnVzbVhrVGduZ1g5R2lZWVl6YnNxdHZ1eFpWWGxIQ0hfd09lRHVvSHdaVXRqUkRMUnlHbXRsMW5oV2k0VXpzRDBqNWUzQdIBdkFVX3lxTE5CcC1PNm5qa1VJOHZrTGhfdXVIMExQY1dhOFdIdWdGZXVBMEdjQ21pRnRBaXZ4N1Rjb0M3WEF5YTRTWXNfbUlsbnJHWFEydFlpNTc1eTZXbmhYRmxwNmFEWWV1SWRNNmFwZ3BHMEo2OEZOX01xcGc?oc=5"
+        },
+        {
           "time": "2026-10-06T09:36:00+09:00",
           "title": "\"삼성전자 주가 내년 50만원 갈 수 있다\"",
-          "source": "chosun.com",
+          "source": "조선일보",
           "link": "https://news.google.com/rss/articles/CBMigAFBVV95cUxQMFFEcEhHamk1TzA2eHpOalVJdWtydW8zNUlQU0owLWQ0aVM0QmZXblJhOXQxUDBpam5xS0xCVGZiWnFCLXAxcTNib0dRVmNGRGtuSUwtTksxWGtKZk10cmUtLXc3RGZVMDZ2U3kyTjJwVHQzVGtIREg0ekluMDB0ag?oc=5"
         },
         {
           "time": "2026-10-06T09:19:42+09:00",
           "title": "삼성전자 보합·SK하이닉스 하락… 검색 상위 15개는 올랐다",
-          "source": "서울신문",
+          "source": "seoul.co.kr",
           "link": "https://news.google.com/rss/articles/CBMifkFVX3lxTFBuNEFtb29fVXlrbV9HVGRHWGd0eVZZZWFpS3A0dk9YLXhVQ2VVdm9ZcDB3MnBTbkhYNzBVdkNKWURydG1vRGhPRE5sbXU1TkJPV1otc0VycjdBQndadkRVNVpWQlhMRXNfaGxfUmRzMGJjU01neVNoS1JxR2owUQ?oc=5"
-        },
-        {
-          "time": "2026-10-06T09:49:18+09:00",
-          "title": "삼성바이오로직스 노조, 삼성전자에 첫 단체교섭 요구",
-          "source": "inews24.com",
-          "link": "https://news.google.com/rss/articles/CBMiS0FVX3lxTFBEcjhWX2dDb2E4cEEwbk9DT2ZlejNSeDFqTEIzT3lHeWpzS1B5ZEFVMTByYVV1WkU2bHcySW1PcGpQOTdGYko0UGlvbw?oc=5"
         },
         {
           "time": "2026-10-06T09:59:33+09:00",
@@ -589,34 +588,16 @@
       "score": 4.387745645675473,
       "news": [
         {
-          "time": "2026-10-06T08:00:00+09:00",
-          "title": "[영상] 세계 무대에서 빛난 기술 국가대표들… 삼성전자와 함께한 ‘2026 상하이 국제기능올림픽’ 도전기",
-          "source": "Samsung Global Newsroom",
-          "link": "https://news.google.com/rss/articles/CBMiugJBVV95cUxQNGFUcF90OS1LSVFXN3NIeHJMZlNGUGtlZG5HUHBBVDBGUGp1SERnMGFsdG1GTUxYdHVJMDZlNzVEX3kxcVRDYzB0WHozd3hsUjJzZm4zMHhreUVPQVY5cXdvZEZoOFhLLTItcWFfeFd2TE1yelBST1FUYUNzWUMxbVZ4TlpCXzhBd3VETkRiY3doQ3MzTVV3dDQ2OFV6VFNsOWZNamVBRnRvMTVoay14WF9KYlBldUJoQVR4MmxwNGpVRzhYR3hXZGV3OGRySjdOdUhkbDVYemg4ckUtSjNWNlBjMGp5TlBTdmRsV0xqb1pueFJWaFlNamVIYWJjR0ZlMUQ0NGgwcEFOWmJSY0tKNkJHcXBrdTBwaWFZVHpxU1piLWJ0amVwbEVLT2lveF9ubUtIQWZXb2Qxdw?oc=5"
-        },
-        {
-          "time": "2026-10-06T08:32:11+09:00",
-          "title": "신보, 삼성전자 평택 P5 팹 전기공사 수주",
-          "source": "전기신문",
-          "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE50TjRTYWZwdGtISFRwdGpwMXpSSW1IbE5TZFBMLU8wd2hydkFmS3BDVkgzZnhJU0F3bGFlT2hzYzNtQVloRnRXLUFicDhBc3pSUU9IRkRaWW5GOTc5TTdSNzkwMDBHRm5EXzhvVNIBcEFVX3lxTE9TNHBId2NFVzk2VWhvWFpYWVVmV3R6Q1ZrT2Y0MG5oQkY1U1ZkaG9ua1NKR3JZeDVEX3dyWHRjQWZ5Nmo5LVlpWm8zWmQwRG1HWEstVjF4WkViRXczUDNhZEdsQ3ZHWllrWTh3LUFfTEI?oc=5"
-        },
-        {
-          "time": "2026-10-06T08:41:25+09:00",
-          "title": "삼성바이오 노조, 삼성전자에 첫 단체교섭 요구",
-          "source": "연합뉴스",
-          "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE52NFpQQVVjMVJnZ242RlVndXdWZktmTU1td3F4NWEtcm8zMnREMzItd0Ewd1VzR0VmYXU4OERtcjhPdk5Ua3Frc3JWUTRLbE1MQWthT2NNcmhrcm1xb0hwa9IBYEFVX3lxTE52NFpQQVVjMVJnZ242RlVndXdWZktmTU1td3F4NWEtcm8zMnREMzItd0Ewd1VzR0VmYXU4OERtcjhPdk5Ua3Frc3JWUTRLbE1MQWthT2NNcmhrcm1xb0hwaw?oc=5"
-        },
-        {
           "time": "2026-10-06T09:19:42+09:00",
           "title": "삼성전자 보합·SK하이닉스 하락… 검색 상위 15개는 올랐다",
-          "source": "서울신문",
+          "source": "seoul.co.kr",
           "link": "https://news.google.com/rss/articles/CBMifkFVX3lxTFBuNEFtb29fVXlrbV9HVGRHWGd0eVZZZWFpS3A0dk9YLXhVQ2VVdm9ZcDB3MnBTbkhYNzBVdkNKWURydG1vRGhPRE5sbXU1TkJPV1otc0VycjdBQndadkRVNVpWQlhMRXNfaGxfUmRzMGJjU01neVNoS1JxR2owUQ?oc=5"
         },
         {
-          "time": "2026-10-06T08:28:37+09:00",
-          "title": "삼성전자, 갤럭시 탭 S12·스마트태그3 국내 출시…대화면 AI·위치 탐색 강화",
-          "source": "인공지능신문",
-          "link": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE1IRlJtQk5GMlg5WlA3ZEdJZFYzT0dNM0lkaEIzV1dEc29QbFlKajNhclBLZ1VpaGRiZDRNYTV3N3ctVWlPVFdlcnd2TjFiSXRpQ0JlU0JQYTdoeTJFYU45S3laa281RjA?oc=5"
+          "time": "2026-10-06T08:00:00+09:00",
+          "title": "삼성전자, ‘갤럭시 탭 S12 시리즈·스마트태그3’ 국내 출시",
+          "source": "Samsung Global Newsroom",
+          "link": "https://news.google.com/rss/articles/CBMiuwJBVV95cUxPWlRtTDFVbTI5dVVRNTR6d1ZuZ1BDYWw0R2tpZV9VRlhxNWhPeFVtd05URldQYjdDVnUzNXl5ZW9JSjM4bGdNTVRQOU00YU1Bd0dWQkZCNjRmVzBJSW9qcUoyU19odHFiR1daTWdHSnVOMjgwb1RwcFN5V3hOODdTWjNHYUxIeVBSNy1lOTdEVW8tZHlOMmpXbTJ2M0J6UnBEd2pjc2J6WVBKeUhEUW0zcktoOU5RYmcyYl9pMnhmWlhqbmVMYmt5RUoxVkZYMDFDbFlxMWM5eVY4dW9iODNoaEpvWUJrVm53OTN1amlhZjhtSF9KaVpnM0lKbl9PZERITy1iQWZEZXVXTlV5SHVUajNya212cHY1MWlnV3pHSFFSU2w4OWJPN2ZFWTNocDd6eGMwRFRnUEcyWlE?oc=5"
         }
       ],
       "price": 277500.0,
@@ -633,22 +614,22 @@
       "score": 4.2473906320119115,
       "news": [
         {
+          "time": "2026-10-06T10:06:54+09:00",
+          "title": "엔비디아, 삼성전자·SK하이닉스에 ‘HBM 더 얇게’ 주문했다",
+          "source": "시사저널e",
+          "link": "https://news.google.com/rss/articles/CBMickFVX3lxTFBrdnFNa2d2dko3Uy13c2NSaGdxT092SnhCVVFEeWVrYXJIbUJhcnVzbVhrVGduZ1g5R2lZWVl6YnNxdHZ1eFpWWGxIQ0hfd09lRHVvSHdaVXRqUkRMUnlHbXRsMW5oV2k0VXpzRDBqNWUzQdIBdkFVX3lxTE5CcC1PNm5qa1VJOHZrTGhfdXVIMExQY1dhOFdIdWdGZXVBMEdjQ21pRnRBaXZ4N1Rjb0M3WEF5YTRTWXNfbUlsbnJHWFEydFlpNTc1eTZXbmhYRmxwNmFEWWV1SWRNNmFwZ3BHMEo2OEZOX01xcGc?oc=5"
+        },
+        {
           "time": "2026-10-06T09:36:00+09:00",
           "title": "\"삼성전자 주가 내년 50만원 갈 수 있다\"",
-          "source": "chosun.com",
+          "source": "조선일보",
           "link": "https://news.google.com/rss/articles/CBMigAFBVV95cUxQMFFEcEhHamk1TzA2eHpOalVJdWtydW8zNUlQU0owLWQ0aVM0QmZXblJhOXQxUDBpam5xS0xCVGZiWnFCLXAxcTNib0dRVmNGRGtuSUwtTksxWGtKZk10cmUtLXc3RGZVMDZ2U3kyTjJwVHQzVGtIREg0ekluMDB0ag?oc=5"
         },
         {
           "time": "2026-10-06T09:19:42+09:00",
           "title": "삼성전자 보합·SK하이닉스 하락… 검색 상위 15개는 올랐다",
-          "source": "서울신문",
+          "source": "seoul.co.kr",
           "link": "https://news.google.com/rss/articles/CBMifkFVX3lxTFBuNEFtb29fVXlrbV9HVGRHWGd0eVZZZWFpS3A0dk9YLXhVQ2VVdm9ZcDB3MnBTbkhYNzBVdkNKWURydG1vRGhPRE5sbXU1TkJPV1otc0VycjdBQndadkRVNVpWQlhMRXNfaGxfUmRzMGJjU01neVNoS1JxR2owUQ?oc=5"
-        },
-        {
-          "time": "2026-10-06T09:49:18+09:00",
-          "title": "삼성바이오로직스 노조, 삼성전자에 첫 단체교섭 요구",
-          "source": "inews24.com",
-          "link": "https://news.google.com/rss/articles/CBMiS0FVX3lxTFBEcjhWX2dDb2E4cEEwbk9DT2ZlejNSeDFqTEIzT3lHeWpzS1B5ZEFVMTByYVV1WkU2bHcySW1PcGpQOTdGYko0UGlvbw?oc=5"
         },
         {
           "time": "2026-10-06T09:59:33+09:00",
@@ -670,30 +651,6 @@
   "overnight_news": [
     {
       "time": "2026-10-06T08:00:00+09:00",
-      "title": "[영상] 세계 무대에서 빛난 기술 국가대표들… 삼성전자와 함께한 ‘2026 상하이 국제기능올림픽’ 도전기",
-      "source": "Samsung Global Newsroom",
-      "link": "https://news.google.com/rss/articles/CBMiugJBVV95cUxQNGFUcF90OS1LSVFXN3NIeHJMZlNGUGtlZG5HUHBBVDBGUGp1SERnMGFsdG1GTUxYdHVJMDZlNzVEX3kxcVRDYzB0WHozd3hsUjJzZm4zMHhreUVPQVY5cXdvZEZoOFhLLTItcWFfeFd2TE1yelBST1FUYUNzWUMxbVZ4TlpCXzhBd3VETkRiY3doQ3MzTVV3dDQ2OFV6VFNsOWZNamVBRnRvMTVoay14WF9KYlBldUJoQVR4MmxwNGpVRzhYR3hXZGV3OGRySjdOdUhkbDVYemg4ckUtSjNWNlBjMGp5TlBTdmRsV0xqb1pueFJWaFlNamVIYWJjR0ZlMUQ0NGgwcEFOWmJSY0tKNkJHcXBrdTBwaWFZVHpxU1piLWJ0amVwbEVLT2lveF9ubUtIQWZXb2Qxdw?oc=5"
-    },
-    {
-      "time": "2026-10-06T08:32:11+09:00",
-      "title": "신보, 삼성전자 평택 P5 팹 전기공사 수주",
-      "source": "전기신문",
-      "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE50TjRTYWZwdGtISFRwdGpwMXpSSW1IbE5TZFBMLU8wd2hydkFmS3BDVkgzZnhJU0F3bGFlT2hzYzNtQVloRnRXLUFicDhBc3pSUU9IRkRaWW5GOTc5TTdSNzkwMDBHRm5EXzhvVNIBcEFVX3lxTE9TNHBId2NFVzk2VWhvWFpYWVVmV3R6Q1ZrT2Y0MG5oQkY1U1ZkaG9ua1NKR3JZeDVEX3dyWHRjQWZ5Nmo5LVlpWm8zWmQwRG1HWEstVjF4WkViRXczUDNhZEdsQ3ZHWllrWTh3LUFfTEI?oc=5"
-    },
-    {
-      "time": "2026-10-06T08:41:25+09:00",
-      "title": "삼성바이오 노조, 삼성전자에 첫 단체교섭 요구",
-      "source": "연합뉴스",
-      "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE52NFpQQVVjMVJnZ242RlVndXdWZktmTU1td3F4NWEtcm8zMnREMzItd0Ewd1VzR0VmYXU4OERtcjhPdk5Ua3Frc3JWUTRLbE1MQWthT2NNcmhrcm1xb0hwa9IBYEFVX3lxTE52NFpQQVVjMVJnZ242RlVndXdWZktmTU1td3F4NWEtcm8zMnREMzItd0Ewd1VzR0VmYXU4OERtcjhPdk5Ua3Frc3JWUTRLbE1MQWthT2NNcmhrcm1xb0hwaw?oc=5"
-    },
-    {
-      "time": "2026-10-06T08:28:37+09:00",
-      "title": "삼성전자, 갤럭시 탭 S12·스마트태그3 국내 출시…대화면 AI·위치 탐색 강화",
-      "source": "인공지능신문",
-      "link": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE1IRlJtQk5GMlg5WlA3ZEdJZFYzT0dNM0lkaEIzV1dEc29QbFlKajNhclBLZ1VpaGRiZDRNYTV3N3ctVWlPVFdlcnd2TjFiSXRpQ0JlU0JQYTdoeTJFYU45S3laa281RjA?oc=5"
-    },
-    {
-      "time": "2026-10-06T08:00:00+09:00",
       "title": "삼성전자, ‘갤럭시 탭 S12 시리즈·스마트태그3’ 국내 출시",
       "source": "Samsung Global Newsroom",
       "link": "https://news.google.com/rss/articles/CBMiuwJBVV95cUxPWlRtTDFVbTI5dVVRNTR6d1ZuZ1BDYWw0R2tpZV9VRlhxNWhPeFVtd05URldQYjdDVnUzNXl5ZW9JSjM4bGdNTVRQOU00YU1Bd0dWQkZCNjRmVzBJSW9qcUoyU19odHFiR1daTWdHSnVOMjgwb1RwcFN5V3hOODdTWjNHYUxIeVBSNy1lOTdEVW8tZHlOMmpXbTJ2M0J6UnBEd2pjc2J6WVBKeUhEUW0zcktoOU5RYmcyYl9pMnhmWlhqbmVMYmt5RUoxVkZYMDFDbFlxMWM5eVY4dW9iODNoaEpvWUJrVm53OTN1amlhZjhtSF9KaVpnM0lKbl9PZERITy1iQWZEZXVXTlV5SHVUajNya212cHY1MWlnV3pHSFFSU2w4OWJPN2ZFWTNocDd6eGMwRFRnUEcyWlE?oc=5"
@@ -701,16 +658,10 @@
   ],
   "top_news": [
     {
-      "time": "2026-10-06T16:02:07+09:00",
-      "title": "메모리 반도체 호황 속 삼성전자 완제품은 '고전'…DX부문 3분기 실적 어떻게",
-      "source": "뉴시스",
-      "link": "https://news.google.com/rss/articles/CBMieEFVX3lxTE4wejJTM3ZFQVZWQWtON1pQYVFsdEN2aUI5T2xXS2JFN0EyVkZTaEJoUG5BVWJKRHVOTDJBTGVUaGt2VmE0RUZtQ1dPMFpCSmRQMGRyM0JKRVI1YnN2OUxPNjFQWng2aXZsdmdrQ0wySjZXLVJCTXRyaNIBeEFVX3lxTE4wejJTM3ZFQVZWQWtON1pQYVFsdEN2aUI5T2xXS2JFN0EyVkZTaEJoUG5BVWJKRHVOTDJBTGVUaGt2VmE0RUZtQ1dPMFpCSmRQMGRyM0JKRVI1YnN2OUxPNjFQWng2aXZsdmdrQ0wySjZXLVJCTXRyaA?oc=5"
-    },
-    {
-      "time": "2026-10-06T10:44:59+09:00",
+      "time": "2026-10-06T10:06:54+09:00",
       "title": "엔비디아, 삼성전자·SK하이닉스에 ‘HBM 더 얇게’ 주문했다",
       "source": "시사저널e",
-      "link": "https://news.google.com/rss/articles/CBMidkFVX3lxTE5CcC1PNm5qa1VJOHZrTGhfdXVIMExQY1dhOFdIdWdGZXVBMEdjQ21pRnRBaXZ4N1Rjb0M3WEF5YTRTWXNfbUlsbnJHWFEydFlpNTc1eTZXbmhYRmxwNmFEWWV1SWRNNmFwZ3BHMEo2OEZOX01xcGfSAXZBVV95cUxOQnAtTzZuamtVSTh2a0xoX3V1SDBMUGNXYThXSHVnRmV1QTBHY0NtaUZ0QWl2eDdUY29DN1hBeWE0U1lzX21JbG5yR1hRMnRZaTU3NXk2V25oWEZscDZhRFlldUlkTTZhcGdwRzBKNjhGTl9NcXBn?oc=5"
+      "link": "https://news.google.com/rss/articles/CBMickFVX3lxTFBrdnFNa2d2dko3Uy13c2NSaGdxT092SnhCVVFEeWVrYXJIbUJhcnVzbVhrVGduZ1g5R2lZWVl6YnNxdHZ1eFpWWGxIQ0hfd09lRHVvSHdaVXRqUkRMUnlHbXRsMW5oV2k0VXpzRDBqNWUzQdIBdkFVX3lxTE5CcC1PNm5qa1VJOHZrTGhfdXVIMExQY1dhOFdIdWdGZXVBMEdjQ21pRnRBaXZ4N1Rjb0M3WEF5YTRTWXNfbUlsbnJHWFEydFlpNTc1eTZXbmhYRmxwNmFEWWV1SWRNNmFwZ3BHMEo2OEZOX01xcGc?oc=5"
     },
     {
       "time": "2026-10-06T14:52:00+09:00",
@@ -719,31 +670,105 @@
       "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTFBoRXo4SUQ5ZnYtLUN5NDJzdXBPdGc2VGdmT042bVpmejR3RWF0TUdxMzFzSGpob01CUUFwZ3YwTktIZElEeVNUZnF6dHp3X2lvU25paURETHpxbXo3eDhvX3l2bUFGNlMtaThqd1VadGk?oc=5"
     },
     {
-      "time": "2026-10-06T16:22:11+09:00",
+      "time": "2026-10-06T16:20:01+09:00",
       "title": "삼성전자 잠정 실적 발표 앞두고 외인 '이탈'⋯코스피 1.6% 밀려 '6890선'",
-      "source": "v.daum.net",
-      "link": "https://news.google.com/rss/articles/CBMiT0FVX3lxTE1QeHE2Yks4UTZmN05QUE5oeWZTdWtBZHNrRGN2U050TmoxbjZqVm1HWnROSWZPZzJ3Sm1KdTdSTEtJSG5iQ2xXMndobllENUU?oc=5"
+      "source": "아이뉴스24",
+      "link": "https://news.google.com/rss/articles/CBMiS0FVX3lxTE5QS0hidTQ5U1k1cUR5b2NpWE4tY1Y2SzhXVGdEblQ1T0RjNjdhcDY2WThUX05WNFZ5bURQWVY5ckRzdzROa0JUQUpyOA?oc=5"
     },
     {
-      "time": "2026-10-06T16:40:54+09:00",
-      "title": "[코스피 지수선물 옵션] SK하이닉스·삼성전자 약세에도 삼성전기·한미반도체는 상승랠리",
-      "source": "핀포인트뉴스",
-      "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTFBCeXpXU0lwdm5UN0R1R1NQb3VFNHllaE5hQzg1SHFIOXRiX2JXbkoyWHBhR2lZRjYtQjlvSkhiRXlxeE01STFTVDl4TFRhY2JrM0M1NTBtZ29IYUFveTlkQTdMaEltY1F5TUR4bENxZGRWUE3SAXdBVV95cUxOaFpSV2Z6RjRrM2lMR29Ka1BDZEkxQjNfLU5UM09lTm10dXlrZzlPU2FBNDZmOVl0b2U5UGRudm9rVlVVUEZxNGRCTUxSb0hTbXlzc2dBZlVQUjNaSl9udE5RYzhBa0t6S2pOSTRXejBTODJmN0g1TQ?oc=5"
+      "time": "2026-10-06T16:20:46+09:00",
+      "title": "외국인 매도에 삼성전자·SK하이닉스 동반 하락…반도체주 약세",
+      "source": "sankyungtoday.com",
+      "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE5KbnVSQkxYSzEteDI0RHczXzFZQjh6NS1UOUF5V0pxZy1vUUR6R1VhbEtOeXNkRlQ4OGhBVnU3NXJpM1hwUm5yUDVGOHJybVlEYzZrVEVJQkdzVklaVHZ0R3B6V080aEgxM1I3emVnLV_SAXRBVV95cUxQQnlKTHlCRG1kVVFMS1JyNXdYeWhSZUJncTNQbVlPaXU0SlBmU0dSZndCS2RvTHA5YnBHTkxOcTlSWGxMeUxNWE9WYVBIT1d3a0FlN2RucXZGMnVxYmFCRU1NS2tDNzBjRU1VQlhIYWlxOVBYSQ?oc=5"
     },
     {
       "time": "2026-10-06T17:20:00+09:00",
       "title": "글로벌 반도체 업황 기대감에도 삼성전자·SK하이닉스 주가 정체된 이유",
       "source": "뉴시스",
-      "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE1WelNFZkE1UzgtcG40SW9EaGR6djJpZlRtQ2NxN3FGNDJ0NEZJaU41SjBmT3lueXgzVE43UHAwdzNCWDRIdEVTeERIYUhsMk93aUZma2VacDNoLS02NlUzZA?oc=5"
+      "link": "https://news.google.com/rss/articles/CBMieEFVX3lxTE5pUjJkMDBzZ3EtYno5eFJkTVBUdHdBSFBrRHA0V29MeTUzcFdMSWhyUGZZUWl3aVZiUzNOUWJsZkhzOWRXZ3BweWtKSmdTZm5BODVoYzZiZGltUnpoVGd2cXJxbzZqWTFPR2hnTFgxckxrSzl2RWI1SdIBeEFVX3lxTE5pUjJkMDBzZ3EtYno5eFJkTVBUdHdBSFBrRHA0V29MeTUzcFdMSWhyUGZZUWl3aVZiUzNOUWJsZkhzOWRXZ3BweWtKSmdTZm5BODVoYzZiZGltUnpoVGd2cXJxbzZqWTFPR2hnTFgxckxrSzl2RWI1SQ?oc=5"
+    },
+    {
+      "time": "2026-10-06T18:40:00+09:00",
+      "title": "삼성전자 다 버리고 '이곳'으로 모였다! 외국인·기관이 작정하고 쓸어 담은 반도체 핵심주 (10.06)",
+      "source": "네이버 프리미엄콘텐츠",
+      "link": "https://news.google.com/rss/articles/CBMiigFBVV95cUxPTmtlM0VzblNxRzQ0VHR2N0U4aDF4ZFhVWHRvOEc3cEVwaTNsWkE0ZHBTekVLSmxtTUVRWTNSWGljTGI5T0VXYW9MVlllZVk1Qml5cnRWdjRTNW9hVHlWcGVqcVUzQ3l4QzQySjk4ejFuaDlweWFQQWxJM05aWVprcmtkVnVQN1VvRmc?oc=5"
     }
   ],
-  "disclosures": null,
-  "disclosure_note": "DART 조회 실패(URLError)",
-  "flows": null,
-  "flow_story": null,
+  "disclosures": [],
+  "disclosure_note": null,
+  "flows": "외국인 -2,064,174 / 기관 -193,422",
+  "flow_story": {
+    "direction": "down",
+    "c2c": -0.01449275362318836,
+    "actors": [
+      {
+        "key": "foreign_net",
+        "name": "외국인",
+        "shares": -2064174.0,
+        "won": -561455328000.0,
+        "vs_usual": 0.8201067665957749
+      },
+      {
+        "key": "inst_net",
+        "name": "기관",
+        "shares": -193422.0,
+        "won": -52610784000.0,
+        "vs_usual": 0.10291173018783457
+      },
+      {
+        "key": "indiv_net",
+        "name": "개인",
+        "shares": 1273618.0,
+        "won": 346424096000.0,
+        "vs_usual": 0.36443803482085246
+      },
+      {
+        "key": "other_net",
+        "name": "기타 법인 등(추정)",
+        "shares": 983978.0,
+        "won": 267642016000.0,
+        "vs_usual": null
+      }
+    ],
+    "lead": {
+      "key": "foreign_net",
+      "name": "외국인",
+      "shares": -2064174.0,
+      "won": -561455328000.0,
+      "vs_usual": 0.8201067665957749
+    },
+    "counter": {
+      "key": "indiv_net",
+      "name": "개인",
+      "shares": 1273618.0,
+      "won": 346424096000.0,
+      "vs_usual": 0.36443803482085246
+    },
+    "all_one_side": false,
+    "observations": [
+      "전일까지 20거래일 고점: 종가 돌파 없음 · 종가 위치 -4.73%.",
+      "전일까지 60거래일 고점: 종가 돌파 없음 · 종가 위치 -12.26%.",
+      "같은 5거래일 수익률: 이 종목 +0.74%, SK하이닉스 +0.28% · 차이 +0.46%p.",
+      "같은 20거래일 수익률: 이 종목 +8.80%, SK하이닉스 +11.09% · 차이 -2.29%p.",
+      "같은 60거래일 수익률: 이 종목 -8.11%, SK하이닉스 -19.43% · 차이 +11.32%p.",
+      "외국인 5일 합계 순매도 전환: 직전 5일 → 최근 5일 순매수/거래량 +2.58% → -12.32% (일평균 +516,160주 → -1,774,601주). 향후 상승을 뜻하는 신호는 아닙니다.",
+      "코스피도 -0.89% — 시장 전체가 같은 방향이었습니다.",
+      "SK하이닉스 -3.69% — 반도체 업종이 함께 움직였습니다.",
+      "휴장 기간(2거래일 누적) SOX는 +2.68%로 반대 방향이어서 미국 반도체 흐름으로는 설명되지 않습니다.",
+      "휴장 기간(2거래일 누적) 마이크론 -3.05% — 미국 메모리 회사와 같은 방향입니다.",
+      "장중 5일선(272,600원) 위로 올랐다가 그 아래로 밀려 마감했습니다.",
+      "우리 장중(09:00~15:30) 나스닥100 선물 +0.15%, 이 종목 고점 이후 +0.07% · 미 10년물 국채 선물 +0.03%, 이 종목 고점 이후 +0.03% · 원/달러 -0.16%(원화 강세), 이 종목 고점 이후 +0.04%.",
+      "자사주 매입 기간 중(직접 취득 2026-08-24~2026-11-21, 14,999,999,992,000, DART 공시) — 회사 자신의 매수는 기타 법인으로 잡힙니다.",
+      "마감가가 장중 고가보다 -2.77% 아래 — 오른 폭을 장중에 꽤 반납했습니다.",
+      "기타 법인 등(추정) 순매수 +2,676억원 — 회사의 자사주 매입 기간이라 회사 매입과 맞는 모양입니다."
+    ],
+    "estimated_indiv": false,
+    "source_note": "출처 naver+cache · 장 마감 직후 잠정치라 저녁 확정치와 다를 수 있습니다 · KRX는 받지 못함(pykrx 미설치)"
+  },
   "flow_status": {
-    "state": "pending",
-    "detail": "최신 2026-10-02"
+    "state": "ok",
+    "detail": "naver+cache",
+    "krx_error": "pykrx 미설치"
   },
   "context": {},
   "market": {
@@ -754,16 +779,84 @@
     "steady": 32,
     "upper": 0,
     "lower": 0,
-    "individual": 7542.0,
-    "foreign": -17666.0,
-    "institution": -35.0,
+    "individual": 7441.0,
+    "foreign": -17575.0,
+    "institution": -39.0,
     "prev_close": 7003.74,
     "open": 7044.67,
     "high": 7044.67,
     "low": 6897.38,
     "close": 6941.39
   },
-  "earnings_reactions": null,
+  "earnings_reactions": {
+    "n": 44,
+    "down": 24,
+    "mean": 0.005144005171262269,
+    "first": "2015-04-07",
+    "last": "2026-07-30",
+    "prior_up": {
+      "n": 26,
+      "down": 15,
+      "mean": 0.006803917975340668
+    },
+    "prior_down": {
+      "n": 18,
+      "down": 9,
+      "mean": 0.0027463533431490252,
+      "next5_n": 18,
+      "next5_up": 8
+    },
+    "rows": [
+      {
+        "date": "2024-04-05",
+        "ret": -0.00937865772137525,
+        "prior20": 0.18680931015556013,
+        "next5": -0.027218966042563242
+      },
+      {
+        "date": "2024-07-05",
+        "ret": 0.02955081575743268,
+        "prior20": 0.09789851234261726,
+        "next5": -0.03099888095789405
+      },
+      {
+        "date": "2024-10-08",
+        "ret": -0.011475474392905527,
+        "prior20": -0.17550716671415245,
+        "next5": -0.013266997454855045
+      },
+      {
+        "date": "2025-01-08",
+        "ret": 0.03429592557854533,
+        "prior20": 0.038691834110668566,
+        "next5": -0.06282719660027825
+      },
+      {
+        "date": "2025-04-08",
+        "ret": 0.005639189279862844,
+        "prior20": -0.0034250619261930737,
+        "next5": 0.05794389353365759
+      },
+      {
+        "date": "2025-10-14",
+        "ret": -0.01822079386417541,
+        "prior20": 0.3484355968820865,
+        "next5": 0.06441047284052348
+      },
+      {
+        "date": "2026-04-07",
+        "ret": 0.017607433616103174,
+        "prior20": 0.11527197433303193,
+        "next5": 0.05089058828005988
+      },
+      {
+        "date": "2026-07-30",
+        "ret": -0.007194244604316502,
+        "prior20": -0.37574850299401197,
+        "next5": 0.11352657004830924
+      }
+    ]
+  },
   "forecasts": [
     {
       "model": "No macro ensemble",

@@ -1,0 +1,98 @@
+# 이메일 링크 유입 집계 구현 계획
+
+> 후속 작업자: `superpowers:executing-plans` 또는 `superpowers:subagent-driven-development`를 이용해 아래 단계를 순서대로 구현한다. 완료한 항목만 체크하고 단계마다 테스트·커밋·push한다.
+
+**목표:** 이메일의 보고서 링크를 통해 들어온 방문을 관리자 방문 통계에서 날짜·보고서·메일 회차별로 구분한다.
+
+**구조:** 메일 생성 시 개인 식별 정보 없는 유입 표시를 링크에 붙인다. 페이지가 기존 `/hit` 요청으로 표시를 전달하고, Worker가 기존 방문 행에 출처를 저장하여 `/stats`에서 집계한다. 별도 리다이렉트 서버나 메일 열람 추적 픽셀은 만들지 않는다.
+
+**기술:** Cloudflare Worker(JavaScript), D1(SQLite), 정적 JavaScript, Python 보고서 생성기·unittest, Node 테스트.
+
+**요청 근거:** 2026-10-06 사용자 요청. 오늘은 이 계획만 main에 저장하며 구현·DB 변경·Worker 배포·메일 발송은 하지 않는다. 다음 구현은 사용자가 2026-10-07 이어갈 예정이다.
+
+## 집계 기준과 제약
+
+- 지표 이름은 **이메일 링크 유입 방문수**. 메일 열람수·원시 클릭수·실제 구독자 수·클릭률로 표시하지 않는다. 링크 공유·자동 검사·JavaScript 차단 때문에 실제 사람의 클릭과 완전히 일치하지 않는다.
+- 기존 방문수와 별개로 한 번 더 `/hit`를 보내지 않는다. 이메일 유입은 기존 방문의 부분집합이며 기존 누적 조회수·봇 필터·허용 출처·10분 중복 제거를 유지한다.
+- 수신자 이메일·구독자 ID·구독 취소 토큰을 유입 URL이나 방문 기록에 넣지 않는다. 기존 일별 방문자 해시만 사용한다. 전체 URL·임의 쿼리 값은 저장하지 않는다.
+- 메일의 HTML과 일반 텍스트 링크 모두 적용한다. 삼성전자·SK하이닉스뿐 아니라 `site_reports`에 포함되는 다른 보고서도 포함한다. 구독 취소 링크는 변경하지 않는다.
+- 쿼리 규격: `utm_source=email`, `utm_medium=report`, `edition_day=YYYY-MM-DD`, `edition_phase=pre_open|post_close`. 보고서 종류는 이미 검증된 `/hit?page=` 값으로 구분한다.
+- `edition_day`는 메일 본문 `c.day`인 **발행 회차일**이며 실제 발송일로 표시하지 않는다. 방문 시각과 구분한다. 유입 표시는 공개 파라미터이므로 발송 사실의 인증 자료가 아니다.
+- 기존 `hits.day`와 방문자 해시가 UTC 일자 기준이므로 이번 변경에서는 이를 유지하고 통계 날짜에 **UTC 기준**을 명시한다. KST 전환은 기존 통계 전체의 별도 변경으로 남긴다. 회차일은 메일의 원래 날짜를 유지한다.
+- 추적 표시가 없는 과거 방문은 `출처 미분류`다. 직접 방문으로 단정하거나 이메일 유입을 소급 계산하지 않는다. 도입 전/후를 구분한다.
+- URL 표시는 해당 도착 페이지에서만 읽는다. 다른 메뉴로 전파하거나 쿠키·로컬 저장소로 장기 유지하지 않는다.
+
+## 확인한 현재 코드
+
+| 파일 | 역할·변경 지점 |
+| --- | --- |
+| `counter/worker.js` | `mailPayload`의 보고서 링크, `handleHit`, `handleStats`, 기존 보관기간 정리 |
+| `counter/schema.sql`, `counter/README.md` | 신규 DB 스키마, 기존 DB 이행·수동 배포 안내 |
+| `samsung_direction_model_colab.ipynb` | 삼성전자·SK하이닉스 보고서의 인라인 `/hit` 코드 생성 |
+| `tools/build_{metals,china,interest,trends,ai_news}_report.py` | 다른 보고서의 인라인 `/hit` 코드 생성 |
+| `docs/index.html` | 직접 관리하는 메인 페이지 방문 집계 |
+| `docs/admin/index.html` | 방문 통계 표시 |
+| `tests/test_counter_worker.py`, `tests/test_report_email.py`, `tests/report_mail_cases.mjs`, `tests/test_mail_site_reports.py`, `tests/test_admin_page.py` | 기존 회귀 테스트 |
+
+현재 `mailPayload`는 검증된 `r.url`을 그대로 출력하고, `/hit`는 출처별 필드 없이 저장한다. `Referer`만으로 이메일 유입을 추정하지 않는다. 종목 보고서 생성 HTML은 직접 수정하지 않는다.
+
+## 검토할 경계 조건
+
+1. 기존 DB/Worker/페이지가 서로 다른 버전일 때 기존 방문수와 메일 발송이 유지되는가 → 1·2·3단계 호환 테스트.
+2. 일반 방문 직후 이메일 링크로 재방문할 때 조회수 중복 없이 출처가 반영되는가 → 1단계 중복 제거 테스트.
+3. 잘못된 날짜·다른 보고서·긴 문자열·HTML 쿼리가 통계나 화면에 들어가는가 → 1·2·3·4단계 입력 검증 테스트.
+4. 다른 보고서 링크·텍스트 메일·구독 취소에 빠뜨린 적용이 있는가 → 2·3단계 링크 목록 테스트.
+5. 과거 자료·빈 결과·UTC 날짜 경계에서 잘못된 0이나 고유 방문자 합계가 보이는가 → 4단계 표시 테스트.
+
+## 1. 방문 저장·통계 API
+
+수정: `counter/worker.js`, `counter/schema.sql`, `counter/README.md`. 신규: `counter/migrations/20261007_email_attribution.sql`, `tests/email_traffic_cases.mjs`, `tests/test_email_traffic.py`.
+
+인터페이스: `parseEmailAttribution(url: URL) -> null | {source:'email', edition_day:string, edition_phase:string}`. `/hit`의 기존 응답 계약은 유지한다. `/stats`에 `emailTraffic: {available:boolean, timezone:'UTC', daily:[], editions:[]}`를 추가한다. daily 행은 `{day,page,views}`, editions 행은 `{edition_day,edition_phase,page,views}`다. 첫 버전에서는 고유 방문자·클릭률을 추가하지 않는다.
+
+- [ ] 실패 테스트 작성: 유효 회차만 채택, 실제 달력에 없는 날짜/중복 파라미터/과도한 길이/알 수 없는 phase는 null. 잘못된 유입 표시 때문에 기존 방문 집계가 실패하지 않는다.
+- [ ] 실패 테스트 작성: 신규 이메일 방문은 hits·counters 한 번 증가, 10분 안 재방문은 추가 증가 없음. 직전 일반 방문의 출처가 비어 있으면 동일한 최신 행에 이메일 표시를 보강하며 조회수는 늘리지 않는다. 이미 표시된 회차는 다른 회차로 덮어쓰지 않는다(10분 구간 첫 이메일 회차 우선). 봇은 기록·보강 모두 금지.
+- [ ] 테스트 실패 확인: `python -m unittest discover -s tests -p 'test_email_traffic.py' -v`.
+- [ ] `hits`에 `source`, `edition_day`, `edition_phase` TEXT NOT NULL DEFAULT '' 추가. 신규 DB와 기존 DB의 ALTER 문을 분리한다. 기존 행·인덱스·보관기간은 유지한다. 이행 SQL 재실행 전 `PRAGMA table_info(hits)`로 적용 여부 확인하도록 안내한다.
+- [ ] 중복 조회와 출처 보강의 경쟁 조건을 다룬다. 보강은 조회한 행 id와 `source=''` 조건으로 수행하여 먼저 반영된 출처를 덮어쓰지 않는다.
+- [ ] 기존 컬럼 부재인 경우에만 기존 INSERT/통계로 복귀하고 `emailTraffic.available=false`를 반환한다. 다른 DB 오류는 숨기지 않는다. 새 집계도 기존 `/stats?days=` 기간 필터·인증을 적용한다.
+- [ ] 위 테스트 및 `test_counter_worker.py` 통과 후 커밋·push. 실제 운영 DB에는 아직 적용하지 않는다.
+
+## 2. 이메일 링크 표시
+
+수정: `counter/worker.js`, `tests/report_mail_cases.mjs`, `tests/test_report_email.py`, `tests/test_mail_site_reports.py`.
+
+인터페이스: `emailReportUrl(rawUrl:string, day:string, phase:string) -> string`. 검증된 보고서 URL을 받아 URL API로 정해진 파라미터만 추가한다. 기존 알림 수신 URL 검증 규칙은 완화하지 않고 출력 단계에서만 변환한다.
+
+- [ ] 실패 테스트: HTML·텍스트의 모든 보고서 링크에 같은 회차가 붙고 이메일 주소/구독 취소 토큰은 없으며 구독 취소 URL은 원래 그대로다. 기존 쿼리·fragment를 훼손하지 않고 중복 표시를 만들지 않는다.
+- [ ] `mailPayload`의 stocks와 site_reports 공통 출력에 함수를 적용한다. 이벤트 저장값·메일 발송 중복 제거 ID는 변경하지 않는다.
+- [ ] `python -m unittest discover -s tests -p 'test_report_email.py' -v` 및 `test_mail_site_reports.py` 실행 후 커밋·push. 테스트는 모의 요청으로 수행하며 실제 구독자에게 발송하지 않는다.
+
+## 3. 모든 도착 페이지의 출처 전달
+
+신규: `docs/traffic_attribution.js`. 수정: 위 파일 표의 기존 방문 집계 생성부·메인 페이지 및 관련 테스트.
+
+인터페이스: 브라우저 `TrafficAttribution.hitUrl(endpoint:string, page:string, search:string) -> string`. 1단계 쿼리 규격을 정규화하여 기존 `/hit?page=`에 추가한다. 검증 실패 시 기존 URL만 반환한다. 브라우저 전역과 Node 테스트에서 동일 함수를 사용할 수 있게 한다.
+
+- [ ] 실패 테스트: 정상·표시 없음·잘못된 표시·중복 파라미터·특수문자·URL 인코딩, 실제 페이지당 요청 한 번. 다른 메뉴 이동에서는 표시를 전파하지 않는다.
+- [ ] 공통 스크립트를 사이트 절대 경로 `/predict_stock/traffic_attribution.js`로 연결한다. 모듈 로딩 실패 시에도 기존 집계를 수행하도록 인라인 호출에 존재 여부 검사를 둔다.
+- [ ] `site_reports`에 실제 포함되는 모든 메뉴와 기존 `/hit` 호출 목록을 대조한다. 종목 노트북·다섯 보고서 생성기·메인 호출을 공통 함수로 전환한다. 빠진 메뉴가 있으면 해당 생성기와 테스트를 같은 단계에 추가한다.
+- [ ] 노트북을 수정해도 원장을 생성하는 수동 보고서 실행을 하지 않는다. 헬퍼를 수정했다면 `python tools/sync_notebook_helpers.py` 실행. 생성 코드/정적 파일은 정상 게시 경로로 반영한다.
+- [ ] Node URL 테스트와 생성 HTML 연결 테스트 통과 후 커밋·push.
+
+## 4. 관리자 표시·배포·최종 확인
+
+수정: `docs/admin/index.html`, `tests/test_admin_page.py`, `counter/README.md`.
+
+- [ ] 실패 테스트: 새 API 정상·빈 배열·available=false·필드 없는 이전 Worker 응답. 미지원은 `이메일 유입 집계 미적용`으로 표시하며 성공한 빈 조회와 구분한다. 외부 문자열 HTML 이스케이프를 검증한다.
+- [ ] 방문 통계에 이메일 유입 방문수, 방문일별·보고서별 내역, 발행 회차별 내역을 추가한다. 기존 기간 선택을 공유한다. UTC 방문일·발행 회차일·기존 전체 조회수와의 관계 및 위 집계 한계를 짧게 표시한다.
+- [ ] `python -m unittest discover -s tests -v` 전체 CI 통과와 관리자 모바일 표시 확인 후 커밋·push.
+- [ ] 배포 순서: 사용자 D1 이행 적용 → Worker 전체 코드 수동 Deploy → 사이트 공통 스크립트와 생성 페이지 반영 확인 → 관리자 통계 확인. GitHub push만으로 Worker가 배포됐다고 말하지 않는다.
+- [ ] 구버전 조합·이행 누락은 1단계 호환 동작으로 기존 서비스를 유지한다. 되돌릴 때 DB 컬럼은 삭제하지 않고 이전 Worker/사이트로 복귀한다.
+- [ ] 테스트 환경에서 일반 방문·이메일 방문·10분 내 재방문·잘못된 링크를 검증한다. 운영 확인은 다음 정상 메일의 링크 표시와 방문 통계로 한다. 테스트 때문에 실제 메일을 임의 발송하거나 가짜 운영 방문을 대량 생성하지 않는다.
+- [ ] 이 문서에 적용 커밋·테스트 결과·D1/Worker/사이트 배포 여부와 확인 시각을 남긴다.
+
+## 현재 인계 상태
+
+- [x] 계획 작성 및 자체 검토: 개인정보 미포함, 전체 방문수 중복 방지, 기존 DB 호환, 전 보고서 링크, UTC/회차일 구분, 배포 순서 포함.
+- [ ] 구현 시작 — 위 1단계부터 진행. 오늘 변경 범위는 이 문서 한 개뿐이다.

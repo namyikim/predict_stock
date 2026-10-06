@@ -3,7 +3,7 @@
   "name": "SK하이닉스",
   "peer_name": "삼성전자",
   "session_date": "2026-10-06",
-  "generated_at": "2026-10-06 17:31 KST",
+  "generated_at": "2026-10-06 17:32 KST",
   "summary": {
     "prev_close": 1841000.0,
     "open": 1835000.0,
@@ -15,11 +15,11 @@
     "c2c": -0.03693644758283543,
     "high_vs_open": 0.0010899182561308063,
     "low_vs_open": -0.034877384196185246,
-    "volume": 2999227.0,
-    "volume_ratio": 0.9426416281781181,
+    "volume": 3000877.0,
+    "volume_ratio": 0.9431602146960756,
     "kospi_c2c": -0.008902400084776163,
     "peer_c2c": -0.01449275362318836,
-    "usdkrw_chg": -0.0027410719448872634,
+    "usdkrw_chg": -0.0026666055660481414,
     "us_nights": 2,
     "sox_ret": 0.026794000652817784,
     "nasdaq_ret": 0.022540933413159214,
@@ -154,7 +154,7 @@
         {
           "time": "2026-10-06T08:26:38+09:00",
           "title": "[증시 전망] 젠슨 황발 AI 낙관론…삼성전자·SK하이닉스 반도체 강세 이어질까",
-          "source": "issuevalley.com",
+          "source": "이슈밸리",
           "link": "https://news.google.com/rss/articles/CBMibkFVX3lxTE1RMGZQRC1ybFhKYk5nc1hpQkxMNDR4eHNEMFFZOXA5d3Bab0pkTmoxeGxnTFpkS1V0Y0VHaFZ5Ty1wLTM5VVlkWG5OQzRuOUdGN3NuY3BPSGlzLURfSmU5NlkybVAxWVFNaXRzc3ZR?oc=5"
         },
         {
@@ -172,7 +172,7 @@
         {
           "time": "2026-10-06T09:04:25+09:00",
           "title": "SK하이닉스 주가 상승 중",
-          "source": "anewsa.com",
+          "source": "아시아뉴스통신",
           "link": "https://news.google.com/rss/articles/CBMidEFVX3lxTFB3OW1RaWg3WkxXNTlSanBROFh2WGVlWFZEemt6VmMzbVA3MmpKNXU4TjlDd3NOcERrZ25tNVFsdUNJTzFZVC1yTDJWYTFMUkhlandrLVNIWWt1TlJOcS1Pa09ZbTltNUMwSC1MX3Y2VWxNTjlG?oc=5"
         },
         {
@@ -566,7 +566,7 @@
         {
           "time": "2026-10-06T08:26:38+09:00",
           "title": "[증시 전망] 젠슨 황발 AI 낙관론…삼성전자·SK하이닉스 반도체 강세 이어질까",
-          "source": "issuevalley.com",
+          "source": "이슈밸리",
           "link": "https://news.google.com/rss/articles/CBMibkFVX3lxTE1RMGZQRC1ybFhKYk5nc1hpQkxMNDR4eHNEMFFZOXA5d3Bab0pkTmoxeGxnTFpkS1V0Y0VHaFZ5Ty1wLTM5VVlkWG5OQzRuOUdGN3NuY3BPSGlzLURfSmU5NlkybVAxWVFNaXRzc3ZR?oc=5"
         },
         {
@@ -584,7 +584,7 @@
         {
           "time": "2026-10-06T09:04:25+09:00",
           "title": "SK하이닉스 주가 상승 중",
-          "source": "anewsa.com",
+          "source": "아시아뉴스통신",
           "link": "https://news.google.com/rss/articles/CBMidEFVX3lxTFB3OW1RaWg3WkxXNTlSanBROFh2WGVlWFZEemt6VmMzbVA3MmpKNXU4TjlDd3NOcERrZ25tNVFsdUNJTzFZVC1yTDJWYTFMUkhlandrLVNIWWt1TlJOcS1Pa09ZbTltNUMwSC1MX3Y2VWxNTjlG?oc=5"
         },
         {
@@ -602,7 +602,7 @@
     {
       "time": "2026-10-06T08:26:38+09:00",
       "title": "[증시 전망] 젠슨 황발 AI 낙관론…삼성전자·SK하이닉스 반도체 강세 이어질까",
-      "source": "issuevalley.com",
+      "source": "이슈밸리",
       "link": "https://news.google.com/rss/articles/CBMibkFVX3lxTE1RMGZQRC1ybFhKYk5nc1hpQkxMNDR4eHNEMFFZOXA5d3Bab0pkTmoxeGxnTFpkS1V0Y0VHaFZ5Ty1wLTM5VVlkWG5OQzRuOUdGN3NuY3BPSGlzLURfSmU5NlkybVAxWVFNaXRzc3ZR?oc=5"
     },
     {
@@ -652,7 +652,7 @@
     {
       "time": "2026-10-06T08:26:38+09:00",
       "title": "[증시 전망] 젠슨 황발 AI 낙관론…삼성전자·SK하이닉스 반도체 강세 이어질까",
-      "source": "issuevalley.com",
+      "source": "이슈밸리",
       "link": "https://news.google.com/rss/articles/CBMibkFVX3lxTE1RMGZQRC1ybFhKYk5nc1hpQkxMNDR4eHNEMFFZOXA5d3Bab0pkTmoxeGxnTFpkS1V0Y0VHaFZ5Ty1wLTM5VVlkWG5OQzRuOUdGN3NuY3BPSGlzLURfSmU5NlkybVAxWVFNaXRzc3ZR?oc=5"
     },
     {
@@ -664,7 +664,7 @@
     {
       "time": "2026-10-06T09:59:00+09:00",
       "title": "코스피 '흔들'.. 엔비디아 사상 최고에도 삼성전자·SK하이닉스 하락 > 뉴스",
-      "source": "gdaily.kr",
+      "source": "지데일리",
       "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE50VG52S1ZZQ2J6UkMtLXM3enZKTXpGX0F4Nlo1OTVSVE5kOW43azlyRHV6Zl9EMUF6Ykx4QmRnbkpxdWFMMTZvSDY1LUEtNE1OeWNzcFVKRFBTQUl3S1A2WTJ2VDNmWVdwRUVSUg?oc=5"
     }
   ],
@@ -692,8 +692,8 @@
     "steady": 32,
     "upper": 0,
     "lower": 0,
-    "individual": 7550.0,
-    "foreign": -17671.0,
+    "individual": 7549.0,
+    "foreign": -17669.0,
     "institution": -35.0,
     "prev_close": 7003.74,
     "open": 7044.67,

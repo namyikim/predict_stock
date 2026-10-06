@@ -3,7 +3,7 @@
   "name": "삼성전자",
   "peer_name": "SK하이닉스",
   "session_date": "2026-10-06",
-  "generated_at": "2026-10-06 16:46 KST",
+  "generated_at": "2026-10-06 16:47 KST",
   "summary": {
     "prev_close": 276000.0,
     "open": 278500.0,
@@ -15,8 +15,8 @@
     "c2c": -0.01449275362318836,
     "high_vs_open": 0.0017953321364452268,
     "low_vs_open": -0.030520646319569078,
-    "volume": 14121835.0,
-    "volume_ratio": 0.8500868065431564,
+    "volume": 14122307.0,
+    "volume_ratio": 0.8501152193501811,
     "kospi_c2c": -0.008902400084776163,
     "peer_c2c": -0.03693644758283543,
     "usdkrw_chg": -0.001087536455793181,
@@ -152,7 +152,7 @@
         {
           "time": "2026-10-06T08:32:11+09:00",
           "title": "신보, 삼성전자 평택 P5 팹 전기공사 수주",
-          "source": "electimes.com",
+          "source": "전기신문",
           "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE50TjRTYWZwdGtISFRwdGpwMXpSSW1IbE5TZFBMLU8wd2hydkFmS3BDVkgzZnhJU0F3bGFlT2hzYzNtQVloRnRXLUFicDhBc3pSUU9IRkRaWW5GOTc5TTdSNzkwMDBHRm5EXzhvVNIBcEFVX3lxTE9TNHBId2NFVzk2VWhvWFpYWVVmV3R6Q1ZrT2Y0MG5oQkY1U1ZkaG9ua1NKR3JZeDVEX3dyWHRjQWZ5Nmo5LVlpWm8zWmQwRG1HWEstVjF4WkViRXczUDNhZEdsQ3ZHWllrWTh3LUFfTEI?oc=5"
         },
         {
@@ -192,12 +192,6 @@
           "link": "https://news.google.com/rss/articles/CBMigAFBVV95cUxQMFFEcEhHamk1TzA2eHpOalVJdWtydW8zNUlQU0owLWQ0aVM0QmZXblJhOXQxUDBpam5xS0xCVGZiWnFCLXAxcTNib0dRVmNGRGtuSUwtTksxWGtKZk10cmUtLXc3RGZVMDZ2U3kyTjJwVHQzVGtIREg0ekluMDB0ag?oc=5"
         },
         {
-          "time": "2026-10-06T10:29:03+09:00",
-          "title": "\"삼성전자 1000원어치 주세요\"…iM증권, 국내주식 소수점 거래 시작",
-          "source": "비즈워치",
-          "link": "https://news.google.com/rss/articles/CBMiakFVX3lxTFBiTGdOMHpyUUQ4aVBCUWRTOFlfTVhWcXJZU2tMQjdRTlc2X3UwSnlkcy02Q1ZSQWhqTjdmQWY2Qkt1SjZoMmI0RWUyQmpDbjl3SjQxcDEzZzZlNW9Fc0pEbndJMjVnWmVoZ1E?oc=5"
-        },
-        {
           "time": "2026-10-06T09:11:37+09:00",
           "title": "삼성바이오로직스 노조, '2대주주' 삼성전자에 단체교섭 요구 - 머니투데이",
           "source": "머니투데이",
@@ -214,6 +208,12 @@
           "title": "2차 총파업 앞둔 삼바 노조, 삼성전자에 단체교섭 요구…\"실질적 사용자\" 압박",
           "source": "매일신문",
           "link": "https://news.google.com/rss/articles/CBMiYkFVX3lxTFBfd0JIbXUtWlhZSW5Mei1yQTk3NG8yQW1sM214U2VEX21GaVJYVGRmN2lDdEYwSWl0bFNOTWtzMHgxdUZieUtWbllVRXExT2FPUGdOWEEyS3JWbHIxYThoQTZn?oc=5"
+        },
+        {
+          "time": "2026-10-06T09:49:18+09:00",
+          "title": "삼성바이오로직스 노조, 삼성전자에 첫 단체교섭 요구",
+          "source": "아이뉴스24",
+          "link": "https://news.google.com/rss/articles/CBMiS0FVX3lxTFBEcjhWX2dDb2E4cEEwbk9DT2ZlejNSeDFqTEIzT3lHeWpzS1B5ZEFVMTByYVV1WkU2bHcySW1PcGpQOTdGYko0UGlvbw?oc=5"
         }
       ]
     }
@@ -606,7 +606,7 @@
         {
           "time": "2026-10-06T08:32:11+09:00",
           "title": "신보, 삼성전자 평택 P5 팹 전기공사 수주",
-          "source": "electimes.com",
+          "source": "전기신문",
           "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE50TjRTYWZwdGtISFRwdGpwMXpSSW1IbE5TZFBMLU8wd2hydkFmS3BDVkgzZnhJU0F3bGFlT2hzYzNtQVloRnRXLUFicDhBc3pSUU9IRkRaWW5GOTc5TTdSNzkwMDBHRm5EXzhvVNIBcEFVX3lxTE9TNHBId2NFVzk2VWhvWFpYWVVmV3R6Q1ZrT2Y0MG5oQkY1U1ZkaG9ua1NKR3JZeDVEX3dyWHRjQWZ5Nmo5LVlpWm8zWmQwRG1HWEstVjF4WkViRXczUDNhZEdsQ3ZHWllrWTh3LUFfTEI?oc=5"
         },
         {
@@ -648,12 +648,6 @@
           "link": "https://news.google.com/rss/articles/CBMigAFBVV95cUxQMFFEcEhHamk1TzA2eHpOalVJdWtydW8zNUlQU0owLWQ0aVM0QmZXblJhOXQxUDBpam5xS0xCVGZiWnFCLXAxcTNib0dRVmNGRGtuSUwtTksxWGtKZk10cmUtLXc3RGZVMDZ2U3kyTjJwVHQzVGtIREg0ekluMDB0ag?oc=5"
         },
         {
-          "time": "2026-10-06T10:29:03+09:00",
-          "title": "\"삼성전자 1000원어치 주세요\"…iM증권, 국내주식 소수점 거래 시작",
-          "source": "비즈워치",
-          "link": "https://news.google.com/rss/articles/CBMiakFVX3lxTFBiTGdOMHpyUUQ4aVBCUWRTOFlfTVhWcXJZU2tMQjdRTlc2X3UwSnlkcy02Q1ZSQWhqTjdmQWY2Qkt1SjZoMmI0RWUyQmpDbjl3SjQxcDEzZzZlNW9Fc0pEbndJMjVnWmVoZ1E?oc=5"
-        },
-        {
           "time": "2026-10-06T09:11:37+09:00",
           "title": "삼성바이오로직스 노조, '2대주주' 삼성전자에 단체교섭 요구 - 머니투데이",
           "source": "머니투데이",
@@ -670,6 +664,12 @@
           "title": "2차 총파업 앞둔 삼바 노조, 삼성전자에 단체교섭 요구…\"실질적 사용자\" 압박",
           "source": "매일신문",
           "link": "https://news.google.com/rss/articles/CBMiYkFVX3lxTFBfd0JIbXUtWlhZSW5Mei1yQTk3NG8yQW1sM214U2VEX21GaVJYVGRmN2lDdEYwSWl0bFNOTWtzMHgxdUZieUtWbllVRXExT2FPUGdOWEEyS3JWbHIxYThoQTZn?oc=5"
+        },
+        {
+          "time": "2026-10-06T09:49:18+09:00",
+          "title": "삼성바이오로직스 노조, 삼성전자에 첫 단체교섭 요구",
+          "source": "아이뉴스24",
+          "link": "https://news.google.com/rss/articles/CBMiS0FVX3lxTFBEcjhWX2dDb2E4cEEwbk9DT2ZlejNSeDFqTEIzT3lHeWpzS1B5ZEFVMTByYVV1WkU2bHcySW1PcGpQOTdGYko0UGlvbw?oc=5"
         }
       ],
       "price": 275500.0,
@@ -692,7 +692,7 @@
     {
       "time": "2026-10-06T08:32:11+09:00",
       "title": "신보, 삼성전자 평택 P5 팹 전기공사 수주",
-      "source": "electimes.com",
+      "source": "전기신문",
       "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE50TjRTYWZwdGtISFRwdGpwMXpSSW1IbE5TZFBMLU8wd2hydkFmS3BDVkgzZnhJU0F3bGFlT2hzYzNtQVloRnRXLUFicDhBc3pSUU9IRkRaWW5GOTc5TTdSNzkwMDBHRm5EXzhvVNIBcEFVX3lxTE9TNHBId2NFVzk2VWhvWFpYWVVmV3R6Q1ZrT2Y0MG5oQkY1U1ZkaG9ua1NKR3JZeDVEX3dyWHRjQWZ5Nmo5LVlpWm8zWmQwRG1HWEstVjF4WkViRXczUDNhZEdsQ3ZHWllrWTh3LUFfTEI?oc=5"
     },
     {
@@ -718,7 +718,7 @@
     {
       "time": "2026-10-06T12:37:00+09:00",
       "title": "[리포트 브리핑]삼성전자, '반도체 사상 첫 매출 천억불 달성' 목표가 400,000원 - 미래에셋증권",
-      "source": "뉴스핌",
+      "source": "newspim.com",
       "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE5ueUtIejBuT1VHYU1YRjhNdGthV2FfSjlqUU5fb0RIa3Uxa3Y1dW4teE8ycmdUVWcyWEJPMEhsYS1vLUo3QVZvakFmU1N6Zzd6ZURpNWNKY0hFSXZT?oc=5"
     },
     {
@@ -763,8 +763,8 @@
     "steady": 32,
     "upper": 0,
     "lower": 0,
-    "individual": 7676.0,
-    "foreign": -17782.0,
+    "individual": 7693.0,
+    "foreign": -17799.0,
     "institution": -18.0,
     "prev_close": 7003.74,
     "open": 7044.67,
@@ -775,62 +775,62 @@
   "earnings_reactions": {
     "n": 44,
     "down": 24,
-    "mean": 0.005144028284247522,
+    "mean": 0.0051440141910881,
     "first": "2015-04-07",
     "last": "2026-07-30",
     "prior_up": {
       "n": 26,
       "down": 15,
-      "mean": 0.00680393928043282
+      "mean": 0.006803938080098561
     },
     "prior_down": {
       "n": 18,
       "down": 9,
-      "mean": 0.002746379067535424,
+      "mean": 0.002746346351406322,
       "next5_n": 18,
       "next5_up": 8
     },
     "rows": [
       {
         "date": "2024-04-05",
-        "ret": -0.009378753176508159,
-        "prior20": 0.1868094446056896,
-        "next5": -0.027218775947634
+        "ret": -0.009378564056706451,
+        "prior20": 0.18680908358147907,
+        "next5": -0.027218968665351784
       },
       {
         "date": "2024-07-05",
-        "ret": 0.02955071993984193,
-        "prior20": 0.09789839684591217,
-        "next5": -0.030998697708113365
+        "ret": 0.02955072277132098,
+        "prior20": 0.09789829164793273,
+        "next5": -0.030998700593081296
       },
       {
         "date": "2024-10-08",
         "ret": -0.011475407561411965,
-        "prior20": -0.1755070224054972,
-        "next5": -0.013266995681315064
+        "prior20": -0.17550720206890336,
+        "next5": -0.013267062521606143
       },
       {
         "date": "2025-01-08",
-        "ret": 0.03429621957280493,
-        "prior20": 0.03869176195938784,
+        "ret": 0.034296144835121556,
+        "prior20": 0.03869183701469603,
         "next5": -0.06282732754845655
       },
       {
         "date": "2025-04-08",
-        "ret": 0.0056390392516327825,
+        "ret": 0.005639114054833083,
         "prior20": -0.0034249873791928342,
-        "next5": 0.05794397222748904
+        "next5": 0.05794389353365759
       },
       {
         "date": "2025-10-14",
         "ret": -0.01822079386417541,
         "prior20": 0.3484355968820865,
-        "next5": 0.06441038686451694
+        "next5": 0.06441047284052348
       },
       {
         "date": "2026-04-07",
         "ret": 0.017607433616103174,
-        "prior20": 0.11527187357539503,
+        "prior20": 0.11527197433303193,
         "next5": 0.05089058828005988
       },
       {

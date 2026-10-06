@@ -14,7 +14,10 @@ CREATE TABLE IF NOT EXISTS hits (
   city     TEXT NOT NULL DEFAULT '',   -- 시/군/구. NAT·회사 회선 때문에 편차가 크다
   referrer TEXT NOT NULL DEFAULT '',
   ua       TEXT NOT NULL DEFAULT '',
-  visitor  TEXT NOT NULL DEFAULT ''
+  visitor  TEXT NOT NULL DEFAULT '',
+  source TEXT NOT NULL DEFAULT '',          -- email / 빈 값은 출처 미분류
+  edition_day TEXT NOT NULL DEFAULT '',     -- 메일 본문의 발행 회차일
+  edition_phase TEXT NOT NULL DEFAULT ''    -- pre_open / post_close
 );
 
 CREATE INDEX IF NOT EXISTS idx_hits_day_page ON hits (day, page);

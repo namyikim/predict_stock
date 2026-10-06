@@ -50,13 +50,13 @@
 
 인터페이스: `parseEmailAttribution(url: URL) -> null | {source:'email', edition_day:string, edition_phase:string}`. `/hit`의 기존 응답 계약은 유지한다. `/stats`에 `emailTraffic: {available:boolean, timezone:'UTC', daily:[], editions:[]}`를 추가한다. daily 행은 `{day,page,views}`, editions 행은 `{edition_day,edition_phase,page,views}`다. 첫 버전에서는 고유 방문자·클릭률을 추가하지 않는다.
 
-- [ ] 실패 테스트 작성: 유효 회차만 채택, 실제 달력에 없는 날짜/중복 파라미터/과도한 길이/알 수 없는 phase는 null. 잘못된 유입 표시 때문에 기존 방문 집계가 실패하지 않는다.
-- [ ] 실패 테스트 작성: 신규 이메일 방문은 hits·counters 한 번 증가, 10분 안 재방문은 추가 증가 없음. 직전 일반 방문의 출처가 비어 있으면 동일한 최신 행에 이메일 표시를 보강하며 조회수는 늘리지 않는다. 이미 표시된 회차는 다른 회차로 덮어쓰지 않는다(10분 구간 첫 이메일 회차 우선). 봇은 기록·보강 모두 금지.
-- [ ] 테스트 실패 확인: `python -m unittest discover -s tests -p 'test_email_traffic.py' -v`.
-- [ ] `hits`에 `source`, `edition_day`, `edition_phase` TEXT NOT NULL DEFAULT '' 추가. 신규 DB와 기존 DB의 ALTER 문을 분리한다. 기존 행·인덱스·보관기간은 유지한다. 이행 SQL 재실행 전 `PRAGMA table_info(hits)`로 적용 여부 확인하도록 안내한다.
-- [ ] 중복 조회와 출처 보강의 경쟁 조건을 다룬다. 보강은 조회한 행 id와 `source=''` 조건으로 수행하여 먼저 반영된 출처를 덮어쓰지 않는다.
-- [ ] 기존 컬럼 부재인 경우에만 기존 INSERT/통계로 복귀하고 `emailTraffic.available=false`를 반환한다. 다른 DB 오류는 숨기지 않는다. 새 집계도 기존 `/stats?days=` 기간 필터·인증을 적용한다.
-- [ ] 위 테스트 및 `test_counter_worker.py` 통과 후 커밋·push. 실제 운영 DB에는 아직 적용하지 않는다.
+- [x] 실패 테스트 작성: 유효 회차만 채택, 실제 달력에 없는 날짜/중복 파라미터/과도한 길이/알 수 없는 phase는 null. 잘못된 유입 표시 때문에 기존 방문 집계가 실패하지 않는다.
+- [x] 실패 테스트 작성: 신규 이메일 방문은 hits·counters 한 번 증가, 10분 안 재방문은 추가 증가 없음. 직전 일반 방문의 출처가 비어 있으면 동일한 최신 행에 이메일 표시를 보강하며 조회수는 늘리지 않는다. 이미 표시된 회차는 다른 회차로 덮어쓰지 않는다(10분 구간 첫 이메일 회차 우선). 봇은 기록·보강 모두 금지.
+- [x] 테스트 실패 확인: `python -m unittest discover -s tests -p 'test_email_traffic.py' -v`.
+- [x] `hits`에 `source`, `edition_day`, `edition_phase` TEXT NOT NULL DEFAULT '' 추가. 신규 DB와 기존 DB의 ALTER 문을 분리한다. 기존 행·인덱스·보관기간은 유지한다. 이행 SQL 재실행 전 `PRAGMA table_info(hits)`로 적용 여부 확인하도록 안내한다.
+- [x] 중복 조회와 출처 보강의 경쟁 조건을 다룬다. 보강은 조회한 행 id와 `source=''` 조건으로 수행하여 먼저 반영된 출처를 덮어쓰지 않는다.
+- [x] 기존 컬럼 부재인 경우에만 기존 INSERT/통계로 복귀하고 `emailTraffic.available=false`를 반환한다. 다른 DB 오류는 숨기지 않는다. 새 집계도 기존 `/stats?days=` 기간 필터·인증을 적용한다.
+- [x] 위 테스트 및 `test_counter_worker.py` 통과 후 커밋·push. 실제 운영 DB에는 아직 적용하지 않는다.
 
 ## 2. 이메일 링크 표시
 
@@ -95,7 +95,7 @@
 ## 현재 인계 상태
 
 - [x] 계획 작성 및 자체 검토: 개인정보 미포함, 전체 방문수 중복 방지, 기존 DB 호환, 전 보고서 링크, UTC/회차일 구분, 배포 순서 포함.
-- [ ] 구현 시작 — 위 1단계부터 진행. 오늘 변경 범위는 이 문서 한 개뿐이다.
+- [x] 1단계 API 구현 — 2026-10-07. 다음 작업은 2단계 이메일 링크 표시다. 2~4단계와 운영 DB 이행·Worker 배포는 아직 미완료다.
 
 ## 추가 계획: 카카오톡 보고서 알림 연결 — 2026-10-07
 
@@ -113,3 +113,13 @@
 - [ ] 배포·인계: 코드 커밋·push, 필요한 Worker/DB 적용 안내, 사용자 인증, 본인 수신 확인 순으로 완료 체크한다. 단계마다 구현 커밋·테스트·남은 외부 설정을 이 문서에 기록한다. 외부 심사나 인증 때문에 당일 완료가 어려우면 준비 완료와 운영 가능을 구분한다.
 
 관련 후보 파일: `counter/worker.js`, `counter/schema.sql`, `counter/README.md`, `docs/admin/index.html`, 신규 카카오 발송/인증 테스트. 기존 이메일 발송 로직을 복제하기 전에 이벤트·채널 분리 지점을 확인한다. 이번 요청에서는 계획만 추가하며 실제 연결·메시지 발송은 수행하지 않는다.
+
+
+### 1단계 구현 기록 — 2026-10-07
+
+- 이메일 유입 파서, 기존 방문 행의 회차 보강, `/stats.emailTraffic`을 추가했다. UTC 기준과 과거 출처 미분류를 유지한다.
+- 기존 계획보다 동시 요청 중복 억제를 강화했다. 조회 이후 동시 요청이 들어와도 D1 batch 안의 조건부 INSERT와 `changes()` 기반 누적 증가로 한 건만 센다. 이미 기록된 이메일 회차는 조건부 UPDATE로 보존한다.
+- 실제 SQLite를 사용해 정상·잘못된 입력·중복·동시 요청·봇·출처·인증·기간·UTC 경계·구 스키마·부분 이행·DB 장애를 검증했다. 누락 기능 실패 테스트를 확인한 뒤 구현했다.
+- 신규 DB 스키마와 기존 DB ALTER 안내를 분리했다. 운영 DB 변경·Worker 배포·메시지 발송은 수행하지 않았다.
+- 다음 단계에서는 모든 메일 보고서 링크에 회차 표시를 붙인다. 현재는 API 준비만 완료됐으며 이메일 유입 수가 실제 관리자 화면에 나타나는 단계가 아니다.
+- 검증 결과: 이메일 유입·기존 Worker·보고서 이메일·관리자 관련 테스트 32개 통과. 독립 검토에서 중요 결함 없음. 원격 전체 CI와 실제 D1 적용은 아직 확인하지 않았다.

@@ -202,6 +202,48 @@ async function currentTotal(env, page) {
   return row ? row.total : 0;
 }
 
+// 이메일 회차만 저장한다. 임의 쿼리·개인 식별값은 저장하지 않는다(2026-10-07).
+export function parseEmailAttribution(url) {
+  const p=url.searchParams;
+  const keys=['utm_source','utm_medium','edition_day','edition_phase'];
+  if(keys.some(k=>p.getAll(k).length!==1))return null;
+  const day=p.get('edition_day'),phase=p.get('edition_phase');
+  if(p.get('utm_source')!=='email'||p.get('utm_medium')!=='report'||
+     !/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/.test(day)||day.startsWith('0000')||
+     !['pre_open','post_close'].includes(phase))return null;
+  const stamp=Date.parse(day+'T00:00:00Z');
+  if(!Number.isFinite(stamp)||new Date(stamp).toISOString().slice(0,10)!==day)return null;
+  return {source:'email',edition_day:day,edition_phase:phase};
+}
+
+function missingAttributionColumns(error) {
+  // D1 이행 전의 세 컬럼 부재만 호환 처리한다. DB 장애는 숨기지 않는다.
+  const messages=[error?.message,error?.cause?.message].filter(Boolean).join(' ');
+  return /no such column: (?:hits\.)?(?:source|edition_day|edition_phase)\b/i.test(messages)||
+    /table hits has no column named (?:source|edition_day|edition_phase)\b/i.test(messages);
+}
+
+async function attachEmailAttribution(env, id, attribution) {
+  if(!attribution)return;
+  try {
+    await env.DB.prepare("UPDATE hits SET source=?, edition_day=?, edition_phase=? WHERE id=? AND source='' ")
+      .bind(attribution.source,attribution.edition_day,attribution.edition_phase,id).run();
+  } catch(error) {if(!missingAttributionColumns(error))throw error;}
+}
+
+async function emailTrafficStats(env, since) {
+  try {
+    const [daily,editions]=await env.DB.batch([
+      env.DB.prepare("SELECT day,page,COUNT(*) AS views FROM hits WHERE day >= ? AND source='email' GROUP BY day,page ORDER BY day DESC,page").bind(since),
+      env.DB.prepare("SELECT edition_day,edition_phase,page,COUNT(*) AS views FROM hits WHERE day >= ? AND source='email' GROUP BY edition_day,edition_phase,page ORDER BY edition_day DESC,edition_phase,page").bind(since),
+    ]);
+    return {available:true,timezone:'UTC',daily:daily.results,editions:editions.results};
+  } catch(error) {
+    if(!missingAttributionColumns(error))throw error;
+    return {available:false,timezone:'UTC',daily:[],editions:[]};
+  }
+}
+
 async function handleHit(request, env, url, origin) {
   const page = url.searchParams.get("page") || "";
   if (!ALLOWED_PAGES.includes(page)) {
@@ -224,37 +266,41 @@ async function handleHit(request, env, url, origin) {
   const visitor = await visitorHash(request, env.VISITOR_SALT, day);
   const geo = geoOf(request);
 
-  const recent = await env.DB.prepare(
-    "SELECT ts FROM hits WHERE visitor = ? AND page = ? AND day = ? ORDER BY id DESC LIMIT 1"
-  ).bind(visitor, page, day).first();
+  const attribution=parseEmailAttribution(url);
+  const recentQuery="SELECT id,ts FROM hits WHERE visitor = ? AND page = ? AND day = ? ORDER BY id DESC LIMIT 1";
+  const recent = await env.DB.prepare(recentQuery).bind(visitor,page,day).first();
   if (recent && now.getTime() - Date.parse(recent.ts) < DEDUPE_MINUTES * 60000) {
+    await attachEmailAttribution(env,recent.id,attribution);
     return json({ page, total: await currentTotal(env, page), counted: false }, origin);
   }
 
-  const results = await env.DB.batch([
-    env.DB.prepare(
-      "INSERT INTO hits (page, ts, day, country, region, city, referrer, ua, visitor) " +
-        "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"
-    ).bind(
-      page,
-      now.toISOString(),
-      day,
-      geo.country,
-      geo.region,
-      geo.city,
-      referrerHost(request.headers.get("Referer")),
-      ua.slice(0, 300),
-      visitor
-    ),
-    env.DB.prepare(
-      "INSERT INTO counters (page, total) VALUES (?, 1) " +
-        "ON CONFLICT(page) DO UPDATE SET total = total + 1"
-    ).bind(page),
-    env.DB.prepare("SELECT total FROM counters WHERE page = ?").bind(page),
-  ]);
-
+  const cutoff=new Date(now.getTime()-DEDUPE_MINUTES*60000).toISOString();
+  const values=[page,now.toISOString(),day,geo.country,geo.region,geo.city,
+                referrerHost(request.headers.get("Referer")),ua.slice(0,300),visitor];
+  async function insert(includeAttribution) {
+    const columns=includeAttribution?",source,edition_day,edition_phase":"";
+    const slots=includeAttribution?",?,?,?":"";
+    const extra=includeAttribution?[attribution?.source||'',attribution?.edition_day||'',attribution?.edition_phase||'']:[];
+    // D1 batch는 트랜잭션이다. 같은 시각의 두 요청도 INSERT 시점에 다시 중복 확인한다.
+    return await env.DB.batch([
+      env.DB.prepare("INSERT INTO hits (page,ts,day,country,region,city,referrer,ua,visitor"+columns+") SELECT ?,?,?,?,?,?,?,?,?"+slots+
+        " WHERE NOT EXISTS (SELECT 1 FROM hits WHERE visitor=? AND page=? AND day=? AND ts>?)")
+        .bind(...values,...extra,visitor,page,day,cutoff),
+      env.DB.prepare("INSERT INTO counters (page,total) SELECT ?,1 WHERE changes()>0 ON CONFLICT(page) DO UPDATE SET total=total+1").bind(page),
+      env.DB.prepare("SELECT total FROM counters WHERE page=?").bind(page),
+    ]);
+  }
+  let results;
+  try {results=await insert(true);}
+  catch(error) {if(!missingAttributionColumns(error))throw error;results=await insert(false);}
+  const counted=results[0].meta.changes>0;
+  // 조회와 INSERT 사이에 일반 방문이 먼저 저장된 경우에도 그 행만 보강한다.
+  if(!counted&&attribution) {
+    const latest=await env.DB.prepare(recentQuery).bind(visitor,page,day).first();
+    if(latest)await attachEmailAttribution(env,latest.id,attribution);
+  }
   const row = results[2].results[0];
-  return json({ page, total: row ? row.total : 0, counted: true }, origin);
+  return json({ page, total: row ? row.total : 0, counted }, origin);
 }
 
 async function handleStats(request, env, url, origin) {
@@ -320,6 +366,7 @@ async function handleStats(request, env, url, origin) {
       cities: cities.results,
       citiesDaily: citiesDaily.results,
       referrers: referrers.results,
+      emailTraffic: await emailTrafficStats(env,since),
     },
     origin
   );

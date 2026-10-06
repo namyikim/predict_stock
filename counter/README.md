@@ -483,3 +483,44 @@ Gmail 및 발송 관리 검증(2026-10-04): 가짜 SMTP의 TLS·한글 MIME·인
 Gmail 실제 수신 확인(2026-10-04): 사용자가 앱 비밀번호를 갱신한 뒤 본인 Gmail 주소로 요청한 연결 시험에서 SMTP 접수에 성공했고, 사용자가 수신을 확인했다. 임시 시험 경로는 제거하고 운영 Worker로 복구했다. GitHub 자동 발행부터 메일 수신까지의 전체 자동 경로는 별도 확인이 필요하다.
 
 구독 취소 안내 보완(2026-10-04): 관련 테스트 27개 통과. 메일의 HTML·텍스트 링크 일치, 링크 열람만으로 해지되지 않음, 확인 후 모든 구독·발송 대기·토큰 삭제, 관리자 목록 제외 및 다른 구독자 보존을 검증했다. 로컬 가짜 구독자로 메일 → 확인 → 완료 화면을 확인했으며 375px에서 가로 넘침이 없다. 이 변경으로 실제 구독자를 해지하거나 메일을 발송하지 않았다.
+
+## 이메일 링크 유입 집계 — 1단계 API (2026-10-07)
+
+이 단계는 저장·조회 API만 추가한다. 이메일 링크·사이트 요청 코드·관리자 화면 연결은
+`guides/email-traffic-tracking-plan.md`의 2~4단계다. 이 코드 push만으로 운영 집계가 시작되지는 않는다.
+
+### 기존 DB 이행
+
+1. D1 Console에서 `PRAGMA table_info(hits);`를 실행한다.
+2. `source`, `edition_day`, `edition_phase` 중 없는 컬럼만
+   `counter/migrations/20261007_email_attribution.sql`의 해당 ALTER 문으로 **한 문장씩** 추가한다.
+3. 신규 DB는 `schema.sql`에 포함되므로 ALTER 문을 다시 실행하지 않는다.
+4. Worker는 전체 코드를 수동 Deploy한다. 기존 컬럼을 지우거나 방문 기록을 초기화하지 않는다.
+
+DB 변경 전/도중에는 새 Worker도 기존 방문 집계로 동작하고 `emailTraffic.available=false`를 반환한다.
+컬럼 부재 이외의 DB 장애는 HTTP 500으로 표시한다. 되돌릴 때는 이전 Worker로 복귀하고 추가 컬럼은 남겨둔다.
+
+### 요청·집계 계약
+
+- 기존 `/hit?page=samsung`에 `utm_source=email&utm_medium=report&edition_day=2026-10-07&edition_phase=pre_open`을 붙인다.
+- `edition_phase`는 `pre_open` 또는 `post_close`. 회차일은 실제 달력 날짜여야 한다.
+  필수 파라미터 중복·누락·잘못된 값이면 일반 방문으로 기록한다. 수신자 이메일·토큰·임의 쿼리는 저장하지 않는다.
+- `edition_day`는 메일 본문의 발행 회차일이다. 방문일(`hits.day`, UTC)이나 실제 발송일과 구분한다.
+- 같은 방문자·페이지·UTC 일자의 10분 내 방문은 기존처럼 한 건이다. 먼저 일반 방문이 저장됐으면
+  같은 행의 출처만 보강한다. 이미 이메일 회차가 기록돼 있으면 덮어쓰지 않는다.
+  따라서 이메일 유입은 중복 제거된 방문의 분류이며 클릭 횟수/열람수와 같지 않다.
+- 동시에 들어온 새 방문도 트랜잭션 안에서 중복을 재확인한다. `hits`에 추가된 경우만 `counters`를 증가시킨다.
+- 기존 봇·출처 허용 목록·통계 인증·기록 보관기간은 유지한다. 과거 빈 출처를 직접 방문으로 단정하지 않는다.
+
+인증된 `/stats?days=30`의 기존 필드에 다음 항목을 추가한다. 조회 기간은 **방문일** 기준이다.
+
+```json
+{"emailTraffic":{"available":true,"timezone":"UTC","daily":[{"day":"2026-10-07","page":"samsung","views":1}],"editions":[{"edition_day":"2026-10-07","edition_phase":"pre_open","page":"samsung","views":1}]}}
+```
+
+지원하는 DB에서 기록이 없으면 `available=true`와 빈 배열이다. DB 이행이 안 됐으면
+`available=false`와 빈 배열이며 두 상태를 구분해야 한다. API는 메일 발송 사실을 인증하지 않으며,
+링크 공유·자동 검사·JavaScript 차단 등으로 실제 사람의 클릭과 차이가 날 수 있다.
+
+검증: `python -m unittest discover -s tests -p 'test_email_traffic.py' -v`.
+Node의 내장 SQLite로 실제 SQL과 Worker 응답을 확인한다(Node 22.13 이상 또는 24).

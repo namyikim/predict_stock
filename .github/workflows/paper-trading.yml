@@ -64,6 +64,22 @@ jobs:
         if: inputs.halt != true
         continue-on-error: true
         run: python -m tools.run_wave_paper
+      - name: 현금 가격 검증 의존성 설치
+        if: inputs.halt != true
+        continue-on-error: true
+        run: |
+          pip install matplotlib==3.11.1 deprecated multipledispatch
+          pip install --no-deps pykrx==1.2.8
+      - name: 현금 가격 교차 검증 (기존 계좌와 분리)
+        id: cash_prices
+        if: inputs.halt != true
+        continue-on-error: true
+        timeout-minutes: 2
+        env:
+          KRX_ID: ${{ secrets.KRX_ID }}
+          KRX_PW: ${{ secrets.KRX_PW }}
+          MPLBACKEND: Agg
+        run: python -m tools.collect_cash_prices
       - name: 파동 전략 기간 분리 평가 (연구용)
         id: wave_validation
         if: inputs.halt != true
@@ -77,6 +93,7 @@ jobs:
           mkdir -p "$RUNNER_TEMP/paper-recovery"
           cp paper_history/account.sqlite docs/lab/paper_status.json macro_inputs/paper_trading.json "$RUNNER_TEMP/paper-recovery/"
           if [ -d paper_history/market ]; then cp -R paper_history/market "$RUNNER_TEMP/paper-recovery/market"; fi
+          if [ -d paper_history/market_cash ]; then cp -R paper_history/market_cash "$RUNNER_TEMP/paper-recovery/market_cash"; fi
           if [ -d paper_history/strategies ]; then cp -R paper_history/strategies "$RUNNER_TEMP/paper-recovery/strategies"; fi
           if [ -f docs/lab/wave_paper_status.json ]; then cp docs/lab/wave_paper_status.json "$RUNNER_TEMP/paper-recovery/"; fi
           for file in docs/lab/wave_validation_*.json; do

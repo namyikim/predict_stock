@@ -166,7 +166,7 @@ def evaluate_wave(data, *, config):
     if enough:
         for part in (selection,evaluation):
             enough=bool(enough and len(part['dates'])>=settings['min_days'] and part['standard'][selected]['metrics'].get('closed_trades',0)>=settings['min_trades'])
-    files=['tools/evaluate_wave_trading.py','tools/wave_backtest.py','tools/wave_signals.py','tools/paper_market_data.py','tools/paper_trading.py','tools/run_wave_paper.py','docs/lab/trading_sim.js']
+    files=['tools/evaluate_wave_trading.py','tools/wave_backtest.py','tools/wave_signals.py','tools/paper_market_data.py','tools/collect_cash_prices.py','tools/paper_trading.py','tools/run_wave_paper.py','docs/lab/trading_sim.js']
     engine=b'\n'.join((ROOT/f).read_bytes() for f in files)
     return dict(schema_version=1,target=data['target'],method='observed_time_retrospective_split',automatic_promotion=False,
                 selection=selection,evaluation=evaluation,selected=selected,candidate_count=2,
@@ -182,6 +182,11 @@ def evaluate_wave(data, *, config):
                              '평가를 본 뒤 규칙을 바꾸면 새 버전·새 평가 구간이 필요'])
 
 
+def validation_bars(root, target):
+    # 검증된 별도 보관본만 읽으며 기존 Yahoo 계열로 대체하지 않는다.
+    return read_archive(Path(root)/'paper_history/market_cash', target=target, timeframe='1d')
+
+
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--target',required=True,choices=['samsung','sk_hynix'])
@@ -190,7 +195,7 @@ def main():
     args=parser.parse_args();config=json.loads(args.config.read_text())
     path=ROOT/'forecast_history'/args.target/'forecast_log.csv'
     forecasts=list(csv.DictReader(path.open(encoding='utf-8-sig'))) if path.exists() else []
-    data=dict(target=args.target,bars=read_archive(ROOT/'paper_history/market',target=args.target,timeframe='1d'),forecasts=forecasts)
+    data=dict(target=args.target,bars=validation_bars(ROOT,args.target),forecasts=forecasts)
     result=evaluate_wave(data,config=config)
     result['generated_at_utc']=datetime.now(timezone.utc).isoformat()
     result['source_revision']=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip()

@@ -5,7 +5,16 @@ const require=createRequire(import.meta.url);
 assert.ok(fs.existsSync(new URL('../docs/lab/wave_view.js',import.meta.url)),'파동 화면 모듈 필요');
 const {renderWaveComparison}=require('../docs/lab/wave_view.js');
 const now=Date.parse('2026-10-06T08:00:00Z');
-let real=JSON.parse(fs.readFileSync(new URL('../docs/lab/wave_validation_samsung.json',import.meta.url),'utf8'));
+// 자동 생성 자료가 쌓여도 테스트의 '자료 없음' 조건은 바뀌지 않는다.
+const unavailable={status:'unavailable',metrics:{total:null},equity_curve:[],fills:[],orders:[],limitations:['missing_common_prices']};
+const results=Object.fromEntries(['range_rebound','trend_pullback','buy_hold','cash','legacy'].map(k=>[k,structuredClone(unavailable)]));
+let real={schema_version:1,target:'samsung',method:'observed_time_retrospective_split',automatic_promotion:false,
+  input_sha256:'a'.repeat(64),engine_sha256:'b'.repeat(64),config_sha256:'c'.repeat(64),
+  evidence:'insufficient',generated_at_utc:'2026-10-06T07:59:00Z',selected:null,
+  config:{strategies:{range_rebound:{version:'wave-v1'},trend_pullback:{version:'wave-v1'}},
+    paper:{capital:10000000,max_symbol_weight:.3},validation:{selection:{start:'2026-07-01',end:'2026-08-31'}}},
+  evaluation:{dates:['2026-09-08','2026-10-06'],status:'unavailable',reasons:['missing_common_prices'],
+    standard:structuredClone(results),double_cost:structuredClone(results)}};
 const render=(v=real,p=null,options={})=>renderWaveComparison(v,p,{now,target:'samsung',...options});
 assert.match(render(null),/평가 자료를 불러오지 못했습니다/);
 assert.match(render(),/공통 평가 가격 자료 부족/);

@@ -51,7 +51,9 @@
     ],
     "status": "unavailable",
     "reasons": [
-      "missing_common_prices"
+      "corporate_action_unresolved",
+      "missing_common_prices",
+      "unverified_cash_price_basis"
     ],
     "standard": {
       "range_rebound": {
@@ -63,7 +65,7 @@
         "fills": [],
         "orders": [],
         "limitations": [
-          "missing_common_prices"
+          "corporate_action_unresolved,missing_common_prices,unverified_cash_price_basis"
         ]
       },
       "trend_pullback": {
@@ -75,7 +77,7 @@
         "fills": [],
         "orders": [],
         "limitations": [
-          "missing_common_prices"
+          "corporate_action_unresolved,missing_common_prices,unverified_cash_price_basis"
         ]
       },
       "buy_hold": {
@@ -87,7 +89,7 @@
         "fills": [],
         "orders": [],
         "limitations": [
-          "missing_common_prices"
+          "corporate_action_unresolved,missing_common_prices,unverified_cash_price_basis"
         ]
       },
       "cash": {
@@ -99,7 +101,7 @@
         "fills": [],
         "orders": [],
         "limitations": [
-          "missing_common_prices"
+          "corporate_action_unresolved,missing_common_prices,unverified_cash_price_basis"
         ]
       },
       "legacy": {
@@ -111,7 +113,7 @@
         "fills": [],
         "orders": [],
         "limitations": [
-          "missing_common_prices"
+          "corporate_action_unresolved,missing_common_prices,unverified_cash_price_basis"
         ]
       }
     },
@@ -125,7 +127,7 @@
         "fills": [],
         "orders": [],
         "limitations": [
-          "missing_common_prices"
+          "corporate_action_unresolved,missing_common_prices,unverified_cash_price_basis"
         ]
       },
       "trend_pullback": {
@@ -137,7 +139,7 @@
         "fills": [],
         "orders": [],
         "limitations": [
-          "missing_common_prices"
+          "corporate_action_unresolved,missing_common_prices,unverified_cash_price_basis"
         ]
       },
       "buy_hold": {
@@ -149,7 +151,7 @@
         "fills": [],
         "orders": [],
         "limitations": [
-          "missing_common_prices"
+          "corporate_action_unresolved,missing_common_prices,unverified_cash_price_basis"
         ]
       },
       "cash": {
@@ -161,7 +163,7 @@
         "fills": [],
         "orders": [],
         "limitations": [
-          "missing_common_prices"
+          "corporate_action_unresolved,missing_common_prices,unverified_cash_price_basis"
         ]
       },
       "legacy": {
@@ -173,7 +175,7 @@
         "fills": [],
         "orders": [],
         "limitations": [
-          "missing_common_prices"
+          "corporate_action_unresolved,missing_common_prices,unverified_cash_price_basis"
         ]
       }
     }
@@ -201,7 +203,7 @@
     ],
     "status": "unavailable",
     "reasons": [
-      "missing_common_prices"
+      "unverified_cash_price_basis"
     ],
     "standard": {
       "range_rebound": {
@@ -213,7 +215,7 @@
         "fills": [],
         "orders": [],
         "limitations": [
-          "missing_common_prices"
+          "unverified_cash_price_basis"
         ]
       },
       "trend_pullback": {
@@ -225,7 +227,7 @@
         "fills": [],
         "orders": [],
         "limitations": [
-          "missing_common_prices"
+          "unverified_cash_price_basis"
         ]
       },
       "buy_hold": {
@@ -237,7 +239,7 @@
         "fills": [],
         "orders": [],
         "limitations": [
-          "missing_common_prices"
+          "unverified_cash_price_basis"
         ]
       },
       "cash": {
@@ -249,7 +251,7 @@
         "fills": [],
         "orders": [],
         "limitations": [
-          "missing_common_prices"
+          "unverified_cash_price_basis"
         ]
       },
       "legacy": {
@@ -261,7 +263,7 @@
         "fills": [],
         "orders": [],
         "limitations": [
-          "missing_common_prices"
+          "unverified_cash_price_basis"
         ]
       }
     },
@@ -275,7 +277,7 @@
         "fills": [],
         "orders": [],
         "limitations": [
-          "missing_common_prices"
+          "unverified_cash_price_basis"
         ]
       },
       "trend_pullback": {
@@ -287,7 +289,7 @@
         "fills": [],
         "orders": [],
         "limitations": [
-          "missing_common_prices"
+          "unverified_cash_price_basis"
         ]
       },
       "buy_hold": {
@@ -299,7 +301,7 @@
         "fills": [],
         "orders": [],
         "limitations": [
-          "missing_common_prices"
+          "unverified_cash_price_basis"
         ]
       },
       "cash": {
@@ -311,7 +313,7 @@
         "fills": [],
         "orders": [],
         "limitations": [
-          "missing_common_prices"
+          "unverified_cash_price_basis"
         ]
       },
       "legacy": {
@@ -323,7 +325,7 @@
         "fills": [],
         "orders": [],
         "limitations": [
-          "missing_common_prices"
+          "unverified_cash_price_basis"
         ]
       }
     }
@@ -339,7 +341,7 @@
   },
   "selection_rule": "선택 기간의 비용 차감 수익률 최대, 완료 거래가 있는 후보만, 동률은 이름순",
   "evidence": "insufficient",
-  "input_sha256": "b61ddf2d4e9680138d939422cb35607df78f233dc6ab67bf118e9b06716042eb",
+  "input_sha256": "8dab2c65c747eb23b1d83a04947203044066f92e4317637c68007725ebfa399c",
   "config_sha256": "446ce4c45217a58b06a8bf26afe398f37e705eb92c65519e8b86409b7afdd458",
   "engine_sha256": "6080509f5773c4aeb3a23294466b490f1e233eaea556705cd0d4f1c19521a490",
   "calendar_version": "4.13.2",
@@ -405,6 +407,6 @@
     "기간 경계는 5거래일 분리, 학습 모델 추가 없음, 기존 예측은 사전 원장만 사용",
     "평가를 본 뒤 규칙을 바꾸면 새 버전·새 평가 구간이 필요"
   ],
-  "generated_at_utc": "2026-10-06T08:54:03.172336+00:00",
-  "source_revision": "56bd4742efb9ec76d18ee8469086ad466211630f"
+  "generated_at_utc": "2026-10-06T11:00:41.732614+00:00",
+  "source_revision": "c82592ba8296e6dc4c285b09da4890b1d2dd8ea2"
 }

@@ -3,7 +3,7 @@
   "name": "삼성전자",
   "peer_name": "SK하이닉스",
   "session_date": "2026-10-06",
-  "generated_at": "2026-10-06 16:11 KST",
+  "generated_at": "2026-10-06 16:15 KST",
   "summary": {
     "prev_close": 276000.0,
     "open": 278500.0,
@@ -19,7 +19,7 @@
     "volume_ratio": 0.8487669955388883,
     "kospi_c2c": -0.008902400084776163,
     "peer_c2c": -0.03693644758283543,
-    "usdkrw_chg": 8.937783931473042e-05,
+    "usdkrw_chg": 0.00046180065704981565,
     "us_nights": 2,
     "sox_ret": 0.026794000652817784,
     "nasdaq_ret": 0.022540933413159214,
@@ -113,16 +113,7 @@
       }
     },
     "from_high": -0.02773473038506724,
-    "buyback": [
-      {
-        "kind": "직접 취득",
-        "start": "2026-08-24",
-        "end": "2026-11-21",
-        "amount": "14,999,999,992,000",
-        "purpose": "임직원 주식보상",
-        "rcept_no": "20260821000616"
-      }
-    ]
+    "buyback": []
   },
   "classification": {
     "labels": [
@@ -158,7 +149,7 @@
         {
           "time": "2026-10-06T08:32:11+09:00",
           "title": "신보, 삼성전자 평택 P5 팹 전기공사 수주",
-          "source": "electimes.com",
+          "source": "전기신문",
           "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE50TjRTYWZwdGtISFRwdGpwMXpSSW1IbE5TZFBMLU8wd2hydkFmS3BDVkgzZnhJU0F3bGFlT2hzYzNtQVloRnRXLUFicDhBc3pSUU9IRkRaWW5GOTc5TTdSNzkwMDBHRm5EXzhvVNIBcEFVX3lxTE9TNHBId2NFVzk2VWhvWFpYWVVmV3R6Q1ZrT2Y0MG5oQkY1U1ZkaG9ua1NKR3JZeDVEX3dyWHRjQWZ5Nmo5LVlpWm8zWmQwRG1HWEstVjF4WkViRXczUDNhZEdsQ3ZHWllrWTh3LUFfTEI?oc=5"
         },
         {
@@ -200,7 +191,7 @@
         {
           "time": "2026-10-06T10:29:03+09:00",
           "title": "\"삼성전자 1000원어치 주세요\"…iM증권, 국내주식 소수점 거래 시작",
-          "source": "비즈워치",
+          "source": "news.bizwatch.co.kr",
           "link": "https://news.google.com/rss/articles/CBMiakFVX3lxTFBiTGdOMHpyUUQ4aVBCUWRTOFlfTVhWcXJZU2tMQjdRTlc2X3UwSnlkcy02Q1ZSQWhqTjdmQWY2Qkt1SjZoMmI0RWUyQmpDbjl3SjQxcDEzZzZlNW9Fc0pEbndJMjVnWmVoZ1E?oc=5"
         },
         {
@@ -612,7 +603,7 @@
         {
           "time": "2026-10-06T08:32:11+09:00",
           "title": "신보, 삼성전자 평택 P5 팹 전기공사 수주",
-          "source": "electimes.com",
+          "source": "전기신문",
           "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE50TjRTYWZwdGtISFRwdGpwMXpSSW1IbE5TZFBMLU8wd2hydkFmS3BDVkgzZnhJU0F3bGFlT2hzYzNtQVloRnRXLUFicDhBc3pSUU9IRkRaWW5GOTc5TTdSNzkwMDBHRm5EXzhvVNIBcEFVX3lxTE9TNHBId2NFVzk2VWhvWFpYWVVmV3R6Q1ZrT2Y0MG5oQkY1U1ZkaG9ua1NKR3JZeDVEX3dyWHRjQWZ5Nmo5LVlpWm8zWmQwRG1HWEstVjF4WkViRXczUDNhZEdsQ3ZHWllrWTh3LUFfTEI?oc=5"
         },
         {
@@ -656,7 +647,7 @@
         {
           "time": "2026-10-06T10:29:03+09:00",
           "title": "\"삼성전자 1000원어치 주세요\"…iM증권, 국내주식 소수점 거래 시작",
-          "source": "비즈워치",
+          "source": "news.bizwatch.co.kr",
           "link": "https://news.google.com/rss/articles/CBMiakFVX3lxTFBiTGdOMHpyUUQ4aVBCUWRTOFlfTVhWcXJZU2tMQjdRTlc2X3UwSnlkcy02Q1ZSQWhqTjdmQWY2Qkt1SjZoMmI0RWUyQmpDbjl3SjQxcDEzZzZlNW9Fc0pEbndJMjVnWmVoZ1E?oc=5"
         },
         {
@@ -692,7 +683,7 @@
     {
       "time": "2026-10-06T08:32:11+09:00",
       "title": "신보, 삼성전자 평택 P5 팹 전기공사 수주",
-      "source": "electimes.com",
+      "source": "전기신문",
       "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE50TjRTYWZwdGtISFRwdGpwMXpSSW1IbE5TZFBMLU8wd2hydkFmS3BDVkgzZnhJU0F3bGFlT2hzYzNtQVloRnRXLUFicDhBc3pSUU9IRkRaWW5GOTc5TTdSNzkwMDBHRm5EXzhvVNIBcEFVX3lxTE9TNHBId2NFVzk2VWhvWFpYWVVmV3R6Q1ZrT2Y0MG5oQkY1U1ZkaG9ua1NKR3JZeDVEX3dyWHRjQWZ5Nmo5LVlpWm8zWmQwRG1HWEstVjF4WkViRXczUDNhZEdsQ3ZHWllrWTh3LUFfTEI?oc=5"
     },
     {
@@ -746,8 +737,8 @@
       "link": "https://news.google.com/rss/articles/CBMiZkFVX3lxTE9WN2ZiT1R1TERmWDRjSjFhRTByV3d0VXRseFdPS0pzM2dBNlFWOXpsTXNOMzdvWmxwOWQ4Z2dMdFM1bnRtU1gwQmxDc29BRW9FNmVRQ1pMR2t0OXpJaGtsMHU5RUszZw?oc=5"
     }
   ],
-  "disclosures": [],
-  "disclosure_note": null,
+  "disclosures": null,
+  "disclosure_note": "DART 조회 실패(URLError)",
   "flows": null,
   "flow_story": null,
   "flow_status": {
@@ -763,8 +754,8 @@
     "steady": 32,
     "upper": 0,
     "lower": 0,
-    "individual": 7463.0,
-    "foreign": -17572.0,
+    "individual": 7465.0,
+    "foreign": -17574.0,
     "institution": -17.0,
     "prev_close": 7003.74,
     "open": 7044.67,
@@ -772,75 +763,7 @@
     "low": 6897.38,
     "close": 6941.39
   },
-  "earnings_reactions": {
-    "n": 44,
-    "down": 24,
-    "mean": 0.005144014401032684,
-    "first": "2015-04-07",
-    "last": "2026-07-30",
-    "prior_up": {
-      "n": 26,
-      "down": 15,
-      "mean": 0.006803948143671519
-    },
-    "prior_down": {
-      "n": 18,
-      "down": 9,
-      "mean": 0.002746332328332145,
-      "next5_n": 18,
-      "next5_up": 8
-    },
-    "rows": [
-      {
-        "date": "2024-04-05",
-        "ret": -0.00937856316147434,
-        "prior20": 0.1868091968685197,
-        "next5": -0.027219062401412808
-      },
-      {
-        "date": "2024-07-05",
-        "ret": 0.029550818588921057,
-        "prior20": 0.09789840714462672,
-        "next5": -0.030998790775496055
-      },
-      {
-        "date": "2024-10-08",
-        "ret": -0.011475407561411965,
-        "prior20": -0.17550711223721005,
-        "next5": -0.013266995681315064
-      },
-      {
-        "date": "2025-01-08",
-        "ret": 0.03429607009744906,
-        "prior20": 0.038691834110668566,
-        "next5": -0.06282725768504516
-      },
-      {
-        "date": "2025-04-08",
-        "ret": 0.005639114476656992,
-        "prior20": -0.00342513621785967,
-        "next5": 0.05794397222748904
-      },
-      {
-        "date": "2025-10-14",
-        "ret": -0.01822079386417541,
-        "prior20": 0.348435443402201,
-        "next5": 0.06441038686451694
-      },
-      {
-        "date": "2026-04-07",
-        "ret": 0.017607433616103174,
-        "prior20": 0.11527187357539503,
-        "next5": 0.05089058828005988
-      },
-      {
-        "date": "2026-07-30",
-        "ret": -0.007194244604316502,
-        "prior20": -0.37574850299401197,
-        "next5": 0.11352657004830924
-      }
-    ]
-  },
+  "earnings_reactions": null,
   "forecasts": [
     {
       "model": "No macro ensemble",

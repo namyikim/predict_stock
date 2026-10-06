@@ -64,12 +64,13 @@ jobs:
         run: |
           mkdir -p "$RUNNER_TEMP/paper-recovery"
           cp paper_history/account.sqlite docs/lab/paper_status.json macro_inputs/paper_trading.json "$RUNNER_TEMP/paper-recovery/"
+          if [ -d paper_history/market ]; then cp -R paper_history/market "$RUNNER_TEMP/paper-recovery/market"; fi
           git rev-parse HEAD > "$RUNNER_TEMP/paper-recovery/source-revision.txt"
       - name: 원장 저장
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add paper_history/account.sqlite docs/lab/paper_status.json
+          git add paper_history docs/lab/paper_status.json
           if ! git diff --cached --quiet; then
             git commit -m 'data: 모의운용 관측과 원장 갱신'
             # 충돌 시 덮어쓰지 않고 실패시켜 이중 장부를 방지한다.

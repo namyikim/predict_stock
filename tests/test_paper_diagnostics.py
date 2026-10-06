@@ -107,9 +107,11 @@ class CollectorDiagnosticsTests(unittest.TestCase):
         from tools.run_paper_trading import run
         with tempfile.TemporaryDirectory() as folder:
             root=Path(folder)
-            with patch('tools.run_paper_trading.ROOT',root), patch('tools.run_paper_trading.is_session',return_value=True), patch('tools.run_paper_trading.fetch_quote',side_effect=OSError('offline')):
+            with patch('tools.run_paper_trading.ROOT',root), patch('tools.run_paper_trading.is_session',return_value=True), patch('tools.run_paper_trading.fetch_quote',side_effect=OSError('offline')), patch('tools.run_paper_trading.collect_daily',side_effect=OSError('offline')):
                 result=run(CONFIG,root/'book.sqlite',root/'status.json')
             counts=result['diagnostics']['targets']['samsung']['reason_counts']
             self.assertIn('quote_collection_failed',counts)
             self.assertIn('signal_collection_failed',counts)
+            self.assertEqual(len(result['market_errors']),2)
+            self.assertIsNone(result['diagnostics']['last_success_at'])
             self.assertEqual(json.loads((root/'status.json').read_text())['diagnostics'],result['diagnostics'])

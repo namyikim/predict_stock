@@ -7,8 +7,10 @@ from pathlib import Path
 
 try:
     from .paper_trading import PaperBook, instant, finite
+    from .paper_market_data import normalize_bars, archive_bars, daily_collected
 except ImportError:
     from paper_trading import PaperBook, instant, finite
+    from paper_market_data import normalize_bars, archive_bars, daily_collected
 
 ROOT = Path(__file__).resolve().parents[1]
 TICKERS = {'samsung': '005930.KS', 'sk_hynix': '000660.KS'}
@@ -27,11 +29,41 @@ def completed_quote(bars, target, observed_at):
     return max(valid, key=lambda q: q['timestamp']) if valid else None
 
 
-def fetch_quote(target):
+def fetch_bars(target, timeframe):
     import yfinance as yf
-    frame = yf.Ticker(TICKERS[target]).history(period='1d', interval='1m', auto_adjust=False, prepost=False)
-    bars = [{'timestamp': idx.isoformat(), 'close': row['Close']} for idx, row in frame.iterrows()]
-    return completed_quote(bars, target, datetime.now(timezone.utc).isoformat())
+    return yf.Ticker(TICKERS[target]).history(period='3mo' if timeframe=='1d' else '1d',
+                                            interval=timeframe, auto_adjust=False, prepost=False, actions=True)
+
+
+def _frame_rows(frame, timeframe):
+    return [dict(timestamp=idx.isoformat(), open=row['Open'], high=row['High'], low=row['Low'],
+                 close=row['Close'], volume=row['Volume'], split=row.get('Stock Splits', 0),
+                 dividend=row.get('Dividends', 0), source='Yahoo '+timeframe,
+                 adjustment='yahoo_auto_adjust_false' if timeframe=='1d' else 'unadjusted') for idx, row in frame.iterrows()]
+
+
+def fetch_quote(target, archive_root=None, observed_at=None):
+    frame = fetch_bars(target, '1m')
+    observed_at = observed_at or datetime.now(timezone.utc).isoformat()
+    rows = normalize_bars(_frame_rows(frame, '1m'), target=target, timeframe='1m', observed_at=observed_at)
+    quality = archive_bars(rows, root=archive_root or ROOT/'paper_history/market', target=target,
+                           timeframe='1m', observed_at=observed_at)
+    if not rows:
+        return None
+    last = rows[-1]
+    return {'target': target, 'timestamp': last['bar_end'], 'price': last['close'],
+            'source': 'Yahoo 1m close (unadjusted)', 'market_quality': quality}
+
+
+def collect_daily(target, archive_root, observed_at=None):
+    # 체결 판단 이후 실행한다. 일봉 수집 지연으로 분봉 체결 시점을 뒤로 밀지 않는다.
+    check_at = observed_at or datetime.now(timezone.utc).isoformat()
+    if daily_collected(archive_root, target=target, observed_at=check_at):
+        return {'skipped': 'latest_completed_daily_already_collected'}
+    frame = fetch_bars(target, '1d')
+    collected_at = observed_at or datetime.now(timezone.utc).isoformat()
+    rows = normalize_bars(_frame_rows(frame, '1d'), target=target, timeframe='1d', observed_at=collected_at)
+    return archive_bars(rows, root=archive_root, target=target, timeframe='1d', observed_at=collected_at)
 
 
 def is_session(now):
@@ -45,13 +77,17 @@ def run(config, database, status, initialize=False, halt=False):
     # 달력이 실패하면 휴장일을 추정하지 않고 중단한다.
     trading_day = False if initialize or halt else is_session(now)
     errors, quotes, signals = [], [], []
+    market_quality = {}
+    market_errors = []
+    archive_root = ROOT/'paper_history/market'
     collection_status = {target: {} for target in config['targets']}
     if trading_day and not initialize:
         for target in config['targets']:
             try:
-                q = fetch_quote(target)
+                q = fetch_quote(target, archive_root=archive_root)
                 if q:
                     quotes.append(q)
+                    market_quality.setdefault(target, {})['1m'] = q.get('market_quality')
                 else:
                     collection_status[target]['quote_error'] = 'no_completed_bar'
                     errors.append(target + ': 완료된 1분봉 없음')
@@ -72,7 +108,13 @@ def run(config, database, status, initialize=False, halt=False):
         result = book.snapshot() if initialize or halt else book.tick(signals, quotes, datetime.now(timezone.utc).isoformat(), trading_day, collection_status=collection_status)
     finally:
         book.close()
-    result.update({'generated_at_utc': datetime.now(timezone.utc).isoformat(), 'collection_errors': errors,
+    if trading_day and not initialize and not halt:
+        for target in config['targets']:
+            try:
+                market_quality.setdefault(target, {})['1d'] = collect_daily(target, archive_root)
+            except Exception as exc:
+                market_errors.append(target + ': 일봉 보관 실패 ' + type(exc).__name__)
+    result.update({'market_quality': market_quality, 'market_errors': market_errors, 'generated_at_utc': datetime.now(timezone.utc).isoformat(), 'collection_errors': errors,
                    'trading_day': trading_day, 'initialized_only': initialize,
                    'notice': '수익성 미검증 관찰 전략. 다음 실행에서 결정 이후의 신선한 1분봉 종가로 가상 체결합니다. 실제 체결·호가를 보장하지 않습니다.'})
     status = Path(status)
@@ -85,6 +127,9 @@ def run(config, database, status, initialize=False, halt=False):
     result['decisions'] = result['decisions'][-100:]
     result['fills'] = result['fills'][-100:]
     status.write_text(json.dumps(result, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+    if market_errors:
+        print('시세 보관 경고: ' + ' · '.join(market_errors))
+    print('시세 자료 품질: ' + json.dumps(market_quality, ensure_ascii=False))
     # 원장 수익성이나 체결 성공을 뜻하지 않는다. 관측/차단 사유만 짧게 남긴다.
     for target, detail in (result.get('diagnostics') or {}).get('targets', {}).items():
         print(f"모의운용 진단 {target}: 시세 {detail['quote_timestamp']} / 지연 {detail['quote_age_seconds']}초 / "

@@ -447,3 +447,44 @@ setImmediate(()=>{{
 '''
         done=subprocess.run(['node'],input=harness,text=True,capture_output=True)
         self.assertEqual(done.returncode,0,done.stderr)
+
+class AllModelPerformanceTests(PageSource):
+    def test_comparison_engine_and_rendered_models(self):
+        done=subprocess.run(['node',str(ROOT/'tests/model_comparison_cases.cjs')],cwd=ROOT,text=True,capture_output=True)
+        self.assertEqual(done.returncode,0,done.stderr)
+        self.assertIn('function modelComparisonTable(',self.script)
+        script=self.script.replace('  loadPaper();','  global.tableForTest=modelComparisonTable;')
+        harness=f'''const elements={{}};
+global.document={{getElementById:(id)=>elements[id]||(elements[id]={{value:'samsung',addEventListener:()=>{{}}}}),querySelectorAll:()=>[]}};
+global.fetch=()=>new Promise(()=>{{}});
+eval({json.dumps(script)});
+const assert=require('node:assert/strict');
+const html=tableForTest({{scope:'available',eligibleModels:1,priceConflictDays:0,models:[
+{{model:'A<script>',dates:['2026-10-01','2026-10-02'],simulation:{{total:.02,mdd:-.01,trades:[{{}}]}},hold:{{total:.01}}}},
+{{model:'B',dates:[],simulation:null,hold:null}}]}},10000000,'A<script>');
+for(const text of ['A&lt;script&gt;','B','2.00%','200,000원','1.00%p','2026-10-01','자료 없음'])assert.ok(html.includes(text),text);
+assert.ok(!html.includes('<script>'));
+'''
+        done=subprocess.run(['node'],input=harness,text=True,capture_output=True)
+        self.assertEqual(done.returncode,0,done.stderr)
+
+    def test_all_models_render_even_when_selected_model_has_no_scores(self):
+        script=self.script.replace('  loadPaper();','  global.runForTest=run;global.rowsForTest=function(x){rows=x;};')
+        harness=f'''const elements={{}};
+global.document={{getElementById:(id)=>elements[id]||(elements[id]={{value:'samsung',addEventListener:()=>{{}}}}),querySelectorAll:()=>[]}};
+global.fetch=()=>new Promise(()=>{{}});
+global.TradingSim=require({json.dumps(str(ROOT/'docs/lab/trading_sim.js'))});
+eval({json.dumps(script)});
+const values={{model:'未採点',rule:'up_over_flat',capital:'10000000',fee:'0.015',tax:'0.18',slip:'0.05','cost-mode':'standard','model-period':'available'}};
+for(const [key,value]of Object.entries(values))elements[key].value=value;
+const base={{kind:'direction',target_date:'2026-10-01',created_at_utc:'2026-10-01T08:00:00+09:00',is_prospective:'true',status:'scored',actual_open:'100',actual_close:'110',p_up:'.8',p_down:'.1',prediction:'상승'}};
+rowsForTest([{{...base,model:'평가완료'}},{{...base,model:'未採点',status:'pending'}}]);runForTest();
+const assert=require('node:assert/strict'), html=elements['model-compare'].innerHTML;
+assert.ok(html.includes('평가완료'));
+assert.ok(html.includes('未採点'));
+assert.ok(html.includes('2026-10-01'));
+assert.ok(html.includes('자료 없음'));
+assert.ok(elements.result.innerHTML.includes('채점 예측이 없습니다'));
+'''.replace('未採点','미채점')
+        done=subprocess.run(['node'],input=harness,text=True,capture_output=True)
+        self.assertEqual(done.returncode,0,done.stderr)

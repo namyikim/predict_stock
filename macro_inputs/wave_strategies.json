@@ -4,7 +4,23 @@
   "automatic_promotion": false,
   "description": "최초 연구 후보. wave-v1의 20/60/5봉·1%·하위 20% 기준은 코드 버전과 함께 고정.",
   "strategies": {
-    "range_rebound": {"strategy": "range_rebound", "version": "wave-v1", "timeframe": "1d", "requires_forecast": false},
-    "trend_pullback": {"strategy": "trend_pullback", "version": "wave-v1", "timeframe": "1d", "requires_forecast": false}
+    "range_rebound": {
+      "strategy": "range_rebound",
+      "version": "wave-v1",
+      "timeframe": "1d",
+      "requires_forecast": false
+    },
+    "trend_pullback": {
+      "strategy": "trend_pullback",
+      "version": "wave-v1",
+      "timeframe": "1d",
+      "requires_forecast": false
+    }
+  },
+  "execution": {
+    "fee": 0.00015,
+    "tax": 0.0018,
+    "slip": 0.0005,
+    "max_holding_sessions": 5
   }
 }

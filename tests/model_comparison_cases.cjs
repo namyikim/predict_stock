@@ -1,0 +1,24 @@
+const assert=require('node:assert/strict');
+const sim=require('../docs/lab/trading_sim.js');
+assert.equal(typeof sim.compareModels,'function','전체 모델 비교 함수 필요');
+function row(model,date,open,close){return {model,kind:'direction',target_date:date,created_at_utc:date+'T08:00:00+09:00',information_cutoff:'pre_open',is_prospective:'true',status:'scored',actual_open:String(open),actual_close:String(close),p_up:'0.8',p_down:'0.1',prediction:'상승'};}
+const cost={fee:.00015,tax:.0018,slip:.0005};
+let data=[row('A','2026-10-01',100,110),row('A','2026-10-02',110,100),row('B','2026-10-02',110,100),{...row('C','2026-10-02',110,100),status:'pending'}];
+const before=JSON.stringify(data);
+let result=sim.compareModels(data,'up_over_flat',cost,100000,'available');
+assert.equal(result.models.length,3);
+assert.equal(result.models[0].dates.length,2);
+assert.equal(result.models[1].dates.length,1);
+assert.equal(result.models[2].simulation,null);
+assert.equal(result.models[0].simulation.total,sim.simulate(sim.prepare(data,'A').rows,'up_over_flat',cost,100000).total);
+result=sim.compareModels(data,'up_over_flat',cost,100000,'common');
+assert.deepEqual(result.models[0].dates,['2026-10-02']);
+assert.deepEqual(result.models[1].dates,['2026-10-02']);
+assert.equal(result.models[0].simulation.total,result.models[1].simulation.total);
+assert.equal(JSON.stringify(data),before);
+result=sim.compareModels([row('A','2026-10-01',100,110),row('B','2026-10-02',110,100)],'always',cost,100000,'common');
+assert.ok(result.models.every(x=>x.simulation===null));
+result=sim.compareModels([row('A','2026-10-01',100,110),row('B','2026-10-01',100,120)],'always',cost,100000,'common');
+assert.equal(result.priceConflictDays,1);
+assert.ok(result.models.every(x=>x.simulation===null));
+console.log('전체 모델 비교 검증 통과');

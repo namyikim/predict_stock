@@ -107,5 +107,28 @@
     return {curve:curve,trades:trades,total:cash/capital-1,mdd:mdd,fees:costs/capital,costWon:costs,
       explicitCostWon:explicitCosts,slippageWon:slipCosts,finalCash:cash,days:picked.length,heldDays:heldDays,unfilled:unfilled};
   }
-  return {prepare:prepare,simulate:simulate,decide:decide};
+  function compareModels(all, rule, cost, capital, scope) {
+    if (['available','common'].indexOf(scope)<0) throw new Error('알 수 없는 비교 기간');
+    var names=Array.from(new Set(all.filter(function(r){return r.kind==='direction';}).map(function(r){return r.model;}))).sort();
+    var prepared=names.map(function(name){return {name:name,rows:prepare(all,name).rows};});
+    var active=prepared.filter(function(p){return p.rows.length>0;}), common=[], conflicts=0;
+    if(active.length) {
+      var maps=active.map(function(p){return new Map(p.rows.map(function(r){return [r.target_date,r];}));});
+      active[0].rows.forEach(function(r){
+        if(!maps.every(function(m){return m.has(r.target_date);}))return;
+        var same=maps.every(function(m){var x=m.get(r.target_date);return number(x.actual_open)===number(r.actual_open)&&number(x.actual_close)===number(r.actual_close);});
+        if(same)common.push(r.target_date);else conflicts++;
+      });
+    }
+    var shared=new Set(common);
+    return {scope:scope,commonDates:common,priceConflictDays:conflicts,eligibleModels:active.length,
+      models:prepared.map(function(p){
+        var rows=scope==='common'?p.rows.filter(function(r){return shared.has(r.target_date);}):p.rows;
+        return {model:p.name,dates:rows.map(function(r){return r.target_date;}),availableDays:p.rows.length,
+                simulation:rows.length?simulate(rows,rule,cost,capital):null,
+                hold:rows.length?simulate(rows,'buy_hold',cost,capital):null};
+      })};
+  }
+  return {prepare:prepare,simulate:simulate,decide:decide,compareModels:compareModels};
+
 });

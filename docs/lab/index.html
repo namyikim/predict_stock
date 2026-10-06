@@ -54,6 +54,8 @@ body{zoom:1.15}
 .performance-summary .muted{font-size:12px;color:#586573}
 .performance-summary p{margin:0 0 10px;font-size:14px}
 #compare th,#validation-result th{font-size:12px}
+#model-compare th{font-size:12px}
+.model-table-scroll{overflow-x:auto;max-width:100%}
 #compare, #trades { overflow-x:auto; max-width:100%; }
 </style>
 <!-- REPORT_UI_START --><style id="report-simple-ui">
@@ -157,7 +159,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
         <option value="sk_hynix">SK하이닉스</option>
       </select>
     </div>
-    <label class="field">모델
+    <label class="field">상세 보기 모델
       <select id="model"></select>
     </label>
     <label class="field">자세히 볼 규칙
@@ -188,6 +190,12 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
   <div id="status" class="muted">원장을 불러오는 중…</div>
   <p class="muted">아래는 기록된 실제 시가·종가에 선택한 규칙을 적용한 모의 결과입니다. 실제 계좌 수익이 아닙니다.</p>
+  <h2>모든 모델의 모의 수익 한눈에 보기</h2>
+  <label class="field">비교할 평가일
+    <select id="model-period"><option value="available">모델별 전체 평가일</option><option value="common">평가 가능한 모든 모델의 공통일</option></select>
+  </label>
+  <div id="model-compare" aria-live="polite"></div>
+  <h2>선택한 모델 상세 결과</h2>
   <div id="result"></div>
 
   <h2>자동 모의운용 원장 · 두 종목 통합 계좌</h2>
@@ -317,7 +325,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
     var target = $("target").value;
     loadValidation(target);
     $("status").textContent = "원장을 불러오는 중…";
-    $("result").innerHTML = ""; $("trades").innerHTML = "";
+    $("result").innerHTML = ""; $("trades").innerHTML = ""; $("model-compare").innerHTML="";
     fetch(BASE + target + "/forecast_log.csv", { cache: "no-store" })
       .then(function (r) { if (!r.ok) throw new Error("HTTP " + r.status); return r.text(); })
       .then(function (text) {
@@ -533,6 +541,23 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
       '여기서 볼 것은 <b>어느 규칙이 이겼나</b>가 아니라 <b>다섯 규칙이 보유 전략과 얼마나 다른가</b>입니다.</div>';
   }
 
+  function modelComparisonTable(result, capital, current) {
+    var rows=result.models.map(function(row) {
+      var name=esc(row.model)+(row.model===current?' · 상세 선택됨':'');
+      if(!row.simulation)return '<tr><th scope="row">'+name+'</th><td colspan="7">자료 없음 · 이 기간은 성능 판단 불가</td></tr>';
+      var m=row.simulation, diff=m.total-row.hold.total;
+      return '<tr><th scope="row">'+name+'</th><td class="num">'+esc(row.dates[0])+'<br>~ '+esc(row.dates[row.dates.length-1])+
+        '</td><td class="num">'+row.dates.length+'일</td><td class="num">'+pct(m.total)+
+        '</td><td class="num">'+nf.format(Math.round(capital*m.total))+'원</td><td class="num">'+(diff*100).toFixed(2)+
+        '%p</td><td class="num">'+m.trades.length+'건</td><td class="num">'+pct(m.mdd)+'</td></tr>';
+    }).join('');
+    return '<p class="muted">'+(result.scope==='common'?'평가 자료가 있는 '+result.eligibleModels+'개 모델의 공통 평가일·같은 시가와 종가만 비교합니다.':'모델별 평가일이 다를 수 있습니다. 공정한 비교에는 공통일 옵션을 사용하세요.')+
+      ' 위에서 선택한 매매 규칙·초기 자금·비용을 모든 모델에 동일하게 적용합니다. 모델명순이며 수익률 순위가 아닙니다.</p>'+
+      (result.scope==='common'&&result.priceConflictDays?'<p class="warn">모델별 실제 가격이 다른 '+result.priceConflictDays+'일은 공통 비교에서 제외했습니다.</p>':'')+
+      '<div class="model-table-scroll"><table><thead><tr><th>모델</th><th>평가 기간</th><th>평가일</th><th>비용 차감 수익률</th><th>모의 순손익</th><th>보유 대비</th><th>청산 거래</th><th>최대 하락폭</th></tr></thead><tbody>'+rows+'</tbody></table></div>'+
+      '<p class="muted">실제 계좌 수익이 아닌 사후 모의 계산입니다. 평가일·거래 수가 적으면 성능 판단이 어렵고, 이 표만 보고 수익이 높은 모델을 고르면 과적합이 생길 수 있습니다.</p>';
+  }
+
   function run() {
     var model = $("model").value, rule = $("rule").value;
     var capital = Number($("capital").value);
@@ -545,12 +570,15 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
     var notes = Object.keys(simExcluded).map(function(k) { return reasonNames[k]+" "+simExcluded[k]+"건"; });
     $("status").textContent = "시가 진입 가능 예측 " + picked.length + "일" + (notes.length ? " · 제외: "+notes.join(" / ") : "");
     $("compare").innerHTML = "";
+    $("model-compare").innerHTML = "";
     if (!Number.isFinite(capital) || capital<=0 || [cost.fee,cost.tax,cost.slip].some(function(v) {
       return !Number.isFinite(v) || v<0 || v>=1;
     }) || cost.fee+cost.tax>=1 || ($("cost-mode").value === "standard" && [cost.fee,cost.tax,cost.slip].some(function(v) { return v<=0; }))) {
       $("result").textContent = "초기 자금과 비용을 확인하세요. 비용은 100% 미만이어야 하며, 0%는 민감도 실험에서만 허용합니다.";
       $("trades").innerHTML = ""; return;
     }
+    var allModels=TradingSim.compareModels(rows,rule,cost,capital,$("model-period").value);
+    $("model-compare").innerHTML=modelComparisonTable(allModels,capital,model);
     if (!picked.length) {
       $("result").innerHTML = '<div class="empty">이 모델에는 개장 전에 이용할 수 있었던 채점 예측이 없습니다. 장 시작 후 예측은 시가 매매에서 제외합니다.</div>';
       $("trades").innerHTML = ""; return;
@@ -599,7 +627,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
       : '<div class="empty">이 규칙으로는 매수한 날이 없습니다.</div>';
   }
 
-  ["model", "rule", "capital", "fee", "tax", "slip", "cost-mode"].forEach(function (id) {
+  ["model", "rule", "capital", "fee", "tax", "slip", "cost-mode", "model-period"].forEach(function (id) {
     $(id).addEventListener("change", run);
   });
   // 종목 버튼 탭. 두 탭(가상 매매·기여도)의 버튼이 모두 숨은 #target 하나를 바꾸고, 그 값에 맞춰 함께 칠해진다.

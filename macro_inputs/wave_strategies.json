@@ -28,5 +28,24 @@
     "max_symbol_weight": 0.3,
     "max_sector_weight": 0.5,
     "max_quote_age_seconds": 120
+  },
+  "validation": {
+    "selection": {
+      "start": "2026-07-01",
+      "end": "2026-08-31"
+    },
+    "evaluation": {
+      "start": "2026-09-08",
+      "end": "2026-10-06"
+    },
+    "legacy_model": "No macro ensemble",
+    "min_days": 60,
+    "min_trades": 20,
+    "purge_sessions": 5,
+    "bootstrap": {
+      "block_sessions": 5,
+      "samples": 500,
+      "seed": 17
+    }
   }
 }

@@ -121,6 +121,17 @@ class WaveBacktestTests(unittest.TestCase):
         self.assertGreater(r['metrics']['open_qty'],0)
         self.assertIn('ending_position_not_liquidated',r['limitations'])
 
+    def test_evaluation_boundary_and_allocation_are_respected(self):
+        data=sample(8);config=copy.deepcopy(self.config)
+        config['execution'].update(position_weight=0.3,trade_start=data[65]['session'],entry_deadline=data[68]['session'])
+        r=self.run_sim(data,config)
+        self.assertEqual(r['equity_curve'][0]['session'],data[65]['session'])
+        first=r['fills'][0]
+        self.assertLessEqual(first['qty']*first['price']+first['fee'],30000)
+        self.assertEqual(r['metrics']['open_qty'],0)
+        config['execution']['entry_deadline']=data[64]['session']
+        self.assertEqual(self.run_sim(data,config)['fills'],[])
+
     def test_unverified_price_basis_rejected(self):
         data=sample(1);data[0]['adjustment']='yahoo_auto_adjust_false'
         with self.assertRaises(ValueError):self.run_sim(data)

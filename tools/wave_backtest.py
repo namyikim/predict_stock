@@ -15,6 +15,10 @@ def simulate_wave(bars, *, config, capital):
         raise ValueError('비용 범위 오류')
     if execution.get('max_holding_sessions')!=5:
         raise ValueError('wave-v1은 최대 5거래일 보유')
+    weight=execution.get('position_weight',1.0)
+    if isinstance(weight,bool) or not isinstance(weight,(int,float)) or not 0<weight<=1:raise ValueError('배분 한도 오류')
+    trade_start=execution.get('trade_start','0001-01-01')
+    entry_deadline=execution.get('entry_deadline','9999-12-31')
     wave_signal([],decision_at='2000-01-01T00:00:00+00:00',config=config)
     rows=list(bars)
     if len({(r['target'],r['timeframe']) for r in rows})>1:
@@ -60,6 +64,8 @@ def simulate_wave(bars, *, config, capital):
 
     for i,day in enumerate(sessions):
         bar=first.get(day)
+        active=day>=trade_start
+        if not active or day>entry_deadline:pending=None
         if bar is not None and bar['requires_corporate_action_adjustment']:
             history=[];pending=None
             if position:
@@ -75,7 +81,7 @@ def simulate_wave(bars, *, config, capital):
                 orders.append(dict(side='sell',session=day,status='delayed',reason=unavailable))
                 position['delayed']=True
             stale=bool(position)
-            curve.append(dict(session=day,equity=cash+qty*(last_price or 0),stale=stale))
+            if active:curve.append(dict(session=day,equity=cash+qty*(last_price or 0),stale=stale))
             continue
         stale=False
         if pending:
@@ -90,7 +96,7 @@ def simulate_wave(bars, *, config, capital):
             # 원시 목표 차익과 왕복 비용을 같은 1주 단위로 비교한다.
             round_cost=(price-reference)+price*fee+target*slip+target*(1-slip)*(fee+tax)
             if rejection is None and target-reference<=2*round_cost:rejection='reward_below_cost_buffer'
-            quantity=math.floor(cash/(price*(1+fee)))
+            quantity=math.floor(cash*weight/(price*(1+fee)))
             if rejection is None and quantity<1:rejection='insufficient_cash'
             orders.append(dict(side='buy',session=day,decision_at=signal['decision_at'],
                                status='rejected' if rejection else 'filled',reason=rejection or 'next_open'))
@@ -118,12 +124,12 @@ def simulate_wave(bars, *, config, capital):
                 sell(bar,bar['close'],'max_holding','close');sold=True
         last_price=bar['close'];equity=cash+qty*last_price
         peak=max(peak,equity);mdd=min(mdd,equity/peak-1)
-        curve.append(dict(session=day,equity=equity,stale=False))
+        if active:curve.append(dict(session=day,equity=equity,stale=False))
         history.append(bar)
         if not position and not sold:
             # 마지막 날 신호도 기록하지만 미래 봉이 없으면 체결하지 않는다.
             signal=wave_signal(history,decision_at=bar['observed_at'],config=config)
-            decisions.append(signal)
+            if active:decisions.append(signal)
             if signal['action']=='enter':pending=signal
     if position:limitations.append('ending_position_not_liquidated')
     if stale:limitations.append('ending_valuation_stale')

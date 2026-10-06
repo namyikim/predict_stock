@@ -3,7 +3,7 @@
   "name": "SK하이닉스",
   "peer_name": "삼성전자",
   "session_date": "2026-10-06",
-  "generated_at": "2026-10-06 16:12 KST",
+  "generated_at": "2026-10-06 16:46 KST",
   "summary": {
     "prev_close": 1841000.0,
     "open": 1835000.0,
@@ -15,11 +15,11 @@
     "c2c": -0.03693644758283543,
     "high_vs_open": 0.0010899182561308063,
     "low_vs_open": -0.034877384196185246,
-    "volume": 2964838.0,
-    "volume_ratio": 0.9318333422593074,
+    "volume": 2973257.0,
+    "volume_ratio": 0.9344793906803277,
     "kospi_c2c": -0.008902400084776163,
     "peer_c2c": -0.01449275362318836,
-    "usdkrw_chg": 0.0004096105453847976,
+    "usdkrw_chg": -0.001087536455793181,
     "us_nights": 2,
     "sox_ret": 0.026794000652817784,
     "nasdaq_ret": 0.022540933413159214,
@@ -154,7 +154,7 @@
         {
           "time": "2026-10-06T08:26:38+09:00",
           "title": "[증시 전망] 젠슨 황발 AI 낙관론…삼성전자·SK하이닉스 반도체 강세 이어질까",
-          "source": "이슈밸리",
+          "source": "issuevalley.com",
           "link": "https://news.google.com/rss/articles/CBMibkFVX3lxTE1RMGZQRC1ybFhKYk5nc1hpQkxMNDR4eHNEMFFZOXA5d3Bab0pkTmoxeGxnTFpkS1V0Y0VHaFZ5Ty1wLTM5VVlkWG5OQzRuOUdGN3NuY3BPSGlzLURfSmU5NlkybVAxWVFNaXRzc3ZR?oc=5"
         },
         {
@@ -170,16 +170,16 @@
           "link": "https://news.google.com/rss/articles/CBMigAFBVV95cUxNYmNCWGc4ZnhncnlaUEUwbXR1NHJtczN5cmRHdUhKelV1VXJOWVIxaWJzMUpVdjVpeUo0NE9SdUdaVV9jcnlyNEFfRkRmeEgzNkQ2RkZXWjZaRG9URFNVU2MzRVY1RzZrNnowaDdyMkdkZ0ZKTFV6aC1Wd1o0TUtsYg?oc=5"
         },
         {
-          "time": "2026-10-06T08:30:12+09:00",
-          "title": "삼성전자, 반도체 상장기업 브랜드평판 10월 빅데이터 1위...SK하이닉스 바짝 추격",
-          "source": "빅데이터뉴스",
-          "link": "https://news.google.com/rss/articles/CBMifEFVX3lxTFA4bkpiTDd5R0dmdGd0ZWxEVGFPdHo4VWp4UVI4RDNUaU8xZkhYb1IxRlJfZElsLUl0VUpTeDUxYjJBTUMwcDBLZGY4WkZqZkM5UV9rNDNpS3JQcDFuak9xdXp5eUQ3T0g5R3g3N05UTElfa2l4cFdyTzgyVzA?oc=5"
-        },
-        {
           "time": "2026-10-06T09:04:25+09:00",
           "title": "SK하이닉스 주가 상승 중",
           "source": "아시아뉴스통신",
           "link": "https://news.google.com/rss/articles/CBMidEFVX3lxTFB3OW1RaWg3WkxXNTlSanBROFh2WGVlWFZEemt6VmMzbVA3MmpKNXU4TjlDd3NOcERrZ25tNVFsdUNJTzFZVC1yTDJWYTFMUkhlandrLVNIWWt1TlJOcS1Pa09ZbTltNUMwSC1MX3Y2VWxNTjlG?oc=5"
+        },
+        {
+          "time": "2026-10-06T09:06:00+09:00",
+          "title": "\"삼성전자 3분기 실적 주목…환율 효과·본업 실적 구분해야\"",
+          "source": "뉴스투데이",
+          "link": "https://news.google.com/rss/articles/CBMiXkFVX3lxTE9adENpMUZ1UERfVXZHa0tGMWFiR1FGdGNLdmtuS3RiTFhJbUxwcEU2ZWgxSmMzS3ZCLWN5bmxNcElNNjVBUndxbXlNb3pzRTM4bmpSV2RuejloRE43Zmc?oc=5"
         }
       ]
     }
@@ -566,7 +566,7 @@
         {
           "time": "2026-10-06T08:26:38+09:00",
           "title": "[증시 전망] 젠슨 황발 AI 낙관론…삼성전자·SK하이닉스 반도체 강세 이어질까",
-          "source": "이슈밸리",
+          "source": "issuevalley.com",
           "link": "https://news.google.com/rss/articles/CBMibkFVX3lxTE1RMGZQRC1ybFhKYk5nc1hpQkxMNDR4eHNEMFFZOXA5d3Bab0pkTmoxeGxnTFpkS1V0Y0VHaFZ5Ty1wLTM5VVlkWG5OQzRuOUdGN3NuY3BPSGlzLURfSmU5NlkybVAxWVFNaXRzc3ZR?oc=5"
         },
         {
@@ -582,16 +582,16 @@
           "link": "https://news.google.com/rss/articles/CBMigAFBVV95cUxNYmNCWGc4ZnhncnlaUEUwbXR1NHJtczN5cmRHdUhKelV1VXJOWVIxaWJzMUpVdjVpeUo0NE9SdUdaVV9jcnlyNEFfRkRmeEgzNkQ2RkZXWjZaRG9URFNVU2MzRVY1RzZrNnowaDdyMkdkZ0ZKTFV6aC1Wd1o0TUtsYg?oc=5"
         },
         {
-          "time": "2026-10-06T08:30:12+09:00",
-          "title": "삼성전자, 반도체 상장기업 브랜드평판 10월 빅데이터 1위...SK하이닉스 바짝 추격",
-          "source": "빅데이터뉴스",
-          "link": "https://news.google.com/rss/articles/CBMifEFVX3lxTFA4bkpiTDd5R0dmdGd0ZWxEVGFPdHo4VWp4UVI4RDNUaU8xZkhYb1IxRlJfZElsLUl0VUpTeDUxYjJBTUMwcDBLZGY4WkZqZkM5UV9rNDNpS3JQcDFuak9xdXp5eUQ3T0g5R3g3N05UTElfa2l4cFdyTzgyVzA?oc=5"
-        },
-        {
           "time": "2026-10-06T09:04:25+09:00",
           "title": "SK하이닉스 주가 상승 중",
           "source": "아시아뉴스통신",
           "link": "https://news.google.com/rss/articles/CBMidEFVX3lxTFB3OW1RaWg3WkxXNTlSanBROFh2WGVlWFZEemt6VmMzbVA3MmpKNXU4TjlDd3NOcERrZ25tNVFsdUNJTzFZVC1yTDJWYTFMUkhlandrLVNIWWt1TlJOcS1Pa09ZbTltNUMwSC1MX3Y2VWxNTjlG?oc=5"
+        },
+        {
+          "time": "2026-10-06T09:06:00+09:00",
+          "title": "\"삼성전자 3분기 실적 주목…환율 효과·본업 실적 구분해야\"",
+          "source": "뉴스투데이",
+          "link": "https://news.google.com/rss/articles/CBMiXkFVX3lxTE9adENpMUZ1UERfVXZHa0tGMWFiR1FGdGNLdmtuS3RiTFhJbUxwcEU2ZWgxSmMzS3ZCLWN5bmxNcElNNjVBUndxbXlNb3pzRTM4bmpSV2RuejloRE43Zmc?oc=5"
         }
       ],
       "price": 1821000.0,
@@ -602,7 +602,7 @@
     {
       "time": "2026-10-06T08:26:38+09:00",
       "title": "[증시 전망] 젠슨 황발 AI 낙관론…삼성전자·SK하이닉스 반도체 강세 이어질까",
-      "source": "이슈밸리",
+      "source": "issuevalley.com",
       "link": "https://news.google.com/rss/articles/CBMibkFVX3lxTE1RMGZQRC1ybFhKYk5nc1hpQkxMNDR4eHNEMFFZOXA5d3Bab0pkTmoxeGxnTFpkS1V0Y0VHaFZ5Ty1wLTM5VVlkWG5OQzRuOUdGN3NuY3BPSGlzLURfSmU5NlkybVAxWVFNaXRzc3ZR?oc=5"
     },
     {
@@ -614,7 +614,7 @@
     {
       "time": "2026-10-06T06:05:12+09:00",
       "title": "美AI 반도체 강세 지속…필라델피아 0.27%↑·엔비디아 사상 최고",
-      "source": "뉴스1",
+      "source": "news1.kr",
       "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE5LNTZHNVo5UWdoZk9sVllIYlFlUVhtQzdyUEwtRmxZRXljNVlQblpvZ2s1ZHNnTmJHTy1DUjRMSjI1V0pXYWNtclJ0M0c3aEtHcF9sdXFrVXgteUpBY1N5a254VS1ZQ3Z3U09kbtIBbEFVX3lxTE5LNTZHNVo5UWdoZk9sVllIYlFlUVhtQzdyUEwtRmxZRXljNVlQblpvZ2s1ZHNnTmJHTy1DUjRMSjI1V0pXYWNtclJ0M0c3aEtHcF9sdXFrVXgteUpBY1N5a254VS1ZQ3Z3U09kbg?oc=5"
     },
     {
@@ -652,7 +652,7 @@
     {
       "time": "2026-10-06T08:26:38+09:00",
       "title": "[증시 전망] 젠슨 황발 AI 낙관론…삼성전자·SK하이닉스 반도체 강세 이어질까",
-      "source": "이슈밸리",
+      "source": "issuevalley.com",
       "link": "https://news.google.com/rss/articles/CBMibkFVX3lxTE1RMGZQRC1ybFhKYk5nc1hpQkxMNDR4eHNEMFFZOXA5d3Bab0pkTmoxeGxnTFpkS1V0Y0VHaFZ5Ty1wLTM5VVlkWG5OQzRuOUdGN3NuY3BPSGlzLURfSmU5NlkybVAxWVFNaXRzc3ZR?oc=5"
     },
     {
@@ -664,7 +664,7 @@
     {
       "time": "2026-10-06T09:59:00+09:00",
       "title": "코스피 '흔들'.. 엔비디아 사상 최고에도 삼성전자·SK하이닉스 하락 > 뉴스",
-      "source": "지데일리",
+      "source": "gdaily.kr",
       "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE50VG52S1ZZQ2J6UkMtLXM3enZKTXpGX0F4Nlo1OTVSVE5kOW43azlyRHV6Zl9EMUF6Ykx4QmRnbkpxdWFMMTZvSDY1LUEtNE1OeWNzcFVKRFBTQUl3S1A2WTJ2VDNmWVdwRUVSUg?oc=5"
     }
   ],
@@ -692,9 +692,9 @@
     "steady": 32,
     "upper": 0,
     "lower": 0,
-    "individual": 7463.0,
-    "foreign": -17572.0,
-    "institution": -17.0,
+    "individual": 7676.0,
+    "foreign": -17782.0,
+    "institution": -18.0,
     "prev_close": 7003.74,
     "open": 7044.67,
     "high": 7044.67,

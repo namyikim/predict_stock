@@ -3,43 +3,43 @@
   "name": "SK하이닉스",
   "peer_name": "삼성전자",
   "session_date": "2026-10-06",
-  "generated_at": "2026-10-06 15:50 KST",
+  "generated_at": "2026-10-06 16:11 KST",
   "summary": {
     "prev_close": 1841000.0,
     "open": 1835000.0,
     "high": 1837000.0,
     "low": 1771000.0,
-    "close": 1776000.0,
+    "close": 1773000.0,
     "gap": -0.0032590983161325804,
-    "session": -0.03215258855585834,
-    "c2c": -0.035306898424769195,
+    "session": -0.03378746594005455,
+    "c2c": -0.03693644758283543,
     "high_vs_open": 0.0010899182561308063,
     "low_vs_open": -0.034877384196185246,
-    "volume": 2323759.0,
-    "volume_ratio": 0.7303455081104416,
-    "kospi_c2c": -0.009206576285271661,
+    "volume": 2964838.0,
+    "volume_ratio": 0.9318333422593074,
+    "kospi_c2c": -0.008902400084776163,
     "peer_c2c": -0.01449275362318836,
-    "usdkrw_chg": 0.00011165410648894536,
+    "usdkrw_chg": 0.00046180065704981565,
     "us_nights": 2,
     "sox_ret": 0.026794000652817784,
     "nasdaq_ret": 0.022540933413159214,
     "micron_ret": -0.03046323847009602,
     "prior_streak": 3,
-    "ma5": 1798200.0,
-    "ma20": 1791050.0,
+    "ma5": 1797600.0,
+    "ma20": 1790900.0,
     "high20": 1935000.0,
     "high252": 2986352.5777339735,
     "price_context": {
       "breakouts": {
         "20": {
           "prior_high": 1935000.0,
-          "distance": -0.08217054263565893,
+          "distance": -0.08372093023255811,
           "close_breakout": false,
           "intraday_breakout": false
         },
         "60": {
           "prior_high": 2342491.9596774196,
-          "distance": -0.24183304336951927,
+          "distance": -0.24311373079625997,
           "close_breakout": false,
           "intraday_breakout": false
         }
@@ -48,23 +48,23 @@
         "5": {
           "start": "2026-09-28",
           "end": "2026-10-06",
-          "own": 0.004524886877828038,
+          "own": 0.002828054298642524,
           "peer": 0.007407407407407307,
-          "excess": -0.002882520529579269
+          "excess": -0.004579353108764783
         },
         "20": {
           "start": "2026-09-03",
           "end": "2026-10-06",
-          "own": 0.11278195488721798,
+          "own": 0.11090225563909772,
           "peer": 0.08800000000000008,
-          "excess": 0.024781954887217905
+          "excess": 0.022902255639097646
         },
         "60": {
           "start": "2026-07-07",
           "end": "2026-10-06",
-          "own": -0.19291904616755273,
+          "own": -0.194282358589567,
           "peer": -0.08108108108108103,
-          "excess": -0.1118379650864717
+          "excess": -0.11320127750848596
         }
       }
     },
@@ -118,7 +118,7 @@
         "after_high": -0.0014123635025308223
       }
     },
-    "from_high": -0.034810049872289306,
+    "from_high": -0.036440438301559075,
     "buyback": [
       {
         "kind": "직접 취득",
@@ -136,8 +136,8 @@
       "지수 동조"
     ],
     "reasons": [
-      "09:05 봉 -1.09%(σ의 5.3배, 거래량 2.46배)가 세션 -3.22%의 55%",
-      "KOSPI -0.92% vs 종목 -3.53%, 5분 수익률 상관 0.82 — 종목 고유 요인이 약함"
+      "09:05 봉 -1.09%(σ의 5.3배, 거래량 2.46배)가 세션 -3.38%의 55%",
+      "KOSPI -0.89% vs 종목 -3.69%, 5분 수익률 상관 0.82 — 종목 고유 요인이 약함"
     ]
   },
   "events": [
@@ -166,7 +166,7 @@
         {
           "time": "2026-10-06T08:07:24+09:00",
           "title": "솔리다임 증설에 수십조, SK하이닉스 부담 줄일 카드 'IPO'",
-          "source": "네이버 프리미엄콘텐츠",
+          "source": "contents.premium.naver.com",
           "link": "https://news.google.com/rss/articles/CBMigAFBVV95cUxNYmNCWGc4ZnhncnlaUEUwbXR1NHJtczN5cmRHdUhKelV1VXJOWVIxaWJzMUpVdjVpeUo0NE9SdUdaVV9jcnlyNEFfRkRmeEgzNkQ2RkZXWjZaRG9URFNVU2MzRVY1RzZrNnowaDdyMkdkZ0ZKTFV6aC1Wd1o0TUtsYg?oc=5"
         },
         {
@@ -191,9 +191,9 @@
     "low": -0.024779735682819437,
     "pattern": "고점 후 반락"
   },
-  "closing_share": 0.06989144924776175,
+  "closing_share": 0.11639180862631365,
   "intraday_corr_kospi": 0.824728091228394,
-  "intraday_note": "장중 봉은 09:05~14:55까지만 있어 마감 구간(14:55~15:30)은 일봉 종가로만 봅니다(그 구간 -0.22%).",
+  "intraday_note": "장중 봉은 09:05~14:55까지만 있어 마감 구간(14:55~15:30)은 일봉 종가로만 봅니다(그 구간 -0.39%).",
   "intraday_coverage": "09:05~14:55",
   "intraday_path": [
     {
@@ -578,7 +578,7 @@
         {
           "time": "2026-10-06T08:07:24+09:00",
           "title": "솔리다임 증설에 수십조, SK하이닉스 부담 줄일 카드 'IPO'",
-          "source": "네이버 프리미엄콘텐츠",
+          "source": "contents.premium.naver.com",
           "link": "https://news.google.com/rss/articles/CBMigAFBVV95cUxNYmNCWGc4ZnhncnlaUEUwbXR1NHJtczN5cmRHdUhKelV1VXJOWVIxaWJzMUpVdjVpeUo0NE9SdUdaVV9jcnlyNEFfRkRmeEgzNkQ2RkZXWjZaRG9URFNVU2MzRVY1RzZrNnowaDdyMkdkZ0ZKTFV6aC1Wd1o0TUtsYg?oc=5"
         },
         {
@@ -614,27 +614,27 @@
     {
       "time": "2026-10-06T06:05:12+09:00",
       "title": "美AI 반도체 강세 지속…필라델피아 0.27%↑·엔비디아 사상 최고",
-      "source": "news1.kr",
+      "source": "뉴스1",
       "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE5LNTZHNVo5UWdoZk9sVllIYlFlUVhtQzdyUEwtRmxZRXljNVlQblpvZ2s1ZHNnTmJHTy1DUjRMSjI1V0pXYWNtclJ0M0c3aEtHcF9sdXFrVXgteUpBY1N5a254VS1ZQ3Z3U09kbtIBbEFVX3lxTE5LNTZHNVo5UWdoZk9sVllIYlFlUVhtQzdyUEwtRmxZRXljNVlQblpvZ2s1ZHNnTmJHTy1DUjRMSjI1V0pXYWNtclJ0M0c3aEtHcF9sdXFrVXgteUpBY1N5a254VS1ZQ3Z3U09kbg?oc=5"
-    },
-    {
-      "time": "2026-10-06T07:00:00+09:00",
-      "title": "[심층분석] ‘삼전닉스’ 17조 덜어낸 외국인…실적·금리 개선이 복귀 가른다",
-      "source": "굿모닝경제",
-      "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE5yLWw2WndSa0pWTXlvRktRZ3NQd2lTQlRHNGpXLVQzYWgzdkdTZVhCakVzcktOZTcyeXlUcHFvcDdiaEZfSXhUb21yUUhSVFRFOWFmd19aaGs5b19uUkRZRXc3MElST2tNeG05SA?oc=5"
     },
     {
       "time": "2026-10-06T00:36:00+09:00",
       "title": "\"삼성전자·SK하이닉스 다음은?\"…테마주가 아닌 진짜 차기 주도주를 잡아라",
       "source": "뉴시스",
       "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE5TQlFHYUN5ZDFNZXdPRUN6aHNwbWg0TEV2aE5pdmZZVWI2VHQtM0VoV0lCR0ZFRVNjRzZ5QkdKOTNKeUZyaS1nYXBYRmpaOUtoNzV3UXdkNXBoblBqNkpya9IBeEFVX3lxTFBGNGlreUpWNW5mTXlrbmdjamdtSGJXbE4xS21qR0dKd0VaRFpjYkozSXVPU0NJZWJocXJvR1FHNFlnZ0tjU3ZoLXZjNlZZM1Nhc0dfc05DTzVyRG9DUS1LdjlvWXNRLVNSZVF1Z1djOHE2MXl6VEJqTQ?oc=5"
+    },
+    {
+      "time": "2026-10-06T06:47:00+09:00",
+      "title": "[빅데이터로본다] 반도체 상장기업 2026년 10월 브랜드평판... 1위 삼성전자, 2위 SK하이닉스, 3위 한미반도체",
+      "source": "dtoday.co.kr",
+      "link": "https://news.google.com/rss/articles/CBMia0FVX3lxTFBDR0Rwd1BYWk1UN2hweHRKZDhFdDBGUXlENE1sRVVqTDhYUFhLR1k1c2FrVXdEOTJCX1FyWmdMSTJYdG8xSG5LLXluS3BDalYtN0RnaC1zVk8wZXFpX1pLUnBjdUJsaWFxbWhF?oc=5"
     }
   ],
   "top_news": [
     {
       "time": "2026-10-06T13:56:00+09:00",
       "title": "HBM 다음은 로봇 반도체…삼성·SK하이닉스, '피지컬AI 메모리' 선점나서",
-      "source": "뉴스핌",
+      "source": "newspim.com",
       "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTFBqM2JSN3Vub3RQVW9OQUxJTjM0amlfTlVUUzRJTm9jY0x4U2tQaVB2Z1BQTXM3djByVGxfeFMwTVdqakpwUEx4T0tNOFo0NmhuOTVCdExfU2NiWFNw?oc=5"
     },
     {
@@ -692,9 +692,9 @@
     "steady": 32,
     "upper": 0,
     "lower": 0,
-    "individual": 7421.0,
-    "foreign": -17525.0,
-    "institution": -20.0,
+    "individual": 7463.0,
+    "foreign": -17572.0,
+    "institution": -17.0,
     "prev_close": 7003.74,
     "open": 7044.67,
     "high": 7044.67,
@@ -706,8 +706,8 @@
     {
       "model": "No macro ensemble",
       "hit": false,
-      "verdict": "틀림 — 예측 상승 37%, 실제 하락(-3.53%)",
-      "legs": "갭 -0.33%(보합) · 세션 -3.22%(하락)",
+      "verdict": "틀림 — 예측 상승 37%, 실제 하락(-3.69%)",
+      "legs": "갭 -0.33%(보합) · 세션 -3.38%(하락)",
       "where": "결과는 주로 장중에서 정해졌습니다.",
       "band": 0.0103491583055199,
       "probs": [
@@ -721,8 +721,8 @@
     {
       "model": "Mean ensemble",
       "hit": false,
-      "verdict": "틀림 — 예측 상승 40%, 실제 하락(-3.53%)",
-      "legs": "갭 -0.33%(보합) · 세션 -3.22%(하락)",
+      "verdict": "틀림 — 예측 상승 40%, 실제 하락(-3.69%)",
+      "legs": "갭 -0.33%(보합) · 세션 -3.38%(하락)",
       "where": "결과는 주로 장중에서 정해졌습니다.",
       "band": 0.0103491583055199,
       "probs": [
@@ -736,8 +736,8 @@
     {
       "model": "Candidate expanding",
       "hit": true,
-      "verdict": "맞음 — 예측 하락 40%, 실제 하락(-3.53%)",
-      "legs": "갭 -0.33%(보합) · 세션 -3.22%(하락)",
+      "verdict": "맞음 — 예측 하락 40%, 실제 하락(-3.69%)",
+      "legs": "갭 -0.33%(보합) · 세션 -3.38%(하락)",
       "where": "결과는 주로 장중에서 정해졌습니다.",
       "band": 0.0103491583055199,
       "probs": [
@@ -749,6 +749,6 @@
       "predicted": "하락"
     }
   ],
-  "price_check": "1거래일 예상 구간 1,779,419~1,936,691원 · 종가 1,776,000원 → 구간 밖",
+  "price_check": "1거래일 예상 구간 1,779,419~1,936,691원 · 종가 1,773,000원 → 구간 밖",
   "disclaimer": "시간이 맞는 것이지 원인 확정이 아닙니다. 뉴스 없이 움직이는 날(수급·프로그램·옵션 만기)이 많고, 기사 발행 시각은 실제 정보 유통보다 늦거나 앞섭니다. 이 절은 설명 도구이며 다음날 예측에 자동 반영되지 않습니다."
 }

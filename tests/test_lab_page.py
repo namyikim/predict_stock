@@ -384,3 +384,66 @@ assert.ok(elements['paper-status'].innerHTML.includes('진단 정보가 없는 �
 '''
         done=subprocess.run(['node'],input=harness,text=True,capture_output=True)
         self.assertEqual(done.returncode,0,done.stderr)
+
+class PerformanceSummaryTests(PageSource):
+    def test_performance_summary_period_money_units_and_empty_data(self):
+        self.assertIn('function performanceSummary(',self.script)
+        script=self.script.replace('  loadPaper();','  global.summaryForTest=performanceSummary;')
+        harness=f'''const elements={{}};
+global.document={{getElementById:(id)=>elements[id]||(elements[id]={{value:'samsung',addEventListener:()=>{{}}}}),querySelectorAll:()=>[]}};
+global.fetch=()=>new Promise(()=>{{}});
+eval({json.dumps(script)});
+const assert=require('node:assert/strict');
+let html=summaryForTest({{dates:['2026-10-01','2026-10-06'],capital:10000000,total:0.025,benchmark:0.01,trades:2}});
+for(const text of ['2026-10-01','2026-10-06','2일','2.50%','250,000원','10,250,000원','1.50%p','2건'])assert.ok(html.includes(text),text);
+html=summaryForTest({{dates:[],capital:10000000,total:0,trades:0}});
+assert.ok(html.includes('평가일 없음'));
+assert.ok(html.includes('거래 없음'));
+assert.ok(!html.includes('0.00%'));
+assert.ok(!html.includes('NaN'));
+html=summaryForTest({{dates:['2026-10-06'],capital:10000000,total:-0.02,trades:1}});
+assert.ok(html.includes('-200,000원'));
+assert.ok(html.includes('-2.00%'));
+'''
+        done=subprocess.run(['node'],input=harness,text=True,capture_output=True)
+        self.assertEqual(done.returncode,0,done.stderr)
+
+    def test_saved_validation_displays_observed_dates_and_net_profit(self):
+        data=json.loads((ROOT/'docs/lab/validation_samsung.json').read_text())
+        harness=f'''const elements={{}};
+global.document={{getElementById:(id)=>elements[id]||(elements[id]={{value:'samsung',addEventListener:()=>{{}}}}),querySelectorAll:()=>[]}};
+const data={json.dumps(data)};
+global.fetch=(url)=>url==='validation_samsung.json'?Promise.resolve({{ok:true,json:()=>Promise.resolve(data)}}):new Promise(()=>{{}});
+eval({json.dumps(self.script)});
+setImmediate(()=>{{
+ const assert=require('node:assert/strict'), html=elements['validation-result'].innerHTML;
+ assert.ok(html.includes('실제 자료 평가 기간: '+data.evaluation.dates[0]));
+ assert.ok(html.includes(data.evaluation.dates.length+'일 관측'));
+ assert.ok(html.includes((data.evaluation.strategy.total*100).toFixed(2)+'%'));
+ assert.ok(html.includes('과거') || html.includes('사후'));
+ assert.ok(html.includes('순손익(원)'));
+ assert.ok(html.includes('자료 부족'));
+}});
+'''
+        done=subprocess.run(['node'],input=harness,text=True,capture_output=True)
+        self.assertEqual(done.returncode,0,done.stderr)
+
+    def test_empty_saved_evaluation_does_not_display_zero_performance(self):
+        data=json.loads((ROOT/'docs/lab/validation_samsung.json').read_text())
+        data['evaluation']['dates']=[]
+        for key in ('strategy','buy_hold','daily_session'):
+            data['evaluation'][key].update(total=0,trades=0)
+        harness=f'''const elements={{}};
+global.document={{getElementById:(id)=>elements[id]||(elements[id]={{value:'samsung',addEventListener:()=>{{}}}}),querySelectorAll:()=>[]}};
+const data={json.dumps(data)};
+global.fetch=(url)=>url==='validation_samsung.json'?Promise.resolve({{ok:true,json:()=>Promise.resolve(data)}}):new Promise(()=>{{}});
+eval({json.dumps(self.script)});
+setImmediate(()=>{{
+ const assert=require('node:assert/strict'), html=elements['validation-result'].innerHTML;
+ assert.ok(html.includes('평가일 없음'));
+ assert.ok(html.includes('평가 자료 없음'));
+ assert.ok(!html.includes('0.00%'));
+}});
+'''
+        done=subprocess.run(['node'],input=harness,text=True,capture_output=True)
+        self.assertEqual(done.returncode,0,done.stderr)

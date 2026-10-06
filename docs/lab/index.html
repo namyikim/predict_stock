@@ -48,6 +48,12 @@
 body{zoom:1.15}
   .embed .lab-head{display:none}
   .embed body{padding-top:4px}
+.performance-summary{background:#f7fafc;border:1px solid #d9e4ed;border-radius:10px;padding:14px;margin:14px 0}
+.performance-summary .tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr))}
+.performance-summary .tile{min-width:0;background:white;padding:12px}
+.performance-summary .muted{font-size:12px;color:#586573}
+.performance-summary p{margin:0 0 10px;font-size:14px}
+#compare th,#validation-result th{font-size:12px}
 #compare, #trades { overflow-x:auto; max-width:100%; }
 </style>
 <!-- REPORT_UI_START --><style id="report-simple-ui">
@@ -181,12 +187,13 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
   </div>
 
   <div id="status" class="muted">원장을 불러오는 중…</div>
+  <p class="muted">아래는 기록된 실제 시가·종가에 선택한 규칙을 적용한 모의 결과입니다. 실제 계좌 수익이 아닙니다.</p>
   <div id="result"></div>
 
   <h2>자동 모의운용 원장 · 두 종목 통합 계좌</h2>
   <div id="paper-status" class="muted">모의계좌를 불러오는 중…</div>
 
-  <h2>기간을 나눈 전략 검증</h2>
+  <h2>기간을 나눈 전략 검증 · 과거자료 재계산</h2>
   <div id="validation-result" class="muted">검증 결과를 불러오는 중…</div>
 
   <h2>규칙별 비교</h2>
@@ -395,6 +402,8 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
       '<p>전략 '+esc(c.version)+" · "+esc(c.model)+" · 상승 확률 &gt; 하락 확률일 때만 모의 진입</p>"+
       '<p>마지막 실행: '+time(r.last_tick)+(old?' <b>최근 30분 내 관측 없음 (휴장·장외 포함)</b>':"")+"</p>"+
       '<p>신규 매수 상태: <b>'+esc(r.halt_reason||"관측 대기/조건 충족 시 허용")+"</b></p>"+
+      '<p><b>자동 모의운용 누적 수익률: '+pct(r.last_equity/c.capital-1)+' · 손익 '+nf.format(Math.round(r.last_equity-c.capital))+'원</b><br><span class="muted">마지막 관측 평가액 기준 · 기지급 비용 반영 · 미실현 손익 포함 · 운영 시작일 미기록</span></p>'+
+      (r.fill_count===0?'<p class="warn">아직 체결이 없어 전략의 수익 성능을 판단할 수 없습니다.</p>':'')+
       '<div class="tiles"><div class="tile">가상 현금<br><b>'+nf.format(Math.round(r.cash))+"원</b></div>"+
       '<div class="tile">마지막 관측 평가액<br><b>'+nf.format(Math.round(r.last_equity))+"원</b></div>"+
       '<div class="tile">누적 가상 체결<br><b>'+r.fill_count+"건</b></div></div>"+
@@ -406,6 +415,22 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
       (r.collection_errors.length?'<p class="warn">'+esc(r.collection_errors.join(" · "))+"</p>":"")+
       (body?'<div style="overflow-x:auto"><table><tr><th>결정 시각</th><th>종목</th><th>구분</th><th>수량</th><th>상태</th></tr>'+body+"</table></div>":'<p class="muted">아직 모의 주문이 없습니다.</p>')+
       '<p><a href="https://raw.githubusercontent.com/namyikim/predict_stock/main/docs/lab/paper_status.json">전체 설정·최근 체결 JSON</a> · <a href="https://github.com/namyikim/predict_stock/actions/workflows/paper-trading.yml">실행 내역·신규 매수 중지</a></p>';
+  }
+
+  function performanceSummary(data) {
+    // 기간 수익을연간 수익률로 확대하지 않는다. 모의 성과와 원 단위 손익을 함께 표시한다.
+    var dates=Array.from(new Set(data.dates||[])).sort();
+    var valid=dates.length>0 && typeof data.total==='number' && Number.isFinite(data.total);
+    var money=function(v){return nf.format(Math.round(v))+"원";};
+    var diff=valid && typeof data.benchmark==='number' && Number.isFinite(data.benchmark) ? data.total-data.benchmark : null;
+    var tile=function(label,value,detail){return '<div class="tile"><span>'+label+'</span><b>'+value+'</b><span class="muted">'+detail+'</span></div>';};
+    var period=dates.length ? esc(dates[0])+' ~ '+esc(dates[dates.length-1]) : '평가일 없음';
+    return '<section class="performance-summary" aria-label="기간과 모의 수익 요약"><p><b>실제 자료 평가 기간: '+period+'</b> · '+dates.length+'일 관측</p>'+
+      '<div class="tiles">'+tile('비용 차감 후 모의 수익률',valid?pct(data.total):'—','해당 기간 누적 · 연환산 아님')+
+      tile('원금 대비 모의 손익',valid?money(data.capital*data.total):'—','초기 자금 '+money(data.capital))+
+      tile('종료 평가액',valid?money(data.capital*(1+data.total)):'—','현금과 보유 주식 합계')+
+      tile('청산 완료 거래',data.trades+'건',data.trades?'왕복 거래 기준':'거래 없음 · 성능 판단 대기')+
+      (diff===null?'':tile('매수 후 보유 대비',(diff*100).toFixed(2)+'%p','같은 평가일·비용 기준'))+'</div></section>';
   }
 
   function loadValidation(target) {
@@ -422,20 +447,24 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
       var rows = [["선택 기간에서 고른 전략", ev.strategy], ["매수 후 보유", ev.buy_hold], ["매일 장중 보유", ev.daily_session]];
       var body = rows.filter(function(x) { return x[1]; }).map(function(x) {
         var m=x[1];
-        return "<tr><td>" + x[0] + '</td><td class="num">' + pct(m.total) + '</td><td class="num">' +
+        if (!ev.dates.length || typeof m.total!=='number' || !Number.isFinite(m.total)) {
+          return '<tr><td>'+x[0]+'</td><td colspan="5">평가 자료 없음</td></tr>';
+        }
+        return "<tr><td>" + x[0] + '</td><td class="num">' + nf.format(Math.round(c.capital*m.total)) + '원</td><td class="num">' + pct(m.total) + '</td><td class="num">' +
           pct(m.mdd) + '</td><td class="num">' + m.trades + '</td><td class="num">' +
           nf.format(Math.round(m.cost_won)) + "원</td></tr>";
       }).join("");
       box.innerHTML = '<div class="warn"><b>' + title + '</b><br>기존 자료를 사후에 나눈 검증입니다. 앞으로의 모의운용 성적과 다릅니다. '
         + '평가 성과로 전략을 다시 고르거나 실거래를 자동 활성화하지 않습니다.</div>'
+        + performanceSummary({dates:ev.dates,capital:c.capital,total:ev.strategy?ev.strategy.total:null,benchmark:ev.buy_hold?ev.buy_hold.total:null,trades:ev.strategy?ev.strategy.trades:0})
         + '<p class="muted">저장된 결과 생성 시각: ' + esc(r.generated_at_utc) + ' (UTC)</p>'
-        + '<p>선택: ' + esc(c.selection.start) + ' ~ ' + esc(c.selection.end) + ' (' + r.selection.dates.length + '일)'
+        + '<details><summary>전략 선택 기간·평가 설정·비용 보기</summary><p>전략을 고른 기간: ' + esc(c.selection.start) + ' ~ ' + esc(c.selection.end) + ' (' + r.selection.dates.length + '일)'
         + ' · 평가: ' + esc(c.evaluation.start) + ' ~ ' + esc(c.evaluation.end) + ' (' + ev.dates.length + '일)</p>'
         + '<p>선택된 규칙: ' + esc(r.selected ? r.selected.id : '없음') + ' · 초기 자금 ' + nf.format(c.capital) + '원'
         + ' · 편도 수수료 ' + (c.cost.fee*100).toFixed(3)+"%" + ' / 매도세 ' + (c.cost.tax*100).toFixed(3)+"%" + ' / 편도 슬리피지 ' + (c.cost.slip*100).toFixed(3)+"%" + '</p>'
         + '<p class="muted">위 가상매매 입력과 별도로 고정된 설정입니다. 최소 기준: 각 기간 ' + c.min_days + '일·선택 전략 각 ' + c.min_trades + '거래. '
-        + '같은 예측 관측일만 비교하며, 낙폭은 관측일 종가 기준입니다.</p>'
-        + '<div style="overflow-x:auto"><table><tr><th>평가 기간 결과</th><th>수익률</th><th>낙폭</th><th>청산 거래</th><th>비용</th></tr>' + body + '</table></div>'
+        + '같은 예측 관측일만 비교하며, 낙폭은 관측일 종가 기준입니다.</p></details>'
+        + '<div style="overflow-x:auto"><table><tr><th>같은 기간 비교</th><th>순손익(원)</th><th>비용 차감 수익률</th><th>최대 하락폭</th><th>청산 거래</th><th>차감된 비용</th></tr>' + body + '</table></div>'
         + '<p><a href="validation_' + target + '.json">설정·데이터 지문·상세 결과 JSON</a></p>';
     }).catch(function() {
       if ($("target").value === target) box.textContent = "저장된 기간 분리 검증 결과를 읽지 못했습니다. 가상매매 계산은 계속 사용할 수 있습니다.";
@@ -489,14 +518,14 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
       var wins = sim.trades.filter(function (t) { return t.net > 0; }).length;
       return "<tr" + mark + "><td>" + rule.name + (rule.id === current ? " ←" : "") + "</td>" +
         '<td class="num ' + tone(sim.total) + '">' + pct(sim.total) + "</td>" +
-        '<td class="num ' + tone(diff) + '">' + (rule.id === "buy_hold" ? "—" : pct(diff)) + "</td>" +
+        '<td class="num ' + tone(diff) + '">' + (rule.id === "buy_hold" ? "—" : (diff*100).toFixed(2)+"%p") + "</td>" +
         '<td class="num down">' + pct(sim.mdd) + "</td>" +
         '<td class="num">' + sim.heldDays + " / " + sim.days + "</td>" +
         '<td class="num">' + (sim.trades.length ? Math.round(100 * wins / sim.trades.length) + "%" : "—") + "</td>" +
         '<td class="num down">-' + pct(sim.fees) + "</td></tr>";
     }).join("");
-    return '<table><tr><th>규칙</th><th class="num">수익률</th><th class="num">보유 대비</th>' +
-      '<th class="num">관측일 낙폭</th><th class="num">보유일</th><th class="num">이익 낸 거래</th>' +
+    return '<table><tr><th>규칙</th><th class="num">비용 차감 수익률</th><th class="num">보유 대비(%p)</th>' +
+      '<th class="num">최대 하락폭</th><th class="num">보유일 / 평가일</th><th class="num">거래 승률</th>' +
       '<th class="num">누적 비용</th></tr>' + body + "</table>" +
       '<div class="warn" style="margin-top:10px"><b>이 표에서 제일 좋은 규칙을 고르지 마세요.</b> ' +
       picked.length + '일 자료에 규칙을 맞추는 것(과적합)이고, 그렇게 고른 규칙은 다음 달에 같은 성적을 ' +
@@ -535,12 +564,13 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
       ($("cost-mode").value === "sensitivity" ? '<div class="warn">비용 민감도 실험 — 실제 비용 적용 성과와 구분해서 보세요.</div>' : "") +
       (few ? '<div class="warn">채점된 예측이 <b>' + picked.length + '일</b>뿐입니다. 하루 등락이 2~3%인 것에 비해 ' +
              '표본이 적어 <b>수익성을 판단하기 어렵습니다.</b> 60일이 넘어도 다른 기간과 장세에서 별도 검증해야 합니다.</div>' : "") +
-      '<div class="tiles">' +
+      performanceSummary({dates:sim.curve.map(function(p){return p.date;}),capital:capital,total:sim.total,benchmark:hold.total,trades:sim.trades.length})+
+      '<details><summary>보유 수익률·위험·비용 자세히 보기</summary><div class="tiles">' +
         '<div class="tile">규칙대로 매매<b class="' + tone(sim.total) + '">' + pct(sim.total) + "</b>" +
           '<span class="muted">' + nf.format(Math.round(capital * (1 + sim.total))) + "원</span></div>" +
         '<div class="tile">매수 후 보유<b class="' + tone(hold.total) + '">' + pct(hold.total) + "</b>" +
           '<span class="muted">' + nf.format(Math.round(capital * (1 + hold.total))) + "원</span></div>" +
-        '<div class="tile">보유 대비<b class="' + tone(diff) + '">' + pct(diff) + "</b>" +
+        '<div class="tile">보유 대비<b class="' + tone(diff) + '">' + (diff*100).toFixed(2) + "%p</b>" +
           '<span class="muted">이 값이 핵심입니다</span></div>' +
         '<div class="tile">관측일 최대 낙폭<b class="down">' + pct(sim.mdd) + "</b>" +
           '<span class="muted">규칙대로 매매</span></div>' +
@@ -548,7 +578,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
           '<span class="muted">보유한 날 / 전체</span></div>' +
         '<div class="tile">누적 비용<b class="down">-' + pct(sim.fees) + "</b>" +
           '<span class="muted">' + nf.format(Math.round(sim.costWon)) + "원</span></div>" +
-      "</div>" + '<div class="muted">비용 합계는 수수료·거래세·슬리피지이며 초기 자금 대비 비율입니다. 최소 1주 매수 불가 ' + sim.unfilled + '회.</div>' + sparkline(sim.curve, hold.curve);
+      "</div>" + '<div class="muted">비용 합계는 수수료·거래세·슬리피지이며 초기 자금 대비 비율입니다. 최소 1주 매수 불가 ' + sim.unfilled + '회.</div></details>' + sparkline(sim.curve, hold.curve);
     $("compare").innerHTML = compareTable(picked, cost, rule, capital);
     $("trades-rule").textContent = "· " + (RULES.filter(function (r) { return r.id === rule; })[0] || {}).name;
 

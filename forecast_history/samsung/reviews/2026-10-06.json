@@ -3,7 +3,7 @@
   "name": "삼성전자",
   "peer_name": "SK하이닉스",
   "session_date": "2026-10-06",
-  "generated_at": "2026-10-06 17:31 KST",
+  "generated_at": "2026-10-06 17:35 KST",
   "summary": {
     "prev_close": 276000.0,
     "open": 278500.0,
@@ -15,11 +15,11 @@
     "c2c": -0.01449275362318836,
     "high_vs_open": 0.0017953321364452268,
     "low_vs_open": -0.030520646319569078,
-    "volume": 14185306.0,
-    "volume_ratio": 0.8539075465318406,
+    "volume": 14185428.0,
+    "volume_ratio": 0.8539148905200971,
     "kospi_c2c": -0.008902400084776163,
     "peer_c2c": -0.03693644758283543,
-    "usdkrw_chg": -0.0030092054628316767,
+    "usdkrw_chg": -0.0031954168716992193,
     "us_nights": 2,
     "sox_ret": 0.026794000652817784,
     "nasdaq_ret": 0.022540933413159214,
@@ -113,16 +113,7 @@
       }
     },
     "from_high": -0.02773473038506724,
-    "buyback": [
-      {
-        "kind": "직접 취득",
-        "start": "2026-08-24",
-        "end": "2026-11-21",
-        "amount": "14,999,999,992,000",
-        "purpose": "임직원 주식보상",
-        "rcept_no": "20260821000616"
-      }
-    ]
+    "buyback": []
   },
   "classification": {
     "labels": [
@@ -152,7 +143,7 @@
         {
           "time": "2026-10-06T08:32:11+09:00",
           "title": "신보, 삼성전자 평택 P5 팹 전기공사 수주",
-          "source": "electimes.com",
+          "source": "전기신문",
           "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE50TjRTYWZwdGtISFRwdGpwMXpSSW1IbE5TZFBMLU8wd2hydkFmS3BDVkgzZnhJU0F3bGFlT2hzYzNtQVloRnRXLUFicDhBc3pSUU9IRkRaWW5GOTc5TTdSNzkwMDBHRm5EXzhvVNIBcEFVX3lxTE9TNHBId2NFVzk2VWhvWFpYWVVmV3R6Q1ZrT2Y0MG5oQkY1U1ZkaG9ua1NKR3JZeDVEX3dyWHRjQWZ5Nmo5LVlpWm8zWmQwRG1HWEstVjF4WkViRXczUDNhZEdsQ3ZHWllrWTh3LUFfTEI?oc=5"
         },
         {
@@ -188,7 +179,7 @@
         {
           "time": "2026-10-06T09:36:00+09:00",
           "title": "\"삼성전자 주가 내년 50만원 갈 수 있다\"",
-          "source": "조선일보",
+          "source": "chosun.com",
           "link": "https://news.google.com/rss/articles/CBMigAFBVV95cUxQMFFEcEhHamk1TzA2eHpOalVJdWtydW8zNUlQU0owLWQ0aVM0QmZXblJhOXQxUDBpam5xS0xCVGZiWnFCLXAxcTNib0dRVmNGRGtuSUwtTksxWGtKZk10cmUtLXc3RGZVMDZ2U3kyTjJwVHQzVGtIREg0ekluMDB0ag?oc=5"
         },
         {
@@ -200,7 +191,7 @@
         {
           "time": "2026-10-06T09:49:18+09:00",
           "title": "삼성바이오로직스 노조, 삼성전자에 첫 단체교섭 요구",
-          "source": "아이뉴스24",
+          "source": "inews24.com",
           "link": "https://news.google.com/rss/articles/CBMiS0FVX3lxTFBEcjhWX2dDb2E4cEEwbk9DT2ZlejNSeDFqTEIzT3lHeWpzS1B5ZEFVMTByYVV1WkU2bHcySW1PcGpQOTdGYko0UGlvbw?oc=5"
         },
         {
@@ -606,7 +597,7 @@
         {
           "time": "2026-10-06T08:32:11+09:00",
           "title": "신보, 삼성전자 평택 P5 팹 전기공사 수주",
-          "source": "electimes.com",
+          "source": "전기신문",
           "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE50TjRTYWZwdGtISFRwdGpwMXpSSW1IbE5TZFBMLU8wd2hydkFmS3BDVkgzZnhJU0F3bGFlT2hzYzNtQVloRnRXLUFicDhBc3pSUU9IRkRaWW5GOTc5TTdSNzkwMDBHRm5EXzhvVNIBcEFVX3lxTE9TNHBId2NFVzk2VWhvWFpYWVVmV3R6Q1ZrT2Y0MG5oQkY1U1ZkaG9ua1NKR3JZeDVEX3dyWHRjQWZ5Nmo5LVlpWm8zWmQwRG1HWEstVjF4WkViRXczUDNhZEdsQ3ZHWllrWTh3LUFfTEI?oc=5"
         },
         {
@@ -644,7 +635,7 @@
         {
           "time": "2026-10-06T09:36:00+09:00",
           "title": "\"삼성전자 주가 내년 50만원 갈 수 있다\"",
-          "source": "조선일보",
+          "source": "chosun.com",
           "link": "https://news.google.com/rss/articles/CBMigAFBVV95cUxQMFFEcEhHamk1TzA2eHpOalVJdWtydW8zNUlQU0owLWQ0aVM0QmZXblJhOXQxUDBpam5xS0xCVGZiWnFCLXAxcTNib0dRVmNGRGtuSUwtTksxWGtKZk10cmUtLXc3RGZVMDZ2U3kyTjJwVHQzVGtIREg0ekluMDB0ag?oc=5"
         },
         {
@@ -656,7 +647,7 @@
         {
           "time": "2026-10-06T09:49:18+09:00",
           "title": "삼성바이오로직스 노조, 삼성전자에 첫 단체교섭 요구",
-          "source": "아이뉴스24",
+          "source": "inews24.com",
           "link": "https://news.google.com/rss/articles/CBMiS0FVX3lxTFBEcjhWX2dDb2E4cEEwbk9DT2ZlejNSeDFqTEIzT3lHeWpzS1B5ZEFVMTByYVV1WkU2bHcySW1PcGpQOTdGYko0UGlvbw?oc=5"
         },
         {
@@ -686,7 +677,7 @@
     {
       "time": "2026-10-06T08:32:11+09:00",
       "title": "신보, 삼성전자 평택 P5 팹 전기공사 수주",
-      "source": "electimes.com",
+      "source": "전기신문",
       "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE50TjRTYWZwdGtISFRwdGpwMXpSSW1IbE5TZFBMLU8wd2hydkFmS3BDVkgzZnhJU0F3bGFlT2hzYzNtQVloRnRXLUFicDhBc3pSUU9IRkRaWW5GOTc5TTdSNzkwMDBHRm5EXzhvVNIBcEFVX3lxTE9TNHBId2NFVzk2VWhvWFpYWVVmV3R6Q1ZrT2Y0MG5oQkY1U1ZkaG9ua1NKR3JZeDVEX3dyWHRjQWZ5Nmo5LVlpWm8zWmQwRG1HWEstVjF4WkViRXczUDNhZEdsQ3ZHWllrWTh3LUFfTEI?oc=5"
     },
     {
@@ -746,8 +737,8 @@
       "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE1WelNFZkE1UzgtcG40SW9EaGR6djJpZlRtQ2NxN3FGNDJ0NEZJaU41SjBmT3lueXgzVE43UHAwdzNCWDRIdEVTeERIYUhsMk93aUZma2VacDNoLS02NlUzZA?oc=5"
     }
   ],
-  "disclosures": [],
-  "disclosure_note": null,
+  "disclosures": null,
+  "disclosure_note": "DART 조회 실패(URLError)",
   "flows": null,
   "flow_story": null,
   "flow_status": {
@@ -763,8 +754,8 @@
     "steady": 32,
     "upper": 0,
     "lower": 0,
-    "individual": 7550.0,
-    "foreign": -17671.0,
+    "individual": 7542.0,
+    "foreign": -17666.0,
     "institution": -35.0,
     "prev_close": 7003.74,
     "open": 7044.67,
@@ -772,75 +763,7 @@
     "low": 6897.38,
     "close": 6941.39
   },
-  "earnings_reactions": {
-    "n": 44,
-    "down": 24,
-    "mean": 0.005144069164658278,
-    "first": "2015-04-07",
-    "last": "2026-07-30",
-    "prior_up": {
-      "n": 26,
-      "down": 15,
-      "mean": 0.006804006996176533
-    },
-    "prior_down": {
-      "n": 18,
-      "down": 9,
-      "mean": 0.0027463811857985753,
-      "next5_n": 18,
-      "next5_up": 8
-    },
-    "rows": [
-      {
-        "date": "2024-04-05",
-        "ret": -0.009378753176508159,
-        "prior20": 0.1868094446056896,
-        "next5": -0.027218968665351784
-      },
-      {
-        "date": "2024-07-05",
-        "ret": 0.029550818588921057,
-        "prior20": 0.09789840714462672,
-        "next5": -0.030998790775496055
-      },
-      {
-        "date": "2024-10-08",
-        "ret": -0.011475407561411965,
-        "prior20": -0.17550720206890336,
-        "next5": -0.013266995681315064
-      },
-      {
-        "date": "2025-01-08",
-        "ret": 0.03429607257566447,
-        "prior20": 0.038691759055365926,
-        "next5": -0.06282726207437195
-      },
-      {
-        "date": "2025-04-08",
-        "ret": 0.005639114054833083,
-        "prior20": -0.0034249873791928342,
-        "next5": 0.05794389353365759
-      },
-      {
-        "date": "2025-10-14",
-        "ret": -0.01822079386417541,
-        "prior20": 0.3484355968820865,
-        "next5": 0.06441047284052348
-      },
-      {
-        "date": "2026-04-07",
-        "ret": 0.017607433616103174,
-        "prior20": 0.11527197433303193,
-        "next5": 0.05089058828005988
-      },
-      {
-        "date": "2026-07-30",
-        "ret": -0.007194244604316502,
-        "prior20": -0.37574850299401197,
-        "next5": 0.11352657004830924
-      }
-    ]
-  },
+  "earnings_reactions": null,
   "forecasts": [
     {
       "model": "No macro ensemble",

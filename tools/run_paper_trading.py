@@ -45,6 +45,7 @@ def run(config, database, status, initialize=False, halt=False):
     # 달력이 실패하면 휴장일을 추정하지 않고 중단한다.
     trading_day = False if initialize or halt else is_session(now)
     errors, quotes, signals = [], [], []
+    collection_status = {target: {} for target in config['targets']}
     if trading_day and not initialize:
         for target in config['targets']:
             try:
@@ -52,20 +53,23 @@ def run(config, database, status, initialize=False, halt=False):
                 if q:
                     quotes.append(q)
                 else:
+                    collection_status[target]['quote_error'] = 'no_completed_bar'
                     errors.append(target + ': 완료된 1분봉 없음')
             except Exception as exc:
+                collection_status[target]['quote_error'] = type(exc).__name__
                 errors.append(target + ': 시세 수집 실패 ' + type(exc).__name__)
             path = ROOT / 'forecast_history' / target / 'forecast_log.csv'
             try:
                 with path.open(encoding='utf-8-sig', newline='') as f:
                     signals.extend(dict(r, target=target) for r in csv.DictReader(f))
             except Exception as exc:
+                collection_status[target]['signal_error'] = type(exc).__name__
                 errors.append(target + ': 예측 수집 실패 ' + type(exc).__name__)
     book = PaperBook(database, config)
     try:
         if halt:
             book.halt('운영자 신규 매수 중지')
-        result = book.snapshot() if initialize or halt else book.tick(signals, quotes, datetime.now(timezone.utc).isoformat(), trading_day)
+        result = book.snapshot() if initialize or halt else book.tick(signals, quotes, datetime.now(timezone.utc).isoformat(), trading_day, collection_status=collection_status)
     finally:
         book.close()
     result.update({'generated_at_utc': datetime.now(timezone.utc).isoformat(), 'collection_errors': errors,
@@ -81,6 +85,10 @@ def run(config, database, status, initialize=False, halt=False):
     result['decisions'] = result['decisions'][-100:]
     result['fills'] = result['fills'][-100:]
     status.write_text(json.dumps(result, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+    # 원장 수익성이나 체결 성공을 뜻하지 않는다. 관측/차단 사유만 짧게 남긴다.
+    for target, detail in (result.get('diagnostics') or {}).get('targets', {}).items():
+        print(f"모의운용 진단 {target}: 시세 {detail['quote_timestamp']} / 지연 {detail['quote_age_seconds']}초 / "
+              f"유효 신호 {detail['eligible_signal_count']} / 사유 {json.dumps(detail['reason_counts'], ensure_ascii=False)}")
     return result
 
 

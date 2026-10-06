@@ -365,6 +365,32 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
       return "<tr><td>"+time(o.decision_at)+"</td><td>"+esc(names[o.target]||o.target)+"</td><td>모의 "+(o.side==="buy"?"매수":"청산")+
         '</td><td class="num">'+o.qty+"주</td><td>"+esc(labels[o.status]||o.status)+" "+esc(reasons[o.reason]||o.reason)+"</td></tr>";
     }).join("");
+    var diagnostic='<p class="muted">진단 정보가 없는 이전 저장본입니다. 다음 모의운용 실행 후 표시됩니다.</p>';
+    if(r.diagnostics && r.diagnostics.schema_version===1) {
+      var d=r.diagnostics, reasonNames={
+        stale_quote:"시세 지연으로 거래 제외",no_quote:"이번 실행에서 받은 시세 없음",
+        invalid_quote:"미래 시각 또는 유효하지 않은 시세",quote_outside_session:"거래 시간 밖 시세",
+        quote_collection_failed:"시세 수집 실패",signal_collection_failed:"예측 자료 읽기 실패",
+        selected_signal_invalid:"최초 선택 예측의 확률 오류 · 이후 후보로 대체하지 않음",
+        no_signal:"예측 자료 없음",no_eligible_signal:"날짜·모델·시각·확률 조건을 통과한 예측 없음",
+        non_trading_day:"휴장일",outside_decision_window:"거래 판단 시간 밖",entry_window_closed:"신규 진입 시간 종료",
+        already_decided:"오늘 최초 판단이 이미 기록됨",already_holding:"이미 보유 중",hold_cash:"상승 우위가 없어 현금 유지",
+        halted:"신규 매수 중지",order_halted:"대기 주문 중지",blocked_by_limit:"투자 한도·현금 부족",
+        risk_changed:"체결 시 투자 한도 초과",position_quote_missing:"보유 종목의 신선한 시세 부족",
+        order_expired:"대기 주문 유효시간 초과",price_moved:"주문 뒤 가격 변동 한도 초과",
+        awaiting_fill_quote:"결정 이후의 체결용 시세 대기",order_created:"모의 주문 생성",filled:"모의 체결 완료"};
+      var details=Object.keys(d.targets||{}).map(function(t){
+        var x=d.targets[t], age=x.quote_age_seconds;
+        var ageLabel=typeof age==='number'&&Number.isFinite(age)?Math.round(age)+'초':'확인 불가';
+        var reasons=Object.keys(x.reason_counts||{}).map(function(k){return esc(reasonNames[k]||k)+' ('+esc(x.reason_counts[k])+')';}).join(' · ');
+        return '<tr><th scope="row">'+esc(names[t]||t)+'</th><td>'+time(x.quote_timestamp)+
+          '<br>수집 '+time(x.observed_at)+'</td><td>'+esc(ageLabel)+'</td><td>읽은 예측 '+esc(x.signal_count)+
+          '건 · 유효 후보 '+esc(x.eligible_signal_count)+'건</td><td>'+(reasons||'차단·주문 이벤트 없음')+'</td></tr>';
+      }).join('');
+      diagnostic='<h4>최근 실행에서 거래가 진행되거나 건너뛴 이유</h4><p>마지막 전체 시세 정상 관측: '+time(d.last_success_at)+
+        '</p><p class="muted">두 종목의 시세가 유효시간 이내이고 수집 오류가 없었던 실행입니다. 주문·수익 발생을 뜻하지 않습니다. 아래 사유는 마지막 실행 기준이며 누적 횟수가 아닙니다.</p>'+
+        '<div style="overflow-x:auto"><table><tr><th>종목</th><th>시세·수집 시각</th><th>당시 지연</th><th>예측 자료</th><th>처리 사유</th></tr>'+details+'</table></div>';
+    }
     $("paper-status").innerHTML='<div class="warn"><b>실주문 없는 관찰용 계좌 · 수익성 미검증</b><br>'+esc(r.notice)+"</div>"+
       '<p>전략 '+esc(c.version)+" · "+esc(c.model)+" · 상승 확률 &gt; 하락 확률일 때만 모의 진입</p>"+
       '<p>마지막 실행: '+time(r.last_tick)+(old?' <b>최근 30분 내 관측 없음 (휴장·장외 포함)</b>':"")+"</p>"+
@@ -376,6 +402,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
       '<p class="muted">가상 초기 자금 '+nf.format(c.capital)+"원 · 종목 한도 "+(c.max_symbol_weight*100)+"% · 반도체 합산 "+(c.max_sector_weight*100)+"% · 일일 손실 "+(c.max_daily_loss*100)+"%에서 신규 매수 중지. 비용은 고정 가정입니다.</p>"+
       '<p class="muted">09:45부터 관측 후 결정하고 다음 실행에서 체결합니다. 14:30부터 신규 진입 중지, 15:00부터 청산을 시도합니다. 예약 실행 지연·시세 누락으로 당일 청산되지 않을 수 있습니다. '+
       ((stale||old)?"평가액에 이전 시세가 포함될 수 있습니다. ":"")+"실험실의 위 입력값은 이 계좌 설정을 바꾸지 않습니다.</p>"+
+      diagnostic+
       (r.collection_errors.length?'<p class="warn">'+esc(r.collection_errors.join(" · "))+"</p>":"")+
       (body?'<div style="overflow-x:auto"><table><tr><th>결정 시각</th><th>종목</th><th>구분</th><th>수량</th><th>상태</th></tr>'+body+"</table></div>":'<p class="muted">아직 모의 주문이 없습니다.</p>')+
       '<p><a href="https://raw.githubusercontent.com/namyikim/predict_stock/main/docs/lab/paper_status.json">전체 설정·최근 체결 JSON</a> · <a href="https://github.com/namyikim/predict_stock/actions/workflows/paper-trading.yml">실행 내역·신규 매수 중지</a></p>';

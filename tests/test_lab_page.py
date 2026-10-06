@@ -357,3 +357,30 @@ assert.ok(!html.includes('<script>잘못된 응답'));
 '''
         done=subprocess.run(['node'],input=harness,text=True,capture_output=True)
         self.assertEqual(done.returncode,0,done.stderr)
+
+
+class PaperDiagnosticsViewTests(PageSource):
+    def test_diagnostics_and_legacy_state_render(self):
+        data=json.loads((ROOT/'docs/lab/paper_status.json').read_text())
+        data['diagnostics']={'schema_version':1,'last_success_at':None,'targets':{'samsung':{
+            'quote_timestamp':'2026-10-06T03:38:00+00:00','observed_at':'2026-10-06T03:57:57+00:00',
+            'quote_age_seconds':1197,'signal_count':4,'eligible_signal_count':1,
+            'reason_counts':{'stale_quote':1,'<img src=x>':1}}}}
+        script=self.script.replace('  loadPaper();','  global.renderPaperForTest=renderPaper;')
+        harness=f'''const elements={{}};
+global.document={{getElementById:(id)=>elements[id]||(elements[id]={{value:'samsung',addEventListener:()=>{{}}}}),querySelectorAll:()=>[]}};
+global.fetch=()=>new Promise(()=>{{}});
+eval({json.dumps(script)});
+const data={json.dumps(data)};
+renderPaperForTest(data);
+const assert=require('node:assert/strict'),html=elements['paper-status'].innerHTML;
+assert.ok(html.includes('시세 지연으로 거래 제외'));
+assert.ok(html.includes('1197초'));
+assert.ok(html.includes('유효 후보 1건'));
+assert.ok(html.includes('&lt;img src=x&gt;'));
+assert.ok(!html.includes('<img src=x>'));
+delete data.diagnostics;renderPaperForTest(data);
+assert.ok(elements['paper-status'].innerHTML.includes('진단 정보가 없는 이전 저장본'));
+'''
+        done=subprocess.run(['node'],input=harness,text=True,capture_output=True)
+        self.assertEqual(done.returncode,0,done.stderr)

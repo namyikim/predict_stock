@@ -80,6 +80,13 @@ window.addEventListener("hashchange",route);route();
 })();</script>"""
 
 
+try:
+    from .report_ui import simple_document
+except ImportError:
+    from report_ui import simple_document
+
+
+@simple_document
 def build_hub():
     """틀 페이지 HTML. 자료를 받지 않으므로 같은 입력이면 늘 같은 출력이다."""
     import json

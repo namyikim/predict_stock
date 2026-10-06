@@ -239,6 +239,14 @@ def _pct(x):
     return "—" if x is None else f"{x:+.1%}"
 
 
+# 직접 실행과 패키지 import 모두 지원한다.
+try:
+    from .report_ui import simple_document
+except ImportError:
+    from report_ui import simple_document
+
+
+@simple_document
 def build_html(rows, span, now):
     e = html.escape
     body = []

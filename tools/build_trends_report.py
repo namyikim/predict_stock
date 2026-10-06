@@ -79,6 +79,14 @@ def _kst(pub_date):
     return ""
 
 
+# 직접 실행과 패키지 import 모두 지원한다.
+try:
+    from .report_ui import simple_document
+except ImportError:
+    from report_ui import simple_document
+
+
+@simple_document
 def build_html(items, geo, now):
     e = html.escape
     rows = []

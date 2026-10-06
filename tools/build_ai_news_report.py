@@ -177,6 +177,14 @@ def _safe_url(url):
     return url if parsed.scheme in ("http", "https") and parsed.netloc else ""
 
 
+# 직접 실행과 패키지 import 모두 지원한다.
+try:
+    from .report_ui import simple_document
+except ImportError:
+    from report_ui import simple_document
+
+
+@simple_document
 def build_html(ranked, now, total, failed, topic=None):
     """순위표 한 장. 인기 급상승 검색어 페이지와 같은 모양(순위 · 말 · 기사 세 건). topic 을 안 주면 AI 뉴스다."""
     e = html.escape

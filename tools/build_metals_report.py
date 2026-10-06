@@ -679,6 +679,14 @@ def render(results, usdkrw, today, quality):
     return tabify_sections("".join(parts), groups=METAL_TABS, default_label="금 · 단기 예측"), pred
 
 
+# 직접 실행과 패키지 import 모두 지원한다.
+try:
+    from .report_ui import simple_document
+except ImportError:
+    from report_ui import simple_document
+
+
+@simple_document
 def page(inner, pred, today):
     counter = ('<div style="margin-top:10px;font-variant-numeric:tabular-nums">조회 <span id="view-count">—</span></div>'
                '<script>(function(){' f'var E="{COUNTER_ENDPOINT}",P="metals";'

@@ -891,6 +891,14 @@ def inputs_fingerprint(history=None):
     return digest.hexdigest()[:16]
 
 
+# 직접 실행과 패키지 import 모두 지원한다.
+try:
+    from .report_ui import simple_document
+except ImportError:
+    from report_ui import simple_document
+
+
+@simple_document
 def build_page(now=None, fx_frame=None, fx_info=None, us_jp_frame=None, us_jp_info=None,
                us_market_frame=None, us_market_info=None, saving_frame=None, saving_info=None,
                cycle_fetch=True):

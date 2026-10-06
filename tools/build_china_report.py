@@ -626,6 +626,14 @@ def render(plan_results, csi, rows15, today, fetched):
     return tabify_sections("".join(parts), groups=china_tabs(PLANS), default_label="한눈에")
 
 
+# 직접 실행과 패키지 import 모두 지원한다.
+try:
+    from .report_ui import simple_document
+except ImportError:
+    from report_ui import simple_document
+
+
+@simple_document
 def page(inner, today):
     counter = (
         '<div style="margin-top:10px;font-variant-numeric:tabular-nums">조회 <span id="view-count">—</span></div>'

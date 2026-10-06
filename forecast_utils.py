@@ -188,24 +188,24 @@ def next_day_forecast_html(*, prediction_date, summary, open_forecast, price_for
         return f"{point:,.0f}원", (f"전일 종가 대비 {change:+.2%}" if change is not None else "모델 예상")
 
     by_days = {r.get("trading_days"): r for r in (price_forecasts or []) if hasattr(r, "get")}
-    cards = [("시초가 · 09:00",) + price(open_forecast, "predicted_open") + (True,),
+    cards = [("시초가 예측 · 09:00",) + price(open_forecast, "predicted_open") + (True,),
              ("종가 방향", call["label"], direction_note, False),
-             ("종가 · 15:30",) + price(by_days.get(1, {}), "predicted_close") + (False,)]
+             ("종가 예측 · 15:30",) + price(by_days.get(1, {}), "predicted_close") + (False,)]
     body = ""
     for label, value, note, big in cards:
         muted = value in ("예측 안 함", "판단 어려움", "판단 유보")
         size = 16 if muted else (24 if big else 19)
-        body += (f'<div style="{_CARD}{";flex:2 1 150px" if big else ""}">'
-                 f'<div style="font-size:11px;color:#7a8797">{escape(label)}'
+        body += (f'<div class="forecast-card" style="{_CARD}{";flex:2 1 150px" if big else ""}">'
+                 f'<div class="forecast-label" style="font-size:11px;color:#7a8797">{escape(label)}'
                  f'{" · 밤사이 미국 시장을 반영한 값 · 09:00 전에만 의미" if big else ""}</div>'
-                 f'<div style="font-size:{size}px;font-weight:700;line-height:1.35;'
+                 f'<div class="forecast-value" style="font-size:{size}px;font-weight:700;line-height:1.35;'
                  f'color:{"#8a9199" if muted else "#1a1a1a"}">{escape(value)}</div>'
-                 f'<div style="font-size:11px;color:#7a8797;line-height:1.45">{escape(note)}</div></div>')
+                 f'<div class="forecast-note" style="font-size:11px;color:#7a8797;line-height:1.45">{escape(note)}</div></div>')
     when = _day_label(open_forecast.get("target_date", prediction_date)) or _day_label(prediction_date)
-    return (f'<div style="{_BOX}">'
-            f'<div style="font-size:14px;font-weight:700;margin-bottom:8px">다음 거래일 '
+    return (f'<div class="forecast-hero" style="{_BOX}">'
+            f'<div class="forecast-date" style="font-size:14px;font-weight:700;margin-bottom:8px">다음 거래일 '
             f'{escape(when or "날짜 미확인")} 예측</div>'
-            f'<div style="display:flex;gap:8px;flex-wrap:wrap">{body}</div></div>')
+            f'<div class="forecast-grid" style="display:flex;gap:8px;flex-wrap:wrap">{body}</div></div>')
 
 
 def scorecard_html(review, ensemble_name="Mean ensemble", note=""):
@@ -1359,7 +1359,9 @@ def easy_summary_html(*, name, prediction_date, data_date, summary, open_forecas
             '<h3 style="margin:0 0 6px;font-size:19px">한눈에 보는 쉬운 요약</h3>'
             f'<div style="font-size:12px;color:#586575">단기 데이터 기준 {escape(date_text(data_date))} · '
             '보고서 생성 시점의 계산 결과를 쉬운 말로 풀었습니다.</div>'
-            f'{top}{lead}{status}{price_block}{outlook}{fine_print}</section>')
+            f'{lead}{status}{top}{price_block}'
+            '<details class="report-detail"><summary>중장기 전망과 회사 실적 · 자세히 보기</summary>'
+            f'{outlook}</details>{fine_print}</section>')
 
 
 _TILE_COLORS = {"up": "#1e6b34", "down": "#a8322a", "": "#1a1a1a", "muted": "#8a9199"}

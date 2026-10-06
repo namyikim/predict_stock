@@ -55,23 +55,23 @@ class TopOfSummaryTests(unittest.TestCase):
         args.update(changes)
         return forecast_utils.easy_summary_html(**args)
 
-    def test_next_day_open_direction_and_close_come_before_everything_else(self):
+    def test_plain_summary_precedes_forecast_cards_and_review(self):
         html = self.render()
         top = html.index("다음 거래일 2026-09-14 (월) 예측")
         last = html.index("지난 예측은 맞았나")
         self.assertLess(top, last)
         self.assertLess(last, html.index("지금까지 성적"))
-        self.assertLess(html.index("지금까지 성적"), html.index("전체 결론"))
+        self.assertLess(html.index("전체 결론"), top)
         cards = html[top:last]
-        self.assertLess(cards.index("시초가 · 09:00"), cards.index("종가 방향"))
-        self.assertLess(cards.index("종가 방향"), cards.index("종가 · 15:30"))
+        self.assertLess(cards.index("시초가 예측 · 09:00"), cards.index("종가 방향"))
+        self.assertLess(cards.index("종가 방향"), cards.index("종가 예측 · 15:30"))
         for text in ("70,100원", "+0.40%", "▲ 상승", "71,000원", "+1.20%"):
             self.assertIn(text, cards)
 
     def test_the_rest_of_the_summary_stays_below(self):
         html = self.render()
         # 2026-09-28: 글 목록 대신 가격 범위 그림·숫자 타일·작은 회색 주석으로 바꿨다. 순서는 그대로.
-        for label in ("전체 결론", "가격 전망 — 시초가예측과 종가예측",
+        for label in ("가격 전망 — 시초가예측과 종가예측",
                       "중장기 전망", "회사 실적 — 본업으로 번 이익", "얼마나 믿을 수 있나요?", "주의할 점"):
             self.assertGreater(html.index(label), html.index("지금까지 성적"), label)
 

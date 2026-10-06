@@ -11,7 +11,7 @@ DATA_SOURCE_MODULES = ["_common", "kosis", "ecos", "oecd", "exports", "flows", "
 _PACKAGE_IMPORT = re.compile(r"^from data_sources[.\w]* import .*$", re.M)
 
 
-HELPER_TAGS = ["forecast_utils", "macro_utils", "report_html", "github_pages"]
+HELPER_TAGS = ["forecast_utils", "macro_utils", "report_html", "github_pages", "report_ui"]
 
 
 def github_pages_cell():
@@ -35,6 +35,12 @@ def github_pages_cell():
 
 def helper_source(tag):
     """노트북에 넣을 본문. macro_utils 는 facade 라서 data_sources/ 모듈을 이어 붙인다."""
+    if tag == "report_ui":
+        source = (ROOT / "tools" / "report_ui.py").read_text(encoding="utf-8")
+        return ("import sys as _sys, types as _types\n"
+                "report_ui = _types.ModuleType('report_ui')\n"
+                f"exec(compile({source!r}, 'report_ui.py', 'exec'), report_ui.__dict__)\n"
+                "_sys.modules['report_ui'] = report_ui\n")
     if tag == "github_pages":
         return github_pages_cell()
     if tag != "macro_utils":

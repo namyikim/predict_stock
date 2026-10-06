@@ -1,25 +1,11 @@
-<!doctype html>
-<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>최신 뉴스 및 트렌드</title><style>
-html,body{overflow-x:hidden;overflow-x:clip}
-body{margin:0;padding:24px 20px 48px;background:#fff;font-family:-apple-system,'Malgun Gothic',sans-serif;
-line-height:1.65;color:#1a1a1a;-webkit-font-smoothing:antialiased}
-.wrap{max-width:860px;margin:0 auto}a{color:#1a5490}
-@media(max-width:640px){body{padding:16px 12px 32px}}
-/* 알약 버튼 탭(2026-09-28): 밑줄 글자는 버튼으로 읽히지 않았다. 종목 보고서 탭(report_html)과 같은 모양이다. */
-.hub-tabs{position:sticky;top:0;z-index:20;display:flex;flex-wrap:wrap;gap:6px;background:#fff;
-border-bottom:1px solid #d8dce0;margin:0 0 10px;padding:8px 0 10px}
-.hub-tabs a{flex:0 0 auto;padding:8px 16px;min-height:36px;box-sizing:border-box;font-size:14px;font-weight:600;
-line-height:1.3;color:#1a5490;background:#f0f6fc;border:1px solid #b9d3ec;border-radius:999px;text-decoration:none;
-white-space:nowrap}
-.hub-tabs a:hover{background:#e0edf9;border-color:#7fa9d4}
-.hub-tabs a[aria-selected="true"]{color:#fff;background:#1a5490;border-color:#1a5490;box-shadow:0 1px 4px rgba(26,84,144,.35)}
-.hub-tabs a:focus-visible{outline:2px solid #1a5490;outline-offset:2px}
-@media(max-width:640px){.hub-tabs{gap:5px}.hub-tabs a{padding:7px 12px;font-size:13px;min-height:34px}}
-.hub-panel iframe{display:block;width:100%;height:80vh;border:0}
-.hub-on .hub-panel{display:none}
-.hub-on .hub-panel.is-active{display:block}
-body{zoom:1.15}
-</style><!-- REPORT_UI_START --><style id="report-simple-ui">
+"""보고서 공통 화면. 데이터 재수집 없이 기존 발행본에도 같은 디자인을 적용한다."""
+from functools import wraps
+from pathlib import Path
+import re
+
+START = '<!-- REPORT_UI_START -->'
+END = '<!-- REPORT_UI_END -->'
+STYLE = """<style id="report-simple-ui">
 :root{color-scheme:light;--surface:#fff!important;--surface-2:#f5f8fc!important;--border:#e1e8f2!important;--border-strong:#cbd8ea!important;--text:#182b46!important;--text-2:#465973!important;--text-3:#62748b!important;--accent:#2463d4!important}
 html{background:#f2f6fc;scroll-padding-top:90px}
 body{margin:0!important;padding:32px 20px 64px!important;zoom:1!important;background:#f2f6fc!important;color:#182b46;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Malgun Gothic',sans-serif!important;font-size:15px;line-height:1.7;-webkit-font-smoothing:antialiased}
@@ -45,7 +31,9 @@ details.report-detail{border:1px solid #dce5f2;border-radius:12px;background:#ff
 .report-table-scroll{max-width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch;margin:12px 0}.report-table-scroll>table{margin:0!important}table{border-spacing:0}th{font-size:13px!important}td{font-size:13px}th,td{line-height:1.65}img{max-width:100%;height:auto}svg{max-width:100%}
 @media(max-width:640px){body{padding:12px 10px 32px!important}body>.wrap,body>div[style*="max-width"]:not(#stale-note){padding:20px 14px!important;border-radius:18px}h1{font-size:25px!important}h3{font-size:19px!important}#easy-summary{padding:16px 12px!important}.forecast-grid{grid-template-columns:1fr}.forecast-hero{padding:16px!important}.forecast-value{font-size:29px!important}.rtabs a,.hub-tabs a,.tab{padding:9px 11px!important}.tiles{grid-template-columns:1fr!important}}
 @media print{body{background:white!important;padding:0!important}body>.wrap{border:0;box-shadow:none;padding:0!important}.forecast-hero{background:#eef4ff!important;color:#182b46!important}.report-table-scroll{overflow:visible}}
-</style><script id="report-simple-ui-script">
+</style>"""
+# 기존 발행본은 숫자를 다시 계산하지 않고 의미별 클래스만 붙인다. 숨김·발송 상태는 건드리지 않는다.
+SCRIPT = """<script id="report-simple-ui-script">
 (function(){
 function enhance(){
  const summary=document.getElementById('easy-summary');
@@ -82,30 +70,37 @@ function enhance(){
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',enhance);else enhance();
 })();
-</script><!-- REPORT_UI_END --></head><body><div class="wrap" id="hub"><div style="margin-bottom:10px"><a href="../" style="display:inline-block;font-size:12px;color:#1a5490;text-decoration:none;border:1px solid #cedff0;border-radius:5px;padding:5px 11px;background:#f0f6fc">← 보고서 목록</a></div><div style="padding-bottom:8px;margin-bottom:6px"><div style="font-size:11px;letter-spacing:2px;color:#8a9199">NEWS &amp; TRENDS</div><h2 style="margin:6px 0 4px;font-size:27px">최신 뉴스 및 트렌드</h2><div style="font-size:12px;color:#8a9199">탭마다 따로 갱신됩니다 — AI 뉴스·로봇 뉴스와 검색어는 약 3시간마다, 장기 관심도는 하루 한 번. 각 탭 안에 기준 시각이 적혀 있습니다.</div></div><nav class="hub-tabs" aria-label="뉴스와 트렌드 탭"><a href="#ai_news" data-tab="ai_news" aria-selected="true">최신 AI 뉴스</a><a href="#robot_news" data-tab="robot_news" aria-selected="false">최신 로봇 뉴스</a><a href="#trends" data-tab="trends" aria-selected="false">인기 급상승 검색어</a><a href="#interest" data-tab="interest" aria-selected="false">장기 관심도</a></nav><section class="hub-panel" id="panel-ai_news" data-tab="ai_news"><iframe title="최신 AI 뉴스" data-src="../ai_news/"></iframe><noscript><p><a href="../ai_news/">최신 AI 뉴스 열기</a></p></noscript></section><section class="hub-panel" id="panel-robot_news" data-tab="robot_news"><iframe title="최신 로봇 뉴스" data-src="../robot_news/"></iframe><noscript><p><a href="../robot_news/">최신 로봇 뉴스 열기</a></p></noscript></section><section class="hub-panel" id="panel-trends" data-tab="trends"><iframe title="인기 급상승 검색어" data-src="../trends/"></iframe><noscript><p><a href="../trends/">인기 급상승 검색어 열기</a></p></noscript></section><section class="hub-panel" id="panel-interest" data-tab="interest"><iframe title="장기 관심도" data-src="../interest/"></iframe><noscript><p><a href="../interest/">장기 관심도 열기</a></p></noscript></section><div style="margin-top:24px;padding-top:14px;border-top:1px solid #e5e5e5;font-size:12px;color:#8a9199">헤드라인과 검색 지표 모음입니다. 투자 자문이 아닙니다.</div></div><script>(function(){
-var root=document.getElementById("hub");if(!root)return;
-var tabs=root.querySelectorAll(".hub-tabs a"),panels=root.querySelectorAll(".hub-panel");
-if(!panels.length)return;root.className+=" hub-on";
-function fit(frame){try{var d=frame.contentDocument;if(!d||!d.documentElement)return;
-var h=Math.max(d.documentElement.scrollHeight,d.body?d.body.scrollHeight:0);if(h>0)frame.style.height=h+"px";}catch(e){}}
-function dress(frame){try{var d=frame.contentDocument;if(!d||!d.head)return;
-if(!d.getElementById("hub-embed")){var s=d.createElement("style");s.id="hub-embed";s.textContent="body{padding:2px 2px 12px!important}.page-title{display:none!important}";d.head.appendChild(s);}
-var links=d.querySelectorAll("a[href]");
-for(var i=0;i<links.length;i++){var h=links[i].getAttribute("href")||"";
-if(h.charAt(0)!=="#"&&!links[i].getAttribute("target"))links[i].setAttribute("target","_top");}}catch(e){}}
-function watch(frame){frame.addEventListener("load",function(){dress(frame);fit(frame);
-try{if(window.ResizeObserver){new ResizeObserver(function(){fit(frame);}).observe(frame.contentDocument.body);}}catch(e){}
-var n=0,t=setInterval(function(){fit(frame);if(++n>=12)clearInterval(t);},500);});}
-function show(key){var hit=null,i;
-for(i=0;i<panels.length;i++){var on=panels[i].getAttribute("data-tab")===key;panels[i].classList.toggle("is-active",on);if(on)hit=panels[i];}
-if(!hit){hit=panels[0];hit.classList.add("is-active");key=hit.getAttribute("data-tab");}
-for(i=0;i<tabs.length;i++){tabs[i].setAttribute("aria-selected",tabs[i].getAttribute("data-tab")===key?"true":"false");}
-var frame=hit.querySelector("iframe");
-if(frame&&!frame.getAttribute("src")){watch(frame);frame.setAttribute("src",frame.getAttribute("data-src"));}
-else if(frame){fit(frame);}
-return key;}
-for(var k=0;k<tabs.length;k++){tabs[k].addEventListener("click",function(e){e.preventDefault();
-var key=show(this.getAttribute("data-tab"));try{history.replaceState(null,"","#"+key);}catch(err){}});}
-function route(){show((location.hash||"").slice(1));}
-window.addEventListener("hashchange",route);route();
-})();</script></body></html>
+</script>"""
+
+
+def apply_simple_ui(document):
+    """완성 HTML의 공통 화면만 갱신한다. 원문·실행 시각·기존 스크립트는 보존한다."""
+    if not re.search(r'</head\s*>', document, re.I):
+        return document
+    document = re.sub(re.escape(START) + r'.*?' + re.escape(END), '', document, flags=re.S)
+    block = START + STYLE + SCRIPT + END
+    return re.sub(r'</head\s*>', lambda m: block + m.group(), document, count=1, flags=re.I)
+
+
+def simple_document(builder):
+    """모든 생성기가 같은 화면으로 발행하도록 반환값에 적용한다."""
+    @wraps(builder)
+    def wrapped(*args, **kwargs):
+        return apply_simple_ui(builder(*args, **kwargs))
+    return wrapped
+
+
+def refresh_existing(root):
+    """수집·예측·원장 기록 없이 기존 보고서의 화면만 재생성한다."""
+    changed = 0
+    for path in Path(root).rglob('*.html'):
+        before = path.read_text(encoding='utf-8')
+        after = apply_simple_ui(before)
+        if after != before:
+            path.write_text(after, encoding='utf-8')
+            changed += 1
+    return changed
+
+
+if __name__ == '__main__':
+    print(f"공통 화면 적용: {refresh_existing(Path(__file__).resolve().parents[1] / 'docs')}개")

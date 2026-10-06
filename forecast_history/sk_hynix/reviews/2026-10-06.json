@@ -3,7 +3,7 @@
   "name": "SK하이닉스",
   "peer_name": "삼성전자",
   "session_date": "2026-10-06",
-  "generated_at": "2026-10-06 16:47 KST",
+  "generated_at": "2026-10-06 17:31 KST",
   "summary": {
     "prev_close": 1841000.0,
     "open": 1835000.0,
@@ -15,11 +15,11 @@
     "c2c": -0.03693644758283543,
     "high_vs_open": 0.0010899182561308063,
     "low_vs_open": -0.034877384196185246,
-    "volume": 2974266.0,
-    "volume_ratio": 0.9347965141934301,
+    "volume": 2999227.0,
+    "volume_ratio": 0.9426416281781181,
     "kospi_c2c": -0.008902400084776163,
     "peer_c2c": -0.01449275362318836,
-    "usdkrw_chg": -0.0007300250985338153,
+    "usdkrw_chg": -0.0027410719448872634,
     "us_nights": 2,
     "sox_ret": 0.026794000652817784,
     "nasdaq_ret": 0.022540933413159214,
@@ -172,14 +172,14 @@
         {
           "time": "2026-10-06T09:04:25+09:00",
           "title": "SK하이닉스 주가 상승 중",
-          "source": "아시아뉴스통신",
+          "source": "anewsa.com",
           "link": "https://news.google.com/rss/articles/CBMidEFVX3lxTFB3OW1RaWg3WkxXNTlSanBROFh2WGVlWFZEemt6VmMzbVA3MmpKNXU4TjlDd3NOcERrZ25tNVFsdUNJTzFZVC1yTDJWYTFMUkhlandrLVNIWWt1TlJOcS1Pa09ZbTltNUMwSC1MX3Y2VWxNTjlG?oc=5"
         },
         {
-          "time": "2026-10-06T09:06:00+09:00",
-          "title": "\"삼성전자 3분기 실적 주목…환율 효과·본업 실적 구분해야\"",
-          "source": "뉴스투데이",
-          "link": "https://news.google.com/rss/articles/CBMiXkFVX3lxTE9adENpMUZ1UERfVXZHa0tGMWFiR1FGdGNLdmtuS3RiTFhJbUxwcEU2ZWgxSmMzS3ZCLWN5bmxNcElNNjVBUndxbXlNb3pzRTM4bmpSV2RuejloRE43Zmc?oc=5"
+          "time": "2026-10-06T07:47:00+09:00",
+          "title": "[전날 애프터마켓] SK하이닉스·KB금융 상승폭 확대…코스닥선 심텍ㆍ리노공업 강세 지속",
+          "source": "이투데이",
+          "link": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE1kajVLeGhBb2xVbXA5NUVONkI5RGdHUGdrbmt6aUJKUzJiR1Y2dXJOR1I3V19lcWhCaG5pTU1yQWdsZkJLU2FMRC1ZT3dLTjRqQlZnbg?oc=5"
         }
       ]
     }
@@ -584,14 +584,14 @@
         {
           "time": "2026-10-06T09:04:25+09:00",
           "title": "SK하이닉스 주가 상승 중",
-          "source": "아시아뉴스통신",
+          "source": "anewsa.com",
           "link": "https://news.google.com/rss/articles/CBMidEFVX3lxTFB3OW1RaWg3WkxXNTlSanBROFh2WGVlWFZEemt6VmMzbVA3MmpKNXU4TjlDd3NOcERrZ25tNVFsdUNJTzFZVC1yTDJWYTFMUkhlandrLVNIWWt1TlJOcS1Pa09ZbTltNUMwSC1MX3Y2VWxNTjlG?oc=5"
         },
         {
-          "time": "2026-10-06T09:06:00+09:00",
-          "title": "\"삼성전자 3분기 실적 주목…환율 효과·본업 실적 구분해야\"",
-          "source": "뉴스투데이",
-          "link": "https://news.google.com/rss/articles/CBMiXkFVX3lxTE9adENpMUZ1UERfVXZHa0tGMWFiR1FGdGNLdmtuS3RiTFhJbUxwcEU2ZWgxSmMzS3ZCLWN5bmxNcElNNjVBUndxbXlNb3pzRTM4bmpSV2RuejloRE43Zmc?oc=5"
+          "time": "2026-10-06T07:47:00+09:00",
+          "title": "[전날 애프터마켓] SK하이닉스·KB금융 상승폭 확대…코스닥선 심텍ㆍ리노공업 강세 지속",
+          "source": "이투데이",
+          "link": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE1kajVLeGhBb2xVbXA5NUVONkI5RGdHUGdrbmt6aUJKUzJiR1Y2dXJOR1I3V19lcWhCaG5pTU1yQWdsZkJLU2FMRC1ZT3dLTjRqQlZnbg?oc=5"
         }
       ],
       "price": 1821000.0,
@@ -612,22 +612,22 @@
       "link": "https://news.google.com/rss/articles/CBMihwFBVV95cUxNalRwemJLLTVFb2FqTG5reWIxMmQyY0lqZ3dDTzI1ZVlZNTZJOG9uMWNleDNfaG9vSy1QbDRVZ2xnRkVPR2FJR2R6TlpMcXp3S1FFNWUxYk1FYmNaZmY1SVFlNEdyQW14Q0hQMEVpOHlnN3R2UzkxWjU2RWYxY0pMWlZmVGpBLXc?oc=5"
     },
     {
-      "time": "2026-10-06T06:05:12+09:00",
-      "title": "美AI 반도체 강세 지속…필라델피아 0.27%↑·엔비디아 사상 최고",
-      "source": "news1.kr",
-      "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE5LNTZHNVo5UWdoZk9sVllIYlFlUVhtQzdyUEwtRmxZRXljNVlQblpvZ2s1ZHNnTmJHTy1DUjRMSjI1V0pXYWNtclJ0M0c3aEtHcF9sdXFrVXgteUpBY1N5a254VS1ZQ3Z3U09kbtIBbEFVX3lxTE5LNTZHNVo5UWdoZk9sVllIYlFlUVhtQzdyUEwtRmxZRXljNVlQblpvZ2s1ZHNnTmJHTy1DUjRMSjI1V0pXYWNtclJ0M0c3aEtHcF9sdXFrVXgteUpBY1N5a254VS1ZQ3Z3U09kbg?oc=5"
-    },
-    {
       "time": "2026-10-06T00:36:00+09:00",
       "title": "\"삼성전자·SK하이닉스 다음은?\"…테마주가 아닌 진짜 차기 주도주를 잡아라",
       "source": "뉴시스",
       "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE5TQlFHYUN5ZDFNZXdPRUN6aHNwbWg0TEV2aE5pdmZZVWI2VHQtM0VoV0lCR0ZFRVNjRzZ5QkdKOTNKeUZyaS1nYXBYRmpaOUtoNzV3UXdkNXBoblBqNkpya9IBeEFVX3lxTFBGNGlreUpWNW5mTXlrbmdjamdtSGJXbE4xS21qR0dKd0VaRFpjYkozSXVPU0NJZWJocXJvR1FHNFlnZ0tjU3ZoLXZjNlZZM1Nhc0dfc05DTzVyRG9DUS1LdjlvWXNRLVNSZVF1Z1djOHE2MXl6VEJqTQ?oc=5"
     },
     {
-      "time": "2026-10-06T06:47:00+09:00",
-      "title": "[빅데이터로본다] 반도체 상장기업 2026년 10월 브랜드평판... 1위 삼성전자, 2위 SK하이닉스, 3위 한미반도체",
-      "source": "일간투데이",
-      "link": "https://news.google.com/rss/articles/CBMia0FVX3lxTFBDR0Rwd1BYWk1UN2hweHRKZDhFdDBGUXlENE1sRVVqTDhYUFhLR1k1c2FrVXdEOTJCX1FyWmdMSTJYdG8xSG5LLXluS3BDalYtN0RnaC1zVk8wZXFpX1pLUnBjdUJsaWFxbWhF?oc=5"
+      "time": "2026-10-06T07:02:21+09:00",
+      "title": "삼성전자·SK하이닉스 쌍끌이…반도체 브랜드평판 9.61% 뛰었다",
+      "source": "핀포인트뉴스",
+      "link": "https://news.google.com/rss/articles/CBMid0FVX3lxTE9jZGpRZmxNNThNa3JiS3lQR2FFejg0QS1XVXZiYjN4UXA4WmZ4OGVycVd3V3c5SHVnM3hPdWhxX3NETk9kR2FMdFpHQUpiTXd3WWU1WFJpVFlJLUVTcENMN3hUcmRVemhJbGpONUVkcHd2ak5lbEQw0gF3QVVfeXFMT2NkalFmbE01OE1rcmJLeVBHYUV6ODRBLVdVdmJiM3hRcDhaZng4ZXJxV3dXdzlIdWczeE91aHFfc0ROT2RHYUx0WkdBSmJNd3dZZTVYUmlUWUktRVNwQ0w3eFRyZFV6aElsak41RWRwd3ZqTmVsRDA?oc=5"
+    },
+    {
+      "time": "2026-10-06T07:14:25+09:00",
+      "title": "최태원 회장의 9440억원 SK 지분 매각 및 SK하이닉스 솔리다임 IPO는 \"주주가치 최우선 판단 기준\"",
+      "source": "녹색경제신문",
+      "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTFBoVDRWaTNMYnBBWWJNdkZic3V6Z1poOWszdFNYby1KMjFHdW16emd6N0tWc2FDcnZrcFh4eVYyOVJUOE56X09LMHNXQy1PZ2pTU0FPQUhOQzJ3eWVOVk5aVnJFXzdCMDY3?oc=5"
     }
   ],
   "top_news": [
@@ -692,9 +692,9 @@
     "steady": 32,
     "upper": 0,
     "lower": 0,
-    "individual": 7693.0,
-    "foreign": -17799.0,
-    "institution": -18.0,
+    "individual": 7550.0,
+    "foreign": -17671.0,
+    "institution": -35.0,
     "prev_close": 7003.74,
     "open": 7044.67,
     "high": 7044.67,

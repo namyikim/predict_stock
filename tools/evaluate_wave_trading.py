@@ -12,6 +12,7 @@ from pathlib import Path
 from tools.paper_trading import instant
 from tools.paper_market_data import read_archive
 from tools.wave_backtest import simulate_wave
+from tools.run_wave_paper import paper_config_hash
 
 ROOT=Path(__file__).resolve().parents[1]
 NAMES=('range_rebound','trend_pullback','buy_hold','cash','legacy')
@@ -137,6 +138,7 @@ def evaluate_wave(data, *, config):
             for scenario in ('standard','double_cost'):
                 result[scenario]={name:unavailable(','.join(sorted(reasons))) for name in NAMES}
             return result
+        result['prices']=[{key:first[d][key] for key in ('session','open','high','low','close')} for d in dates]
         current=[first[d] for d in dates];history=[first[d] for d in sorted(first) if d<=dates[-1]]
         for multiplier,scenario in [(1,'standard'),(2,'double_cost')]:
             cost=copy.deepcopy(config['execution'])
@@ -164,7 +166,7 @@ def evaluate_wave(data, *, config):
     if enough:
         for part in (selection,evaluation):
             enough=bool(enough and len(part['dates'])>=settings['min_days'] and part['standard'][selected]['metrics'].get('closed_trades',0)>=settings['min_trades'])
-    files=['tools/evaluate_wave_trading.py','tools/wave_backtest.py','tools/wave_signals.py','tools/paper_market_data.py','tools/paper_trading.py','docs/lab/trading_sim.js']
+    files=['tools/evaluate_wave_trading.py','tools/wave_backtest.py','tools/wave_signals.py','tools/paper_market_data.py','tools/paper_trading.py','tools/run_wave_paper.py','docs/lab/trading_sim.js']
     engine=b'\n'.join((ROOT/f).read_bytes() for f in files)
     return dict(schema_version=1,target=data['target'],method='observed_time_retrospective_split',automatic_promotion=False,
                 selection=selection,evaluation=evaluation,selected=selected,candidate_count=2,
@@ -172,7 +174,7 @@ def evaluate_wave(data, *, config):
                 selection_rule='선택 기간의 비용 차감 수익률 최대, 완료 거래가 있는 후보만, 동률은 이름순',
                 evidence='minimum_sample_met_not_profit_proof' if enough else 'insufficient',
                 input_sha256=digest(data),config_sha256=digest(config),engine_sha256=hashlib.sha256(engine).hexdigest(),
-                calendar_version=xcals.__version__,config=config,
+                calendar_version=xcals.__version__,config=config,paper_config_hashes={name:paper_config_hash(config,name) for name in config['strategies']},
                 limitations=['관측 시각을 소급하지 않은 연구 재생이며 실시간 모의운용 실적이 아님',
                              '단일 종목별 동일 배분 한도 비교이며 두 종목 수익을 합산하지 않음',
                              '파동 신규 진입은 구간 마지막 4거래일 제외, 각 기간 현금에서 시작',

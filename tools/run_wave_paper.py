@@ -29,6 +29,11 @@ def encoded(value):
     return json.dumps(value,ensure_ascii=False,sort_keys=True,separators=(',',':'),allow_nan=False)
 
 
+def paper_config_hash(config,strategy):
+    meaningful=dict(signal=config['strategies'][strategy],execution=config['execution'],paper=config['paper'],mode='observe_only',targets=TARGETS)
+    return hashlib.sha256(encoded(meaningful).encode()).hexdigest()
+
+
 def risk_preview(state, *, target, quotes, now, completed_bar_ends, paper, execution):
     """현재 시세로 한도만 점검한다. suggested_qty는 주문이나 예약이 아니다."""
     stamp=instant(now);reasons=[];prices={}
@@ -116,8 +121,7 @@ def run_wave_paper(config, *, now, dry_run=True, root=ROOT):
             db.execute('CREATE TABLE IF NOT EXISTS meta (key TEXT PRIMARY KEY, value TEXT NOT NULL)')
             db.execute('CREATE TABLE IF NOT EXISTS decisions (target TEXT, bar_end TEXT, payload TEXT NOT NULL, PRIMARY KEY(target,bar_end))')
             db.execute('CREATE TABLE IF NOT EXISTS runs (observed_at TEXT PRIMARY KEY, payload TEXT NOT NULL)')
-            meaningful=dict(signal=signal_config,execution=config['execution'],paper=paper,mode='observe_only',targets=TARGETS)
-            digest=hashlib.sha256(encoded(meaningful).encode()).hexdigest()
+            digest=paper_config_hash(config,name)
             meta=dict(db.execute('SELECT key,value FROM meta'))
             if meta and meta.get('config_hash')!=digest:raise ValueError(name+': 설정 변경으로 기존 장부 사용 불가')
             if meta.get('last_observed_at') and instant(meta['last_observed_at'])>stamp:raise ValueError('관측 시각 역행')
@@ -153,7 +157,10 @@ def run_wave_paper(config, *, now, dry_run=True, root=ROOT):
                     # 두 종목의 관측상 배분도 합산 한도를 넘기지 않게 같은 실행 안에서만 예약한다.
                     state['reservations'][target]=risk['reservation_preview']
                 observations.append(dict(target=target,status='observe_only',signal=signal,risk_preview=risk))
-            summary=dict(strategy=name,mode='observe_only',observed_at=now,initial_capital=paper['capital'],cash=cash,
+            history_times=[instant(row[0]) for row in db.execute('SELECT observed_at FROM runs')]+[stamp]
+            observed_days=len({t.astimezone(KST).date() for t in history_times})
+            summary=dict(observed_days=observed_days,first_observed_at=min(history_times).isoformat(),strategy=name,strategy_version=strategies[name]['version'],
+                         config_hash=db.execute("SELECT value FROM meta WHERE key='config_hash'").fetchone()[0],mode='observe_only',observed_at=now,initial_capital=paper['capital'],cash=cash,
                          positions={},order_count=0,fill_count=0,total_return=None,
                          decision_count=db.execute('SELECT COUNT(*) FROM decisions').fetchone()[0],observations=observations,
                          notice='관측용 배분은 주문이 아닙니다. 독립 계좌의 자금을 합산하지 않습니다.')

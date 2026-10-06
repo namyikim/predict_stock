@@ -42,6 +42,10 @@ class WavePaperTests(unittest.TestCase):
             self.assertEqual(x['order_count'],0)
             self.assertIsNone(x['total_return'])
             self.assertEqual(x['mode'],'observe_only')
+            self.assertEqual(x['strategy_version'],'wave-v1')
+            self.assertEqual(len(x['config_hash']),64)
+            self.assertEqual(x['observed_days'],1)
+            self.assertEqual(x['first_observed_at'],NOW)
         self.assertEqual((self.root/'paper_history/account.sqlite').read_bytes(),b'original-account')
 
     def test_same_bar_and_restart_are_idempotent(self):

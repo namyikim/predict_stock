@@ -53,6 +53,8 @@ class WaveValidationTests(unittest.TestCase):
             for f in strategy['fills']:
                 if f['side']=='buy':self.assertLessEqual(f['qty']*f['price']+f['fee'],3000000)
         self.assertEqual(len(period['dates']),25)
+        self.assertEqual([p['session'] for p in period['prices']],period['dates'])
+        self.assertEqual(period['prices'][0]['close'],self.rows[85]['close'])
         self.assertEqual(r['evidence'],'insufficient')
 
     def test_missing_and_corporate_action_block_all_price_comparisons(self):

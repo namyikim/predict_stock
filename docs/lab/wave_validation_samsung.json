@@ -341,7 +341,7 @@
   "evidence": "insufficient",
   "input_sha256": "0d3e0068d60897b5f02f43f78d4f7032001dd1e2e899c68efe3f04f1704654fe",
   "config_sha256": "446ce4c45217a58b06a8bf26afe398f37e705eb92c65519e8b86409b7afdd458",
-  "engine_sha256": "d67b8fb5d34291f66d65d0ab76c1bb895586fc15ad35f78ba567013ddc78630d",
+  "engine_sha256": "6080509f5773c4aeb3a23294466b490f1e233eaea556705cd0d4f1c19521a490",
   "calendar_version": "4.13.2",
   "config": {
     "schema_version": 1,
@@ -394,6 +394,10 @@
       }
     }
   },
+  "paper_config_hashes": {
+    "range_rebound": "813e2b8c8e49d2bbd7a5d99c9fdb1471ae5b2df3da0c05312e2aa2b6d940b03f",
+    "trend_pullback": "90f919d87d5d5b5b1775468511ef725c490ac54a674b2b779761e5869cc3be13"
+  },
   "limitations": [
     "관측 시각을 소급하지 않은 연구 재생이며 실시간 모의운용 실적이 아님",
     "단일 종목별 동일 배분 한도 비교이며 두 종목 수익을 합산하지 않음",
@@ -401,6 +405,6 @@
     "기간 경계는 5거래일 분리, 학습 모델 추가 없음, 기존 예측은 사전 원장만 사용",
     "평가를 본 뒤 규칙을 바꾸면 새 버전·새 평가 구간이 필요"
   ],
-  "generated_at_utc": "2026-10-06T08:29:42.193922+00:00",
-  "source_revision": "c5250b3aee13554bf318d63008e819182beb0afe"
+  "generated_at_utc": "2026-10-06T08:54:00.782641+00:00",
+  "source_revision": "56bd4742efb9ec76d18ee8469086ad466211630f"
 }

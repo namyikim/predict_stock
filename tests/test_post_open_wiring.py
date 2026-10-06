@@ -288,7 +288,7 @@ class RenderingTests(unittest.TestCase):
         self.assertEqual(html.count(fu.POSTOPEN_END), 1)
         self.assertIn("09:37 갱신", html)
         self.assertIn("07:00 예측은 그대로 남습니다", html)
-        self.assertLess(html.index("종가 · 15:30"), html.index(fu.POSTOPEN_START))
+        self.assertLess(html.index("종가 예측 · 15:30"), html.index(fu.POSTOPEN_START))
         self.assertLess(html.index(fu.POSTOPEN_END), html.index(fu.SCORECARD_START))
 
     def test_easy_summary_renders_the_card_when_the_row_exists(self):

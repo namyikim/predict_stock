@@ -68,7 +68,7 @@ class SummaryTests(unittest.TestCase):
     def test_open_forecast_leads_but_is_labelled_honestly(self):
         text = plain(self.render({"p_down": .2, "p_flat": .3, "p_up": .5}))
         self.assertIn("삼성전자 · 2026-09-17: 시초가 약 250,100원(+0.40%) 예상. 전일 종가 대비 종가 방향은 ‘상승’", text)
-        self.assertIn("시초가 · 09:00 · 밤사이 미국 시장을 반영한 값 · 09:00 전에만 의미", text)
+        self.assertIn("시초가 예측 · 09:00 · 밤사이 미국 시장을 반영한 값 · 09:00 전에만 의미", text)
         self.assertNotIn("가장 믿을 만한", text)
 
     def test_no_open_signal_says_so_first(self):

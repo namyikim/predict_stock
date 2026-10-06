@@ -3,7 +3,7 @@
   "name": "삼성전자",
   "peer_name": "SK하이닉스",
   "session_date": "2026-10-06",
-  "generated_at": "2026-10-06 15:50 KST",
+  "generated_at": "2026-10-06 16:11 KST",
   "summary": {
     "prev_close": 276000.0,
     "open": 278500.0,
@@ -15,11 +15,11 @@
     "c2c": -0.01449275362318836,
     "high_vs_open": 0.0017953321364452268,
     "low_vs_open": -0.030520646319569078,
-    "volume": 14098706.0,
-    "volume_ratio": 0.8486945188023255,
-    "kospi_c2c": -0.008831009658622713,
-    "peer_c2c": -0.035306898424769195,
-    "usdkrw_chg": 0.00019357621556581606,
+    "volume": 14099910.0,
+    "volume_ratio": 0.8487669955388883,
+    "kospi_c2c": -0.008902400084776163,
+    "peer_c2c": -0.03693644758283543,
+    "usdkrw_chg": 8.937783931473042e-05,
     "us_nights": 2,
     "sox_ret": 0.026794000652817784,
     "nasdaq_ret": 0.022540933413159214,
@@ -49,22 +49,22 @@
           "start": "2026-09-28",
           "end": "2026-10-06",
           "own": 0.007407407407407307,
-          "peer": 0.004524886877828038,
-          "excess": 0.002882520529579269
+          "peer": 0.002828054298642524,
+          "excess": 0.004579353108764783
         },
         "20": {
           "start": "2026-09-03",
           "end": "2026-10-06",
           "own": 0.08800000000000008,
-          "peer": 0.11278195488721798,
-          "excess": -0.024781954887217905
+          "peer": 0.11090225563909772,
+          "excess": -0.022902255639097646
         },
         "60": {
           "start": "2026-07-07",
           "end": "2026-10-06",
           "own": -0.08108108108108103,
-          "peer": -0.19291904616755273,
-          "excess": 0.1118379650864717
+          "peer": -0.194282358589567,
+          "excess": 0.11320127750848596
         }
       }
     },
@@ -129,7 +129,7 @@
       "지수 동조"
     ],
     "reasons": [
-      "KOSPI -0.88% vs 종목 -1.45%, 5분 수익률 상관 0.83 — 종목 고유 요인이 약함"
+      "KOSPI -0.89% vs 종목 -1.45%, 5분 수익률 상관 0.83 — 종목 고유 요인이 약함"
     ]
   },
   "events": [
@@ -156,12 +156,6 @@
           "link": "https://news.google.com/rss/articles/CBMiugJBVV95cUxQNGFUcF90OS1LSVFXN3NIeHJMZlNGUGtlZG5HUHBBVDBGUGp1SERnMGFsdG1GTUxYdHVJMDZlNzVEX3kxcVRDYzB0WHozd3hsUjJzZm4zMHhreUVPQVY5cXdvZEZoOFhLLTItcWFfeFd2TE1yelBST1FUYUNzWUMxbVZ4TlpCXzhBd3VETkRiY3doQ3MzTVV3dDQ2OFV6VFNsOWZNamVBRnRvMTVoay14WF9KYlBldUJoQVR4MmxwNGpVRzhYR3hXZGV3OGRySjdOdUhkbDVYemg4ckUtSjNWNlBjMGp5TlBTdmRsV0xqb1pueFJWaFlNamVIYWJjR0ZlMUQ0NGgwcEFOWmJSY0tKNkJHcXBrdTBwaWFZVHpxU1piLWJ0amVwbEVLT2lveF9ubUtIQWZXb2Qxdw?oc=5"
         },
         {
-          "time": "2026-10-06T08:25:41+09:00",
-          "title": "삼성바이오 노조, 삼성전자에 단체교섭 요구…\"인사·보상 실질 사용자\"",
-          "source": "sentv.co.kr",
-          "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE14Qld1OUtHd1FpWm9HTFY4ZmlNRHZ0RUR0ckNBQmhac1RSY0lFNGU3VDRHalhOLVZFQWtlb1hKeWtOOG1xeGJFT041c1VPVlg2R1hKSkRzNVM4bUotVkMxdzFIUlg?oc=5"
-        },
-        {
           "time": "2026-10-06T08:32:11+09:00",
           "title": "신보, 삼성전자 평택 P5 팹 전기공사 수주",
           "source": "electimes.com",
@@ -172,6 +166,12 @@
           "title": "삼성바이오 노조, 삼성전자도 '사용자' 주장…직접 교섭 요구",
           "source": "아시아경제",
           "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTFA3UGw5N0pFQ0p0ZE1kYmRNbm00X09BWE9FQUxKeVFmN1RZbEVVX0d0ZWNjS0NfeWpuSU9wb2xKRkV5V1hBUnducUg0OUdOMWQxejNBSWdrX19naVBqWW0wQQ?oc=5"
+        },
+        {
+          "time": "2026-10-06T08:41:25+09:00",
+          "title": "삼성바이오 노조, 삼성전자에 첫 단체교섭 요구",
+          "source": "연합뉴스",
+          "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE52NFpQQVVjMVJnZ242RlVndXdWZktmTU1td3F4NWEtcm8zMnREMzItd0Ewd1VzR0VmYXU4OERtcjhPdk5Ua3Frc3JWUTRLbE1MQWthT2NNcmhrcm1xb0hwa9IBYEFVX3lxTE52NFpQQVVjMVJnZ242RlVndXdWZktmTU1td3F4NWEtcm8zMnREMzItd0Ewd1VzR0VmYXU4OERtcjhPdk5Ua3Frc3JWUTRLbE1MQWthT2NNcmhrcm1xb0hwaw?oc=5"
         }
       ]
     },
@@ -194,14 +194,8 @@
         {
           "time": "2026-10-06T09:36:00+09:00",
           "title": "\"삼성전자 주가 내년 50만원 갈 수 있다\"",
-          "source": "chosun.com",
+          "source": "조선일보",
           "link": "https://news.google.com/rss/articles/CBMigAFBVV95cUxQMFFEcEhHamk1TzA2eHpOalVJdWtydW8zNUlQU0owLWQ0aVM0QmZXblJhOXQxUDBpam5xS0xCVGZiWnFCLXAxcTNib0dRVmNGRGtuSUwtTksxWGtKZk10cmUtLXc3RGZVMDZ2U3kyTjJwVHQzVGtIREg0ekluMDB0ag?oc=5"
-        },
-        {
-          "time": "2026-10-06T10:23:46+09:00",
-          "title": "라이프운용 “삼성전자 주주제안 핵심은 자사주 매입·소각 확대”",
-          "source": "v.daum.net",
-          "link": "https://news.google.com/rss/articles/CBMiT0FVX3lxTFBZcGRqY21VQmhFZVBoV3ZaQVloZTlYd0dTcFcwX096c1dQOFZjQjRYY2ZpUzh0UWpBOXFodzBxY1d0cDVldzFocmlGYVUyM2s?oc=5"
         },
         {
           "time": "2026-10-06T10:29:03+09:00",
@@ -210,10 +204,16 @@
           "link": "https://news.google.com/rss/articles/CBMiakFVX3lxTFBiTGdOMHpyUUQ4aVBCUWRTOFlfTVhWcXJZU2tMQjdRTlc2X3UwSnlkcy02Q1ZSQWhqTjdmQWY2Qkt1SjZoMmI0RWUyQmpDbjl3SjQxcDEzZzZlNW9Fc0pEbndJMjVnWmVoZ1E?oc=5"
         },
         {
-          "time": "2026-10-06T08:55:00+09:00",
-          "title": "삼성바이오로직스 노조, 삼성전자에 단체교섭 요구⋯“인사·보상 실질적 지배”",
-          "source": "브릿지경제",
-          "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE1uZ2hTU0xtVF9ENk54RkROWE9KUTdibG80QVpqVDNRWUNXM0M0VDRNcWN5c3J5aF9CTU1Jd0ZRRXNzSV8wQUlYTzZCbjdmNHM1NzdOa2JLNGRqUQ?oc=5"
+          "time": "2026-10-06T09:11:37+09:00",
+          "title": "삼성바이오로직스 노조, '2대주주' 삼성전자에 단체교섭 요구 - 머니투데이",
+          "source": "머니투데이",
+          "link": "https://news.google.com/rss/articles/CBMiakFVX3lxTE5RRjRHSUZON2lfYmkzVGdGVGxWaTJQdXBRVTB4bjdlNlJBaFM5aVc2bm9RZDM0VjJnMGx2dHJIRTlPM0MxN2Q2SkNfZDNxOUFhX0ZORlpsNXBVbnY3WUpoeVZSYXhvV2Q0WnfSAW9BVV95cUxPMDhwSWZSeFd2enhVZ2NFcmRWNl9iaVlPbkN0VWNfcVNfNjRTbWllOUxqakpWaFFpN0x5M1o0bkQ3SnpHbG42ZmgwcUhKUkQ3YUtfTWp6WkluNE5OUmNmNjB4aVl4SGJqZDVSN3NRdVE?oc=5"
+        },
+        {
+          "time": "2026-10-06T09:19:42+09:00",
+          "title": "삼성전자 보합·SK하이닉스 하락… 검색 상위 15개는 올랐다",
+          "source": "서울신문",
+          "link": "https://news.google.com/rss/articles/CBMifkFVX3lxTFBuNEFtb29fVXlrbV9HVGRHWGd0eVZZZWFpS3A0dk9YLXhVQ2VVdm9ZcDB3MnBTbkhYNzBVdkNKWURydG1vRGhPRE5sbXU1TkJPV1otc0VycjdBQndadkRVNVpWQlhMRXNfaGxfUmRzMGJjU01neVNoS1JxR2owUQ?oc=5"
         }
       ]
     }
@@ -610,12 +610,6 @@
           "link": "https://news.google.com/rss/articles/CBMiugJBVV95cUxQNGFUcF90OS1LSVFXN3NIeHJMZlNGUGtlZG5HUHBBVDBGUGp1SERnMGFsdG1GTUxYdHVJMDZlNzVEX3kxcVRDYzB0WHozd3hsUjJzZm4zMHhreUVPQVY5cXdvZEZoOFhLLTItcWFfeFd2TE1yelBST1FUYUNzWUMxbVZ4TlpCXzhBd3VETkRiY3doQ3MzTVV3dDQ2OFV6VFNsOWZNamVBRnRvMTVoay14WF9KYlBldUJoQVR4MmxwNGpVRzhYR3hXZGV3OGRySjdOdUhkbDVYemg4ckUtSjNWNlBjMGp5TlBTdmRsV0xqb1pueFJWaFlNamVIYWJjR0ZlMUQ0NGgwcEFOWmJSY0tKNkJHcXBrdTBwaWFZVHpxU1piLWJ0amVwbEVLT2lveF9ubUtIQWZXb2Qxdw?oc=5"
         },
         {
-          "time": "2026-10-06T08:25:41+09:00",
-          "title": "삼성바이오 노조, 삼성전자에 단체교섭 요구…\"인사·보상 실질 사용자\"",
-          "source": "sentv.co.kr",
-          "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE14Qld1OUtHd1FpWm9HTFY4ZmlNRHZ0RUR0ckNBQmhac1RSY0lFNGU3VDRHalhOLVZFQWtlb1hKeWtOOG1xeGJFT041c1VPVlg2R1hKSkRzNVM4bUotVkMxdzFIUlg?oc=5"
-        },
-        {
           "time": "2026-10-06T08:32:11+09:00",
           "title": "신보, 삼성전자 평택 P5 팹 전기공사 수주",
           "source": "electimes.com",
@@ -626,6 +620,12 @@
           "title": "삼성바이오 노조, 삼성전자도 '사용자' 주장…직접 교섭 요구",
           "source": "아시아경제",
           "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTFA3UGw5N0pFQ0p0ZE1kYmRNbm00X09BWE9FQUxKeVFmN1RZbEVVX0d0ZWNjS0NfeWpuSU9wb2xKRkV5V1hBUnducUg0OUdOMWQxejNBSWdrX19naVBqWW0wQQ?oc=5"
+        },
+        {
+          "time": "2026-10-06T08:41:25+09:00",
+          "title": "삼성바이오 노조, 삼성전자에 첫 단체교섭 요구",
+          "source": "연합뉴스",
+          "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE52NFpQQVVjMVJnZ242RlVndXdWZktmTU1td3F4NWEtcm8zMnREMzItd0Ewd1VzR0VmYXU4OERtcjhPdk5Ua3Frc3JWUTRLbE1MQWthT2NNcmhrcm1xb0hwa9IBYEFVX3lxTE52NFpQQVVjMVJnZ242RlVndXdWZktmTU1td3F4NWEtcm8zMnREMzItd0Ewd1VzR0VmYXU4OERtcjhPdk5Ua3Frc3JWUTRLbE1MQWthT2NNcmhrcm1xb0hwaw?oc=5"
         }
       ],
       "price": 277500.0,
@@ -650,14 +650,8 @@
         {
           "time": "2026-10-06T09:36:00+09:00",
           "title": "\"삼성전자 주가 내년 50만원 갈 수 있다\"",
-          "source": "chosun.com",
+          "source": "조선일보",
           "link": "https://news.google.com/rss/articles/CBMigAFBVV95cUxQMFFEcEhHamk1TzA2eHpOalVJdWtydW8zNUlQU0owLWQ0aVM0QmZXblJhOXQxUDBpam5xS0xCVGZiWnFCLXAxcTNib0dRVmNGRGtuSUwtTksxWGtKZk10cmUtLXc3RGZVMDZ2U3kyTjJwVHQzVGtIREg0ekluMDB0ag?oc=5"
-        },
-        {
-          "time": "2026-10-06T10:23:46+09:00",
-          "title": "라이프운용 “삼성전자 주주제안 핵심은 자사주 매입·소각 확대”",
-          "source": "v.daum.net",
-          "link": "https://news.google.com/rss/articles/CBMiT0FVX3lxTFBZcGRqY21VQmhFZVBoV3ZaQVloZTlYd0dTcFcwX096c1dQOFZjQjRYY2ZpUzh0UWpBOXFodzBxY1d0cDVldzFocmlGYVUyM2s?oc=5"
         },
         {
           "time": "2026-10-06T10:29:03+09:00",
@@ -666,10 +660,16 @@
           "link": "https://news.google.com/rss/articles/CBMiakFVX3lxTFBiTGdOMHpyUUQ4aVBCUWRTOFlfTVhWcXJZU2tMQjdRTlc2X3UwSnlkcy02Q1ZSQWhqTjdmQWY2Qkt1SjZoMmI0RWUyQmpDbjl3SjQxcDEzZzZlNW9Fc0pEbndJMjVnWmVoZ1E?oc=5"
         },
         {
-          "time": "2026-10-06T08:55:00+09:00",
-          "title": "삼성바이오로직스 노조, 삼성전자에 단체교섭 요구⋯“인사·보상 실질적 지배”",
-          "source": "브릿지경제",
-          "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE1uZ2hTU0xtVF9ENk54RkROWE9KUTdibG80QVpqVDNRWUNXM0M0VDRNcWN5c3J5aF9CTU1Jd0ZRRXNzSV8wQUlYTzZCbjdmNHM1NzdOa2JLNGRqUQ?oc=5"
+          "time": "2026-10-06T09:11:37+09:00",
+          "title": "삼성바이오로직스 노조, '2대주주' 삼성전자에 단체교섭 요구 - 머니투데이",
+          "source": "머니투데이",
+          "link": "https://news.google.com/rss/articles/CBMiakFVX3lxTE5RRjRHSUZON2lfYmkzVGdGVGxWaTJQdXBRVTB4bjdlNlJBaFM5aVc2bm9RZDM0VjJnMGx2dHJIRTlPM0MxN2Q2SkNfZDNxOUFhX0ZORlpsNXBVbnY3WUpoeVZSYXhvV2Q0WnfSAW9BVV95cUxPMDhwSWZSeFd2enhVZ2NFcmRWNl9iaVlPbkN0VWNfcVNfNjRTbWllOUxqakpWaFFpN0x5M1o0bkQ3SnpHbG42ZmgwcUhKUkQ3YUtfTWp6WkluNE5OUmNmNjB4aVl4SGJqZDVSN3NRdVE?oc=5"
+        },
+        {
+          "time": "2026-10-06T09:19:42+09:00",
+          "title": "삼성전자 보합·SK하이닉스 하락… 검색 상위 15개는 올랐다",
+          "source": "서울신문",
+          "link": "https://news.google.com/rss/articles/CBMifkFVX3lxTFBuNEFtb29fVXlrbV9HVGRHWGd0eVZZZWFpS3A0dk9YLXhVQ2VVdm9ZcDB3MnBTbkhYNzBVdkNKWURydG1vRGhPRE5sbXU1TkJPV1otc0VycjdBQndadkRVNVpWQlhMRXNfaGxfUmRzMGJjU01neVNoS1JxR2owUQ?oc=5"
         }
       ],
       "price": 275500.0,
@@ -690,12 +690,6 @@
       "link": "https://news.google.com/rss/articles/CBMiugJBVV95cUxQNGFUcF90OS1LSVFXN3NIeHJMZlNGUGtlZG5HUHBBVDBGUGp1SERnMGFsdG1GTUxYdHVJMDZlNzVEX3kxcVRDYzB0WHozd3hsUjJzZm4zMHhreUVPQVY5cXdvZEZoOFhLLTItcWFfeFd2TE1yelBST1FUYUNzWUMxbVZ4TlpCXzhBd3VETkRiY3doQ3MzTVV3dDQ2OFV6VFNsOWZNamVBRnRvMTVoay14WF9KYlBldUJoQVR4MmxwNGpVRzhYR3hXZGV3OGRySjdOdUhkbDVYemg4ckUtSjNWNlBjMGp5TlBTdmRsV0xqb1pueFJWaFlNamVIYWJjR0ZlMUQ0NGgwcEFOWmJSY0tKNkJHcXBrdTBwaWFZVHpxU1piLWJ0amVwbEVLT2lveF9ubUtIQWZXb2Qxdw?oc=5"
     },
     {
-      "time": "2026-10-06T08:25:41+09:00",
-      "title": "삼성바이오 노조, 삼성전자에 단체교섭 요구…\"인사·보상 실질 사용자\"",
-      "source": "sentv.co.kr",
-      "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE14Qld1OUtHd1FpWm9HTFY4ZmlNRHZ0RUR0ckNBQmhac1RSY0lFNGU3VDRHalhOLVZFQWtlb1hKeWtOOG1xeGJFT041c1VPVlg2R1hKSkRzNVM4bUotVkMxdzFIUlg?oc=5"
-    },
-    {
       "time": "2026-10-06T08:32:11+09:00",
       "title": "신보, 삼성전자 평택 P5 팹 전기공사 수주",
       "source": "electimes.com",
@@ -706,6 +700,12 @@
       "title": "삼성바이오 노조, 삼성전자도 '사용자' 주장…직접 교섭 요구",
       "source": "아시아경제",
       "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTFA3UGw5N0pFQ0p0ZE1kYmRNbm00X09BWE9FQUxKeVFmN1RZbEVVX0d0ZWNjS0NfeWpuSU9wb2xKRkV5V1hBUnducUg0OUdOMWQxejNBSWdrX19naVBqWW0wQQ?oc=5"
+    },
+    {
+      "time": "2026-10-06T08:41:25+09:00",
+      "title": "삼성바이오 노조, 삼성전자에 첫 단체교섭 요구",
+      "source": "연합뉴스",
+      "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE52NFpQQVVjMVJnZ242RlVndXdWZktmTU1td3F4NWEtcm8zMnREMzItd0Ewd1VzR0VmYXU4OERtcjhPdk5Ua3Frc3JWUTRLbE1MQWthT2NNcmhrcm1xb0hwa9IBYEFVX3lxTE52NFpQQVVjMVJnZ242RlVndXdWZktmTU1td3F4NWEtcm8zMnREMzItd0Ewd1VzR0VmYXU4OERtcjhPdk5Ua3Frc3JWUTRLbE1MQWthT2NNcmhrcm1xb0hwaw?oc=5"
     }
   ],
   "top_news": [
@@ -763,9 +763,9 @@
     "steady": 32,
     "upper": 0,
     "lower": 0,
-    "individual": 7421.0,
-    "foreign": -17525.0,
-    "institution": -20.0,
+    "individual": 7463.0,
+    "foreign": -17572.0,
+    "institution": -17.0,
     "prev_close": 7003.74,
     "open": 7044.67,
     "high": 7044.67,
@@ -775,18 +775,18 @@
   "earnings_reactions": {
     "n": 44,
     "down": 24,
-    "mean": 0.005144013634116457,
+    "mean": 0.005144014401032684,
     "first": "2015-04-07",
     "last": "2026-07-30",
     "prior_up": {
       "n": 26,
       "down": 15,
-      "mean": 0.006803927245789991
+      "mean": 0.006803948143671519
     },
     "prior_down": {
       "n": 18,
       "down": 9,
-      "mean": 0.002746360639476907,
+      "mean": 0.002746332328332145,
       "next5_n": 18,
       "next5_up": 8
     },
@@ -799,21 +799,21 @@
       },
       {
         "date": "2024-07-05",
-        "ret": 0.029550717108363322,
-        "prior20": 0.0978987330373482,
-        "next5": -0.03099888095789405
+        "ret": 0.029550818588921057,
+        "prior20": 0.09789840714462672,
+        "next5": -0.030998790775496055
       },
       {
         "date": "2024-10-08",
-        "ret": -0.011475342246353937,
-        "prior20": -0.17550716671415245,
-        "next5": -0.013267062521606143
+        "ret": -0.011475407561411965,
+        "prior20": -0.17550711223721005,
+        "next5": -0.013266995681315064
       },
       {
         "date": "2025-01-08",
-        "ret": 0.03429607257566447,
-        "prior20": 0.038691759055365926,
-        "next5": -0.06282719221095567
+        "ret": 0.03429607009744906,
+        "prior20": 0.038691834110668566,
+        "next5": -0.06282725768504516
       },
       {
         "date": "2025-04-08",
@@ -823,14 +823,14 @@
       },
       {
         "date": "2025-10-14",
-        "ret": -0.018220878273630836,
+        "ret": -0.01822079386417541,
         "prior20": 0.348435443402201,
-        "next5": 0.06441047837827907
+        "next5": 0.06441038686451694
       },
       {
         "date": "2026-04-07",
         "ret": 0.017607433616103174,
-        "prior20": 0.11527197433303193,
+        "prior20": 0.11527187357539503,
         "next5": 0.05089058828005988
       },
       {

@@ -5,7 +5,12 @@ import assert from 'node:assert/strict';
 const html=fs.readFileSync('docs/admin/index.html','utf8');
 const script=[...html.matchAll(/<script>([\s\S]*?)<\/script>/g)].map(m=>m[1]).find(s=>s.includes('// 구독자 목록.'));
 const elements=new Map();
-for(const m of html.matchAll(/id="([^"]+)"/g)) elements.set(m[1],{value:'',textContent:'',innerHTML:'',disabled:false,events:{},addEventListener(name,fn){this.events[name]=fn;}});
+for(const m of html.matchAll(/id="([^"]+)"/g)) elements.set(m[1],{value:'',textContent:'',innerHTML:'',className:'',disabled:false,events:{},addEventListener(name,fn){this.events[name]=fn;}});
+// 상태 문구만 바꾸고 .msg의 display:none을 해제하지 않은 회귀(2026-10-06).
+function assertMessageShown(kind) {
+ const classes=get('mail-action-msg').className.split(/\s+/);
+ assert.ok(classes.includes('msg') && classes.includes(kind),'상태 메시지는 표시용 클래스를 적용해야 한다');
+}
 const get=id=>{assert.ok(elements.has(id),'존재하는 DOM만 사용: '+id);return elements.get(id);};
 let confirmed=false, status='dispatched', paused=false, error=false;
 const requests=[];
@@ -18,17 +23,17 @@ const context={document:{getElementById:get},location:{hash:''},window:{addEvent
  }};
 vm.runInNewContext(script,context);
 const flush=()=>new Promise(resolve=>setImmediate(resolve));
-get('mail-send-today').events.click();await flush();assert.equal(requests.length,0,'인증 없이 요청하지 않음');
+get('mail-send-today').events.click();await flush();assert.equal(requests.length,0,'인증 없이 요청하지 않음');assertMessageShown('err');
 get('sub-token').value='private-token';
 get('mail-refresh').events.click();await flush();assert.equal(get('mail-send-today').disabled,false);
 get('mail-send-today').events.click();await flush();assert.equal(requests.filter(r=>r.url.endsWith('/mail/send-today')).length,0,'확인 취소 시 발송 요청 없음');
-confirmed=true;get('mail-send-today').events.click();get('mail-send-today').events.click();await flush();
+confirmed=true;get('mail-send-today').events.click();assertMessageShown('info');get('mail-send-today').events.click();await flush();
 const posts=requests.filter(r=>r.url.endsWith('/mail/send-today'));
 assert.equal(posts.length,1,'연속 클릭은 한 번만 전송');assert.equal(posts[0].init.method,'POST');
 assert.equal(posts[0].init.headers.Authorization,'Bearer private-token');assert.ok(!posts[0].url.includes('private-token'));
-assert.ok(get('mail-action-msg').textContent.includes('아직 발송 완료는 아닙니다'));
+assert.ok(get('mail-action-msg').textContent.includes('아직 발송 완료는 아닙니다'));assertMessageShown('info');
 status='already_registered';get('mail-send-today').events.click();await flush();
 assert.ok(get('mail-action-msg').textContent.includes('이미 등록'));
-error=true;get('mail-send-today').events.click();await flush();assert.ok(get('mail-action-msg').textContent.includes('발송 시간 밖'));
+error=true;get('mail-send-today').events.click();await flush();assert.ok(get('mail-action-msg').textContent.includes('발송 시간 밖'));assertMessageShown('err');
 paused=true;get('mail-refresh').events.click();await flush();assert.equal(get('mail-send-today').disabled,true);
 console.log('관리자 버튼 인증·확인·연속 클릭·접수/발송 구분·오류 표시 통과');

@@ -925,21 +925,27 @@ a{color:var(--accent)}
         r.events.map(function(e,i) { return '<tr><td>구독 보고서 묶음 · '+(e.phase==='pre_open'?'개장 전':'마감 후')+'</td><td>'+esc(e.session_date)+'</td><td>'+esc(e.last_sent_at?kst(e.last_sent_at):"—")+'</td><td>'+Number(e.accepted||0)+'</td><td>'+Number(e.sending||0)+'</td><td>'+Number(e.failed||0)+'</td><td>'+Number(e.cancelled||0)+'</td><td>'+Number(e.remaining||0)+(e.expired?' (만료)':' (대기)')+'</td><td><button type="button" data-mail-detail="'+i+'">상세</button> <button type="button" data-mail-cancel="'+i+'" '+(mailBusy||e.stopped||e.expired||!e.remaining?'disabled':'')+'>'+(e.stopped?'회차 취소됨':'대기 취소')+'</button></td></tr>'; }).join('')+'</tbody></table></div>' : '<p>아직 접수된 보고서 갱신이 없습니다.</p>');
     }).catch(function (error) { $("mail-send-today").disabled = true; $("mail-pause").disabled = true; $("mail-status").textContent = "발송 상태 조회 실패: "+error.message+" 이메일 기능의 Worker 배포와 D1 표 생성을 확인하세요."; });
   }
+  function showMailAction(kind, message) {
+    // .msg는 기본 display:none이다. 글자뿐 아니라 표시 상태도 바꿔야 한다(2026-10-06).
+    var el = $("mail-action-msg");
+    el.className = "msg " + kind;
+    el.textContent = message;
+  }
   function mailAction(path, body, message) {
     if (mailBusy) return;
     mailBusy = true; $("mail-pause").disabled = true; $("mail-send-today").disabled = true;
-    $("mail-action-msg").textContent = "처리 중…";
+    showMailAction("info", "처리 중…");
     call(path, {method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)})
-      .then(function(result) { $("mail-action-msg").textContent = typeof message === "function" ? message(result) : message; })
-      .catch(function(error) { $("mail-action-msg").textContent = "처리 실패: "+error.message; })
+      .then(function(result) { showMailAction("info", typeof message === "function" ? message(result) : message); })
+      .catch(function(error) { showMailAction("err", "처리 실패: "+error.message); })
       .finally(function() { mailBusy = false; loadMailStatus(); if (selectedMail) loadMailDetails(selectedMail,mailOffset); });
   }
   $("mail-refresh").addEventListener("click",function() {
-    if (!token()) { $("mail-action-msg").textContent = "관리자 토큰을 먼저 입력하세요."; return; }
+    if (!token()) { showMailAction("err", "관리자 토큰을 먼저 입력하세요."); return; }
     loadMailStatus(); if (selectedMail) loadMailDetails(selectedMail,mailOffset);
   });
   $("mail-send-today").addEventListener("click",function() {
-    if (!token()) { $("mail-action-msg").textContent = "관리자 토큰을 먼저 입력하세요."; return; }
+    if (!token()) { showMailAction("err", "관리자 토큰을 먼저 입력하세요."); return; }
     if (!confirm("오늘 게시된 보고서를 기존 구독자에게 발송 요청할까요? 오전 9시 전은 개장 전 예측, 오후 3시 30분 이후는 마감 회고입니다. 이미 발송한 수신자에게는 중복 발송하지 않으며, 취소·실패/접수 불확실 건은 다시 보내지 않습니다.")) return;
     mailAction("/mail/send-today",{},function(r) {
       if (r.status === "already_registered") return "오늘 회차는 이미 등록됐습니다. 아래 발송 이력을 확인하세요. 발송 대기는 다음 처리 주기에 처리됩니다.";

@@ -1,0 +1,145 @@
+{
+  "recorded_at": "2026-10-06T16:36:19.226650+09:00",
+  "target": "samsung",
+  "valuation": {
+    "status": "available",
+    "ticker": "005930.KS",
+    "price": 276000.0,
+    "price_date": "2026-10-02",
+    "observed_on": "2026-10-06",
+    "financial_period": "2026-06-30",
+    "eps_ttm": 22548.344399088917,
+    "bps": 85111.58528444137,
+    "per": 12.240366526029822,
+    "pbr": 3.2428017769568385,
+    "source": "https://finance.yahoo.com/quote/005930.KS/key-statistics/",
+    "assumptions": {
+      "version": 1,
+      "per": [
+        8,
+        12,
+        16
+      ],
+      "pbr": [
+        1,
+        1.5,
+        2
+      ],
+      "basis": "배수는 민감도 비교를 위한 공통 예시 가정입니다. 증권사 컨센서스·과거 평균·통계적 신뢰구간이 아니며, 두 회사의 적정 배수가 같다는 뜻도 아닙니다. 설정 파일에서 변경할 수 있습니다."
+    },
+    "scenarios": {
+      "per": [
+        {
+          "multiple": 8,
+          "price": 180386.75519271134,
+          "upside": -0.3464248000264082
+        },
+        {
+          "multiple": 12,
+          "price": 270580.132789067,
+          "upside": -0.019637200039612335
+        },
+        {
+          "multiple": 16,
+          "price": 360773.5103854227,
+          "upside": 0.3071503999471836
+        }
+      ],
+      "pbr": [
+        {
+          "multiple": 1,
+          "price": 85111.58528444137,
+          "upside": -0.6916246909984007
+        },
+        {
+          "multiple": 1.5,
+          "price": 127667.37792666207,
+          "upside": -0.5374370364976012
+        },
+        {
+          "multiple": 2,
+          "price": 170223.17056888275,
+          "upside": -0.3832493819968016
+        }
+      ]
+    },
+    "evaluation_status": "예측 성능 미검증 — 현재 가치 시나리오이며 도달 시점을 예측하지 않음",
+    "basis_note": "분기 재무제표 최근 4분기 순이익(Net Income Common Stockholders) ÷ EPS 기준 주식 수 6,637,701,214주",
+    "retrieved_on": "2026-10-06",
+    "cached": false
+  },
+  "model_as_of": "2026-09-30",
+  "model_forecast": {
+    "3": {
+      "raw": 0.05774076355753727,
+      "point": 0.016469557106282354
+    },
+    "6": {
+      "raw": 0.45948440461404205,
+      "point": 0.07451220874555506
+    },
+    "12": {
+      "raw": 0.3381504641819516,
+      "point": 0.12066474464544888
+    }
+  },
+  "live_exports": {
+    "as_of": "2026-10-06",
+    "price_last": "2026-09-30",
+    "exports_last_month": "2026-09",
+    "latest_period": {
+      "month": "2026-09",
+      "days": 31,
+      "yoy": 2.6027376419244344,
+      "observed_usd": 60503641000.0,
+      "monthly_usd": 60503641000.0,
+      "basis": "full_month_preliminary"
+    },
+    "snapshot_hash": "8c3c6f24b1b6b90a81c8",
+    "generated_at": "2026-10-06 16:34 KST",
+    "flash_info": {
+      "enabled": true,
+      "source": "customs_flash_api",
+      "rows": 42,
+      "first": "2025-08",
+      "last": "2026-09",
+      "last_days": 31,
+      "yoy_rows": 6
+    },
+    "current": {
+      "mom_12m": 1.1712445560543543,
+      "drawdown_36m": -0.19610778443113774,
+      "macro_leading_cycle": 4.299999999999997,
+      "macro_leading_change_3m": 2.0,
+      "macro_semiconductor_yoy": 2.6388611115299407,
+      "macro_semiconductor_yoy_change_3m": 0.6449321524031539,
+      "price_to_exports_z": 0.48531097690836533,
+      "exports_cycle": 2.1722857751391285,
+      "exports_accel": 0.3658768448027907,
+      "cli_level": 0.2968000000000046,
+      "cli_change_3m": -0.02169999999999561,
+      "exports_daily_yoy": 2.6388611115299407,
+      "cycle_score": 1.8411777810586676
+    },
+    "phase": "확장(YoY>0, 가속)",
+    "forecast": {
+      "3": {
+        "point": null,
+        "validated": false,
+        "interval": null
+      },
+      "6": {
+        "point": null,
+        "validated": false,
+        "interval": null
+      },
+      "12": {
+        "point": null,
+        "validated": false,
+        "interval": null
+      }
+    },
+    "validated": false
+  },
+  "evaluation_status": "참고 시나리오 보관 — 미래 성능 평가 결과 아님"
+}

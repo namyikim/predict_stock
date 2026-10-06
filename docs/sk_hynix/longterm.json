@@ -669,11 +669,11 @@
       "fresh": true,
       "fetch_error": null,
       "first": "2005-01-01",
-      "last": "2026-09-27",
-      "rows": 7940,
+      "last": "2026-10-05",
+      "rows": 7948,
       "release_lag_days": 14,
       "note": "뉴스심리지수는 일별 지수이지만 주 1회, 약 1주 지연 공개되므로 지수 날짜+14일 이후에만 사용. 2026-09 신지수로 과거치가 재계산되어 백테스트는 재계산 이력 기준",
-      "snapshot_hash": "e338eb740fa4af1d970c",
+      "snapshot_hash": "11f86fa60d8950a521b1",
       "enabled": true
     },
     "term_spread": {
@@ -681,9 +681,9 @@
       "fresh": true,
       "fetch_error": null,
       "first": "2000-12-18",
-      "last": "2026-10-02",
-      "rows": 6386,
-      "snapshot_hash": "f93861273e2e7aa94ca7",
+      "last": "2026-10-06",
+      "rows": 6387,
+      "snapshot_hash": "eb3d6665fb1cb7dc5088",
       "enabled": true
     }
   },
@@ -958,7 +958,7 @@
     "krw": 1405.6209542410713
   },
   "chart_first": "2000-01-31",
-  "generated_at": "2026-10-05 16:16 KST",
+  "generated_at": "2026-10-06 16:44 KST",
   "macro_snapshot_hash": "064717b64854b17df0da",
   "macro_sources": {
     "leading_cycle": "KOSIS_API",
@@ -966,7 +966,7 @@
   },
   "frame_hash": "a558305b597f7c78",
   "live_exports": {
-    "as_of": "2026-10-05",
+    "as_of": "2026-10-06",
     "price_last": "2026-09-30",
     "exports_last_month": "2026-09",
     "latest_period": {
@@ -978,7 +978,7 @@
       "basis": "full_month_preliminary"
     },
     "snapshot_hash": "8c3c6f24b1b6b90a81c8",
-    "generated_at": "2026-10-05 16:14 KST",
+    "generated_at": "2026-10-06 16:43 KST",
     "flash_info": {
       "enabled": true,
       "source": "customs_flash_api",
@@ -1028,7 +1028,7 @@
     "ticker": "000660.KS",
     "price": 1841000.0,
     "price_date": "2026-10-02",
-    "observed_on": "2026-10-05",
+    "observed_on": "2026-10-06",
     "financial_period": "2026-06-30",
     "eps_ttm": 232070.09450008773,
     "bps": 375948.7934903294,
@@ -1087,7 +1087,7 @@
     },
     "evaluation_status": "예측 성능 미검증 — 현재 가치 시나리오이며 도달 시점을 예측하지 않음",
     "basis_note": "분기 재무제표 최근 4분기 순이익(Net Income Common Stockholders) ÷ EPS 기준 주식 수 697,915,819주",
-    "retrieved_on": "2026-10-05",
+    "retrieved_on": "2026-10-06",
     "cached": false
   }
 }

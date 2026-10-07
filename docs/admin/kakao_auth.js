@@ -32,7 +32,6 @@
       if (data.owner_id) text += ' · 확인한 회원번호 ' + data.owner_id;
       if (pending) text += ' · 로그인한 회원번호 ' + pending.owner_id + ': 본인 계정을 확인한 뒤 아래 버튼을 누르세요.';
       if (data.last_error) text += ' · ' + (errors[data.last_error] || '연결 요청을 완료하지 못했습니다. 다시 연결하세요.');
-      text += ' · 자동 알림은 아직 꺼져 있습니다. 보고서 발송 연결은 다음 단계입니다.';
     }
     // 응답 문자열을 HTML로 해석하지 않는다.
     $('kakao-status').textContent = text;

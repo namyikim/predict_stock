@@ -565,7 +565,7 @@ Worker는 수동 Deploy 전까지 운영 코드가 바뀌지 않는다. 이번 �
 ## 카카오톡 본인 인증(K2)
 
 관리자 화면의 **카카오톡 연결**에서 본인 로그인·계정 확인·인증 갱신·연결 해제를 수행한다.
-현재 자동 발송은 미구현이며 이메일 설정과 독립이다. API는 `/kakao/status`, `/kakao/connect`,
+인증과 보고서 발송은 이메일 설정과 독립이다. 인증 API는 `/kakao/status`, `/kakao/connect`,
 `/kakao/confirm`, `/kakao/refresh`, `/kakao/disconnect`를 제공하며 STATS_TOKEN 인증이 필요하다.
 수정 요청은 기존 GitHub Pages Origin에서만 받는다. `/kakao/authorize`, `/kakao/callback`은
 관리자에게 발급한 10분짜리 일회용 state와 Worker 쿠키를 확인한다.
@@ -575,3 +575,18 @@ Worker에 KAKAO_KEY·KAKAO_TOKEN_KEY·필요한 Client Secret과 KAKAO_APP_ID·K
 전체 worker.js를 수동 Deploy해야 한다. GitHub Actions의 KAKAO_KEY는 Worker로 자동 전달되지 않는다.
 
 [정확한 설정 값·콜백 주소·배포 순서·보관/해제 범위](../guides/kakao-notification-setup.md#k2-적용-순서--2026-10-07)를 확인한다.
+
+
+## 카카오톡 본인 보고서 발송(K3)
+
+인증 이행 후 `migrations/20261007_kakao_delivery.sql`의 두 표와 인덱스를 한 문장씩 적용하고 최신 `worker.js` 전체를 Deploy한다. 기존 `*/5 * * * *` Cron을 재사용한다.
+
+- `kakao_delivery_settings`: 자동 켜기 시각과 설정 세대. 처음에는 인증 표의 enabled=0으로 꺼져 있다.
+- `kakao_deliveries`: 이메일과 독립된 회차·공개 메시지·발송 결과 원장. 30일 보관, 불명확 결과 자동 재전송 금지.
+- `GET /kakao/delivery-status`: 미리보기·최근 10건·활성 상태. 관리자 인증 필요.
+- `POST /kakao/control`의 `{enabled:true|false}`: 켠 이후 새 회차만 처리, 중지하면 대기 취소.
+- `POST /kakao/test`의 `{confirmed:true,request_id:UUID}`: 본인 확인한 시험 메시지. 같은 요청 키는 중복 발송하지 않고 하루 최대 3건.
+
+관리자 **발송 상태 확인 → 시험 메시지 보내기 → 나와의 채팅 수신 확인 → 자동 알림 켜기** 순이다.
+제품 링크 웹 도메인 등록과 [K3 배포 안내](../guides/kakao-notification-setup.md#k3-발송-적용-순서--2026-10-07)를 함께 확인한다.
+카카오 호출 실패나 D1 미적용은 기존 메일·채점 Cron을 중단하지 않는다.

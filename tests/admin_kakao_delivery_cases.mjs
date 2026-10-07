@@ -1,0 +1,27 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import vm from 'node:vm';
+const nodes=new Map();
+for(const id of ['kakao-token','sub-token','token','kakao-delivery-load','kakao-delivery-test','kakao-delivery-enable','kakao-delivery-disable','kakao-delivery-status','kakao-delivery-preview','kakao-delivery-history','kakao-delivery-action'])nodes.set(id,{value:'',disabled:true,textContent:'',handlers:{},addEventListener(type,fn){this.handlers[type]=fn;}});
+const document={getElementById:id=>nodes.get(id)||null};
+let connection={configured:true,status:'connected',owner_id:'321'},delivery={available:true,enabled:false,preview:{text:'시험 메시지 본문',link:{web_url:'https://namyikim.github.io/predict_stock/'}},deliveries:[{kind:'report',day:'2026-10-07',phase:'pre_open',status:'uncertain',error_code:'response_unknown',updated_at:0}]};
+let confirm=true,fail=0,sendStatus='sent',sequence=0;const calls=[],confirmations=[];
+const window={confirm:text=>{confirmations.push(text);return confirm;}};
+const context=vm.createContext({window,document,crypto:{randomUUID:()=> '00000000-0000-4000-8000-'+String(++sequence).padStart(12,'0')},Date,fetch:async(url,init)=>{
+  calls.push({url,init});return {status:fail||200,ok:!fail,json:async()=>fail?{error:'발송 기능 없음'}:url.endsWith('/delivery-status')?delivery:url.endsWith('/status')?connection:url.endsWith('/test')?{status:sendStatus}:delivery};
+}});
+vm.runInContext(fs.readFileSync('docs/admin/kakao_delivery.js','utf8'),context);
+const click=async id=>nodes.get(id).handlers.click();
+await click('kakao-delivery-load');assert.equal(calls.length,0,'관리자 토큰 없이 상태 조회 금지');
+nodes.get('kakao-token').value='admin-secret';await click('kakao-delivery-load');
+assert.equal(nodes.get('kakao-delivery-test').disabled,false);assert.equal(nodes.get('kakao-delivery-enable').disabled,false);assert.equal(nodes.get('kakao-delivery-disable').disabled,true);
+assert.match(nodes.get('kakao-delivery-preview').textContent,/시험 메시지 본문/);assert.match(nodes.get('kakao-delivery-history').textContent,/확인 필요/);
+confirm=false;await click('kakao-delivery-test');assert.equal(calls.filter(c=>c.url.endsWith('/test')).length,0,'확인 취소는 실발송 없음');
+confirm=true;await click('kakao-delivery-test');const sent=calls.find(c=>c.url.endsWith('/test'));assert.equal(sent.init.headers.Authorization,'Bearer admin-secret');assert.equal(JSON.parse(sent.init.body).confirmed,true);assert.match(confirmations.at(-1),/321/);assert.match(confirmations.at(-1),/시험 메시지 본문/);assert.match(nodes.get('kakao-delivery-action').textContent,/전송 접수/);assert.doesNotMatch(nodes.get('kakao-delivery-action').textContent,/수신 완료/);
+sendStatus='uncertain';await click('kakao-delivery-test');assert.match(nodes.get('kakao-delivery-action').textContent,/확인 필요/);
+sendStatus='blocked';await click('kakao-delivery-test');const blocked=JSON.parse(calls.filter(c=>c.url.endsWith('/test')).at(-1).init.body).request_id;await click('kakao-delivery-test');assert.equal(JSON.parse(calls.filter(c=>c.url.endsWith('/test')).at(-1).init.body).request_id,blocked,'인증 대기 요청의 키를 유지한다');
+await click('kakao-delivery-enable');assert.equal(JSON.parse(calls.find(c=>c.url.endsWith('/control')).init.body).enabled,true);
+connection.status='disconnected';await click('kakao-delivery-load');assert.equal(nodes.get('kakao-delivery-test').disabled,true);assert.equal(nodes.get('kakao-delivery-enable').disabled,true);
+delivery.available=false;await click('kakao-delivery-load');assert.match(nodes.get('kakao-delivery-status').textContent,/D1/);
+fail=404;await click('kakao-delivery-load');assert.match(nodes.get('kakao-delivery-action').textContent,/Worker/);assert.equal(nodes.get('kakao-delivery-test').disabled,true);
+console.log('카카오 발송 UI: 상태·미리보기·동의·인증·오류·구 Worker 검증 통과');

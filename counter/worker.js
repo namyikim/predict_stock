@@ -1164,7 +1164,7 @@ export async function getKakaoAccessToken(env, now = Date.now()) {
   try { tokens = await kakaoOpen(env,row); } catch { return {status:'configuration_required'}; }
   if (row.status === 'connected' && row.access_expires > now + 60000) {
     const current = await env.DB.prepare('SELECT version,status FROM kakao_connection WHERE id=1').first();
-    return current.version === row.version && current.status === 'connected' ? {status:'ready',accessToken:tokens.access_token} : {status:'connection_changed'};
+    return current.version === row.version && current.status === 'connected' ? {status:'ready',accessToken:tokens.access_token,version:row.version,ownerId:row.owner_id,appId:row.app_id} : {status:'connection_changed'};
   }
   const lease = crypto.randomUUID();
   const claimed = await env.DB.prepare("UPDATE kakao_connection SET lease_owner=?,lease_until=? WHERE id=1 AND version=? AND status IN ('connected','verification_required') AND lease_until<=?")
@@ -1197,7 +1197,7 @@ export async function getKakaoAccessToken(env, now = Date.now()) {
     }
     const verified = await env.DB.prepare("UPDATE kakao_connection SET status='connected',last_error='',updated_at=? WHERE id=1 AND version=? AND lease_owner=? AND status='verification_required'")
       .bind(now,row.version,lease).run();
-    return verified.meta.changes === 1 ? {status:'ready',accessToken:tokens.access_token} : {status:'connection_changed'};
+    return verified.meta.changes === 1 ? {status:'ready',accessToken:tokens.access_token,version:row.version,ownerId:row.owner_id,appId:row.app_id} : {status:'connection_changed'};
   } finally {
     await env.DB.prepare("UPDATE kakao_connection SET lease_owner='',lease_until=0 WHERE id=1 AND lease_owner=?").bind(lease).run();
   }
@@ -1233,11 +1233,163 @@ async function kakaoDisconnect(request, env, origin) {
   return kakaoResponse({ok:true,revoke_status:revokeStatus},origin);
 }
 
+// 카카오 본인 발송(K3, 2026-10-07). 메일 원장은 공개 게시 이벤트로만 읽는다.
+const KAKAO_SEND_URL = 'https://kapi.kakao.com/v2/api/talk/memo/default/send';
+const KAKAO_TEST_TEXT = '카카오톡 보고서 알림 연결 테스트입니다.\n삼성전자·SK하이닉스 보고서는 아래 사이트에서 확인할 수 있습니다.';
+function kakaoLink(target, day, phase) {
+  const url = new URL('https://namyikim.github.io/predict_stock/' + (target ? target + '/' : ''));
+  url.searchParams.set('utm_source','kakao');url.searchParams.set('utm_medium','report');
+  if (day && phase !== 'test') {url.searchParams.set('edition_day',day);url.searchParams.set('edition_phase',phase);}
+  return {web_url:url.href,mobile_web_url:url.href};
+}
+function kakaoTestTemplate() {
+  return {object_type:'text',text:KAKAO_TEST_TEXT,link:kakaoLink('', '', 'test'),button_title:'보고서 보기'};
+}
+export function kakaoReportTemplate(reports, day, phase) {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(day) || !['pre_open','post_close'].includes(phase) || reports.length !== 2) throw new Error('invalid_report');
+  const selected = ['samsung','sk_hynix'].map(target => {
+    const report=reports.find(r=>r.target===target);
+    if (!report || report.session_date!==day || report.phase!==phase || report.url!==`https://namyikim.github.io/predict_stock/${target}/` ||
+        !Array.isArray(report.lines) || !report.lines.length || report.lines.some(x=>typeof x!=='string')) throw new Error('invalid_report');
+    const raw=report.lines.join(' ').replace(/[\u0000-\u001f\u007f]/g,' ').replace(/\s+/g,' ').trim();
+    if (!raw) throw new Error('invalid_report');
+    // UTF-16 기준 60자 안에서 자르고 서로게이트 쌍은 나누지 않는다.
+    let excerpt='';for(const char of raw){if((excerpt+char).length>59)break;excerpt+=char;}
+    if(excerpt!==raw)excerpt+='…';
+    return {target,excerpt};
+  });
+  const text=`${day} · ${phase==='pre_open'?'개장 전 예측':'마감 후 회고'}\n`+
+    selected.map(r=>MAIL_NAMES[r.target]+': '+r.excerpt).join('\n')+'\n전체 내용은 보고서에서 확인하세요.';
+  if(text.length>200)throw new Error('message_too_long');
+  return {object_type:'text',text,link:kakaoLink('',day,phase),buttons:selected.map(r=>({title:MAIL_NAMES[r.target],link:kakaoLink(r.target,day,phase)}))};
+}
+async function kakaoDeliverySettings(env) {
+  await env.DB.prepare('INSERT OR IGNORE INTO kakao_delivery_settings(id) VALUES(1)').run();
+  return env.DB.prepare('SELECT * FROM kakao_delivery_settings WHERE id=1').first();
+}
+async function kakaoRecoverSending(env, now) {
+  // 요청을 시작한 행은 임대가 만료돼도 다시 점유하지 않는다.
+  await env.DB.prepare("UPDATE kakao_deliveries SET status='uncertain',error_code='response_unknown',updated_at=? WHERE status='sending' AND lease_until<=?").bind(now,now).run();
+}
+async function kakaoDeliveryStatus(env) {
+  try {
+    const settings=await kakaoDeliverySettings(env),row=await kakaoConnection(env);
+    await kakaoRecoverSending(env,Date.now());
+    const deliveries=await env.DB.prepare('SELECT kind,day,phase,status,attempts,created_at,updated_at,error_code FROM kakao_deliveries ORDER BY created_at DESC,id DESC LIMIT 10').all();
+    return {available:true,enabled:Boolean(row.enabled),enabled_since:settings.enabled_since,preview:kakaoTestTemplate(),deliveries:deliveries.results};
+  } catch(error) {
+    if(/no such table:\s*kakao_/i.test(String(error.message)))return {available:false,enabled:false,status:'schema_required',deliveries:[]};
+    throw error;
+  }
+}
+async function kakaoDeliveryControl(request,env,origin) {
+  const body=await readJson(request);
+  if(!body || typeof body.enabled!=='boolean')return kakaoResponse({error:'자동 발송 여부를 선택하세요.'},origin,400);
+  const current=await kakaoDeliveryStatus(env);
+  if(!current.available)return kakaoResponse({error:'카카오 발송 D1 설정이 필요합니다.'},origin,503);
+  const row=await kakaoConnection(env),now=Date.now();
+  if(body.enabled && (!kakaoConfig(env).ready || row.status!=='connected' || row.refresh_expires<=now))return kakaoResponse({error:'카카오 연결과 인증을 먼저 확인하세요.'},origin,409);
+  if(Boolean(row.enabled)===body.enabled)return kakaoResponse(current,origin);
+  const results=await env.DB.batch([
+    env.DB.prepare('UPDATE kakao_connection SET enabled=?,updated_at=? WHERE id=1 AND version=?').bind(body.enabled?1:0,now,row.version),
+    env.DB.prepare('UPDATE kakao_delivery_settings SET enabled_since=?,generation=generation+1,updated_at=? WHERE id=1 AND changes()=1').bind(body.enabled?now:0,now),
+    env.DB.prepare("UPDATE kakao_deliveries SET status='cancelled',error_code='control_changed',updated_at=? WHERE kind='report' AND status='pending' AND changes()>=1").bind(now)
+  ]);
+  if(results[0].meta.changes!==1)return kakaoResponse({error:'연결 상태가 바뀌었습니다. 다시 확인하세요.'},origin,409);
+  return kakaoResponse(await kakaoDeliveryStatus(env),origin);
+}
+async function kakaoSendDelivery(env, delivery, now) {
+  if(delivery.status!=='pending' || delivery.next_attempt>now)return {status:delivery.status};
+  const token=await getKakaoAccessToken(env,now);
+  if(token.status!=='ready') {
+    await env.DB.prepare("UPDATE kakao_deliveries SET error_code=?,next_attempt=?,updated_at=? WHERE id=? AND status='pending'").bind(token.status,delivery.kind==='test'?0:now+300000,now,delivery.id).run();
+    return {status:'blocked',reason:token.status};
+  }
+  if(delivery.recipient_key!==await mailHash(token.appId+'|'+token.ownerId))return {status:'connection_changed'};
+  const sendingAt=Date.now();
+  if(delivery.day!==mailDay(new Date(sendingAt)) || (delivery.kind==='report' && !phaseOpen(delivery.phase,new Date(sendingAt)))){
+    await env.DB.prepare("UPDATE kakao_deliveries SET status='cancelled',error_code='edition_expired',updated_at=? WHERE id=? AND status='pending'").bind(sendingAt,delivery.id).run();
+    return {status:'cancelled',error_code:'edition_expired'};
+  }
+  // 점유 시점에 연결 버전과 중지 세대를 함께 확인한다. 이후 시작한 전송은 회수할 수 없다.
+  const claimed=await env.DB.prepare(`UPDATE kakao_deliveries SET status='sending',attempts=attempts+1,lease_until=?,updated_at=?
+    WHERE id=? AND status='pending' AND attempts<3 AND next_attempt<=?
+    AND EXISTS(SELECT 1 FROM kakao_connection c WHERE c.id=1 AND c.version=? AND c.status='connected'
+      AND (kakao_deliveries.kind='test' OR c.enabled=1))
+    AND (kind='test' OR EXISTS(SELECT 1 FROM kakao_delivery_settings s WHERE s.id=1 AND s.generation=kakao_deliveries.settings_generation))
+    RETURNING *`).bind(sendingAt+60000,sendingAt,delivery.id,sendingAt,token.version).first();
+  if(!claimed)return {status:'not_claimed'};
+  let status='uncertain',code='response_unknown';
+  try {
+    const response=await fetch(KAKAO_SEND_URL,{method:'POST',redirect:'manual',signal:AbortSignal.timeout(10000),
+      headers:{Authorization:'Bearer '+token.accessToken,'Content-Type':'application/x-www-form-urlencoded;charset=utf-8'},
+      body:new URLSearchParams({template_object:claimed.payload}).toString()});
+    let data;try{data=await response.json();}catch{/* 원문 응답은 보관하지 않는다. */}
+    if(response.ok && data?.result_code===0){status='sent';code='';}
+    else if(response.status===400 && [-532,-533,-536].includes(data?.code)){status='failed';code='daily_limit';}
+    else if(response.status===429 || (response.status===400 && data?.code===-10)){
+      status=claimed.kind==='report' && claimed.attempts<3?'pending':'failed';code='rate_limited';
+    } else if(response.status===401 || data?.code===-401){status='failed';code='reconnect_required';}
+    else if([-402,-3].includes(data?.code)){status='failed';code='permission_required';}
+    else if(response.status>=300 && response.status<400){status='failed';code='unexpected_redirect';}
+    else if(response.status>=400 && response.status<500 && response.status!==408){status='failed';code='provider_error';}
+  } catch {/* 전송 여부를 알 수 없으므로 자동 재시도하지 않는다. */}
+  const done=Date.now();
+  await env.DB.prepare("UPDATE kakao_deliveries SET status=?,error_code=?,next_attempt=?,updated_at=? WHERE id=? AND status='sending' AND attempts=?")
+    .bind(status,code,status==='pending'?done+300000:0,done,delivery.id,claimed.attempts).run();
+  if(['reconnect_required','permission_required'].includes(code))await env.DB.prepare("UPDATE kakao_connection SET status='reconnect_required',enabled=0,last_error=? WHERE id=1 AND version=?").bind(code,token.version).run();
+  return {status,error_code:code};
+}
+export async function processKakao(env, now=new Date()) {
+  let settings,row;
+  try {settings=await kakaoDeliverySettings(env);row=await kakaoConnection(env);await kakaoRecoverSending(env,now.getTime());}
+  catch(error){if(/no such table:\s*kakao_/i.test(String(error.message)))return {status:'schema_required'};throw error;}
+  await env.DB.prepare('DELETE FROM kakao_deliveries WHERE created_at<?').bind(now.getTime()-30*86400000).run();
+  if(!row.enabled)return {status:'disabled'};
+  if(!['connected','verification_required'].includes(row.status))return {status:row.status};
+  const day=mailDay(now),phase=phaseOpen('pre_open',now)?'pre_open':phaseOpen('post_close',now)?'post_close':'';
+  await env.DB.prepare("UPDATE kakao_deliveries SET status='cancelled',error_code='edition_expired',updated_at=? WHERE kind='report' AND status='pending' AND (day<? OR (day=? AND phase='pre_open' AND ?=0))")
+    .bind(now.getTime(),day,day,phaseOpen('pre_open',now)?1:0).run();
+  if(!phase)return {status:'outside_session'};
+  const edition='digest/'+day+'/'+phase,recipient=await mailHash(row.app_id+'|'+row.owner_id),id=edition+'/'+recipient;
+  let delivery=await env.DB.prepare('SELECT * FROM kakao_deliveries WHERE id=?').bind(id).first();
+  if(!delivery){
+    const event=await env.DB.prepare('SELECT created_at FROM mail_editions WHERE id=?').bind(edition).first();
+    if(!event || Date.parse(event.created_at)<=settings.enabled_since)return {status:'waiting_report'};
+    const records=await env.DB.prepare('SELECT content FROM mail_events WHERE id IN (?,?) ORDER BY target').bind(edition+'/samsung',edition+'/sk_hynix').all();
+    if(records.results.length!==2)return {status:'waiting_report'};
+    let payload;try{payload=kakaoReportTemplate(records.results.map(r=>JSON.parse(r.content)),day,phase);}catch{return {status:'invalid_report'};}
+    await env.DB.prepare(`INSERT OR IGNORE INTO kakao_deliveries(id,recipient_key,kind,day,phase,payload,settings_generation,created_at,updated_at)
+      SELECT ?,?,'report',?,?,?,?,?,? WHERE EXISTS(SELECT 1 FROM kakao_connection c,kakao_delivery_settings s
+      WHERE c.id=1 AND s.id=1 AND c.enabled=1 AND c.version=? AND s.generation=?)`)
+      .bind(id,recipient,day,phase,JSON.stringify(payload),settings.generation,now.getTime(),now.getTime(),row.version,settings.generation).run();
+    delivery=await env.DB.prepare('SELECT * FROM kakao_deliveries WHERE id=?').bind(id).first();
+  }
+  return delivery?kakaoSendDelivery(env,delivery,now.getTime()):{status:'connection_changed'};
+}
+async function kakaoTestSend(request,env,origin) {
+  const body=await readJson(request),now=Date.now();
+  if(!body || body.confirmed!==true || typeof body.request_id!=='string' || !/^[a-f0-9-]{36}$/.test(body.request_id))return kakaoResponse({error:'본인 수신과 시험 내용을 확인한 요청이 필요합니다.'},origin,400);
+  if(!(await kakaoDeliveryStatus(env)).available)return kakaoResponse({error:'카카오 발송 D1 설정이 필요합니다.'},origin,503);
+  const row=await kakaoConnection(env);
+  if(!kakaoConfig(env).ready || !['connected','verification_required'].includes(row.status))return kakaoResponse({error:'카카오 연결을 먼저 확인하세요.'},origin,409);
+  const day=mailDay(new Date(now)),recipient=await mailHash(row.app_id+'|'+row.owner_id),id='test/'+recipient+'/'+body.request_id;
+  await env.DB.prepare(`INSERT OR IGNORE INTO kakao_deliveries(id,recipient_key,kind,day,phase,payload,created_at,updated_at)
+    SELECT ?,?,'test',?,'test',?,?,? WHERE (SELECT COUNT(*) FROM kakao_deliveries WHERE kind='test' AND day=? AND recipient_key=?)<3`)
+    .bind(id,recipient,day,JSON.stringify(kakaoTestTemplate()),now,now,day,recipient).run();
+  const delivery=await env.DB.prepare('SELECT * FROM kakao_deliveries WHERE id=?').bind(id).first();
+  if(!delivery)return kakaoResponse({error:'시험 메시지는 하루 최대 3회까지 보낼 수 있습니다.'},origin,429);
+  return kakaoResponse(await kakaoSendDelivery(env,delivery,now),origin);
+}
+
 async function handleKakao(request, env, url, origin) {
   if (request.method === 'GET' && url.pathname === '/kakao/authorize') return kakaoAuthorize(request,env,url);
   if (request.method === 'GET' && url.pathname === '/kakao/callback') return kakaoCallback(request,env,url);
   if (!isAdmin(request,env)) return kakaoResponse({error:'unauthorized'},origin,401);
   if (request.method !== 'GET' && !ALLOWED_ORIGINS.includes(origin)) return kakaoResponse({error:'forbidden'},origin,403);
+  if (request.method === 'GET' && url.pathname === '/kakao/delivery-status') return kakaoResponse(await kakaoDeliveryStatus(env),origin);
+  if (request.method === 'POST' && url.pathname === '/kakao/control') return kakaoDeliveryControl(request,env,origin);
+  if (request.method === 'POST' && url.pathname === '/kakao/test') return kakaoTestSend(request,env,origin);
   if (request.method === 'GET' && url.pathname === '/kakao/status') return kakaoResponse(await kakaoStatus(env),origin);
   if (request.method === 'POST' && url.pathname === '/kakao/connect') return kakaoStart(request,env,origin);
   if (request.method === 'POST' && url.pathname === '/kakao/confirm') return kakaoConfirm(request,env,origin);
@@ -1296,6 +1448,8 @@ export default {
     // 10분짜리 인증 대기 자료는 매 Cron에서 폐기한다. 구 DB도 기존 메일·채점은 계속 동작한다.
     try { await env.DB.prepare('DELETE FROM kakao_oauth WHERE expires_at<=?').bind(Date.now()).run(); }
     catch (error) { if (!/no such table:\s*kakao_oauth/i.test(String(error.message))) console.log('카카오 인증 대기 정리 실패: D1 상태를 확인하세요.'); }
+    // 이메일 설정·구독자 유무와 독립적으로 처리한다. 카카오 실패는 기존 Cron을 중단하지 않는다.
+    try { await processKakao(env); } catch { console.log('카카오 발송 처리 실패: 관리자 발송 상태와 D1을 확인하세요.'); }
     // 기존 보고서 정시 호출과 함께 실행한다. 별도 */5 * * * * 트리거는 발송 재시도용이다.
     if (String(env.MAIL_ENABLED || '') === '1') {
       try { const result = await processMail(env); console.log('report_mail ' + JSON.stringify({status:result.status,accepted:result.accepted})); }

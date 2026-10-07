@@ -352,7 +352,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 <section class="admin-panel" id="panel-kakao" data-tab="kakao" hidden>
 <h2 class="panel-title">카카오톡 본인 연결</h2>
-<p class="sub">본인의 ‘나와의 채팅’ 알림을 준비합니다. 로그인과 메시지 전송 동의 후 본인 계정을 확인하세요. 현재는 인증 단계이며 자동 발송은 다음 단계에서 연결합니다.</p>
+<p class="sub">본인의 ‘나와의 채팅’ 알림을 준비합니다. 로그인과 메시지 전송 동의 후 본인 계정을 확인하세요. 아래 발송 설정에서 시험 메시지를 확인한 뒤 자동 알림을 켤 수 있습니다.</p>
 <label for="kakao-token">STATS_TOKEN</label>
 <input id="kakao-token" type="password" placeholder="방문 통계와 같은 관리자 토큰" autocomplete="off" style="max-width:100%;box-sizing:border-box">
 <div style="display:flex;gap:8px;flex-wrap:wrap;margin:12px 0">
@@ -367,6 +367,18 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 <p class="sub">체크하지 않으면 서버 토큰만 지웁니다. 체크하면 이 앱의 카카오 동의도 해제하므로 같은 앱을 쓰는 다른 기능에 영향을 줄 수 있습니다.</p>
 <div id="kakao-status" class="sub" role="status">관리자 토큰을 입력하고 연결 상태를 확인하세요.</div>
 <div id="kakao-action" class="msg" role="status" aria-live="polite"></div>
+<h3 style="margin-top:28px">카카오톡 보고서 발송</h3>
+<p class="sub">본인의 나와의 채팅으로 보냅니다. 시험 메시지는 하루 최대 3회이며 자동 알림은 별도로 켭니다. 전송 접수 성공은 수신·열람 확인과 구분됩니다.</p>
+<div style="display:flex;gap:8px;flex-wrap:wrap;margin:12px 0">
+<button id="kakao-delivery-load" type="button">발송 상태 확인</button>
+<button id="kakao-delivery-test" type="button" disabled>시험 메시지 보내기</button>
+<button id="kakao-delivery-enable" type="button" disabled>자동 알림 켜기</button>
+<button id="kakao-delivery-disable" type="button" disabled>자동 알림 끄기</button>
+</div>
+<div id="kakao-delivery-status" class="sub" role="status">발송 상태 확인을 눌러주세요.</div>
+<details style="margin:12px 0"><summary>시험 메시지 미리보기</summary><pre id="kakao-delivery-preview" style="white-space:pre-wrap;overflow-wrap:anywhere"></pre></details>
+<pre id="kakao-delivery-history" style="white-space:pre-wrap;overflow-wrap:anywhere" aria-live="polite"></pre>
+<div id="kakao-delivery-action" class="msg" role="status" aria-live="polite"></div>
 </section>
 
 <section class="admin-panel" id="panel-sim" data-tab="sim" hidden>
@@ -396,6 +408,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 <script src="email_traffic.js"></script>
 <script src="kakao_auth.js"></script>
+<script src="kakao_delivery.js"></script>
 <script>
 (function () {
   "use strict";

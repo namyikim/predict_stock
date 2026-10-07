@@ -1,0 +1,20 @@
+// 저장된 방문만 사용하며 개인별 조회·실제 네트워크 요청은 하지 않는다.
+import fs from 'node:fs';
+import assert from 'node:assert/strict';
+import {DatabaseSync} from 'node:sqlite';
+const worker=await import('data:text/javascript;base64,'+fs.readFileSync('counter/worker.js').toString('base64'));
+const db=new DatabaseSync(':memory:');db.exec(fs.readFileSync('counter/schema.sql','utf8'));
+const day=new Date().toISOString().slice(0,10);
+const insert=db.prepare('INSERT INTO hits (page,ts,day,country,ua,source,edition_day,edition_phase) VALUES (?,?,?,?,?,?,?,?)');
+for(const [country,ua,source] of [['KR','Mozilla iPhone Mobile','email'],['US','Mozilla iPad','email'],['KR','Mozilla Android Mobile','email'],['','Mozilla Android','email'],['KR','Mozilla Windows NT','email'],['XX<script>','mystery','email'],['JP','Mozilla Windows NT','']])insert.run('samsung',day,day,country,ua,source,day,'pre_open');
+insert.run('samsung','2000-01-01','2000-01-01','DE','Mozilla iPhone Mobile','email',day,'pre_open');
+const env={STATS_TOKEN:'test',DB:{prepare(sql){let values=[];return {bind(...args){values=args;return this;},execute(){return {results:db.prepare(sql).all(...values)};}};},async batch(queries){return queries.map(q=>q.execute());}}};
+const response=await worker.default.fetch(new Request('https://counter.example/stats?days=7',{headers:{Authorization:'Bearer test',Origin:'https://namyikim.github.io'}}),env,{});
+assert.equal(response.status,200);
+const data=(await response.json()).emailTraffic;
+assert.deepEqual(Object.fromEntries(data.countries.map(r=>[r.country,r.views])),{KR:3,US:1,unknown:2});
+assert.deepEqual(Object.fromEntries(data.devices.map(r=>[r.device,r.views])),{mobile:2,tablet:2,desktop:1,unknown:1});
+assert.equal(data.daily.reduce((n,r)=>n+r.views,0),6);
+assert.ok(!JSON.stringify(data).includes('Mozilla'));
+assert.ok(!JSON.stringify(data).includes('XX<script>'));
+console.log('이메일 국가·기기 분류·미확인·기간·일반 방문 제외 검증 통과');

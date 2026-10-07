@@ -486,8 +486,8 @@ Gmail 실제 수신 확인(2026-10-04): 사용자가 앱 비밀번호를 갱신�
 
 ## 이메일 링크 유입 집계 — 1단계 API (2026-10-07)
 
-저장·조회 API, 이메일 링크 표시, 사이트 방문 요청 연결은 구현했다. 관리자 화면은
-`guides/email-traffic-tracking-plan.md`의 4단계다. 이 코드 push만으로 운영 집계가 시작되지는 않는다.
+저장·조회 API, 이메일 링크 표시, 사이트 방문 요청과 관리자 화면 연결을 구현했다.
+진행 기록은 `guides/email-traffic-tracking-plan.md`에 있다. 이 코드 push만으로 운영 집계가 시작되지는 않는다.
 
 ### 기존 DB 이행
 
@@ -530,7 +530,7 @@ Node의 내장 SQLite로 실제 SQL과 Worker 응답을 확인한다(Node 22.13 
 
 `mailPayload`는 HTML·일반 텍스트의 모든 보고서 링크에 이메일 출처와 발행 회차를 붙인다.
 기존 알림 이벤트와 중복 발송 ID는 유지하고, 구독 취소 링크 및 List-Unsubscribe 헤더는 변경하지 않는다.
-사이트 방문 요청 연결(계획 3단계)은 구현했고 관리자 화면(4단계)은 아직 필요하다.
+사이트 방문 요청과 관리자 화면 연결도 구현했다.
 Worker는 수동 Deploy 전까지 운영 코드가 바뀌지 않는다. 이번 구현에서 실발송하지 않았다.
 검증: `node tests/email_link_cases.mjs` 또는 `python -m unittest discover -s tests -p 'test_email_traffic.py' -v`.
 
@@ -543,3 +543,20 @@ Worker는 수동 Deploy 전까지 운영 코드가 바뀌지 않는다. 이번 �
 **Worker 전체 코드 수동 Deploy 전에는 거시경제 집계 요청이 거절된다.**
 생성 보고서는 정상 게시 작업에서 반영하며, 이 변경으로 원장 기록용 수동 실행을 하지 않는다.
 검증: `python -m unittest discover -s tests -p 'test_traffic_attribution.py' -v`.
+
+
+### 4단계: 관리자 이메일 통계·국가·기기 분포 (2026-10-07)
+
+관리자 → 방문 통계에서 기존 STATS_TOKEN과 기간 선택으로 **이메일 유입**을 확인한다.
+선택 기간의 이메일 유입 방문수·전체 조회 중 비중, 보고서별·국가별·기기별 막대,
+방문일(UTC)·발행 회차일(한국)별 표를 제공한다. 메일 발송 대비 클릭률이나 고유 구독자 수가 아니다.
+
+- `/stats.emailTraffic`에 `countries: [{country,views}]`, `devices: [{device,views}]`를 추가했다.
+- 기존 hits의 country와 ua만 이용한다. 기기는 mobile/tablet/desktop/unknown 추정값으로 묶고, UA 원문·계정·수신자 식별자·IP 원본을 응답하지 않는다.
+- 기존 일반 방문 통계의 시/도·도시와 별도로, 이메일 화면은 국가 수준으로만 표시한다. 위치·기기는 오차가 있을 수 있다.
+- 필드가 없는 옛 Worker 또는 D1 미이행은 ‘집계 미적용’, 정상 빈 집계는 ‘기록 없음’으로 구분한다. 국가·기기 필드만 없으면 ‘추가 통계 미적용’으로 표시한다.
+- 이번 분포 추가에 새 DB 컬럼은 없다. 앞 단계의 source/edition_day/edition_phase 3개 컬럼 이행은 필요하다.
+- 적용 순서: 기존 DB 이행 SQL을 한 문장씩 실행 → `counter/worker.js` 전체 코드 수동 Deploy → 사이트 게시 후 관리자에서 조회. 기존 컬럼이 있으면 ALTER를 반복하지 않는다.
+- 실제 메일 시험 발송·운영 방문 생성·DB 이행·Worker 배포는 수행하지 않았다.
+
+검증: `python -m unittest discover -s tests -p 'test_email_dimensions.py' -v`.

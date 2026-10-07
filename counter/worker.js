@@ -233,14 +233,17 @@ async function attachEmailAttribution(env, id, attribution) {
 
 async function emailTrafficStats(env, since) {
   try {
-    const [daily,editions]=await env.DB.batch([
+    const [daily,editions,countries,devices]=await env.DB.batch([
       env.DB.prepare("SELECT day,page,COUNT(*) AS views FROM hits WHERE day >= ? AND source='email' GROUP BY day,page ORDER BY day DESC,page").bind(since),
       env.DB.prepare("SELECT edition_day,edition_phase,page,COUNT(*) AS views FROM hits WHERE day >= ? AND source='email' GROUP BY edition_day,edition_phase,page ORDER BY edition_day DESC,edition_phase,page").bind(since),
+      // 이미 저장한 국가·UA로 분포만 계산한다. 개인 정보나 UA 원문은 응답하지 않는다.
+      env.DB.prepare("SELECT CASE WHEN country GLOB '[A-Z][A-Z]' THEN country ELSE 'unknown' END AS country,COUNT(*) AS views FROM hits WHERE day >= ? AND source='email' GROUP BY 1 ORDER BY views DESC,country").bind(since),
+      env.DB.prepare("SELECT CASE WHEN lower(ua) LIKE '%ipad%' OR lower(ua) LIKE '%tablet%' OR (lower(ua) LIKE '%android%' AND lower(ua) NOT LIKE '%mobile%') THEN 'tablet' WHEN lower(ua) LIKE '%mobile%' OR lower(ua) LIKE '%iphone%' THEN 'mobile' WHEN lower(ua) LIKE '%windows nt%' OR lower(ua) LIKE '%macintosh%' OR lower(ua) LIKE '%x11%' THEN 'desktop' ELSE 'unknown' END AS device,COUNT(*) AS views FROM hits WHERE day >= ? AND source='email' GROUP BY 1 ORDER BY views DESC,device").bind(since),
     ]);
-    return {available:true,timezone:'UTC',daily:daily.results,editions:editions.results};
+    return {available:true,timezone:'UTC',daily:daily.results,editions:editions.results,countries:countries.results,devices:devices.results};
   } catch(error) {
     if(!missingAttributionColumns(error))throw error;
-    return {available:false,timezone:'UTC',daily:[],editions:[]};
+    return {available:false,timezone:'UTC',daily:[],editions:[],countries:[],devices:[]};
   }
 }
 

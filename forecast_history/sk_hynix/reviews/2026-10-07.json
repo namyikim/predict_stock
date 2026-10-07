@@ -3,7 +3,7 @@
   "name": "SK하이닉스",
   "peer_name": "삼성전자",
   "session_date": "2026-10-07",
-  "generated_at": "2026-10-07 16:11 KST",
+  "generated_at": "2026-10-07 16:46 KST",
   "summary": {
     "prev_close": 1773000.0,
     "open": 1728000.0,
@@ -15,11 +15,11 @@
     "c2c": -0.028200789622109368,
     "high_vs_open": 0.02951388888888884,
     "low_vs_open": -0.0028935185185184897,
-    "volume": 2758578.0,
-    "volume_ratio": 0.8645802262788664,
+    "volume": 2762810.0,
+    "volume_ratio": 0.8659065993296238,
     "kospi_c2c": -0.019807305405253106,
     "peer_c2c": -0.012867647058823484,
-    "usdkrw_chg": -0.003698582848837173,
+    "usdkrw_chg": -0.004658611918604616,
     "us_nights": 1,
     "sox_ret": 0.0034222247856494636,
     "nasdaq_ret": 0.004457441910701521,
@@ -160,12 +160,6 @@
           "link": "https://news.google.com/rss/articles/CBMiYkFVX3lxTE5Za1ZMMDVMZEZIUjJ6Zjg3ajFZU1ByaGpiVjNCNWRndVFZbVFPZ3JiZS1sWlBUUC1wV0t2dlV5QTk1WXd0OG9XR0M1djF6UVNNMlVVNDNCZWp4OURtNlc3Tmdn?oc=5"
         },
         {
-          "time": "2026-10-07T08:29:23+09:00",
-          "title": "반도체 숨 고르기…삼성전자·SK하이닉스, 실적 앞두고 프리마켓서 동반 하락",
-          "source": "직썰",
-          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE43RGN0Q0F1SWIxSko5NGhWUGM0UUNBQTY1YXVXVXdQQVVXU1ZBR1Fza21qNjRSN0F6eVVuQXdYbE9JZTJiYWtQMXJjZklKWk9nOFAzR0xzakxfMVA1MzhSYjdtMXZXaTg50gFsQVVfeXFMTUotazhWTlRiTzZucGtYa1lDQVJtbnltdnpFSjR0UFhMLW9ZUjBNTFBNVW8td2xQQm9GcGdQVTVxQVRzcF9sR05DSVpTUWIxUzdTZXptQ2hKVWdjTkpTMzl0eWFEamVBMHB1a1ZZ?oc=5"
-        },
-        {
           "time": "2026-10-07T08:16:16+09:00",
           "title": "3Q 실적 앞둔 삼성전자, 프리마켓서 약보합…SK하이닉스 1%↓",
           "source": "뉴스1",
@@ -176,6 +170,12 @@
           "title": "IBK증권, SK하이닉스 목표가 400만원 유지…\"지나치게 저평가\"",
           "source": "연합뉴스",
           "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTFAtalNHUnI1SmE0WG12QUJUSE15ZWdQYU50RjZvTXhXRVU3c2VmXzVveGtkbFFucWYydXBvcUdnc2g3Xzk1c3Ywb3pCWnlUYUNRdllZblFTazVoZnk1d3ViVtIBYEFVX3lxTFAtalNHUnI1SmE0WG12QUJUSE15ZWdQYU50RjZvTXhXRVU3c2VmXzVveGtkbFFucWYydXBvcUdnc2g3Xzk1c3Ywb3pCWnlUYUNRdllZblFTazVoZnk1d3ViVg?oc=5"
+        },
+        {
+          "time": "2026-10-07T08:35:00+09:00",
+          "title": "[모닝 리포트] \"SK하이닉스, AI 수요에 목표가 400만원 유지\"",
+          "source": "뉴스핌",
+          "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE00TTVfNGpuYS1odGZVM29xUkJ6ZlVMN2I3eVl4c0V3UjJ5VU9FLXdwaE8tZkRWRjg4anE5RW82c0pXVHVfUTh5VE54Z2NKNXRsSVJRVkpRNzVUTE1a?oc=5"
         }
       ]
     }
@@ -230,12 +230,12 @@
     {
       "time": "2026-10-07T09:35:00+09:00",
       "price": 1775000.0,
-      "volume": 59246.0
+      "volume": 59235.0
     },
     {
       "time": "2026-10-07T09:40:00+09:00",
       "price": 1775000.0,
-      "volume": 38528.0
+      "volume": 38539.0
     },
     {
       "time": "2026-10-07T09:45:00+09:00",
@@ -295,12 +295,12 @@
     {
       "time": "2026-10-07T10:40:00+09:00",
       "price": 1747000.0,
-      "volume": 23480.0
+      "volume": 23481.0
     },
     {
       "time": "2026-10-07T10:45:00+09:00",
       "price": 1742000.0,
-      "volume": 22180.0
+      "volume": 22179.0
     },
     {
       "time": "2026-10-07T10:50:00+09:00",
@@ -370,12 +370,12 @@
     {
       "time": "2026-10-07T11:55:00+09:00",
       "price": 1741000.0,
-      "volume": 15173.0
+      "volume": 15169.0
     },
     {
       "time": "2026-10-07T12:00:00+09:00",
       "price": 1740000.0,
-      "volume": 14793.0
+      "volume": 14797.0
     },
     {
       "time": "2026-10-07T12:05:00+09:00",
@@ -415,12 +415,12 @@
     {
       "time": "2026-10-07T12:40:00+09:00",
       "price": 1743000.0,
-      "volume": 15697.0
+      "volume": 15834.0
     },
     {
       "time": "2026-10-07T12:45:00+09:00",
       "price": 1742000.0,
-      "volume": 14256.0
+      "volume": 14119.0
     },
     {
       "time": "2026-10-07T12:50:00+09:00",
@@ -535,12 +535,12 @@
     {
       "time": "2026-10-07T14:40:00+09:00",
       "price": 1729000.0,
-      "volume": 21971.0
+      "volume": 21967.0
     },
     {
       "time": "2026-10-07T14:45:00+09:00",
       "price": 1730000.0,
-      "volume": 27777.0
+      "volume": 27781.0
     },
     {
       "time": "2026-10-07T14:50:00+09:00",
@@ -577,12 +577,6 @@
           "link": "https://news.google.com/rss/articles/CBMiYkFVX3lxTE5Za1ZMMDVMZEZIUjJ6Zjg3ajFZU1ByaGpiVjNCNWRndVFZbVFPZ3JiZS1sWlBUUC1wV0t2dlV5QTk1WXd0OG9XR0M1djF6UVNNMlVVNDNCZWp4OURtNlc3Tmdn?oc=5"
         },
         {
-          "time": "2026-10-07T08:29:23+09:00",
-          "title": "반도체 숨 고르기…삼성전자·SK하이닉스, 실적 앞두고 프리마켓서 동반 하락",
-          "source": "직썰",
-          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE43RGN0Q0F1SWIxSko5NGhWUGM0UUNBQTY1YXVXVXdQQVVXU1ZBR1Fza21qNjRSN0F6eVVuQXdYbE9JZTJiYWtQMXJjZklKWk9nOFAzR0xzakxfMVA1MzhSYjdtMXZXaTg50gFsQVVfeXFMTUotazhWTlRiTzZucGtYa1lDQVJtbnltdnpFSjR0UFhMLW9ZUjBNTFBNVW8td2xQQm9GcGdQVTVxQVRzcF9sR05DSVpTUWIxUzdTZXptQ2hKVWdjTkpTMzl0eWFEamVBMHB1a1ZZ?oc=5"
-        },
-        {
           "time": "2026-10-07T08:16:16+09:00",
           "title": "3Q 실적 앞둔 삼성전자, 프리마켓서 약보합…SK하이닉스 1%↓",
           "source": "뉴스1",
@@ -593,6 +587,12 @@
           "title": "IBK증권, SK하이닉스 목표가 400만원 유지…\"지나치게 저평가\"",
           "source": "연합뉴스",
           "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTFAtalNHUnI1SmE0WG12QUJUSE15ZWdQYU50RjZvTXhXRVU3c2VmXzVveGtkbFFucWYydXBvcUdnc2g3Xzk1c3Ywb3pCWnlUYUNRdllZblFTazVoZnk1d3ViVtIBYEFVX3lxTFAtalNHUnI1SmE0WG12QUJUSE15ZWdQYU50RjZvTXhXRVU3c2VmXzVveGtkbFFucWYydXBvcUdnc2g3Xzk1c3Ywb3pCWnlUYUNRdllZblFTazVoZnk1d3ViVg?oc=5"
+        },
+        {
+          "time": "2026-10-07T08:35:00+09:00",
+          "title": "[모닝 리포트] \"SK하이닉스, AI 수요에 목표가 400만원 유지\"",
+          "source": "뉴스핌",
+          "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE00TTVfNGpuYS1odGZVM29xUkJ6ZlVMN2I3eVl4c0V3UjJ5VU9FLXdwaE8tZkRWRjg4anE5RW82c0pXVHVfUTh5VE54Z2NKNXRsSVJRVkpRNzVUTE1a?oc=5"
         }
       ],
       "price": 1743500.0,
@@ -613,12 +613,6 @@
       "link": "https://news.google.com/rss/articles/CBMiYkFVX3lxTE5Za1ZMMDVMZEZIUjJ6Zjg3ajFZU1ByaGpiVjNCNWRndVFZbVFPZ3JiZS1sWlBUUC1wV0t2dlV5QTk1WXd0OG9XR0M1djF6UVNNMlVVNDNCZWp4OURtNlc3Tmdn?oc=5"
     },
     {
-      "time": "2026-10-07T08:29:23+09:00",
-      "title": "반도체 숨 고르기…삼성전자·SK하이닉스, 실적 앞두고 프리마켓서 동반 하락",
-      "source": "직썰",
-      "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE43RGN0Q0F1SWIxSko5NGhWUGM0UUNBQTY1YXVXVXdQQVVXU1ZBR1Fza21qNjRSN0F6eVVuQXdYbE9JZTJiYWtQMXJjZklKWk9nOFAzR0xzakxfMVA1MzhSYjdtMXZXaTg50gFsQVVfeXFMTUotazhWTlRiTzZucGtYa1lDQVJtbnltdnpFSjR0UFhMLW9ZUjBNTFBNVW8td2xQQm9GcGdQVTVxQVRzcF9sR05DSVpTUWIxUzdTZXptQ2hKVWdjTkpTMzl0eWFEamVBMHB1a1ZZ?oc=5"
-    },
-    {
       "time": "2026-10-07T08:16:16+09:00",
       "title": "3Q 실적 앞둔 삼성전자, 프리마켓서 약보합…SK하이닉스 1%↓",
       "source": "뉴스1",
@@ -629,6 +623,12 @@
       "title": "IBK증권, SK하이닉스 목표가 400만원 유지…\"지나치게 저평가\"",
       "source": "연합뉴스",
       "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTFAtalNHUnI1SmE0WG12QUJUSE15ZWdQYU50RjZvTXhXRVU3c2VmXzVveGtkbFFucWYydXBvcUdnc2g3Xzk1c3Ywb3pCWnlUYUNRdllZblFTazVoZnk1d3ViVtIBYEFVX3lxTFAtalNHUnI1SmE0WG12QUJUSE15ZWdQYU50RjZvTXhXRVU3c2VmXzVveGtkbFFucWYydXBvcUdnc2g3Xzk1c3Ywb3pCWnlUYUNRdllZblFTazVoZnk1d3ViVg?oc=5"
+    },
+    {
+      "time": "2026-10-07T08:35:00+09:00",
+      "title": "[모닝 리포트] \"SK하이닉스, AI 수요에 목표가 400만원 유지\"",
+      "source": "뉴스핌",
+      "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE00TTVfNGpuYS1odGZVM29xUkJ6ZlVMN2I3eVl4c0V3UjJ5VU9FLXdwaE8tZkRWRjg4anE5RW82c0pXVHVfUTh5VE54Z2NKNXRsSVJRVkpRNzVUTE1a?oc=5"
     }
   ],
   "top_news": [
@@ -643,12 +643,6 @@
       "title": "[리포트 브리핑]SK하이닉스, '실적에 수급을 더한다' 목표가 4,000,000원 - IBK투자증권",
       "source": "뉴스핌",
       "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE9JZFMtNTY1RjBIZUNCbnpXYmJTQmgyQnJPQ3Yzam5ndVIyczQ5cGJrcFI0VGJEeGZQbVcxTmh3Ykg0OWEzQ1JRSUpSNGFQTUVVVGZNVHRJWDU1QmQ1?oc=5"
-    },
-    {
-      "time": "2026-10-07T15:09:04+09:00",
-      "title": "리사 수, 삼성전자·SK하이닉스 반도체 수장 만난다…AI·HBM 협력 확대 주목",
-      "source": "싱글리스트",
-      "link": "https://news.google.com/rss/articles/CBMiZkFVX3lxTE44XzJfMm43QlYyc1M3aTc3Z2Z2NG1JbEJCaHN3Z2hoekdOcVpQRmpGeHFzTjNUQVJBVHdJQ1JTZDc4Tlh1bkJRUFBNSkI0N1FEVVhuSmJtdkpPZjYybVEyRTVFa3ctQQ?oc=5"
     },
     {
       "time": "2026-10-07T16:02:16+09:00",
@@ -667,6 +661,12 @@
       "title": "[버핏 리포트] SK하이닉스, 3Q 환율 탓 실적 눈높이 하향에도 주주환원 90조 눈길 - IBK",
       "source": "버핏연구소",
       "link": "https://news.google.com/rss/articles/CBMiYkFVX3lxTE5Za1ZMMDVMZEZIUjJ6Zjg3ajFZU1ByaGpiVjNCNWRndVFZbVFPZ3JiZS1sWlBUUC1wV0t2dlV5QTk1WXd0OG9XR0M1djF6UVNNMlVVNDNCZWp4OURtNlc3Tmdn?oc=5"
+    },
+    {
+      "time": "2026-10-07T09:54:00+09:00",
+      "title": "IBK투자증권, SK하이닉스, 지나치게 저평가…목표가 400만원 유지",
+      "source": "SBS Biz",
+      "link": "https://news.google.com/rss/articles/CBMiWEFVX3lxTE9jOTlzanJuTzU3bG9rZXJ2RnNOb2VFUGJtVVhGb2piVFNKOWhsWkFjTGNOQVFwenhPY2dOSlhzVFNtQjhTbFo0cHEwNEVwZ0trRzVRazdySlHSAVhBVV95cUxPYzk5c2pybk81N2xva2VydkZzTm9lRVBibVVYRm9qYlRTSjlobFpBY0xjTkFRcHp4T2NnTkpYc1RTbUI4U2xaNHBxMDRFcGdLa0c1UWs3ckpR?oc=5"
     }
   ],
   "disclosures": [],
@@ -686,9 +686,9 @@
     "steady": 57,
     "upper": 3,
     "lower": 0,
-    "individual": 25612.0,
-    "foreign": -25954.0,
-    "institution": -6745.0,
+    "individual": 25680.0,
+    "foreign": -26008.0,
+    "institution": -6758.0,
     "prev_close": 6941.39,
     "open": 6864.25,
     "high": 6977.77,

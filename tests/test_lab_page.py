@@ -469,6 +469,27 @@ assert.ok(!html.includes('<script>'));
         done=subprocess.run(['node'],input=harness,text=True,capture_output=True)
         self.assertEqual(done.returncode,0,done.stderr)
 
+    def test_model_table_sorts_net_profit_descending_and_missing_last(self):
+        script=self.script.replace('  loadPaper();','  global.tableForTest=modelComparisonTable;')
+        harness=f'''const elements={{}};
+global.document={{getElementById:(id)=>elements[id]||(elements[id]={{value:'samsung',addEventListener:()=>{{}}}}),querySelectorAll:()=>[]}};
+global.fetch=()=>new Promise(()=>{{}});
+eval({json.dumps(script)});
+const assert=require('node:assert/strict');
+const row=(model,total)=>({{model,dates:['2026-10-01'],simulation:total===null?null:{{total,mdd:-.01,trades:[]}},hold:total===null?null:{{total:0}}}});
+const models=[row('미채점',null),row('손실',-.1),row('동률B',.2),row('수익',.3),row('동률A',.2),row('본전',0)];
+const before=JSON.stringify(models);
+for(const scope of ['available','common']){{
+ const html=tableForTest({{scope,eligibleModels:5,models}},10000000,'손실');
+ const names=[...html.matchAll(/<th scope="row">(.*?)<\/th>/g)].map(m=>m[1]);
+ assert.deepEqual(names,['수익','동률A','동률B','본전','손실 · 상세 선택됨','미채점']);
+ assert.equal(JSON.stringify(models),before,'표 정렬은 계산 결과 배열을 바꾸지 않는다');
+ assert.ok(html.includes('3,000,000원'));
+}}
+'''
+        done=subprocess.run(['node'],input=harness,text=True,capture_output=True)
+        self.assertEqual(done.returncode,0,done.stderr)
+
     def test_all_models_render_even_when_selected_model_has_no_scores(self):
         script=self.script.replace('  loadPaper();','  global.runForTest=run;global.rowsForTest=function(x){rows=x;};')
         harness=f'''const elements={{}};

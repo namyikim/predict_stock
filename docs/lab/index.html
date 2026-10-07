@@ -587,7 +587,16 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
   }
 
   function modelComparisonTable(result, capital, current) {
-    var rows=result.models.map(function(row) {
+    // 초기 자금이 같으므로 비용 차감 수익률순은 순손익순과 같다(2026-10-07 요청).
+    // 원본 계산 결과는 유지하고, 자료 없는 모델은 손실 모델보다도 뒤에 둔다.
+    var ranked=result.models.slice().sort(function(a,b) {
+      var aReady=!!a.simulation && Number.isFinite(a.simulation.total);
+      var bReady=!!b.simulation && Number.isFinite(b.simulation.total);
+      if(aReady!==bReady)return aReady?-1:1;
+      if(aReady && a.simulation.total!==b.simulation.total)return b.simulation.total-a.simulation.total;
+      return a.model.localeCompare(b.model,'ko');
+    });
+    var rows=ranked.map(function(row) {
       var name=esc(row.model)+(row.model===current?' · 상세 선택됨':'');
       if(!row.simulation)return '<tr><th scope="row">'+name+'</th><td colspan="7">자료 없음 · 이 기간은 성능 판단 불가</td></tr>';
       var m=row.simulation, diff=m.total-row.hold.total;
@@ -597,9 +606,9 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
         '%p</td><td class="num">'+m.trades.length+'건</td><td class="num">'+pct(m.mdd)+'</td></tr>';
     }).join('');
     return '<p class="muted">'+(result.scope==='common'?'평가 자료가 있는 '+result.eligibleModels+'개 모델의 공통 평가일·같은 시가와 종가만 비교합니다.':'모델별 평가일이 다를 수 있습니다. 공정한 비교에는 공통일 옵션을 사용하세요.')+
-      ' 위에서 선택한 매매 규칙·초기 자금·비용을 모든 모델에 동일하게 적용합니다. 모델명순이며 수익률 순위가 아닙니다.</p>'+
+      ' 위에서 선택한 매매 규칙·초기 자금·비용을 모든 모델에 동일하게 적용합니다. 모의 순손익이 높은 순으로 표시하며, 동률은 모델명순, 자료 없는 모델은 마지막에 표시합니다.</p>'+
       (result.scope==='common'&&result.priceConflictDays?'<p class="warn">모델별 실제 가격이 다른 '+result.priceConflictDays+'일은 공통 비교에서 제외했습니다.</p>':'')+
-      '<div class="model-table-scroll"><table><thead><tr><th>모델</th><th>평가 기간</th><th>평가일</th><th>비용 차감 수익률</th><th>모의 순손익</th><th>보유 대비</th><th>청산 거래</th><th>최대 하락폭</th></tr></thead><tbody>'+rows+'</tbody></table></div>'+
+      '<div class="model-table-scroll"><table><thead><tr><th>모델</th><th>평가 기간</th><th>평가일</th><th>비용 차감 수익률</th><th aria-sort="descending">모의 순손익 ↓</th><th>보유 대비</th><th>청산 거래</th><th>최대 하락폭</th></tr></thead><tbody>'+rows+'</tbody></table></div>'+
       '<p class="muted">실제 계좌 수익이 아닌 사후 모의 계산입니다. 평가일·거래 수가 적으면 성능 판단이 어렵고, 이 표만 보고 수익이 높은 모델을 고르면 과적합이 생길 수 있습니다.</p>';
   }
 

@@ -3,7 +3,7 @@
   "name": "삼성전자",
   "peer_name": "SK하이닉스",
   "session_date": "2026-10-07",
-  "generated_at": "2026-10-07 17:31 KST",
+  "generated_at": "2026-10-07 23:28 KST",
   "summary": {
     "prev_close": 272000.0,
     "open": 269500.0,
@@ -15,11 +15,11 @@
     "c2c": -0.012867647058823484,
     "high_vs_open": 0.03710575139146566,
     "low_vs_open": -0.0037105751391465214,
-    "volume": 17345906.0,
-    "volume_ratio": 1.0468185684520384,
+    "volume": 17737591.0,
+    "volume_ratio": 1.070456603328057,
     "kospi_c2c": -0.019807305405253106,
     "peer_c2c": -0.028200789622109368,
-    "usdkrw_chg": -0.00436836845930233,
+    "usdkrw_chg": -0.0034604832848836864,
     "us_nights": 1,
     "sox_ret": 0.0034222247856494636,
     "nasdaq_ret": 0.004457441910701521,
@@ -122,7 +122,15 @@
         "purpose": "임직원 주식보상",
         "rcept_no": "20260821000616"
       }
-    ]
+    ],
+    "foreign_pressure": {
+      "state": "turned_selling",
+      "previous_ratio": 0.017706651327682905,
+      "recent_ratio": -0.08957857376444173,
+      "previous_daily_net": 349151.2,
+      "recent_daily_net": -1296583.8
+    },
+    "buyback_transition": null
   },
   "classification": {
     "labels": [
@@ -150,7 +158,7 @@
       "score": 7.197977027519792,
       "news": [
         {
-          "time": "2026-10-07T08:31:00+09:00",
+          "time": "2026-10-07T08:37:01+09:00",
           "title": "삼성전자, 사상 최초 분기 영업이익 ’100조 시대' 연다...주가 반등할까",
           "source": "조선일보",
           "link": "https://news.google.com/rss/articles/CBMigAFBVV95cUxOZU5Ddm1pRllIZ29jT016WnIyOG85X282RC0wUEotX3pvUElVT2tUTlIxb2tCUmliUmQ2bkE2SXVwRF82YzBxazc5RjBLQUlBaTA2Y2F5aFZVZEJ1Y0JaOU02UVJXbkhjaWg3NzhKVmZacmVVc3FuQWlBM3BGamR3Mw?oc=5"
@@ -166,18 +174,6 @@
           "title": "\"삼성전자, 내년 1분기 모바일 메모리 가격 폭등…목표가 50만원\" - 머니투데이",
           "source": "머니투데이",
           "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE9CMUlhNkVGbVRBVHVFbnhPS2FyRzZ3VGRlTDN3U0N6dFk5ZElNMWNFZmtYY0lKd0FqZjZQUmFJSklCY2hsSlpLQlVscjZaNlRKbkpHTF92eGJwTmNIUlljT2dUaE5iSTRy0gFuQVVfeXFMTTJndkMzc1ozSExVTk1CZk5zTjNxeTZVZURTQTdGZVVsN1JRZ1Y3ZU1LVUsxMlZETmlwT0lMbDI3cWNUQ0NMejVzdnprYkhGQ29CUWxzYkFUQmpleW9EU1J1WGx0NzZUVWhKd2pIMFE?oc=5"
-        },
-        {
-          "time": "2026-10-07T08:00:00+09:00",
-          "title": "삼성전자, 삼성 아트 스토어에 ‘영국 박물관’ 대표 소장품 30점 공개",
-          "source": "Samsung Global Newsroom",
-          "link": "https://news.google.com/rss/articles/CBMiuwJBVV95cUxPNmN0YXQtWWs5b3N0RHJGN1UzQll5d25ndkcxY3ZVOE04Nk1HQmVObjNPUkVkLWZYQWlHLXdyLU5PaGNNYng5QlplNUowMHJBbVZvaDVEZTJqU2NqRFZXUG1WeVNwcFlrS2RJdm00bElPOHFidnY0TjlUc0tQLXhFSTg2Qmx3OXViLWg0TWgxMEc0Z0NrdFdieXc4M0tUaUNZaVU0WnRVenZ3RlVVLTVfaWFWSk4xZVptRkpVaFN4R1pPRF80S3FPc01SRHpqMEx5TDY4M0hpRGllUEF0ZFFqSllwOFZ4M29hRTRnWmdvcXBfY3NGbHNpUjljcXJwVnNkT1V2b3JHQVlydkJnejhGMGNBeDRLSW5pQ2RaRTE0NXBlaEMzWUxiSENMVndvdDB5eFNaVUZZcG9ONWs?oc=5"
-        },
-        {
-          "time": "2026-10-07T09:07:01+09:00",
-          "title": "삼성전자 TV 아트 스토어에 영국박물관 대표 소장품 30점 공개",
-          "source": "연합뉴스",
-          "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE9zWk16SHh2a2RFZlVIeWhJNEg4TkFjdHlZa1dTLUxzYkFXWjhJLVl4YWxJc0Rkd1dKMXNrUFlKQ0pYWkRnb0xOVDVZdWdLX1h5c0NBWFhITzUzLThjdUhHZdIBYEFVX3lxTE9zWk16SHh2a2RFZlVIeWhJNEg4TkFjdHlZa1dTLUxzYkFXWjhJLVl4YWxJc0Rkd1dKMXNrUFlKQ0pYWkRnb0xOVDVZdWdLX1h5c0NBWFhITzUzLThjdUhHZQ?oc=5"
         }
       ]
     }
@@ -567,7 +563,7 @@
       "score": 7.197977027519792,
       "news": [
         {
-          "time": "2026-10-07T08:31:00+09:00",
+          "time": "2026-10-07T08:37:01+09:00",
           "title": "삼성전자, 사상 최초 분기 영업이익 ’100조 시대' 연다...주가 반등할까",
           "source": "조선일보",
           "link": "https://news.google.com/rss/articles/CBMigAFBVV95cUxOZU5Ddm1pRllIZ29jT016WnIyOG85X282RC0wUEotX3pvUElVT2tUTlIxb2tCUmliUmQ2bkE2SXVwRF82YzBxazc5RjBLQUlBaTA2Y2F5aFZVZEJ1Y0JaOU02UVJXbkhjaWg3NzhKVmZacmVVc3FuQWlBM3BGamR3Mw?oc=5"
@@ -583,18 +579,6 @@
           "title": "\"삼성전자, 내년 1분기 모바일 메모리 가격 폭등…목표가 50만원\" - 머니투데이",
           "source": "머니투데이",
           "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE9CMUlhNkVGbVRBVHVFbnhPS2FyRzZ3VGRlTDN3U0N6dFk5ZElNMWNFZmtYY0lKd0FqZjZQUmFJSklCY2hsSlpLQlVscjZaNlRKbkpHTF92eGJwTmNIUlljT2dUaE5iSTRy0gFuQVVfeXFMTTJndkMzc1ozSExVTk1CZk5zTjNxeTZVZURTQTdGZVVsN1JRZ1Y3ZU1LVUsxMlZETmlwT0lMbDI3cWNUQ0NMejVzdnprYkhGQ29CUWxzYkFUQmpleW9EU1J1WGx0NzZUVWhKd2pIMFE?oc=5"
-        },
-        {
-          "time": "2026-10-07T08:00:00+09:00",
-          "title": "삼성전자, 삼성 아트 스토어에 ‘영국 박물관’ 대표 소장품 30점 공개",
-          "source": "Samsung Global Newsroom",
-          "link": "https://news.google.com/rss/articles/CBMiuwJBVV95cUxPNmN0YXQtWWs5b3N0RHJGN1UzQll5d25ndkcxY3ZVOE04Nk1HQmVObjNPUkVkLWZYQWlHLXdyLU5PaGNNYng5QlplNUowMHJBbVZvaDVEZTJqU2NqRFZXUG1WeVNwcFlrS2RJdm00bElPOHFidnY0TjlUc0tQLXhFSTg2Qmx3OXViLWg0TWgxMEc0Z0NrdFdieXc4M0tUaUNZaVU0WnRVenZ3RlVVLTVfaWFWSk4xZVptRkpVaFN4R1pPRF80S3FPc01SRHpqMEx5TDY4M0hpRGllUEF0ZFFqSllwOFZ4M29hRTRnWmdvcXBfY3NGbHNpUjljcXJwVnNkT1V2b3JHQVlydkJnejhGMGNBeDRLSW5pQ2RaRTE0NXBlaEMzWUxiSENMVndvdDB5eFNaVUZZcG9ONWs?oc=5"
-        },
-        {
-          "time": "2026-10-07T09:07:01+09:00",
-          "title": "삼성전자 TV 아트 스토어에 영국박물관 대표 소장품 30점 공개",
-          "source": "연합뉴스",
-          "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE9zWk16SHh2a2RFZlVIeWhJNEg4TkFjdHlZa1dTLUxzYkFXWjhJLVl4YWxJc0Rkd1dKMXNrUFlKQ0pYWkRnb0xOVDVZdWdLX1h5c0NBWFhITzUzLThjdUhHZdIBYEFVX3lxTE9zWk16SHh2a2RFZlVIeWhJNEg4TkFjdHlZa1dTLUxzYkFXWjhJLVl4YWxJc0Rkd1dKMXNrUFlKQ0pYWkRnb0xOVDVZdWdLX1h5c0NBWFhITzUzLThjdUhHZQ?oc=5"
         }
       ],
       "price": 276000.0,
@@ -603,7 +587,7 @@
   ],
   "overnight_news": [
     {
-      "time": "2026-10-07T08:31:00+09:00",
+      "time": "2026-10-07T08:37:01+09:00",
       "title": "삼성전자, 사상 최초 분기 영업이익 ’100조 시대' 연다...주가 반등할까",
       "source": "조선일보",
       "link": "https://news.google.com/rss/articles/CBMigAFBVV95cUxOZU5Ddm1pRllIZ29jT016WnIyOG85X282RC0wUEotX3pvUElVT2tUTlIxb2tCUmliUmQ2bkE2SXVwRF82YzBxazc5RjBLQUlBaTA2Y2F5aFZVZEJ1Y0JaOU02UVJXbkhjaWg3NzhKVmZacmVVc3FuQWlBM3BGamR3Mw?oc=5"
@@ -625,12 +609,6 @@
       "title": "\"삼성전자, 내년 1분기 모바일 메모리 가격 폭등…목표가 50만원\" - 머니투데이",
       "source": "머니투데이",
       "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE9CMUlhNkVGbVRBVHVFbnhPS2FyRzZ3VGRlTDN3U0N6dFk5ZElNMWNFZmtYY0lKd0FqZjZQUmFJSklCY2hsSlpLQlVscjZaNlRKbkpHTF92eGJwTmNIUlljT2dUaE5iSTRy0gFuQVVfeXFMTTJndkMzc1ozSExVTk1CZk5zTjNxeTZVZURTQTdGZVVsN1JRZ1Y3ZU1LVUsxMlZETmlwT0lMbDI3cWNUQ0NMejVzdnprYkhGQ29CUWxzYkFUQmpleW9EU1J1WGx0NzZUVWhKd2pIMFE?oc=5"
-    },
-    {
-      "time": "2026-10-07T08:00:00+09:00",
-      "title": "삼성전자, 삼성 아트 스토어에 ‘영국 박물관’ 대표 소장품 30점 공개",
-      "source": "Samsung Global Newsroom",
-      "link": "https://news.google.com/rss/articles/CBMiuwJBVV95cUxPNmN0YXQtWWs5b3N0RHJGN1UzQll5d25ndkcxY3ZVOE04Nk1HQmVObjNPUkVkLWZYQWlHLXdyLU5PaGNNYng5QlplNUowMHJBbVZvaDVEZTJqU2NqRFZXUG1WeVNwcFlrS2RJdm00bElPOHFidnY0TjlUc0tQLXhFSTg2Qmx3OXViLWg0TWgxMEc0Z0NrdFdieXc4M0tUaUNZaVU0WnRVenZ3RlVVLTVfaWFWSk4xZVptRkpVaFN4R1pPRF80S3FPc01SRHpqMEx5TDY4M0hpRGllUEF0ZFFqSllwOFZ4M29hRTRnWmdvcXBfY3NGbHNpUjljcXJwVnNkT1V2b3JHQVlydkJnejhGMGNBeDRLSW5pQ2RaRTE0NXBlaEMzWUxiSENMVndvdDB5eFNaVUZZcG9ONWs?oc=5"
     }
   ],
   "top_news": [
@@ -638,19 +616,19 @@
       "time": "2026-10-07T11:41:00+09:00",
       "title": "증권가 \"삼성전자, 3분기 호실적 넘어 내년 메모리 고성장 기대\"",
       "source": "연합뉴스",
-      "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE50YThWam1QQWVuZno3SnEtN3AtS1hZa0tDM050SlFUZ1BlZGE1UlhJSFBIMG9iRjBVNWc1VHVUY2NxZFU3Y3BHcTF2UVRyaFFTWEdiX3JveWRETk9OTzZHatIBYEFVX3lxTE50YThWam1QQWVuZno3SnEtN3AtS1hZa0tDM050SlFUZ1BlZGE1UlhJSFBIMG9iRjBVNWc1VHVUY2NxZFU3Y3BHcTF2UVRyaFFTWEdiX3JveWRETk9OTzZHag?oc=5"
+      "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE1vSmRfRzB3cURKSEhSaHYxdW5tdTY0OFQ3TU12T1JrNXVQU1Q0ZE5BTUZhOEtZVmVGVkRwY2ZUMVNWNHAtRkhHUF9MN3MtVzJYSW5IYWRqQlBGM2PSAWBBVV95cUxOdGE4VmptUEFlbmZ6N0pxLTdwLUtYWWtLQzNOdEpRVGdQZWRhNVJYSUhQSDBvYkYwVTVnNVR1VGNjcWRVN2NwR3ExdlFUcmhRU1hHYl9yb3lkRE5PTk82R2o?oc=5"
     },
     {
       "time": "2026-10-07T12:26:38+09:00",
       "title": "“AI 반도체 슈퍼사이클도 한계”…삼성전자, ‘역대급 실적’ 안 통하는 이유 [머니+]",
       "source": "에너지경제신문",
-      "link": "https://news.google.com/rss/articles/CBMiY0FVX3lxTFBNQWU0OXpLQWJCcGhFLXdxanRKTG5zVThGOGc0OXNLNnVUWnAxNTZ1dVV3OEkyckJTbzZvN0JwS214NWd1MkNjMV9sajc4blBOQnNTY19TcDNUaUZvT0xzdTBWbw?oc=5"
+      "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE1tTk1maXRmeWRraHZsb0h5cGdtZEF1M1VLNUk2VFE3SUFTWUhuVHktV1l6SU1KTVBxdXJRUDdzNk1obFJBRU1zUjNNLTFnODJYeHVTeG4yWGE4WVU?oc=5"
     },
     {
-      "time": "2026-10-07T16:04:36+09:00",
-      "title": "삼성전자 메모리 반도체 부문, 성과급 7.5억 예상…내년 3월 주총 거쳐 자사주 지급",
-      "source": "뉴시스",
-      "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE43b20zZWFUc3ppajcwelhyc0FvU1NDT0xsVmlYSEE0STQ1T2VtanVpQ1FuM1BlLU5GREoyckNkOGdVbW9hamRCeTJQc244SXM1eEg5TVhCRi04LTh6N2x2T9IBeEFVX3lxTE9QVVpBMzBYV1hBWFhQTGR6MWNBYXJLSl9uakFnRTNsak4xRlhwTlNCMzkwaVJzcE5WQTZBaFdiRDRfRFZ0bWVXcTdMWWV0UXdDYm95NTNMWDNuQ2VCWUNUTnZHQ3VxY29oVTFWQnlrVmNHVU9WLTdCQw?oc=5"
+      "time": "2026-10-07T16:30:04+09:00",
+      "title": "코스피, 美금리 반등·삼성전자 실적 경계감으로 1.98% 하락",
+      "source": "딜라이트닷넷",
+      "link": "https://news.google.com/rss/articles/CBMibkFVX3lxTE8xaXBGOEFOZkpKNEduLXhNN3RSZENjX1dNajU0VjM2V2gyekJmZXRVWnY3Q2pfVTR1bUt3TGFvYl9UazdBWWw5eTJrRTJ1Q2NLQlR6LVo0Tk1LZ3pDcDhUb1d4SDk2YUZyemNyT1hn0gFyQVVfeXFMTzlBSUI3NUFtajlpc1JRbmlkSlZKeXV5bFhNNmFnRzRwZEhDbk9WMFBWbVNmUm5VVlprM2RGSWRnRHV6Vmxtd1N4SmVudVRXOUdmZzN6d2oxdW5wZGhvNEYwOFdhWHdJS19wWG1oQlBIUjJ3?oc=5"
     },
     {
       "time": "2026-10-07T17:04:12+09:00",
@@ -659,25 +637,86 @@
       "link": "https://news.google.com/rss/articles/CBMiakFVX3lxTE5lX3NYY1NuN0Z0XzV2bDZmYkJfd29vZDJBdGpuaERaMnA5WnA2VVBaLUNHdjN6MmVJLWRvOWZxQy1CWkpQTTFEUGZ3eTZPOUIzNHdYeE9xcTBJRFFwTEhjRG1DUVQ2cEJudHc?oc=5"
     },
     {
+      "time": "2026-10-07T17:06:55+09:00",
+      "title": "삼성전자 잠정실적 코스피 가을 분위기 가른다, '영업이익 100조 안착' 강도에 쏠리는 눈",
+      "source": "비즈니스포스트",
+      "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTFBVcjNkUFVkalNEQWRGUldfbVNMSTZ5NUF1Tmk3Y3BTSVF5WmNKS2F0dVZkdW84LTZoay1JcDNDOHkxZTVib3ktd1dpcDRteTQ4NC1tb0NnU1hXanUtaFVab3hjb2l6RVNYMk1JX3k2aFJWaDQ?oc=5"
+    },
+    {
       "time": "2026-10-07T17:11:00+09:00",
       "title": "코스피, 1.98% 내린 6803 마감…삼성전자 실적 앞두고 반도체 약세 By EBN",
       "source": "Investing.com 한국어",
       "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE5FdWZKcnNOVGp5bngxbUN3WGNGdnJoY0Z1WXBiWjBlUzRxcG5CdGV1ZVBwcUxTMXd4eC1Pc1dPSE9MWFpUY3JLX2FsTWhYQ1VDWUk5cTZGenRXNmRucE1kVlFuQ2RRdFYwU0JOazVvOVE?oc=5"
-    },
-    {
-      "time": "2026-10-07T08:31:00+09:00",
-      "title": "삼성전자, 사상 최초 분기 영업이익 ’100조 시대' 연다...주가 반등할까",
-      "source": "조선일보",
-      "link": "https://news.google.com/rss/articles/CBMigAFBVV95cUxOZU5Ddm1pRllIZ29jT016WnIyOG85X282RC0wUEotX3pvUElVT2tUTlIxb2tCUmliUmQ2bkE2SXVwRF82YzBxazc5RjBLQUlBaTA2Y2F5aFZVZEJ1Y0JaOU02UVJXbkhjaWg3NzhKVmZacmVVc3FuQWlBM3BGamR3Mw?oc=5"
     }
   ],
   "disclosures": [],
   "disclosure_note": null,
-  "flows": null,
-  "flow_story": null,
+  "flows": "외국인 -118,283 / 기관 -819,541",
+  "flow_story": {
+    "direction": "down",
+    "c2c": -0.012867647058823484,
+    "actors": [
+      {
+        "key": "foreign_net",
+        "name": "외국인",
+        "shares": -118283.0,
+        "won": -31758985500.0,
+        "vs_usual": 0.045222559275778396
+      },
+      {
+        "key": "inst_net",
+        "name": "기관",
+        "shares": -819541.0,
+        "won": -220046758500.0,
+        "vs_usual": 0.4436701733082808
+      },
+      {
+        "key": "indiv_net",
+        "name": "개인",
+        "shares": 957691.0,
+        "won": 257140033500.0,
+        "vs_usual": 0.2738832232980866
+      }
+    ],
+    "lead": {
+      "key": "inst_net",
+      "name": "기관",
+      "shares": -819541.0,
+      "won": -220046758500.0,
+      "vs_usual": 0.4436701733082808
+    },
+    "counter": {
+      "key": "indiv_net",
+      "name": "개인",
+      "shares": 957691.0,
+      "won": 257140033500.0,
+      "vs_usual": 0.2738832232980866
+    },
+    "all_one_side": false,
+    "observations": [
+      "전일까지 20거래일 고점: 종가 돌파 없음 · 종가 위치 -5.95%.",
+      "전일까지 60거래일 고점: 종가 돌파 없음 · 종가 위치 -10.50%.",
+      "같은 5거래일 수익률: 이 종목 -1.47%, SK하이닉스 -2.38% · 차이 +0.91%p.",
+      "같은 20거래일 수익률: 이 종목 +5.09%, SK하이닉스 +4.61% · 차이 +0.47%p.",
+      "같은 60거래일 수익률: 이 종목 -3.24%, SK하이닉스 -16.99% · 차이 +13.74%p.",
+      "외국인 5일 합계 순매도 전환: 직전 5일 → 최근 5일 순매수/거래량 +1.77% → -8.96% (일평균 +349,151주 → -1,296,584주). 향후 상승을 뜻하는 신호는 아닙니다.",
+      "코스피도 -1.98% — 시장 전체가 같은 방향이었습니다.",
+      "SK하이닉스 -2.82% — 반도체 업종이 함께 움직였습니다.",
+      "원화는 오히려 강세(-0.35%)여서 외국인 매도가 환율로는 설명되지 않습니다.",
+      "종가가 당일 범위(저가 268,500~고가 279,500원)의 아래쪽 0% 지점 — 저가 부근에서 마감했습니다.",
+      "장중 5일선(273,000원) 위로 올랐다가 그 아래로 밀려 마감했습니다.",
+      "엔비디아는 미국 정규장 마감 뒤 시간외에서 +0.50%(장중 +0.05%~+4.00%) — 정규장 등락에 안 보이는 반응입니다.",
+      "우리 장중(09:00~15:30) 나스닥100 선물 -0.08%, 이 종목 고점 이후 -0.13% · 미 10년물 국채 선물 -0.09%, 이 종목 고점 이후 -0.06% · 원/달러 +0.06%, 이 종목 고점 이후 +0.03%.",
+      "자사주 매입 기간 중(직접 취득 2026-08-24~2026-11-21, 14,999,999,992,000, DART 공시) — 회사 자신의 매수는 기타 법인으로 잡힙니다.",
+      "마감가가 장중 고가보다 -3.76% 아래 — 오른 폭을 장중에 꽤 반납했습니다."
+    ],
+    "estimated_indiv": false,
+    "source_note": "출처 naver+cache · 장 마감 직후 잠정치라 저녁 확정치와 다를 수 있습니다 · KRX는 받지 못함(pykrx 미설치)"
+  },
   "flow_status": {
-    "state": "pending",
-    "detail": "최신 2026-10-06"
+    "state": "ok",
+    "detail": "naver+cache",
+    "krx_error": "pykrx 미설치"
   },
   "context": {},
   "market": {
@@ -688,9 +727,9 @@
     "steady": 57,
     "upper": 3,
     "lower": 0,
-    "individual": 25724.0,
-    "foreign": -26055.0,
-    "institution": -6760.0,
+    "individual": 26183.0,
+    "foreign": -26188.0,
+    "institution": -7101.0,
     "prev_close": 6941.39,
     "open": 6864.25,
     "high": 6977.77,
@@ -700,62 +739,62 @@
   "earnings_reactions": {
     "n": 44,
     "down": 24,
-    "mean": 0.005144021350578348,
+    "mean": 0.005144030938846272,
     "first": "2015-04-07",
     "last": "2026-07-30",
     "prior_up": {
       "n": 26,
       "down": 15,
-      "mean": 0.00680395632180656
+      "mean": 0.006803951872938008
     },
     "prior_down": {
       "n": 18,
       "down": 9,
-      "mean": 0.002746337503248708,
+      "mean": 0.002746367367380431,
       "next5_n": 18,
       "next5_up": 8
     },
     "rows": [
       {
         "date": "2024-04-05",
-        "ret": -0.009378752281258174,
-        "prior20": 0.1868095578927429,
+        "ret": -0.00937856316147434,
+        "prior20": 0.1868093313186363,
         "next5": -0.027218966042563242
       },
       {
         "date": "2024-07-05",
-        "ret": 0.029550914406521134,
-        "prior20": 0.09789829164793273,
-        "next5": -0.03099878789052002
+        "ret": 0.02955101022412121,
+        "prior20": 0.09789840714462672,
+        "next5": -0.030998971140275278
       },
       {
         "date": "2024-10-08",
-        "ret": -0.011475408319629787,
-        "prior20": -0.17550725654583976,
-        "next5": -0.013266996568085054
+        "ret": -0.011475341488140556,
+        "prior20": -0.17550711223721005,
+        "next5": -0.013267061634831823
       },
       {
         "date": "2025-01-08",
-        "ret": 0.03429607257566447,
-        "prior20": 0.038691759055365926,
-        "next5": -0.06282719221095567
+        "ret": 0.03429607009744906,
+        "prior20": 0.03869191207000444,
+        "next5": -0.06282732754845655
       },
       {
         "date": "2025-04-08",
         "ret": 0.005639114476656992,
-        "prior20": -0.00342513621785967,
-        "next5": 0.05794397222748904
+        "prior20": -0.0034250619261930737,
+        "next5": 0.057943897843741654
       },
       {
         "date": "2025-10-14",
         "ret": -0.01822079386417541,
-        "prior20": 0.348435443402201,
-        "next5": 0.06441047284052348
+        "prior20": 0.3484355968820865,
+        "next5": 0.06441038686451694
       },
       {
         "date": "2026-04-07",
         "ret": 0.017607433616103174,
-        "prior20": 0.11527197433303193,
+        "prior20": 0.11527187357539503,
         "next5": 0.05089058828005988
       },
       {

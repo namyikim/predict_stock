@@ -17,12 +17,16 @@ const request=async(env,path,{method='GET',body,admin=true,cookie,origin='https:
 const json=async(...args)=>{const r=await request(...args);return {status:r.status,body:await r.json()};};
 const post=(env,path,body={},options={})=>json(env,path,{...options,method:'POST',body});
 let calls=[],mode='ok',refreshToken='refresh-new',barrier=null,unlinkBarrier=null,unlinkEntered=null;
+const diagnosticLogs=[];
+console.error=(...args)=>diagnosticLogs.push(args);
 globalThis.fetch=async(url,init={})=>{
   calls.push({url:String(url),init});
   if(mode==='timeout')throw new Error('secret-code client-secret access-old');
+  if(mode==='unsafe-error-name'){const e=new Error('access-old');e.name='client-secret';throw e;}
   if(String(url)==='https://kauth.kakao.com/oauth/token'){
     const form=new URLSearchParams(init.body);
     assert.equal(form.get('client_id'),'rest-key');assert.equal(form.get('client_secret'),'client-secret');
+    if(mode==='token-html')return new Response('secret-code client-secret access-old refresh-old',{status:502,headers:{'Content-Type':'text/html;secret=access-old'}});
     if(form.get('grant_type')==='refresh_token'){
       assert.ok(['refresh-old','refresh-new'].includes(form.get('refresh_token')));
       if(barrier)await barrier;
@@ -34,6 +38,8 @@ globalThis.fetch=async(url,init={})=>{
     return Response.json({access_token:'access-old',token_type:'bearer',refresh_token:'refresh-old',expires_in:3600,refresh_token_expires_in:5184000,scope:'talk_message'});
   }
   assert.equal(init.headers.Authorization,'Bearer '+(init.headers.Authorization.endsWith('new')?'access-new':'access-old'));
+  if(String(url)==='https://kapi.kakao.com/v1/user/access_token_info' && mode==='identity-timeout')throw new DOMException('access-old secret-code','TimeoutError');
+  if(String(url)==='https://kapi.kakao.com/v2/user/scopes' && mode==='scope-html')return new Response('access-old client-secret',{status:403,headers:{'Content-Type':'text/html'}});
   if(String(url)==='https://kapi.kakao.com/v1/user/access_token_info')return Response.json({id:mode==='wrong-owner'?456:321,app_id:mode==='wrong-app'?999:123,expires_in:3600});
   if(String(url)==='https://kapi.kakao.com/v2/user/scopes' && mode==='scope-outage')return Response.json({error_description:'access-new'},{status:503});
   if(String(url)==='https://kapi.kakao.com/v2/user/scopes')return Response.json({id:mode==='wrong-owner'?456:321,scopes:[{id:'talk_message',using:true,agreed:mode!=='no-scope',revocable:true}]});
@@ -84,6 +90,34 @@ for(const scenario of ['wrong-app','no-scope','timeout']){
   const e=environment();flow=await start(e);mode=scenario;const r=await callback(e,flow);assert.equal(r.status,303);
   const s=(await json(e,'/kakao/status')).body;assert.equal(s.status,'disconnected');assert.equal(s.pending,null);
   assert.equal(JSON.stringify(s).includes('secret-code'),false);assert.equal(JSON.stringify(s).includes('access-old'),false);mode='ok';
+}
+// 운영에서 반복된 일반 오류의 위치만 기록하고 인가 코드·토큰·외부 응답은 로그에도 남기지 않는다.
+for(const [scenario,api,stage,status,kind] of [
+  ['timeout','token','request',0,'Error'],
+  ['unsafe-error-name','token','request',0,'other'],
+  ['token-html','token','response_json',502,'SyntaxError'],
+  ['identity-timeout','access_token_info','request',0,'TimeoutError'],
+  ['scope-html','scopes','response_json',403,'SyntaxError']
+]){
+  const e=environment(),flow=await start(e),before=diagnosticLogs.length;mode=scenario;
+  assert.equal((await callback(e,flow)).status,303);
+  assert.equal((await json(e,'/kakao/status')).body.last_error,'temporarily_unavailable');
+  assert.equal(diagnosticLogs.length,before+1);
+  const log=diagnosticLogs.at(-1);assert.equal(log[0],'[kakao-auth]');
+  assert.deepEqual(log[1],{api,stage,http_status:status,error_name:kind,content_type:stage==='response_json'?'non_json':'unknown',timeout_supported:true});
+  for(const secret of ['secret-code','client-secret','access-old','refresh-old','admin-secret'])assert.equal(JSON.stringify(log).includes(secret),false);
+  mode='ok';
+}
+{
+  const e=environment(),flow=await start(e),originalTimeout=AbortSignal.timeout;
+  try {AbortSignal.timeout=undefined;assert.equal((await callback(e,flow)).status,303);}
+  finally {AbortSignal.timeout=originalTimeout;}
+  assert.equal(diagnosticLogs.at(-1)[1].stage,'prepare');
+  assert.equal(diagnosticLogs.at(-1)[1].timeout_supported,false);
+}
+{
+  const before=diagnosticLogs.length;await link(environment());
+  assert.equal(diagnosticLogs.length,before,'정상 인증의 응답과 토큰은 로그에 기록하지 않는다');
 }
 const changed=environment();flow=await start(changed);changed.KAKAO_APP_ID='999';before=calls.length;
 assert.equal((await callback(changed,flow)).status,400);assert.equal(calls.length,before,'중간에 변경된 앱 설정으로 인증하지 않음');

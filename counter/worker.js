@@ -994,15 +994,32 @@ function kakaoCookieValue(request) {
 }
 
 async function kakaoCall(url, init) {
+  // 운영 인증의 반복 실패를 구분한다(2026-10-07). 요청·응답 원문이나 예외 메시지는 기록하지 않는다.
+  const api = url === 'https://kauth.kakao.com/oauth/token' ? 'token' :
+    url === 'https://kapi.kakao.com/v1/user/access_token_info' ? 'access_token_info' :
+    url === 'https://kapi.kakao.com/v2/user/scopes' ? 'scopes' :
+    url === 'https://kapi.kakao.com/v1/user/unlink' ? 'unlink' : 'unknown';
+  let stage = 'prepare', httpStatus = 0, contentType = 'unknown';
   try {
-    const response = await fetch(url, {...init, redirect:'error', signal:AbortSignal.timeout(10000)});
+    const signal = AbortSignal.timeout(10000);
+    stage = 'request';
+    // workerd는 redirect:'error'를 요청 전 TypeError로 거부한다. manual로 받고 3xx는 직접 거절한다.
+    const response = await fetch(url, {...init, redirect:'manual', signal});
+    httpStatus = response.status;
+    contentType = /^application\/(?:[a-z0-9.+-]+\+)?json(?:\s*;|$)/i.test(response.headers.get('Content-Type') || '') ? 'json' : 'non_json';
+    if (response.status >= 300 && response.status < 400) return {ok:false,status:'provider_error'};
+    stage = 'response_json';
     const data = await response.json();
     if (!response.ok) {
       const expired = data.error_code === 'KOE322' || data.code === -401;
       return {ok:false, status:expired ? 'reconnect_required' : response.status === 429 ? 'rate_limited' : 'provider_error'};
     }
     return {ok:true, data};
-  } catch { return {ok:false, status:'temporarily_unavailable'}; }
+  } catch (error) {
+    const name = ['Error','TypeError','SyntaxError','AbortError','TimeoutError'].includes(error?.name) ? error.name : 'other';
+    console.error('[kakao-auth]', {api,stage,http_status:httpStatus,error_name:name,content_type:contentType,timeout_supported:typeof AbortSignal.timeout === 'function'});
+    return {ok:false, status:'temporarily_unavailable'};
+  }
 }
 
 async function kakaoIdentity(accessToken, config) {

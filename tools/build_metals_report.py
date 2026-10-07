@@ -490,6 +490,82 @@ def render_long_term(key, close):
     return parts
 
 
+def render_forecast_summary(key, res):
+    """종목 보고서와 같은 카드로 판정·가격을 구분한다(2026-10-07 요청).
+
+    방향 보류와 가격 신호는 서로 다른 검증 결과다. 한쪽의 보류를 다른 쪽에
+    적용하거나, 변동성 구간의 중심을 종가 예측으로 표시하지 않는다.
+    """
+    e = html.escape
+    live, wf, rows = res["live"], res["wf"], res["price_rows"]
+    current = rows[0]["current_close"]
+    skilled = wf["log_loss_diff_hi"] < 0
+    top = max(PROB_COLS, key=lambda name: live[name])
+    direction = {"p_down": "하락", "p_flat": "보합", "p_up": "상승"}[top]
+    target = pd.Timestamp(res["prediction_date"])
+    target_text = f'{target:%Y-%m-%d} ({"월화수목금토일"[target.weekday()]})'
+
+    def card(label, value, detail, hold=False):
+        color = "#8a5700" if hold else "#203f6f"
+        return (f'<div class="forecast-card"><div class="forecast-label">{e(label)}</div>'
+                f'<div class="forecast-value"><strong style="color:{color}">{e(value)}</strong></div>'
+                f'<div class="forecast-note">{e(detail)}</div></div>')
+
+    def price_state(row):
+        if row is None:
+            return "자료 없음", "해당 기간의 가격 예측 자료가 없습니다.", True
+        if row["signal"] != "있음":
+            return "가격 예측 보류", "현재가 유지보다 낫다는 근거가 부족해 예상 종가를 제시하지 않습니다.", True
+        price = row.get("predicted_close", float("nan"))
+        if not math.isfinite(price) or price <= 0:
+            return "자료 없음", "유효한 예상 종가가 없습니다.", True
+        change = row.get("predicted_return", float("nan"))
+        detail = f"기준 종가 대비 {change * 100:+.2f}%" if math.isfinite(change) else "검증을 통과한 가격 모델의 예상 종가"
+        return f"${price:,.2f}", detail, False
+
+    day_row = next((r for r in rows if r["trading_days"] == 1), None)
+    price, price_note, price_hold = price_state(day_row)
+    direction_note = (f"검증을 통과한 방향 모델 · 계산상 가능성 {live[top]:.0%}" if skilled else
+                      "과거 빈도보다 잘 예측한다는 근거가 부족합니다.")
+    status = f"방향 판단 {direction}" if skilled else "방향 판단 보류"
+    why = ("방향 모델이 과거 빈도 기준보다 나은 결과를 보였습니다. 상승·하락·보합은 기준 종가 대비입니다." if skilled else
+           "현재 모델로는 상승·하락을 신뢰성 있게 구분하기 어렵습니다. 가장 큰 확률을 오늘의 방향 판단으로 읽지 마세요.")
+    body = [f'<!-- METALS_SUMMARY_START --><section id="{key}-forecast-summary" class="metals-summary" aria-label="{e(ASSETS[key]["name"])} 한눈에 보는 쉬운 요약">',
+            '<style>.metals-summary{background:#f5f9ff;border:1px solid #dce8f9;border-radius:18px;padding:18px;margin:16px 0 24px}'
+            '.metals-summary h4{margin:0 0 10px}.metals-summary .forecast-value{font-size:clamp(22px,2.5vw,28px)!important;overflow-wrap:anywhere}'
+            '.metals-status{display:inline-block;padding:6px 12px;border-radius:20px;font-size:16px;font-weight:700;background:#fff0cd;color:#805000}'
+            '.metals-status[data-state="signal"]{background:#e6efff;color:#244f99}'
+            '.metals-horizons{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:14px}'
+            '.metals-horizon{background:#fff;border:1px solid #dce5f2;border-radius:12px;padding:14px;min-width:0}'
+            '.metals-horizon p{margin:6px 0;font-size:13px;line-height:1.65}'
+            '@media(max-width:640px){.metals-summary{padding:14px 12px}.metals-horizons{grid-template-columns:1fr}}</style>',
+            '<h4>한눈에 보는 쉬운 요약</h4>',
+            f'<span class="metals-status" data-state="{"signal" if skilled else "hold"}">{e(status)}</span>',
+            f'<p style="font-size:14px;margin:10px 0">{e(why)}</p>',
+            '<div class="forecast-hero">',
+            f'<div class="forecast-date">다음 거래일 {target_text} 예측</div><div class="forecast-grid">',
+            card("종가 방향", direction if skilled else "보류", direction_note, not skilled),
+            card("종가 예측 · 달러/온스", price, price_note, price_hold),
+            card("기준 종가 · 달러/온스", f"${current:,.2f}", f'기준 봉 {live["as_of"]:%Y-%m-%d} · COMEX 선물'),
+            '</div></div>',
+            '<p style="font-size:13px;margin:8px 0">방향과 가격은 별도로 검증합니다. 방향이 보류여도 가격 예측이 있을 수 있습니다. '
+            '보류는 보합이나 매매 지시를 뜻하지 않습니다.</p><div class="metals-horizons">']
+    for horizon in (5, 20):
+        row = next((r for r in rows if r["trading_days"] == horizon), None)
+        label = "1주일" if horizon == 5 else "1개월"
+        value, detail, hold = price_state(row)
+        body.append(f'<div class="metals-horizon"><b>{label}</b>'
+                    f'<p>{e(str(row["target_date"])) if row else "대상일 자료 없음"}</p>'
+                    f'<strong style="color:{"#8a5700" if hold else "#203f6f"}">{e(value)}</strong><p>{e(detail)}</p>')
+        if row:
+            body.append(f'<p><b>예상 구간 ${row["low_close"]:,.2f} ~ ${row["high_close"]:,.2f}</b><br>'
+                        f'과거 검증에서 구간에 들어온 비율 {row["band_coverage"]:.0%}</p>')
+        body.append('</div>')
+    body.append('</div><p style="font-size:12px;color:#526985;margin:12px 0 0">가격 단위는 달러/트로이온스입니다. '
+                '예상 구간은 변동 범위이며 상승·하락 판단이나 수익 보장이 아닙니다.</p></section><!-- METALS_SUMMARY_END -->')
+    return "".join(body)
+
+
 def render_asset(key, res, usdkrw):
     e = html.escape
     a = ASSETS[key]
@@ -498,6 +574,7 @@ def render_asset(key, res, usdkrw):
     krw_g = current * usdkrw * OZ_PER_GRAM if usdkrw else float("nan")
     # 금·은을 탭으로 나눈다(2026-09-27). 탭은 절 제목 앞부분으로 고르므로 '금 · 단기 예측' / '금 · 장기 전망'처럼 짓는다.
     parts = [f'<h3 style="font-size:18px;margin:34px 0 10px;padding-bottom:6px;border-bottom:1px solid #ddd">{e(a["name"])} · 단기 예측 <span style="font-size:12px;color:#8a9199;font-weight:400">COMEX 선물 {a["ticker"]} · 다음 거래일 방향·1주일·1개월 구간</span></h3>']
+    parts.append(render_forecast_summary(key, res))
     parts.append(f'<div style="font-size:13px;color:#6b7178">기준 봉 {live["as_of"].date()} · 종가 <b style="color:#1a1a1a">${current:,.2f}/온스</b>'
                  + (f' · 약 <b style="color:#1a1a1a">{krw_g:,.0f}원/g</b> (원/달러 {usdkrw:,.0f} 환산, 국내 KRX 금시장 가격과는 다를 수 있음)' if usdkrw else "") + '</div>')
     # 장기 가격 흐름·금 적정 가격은 '장기 전망' 탭으로 옮겼다(render_longterm_asset).
@@ -520,7 +597,7 @@ def render_asset(key, res, usdkrw):
                    f"상승 {share['상승'] * 100:.0f}%)와 구분되지 않습니다 — 워크포워드 {wf['n']:,}일에서 log loss 차이의 95% 구간 "
                    f"[{wf['log_loss_diff_lo']:+.4f}, {wf['log_loss_diff_hi']:+.4f}]가 0을 포함합니다. "
                    f"가장 큰 확률이 {label}({live[top] * 100:.0f}%)이지만, 그것은 과거에 {label}이 잦았다는 뜻이지 내일에 대한 판단이 아닙니다. "
-                   "이 종목에서 쓸 수 있는 것은 아래 변동성 구간뿐입니다.")
+                   "가격 예측은 아래 기간별 신호로 별도 판단하며, 신호가 없는 기간은 변동성 구간만 참고하세요.")
     parts.append(note(verdict, warn=not skill))
 
     # 1주·1개월
@@ -651,10 +728,10 @@ def render(results, usdkrw, today, quality):
              f'<div style="font-size:13px;color:#6b7178">예측일 {pred.date()} · 시세 기준일 {today.date()} · 삼성전자·SK하이닉스 보고서와 같은 검증 장치를 씁니다</div>',
              github_pages.version_line(os.environ.get("GITHUB_TOKEN"),
                                        generated_at=datetime.now(KST).strftime("%Y-%m-%d %H:%M KST"))]
-    parts.append(note("<b>먼저 읽을 것.</b> 금·은은 거의 24시간 거래되는 시장이라 삼성전자 보고서의 예측력을 만들던 '야간 갭'이 없습니다. "
+    parts.append('<details class="report-detail"><summary>보고서 읽는 법 · 예측의 한계</summary>' + note("<b>먼저 읽을 것.</b> 금·은은 거의 24시간 거래되는 시장이라 삼성전자 보고서의 예측력을 만들던 '야간 갭'이 없습니다. "
                       "따라서 다음 거래일 방향 확률은 과거 빈도와 크게 다르지 않을 가능성이 높고, 아래 각 금속의 '과거 성적' 표가 그것을 "
                       "그대로 보여 줍니다. 쓸모가 있는 쪽은 <b>변동성으로 보정한 1주일·1개월 구간</b>입니다 — 그 구간의 실제 적중률을 함께 적었습니다. "
-                      "연구·교육용이며 투자 자문이 아닙니다."))
+                      "연구·교육용이며 투자 자문이 아닙니다.") + "</details>")
     for key in ASSETS:
         parts.append(render_asset(key, results[key], usdkrw))
         parts.append(render_longterm_asset(key, results[key]))

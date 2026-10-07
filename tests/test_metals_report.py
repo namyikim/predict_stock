@@ -61,6 +61,57 @@ class RenderTests(unittest.TestCase):
         html = mr.render_asset("gold", self.make_res(skill=True), 1355.)
         self.assertIn("최빈 판정은 <b>상승</b>", html)
 
+    def summary_text(self, result):
+        from html.parser import HTMLParser
+        class Text(HTMLParser):
+            def __init__(self):
+                super().__init__(); self.parts = []
+            def handle_data(self, value):
+                self.parts.append(value)
+        parser = Text(); parser.feed(result)
+        return " ".join(parser.parts)
+
+    def test_summary_puts_hold_before_probabilities_for_both_metals(self):
+        for key in ("gold", "silver"):
+            result = mr.render_asset(key, self.make_res(skill=False), 1355.)
+            self.assertIn('id="' + key + '-forecast-summary"', result)
+            summary = result.split('<!-- METALS_SUMMARY_END -->')[0]
+            self.assertIn("방향 판단 보류", self.summary_text(summary))
+            self.assertIn("과거 빈도보다", summary)
+            self.assertLess(result.index('forecast-summary'), result.index('max-width:420px'))
+            self.assertIn("2026-09-07", summary)
+            self.assertIn("종가 예측", summary)
+            self.assertIn("자료 없음", summary)  # 다음 거래일 행을 1주일 행으로 대체하지 않는다.
+
+    def test_direction_hold_does_not_hide_valid_independent_price_prediction(self):
+        res = self.make_res(skill=False)
+        day = dict(res['price_rows'][0], horizon='1거래일', trading_days=1,
+                   target_date='2026-09-07', signal='있음', predicted_close=4490.25,
+                   predicted_return=.003, low_close=4400., high_close=4550.)
+        res['price_rows'].insert(0, day)
+        full = mr.render_asset('gold', res, 1355.)
+        self.assertNotIn('변동성 구간뿐', full)
+        summary = full.split('<!-- METALS_SUMMARY_END -->')[0]
+        text = self.summary_text(summary)
+        self.assertIn('방향 판단 보류', text)
+        self.assertIn('$4,490.25', text)
+        self.assertIn('방향과 가격은 별도로 검증', text)
+        self.assertIn('1주일', text)
+        self.assertIn('가격 예측 보류', text)
+        self.assertIn('$4,278.00', text)
+
+    def test_no_signal_never_displays_stale_price_as_prediction(self):
+        res = self.make_res(skill=True)
+        res['price_rows'][0].update(horizon='1거래일', trading_days=1,
+            target_date='2026-09-07', signal='없음', predicted_close=9999., predicted_return=.1)
+        summary = mr.render_asset('silver', res, 0).split('<!-- METALS_SUMMARY_END -->')[0]
+        text = self.summary_text(summary)
+        self.assertIn('상승', text)
+        self.assertIn('가격 예측 보류', text)
+        self.assertNotIn('9,999', text)
+        self.assertNotIn('nan', text.lower())
+        self.assertIn('기준 종가', text)
+
     def test_ledger_review_is_rendered_when_scored(self):
         bars = pd.DataFrame({"open": [100., 101.], "close": [100., 99.], "adj_close": [100., 99.]},
                             index=pd.to_datetime(["2026-09-04", "2026-09-07"]))

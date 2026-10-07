@@ -123,7 +123,8 @@ class AttributionTabTests(PageSource):
         report = next("".join(c["source"]) for c in nb["cells"]
                       if "def build_summary():" in "".join(c.get("source", [])))
         self.assertNotIn("live_contributions", report)
-        self.assertNotIn("attribution", report)
+        # 이메일·카카오 유입을 집계하는 traffic_attribution.js는 모델 기여도 원장이 아니다.
+        self.assertNotIn("attribution.csv", report)
 
 
 

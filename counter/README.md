@@ -560,3 +560,18 @@ Worker는 수동 Deploy 전까지 운영 코드가 바뀌지 않는다. 이번 �
 - 실제 메일 시험 발송·운영 방문 생성·DB 이행·Worker 배포는 수행하지 않았다.
 
 검증: `python -m unittest discover -s tests -p 'test_email_dimensions.py' -v`.
+
+
+## 카카오톡 본인 인증(K2)
+
+관리자 화면의 **카카오톡 연결**에서 본인 로그인·계정 확인·인증 갱신·연결 해제를 수행한다.
+현재 자동 발송은 미구현이며 이메일 설정과 독립이다. API는 `/kakao/status`, `/kakao/connect`,
+`/kakao/confirm`, `/kakao/refresh`, `/kakao/disconnect`를 제공하며 STATS_TOKEN 인증이 필요하다.
+수정 요청은 기존 GitHub Pages Origin에서만 받는다. `/kakao/authorize`, `/kakao/callback`은
+관리자에게 발급한 10분짜리 일회용 state와 Worker 쿠키를 확인한다.
+
+기존 DB에는 `migrations/20261007_kakao_auth.sql`을 한 문장씩 적용한다. 새 DB는 `schema.sql`을 쓴다.
+Worker에 KAKAO_KEY·KAKAO_TOKEN_KEY·필요한 Client Secret과 KAKAO_APP_ID·KAKAO_PUBLIC_URL을 설정하고,
+전체 worker.js를 수동 Deploy해야 한다. GitHub Actions의 KAKAO_KEY는 Worker로 자동 전달되지 않는다.
+
+[정확한 설정 값·콜백 주소·배포 순서·보관/해제 범위](../guides/kakao-notification-setup.md#k2-적용-순서--2026-10-07)를 확인한다.

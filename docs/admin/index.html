@@ -226,6 +226,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
   <a href="#notice" data-tab="notice">공지사항</a>
   <a href="#visits" data-tab="visits">방문 통계</a>
   <a href="#subscribers" data-tab="subscribers">구독자</a>
+  <a href="#kakao" data-tab="kakao">카카오톡 연결</a>
   <div class="group">실험실</div>
   <a href="#sim" data-tab="sim">가상 매매</a>
   <a href="#attr" data-tab="attr">무엇이 예측을 밀었나</a>
@@ -349,6 +350,25 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 <div id="mail-deliveries" style="overflow-x:auto;margin-top:16px" aria-live="polite"></div>
 </section>
 
+<section class="admin-panel" id="panel-kakao" data-tab="kakao" hidden>
+<h2 class="panel-title">카카오톡 본인 연결</h2>
+<p class="sub">본인의 ‘나와의 채팅’ 알림을 준비합니다. 로그인과 메시지 전송 동의 후 본인 계정을 확인하세요. 현재는 인증 단계이며 자동 발송은 다음 단계에서 연결합니다.</p>
+<label for="kakao-token">STATS_TOKEN</label>
+<input id="kakao-token" type="password" placeholder="방문 통계와 같은 관리자 토큰" autocomplete="off" style="max-width:100%;box-sizing:border-box">
+<div style="display:flex;gap:8px;flex-wrap:wrap;margin:12px 0">
+<button id="kakao-load" type="button">연결 상태 확인</button>
+<button id="kakao-connect" type="button" disabled>카카오 로그인 연결</button>
+<button id="kakao-confirm" type="button" disabled>본인 계정 확인</button>
+<button id="kakao-refresh" type="button" disabled>인증 갱신 확인</button>
+<button id="kakao-disconnect" type="button" disabled>연결 해제</button>
+<button id="kakao-acknowledge" type="button" disabled>앱 동의 해제 결과 확인</button>
+</div>
+<p><label><input id="kakao-revoke" type="checkbox"> 연결 해제 시 카카오 앱 동의도 해제</label></p>
+<p class="sub">체크하지 않으면 서버 토큰만 지웁니다. 체크하면 이 앱의 카카오 동의도 해제하므로 같은 앱을 쓰는 다른 기능에 영향을 줄 수 있습니다.</p>
+<div id="kakao-status" class="sub" role="status">관리자 토큰을 입력하고 연결 상태를 확인하세요.</div>
+<div id="kakao-action" class="msg" role="status" aria-live="polite"></div>
+</section>
+
 <section class="admin-panel" id="panel-sim" data-tab="sim" hidden>
 <h2 class="panel-title">가상 매매</h2>
 <iframe title="가상 매매" data-src="../lab/?tab=sim&amp;embed=1"></iframe>
@@ -375,6 +395,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 <div id="tip" role="status" aria-live="polite"></div>
 
 <script src="email_traffic.js"></script>
+<script src="kakao_auth.js"></script>
 <script>
 (function () {
   "use strict";
@@ -916,7 +937,8 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
   if (location.hash && history.replaceState) {
     history.replaceState(null, "", location.pathname + location.search);
   }
-  show("visits");
+  if (new URLSearchParams(location.search).get("kakao") === "return") show("kakao");
+  else show("visits");
 })();
 </script>
 <script>

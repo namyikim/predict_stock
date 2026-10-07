@@ -20,6 +20,8 @@
 //   GET /mail/deliveries  관리자 수신자별 이력(50명씩). 본문·토큰 제외.
 //   POST /mail/control, /mail/cancel  자동 발송 일시 중지·회차 대기 취소(STATS_TOKEN).
 //   GET/POST /mail/unsubscribe  메일 내 토큰 링크. GET 확인 후 POST로 전체 해지.
+//   GET /kakao/status, POST /kakao/connect /confirm /refresh /disconnect  관리자 본인 인증.
+//   GET /kakao/authorize /callback  일회용 연결 코드와 브라우저 쿠키로 확인.
 //   POST /dispatch/test  관리자가 GitHub 채점 워크플로 호출을 한 번 시험한다(STATS_TOKEN). 결과 JSON 을 바로 돌려줘
 //                        Cloudflare 로그를 열지 않아도 토큰·권한 문제를 알 수 있다(2026-10-01).
 //
@@ -32,6 +34,8 @@
 //   DB                    D1 데이터베이스
 //   VISITOR_SALT          방문자 해시용 비밀값(시크릿)
 //   STATS_TOKEN           /stats 접근 토큰(시크릿)
+//   KAKAO_KEY, KAKAO_CLIENT_SECRET, KAKAO_TOKEN_KEY (선택) 카카오 인증 시크릿
+//   KAKAO_APP_ID, KAKAO_PUBLIC_URL (선택) 카카오 앱 ID·Worker HTTPS 원점
 //   GH_DISPATCH_TOKEN (선택) 채점 워크플로를 깨우는 fine-grained PAT(시크릿). 이름은
 //                     GITHUB_DISPATCH_TOKEN 이어도 된다 — 둘 중 있는 쪽을 읽는다.
 //                         이 저장소 하나, Actions: Read and write 권한만. 없으면 깨우지 않는다.
@@ -917,6 +921,317 @@ async function handleMailStatus(request,env,origin) {
     notice:'수신자별 하루 최대 두 통입니다. 발송 완료는 발송 서비스 접수 기준이며 수신함 도착을 보장하지 않습니다. 전송 중인 메일은 취소할 수 없습니다.'},origin);
 }
 
+// 카카오 인증(K2, 2026-10-07). 수동 단일 파일 배포를 유지하며 이메일 처리와 분리한다.
+const KAKAO_COOKIE = '__Host-kakao_auth';
+const KAKAO_AUTH_LIFETIME = 600000;
+const KAKAO_ADMIN_URL = 'https://namyikim.github.io/predict_stock/admin/?kakao=return#kakao';
+
+function kakaoConfig(env) {
+  const missing = [];
+  const key = env.KAKAO_KEY || env.KAKAO_REST_API_KEY || '';
+  if (!key || (env.KAKAO_KEY && env.KAKAO_REST_API_KEY && env.KAKAO_KEY !== env.KAKAO_REST_API_KEY)) missing.push('KAKAO_KEY');
+  if (!/^\d+$/.test(String(env.KAKAO_APP_ID || ''))) missing.push('KAKAO_APP_ID');
+  let root;
+  try {
+    root = new URL(env.KAKAO_PUBLIC_URL);
+    if (root.protocol !== 'https:' || root.username || root.password || root.search || root.hash || root.pathname !== '/') throw new Error();
+  } catch { missing.push('KAKAO_PUBLIC_URL'); }
+  let bytes;
+  try {
+    bytes = Uint8Array.from(atob(env.KAKAO_TOKEN_KEY || ''), c => c.charCodeAt(0));
+    if (bytes.length !== 32) throw new Error();
+  } catch { missing.push('KAKAO_TOKEN_KEY'); }
+  return {ready:missing.length === 0, missing, key, bytes, appId:String(env.KAKAO_APP_ID || ''),
+    origin:root ? root.origin : '', redirect:root ? root.origin + '/kakao/callback' : ''};
+}
+
+async function kakaoConfigHash(env, config) {
+  return mailHash(JSON.stringify([config.key, config.appId, config.redirect, env.KAKAO_CLIENT_SECRET || '', env.KAKAO_TOKEN_KEY]));
+}
+
+async function kakaoSeal(env, ownerId, value) {
+  const config = kakaoConfig(env);
+  if (!config.ready) throw new Error('kakao_config');
+  const key = await crypto.subtle.importKey('raw', config.bytes, 'AES-GCM', false, ['encrypt']);
+  const iv = crypto.getRandomValues(new Uint8Array(12));
+  const data = await crypto.subtle.encrypt({name:'AES-GCM', iv,
+    additionalData:new TextEncoder().encode(config.appId + '|' + ownerId)}, key, new TextEncoder().encode(JSON.stringify(value)));
+  const b64 = bytes => btoa(String.fromCharCode(...new Uint8Array(bytes)));
+  return 'v1.' + b64(iv) + '.' + b64(data);
+}
+
+async function kakaoOpen(env, row) {
+  const config = kakaoConfig(env);
+  if (!config.ready || row.app_id !== config.appId) throw new Error('kakao_config');
+  const parts = row.token_cipher.split('.');
+  if (parts.length !== 3 || parts[0] !== 'v1') throw new Error('kakao_cipher');
+  const bytes = raw => Uint8Array.from(atob(raw), c => c.charCodeAt(0));
+  const key = await crypto.subtle.importKey('raw', config.bytes, 'AES-GCM', false, ['decrypt']);
+  const data = await crypto.subtle.decrypt({name:'AES-GCM', iv:bytes(parts[1]),
+    additionalData:new TextEncoder().encode(config.appId + '|' + row.owner_id)}, key, bytes(parts[2]));
+  return JSON.parse(new TextDecoder().decode(data));
+}
+
+function kakaoResponse(body, origin, status = 200) {
+  const response = json(body, origin, status);
+  response.headers.set('Cache-Control', 'no-store');
+  response.headers.set('Referrer-Policy', 'no-referrer');
+  return response;
+}
+
+function kakaoRedirect(target, status = 303, cookie = '') {
+  return new Response(null, {status, headers:{Location:target, 'Cache-Control':'no-store', 'Referrer-Policy':'no-referrer',
+    ...(cookie ? {'Set-Cookie':cookie} : {})}});
+}
+
+function kakaoCookie(value, age = 600) {
+  return KAKAO_COOKIE + '=' + value + '; Path=/; Max-Age=' + age + '; HttpOnly; Secure; SameSite=Lax';
+}
+
+function kakaoCookieValue(request) {
+  const values = (request.headers.get('Cookie') || '').split(';').map(x => x.trim()).filter(x => x.startsWith(KAKAO_COOKIE + '='));
+  return values.length === 1 ? values[0].slice(KAKAO_COOKIE.length + 1) : '';
+}
+
+async function kakaoCall(url, init) {
+  try {
+    const response = await fetch(url, {...init, redirect:'error', signal:AbortSignal.timeout(10000)});
+    const data = await response.json();
+    if (!response.ok) {
+      const expired = data.error_code === 'KOE322' || data.code === -401;
+      return {ok:false, status:expired ? 'reconnect_required' : response.status === 429 ? 'rate_limited' : 'provider_error'};
+    }
+    return {ok:true, data};
+  } catch { return {ok:false, status:'temporarily_unavailable'}; }
+}
+
+async function kakaoIdentity(accessToken, config) {
+  const headers = {Authorization:'Bearer ' + accessToken};
+  const info = await kakaoCall('https://kapi.kakao.com/v1/user/access_token_info', {headers});
+  if (!info.ok) return info;
+  if (String(info.data.app_id) !== config.appId || !/^\d+$/.test(String(info.data.id || '')) || !(info.data.expires_in > 0)) return {ok:false,status:'app_mismatch'};
+  const scopes = await kakaoCall('https://kapi.kakao.com/v2/user/scopes', {headers});
+  if (!scopes.ok) return scopes;
+  if (String(scopes.data.id) !== String(info.data.id) || !Array.isArray(scopes.data.scopes) ||
+      !scopes.data.scopes.some(s => s.id === 'talk_message' && s.using === true && s.agreed === true)) return {ok:false,status:'permission_required'};
+  return {ok:true, ownerId:String(info.data.id)};
+}
+
+function kakaoTokenForm(env, config, values) {
+  return {method:'POST', headers:{'Content-Type':'application/x-www-form-urlencoded;charset=utf-8'},
+    body:new URLSearchParams({client_id:config.key, ...(env.KAKAO_CLIENT_SECRET ? {client_secret:env.KAKAO_CLIENT_SECRET} : {}), ...values}).toString()};
+}
+
+function kakaoTokenValues(data, now, previous = null) {
+  // 갱신 응답의 refresh_token은 선택 항목이다. 빠지면 토큰과 기존 만료 시각을 모두 유지한다.
+  const duration = value => Number.isInteger(value) && value > 0 && value <= 366 * 86400;
+  const token = value => typeof value === 'string' && value.length > 0 && value.length <= 4096;
+  if (!token(data.access_token) || data.token_type !== 'bearer' || !duration(data.expires_in)) return null;
+  if (!previous && (!token(data.refresh_token) || !duration(data.refresh_token_expires_in))) return null;
+  if (data.refresh_token !== undefined && (!token(data.refresh_token) || !duration(data.refresh_token_expires_in))) return null;
+  return {access_token:data.access_token, refresh_token:data.refresh_token || previous.refresh_token,
+    access_expires:now + data.expires_in * 1000,
+    refresh_expires:data.refresh_token ? now + data.refresh_token_expires_in * 1000 : previous.refresh_expires};
+}
+
+async function kakaoConnection(env) {
+  await env.DB.prepare('INSERT OR IGNORE INTO kakao_connection(id) VALUES(1)').run();
+  return env.DB.prepare('SELECT * FROM kakao_connection WHERE id=1').first();
+}
+
+async function kakaoStatus(env) {
+  const config = kakaoConfig(env);
+  try {
+    const row = await kakaoConnection(env);
+    const pending = await env.DB.prepare("SELECT state_hash AS id,owner_id,expires_at FROM kakao_oauth WHERE status='verified' AND expires_at>? AND base_version=? ORDER BY expires_at DESC LIMIT 1").bind(Date.now(), row.version).first();
+    const status = row.status === 'revoking' && row.lease_until <= Date.now() ? 'revoke_uncertain' : row.status;
+    return {available:true, configured:config.ready, missing:config.missing, status, enabled:Boolean(row.enabled),
+      owner_id:row.owner_id, access_expires:row.access_expires, refresh_expires:row.refresh_expires,
+      last_error:row.last_error, updated_at:row.updated_at, pending:pending || null};
+  } catch (error) {
+    if (/no such table:\s*kakao_(connection|oauth)/i.test(String(error.message))) return {available:false,configured:config.ready,missing:config.missing,status:'schema_required',pending:null};
+    throw error;
+  }
+}
+
+async function kakaoStart(request, env, origin) {
+  const config = kakaoConfig(env);
+  if (!config.ready) return kakaoResponse({error:'카카오 설정이 필요합니다.',missing:config.missing}, origin, 503);
+  const row = await kakaoConnection(env), now = Date.now();
+  if (['revoking','revoke_uncertain'].includes(row.status)) return kakaoResponse({error:'카카오 앱 동의 해제 결과를 확인한 뒤 연결하세요.'},origin,409);
+  const state = crypto.randomUUID().replaceAll('-', '') + crypto.randomUUID().replaceAll('-', '');
+  await env.DB.batch([
+    env.DB.prepare('DELETE FROM kakao_oauth WHERE expires_at<=?').bind(now),
+    env.DB.prepare('INSERT INTO kakao_oauth(state_hash,config_hash,expires_at,base_version) VALUES(?,?,?,?)')
+      .bind(await mailHash(state), await kakaoConfigHash(env, config), now + KAKAO_AUTH_LIFETIME, row.version)
+  ]);
+  return kakaoResponse({login_url:config.origin + '/kakao/authorize?ticket=' + state}, origin);
+}
+
+async function kakaoAuthorize(request, env, url) {
+  const config = kakaoConfig(env), ticket = url.searchParams.get('ticket') || '';
+  if (!config.ready || url.origin !== config.origin || !/^[a-f0-9]{64}$/.test(ticket) || url.searchParams.getAll('ticket').length !== 1) return kakaoResponse({error:'연결 요청이 올바르지 않습니다.'}, '', 400);
+  const session = crypto.randomUUID().replaceAll('-', '') + crypto.randomUUID().replaceAll('-', '');
+  const hash = await mailHash(ticket), configHash = await kakaoConfigHash(env, config);
+  const result = await env.DB.prepare("UPDATE kakao_oauth SET status='started',session_hash=? WHERE state_hash=? AND status='issued' AND expires_at>? AND config_hash=?")
+    .bind(await mailHash(session), hash, Date.now(), configHash).run();
+  if (result.meta.changes !== 1) return kakaoResponse({error:'연결 요청이 만료되었거나 이미 사용됐습니다.'}, '', 400);
+  const authorize = new URL('https://kauth.kakao.com/oauth/authorize');
+  for (const [key,value] of Object.entries({client_id:config.key, redirect_uri:config.redirect,response_type:'code',scope:'talk_message',state:ticket})) authorize.searchParams.set(key,value);
+  return kakaoRedirect(authorize.href, 302, kakaoCookie(session));
+}
+
+async function kakaoCallback(request, env, url) {
+  const config = kakaoConfig(env), state = url.searchParams.get('state') || '', session = kakaoCookieValue(request);
+  if (!config.ready || url.origin !== config.origin || !/^[a-f0-9]{64}$/.test(state) || !/^[a-f0-9]{64}$/.test(session) ||
+      url.searchParams.getAll('state').length !== 1 || url.searchParams.getAll('code').length > 1 || url.searchParams.getAll('error').length > 1) return kakaoResponse({error:'로그인 확인 요청이 올바르지 않습니다.'}, '', 400);
+  const hash = await mailHash(state), now = Date.now(), sessionHash = await mailHash(session), configHash = await kakaoConfigHash(env, config);
+  const result = await env.DB.prepare("UPDATE kakao_oauth SET status='consumed' WHERE state_hash=? AND status='started' AND expires_at>? AND session_hash=? AND config_hash=?")
+    .bind(hash, now, sessionHash, configHash).run();
+  if (result.meta.changes !== 1) return kakaoResponse({error:'로그인 요청이 만료되었거나 이미 사용됐습니다.'}, '', 400);
+  const pending = await env.DB.prepare('SELECT * FROM kakao_oauth WHERE state_hash=?').bind(hash).first();
+  if (!pending) return kakaoRedirect(KAKAO_ADMIN_URL,303,kakaoCookie('',0));
+  let error = 'login_cancelled';
+  const code = url.searchParams.get('code') || '';
+  if (!url.searchParams.has('error') && code.length > 0 && code.length <= 2048) {
+    const response = await kakaoCall('https://kauth.kakao.com/oauth/token', kakaoTokenForm(env,config,{grant_type:'authorization_code',code,redirect_uri:config.redirect}));
+    error = response.status || 'invalid_token_response';
+    const tokens = response.ok ? kakaoTokenValues(response.data,now) : null;
+    if (tokens) {
+      const identity = await kakaoIdentity(tokens.access_token,config);
+      error = identity.status || 'connection_changed';
+      if (identity.ok) {
+        const row = await kakaoConnection(env);
+        if (row.version === pending.base_version && (!row.owner_id || row.owner_id === identity.ownerId)) {
+          const cipher = await kakaoSeal(env,identity.ownerId,tokens);
+          const saved = await env.DB.prepare("UPDATE kakao_oauth SET status='verified',token_cipher=?,owner_id=?,app_id=?,access_expires=?,refresh_expires=? WHERE state_hash=? AND status='consumed' AND base_version=(SELECT version FROM kakao_connection WHERE id=1)")
+            .bind(cipher,identity.ownerId,config.appId,tokens.access_expires,tokens.refresh_expires,hash).run();
+          if (saved.meta.changes === 1) error = '';
+        } else if (row.owner_id && row.owner_id !== identity.ownerId) error = 'owner_mismatch';
+      }
+    }
+  }
+  if (error) await env.DB.prepare('UPDATE kakao_connection SET last_error=?,updated_at=? WHERE id=1 AND version=?').bind(error,now,pending.base_version).run();
+  // 인가 코드가 남은 콜백 페이지를 렌더링하지 않고 고정 관리자 주소로 이동한다.
+  return kakaoRedirect(KAKAO_ADMIN_URL, 303, kakaoCookie('',0));
+}
+
+async function kakaoConfirm(request, env, origin) {
+  const body = await readJson(request), now = Date.now();
+  if (!body || !/^[a-f0-9]{64}$/.test(body.pending_id || '') || !/^\d+$/.test(body.owner_id || '')) return kakaoResponse({error:'확인할 계정 정보가 올바르지 않습니다.'},origin,400);
+  const pending = await env.DB.prepare("SELECT * FROM kakao_oauth WHERE state_hash=? AND status='verified' AND expires_at>?").bind(body.pending_id,now).first();
+  if (!pending) return kakaoResponse({error:'확인 요청이 만료되었거나 이미 사용됐습니다.'},origin,409);
+  if (pending.owner_id !== body.owner_id) return kakaoResponse({error:'로그인한 계정과 확인 계정이 다릅니다.'},origin,400);
+  if (pending.config_hash !== await kakaoConfigHash(env,kakaoConfig(env))) return kakaoResponse({error:'설정이 바뀌었습니다. 다시 연결하세요.'},origin,409);
+  await kakaoOpen(env,pending);
+  const results = await env.DB.batch([
+    env.DB.prepare("UPDATE kakao_connection SET owner_id=?,app_id=?,token_cipher=?,access_expires=?,refresh_expires=?,status='connected',enabled=0,version=version+1,last_error='',updated_at=?,lease_owner='',lease_until=0 WHERE id=1 AND version=? AND status NOT IN ('revoking','revoke_uncertain') AND (owner_id='' OR owner_id=?)")
+      .bind(pending.owner_id,pending.app_id,pending.token_cipher,pending.access_expires,pending.refresh_expires,now,pending.base_version,pending.owner_id),
+    env.DB.prepare("UPDATE kakao_oauth SET status='confirmed',token_cipher='' WHERE state_hash=? AND changes()=1").bind(body.pending_id)
+  ]);
+  return results[0].meta.changes === 1 ? kakaoResponse({ok:true},origin) : kakaoResponse({error:'연결 상태가 바뀌었습니다. 다시 연결하세요.'},origin,409);
+}
+
+// 서버의 발송 코드가 사용할 함수. HTTP 응답에는 토큰을 절대 반환하지 않는다.
+export async function getKakaoAccessToken(env, now = Date.now()) {
+  const config = kakaoConfig(env);
+  if (!config.ready) return {status:'configuration_required'};
+  let row = await kakaoConnection(env);
+  if (!['connected','verification_required'].includes(row.status)) return {status:row.status};
+  if (row.refresh_expires <= now) {
+    await env.DB.prepare("UPDATE kakao_connection SET status='reconnect_required',enabled=0,last_error='refresh_expired' WHERE id=1 AND version=?").bind(row.version).run();
+    return {status:'reconnect_required'};
+  }
+  if (row.lease_until > now) return {status:'busy'};
+  let tokens;
+  try { tokens = await kakaoOpen(env,row); } catch { return {status:'configuration_required'}; }
+  if (row.status === 'connected' && row.access_expires > now + 60000) {
+    const current = await env.DB.prepare('SELECT version,status FROM kakao_connection WHERE id=1').first();
+    return current.version === row.version && current.status === 'connected' ? {status:'ready',accessToken:tokens.access_token} : {status:'connection_changed'};
+  }
+  const lease = crypto.randomUUID();
+  const claimed = await env.DB.prepare("UPDATE kakao_connection SET lease_owner=?,lease_until=? WHERE id=1 AND version=? AND status IN ('connected','verification_required') AND lease_until<=?")
+    .bind(lease,now + 60000,row.version,now).run();
+  if (claimed.meta.changes !== 1) return {status:'busy'};
+  try {
+    if (row.access_expires <= now + 60000) {
+      const response = await kakaoCall('https://kauth.kakao.com/oauth/token',kakaoTokenForm(env,config,{grant_type:'refresh_token',refresh_token:tokens.refresh_token}));
+      if (!response.ok) {
+        await env.DB.prepare("UPDATE kakao_connection SET last_error=?,status=CASE WHEN ?='reconnect_required' THEN 'reconnect_required' ELSE status END,enabled=CASE WHEN ?='reconnect_required' THEN 0 ELSE enabled END WHERE id=1 AND version=? AND lease_owner=?")
+          .bind(response.status,response.status,response.status,row.version,lease).run();
+        return {status:response.status};
+      }
+      const renewed = kakaoTokenValues(response.data,now,{...tokens,refresh_expires:row.refresh_expires});
+      if (!renewed) return {status:'invalid_token_response'};
+      const cipher = await kakaoSeal(env,row.owner_id,renewed);
+      // 갱신 토큰이 교체되면 권한 조회 전에 보존한다. 이후 API 장애에도 새 토큰을 잃지 않는다.
+      const saved = await env.DB.prepare("UPDATE kakao_connection SET token_cipher=?,access_expires=?,refresh_expires=?,status='verification_required',version=version+1,updated_at=? WHERE id=1 AND version=? AND lease_owner=? AND status IN ('connected','verification_required')")
+        .bind(cipher,renewed.access_expires,renewed.refresh_expires,now,row.version,lease).run();
+      if (saved.meta.changes !== 1) return {status:'connection_changed'};
+      tokens = renewed;row = {...row,version:row.version + 1};
+    }
+    const identity = await kakaoIdentity(tokens.access_token,config);
+    if (!identity.ok || identity.ownerId !== row.owner_id) {
+      const code = identity.status || 'owner_mismatch';
+      const transient = ['temporarily_unavailable','rate_limited','provider_error'].includes(code);
+      await env.DB.prepare("UPDATE kakao_connection SET status=?,enabled=CASE WHEN ?=1 THEN enabled ELSE 0 END,last_error=? WHERE id=1 AND version=? AND lease_owner=?")
+        .bind(transient ? 'verification_required' : 'reconnect_required',transient ? 1 : 0,code,row.version,lease).run();
+      return {status:transient ? code : 'reconnect_required'};
+    }
+    const verified = await env.DB.prepare("UPDATE kakao_connection SET status='connected',last_error='',updated_at=? WHERE id=1 AND version=? AND lease_owner=? AND status='verification_required'")
+      .bind(now,row.version,lease).run();
+    return verified.meta.changes === 1 ? {status:'ready',accessToken:tokens.access_token} : {status:'connection_changed'};
+  } finally {
+    await env.DB.prepare("UPDATE kakao_connection SET lease_owner='',lease_until=0 WHERE id=1 AND lease_owner=?").bind(lease).run();
+  }
+}
+
+async function kakaoDisconnect(request, env, origin) {
+  const body = await readJson(request), now = Date.now();
+  if (!body || (body.revoke !== undefined && typeof body.revoke !== 'boolean') ||
+      (body.acknowledge_revoke !== undefined && typeof body.acknowledge_revoke !== 'boolean')) return kakaoResponse({error:'해제 요청이 올바르지 않습니다.'},origin,400);
+  const row = await kakaoConnection(env);
+  if (row.status === 'revoking' && row.lease_until > now) return kakaoResponse({error:'카카오 앱 동의 해제가 진행 중입니다.'},origin,409);
+  if (['revoking','revoke_uncertain'].includes(row.status) && body.acknowledge_revoke !== true) return kakaoResponse({error:'카카오계정에서 앱 동의 해제를 확인한 뒤 결과 확인 버튼을 누르세요.'},origin,409);
+  let token;
+  if (body.revoke === true && row.token_cipher && row.access_expires > now) {
+    try { token = (await kakaoOpen(env,row)).access_token; } catch { /* 로컬 해제는 암호키 손실에도 가능하다. */ }
+  }
+  const lease = crypto.randomUUID(), remote = body.revoke === true && Boolean(token);
+  // 원격 해제 중에는 새 로그인도 막는다. 이전 unlink가 새 토큰까지 폐기할 수 있기 때문이다.
+  const results = await env.DB.batch([
+    env.DB.prepare("UPDATE kakao_connection SET token_cipher='',access_expires=0,refresh_expires=0,status=?,enabled=0,version=version+1,last_error='',updated_at=?,lease_owner=?,lease_until=? WHERE id=1 AND version=?")
+      .bind(remote ? 'revoking' : 'disconnected',now,remote ? lease : '',remote ? now + 60000 : 0,row.version),
+    env.DB.prepare('DELETE FROM kakao_oauth WHERE changes()=1')
+  ]);
+  if (results[0].meta.changes !== 1) return kakaoResponse({error:'다른 처리로 연결 상태가 바뀌었습니다. 다시 확인하세요.'},origin,409);
+  let revokeStatus = body.revoke === true ? 'manual_required' : 'not_requested';
+  if (remote) {
+    const result = await kakaoCall('https://kapi.kakao.com/v1/user/unlink',{method:'POST',headers:{Authorization:'Bearer ' + token,'Content-Type':'application/x-www-form-urlencoded'}});
+    revokeStatus = result.ok && String(result.data.id) === row.owner_id ? 'revoked' : 'manual_required';
+    // 실패 응답/시간 초과의 원격 결과는 단정하지 않는다. 계정에서 동의 해제를 확인해야 재연결한다.
+    await env.DB.prepare("UPDATE kakao_connection SET status=?,last_error=?,lease_owner='',lease_until=0 WHERE id=1 AND version=? AND lease_owner=? AND status='revoking'")
+      .bind(revokeStatus === 'revoked' ? 'disconnected' : 'revoke_uncertain',revokeStatus === 'revoked' ? '' : 'revoke_uncertain',row.version + 1,lease).run();
+  }
+  return kakaoResponse({ok:true,revoke_status:revokeStatus},origin);
+}
+
+async function handleKakao(request, env, url, origin) {
+  if (request.method === 'GET' && url.pathname === '/kakao/authorize') return kakaoAuthorize(request,env,url);
+  if (request.method === 'GET' && url.pathname === '/kakao/callback') return kakaoCallback(request,env,url);
+  if (!isAdmin(request,env)) return kakaoResponse({error:'unauthorized'},origin,401);
+  if (request.method !== 'GET' && !ALLOWED_ORIGINS.includes(origin)) return kakaoResponse({error:'forbidden'},origin,403);
+  if (request.method === 'GET' && url.pathname === '/kakao/status') return kakaoResponse(await kakaoStatus(env),origin);
+  if (request.method === 'POST' && url.pathname === '/kakao/connect') return kakaoStart(request,env,origin);
+  if (request.method === 'POST' && url.pathname === '/kakao/confirm') return kakaoConfirm(request,env,origin);
+  if (request.method === 'POST' && url.pathname === '/kakao/disconnect') return kakaoDisconnect(request,env,origin);
+  if (request.method === 'POST' && url.pathname === '/kakao/refresh') {
+    const result = await getKakaoAccessToken(env);
+    return kakaoResponse({status:result.status},origin);
+  }
+  return kakaoResponse({error:'not found'},origin,404);
+}
+
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
@@ -927,6 +1242,7 @@ export default {
     }
 
     try {
+      if (url.pathname.startsWith('/kakao/')) return await handleKakao(request,env,url,origin);
       if (url.pathname === '/mail/unsubscribe' && ['GET','POST'].includes(request.method)) return await handleMailUnsubscribe(request,env,url);
       if (request.method === 'POST' && url.pathname === '/mail/send-today') return await handleMailSendToday(request,env,origin);
       if (request.method === 'POST' && url.pathname === '/mail/events') return await handleMailEvent(request,env,origin);
@@ -952,6 +1268,7 @@ export default {
       return json({ error: "not found" }, origin, 404);
     } catch (err) {
       // 카운터가 실패해도 보고서 페이지는 그대로 보여야 하므로, 오류를 조용히 JSON으로 돌려준다.
+      if (url.pathname.startsWith('/kakao/')) return kakaoResponse({error:'카카오 처리 실패: Worker 설정과 D1 스키마를 확인하세요.'},origin,500);
       return json({ error: url.pathname.startsWith('/mail/') ? '메일 처리 실패: 설정과 D1 스키마를 확인하세요.' : String(err && err.message ? err.message : err) }, origin, 500);
     }
   },
@@ -959,6 +1276,9 @@ export default {
   // Cron Trigger가 부른다. 채점 회차 시각이면 GitHub 워크플로를 깨우고, 그 밖의 트리거(보관기간 정리)는
   // 누적 조회수(counters)는 그대로 두고 일별 통계에 더는 쓰이지 않는 오래된 조회 기록만 지운다.
   async scheduled(event, env) {
+    // 10분짜리 인증 대기 자료는 매 Cron에서 폐기한다. 구 DB도 기존 메일·채점은 계속 동작한다.
+    try { await env.DB.prepare('DELETE FROM kakao_oauth WHERE expires_at<=?').bind(Date.now()).run(); }
+    catch (error) { if (!/no such table:\s*kakao_oauth/i.test(String(error.message))) console.log('카카오 인증 대기 정리 실패: D1 상태를 확인하세요.'); }
     // 기존 보고서 정시 호출과 함께 실행한다. 별도 */5 * * * * 트리거는 발송 재시도용이다.
     if (String(env.MAIL_ENABLED || '') === '1') {
       try { const result = await processMail(env); console.log('report_mail ' + JSON.stringify({status:result.status,accepted:result.accepted})); }

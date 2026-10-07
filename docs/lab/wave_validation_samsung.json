@@ -51,8 +51,7 @@
     ],
     "status": "unavailable",
     "reasons": [
-      "missing_common_prices",
-      "unverified_cash_price_basis"
+      "missing_common_prices"
     ],
     "standard": {
       "range_rebound": {
@@ -64,7 +63,7 @@
         "fills": [],
         "orders": [],
         "limitations": [
-          "missing_common_prices,unverified_cash_price_basis"
+          "missing_common_prices"
         ]
       },
       "trend_pullback": {
@@ -76,7 +75,7 @@
         "fills": [],
         "orders": [],
         "limitations": [
-          "missing_common_prices,unverified_cash_price_basis"
+          "missing_common_prices"
         ]
       },
       "buy_hold": {
@@ -88,7 +87,7 @@
         "fills": [],
         "orders": [],
         "limitations": [
-          "missing_common_prices,unverified_cash_price_basis"
+          "missing_common_prices"
         ]
       },
       "cash": {
@@ -100,7 +99,7 @@
         "fills": [],
         "orders": [],
         "limitations": [
-          "missing_common_prices,unverified_cash_price_basis"
+          "missing_common_prices"
         ]
       },
       "legacy": {
@@ -112,7 +111,7 @@
         "fills": [],
         "orders": [],
         "limitations": [
-          "missing_common_prices,unverified_cash_price_basis"
+          "missing_common_prices"
         ]
       }
     },
@@ -126,7 +125,7 @@
         "fills": [],
         "orders": [],
         "limitations": [
-          "missing_common_prices,unverified_cash_price_basis"
+          "missing_common_prices"
         ]
       },
       "trend_pullback": {
@@ -138,7 +137,7 @@
         "fills": [],
         "orders": [],
         "limitations": [
-          "missing_common_prices,unverified_cash_price_basis"
+          "missing_common_prices"
         ]
       },
       "buy_hold": {
@@ -150,7 +149,7 @@
         "fills": [],
         "orders": [],
         "limitations": [
-          "missing_common_prices,unverified_cash_price_basis"
+          "missing_common_prices"
         ]
       },
       "cash": {
@@ -162,7 +161,7 @@
         "fills": [],
         "orders": [],
         "limitations": [
-          "missing_common_prices,unverified_cash_price_basis"
+          "missing_common_prices"
         ]
       },
       "legacy": {
@@ -174,7 +173,7 @@
         "fills": [],
         "orders": [],
         "limitations": [
-          "missing_common_prices,unverified_cash_price_basis"
+          "missing_common_prices"
         ]
       }
     }
@@ -200,58 +199,1064 @@
       "2026-10-02",
       "2026-10-06"
     ],
-    "status": "unavailable",
-    "reasons": [
-      "unverified_cash_price_basis"
-    ],
+    "status": "available",
+    "reasons": [],
     "standard": {
       "range_rebound": {
-        "status": "unavailable",
-        "metrics": {
-          "total": null
-        },
-        "equity_curve": [],
-        "fills": [],
+        "mode": "research_only",
+        "decisions": [
+          {
+            "strategy": "range_rebound",
+            "version": "wave-v1",
+            "action": "wait",
+            "regime": "unknown",
+            "range_position": null,
+            "reason_codes": [
+              "insufficient_bars"
+            ],
+            "information_cutoff": "2026-10-07T03:25:58.376997+00:00",
+            "reference_stop": null,
+            "decision_at": "2026-10-07T03:25:58.376997+00:00",
+            "available_bars": 36
+          },
+          {
+            "strategy": "range_rebound",
+            "version": "wave-v1",
+            "action": "wait",
+            "regime": "unknown",
+            "range_position": null,
+            "reason_codes": [
+              "insufficient_bars"
+            ],
+            "information_cutoff": "2026-10-07T03:25:58.376997+00:00",
+            "reference_stop": null,
+            "decision_at": "2026-10-07T03:25:58.376997+00:00",
+            "available_bars": 37
+          },
+          {
+            "strategy": "range_rebound",
+            "version": "wave-v1",
+            "action": "wait",
+            "regime": "unknown",
+            "range_position": null,
+            "reason_codes": [
+              "insufficient_bars"
+            ],
+            "information_cutoff": "2026-10-07T03:25:58.376997+00:00",
+            "reference_stop": null,
+            "decision_at": "2026-10-07T03:25:58.376997+00:00",
+            "available_bars": 38
+          },
+          {
+            "strategy": "range_rebound",
+            "version": "wave-v1",
+            "action": "wait",
+            "regime": "unknown",
+            "range_position": null,
+            "reason_codes": [
+              "insufficient_bars"
+            ],
+            "information_cutoff": "2026-10-07T03:25:58.376997+00:00",
+            "reference_stop": null,
+            "decision_at": "2026-10-07T03:25:58.376997+00:00",
+            "available_bars": 39
+          },
+          {
+            "strategy": "range_rebound",
+            "version": "wave-v1",
+            "action": "wait",
+            "regime": "unknown",
+            "range_position": null,
+            "reason_codes": [
+              "insufficient_bars"
+            ],
+            "information_cutoff": "2026-10-07T03:25:58.376997+00:00",
+            "reference_stop": null,
+            "decision_at": "2026-10-07T03:25:58.376997+00:00",
+            "available_bars": 40
+          },
+          {
+            "strategy": "range_rebound",
+            "version": "wave-v1",
+            "action": "wait",
+            "regime": "unknown",
+            "range_position": null,
+            "reason_codes": [
+              "insufficient_bars"
+            ],
+            "information_cutoff": "2026-10-07T03:25:58.376997+00:00",
+            "reference_stop": null,
+            "decision_at": "2026-10-07T03:25:58.376997+00:00",
+            "available_bars": 41
+          },
+          {
+            "strategy": "range_rebound",
+            "version": "wave-v1",
+            "action": "wait",
+            "regime": "unknown",
+            "range_position": null,
+            "reason_codes": [
+              "insufficient_bars"
+            ],
+            "information_cutoff": "2026-10-07T03:25:58.376997+00:00",
+            "reference_stop": null,
+            "decision_at": "2026-10-07T03:25:58.376997+00:00",
+            "available_bars": 42
+          },
+          {
+            "strategy": "range_rebound",
+            "version": "wave-v1",
+            "action": "wait",
+            "regime": "unknown",
+            "range_position": null,
+            "reason_codes": [
+              "insufficient_bars"
+            ],
+            "information_cutoff": "2026-10-07T03:25:58.376997+00:00",
+            "reference_stop": null,
+            "decision_at": "2026-10-07T03:25:58.376997+00:00",
+            "available_bars": 43
+          },
+          {
+            "strategy": "range_rebound",
+            "version": "wave-v1",
+            "action": "wait",
+            "regime": "unknown",
+            "range_position": null,
+            "reason_codes": [
+              "insufficient_bars"
+            ],
+            "information_cutoff": "2026-10-07T03:25:58.376997+00:00",
+            "reference_stop": null,
+            "decision_at": "2026-10-07T03:25:58.376997+00:00",
+            "available_bars": 44
+          },
+          {
+            "strategy": "range_rebound",
+            "version": "wave-v1",
+            "action": "wait",
+            "regime": "unknown",
+            "range_position": null,
+            "reason_codes": [
+              "insufficient_bars"
+            ],
+            "information_cutoff": "2026-10-07T03:25:58.376997+00:00",
+            "reference_stop": null,
+            "decision_at": "2026-10-07T03:25:58.376997+00:00",
+            "available_bars": 45
+          },
+          {
+            "strategy": "range_rebound",
+            "version": "wave-v1",
+            "action": "wait",
+            "regime": "unknown",
+            "range_position": null,
+            "reason_codes": [
+              "insufficient_bars"
+            ],
+            "information_cutoff": "2026-10-07T03:25:58.376997+00:00",
+            "reference_stop": null,
+            "decision_at": "2026-10-07T03:25:58.376997+00:00",
+            "available_bars": 46
+          },
+          {
+            "strategy": "range_rebound",
+            "version": "wave-v1",
+            "action": "wait",
+            "regime": "unknown",
+            "range_position": null,
+            "reason_codes": [
+              "insufficient_bars"
+            ],
+            "information_cutoff": "2026-10-07T03:25:58.376997+00:00",
+            "reference_stop": null,
+            "decision_at": "2026-10-07T03:25:58.376997+00:00",
+            "available_bars": 47
+          },
+          {
+            "strategy": "range_rebound",
+            "version": "wave-v1",
+            "action": "wait",
+            "regime": "unknown",
+            "range_position": null,
+            "reason_codes": [
+              "insufficient_bars"
+            ],
+            "information_cutoff": "2026-10-07T03:25:58.376997+00:00",
+            "reference_stop": null,
+            "decision_at": "2026-10-07T03:25:58.376997+00:00",
+            "available_bars": 48
+          },
+          {
+            "strategy": "range_rebound",
+            "version": "wave-v1",
+            "action": "wait",
+            "regime": "unknown",
+            "range_position": null,
+            "reason_codes": [
+              "insufficient_bars"
+            ],
+            "information_cutoff": "2026-10-07T03:25:58.376997+00:00",
+            "reference_stop": null,
+            "decision_at": "2026-10-07T03:25:58.376997+00:00",
+            "available_bars": 49
+          },
+          {
+            "strategy": "range_rebound",
+            "version": "wave-v1",
+            "action": "wait",
+            "regime": "unknown",
+            "range_position": null,
+            "reason_codes": [
+              "insufficient_bars"
+            ],
+            "information_cutoff": "2026-10-07T03:25:58.376997+00:00",
+            "reference_stop": null,
+            "decision_at": "2026-10-07T03:25:58.376997+00:00",
+            "available_bars": 50
+          },
+          {
+            "strategy": "range_rebound",
+            "version": "wave-v1",
+            "action": "wait",
+            "regime": "unknown",
+            "range_position": null,
+            "reason_codes": [
+              "insufficient_bars"
+            ],
+            "information_cutoff": "2026-10-07T03:25:58.376997+00:00",
+            "reference_stop": null,
+            "decision_at": "2026-10-07T03:25:58.376997+00:00",
+            "available_bars": 51
+          },
+          {
+            "strategy": "range_rebound",
+            "version": "wave-v1",
+            "action": "wait",
+            "regime": "unknown",
+            "range_position": null,
+            "reason_codes": [
+              "insufficient_bars"
+            ],
+            "information_cutoff": "2026-10-07T03:25:58.376997+00:00",
+            "reference_stop": null,
+            "decision_at": "2026-10-07T03:25:58.376997+00:00",
+            "available_bars": 52
+          },
+          {
+            "strategy": "range_rebound",
+            "version": "wave-v1",
+            "action": "wait",
+            "regime": "unknown",
+            "range_position": null,
+            "reason_codes": [
+              "insufficient_bars"
+            ],
+            "information_cutoff": "2026-10-07T03:25:58.376997+00:00",
+            "reference_stop": null,
+            "decision_at": "2026-10-07T03:25:58.376997+00:00",
+            "available_bars": 53
+          }
+        ],
         "orders": [],
+        "fills": [],
+        "equity_curve": [
+          {
+            "session": "2026-09-08",
+            "equity": 10000000.0,
+            "stale": false
+          },
+          {
+            "session": "2026-09-09",
+            "equity": 10000000.0,
+            "stale": false
+          },
+          {
+            "session": "2026-09-10",
+            "equity": 10000000.0,
+            "stale": false
+          },
+          {
+            "session": "2026-09-11",
+            "equity": 10000000.0,
+            "stale": false
+          },
+          {
+            "session": "2026-09-14",
+            "equity": 10000000.0,
+            "stale": false
+          },
+          {
+            "session": "2026-09-15",
+            "equity": 10000000.0,
+            "stale": false
+          },
+          {
+            "session": "2026-09-16",
+            "equity": 10000000.0,
+            "stale": false
+          },
+          {
+            "session": "2026-09-17",
+            "equity": 10000000.0,
+            "stale": false
+          },
+          {
+            "session": "2026-09-18",
+            "equity": 10000000.0,
+            "stale": false
+          },
+          {
+            "session": "2026-09-21",
+            "equity": 10000000.0,
+            "stale": false
+          },
+          {
+            "session": "2026-09-22",
+            "equity": 10000000.0,
+            "stale": false
+          },
+          {
+            "session": "2026-09-23",
+            "equity": 10000000.0,
+            "stale": false
+          },
+          {
+            "session": "2026-09-28",
+            "equity": 10000000.0,
+            "stale": false
+          },
+          {
+            "session": "2026-09-29",
+            "equity": 10000000.0,
+            "stale": false
+          },
+          {
+            "session": "2026-09-30",
+            "equity": 10000000.0,
+            "stale": false
+          },
+          {
+            "session": "2026-10-01",
+            "equity": 10000000.0,
+            "stale": false
+          },
+          {
+            "session": "2026-10-02",
+            "equity": 10000000.0,
+            "stale": false
+          },
+          {
+            "session": "2026-10-06",
+            "equity": 10000000.0,
+            "stale": false
+          }
+        ],
+        "metrics": {
+          "total": 0.0,
+          "final_equity": 10000000.0,
+          "cash": 10000000.0,
+          "open_qty": 0,
+          "closed_trades": 0,
+          "winning_trades": 0,
+          "cost_won": 0.0,
+          "mdd": 0.0,
+          "observed_sessions": 18,
+          "start": "2026-09-08",
+          "end": "2026-10-06",
+          "average_net_pnl": null,
+          "exposure_fraction": 0.0,
+          "mean_holding_sessions": null,
+          "unfilled_rate": null
+        },
         "limitations": [
-          "unverified_cash_price_basis"
-        ]
+          "research_ohlc_execution_not_live",
+          "intrabar_order_unknown_stop_first",
+          "first_observed_price_snapshot",
+          "no_backdated_observations",
+          "no_partial_take_profit_or_trailing_stop"
+        ],
+        "status": "available",
+        "uncertainty": {
+          "method": "moving_day_blocks",
+          "interval": [
+            0.0,
+            0.0
+          ],
+          "level": 0.95,
+          "block_sessions": 5,
+          "samples": 500,
+          "seed": 17,
+          "notice": "탐색적 구간. 전략 선택 불확실성·미래 장세 변화는 포함하지 않음"
+        }
       },
       "trend_pullback": {
-        "status": "unavailable",
-        "metrics": {
-          "total": null
-        },
-        "equity_curve": [],
-        "fills": [],
+        "mode": "research_only",
+        "decisions": [
+          {
+            "strategy": "trend_pullback",
+            "version": "wave-v1",
+            "action": "wait",
+            "regime": "unknown",
+            "range_position": null,
+            "reason_codes": [
+              "insufficient_bars"
+            ],
+            "information_cutoff": "2026-10-07T03:25:58.376997+00:00",
+            "reference_stop": null,
+            "decision_at": "2026-10-07T03:25:58.376997+00:00",
+            "available_bars": 36
+          },
+          {
+            "strategy": "trend_pullback",
+            "version": "wave-v1",
+            "action": "wait",
+            "regime": "unknown",
+            "range_position": null,
+            "reason_codes": [
+              "insufficient_bars"
+            ],
+            "information_cutoff": "2026-10-07T03:25:58.376997+00:00",
+            "reference_stop": null,
+            "decision_at": "2026-10-07T03:25:58.376997+00:00",
+            "available_bars": 37
+          },
+          {
+            "strategy": "trend_pullback",
+            "version": "wave-v1",
+            "action": "wait",
+            "regime": "unknown",
+            "range_position": null,
+            "reason_codes": [
+              "insufficient_bars"
+            ],
+            "information_cutoff": "2026-10-07T03:25:58.376997+00:00",
+            "reference_stop": null,
+            "decision_at": "2026-10-07T03:25:58.376997+00:00",
+            "available_bars": 38
+          },
+          {
+            "strategy": "trend_pullback",
+            "version": "wave-v1",
+            "action": "wait",
+            "regime": "unknown",
+            "range_position": null,
+            "reason_codes": [
+              "insufficient_bars"
+            ],
+            "information_cutoff": "2026-10-07T03:25:58.376997+00:00",
+            "reference_stop": null,
+            "decision_at": "2026-10-07T03:25:58.376997+00:00",
+            "available_bars": 39
+          },
+          {
+            "strategy": "trend_pullback",
+            "version": "wave-v1",
+            "action": "wait",
+            "regime": "unknown",
+            "range_position": null,
+            "reason_codes": [
+              "insufficient_bars"
+            ],
+            "information_cutoff": "2026-10-07T03:25:58.376997+00:00",
+            "reference_stop": null,
+            "decision_at": "2026-10-07T03:25:58.376997+00:00",
+            "available_bars": 40
+          },
+          {
+            "strategy": "trend_pullback",
+            "version": "wave-v1",
+            "action": "wait",
+            "regime": "unknown",
+            "range_position": null,
+            "reason_codes": [
+              "insufficient_bars"
+            ],
+            "information_cutoff": "2026-10-07T03:25:58.376997+00:00",
+            "reference_stop": null,
+            "decision_at": "2026-10-07T03:25:58.376997+00:00",
+            "available_bars": 41
+          },
+          {
+            "strategy": "trend_pullback",
+            "version": "wave-v1",
+            "action": "wait",
+            "regime": "unknown",
+            "range_position": null,
+            "reason_codes": [
+              "insufficient_bars"
+            ],
+            "information_cutoff": "2026-10-07T03:25:58.376997+00:00",
+            "reference_stop": null,
+            "decision_at": "2026-10-07T03:25:58.376997+00:00",
+            "available_bars": 42
+          },
+          {
+            "strategy": "trend_pullback",
+            "version": "wave-v1",
+            "action": "wait",
+            "regime": "unknown",
+            "range_position": null,
+            "reason_codes": [
+              "insufficient_bars"
+            ],
+            "information_cutoff": "2026-10-07T03:25:58.376997+00:00",
+            "reference_stop": null,
+            "decision_at": "2026-10-07T03:25:58.376997+00:00",
+            "available_bars": 43
+          },
+          {
+            "strategy": "trend_pullback",
+            "version": "wave-v1",
+            "action": "wait",
+            "regime": "unknown",
+            "range_position": null,
+            "reason_codes": [
+              "insufficient_bars"
+            ],
+            "information_cutoff": "2026-10-07T03:25:58.376997+00:00",
+            "reference_stop": null,
+            "decision_at": "2026-10-07T03:25:58.376997+00:00",
+            "available_bars": 44
+          },
+          {
+            "strategy": "trend_pullback",
+            "version": "wave-v1",
+            "action": "wait",
+            "regime": "unknown",
+            "range_position": null,
+            "reason_codes": [
+              "insufficient_bars"
+            ],
+            "information_cutoff": "2026-10-07T03:25:58.376997+00:00",
+            "reference_stop": null,
+            "decision_at": "2026-10-07T03:25:58.376997+00:00",
+            "available_bars": 45
+          },
+          {
+            "strategy": "trend_pullback",
+            "version": "wave-v1",
+            "action": "wait",
+            "regime": "unknown",
+            "range_position": null,
+            "reason_codes": [
+              "insufficient_bars"
+            ],
+            "information_cutoff": "2026-10-07T03:25:58.376997+00:00",
+            "reference_stop": null,
+            "decision_at": "2026-10-07T03:25:58.376997+00:00",
+            "available_bars": 46
+          },
+          {
+            "strategy": "trend_pullback",
+            "version": "wave-v1",
+            "action": "wait",
+            "regime": "unknown",
+            "range_position": null,
+            "reason_codes": [
+              "insufficient_bars"
+            ],
+            "information_cutoff": "2026-10-07T03:25:58.376997+00:00",
+            "reference_stop": null,
+            "decision_at": "2026-10-07T03:25:58.376997+00:00",
+            "available_bars": 47
+          },
+          {
+            "strategy": "trend_pullback",
+            "version": "wave-v1",
+            "action": "wait",
+            "regime": "unknown",
+            "range_position": null,
+            "reason_codes": [
+              "insufficient_bars"
+            ],
+            "information_cutoff": "2026-10-07T03:25:58.376997+00:00",
+            "reference_stop": null,
+            "decision_at": "2026-10-07T03:25:58.376997+00:00",
+            "available_bars": 48
+          },
+          {
+            "strategy": "trend_pullback",
+            "version": "wave-v1",
+            "action": "wait",
+            "regime": "unknown",
+            "range_position": null,
+            "reason_codes": [
+              "insufficient_bars"
+            ],
+            "information_cutoff": "2026-10-07T03:25:58.376997+00:00",
+            "reference_stop": null,
+            "decision_at": "2026-10-07T03:25:58.376997+00:00",
+            "available_bars": 49
+          },
+          {
+            "strategy": "trend_pullback",
+            "version": "wave-v1",
+            "action": "wait",
+            "regime": "unknown",
+            "range_position": null,
+            "reason_codes": [
+              "insufficient_bars"
+            ],
+            "information_cutoff": "2026-10-07T03:25:58.376997+00:00",
+            "reference_stop": null,
+            "decision_at": "2026-10-07T03:25:58.376997+00:00",
+            "available_bars": 50
+          },
+          {
+            "strategy": "trend_pullback",
+            "version": "wave-v1",
+            "action": "wait",
+            "regime": "unknown",
+            "range_position": null,
+            "reason_codes": [
+              "insufficient_bars"
+            ],
+            "information_cutoff": "2026-10-07T03:25:58.376997+00:00",
+            "reference_stop": null,
+            "decision_at": "2026-10-07T03:25:58.376997+00:00",
+            "available_bars": 51
+          },
+          {
+            "strategy": "trend_pullback",
+            "version": "wave-v1",
+            "action": "wait",
+            "regime": "unknown",
+            "range_position": null,
+            "reason_codes": [
+              "insufficient_bars"
+            ],
+            "information_cutoff": "2026-10-07T03:25:58.376997+00:00",
+            "reference_stop": null,
+            "decision_at": "2026-10-07T03:25:58.376997+00:00",
+            "available_bars": 52
+          },
+          {
+            "strategy": "trend_pullback",
+            "version": "wave-v1",
+            "action": "wait",
+            "regime": "unknown",
+            "range_position": null,
+            "reason_codes": [
+              "insufficient_bars"
+            ],
+            "information_cutoff": "2026-10-07T03:25:58.376997+00:00",
+            "reference_stop": null,
+            "decision_at": "2026-10-07T03:25:58.376997+00:00",
+            "available_bars": 53
+          }
+        ],
         "orders": [],
+        "fills": [],
+        "equity_curve": [
+          {
+            "session": "2026-09-08",
+            "equity": 10000000.0,
+            "stale": false
+          },
+          {
+            "session": "2026-09-09",
+            "equity": 10000000.0,
+            "stale": false
+          },
+          {
+            "session": "2026-09-10",
+            "equity": 10000000.0,
+            "stale": false
+          },
+          {
+            "session": "2026-09-11",
+            "equity": 10000000.0,
+            "stale": false
+          },
+          {
+            "session": "2026-09-14",
+            "equity": 10000000.0,
+            "stale": false
+          },
+          {
+            "session": "2026-09-15",
+            "equity": 10000000.0,
+            "stale": false
+          },
+          {
+            "session": "2026-09-16",
+            "equity": 10000000.0,
+            "stale": false
+          },
+          {
+            "session": "2026-09-17",
+            "equity": 10000000.0,
+            "stale": false
+          },
+          {
+            "session": "2026-09-18",
+            "equity": 10000000.0,
+            "stale": false
+          },
+          {
+            "session": "2026-09-21",
+            "equity": 10000000.0,
+            "stale": false
+          },
+          {
+            "session": "2026-09-22",
+            "equity": 10000000.0,
+            "stale": false
+          },
+          {
+            "session": "2026-09-23",
+            "equity": 10000000.0,
+            "stale": false
+          },
+          {
+            "session": "2026-09-28",
+            "equity": 10000000.0,
+            "stale": false
+          },
+          {
+            "session": "2026-09-29",
+            "equity": 10000000.0,
+            "stale": false
+          },
+          {
+            "session": "2026-09-30",
+            "equity": 10000000.0,
+            "stale": false
+          },
+          {
+            "session": "2026-10-01",
+            "equity": 10000000.0,
+            "stale": false
+          },
+          {
+            "session": "2026-10-02",
+            "equity": 10000000.0,
+            "stale": false
+          },
+          {
+            "session": "2026-10-06",
+            "equity": 10000000.0,
+            "stale": false
+          }
+        ],
+        "metrics": {
+          "total": 0.0,
+          "final_equity": 10000000.0,
+          "cash": 10000000.0,
+          "open_qty": 0,
+          "closed_trades": 0,
+          "winning_trades": 0,
+          "cost_won": 0.0,
+          "mdd": 0.0,
+          "observed_sessions": 18,
+          "start": "2026-09-08",
+          "end": "2026-10-06",
+          "average_net_pnl": null,
+          "exposure_fraction": 0.0,
+          "mean_holding_sessions": null,
+          "unfilled_rate": null
+        },
         "limitations": [
-          "unverified_cash_price_basis"
-        ]
+          "research_ohlc_execution_not_live",
+          "intrabar_order_unknown_stop_first",
+          "first_observed_price_snapshot",
+          "no_backdated_observations",
+          "no_partial_take_profit_or_trailing_stop"
+        ],
+        "status": "available",
+        "uncertainty": {
+          "method": "moving_day_blocks",
+          "interval": [
+            0.0,
+            0.0
+          ],
+          "level": 0.95,
+          "block_sessions": 5,
+          "samples": 500,
+          "seed": 17,
+          "notice": "탐색적 구간. 전략 선택 불확실성·미래 장세 변화는 포함하지 않음"
+        }
       },
       "buy_hold": {
-        "status": "unavailable",
-        "metrics": {
-          "total": null
-        },
-        "equity_curve": [],
-        "fills": [],
-        "orders": [],
+        "status": "available",
+        "equity_curve": [
+          {
+            "session": "2026-09-08",
+            "equity": 9970554.9756,
+            "stale": false
+          },
+          {
+            "session": "2026-09-09",
+            "equity": 9970554.9756,
+            "stale": false
+          },
+          {
+            "session": "2026-09-10",
+            "equity": 9965054.9756,
+            "stale": false
+          },
+          {
+            "session": "2026-09-11",
+            "equity": 9860554.9756,
+            "stale": false
+          },
+          {
+            "session": "2026-09-14",
+            "equity": 9745054.9756,
+            "stale": false
+          },
+          {
+            "session": "2026-09-15",
+            "equity": 9739554.9756,
+            "stale": false
+          },
+          {
+            "session": "2026-09-16",
+            "equity": 9794554.9756,
+            "stale": false
+          },
+          {
+            "session": "2026-09-17",
+            "equity": 9783554.9756,
+            "stale": false
+          },
+          {
+            "session": "2026-09-18",
+            "equity": 9877054.9756,
+            "stale": false
+          },
+          {
+            "session": "2026-09-21",
+            "equity": 10020054.9756,
+            "stale": false
+          },
+          {
+            "session": "2026-09-22",
+            "equity": 10047554.9756,
+            "stale": false
+          },
+          {
+            "session": "2026-09-23",
+            "equity": 10146554.9756,
+            "stale": false
+          },
+          {
+            "session": "2026-09-28",
+            "equity": 9976054.9756,
+            "stale": false
+          },
+          {
+            "session": "2026-09-29",
+            "equity": 10003554.9756,
+            "stale": false
+          },
+          {
+            "session": "2026-09-30",
+            "equity": 9959554.9756,
+            "stale": false
+          },
+          {
+            "session": "2026-10-01",
+            "equity": 10042054.9756,
+            "stale": false
+          },
+          {
+            "session": "2026-10-02",
+            "equity": 10042054.9756,
+            "stale": false
+          },
+          {
+            "session": "2026-10-06",
+            "equity": 9990727.492800001,
+            "stale": false
+          }
+        ],
+        "fills": [
+          {
+            "side": "buy",
+            "session": "2026-09-08",
+            "price": 272136.0,
+            "qty": 11,
+            "fee": 449.02439999999996,
+            "tax": 0,
+            "timing": "open"
+          },
+          {
+            "side": "sell",
+            "session": "2026-10-06",
+            "price": 271864.0,
+            "qty": 11,
+            "fee": 448.57559999999995,
+            "tax": 5382.9072,
+            "pnl": -9272.507199999876,
+            "timing": "close"
+          }
+        ],
+        "orders": [
+          {
+            "side": "buy",
+            "session": "2026-09-08",
+            "status": "filled"
+          }
+        ],
         "limitations": [
-          "unverified_cash_price_basis"
-        ]
+          "retrospective_not_live"
+        ],
+        "metrics": {
+          "total": -0.0009272507199998836,
+          "final_equity": 9990727.492800001,
+          "open_qty": 0,
+          "closed_trades": 1,
+          "cost_won": 9272.5072,
+          "mdd": -0.026044502440000006,
+          "start": "2026-09-08",
+          "end": "2026-10-06",
+          "observed_sessions": 18,
+          "average_net_pnl": -9272.507199999876,
+          "exposure_fraction": 1.0,
+          "mean_holding_sessions": 18.0,
+          "unfilled_rate": 0.0
+        },
+        "uncertainty": {
+          "method": "moving_day_blocks",
+          "interval": [
+            -0.06378346754885034,
+            0.09404444476363594
+          ],
+          "level": 0.95,
+          "block_sessions": 5,
+          "samples": 500,
+          "seed": 17,
+          "notice": "탐색적 구간. 전략 선택 불확실성·미래 장세 변화는 포함하지 않음"
+        }
       },
       "cash": {
-        "status": "unavailable",
-        "metrics": {
-          "total": null
-        },
-        "equity_curve": [],
+        "status": "available",
+        "equity_curve": [
+          {
+            "session": "2026-09-08",
+            "equity": 10000000.0,
+            "stale": false
+          },
+          {
+            "session": "2026-09-09",
+            "equity": 10000000.0,
+            "stale": false
+          },
+          {
+            "session": "2026-09-10",
+            "equity": 10000000.0,
+            "stale": false
+          },
+          {
+            "session": "2026-09-11",
+            "equity": 10000000.0,
+            "stale": false
+          },
+          {
+            "session": "2026-09-14",
+            "equity": 10000000.0,
+            "stale": false
+          },
+          {
+            "session": "2026-09-15",
+            "equity": 10000000.0,
+            "stale": false
+          },
+          {
+            "session": "2026-09-16",
+            "equity": 10000000.0,
+            "stale": false
+          },
+          {
+            "session": "2026-09-17",
+            "equity": 10000000.0,
+            "stale": false
+          },
+          {
+            "session": "2026-09-18",
+            "equity": 10000000.0,
+            "stale": false
+          },
+          {
+            "session": "2026-09-21",
+            "equity": 10000000.0,
+            "stale": false
+          },
+          {
+            "session": "2026-09-22",
+            "equity": 10000000.0,
+            "stale": false
+          },
+          {
+            "session": "2026-09-23",
+            "equity": 10000000.0,
+            "stale": false
+          },
+          {
+            "session": "2026-09-28",
+            "equity": 10000000.0,
+            "stale": false
+          },
+          {
+            "session": "2026-09-29",
+            "equity": 10000000.0,
+            "stale": false
+          },
+          {
+            "session": "2026-09-30",
+            "equity": 10000000.0,
+            "stale": false
+          },
+          {
+            "session": "2026-10-01",
+            "equity": 10000000.0,
+            "stale": false
+          },
+          {
+            "session": "2026-10-02",
+            "equity": 10000000.0,
+            "stale": false
+          },
+          {
+            "session": "2026-10-06",
+            "equity": 10000000.0,
+            "stale": false
+          }
+        ],
         "fills": [],
         "orders": [],
         "limitations": [
-          "unverified_cash_price_basis"
-        ]
+          "retrospective_not_live"
+        ],
+        "metrics": {
+          "total": 0.0,
+          "final_equity": 10000000,
+          "open_qty": 0,
+          "closed_trades": 0,
+          "cost_won": 0.0,
+          "mdd": 0.0,
+          "start": "2026-09-08",
+          "end": "2026-10-06",
+          "observed_sessions": 18,
+          "average_net_pnl": null,
+          "exposure_fraction": 0.0,
+          "mean_holding_sessions": null,
+          "unfilled_rate": null
+        },
+        "uncertainty": {
+          "method": "moving_day_blocks",
+          "interval": [
+            0.0,
+            0.0
+          ],
+          "level": 0.95,
+          "block_sessions": 5,
+          "samples": 500,
+          "seed": 17,
+          "notice": "탐색적 구간. 전략 선택 불확실성·미래 장세 변화는 포함하지 않음"
+        }
       },
       "legacy": {
         "status": "unavailable",
@@ -262,58 +1267,1066 @@
         "fills": [],
         "orders": [],
         "limitations": [
-          "unverified_cash_price_basis"
+          "missing_original_forecasts"
         ]
       }
     },
     "double_cost": {
       "range_rebound": {
-        "status": "unavailable",
-        "metrics": {
-          "total": null
-        },
-        "equity_curve": [],
-        "fills": [],
+        "mode": "research_only",
+        "decisions": [
+          {
+            "strategy": "range_rebound",
+            "version": "wave-v1",
+            "action": "wait",
+            "regime": "unknown",
+            "range_position": null,
+            "reason_codes": [
+              "insufficient_bars"
+            ],
+            "information_cutoff": "2026-10-07T03:25:58.376997+00:00",
+            "reference_stop": null,
+            "decision_at": "2026-10-07T03:25:58.376997+00:00",
+            "available_bars": 36
+          },
+          {
+            "strategy": "range_rebound",
+            "version": "wave-v1",
+            "action": "wait",
+            "regime": "unknown",
+            "range_position": null,
+            "reason_codes": [
+              "insufficient_bars"
+            ],
+            "information_cutoff": "2026-10-07T03:25:58.376997+00:00",
+            "reference_stop": null,
+            "decision_at": "2026-10-07T03:25:58.376997+00:00",
+            "available_bars": 37
+          },
+          {
+            "strategy": "range_rebound",
+            "version": "wave-v1",
+            "action": "wait",
+            "regime": "unknown",
+            "range_position": null,
+            "reason_codes": [
+              "insufficient_bars"
+            ],
+            "information_cutoff": "2026-10-07T03:25:58.376997+00:00",
+            "reference_stop": null,
+            "decision_at": "2026-10-07T03:25:58.376997+00:00",
+            "available_bars": 38
+          },
+          {
+            "strategy": "range_rebound",
+            "version": "wave-v1",
+            "action": "wait",
+            "regime": "unknown",
+            "range_position": null,
+            "reason_codes": [
+              "insufficient_bars"
+            ],
+            "information_cutoff": "2026-10-07T03:25:58.376997+00:00",
+            "reference_stop": null,
+            "decision_at": "2026-10-07T03:25:58.376997+00:00",
+            "available_bars": 39
+          },
+          {
+            "strategy": "range_rebound",
+            "version": "wave-v1",
+            "action": "wait",
+            "regime": "unknown",
+            "range_position": null,
+            "reason_codes": [
+              "insufficient_bars"
+            ],
+            "information_cutoff": "2026-10-07T03:25:58.376997+00:00",
+            "reference_stop": null,
+            "decision_at": "2026-10-07T03:25:58.376997+00:00",
+            "available_bars": 40
+          },
+          {
+            "strategy": "range_rebound",
+            "version": "wave-v1",
+            "action": "wait",
+            "regime": "unknown",
+            "range_position": null,
+            "reason_codes": [
+              "insufficient_bars"
+            ],
+            "information_cutoff": "2026-10-07T03:25:58.376997+00:00",
+            "reference_stop": null,
+            "decision_at": "2026-10-07T03:25:58.376997+00:00",
+            "available_bars": 41
+          },
+          {
+            "strategy": "range_rebound",
+            "version": "wave-v1",
+            "action": "wait",
+            "regime": "unknown",
+            "range_position": null,
+            "reason_codes": [
+              "insufficient_bars"
+            ],
+            "information_cutoff": "2026-10-07T03:25:58.376997+00:00",
+            "reference_stop": null,
+            "decision_at": "2026-10-07T03:25:58.376997+00:00",
+            "available_bars": 42
+          },
+          {
+            "strategy": "range_rebound",
+            "version": "wave-v1",
+            "action": "wait",
+            "regime": "unknown",
+            "range_position": null,
+            "reason_codes": [
+              "insufficient_bars"
+            ],
+            "information_cutoff": "2026-10-07T03:25:58.376997+00:00",
+            "reference_stop": null,
+            "decision_at": "2026-10-07T03:25:58.376997+00:00",
+            "available_bars": 43
+          },
+          {
+            "strategy": "range_rebound",
+            "version": "wave-v1",
+            "action": "wait",
+            "regime": "unknown",
+            "range_position": null,
+            "reason_codes": [
+              "insufficient_bars"
+            ],
+            "information_cutoff": "2026-10-07T03:25:58.376997+00:00",
+            "reference_stop": null,
+            "decision_at": "2026-10-07T03:25:58.376997+00:00",
+            "available_bars": 44
+          },
+          {
+            "strategy": "range_rebound",
+            "version": "wave-v1",
+            "action": "wait",
+            "regime": "unknown",
+            "range_position": null,
+            "reason_codes": [
+              "insufficient_bars"
+            ],
+            "information_cutoff": "2026-10-07T03:25:58.376997+00:00",
+            "reference_stop": null,
+            "decision_at": "2026-10-07T03:25:58.376997+00:00",
+            "available_bars": 45
+          },
+          {
+            "strategy": "range_rebound",
+            "version": "wave-v1",
+            "action": "wait",
+            "regime": "unknown",
+            "range_position": null,
+            "reason_codes": [
+              "insufficient_bars"
+            ],
+            "information_cutoff": "2026-10-07T03:25:58.376997+00:00",
+            "reference_stop": null,
+            "decision_at": "2026-10-07T03:25:58.376997+00:00",
+            "available_bars": 46
+          },
+          {
+            "strategy": "range_rebound",
+            "version": "wave-v1",
+            "action": "wait",
+            "regime": "unknown",
+            "range_position": null,
+            "reason_codes": [
+              "insufficient_bars"
+            ],
+            "information_cutoff": "2026-10-07T03:25:58.376997+00:00",
+            "reference_stop": null,
+            "decision_at": "2026-10-07T03:25:58.376997+00:00",
+            "available_bars": 47
+          },
+          {
+            "strategy": "range_rebound",
+            "version": "wave-v1",
+            "action": "wait",
+            "regime": "unknown",
+            "range_position": null,
+            "reason_codes": [
+              "insufficient_bars"
+            ],
+            "information_cutoff": "2026-10-07T03:25:58.376997+00:00",
+            "reference_stop": null,
+            "decision_at": "2026-10-07T03:25:58.376997+00:00",
+            "available_bars": 48
+          },
+          {
+            "strategy": "range_rebound",
+            "version": "wave-v1",
+            "action": "wait",
+            "regime": "unknown",
+            "range_position": null,
+            "reason_codes": [
+              "insufficient_bars"
+            ],
+            "information_cutoff": "2026-10-07T03:25:58.376997+00:00",
+            "reference_stop": null,
+            "decision_at": "2026-10-07T03:25:58.376997+00:00",
+            "available_bars": 49
+          },
+          {
+            "strategy": "range_rebound",
+            "version": "wave-v1",
+            "action": "wait",
+            "regime": "unknown",
+            "range_position": null,
+            "reason_codes": [
+              "insufficient_bars"
+            ],
+            "information_cutoff": "2026-10-07T03:25:58.376997+00:00",
+            "reference_stop": null,
+            "decision_at": "2026-10-07T03:25:58.376997+00:00",
+            "available_bars": 50
+          },
+          {
+            "strategy": "range_rebound",
+            "version": "wave-v1",
+            "action": "wait",
+            "regime": "unknown",
+            "range_position": null,
+            "reason_codes": [
+              "insufficient_bars"
+            ],
+            "information_cutoff": "2026-10-07T03:25:58.376997+00:00",
+            "reference_stop": null,
+            "decision_at": "2026-10-07T03:25:58.376997+00:00",
+            "available_bars": 51
+          },
+          {
+            "strategy": "range_rebound",
+            "version": "wave-v1",
+            "action": "wait",
+            "regime": "unknown",
+            "range_position": null,
+            "reason_codes": [
+              "insufficient_bars"
+            ],
+            "information_cutoff": "2026-10-07T03:25:58.376997+00:00",
+            "reference_stop": null,
+            "decision_at": "2026-10-07T03:25:58.376997+00:00",
+            "available_bars": 52
+          },
+          {
+            "strategy": "range_rebound",
+            "version": "wave-v1",
+            "action": "wait",
+            "regime": "unknown",
+            "range_position": null,
+            "reason_codes": [
+              "insufficient_bars"
+            ],
+            "information_cutoff": "2026-10-07T03:25:58.376997+00:00",
+            "reference_stop": null,
+            "decision_at": "2026-10-07T03:25:58.376997+00:00",
+            "available_bars": 53
+          }
+        ],
         "orders": [],
+        "fills": [],
+        "equity_curve": [
+          {
+            "session": "2026-09-08",
+            "equity": 10000000.0,
+            "stale": false
+          },
+          {
+            "session": "2026-09-09",
+            "equity": 10000000.0,
+            "stale": false
+          },
+          {
+            "session": "2026-09-10",
+            "equity": 10000000.0,
+            "stale": false
+          },
+          {
+            "session": "2026-09-11",
+            "equity": 10000000.0,
+            "stale": false
+          },
+          {
+            "session": "2026-09-14",
+            "equity": 10000000.0,
+            "stale": false
+          },
+          {
+            "session": "2026-09-15",
+            "equity": 10000000.0,
+            "stale": false
+          },
+          {
+            "session": "2026-09-16",
+            "equity": 10000000.0,
+            "stale": false
+          },
+          {
+            "session": "2026-09-17",
+            "equity": 10000000.0,
+            "stale": false
+          },
+          {
+            "session": "2026-09-18",
+            "equity": 10000000.0,
+            "stale": false
+          },
+          {
+            "session": "2026-09-21",
+            "equity": 10000000.0,
+            "stale": false
+          },
+          {
+            "session": "2026-09-22",
+            "equity": 10000000.0,
+            "stale": false
+          },
+          {
+            "session": "2026-09-23",
+            "equity": 10000000.0,
+            "stale": false
+          },
+          {
+            "session": "2026-09-28",
+            "equity": 10000000.0,
+            "stale": false
+          },
+          {
+            "session": "2026-09-29",
+            "equity": 10000000.0,
+            "stale": false
+          },
+          {
+            "session": "2026-09-30",
+            "equity": 10000000.0,
+            "stale": false
+          },
+          {
+            "session": "2026-10-01",
+            "equity": 10000000.0,
+            "stale": false
+          },
+          {
+            "session": "2026-10-02",
+            "equity": 10000000.0,
+            "stale": false
+          },
+          {
+            "session": "2026-10-06",
+            "equity": 10000000.0,
+            "stale": false
+          }
+        ],
+        "metrics": {
+          "total": 0.0,
+          "final_equity": 10000000.0,
+          "cash": 10000000.0,
+          "open_qty": 0,
+          "closed_trades": 0,
+          "winning_trades": 0,
+          "cost_won": 0.0,
+          "mdd": 0.0,
+          "observed_sessions": 18,
+          "start": "2026-09-08",
+          "end": "2026-10-06",
+          "average_net_pnl": null,
+          "exposure_fraction": 0.0,
+          "mean_holding_sessions": null,
+          "unfilled_rate": null
+        },
         "limitations": [
-          "unverified_cash_price_basis"
-        ]
+          "research_ohlc_execution_not_live",
+          "intrabar_order_unknown_stop_first",
+          "first_observed_price_snapshot",
+          "no_backdated_observations",
+          "no_partial_take_profit_or_trailing_stop"
+        ],
+        "status": "available",
+        "uncertainty": {
+          "method": "moving_day_blocks",
+          "interval": [
+            0.0,
+            0.0
+          ],
+          "level": 0.95,
+          "block_sessions": 5,
+          "samples": 500,
+          "seed": 17,
+          "notice": "탐색적 구간. 전략 선택 불확실성·미래 장세 변화는 포함하지 않음"
+        }
       },
       "trend_pullback": {
-        "status": "unavailable",
-        "metrics": {
-          "total": null
-        },
-        "equity_curve": [],
-        "fills": [],
+        "mode": "research_only",
+        "decisions": [
+          {
+            "strategy": "trend_pullback",
+            "version": "wave-v1",
+            "action": "wait",
+            "regime": "unknown",
+            "range_position": null,
+            "reason_codes": [
+              "insufficient_bars"
+            ],
+            "information_cutoff": "2026-10-07T03:25:58.376997+00:00",
+            "reference_stop": null,
+            "decision_at": "2026-10-07T03:25:58.376997+00:00",
+            "available_bars": 36
+          },
+          {
+            "strategy": "trend_pullback",
+            "version": "wave-v1",
+            "action": "wait",
+            "regime": "unknown",
+            "range_position": null,
+            "reason_codes": [
+              "insufficient_bars"
+            ],
+            "information_cutoff": "2026-10-07T03:25:58.376997+00:00",
+            "reference_stop": null,
+            "decision_at": "2026-10-07T03:25:58.376997+00:00",
+            "available_bars": 37
+          },
+          {
+            "strategy": "trend_pullback",
+            "version": "wave-v1",
+            "action": "wait",
+            "regime": "unknown",
+            "range_position": null,
+            "reason_codes": [
+              "insufficient_bars"
+            ],
+            "information_cutoff": "2026-10-07T03:25:58.376997+00:00",
+            "reference_stop": null,
+            "decision_at": "2026-10-07T03:25:58.376997+00:00",
+            "available_bars": 38
+          },
+          {
+            "strategy": "trend_pullback",
+            "version": "wave-v1",
+            "action": "wait",
+            "regime": "unknown",
+            "range_position": null,
+            "reason_codes": [
+              "insufficient_bars"
+            ],
+            "information_cutoff": "2026-10-07T03:25:58.376997+00:00",
+            "reference_stop": null,
+            "decision_at": "2026-10-07T03:25:58.376997+00:00",
+            "available_bars": 39
+          },
+          {
+            "strategy": "trend_pullback",
+            "version": "wave-v1",
+            "action": "wait",
+            "regime": "unknown",
+            "range_position": null,
+            "reason_codes": [
+              "insufficient_bars"
+            ],
+            "information_cutoff": "2026-10-07T03:25:58.376997+00:00",
+            "reference_stop": null,
+            "decision_at": "2026-10-07T03:25:58.376997+00:00",
+            "available_bars": 40
+          },
+          {
+            "strategy": "trend_pullback",
+            "version": "wave-v1",
+            "action": "wait",
+            "regime": "unknown",
+            "range_position": null,
+            "reason_codes": [
+              "insufficient_bars"
+            ],
+            "information_cutoff": "2026-10-07T03:25:58.376997+00:00",
+            "reference_stop": null,
+            "decision_at": "2026-10-07T03:25:58.376997+00:00",
+            "available_bars": 41
+          },
+          {
+            "strategy": "trend_pullback",
+            "version": "wave-v1",
+            "action": "wait",
+            "regime": "unknown",
+            "range_position": null,
+            "reason_codes": [
+              "insufficient_bars"
+            ],
+            "information_cutoff": "2026-10-07T03:25:58.376997+00:00",
+            "reference_stop": null,
+            "decision_at": "2026-10-07T03:25:58.376997+00:00",
+            "available_bars": 42
+          },
+          {
+            "strategy": "trend_pullback",
+            "version": "wave-v1",
+            "action": "wait",
+            "regime": "unknown",
+            "range_position": null,
+            "reason_codes": [
+              "insufficient_bars"
+            ],
+            "information_cutoff": "2026-10-07T03:25:58.376997+00:00",
+            "reference_stop": null,
+            "decision_at": "2026-10-07T03:25:58.376997+00:00",
+            "available_bars": 43
+          },
+          {
+            "strategy": "trend_pullback",
+            "version": "wave-v1",
+            "action": "wait",
+            "regime": "unknown",
+            "range_position": null,
+            "reason_codes": [
+              "insufficient_bars"
+            ],
+            "information_cutoff": "2026-10-07T03:25:58.376997+00:00",
+            "reference_stop": null,
+            "decision_at": "2026-10-07T03:25:58.376997+00:00",
+            "available_bars": 44
+          },
+          {
+            "strategy": "trend_pullback",
+            "version": "wave-v1",
+            "action": "wait",
+            "regime": "unknown",
+            "range_position": null,
+            "reason_codes": [
+              "insufficient_bars"
+            ],
+            "information_cutoff": "2026-10-07T03:25:58.376997+00:00",
+            "reference_stop": null,
+            "decision_at": "2026-10-07T03:25:58.376997+00:00",
+            "available_bars": 45
+          },
+          {
+            "strategy": "trend_pullback",
+            "version": "wave-v1",
+            "action": "wait",
+            "regime": "unknown",
+            "range_position": null,
+            "reason_codes": [
+              "insufficient_bars"
+            ],
+            "information_cutoff": "2026-10-07T03:25:58.376997+00:00",
+            "reference_stop": null,
+            "decision_at": "2026-10-07T03:25:58.376997+00:00",
+            "available_bars": 46
+          },
+          {
+            "strategy": "trend_pullback",
+            "version": "wave-v1",
+            "action": "wait",
+            "regime": "unknown",
+            "range_position": null,
+            "reason_codes": [
+              "insufficient_bars"
+            ],
+            "information_cutoff": "2026-10-07T03:25:58.376997+00:00",
+            "reference_stop": null,
+            "decision_at": "2026-10-07T03:25:58.376997+00:00",
+            "available_bars": 47
+          },
+          {
+            "strategy": "trend_pullback",
+            "version": "wave-v1",
+            "action": "wait",
+            "regime": "unknown",
+            "range_position": null,
+            "reason_codes": [
+              "insufficient_bars"
+            ],
+            "information_cutoff": "2026-10-07T03:25:58.376997+00:00",
+            "reference_stop": null,
+            "decision_at": "2026-10-07T03:25:58.376997+00:00",
+            "available_bars": 48
+          },
+          {
+            "strategy": "trend_pullback",
+            "version": "wave-v1",
+            "action": "wait",
+            "regime": "unknown",
+            "range_position": null,
+            "reason_codes": [
+              "insufficient_bars"
+            ],
+            "information_cutoff": "2026-10-07T03:25:58.376997+00:00",
+            "reference_stop": null,
+            "decision_at": "2026-10-07T03:25:58.376997+00:00",
+            "available_bars": 49
+          },
+          {
+            "strategy": "trend_pullback",
+            "version": "wave-v1",
+            "action": "wait",
+            "regime": "unknown",
+            "range_position": null,
+            "reason_codes": [
+              "insufficient_bars"
+            ],
+            "information_cutoff": "2026-10-07T03:25:58.376997+00:00",
+            "reference_stop": null,
+            "decision_at": "2026-10-07T03:25:58.376997+00:00",
+            "available_bars": 50
+          },
+          {
+            "strategy": "trend_pullback",
+            "version": "wave-v1",
+            "action": "wait",
+            "regime": "unknown",
+            "range_position": null,
+            "reason_codes": [
+              "insufficient_bars"
+            ],
+            "information_cutoff": "2026-10-07T03:25:58.376997+00:00",
+            "reference_stop": null,
+            "decision_at": "2026-10-07T03:25:58.376997+00:00",
+            "available_bars": 51
+          },
+          {
+            "strategy": "trend_pullback",
+            "version": "wave-v1",
+            "action": "wait",
+            "regime": "unknown",
+            "range_position": null,
+            "reason_codes": [
+              "insufficient_bars"
+            ],
+            "information_cutoff": "2026-10-07T03:25:58.376997+00:00",
+            "reference_stop": null,
+            "decision_at": "2026-10-07T03:25:58.376997+00:00",
+            "available_bars": 52
+          },
+          {
+            "strategy": "trend_pullback",
+            "version": "wave-v1",
+            "action": "wait",
+            "regime": "unknown",
+            "range_position": null,
+            "reason_codes": [
+              "insufficient_bars"
+            ],
+            "information_cutoff": "2026-10-07T03:25:58.376997+00:00",
+            "reference_stop": null,
+            "decision_at": "2026-10-07T03:25:58.376997+00:00",
+            "available_bars": 53
+          }
+        ],
         "orders": [],
+        "fills": [],
+        "equity_curve": [
+          {
+            "session": "2026-09-08",
+            "equity": 10000000.0,
+            "stale": false
+          },
+          {
+            "session": "2026-09-09",
+            "equity": 10000000.0,
+            "stale": false
+          },
+          {
+            "session": "2026-09-10",
+            "equity": 10000000.0,
+            "stale": false
+          },
+          {
+            "session": "2026-09-11",
+            "equity": 10000000.0,
+            "stale": false
+          },
+          {
+            "session": "2026-09-14",
+            "equity": 10000000.0,
+            "stale": false
+          },
+          {
+            "session": "2026-09-15",
+            "equity": 10000000.0,
+            "stale": false
+          },
+          {
+            "session": "2026-09-16",
+            "equity": 10000000.0,
+            "stale": false
+          },
+          {
+            "session": "2026-09-17",
+            "equity": 10000000.0,
+            "stale": false
+          },
+          {
+            "session": "2026-09-18",
+            "equity": 10000000.0,
+            "stale": false
+          },
+          {
+            "session": "2026-09-21",
+            "equity": 10000000.0,
+            "stale": false
+          },
+          {
+            "session": "2026-09-22",
+            "equity": 10000000.0,
+            "stale": false
+          },
+          {
+            "session": "2026-09-23",
+            "equity": 10000000.0,
+            "stale": false
+          },
+          {
+            "session": "2026-09-28",
+            "equity": 10000000.0,
+            "stale": false
+          },
+          {
+            "session": "2026-09-29",
+            "equity": 10000000.0,
+            "stale": false
+          },
+          {
+            "session": "2026-09-30",
+            "equity": 10000000.0,
+            "stale": false
+          },
+          {
+            "session": "2026-10-01",
+            "equity": 10000000.0,
+            "stale": false
+          },
+          {
+            "session": "2026-10-02",
+            "equity": 10000000.0,
+            "stale": false
+          },
+          {
+            "session": "2026-10-06",
+            "equity": 10000000.0,
+            "stale": false
+          }
+        ],
+        "metrics": {
+          "total": 0.0,
+          "final_equity": 10000000.0,
+          "cash": 10000000.0,
+          "open_qty": 0,
+          "closed_trades": 0,
+          "winning_trades": 0,
+          "cost_won": 0.0,
+          "mdd": 0.0,
+          "observed_sessions": 18,
+          "start": "2026-09-08",
+          "end": "2026-10-06",
+          "average_net_pnl": null,
+          "exposure_fraction": 0.0,
+          "mean_holding_sessions": null,
+          "unfilled_rate": null
+        },
         "limitations": [
-          "unverified_cash_price_basis"
-        ]
+          "research_ohlc_execution_not_live",
+          "intrabar_order_unknown_stop_first",
+          "first_observed_price_snapshot",
+          "no_backdated_observations",
+          "no_partial_take_profit_or_trailing_stop"
+        ],
+        "status": "available",
+        "uncertainty": {
+          "method": "moving_day_blocks",
+          "interval": [
+            0.0,
+            0.0
+          ],
+          "level": 0.95,
+          "block_sessions": 5,
+          "samples": 500,
+          "seed": 17,
+          "notice": "탐색적 구간. 전략 선택 불확실성·미래 장세 변화는 포함하지 않음"
+        }
       },
       "buy_hold": {
-        "status": "unavailable",
-        "metrics": {
-          "total": null
-        },
-        "equity_curve": [],
-        "fills": [],
-        "orders": [],
+        "status": "available",
+        "equity_curve": [
+          {
+            "session": "2026-09-08",
+            "equity": 9968609.5024,
+            "stale": false
+          },
+          {
+            "session": "2026-09-09",
+            "equity": 9968609.5024,
+            "stale": false
+          },
+          {
+            "session": "2026-09-10",
+            "equity": 9963109.5024,
+            "stale": false
+          },
+          {
+            "session": "2026-09-11",
+            "equity": 9858609.5024,
+            "stale": false
+          },
+          {
+            "session": "2026-09-14",
+            "equity": 9743109.5024,
+            "stale": false
+          },
+          {
+            "session": "2026-09-15",
+            "equity": 9737609.5024,
+            "stale": false
+          },
+          {
+            "session": "2026-09-16",
+            "equity": 9792609.5024,
+            "stale": false
+          },
+          {
+            "session": "2026-09-17",
+            "equity": 9781609.5024,
+            "stale": false
+          },
+          {
+            "session": "2026-09-18",
+            "equity": 9875109.5024,
+            "stale": false
+          },
+          {
+            "session": "2026-09-21",
+            "equity": 10018109.5024,
+            "stale": false
+          },
+          {
+            "session": "2026-09-22",
+            "equity": 10045609.5024,
+            "stale": false
+          },
+          {
+            "session": "2026-09-23",
+            "equity": 10144609.5024,
+            "stale": false
+          },
+          {
+            "session": "2026-09-28",
+            "equity": 9974109.5024,
+            "stale": false
+          },
+          {
+            "session": "2026-09-29",
+            "equity": 10001609.5024,
+            "stale": false
+          },
+          {
+            "session": "2026-09-30",
+            "equity": 9957609.5024,
+            "stale": false
+          },
+          {
+            "session": "2026-10-01",
+            "equity": 10040109.5024,
+            "stale": false
+          },
+          {
+            "session": "2026-10-02",
+            "equity": 10040109.5024,
+            "stale": false
+          },
+          {
+            "session": "2026-10-06",
+            "equity": 9981460.3712,
+            "stale": false
+          }
+        ],
+        "fills": [
+          {
+            "side": "buy",
+            "session": "2026-09-08",
+            "price": 272271.99999999994,
+            "qty": 11,
+            "fee": 898.4975999999998,
+            "tax": 0,
+            "timing": "open"
+          },
+          {
+            "side": "sell",
+            "session": "2026-10-06",
+            "price": 271728.0,
+            "qty": 11,
+            "fee": 896.7023999999999,
+            "tax": 10760.4288,
+            "pnl": -18539.628799999133,
+            "timing": "close"
+          }
+        ],
+        "orders": [
+          {
+            "side": "buy",
+            "session": "2026-09-08",
+            "status": "filled"
+          }
+        ],
         "limitations": [
-          "unverified_cash_price_basis"
-        ]
+          "retrospective_not_live"
+        ],
+        "metrics": {
+          "total": -0.0018539628799999486,
+          "final_equity": 9981460.3712,
+          "open_qty": 0,
+          "closed_trades": 1,
+          "cost_won": 18539.62879999936,
+          "mdd": -0.02623904976000002,
+          "start": "2026-09-08",
+          "end": "2026-10-06",
+          "observed_sessions": 18,
+          "average_net_pnl": -18539.628799999133,
+          "exposure_fraction": 1.0,
+          "mean_holding_sessions": 18.0,
+          "unfilled_rate": 0.0
+        },
+        "uncertainty": {
+          "method": "moving_day_blocks",
+          "interval": [
+            -0.06386422535012715,
+            0.09406374905263926
+          ],
+          "level": 0.95,
+          "block_sessions": 5,
+          "samples": 500,
+          "seed": 17,
+          "notice": "탐색적 구간. 전략 선택 불확실성·미래 장세 변화는 포함하지 않음"
+        }
       },
       "cash": {
-        "status": "unavailable",
-        "metrics": {
-          "total": null
-        },
-        "equity_curve": [],
+        "status": "available",
+        "equity_curve": [
+          {
+            "session": "2026-09-08",
+            "equity": 10000000.0,
+            "stale": false
+          },
+          {
+            "session": "2026-09-09",
+            "equity": 10000000.0,
+            "stale": false
+          },
+          {
+            "session": "2026-09-10",
+            "equity": 10000000.0,
+            "stale": false
+          },
+          {
+            "session": "2026-09-11",
+            "equity": 10000000.0,
+            "stale": false
+          },
+          {
+            "session": "2026-09-14",
+            "equity": 10000000.0,
+            "stale": false
+          },
+          {
+            "session": "2026-09-15",
+            "equity": 10000000.0,
+            "stale": false
+          },
+          {
+            "session": "2026-09-16",
+            "equity": 10000000.0,
+            "stale": false
+          },
+          {
+            "session": "2026-09-17",
+            "equity": 10000000.0,
+            "stale": false
+          },
+          {
+            "session": "2026-09-18",
+            "equity": 10000000.0,
+            "stale": false
+          },
+          {
+            "session": "2026-09-21",
+            "equity": 10000000.0,
+            "stale": false
+          },
+          {
+            "session": "2026-09-22",
+            "equity": 10000000.0,
+            "stale": false
+          },
+          {
+            "session": "2026-09-23",
+            "equity": 10000000.0,
+            "stale": false
+          },
+          {
+            "session": "2026-09-28",
+            "equity": 10000000.0,
+            "stale": false
+          },
+          {
+            "session": "2026-09-29",
+            "equity": 10000000.0,
+            "stale": false
+          },
+          {
+            "session": "2026-09-30",
+            "equity": 10000000.0,
+            "stale": false
+          },
+          {
+            "session": "2026-10-01",
+            "equity": 10000000.0,
+            "stale": false
+          },
+          {
+            "session": "2026-10-02",
+            "equity": 10000000.0,
+            "stale": false
+          },
+          {
+            "session": "2026-10-06",
+            "equity": 10000000.0,
+            "stale": false
+          }
+        ],
         "fills": [],
         "orders": [],
         "limitations": [
-          "unverified_cash_price_basis"
-        ]
+          "retrospective_not_live"
+        ],
+        "metrics": {
+          "total": 0.0,
+          "final_equity": 10000000,
+          "open_qty": 0,
+          "closed_trades": 0,
+          "cost_won": 0.0,
+          "mdd": 0.0,
+          "start": "2026-09-08",
+          "end": "2026-10-06",
+          "observed_sessions": 18,
+          "average_net_pnl": null,
+          "exposure_fraction": 0.0,
+          "mean_holding_sessions": null,
+          "unfilled_rate": null
+        },
+        "uncertainty": {
+          "method": "moving_day_blocks",
+          "interval": [
+            0.0,
+            0.0
+          ],
+          "level": 0.95,
+          "block_sessions": 5,
+          "samples": 500,
+          "seed": 17,
+          "notice": "탐색적 구간. 전략 선택 불확실성·미래 장세 변화는 포함하지 않음"
+        }
       },
       "legacy": {
         "status": "unavailable",
@@ -324,10 +2337,138 @@
         "fills": [],
         "orders": [],
         "limitations": [
-          "unverified_cash_price_basis"
+          "missing_original_forecasts"
         ]
       }
-    }
+    },
+    "prices": [
+      {
+        "session": "2026-09-08",
+        "open": 272000.0,
+        "high": 279000.0,
+        "low": 269000.0,
+        "close": 269500.0
+      },
+      {
+        "session": "2026-09-09",
+        "open": 269500.0,
+        "high": 275000.0,
+        "low": 267500.0,
+        "close": 269500.0
+      },
+      {
+        "session": "2026-09-10",
+        "open": 269000.0,
+        "high": 270500.0,
+        "low": 263500.0,
+        "close": 269000.0
+      },
+      {
+        "session": "2026-09-11",
+        "open": 258000.0,
+        "high": 261500.0,
+        "low": 256500.0,
+        "close": 259500.0
+      },
+      {
+        "session": "2026-09-14",
+        "open": 249500.0,
+        "high": 254500.0,
+        "low": 248500.0,
+        "close": 249000.0
+      },
+      {
+        "session": "2026-09-15",
+        "open": 248000.0,
+        "high": 252000.0,
+        "low": 246000.0,
+        "close": 248500.0
+      },
+      {
+        "session": "2026-09-16",
+        "open": 248000.0,
+        "high": 254000.0,
+        "low": 247500.0,
+        "close": 253500.0
+      },
+      {
+        "session": "2026-09-17",
+        "open": 257000.0,
+        "high": 259000.0,
+        "low": 251500.0,
+        "close": 252500.0
+      },
+      {
+        "session": "2026-09-18",
+        "open": 261000.0,
+        "high": 262000.0,
+        "low": 257500.0,
+        "close": 261000.0
+      },
+      {
+        "session": "2026-09-21",
+        "open": 264000.0,
+        "high": 275000.0,
+        "low": 263500.0,
+        "close": 274000.0
+      },
+      {
+        "session": "2026-09-22",
+        "open": 283000.0,
+        "high": 283500.0,
+        "low": 274500.0,
+        "close": 276500.0
+      },
+      {
+        "session": "2026-09-23",
+        "open": 284500.0,
+        "high": 285500.0,
+        "low": 281000.0,
+        "close": 285500.0
+      },
+      {
+        "session": "2026-09-28",
+        "open": 284500.0,
+        "high": 285500.0,
+        "low": 270000.0,
+        "close": 270000.0
+      },
+      {
+        "session": "2026-09-29",
+        "open": 266000.0,
+        "high": 276000.0,
+        "low": 266000.0,
+        "close": 272500.0
+      },
+      {
+        "session": "2026-09-30",
+        "open": 274500.0,
+        "high": 276000.0,
+        "low": 267500.0,
+        "close": 268500.0
+      },
+      {
+        "session": "2026-10-01",
+        "open": 266500.0,
+        "high": 276000.0,
+        "low": 264500.0,
+        "close": 276000.0
+      },
+      {
+        "session": "2026-10-02",
+        "open": 273500.0,
+        "high": 277000.0,
+        "low": 271500.0,
+        "close": 276000.0
+      },
+      {
+        "session": "2026-10-06",
+        "open": 278500.0,
+        "high": 279000.0,
+        "low": 270000.0,
+        "close": 272000.0
+      }
+    ]
   },
   "selected": null,
   "candidate_count": 2,
@@ -340,9 +2481,9 @@
   },
   "selection_rule": "선택 기간의 비용 차감 수익률 최대, 완료 거래가 있는 후보만, 동률은 이름순",
   "evidence": "insufficient",
-  "input_sha256": "1c8b82149845d165710a8522b5d106e7b5b1754acc05d0ff6f3651fbe72a4d8a",
+  "input_sha256": "b05bc5036bb36aa1d9f5d6c715ef0a68bd62e40a8bc1d728cd69bff8ba751212",
   "config_sha256": "446ce4c45217a58b06a8bf26afe398f37e705eb92c65519e8b86409b7afdd458",
-  "engine_sha256": "6080509f5773c4aeb3a23294466b490f1e233eaea556705cd0d4f1c19521a490",
+  "engine_sha256": "e2dde81bbe01004fdb3846391ac20bcbf78eb4bbc9fffe3d0f8a62501d493dbb",
   "calendar_version": "4.13.2",
   "config": {
     "schema_version": 1,
@@ -406,6 +2547,6 @@
     "기간 경계는 5거래일 분리, 학습 모델 추가 없음, 기존 예측은 사전 원장만 사용",
     "평가를 본 뒤 규칙을 바꾸면 새 버전·새 평가 구간이 필요"
   ],
-  "generated_at_utc": "2026-10-06T11:00:39.284787+00:00",
-  "source_revision": "c82592ba8296e6dc4c285b09da4890b1d2dd8ea2"
+  "generated_at_utc": "2026-10-07T03:26:16.369326+00:00",
+  "source_revision": "5a2a9fea622edb1e8f0876b2adcf4c64c2aa052c"
 }

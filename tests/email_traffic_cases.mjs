@@ -80,3 +80,11 @@ const midnight=environment();now=OriginalDate.parse('2026-10-07T23:59:59Z');awai
 now+=2000;await hit(midnight);
 assert.deepEqual((await stats(midnight)).body.emailTraffic.daily.map(r=>r.day),['2026-10-08','2026-10-07']);
 assert.equal((await stats(midnight)).body.emailTraffic.editions[0].edition_day,'2026-10-07');
+
+// 거시 보고서도 실제 허용 목록·저장 경로를 통과해야 한다.
+const macroVisit=environment();
+const macroHit=await call(macroVisit,'/hit?page=macro&'+query);
+assert.equal(macroHit.status,200);
+assert.equal(macroHit.body.total,1);
+assert.equal(rows(macroVisit)[0].page,'macro');
+assert.equal((await stats(macroVisit)).body.emailTraffic.daily[0].page,'macro');

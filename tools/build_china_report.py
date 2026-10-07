@@ -637,10 +637,11 @@ except ImportError:
 def page(inner, today):
     counter = (
         '<div style="margin-top:10px;font-variant-numeric:tabular-nums">조회 <span id="view-count">—</span></div>'
-        '<script>(function(){'
+        '<script src="/predict_stock/traffic_attribution.js"></script>'
+               '<script>(function(){'
         f'var E="{COUNTER_ENDPOINT}",P="china";'
         'var el=document.getElementById("view-count");if(!el)return;'
-        'fetch(E+"/hit?page="+encodeURIComponent(P))'
+        'fetch(typeof TrafficAttribution!=="undefined"&&typeof TrafficAttribution.hitUrl==="function"?TrafficAttribution.hitUrl(E,P,typeof location!=="undefined"?location.search:""):E+"/hit?page="+encodeURIComponent(P))'
         '.then(function(r){return r.ok?r.json():null;})'
         '.then(function(d){if(d&&typeof d.total==="number")el.textContent=d.total.toLocaleString("ko-KR");})'
         '.catch(function(){});})();</script>') if COUNTER_ENDPOINT else ""

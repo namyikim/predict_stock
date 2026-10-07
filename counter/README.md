@@ -486,8 +486,8 @@ Gmail 실제 수신 확인(2026-10-04): 사용자가 앱 비밀번호를 갱신�
 
 ## 이메일 링크 유입 집계 — 1단계 API (2026-10-07)
 
-저장·조회 API와 이메일 링크 표시는 구현했다. 사이트 요청 코드·관리자 화면 연결은
-`guides/email-traffic-tracking-plan.md`의 3~4단계다. 이 코드 push만으로 운영 집계가 시작되지는 않는다.
+저장·조회 API, 이메일 링크 표시, 사이트 방문 요청 연결은 구현했다. 관리자 화면은
+`guides/email-traffic-tracking-plan.md`의 4단계다. 이 코드 push만으로 운영 집계가 시작되지는 않는다.
 
 ### 기존 DB 이행
 
@@ -530,6 +530,16 @@ Node의 내장 SQLite로 실제 SQL과 Worker 응답을 확인한다(Node 22.13 
 
 `mailPayload`는 HTML·일반 텍스트의 모든 보고서 링크에 이메일 출처와 발행 회차를 붙인다.
 기존 알림 이벤트와 중복 발송 ID는 유지하고, 구독 취소 링크 및 List-Unsubscribe 헤더는 변경하지 않는다.
-사이트 방문 요청 연결(계획 3단계)과 관리자 화면(4단계)은 아직 필요하다.
+사이트 방문 요청 연결(계획 3단계)은 구현했고 관리자 화면(4단계)은 아직 필요하다.
 Worker는 수동 Deploy 전까지 운영 코드가 바뀌지 않는다. 이번 구현에서 실발송하지 않았다.
 검증: `node tests/email_link_cases.mjs` 또는 `python -m unittest discover -s tests -p 'test_email_traffic.py' -v`.
+
+
+### 3단계: 사이트 도착 요청 연결
+
+`docs/traffic_attribution.js`가 올바른 네 가지 회차 파라미터만 기존 `/hit`에 전달한다.
+모듈 로딩 실패·잘못된 URL에서도 기존 집계 요청 한 번을 유지한다. 쿠키·메뉴 이동 전파는 없다.
+거시경제 생성기에는 없던 카운터를 추가했고 Worker의 `ALLOWED_PAGES`에 `macro`를 추가했다.
+**Worker 전체 코드 수동 Deploy 전에는 거시경제 집계 요청이 거절된다.**
+생성 보고서는 정상 게시 작업에서 반영하며, 이 변경으로 원장 기록용 수동 실행을 하지 않는다.
+검증: `python -m unittest discover -s tests -p 'test_traffic_attribution.py' -v`.

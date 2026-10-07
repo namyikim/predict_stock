@@ -216,10 +216,11 @@ def build_html(ranked, now, total, failed, topic=None):
     if COUNTER_ENDPOINT and "WORKERS-SUBDOMAIN" not in COUNTER_ENDPOINT:
         counter = ('<div style="margin-top:10px;font-variant-numeric:tabular-nums">'
                    '조회 <span id="view-count">—</span></div>'
-                   '<script>(function(){'
+                   '<script src="/predict_stock/traffic_attribution.js"></script>'
+               '<script>(function(){'
                    f'var E="{COUNTER_ENDPOINT}",P="{topic["key"]}";'
                    'var el=document.getElementById("view-count");if(!el||!E)return;'
-                   'fetch(E+"/hit?page="+encodeURIComponent(P))'
+                   'fetch(typeof TrafficAttribution!=="undefined"&&typeof TrafficAttribution.hitUrl==="function"?TrafficAttribution.hitUrl(E,P,typeof location!=="undefined"?location.search:""):E+"/hit?page="+encodeURIComponent(P))'
                    '.then(function(r){return r.ok?r.json():null;})'
                    '.then(function(d){if(d&&typeof d.total==="number")'
                    'el.textContent=d.total.toLocaleString("ko-KR");})'

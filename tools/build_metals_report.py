@@ -689,8 +689,9 @@ except ImportError:
 @simple_document
 def page(inner, pred, today):
     counter = ('<div style="margin-top:10px;font-variant-numeric:tabular-nums">조회 <span id="view-count">—</span></div>'
+               '<script src="/predict_stock/traffic_attribution.js"></script>'
                '<script>(function(){' f'var E="{COUNTER_ENDPOINT}",P="metals";'
-               'var el=document.getElementById("view-count");if(!el)return;fetch(E+"/hit?page="+encodeURIComponent(P))'
+               'var el=document.getElementById("view-count");if(!el)return;fetch(typeof TrafficAttribution!=="undefined"&&typeof TrafficAttribution.hitUrl==="function"?TrafficAttribution.hitUrl(E,P,typeof location!=="undefined"?location.search:""):E+"/hit?page="+encodeURIComponent(P))'
                '.then(function(r){return r.ok?r.json():null;}).then(function(d){if(d&&typeof d.total==="number")el.textContent=d.total.toLocaleString("ko-KR");})'
                '.catch(function(){});})();</script>') if COUNTER_ENDPOINT else ""
     stale = ('<div id="stale-note" hidden style="max-width:980px;margin:0 auto 18px;padding:12px 16px;background:#fff4e5;border:1px solid #f0c58a;'

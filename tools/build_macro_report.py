@@ -949,6 +949,15 @@ def build_page(now=None, fx_frame=None, fx_info=None, us_jp_frame=None, us_jp_in
     from report_html import tabify_sections
     body = tabify_sections('<div>' + body.replace('<h3 ', '<h3 data-nonum ') + '</div>',
                            groups=MACRO_TABS, default_label="한눈에")
+    counter = (
+        '<div style="margin-top:10px">조회 <span id="view-count">—</span></div>'
+        '<script src="/predict_stock/traffic_attribution.js"></script>'
+        '<script>(function(){var E="https://predict-stock-counter.kimname1.workers.dev",P="macro";'
+        'var el=document.getElementById("view-count");if(!el)return;'
+        'fetch(typeof TrafficAttribution!=="undefined"&&typeof TrafficAttribution.hitUrl==="function"?TrafficAttribution.hitUrl(E,P,typeof location!=="undefined"?location.search:""):E+"/hit?page="+encodeURIComponent(P))'
+        '.then(function(r){return r.ok?r.json():null;})'
+        '.then(function(d){if(d&&typeof d.total==="number")el.textContent=d.total.toLocaleString("ko-KR");})'
+        '.catch(function(){});})();</script>')
     return (
         '<!doctype html>\n<html lang="ko"><head><meta charset="utf-8">'
         '<meta name="viewport" content="width=device-width, initial-scale=1">'
@@ -967,7 +976,7 @@ def build_page(now=None, fx_frame=None, fx_info=None, us_jp_frame=None, us_jp_in
         f'생성 {now:%Y-%m-%d %H:%M} KST · '
         f'<a href="https://github.com/{GITHUB_REPO}">저장소</a><br>'
         '연구·교육용입니다. 투자 자문이 아닙니다.</div>'
-        '</div></body></html>')
+        + counter + '</div></body></html>')
 
 
 FX_CACHE = ROOT / "macro_history" / "fx_inputs.csv"

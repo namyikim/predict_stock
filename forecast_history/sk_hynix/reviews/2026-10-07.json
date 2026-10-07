@@ -3,7 +3,7 @@
   "name": "SK하이닉스",
   "peer_name": "삼성전자",
   "session_date": "2026-10-07",
-  "generated_at": "2026-10-07 17:31 KST",
+  "generated_at": "2026-10-07 23:28 KST",
   "summary": {
     "prev_close": 1773000.0,
     "open": 1728000.0,
@@ -15,11 +15,11 @@
     "c2c": -0.028200789622109368,
     "high_vs_open": 0.02951388888888884,
     "low_vs_open": -0.0028935185185184897,
-    "volume": 2773381.0,
-    "volume_ratio": 0.8692197112198781,
+    "volume": 2857684.0,
+    "volume_ratio": 0.895641551318649,
     "kospi_c2c": -0.019807305405253106,
     "peer_c2c": -0.012867647058823484,
-    "usdkrw_chg": -0.00436836845930233,
+    "usdkrw_chg": -0.0034604832848836864,
     "us_nights": 1,
     "sox_ret": 0.0034222247856494636,
     "nasdaq_ret": 0.004457441910701521,
@@ -122,7 +122,15 @@
         "purpose": "자기주식 소각을 통한 \n주주가치 제고",
         "rcept_no": "20260819000254"
       }
-    ]
+    ],
+    "foreign_pressure": {
+      "state": "selling_eased",
+      "previous_ratio": -0.20301169348532105,
+      "recent_ratio": -0.1634166936184395,
+      "previous_daily_net": -617846.6,
+      "recent_daily_net": -430999.6
+    },
+    "buyback_transition": null
   },
   "classification": {
     "labels": [
@@ -148,18 +156,6 @@
       "score": 11.778997914675255,
       "news": [
         {
-          "time": "2026-10-07T08:29:12+09:00",
-          "title": "[버핏 리포트] SK하이닉스, 3Q 환율 탓 실적 눈높이 하향에도 주주환원 90조 눈길 - IBK",
-          "source": "버핏연구소",
-          "link": "https://news.google.com/rss/articles/CBMiYkFVX3lxTE5Za1ZMMDVMZEZIUjJ6Zjg3ajFZU1ByaGpiVjNCNWRndVFZbVFPZ3JiZS1sWlBUUC1wV0t2dlV5QTk1WXd0OG9XR0M1djF6UVNNMlVVNDNCZWp4OURtNlc3Tmdn?oc=5"
-        },
-        {
-          "time": "2026-10-07T08:16:16+09:00",
-          "title": "3Q 실적 앞둔 삼성전자, 프리마켓서 약보합…SK하이닉스 1%↓",
-          "source": "뉴스1",
-          "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTFBBM2k3Y0xHRVN5STZMRHU3VVd5aUdiY0piRHJTVDZnOXlIZXNXRnJQN2VMenRPeXJHajdZRGNNWDIzUXdIZTI3MWhGbExyVHdfc3BTaS1uTGhaZUpPR2pZMHdyeUzSAWRBVV95cUxQQTNpN2NMR0VTeUk2TER1N1VXeWlHYmNKYkRyU1Q2Zzl5SGVzV0ZyUDdlTHp0T3lyR2o3WURjTVgyM1F3SGUyNzFoRmxMclR3X3NwU2ktbkxoWmVKT0dqWTB3cnlM?oc=5"
-        },
-        {
           "time": "2026-10-07T08:27:08+09:00",
           "title": "IBK증권, SK하이닉스 목표가 400만원 유지…\"지나치게 저평가\"",
           "source": "연합뉴스",
@@ -172,10 +168,16 @@
           "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE00TTVfNGpuYS1odGZVM29xUkJ6ZlVMN2I3eVl4c0V3UjJ5VU9FLXdwaE8tZkRWRjg4anE5RW82c0pXVHVfUTh5VE54Z2NKNXRsSVJRVkpRNzVUTE1a?oc=5"
         },
         {
-          "time": "2026-10-07T07:40:33+09:00",
-          "title": "마벨의 좋아도 너무 좋은 전망, SK하이닉스 흔들었나 [마켓무버의 국장 힌트]",
-          "source": "Daum",
-          "link": "https://news.google.com/rss/articles/CBMiVEFVX3lxTFB1dkctVWVGWFZIajBldzQ3T1paWGY2OUxjZ0hzQ0dibGlpbmR3N2FLdGVCRl9CV0RrMmlheHRKU3RhVkp6NnQxUWZWMHRJUmdQSkhLQw?oc=5"
+          "time": "2026-10-07T08:18:00+09:00",
+          "title": "[특징주] 삼전닉스 프리마켓 동반 약세…SK하이닉스 2%↓",
+          "source": "뉴스핌",
+          "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE5QV25rQVhLRmVlWnlnTWdLdi1tdlAxQWRTX2xqZzNrc3l3YWFkTkJlV0NuTGYtZXdvZjk5X0RidC1jTGRUb3pLai02bW8tcmc5MElTV040OUJzNXUx?oc=5"
+        },
+        {
+          "time": "2026-10-07T08:45:30+09:00",
+          "title": "3% 내린 하이닉스 사고, 18% 뛴 주성 팔았다…초고수의 ‘역발상’",
+          "source": "한국경제",
+          "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE83OTJYekZLSnNwNEVvZWJfQVFNZ2huRnJNT3lEeDdvUDFKNjliY2t2OEx1SWdkRnI3dDhnYTRXS1psSXpydnBPSVR0cGV6NFRSRElueEpMRDVKQQ?oc=5"
         }
       ]
     }
@@ -565,18 +567,6 @@
       "score": 11.778997914675255,
       "news": [
         {
-          "time": "2026-10-07T08:29:12+09:00",
-          "title": "[버핏 리포트] SK하이닉스, 3Q 환율 탓 실적 눈높이 하향에도 주주환원 90조 눈길 - IBK",
-          "source": "버핏연구소",
-          "link": "https://news.google.com/rss/articles/CBMiYkFVX3lxTE5Za1ZMMDVMZEZIUjJ6Zjg3ajFZU1ByaGpiVjNCNWRndVFZbVFPZ3JiZS1sWlBUUC1wV0t2dlV5QTk1WXd0OG9XR0M1djF6UVNNMlVVNDNCZWp4OURtNlc3Tmdn?oc=5"
-        },
-        {
-          "time": "2026-10-07T08:16:16+09:00",
-          "title": "3Q 실적 앞둔 삼성전자, 프리마켓서 약보합…SK하이닉스 1%↓",
-          "source": "뉴스1",
-          "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTFBBM2k3Y0xHRVN5STZMRHU3VVd5aUdiY0piRHJTVDZnOXlIZXNXRnJQN2VMenRPeXJHajdZRGNNWDIzUXdIZTI3MWhGbExyVHdfc3BTaS1uTGhaZUpPR2pZMHdyeUzSAWRBVV95cUxQQTNpN2NMR0VTeUk2TER1N1VXeWlHYmNKYkRyU1Q2Zzl5SGVzV0ZyUDdlTHp0T3lyR2o3WURjTVgyM1F3SGUyNzFoRmxMclR3X3NwU2ktbkxoWmVKT0dqWTB3cnlM?oc=5"
-        },
-        {
           "time": "2026-10-07T08:27:08+09:00",
           "title": "IBK증권, SK하이닉스 목표가 400만원 유지…\"지나치게 저평가\"",
           "source": "연합뉴스",
@@ -589,10 +579,16 @@
           "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE00TTVfNGpuYS1odGZVM29xUkJ6ZlVMN2I3eVl4c0V3UjJ5VU9FLXdwaE8tZkRWRjg4anE5RW82c0pXVHVfUTh5VE54Z2NKNXRsSVJRVkpRNzVUTE1a?oc=5"
         },
         {
-          "time": "2026-10-07T07:40:33+09:00",
-          "title": "마벨의 좋아도 너무 좋은 전망, SK하이닉스 흔들었나 [마켓무버의 국장 힌트]",
-          "source": "Daum",
-          "link": "https://news.google.com/rss/articles/CBMiVEFVX3lxTFB1dkctVWVGWFZIajBldzQ3T1paWGY2OUxjZ0hzQ0dibGlpbmR3N2FLdGVCRl9CV0RrMmlheHRKU3RhVkp6NnQxUWZWMHRJUmdQSkhLQw?oc=5"
+          "time": "2026-10-07T08:18:00+09:00",
+          "title": "[특징주] 삼전닉스 프리마켓 동반 약세…SK하이닉스 2%↓",
+          "source": "뉴스핌",
+          "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE5QV25rQVhLRmVlWnlnTWdLdi1tdlAxQWRTX2xqZzNrc3l3YWFkTkJlV0NuTGYtZXdvZjk5X0RidC1jTGRUb3pLai02bW8tcmc5MElTV040OUJzNXUx?oc=5"
+        },
+        {
+          "time": "2026-10-07T08:45:30+09:00",
+          "title": "3% 내린 하이닉스 사고, 18% 뛴 주성 팔았다…초고수의 ‘역발상’",
+          "source": "한국경제",
+          "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE83OTJYekZLSnNwNEVvZWJfQVFNZ2huRnJNT3lEeDdvUDFKNjliY2t2OEx1SWdkRnI3dDhnYTRXS1psSXpydnBPSVR0cGV6NFRSRElueEpMRDVKQQ?oc=5"
         }
       ],
       "price": 1743500.0,
@@ -600,18 +596,6 @@
     }
   ],
   "overnight_news": [
-    {
-      "time": "2026-10-07T08:29:12+09:00",
-      "title": "[버핏 리포트] SK하이닉스, 3Q 환율 탓 실적 눈높이 하향에도 주주환원 90조 눈길 - IBK",
-      "source": "버핏연구소",
-      "link": "https://news.google.com/rss/articles/CBMiYkFVX3lxTE5Za1ZMMDVMZEZIUjJ6Zjg3ajFZU1ByaGpiVjNCNWRndVFZbVFPZ3JiZS1sWlBUUC1wV0t2dlV5QTk1WXd0OG9XR0M1djF6UVNNMlVVNDNCZWp4OURtNlc3Tmdn?oc=5"
-    },
-    {
-      "time": "2026-10-07T08:16:16+09:00",
-      "title": "3Q 실적 앞둔 삼성전자, 프리마켓서 약보합…SK하이닉스 1%↓",
-      "source": "뉴스1",
-      "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTFBBM2k3Y0xHRVN5STZMRHU3VVd5aUdiY0piRHJTVDZnOXlIZXNXRnJQN2VMenRPeXJHajdZRGNNWDIzUXdIZTI3MWhGbExyVHdfc3BTaS1uTGhaZUpPR2pZMHdyeUzSAWRBVV95cUxQQTNpN2NMR0VTeUk2TER1N1VXeWlHYmNKYkRyU1Q2Zzl5SGVzV0ZyUDdlTHp0T3lyR2o3WURjTVgyM1F3SGUyNzFoRmxMclR3X3NwU2ktbkxoWmVKT0dqWTB3cnlM?oc=5"
-    },
     {
       "time": "2026-10-07T08:27:08+09:00",
       "title": "IBK증권, SK하이닉스 목표가 400만원 유지…\"지나치게 저평가\"",
@@ -625,10 +609,22 @@
       "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE00TTVfNGpuYS1odGZVM29xUkJ6ZlVMN2I3eVl4c0V3UjJ5VU9FLXdwaE8tZkRWRjg4anE5RW82c0pXVHVfUTh5VE54Z2NKNXRsSVJRVkpRNzVUTE1a?oc=5"
     },
     {
-      "time": "2026-10-07T05:02:00+09:00",
-      "title": "[속보] 뉴욕증시 강보합 마감… SK하이닉스 ADR은 6.37%↓",
-      "source": "국민일보",
-      "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE94b0JCektDc1JIZGNaTWtUall5aWtIWnNfb2RidDVfUFdEMC11MzdvWFdhdFRMd01KVmlvT01wdDItcl9zc1hTbnA1TjJXLU94azgzUk1zVEczWktuTlNyRTZIQkZONFNOMHVQRdIBbEFVX3lxTE94b0JCektDc1JIZGNaTWtUall5aWtIWnNfb2RidDVfUFdEMC11MzdvWFdhdFRMd01KVmlvT01wdDItcl9zc1hTbnA1TjJXLU94azgzUk1zVEczWktuTlNyRTZIQkZONFNOMHVQRQ?oc=5"
+      "time": "2026-10-07T06:19:47+09:00",
+      "title": "SK하이닉스 ADR, 6.39% 급락...원화 강세·성과급 충당금 ‘발목’",
+      "source": "글로벌이코노믹",
+      "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxQeDJ6MktPb1dHSzZ3MmxlX1JydDNvdUd2ay1ySFJnQ0liZzZCTk5mZ3Zjdm5BTUtsOXlmenZjTHRyVXJpYkd1OVJBR3MwXzZFbnhMUHhyNkR1UGtSWEE5eE9RSkZIYkdPcEdQVWVOM2k1eHlRc0N0NDh1ZGctZzdtNHZ6bUxqbExC?oc=5"
+    },
+    {
+      "time": "2026-10-07T08:18:00+09:00",
+      "title": "[특징주] 삼전닉스 프리마켓 동반 약세…SK하이닉스 2%↓",
+      "source": "뉴스핌",
+      "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE5QV25rQVhLRmVlWnlnTWdLdi1tdlAxQWRTX2xqZzNrc3l3YWFkTkJlV0NuTGYtZXdvZjk5X0RidC1jTGRUb3pLai02bW8tcmc5MElTV040OUJzNXUx?oc=5"
+    },
+    {
+      "time": "2026-10-07T08:45:30+09:00",
+      "title": "3% 내린 하이닉스 사고, 18% 뛴 주성 팔았다…초고수의 ‘역발상’",
+      "source": "한국경제",
+      "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE83OTJYekZLSnNwNEVvZWJfQVFNZ2huRnJNT3lEeDdvUDFKNjliY2t2OEx1SWdkRnI3dDhnYTRXS1psSXpydnBPSVR0cGV6NFRSRElueEpMRDVKQQ?oc=5"
     }
   ],
   "top_news": [
@@ -642,13 +638,13 @@
       "time": "2026-10-07T16:02:16+09:00",
       "title": "'삼성전자 실적 관망' 코스피 6800대로 외국인·기관 매도…SK하이닉스 3%↓",
       "source": "중소기업신문",
-      "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE9lSVJnMDFkaWpObERxdFVVUE14TEdUWEtsMVd1emxKVmswcS15aHhndl91cXQyZ0JsdlktdGpnMWRPM2pfX2s3ajBKOUFOeDFMbFgtS2Fwd2Rpd21oTEFCUFZDejVTcVd3cjgwZg?oc=5"
+      "link": "https://news.google.com/rss/articles/CBMibkFVX3lxTFBBNTRjS0VfaF9xeFhVSEZzYUg5dmZmTzlfc2duU0F0NUkzV2J6RGdYN0hGNmsxOUZiSW9xZHNSNXJMRC11V1VsRlZobkZHd0VfQjVaY1Z6aXlXMUNEOThySlpXUno0azdhOTBDVG1B?oc=5"
     },
     {
-      "time": "2026-10-07T08:29:12+09:00",
-      "title": "[버핏 리포트] SK하이닉스, 3Q 환율 탓 실적 눈높이 하향에도 주주환원 90조 눈길 - IBK",
-      "source": "버핏연구소",
-      "link": "https://news.google.com/rss/articles/CBMiYkFVX3lxTE5Za1ZMMDVMZEZIUjJ6Zjg3ajFZU1ByaGpiVjNCNWRndVFZbVFPZ3JiZS1sWlBUUC1wV0t2dlV5QTk1WXd0OG9XR0M1djF6UVNNMlVVNDNCZWp4OURtNlc3Tmdn?oc=5"
+      "time": "2026-10-07T22:53:00+09:00",
+      "title": "[속보]마이크론 테크놀로지, 엔비디아, AMD 등 반도체주 대거 이름...주가는 약세쪽",
+      "source": "CBC뉴스",
+      "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE1ZOHUxUGZRSXVKZ1QxekVBcDBfWmE2UTVVWDRQUTI2aVBlMFpvY0h3Rk93M0FQMF9fek96U1A4RWF5UGNqRnpGekV3bzFlVXg2NHlub2d4NXFQN0RZWEdDNVJiV3V3WEty?oc=5"
     },
     {
       "time": "2026-10-07T09:57:08+09:00",
@@ -657,25 +653,94 @@
       "link": "https://news.google.com/rss/articles/CBMiT0FVX3lxTE1iQjhmNDMwY0ZGMXRoVU5uYzBfbGZ3a2NIV0g5Nk9SS1pKSjZLbnRjekNqTkVsVDNaTzhnT25GTW8zbkl0RW1FeGZ2Q00xS00?oc=5"
     },
     {
-      "time": "2026-10-07T10:50:21+09:00",
-      "title": "삼성전자부터 SK하이닉스까지…‘실적 시즌’ 열린다, 코스피 7000 향방 가를까",
-      "source": "Daum",
-      "link": "https://news.google.com/rss/articles/CBMiRkFVX3lxTE1nS1o2ZG40aUdQRXZsdGtQc21maVRCT2tGdFVaR0NvUi1ZSmdDaG1OeWRsU1h6X3pLRkRDOVVoNG9qSUV5TUE?oc=5"
+      "time": "2026-10-07T16:02:55+09:00",
+      "title": "SK하이닉스서 시작해 글로벌로…큐알티, 메모리 반도체·우주로 퀀텀점프 [그 회사 어때?]",
+      "source": "헤럴드경제",
+      "link": "https://news.google.com/rss/articles/CBMiV0FVX3lxTE9ob2U0eE05WlIwTzBBTWtWMnY5bG5fazdfSzhNcy1aZk9qc1BSSlVsNnFlYmljTXcxUWtRX0hHZDF4Rko1VnBuTS1pZG5ZRzVSMFhaaEUyaw?oc=5"
     },
     {
-      "time": "2026-10-07T10:54:39+09:00",
-      "title": "SK하이닉스, 3분기 영업익 7.5조 전망…가격 상승 구간 지속-IBK투자증권",
-      "source": "PRESS9",
-      "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTFBxVGVhcTNZLXZoRjNFR1hPRXdTRU9jWS05S1hHWmhsQjFneWtrRVV1WEdzUXo5RUhtOHRESU1LcUNRSVZkZjcwLWhYOEJPNGFpajFDTmJrZnZidE9kYU5JcDk4ZjM?oc=5"
+      "time": "2026-10-07T16:16:45+09:00",
+      "title": "실적 경계감에 반도체株 흔들…삼성전자·SK하이닉스 동반 하락",
+      "source": "산경투데이",
+      "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE96WkpoR1NHd0w2bHd2M1pvc0RqaUY0bVBsVURsd3E5eEpDMkFFWU5pNjVXb3MyQXlQaVBqZVVPXzVWMWkyTTZiVEY3V094YnU5WGhFNmphQVNYeHEwRGpVaUJJRzVBU0VjMFBUR29Jem3SAXRBVV95cUxNbWtLRHJnLTRvYlpDT0U2cXA3MElHaVlRc213RkFsTm5waVZmMXltOS1tZmUyNjFaSDNRZDdxLXZ4dWJUcjNiVmhTSkJJR0JzWU5DbDJKVzA4NVE0ZHhTT1R5c3FvWnQ2S2d0NFVBeU1JejdqRw?oc=5"
     }
   ],
   "disclosures": [],
   "disclosure_note": null,
-  "flows": null,
-  "flow_story": null,
+  "flows": "외국인 -787,785 / 기관 -107,621",
+  "flow_story": {
+    "direction": "down",
+    "c2c": -0.028200789622109368,
+    "actors": [
+      {
+        "key": "foreign_net",
+        "name": "외국인",
+        "shares": -787785.0,
+        "won": -1357353555000.0,
+        "vs_usual": 1.4683686622390475
+      },
+      {
+        "key": "inst_net",
+        "name": "기관",
+        "shares": -107621.0,
+        "won": -185430983000.0,
+        "vs_usual": 0.719685406377402
+      },
+      {
+        "key": "indiv_net",
+        "name": "개인",
+        "shares": 498962.0,
+        "won": 859711526000.0,
+        "vs_usual": 0.914418229940003
+      },
+      {
+        "key": "other_net",
+        "name": "기타 법인 등(추정)",
+        "shares": 396444.0,
+        "won": 683073012000.0,
+        "vs_usual": null
+      }
+    ],
+    "lead": {
+      "key": "foreign_net",
+      "name": "외국인",
+      "shares": -787785.0,
+      "won": -1357353555000.0,
+      "vs_usual": 1.4683686622390475
+    },
+    "counter": {
+      "key": "indiv_net",
+      "name": "개인",
+      "shares": 498962.0,
+      "won": 859711526000.0,
+      "vs_usual": 0.914418229940003
+    },
+    "all_one_side": false,
+    "observations": [
+      "전일까지 20거래일 고점: 종가 돌파 없음 · 종가 위치 -10.96%.",
+      "전일까지 60거래일 고점: 종가 돌파 없음 · 종가 위치 -26.00%.",
+      "같은 5거래일 수익률: 이 종목 -2.38%, 삼성전자 -1.47% · 차이 -0.91%p.",
+      "같은 20거래일 수익률: 이 종목 +4.61%, 삼성전자 +5.09% · 차이 -0.47%p.",
+      "같은 60거래일 수익률: 이 종목 -16.99%, 삼성전자 -3.24% · 차이 -13.74%p.",
+      "외국인 순매도 지속·거래량 대비 강도 약화: 직전 5일 → 최근 5일 순매수/거래량 -20.30% → -16.34% (일평균 -617,847주 → -431,000주). 향후 상승을 뜻하는 신호는 아닙니다.",
+      "코스피도 -1.98% — 시장 전체가 같은 방향이었습니다.",
+      "삼성전자도 -1.29%였지만 이 종목이 더 크게 움직였습니다.",
+      "원화는 오히려 강세(-0.35%)여서 외국인 매도가 환율로는 설명되지 않습니다.",
+      "종가가 당일 범위(저가 1,723,000~고가 1,779,000원)의 아래쪽 0% 지점 — 저가 부근에서 마감했습니다.",
+      "장중 60일선(1,728,984원) 위로 올랐다가 그 아래로 밀려 마감했습니다.",
+      "엔비디아는 미국 정규장 마감 뒤 시간외에서 +0.50%(장중 +0.05%~+4.00%) — 정규장 등락에 안 보이는 반응입니다.",
+      "우리 장중(09:00~15:30) 나스닥100 선물 -0.08%, 이 종목 고점 이후 -0.13% · 미 10년물 국채 선물 -0.09%, 이 종목 고점 이후 -0.06% · 원/달러 +0.06%, 이 종목 고점 이후 +0.03%.",
+      "자사주 매입 기간 중(직접 취득 2026-08-20~2026-11-19, 40,004,340,000,000, DART 공시) — 회사 자신의 매수는 기타 법인으로 잡힙니다.",
+      "마감가가 장중 고가보다 -2.93% 아래 — 오른 폭을 장중에 꽤 반납했습니다.",
+      "기타 법인 등(추정) 순매수 +6,831억원 — 회사의 자사주 매입 기간이라 회사 매입과 맞는 모양입니다."
+    ],
+    "estimated_indiv": false,
+    "source_note": "출처 naver+cache · 장 마감 직후 잠정치라 저녁 확정치와 다를 수 있습니다 · KRX는 받지 못함(pykrx 미설치)"
+  },
   "flow_status": {
-    "state": "pending",
-    "detail": "최신 2026-10-06"
+    "state": "ok",
+    "detail": "naver+cache",
+    "krx_error": "pykrx 미설치"
   },
   "context": {},
   "market": {
@@ -686,9 +751,9 @@
     "steady": 57,
     "upper": 3,
     "lower": 0,
-    "individual": 25724.0,
-    "foreign": -26055.0,
-    "institution": -6760.0,
+    "individual": 26183.0,
+    "foreign": -26188.0,
+    "institution": -7101.0,
     "prev_close": 6941.39,
     "open": 6864.25,
     "high": 6977.77,

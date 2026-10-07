@@ -3,7 +3,7 @@
   "name": "SK하이닉스",
   "peer_name": "삼성전자",
   "session_date": "2026-10-07",
-  "generated_at": "2026-10-07 16:46 KST",
+  "generated_at": "2026-10-07 17:31 KST",
   "summary": {
     "prev_close": 1773000.0,
     "open": 1728000.0,
@@ -15,11 +15,11 @@
     "c2c": -0.028200789622109368,
     "high_vs_open": 0.02951388888888884,
     "low_vs_open": -0.0028935185185184897,
-    "volume": 2762810.0,
-    "volume_ratio": 0.8659065993296238,
+    "volume": 2773381.0,
+    "volume_ratio": 0.8692197112198781,
     "kospi_c2c": -0.019807305405253106,
     "peer_c2c": -0.012867647058823484,
-    "usdkrw_chg": -0.004658611918604616,
+    "usdkrw_chg": -0.00436836845930233,
     "us_nights": 1,
     "sox_ret": 0.0034222247856494636,
     "nasdaq_ret": 0.004457441910701521,
@@ -81,19 +81,19 @@
     ],
     "micron_ah": {
       "regular_close": 1045.56005859375,
-      "last": 1044.3646,
-      "ret": -0.0011433667381649526,
-      "low_ret": -0.001492079370216448,
+      "last": 1044.8,
+      "ret": -0.0007269392011515219,
+      "low_ret": -0.0011965439799150879,
       "high_ret": 0.0018649731215560905,
-      "last_time": "2026-10-07T08:55:00+09:00"
+      "last_time": "2026-10-07T08:00:00+09:00"
     },
     "nvidia_ah": {
       "regular_close": 239.1699981689453,
-      "last": 239.86,
-      "ret": 0.002884984890819453,
+      "last": 240.3682,
+      "ret": 0.005009833341254932,
       "low_ret": 0.0004983979260244631,
       "high_ret": 0.0399686495139,
-      "last_time": "2026-10-07T08:55:00+09:00"
+      "last_time": "2026-10-07T08:00:00+09:00"
     },
     "session_cross": {
       "NQ=F": {
@@ -148,12 +148,6 @@
       "score": 11.778997914675255,
       "news": [
         {
-          "time": "2026-10-07T07:57:00+09:00",
-          "title": "IBK투자證 \"SK하이닉스, 안정적 현금흐름·주주환원 매력…주가 저평가\"",
-          "source": "이투데이",
-          "link": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE9GMWRDdC1pVHozaDZQUWh1MFZIZG5QelRnOElQM01Zb1VmVnFFVWpHS2dGY1BSd19KRFBoWFVwWUdKUDFkMUw2c3FUNDJJcTk1bVpSTw?oc=5"
-        },
-        {
           "time": "2026-10-07T08:29:12+09:00",
           "title": "[버핏 리포트] SK하이닉스, 3Q 환율 탓 실적 눈높이 하향에도 주주환원 90조 눈길 - IBK",
           "source": "버핏연구소",
@@ -176,6 +170,12 @@
           "title": "[모닝 리포트] \"SK하이닉스, AI 수요에 목표가 400만원 유지\"",
           "source": "뉴스핌",
           "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE00TTVfNGpuYS1odGZVM29xUkJ6ZlVMN2I3eVl4c0V3UjJ5VU9FLXdwaE8tZkRWRjg4anE5RW82c0pXVHVfUTh5VE54Z2NKNXRsSVJRVkpRNzVUTE1a?oc=5"
+        },
+        {
+          "time": "2026-10-07T07:40:33+09:00",
+          "title": "마벨의 좋아도 너무 좋은 전망, SK하이닉스 흔들었나 [마켓무버의 국장 힌트]",
+          "source": "Daum",
+          "link": "https://news.google.com/rss/articles/CBMiVEFVX3lxTFB1dkctVWVGWFZIajBldzQ3T1paWGY2OUxjZ0hzQ0dibGlpbmR3N2FLdGVCRl9CV0RrMmlheHRKU3RhVkp6NnQxUWZWMHRJUmdQSkhLQw?oc=5"
         }
       ]
     }
@@ -565,12 +565,6 @@
       "score": 11.778997914675255,
       "news": [
         {
-          "time": "2026-10-07T07:57:00+09:00",
-          "title": "IBK투자證 \"SK하이닉스, 안정적 현금흐름·주주환원 매력…주가 저평가\"",
-          "source": "이투데이",
-          "link": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE9GMWRDdC1pVHozaDZQUWh1MFZIZG5QelRnOElQM01Zb1VmVnFFVWpHS2dGY1BSd19KRFBoWFVwWUdKUDFkMUw2c3FUNDJJcTk1bVpSTw?oc=5"
-        },
-        {
           "time": "2026-10-07T08:29:12+09:00",
           "title": "[버핏 리포트] SK하이닉스, 3Q 환율 탓 실적 눈높이 하향에도 주주환원 90조 눈길 - IBK",
           "source": "버핏연구소",
@@ -593,6 +587,12 @@
           "title": "[모닝 리포트] \"SK하이닉스, AI 수요에 목표가 400만원 유지\"",
           "source": "뉴스핌",
           "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE00TTVfNGpuYS1odGZVM29xUkJ6ZlVMN2I3eVl4c0V3UjJ5VU9FLXdwaE8tZkRWRjg4anE5RW82c0pXVHVfUTh5VE54Z2NKNXRsSVJRVkpRNzVUTE1a?oc=5"
+        },
+        {
+          "time": "2026-10-07T07:40:33+09:00",
+          "title": "마벨의 좋아도 너무 좋은 전망, SK하이닉스 흔들었나 [마켓무버의 국장 힌트]",
+          "source": "Daum",
+          "link": "https://news.google.com/rss/articles/CBMiVEFVX3lxTFB1dkctVWVGWFZIajBldzQ3T1paWGY2OUxjZ0hzQ0dibGlpbmR3N2FLdGVCRl9CV0RrMmlheHRKU3RhVkp6NnQxUWZWMHRJUmdQSkhLQw?oc=5"
         }
       ],
       "price": 1743500.0,
@@ -600,12 +600,6 @@
     }
   ],
   "overnight_news": [
-    {
-      "time": "2026-10-07T07:57:00+09:00",
-      "title": "IBK투자證 \"SK하이닉스, 안정적 현금흐름·주주환원 매력…주가 저평가\"",
-      "source": "이투데이",
-      "link": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE9GMWRDdC1pVHozaDZQUWh1MFZIZG5QelRnOElQM01Zb1VmVnFFVWpHS2dGY1BSd19KRFBoWFVwWUdKUDFkMUw2c3FUNDJJcTk1bVpSTw?oc=5"
-    },
     {
       "time": "2026-10-07T08:29:12+09:00",
       "title": "[버핏 리포트] SK하이닉스, 3Q 환율 탓 실적 눈높이 하향에도 주주환원 90조 눈길 - IBK",
@@ -629,15 +623,15 @@
       "title": "[모닝 리포트] \"SK하이닉스, AI 수요에 목표가 400만원 유지\"",
       "source": "뉴스핌",
       "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE00TTVfNGpuYS1odGZVM29xUkJ6ZlVMN2I3eVl4c0V3UjJ5VU9FLXdwaE8tZkRWRjg4anE5RW82c0pXVHVfUTh5VE54Z2NKNXRsSVJRVkpRNzVUTE1a?oc=5"
+    },
+    {
+      "time": "2026-10-07T05:02:00+09:00",
+      "title": "[속보] 뉴욕증시 강보합 마감… SK하이닉스 ADR은 6.37%↓",
+      "source": "국민일보",
+      "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE94b0JCektDc1JIZGNaTWtUall5aWtIWnNfb2RidDVfUFdEMC11MzdvWFdhdFRMd01KVmlvT01wdDItcl9zc1hTbnA1TjJXLU94azgzUk1zVEczWktuTlNyRTZIQkZONFNOMHVQRdIBbEFVX3lxTE94b0JCektDc1JIZGNaTWtUall5aWtIWnNfb2RidDVfUFdEMC11MzdvWFdhdFRMd01KVmlvT01wdDItcl9zc1hTbnA1TjJXLU94azgzUk1zVEczWktuTlNyRTZIQkZONFNOMHVQRQ?oc=5"
     }
   ],
   "top_news": [
-    {
-      "time": "2026-10-07T10:23:37+09:00",
-      "title": "IBK투자증권 \"SK하이닉스, 지나치게 저평가...목표주가 400만원 유지\"",
-      "source": "파이낸셜포스트",
-      "link": "https://news.google.com/rss/articles/CBMidEFVX3lxTE5YSFk2Q1VYeWtQb1JBZDFnZzY5eVoxZjlaaGhFZkpGT3dvdXRSV1plaGZ0eHlxeHlUbjJMbkNxbFFRMmpVd1J0YkxYTHB2dlcxZ3JKOXp2RHFpaERlQ0M0UEFJUVZSWk04N1RDbFBtSzh3eDlT?oc=5"
-    },
     {
       "time": "2026-10-07T12:12:00+09:00",
       "title": "[리포트 브리핑]SK하이닉스, '실적에 수급을 더한다' 목표가 4,000,000원 - IBK투자증권",
@@ -651,22 +645,28 @@
       "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE9lSVJnMDFkaWpObERxdFVVUE14TEdUWEtsMVd1emxKVmswcS15aHhndl91cXQyZ0JsdlktdGpnMWRPM2pfX2s3ajBKOUFOeDFMbFgtS2Fwd2Rpd21oTEFCUFZDejVTcVd3cjgwZg?oc=5"
     },
     {
-      "time": "2026-10-07T07:57:00+09:00",
-      "title": "IBK투자證 \"SK하이닉스, 안정적 현금흐름·주주환원 매력…주가 저평가\"",
-      "source": "이투데이",
-      "link": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE9GMWRDdC1pVHozaDZQUWh1MFZIZG5QelRnOElQM01Zb1VmVnFFVWpHS2dGY1BSd19KRFBoWFVwWUdKUDFkMUw2c3FUNDJJcTk1bVpSTw?oc=5"
-    },
-    {
       "time": "2026-10-07T08:29:12+09:00",
       "title": "[버핏 리포트] SK하이닉스, 3Q 환율 탓 실적 눈높이 하향에도 주주환원 90조 눈길 - IBK",
       "source": "버핏연구소",
       "link": "https://news.google.com/rss/articles/CBMiYkFVX3lxTE5Za1ZMMDVMZEZIUjJ6Zjg3ajFZU1ByaGpiVjNCNWRndVFZbVFPZ3JiZS1sWlBUUC1wV0t2dlV5QTk1WXd0OG9XR0M1djF6UVNNMlVVNDNCZWp4OURtNlc3Tmdn?oc=5"
     },
     {
-      "time": "2026-10-07T09:54:00+09:00",
-      "title": "IBK투자증권, SK하이닉스, 지나치게 저평가…목표가 400만원 유지",
-      "source": "SBS Biz",
-      "link": "https://news.google.com/rss/articles/CBMiWEFVX3lxTE9jOTlzanJuTzU3bG9rZXJ2RnNOb2VFUGJtVVhGb2piVFNKOWhsWkFjTGNOQVFwenhPY2dOSlhzVFNtQjhTbFo0cHEwNEVwZ0trRzVRazdySlHSAVhBVV95cUxPYzk5c2pybk81N2xva2VydkZzTm9lRVBibVVYRm9qYlRTSjlobFpBY0xjTkFRcHp4T2NnTkpYc1RTbUI4U2xaNHBxMDRFcGdLa0c1UWs3ckpR?oc=5"
+      "time": "2026-10-07T09:57:08+09:00",
+      "title": "IBK투자증권, \"SK하이닉스, 지나치게 저평가\"…목표가 400만원 유지",
+      "source": "Daum",
+      "link": "https://news.google.com/rss/articles/CBMiT0FVX3lxTE1iQjhmNDMwY0ZGMXRoVU5uYzBfbGZ3a2NIV0g5Nk9SS1pKSjZLbnRjekNqTkVsVDNaTzhnT25GTW8zbkl0RW1FeGZ2Q00xS00?oc=5"
+    },
+    {
+      "time": "2026-10-07T10:50:21+09:00",
+      "title": "삼성전자부터 SK하이닉스까지…‘실적 시즌’ 열린다, 코스피 7000 향방 가를까",
+      "source": "Daum",
+      "link": "https://news.google.com/rss/articles/CBMiRkFVX3lxTE1nS1o2ZG40aUdQRXZsdGtQc21maVRCT2tGdFVaR0NvUi1ZSmdDaG1OeWRsU1h6X3pLRkRDOVVoNG9qSUV5TUE?oc=5"
+    },
+    {
+      "time": "2026-10-07T10:54:39+09:00",
+      "title": "SK하이닉스, 3분기 영업익 7.5조 전망…가격 상승 구간 지속-IBK투자증권",
+      "source": "PRESS9",
+      "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTFBxVGVhcTNZLXZoRjNFR1hPRXdTRU9jWS05S1hHWmhsQjFneWtrRVV1WEdzUXo5RUhtOHRESU1LcUNRSVZkZjcwLWhYOEJPNGFpajFDTmJrZnZidE9kYU5JcDk4ZjM?oc=5"
     }
   ],
   "disclosures": [],
@@ -686,9 +686,9 @@
     "steady": 57,
     "upper": 3,
     "lower": 0,
-    "individual": 25680.0,
-    "foreign": -26008.0,
-    "institution": -6758.0,
+    "individual": 25724.0,
+    "foreign": -26055.0,
+    "institution": -6760.0,
     "prev_close": 6941.39,
     "open": 6864.25,
     "high": 6977.77,

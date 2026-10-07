@@ -170,10 +170,16 @@
     "change_30d": null,
     "days": 26
   },
-  "provisional": {},
+  "provisional": {
+    "2026Q3": 107400000000000.0
+  },
   "provisional_info": {
     "2026Q3": {
-      "reason": "잠정실적 공시가 아직 없습니다"
+      "source": "Reuters（삼성전자 잠정실적 공시 인용）",
+      "source_url": "https://www.reuters.com/business/samsung-q3-profit-jumps-783-ai-memory-boom-lifts-chip-earnings-2026-10-07/",
+      "announced_on_kst": "2026-10-08",
+      "status": "provisional",
+      "scorecard": "../../reports/samsung-earnings-scorecard.md"
     }
   },
   "next_quarter": {
@@ -316,5 +322,5 @@
       "high": 122000000000000.0
     }
   },
-  "ledger_html": "<h4 style=\"font-size:14px;margin:18px 0 6px\">지난 분기 추정 vs 실제 <span style=\"font-size:11px;color:#8a9199;font-weight:400\">실제로 미리 낸 추정만 채점</span></h4><div style=\"font-size:13px;color:#6b7178\">아직 채점된 추정이 없습니다. 분기 영업이익이 공시되면 이 표에 쌓입니다.</div>"
+  "ledger_html": "<h4 style=\"font-size:14px;margin:18px 0 6px\">지난 분기 추정 vs 실제 <span style=\"font-size:11px;color:#8a9199;font-weight:400\">실제로 미리 낸 추정만 채점</span></h4><div style=\"overflow-x:auto\"><table style=\"width:100%;min-width:520px;border-collapse:collapse;font-size:13px;border:1px solid #e5e5e5\"><tr><th style=\"padding:8px 10px;text-align:left;font-size:11px;color:#6b7178;letter-spacing:.5px;background:#fafafa\">분기</th><th style=\"padding:8px 10px;text-align:right;font-size:11px;color:#6b7178;letter-spacing:.5px;background:#fafafa\">반영</th><th style=\"padding:8px 10px;text-align:right;font-size:11px;color:#6b7178;letter-spacing:.5px;background:#fafafa\">추정</th><th style=\"padding:8px 10px;text-align:right;font-size:11px;color:#6b7178;letter-spacing:.5px;background:#fafafa\">실제</th><th style=\"padding:8px 10px;text-align:right;font-size:11px;color:#6b7178;letter-spacing:.5px;background:#fafafa\">오차</th></tr><tr><td style=\"padding:6px 10px;border-top:1px solid #eee\">2026Q3</td><td style=\"padding:6px 10px;border-top:1px solid #eee;text-align:right;font-variant-numeric:tabular-nums\">1개월</td><td style=\"padding:6px 10px;border-top:1px solid #eee;text-align:right;font-variant-numeric:tabular-nums\">122.19조원</td><td style=\"padding:6px 10px;border-top:1px solid #eee;text-align:right;font-variant-numeric:tabular-nums\">107.40조원 <span style=\"color:#8a9199\">(잠정)</span></td><td style=\"padding:6px 10px;border-top:1px solid #eee;text-align:right;font-variant-numeric:tabular-nums\">+14.79조원 (14%)</td></tr><tr><td style=\"padding:6px 10px;border-top:1px solid #eee\">2026Q3</td><td style=\"padding:6px 10px;border-top:1px solid #eee;text-align:right;font-variant-numeric:tabular-nums\">2개월</td><td style=\"padding:6px 10px;border-top:1px solid #eee;text-align:right;font-variant-numeric:tabular-nums\">122.44조원</td><td style=\"padding:6px 10px;border-top:1px solid #eee;text-align:right;font-variant-numeric:tabular-nums\">107.40조원 <span style=\"color:#8a9199\">(잠정)</span></td><td style=\"padding:6px 10px;border-top:1px solid #eee;text-align:right;font-variant-numeric:tabular-nums\">+15.04조원 (14%)</td></tr><tr><td style=\"padding:6px 10px;border-top:1px solid #eee\">2026Q3</td><td style=\"padding:6px 10px;border-top:1px solid #eee;text-align:right;font-variant-numeric:tabular-nums\">3개월</td><td style=\"padding:6px 10px;border-top:1px solid #eee;text-align:right;font-variant-numeric:tabular-nums\">122.90조원</td><td style=\"padding:6px 10px;border-top:1px solid #eee;text-align:right;font-variant-numeric:tabular-nums\">107.40조원 <span style=\"color:#8a9199\">(잠정)</span></td><td style=\"padding:6px 10px;border-top:1px solid #eee;text-align:right;font-variant-numeric:tabular-nums\">+15.50조원 (14%)</td></tr></table></div><div style=\"font-size:11px;color:#8a9199;margin-top:4px\">분기·반영 개월 수마다 그 시점의 <b>첫 추정</b>만 남깁니다. 잠정실적으로 채점한 행은 확정 재무제표가 나오면 그 값으로 다시 채점됩니다.</div>"
 }

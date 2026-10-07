@@ -1,0 +1,82 @@
+{
+  "target": "samsung",
+  "quarter": "2026Q3",
+  "scored_at_kst": "2026-10-08T08:33:31+09:00",
+  "release": {
+    "actual_krw_tn": 107.4,
+    "status": "provisional",
+    "announced_on_kst": "2026-10-08",
+    "metric": "연결 기준 분기 영업이익",
+    "source_name": "Reuters — 삼성전자 잠정실적 공시 인용",
+    "source_url": "https://www.reuters.com/business/samsung-q3-profit-jumps-783-ai-memory-boom-lifts-chip-earnings-2026-10-07/",
+    "verification_note": "삼성전자 공시 원문은 직접 열리지 않아 공시를 인용한 Reuters 본문과 국내 보도로 대조함. 확정치 아님."
+  },
+  "forecast_source_commit": "cad7455ff26e4005a4c6e441dc0e50936b293de9",
+  "segment_scores": [
+    {
+      "quarter": "2026Q3",
+      "method": "segment_split_v1",
+      "recorded_at_kst": "2026-09-29",
+      "low_krw_tn": 116.4,
+      "high_krw_tn": 122.0,
+      "actual_krw_tn": 107.4,
+      "in_range": false,
+      "midpoint_reference_krw_tn": 119.2,
+      "midpoint_reference_error_krw_tn": 11.799999999999997,
+      "midpoint_reference_ape": 0.10986964618249531,
+      "below_low_krw_tn": 9.0
+    }
+  ],
+  "regression_scores": [
+    {
+      "record_id": "samsung:2026Q3:k1",
+      "quarter": "2026Q3",
+      "created_at_kst": "2026-09-08 19:51",
+      "months_used": 1,
+      "point_krw_tn": 122.19222289401299,
+      "actual_krw_tn": 107.4,
+      "error_krw_tn": 14.79222289401298,
+      "ape": 0.1377301945438825,
+      "actual_source": "provisional"
+    },
+    {
+      "record_id": "samsung:2026Q3:k2",
+      "quarter": "2026Q3",
+      "created_at_kst": "2026-09-12 19:10",
+      "months_used": 2,
+      "point_krw_tn": 122.43829456292876,
+      "actual_krw_tn": 107.4,
+      "error_krw_tn": 15.038294562928755,
+      "ape": 0.14002136464551912,
+      "actual_source": "provisional"
+    },
+    {
+      "record_id": "samsung:2026Q3:k3",
+      "quarter": "2026Q3",
+      "created_at_kst": "2026-09-12 22:34",
+      "months_used": 3,
+      "point_krw_tn": 122.89684702029643,
+      "actual_krw_tn": 107.4,
+      "error_krw_tn": 15.496847020296428,
+      "ape": 0.1442909405986632,
+      "actual_source": "provisional"
+    }
+  ],
+  "cumulative": {
+    "segment_scored_quarters": 1,
+    "segment_range_hits": 0,
+    "segment_range_hit_rate": 0.0,
+    "midpoint_reference_mae_krw_tn": 11.799999999999997,
+    "midpoint_reference_mape": 0.10986964618249531,
+    "regression_scored_quarters": 1,
+    "regression_records": 3,
+    "regression_record_mae_krw_tn": 15.10912149241272,
+    "regression_record_mape": 0.1406808332626883
+  },
+  "rules": [
+    "발표 전 원장에 남긴 예측만 평가하며 예측 필드는 수정하지 않는다.",
+    "부문 분리 방식은 범위 예측이다. 중간값은 비교용 사후 산술값이며 사전 점 예측으로 세지 않는다.",
+    "기존 모델의 1·2·3개월 입력 예측은 같은 분기의 세 기록이다. 독립된 세 분기로 세지 않는다.",
+    "확정실적 발표 시 잠정 기준 기록임을 확인하고 실제값과 성적만 갱신한다."
+  ]
+}

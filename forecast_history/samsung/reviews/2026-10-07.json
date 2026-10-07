@@ -1,0 +1,818 @@
+{
+  "target": "samsung",
+  "name": "삼성전자",
+  "peer_name": "SK하이닉스",
+  "session_date": "2026-10-07",
+  "generated_at": "2026-10-07 16:11 KST",
+  "summary": {
+    "prev_close": 272000.0,
+    "open": 269500.0,
+    "high": 279500.0,
+    "low": 268500.0,
+    "close": 268500.0,
+    "gap": -0.009191176470588203,
+    "session": -0.0037105751391465214,
+    "c2c": -0.012867647058823484,
+    "high_vs_open": 0.03710575139146566,
+    "low_vs_open": -0.0037105751391465214,
+    "volume": 17289757.0,
+    "volume_ratio": 1.0434299985036013,
+    "kospi_c2c": -0.019807305405253106,
+    "peer_c2c": -0.028200789622109368,
+    "usdkrw_chg": -0.003959029796511637,
+    "us_nights": 1,
+    "sox_ret": 0.0034222247856494636,
+    "nasdaq_ret": 0.004457441910701521,
+    "micron_ret": -0.017293792077981096,
+    "prior_streak": -1,
+    "ma5": 272200.0,
+    "ma20": 267075.0,
+    "high20": 285500.0,
+    "high252": 374087.44831391243,
+    "price_context": {
+      "breakouts": {
+        "20": {
+          "prior_high": 285500.0,
+          "distance": -0.05954465849387036,
+          "close_breakout": false,
+          "intraday_breakout": false
+        },
+        "60": {
+          "prior_high": 300000.0,
+          "distance": -0.10499999999999998,
+          "close_breakout": false,
+          "intraday_breakout": false
+        }
+      },
+      "relative": {
+        "5": {
+          "start": "2026-09-29",
+          "end": "2026-10-07",
+          "own": -0.014678899082568808,
+          "peer": -0.023796033994334276,
+          "excess": 0.009117134911765468
+        },
+        "20": {
+          "start": "2026-09-04",
+          "end": "2026-10-07",
+          "own": 0.050880626223092085,
+          "peer": 0.04614450516089863,
+          "excess": 0.004736121062193455
+        },
+        "60": {
+          "start": "2026-07-08",
+          "end": "2026-10-07",
+          "own": -0.032432432432432434,
+          "peer": -0.16985859169858597,
+          "excess": 0.13742615926615354
+        }
+      }
+    },
+    "range": 0.040968342644320366,
+    "peer_range": 0.032501450957632017,
+    "prior_5d": 0.007407407407407307,
+    "ma_touches": [
+      {
+        "ma": 5,
+        "level": 273000.0,
+        "kind": "fail",
+        "price": 279500.0
+      }
+    ],
+    "micron_ah": {
+      "regular_close": 1045.56005859375,
+      "last": 1044.3646,
+      "ret": -0.0011433667381649526,
+      "low_ret": -0.001492079370216448,
+      "high_ret": 0.0018649731215560905,
+      "last_time": "2026-10-07T08:55:00+09:00"
+    },
+    "nvidia_ah": {
+      "regular_close": 239.1699981689453,
+      "last": 239.86,
+      "ret": 0.002884984890819453,
+      "low_ret": 0.0004983979260244631,
+      "high_ret": 0.0399686495139,
+      "last_time": "2026-10-07T08:55:00+09:00"
+    },
+    "session_cross": {
+      "NQ=F": {
+        "label": "나스닥100 선물",
+        "ret": -0.0007858265466494929,
+        "after_high": -0.0013090251332825709
+      },
+      "ZN=F": {
+        "label": "미 10년물 국채 선물",
+        "ret": -0.0008980691513246208,
+        "after_high": -0.0005988920497080885
+      },
+      "KRW=X": {
+        "label": "원/달러",
+        "ret": 0.0006497931958164838,
+        "after_high": 0.00027624357227873375
+      }
+    },
+    "from_high": -0.037634408602150504,
+    "buyback": [
+      {
+        "kind": "직접 취득",
+        "start": "2026-08-24",
+        "end": "2026-11-21",
+        "amount": "14,999,999,992,000",
+        "purpose": "임직원 주식보상",
+        "rcept_no": "20260821000616"
+      }
+    ]
+  },
+  "classification": {
+    "labels": [
+      "갭 주도",
+      "장중 급변 09:10 주도",
+      "지수 동조",
+      "마감 구간 쏠림(14:55~종가)"
+    ],
+    "reasons": [
+      "갭 -0.92%가 종가→종가 -1.29%의 71%",
+      "09:10 봉 +1.47%(σ의 5.42배, 거래량 3.87배)가 세션 -0.37%의 793%",
+      "KOSPI -1.98% vs 종목 -1.29%, 5분 수익률 상관 0.89 — 종목 고유 요인이 약함",
+      "14:55~종가 구간이 세션 -0.37%의 150% (5분봉이 없는 구간, 일봉 종가 기준)"
+    ]
+  },
+  "events": [
+    {
+      "time": "2026-10-07T09:10:00+09:00",
+      "ret": 0.014705882352941124,
+      "z": 5.42,
+      "volume_ratio": 3.87,
+      "cum_before": 0.00927643784786647,
+      "cum_after": 0.024118738404452778,
+      "session_share": 7.926470588235602,
+      "score": 7.197977027519792,
+      "news": [
+        {
+          "time": "2026-10-07T08:16:32+09:00",
+          "title": "\"삼성전자 HBM 가격 2배 뛴다\"…파격 전망 내놓은 증권사",
+          "source": "Daum",
+          "link": "https://news.google.com/rss/articles/CBMiT0FVX3lxTFBzQUxTakFPNEJSNzVKc3dvOWtNTVRWdU54WE16Ujh1bXVkWDV0WDlmb1N6a1pTMDZZZ0dvMVVqRlltMFZYZ1ZESWppT1RLV1E?oc=5"
+        },
+        {
+          "time": "2026-10-07T08:31:00+09:00",
+          "title": "삼성전자, 사상 최초 분기 영업이익 ’100조 시대' 연다...주가 반등할까",
+          "source": "조선일보",
+          "link": "https://news.google.com/rss/articles/CBMigAFBVV95cUxOZU5Ddm1pRllIZ29jT016WnIyOG85X282RC0wUEotX3pvUElVT2tUTlIxb2tCUmliUmQ2bkE2SXVwRF82YzBxazc5RjBLQUlBaTA2Y2F5aFZVZEJ1Y0JaOU02UVJXbkhjaWg3NzhKVmZacmVVc3FuQWlBM3BGamR3Mw?oc=5"
+        },
+        {
+          "time": "2026-10-07T08:54:15+09:00",
+          "title": "삼성전자, 자사주 매입 '일단 종료'…주가는 어떻게 되나",
+          "source": "한국경제",
+          "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE5TZlpieElaS3RQN19RSDZXR0taNGlrZ3JRNUVCdzZLWUFqTzE0dlV6WFdxQmhrVFRmRm1IenZ0MmpUSDQ0OUNqNjBwS2VuLTVYXzN3Q2ltSzhRUQ?oc=5"
+        },
+        {
+          "time": "2026-10-07T09:19:12+09:00",
+          "title": "코스피, 삼성전자 실적 발표 하루 앞두고 경계심리에 하락 - 머니투데이",
+          "source": "머니투데이",
+          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE9sMU5rRDV0RmlFUnhZS29MV1lnVDlxMzBnRGd3WUVGWFNTREphdGwwRWt0N19COTJjZEpfYVItWENOTTlGOHRKQU03aXB1RlRNbzVsaE1YV0dsTEV1Q19VckJDTU5tcHZ10gFuQVVfeXFMT1JnWFlsVW1WNlJhU0FUejJEbWYwTUlMd2NrU0ZhN1dwSmZhTjNMajJtNzdkQUZjTGpoRW8zYVVvQjBVbFNYQWlQQ1NiM3h5ejRFTjlGQklGTHNYUkxsRzlPcE5IRGtmdFlvOXg3V2c?oc=5"
+        },
+        {
+          "time": "2026-10-07T08:55:27+09:00",
+          "title": "\"삼성전자, 내년 1분기 모바일 메모리 가격 폭등…목표가 50만원\" - 머니투데이",
+          "source": "머니투데이",
+          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE9CMUlhNkVGbVRBVHVFbnhPS2FyRzZ3VGRlTDN3U0N6dFk5ZElNMWNFZmtYY0lKd0FqZjZQUmFJSklCY2hsSlpLQlVscjZaNlRKbkpHTF92eGJwTmNIUlljT2dUaE5iSTRy0gFuQVVfeXFMTTJndkMzc1ozSExVTk1CZk5zTjNxeTZVZURTQTdGZVVsN1JRZ1Y3ZU1LVUsxMlZETmlwT0lMbDI3cWNUQ0NMejVzdnprYkhGQ29CUWxzYkFUQmpleW9EU1J1WGx0NzZUVWhKd2pIMFE?oc=5"
+        }
+      ]
+    }
+  ],
+  "turning_point": {
+    "high_time": "2026-10-07T09:35:00+09:00",
+    "high": 0.03525046382189245,
+    "low_time": "2026-10-07T14:45:00+09:00",
+    "low": 0.0018552875695732052,
+    "pattern": "고점 후 반락"
+  },
+  "closing_share": 1.4972222222222356,
+  "intraday_corr_kospi": 0.8903904108336753,
+  "intraday_note": "장중 봉은 09:00~14:55까지만 있어 마감 구간(14:55~15:30)은 일봉 종가로만 봅니다(그 구간 -0.56%).",
+  "intraday_coverage": "09:00~14:55",
+  "intraday_path": [
+    {
+      "time": "2026-10-07T09:00:00+09:00",
+      "price": 273250.0,
+      "volume": 780203.0
+    },
+    {
+      "time": "2026-10-07T09:05:00+09:00",
+      "price": 272000.0,
+      "volume": 271001.0
+    },
+    {
+      "time": "2026-10-07T09:10:00+09:00",
+      "price": 276000.0,
+      "volume": 566159.0
+    },
+    {
+      "time": "2026-10-07T09:15:00+09:00",
+      "price": 278500.0,
+      "volume": 626970.0
+    },
+    {
+      "time": "2026-10-07T09:20:00+09:00",
+      "price": 278000.0,
+      "volume": 323926.0
+    },
+    {
+      "time": "2026-10-07T09:25:00+09:00",
+      "price": 277750.0,
+      "volume": 341628.0
+    },
+    {
+      "time": "2026-10-07T09:30:00+09:00",
+      "price": 278000.0,
+      "volume": 382982.0
+    },
+    {
+      "time": "2026-10-07T09:35:00+09:00",
+      "price": 279000.0,
+      "volume": 330063.0
+    },
+    {
+      "time": "2026-10-07T09:40:00+09:00",
+      "price": 278750.0,
+      "volume": 384301.0
+    },
+    {
+      "time": "2026-10-07T09:45:00+09:00",
+      "price": 277500.0,
+      "volume": 350508.0
+    },
+    {
+      "time": "2026-10-07T09:50:00+09:00",
+      "price": 277500.0,
+      "volume": 167738.0
+    },
+    {
+      "time": "2026-10-07T09:55:00+09:00",
+      "price": 276000.0,
+      "volume": 339815.0
+    },
+    {
+      "time": "2026-10-07T10:00:00+09:00",
+      "price": 275000.0,
+      "volume": 380689.0
+    },
+    {
+      "time": "2026-10-07T10:05:00+09:00",
+      "price": 275000.0,
+      "volume": 297582.0
+    },
+    {
+      "time": "2026-10-07T10:10:00+09:00",
+      "price": 274000.0,
+      "volume": 343296.0
+    },
+    {
+      "time": "2026-10-07T10:15:00+09:00",
+      "price": 273250.0,
+      "volume": 132972.0
+    },
+    {
+      "time": "2026-10-07T10:20:00+09:00",
+      "price": 273750.0,
+      "volume": 292597.0
+    },
+    {
+      "time": "2026-10-07T10:25:00+09:00",
+      "price": 273250.0,
+      "volume": 126421.0
+    },
+    {
+      "time": "2026-10-07T10:30:00+09:00",
+      "price": 273500.0,
+      "volume": 163090.0
+    },
+    {
+      "time": "2026-10-07T10:35:00+09:00",
+      "price": 273000.0,
+      "volume": 199912.0
+    },
+    {
+      "time": "2026-10-07T10:40:00+09:00",
+      "price": 273250.0,
+      "volume": 140762.0
+    },
+    {
+      "time": "2026-10-07T10:45:00+09:00",
+      "price": 272250.0,
+      "volume": 146634.0
+    },
+    {
+      "time": "2026-10-07T10:50:00+09:00",
+      "price": 272000.0,
+      "volume": 175855.0
+    },
+    {
+      "time": "2026-10-07T10:55:00+09:00",
+      "price": 272500.0,
+      "volume": 82737.0
+    },
+    {
+      "time": "2026-10-07T11:00:00+09:00",
+      "price": 270750.0,
+      "volume": 317553.0
+    },
+    {
+      "time": "2026-10-07T11:05:00+09:00",
+      "price": 270750.0,
+      "volume": 176365.0
+    },
+    {
+      "time": "2026-10-07T11:10:00+09:00",
+      "price": 271500.0,
+      "volume": 174691.0
+    },
+    {
+      "time": "2026-10-07T11:15:00+09:00",
+      "price": 271250.0,
+      "volume": 111564.0
+    },
+    {
+      "time": "2026-10-07T11:20:00+09:00",
+      "price": 270750.0,
+      "volume": 80535.0
+    },
+    {
+      "time": "2026-10-07T11:25:00+09:00",
+      "price": 272000.0,
+      "volume": 118086.0
+    },
+    {
+      "time": "2026-10-07T11:30:00+09:00",
+      "price": 272500.0,
+      "volume": 83389.0
+    },
+    {
+      "time": "2026-10-07T11:35:00+09:00",
+      "price": 273000.0,
+      "volume": 92375.0
+    },
+    {
+      "time": "2026-10-07T11:40:00+09:00",
+      "price": 272500.0,
+      "volume": 67932.0
+    },
+    {
+      "time": "2026-10-07T11:45:00+09:00",
+      "price": 272750.0,
+      "volume": 100012.0
+    },
+    {
+      "time": "2026-10-07T11:50:00+09:00",
+      "price": 273250.0,
+      "volume": 85105.0
+    },
+    {
+      "time": "2026-10-07T11:55:00+09:00",
+      "price": 272250.0,
+      "volume": 68757.0
+    },
+    {
+      "time": "2026-10-07T12:00:00+09:00",
+      "price": 272500.0,
+      "volume": 29602.0
+    },
+    {
+      "time": "2026-10-07T12:05:00+09:00",
+      "price": 272500.0,
+      "volume": 27021.0
+    },
+    {
+      "time": "2026-10-07T12:10:00+09:00",
+      "price": 272250.0,
+      "volume": 118038.0
+    },
+    {
+      "time": "2026-10-07T12:15:00+09:00",
+      "price": 272000.0,
+      "volume": 29942.0
+    },
+    {
+      "time": "2026-10-07T12:20:00+09:00",
+      "price": 272500.0,
+      "volume": 36931.0
+    },
+    {
+      "time": "2026-10-07T12:25:00+09:00",
+      "price": 272750.0,
+      "volume": 91763.0
+    },
+    {
+      "time": "2026-10-07T12:30:00+09:00",
+      "price": 273000.0,
+      "volume": 33606.0
+    },
+    {
+      "time": "2026-10-07T12:35:00+09:00",
+      "price": 272000.0,
+      "volume": 98858.0
+    },
+    {
+      "time": "2026-10-07T12:40:00+09:00",
+      "price": 272250.0,
+      "volume": 77123.0
+    },
+    {
+      "time": "2026-10-07T12:45:00+09:00",
+      "price": 272250.0,
+      "volume": 101860.0
+    },
+    {
+      "time": "2026-10-07T12:50:00+09:00",
+      "price": 272500.0,
+      "volume": 122073.0
+    },
+    {
+      "time": "2026-10-07T12:55:00+09:00",
+      "price": 272500.0,
+      "volume": 55092.0
+    },
+    {
+      "time": "2026-10-07T13:00:00+09:00",
+      "price": 272500.0,
+      "volume": 137517.0
+    },
+    {
+      "time": "2026-10-07T13:05:00+09:00",
+      "price": 272500.0,
+      "volume": 144060.0
+    },
+    {
+      "time": "2026-10-07T13:10:00+09:00",
+      "price": 271500.0,
+      "volume": 47874.0
+    },
+    {
+      "time": "2026-10-07T13:15:00+09:00",
+      "price": 271750.0,
+      "volume": 58937.0
+    },
+    {
+      "time": "2026-10-07T13:20:00+09:00",
+      "price": 271750.0,
+      "volume": 166385.0
+    },
+    {
+      "time": "2026-10-07T13:25:00+09:00",
+      "price": 271500.0,
+      "volume": 122960.0
+    },
+    {
+      "time": "2026-10-07T13:30:00+09:00",
+      "price": 272500.0,
+      "volume": 188087.0
+    },
+    {
+      "time": "2026-10-07T13:35:00+09:00",
+      "price": 272250.0,
+      "volume": 107725.0
+    },
+    {
+      "time": "2026-10-07T13:40:00+09:00",
+      "price": 271750.0,
+      "volume": 63298.0
+    },
+    {
+      "time": "2026-10-07T13:45:00+09:00",
+      "price": 272000.0,
+      "volume": 74989.0
+    },
+    {
+      "time": "2026-10-07T13:50:00+09:00",
+      "price": 271500.0,
+      "volume": 249554.0
+    },
+    {
+      "time": "2026-10-07T13:55:00+09:00",
+      "price": 270750.0,
+      "volume": 253541.0
+    },
+    {
+      "time": "2026-10-07T14:00:00+09:00",
+      "price": 270750.0,
+      "volume": 254771.0
+    },
+    {
+      "time": "2026-10-07T14:05:00+09:00",
+      "price": 271000.0,
+      "volume": 265053.0
+    },
+    {
+      "time": "2026-10-07T14:10:00+09:00",
+      "price": 270500.0,
+      "volume": 145662.0
+    },
+    {
+      "time": "2026-10-07T14:15:00+09:00",
+      "price": 270250.0,
+      "volume": 163585.0
+    },
+    {
+      "time": "2026-10-07T14:20:00+09:00",
+      "price": 271000.0,
+      "volume": 273830.0
+    },
+    {
+      "time": "2026-10-07T14:25:00+09:00",
+      "price": 272000.0,
+      "volume": 273116.0
+    },
+    {
+      "time": "2026-10-07T14:30:00+09:00",
+      "price": 271000.0,
+      "volume": 180332.0
+    },
+    {
+      "time": "2026-10-07T14:35:00+09:00",
+      "price": 270500.0,
+      "volume": 167474.0
+    },
+    {
+      "time": "2026-10-07T14:40:00+09:00",
+      "price": 270250.0,
+      "volume": 191958.0
+    },
+    {
+      "time": "2026-10-07T14:45:00+09:00",
+      "price": 270000.0,
+      "volume": 143358.0
+    },
+    {
+      "time": "2026-10-07T14:50:00+09:00",
+      "price": 270500.0,
+      "volume": 220723.0
+    },
+    {
+      "time": "2026-10-07T14:55:00+09:00",
+      "price": 270000.0,
+      "volume": 85867.0
+    }
+  ],
+  "timeline_items": [
+    {
+      "time": "2026-10-07T09:10:00+09:00",
+      "ret": 0.014705882352941124,
+      "z": 5.42,
+      "volume_ratio": 3.87,
+      "cum_before": 0.00927643784786647,
+      "cum_after": 0.024118738404452778,
+      "session_share": 7.926470588235602,
+      "score": 7.197977027519792,
+      "news": [
+        {
+          "time": "2026-10-07T08:16:32+09:00",
+          "title": "\"삼성전자 HBM 가격 2배 뛴다\"…파격 전망 내놓은 증권사",
+          "source": "Daum",
+          "link": "https://news.google.com/rss/articles/CBMiT0FVX3lxTFBzQUxTakFPNEJSNzVKc3dvOWtNTVRWdU54WE16Ujh1bXVkWDV0WDlmb1N6a1pTMDZZZ0dvMVVqRlltMFZYZ1ZESWppT1RLV1E?oc=5"
+        },
+        {
+          "time": "2026-10-07T08:31:00+09:00",
+          "title": "삼성전자, 사상 최초 분기 영업이익 ’100조 시대' 연다...주가 반등할까",
+          "source": "조선일보",
+          "link": "https://news.google.com/rss/articles/CBMigAFBVV95cUxOZU5Ddm1pRllIZ29jT016WnIyOG85X282RC0wUEotX3pvUElVT2tUTlIxb2tCUmliUmQ2bkE2SXVwRF82YzBxazc5RjBLQUlBaTA2Y2F5aFZVZEJ1Y0JaOU02UVJXbkhjaWg3NzhKVmZacmVVc3FuQWlBM3BGamR3Mw?oc=5"
+        },
+        {
+          "time": "2026-10-07T08:54:15+09:00",
+          "title": "삼성전자, 자사주 매입 '일단 종료'…주가는 어떻게 되나",
+          "source": "한국경제",
+          "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE5TZlpieElaS3RQN19RSDZXR0taNGlrZ3JRNUVCdzZLWUFqTzE0dlV6WFdxQmhrVFRmRm1IenZ0MmpUSDQ0OUNqNjBwS2VuLTVYXzN3Q2ltSzhRUQ?oc=5"
+        },
+        {
+          "time": "2026-10-07T09:19:12+09:00",
+          "title": "코스피, 삼성전자 실적 발표 하루 앞두고 경계심리에 하락 - 머니투데이",
+          "source": "머니투데이",
+          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE9sMU5rRDV0RmlFUnhZS29MV1lnVDlxMzBnRGd3WUVGWFNTREphdGwwRWt0N19COTJjZEpfYVItWENOTTlGOHRKQU03aXB1RlRNbzVsaE1YV0dsTEV1Q19VckJDTU5tcHZ10gFuQVVfeXFMT1JnWFlsVW1WNlJhU0FUejJEbWYwTUlMd2NrU0ZhN1dwSmZhTjNMajJtNzdkQUZjTGpoRW8zYVVvQjBVbFNYQWlQQ1NiM3h5ejRFTjlGQklGTHNYUkxsRzlPcE5IRGtmdFlvOXg3V2c?oc=5"
+        },
+        {
+          "time": "2026-10-07T08:55:27+09:00",
+          "title": "\"삼성전자, 내년 1분기 모바일 메모리 가격 폭등…목표가 50만원\" - 머니투데이",
+          "source": "머니투데이",
+          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE9CMUlhNkVGbVRBVHVFbnhPS2FyRzZ3VGRlTDN3U0N6dFk5ZElNMWNFZmtYY0lKd0FqZjZQUmFJSklCY2hsSlpLQlVscjZaNlRKbkpHTF92eGJwTmNIUlljT2dUaE5iSTRy0gFuQVVfeXFMTTJndkMzc1ozSExVTk1CZk5zTjNxeTZVZURTQTdGZVVsN1JRZ1Y3ZU1LVUsxMlZETmlwT0lMbDI3cWNUQ0NMejVzdnprYkhGQ29CUWxzYkFUQmpleW9EU1J1WGx0NzZUVWhKd2pIMFE?oc=5"
+        }
+      ],
+      "price": 276000.0,
+      "kind": "turn_up"
+    }
+  ],
+  "overnight_news": [
+    {
+      "time": "2026-10-07T06:00:00+09:00",
+      "title": "삼성전자, 내년 HBM4 공급가 대폭 인상 전망… “D램 가격 급등 반영” - 조선비즈",
+      "source": "Chosunbiz",
+      "link": "https://news.google.com/rss/articles/CBMiggFBVV95cUxQamZCOFlZNmJKd2Q4dWV6RGZZLUh4Sk9mYnJHaHNObFFVMFdNand4aE4yTXk0WHNDdG5Sek5IdTM2T0JNSE5IV3E1UXNHeVV1WjZVZUE2Tk9FWnRBR20zaHlXM1U3LURWaGhwU3ZxUFhLbDhYYlBtY2c2NzU2bXV3UFNR0gGWAUFVX3lxTE1lQ3dZZjdKdkVwbnplRUtUQ1BrdEszV185bE54cVgzVlBaLUtZWmdNWXpYVXU2aHhZZ2JBUXliMzMzUGkwZGI4UzZ6ZGgzY0N2ZFFIY3RHYzBLcWNnRzNHUG9ILWlFejc3ZUJJcXcyOVJHVWxpVDJ0M094NUhuU1huSUpnbWNxSHNWUDNGc1VFLTJVX3htdw?oc=5"
+    },
+    {
+      "time": "2026-10-07T08:16:32+09:00",
+      "title": "\"삼성전자 HBM 가격 2배 뛴다\"…파격 전망 내놓은 증권사",
+      "source": "Daum",
+      "link": "https://news.google.com/rss/articles/CBMiT0FVX3lxTFBzQUxTakFPNEJSNzVKc3dvOWtNTVRWdU54WE16Ujh1bXVkWDV0WDlmb1N6a1pTMDZZZ0dvMVVqRlltMFZYZ1ZESWppT1RLV1E?oc=5"
+    },
+    {
+      "time": "2026-10-07T08:31:00+09:00",
+      "title": "삼성전자, 사상 최초 분기 영업이익 ’100조 시대' 연다...주가 반등할까",
+      "source": "조선일보",
+      "link": "https://news.google.com/rss/articles/CBMigAFBVV95cUxOZU5Ddm1pRllIZ29jT016WnIyOG85X282RC0wUEotX3pvUElVT2tUTlIxb2tCUmliUmQ2bkE2SXVwRF82YzBxazc5RjBLQUlBaTA2Y2F5aFZVZEJ1Y0JaOU02UVJXbkhjaWg3NzhKVmZacmVVc3FuQWlBM3BGamR3Mw?oc=5"
+    },
+    {
+      "time": "2026-10-07T08:54:15+09:00",
+      "title": "삼성전자, 자사주 매입 '일단 종료'…주가는 어떻게 되나",
+      "source": "한국경제",
+      "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE5TZlpieElaS3RQN19RSDZXR0taNGlrZ3JRNUVCdzZLWUFqTzE0dlV6WFdxQmhrVFRmRm1IenZ0MmpUSDQ0OUNqNjBwS2VuLTVYXzN3Q2ltSzhRUQ?oc=5"
+    },
+    {
+      "time": "2026-10-07T05:00:00+09:00",
+      "title": "삼성전자, 석 달에 100조 번다?…역대급 실적 뒤 ‘숨은 변수’",
+      "source": "중앙일보",
+      "link": "https://news.google.com/rss/articles/CBMiVkFVX3lxTFBLcENxTWdKTHRDVEptYnh2Q0tsSjJ5RFlDMHAxLXJpbGRKWlBzeFlwVHNpSUFnNGF4VnlHdTd5elJuSXhiVEM3STRWZEF2M1F4X0pfUEVR?oc=5"
+    }
+  ],
+  "top_news": [
+    {
+      "time": "2026-10-07T11:41:00+09:00",
+      "title": "증권가 \"삼성전자, 3분기 호실적 넘어 내년 메모리 고성장 기대\"",
+      "source": "연합뉴스",
+      "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE50YThWam1QQWVuZno3SnEtN3AtS1hZa0tDM050SlFUZ1BlZGE1UlhJSFBIMG9iRjBVNWc1VHVUY2NxZFU3Y3BHcTF2UVRyaFFTWEdiX3JveWRETk9OTzZHatIBYEFVX3lxTE50YThWam1QQWVuZno3SnEtN3AtS1hZa0tDM050SlFUZ1BlZGE1UlhJSFBIMG9iRjBVNWc1VHVUY2NxZFU3Y3BHcTF2UVRyaFFTWEdiX3JveWRETk9OTzZHag?oc=5"
+    },
+    {
+      "time": "2026-10-07T12:26:38+09:00",
+      "title": "“AI 반도체 슈퍼사이클도 한계”…삼성전자, ‘역대급 실적’ 안 통하는 이유 [머니+]",
+      "source": "에너지경제신문",
+      "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE1tTk1maXRmeWRraHZsb0h5cGdtZEF1M1VLNUk2VFE3SUFTWUhuVHktV1l6SU1KTVBxdXJRUDdzNk1obFJBRU1zUjNNLTFnODJYeHVTeG4yWGE4WVU?oc=5"
+    },
+    {
+      "time": "2026-10-07T06:00:00+09:00",
+      "title": "삼성전자, 내년 HBM4 공급가 대폭 인상 전망… “D램 가격 급등 반영” - 조선비즈",
+      "source": "Chosunbiz",
+      "link": "https://news.google.com/rss/articles/CBMiggFBVV95cUxQamZCOFlZNmJKd2Q4dWV6RGZZLUh4Sk9mYnJHaHNObFFVMFdNand4aE4yTXk0WHNDdG5Sek5IdTM2T0JNSE5IV3E1UXNHeVV1WjZVZUE2Tk9FWnRBR20zaHlXM1U3LURWaGhwU3ZxUFhLbDhYYlBtY2c2NzU2bXV3UFNR0gGWAUFVX3lxTE1lQ3dZZjdKdkVwbnplRUtUQ1BrdEszV185bE54cVgzVlBaLUtZWmdNWXpYVXU2aHhZZ2JBUXliMzMzUGkwZGI4UzZ6ZGgzY0N2ZFFIY3RHYzBLcWNnRzNHUG9ILWlFejc3ZUJJcXcyOVJHVWxpVDJ0M094NUhuU1huSUpnbWNxSHNWUDNGc1VFLTJVX3htdw?oc=5"
+    },
+    {
+      "time": "2026-10-07T08:16:32+09:00",
+      "title": "\"삼성전자 HBM 가격 2배 뛴다\"…파격 전망 내놓은 증권사",
+      "source": "Daum",
+      "link": "https://news.google.com/rss/articles/CBMiT0FVX3lxTFBzQUxTakFPNEJSNzVKc3dvOWtNTVRWdU54WE16Ujh1bXVkWDV0WDlmb1N6a1pTMDZZZ0dvMVVqRlltMFZYZ1ZESWppT1RLV1E?oc=5"
+    },
+    {
+      "time": "2026-10-07T08:31:00+09:00",
+      "title": "삼성전자, 사상 최초 분기 영업이익 ’100조 시대' 연다...주가 반등할까",
+      "source": "조선일보",
+      "link": "https://news.google.com/rss/articles/CBMigAFBVV95cUxOZU5Ddm1pRllIZ29jT016WnIyOG85X282RC0wUEotX3pvUElVT2tUTlIxb2tCUmliUmQ2bkE2SXVwRF82YzBxazc5RjBLQUlBaTA2Y2F5aFZVZEJ1Y0JaOU02UVJXbkhjaWg3NzhKVmZacmVVc3FuQWlBM3BGamR3Mw?oc=5"
+    },
+    {
+      "time": "2026-10-07T08:54:15+09:00",
+      "title": "삼성전자, 자사주 매입 '일단 종료'…주가는 어떻게 되나",
+      "source": "한국경제",
+      "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE5TZlpieElaS3RQN19RSDZXR0taNGlrZ3JRNUVCdzZLWUFqTzE0dlV6WFdxQmhrVFRmRm1IenZ0MmpUSDQ0OUNqNjBwS2VuLTVYXzN3Q2ltSzhRUQ?oc=5"
+    }
+  ],
+  "disclosures": [],
+  "disclosure_note": null,
+  "flows": null,
+  "flow_story": null,
+  "flow_status": {
+    "state": "pending",
+    "detail": "최신 2026-10-06"
+  },
+  "context": {},
+  "market": {
+    "index": "KOSPI",
+    "date": "2026-10-07",
+    "rise": 333,
+    "fall": 527,
+    "steady": 57,
+    "upper": 3,
+    "lower": 0,
+    "individual": 25612.0,
+    "foreign": -25954.0,
+    "institution": -6745.0,
+    "prev_close": 6941.39,
+    "open": 6864.25,
+    "high": 6977.77,
+    "low": 6803.81,
+    "close": 6803.9
+  },
+  "earnings_reactions": {
+    "n": 44,
+    "down": 24,
+    "mean": 0.005143967724892604,
+    "first": "2015-04-07",
+    "last": "2026-07-30",
+    "prior_up": {
+      "n": 26,
+      "down": 15,
+      "mean": 0.006803900790824892
+    },
+    "prior_down": {
+      "n": 18,
+      "down": 9,
+      "mean": 0.0027462866296570788,
+      "next5_n": 18,
+      "next5_up": 8
+    },
+    "rows": [
+      {
+        "date": "2024-04-05",
+        "ret": -0.009378468601555334,
+        "prior20": 0.18680935248171737,
+        "next5": -0.027219062401412808
+      },
+      {
+        "date": "2024-07-05",
+        "ret": 0.029550818588921057,
+        "prior20": 0.09789840714462672,
+        "next5": -0.030998790775496055
+      },
+      {
+        "date": "2024-10-08",
+        "ret": -0.011475407561411965,
+        "prior20": -0.17550711223721005,
+        "next5": -0.013267062521606143
+      },
+      {
+        "date": "2025-01-08",
+        "ret": 0.03429607257566447,
+        "prior20": 0.038691759055365926,
+        "next5": -0.06282719221095567
+      },
+      {
+        "date": "2025-04-08",
+        "ret": 0.0056390392516327825,
+        "prior20": -0.0034250616708649817,
+        "next5": 0.05794397222748904
+      },
+      {
+        "date": "2025-10-14",
+        "ret": -0.01822079386417541,
+        "prior20": 0.3484355968820865,
+        "next5": 0.06441038686451694
+      },
+      {
+        "date": "2026-04-07",
+        "ret": 0.017607433616103174,
+        "prior20": 0.11527187357539503,
+        "next5": 0.05089058828005988
+      },
+      {
+        "date": "2026-07-30",
+        "ret": -0.007194244604316502,
+        "prior20": -0.37574850299401197,
+        "next5": 0.11352657004830924
+      }
+    ]
+  },
+  "forecasts": [
+    {
+      "model": "No macro ensemble",
+      "hit": false,
+      "verdict": "틀림 — 예측 상승 37%, 실제 하락(-1.29%)",
+      "legs": "갭 -0.92%(하락) · 세션 -0.37%(보합)",
+      "where": "결과는 주로 갭(밤사이)에서 정해졌습니다.",
+      "band": 0.0085935114364349,
+      "probs": [
+        0.3336663432595559,
+        0.2951769495860856,
+        0.3711567071543585
+      ],
+      "actual": "하락",
+      "predicted": "상승"
+    },
+    {
+      "model": "Mean ensemble",
+      "hit": false,
+      "verdict": "틀림 — 예측 상승 38%, 실제 하락(-1.29%)",
+      "legs": "갭 -0.92%(하락) · 세션 -0.37%(보합)",
+      "where": "결과는 주로 갭(밤사이)에서 정해졌습니다.",
+      "band": 0.0085935114364349,
+      "probs": [
+        0.3341349685614951,
+        0.2842517697045646,
+        0.3816132617339403
+      ],
+      "actual": "하락",
+      "predicted": "상승"
+    },
+    {
+      "model": "Candidate expanding",
+      "hit": false,
+      "verdict": "틀림 — 예측 상승 39%, 실제 하락(-1.29%)",
+      "legs": "갭 -0.92%(하락) · 세션 -0.37%(보합)",
+      "where": "결과는 주로 갭(밤사이)에서 정해졌습니다.",
+      "band": 0.0085935114364349,
+      "probs": [
+        0.3083803199400071,
+        0.3040038643512776,
+        0.3876158157087153
+      ],
+      "actual": "하락",
+      "predicted": "상승"
+    }
+  ],
+  "price_check": "1거래일 예상 구간 262,559~282,151원 · 종가 268,500원 → 구간 안",
+  "disclaimer": "시간이 맞는 것이지 원인 확정이 아닙니다. 뉴스 없이 움직이는 날(수급·프로그램·옵션 만기)이 많고, 기사 발행 시각은 실제 정보 유통보다 늦거나 앞섭니다. 이 절은 설명 도구이며 다음날 예측에 자동 반영되지 않습니다."
+}

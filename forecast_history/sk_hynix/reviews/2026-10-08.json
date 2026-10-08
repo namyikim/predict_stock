@@ -3,7 +3,7 @@
   "name": "SK하이닉스",
   "peer_name": "삼성전자",
   "session_date": "2026-10-08",
-  "generated_at": "2026-10-08 17:31 KST",
+  "generated_at": "2026-10-08 23:33 KST",
   "summary": {
     "prev_close": 1723000.0,
     "open": 1722000.0,
@@ -15,11 +15,11 @@
     "c2c": -0.024376088218224012,
     "high_vs_open": 0.021486643437862885,
     "low_vs_open": -0.023809523809523836,
-    "volume": 3790519.0,
-    "volume_ratio": 1.1919219072906373,
+    "volume": 3203231.0,
+    "volume_ratio": 1.0072502480563994,
     "kospi_c2c": -0.026157017169108343,
     "peer_c2c": -0.02420856610800748,
-    "usdkrw_chg": -6.715170179905083e-05,
+    "usdkrw_chg": 0.0011495059293038512,
     "us_nights": 1,
     "sox_ret": -0.011474654541306362,
     "nasdaq_ret": -0.0022137708819671698,
@@ -122,7 +122,15 @@
         "purpose": "자기주식 소각을 통한 \n주주가치 제고",
         "rcept_no": "20260819000254"
       }
-    ]
+    ],
+    "foreign_pressure": {
+      "state": "selling_eased",
+      "previous_ratio": -0.1950778609637762,
+      "recent_ratio": -0.18067070712846983,
+      "previous_daily_net": -614187.0,
+      "recent_daily_net": -465063.6
+    },
+    "buyback_transition": null
   },
   "classification": {
     "labels": [
@@ -517,10 +525,42 @@
       "link": "https://news.google.com/rss/articles/CBMiYkFVX3lxTFA3S05VbjJOTGZhUzlKQ3NncFNJY2Z0MWpSeEs4MjQyYWx1T0lIWUFpTUJ5TWxSbWxBeWMwQTVkZ3RUVFhNWHNrMnZpVUFZR2RINDdmZWhKZGFrSE5XUnk5MWlR?oc=5"
     },
     {
-      "time": "2026-10-08T08:30:17+09:00",
-      "title": "[미국증시] 마이크론 목표주가 3000달러…삼성전자·SK하이닉스는?",
-      "source": "자본시장뉴스",
-      "link": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE44V3pFVUFva0s4WlJZSUxfVUI3TDN0SGltMFRFUnplZjJZODM4LTkyQlNPdzN1dG82Zmo3QkFCX1I2RmRKVXJzWDlmMHFZaGlvZ3QyQ2w4Y0NZMjJxdVRXTFppbWJGZk0?oc=5"
+      "time": "2026-10-08T07:00:04+09:00",
+      "title": "SK하이닉스, AI환경연구소 설립한다…반도체 환경문제 선제대응",
+      "source": "연합뉴스",
+      "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE1JYXNMRnRXZ2stV0tjMkU2R3J6SG15cU1YR2UyYVBNb0VLUTRZMGlpb2psYVd5dmtGMU55d0tQQkFuR0JfakNiUThlSnFxVktTT3VvUUxqNkxZbFB2TXFpcdIBYEFVX3lxTE1JYXNMRnRXZ2stV0tjMkU2R3J6SG15cU1YR2UyYVBNb0VLUTRZMGlpb2psYVd5dmtGMU55d0tQQkFuR0JfakNiUThlSnFxVktTT3VvUUxqNkxZbFB2TXFpcQ?oc=5"
+    },
+    {
+      "time": "2026-10-08T07:43:01+09:00",
+      "title": "SK하이닉스, AI환경연구소 설립 추진…반도체·D센터 문제 선제대응",
+      "source": "조세금융신문",
+      "link": "https://news.google.com/rss/articles/CBMiY0FVX3lxTE5kSUVwWS1JMHNjRl9FVmEyZ2pTSHh4aUtHQ1NGTzJIUllGNzBfV1NkQXdxZEluZ1k5XzREYnBXZlpoOFVoNUZIYTdEaXEwdU5faEhJSDV0Yi10NGJuU0FOVGUyWQ?oc=5"
+    },
+    {
+      "time": "2026-10-08T08:21:54+09:00",
+      "title": "\"반도체 환경 난제 해결하겠다\"…SK하이닉스 'AI 환경연구소' 설립 추진",
+      "source": "아시아경제",
+      "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE4tLUlnLTVYcG45d3RENjdzZzJaUUZqMkY2SUJocjY1Ujl5R3VFQloySjVoSkRpS0tacVdzOHJlb1hGc1FKaFJLd1lnVVBzdUFiRnVRNDRSN0JGMHktNVBaOQ?oc=5"
+    },
+    {
+      "time": "2026-10-08T08:44:00+09:00",
+      "title": "SK하이닉스, AI환경연구소 설립 추진…반도체 환경 난제 대응",
+      "source": "연합뉴스TV",
+      "link": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTFBJNjdpSWhjSzI3dXN5aUoyY0l4NVI3MERuT1BvZWRkLUo2VkJtcEo5cGNjYWJReWw3YjZjMlBCLVVFbjdYUWs3bXJvbE5nbFQwelFxSV9ZR1ZQTXI1WGlmcU80Rl9jVlE?oc=5"
+    }
+  ],
+  "top_news": [
+    {
+      "time": "2026-10-08T07:10:00+09:00",
+      "title": "\"SK하이닉스, 목표주가 400만원 유지…메모리 수요 지속\"[클릭e종목]",
+      "source": "아시아경제",
+      "link": "https://news.google.com/rss/articles/CBMiYkFVX3lxTFA3S05VbjJOTGZhUzlKQ3NncFNJY2Z0MWpSeEs4MjQyYWx1T0lIWUFpTUJ5TWxSbWxBeWMwQTVkZ3RUVFhNWHNrMnZpVUFZR2RINDdmZWhKZGFrSE5XUnk5MWlR?oc=5"
+    },
+    {
+      "time": "2026-10-08T17:58:50+09:00",
+      "title": "[오늘의 주목주] '반도체 투심 위축' SK스퀘어 주가 장중 7%대 내려, 코스피 외국인·기관 매도세에 6620선 하락 마감",
+      "source": "비즈니스포스트",
+      "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTFA3NnBSM0o1Nk1BUGJDOEJSWnVyVnQ5SG5GTm1POWJnTEJub1NyOXYycmFsdEZTLVI2elA4MkpMV2RCYlU3LWp1YXNpMnZuOWVGczNfWmNuRDRvVzZmVHNrMTZ0d25vTW04ekM1RzRfQWNHazQ?oc=5"
     },
     {
       "time": "2026-10-08T07:00:04+09:00",
@@ -539,53 +579,90 @@
       "title": "\"반도체 환경 난제 해결하겠다\"…SK하이닉스 'AI 환경연구소' 설립 추진",
       "source": "아시아경제",
       "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE4tLUlnLTVYcG45d3RENjdzZzJaUUZqMkY2SUJocjY1Ujl5R3VFQloySjVoSkRpS0tacVdzOHJlb1hGc1FKaFJLd1lnVVBzdUFiRnVRNDRSN0JGMHktNVBaOQ?oc=5"
-    }
-  ],
-  "top_news": [
-    {
-      "time": "2026-10-08T07:10:00+09:00",
-      "title": "\"SK하이닉스, 목표주가 400만원 유지…메모리 수요 지속\"[클릭e종목]",
-      "source": "아시아경제",
-      "link": "https://news.google.com/rss/articles/CBMiYkFVX3lxTFA3S05VbjJOTGZhUzlKQ3NncFNJY2Z0MWpSeEs4MjQyYWx1T0lIWUFpTUJ5TWxSbWxBeWMwQTVkZ3RUVFhNWHNrMnZpVUFZR2RINDdmZWhKZGFrSE5XUnk5MWlR?oc=5"
     },
     {
-      "time": "2026-10-08T08:30:17+09:00",
-      "title": "[미국증시] 마이크론 목표주가 3000달러…삼성전자·SK하이닉스는?",
-      "source": "자본시장뉴스",
-      "link": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE44V3pFVUFva0s4WlJZSUxfVUI3TDN0SGltMFRFUnplZjJZODM4LTkyQlNPdzN1dG82Zmo3QkFCX1I2RmRKVXJzWDlmMHFZaGlvZ3QyQ2w4Y0NZMjJxdVRXTFppbWJGZk0?oc=5"
-    },
-    {
-      "time": "2026-10-08T14:10:47+09:00",
-      "title": "SK증권, 'AI 투자지도 2027' 세미나…반도체 투자전략 짚는다",
-      "source": "서울경제TV",
-      "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE90cVgtVjNLN0F6Y3VnaW0wdDFnb01NbDRLcGNFcGpFYjNyZEZYaG00TjJ6cUFrbzZ6MHdmNWIyZlBFdEt2WTNFbG92VTJpeGI5akg5dlpkdHZqVnUyUVU1Z1puQUc?oc=5"
-    },
-    {
-      "time": "2026-10-08T15:10:54+09:00",
-      "title": "SK증권, AI 시대 투자 기회 짚는다…‘2027 반도체 투자전략’ 공개",
-      "source": "리드경제",
-      "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE4xbld4VmZUTl9pUFpGWTItYU9XVUpaY05Yb3J5VW90T1dhTzBWSFotbVJUaDdneldMODdYTlF1N1FZSWpMdW1BWEp5azJsY0JBQUVqRWo4VTQ3VVY3bVZiOVdiVmZoTkx3Uk4zSVVFU3Y?oc=5"
-    },
-    {
-      "time": "2026-10-08T07:00:04+09:00",
-      "title": "SK하이닉스, AI환경연구소 설립한다…반도체 환경문제 선제대응",
-      "source": "연합뉴스",
-      "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE1JYXNMRnRXZ2stV0tjMkU2R3J6SG15cU1YR2UyYVBNb0VLUTRZMGlpb2psYVd5dmtGMU55d0tQQkFuR0JfakNiUThlSnFxVktTT3VvUUxqNkxZbFB2TXFpcdIBYEFVX3lxTE1JYXNMRnRXZ2stV0tjMkU2R3J6SG15cU1YR2UyYVBNb0VLUTRZMGlpb2psYVd5dmtGMU55d0tQQkFuR0JfakNiUThlSnFxVktTT3VvUUxqNkxZbFB2TXFpcQ?oc=5"
-    },
-    {
-      "time": "2026-10-08T07:43:01+09:00",
-      "title": "SK하이닉스, AI환경연구소 설립 추진…반도체·D센터 문제 선제대응",
-      "source": "조세금융신문",
-      "link": "https://news.google.com/rss/articles/CBMiY0FVX3lxTE5kSUVwWS1JMHNjRl9FVmEyZ2pTSHh4aUtHQ1NGTzJIUllGNzBfV1NkQXdxZEluZ1k5XzREYnBXZlpoOFVoNUZIYTdEaXEwdU5faEhJSDV0Yi10NGJuU0FOVGUyWQ?oc=5"
+      "time": "2026-10-08T08:44:00+09:00",
+      "title": "SK하이닉스, AI환경연구소 설립 추진…반도체 환경 난제 대응",
+      "source": "연합뉴스TV",
+      "link": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTFBJNjdpSWhjSzI3dXN5aUoyY0l4NVI3MERuT1BvZWRkLUo2VkJtcEo5cGNjYWJReWw3YjZjMlBCLVVFbjdYUWs3bXJvbE5nbFQwelFxSV9ZR1ZQTXI1WGlmcU80Rl9jVlE?oc=5"
     }
   ],
   "disclosures": [],
   "disclosure_note": null,
-  "flows": null,
-  "flow_story": null,
+  "flows": "외국인 -513,008 / 기관 -22,595",
+  "flow_story": {
+    "direction": "down",
+    "c2c": -0.024376088218224012,
+    "actors": [
+      {
+        "key": "foreign_net",
+        "name": "외국인",
+        "shares": -513008.0,
+        "won": -862366448000.0,
+        "vs_usual": 0.9153482868221432
+      },
+      {
+        "key": "inst_net",
+        "name": "기관",
+        "shares": -22595.0,
+        "won": -37982195000.0,
+        "vs_usual": 0.15055183460686614
+      },
+      {
+        "key": "indiv_net",
+        "name": "개인",
+        "shares": 130172.0,
+        "won": 218819132000.0,
+        "vs_usual": 0.25094515052140154
+      },
+      {
+        "key": "other_net",
+        "name": "기타 법인 등(추정)",
+        "shares": 405431.0,
+        "won": 681529511000.0,
+        "vs_usual": null
+      }
+    ],
+    "lead": {
+      "key": "foreign_net",
+      "name": "외국인",
+      "shares": -513008.0,
+      "won": -862366448000.0,
+      "vs_usual": 0.9153482868221432
+    },
+    "counter": {
+      "key": "other_net",
+      "name": "기타 법인 등(추정)",
+      "shares": 405431.0,
+      "won": 681529511000.0,
+      "vs_usual": null
+    },
+    "all_one_side": false,
+    "observations": [
+      "전일까지 20거래일 고점: 종가 돌파 없음 · 종가 위치 -13.13%.",
+      "전일까지 60거래일 고점: 종가 돌파 없음 · 종가 위치 -27.06%.",
+      "같은 5거래일 수익률: 이 종목 -5.35%, 삼성전자 -2.42% · 차이 -2.93%p.",
+      "같은 20거래일 수익률: 이 종목 -5.72%, 삼성전자 -2.96% · 차이 -2.76%p.",
+      "같은 60거래일 수익률: 이 종목 -23.08%, 삼성전자 -5.76% · 차이 -17.33%p.",
+      "외국인 순매도 지속·거래량 대비 강도 약화: 직전 5일 → 최근 5일 순매수/거래량 -19.51% → -18.07% (일평균 -614,187주 → -465,064주). 향후 상승을 뜻하는 신호는 아닙니다.",
+      "코스피도 -2.62% — 시장 전체가 같은 방향이었습니다.",
+      "삼성전자 -2.42% — 반도체 업종이 함께 움직였습니다.",
+      "전날 밤 미국 반도체지수(SOX) -1.15% — 미국 반도체 흐름과 같은 방향입니다.",
+      "전날 밤 마이크론은 +4.06%로 반대 방향이었습니다.",
+      "종가가 당일 범위(저가 1,681,000~고가 1,759,000원)의 아래쪽 0% 지점 — 저가 부근에서 마감했습니다.",
+      "장중 60일선(1,723,108원) 위로 올랐다가 그 아래로 밀려 마감했습니다.",
+      "우리 장중(09:00~15:30) 나스닥100 선물 -0.48%, 이 종목 고점 이후 -0.53% · 미 10년물 국채 선물 -0.18%(금리 상승), 이 종목 고점 이후 -0.13% · 원/달러 -0.02%, 이 종목 고점 이후 +0.04%.",
+      "자사주 매입 기간 중(직접 취득 2026-08-20~2026-11-19, 40,004,340,000,000, DART 공시) — 회사 자신의 매수는 기타 법인으로 잡힙니다.",
+      "마감가가 장중 고가보다 -4.24% 아래 — 오른 폭을 장중에 꽤 반납했습니다.",
+      "기타 법인 등(추정) 순매수 +6,815억원 — 회사의 자사주 매입 기간이라 회사 매입과 맞는 모양입니다."
+    ],
+    "estimated_indiv": false,
+    "source_note": "출처 naver+cache · 장 마감 직후 잠정치라 저녁 확정치와 다를 수 있습니다 · KRX는 받지 못함(pykrx 미설치)"
+  },
   "flow_status": {
-    "state": "pending",
-    "detail": "최신 2026-10-07"
+    "state": "ok",
+    "detail": "naver+cache",
+    "krx_error": "pykrx 미설치"
   },
   "context": {},
   "market": {
@@ -596,9 +673,9 @@
     "steady": 40,
     "upper": 3,
     "lower": 0,
-    "individual": 29309.0,
-    "foreign": -20322.0,
-    "institution": -16531.0,
+    "individual": 29972.0,
+    "foreign": -20704.0,
+    "institution": -16789.0,
     "prev_close": 6803.9,
     "open": 6808.68,
     "high": 6810.83,

@@ -454,6 +454,11 @@ def build_frame(profit, exports, usdkrw, k, cli=None, tsmc=None, quantity=None):
         f["volume_yoy"] = f["volume_k"] / f["volume_k"].shift(4) - 1
     f["profit"] = profit.reindex(f.index)
     f["profit_lag1"] = f["profit"].shift(1)                    # 직전 분기(이번 분기 중에 이미 발표됨)
+    # 이익 규모가 급변해도 직전 공시 수준에서 출발한다(2026-10-08 오차 분석).
+    # 이 기준값과 실제의 차이만 학습하며, 당기 실제 이익은 기준값에 넣지 않는다.
+    prior_exports = f["exports_krw_k"].shift(1)
+    f["profit_export_anchor"] = (f["profit_lag1"] * f["exports_krw_k"]
+                                  / prior_exports.where(prior_exports > 0))
     f["profit_lag3"] = f["profit"].shift(3)                    # 다음 분기의 '4분기 전'
     f["profit_lag4"] = f["profit"].shift(4)
     f["profit_next"] = f["profit"].shift(-1)                   # 다음 분기 타깃
@@ -488,7 +493,7 @@ CLI_FEATURES = ["cli_level", "cli_change_3m"]
 
 
 def walk_forward(f, target="profit", features=None, gap=0, rw="profit_lag1", sn="profit_lag4",
-                 first_test=FIRST_TEST_QUARTER, min_train=MIN_TRAIN_QUARTERS):
+                 first_test=FIRST_TEST_QUARTER, min_train=MIN_TRAIN_QUARTERS, offset=None):
     """확장 창. 분기 t는 타깃이 이미 알려진 분기들로만 학습한다.
 
     gap=0: 이번 분기 나우캐스트. t 이전 분기의 영업이익은 다 발표됐다.
@@ -498,18 +503,18 @@ def walk_forward(f, target="profit", features=None, gap=0, rw="profit_lag1", sn=
     from sklearn.pipeline import make_pipeline
     from sklearn.preprocessing import StandardScaler
     features = features or FEATURES
-    usable = f.dropna(subset=features + [target, rw, sn])
+    usable = f.replace([np.inf, -np.inf], np.nan).dropna(subset=features + [target, rw, sn] + ([offset] if offset else []))
     rows = []
     for t in usable.index[usable.index >= pd.Period(first_test, freq="Q")]:
         train = usable[usable.index < t - gap]
         if len(train) < min_train:
             continue
         model = make_pipeline(StandardScaler(), Ridge(alpha=1.0))
-        model.fit(train[features], train[target])
+        model.fit(train[features], train[target] - (train[offset] if offset else 0))
         rows.append({
             "quarter": t,
             "actual": float(usable.loc[t, target]),
-            "model": float(model.predict(usable.loc[[t], features])[0]),
+            "model": float(model.predict(usable.loc[[t], features])[0]) + (float(usable.loc[t, offset]) if offset else 0),
             "random_walk": float(usable.loc[t, rw]),
             "seasonal_naive": float(usable.loc[t, sn]),
         })
@@ -674,18 +679,62 @@ def apply_flash_interval_policy(result):
             block.update(estimate_basis="partial_month_scenario", low=None, high=None, interval_note=note)
 
 
-def fit_live(f, live_quarter, target="profit", features=None, gap=0):
+def fit_live(f, live_quarter, target="profit", features=None, gap=0, offset=None):
     from sklearn.linear_model import Ridge
     from sklearn.pipeline import make_pipeline
     from sklearn.preprocessing import StandardScaler
     features = features or FEATURES
-    usable = f.dropna(subset=features + [target])
+    f = f.replace([np.inf, -np.inf], np.nan)
+    needed = features + ([offset] if offset else [])
+    usable = f.dropna(subset=needed + [target])
     train = usable[usable.index < live_quarter - gap]
-    live = f.loc[[live_quarter], features] if live_quarter in f.index else None
+    live = f.loc[[live_quarter], needed] if live_quarter in f.index else None
     if len(train) < MIN_TRAIN_QUARTERS or live is None or live.isna().any(axis=1).iloc[0]:
         return None, len(train)
-    model = make_pipeline(StandardScaler(), Ridge(alpha=1.0)).fit(train[features], train[target])
-    return float(model.predict(live)[0]), len(train)
+    model = make_pipeline(StandardScaler(), Ridge(alpha=1.0)).fit(
+        train[features], train[target] - (train[offset] if offset else 0))
+    return float(model.predict(live[features])[0]) + (float(live[offset].iloc[0]) if offset else 0), len(train)
+
+
+def prequential_anchor_choice(base, candidate):
+    """각 분기 이전에 채점 가능한 쌍체 오차만으로 후보를 고른다."""
+    # 미래의 성적이 좋아졌다고 과거에도 새 모델을 골랐던 것으로 계산하지 않는다.
+    result = base.copy()
+    for quarter in result.index:
+        if quarter not in candidate.index or not np.isfinite(candidate.loc[quarter, 'model']):
+            continue
+        comparison = paired_ablation(base.loc[base.index < quarter], candidate.loc[candidate.index < quarter])
+        if comparison.get('n', 0) >= MIN_CANDIDATE_ROWS and comparison['mae_diff'] < 0:
+            result.loc[quarter, 'model'] = candidate.loc[quarter, 'model']
+    return result
+
+
+def fit_nowcast(f, live_quarter, months_used, full_months=True):
+    """3개월 완결 자료에서만 수출 기준 보정을 후보로 쓰는 시간순 선택 정책.
+
+    2026-10-08: 1·2개월/월중 속보는 다른 관측 조건이고 개선이 재현되지 않아 기존 모델을 유지한다.
+    현재 분기 실제값은 이미 입력돼 있더라도 선택·학습·평가에 사용하지 않는다.
+    """
+    history = f.loc[f.index < live_quarter]
+    base = walk_forward(history)
+    point, n_train = fit_live(f, live_quarter)
+    output = {'point': point, 'n_train': n_train, 'chosen': 'level_ridge', 'oof': base,
+              'base_oof': base, 'selection': {'eligible': False, 'reason': '3개월 월 전체 자료에서만 보정 후보를 검증합니다.'}}
+    if months_used != 3 or not full_months:
+        return output
+    candidate = walk_forward(history, offset='profit_export_anchor')
+    comparison = paired_ablation(base, candidate)
+    corrected, corrected_n = fit_live(f, live_quarter, offset='profit_export_anchor')
+    use = (comparison.get('n', 0) >= MIN_CANDIDATE_ROWS and comparison['mae_diff'] < 0
+           and corrected is not None and np.isfinite(corrected))
+    output['selection'] = {**comparison, 'eligible': True, 'min_pairs': MIN_CANDIDATE_ROWS,
+                           'last_known_quarter': str(history.index[-1]) if len(history) else None,
+                           'base_point': point, 'candidate_point': corrected,
+                           'policy': '과거 쌍체 MAE가 작을 때만 수출 기준 보정 선택'}
+    output['oof'] = prequential_anchor_choice(base, candidate)
+    if use:
+        output.update(point=corrected, n_train=corrected_n, chosen='export_anchor_residual')
+    return output
 
 
 # ---------------------------------------------------------------------------
@@ -698,7 +747,7 @@ LEDGER_COLUMNS = [
     "record_id", "run_id", "created_at_kst", "target", "quarter", "months_used", "months_included",
     "point", "low", "high", "raw_point", "beats_baselines", "mae_model", "mae_random_walk",
     "mae_seasonal_naive", "n_eval", "last_actual", "status", "actual", "actual_source",
-    "error", "ape", "scored_at_kst", "estimate_basis", "interval_note",
+    "error", "ape", "scored_at_kst", "estimate_basis", "interval_note", "nowcast_model",
 ]
 
 
@@ -713,6 +762,22 @@ def read_ledger(path):
                    "mae_seasonal_naive", "last_actual", "actual", "error", "ape", "months_used", "n_eval"):
         frame[column] = pd.to_numeric(frame[column], errors="coerce")
     return frame[LEDGER_COLUMNS]
+
+
+def known_quarter_actual(result, ledger=None):
+    """조회 장애 때도 확정실적·이미 채점한 원장으로 발표 사실을 보존한다."""
+    quarter = str(result.get('quarter_code', ''))
+    values = []
+    if str(result.get('last_actual_quarter')) == quarter:
+        values.append(result.get('last_actual'))
+    values.extend([(result.get('provisional') or {}).get(quarter), result.get('announced_actual')])
+    if ledger is not None and not ledger.empty:
+        rows = ledger[(ledger['target'] == result.get('target')) &
+                      (ledger['quarter'] == quarter) & (ledger['status'] == 'scored')]
+        confirmed = rows[rows['actual_source'] == 'confirmed']
+        values.extend((confirmed if len(confirmed) else rows)['actual'].tolist())
+    return next((float(value) for value in values if value is not None and pd.notna(value)
+                 and np.isfinite(float(value))), None)
 
 
 def append_estimate(ledger, result, run_id):
@@ -735,6 +800,9 @@ def append_estimate(ledger, result, run_id):
 
 
 def _append_one(ledger, result, months_used, run_id):
+    # 발표 후 빠져 있던 k를 새로 기록해 즉시 채점하면 사전 성적이 부풀려진다.
+    if known_quarter_actual(result, ledger) is not None:
+        return ledger, False
     key = (str(result["quarter_code"]), int(months_used))
     months = pd.to_numeric(ledger["months_used"], errors="coerce")
     existing = set(zip(ledger["quarter"].astype(str), months.where(months.notna(), -1).astype(int)))
@@ -748,6 +816,7 @@ def _append_one(ledger, result, months_used, run_id):
         "months_included": result.get("months_included"),
         "estimate_basis": result.get("estimate_basis", "monthly"),
         "interval_note": result.get("interval_note", ""),
+        "nowcast_model": result.get("nowcast_model", ""),
         "point": result.get("point"), "low": result.get("low"), "high": result.get("high"),
         # 축소·게이트 이전의 원시 추정값. 게이트에 걸려 point 가 비어도 무엇을 계산했는지는 남는다.
         "raw_point": result.get("raw_point"),
@@ -1075,6 +1144,17 @@ def render_fragment(result):
 
     parts.append(render_segment_split(r))
     parts.append('<h4 style="font-size:14px;margin:18px 0 6px">추정</h4>')
+    if r.get('nowcast_model'):
+        method = ('수출 기준 보정' if r['nowcast_model'] == 'export_anchor_residual' else '기존 수준 회귀')
+        parts.append(f'<div style="font-size:12px;color:#6b7178;margin-bottom:6px">적용 모델: {method}. '
+                     '보정 모델은 직전 이익에 원화 수출 증감을 반영하고 남은 차이를 학습합니다. '
+                     '3개월 월 전체 자료에서 과거 쌍체 오차가 더 작을 때만 선택합니다. '
+                     '아래 검증은 각 분기 이전의 오차로 모델을 선택한 정책의 성적이며, 향후 실전 성적은 원장으로 확인합니다.</div>')
+    announced = known_quarter_actual(r)
+    if announced is not None:
+        parts.append(f'<div style="font-size:13px;color:#a8322a;margin-bottom:8px">'
+                     f'발표 실적 {jo(announced)}을 확인했습니다. 아래 현재 추정은 <b>발표 후 재계산</b>이며 '
+                     '사전 예측 성적이 아닙니다. 발표 전 기록의 성적은 ‘지난 분기 추정 vs 실제’에서 확인하세요.</div>')
     if r["point"] is not None:
         interval_text = ("속보 기반 시나리오 · 구간 미검증" if r.get("interval_note") else
                          f'80% 구간 {jo(r["low"])} ~ {jo(r["high"])}')
@@ -1523,9 +1603,12 @@ def analyse(target, out_dir, fetch=True):
         print("  ⚠️ D램 현물가를 받지 못했습니다(무시):", exc, flush=True)
 
     f = build_frame(profit, exports, usdkrw, months_used, cli, tsmc, quantity)
-    oof = walk_forward(f)
+    full_months = all(row.get('days') is not None and
+                      row['days'] >= pd.Timestamp(row['month']).days_in_month for row in flash_applied)
+    nowcast = fit_nowcast(f, live_quarter, months_used, full_months=full_months)
+    oof, oof_base = nowcast['oof'], nowcast['base_oof']
     ev = evaluate(oof)
-    point, n_train = fit_live(f, live_quarter)
+    point, n_train = nowcast['point'], nowcast['n_train']
 
     # TSMC 를 넣으면 이번 분기 추정이 나아지는가. 같은 날짜·같은 방법으로 쌍체 비교한다.
     leverage_active = feature_coverage(f, LEVERAGE_FEATURES) > 0.5
@@ -1542,22 +1625,22 @@ def analyse(target, out_dir, fetch=True):
             error = oof["actual"] - oof["model"]
             ok = growth.notna() & error.notna()
             return float(np.corrcoef(growth[ok], error[ok])[0, 1]) if ok.sum() > 2 else float("nan")
-        leverage_ablation = {**paired_ablation(oof, oof_lev),          # 같은 분기에서만 비교
-                             "bias_with": growth_bias(oof_lev), "bias_without": growth_bias(oof)}
+        leverage_ablation = {**paired_ablation(oof_base, oof_lev),          # 기존 회귀식에 특징을 더한 효과만 비교
+                             "bias_with": growth_bias(oof_lev), "bias_without": growth_bias(oof_base)}
 
     price_active = feature_coverage(f, UNIT_PRICE_FEATURES) > 0.5
     price_ablation = {}
     if price_active:
-        price_ablation = paired_ablation(oof, walk_forward(f, features=FEATURES + UNIT_PRICE_FEATURES))
+        price_ablation = paired_ablation(oof_base, walk_forward(f, features=FEATURES + UNIT_PRICE_FEATURES))
 
     tsmc_active = feature_coverage(f, TSMC_FEATURES) > 0.5
     tsmc_ablation = {}
     if tsmc_active:
         oof_tsmc = walk_forward(f, features=FEATURES + TSMC_FEATURES)
         with_tsmc = evaluate(oof_tsmc)
-        tsmc_ablation = {**paired_ablation(oof, oof_tsmc),
+        tsmc_ablation = {**paired_ablation(oof_base, oof_tsmc),
                          "beats_with": with_tsmc.get("beats_baselines"),
-                         "beats_without": ev.get("beats_baselines")}
+                         "beats_without": evaluate(oof_base).get("beats_baselines")}
     raw_point = point          # 기준선 게이트에 걸리기 전의 원시 추정값
 
     # ---- 다음 분기 전망 (CLI가 이론적으로 맞는 자리) --------------------------------
@@ -1642,6 +1725,7 @@ def analyse(target, out_dir, fetch=True):
         "flash_info": flash_info,
         "exports_snapshot_hash": exports_snapshot["snapshot_hash"],
         "point": point, "raw_point": raw_point,
+        "nowcast_model": nowcast['chosen'], "nowcast_selection": nowcast['selection'],
         "low": interval_bounds(point, ev.get("interval_rel_halfwidth"))[0],
         "high": interval_bounds(point, ev.get("interval_rel_halfwidth"))[1],
         "change_vs_last": (point / last_actual - 1) if (point is not None and last_actual) else float("nan"),
@@ -1664,6 +1748,8 @@ def analyse(target, out_dir, fetch=True):
         "generated_at": datetime.now(KST).strftime("%Y-%m-%d %H:%M KST"),
     }
     apply_flash_interval_policy(result)
+    result['announced_actual'] = known_quarter_actual(
+        result, read_ledger(ROOT / 'forecast_history' / target / 'earnings_log.csv'))
     result["chart_svg"] = render_chart(f, oof, spec["name"])
     # 부문 분리 추정(삼성전자만, 2026-09-29). 실패해도 기존 추정은 그대로 낸다.
     if target == "samsung" and result.get("quarter_code"):
@@ -1705,6 +1791,7 @@ def main():
             ) from exc
         print("  원장을 받지 못했습니다(로컬만 사용):", exc, flush=True)
     ledger = read_ledger(ledger_path)
+    result['announced_actual'] = known_quarter_actual(result, ledger)
     ledger, added = append_estimate(ledger, result, run_id)
     ledger, scored = score_ledger(ledger, profit_series, result.get("provisional"))
     ledger.to_csv(ledger_path, index=False)

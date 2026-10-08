@@ -1,0 +1,280 @@
+{
+  "source_commit": "67ec5688592e9657d193187aab0cee901d97eda2",
+  "input_sha256": {
+    "macro_history/fx_inputs.csv": "4c787350f7a2dcf13ddf8050c9e02cae1f0ad9f13698ffa0ebf722b3307a6673",
+    "docs/samsung/exports_snapshot.json": "0283480a8a595582a707007af6237723c4cc014bd9b90bd3e33c71166a825b19",
+    "macro_history/operating_profit_samsung.csv": "3ba46bec133f894df2596192acee6d44c89f911c2f9c9efd0252d9e8e5ec812b",
+    "docs/sk_hynix/exports_snapshot.json": "cb00d7924af34e1d40a48fc1e3a92740a710b8cd04494b2e169eb6a3b77af055",
+    "macro_history/operating_profit_sk_hynix.csv": "4cb5964ec521fe7e2775616e352edccc37d6af00b1df43809e3faa15b0f51a12"
+  },
+  "evaluation_cutoff_exclusive": "2026Q3",
+  "policy": "3개월 월 전체 자료에서 이전 쌍체 오차 8개 이상, 후보 MAE가 작을 때만 선택",
+  "limitations": [
+    "현재 저장된 수정 이력 자료를 이용한 시간순 재검증이며 당시 원본 자료 빈티지가 아님",
+    "후보 방식과 3개월 적용 범위는 이번 사후 연구에서 정했으므로 독립된 최종 검증이 아님",
+    "2026Q3 재계산은 진단용이며 원장의 사전 성적에 합산하지 않음",
+    "원/달러는 발행 때 쓰던 yfinance 월평균을 저장한 fx_inputs 보관본 사용"
+  ],
+  "summary": [
+    {
+      "target": "samsung",
+      "months_used": 1,
+      "n": 22,
+      "first": "2021Q1",
+      "last": "2026Q2",
+      "base_mae_krw_tn": 4.307103908963066,
+      "policy_mae_krw_tn": 4.307103908963066,
+      "improvement_pct": 0.0,
+      "late_n": 11,
+      "late_base_mae_krw_tn": 6.654987367842015,
+      "late_policy_mae_krw_tn": 6.654987367842015,
+      "live_chosen": "level_ridge",
+      "q3_recalculated_krw_tn": 122.1990879855544
+    },
+    {
+      "target": "samsung",
+      "months_used": 2,
+      "n": 22,
+      "first": "2021Q1",
+      "last": "2026Q2",
+      "base_mae_krw_tn": 4.352335107003838,
+      "policy_mae_krw_tn": 4.352335107003838,
+      "improvement_pct": 0.0,
+      "late_n": 11,
+      "late_base_mae_krw_tn": 6.813292320779642,
+      "late_policy_mae_krw_tn": 6.813292320779642,
+      "live_chosen": "level_ridge",
+      "q3_recalculated_krw_tn": 120.528232368075
+    },
+    {
+      "target": "samsung",
+      "months_used": 3,
+      "n": 22,
+      "first": "2021Q1",
+      "last": "2026Q2",
+      "base_mae_krw_tn": 4.107095849152639,
+      "policy_mae_krw_tn": 3.7924119501192934,
+      "improvement_pct": 7.661956540368298,
+      "late_n": 11,
+      "late_base_mae_krw_tn": 6.112489026791424,
+      "late_policy_mae_krw_tn": 5.829687235954455,
+      "live_chosen": "export_anchor_residual",
+      "q3_recalculated_krw_tn": 110.3528146722749
+    },
+    {
+      "target": "sk_hynix",
+      "months_used": 1,
+      "n": 22,
+      "first": "2021Q1",
+      "last": "2026Q2",
+      "base_mae_krw_tn": 2.176711082128126,
+      "policy_mae_krw_tn": 2.176711082128126,
+      "improvement_pct": 0.0,
+      "late_n": 11,
+      "late_base_mae_krw_tn": 3.366080419182995,
+      "late_policy_mae_krw_tn": 3.366080419182995,
+      "live_chosen": "level_ridge",
+      "q3_recalculated_krw_tn": 83.16950556530668
+    },
+    {
+      "target": "sk_hynix",
+      "months_used": 2,
+      "n": 22,
+      "first": "2021Q1",
+      "last": "2026Q2",
+      "base_mae_krw_tn": 1.8895223708448288,
+      "policy_mae_krw_tn": 1.8895223708448288,
+      "improvement_pct": 0.0,
+      "late_n": 11,
+      "late_base_mae_krw_tn": 2.911281929583234,
+      "late_policy_mae_krw_tn": 2.911281929583234,
+      "live_chosen": "level_ridge",
+      "q3_recalculated_krw_tn": 80.82746297619482
+    },
+    {
+      "target": "sk_hynix",
+      "months_used": 3,
+      "n": 22,
+      "first": "2021Q1",
+      "last": "2026Q2",
+      "base_mae_krw_tn": 1.6945296977154383,
+      "policy_mae_krw_tn": 1.5061504684561084,
+      "improvement_pct": 11.11690338111526,
+      "late_n": 11,
+      "late_base_mae_krw_tn": 2.406177891140579,
+      "late_policy_mae_krw_tn": 2.0294135350111047,
+      "live_chosen": "export_anchor_residual",
+      "q3_recalculated_krw_tn": 78.52009531569796
+    }
+  ],
+  "candidate_screening": [
+    {
+      "target": "samsung",
+      "months_used": 1,
+      "method": "level",
+      "n": 22,
+      "mae_krw_tn": 4.307103908963066
+    },
+    {
+      "target": "samsung",
+      "months_used": 1,
+      "method": "delta",
+      "n": 22,
+      "mae_krw_tn": 4.0670212552212055
+    },
+    {
+      "target": "samsung",
+      "months_used": 1,
+      "method": "anchor",
+      "n": 22,
+      "mae_krw_tn": 4.567715210573903
+    },
+    {
+      "target": "samsung",
+      "months_used": 1,
+      "method": "leverage",
+      "n": 22,
+      "mae_krw_tn": 6.7812202758072555
+    },
+    {
+      "target": "samsung",
+      "months_used": 2,
+      "method": "level",
+      "n": 22,
+      "mae_krw_tn": 4.352335107003838
+    },
+    {
+      "target": "samsung",
+      "months_used": 2,
+      "method": "delta",
+      "n": 22,
+      "mae_krw_tn": 4.087615885740357
+    },
+    {
+      "target": "samsung",
+      "months_used": 2,
+      "method": "anchor",
+      "n": 22,
+      "mae_krw_tn": 4.004782930620898
+    },
+    {
+      "target": "samsung",
+      "months_used": 2,
+      "method": "leverage",
+      "n": 22,
+      "mae_krw_tn": 4.8646987396093735
+    },
+    {
+      "target": "samsung",
+      "months_used": 3,
+      "method": "level",
+      "n": 22,
+      "mae_krw_tn": 4.107095849152639
+    },
+    {
+      "target": "samsung",
+      "months_used": 3,
+      "method": "delta",
+      "n": 22,
+      "mae_krw_tn": 3.9050504830437687
+    },
+    {
+      "target": "samsung",
+      "months_used": 3,
+      "method": "anchor",
+      "n": 22,
+      "mae_krw_tn": 3.748776710034266
+    },
+    {
+      "target": "samsung",
+      "months_used": 3,
+      "method": "leverage",
+      "n": 22,
+      "mae_krw_tn": 3.7367041225969544
+    },
+    {
+      "target": "sk_hynix",
+      "months_used": 1,
+      "method": "level",
+      "n": 22,
+      "mae_krw_tn": 2.176711082128126
+    },
+    {
+      "target": "sk_hynix",
+      "months_used": 1,
+      "method": "delta",
+      "n": 22,
+      "mae_krw_tn": 2.106228834107516
+    },
+    {
+      "target": "sk_hynix",
+      "months_used": 1,
+      "method": "anchor",
+      "n": 22,
+      "mae_krw_tn": 2.571772986566185
+    },
+    {
+      "target": "sk_hynix",
+      "months_used": 1,
+      "method": "leverage",
+      "n": 22,
+      "mae_krw_tn": 2.86841080623995
+    },
+    {
+      "target": "sk_hynix",
+      "months_used": 2,
+      "method": "level",
+      "n": 22,
+      "mae_krw_tn": 1.8895223708448288
+    },
+    {
+      "target": "sk_hynix",
+      "months_used": 2,
+      "method": "delta",
+      "n": 22,
+      "mae_krw_tn": 1.7885894458835545
+    },
+    {
+      "target": "sk_hynix",
+      "months_used": 2,
+      "method": "anchor",
+      "n": 22,
+      "mae_krw_tn": 1.981513566379614
+    },
+    {
+      "target": "sk_hynix",
+      "months_used": 2,
+      "method": "leverage",
+      "n": 22,
+      "mae_krw_tn": 1.7837382062748572
+    },
+    {
+      "target": "sk_hynix",
+      "months_used": 3,
+      "method": "level",
+      "n": 22,
+      "mae_krw_tn": 1.6945296977154383
+    },
+    {
+      "target": "sk_hynix",
+      "months_used": 3,
+      "method": "delta",
+      "n": 22,
+      "mae_krw_tn": 1.5997216512684
+    },
+    {
+      "target": "sk_hynix",
+      "months_used": 3,
+      "method": "anchor",
+      "n": 22,
+      "mae_krw_tn": 1.4550990306573
+    },
+    {
+      "target": "sk_hynix",
+      "months_used": 3,
+      "method": "leverage",
+      "n": 22,
+      "mae_krw_tn": 1.7173148328321077
+    }
+  ]
+}

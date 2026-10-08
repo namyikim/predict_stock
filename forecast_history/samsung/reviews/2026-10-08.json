@@ -3,7 +3,7 @@
   "name": "삼성전자",
   "peer_name": "SK하이닉스",
   "session_date": "2026-10-08",
-  "generated_at": "2026-10-08 16:11 KST",
+  "generated_at": "2026-10-08 16:46 KST",
   "summary": {
     "prev_close": 268500.0,
     "open": 269500.0,
@@ -15,11 +15,11 @@
     "c2c": -0.02420856610800748,
     "high_vs_open": 0.0018552875695732052,
     "low_vs_open": -0.0278293135435993,
-    "volume": 23550028.0,
-    "volume_ratio": 1.4111700701526564,
+    "volume": 23572382.0,
+    "volume_ratio": 1.4125095715642126,
     "kospi_c2c": -0.026157017169108343,
     "peer_c2c": -0.024376088218224012,
-    "usdkrw_chg": 0.00017913194808261146,
+    "usdkrw_chg": 0.00025375507396252495,
     "us_nights": 1,
     "sox_ret": -0.011474654541306362,
     "nasdaq_ret": -0.0022137708819671698,
@@ -148,12 +148,12 @@
     {
       "time": "2026-10-08T09:00:00+09:00",
       "price": 269000.0,
-      "volume": 896122.0
+      "volume": 896077.0
     },
     {
       "time": "2026-10-08T09:05:00+09:00",
       "price": 268750.0,
-      "volume": 224644.0
+      "volume": 224689.0
     },
     {
       "time": "2026-10-08T09:10:00+09:00",
@@ -278,12 +278,12 @@
     {
       "time": "2026-10-08T11:10:00+09:00",
       "price": 266750.0,
-      "volume": 189093.0
+      "volume": 189110.0
     },
     {
       "time": "2026-10-08T11:15:00+09:00",
       "price": 266750.0,
-      "volume": 106369.0
+      "volume": 106352.0
     },
     {
       "time": "2026-10-08T11:20:00+09:00",
@@ -333,12 +333,12 @@
     {
       "time": "2026-10-08T12:05:00+09:00",
       "price": 265500.0,
-      "volume": 76319.0
+      "volume": 76292.0
     },
     {
       "time": "2026-10-08T12:10:00+09:00",
       "price": 265500.0,
-      "volume": 243805.0
+      "volume": 243832.0
     },
     {
       "time": "2026-10-08T12:15:00+09:00",
@@ -358,22 +358,22 @@
     {
       "time": "2026-10-08T12:30:00+09:00",
       "price": 265000.0,
-      "volume": 135728.0
+      "volume": 135579.0
     },
     {
       "time": "2026-10-08T12:35:00+09:00",
       "price": 265000.0,
-      "volume": 326562.0
+      "volume": 326711.0
     },
     {
       "time": "2026-10-08T12:40:00+09:00",
       "price": 263750.0,
-      "volume": 290899.0
+      "volume": 290803.0
     },
     {
       "time": "2026-10-08T12:45:00+09:00",
       "price": 264500.0,
-      "volume": 252324.0
+      "volume": 252420.0
     },
     {
       "time": "2026-10-08T12:50:00+09:00",
@@ -527,16 +527,16 @@
       "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE1zWlVRU0VJVVh4M1BGZ1RCbGRjSHdTNGhtTEVlVFBIeDJSdVIwWjZEblpraDZMOGJHQjNzVmptdWlaVVNmNGt4V0xlU0ZWUnRNZDlfUnAwX01XU0XSAWBBVV95cUxOWmNETEN5QXdoWENjOFh1eEYteE9NbTRoVDVxeUVrN1RxOC1DODZtXzEyTGVRWG81TU1oTmpKNXZkUXhMLUNpNFFEUWNtYVlDUG82SlVoWUtkQVoteURIcFk?oc=5"
     },
     {
-      "time": "2026-10-08T07:50:00+09:00",
-      "title": "삼성전자 3분기 영업이익 107.4조 원…국내 기업 첫 100조 돌파",
-      "source": "KBS 뉴스",
-      "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTFB4MHVrdFlRT3RHV2lnMW0tdEllMTJvN1Jpa3gxNzYxZ1NIWWRhU2RXSEdGaFRnR29VeWpLUTFoTXlGejIxeHlDOExzR2tMd1pPZkxPMzBTTmd0VGM?oc=5"
-    },
-    {
       "time": "2026-10-08T07:59:00+09:00",
       "title": "삼성전자 3분기 영업이익 107조 4천억원…’100조원 시대’ 열었다",
       "source": "연합뉴스TV",
       "link": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE83NDAxQWtEblBwcmE5UWpTUmpGQmhiTW5raXRIcjVCVDhqV19hb3BCQlR3QjNFYWY0ekduNnM4SFhCTGZSVGNfMFdYWG5iNzFrT2J5QWZRczZ1Zk12VEtTWElEd05jYnc?oc=5"
+    },
+    {
+      "time": "2026-10-08T08:31:42+09:00",
+      "title": "삼성전자 3분기 영업이익 107조4천억 원‥4분기 연속 신기록",
+      "source": "MBC 뉴스",
+      "link": "https://news.google.com/rss/articles/CBMidEFVX3lxTE9Cb3ZfUXFMcVd1SDZiSFFrU1Z1b3BxOExWMTdsQlhSbXd5Tktva2xWRk1fbS1RR2lPb0M4YWFHQXNsY2NVYVRiajV4cXlkUmN0Vm1aNndrdW1GdDg5QkpTWTFEc1ZuNVpHVnQwSnpwLUdRTUVN0gF0QVVfeXFMTlduTC04SEpNNVBtMUpCNVR1em1OVDFXT2tKeE4tR0I1RjkwMjU5aldieFIzeThaVzV0LWRjOGppS21Rd1FMZDRUc1BfU0lWaldUSkJvd1ZPbU5KbGNiVVZubDVfUDR3N2kycXRKLWJvV3lUbng?oc=5"
     }
   ],
   "top_news": [
@@ -547,22 +547,16 @@
       "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTFB4Rkw2Mlp5dnc3V3NaY2YyemZwOHlZSWlkbm85S2JMQVNhQ2lycXE5OEpMTWZkRnRKdXZJbWcxNFJyaE1TSW5mb3BLeG9iQngzU1ZacnFVenNLSU1PUHFpbQ?oc=5"
     },
     {
-      "time": "2026-10-08T11:37:00+09:00",
-      "title": "삼성전자 '100조' 실적에도…기관·외국인 매도에 코스피 6750선 후퇴",
-      "source": "뉴스핌",
-      "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE9FOUtubE5kWXkzVnhLM3JaUVB3SmNwaXlNRjVhREJJZFk4NDlJRndDNWdQeHEteHhPUEJYOGZkdVBZNXR5ald5ZEFKOGtleTNNcUdkZHl1VV9xQzNf?oc=5"
-    },
-    {
       "time": "2026-10-08T15:01:52+09:00",
       "title": "예상 웃돈 삼성전자 3Q 실적…증권가 \"막연한 우려, D램 사이클 연장\"",
       "source": "연합인포맥스",
       "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE5VYUU2eS1EWk1Nb1pEc1dEbGs1cW5EbmdyVUdHNDNXcUgxX181SlNFWGZkdVlqYTNiX01pYThLVFlZdzIyc3NlSkhPTnNhSmZEOU9Ndnc5X1Q5TmRrb3gyaVYzRExRcFdCLXhWcWxMVzI?oc=5"
     },
     {
-      "time": "2026-10-08T09:49:00+09:00",
-      "title": "삼성전자 실적 발표에도 코스피·코스닥 혼조세",
-      "source": "YTN",
-      "link": "https://news.google.com/rss/articles/CBMiXkFVX3lxTFA5SEhZdVZTMTVwZllVV25LMXBiUkdLdDJhaExKWmxPZTFpbDY4UjVBRjU0WEJ0Yzc4blJ6Z3VzeXExV0JkZ05tZFBTSUs1UUI0VkhuSTdXeV9TdHI0M3c?oc=5"
+      "time": "2026-10-08T16:01:36+09:00",
+      "title": "삼성전자 역대 최대 실적에도 코스피 2%대 하락 마감‥금리·유가 영향",
+      "source": "MBC 뉴스",
+      "link": "https://news.google.com/rss/articles/CBMidEFVX3lxTE1RbGRUWlNUejZLb29Xd2NPamlTNjNuZC1vNkJfOUI4Yzl5a1ZCMmEzSGFyWFlaRHd3YlN1eF80Z2xUd3B4ZTQ2cDdqckhzRGZVMHItRGJtblZjM1Zpb216NzlydTJ0VXItT1lyRTVrdUduelA50gF0QVVfeXFMTXlTaF9BdWV3ZTg0OWpVSUtQT0FaTm15aU1xc1JOcWNabjc0WGd0ZGMzdTRLSmI5ZktoTDdJV2RPNVBDclUzUTRYM00zRzlMb2ZMRnQyZUZWOFA0cEMzT0VTcWxhMDByQkhKWFRINzZMb2x6bjU?oc=5"
     },
     {
       "time": "2026-10-08T10:05:44+09:00",
@@ -575,6 +569,12 @@
       "title": "107조원 벌었지만 삼성전자 주가는 주춤…'반도체 고점' 경계감 여전",
       "source": "아시아경제",
       "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTFBHNVhxUVk2NGYtUl95R3k0cWcwdzZLVzlfRXVISFJuelZnNTY3bHRVaVBuQlpHdk93a3ZqdW1KNDA1SHNkQnVUeF9PU1lZd01lcFE0UTVpRVFTWFQ5aWR4Xw?oc=5"
+    },
+    {
+      "time": "2026-10-08T10:42:00+09:00",
+      "title": "삼성전자 역대급 실적에도…코스피 6,700선 후퇴",
+      "source": "연합뉴스TV",
+      "link": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE1aR0g5S0hBM3NfY1BhNHRURDByZmh4T2pZdDdwN1k3YUNZYlJ1dzlBMmVRa1d6R3BJVFRFbWFxbmZBOXg0X0hUcmRlcTVZZ1BKTDFFMm5oVjFMT2ZWdE5Kc3o4NE9zcFU?oc=5"
     }
   ],
   "disclosures": [
@@ -607,9 +607,9 @@
     "steady": 40,
     "upper": 3,
     "lower": 0,
-    "individual": 29021.0,
-    "foreign": -19923.0,
-    "institution": -16639.0,
+    "individual": 29096.0,
+    "foreign": -20015.0,
+    "institution": -16624.0,
     "prev_close": 6803.9,
     "open": 6808.68,
     "high": 6810.83,
@@ -619,39 +619,39 @@
   "earnings_reactions": {
     "n": 45,
     "down": 25,
-    "mean": 0.0044917051905369555,
+    "mean": 0.004491748600005198,
     "first": "2015-04-07",
     "last": "2026-10-08",
     "prior_up": {
       "n": 27,
       "down": 16,
-      "mean": 0.005655282710595545
+      "mean": 0.005655356663269768
     },
     "prior_down": {
       "n": 18,
       "down": 9,
-      "mean": 0.0027463389104490704,
+      "mean": 0.0027463365051083413,
       "next5_n": 18,
       "next5_up": 8
     },
     "rows": [
       {
         "date": "2024-07-05",
-        "ret": 0.02955081575743268,
+        "ret": 0.02955071993984193,
         "prior20": 0.09789851234261726,
-        "next5": -0.03099888095789405
+        "next5": -0.030998790775496055
       },
       {
         "date": "2024-10-08",
         "ret": -0.011475407561411965,
-        "prior20": -0.1755070224054972,
+        "prior20": -0.17550720206890336,
         "next5": -0.013267062521606143
       },
       {
         "date": "2025-01-08",
-        "ret": 0.03429592557854533,
-        "prior20": 0.038691834110668566,
-        "next5": -0.06282719660027825
+        "ret": 0.034296144835121556,
+        "prior20": 0.038691759055365926,
+        "next5": -0.06282732754845655
       },
       {
         "date": "2025-04-08",
@@ -661,14 +661,14 @@
       },
       {
         "date": "2025-10-14",
-        "ret": -0.01822079386417541,
+        "ret": -0.018220878273630836,
         "prior20": 0.3484355968820865,
-        "next5": 0.06441038686451694
+        "next5": 0.06441047837827907
       },
       {
         "date": "2026-04-07",
         "ret": 0.017607433616103174,
-        "prior20": 0.11527187357539503,
+        "prior20": 0.11527197433303193,
         "next5": 0.05089058828005988
       },
       {

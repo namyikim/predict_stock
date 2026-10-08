@@ -3,7 +3,7 @@
   "name": "삼성전자",
   "peer_name": "SK하이닉스",
   "session_date": "2026-10-08",
-  "generated_at": "2026-10-08 17:31 KST",
+  "generated_at": "2026-10-08 23:33 KST",
   "summary": {
     "prev_close": 268500.0,
     "open": 269500.0,
@@ -15,11 +15,11 @@
     "c2c": -0.02420856610800748,
     "high_vs_open": 0.0018552875695732052,
     "low_vs_open": -0.0278293135435993,
-    "volume": 23687803.0,
-    "volume_ratio": 1.4194258546644745,
+    "volume": 21259056.0,
+    "volume_ratio": 1.2738899311244662,
     "kospi_c2c": -0.026157017169108343,
     "peer_c2c": -0.024376088218224012,
-    "usdkrw_chg": 0.00010450882220292002,
+    "usdkrw_chg": 0.001007639986697173,
     "us_nights": 1,
     "sox_ret": -0.011474654541306362,
     "nasdaq_ret": -0.0022137708819671698,
@@ -122,7 +122,15 @@
         "purpose": "임직원 주식보상",
         "rcept_no": "20260821000616"
       }
-    ]
+    ],
+    "foreign_pressure": {
+      "state": "selling_intensified",
+      "previous_ratio": -0.059540782628946624,
+      "recent_ratio": -0.06065998439112198,
+      "previous_daily_net": -1105187.6,
+      "recent_daily_net": -919735.2
+    },
+    "buyback_transition": null
   },
   "classification": {
     "labels": [
@@ -148,12 +156,12 @@
     {
       "time": "2026-10-08T09:00:00+09:00",
       "price": 269000.0,
-      "volume": 896077.0
+      "volume": 896122.0
     },
     {
       "time": "2026-10-08T09:05:00+09:00",
       "price": 268750.0,
-      "volume": 224689.0
+      "volume": 224644.0
     },
     {
       "time": "2026-10-08T09:10:00+09:00",
@@ -278,12 +286,12 @@
     {
       "time": "2026-10-08T11:10:00+09:00",
       "price": 266750.0,
-      "volume": 189110.0
+      "volume": 189093.0
     },
     {
       "time": "2026-10-08T11:15:00+09:00",
       "price": 266750.0,
-      "volume": 106352.0
+      "volume": 106369.0
     },
     {
       "time": "2026-10-08T11:20:00+09:00",
@@ -333,12 +341,12 @@
     {
       "time": "2026-10-08T12:05:00+09:00",
       "price": 265500.0,
-      "volume": 76292.0
+      "volume": 76319.0
     },
     {
       "time": "2026-10-08T12:10:00+09:00",
       "price": 265500.0,
-      "volume": 243832.0
+      "volume": 243805.0
     },
     {
       "time": "2026-10-08T12:15:00+09:00",
@@ -358,22 +366,22 @@
     {
       "time": "2026-10-08T12:30:00+09:00",
       "price": 265000.0,
-      "volume": 135579.0
+      "volume": 135728.0
     },
     {
       "time": "2026-10-08T12:35:00+09:00",
       "price": 265000.0,
-      "volume": 326711.0
+      "volume": 326562.0
     },
     {
       "time": "2026-10-08T12:40:00+09:00",
       "price": 263750.0,
-      "volume": 290803.0
+      "volume": 290899.0
     },
     {
       "time": "2026-10-08T12:45:00+09:00",
       "price": 264500.0,
-      "volume": 252420.0
+      "volume": 252324.0
     },
     {
       "time": "2026-10-08T12:50:00+09:00",
@@ -521,36 +529,36 @@
       "link": "https://news.google.com/rss/articles/CBMi6gFBVV95cUxOQkQyeHJWWHhfMjFtUWdJY3RDM2xqMHhTUmwwRUZXeVFMelgtZ3ZoYjBVT09ka3p3MG53RFBpNlMtQm1CZUdXTHlNaWgxNWYzZkR1U3VNZ0lIU2g2YjM1YzktcXRsTG5fNHhrYWJFVDZVQVJjb29ZVDdyRmx2dkdYaTdOd2VsRk0xXzRqeGtTR1oxT2dHaXM1UTdfVnhNcGVaX3pxVF9YbzBRU2t2aWh4TmdYdmQ4TjVVMG00ZXRlcDNSQkE5ZjdfcXBldEpkaU5HMUJnU2NTR0c5bEdzUUFFYnlwLVI3VEh5eFE?oc=5"
     },
     {
-      "time": "2026-10-08T07:59:00+09:00",
-      "title": "삼성전자 3분기 영업이익 107조 4천억원…’100조원 시대’ 열었다",
-      "source": "연합뉴스TV",
-      "link": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE83NDAxQWtEblBwcmE5UWpTUmpGQmhiTW5raXRIcjVCVDhqV19hb3BCQlR3QjNFYWY0ekduNnM4SFhCTGZSVGNfMFdYWG5iNzFrT2J5QWZRczZ1Zk12VEtTWElEd05jYnc?oc=5"
-    },
-    {
-      "time": "2026-10-08T08:31:42+09:00",
-      "title": "삼성전자 3분기 영업이익 107조4천억 원‥4분기 연속 신기록",
-      "source": "MBC 뉴스",
-      "link": "https://news.google.com/rss/articles/CBMidEFVX3lxTE9Cb3ZfUXFMcVd1SDZiSFFrU1Z1b3BxOExWMTdsQlhSbXd5Tktva2xWRk1fbS1RR2lPb0M4YWFHQXNsY2NVYVRiajV4cXlkUmN0Vm1aNndrdW1GdDg5QkpTWTFEc1ZuNVpHVnQwSnpwLUdRTUVN0gF0QVVfeXFMTlduTC04SEpNNVBtMUpCNVR1em1OVDFXT2tKeE4tR0I1RjkwMjU5aldieFIzeThaVzV0LWRjOGppS21Rd1FMZDRUc1BfU0lWaldUSkJvd1ZPbU5KbGNiVVZubDVfUDR3N2kycXRKLWJvV3lUbng?oc=5"
-    },
-    {
       "time": "2026-10-08T07:45:27+09:00",
       "title": "[속보] 삼성전자 영업익 100조 돌파…분기 기준 '국내 최초'",
       "source": "한국경제",
       "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE1ZaHVfYVZvYnRKTmZpUjc4UGh4QUxZd3YyYkVXR1c4a2FxWTM4aERMUFJ5a2x2YkhlYVFXeXpZckxmaUp1OTh3LUx0VGhtZkZnZWpzcXZnSzVqQQ?oc=5"
+    },
+    {
+      "time": "2026-10-08T08:02:09+09:00",
+      "title": "삼성전자, 분기 영업익 107.4조원…세계 테크기업 첫 100조 돌파",
+      "source": "중앙일보",
+      "link": "https://news.google.com/rss/articles/CBMiVkFVX3lxTE8tdjBmQ0piMkZ0TUFqT293SnMwM01VMG51eUlRYXZzdHpDaXozUmxXTkM1NHlZOVBReHpVNVg4SXJpem84SWdvZDVNbkpFb201dkh4UG1n?oc=5"
+    },
+    {
+      "time": "2026-10-08T08:56:16+09:00",
+      "title": "'전세계 최초' 100조 영업익 '새역사' 쓴 삼성전자…신기록 안 끝났다 - 머니투데이",
+      "source": "머니투데이",
+      "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTFB1S3hrdkVOX1ZiTWs2eVRxbzBZNWpiRjNyLXhkLWphemNlcUh6MGJrOGs5Uk1fTW9FUlUtV05GbFdzaU5XY2xnZTByMEMtVnl5ektNbVpIZDRmSGQ5eXdyNEVHNUlsUXlHZUJZOdIBckFVX3lxTE5LNVNIN3Ffa2JfTXZtWURjZ1hGOFJCdV84VUFDclQyUTluQVFmQThLRVdCTW9HcFB3ZEtqdnczVzZlaTE4RnlqX2pqR19rSUd2ZXdNSy1icHJhNkE4cGJCZ21taFNtUEpJdDRGSGVZd0pNUQ?oc=5"
     }
   ],
   "top_news": [
     {
-      "time": "2026-10-08T15:06:58+09:00",
-      "title": "삼성전자 최대 실적에도 주가 주춤...증권가 \"관건은 메모리 호황 지속성\"",
-      "source": "메트로신문",
-      "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTFB4Rkw2Mlp5dnc3V3NaY2YyemZwOHlZSWlkbm85S2JMQVNhQ2lycXE5OEpMTWZkRnRKdXZJbWcxNFJyaE1TSW5mb3BLeG9iQngzU1ZacnFVenNLSU1PUHFpbQ?oc=5"
-    },
-    {
-      "time": "2026-10-08T15:01:52+09:00",
+      "time": "2026-10-08T15:01:00+09:00",
       "title": "예상 웃돈 삼성전자 3Q 실적…증권가 \"막연한 우려, D램 사이클 연장\"",
       "source": "연합인포맥스",
       "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE5VYUU2eS1EWk1Nb1pEc1dEbGs1cW5EbmdyVUdHNDNXcUgxX181SlNFWGZkdVlqYTNiX01pYThLVFlZdzIyc3NlSkhPTnNhSmZEOU9Ndnc5X1Q5TmRrb3gyaVYzRExRcFdCLXhWcWxMVzI?oc=5"
+    },
+    {
+      "time": "2026-10-08T16:01:22+09:00",
+      "title": "삼성전자 107조 벌었는데 코스피 6620선 급락···\"실적보다 금리가 무서웠다\"",
+      "source": "스마트비즈",
+      "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTFBodkhOR0tHUEtoUWNKZDJhSGhZcEhXWGgxT1RmVVlMRTdHMlRoTENmSEhNUktNc2xLZzFwTUFsTWFtNXh2c2V6bEdYb29GM053Yk1BRl91VlRSMU52aEU5ZzVQWDBEX3E1N1RMcA?oc=5"
     },
     {
       "time": "2026-10-08T16:01:36+09:00",
@@ -568,7 +576,7 @@
       "time": "2026-10-08T16:59:00+09:00",
       "title": "꺾이지 않은 삼성전자…반도체 초호황, AI 수요에 HBM 업고 내년에도 좋다",
       "source": "경향신문",
-      "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE05WW1fSXJyc3dZQ2tIaHJWS1hrTTl3dG5paHNkWFZKeEM4aVlFRkVrT3MzQnFFWno0NGR0ZlFJWGdiUzVZX1BtYnNHZkRVNklWRzloQ2E5bGRGdw?oc=5"
+      "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE05WW1fSXJyc3dZQ2tIaHJWS1hrTTl3dG5paHNkWFZKeEM4aVlFRkVrT3MzQnFFWno0NGR0ZlFJWGdiUzVZX1BtYnNHZkRVNklWRzloQ2E5bGRGd9IBX0FVX3lxTE9EX2hOcUdaOVYzcHkxX2FFcUktU0xXdmpndmtIdk5yclZ4RU9LZXZjZ3Z6YmlXSm1oakt2ZmU4b0FQX0pWT0o5TG05Wk1XQjRNcFNTZTByQWZ3dDhiNWo0?oc=5"
     },
     {
       "time": "2026-10-08T17:15:00+09:00",
@@ -589,14 +597,82 @@
       "rcept_dt": "20261008",
       "rcept_no": "20261008800004",
       "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261008800004"
+    },
+    {
+      "report_nm": "주식등의대량보유상황보고서(일반)",
+      "rcept_dt": "20261008",
+      "rcept_no": "20261008000706",
+      "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261008000706"
     }
   ],
   "disclosure_note": null,
-  "flows": null,
-  "flow_story": null,
+  "flows": "외국인 -1,307,041 / 기관 -4,087,636",
+  "flow_story": {
+    "direction": "down",
+    "c2c": -0.02420856610800748,
+    "actors": [
+      {
+        "key": "foreign_net",
+        "name": "외국인",
+        "shares": -1307041.0,
+        "won": -342444742000.0,
+        "vs_usual": 0.4996868166796421
+      },
+      {
+        "key": "inst_net",
+        "name": "기관",
+        "shares": -4087636.0,
+        "won": -1070960632000.0,
+        "vs_usual": 2.317685315243194
+      },
+      {
+        "key": "indiv_net",
+        "name": "개인",
+        "shares": 5259380.0,
+        "won": 1377957560000.0,
+        "vs_usual": 1.5806274932285345
+      }
+    ],
+    "lead": {
+      "key": "inst_net",
+      "name": "기관",
+      "shares": -4087636.0,
+      "won": -1070960632000.0,
+      "vs_usual": 2.317685315243194
+    },
+    "counter": {
+      "key": "indiv_net",
+      "name": "개인",
+      "shares": 5259380.0,
+      "won": 1377957560000.0,
+      "vs_usual": 1.5806274932285345
+    },
+    "all_one_side": false,
+    "observations": [
+      "전일까지 20거래일 고점: 종가 돌파 없음 · 종가 위치 -8.23%.",
+      "전일까지 60거래일 고점: 종가 돌파 없음 · 종가 위치 -12.08%.",
+      "같은 5거래일 수익률: 이 종목 -2.42%, SK하이닉스 -5.35% · 차이 +2.93%p.",
+      "같은 20거래일 수익률: 이 종목 -2.96%, SK하이닉스 -5.72% · 차이 +2.76%p.",
+      "같은 60거래일 수익률: 이 종목 -5.76%, SK하이닉스 -23.08% · 차이 +17.33%p.",
+      "외국인 순매도 지속·거래량 대비 강도 강화: 직전 5일 → 최근 5일 순매수/거래량 -5.95% → -6.07% (일평균 -1,105,188주 → -919,735주). 향후 상승을 뜻하는 신호는 아닙니다.",
+      "코스피도 -2.62% — 시장 전체가 같은 방향이었습니다.",
+      "SK하이닉스 -2.44% — 반도체 업종이 함께 움직였습니다.",
+      "전날 밤 미국 반도체지수(SOX) -1.15% — 미국 반도체 흐름과 같은 방향입니다.",
+      "전날 밤 마이크론은 +4.06%로 반대 방향이었습니다.",
+      "종가가 당일 범위(저가 262,000~고가 270,000원)의 아래쪽 0% 지점 — 저가 부근에서 마감했습니다.",
+      "장중 20일선(267,075원) 위로 올랐다가 그 아래로 밀려 마감했습니다.",
+      "우리 장중(09:00~15:30) 나스닥100 선물 -0.48%, 이 종목 고점 이후 -0.48% · 미 10년물 국채 선물 -0.18%(금리 상승), 이 종목 고점 이후 -0.18% · 원/달러 -0.02%, 이 종목 고점 이후 -0.02%.",
+      "자사주 매입 기간 중(직접 취득 2026-08-24~2026-11-21, 14,999,999,992,000, DART 공시) — 회사 자신의 매수는 기타 법인으로 잡힙니다.",
+      "마감가가 장중 고가보다 -2.60% 아래 — 오른 폭을 장중에 꽤 반납했습니다.",
+      "기관의 순매도 규모가 최근 20거래일 평균의 2.3배로 컸습니다."
+    ],
+    "estimated_indiv": false,
+    "source_note": "출처 naver+cache · 장 마감 직후 잠정치라 저녁 확정치와 다를 수 있습니다 · KRX는 받지 못함(pykrx 미설치)"
+  },
   "flow_status": {
-    "state": "pending",
-    "detail": "최신 2026-10-07"
+    "state": "ok",
+    "detail": "naver+cache",
+    "krx_error": "pykrx 미설치"
   },
   "context": {},
   "market": {
@@ -607,9 +683,9 @@
     "steady": 40,
     "upper": 3,
     "lower": 0,
-    "individual": 29309.0,
-    "foreign": -20322.0,
-    "institution": -16531.0,
+    "individual": 29972.0,
+    "foreign": -20704.0,
+    "institution": -16789.0,
     "prev_close": 6803.9,
     "open": 6808.68,
     "high": 6810.83,
@@ -619,56 +695,56 @@
   "earnings_reactions": {
     "n": 45,
     "down": 25,
-    "mean": 0.004491739974758925,
+    "mean": 0.004491735954005071,
     "first": "2015-04-07",
     "last": "2026-10-08",
     "prior_up": {
       "n": 27,
       "down": 16,
-      "mean": 0.005655347719756073
+      "mean": 0.005655307096082949
     },
     "prior_down": {
       "n": 18,
       "down": 9,
-      "mean": 0.0027463283572632022,
+      "mean": 0.002746379240888256,
       "next5_n": 18,
       "next5_up": 8
     },
     "rows": [
       {
         "date": "2024-07-05",
-        "ret": 0.029550818588921057,
-        "prior20": 0.09789829164793273,
-        "next5": -0.030998883842878855
+        "ret": 0.02955071993984193,
+        "prior20": 0.09789851234261726,
+        "next5": -0.030998790775496055
       },
       {
         "date": "2024-10-08",
-        "ret": -0.011475276173078197,
-        "prior20": -0.17550716671415245,
-        "next5": -0.013267061634831823
+        "ret": -0.011475407561411965,
+        "prior20": -0.17550711223721005,
+        "next5": -0.013267062521606143
       },
       {
         "date": "2025-01-08",
-        "ret": 0.0342959231003408,
-        "prior20": 0.038691909165971206,
+        "ret": 0.034295997837997305,
+        "prior20": 0.038691834110668566,
         "next5": -0.06282719221095567
       },
       {
         "date": "2025-04-08",
-        "ret": 0.005639114476656992,
-        "prior20": -0.00342513621785967,
-        "next5": 0.05794397222748904
+        "ret": 0.0056390392516327825,
+        "prior20": -0.0034250616708649817,
+        "next5": 0.057943897843741654
       },
       {
         "date": "2025-10-14",
-        "ret": -0.018220878273630836,
+        "ret": -0.01822079386417541,
         "prior20": 0.3484355968820865,
-        "next5": 0.06441047837827907
+        "next5": 0.06441047284052348
       },
       {
         "date": "2026-04-07",
         "ret": 0.017607433616103174,
-        "prior20": 0.11527197433303193,
+        "prior20": 0.11527187357539503,
         "next5": 0.05089058828005988
       },
       {

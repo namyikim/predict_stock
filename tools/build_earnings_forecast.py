@@ -851,6 +851,9 @@ def append_estimate(ledger, result, run_id):
 
 
 def _append_one(ledger, result, months_used, run_id):
+    # 자료 대기는 예측이 아니다. 빈 k0 행이 나중의 최초 예측을 막지 않게 한다.
+    if result.get('forecast_status') == 'waiting_data':
+        return ledger, False
     # 발표 후 빠져 있던 k를 새로 기록해 즉시 채점하면 사전 성적이 부풀려진다.
     if known_quarter_actual(result, ledger) is not None:
         return ledger, False
@@ -925,7 +928,7 @@ def render_ledger_block(ledger, target):
         err = "—" if pd.isna(r["error"]) else f'{r["error"] / TRILLION:+,.2f}조원 ({r["ape"]:.0%})'
         source = "확정" if r["actual_source"] == "confirmed" else "잠정"
         body += (f'<tr><td {TD}>{html.escape(str(r["quarter"]))}</td>'
-                 f'<td {TDR}>{"분기 전" if int(r["months_used"]) == 0 else str(int(r["months_used"])) + "개월"}</td>'
+                 f'<td {TDR}>{"수출 0개월" if int(r["months_used"]) == 0 else str(int(r["months_used"])) + "개월"}</td>'
                  f'<td {TDR}>{point}</td>'
                  f'<td {TDR}>{jo(r["actual"])} <span style="color:#8a9199">({source})</span></td>'
                  f'<td {TDR}>{err}</td></tr>')
@@ -1160,6 +1163,56 @@ def render_segment_split(result):
             + '과거 분기로 검증하지 않은 계산입니다. 방법: guides/segment-earnings-method.md.</div>')
 
 
+def align_calendar_quarters(result, now=None):
+    """수출 기준 분기와 현재 달력 분기를 분리한다(2026-10-08 사용자 수정)."""
+    timestamp = pd.Timestamp(now if now is not None else datetime.now(KST))
+    if timestamp.tzinfo is not None:
+        timestamp = timestamp.tz_convert(KST).tz_localize(None)
+    current = timestamp.to_period('Q')
+    source = pd.Period(result['quarter_code'], freq='Q')
+    if source >= current:
+        return result
+
+    def waiting(quarter):
+        return {'quarter_code': str(quarter), 'quarter': f'{quarter.year}년 {quarter.quarter}분기',
+                'point': None, 'raw_point': None, 'low': None, 'high': None,
+                'evaluation': {'n': 0, 'beats_baselines': False, 'note': '자료 대기'},
+                'forecast_status': 'waiting_data', 'chosen': 'waiting_data',
+                'evaluation_without_cli': None, 'evaluation_with_cli': None,
+                'no_point_reason': '해당 분기 전망에 필요한 수출 자료가 아직 없어 추정을 기다립니다.'}
+
+    old_next = result.get('next_quarter') or {}
+    promoted = old_next if old_next.get('quarter_code') == str(current) else waiting(current)
+    r = {**result, **promoted}
+    actual = known_quarter_actual(result)
+    r['completed_quarter'] = {'quarter_code': str(source), 'quarter': result['quarter'],
+                              'actual': actual, 'recalculated_point': result.get('raw_point')}
+    # 이전 분기 전용 진단/부문 계산을 새 분기 추정으로 잘못 표시하지 않는다.
+    for key in ('chart_svg', 'segment_split', 'extrapolation', 'nowcast_selection',
+                'interval_note', 'release_comparison'):
+        r.pop(key, None)
+    for key in ('leverage_active', 'price_active', 'tsmc_active'):
+        r[key] = False
+    r.update(quarter_code=str(current), quarter=f'{current.year}년 {current.quarter}분기',
+             months_used=0, months_included='없음(대상 분기 수출 미반영)',
+             months_missing=', '.join(f'{m}월' for m in range(current.start_time.month, current.end_time.month+1)),
+             estimate_basis='prior_quarter_outlook', input_quarter_code=str(source),
+             announced_actual=None, next_quarter=waiting(current+1),
+             nowcast_model=promoted.get('nowcast_model', promoted.get('chosen', '')))
+    if promoted.get('interval_note'):
+        r['interval_note'] = promoted['interval_note']
+    if actual is not None:
+        r.update(last_actual=actual, last_actual_quarter=str(source))
+    r['change_vs_last'] = (r['point']/r['last_actual']-1
+                           if r.get('point') is not None and r.get('last_actual') else float('nan'))
+    # 선행 전망 평가의 인덱스는 입력 분기이므로 표시할 때는 예측 대상 분기로 옮긴다.
+    r['evaluation'] = dict(promoted.get('evaluation') or {'n': 0})
+    for key in ('first', 'last'):
+        if r['evaluation'].get(key):
+            r['evaluation'][key] = str(pd.Period(r['evaluation'][key], freq='Q')+1)
+    return r
+
+
 def render_fragment(result):
     e = html.escape
     r = result
@@ -1168,34 +1221,52 @@ def render_fragment(result):
              f'2. 이번 분기 영업이익 추정 <span style="font-weight:400;color:#8a9199;font-size:12px">'
              f'&nbsp;{e(r["quarter"])} · 월별 반도체 수출액 기준 · '
              f'{e(r.get("months_included") or "")} 반영</span></h3>']
-    parts.append('<div style="background:#fdf8ec;border-left:4px solid #c8952a;padding:12px 16px;'
-                 'border-radius:0 5px 5px 0;font-size:13px">'
-                 '주가 예측과 성격이 다릅니다. 이것은 <b>이미 진행 중인 분기의 결과를 발표 전에 추정</b>하는 '
-                 '나우캐스트입니다. 메모리 영업이익과 한국 반도체 수출액은 같은 것(D램·낸드 가격과 물량)을 재고 있어 '
-                 f'여지가 실제로 있습니다. 분기가 끝나기 전이므로 이번 분기의 <b>{e(r.get("months_included") or "")}</b> 수출만 썼고, '
-                 f'과거 분기도 똑같이 <b>각 분기의 앞 {r["months_used"]}개월</b>로 특징을 만들어 학습했습니다 — '
-                 '3개월 평균으로 학습한 계수를 2개월 평균에 적용하면 성질이 다른 값을 넣는 셈이 되기 때문입니다.'
-                 + (f' <b>{e(r["months_missing"])} 수출은 아직 KOSIS에 올라오지 않았습니다.</b> '
-                    '그 달이 들어오면 추정이 더 단단해집니다.' if r.get("months_missing") else "")
-                 + (" " + " ".join(
-                     (f'<b>{e(a["month"])}</b>은 관세청 월말 잠정 수출액을 반영했습니다.'
-                      if a.get("basis") == "full_month_preliminary" else
-                      f'<b>{e(a["month"])}</b>은 관세청 1~{a["days"]}일 속보(반도체 {a["yoy"]:+.0%})로 잠정 추정한 값입니다.')
-                     for a in r.get("flash_applied") or []) if r.get("flash_applied") else "")
-                 + ((f' {e(", ".join(r["customs_info"]["months_added"]))}은 관세청 원천(HS 8541·8542 합계)을 '
-                     f'KOSIS 기준으로 환산해 넣은 값입니다 — 품목 범위가 좁아 그대로는 KOSIS의 '
-                     f'{r["customs_info"]["scale"]:.2f}분의 1 수준이라, 겹치는 최근 '
-                     f'{r["customs_info"]["window"]}개월 배율(×{r["customs_info"]["scale"]:.3f})로 맞췄습니다. '
-                     f'확정치가 아니라 추정입니다.')
-                    if (r.get("customs_info") or {}).get("months_added") else "")
-                 + '</div>')
+    if r['months_used'] == 0:
+        parts.append('<div style="background:#fdf8ec;padding:12px 16px;font-size:13px">'
+                     f'현재 달력 기준은 <b>{e(r["quarter"])}</b>입니다. 이 분기의 수출 자료는 아직 반영하지 않았습니다. '
+                     f'{e(r.get("input_quarter_code", "직전 분기"))} 자료로 계산한 선행 전망이며, '
+                     '새 분기 수출이 들어오면 해당 자료를 반영한 추정으로 갱신합니다.</div>')
+        completed = r.get('completed_quarter') or {}
+        if completed.get('quarter'):
+            actual_text = jo(completed['actual']) if completed.get('actual') is not None else '발표 실적 확인 대기'
+            parts.append(f'<div style="font-size:13px;margin-top:8px">지난 분기 — {e(completed["quarter"])}: '
+                         f'{e(actual_text)}. 사전 예측 평가는 아래 원장에서 확인할 수 있습니다.</div>')
+    else:
+        parts.append('<div style="background:#fdf8ec;border-left:4px solid #c8952a;padding:12px 16px;'
+                     'border-radius:0 5px 5px 0;font-size:13px">'
+                     '주가 예측과 성격이 다릅니다. 이것은 <b>이미 진행 중인 분기의 결과를 발표 전에 추정</b>하는 '
+                     '나우캐스트입니다. 메모리 영업이익과 한국 반도체 수출액은 같은 것(D램·낸드 가격과 물량)을 재고 있어 '
+                     f'여지가 실제로 있습니다. 분기가 끝나기 전이므로 이번 분기의 <b>{e(r.get("months_included") or "")}</b> 수출만 썼고, '
+                     f'과거 분기도 똑같이 <b>각 분기의 앞 {r["months_used"]}개월</b>로 특징을 만들어 학습했습니다 — '
+                     '3개월 평균으로 학습한 계수를 2개월 평균에 적용하면 성질이 다른 값을 넣는 셈이 되기 때문입니다.'
+                     + (f' <b>{e(r["months_missing"])} 수출은 아직 KOSIS에 올라오지 않았습니다.</b> '
+                        '그 달이 들어오면 추정이 더 단단해집니다.' if r.get("months_missing") else "")
+                     + (" " + " ".join(
+                         (f'<b>{e(a["month"])}</b>은 관세청 월말 잠정 수출액을 반영했습니다.'
+                          if a.get("basis") == "full_month_preliminary" else
+                          f'<b>{e(a["month"])}</b>은 관세청 1~{a["days"]}일 속보(반도체 {a["yoy"]:+.0%})로 잠정 추정한 값입니다.')
+                         for a in r.get("flash_applied") or []) if r.get("flash_applied") else "")
+                     + ((f' {e(", ".join(r["customs_info"]["months_added"]))}은 관세청 원천(HS 8541·8542 합계)을 '
+                         f'KOSIS 기준으로 환산해 넣은 값입니다 — 품목 범위가 좁아 그대로는 KOSIS의 '
+                         f'{r["customs_info"]["scale"]:.2f}분의 1 수준이라, 겹치는 최근 '
+                         f'{r["customs_info"]["window"]}개월 배율(×{r["customs_info"]["scale"]:.3f})로 맞췄습니다. '
+                         f'확정치가 아니라 추정입니다.')
+                        if (r.get("customs_info") or {}).get("months_added") else "")
+                     + '</div>')
 
     if r.get("chart_svg"):
         parts.append(f'<div style="border:1px solid #e5e5e5;border-radius:6px;padding:8px;margin-top:10px">{r["chart_svg"]}</div>')
 
     parts.append(render_segment_split(r))
     parts.append('<h4 style="font-size:14px;margin:18px 0 6px">추정</h4>')
-    if r.get('nowcast_model'):
+    if r.get('months_used') == 0:
+        labels = {'released_residual': '발표 실적 대비 변화 보정', 'released_level': '발표 실적 반영 회귀',
+                  'legacy_level': '기존 회귀', 'with_cli': 'CLI 포함 선행 전망',
+                  'without_cli': 'CLI 제외 선행 전망', 'waiting_data': '자료 대기'}
+        parts.append(f'<div style="font-size:12px;color:#6b7178">적용 모델: '
+                     f'{e(labels.get(r.get("nowcast_model"), "선행 전망"))}. '
+                     '아래 성적은 과거 확정·수정 자료 기준 재검증입니다.</div>')
+    elif r.get('nowcast_model'):
         method = ('수출 기준 보정' if r['nowcast_model'] == 'export_anchor_residual' else '기존 수준 회귀')
         parts.append(f'<div style="font-size:12px;color:#6b7178;margin-bottom:6px">적용 모델: {method}. '
                      '보정 모델은 직전 이익에 원화 수출 증감을 반영하고 남은 차이를 학습합니다. '
@@ -1833,6 +1904,7 @@ def analyse(target, out_dir, fetch=True):
             result["segment_split"]["recorded"] = recorded_segment_estimate(target, result["quarter_code"])
         except Exception as exc:
             result["segment_split"] = {"method": SEGMENT_METHOD, "reason": f"계산 실패({type(exc).__name__})"}
+    result = align_calendar_quarters(result)
     return result, f, oof, profit
 
 
@@ -1879,12 +1951,16 @@ def main():
     frame.to_csv(out_dir / "earnings_frame.csv")
     profit_series.rename_axis("quarter").rename("value").reset_index().assign(
         quarter=lambda d: d["quarter"].astype(str)).to_csv(out_dir / "earnings_profit.csv", index=False)
-    oof.to_csv(out_dir / "earnings_oof.csv")
+    # 달력 전환 직후 반환된 진단 표는 이전 입력 분기의 나우캐스트임을 이름에 남긴다.
+    oof_name = ('earnings_input_quarter_oof.csv' if result.get('input_quarter_code') else 'earnings_oof.csv')
+    oof.to_csv(out_dir / oof_name)
     print(f"{result['name']} {result['quarter']} ({result.get('months_included')} 반영): "
           f"{jo(result['point']) if result['point'] is not None else '예측하지 않음'}"
           f" · 직전 {jo(result['last_actual'])} ({result['last_actual_quarter']})", flush=True)
     if args.dump:
         print(json.dumps(result["evaluation"], ensure_ascii=False, indent=2, default=str))
+        if result.get('input_quarter_code'):
+            print(f"아래 OOF는 입력 분기 {result['input_quarter_code']}의 나우캐스트 진단이며 현재 분기 성적과 다릅니다.")
         print(oof.tail(8).to_string())
     if args.publish:
         token = github_pages.token()

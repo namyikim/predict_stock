@@ -696,6 +696,57 @@ def fit_live(f, live_quarter, target="profit", features=None, gap=0, offset=None
     return float(model.predict(live[features])[0]) + (float(live[offset].iloc[0]) if offset else 0), len(train)
 
 
+def fit_released_next(f, live_quarter, actual, months_used, full_months=True):
+    """실적 발표 후의 다음 분기 전망. 발표 전 모델과 관측 조건을 구분한다.
+
+    당시에도 직전 분기 실적이 나온 시점이라고 가정해 재검증한다. 현재 실적은
+    실시간 학습에는 쓰되, 모델 선택/성적에서는 직전 발표 분기까지 제외한다.
+    """
+    if actual is None or not np.isfinite(actual) or months_used != 3 or not full_months:
+        return None
+    f = f.loc[f.index <= live_quarter].copy()
+    if live_quarter not in f.index:
+        return None
+    f.loc[live_quarter, 'profit'] = actual
+    f['profit_next'] = f['profit'].shift(-1)
+    f['released_anchor'] = f['profit']
+    features = ['profit' if c == 'profit_lag1' else c for c in FEATURES_NEXT]
+    variants = {'legacy_level': (FEATURES_NEXT, 1, None),
+                'released_level': (features, 0, None),
+                'released_residual': (features, 0, 'released_anchor')}
+    history = f.loc[f.index < live_quarter - 1]
+    forecasts = {}
+    for name, (feats, gap, offset) in variants.items():
+        forecasts[name] = walk_forward(history, target='profit_next', features=feats,
+                                       gap=gap, rw='profit', sn='profit_lag3', offset=offset)
+    common = forecasts['legacy_level'].index
+    for oof in forecasts.values():
+        common = common.intersection(oof.index)
+    if len(common) < 2 * MIN_CANDIDATE_ROWS:
+        return None
+    results = {}
+    for name, oof in forecasts.items():
+        oof = oof.loc[common].copy()
+        oof.attrs['target_gap'] = 0  # 발표 후에는 바로 앞 행의 타깃까지 알려져 있다.
+        select, assess = split_selection_evaluation(oof)
+        results[name] = {'selection': evaluate(select), 'evaluation': evaluate(assess)}
+    chosen = min(results, key=lambda name: results[name]['selection']['mae_model'])
+    feats, gap, offset = variants[chosen]
+    raw, n_train = fit_live(f, live_quarter, target='profit_next', features=feats, gap=gap, offset=offset)
+    if raw is None or not np.isfinite(raw):
+        return None
+    ev = results[chosen]['evaluation']
+    point = raw if ev['beats_baselines'] else None
+    low, high = interval_bounds(point, ev.get('interval_rel_halfwidth'))
+    return {'chosen': chosen, 'nowcast_model': chosen, 'raw_point': raw, 'point': point,
+            'low': low, 'high': high, 'n_train': n_train,
+            'selection': results[chosen]['selection'], 'evaluation': ev,
+            'release_comparison': results, 'anchor_actual': float(actual),
+            'anchor_quarter': str(live_quarter), 'last_actual': float(actual),
+            'no_point_reason': '' if point is not None else
+                '발표 실적 반영 모델이 과거 평가에서 직전 실적·계절 기준선을 이기지 못했습니다.'}
+
+
 def prequential_anchor_choice(base, candidate):
     """각 분기 이전에 채점 가능한 쌍체 오차만으로 후보를 고른다."""
     # 미래의 성적이 좋아졌다고 과거에도 새 모델을 골랐던 것으로 계산하지 않는다.
@@ -792,9 +843,9 @@ def append_estimate(ledger, result, run_id):
     nxt = result.get("next_quarter") or {}
     if nxt.get("quarter_code"):
         ledger, one = _append_one(ledger, {**nxt, "target": result["target"],
-                                           "months_included": "없음(분기 시작 전 추정)",
+                                           "months_included": "없음(대상 분기 수출 미반영)",
                                            "estimate_basis": "next_quarter",
-                                           "last_actual": result.get("last_actual")}, 0, run_id)
+                                           "last_actual": nxt.get("last_actual", result.get("last_actual"))}, 0, run_id)
         added |= one
     return ledger, added
 
@@ -1322,24 +1373,37 @@ def render_fragment(result):
     nq = r.get("next_quarter")
     if nq:
         parts.append('<h4 style="font-size:14px;margin:22px 0 6px">'
-                     f'다음 분기({e(nq["quarter"])}) 전망 — G20 경기선행지수를 넣어 보다</h4>')
-        parts.append('<div style="font-size:12px;color:#6b7178;margin-bottom:6px">이번 분기 나우캐스트와 달리 '
-                     '아직 시작하지 않은 분기를 내다보는 것이라 훨씬 어렵습니다. 선행지수가 쓸모 있다면 여기서 '
-                     '나타나야 합니다. 같은 날짜에서 CLI를 넣은 모델과 뺀 모델을 나란히 쟀습니다. '
-                     '과거 OOF의 앞 절반에서 모델을 선택하고 뒤 절반에서 최종 평가했습니다.</div>')
+                     f'다음 분기({e(nq["quarter"])}) 전망</h4>')
+        if nq.get('release_comparison'):
+            parts.append('<div style="font-size:12px;color:#6b7178;margin-bottom:6px">'
+                         f'{e(nq["anchor_quarter"])} 발표 실적 {jo(nq["anchor_actual"])}을 반영했습니다. '
+                         '기존 모델·발표 실적 반영 회귀·실적 대비 변화 보정을 같은 과거 분기로 비교합니다. '
+                         '앞 절반에서 모델을 선택하고 뒤 절반에서 최종 평가했습니다. '
+                         '과거 확정·수정 자료 기준 재검증이며 실제 사전 예측 성적은 아닙니다.</div>')
+        else:
+            parts.append('<div style="font-size:12px;color:#6b7178;margin-bottom:6px">'
+                         '대상 분기 수출이 없는 선행 전망입니다. 직전 실적 발표 전에는 기존 모델을 사용합니다. '
+                         '과거 OOF의 앞 절반에서 모델을 선택하고 뒤 절반에서 최종 평가했습니다.</div>')
+        model_labels = {'legacy_level': '기존 회귀', 'released_level': '발표 실적 반영 회귀',
+                        'released_residual': '발표 실적 대비 변화 보정',
+                        'with_cli': 'CLI 포함', 'without_cli': 'CLI 제외'}
         if nq["point"] is not None:
             interval_text = ("속보 기반 시나리오 · 구간 미검증" if nq.get("interval_note") else
                              f'80% 구간 {jo(nq["low"])} ~ {jo(nq["high"])}')
             parts.append(f'<div style="font-size:20px;font-weight:700">{jo(nq["point"])}'
                          f'<span style="font-size:13px;font-weight:400;color:#6b7178"> · {interval_text} · '
-                         f'{"CLI 포함" if nq["chosen"] == "with_cli" else "CLI 제외"} 모델</span></div>')
+                         f'{e(model_labels.get(nq["chosen"], nq["chosen"]))} 모델</span></div>')
         else:
             parts.append('<div style="font-size:16px;font-weight:600;color:#6b7178">예측하지 않음</div>'
                          f'<div style="font-size:12px;color:#8a9199;margin-top:4px">{e(nq["no_point_reason"])}</div>')
         if nq.get("interval_note"):
             parts.append(f'<div style="font-size:12px;color:#6b7178">{e(nq["interval_note"])}</div>')
         body = ""
-        for label, evx in (("CLI 제외", nq["evaluation_without_cli"]), ("CLI 포함", nq.get("evaluation_with_cli"))):
+        evaluations = ([(model_labels[name], item['evaluation'])
+                        for name, item in nq['release_comparison'].items()]
+                       if nq.get('release_comparison') else
+                       [("CLI 제외", nq["evaluation_without_cli"]), ("CLI 포함", nq.get("evaluation_with_cli"))])
+        for label, evx in evaluations:
             if not evx or not evx.get("n"):
                 body += f'<tr><td {TD}>{label}</td><td {TDR} colspan="4">{e((evx or {}).get("note", "미포함"))}</td></tr>'
                 continue
@@ -1350,7 +1414,9 @@ def render_fragment(result):
         parts.append('<div style="overflow-x:auto"><table style="width:100%;min-width:520px;border-collapse:collapse;'
                      f'font-size:13px;border:1px solid #e5e5e5"><tr><th {TH}>모델</th><th {THR}>분기 수</th>'
                      f'<th {THR}>MAE</th><th {THR}>기준선 MAE (직전/4분기 전)</th><th {THR}>판정</th></tr>{body}</table></div>')
-        if r.get("cli_active"):
+        if nq.get("release_comparison"):
+            pass  # 발표 후 모델에는 CLI를 넣지 않는다.
+        elif r.get("cli_active"):
             parts.append('<div style="font-size:11px;color:#8a9199;margin-top:4px">G20 CLI는 참조월+1개월 20일 이후 값만 썼습니다. '
                          'CLI는 매달 소급 수정되므로 이 표는 최종 수정치 기준이라 낙관적입니다.</div>')
         else:
@@ -1707,6 +1773,15 @@ def analyse(target, out_dir, fetch=True):
                       f"({info.get('report_nm')}, {info.get('rcept_dt')})", flush=True)
             elif info.get("reason"):
                 print(f"  잠정실적 {period}: {info['reason']}", flush=True)
+
+    # 다음 분기에는 이미 발표된 당기 실적을 반영한다. 나우캐스트 학습 표는 그대로 둔다.
+    announced_actual = known_quarter_actual({
+        'target': target, 'quarter_code': str(live_quarter), 'provisional': provisional,
+        'last_actual_quarter': str(profit.index[-1]), 'last_actual': float(profit.iloc[-1])},
+        read_ledger(ROOT / 'forecast_history' / target / 'earnings_log.csv'))
+    released_next = fit_released_next(f, live_quarter, announced_actual, months_used, full_months)
+    if released_next is not None:
+        next_block.update(released_next)
 
     # 같은 실행의 장기 전망도 정확히 같은 수출 계열을 사용한다.
     from export_refresh import snapshot

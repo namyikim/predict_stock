@@ -3,7 +3,7 @@
   "name": "SK하이닉스",
   "peer_name": "삼성전자",
   "session_date": "2026-10-08",
-  "generated_at": "2026-10-08 16:46 KST",
+  "generated_at": "2026-10-08 17:31 KST",
   "summary": {
     "prev_close": 1723000.0,
     "open": 1722000.0,
@@ -15,11 +15,11 @@
     "c2c": -0.024376088218224012,
     "high_vs_open": 0.021486643437862885,
     "low_vs_open": -0.023809523809523836,
-    "volume": 3779903.0,
-    "volume_ratio": 1.1885837251135272,
+    "volume": 3790519.0,
+    "volume_ratio": 1.1919219072906373,
     "kospi_c2c": -0.026157017169108343,
     "peer_c2c": -0.02420856610800748,
-    "usdkrw_chg": 0.00015671767584035656,
+    "usdkrw_chg": -6.715170179905083e-05,
     "us_nights": 1,
     "sox_ret": -0.011474654541306362,
     "nasdaq_ret": -0.0022137708819671698,
@@ -81,19 +81,19 @@
     ],
     "micron_ah": {
       "regular_close": 1087.8349609375,
-      "last": 1092.5,
-      "ret": 0.00428837023079276,
-      "low_ret": -0.0022199699625563563,
-      "high_ret": 0.006117691838810391,
-      "last_time": "2026-10-08T08:55:00+09:00"
+      "last": 1088.0,
+      "ret": 0.00015171332824026607,
+      "low_ret": 0.00015171332824026607,
+      "high_ret": 0.00015171332824026607,
+      "last_time": "2026-10-08T05:00:00+09:00"
     },
     "nvidia_ah": {
       "regular_close": 237.36000061035156,
-      "last": 237.7492,
-      "ret": 0.0016397008284785297,
-      "low_ret": -4.213266905062074e-05,
-      "high_ret": 0.0029912343605609237,
-      "last_time": "2026-10-08T08:55:00+09:00"
+      "last": 237.47,
+      "ret": 0.00046342850255132184,
+      "low_ret": 0.00046342850255132184,
+      "high_ret": 0.00046342850255132184,
+      "last_time": "2026-10-08T05:00:00+09:00"
     },
     "session_cross": {
       "NQ=F": {
@@ -112,7 +112,7 @@
         "after_high": 0.0004338362711773236
       }
     },
-    "from_high": -0.042983205237688504,
+    "from_high": -0.04242744635571272,
     "buyback": [
       {
         "kind": "직접 취득",
@@ -137,9 +137,9 @@
   "events": [],
   "turning_point": {
     "high_time": "2026-10-08T10:55:00+09:00",
-    "high": 0.020034843205574804,
+    "high": 0.01944283226929766,
     "low_time": "2026-10-08T12:50:00+09:00",
-    "low": -0.015098722415795574,
+    "low": -0.015670342426001183,
     "pattern": "고점 후 반락"
   },
   "closing_share": 0.4449676280164793,
@@ -523,22 +523,22 @@
       "link": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE44V3pFVUFva0s4WlJZSUxfVUI3TDN0SGltMFRFUnplZjJZODM4LTkyQlNPdzN1dG82Zmo3QkFCX1I2RmRKVXJzWDlmMHFZaGlvZ3QyQ2w4Y0NZMjJxdVRXTFppbWJGZk0?oc=5"
     },
     {
-      "time": "2026-10-08T03:03:23+09:00",
-      "title": "AMD AI칩 공급망에 삼성·SK하이닉스 합류... HBM4 경쟁 본격화",
-      "source": "테크데일리",
-      "link": "https://news.google.com/rss/articles/CBMickFVX3lxTE56NVZ6MWlXWUpXb1hjblR0T1l1ajJLUS1VV3doTUt4SmlZX0tQWHpHWFdCUmI4Mkk4UFJCOTJNN01zOWM0YmcwVXNEVWRFY012a01lQXlqTVg3OEFoWGxFVVVGVWVEQlcxdzBETUZYdjVEd9IBckFVX3lxTE56NVZ6MWlXWUpXb1hjblR0T1l1ajJLUS1VV3doTUt4SmlZX0tQWHpHWFdCUmI4Mkk4UFJCOTJNN01zOWM0YmcwVXNEVWRFY012a01lQXlqTVg3OEFoWGxFVVVGVWVEQlcxdzBETUZYdjVEdw?oc=5"
-    },
-    {
-      "time": "2026-10-08T07:00:00+09:00",
+      "time": "2026-10-08T07:00:04+09:00",
       "title": "SK하이닉스, AI환경연구소 설립한다…반도체 환경문제 선제대응",
-      "source": "한국경제TV",
-      "link": "https://news.google.com/rss/articles/CBMifEFVX3lxTE5hNWJHa3E4eDdaeS14OEs3RmFka00zUmJMWUJ4eDg5azhrSGRXUmUwOG1NekM1X1lxd3FZeFhSUF9ET3FpTzlVTlNvMFp2N2VxNlY1WGNWYVpESW5NLUw4LURLanJESEhLSHd3Z2VuZzZYRGM0U3dJX0lPQV8?oc=5"
+      "source": "연합뉴스",
+      "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE1JYXNMRnRXZ2stV0tjMkU2R3J6SG15cU1YR2UyYVBNb0VLUTRZMGlpb2psYVd5dmtGMU55d0tQQkFuR0JfakNiUThlSnFxVktTT3VvUUxqNkxZbFB2TXFpcdIBYEFVX3lxTE1JYXNMRnRXZ2stV0tjMkU2R3J6SG15cU1YR2UyYVBNb0VLUTRZMGlpb2psYVd5dmtGMU55d0tQQkFuR0JfakNiUThlSnFxVktTT3VvUUxqNkxZbFB2TXFpcQ?oc=5"
     },
     {
       "time": "2026-10-08T07:43:01+09:00",
       "title": "SK하이닉스, AI환경연구소 설립 추진…반도체·D센터 문제 선제대응",
       "source": "조세금융신문",
       "link": "https://news.google.com/rss/articles/CBMiY0FVX3lxTE5kSUVwWS1JMHNjRl9FVmEyZ2pTSHh4aUtHQ1NGTzJIUllGNzBfV1NkQXdxZEluZ1k5XzREYnBXZlpoOFVoNUZIYTdEaXEwdU5faEhJSDV0Yi10NGJuU0FOVGUyWQ?oc=5"
+    },
+    {
+      "time": "2026-10-08T08:21:54+09:00",
+      "title": "\"반도체 환경 난제 해결하겠다\"…SK하이닉스 'AI 환경연구소' 설립 추진",
+      "source": "아시아경제",
+      "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE4tLUlnLTVYcG45d3RENjdzZzJaUUZqMkY2SUJocjY1Ujl5R3VFQloySjVoSkRpS0tacVdzOHJlb1hGc1FKaFJLd1lnVVBzdUFiRnVRNDRSN0JGMHktNVBaOQ?oc=5"
     }
   ],
   "top_news": [
@@ -555,18 +555,6 @@
       "link": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE44V3pFVUFva0s4WlJZSUxfVUI3TDN0SGltMFRFUnplZjJZODM4LTkyQlNPdzN1dG82Zmo3QkFCX1I2RmRKVXJzWDlmMHFZaGlvZ3QyQ2w4Y0NZMjJxdVRXTFppbWJGZk0?oc=5"
     },
     {
-      "time": "2026-10-08T10:33:36+09:00",
-      "title": "마이크론 현 주가보다 3배 높은 목표주가 나와, 삼성전자와 SK하이닉스에도 청신호",
-      "source": "비즈니스포스트",
-      "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTE8xd3RkaVdydHlYNy1EcHhCMzVXSHdhbmFzd2ExQXVsV1d1X01hMlhOdHJKTHVQUjB3NEs4YXlpSF9fNWhjR0tyTGkydDdKeDFLT3FpdmI1Wk5zX2RXS1ZybTNESlNFeDFIRm5MaWhfc2JtTkE?oc=5"
-    },
-    {
-      "time": "2026-10-08T10:47:07+09:00",
-      "title": "누리호 탄 SK하이닉스 D램·낸드, 실제 궤도서 반도체 성능 검증",
-      "source": "화이트페이퍼",
-      "link": "https://news.google.com/rss/articles/CBMib0FVX3lxTE1jdmt1dTBRZlNsMUE1T0hjZ2ZxSHVoV3oxaFVndzduWUpaeHBVUTZaWWVqeldaNzBfY2FFd1ZEblBtYW85Wm1sUTF2dXJSdWU5NkloUzg1eFZzbEc1b2JZeTh1S3oyaDh0c0l6Uk9vc9IBc0FVX3lxTE1VNlhlWElIaUhsMmFCeG1fOW13RVhWcFVteXZTMEhndFlHcVpqVGM3cUZmdEh6Y3YzUnJxUXJheW1jbFhOaUNvaHFEY3RGZWZOUEEtVWs5eEtpenRMZFFlQVpwa2lYR1NvWldSQ3dXb0l4cGM?oc=5"
-    },
-    {
       "time": "2026-10-08T14:10:47+09:00",
       "title": "SK증권, 'AI 투자지도 2027' 세미나…반도체 투자전략 짚는다",
       "source": "서울경제TV",
@@ -577,6 +565,18 @@
       "title": "SK증권, AI 시대 투자 기회 짚는다…‘2027 반도체 투자전략’ 공개",
       "source": "리드경제",
       "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE4xbld4VmZUTl9pUFpGWTItYU9XVUpaY05Yb3J5VW90T1dhTzBWSFotbVJUaDdneldMODdYTlF1N1FZSWpMdW1BWEp5azJsY0JBQUVqRWo4VTQ3VVY3bVZiOVdiVmZoTkx3Uk4zSVVFU3Y?oc=5"
+    },
+    {
+      "time": "2026-10-08T07:00:04+09:00",
+      "title": "SK하이닉스, AI환경연구소 설립한다…반도체 환경문제 선제대응",
+      "source": "연합뉴스",
+      "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE1JYXNMRnRXZ2stV0tjMkU2R3J6SG15cU1YR2UyYVBNb0VLUTRZMGlpb2psYVd5dmtGMU55d0tQQkFuR0JfakNiUThlSnFxVktTT3VvUUxqNkxZbFB2TXFpcdIBYEFVX3lxTE1JYXNMRnRXZ2stV0tjMkU2R3J6SG15cU1YR2UyYVBNb0VLUTRZMGlpb2psYVd5dmtGMU55d0tQQkFuR0JfakNiUThlSnFxVktTT3VvUUxqNkxZbFB2TXFpcQ?oc=5"
+    },
+    {
+      "time": "2026-10-08T07:43:01+09:00",
+      "title": "SK하이닉스, AI환경연구소 설립 추진…반도체·D센터 문제 선제대응",
+      "source": "조세금융신문",
+      "link": "https://news.google.com/rss/articles/CBMiY0FVX3lxTE5kSUVwWS1JMHNjRl9FVmEyZ2pTSHh4aUtHQ1NGTzJIUllGNzBfV1NkQXdxZEluZ1k5XzREYnBXZlpoOFVoNUZIYTdEaXEwdU5faEhJSDV0Yi10NGJuU0FOVGUyWQ?oc=5"
     }
   ],
   "disclosures": [],
@@ -596,9 +596,9 @@
     "steady": 40,
     "upper": 3,
     "lower": 0,
-    "individual": 29096.0,
-    "foreign": -20015.0,
-    "institution": -16624.0,
+    "individual": 29309.0,
+    "foreign": -20322.0,
+    "institution": -16531.0,
     "prev_close": 6803.9,
     "open": 6808.68,
     "high": 6810.83,

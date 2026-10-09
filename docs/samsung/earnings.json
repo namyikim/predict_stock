@@ -92,11 +92,11 @@
     "fresh": true,
     "fetch_error": null,
     "first": "2000-01",
-    "last": "2026-08",
-    "rows": 320,
+    "last": "2026-09",
+    "rows": 321,
     "release_day": 20,
     "note": "OECD G20 경기선행지수(OECD 데이터 API). 참조월+1개월 20일 이후에만 사용. 매달 소급 수정되므로 백테스트는 최종 수정치 기준이라 낙관적",
-    "snapshot_hash": "0cdbfc23847b779044d6",
+    "snapshot_hash": "97e5d581980d5a0ce827",
     "enabled": true
   },
   "cli_active": true,
@@ -147,8 +147,8 @@
     "fresh": true,
     "fetch_error": null,
     "first": "2026-09-11",
-    "last": "2026-10-08",
-    "rows": 27,
+    "last": "2026-10-09",
+    "rows": 28,
     "items": [
       "ddr5_16gb",
       "ddr4_16gb",
@@ -159,11 +159,11 @@
   },
   "dram_summary": {
     "item": "ddr5_16gb",
-    "date": "2026-10-08",
-    "value": 58.567,
-    "change_7d": 0.010943676315744,
+    "date": "2026-10-09",
+    "value": 58.9,
+    "change_7d": 0.01551724137931032,
     "change_30d": null,
-    "days": 27
+    "days": 28
   },
   "provisional": {},
   "provisional_info": {
@@ -171,7 +171,7 @@
       "report_nm": "연결재무제표기준영업(잠정)실적(공정공시)              ",
       "rcept_dt": "20261008",
       "rcept_no": "20261008800004",
-      "reason": "본문에서 영업이익을 찾지 못했습니다"
+      "reason": "본문을 받지 못했습니다(BadZipFile)"
     }
   },
   "next_quarter": {
@@ -192,7 +192,7 @@
     "evaluation_with_cli": null,
     "no_point_reason": "해당 분기 전망에 필요한 수출 자료가 아직 없어 추정을 기다립니다."
   },
-  "generated_at": "2026-10-08 16:23 KST",
+  "generated_at": "2026-10-09 16:35 KST",
   "announced_actual": null,
   "chosen": "released_residual",
   "selection": {
@@ -231,16 +231,16 @@
     "n": 10,
     "first": "2021Q1",
     "last": "2023Q2",
-    "mae_model": 3469923271820.1255,
+    "mae_model": 3469074762356.1064,
     "mae_random_walk": 4188391400000.0,
     "mae_seasonal_naive": 6882760500000.0,
-    "corr": 0.8826208735792518,
+    "corr": 0.882468001321904,
     "beats_baselines": true,
-    "residual_q10": -6368607435818.113,
-    "residual_q90": 3084582447828.047,
-    "interval_rel_halfwidth": 0.8894572656066703,
+    "residual_q10": -6365167800984.913,
+    "residual_q90": 3088057978965.6455,
+    "interval_rel_halfwidth": 0.8895239097907636,
     "interval_method": "conformal_relative",
-    "mape_model": 2.290950697545287,
+    "mape_model": 2.29129301701715,
     "coverage_n": 0
   },
   "evaluation_without_cli": {
@@ -267,16 +267,16 @@
     "n": 11,
     "first": "2023Q3",
     "last": "2026Q1",
-    "mae_model": 13901488999502.469,
+    "mae_model": 13899963616028.85,
     "mae_random_walk": 14559542545454.545,
     "mae_seasonal_naive": 16855910090909.092,
-    "corr": 0.7023594599066068,
+    "corr": 0.7027315905739052,
     "beats_baselines": true,
-    "residual_q10": -3883365929708.506,
-    "residual_q90": 49915332068777.85,
-    "interval_rel_halfwidth": 2.8148552802466478,
+    "residual_q10": -3882278741644.203,
+    "residual_q90": 49910243119682.79,
+    "interval_rel_halfwidth": 2.8181554651592,
     "interval_method": "conformal_relative",
-    "mape_model": 0.6087416164945996,
+    "mape_model": 0.6090274055110799,
     "coverage_n": 2,
     "coverage_hit": 0,
     "coverage_rate": 0.0,

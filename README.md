@@ -112,3 +112,120 @@ predict_stock/
 ├── docs/                                # GitHub Pages 발행 결과
 └── forecast_history/                    # 실제 사전 예측과 채점 원장
 ```
+
+---
+
+## English Overview
+
+**predict_stock** is a research project that forecasts the next trading day's price direction, opening price, and closing price for **Samsung Electronics** and **SK hynix**, then compares those forecasts with actual market results. It also publishes automated reports on gold and silver, Chinese equities, trending search topics, and long-term public interest.
+
+### Latest Reports
+
+Browse all reports on **[predict_stock GitHub Pages](https://namyikim.github.io/predict_stock/)**. The reports are primarily written in Korean.
+
+| Report | Link |
+| --- | --- |
+| Samsung Electronics | [Latest report](https://namyikim.github.io/predict_stock/samsung/) |
+| SK hynix | [Latest report](https://namyikim.github.io/predict_stock/sk_hynix/) |
+| Gold and silver | [Latest report](https://namyikim.github.io/predict_stock/metals/) |
+| Chinese equities | [Latest report](https://namyikim.github.io/predict_stock/china/) |
+| Trending search topics | [Latest report](https://namyikim.github.io/predict_stock/trends/) |
+| Long-term public interest | [Latest report](https://namyikim.github.io/predict_stock/interest/) |
+
+### What the Project Provides
+
+- **Next-day direction forecasts** for Samsung Electronics and SK hynix, with explicit target dates.
+- **Opening-price forecasts** and **closing-price forecasts for 1, 5, and 20 trading days ahead**, including estimated ranges.
+- Foreign and institutional investor flows, upcoming events, and recent corporate disclosures.
+- Longer-term outlooks for 3, 6, and 12 months, plus quarterly operating-profit estimates.
+- DRAM spot-price observations from DRAMeXchange. These are displayed while a sufficient history is collected for validation.
+- An experimental volatility-based forecast interval using VXN around events such as earnings releases and FOMC meetings. It is tracked separately as `Candidate IV interval`.
+- A post-open update incorporating the observed opening price, recorded separately as `Post-open`. This uses information available later in the day and should not be treated as a directly comparable improvement over the pre-open forecast.
+- **Forecast-versus-actual performance based on predictions recorded in advance**, alongside separate historical research and simulation results.
+- Plain-language summaries and consolidated decision-support tables with references to the underlying report sections.
+
+The automated reports use programmed analysis and public data without requiring a separate generative AI API or paid AI tokens. When evidence is insufficient, the reports state that a forecast is difficult or that no signal is available instead of forcing a numerical conclusion.
+
+### How to Interpret the Results
+
+In the project's evaluations, much of the observed predictive signal for **close-to-close direction** came from the **overnight gap between the previous close and the next opening price**. Open-to-close performance was generally much weaker. Because overnight information is already reflected in the opening price, a high direction hit rate does **not** automatically translate into profitable trading after the market opens.
+
+The reports therefore distinguish overnight and intraday movements. The operator's **Lab**, available through the admin page, compares simulated strategies with buy-and-hold while accounting for commissions, transaction taxes, and slippage. Cost assumptions matter, and simulations do not guarantee execution at the displayed prices. Historical simulations and automated paper-trading records are separate forms of evidence; neither is a live brokerage account.
+
+The Lab also displays feature contributions from LightGBM and logistic-regression models. A feature with a large contribution to a prediction is not necessarily a useful predictor. The analysis separates correct and incorrect forecasts and highlights when there are too few observations for a reliable interpretation.
+
+Pre-open forecasts are recorded during the designated **06:00–09:00 KST** window. Evening runs can be recorded separately as `Candidate evening forecast` to study the information gained overnight. The ledger preserves prior records rather than replacing them with later predictions after outcomes become known.
+
+The public reports provide **decision-support information, not buy or sell recommendations**. They bring together market conditions, investor flows, earnings estimates, and upcoming events while explaining what the available evidence cannot answer.
+
+> This project is for research and education. It is not investment advice and does not guarantee returns.
+
+### Quick Start
+
+The main notebook is [`samsung_direction_model_colab.ipynb`](samsung_direction_model_colab.ipynb). It can be run from top to bottom in Google Colab.
+
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/namyikim/predict_stock/blob/main/samsung_direction_model_colab.ipynb)
+
+To run it locally:
+
+```bash
+python -m venv .venv
+# Activate the virtual environment before continuing.
+python -m pip install -r requirements.txt
+python tools/run_notebook.py --storage ./outputs
+```
+
+Colab and local runs save their outputs in the current execution environment by default; they do not overwrite the published GitHub reports. See the [running guide](guides/running.md) for configuration and output details.
+
+### Experimental Weekly Sequence Notebook — S04
+
+[`weekly_sequence_s04_colab.ipynb`](weekly_sequence_s04_colab.ipynb) evaluates an experimental five-trading-day sequence model using recorded snapshots. It is separate from the production notebook, does not publish reports or write to the forecast ledger, and saves its results under `experiments/weekly_sequence/S04/`.
+
+This is a **one-time evaluation** of a locked 12-month period for each stock; the runner rejects a second execution. A `GITHUB_TOKEN` secret is required to push the results. See the [weekly sequence model design](guides/weekly-sequence-model-plan.md) and [S04 implementation plan](guides/weekly-sequence-s04-implementation.md) before running it.
+
+### Automated Publishing
+
+The documented publishing schedule uses **Korea Standard Time (KST, UTC+9)**:
+
+| Task | Schedule |
+| --- | --- |
+| Main stock reports | Weekdays at 06:22, with a 07:25 backup and recovery runs every three hours |
+| Opening-price scoring | Weekdays at 09:37 |
+| Closing-price scoring | Weekdays at 16:10 |
+| Long-term outlook | The 7th of each month at 07:00 |
+| Monitoring | Weekdays at 09:20 |
+
+For exact workflow schedules, duplicate prevention, failure detection, and required secrets, see the [automation guide](guides/automation.md) and the workflow files under [`.github/workflows/`](.github/workflows/).
+
+### Documentation
+
+The following detailed guides are primarily in Korean.
+
+| Guide | Contents |
+| --- | --- |
+| [Stock reports](guides/stock-reports.md) | How to read the forecasts and report sections |
+| [Data sources](guides/data-sources.md) | Market prices, exports, economic indicators, investor flows, disclosures, and publication timing |
+| [Running the project](guides/running.md) | Colab and local execution, configuration, and generated files |
+| [Automation and publishing](guides/automation.md) | Scheduled jobs, retries, monitoring, and secrets |
+| [Validation](guides/validation.md) | Walk-forward evaluation, leakage prevention, baselines, and performance criteria |
+| [Model improvement plan](guides/model-improvement-plan.md) | Experiments, completion checklists, and resumption instructions |
+| [Medium-horizon improvement plan](guides/medium-horizon-improvement-plan.md) | Five- and twenty-trading-day price, direction, and interval forecasts |
+| [Research candidates](guides/research-candidates-plan.md) | Research-based experiments targeting observed model weaknesses |
+| [Other reports](guides/other-reports.md) | Metals, China, search trends, and public-interest reports |
+| [Development](guides/development.md) | Repository structure, testing, and notebook helper synchronization |
+| [Counter and subscriptions](counter/README.md) | Cloudflare Worker setup and operational documentation |
+
+### Repository Structure
+
+```text
+predict_stock/
+├── samsung_direction_model_colab.ipynb  # Main analysis, training, and forecasting notebook
+├── forecast_utils.py                   # Shared training, validation, and ledger utilities
+├── report_html.py                      # Stock-report HTML components
+├── data_sources/                       # Primary and supplementary data providers
+├── tools/                              # Runners and report-generation tools
+├── tests/                              # Unit, structural, and execution tests
+├── guides/                             # Detailed documentation
+├── docs/                               # Published GitHub Pages content
+└── forecast_history/                   # Recorded prospective forecasts and their scores
+```

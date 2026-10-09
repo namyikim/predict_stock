@@ -162,14 +162,27 @@ def direction_hold_note(call, min_prob=DIRECTION_ISSUE_MIN_PROB):
             f"(계산상 기울기: {_DIRECTION_WORDS[call['argmax']].strip('▼▲ ')})")
 
 
+# 가격 예측의 signal 값. '있음' = 검증 구간에서 '가격 유지'보다 낫다는 근거를 찾아 발행, '미확인' = 근거는
+# 못 찾았지만 보정 기울기로 축소한 값을 그대로 발행, '없음' = 발행하지 않음(옛 원장·금·은 보고서).
+# 1주일·1개월 종가가 검증을 한 번도 통과하지 못해 매일 '예측하지 않음'이었다. 판단을 접지 말고 매일 내되
+# 검증 여부를 숨기지 않고, 원장에 쌓아 실제 성적으로 채점한다(2026-10-09 요청).
+PRICE_SIGNAL_UNVERIFIED = "미확인"
+PUBLISHED_PRICE_SIGNALS = ("있음", PRICE_SIGNAL_UNVERIFIED)
+
+
+def price_is_published(row):
+    """이 가격 예측 행이 숫자를 낸 것인가(검증 통과 또는 미확인 발행)."""
+    return hasattr(row, "get") and row.get("signal") in PUBLISHED_PRICE_SIGNALS
+
+
 def next_day_forecast_html(*, prediction_date, summary, open_forecast, price_forecasts,
                            target_mode="close_to_close"):
     """다음 거래일의 시초가·방향·종가를 카드 셋으로. 하루의 시간 순서(09:00 → 15:30)대로 놓는다.
 
     시초가 카드를 크게 둔다 — 이 모델의 예측력은 거의 전부 갭(전일 종가→시가)에 있고(갭 AUC 0.8,
     장중 AUC 0.5), 종가 방향은 확률이 기준 이상인 날만 낸다(direction_call).
-    가격은 아래 요약과 같은 문(門)을 지난 것만 숫자로 보인다. 검증을 통과하지 못한 가격은 원시값도
-    중심값도 내지 않는다 — 숫자가 보이면 예측으로 읽힌다.
+    가격은 발행한 것(signal '있음'·'미확인')만 숫자로 보인다. '없음'이면 원시값도 중심값도 내지 않는다 —
+    숫자가 보이면 예측으로 읽힌다. '미확인'은 숫자 옆에 검증 우위 미확인이라고 적는다(2026-10-09).
     """
     from html import escape
     summary = summary if hasattr(summary, "get") else {}
@@ -182,10 +195,13 @@ def next_day_forecast_html(*, prediction_date, summary, open_forecast, price_for
     def price(row, field):
         row = row if hasattr(row, "get") else {}
         point = _finite(row.get(field))
-        if row.get("signal") != "있음" or point is None or point <= 0:
+        if not price_is_published(row) or point is None or point <= 0:
             return "예측 안 함", "검증을 통과하지 못해 숫자를 내지 않습니다"
         change = _finite(row.get("predicted_return"))
-        return f"{point:,.0f}원", (f"전일 종가 대비 {change:+.2%}" if change is not None else "모델 예상")
+        note = f"전일 종가 대비 {change:+.2%}" if change is not None else "모델 예상"
+        if row.get("signal") == PRICE_SIGNAL_UNVERIFIED:
+            note += " · 검증 우위 미확인"
+        return f"{point:,.0f}원", note
 
     by_days = {r.get("trading_days"): r for r in (price_forecasts or []) if hasattr(r, "get")}
     cards = [("시초가 예측 · 09:00",) + price(open_forecast, "predicted_open") + (True,),
@@ -1213,8 +1229,11 @@ def easy_summary_html(*, name, prediction_date, data_date, summary, open_forecas
 
     def price_text(row, field):
         point = number(row.get(field))
-        if row.get("signal") != "있음" or point is None or point <= 0:
+        if not price_is_published(row) or point is None or point <= 0:
             return "예측하기 어렵습니다(검증 근거 부족)."
+        if row.get("signal") == PRICE_SIGNAL_UNVERIFIED:
+            return (f"약 {point:,.0f}원. 과거 검증에서 '가격 유지'보다 낫다는 근거를 아직 찾지 못한 모델 예상입니다"
+                    "(실제 결과로 계속 채점합니다).")
         return f"약 {point:,.0f}원. 확정 가격이 아닌 모델 예상입니다."
 
     # 전체 결론은 시초가가 앞이다. 이 모델이 실제로 맞히는 것은 갭(전일 종가→시가)이고, 종가 방향은
@@ -1404,13 +1423,14 @@ def price_range_html(open_forecast, price_forecasts, prediction_date=None):
         if not row:
             continue
         low, high = _finite(row.get(low_key)), _finite(row.get(high_key))
-        passed = row.get("signal") == "있음"
+        passed = price_is_published(row)
         point = _finite(row.get(point_key)) if passed else None
         if point is not None and point <= 0:
             point = None
         when = row.get("target_date", prediction_date if point_key == "predicted_open" else None)
         day = _day_label(when) if when is not None else None
-        rows.append(dict(label=label, hint=hint, day=day, low=low, high=high, point=point,
+        note = "검증 우위 미확인" if point is not None and row.get("signal") == PRICE_SIGNAL_UNVERIFIED else None
+        rows.append(dict(label=label, hint=hint, day=day, low=low, high=high, point=point, note=note,
                          change=_finite(row.get("predicted_return")) if point is not None else None))
     if not rows:
         return ""
@@ -1428,7 +1448,7 @@ def price_rows_range_html(price_rows, title, money=None, base_label="기준 가�
     for row in price_rows or []:
         if not hasattr(row, "get"):
             continue
-        point = _finite(row.get("predicted_close")) if row.get("signal") == "있음" else None
+        point = _finite(row.get("predicted_close")) if price_is_published(row) else None
         if point is not None and point <= 0:
             point = None
         when = row.get("target_date")
@@ -1476,7 +1496,9 @@ def _range_chart_html(rows, base, title, money=None, base_label="기준 가격(�
             tone = "#1e6b34" if (r["change"] or 0) > 0 else ("#a8322a" if (r["change"] or 0) < 0 else "#1a1a1a")
             value = (f'<div style="font-size:15px;font-weight:700;color:{tone}">{money(r["point"])}'
                      + (f' <span style="font-size:12px">{r["change"]:+.2%}</span>' if r["change"] is not None else "")
-                     + '</div>')
+                     + '</div>'
+                     # '미확인' 발행은 예상가 아래에 주황 글씨로 표시한다(2026-10-09).
+                     + (f'<div style="font-size:11px;color:#8a5a00">{escape(r["note"])}</div>' if r.get("note") else ""))
         else:
             value = '<div style="font-size:12px;font-weight:600;color:#8a9199">예측하기 어렵습니다</div>'
         body += ('<div class="pr-row">'
@@ -1495,8 +1517,11 @@ def _range_chart_html(rows, base, title, money=None, base_label="기준 가격(�
             f'<div style="font-size:14px;font-weight:700;margin-bottom:2px">{escape(title)}</div>'
             f'<div style="font-size:11px;color:#8a9199;margin-bottom:6px">{legend}</div>'
             f'{body}'
-            '<div style="font-size:11px;color:#8a9199;margin-top:6px">검증을 통과하지 못한 기간은 예상가(점) 없이 '
-            '구간만 보입니다. 기간이 길수록 구간이 넓어집니다.</div></div>')
+            '<div style="font-size:11px;color:#8a9199;margin-top:6px">'
+            + ('"검증 우위 미확인"은 과거 검증에서 "가격 유지"보다 낫다는 근거를 아직 찾지 못했지만 낸 예상가로, '
+               '실제 결과로 계속 채점합니다. ' if any(r.get("note") for r in rows) else
+               '검증을 통과하지 못한 기간은 예상가(점) 없이 구간만 보입니다. ')
+            + '기간이 길수록 구간이 넓어집니다.</div></div>')
 
 
 def rolling_train_indices(date_index, before, years=5):
@@ -1756,6 +1781,9 @@ def calibrate_price_forecast(y, prediction, sigma, dates, horizon, ci_function, 
     gate_diff = np.abs(y[gate] - slope * prediction[gate]) - np.abs(y[gate])
     gate_lo, gate_hi = ci_function(pd.DatetimeIndex(dates)[gate], lambda i: float(gate_diff[i].mean()))
     beats_baseline = bool(np.isfinite(gate_hi) and gate_hi < 0)
+    # 검증을 못 통과해도 보정 기울기는 남긴다 — '미확인'으로 발행할 때 쓴다(2026-10-09). 구간 폭·평가는
+    # 아래처럼 0으로 만든 기울기(가격 유지 중심)로 잰다.
+    calibration_slope = slope
     if not beats_baseline:
         slope = 0.
     residual = np.abs(y[cal] - slope * prediction[cal]) / np.maximum(sigma[cal], 1e-6)
@@ -1779,6 +1807,8 @@ def calibrate_price_forecast(y, prediction, sigma, dates, horizon, ci_function, 
         "zero_baseline_mae": float(np.abs(y[evaluation]).mean()),
         "raw_model_mae": float(np.abs(y[evaluation] - prediction[evaluation]).mean()),
         "shrunk_model_mae": float(test_error.mean()), "mae_diff_vs_zero": float(diff.mean()),
+        "calibration_slope": calibration_slope,
+        "calibrated_model_mae": float(np.abs(y[evaluation] - calibration_slope * prediction[evaluation]).mean()),
         "mae_diff_lo": float(lo), "mae_diff_hi": float(hi),
         "selection_mae_diff_lo": float(gate_lo), "selection_mae_diff_hi": float(gate_hi),
         "oof_slope": slope, "beats_baseline": beats_baseline, "band_q": q,
@@ -1853,11 +1883,13 @@ def price_oof_predictions(X, y, sigma, horizon, template, n_splits):
 
 
 def price_issuance_summary(log, horizon_days, last_n=60):
-    """최근 last_n 개 예측일의 h일 가격 예측 중 신호를 낸('있음') 비율. 보고서에 발행률을 병기하는 데 쓴다.
+    """최근 last_n 개 예측일의 h일 가격 예측 중 숫자를 낸('있음'·'미확인') 비율. 보고서에 발행률을 병기하는 데 쓴다.
+
+    verified 는 그중 검증을 통과한('있음') 수다. '미확인' 발행을 더하기 전(2026-10-09)에는 둘이 같았다.
 
     예측일마다 가장 먼저 기록된 행(사전 예측)만 센다. 원장이 없거나 해당 행이 없으면 n=0, rate=NaN.
     """
-    empty = {"n": 0, "issued": 0, "rate": float("nan"), "horizon_days": int(horizon_days)}
+    empty = {"n": 0, "issued": 0, "verified": 0, "rate": float("nan"), "horizon_days": int(horizon_days)}
     if log is None or len(log) == 0:
         return empty
     frame = pd.DataFrame(log)
@@ -1872,8 +1904,10 @@ def price_issuance_summary(log, horizon_days, last_n=60):
         return empty
     order = "created_at_utc" if "created_at_utc" in rows.columns else "prediction_date"
     first = rows.sort_values(order).groupby("prediction_date", sort=True).head(1).sort_values("prediction_date").tail(last_n)
-    issued = int((first["signal"].astype(str) == "있음").sum())
-    return {"n": int(len(first)), "issued": issued, "rate": issued / len(first), "horizon_days": int(horizon_days)}
+    signal = first["signal"].astype(str)
+    issued = int(signal.isin(PUBLISHED_PRICE_SIGNALS).sum())
+    return {"n": int(len(first)), "issued": issued, "verified": int((signal == "있음").sum()),
+            "rate": issued / len(first), "horizon_days": int(horizon_days)}
 
 
 def price_macro_ablation(X, y, sigma, dates, feature_names, horizon, estimator,

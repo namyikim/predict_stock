@@ -1,0 +1,94 @@
+{
+  "folds": [
+    {
+      "fold": 9,
+      "train_rows": 1211,
+      "test_rows": 107,
+      "gap_center_mae": 0.010050641090163836,
+      "gap_zero_mae": 0.011126138192923468,
+      "gap_interval_80": 0.7102803738317757
+    },
+    {
+      "fold": 10,
+      "train_rows": 1193,
+      "test_rows": 120,
+      "gap_center_mae": 0.0262070481281828,
+      "gap_zero_mae": 0.02916638319849983,
+      "gap_interval_80": 0.6333333333333333
+    },
+    {
+      "fold": 11,
+      "train_rows": 1190,
+      "test_rows": 67,
+      "gap_center_mae": 0.026489402884379655,
+      "gap_zero_mae": 0.029285856336086002,
+      "gap_interval_80": 0.8805970149253731
+    }
+  ],
+  "quantiles": 41,
+  "gap_alpha": 10000.0,
+  "inner_share": 0.2,
+  "comparisons": [
+    {
+      "target": "samsung",
+      "comparison": "gap_mixture − t0700",
+      "metric": "log_loss",
+      "delta": 0.0471057561085364,
+      "ci_low": 0.02204760200928159,
+      "ci_high": 0.0761849977899995,
+      "common_n": 294,
+      "verdict": "후보가 유의하게 열위"
+    },
+    {
+      "target": "samsung",
+      "comparison": "gap_mixture − t0700",
+      "metric": "balanced_accuracy",
+      "delta": -0.08116080012694504,
+      "ci_low": -0.13392967666039504,
+      "ci_high": -0.025933451258892792,
+      "common_n": 294,
+      "verdict": "후보가 유의하게 열위"
+    },
+    {
+      "target": "samsung",
+      "comparison": "gap_mixture − t0700",
+      "metric": "accuracy",
+      "delta": -0.08163265306122447,
+      "ci_low": -0.15059584959934255,
+      "ci_high": -0.022755291400096057,
+      "common_n": 294,
+      "verdict": "후보가 유의하게 열위"
+    },
+    {
+      "target": "samsung",
+      "comparison": "t0900 − gap_mixture",
+      "metric": "log_loss",
+      "delta": -0.19123244408450213,
+      "ci_low": -0.24085951480807272,
+      "ci_high": -0.14129367936564718,
+      "common_n": 294,
+      "verdict": "후보가 유의하게 우위"
+    },
+    {
+      "target": "samsung",
+      "comparison": "t0900 − gap_mixture",
+      "metric": "balanced_accuracy",
+      "delta": 0.15562120603984464,
+      "ci_low": 0.09243986228170774,
+      "ci_high": 0.21568514327011237,
+      "common_n": 294,
+      "verdict": "후보가 유의하게 우위"
+    },
+    {
+      "target": "samsung",
+      "comparison": "t0900 − gap_mixture",
+      "metric": "accuracy",
+      "delta": 0.1802721088435374,
+      "ci_low": 0.10953390822081291,
+      "ci_high": 0.25549399198931905,
+      "common_n": 294,
+      "verdict": "후보가 유의하게 우위"
+    }
+  ],
+  "note": "gap_mixture 는 07:00 정보만 쓴다(시험 행의 실현 갭 미사용). t0900 은 09:00 시가를 본 상한 진단."
+}

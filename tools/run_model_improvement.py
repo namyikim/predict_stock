@@ -57,6 +57,7 @@ TASKS = {
     "P18": "전날 저녁(20:00 KST) 예측에 저녁에 거래되는 자산(나스닥·S&P 선물, DAX·유로스톡스 시간봉)을 더할 수 있는가",
     "P17": "해외 1일 수익률을 as-of 가격 수준의 한국 행 사이 누적으로 — 미국 휴장일 반복값 제거(검토 #6)",
     "P19": "대표 모델 학습 행을 보조 자료 결측과 무관하게 시세 열 기준으로(검토 #7)",
+    "P20": "07:00 종가 방향을 '예측한 갭 분포 × 시가 반영 모델'로 — 07:00 정보만 쓴다(2026-10-09 검토)",
 }
 
 # P03에서 비교하는 특징군. 노트북이 같은 폴드·같은 날짜로 이미 계산해 CSV로 남기므로
@@ -2800,10 +2801,152 @@ def run_p19(target, mode, storage, state, run_notebook_fn=None):
     return rows
 
 
+# ---------------------------------------------------------------------------
+# P20 — 07:00 종가 방향 = Σ_g P(갭 = g | 07:00 특징) × P(방향 | 갭 = g, 07:00 특징)
+# ---------------------------------------------------------------------------
+# 2026-10-09 검토: P09 에서 갭 타깃은 log loss 가 −0.18~−0.24 나 줄었지만 종가→종가는 −0.05~−0.07 뿐이었고,
+# P16 은 갭을 '관측'한 09:00 모델(t0900)이 t0700 보다 −0.10 낫다는 것을 보였다. 그런데 07:00 예측은 이 둘을
+# 잇지 않는다. 그래서 07:00 에 알 수 있는 것만으로 갭 분포를 예측하고(Ridge 중심 + 표준화 잔차의 경험 분위),
+# t0900 모델을 그 분포 위에서 평균한다. 당일 정보는 하나도 쓰지 않는다 — 시험 행의 실현 갭은 어디에도 들어가지
+# 않고, 학습 행의 실현 갭만 갭 모델의 정답과 t0900 의 특징으로 쓴다.
+# 후보는 하나(P20_MIXTURE)로 미리 고정한다. 판정은 같은 날짜 t0700 대비 log loss 쌍체 CI.
+P20_T0700 = "t0700"
+P20_MIXTURE = "gap_mixture"
+P20_QUANTILES = tuple((k + .5) / 41 for k in range(41))   # 표준화 잔차의 41개 등확률 분위
+P20_GAP_ALPHA = 1e4                                     # 가격·시초가 모델과 같은 Ridge 규제(make_price_model)
+P20_INNER_SHARE = .2                                    # 학습 구간 마지막 20%로 잔차 분포를 잰다
+
+
+def p20_gap_points(X, gap, scale, tr, te, inner_share=P20_INNER_SHARE, alpha=P20_GAP_ALPHA,
+                   quantiles=P20_QUANTILES):
+    """시험 행마다 갭 분포의 등확률 점(len(te) × len(quantiles)). 학습 행만 본다.
+
+    중심은 학습 구간 전체로 적합한 Ridge, 퍼짐은 '안쪽 앞 80%로 적합 → 뒤 20%에서 잰' 잔차를 그날의
+    갭 변동성(직전 60세션 표준편차, d−1 까지)으로 나눈 값의 분위다. 학습 구간 안에서 잔차를 재면 과적합만큼
+    분포가 좁아지므로 뒤쪽을 떼어 둔다.
+    """
+    sys.path.insert(0, str(ROOT))
+    from forecast_utils import make_price_model
+    tr = np.asarray(tr)
+    cut = int(len(tr) * (1 - inner_share))
+    inner_fit, inner_eval = tr[:cut], tr[cut:]
+    inner = make_price_model(alpha).fit(X[inner_fit], gap[inner_fit])
+    z = (gap[inner_eval] - inner.predict(X[inner_eval])) / scale[inner_eval]
+    z = z[np.isfinite(z)]
+    if len(z) < 50:
+        raise ValueError("갭 잔차 분포를 잴 행이 모자랍니다")
+    z_points = np.quantile(z, quantiles)
+    center = make_price_model(alpha).fit(X[tr], gap[tr]).predict(X[te])
+    return center[:, None] + scale[te][:, None] * z_points[None, :]
+
+
+def p20_mixture_probabilities(models, X_market, gap_points, band, mean, std):
+    """t0900 모델 확률을 갭 점들 위에서 평균한다. 그룹 G 는 가상 갭으로 만들고 나머지 열은 07:00 값 그대로다."""
+    n, k = gap_points.shape
+    flat_gap = pd.Series(gap_points.reshape(-1))
+    rep = lambda a: pd.Series(np.repeat(np.asarray(a, dtype=float), k))
+    sys.path.insert(0, str(ROOT))
+    from forecast_utils import _gap_group_g
+    G = _gap_group_g(flat_gap, rep(band), rep(mean), rep(std)).to_numpy(dtype=np.float32)
+    X = np.hstack([np.repeat(np.asarray(X_market, dtype=np.float32), k, axis=0), G])
+    probs = np.mean([m["predict"](X) for m in models], axis=0)
+    probs = probs.reshape(n, k, 3).mean(axis=1)
+    return probs / probs.sum(axis=1, keepdims=True)
+
+
+def run_p20(target, mode, storage, state, run_notebook_fn=None):
+    """같은 12폴드·같은 날짜에서 t0700(현행) vs gap_mixture(07:00 정보만) 쌍체 비교. 진단용으로 t0900(09:00)도 둔다."""
+    unit = f"{target}:gap_mixture"
+    if state.is_done(unit):
+        print(f"  이미 완료된 단위 건너뜀: {unit} (metrics.csv 유지)")
+        return None
+    if run_notebook_fn is None:
+        sys.path.insert(0, str(ROOT / "tools"))
+        from run_notebook import run_notebook as run_notebook_fn
+    from forecast_utils import post_open_gap_series
+
+    snapshot = snapshot_paths(storage, target)
+    ns = run_notebook_fn(Path(storage) / target, targets=target,
+                         quick=(mode == "quick"), use_cache=bool(snapshot))[target]
+    features, dates, folds = ns["market_X"], pd.DatetimeIndex(ns["dates"]), ns["folds"]
+    dates = dates.tz_localize(None).normalize() if dates.tz is not None else dates.normalize()
+
+    bars = ns["raw"]["target"][["open", "close"]].astype(float).copy()
+    bars.index = pd.DatetimeIndex(bars.index).tz_localize(None).normalize()
+    bars = bars.sort_index()
+    feat_index = pd.DatetimeIndex(ns["feat"].index)
+    band_all = pd.Series(np.asarray(ns["feat"]["band"], dtype=float),
+                         index=feat_index.tz_localize(None).normalize() if feat_index.tz is not None
+                         else feat_index.normalize())
+    band_all = band_all[~band_all.index.duplicated(keep="last")]
+    gap_all = post_open_gap_series(bars)
+    gap_mean = gap_all.rolling(P16_GAP_Z_WINDOW).mean().shift(1)
+    gap_std = gap_all.rolling(P16_GAP_Z_WINDOW).std().shift(1)
+    G = p16_gap_features(bars, band_all.reindex(bars.index), bars.index).reindex(dates)
+
+    X_0700 = np.asarray(features, dtype=np.float32)
+    X_0900 = np.hstack([X_0700, G.to_numpy(dtype=np.float32)])
+    gap = gap_all.reindex(dates).to_numpy(dtype=float)
+    band = band_all.reindex(dates).to_numpy(dtype=float)
+    mean, std = gap_mean.reindex(dates).to_numpy(dtype=float), gap_std.reindex(dates).to_numpy(dtype=float)
+    y = np.asarray(ns["y"], dtype=float)
+    valid = (G.notna().all(axis=1).to_numpy() & np.isfinite(y) & np.isfinite(gap) & np.isfinite(std)
+             & (std > 0) & np.isfinite(X_0700).all(axis=1))
+    y_int = np.where(valid, y, 1).astype(int)
+
+    frames, fold_info = [], []
+    for fold in folds:
+        tr = fold["train_idx"][valid[fold["train_idx"]]]
+        te = fold["test_idx"][valid[fold["test_idx"]]]
+        if len(tr) < MIN_TRAIN_ROWS or len(te) < 20 or len(np.unique(y_int[tr])) < 3:
+            continue
+        frames.append(ns["prediction_frame"](P20_T0700, dates[te], y_int[te],
+                                             _ensemble_probabilities(ns, X_0700, y_int, tr, te), fold["fold"]))
+        fitted = [ns["fit_direction_model"](X_0900, y_int, tr, family, seed=ns.get("SEED", 42),
+                                            selection=ns.get("SELECTION_METRIC", "log_loss"))
+                  for family in ("Logistic", "LightGBM")]
+        models = [{"predict": (lambda f: lambda X: ns["predict_direction_model"](f, X))(f)} for f in fitted]
+        frames.append(ns["prediction_frame"](P16_T0900, dates[te], y_int[te],
+                                             np.mean([m["predict"](X_0900[te]) for m in models], axis=0),
+                                             fold["fold"]))
+        points = p20_gap_points(X_0700, gap, std, tr, te)
+        mix = p20_mixture_probabilities(models, X_0700[te], points, band[te], mean[te], std[te])
+        frames.append(ns["prediction_frame"](P20_MIXTURE, dates[te], y_int[te], mix, fold["fold"]))
+        center = points.mean(axis=1)
+        fold_info.append({"fold": fold["fold"], "train_rows": int(len(tr)), "test_rows": int(len(te)),
+                          "gap_center_mae": float(np.mean(np.abs(gap[te] - center))),
+                          "gap_zero_mae": float(np.mean(np.abs(gap[te]))),
+                          "gap_interval_80": float(np.mean((gap[te] >= np.quantile(points, .1, axis=1))
+                                                           & (gap[te] <= np.quantile(points, .9, axis=1))))})
+        print(f"  폴드 {fold['fold']}: 학습 {len(tr):,} · 시험 {len(te)} · 갭 MAE {fold_info[-1]['gap_center_mae']:.4f}"
+              f" (0 기준 {fold_info[-1]['gap_zero_mae']:.4f})")
+    if not frames:
+        raise RuntimeError("학습 가능한 폴드가 없습니다.")
+    predictions = pd.concat(frames, ignore_index=True)
+    metrics = ns["summarize_predictions"](predictions, with_ci=False)
+    rows = [{"target": target, "model": name, "fold": "all",
+             **{k: r.get(k, "") for k in ("n", "accuracy", "balanced_accuracy", "log_loss", "brier")}}
+            for name, r in metrics.iterrows()]
+    comparisons = []
+    for a, b_ in ((P20_MIXTURE, P20_T0700), (P16_T0900, P20_MIXTURE)):
+        for metric in ("log_loss", "balanced_accuracy", "accuracy"):
+            d = ns["paired_delta_ci"](predictions, a, b_, metric)
+            comparisons.append({"target": target, "comparison": f"{a} − {b_}", "metric": metric,
+                                "delta": d["delta"], "ci_low": d["lo"], "ci_high": d["hi"], "common_n": d["n"],
+                                "verdict": verdict_for(metric, d["lo"], d["hi"])})
+    write_json(state.run_dir / f"p20_{target}.json", {
+        "folds": fold_info, "quantiles": len(P20_QUANTILES), "gap_alpha": P20_GAP_ALPHA,
+        "inner_share": P20_INNER_SHARE, "comparisons": comparisons,
+        "note": "gap_mixture 는 07:00 정보만 쓴다(시험 행의 실현 갭 미사용). t0900 은 09:00 시가를 본 상한 진단."})
+    write_metrics_named(state, comparisons, "comparisons.csv")
+    state.mark(unit, {"evaluation_days": int(predictions[predictions.model == P20_T0700].shape[0])})
+    return rows
+
+
 TASK_RUNNERS = {"P00": run_p00, "P03": run_p03, "P04": run_p04, "P05": run_p05,
                 "P06": run_p06, "P07": run_p07, "P08": run_p08, "P09": run_p09, "P10": run_p10,
                 "P10b": run_p10b, "R02c": run_r02c, "P16": run_p16, "P18": run_p18,
-                "P17": run_p17, "P19": run_p19}
+                "P17": run_p17, "P19": run_p19, "P20": run_p20}
 
 
 # ---------------------------------------------------------------------------
@@ -2924,6 +3067,11 @@ def execute(task, target, mode, storage, resume, run_notebook_fn=None):
                   "row_rule": "시세 열 + target/target_return/band 이 모두 있는 대상 종목 거래일",
                   "folds": "make_walk_forward_folds(후보 날짜) — 같은 규칙", "evaluation": "두 판의 공통 날짜",
                   "headline": "No macro ensemble", "window": BASELINE_WINDOW, "issue_min_prob": issue_min_prob()}
+    elif task == "P20":
+        config = {"task": "P20", "mode": mode, "reference": P20_T0700, "candidate": P20_MIXTURE,
+                  "ceiling": P16_T0900, "quantiles": len(P20_QUANTILES), "gap_alpha": P20_GAP_ALPHA,
+                  "inner_share": P20_INNER_SHARE, "gap_z_window": P16_GAP_Z_WINDOW,
+                  "headline": "No macro ensemble", "window": BASELINE_WINDOW}
     else:
         config = {"mode": mode}
     identity = {

@@ -86,6 +86,7 @@
 | P18 | [x] | 전날 저녁(20:00 KST) 예측에 저녁 거래 자산(NQ·ES 선물, DAX·유로스톡스 시간봉)을 더할 수 있는가 | P09, P16 | CPU | 완료: 채택 없음. log_loss 네 칸 전부 동률, 갭 AUC 만 +0.01/+0.05. 저녁 기준선은 사전확률 수준(갭 AUC 0.47/0.45)이고 t0700 까지 log_loss +0.06/+0.10 은 그대로 — 20:00 에는 답을 만드는 정보(미국 정규장)가 없다 |
 | P17 | [x] | 해외 수익률의 as-of 결합·결측 채움 정리 — 미국 휴장일에 직전 수익률이 새 정보처럼 반복되는 것(검토 #6) | P00 | CPU | 완료: **채택.** sk_hynix log_loss −0.0079 [−0.0129, −0.0030] 우위, samsung 동률(−0.0017), 나빠진 칸 없음. 휴장 88행 전부 반복값이었다. 운영 반영 2026-09-24(`forecast_utils.asof_cumulative_return`·`us_session_features`) |
 | P19 | [x] | 대표 모델 학습 행을 보조 자료 결측과 무관하게 시세 열 기준으로(검토 #7) | P00 | CPU | 완료: 채택 없음. 잘린 행이 4 / 6행(0.2%)뿐, log_loss 두 종목 동률. samsung 정확도 +1.2%p 는 학습 구간 변동 민감도로 판단. 같은 행 쌍체 비교(P03)를 깨므로 반영하지 않는다 |
+| P20 | [x] | 07:00 종가 방향 = 예측한 갭 분포 × 시가 반영 모델(07:00 정보만) | P09·P16 | CPU | 완료: 채택 없음. 두 종목 log_loss 유의 열위(+0.047 / +0.045, quick 3폴드) |
 
 P10~P14는 전부 수행할 의무가 없다. P09까지 완료한 뒤 가장 유망한 후보 하나만 선택할 수 있다.
 선택하지 않은 작업은 미체크 상태로 결론을 “보류(이유)”로 바꾼다. P15는 고급 모델 실험을 모두 기다릴 필요가 없다.
@@ -746,6 +747,13 @@ t0700 까지 남은 거리는 선물을 더해도 그대로다: log_loss samsung
   행 4개로 설명되지 않아 학습 구간 변동 민감도로 판단. 같은 행 쌍체 비교(P03)의 전제를 깨므로 반영하지 않는다.
   `experiments/model_improvement/P19/20260924T0537Z_market_rows/decision.md`. 보조 자료가 바뀌면 `--task P19` 로 다시 잰다.
 
+### P20 — 예측한 갭 분포 × 시가 반영 모델로 07:00 종가 방향 (계획 밖 등록 2026-10-09, 완료·채택 없음)
+
+**출처.** 2026-10-09 전체 검토. P09(갭 타깃 예측력이 큼)와 P16(시가를 보면 −0.10)을 07:00 에서 잇는 방법이 없었다.
+
+- [x] 후보 하나로 고정: 갭 중심 Ridge + 표준화 잔차 41분위, t0900 을 그 위에서 평균. 시험 행의 실현 갭은 쓰지 않는다.
+- [x] 결과: quick 3폴드에서 두 종목 모두 t0700 대비 log_loss 유의 열위(+0.047 / +0.045). 갭 크기 예측이 흐려 확률이
+  사전확률 쪽으로 무뎌진다. `experiments/model_improvement/P20/20261009T0936Z_gap_mixture/decision.md`.
 ## 6. 검증 명령과 커밋 원칙
 
 새 동작은 해당 작업의 의미 있는 회귀 테스트부터 작성한다. 데이터/학습 변경은 미래 라벨 변경 불변성, 날짜 경계, 확률 계약을 중심으로 검증한다.
@@ -816,6 +824,7 @@ P00 이후에는 작업 ID만 바꿔 요청한다. Colab 실행이 필요한 경
 | 2026-09-16 | R02c(계획 밖, research-candidates-plan R02 의 방향 모델 변형) | `experiments/model_improvement/R02c/20260916T1200Z_group_d_direction/`, 러너 `run_model_improvement.py --task R02c`(`run_r02c`·`leg_sign_auc`·`paired_leg_auc_delta`), 그룹 D 빌더 `run_medium_horizon.group_d_features`, `tests/test_overnight_intraday.py` | 19개 통과(러너 종단 포함). 두 종목 12폴드에서 시세만 입력 vs 같은 입력 + 그룹 D 18열(종목·KOSPI 누적 야간/장중 5·20·60) 재학습, 재학습한 current 는 노트북 OOF 와 argmax 일치 1.000 | **완료.** 채택 없음. log_loss samsung −0.0003 [−0.0046, +0.0039] · sk_hynix +0.0031 [−0.0017, +0.0082], balanced_accuracy·갭 AUC·세션 AUC 도 전부 동률. 세션 AUC 차이 +0.003/−0.003 — 누적 야간/장중은 세션 쪽에도 더하는 것이 없다 |
 | 2026-09-20 | P18(계획 밖 등록, 저녁 예측 + 저녁 거래 자산) | `experiments/model_improvement/P18/20260920T0500Z_evening_futures/`, 러너 `--task P18`(`run_p18`·`evening_feature_frame`·`evening_futures_features`·`p18_fill_policy`·`ensure_hourly_cache`), `tests/test_evening_futures.py` | 22개 통과(마감 누수·세션 분리·러너 종단), 전체 회귀 통과. 두 종목 폴드 8~11 × 4후보 재학습 + nq_rule, 394일 같은 날짜. 아침 행렬 재현 차이 0.0 | **완료. 채택 없음.** f2000 − t_evening log_loss samsung +0.0011 [−0.0015, +0.0041] · sk_hynix −0.0010 [−0.0049, +0.0032], 22:00 도 동률. 갭 AUC 만 +0.013/+0.047. 저녁 기준선은 사전확률 수준(갭 AUC 0.47/0.45), t0700 까지 log_loss +0.06/+0.10 그대로. nq_rule 과 동률 |
 | 2026-09-24 | P17(검토 #6)·P19(검토 #7, 계획 밖 등록) | `experiments/model_improvement/P17/20260924T0526Z_asof_cumulative/`·`P19/20260924T0537Z_market_rows/`, 러너 `--task P17`(`run_p17`·`p17_candidate_columns`)·`--task P19`(`run_p19`·`p19_market_rows`), 공용 `retrain_variants`·`paired_report`, `tests/test_p17_p19.py` | 두 종목 12폴드 재학습, 재현 argmax 일치 1.000·log_loss 차이 0. P17 정직성 점검(휴장 88행 후보 0) 실행 안에서 자동 확인 | **완료.** P17 채택: sk_hynix log_loss −0.0079 우위·samsung 동률, 정확도 0.454→0.466 / 0.499→0.501. 운영 반영(노트북 특징 셀 + `forecast_utils`). P19 채택 없음(잘린 행 0.2%, log_loss 동률) |
+| 2026-10-09 | P20(계획 밖 등록) | `experiments/model_improvement/P20/20261009T0936Z_gap_mixture/`, 러너 `--task P20`(`run_p20`·`p20_gap_points`·`p20_mixture_probabilities`) | quick 3폴드 두 종목(294일). full 미실행 | **채택 없음.** log_loss samsung +0.047 / sk_hynix +0.045 유의 열위. 07:00 갭 중심 MAE가 '갭 0' 대비 약 10%만 작아 혼합 확률이 무뎌진다. 재조정하지 않음 |
 - 현재 작업: P15 — 후보 사전 예측 관찰 중(등록 완료, 채점 대기). 방향 발행 정책(0.50)도 같은 창에서 판정
 - 후속 항목(계획 밖) P10b — 해외 자산 특징을 넣은 pooled 패널: **완료(2026-09-16), 채택 없음.** 해외 자산이 예측력의 전부, 공동 학습은 더하는 것이 없음. P11~P14 보류 유지
 - 후속 항목(계획 밖) R02c — 누적 야간/장중 특징 그룹 D: **완료(2026-09-16), 채택 없음.** 열 칸 전부 동률. P03·P10b·R02c 로 07:00 특징 확장(월별·수급·패널·커브·야간/장중 누적)은 전부 동률 또는 열위 — 남은 정보 시점은 시가 이후(09:37 재예측)뿐

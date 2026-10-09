@@ -1,0 +1,94 @@
+{
+  "folds": [
+    {
+      "fold": 9,
+      "train_rows": 1206,
+      "test_rows": 107,
+      "gap_center_mae": 0.015960741556210228,
+      "gap_zero_mae": 0.01822535188694064,
+      "gap_interval_80": 0.7289719626168224
+    },
+    {
+      "fold": 10,
+      "train_rows": 1188,
+      "test_rows": 120,
+      "gap_center_mae": 0.027958434035262814,
+      "gap_zero_mae": 0.03200629297774124,
+      "gap_interval_80": 0.7583333333333333
+    },
+    {
+      "fold": 11,
+      "train_rows": 1185,
+      "test_rows": 67,
+      "gap_center_mae": 0.03175862016567969,
+      "gap_zero_mae": 0.03523118222949787,
+      "gap_interval_80": 0.8805970149253731
+    }
+  ],
+  "quantiles": 41,
+  "gap_alpha": 10000.0,
+  "inner_share": 0.2,
+  "comparisons": [
+    {
+      "target": "sk_hynix",
+      "comparison": "gap_mixture − t0700",
+      "metric": "log_loss",
+      "delta": 0.04512828993287765,
+      "ci_low": 0.015817203313213797,
+      "ci_high": 0.07832395667270176,
+      "common_n": 294,
+      "verdict": "후보가 유의하게 열위"
+    },
+    {
+      "target": "sk_hynix",
+      "comparison": "gap_mixture − t0700",
+      "metric": "balanced_accuracy",
+      "delta": -0.027220061578350385,
+      "ci_low": -0.0713702518682367,
+      "ci_high": 0.029664788165456854,
+      "common_n": 294,
+      "verdict": "동률(CI가 0 포함)"
+    },
+    {
+      "target": "sk_hynix",
+      "comparison": "gap_mixture − t0700",
+      "metric": "accuracy",
+      "delta": -0.013605442176870708,
+      "ci_low": -0.0685049598488427,
+      "ci_high": 0.03887408900176678,
+      "common_n": 294,
+      "verdict": "동률(CI가 0 포함)"
+    },
+    {
+      "target": "sk_hynix",
+      "comparison": "t0900 − gap_mixture",
+      "metric": "log_loss",
+      "delta": -0.17942725451537034,
+      "ci_low": -0.23389400688513906,
+      "ci_high": -0.1229732103409563,
+      "common_n": 294,
+      "verdict": "후보가 유의하게 우위"
+    },
+    {
+      "target": "sk_hynix",
+      "comparison": "t0900 − gap_mixture",
+      "metric": "balanced_accuracy",
+      "delta": 0.17369956246961588,
+      "ci_low": 0.1078396884752948,
+      "ci_high": 0.2335101625355081,
+      "common_n": 294,
+      "verdict": "후보가 유의하게 우위"
+    },
+    {
+      "target": "sk_hynix",
+      "comparison": "t0900 − gap_mixture",
+      "metric": "accuracy",
+      "delta": 0.14285714285714285,
+      "ci_low": 0.08638190076869327,
+      "ci_high": 0.1929771077271532,
+      "common_n": 294,
+      "verdict": "후보가 유의하게 우위"
+    }
+  ],
+  "note": "gap_mixture 는 07:00 정보만 쓴다(시험 행의 실현 갭 미사용). t0900 은 09:00 시가를 본 상한 진단."
+}

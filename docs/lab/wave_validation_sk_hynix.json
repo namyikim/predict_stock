@@ -2547,6 +2547,6 @@
     "기간 경계는 5거래일 분리, 학습 모델 추가 없음, 기존 예측은 사전 원장만 사용",
     "평가를 본 뒤 규칙을 바꾸면 새 버전·새 평가 구간이 필요"
   ],
-  "generated_at_utc": "2026-10-09T03:46:46.096201+00:00",
-  "source_revision": "07ec0c0a2e68adcc2fe9a4cea98830b42ade1832"
+  "generated_at_utc": "2026-10-09T11:02:29.428295+00:00",
+  "source_revision": "77c9a59b9313ad483d1cf35c0388aebdcecbf27f"
 }

@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "mode": "observe_only",
-  "generated_at": "2026-10-09T03:45:58.116304+00:00",
+  "generated_at": "2026-10-09T11:02:13.856770+00:00",
   "strategies": [
     {
       "observed_days": 4,
@@ -10,7 +10,7 @@
       "strategy_version": "wave-v1",
       "config_hash": "813e2b8c8e49d2bbd7a5d99c9fdb1471ae5b2df3da0c05312e2aa2b6d940b03f",
       "mode": "observe_only",
-      "observed_at": "2026-10-09T03:45:58.116304+00:00",
+      "observed_at": "2026-10-09T11:02:13.856770+00:00",
       "initial_capital": 10000000,
       "cash": 10000000.0,
       "positions": {},
@@ -79,7 +79,7 @@
       "strategy_version": "wave-v1",
       "config_hash": "90f919d87d5d5b5b1775468511ef725c490ac54a674b2b779761e5869cc3be13",
       "mode": "observe_only",
-      "observed_at": "2026-10-09T03:45:58.116304+00:00",
+      "observed_at": "2026-10-09T11:02:13.856770+00:00",
       "initial_capital": 10000000,
       "cash": 10000000.0,
       "positions": {},

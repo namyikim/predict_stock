@@ -22,7 +22,7 @@
   },
   "cash": 10000000.0,
   "halt_reason": "",
-  "last_tick": "2026-10-09T03:45:57.996472+00:00",
+  "last_tick": "2026-10-09T11:02:13.755844+00:00",
   "last_equity": 10000000.0,
   "positions": {},
   "decisions": [],
@@ -32,12 +32,12 @@
   "quote_count": 12,
   "diagnostics": {
     "schema_version": 1,
-    "observed_at": "2026-10-09T03:45:57.996472+00:00",
+    "observed_at": "2026-10-09T11:02:13.755844+00:00",
     "last_success_at": null,
     "targets": {
       "samsung": {
         "quote_timestamp": null,
-        "observed_at": "2026-10-09T03:45:57.996472+00:00",
+        "observed_at": "2026-10-09T11:02:13.755844+00:00",
         "quote_age_seconds": null,
         "signal_count": 0,
         "eligible_signal_count": 0,
@@ -49,7 +49,7 @@
       },
       "sk_hynix": {
         "quote_timestamp": null,
-        "observed_at": "2026-10-09T03:45:57.996472+00:00",
+        "observed_at": "2026-10-09T11:02:13.755844+00:00",
         "quote_age_seconds": null,
         "signal_count": 0,
         "eligible_signal_count": 0,
@@ -63,7 +63,7 @@
   },
   "market_quality": {},
   "market_errors": [],
-  "generated_at_utc": "2026-10-09T03:45:58.000019+00:00",
+  "generated_at_utc": "2026-10-09T11:02:13.762966+00:00",
   "collection_errors": [],
   "trading_day": false,
   "initialized_only": false,

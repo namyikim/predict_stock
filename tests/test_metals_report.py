@@ -112,6 +112,18 @@ class RenderTests(unittest.TestCase):
         self.assertNotIn('nan', text.lower())
         self.assertIn('기준 종가', text)
 
+    def test_unverified_price_is_published_with_a_note(self):
+        """검증을 못 통과해도 '미확인'으로 예상 종가를 낸다(2026-10-09 요청)."""
+        res = self.make_res(skill=True)
+        res['price_rows'][0].update(horizon='1거래일', trading_days=1, target_date='2026-09-07',
+                                    signal='미확인', predicted_close=4321.5, predicted_return=.002)
+        full = mr.render_asset('gold', res, 0)
+        text = self.summary_text(full.split('<!-- METALS_SUMMARY_END -->')[0])
+        self.assertIn('$4,321.50', text)
+        self.assertIn('검증 우위 미확인', text)
+        self.assertNotIn('가격 예측 보류', text.split('1주일')[0])
+        self.assertIn("신호 '미확인'은", full)
+
     def test_ledger_review_is_rendered_when_scored(self):
         bars = pd.DataFrame({"open": [100., 101.], "close": [100., 99.], "adj_close": [100., 99.]},
                             index=pd.to_datetime(["2026-09-04", "2026-09-07"]))

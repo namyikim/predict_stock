@@ -39,6 +39,7 @@ from report_html import tabify_sections  # noqa: E402
 from forecast_utils import (  # noqa: E402
     append_forecasts, atomic_csv, calibrate_price_forecast, daily_comparison, evaluate_forecasts,
     fit_direction_model, predict_direction_model, probability_loss, review_ledger, summarize_daily, price_rows_range_html,
+    PRICE_SIGNAL_UNVERIFIED, price_is_published,
 )
 
 warnings.filterwarnings("ignore")
@@ -269,14 +270,17 @@ def price_forecasts(f, cols, close, as_of):
         st = calibrate_price_forecast(y[mask], oof[mask], sigma[mask], reg.index[mask], h, block_bootstrap_ci, coverage=BAND_COVERAGE)
         fitted = clone(template).fit(X, z)
         sigma_live = float(f.loc[as_of, "vol_20"]) * math.sqrt(h)
-        point = float(st["oof_slope"] * fitted.predict(live_X)[0] * sigma_live)
+        raw = float(fitted.predict(live_X)[0] * sigma_live)
+        point = float(st["oof_slope"] * raw)
+        # 검증을 못 통과해도 판단을 접지 않는다 — 보정 기울기로 축소한 값을 '미확인'으로 발행한다. 구간과 중심은
+        # 검증된 중심(미통과면 현재가 유지) 그대로다. 종목 보고서와 같은 규칙(2026-10-09 요청).
+        published = point if st["beats_baseline"] else float(st["calibration_slope"] * raw)
         half = sigma_live * st["band_q"]
         center = current * (1 + point)
         rows.append(dict(horizon=label, trading_days=h, as_of_date=as_of.date().isoformat(),
                          target_date=trading_days_ahead(as_of, h).date().isoformat(), current_close=current,
-                         signal="있음" if st["beats_baseline"] else "없음",
-                         predicted_return=point if st["beats_baseline"] else np.nan,
-                         predicted_close=center if st["beats_baseline"] else np.nan,
+                         signal="있음" if st["beats_baseline"] else PRICE_SIGNAL_UNVERIFIED,
+                         predicted_return=published, predicted_close=current * (1 + published),
                          center_close=center, low_close=current * (1 + point - half), high_close=current * (1 + point + half),
                          band_coverage=st["band_coverage_realized"], vol_model="simple",
                          model_mae=st["raw_model_mae"], zero_baseline_mae=st["zero_baseline_mae"],
@@ -514,13 +518,15 @@ def render_forecast_summary(key, res):
     def price_state(row):
         if row is None:
             return "자료 없음", "해당 기간의 가격 예측 자료가 없습니다.", True
-        if row["signal"] != "있음":
+        if not price_is_published(row):
             return "가격 예측 보류", "현재가 유지보다 낫다는 근거가 부족해 예상 종가를 제시하지 않습니다.", True
         price = row.get("predicted_close", float("nan"))
         if not math.isfinite(price) or price <= 0:
             return "자료 없음", "유효한 예상 종가가 없습니다.", True
         change = row.get("predicted_return", float("nan"))
         detail = f"기준 종가 대비 {change * 100:+.2f}%" if math.isfinite(change) else "검증을 통과한 가격 모델의 예상 종가"
+        if row["signal"] == PRICE_SIGNAL_UNVERIFIED:
+            detail += " · 검증 우위 미확인(현재가 유지보다 낫다는 근거를 아직 찾지 못한 값, 실제 결과로 채점)"
         return f"${price:,.2f}", detail, False
 
     day_row = next((r for r in rows if r["trading_days"] == 1), None)
@@ -606,9 +612,9 @@ def render_asset(key, res, usdkrw):
     parts.append(price_rows_range_html(rows, "예상 구간 한눈에 (달러/온스)", money=lambda v: f"${v:,.2f}"))
     body = ""
     for r in rows:
-        sig = r["signal"] == "있음"
+        sig = price_is_published(r)
         body += (f'<tr><td {TD}>{e(r["horizon"])}<br><span style="font-size:11px;color:#8a9199">{r["target_date"]}</span></td>'
-                 f'<td {TDR}>{"있음" if sig else "없음"}</td>'
+                 f'<td {TDR}>{e(str(r["signal"]))}</td>'
                  f'<td {TDR}>{num(r["predicted_close"]) if sig else "—"}</td>'
                  f'<td {TDR}>{pct(r["predicted_return"], 2) if sig else "—"}</td>'
                  f'<td {TDR}>{num(r["center_close"])}</td>'
@@ -616,6 +622,9 @@ def render_asset(key, res, usdkrw):
                  f'<td {TDR}>{r["band_coverage"] * 100:.0f}%</td></tr>')
     parts.append(table(f'<th {TH}>기간</th><th {THR}>신호</th><th {THR}>예상 종가</th><th {THR}>예상 변화</th><th {THR}>중심</th>'
                        f'<th {THR}>명목 {BAND_COVERAGE:.0%} 구간</th><th {THR}>실제 적중률</th>', body))
+    if any(r["signal"] == PRICE_SIGNAL_UNVERIFIED for r in rows):
+        parts.append(note("신호 '미확인'은 독립 구간에서 '현재가 유지'보다 낫다는 근거를 아직 찾지 못했지만 보정 기울기로 줄인 "
+                          "예상 종가를 그대로 낸 것입니다. 원장에 기록해 실제 결과로 채점합니다. 중심 열은 구간의 중심(현재가 유지)입니다."))
     no_sig = [r["horizon"] for r in rows if r["signal"] == "없음"]
     if no_sig:
         parts.append(note("신호 '없음'은 출력 오류가 아닙니다. 그 기간의 점 예측이 독립 구간에서 '현재가 유지'보다 낫다는 것을 보이지 못해 "

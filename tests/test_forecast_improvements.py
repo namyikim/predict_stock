@@ -116,6 +116,13 @@ class ForecastLedgerTests(unittest.TestCase):
         ledger = frame.assign(run_id=frame.record_id)
         self.assertEqual(fu.official_forecast(ledger, "2026-09-28")["run_id"], "monday")
 
+    def test_config_change_does_not_add_a_second_sample_for_the_same_day(self):
+        # 설정을 바꾼 재실행(config_hash 다름)도 같은 날짜·모델이면 1건만 남는다(2026-10-09 검토: 9/7 이 3번 채점됐다).
+        first = dict(self.record, record_id="first", created_at_utc="2026-09-01T21:00:00Z", config_hash="a")
+        rerun = dict(self.record, record_id="rerun", created_at_utc="2026-09-01T22:00:00Z", config_hash="b")
+        got = fu.daily_comparison(self.score([first, rerun]))
+        self.assertEqual(got.record_id.tolist(), ["first"])
+
     def test_legacy_rows_survive_but_are_not_prospective_evidence(self):
         legacy = {k: v for k, v in self.record.items() if k not in ["created_at_utc", "record_id"]}
         with tempfile.TemporaryDirectory() as td:

@@ -122,6 +122,17 @@ class SessionCloseTests(unittest.TestCase):
         self.assertEqual(len(self.drop(winter_frame, "us", now=winter_now)), 0,
                          "겨울에는 20:30 UTC가 15:30 EST라 아직 장중이다")
 
+    def test_winter_morning_run_keeps_previous_day_continuous_bar(self):
+        """겨울 06:22 KST(= 전날 16:22 EST)에도 환율·VIX 같은 24시간 자산의 전날 봉을 쓴다.
+
+        17:05 ET 마감이던 때는 겨울에만 그 봉이 버려져 라이브 1일 수익률이 0이 됐다(2026-10-09 검토).
+        여름 같은 시각(17:22 EDT)과 답이 같아야 학습 행과 라이브 행이 같은 봉을 본다.
+        """
+        for day, now in (("2026-12-01", "2026-12-02 06:22"), ("2026-07-01", "2026-07-02 06:22")):
+            frame = _bars([day])
+            kept = self.drop(frame, "cont", now=pd.Timestamp(now, tz="Asia/Seoul"))
+            self.assertEqual(len(kept), 1, f"{now} KST 에 {day} 봉이 남아야 한다")
+
     def test_korea_close_is_evaluated_in_seoul_time(self):
         frame = _bars(["2026-09-09"])
         before = pd.Timestamp("2026-09-09 15:00", tz="Asia/Seoul")

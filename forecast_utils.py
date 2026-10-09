@@ -2476,10 +2476,12 @@ def same_day_rank(frame):
 
 
 def daily_comparison(evaluated):
-    """동일 날짜/모델/설정의 사전 예측 하나만 선택하여 재실행으로 표본이 늘지 않게 한다.
+    """동일 날짜/모델의 사전 예측 하나만 선택하여 재실행으로 표본이 늘지 않게 한다.
 
     고르는 규칙: 예측일 당일 아침에 만든 사전 예측이 있으면 그중 가장 먼저 것, 없으면 가장 먼저 기록된 사전 예측
     (SAME_DAY_OFFICIAL_FROM 앞의 예측일은 예전 규칙 그대로 — 가장 먼저 기록된 것).
+    키에 config_hash 를 넣지 않는다(2026-10-09 검토): 넣으면 설정을 바꾼 재실행이 같은 날짜의 두 번째 표본이
+    되어, 삼성 9/7 이 3번·9/28 이 2번(휴장 전 예측과 당일 아침 예측 모두) 채점됐다. 날짜당 1건이 원칙이다.
     """
     if evaluated.empty:
         return evaluated.copy()
@@ -2489,8 +2491,8 @@ def daily_comparison(evaluated):
     if "record_id" not in eligible:
         eligible["record_id"] = pd.Series(index=eligible.index, dtype="str")
     eligible["created_at_utc"] = pd.to_datetime(eligible["created_at_utc"], utc=True)
-    keys = ["target_date", "model", "kind", "horizon_days", "target_mode", "config_hash"]
-    for key in keys:
+    keys = ["target_date", "model", "kind", "horizon_days", "target_mode"]
+    for key in keys + ["config_hash"]:   # config_hash 는 키가 아니지만 summarize_daily 가 묶을 때 쓴다
         if key not in eligible:
             eligible[key] = "legacy"
     eligible["_same_day_rank"] = same_day_rank(eligible)

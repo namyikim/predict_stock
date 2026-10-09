@@ -371,8 +371,10 @@ def real_rate_insight(frame, info=None, start="2001-01-01", stale_months=3):
             f'({real_month:%Y-%m})입니다.')
     if stale:
         reason = ((info or {}).get("notes") or {}).get("korea_cpi")
+        # 사유는 그 실행의 조회 기록(예: ECOS 시간 초과)이라 보관본으로 다시 만들면 나오지 않는다. 표시를 붙여
+        # 테스트가 '자료 상태' 줄처럼 빼고 비교하게 한다(2026-10-09: 이 문구 때문에 push 실행의 테스트가 실패했다).
         text += (f' 그 뒤 {lag}개월은 한국 물가 자료가 끊겨 계산하지 못했습니다'
-                 + (f'({escape(str(reason))})' if reason else '') + '.')
+                 + (f'<span data-run-note>({escape(str(reason))})</span>' if reason else '') + '.')
     facts.append(text)
     real_12 = (real_value - float(real.iloc[-13])) if not stale and len(real) >= 13 else None
 

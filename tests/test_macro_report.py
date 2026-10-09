@@ -78,7 +78,8 @@ class PageTests(unittest.TestCase):
             self.skipTest("보관본이 발행본을 만든 뒤 바뀌었습니다(다음 거시 보고서 실행에서 다시 만듭니다)")
         # '자료 상태' 줄은 실행 순간의 기록이라 시각처럼 뺀다(2026-10-01): 그 실행에서 Yahoo로 대체했는지는 보관본에
         # 남지 않고, 'n영업일 전'은 실행한 날짜에 따라 바뀐다. 이 줄 때문에 테스트가 실패해 push 실행의 보고서가 건너뛰어졌다.
-        strip = lambda text: re.sub(r"자료 상태: .*?</div>", "",
+        # 한국 물가 조회 실패 사유(<span data-run-note>)도 같은 실행 기록이라 뺀다(2026-10-09).
+        strip = lambda text: re.sub(r"자료 상태: .*?</div>|<span data-run-note>.*?</span>", "",
                                     re.sub(r"\d{4}-\d{2}-\d{2} \d{2}:\d{2}", "", text), flags=re.S)
         self.assertEqual(strip(committed), strip(generated),
                          "docs/macro/index.html 을 python tools/build_macro_report.py --write --no-fetch 로 다시 만드세요")

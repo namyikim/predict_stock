@@ -147,8 +147,8 @@
     "fresh": true,
     "fetch_error": null,
     "first": "2026-09-11",
-    "last": "2026-10-09",
-    "rows": 28,
+    "last": "2026-10-10",
+    "rows": 29,
     "items": [
       "ddr5_16gb",
       "ddr4_16gb",
@@ -159,11 +159,11 @@
   },
   "dram_summary": {
     "item": "ddr5_16gb",
-    "date": "2026-10-09",
+    "date": "2026-10-10",
     "value": 58.9,
     "change_7d": 0.01551724137931032,
     "change_30d": null,
-    "days": 28
+    "days": 29
   },
   "provisional": {},
   "provisional_info": {
@@ -192,7 +192,7 @@
     "evaluation_with_cli": null,
     "no_point_reason": "해당 분기 전망에 필요한 수출 자료가 아직 없어 추정을 기다립니다."
   },
-  "generated_at": "2026-10-09 16:35 KST",
+  "generated_at": "2026-10-10 16:06 KST",
   "announced_actual": null,
   "chosen": "released_residual",
   "selection": {

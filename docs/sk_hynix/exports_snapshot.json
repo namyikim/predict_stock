@@ -1042,19 +1042,10 @@
     },
     {
       "month": "2026-09",
-      "value": 60503641000.0
+      "value": 54460406534.83949
     }
   ],
-  "applied": [
-    {
-      "month": "2026-09",
-      "days": 31,
-      "yoy": 2.6027376419244344,
-      "observed_usd": 60503641000.0,
-      "monthly_usd": 60503641000.0,
-      "basis": "full_month_preliminary"
-    }
-  ],
+  "applied": [],
   "flash_info": {
     "enabled": true,
     "source": "customs_flash_api",
@@ -1064,6 +1055,6 @@
     "last_days": 31,
     "yoy_rows": 6
   },
-  "snapshot_hash": "8c3c6f24b1b6b90a81c8",
-  "generated_at": "2026-10-10 16:11 KST"
+  "snapshot_hash": "05b01e9c5e31e82caaf1",
+  "generated_at": "2026-10-11 16:22 KST"
 }

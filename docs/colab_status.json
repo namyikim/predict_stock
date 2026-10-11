@@ -13,14 +13,14 @@
   {
    "file": "customs_exports.csv",
    "label": "반도체 수출액(관세청 품목별)",
-   "have": "2026-08",
+   "have": "2026-09",
    "expected": "2026-08",
    "late": false
   },
   {
    "file": "customs_quantity.csv",
    "label": "반도체 수출 단가·물량(관세청)",
-   "have": "2026-08",
+   "have": "2026-09",
    "expected": "2026-08",
    "late": false
   },

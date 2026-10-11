@@ -6,27 +6,18 @@
   "months_used": 0,
   "months_included": "없음(대상 분기 수출 미반영)",
   "months_missing": "10월, 11월, 12월",
-  "flash_applied": [
-    {
-      "month": "2026-09",
-      "days": 31,
-      "yoy": 2.6027376419244344,
-      "observed_usd": 60503641000.0,
-      "monthly_usd": 60503641000.0,
-      "basis": "full_month_preliminary"
-    }
-  ],
+  "flash_applied": [],
   "customs_info": {
     "enabled": true,
     "source": "customs_api",
     "first": "2025-04",
-    "last": "2026-08",
+    "last": "2026-09",
     "same_size": false,
-    "ratio_median": 0.8272840187130155,
+    "ratio_median": 0.8272528806256424,
     "overlap": 17,
     "window": 6,
-    "scale": 1.2490656328717091,
-    "spread": 0.05807173129963683,
+    "scale": 1.249065853129181,
+    "spread": 0.0580717998581155,
     "ratios": {
       "2026-03": 1.3029,
       "2026-04": 1.2491,
@@ -35,7 +26,9 @@
       "2026-07": 1.239,
       "2026-08": 1.2088
     },
-    "months_added": []
+    "months_added": [
+      "2026-09"
+    ]
   },
   "flash_info": {
     "enabled": true,
@@ -46,13 +39,13 @@
     "last_days": 31,
     "yoy_rows": 6
   },
-  "exports_snapshot_hash": "8c3c6f24b1b6b90a81c8",
-  "point": 135572219458191.48,
-  "raw_point": 135572219458191.48,
+  "exports_snapshot_hash": "05b01e9c5e31e82caaf1",
+  "point": 133642013899524.28,
+  "raw_point": 133642013899524.28,
   "nowcast_model": "released_residual",
-  "low": -98372793169526.67,
-  "high": 369517232085909.6,
-  "change_vs_last": 0.26231116813958555,
+  "low": -96972213368175.81,
+  "high": 364256241167224.4,
+  "change_vs_last": 0.24433904934380157,
   "no_point_reason": "",
   "last_actual": 107400000000000.0,
   "last_actual_quarter": "2026Q3",
@@ -66,8 +59,8 @@
     "corr": 0.8936840286832589,
     "beats_baselines": true,
     "residual_q10": -2294156240698.9785,
-    "residual_q90": 10676292773819.508,
-    "interval_rel_halfwidth": 1.7256117334559342,
+    "residual_q90": 10676292773819.506,
+    "interval_rel_halfwidth": 1.7256117334559338,
     "interval_method": "conformal_relative",
     "mape_model": 0.33505157394100366,
     "coverage_n": 3,
@@ -119,26 +112,26 @@
     "n": 22,
     "mae_with": 3736704122596.9575,
     "mae_without": 4107095849152.641,
-    "mae_diff": -370391726555.6834,
+    "mae_diff": -370391726555.68414,
     "n_candidate_only": 0,
     "n_base_only": 0,
-    "bias_with": -0.21837582260475522,
+    "bias_with": -0.218375822604755,
     "bias_without": 0.5914367845077447
   },
   "quantity_info": {
     "enabled": true,
     "source": "customs_api",
     "fresh": true,
-    "rows": 140,
+    "rows": 141,
     "first": "2015-01",
-    "last": "2026-08"
+    "last": "2026-09"
   },
   "price_active": false,
   "price_ablation": {
     "n": 22,
-    "mae_with": 4549743854897.855,
+    "mae_with": 4549745075661.72,
     "mae_without": 4107095849152.641,
-    "mae_diff": 442648005745.215,
+    "mae_diff": 442649226509.0782,
     "n_candidate_only": 0,
     "n_base_only": 0
   },
@@ -147,8 +140,8 @@
     "fresh": true,
     "fetch_error": null,
     "first": "2026-09-11",
-    "last": "2026-10-10",
-    "rows": 29,
+    "last": "2026-10-11",
+    "rows": 30,
     "items": [
       "ddr5_16gb",
       "ddr4_16gb",
@@ -159,11 +152,11 @@
   },
   "dram_summary": {
     "item": "ddr5_16gb",
-    "date": "2026-10-10",
+    "date": "2026-10-11",
     "value": 58.9,
     "change_7d": 0.01551724137931032,
-    "change_30d": null,
-    "days": 29
+    "change_30d": 0.08405573040325409,
+    "days": 30
   },
   "provisional": {},
   "provisional_info": {
@@ -171,7 +164,7 @@
       "report_nm": "연결재무제표기준영업(잠정)실적(공정공시)              ",
       "rcept_dt": "20261008",
       "rcept_no": "20261008800004",
-      "reason": "본문을 받지 못했습니다(BadZipFile)"
+      "reason": "본문에서 영업이익을 찾지 못했습니다"
     }
   },
   "next_quarter": {
@@ -192,21 +185,21 @@
     "evaluation_with_cli": null,
     "no_point_reason": "해당 분기 전망에 필요한 수출 자료가 아직 없어 추정을 기다립니다."
   },
-  "generated_at": "2026-10-10 16:06 KST",
+  "generated_at": "2026-10-11 16:15 KST",
   "announced_actual": null,
   "chosen": "released_residual",
   "selection": {
     "n": 10,
     "first": "2021Q1",
     "last": "2023Q2",
-    "mae_model": 2283065225670.881,
+    "mae_model": 2283065225670.8813,
     "mae_random_walk": 2391476600000.0,
     "mae_seasonal_naive": 6882760500000.0,
     "corr": 0.9045532384666518,
     "beats_baselines": true,
-    "residual_q10": -3908350475494.379,
+    "residual_q10": -3908350475494.3784,
     "residual_q90": 3020585445144.701,
-    "interval_rel_halfwidth": 0.5625444686718547,
+    "interval_rel_halfwidth": 0.5625444686718548,
     "interval_method": "conformal_relative",
     "mape_model": 0.9540734186915414,
     "coverage_n": 0
@@ -215,12 +208,12 @@
     "n": 10,
     "first": "2021Q1",
     "last": "2023Q2",
-    "mae_model": 3369086830370.349,
+    "mae_model": 3369086830370.3486,
     "mae_random_walk": 4188391400000.0,
     "mae_seasonal_naive": 6882760500000.0,
-    "corr": 0.9222018620760913,
+    "corr": 0.9222018620760912,
     "beats_baselines": true,
-    "residual_q10": -6409248352541.023,
+    "residual_q10": -6409248352541.025,
     "residual_q90": 2286245392336.791,
     "interval_rel_halfwidth": 0.8923202527500183,
     "interval_method": "conformal_relative",
@@ -252,7 +245,7 @@
     "mae_seasonal_naive": 16855910090909.092,
     "corr": 0.7020697887050605,
     "beats_baselines": true,
-    "residual_q10": -3899365170711.6035,
+    "residual_q10": -3899365170711.6016,
     "residual_q90": 49839259120662.19,
     "interval_rel_halfwidth": 2.803729450111864,
     "interval_method": "conformal_relative",
@@ -289,7 +282,7 @@
     "quarter_code": "2026Q3",
     "quarter": "2026년 3분기",
     "actual": 107400000000000.0,
-    "recalculated_point": 110352814672274.9
+    "recalculated_point": 103357545918290.08
   },
   "estimate_basis": "prior_quarter_outlook",
   "input_quarter_code": "2026Q3",

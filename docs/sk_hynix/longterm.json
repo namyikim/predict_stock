@@ -958,7 +958,7 @@
     "krw": 1405.6209542410713
   },
   "chart_first": "2000-01-31",
-  "generated_at": "2026-10-10 16:12 KST",
+  "generated_at": "2026-10-11 16:23 KST",
   "macro_snapshot_hash": "064717b64854b17df0da",
   "macro_sources": {
     "leading_cycle": "KOSIS_API",
@@ -966,19 +966,12 @@
   },
   "frame_hash": "88632350a76d4120",
   "live_exports": {
-    "as_of": "2026-10-10",
+    "as_of": "2026-10-11",
     "price_last": "2026-09-30",
     "exports_last_month": "2026-09",
-    "latest_period": {
-      "month": "2026-09",
-      "days": 31,
-      "yoy": 2.6027376419244344,
-      "observed_usd": 60503641000.0,
-      "monthly_usd": 60503641000.0,
-      "basis": "full_month_preliminary"
-    },
-    "snapshot_hash": "8c3c6f24b1b6b90a81c8",
-    "generated_at": "2026-10-10 16:11 KST",
+    "latest_period": null,
+    "snapshot_hash": "05b01e9c5e31e82caaf1",
+    "generated_at": "2026-10-11 16:22 KST",
     "flash_info": {
       "enabled": true,
       "source": "customs_flash_api",
@@ -993,15 +986,15 @@
       "drawdown_36m": -0.329811320754717,
       "macro_leading_cycle": 4.299999999999997,
       "macro_leading_change_3m": 2.0,
-      "macro_semiconductor_yoy": 2.6388611115299407,
-      "macro_semiconductor_yoy_change_3m": 0.6449321524031539,
-      "price_to_exports_z": 1.3636408609417714,
-      "exports_cycle": 2.1722857751391285,
-      "exports_accel": 0.3658768448027907,
+      "macro_semiconductor_yoy": 2.2754037969010574,
+      "macro_semiconductor_yoy_change_3m": 0.2814748377742706,
+      "price_to_exports_z": 1.3827862571638023,
+      "exports_cycle": 2.051133336929501,
+      "exports_accel": 0.24472440659316308,
       "cli_level": 0.16089999999999804,
       "cli_change_3m": -0.07580000000000098,
-      "exports_daily_yoy": 2.6388611115299407,
-      "cycle_score": 1.8411777810586676
+      "exports_daily_yoy": 2.275403796901057,
+      "cycle_score": 1.6391951827121867
     },
     "phase": "확장(YoY>0, 가속)",
     "forecast": {
@@ -1028,7 +1021,7 @@
     "ticker": "000660.KS",
     "price": 1681000.0,
     "price_date": "2026-10-08",
-    "observed_on": "2026-10-10",
+    "observed_on": "2026-10-11",
     "financial_period": "2026-06-30",
     "eps_ttm": 232070.09450008773,
     "bps": 375948.7934903294,
@@ -1087,7 +1080,7 @@
     },
     "evaluation_status": "예측 성능 미검증 — 현재 가치 시나리오이며 도달 시점을 예측하지 않음",
     "basis_note": "분기 재무제표 최근 4분기 순이익(Net Income Common Stockholders) ÷ EPS 기준 주식 수 697,915,819주",
-    "retrieved_on": "2026-10-10",
+    "retrieved_on": "2026-10-11",
     "cached": false
   }
 }

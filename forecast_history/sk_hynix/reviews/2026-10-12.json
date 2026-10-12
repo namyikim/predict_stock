@@ -3,7 +3,7 @@
   "name": "SK하이닉스",
   "peer_name": "삼성전자",
   "session_date": "2026-10-12",
-  "generated_at": "2026-10-13 01:42 KST",
+  "generated_at": "2026-10-13 01:50 KST",
   "summary": {
     "prev_close": 1681000.0,
     "open": NaN,
@@ -19,7 +19,7 @@
     "volume_ratio": 1.0834019616649024,
     "kospi_c2c": NaN,
     "peer_c2c": NaN,
-    "usdkrw_chg": -0.0066940113476244845,
+    "usdkrw_chg": -0.006559942060253232,
     "us_nights": 2,
     "sox_ret": -0.03778698805611891,
     "nasdaq_ret": -0.0062646238683091715,
@@ -46,11 +46,11 @@
       "last_time": "2026-10-10T05:00:00+09:00"
     },
     "nvidia_ah": {
-      "regular_close": 229.32000732421875,
+      "regular_close": 229.33999633789062,
       "last": 229.28,
-      "ret": -0.0001744606791425074,
-      "low_ret": -0.0001744606791425074,
-      "high_ret": -0.0001744606791425074,
+      "ret": -0.00026160433787669746,
+      "low_ret": -0.00026160433787669746,
+      "high_ret": -0.00026160433787669746,
       "last_time": "2026-10-10T05:00:00+09:00"
     },
     "session_cross": {
@@ -109,10 +109,10 @@
       "score": 8.49435624291254,
       "news": [
         {
-          "time": "2026-10-12T08:51:14+09:00",
-          "title": "SK하이닉스, 용인·호남 투트랙…AI 메모리 생산능력 늘린다",
-          "source": "더트래커",
-          "link": "https://news.google.com/rss/articles/CBMiWEFVX3lxTFBlUWVrSEdmSktRZjBWRDZfck9LeE1vaFc4M3h3dHdoTGhJM3liZDd0b1FlOXZTckZjUWwzN1JobFJzVTFlX05lZ2JQeG56YzdEbmNVVTJqZmI?oc=5"
+          "time": "2026-10-12T09:12:22+09:00",
+          "title": "메리츠증권 \"SK하이닉스 목표주가 상향, 3분기 영업이익 80.1조 추정\"",
+          "source": "비즈니스포스트",
+          "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTFBCcmZQYnd1Q0Q4QjQwdl9TZkNrbnRfbklrcUZGeEhHV2w5MjRIT0Zrdks0M3pnUmt3WDliYkxCaTRyXzBUYVotNjVUSUhoOVpwN24tMlg2UnVjVHFnN3puX2tfaWIzOVR6eVRSVlB4QjNMWE0?oc=5"
         },
         {
           "time": "2026-10-12T08:22:52+09:00",
@@ -291,12 +291,12 @@
     {
       "time": "2026-10-12T11:20:00+09:00",
       "price": 1634000.0,
-      "volume": 18949.0
+      "volume": 18851.0
     },
     {
       "time": "2026-10-12T11:25:00+09:00",
       "price": 1638500.0,
-      "volume": 20116.0
+      "volume": 20214.0
     },
     {
       "time": "2026-10-12T11:30:00+09:00",
@@ -521,10 +521,10 @@
       "score": 8.49435624291254,
       "news": [
         {
-          "time": "2026-10-12T08:51:14+09:00",
-          "title": "SK하이닉스, 용인·호남 투트랙…AI 메모리 생산능력 늘린다",
-          "source": "더트래커",
-          "link": "https://news.google.com/rss/articles/CBMiWEFVX3lxTFBlUWVrSEdmSktRZjBWRDZfck9LeE1vaFc4M3h3dHdoTGhJM3liZDd0b1FlOXZTckZjUWwzN1JobFJzVTFlX05lZ2JQeG56YzdEbmNVVTJqZmI?oc=5"
+          "time": "2026-10-12T09:12:22+09:00",
+          "title": "메리츠증권 \"SK하이닉스 목표주가 상향, 3분기 영업이익 80.1조 추정\"",
+          "source": "비즈니스포스트",
+          "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTFBCcmZQYnd1Q0Q4QjQwdl9TZkNrbnRfbklrcUZGeEhHV2w5MjRIT0Zrdks0M3pnUmt3WDliYkxCaTRyXzBUYVotNjVUSUhoOVpwN24tMlg2UnVjVHFnN3puX2tfaWIzOVR6eVRSVlB4QjNMWE0?oc=5"
         },
         {
           "time": "2026-10-12T08:22:52+09:00",
@@ -557,12 +557,6 @@
   ],
   "overnight_news": [
     {
-      "time": "2026-10-12T08:51:14+09:00",
-      "title": "SK하이닉스, 용인·호남 투트랙…AI 메모리 생산능력 늘린다",
-      "source": "더트래커",
-      "link": "https://news.google.com/rss/articles/CBMiWEFVX3lxTFBlUWVrSEdmSktRZjBWRDZfck9LeE1vaFc4M3h3dHdoTGhJM3liZDd0b1FlOXZTckZjUWwzN1JobFJzVTFlX05lZ2JQeG56YzdEbmNVVTJqZmI?oc=5"
-    },
-    {
       "time": "2026-10-12T08:22:52+09:00",
       "title": "\"SK하이닉스, 3분기 영업익 80조 '깜짝 실적'…목표가↑\"-메리츠",
       "source": "한국경제",
@@ -585,14 +579,26 @@
       "title": "마이크론보다 2배 더 빠진 하이닉스…\"반도체 아니라 한국 문제\"",
       "source": "파이낸셜뉴스",
       "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE9yTTBKTVh5Q18xNmxkVDJHQUxBcUhYSFRPRzFNMU9aSVY4OWhBUDFVeHVNZXNaQXVZM2kwSk9iODM2Qzc4aXZ3UmtrdkdtcDRRMndLN2xWM3E0dw?oc=5"
+    },
+    {
+      "time": "2026-10-12T07:17:31+09:00",
+      "title": "ASML, 노광 장비 판 흔든다… 2020년대 후반 노린 삼성·SK하이닉스 수율 셈법 복잡",
+      "source": "글로벌이코노믹",
+      "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxQLXdYTnp2V01Oem5ib3dTbkxRNGxRRmVEZE5kQmROTlFPSTNtdGtwSEJKRTFWUDdXbmhCSDBzUFhPQjJ2U3JXaFp5Ym4xMEo5ZlVLaW5ueVlFNFA3UmlLTXFtWHFHbFl1cFJDRjd2NE9qOG1BSi0tZWY3ZVdGdnVuNW1ialJDaWc1?oc=5"
     }
   ],
   "top_news": [
     {
+      "time": "2026-10-12T09:12:22+09:00",
+      "title": "메리츠증권 \"SK하이닉스 목표주가 상향, 3분기 영업이익 80.1조 추정\"",
+      "source": "비즈니스포스트",
+      "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTFBCcmZQYnd1Q0Q4QjQwdl9TZkNrbnRfbklrcUZGeEhHV2w5MjRIT0Zrdks0M3pnUmt3WDliYkxCaTRyXzBUYVotNjVUSUhoOVpwN24tMlg2UnVjVHFnN3puX2tfaWIzOVR6eVRSVlB4QjNMWE0?oc=5"
+    },
+    {
       "time": "2026-10-12T11:00:00+09:00",
       "title": "iM증권 “SK하이닉스, 마이크론 대비 저평가 심화\"⋯3Q 실적 등에 주목",
       "source": "브릿지경제",
-      "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTFBzMHNQOVNGbUd0Z3hvcHltYVp3RlpvSVJTRnozdmYyYzBaSWdUaDllZ0hUNUh2TDh4MlEwSC00ZlVlUnBhczcxTWl2VWt6ZUF1SWNyalV1d1ZmZw?oc=5"
+      "link": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE4yRC0zREFaeXNhOVBvNzdJN3lyWTJwMUJSV2ZqQmNjNDN1cEVhdFVHblhvMDlFaHNrNXNtalYtNGs1NGlnajB5SmF5bDF0dlVaVzRQdg?oc=5"
     },
     {
       "time": "2026-10-12T11:00:00+09:00",
@@ -617,12 +623,6 @@
       "title": "삼성전자·SK하이닉스 자사주 매입 막바지…반도체 투톱에 외국인 매도 집중",
       "source": "싱글리스트",
       "link": "https://news.google.com/rss/articles/CBMiZkFVX3lxTE9CdGhkYTdxQS10c1lWeFFHU1Q2UjBEWFR3Ni1tUVdyZUxtaVhDYW5sUUdGR0hnMU44WEcydmpPVWJOTWI2a0V2eExBazcwd1NjdEI0YzRUVWdJd1NscU9kd00yQUpKZw?oc=5"
-    },
-    {
-      "time": "2026-10-12T16:48:44+09:00",
-      "title": "SK하이닉스, 3Q 최대 실적 예고···HBM4에 D램까지 '효자'",
-      "source": "현대경제신문",
-      "link": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE0tVU9OZmlHNFlkWEpRRnpTZzFFZmFtall1Z25xbjh1VWtNZUFhQzJucFB3NVhuSy1YTTk0aEduM0psNnp4MHFSMUlzbWNySUdCa2c2T1h4UTR3V0xvVGs2eUpFdjhyVDTSAWtBVV95cUxNaVVMYnc0Q2tJQkJ0bnllU09VWi1xaDk0WFpaelVoS3lzejR4VkF0WjlVMjBydkFETEZLMzJOeEhxc3hfeDFJaTBOSlFmZHJmRHZ3UmlDX0dlYnJIVVFzM3NYM1A2dFgxX1h5MA?oc=5"
     }
   ],
   "disclosures": [],

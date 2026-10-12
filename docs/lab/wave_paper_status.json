@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "mode": "observe_only",
-  "generated_at": "2026-10-12T03:25:01.418700+00:00",
+  "generated_at": "2026-10-12T11:10:15.957205+00:00",
   "strategies": [
     {
       "observed_days": 5,
@@ -10,31 +10,41 @@
       "strategy_version": "wave-v1",
       "config_hash": "813e2b8c8e49d2bbd7a5d99c9fdb1471ae5b2df3da0c05312e2aa2b6d940b03f",
       "mode": "observe_only",
-      "observed_at": "2026-10-12T03:25:01.418700+00:00",
+      "observed_at": "2026-10-12T11:10:15.957205+00:00",
       "initial_capital": 10000000,
       "cash": 10000000.0,
       "positions": {},
       "order_count": 0,
       "fill_count": 0,
       "total_return": null,
-      "decision_count": 6,
+      "decision_count": 8,
       "observations": [
         {
           "target": "samsung",
           "status": "observe_only",
           "signal": {
-            "action": "wait",
-            "available_bars": 64,
-            "decision_at": "2026-10-08T10:55:55.506301+00:00",
-            "information_cutoff": "2026-10-08T10:55:55.249982+00:00",
-            "range_position": null,
-            "reason_codes": [
-              "insufficient_bars"
-            ],
-            "reference_stop": null,
-            "regime": "unknown",
             "strategy": "range_rebound",
-            "version": "wave-v1"
+            "version": "wave-v1",
+            "action": "wait",
+            "regime": "range",
+            "range_position": 0.4050632911392405,
+            "reason_codes": [
+              "outside_lower_range",
+              "rebound_unconfirmed"
+            ],
+            "information_cutoff": "2026-10-12T11:10:15.659239+00:00",
+            "reference_stop": 249500.0,
+            "decision_at": "2026-10-12T11:10:15.957205+00:00",
+            "available_bars": 65,
+            "metrics": {
+              "range_low": 246000.0,
+              "range_high": 285500.0,
+              "ma20": 265725.0,
+              "ma60": 257325.0,
+              "ma20_change_5": 0.006343495550085176,
+              "previous_ma20": 266675.0
+            },
+            "signal_bar_end": "2026-10-12T06:30:00+00:00"
           },
           "risk_preview": {
             "budget": 0,
@@ -48,18 +58,18 @@
           "target": "sk_hynix",
           "status": "observe_only",
           "signal": {
+            "strategy": "range_rebound",
+            "version": "wave-v1",
             "action": "wait",
-            "available_bars": 26,
-            "decision_at": "2026-10-08T10:55:55.506301+00:00",
-            "information_cutoff": "2026-10-08T10:55:55.343314+00:00",
+            "regime": "unknown",
             "range_position": null,
             "reason_codes": [
               "insufficient_bars"
             ],
+            "information_cutoff": "2026-10-12T11:10:15.824085+00:00",
             "reference_stop": null,
-            "regime": "unknown",
-            "strategy": "range_rebound",
-            "version": "wave-v1"
+            "decision_at": "2026-10-12T11:10:15.957205+00:00",
+            "available_bars": 27
           },
           "risk_preview": {
             "budget": 0,
@@ -79,31 +89,41 @@
       "strategy_version": "wave-v1",
       "config_hash": "90f919d87d5d5b5b1775468511ef725c490ac54a674b2b779761e5869cc3be13",
       "mode": "observe_only",
-      "observed_at": "2026-10-12T03:25:01.418700+00:00",
+      "observed_at": "2026-10-12T11:10:15.957205+00:00",
       "initial_capital": 10000000,
       "cash": 10000000.0,
       "positions": {},
       "order_count": 0,
       "fill_count": 0,
       "total_return": null,
-      "decision_count": 6,
+      "decision_count": 8,
       "observations": [
         {
           "target": "samsung",
           "status": "observe_only",
           "signal": {
-            "action": "wait",
-            "available_bars": 64,
-            "decision_at": "2026-10-08T10:55:55.506301+00:00",
-            "information_cutoff": "2026-10-08T10:55:55.249982+00:00",
-            "range_position": null,
-            "reason_codes": [
-              "insufficient_bars"
-            ],
-            "reference_stop": null,
-            "regime": "unknown",
             "strategy": "trend_pullback",
-            "version": "wave-v1"
+            "version": "wave-v1",
+            "action": "wait",
+            "regime": "uptrend",
+            "range_position": 0.4050632911392405,
+            "reason_codes": [
+              "average_not_recovered",
+              "rebound_unconfirmed"
+            ],
+            "information_cutoff": "2026-10-12T11:10:15.659239+00:00",
+            "reference_stop": 249500.0,
+            "decision_at": "2026-10-12T11:10:15.957205+00:00",
+            "available_bars": 65,
+            "metrics": {
+              "range_low": 246000.0,
+              "range_high": 285500.0,
+              "ma20": 265725.0,
+              "ma60": 257325.0,
+              "ma20_change_5": 0.006343495550085176,
+              "previous_ma20": 266675.0
+            },
+            "signal_bar_end": "2026-10-12T06:30:00+00:00"
           },
           "risk_preview": {
             "budget": 0,
@@ -117,18 +137,18 @@
           "target": "sk_hynix",
           "status": "observe_only",
           "signal": {
+            "strategy": "trend_pullback",
+            "version": "wave-v1",
             "action": "wait",
-            "available_bars": 26,
-            "decision_at": "2026-10-08T10:55:55.506301+00:00",
-            "information_cutoff": "2026-10-08T10:55:55.343314+00:00",
+            "regime": "unknown",
             "range_position": null,
             "reason_codes": [
               "insufficient_bars"
             ],
+            "information_cutoff": "2026-10-12T11:10:15.824085+00:00",
             "reference_stop": null,
-            "regime": "unknown",
-            "strategy": "trend_pullback",
-            "version": "wave-v1"
+            "decision_at": "2026-10-12T11:10:15.957205+00:00",
+            "available_bars": 27
           },
           "risk_preview": {
             "budget": 0,

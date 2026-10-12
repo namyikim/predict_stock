@@ -1043,18 +1043,31 @@
     {
       "month": "2026-09",
       "value": 54460406534.83949
+    },
+    {
+      "month": "2026-10",
+      "value": 42564878412.230354
     }
   ],
-  "applied": [],
+  "applied": [
+    {
+      "month": "2026-10",
+      "days": 10,
+      "yoy": 1.7093222850019925,
+      "observed_usd": 12197797000.0,
+      "monthly_usd": 42564878412.230354,
+      "basis": "partial_month_scenario"
+    }
+  ],
   "flash_info": {
     "enabled": true,
     "source": "customs_flash_api",
-    "rows": 42,
+    "rows": 43,
     "first": "2025-08",
-    "last": "2026-09",
-    "last_days": 31,
-    "yoy_rows": 6
+    "last": "2026-10",
+    "last_days": 10,
+    "yoy_rows": 7
   },
-  "snapshot_hash": "05b01e9c5e31e82caaf1",
-  "generated_at": "2026-10-11 16:22 KST"
+  "snapshot_hash": "3b6a47696acf99726920",
+  "generated_at": "2026-10-12 16:28 KST"
 }

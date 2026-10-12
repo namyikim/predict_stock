@@ -3,7 +3,7 @@
   "name": "삼성전자",
   "peer_name": "SK하이닉스",
   "session_date": "2026-10-12",
-  "generated_at": "2026-10-12 16:46 KST",
+  "generated_at": "2026-10-12 17:31 KST",
   "summary": {
     "prev_close": 262000.0,
     "open": 260000.0,
@@ -15,11 +15,11 @@
     "c2c": -0.043893129770992356,
     "high_vs_open": 0.009615384615384581,
     "low_vs_open": -0.04038461538461535,
-    "volume": 18847149.0,
-    "volume_ratio": 1.1194851333332814,
+    "volume": 18881998.0,
+    "volume_ratio": 1.121555098260684,
     "kospi_c2c": -0.036476379164039785,
     "peer_c2c": -0.04521118381915523,
-    "usdkrw_chg": -0.008153412349681033,
+    "usdkrw_chg": -0.008957646285044585,
     "us_nights": 2,
     "sox_ret": -0.03778698805611891,
     "nasdaq_ret": -0.0062646238683091715,
@@ -81,19 +81,19 @@
     ],
     "micron_ah": {
       "regular_close": 1028.135009765625,
-      "last": 1028.5001,
-      "ret": 0.0003550995062975293,
-      "low_ret": -0.001279024401595663,
-      "high_ret": 0.001998755236283234,
-      "last_time": "2026-10-10T08:55:00+09:00"
+      "last": 1029.0,
+      "ret": 0.000841319696498033,
+      "low_ret": 0.000841319696498033,
+      "high_ret": 0.000841319696498033,
+      "last_time": "2026-10-10T05:00:00+09:00"
     },
     "nvidia_ah": {
-      "regular_close": 229.32000732421875,
-      "last": 229.33,
-      "ret": 4.357524621534381e-05,
-      "low_ret": -0.00013695849998096588,
-      "high_ret": 0.0010038054614911474,
-      "last_time": "2026-10-10T08:55:00+09:00"
+      "regular_close": 229.33999633789062,
+      "last": 229.28,
+      "ret": -0.00026160433787669746,
+      "low_ret": -0.00026160433787669746,
+      "high_ret": -0.00026160433787669746,
+      "last_time": "2026-10-10T05:00:00+09:00"
     },
     "session_cross": {
       "NQ=F": {
@@ -204,16 +204,16 @@
           "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE8yckVsWGM1OFZkdmFoZ0hVOWw3VDFtNkJ5NTlwOXZLcE5RYVJaQVRDM0wxU2RTWEdxX013c01pWXF0LXp6YlNqd3RwWnBIMnQtYUoyMlI5Z3JFNmVIdGNoLUpjSFllanpqTkJaQjh3aUHSAXRBVV95cUxQZmg1YUc5MUZBMEI5Y3JiUF9TWkxLX0JNNlRfNG90OWFGQzN2bjczX1kwQ3NFeC1JVjMwa1ZMM3JMdVJFUGlla2dMRnJiMTB2Z09fMU5fWVFBaDBsZXdLYng1MFJWQV8wTGRaUlRkVVVaZlRjSw?oc=5"
         },
         {
-          "time": "2026-10-12T09:36:05+09:00",
-          "title": "'107조 실적'에도 외국인은 팔았다... 삼성전자 외국인 지분율 18년9개월만 최저",
-          "source": "법률방송뉴스",
-          "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE05eC1BMS1VSmFuV0EzaUFsSnpIWWRMdERBUnN0QjFfc3RMZjNTcFh5Y3pRd05FNklCVmZnWFVyUjBNZ25qQVdMSnVwVkVRR29tVUJFakE2NTNUVkxDVUxKUThsa3c?oc=5"
-        },
-        {
           "time": "2026-10-12T10:05:00+09:00",
           "title": "삼성전자, 역대급 실적에도 외국인 매도세 가속...지분율 17년만에 최저",
           "source": "증권일보",
           "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTFBFWFBFLTdpLTJLdUt3U3JCZDlGaV9HeUdhblAxbHk3MlZlQ25UOUlSN2x3TEwzS1NmenhGMWFZazBmVUE1dFc4bFViZzFjNHlNN1NmaUUyOThzRWZXNHAwMw?oc=5"
+        },
+        {
+          "time": "2026-10-12T08:40:00+09:00",
+          "title": "'영업익 100조' 과거와 달라진 삼성전자…증권가 시선은 주주환원으로",
+          "source": "연합인포맥스",
+          "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE1leGJNWUZBTUc5OFVRbHpZU2VXTHppTGRaRW5yRW1GUkZlSDRYc3lpQmt5eVhPckd6YWVRWWY4VFlUVG5tbjVncnFwVFpzeXdHOWVScGkwa2tfTGp5UUtSdmx5LWlQZEp1R1VBaEZ0ZjA?oc=5"
         }
       ]
     },
@@ -234,10 +234,10 @@
           "link": "https://news.google.com/rss/articles/CBMiX0FVX3lxTE1tM3FZZER1Ti12Ri05dmVpU3NQanJ0UzUwREl4NTRKS3BJRDZLWTJyWG1HUnpENTltWFVzRWJoREdKWGtaT2pwcVAwMWlRY19QZURMRmhnajUxaVhaOUlj?oc=5"
         },
         {
-          "time": "2026-10-12T09:36:05+09:00",
-          "title": "'107조 실적'에도 외국인은 팔았다... 삼성전자 외국인 지분율 18년9개월만 최저",
-          "source": "법률방송뉴스",
-          "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE05eC1BMS1VSmFuV0EzaUFsSnpIWWRMdERBUnN0QjFfc3RMZjNTcFh5Y3pRd05FNklCVmZnWFVyUjBNZ25qQVdMSnVwVkVRR29tVUJFakE2NTNUVkxDVUxKUThsa3c?oc=5"
+          "time": "2026-10-12T10:45:52+09:00",
+          "title": "삼성전자, 차세대 'z낸드' 개발영역 넓힌다…맞춤형 AI 메모리 전략",
+          "source": "지디넷코리아",
+          "link": "https://news.google.com/rss/articles/CBMiVkFVX3lxTE5KSUFQb0hhYjNpb3Q0cjRkRFBuZ253Zlp3UzdROWNkZzROeVh5S2Fsd3lOWnprMjU5TUh3VkY4LXZ6Qy1jT29lYnd4Y2R0Y29ldEZOVlNB?oc=5"
         },
         {
           "time": "2026-10-12T10:05:00+09:00",
@@ -255,7 +255,7 @@
           "time": "2026-10-12T10:15:54+09:00",
           "title": "삼성전자, 청년SW·AI아카데미 역대 최대규모 모집…AI교육 강화",
           "source": "연합뉴스",
-          "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTFByZDVfeEFoa3pIRmJBS0dna0FSb3hXMjFDWi1NVU5PaFhuWjJqNnZpY19TNzlLMTRscDVyTEh4NV85SEhfSlNiMHNUcU9xUmp2aVNuUEluT0duT0HSAWBBVV95cUxQVzZ4eVZCWjdPUGRIYXZobEt4ZEh1LVF2ZFA0b0Zuc2F5dGpEc015akVBWE9DblNJZ2lMR2Q1QWpZclE0Y1p0d1R1ZTBDdFN6Y1k1OVM0MkxaVlhBTlc1dWg?oc=5"
+          "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTFBXNnh5VkJaN09QZEhhdmhsS3hkSHUtUXZkUDRvRm5zYXl0akRzTXlqRUFYT0NuU0lnaUxHZDVBallyUTRjWnR3VHVlMEN0U3pjWTU5UzQyTFpWWEFOVzV1aNIBYEFVX3lxTFBXNnh5VkJaN09QZEhhdmhsS3hkSHUtUXZkUDRvRm5zYXl0akRzTXlqRUFYT0NuU0lnaUxHZDVBallyUTRjWnR3VHVlMEN0U3pjWTU5UzQyTFpWWEFOVzV1aA?oc=5"
         }
       ]
     }
@@ -325,12 +325,12 @@
     {
       "time": "2026-10-12T09:55:00+09:00",
       "price": 255500.0,
-      "volume": 414855.0
+      "volume": 414654.0
     },
     {
       "time": "2026-10-12T10:00:00+09:00",
       "price": 257500.0,
-      "volume": 242650.0
+      "volume": 242851.0
     },
     {
       "time": "2026-10-12T10:05:00+09:00",
@@ -380,12 +380,12 @@
     {
       "time": "2026-10-12T10:50:00+09:00",
       "price": 258000.0,
-      "volume": 98793.0
+      "volume": 98880.0
     },
     {
       "time": "2026-10-12T10:55:00+09:00",
       "price": 258500.0,
-      "volume": 158948.0
+      "volume": 158861.0
     },
     {
       "time": "2026-10-12T11:00:00+09:00",
@@ -490,12 +490,12 @@
     {
       "time": "2026-10-12T12:40:00+09:00",
       "price": 253500.0,
-      "volume": 169582.0
+      "volume": 169630.0
     },
     {
       "time": "2026-10-12T12:45:00+09:00",
       "price": 252750.0,
-      "volume": 320708.0
+      "volume": 320660.0
     },
     {
       "time": "2026-10-12T12:50:00+09:00",
@@ -580,12 +580,12 @@
     {
       "time": "2026-10-12T14:10:00+09:00",
       "price": 252000.0,
-      "volume": 172434.0
+      "volume": 172443.0
     },
     {
       "time": "2026-10-12T14:15:00+09:00",
       "price": 251500.0,
-      "volume": 167485.0
+      "volume": 167476.0
     },
     {
       "time": "2026-10-12T14:20:00+09:00",
@@ -625,7 +625,7 @@
     {
       "time": "2026-10-12T14:55:00+09:00",
       "price": 251250.0,
-      "volume": 299737.0
+      "volume": 299752.0
     }
   ],
   "timeline_items": [
@@ -702,16 +702,16 @@
           "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE8yckVsWGM1OFZkdmFoZ0hVOWw3VDFtNkJ5NTlwOXZLcE5RYVJaQVRDM0wxU2RTWEdxX013c01pWXF0LXp6YlNqd3RwWnBIMnQtYUoyMlI5Z3JFNmVIdGNoLUpjSFllanpqTkJaQjh3aUHSAXRBVV95cUxQZmg1YUc5MUZBMEI5Y3JiUF9TWkxLX0JNNlRfNG90OWFGQzN2bjczX1kwQ3NFeC1JVjMwa1ZMM3JMdVJFUGlla2dMRnJiMTB2Z09fMU5fWVFBaDBsZXdLYng1MFJWQV8wTGRaUlRkVVVaZlRjSw?oc=5"
         },
         {
-          "time": "2026-10-12T09:36:05+09:00",
-          "title": "'107조 실적'에도 외국인은 팔았다... 삼성전자 외국인 지분율 18년9개월만 최저",
-          "source": "법률방송뉴스",
-          "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE05eC1BMS1VSmFuV0EzaUFsSnpIWWRMdERBUnN0QjFfc3RMZjNTcFh5Y3pRd05FNklCVmZnWFVyUjBNZ25qQVdMSnVwVkVRR29tVUJFakE2NTNUVkxDVUxKUThsa3c?oc=5"
-        },
-        {
           "time": "2026-10-12T10:05:00+09:00",
           "title": "삼성전자, 역대급 실적에도 외국인 매도세 가속...지분율 17년만에 최저",
           "source": "증권일보",
           "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTFBFWFBFLTdpLTJLdUt3U3JCZDlGaV9HeUdhblAxbHk3MlZlQ25UOUlSN2x3TEwzS1NmenhGMWFZazBmVUE1dFc4bFViZzFjNHlNN1NmaUUyOThzRWZXNHAwMw?oc=5"
+        },
+        {
+          "time": "2026-10-12T08:40:00+09:00",
+          "title": "'영업익 100조' 과거와 달라진 삼성전자…증권가 시선은 주주환원으로",
+          "source": "연합인포맥스",
+          "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE1leGJNWUZBTUc5OFVRbHpZU2VXTHppTGRaRW5yRW1GUkZlSDRYc3lpQmt5eVhPckd6YWVRWWY4VFlUVG5tbjVncnFwVFpzeXdHOWVScGkwa2tfTGp5UUtSdmx5LWlQZEp1R1VBaEZ0ZjA?oc=5"
         }
       ],
       "price": 255500.0,
@@ -734,10 +734,10 @@
           "link": "https://news.google.com/rss/articles/CBMiX0FVX3lxTE1tM3FZZER1Ti12Ri05dmVpU3NQanJ0UzUwREl4NTRKS3BJRDZLWTJyWG1HUnpENTltWFVzRWJoREdKWGtaT2pwcVAwMWlRY19QZURMRmhnajUxaVhaOUlj?oc=5"
         },
         {
-          "time": "2026-10-12T09:36:05+09:00",
-          "title": "'107조 실적'에도 외국인은 팔았다... 삼성전자 외국인 지분율 18년9개월만 최저",
-          "source": "법률방송뉴스",
-          "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE05eC1BMS1VSmFuV0EzaUFsSnpIWWRMdERBUnN0QjFfc3RMZjNTcFh5Y3pRd05FNklCVmZnWFVyUjBNZ25qQVdMSnVwVkVRR29tVUJFakE2NTNUVkxDVUxKUThsa3c?oc=5"
+          "time": "2026-10-12T10:45:52+09:00",
+          "title": "삼성전자, 차세대 'z낸드' 개발영역 넓힌다…맞춤형 AI 메모리 전략",
+          "source": "지디넷코리아",
+          "link": "https://news.google.com/rss/articles/CBMiVkFVX3lxTE5KSUFQb0hhYjNpb3Q0cjRkRFBuZ253Zlp3UzdROWNkZzROeVh5S2Fsd3lOWnprMjU5TUh3VkY4LXZ6Qy1jT29lYnd4Y2R0Y29ldEZOVlNB?oc=5"
         },
         {
           "time": "2026-10-12T10:05:00+09:00",
@@ -755,7 +755,7 @@
           "time": "2026-10-12T10:15:54+09:00",
           "title": "삼성전자, 청년SW·AI아카데미 역대 최대규모 모집…AI교육 강화",
           "source": "연합뉴스",
-          "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTFByZDVfeEFoa3pIRmJBS0dna0FSb3hXMjFDWi1NVU5PaFhuWjJqNnZpY19TNzlLMTRscDVyTEh4NV85SEhfSlNiMHNUcU9xUmp2aVNuUEluT0duT0HSAWBBVV95cUxQVzZ4eVZCWjdPUGRIYXZobEt4ZEh1LVF2ZFA0b0Zuc2F5dGpEc015akVBWE9DblNJZ2lMR2Q1QWpZclE0Y1p0d1R1ZTBDdFN6Y1k1OVM0MkxaVlhBTlc1dWg?oc=5"
+          "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTFBXNnh5VkJaN09QZEhhdmhsS3hkSHUtUXZkUDRvRm5zYXl0akRzTXlqRUFYT0NuU0lnaUxHZDVBallyUTRjWnR3VHVlMEN0U3pjWTU5UzQyTFpWWEFOVzV1aNIBYEFVX3lxTFBXNnh5VkJaN09QZEhhdmhsS3hkSHUtUXZkUDRvRm5zYXl0akRzTXlqRUFYT0NuU0lnaUxHZDVBallyUTRjWnR3VHVlMEN0U3pjWTU5UzQyTFpWWEFOVzV1aA?oc=5"
         }
       ],
       "price": 257500.0,
@@ -820,19 +820,25 @@
       "link": "https://news.google.com/rss/articles/CBMiX0FVX3lxTE1tM3FZZER1Ti12Ri05dmVpU3NQanJ0UzUwREl4NTRKS3BJRDZLWTJyWG1HUnpENTltWFVzRWJoREdKWGtaT2pwcVAwMWlRY19QZURMRmhnajUxaVhaOUlj?oc=5"
     },
     {
+      "time": "2026-10-12T10:45:52+09:00",
+      "title": "삼성전자, 차세대 'z낸드' 개발영역 넓힌다…맞춤형 AI 메모리 전략",
+      "source": "지디넷코리아",
+      "link": "https://news.google.com/rss/articles/CBMiVkFVX3lxTE5KSUFQb0hhYjNpb3Q0cjRkRFBuZ253Zlp3UzdROWNkZzROeVh5S2Fsd3lOWnprMjU5TUh3VkY4LXZ6Qy1jT29lYnd4Y2R0Y29ldEZOVlNB?oc=5"
+    },
+    {
       "time": "2026-10-12T11:57:00+09:00",
       "title": "[리포트 브리핑]삼성전자, '영업이익 100조원 시대 개막' 목표가 530,000원 - NH투자증권",
       "source": "뉴스핌",
       "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE5RUXFGcXBxT2RKTEk0Q04xU2htNFVQSHhoS0ZGU3dheXdyVkZ1RWxTZWRfZ1h3cVhIU2oxYm1FV1hjc3N2QTRDakFTWklUQTU4bE8wU2tfeHY2RVJk?oc=5"
-    },
-    {
-      "time": "2026-10-12T15:12:11+09:00",
-      "title": "삼성전자, 차세대 'z낸드' 개발영역 넓힌다…맞춤형 AI 메모리 전략",
-      "source": "지디넷코리아",
-      "link": "https://news.google.com/rss/articles/CBMiVkFVX3lxTE5KSUFQb0hhYjNpb3Q0cjRkRFBuZ253Zlp3UzdROWNkZzROeVh5S2Fsd3lOWnprMjU5TUh3VkY4LXZ6Qy1jT29lYnd4Y2R0Y29ldEZOVlNB?oc=5"
     }
   ],
   "disclosures": [
+    {
+      "report_nm": "자기주식취득결과보고서",
+      "rcept_dt": "20261012",
+      "rcept_no": "20261012000421",
+      "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261012000421"
+    },
     {
       "report_nm": "임원ㆍ주요주주특정증권등소유상황보고서",
       "rcept_dt": "20261012",
@@ -856,9 +862,9 @@
     "steady": 32,
     "upper": 1,
     "lower": 0,
-    "individual": 14701.0,
-    "foreign": -20082.0,
-    "institution": -1239.0,
+    "individual": 14584.0,
+    "foreign": -19922.0,
+    "institution": -1270.0,
     "prev_close": 6625.93,
     "open": 6578.17,
     "high": 6589.69,

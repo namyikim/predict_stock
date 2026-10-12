@@ -6,7 +6,7 @@ Candidate IV interval,price,5,close_to_close,04645af6d68aa70051a9,4,,,,0,,,0.75
 Candidate evening forecast,direction,1,close_to_close,01a15a32dfbfbe7a4a16,9,0.5555555555555556,1.0454337994382263,0.6242876427948764,0,,,
 Candidate evening forecast,direction,1,close_to_close,04645af6d68aa70051a9,7,0.7142857142857143,1.0444128932667616,0.6311083845748501,0,,,
 Candidate evening open,open,1,close_to_close,01a15a32dfbfbe7a4a16,6,,,,6,4710.1316914479,0.017359979439904093,0.6666666666666666
-Candidate evening open,open,1,close_to_close,04645af6d68aa70051a9,7,,,,7,2610.079357623289,0.009716316845666787,1.0
+Candidate evening open,open,1,close_to_close,04645af6d68aa70051a9,7,,,,7,2610.079357623289,0.009716316845666779,1.0
 Candidate expanding,direction,1,close_to_close,01a15a32dfbfbe7a4a16,7,0.7142857142857143,0.8402784994583824,0.4846559336797518,0,,,
 Candidate expanding,direction,1,close_to_close,04645af6d68aa70051a9,8,0.25,1.103645239982754,0.6697278947632657,0,,,
 Candidate expanding,direction,1,close_to_close,fcf9a52b1a6a87f3bd29,1,0.0,1.1978514022617497,0.7366310234911683,0,,,
@@ -50,7 +50,7 @@ No macro ensemble,direction,1,close_to_close,92f57958414c79f097af,1,1.0,0.804656
 No macro ensemble,direction,1,close_to_close,cee1232d50d58d70f18f,1,0.0,0.9704162983232595,0.5900905098149145,0,,,
 No macro ensemble,direction,1,close_to_close,fcf9a52b1a6a87f3bd29,1,0.0,1.2297449961754618,0.7617291048248621,0,,,
 No macro price ensemble,direction,1,close_to_close,01a15a32dfbfbe7a4a16,7,0.7142857142857143,0.9089290835719334,0.5324318824144272,0,,,
-No macro price ensemble,direction,1,close_to_close,04645af6d68aa70051a9,8,0.375,1.0458580737150698,0.6301277360541642,0,,,
+No macro price ensemble,direction,1,close_to_close,04645af6d68aa70051a9,8,0.375,1.0458580737150698,0.6301277360541641,0,,,
 No macro price ensemble,direction,1,close_to_close,92f57958414c79f097af,1,1.0,0.7556341597018115,0.42180703159463995,0,,,
 No macro price ensemble,direction,1,close_to_close,fcf9a52b1a6a87f3bd29,1,0.0,1.2569918371377933,0.7812547543185786,0,,,
 Post-open,direction,1,close_to_close,post-open-grid-v1,10,0.5,1.0132901633345714,0.5864779909728465,0,,,

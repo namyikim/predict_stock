@@ -3,7 +3,7 @@
   "name": "삼성전자",
   "peer_name": "SK하이닉스",
   "session_date": "2026-10-12",
-  "generated_at": "2026-10-12 16:11 KST",
+  "generated_at": "2026-10-12 16:46 KST",
   "summary": {
     "prev_close": 262000.0,
     "open": 260000.0,
@@ -15,11 +15,11 @@
     "c2c": -0.043893129770992356,
     "high_vs_open": 0.009615384615384581,
     "low_vs_open": -0.04038461538461535,
-    "volume": 18793622.0,
-    "volume_ratio": 1.1163057304043857,
+    "volume": 18847149.0,
+    "volume_ratio": 1.1194851333332814,
     "kospi_c2c": -0.036476379164039785,
     "peer_c2c": -0.04521118381915523,
-    "usdkrw_chg": -0.008317295010786485,
+    "usdkrw_chg": -0.008153412349681033,
     "us_nights": 2,
     "sox_ret": -0.03778698805611891,
     "nasdaq_ret": -0.0062646238683091715,
@@ -144,18 +144,6 @@
       "score": 7.477300273241174,
       "news": [
         {
-          "time": "2026-10-12T08:34:00+09:00",
-          "title": "[리포트 브리핑]삼성전자, '사상 최초 DRAM 분기 매출 100조원 상회' 목표가 530,000원 - DS투자증권",
-          "source": "뉴스핌",
-          "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE5ILXUtTXBHdjZVOGQ4MmprZXJrc0t2QjFlT29qdEd2NXRwQXo5SVp0SmpORGk3ZFhnR0M0SUx1QlZETGNkTmpMS3FpbnhnWlJUcFdKbVY2Nmg1RDZC?oc=5"
-        },
-        {
-          "time": "2026-10-12T08:46:30+09:00",
-          "title": "하나증권 \"삼성전자, 주가 상승과 강도는 외국인 수급 전환에 달려\"",
-          "source": "글로벌이코노믹",
-          "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxPaWl1ai1FQkxVZVloVC1vMno1UFI2cmpJR0stbTd5SVZocTNxVnRLUTdIUExvOHNLREJzVWljUVA0bF9CWjdLSUpiTTlaWnZVUVRkMnVGUEYyUjNRVktKU2tMUV9NMDNkM1hnLWJ5Y2EtcFF5dGhISDViTEFCQTFPY1JSTTlqTEZB?oc=5"
-        },
-        {
           "time": "2026-10-12T09:02:02+09:00",
           "title": "\"삼성전자 3분기 실적, 환율도 메모리 호황 못 막았다\"-IBK - 머니투데이",
           "source": "머니투데이",
@@ -172,6 +160,18 @@
           "title": "삼성전자, TSMC 역대급 실적에도 시장이 의심하는 이유",
           "source": "연합인포맥스",
           "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE8yckVsWGM1OFZkdmFoZ0hVOWw3VDFtNkJ5NTlwOXZLcE5RYVJaQVRDM0wxU2RTWEdxX013c01pWXF0LXp6YlNqd3RwWnBIMnQtYUoyMlI5Z3JFNmVIdGNoLUpjSFllanpqTkJaQjh3aUHSAXRBVV95cUxQZmg1YUc5MUZBMEI5Y3JiUF9TWkxLX0JNNlRfNG90OWFGQzN2bjczX1kwQ3NFeC1JVjMwa1ZMM3JMdVJFUGlla2dMRnJiMTB2Z09fMU5fWVFBaDBsZXdLYng1MFJWQV8wTGRaUlRkVVVaZlRjSw?oc=5"
+        },
+        {
+          "time": "2026-10-12T07:54:02+09:00",
+          "title": "\"삼성전자, 이제 세계 1위 이익 기업…HBM4으로 내년 더 뛴다\" [종목+]",
+          "source": "한국경제",
+          "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE9MZzVZUTd1UHdyWkpWN1lJaVgyTVkxTUtNeEg5NlI4ZGtUSV9ucUpfVGFhU3A4V2w3MkgwaDVPckJJM25iZlA0cHhldUJkSVBSNTQ2WTl0ZTR4Zw?oc=5"
+        },
+        {
+          "time": "2026-10-12T08:40:00+09:00",
+          "title": "'영업익 100조' 과거와 달라진 삼성전자…증권가 시선은 주주환원으로",
+          "source": "연합인포맥스",
+          "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE1leGJNWUZBTUc5OFVRbHpZU2VXTHppTGRaRW5yRW1GUkZlSDRYc3lpQmt5eVhPckd6YWVRWWY4VFlUVG5tbjVncnFwVFpzeXdHOWVScGkwa2tfTGp5UUtSdmx5LWlQZEp1R1VBaEZ0ZjA?oc=5"
         }
       ]
     },
@@ -185,18 +185,6 @@
       "session_share": 0.28792912513842805,
       "score": 7.098911968392315,
       "news": [
-        {
-          "time": "2026-10-12T08:34:00+09:00",
-          "title": "[리포트 브리핑]삼성전자, '사상 최초 DRAM 분기 매출 100조원 상회' 목표가 530,000원 - DS투자증권",
-          "source": "뉴스핌",
-          "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE5ILXUtTXBHdjZVOGQ4MmprZXJrc0t2QjFlT29qdEd2NXRwQXo5SVp0SmpORGk3ZFhnR0M0SUx1QlZETGNkTmpMS3FpbnhnWlJUcFdKbVY2Nmg1RDZC?oc=5"
-        },
-        {
-          "time": "2026-10-12T08:46:30+09:00",
-          "title": "하나증권 \"삼성전자, 주가 상승과 강도는 외국인 수급 전환에 달려\"",
-          "source": "글로벌이코노믹",
-          "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxPaWl1ai1FQkxVZVloVC1vMno1UFI2cmpJR0stbTd5SVZocTNxVnRLUTdIUExvOHNLREJzVWljUVA0bF9CWjdLSUpiTTlaWnZVUVRkMnVGUEYyUjNRVktKU2tMUV9NMDNkM1hnLWJ5Y2EtcFF5dGhISDViTEFCQTFPY1JSTTlqTEZB?oc=5"
-        },
         {
           "time": "2026-10-12T09:02:02+09:00",
           "title": "\"삼성전자 3분기 실적, 환율도 메모리 호황 못 막았다\"-IBK - 머니투데이",
@@ -214,6 +202,18 @@
           "title": "삼성전자, TSMC 역대급 실적에도 시장이 의심하는 이유",
           "source": "연합인포맥스",
           "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE8yckVsWGM1OFZkdmFoZ0hVOWw3VDFtNkJ5NTlwOXZLcE5RYVJaQVRDM0wxU2RTWEdxX013c01pWXF0LXp6YlNqd3RwWnBIMnQtYUoyMlI5Z3JFNmVIdGNoLUpjSFllanpqTkJaQjh3aUHSAXRBVV95cUxQZmg1YUc5MUZBMEI5Y3JiUF9TWkxLX0JNNlRfNG90OWFGQzN2bjczX1kwQ3NFeC1JVjMwa1ZMM3JMdVJFUGlla2dMRnJiMTB2Z09fMU5fWVFBaDBsZXdLYng1MFJWQV8wTGRaUlRkVVVaZlRjSw?oc=5"
+        },
+        {
+          "time": "2026-10-12T09:36:05+09:00",
+          "title": "'107조 실적'에도 외국인은 팔았다... 삼성전자 외국인 지분율 18년9개월만 최저",
+          "source": "법률방송뉴스",
+          "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE05eC1BMS1VSmFuV0EzaUFsSnpIWWRMdERBUnN0QjFfc3RMZjNTcFh5Y3pRd05FNklCVmZnWFVyUjBNZ25qQVdMSnVwVkVRR29tVUJFakE2NTNUVkxDVUxKUThsa3c?oc=5"
+        },
+        {
+          "time": "2026-10-12T10:05:00+09:00",
+          "title": "삼성전자, 역대급 실적에도 외국인 매도세 가속...지분율 17년만에 최저",
+          "source": "증권일보",
+          "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTFBFWFBFLTdpLTJLdUt3U3JCZDlGaV9HeUdhblAxbHk3MlZlQ25UOUlSN2x3TEwzS1NmenhGMWFZazBmVUE1dFc4bFViZzFjNHlNN1NmaUUyOThzRWZXNHAwMw?oc=5"
         }
       ]
     },
@@ -240,22 +240,22 @@
           "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE05eC1BMS1VSmFuV0EzaUFsSnpIWWRMdERBUnN0QjFfc3RMZjNTcFh5Y3pRd05FNklCVmZnWFVyUjBNZ25qQVdMSnVwVkVRR29tVUJFakE2NTNUVkxDVUxKUThsa3c?oc=5"
         },
         {
-          "time": "2026-10-12T09:53:00+09:00",
-          "title": "[리포트 브리핑]삼성전자, '4Q26 영업이익 116조원 전망' NR - 키움증권",
-          "source": "뉴스핌",
-          "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTFBLUmV5YlFWcm93SWxEclAzeUt4QWN3RlhzTUdSdWEyMHRxYzNvelFVRjA5Y3docFRBa00yd1VyVU1idzEyU3lSVWI0MXg0cGFEU2Y2N1JzTDNyMmFu?oc=5"
-        },
-        {
           "time": "2026-10-12T10:05:00+09:00",
           "title": "삼성전자, 역대급 실적에도 외국인 매도세 가속...지분율 17년만에 최저",
           "source": "증권일보",
           "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTFBFWFBFLTdpLTJLdUt3U3JCZDlGaV9HeUdhblAxbHk3MlZlQ25UOUlSN2x3TEwzS1NmenhGMWFZazBmVUE1dFc4bFViZzFjNHlNN1NmaUUyOThzRWZXNHAwMw?oc=5"
         },
         {
-          "time": "2026-10-12T09:18:57+09:00",
-          "title": "삼성전자 AI 가전·이동형 스크린, 美 포브스서 나란히 호평",
-          "source": "서울파이낸스",
-          "link": "https://news.google.com/rss/articles/CBMiakFVX3lxTE1aaEFiUGJYa2tnd1BueF9fVGNuMHZyYlBGazJMOVBPSllFcmVPVFl4NGEyaENjcFhnNGNOOVB5dU5rdEVqRG9TaHpnVmY1OUIxOXlFUXk2S2hzczg2Qlg4a20talFKTnBZbGc?oc=5"
+          "time": "2026-10-12T10:05:36+09:00",
+          "title": "삼성전자, 107조 넘게 벌고도 주가 뒷걸음…주가 반등 열쇠는?",
+          "source": "매일신문",
+          "link": "https://news.google.com/rss/articles/CBMiYkFVX3lxTE9TWjBRLXBHWnNTS29SaGQwc0luQlNNOHJDY2U5VDdnWXNWT01MRW14UFhHUVk4R3BWd1Q5S2hmbTlnVTR4WGMwUEZTTFpOZjF3OGQwR09maktVOUF3VzJYelNR?oc=5"
+        },
+        {
+          "time": "2026-10-12T10:15:54+09:00",
+          "title": "삼성전자, 청년SW·AI아카데미 역대 최대규모 모집…AI교육 강화",
+          "source": "연합뉴스",
+          "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTFByZDVfeEFoa3pIRmJBS0dna0FSb3hXMjFDWi1NVU5PaFhuWjJqNnZpY19TNzlLMTRscDVyTEh4NV85SEhfSlNiMHNUcU9xUmp2aVNuUEluT0duT0HSAWBBVV95cUxQVzZ4eVZCWjdPUGRIYXZobEt4ZEh1LVF2ZFA0b0Zuc2F5dGpEc015akVBWE9DblNJZ2lMR2Q1QWpZclE0Y1p0d1R1ZTBDdFN6Y1k1OVM0MkxaVlhBTlc1dWg?oc=5"
         }
       ]
     }
@@ -640,18 +640,6 @@
       "score": 7.477300273241174,
       "news": [
         {
-          "time": "2026-10-12T08:34:00+09:00",
-          "title": "[리포트 브리핑]삼성전자, '사상 최초 DRAM 분기 매출 100조원 상회' 목표가 530,000원 - DS투자증권",
-          "source": "뉴스핌",
-          "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE5ILXUtTXBHdjZVOGQ4MmprZXJrc0t2QjFlT29qdEd2NXRwQXo5SVp0SmpORGk3ZFhnR0M0SUx1QlZETGNkTmpMS3FpbnhnWlJUcFdKbVY2Nmg1RDZC?oc=5"
-        },
-        {
-          "time": "2026-10-12T08:46:30+09:00",
-          "title": "하나증권 \"삼성전자, 주가 상승과 강도는 외국인 수급 전환에 달려\"",
-          "source": "글로벌이코노믹",
-          "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxPaWl1ai1FQkxVZVloVC1vMno1UFI2cmpJR0stbTd5SVZocTNxVnRLUTdIUExvOHNLREJzVWljUVA0bF9CWjdLSUpiTTlaWnZVUVRkMnVGUEYyUjNRVktKU2tMUV9NMDNkM1hnLWJ5Y2EtcFF5dGhISDViTEFCQTFPY1JSTTlqTEZB?oc=5"
-        },
-        {
           "time": "2026-10-12T09:02:02+09:00",
           "title": "\"삼성전자 3분기 실적, 환율도 메모리 호황 못 막았다\"-IBK - 머니투데이",
           "source": "머니투데이",
@@ -668,6 +656,18 @@
           "title": "삼성전자, TSMC 역대급 실적에도 시장이 의심하는 이유",
           "source": "연합인포맥스",
           "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE8yckVsWGM1OFZkdmFoZ0hVOWw3VDFtNkJ5NTlwOXZLcE5RYVJaQVRDM0wxU2RTWEdxX013c01pWXF0LXp6YlNqd3RwWnBIMnQtYUoyMlI5Z3JFNmVIdGNoLUpjSFllanpqTkJaQjh3aUHSAXRBVV95cUxQZmg1YUc5MUZBMEI5Y3JiUF9TWkxLX0JNNlRfNG90OWFGQzN2bjczX1kwQ3NFeC1JVjMwa1ZMM3JMdVJFUGlla2dMRnJiMTB2Z09fMU5fWVFBaDBsZXdLYng1MFJWQV8wTGRaUlRkVVVaZlRjSw?oc=5"
+        },
+        {
+          "time": "2026-10-12T07:54:02+09:00",
+          "title": "\"삼성전자, 이제 세계 1위 이익 기업…HBM4으로 내년 더 뛴다\" [종목+]",
+          "source": "한국경제",
+          "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE9MZzVZUTd1UHdyWkpWN1lJaVgyTVkxTUtNeEg5NlI4ZGtUSV9ucUpfVGFhU3A4V2w3MkgwaDVPckJJM25iZlA0cHhldUJkSVBSNTQ2WTl0ZTR4Zw?oc=5"
+        },
+        {
+          "time": "2026-10-12T08:40:00+09:00",
+          "title": "'영업익 100조' 과거와 달라진 삼성전자…증권가 시선은 주주환원으로",
+          "source": "연합인포맥스",
+          "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE1leGJNWUZBTUc5OFVRbHpZU2VXTHppTGRaRW5yRW1GUkZlSDRYc3lpQmt5eVhPckd6YWVRWWY4VFlUVG5tbjVncnFwVFpzeXdHOWVScGkwa2tfTGp5UUtSdmx5LWlQZEp1R1VBaEZ0ZjA?oc=5"
         }
       ],
       "price": 262000.0,
@@ -683,18 +683,6 @@
       "session_share": 0.28792912513842805,
       "score": 7.098911968392315,
       "news": [
-        {
-          "time": "2026-10-12T08:34:00+09:00",
-          "title": "[리포트 브리핑]삼성전자, '사상 최초 DRAM 분기 매출 100조원 상회' 목표가 530,000원 - DS투자증권",
-          "source": "뉴스핌",
-          "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE5ILXUtTXBHdjZVOGQ4MmprZXJrc0t2QjFlT29qdEd2NXRwQXo5SVp0SmpORGk3ZFhnR0M0SUx1QlZETGNkTmpMS3FpbnhnWlJUcFdKbVY2Nmg1RDZC?oc=5"
-        },
-        {
-          "time": "2026-10-12T08:46:30+09:00",
-          "title": "하나증권 \"삼성전자, 주가 상승과 강도는 외국인 수급 전환에 달려\"",
-          "source": "글로벌이코노믹",
-          "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxPaWl1ai1FQkxVZVloVC1vMno1UFI2cmpJR0stbTd5SVZocTNxVnRLUTdIUExvOHNLREJzVWljUVA0bF9CWjdLSUpiTTlaWnZVUVRkMnVGUEYyUjNRVktKU2tMUV9NMDNkM1hnLWJ5Y2EtcFF5dGhISDViTEFCQTFPY1JSTTlqTEZB?oc=5"
-        },
         {
           "time": "2026-10-12T09:02:02+09:00",
           "title": "\"삼성전자 3분기 실적, 환율도 메모리 호황 못 막았다\"-IBK - 머니투데이",
@@ -712,6 +700,18 @@
           "title": "삼성전자, TSMC 역대급 실적에도 시장이 의심하는 이유",
           "source": "연합인포맥스",
           "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE8yckVsWGM1OFZkdmFoZ0hVOWw3VDFtNkJ5NTlwOXZLcE5RYVJaQVRDM0wxU2RTWEdxX013c01pWXF0LXp6YlNqd3RwWnBIMnQtYUoyMlI5Z3JFNmVIdGNoLUpjSFllanpqTkJaQjh3aUHSAXRBVV95cUxQZmg1YUc5MUZBMEI5Y3JiUF9TWkxLX0JNNlRfNG90OWFGQzN2bjczX1kwQ3NFeC1JVjMwa1ZMM3JMdVJFUGlla2dMRnJiMTB2Z09fMU5fWVFBaDBsZXdLYng1MFJWQV8wTGRaUlRkVVVaZlRjSw?oc=5"
+        },
+        {
+          "time": "2026-10-12T09:36:05+09:00",
+          "title": "'107조 실적'에도 외국인은 팔았다... 삼성전자 외국인 지분율 18년9개월만 최저",
+          "source": "법률방송뉴스",
+          "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE05eC1BMS1VSmFuV0EzaUFsSnpIWWRMdERBUnN0QjFfc3RMZjNTcFh5Y3pRd05FNklCVmZnWFVyUjBNZ25qQVdMSnVwVkVRR29tVUJFakE2NTNUVkxDVUxKUThsa3c?oc=5"
+        },
+        {
+          "time": "2026-10-12T10:05:00+09:00",
+          "title": "삼성전자, 역대급 실적에도 외국인 매도세 가속...지분율 17년만에 최저",
+          "source": "증권일보",
+          "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTFBFWFBFLTdpLTJLdUt3U3JCZDlGaV9HeUdhblAxbHk3MlZlQ25UOUlSN2x3TEwzS1NmenhGMWFZazBmVUE1dFc4bFViZzFjNHlNN1NmaUUyOThzRWZXNHAwMw?oc=5"
         }
       ],
       "price": 255500.0,
@@ -740,22 +740,22 @@
           "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE05eC1BMS1VSmFuV0EzaUFsSnpIWWRMdERBUnN0QjFfc3RMZjNTcFh5Y3pRd05FNklCVmZnWFVyUjBNZ25qQVdMSnVwVkVRR29tVUJFakE2NTNUVkxDVUxKUThsa3c?oc=5"
         },
         {
-          "time": "2026-10-12T09:53:00+09:00",
-          "title": "[리포트 브리핑]삼성전자, '4Q26 영업이익 116조원 전망' NR - 키움증권",
-          "source": "뉴스핌",
-          "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTFBLUmV5YlFWcm93SWxEclAzeUt4QWN3RlhzTUdSdWEyMHRxYzNvelFVRjA5Y3docFRBa00yd1VyVU1idzEyU3lSVWI0MXg0cGFEU2Y2N1JzTDNyMmFu?oc=5"
-        },
-        {
           "time": "2026-10-12T10:05:00+09:00",
           "title": "삼성전자, 역대급 실적에도 외국인 매도세 가속...지분율 17년만에 최저",
           "source": "증권일보",
           "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTFBFWFBFLTdpLTJLdUt3U3JCZDlGaV9HeUdhblAxbHk3MlZlQ25UOUlSN2x3TEwzS1NmenhGMWFZazBmVUE1dFc4bFViZzFjNHlNN1NmaUUyOThzRWZXNHAwMw?oc=5"
         },
         {
-          "time": "2026-10-12T09:18:57+09:00",
-          "title": "삼성전자 AI 가전·이동형 스크린, 美 포브스서 나란히 호평",
-          "source": "서울파이낸스",
-          "link": "https://news.google.com/rss/articles/CBMiakFVX3lxTE1aaEFiUGJYa2tnd1BueF9fVGNuMHZyYlBGazJMOVBPSllFcmVPVFl4NGEyaENjcFhnNGNOOVB5dU5rdEVqRG9TaHpnVmY1OUIxOXlFUXk2S2hzczg2Qlg4a20talFKTnBZbGc?oc=5"
+          "time": "2026-10-12T10:05:36+09:00",
+          "title": "삼성전자, 107조 넘게 벌고도 주가 뒷걸음…주가 반등 열쇠는?",
+          "source": "매일신문",
+          "link": "https://news.google.com/rss/articles/CBMiYkFVX3lxTE9TWjBRLXBHWnNTS29SaGQwc0luQlNNOHJDY2U5VDdnWXNWT01MRW14UFhHUVk4R3BWd1Q5S2hmbTlnVTR4WGMwUEZTTFpOZjF3OGQwR09maktVOUF3VzJYelNR?oc=5"
+        },
+        {
+          "time": "2026-10-12T10:15:54+09:00",
+          "title": "삼성전자, 청년SW·AI아카데미 역대 최대규모 모집…AI교육 강화",
+          "source": "연합뉴스",
+          "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTFByZDVfeEFoa3pIRmJBS0dna0FSb3hXMjFDWi1NVU5PaFhuWjJqNnZpY19TNzlLMTRscDVyTEh4NV85SEhfSlNiMHNUcU9xUmp2aVNuUEluT0duT0HSAWBBVV95cUxQVzZ4eVZCWjdPUGRIYXZobEt4ZEh1LVF2ZFA0b0Zuc2F5dGpEc015akVBWE9DblNJZ2lMR2Q1QWpZclE0Y1p0d1R1ZTBDdFN6Y1k1OVM0MkxaVlhBTlc1dWg?oc=5"
         }
       ],
       "price": 257500.0,
@@ -763,18 +763,6 @@
     }
   ],
   "overnight_news": [
-    {
-      "time": "2026-10-12T08:34:00+09:00",
-      "title": "[리포트 브리핑]삼성전자, '사상 최초 DRAM 분기 매출 100조원 상회' 목표가 530,000원 - DS투자증권",
-      "source": "뉴스핌",
-      "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE5ILXUtTXBHdjZVOGQ4MmprZXJrc0t2QjFlT29qdEd2NXRwQXo5SVp0SmpORGk3ZFhnR0M0SUx1QlZETGNkTmpMS3FpbnhnWlJUcFdKbVY2Nmg1RDZC?oc=5"
-    },
-    {
-      "time": "2026-10-12T08:46:30+09:00",
-      "title": "하나증권 \"삼성전자, 주가 상승과 강도는 외국인 수급 전환에 달려\"",
-      "source": "글로벌이코노믹",
-      "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxPaWl1ai1FQkxVZVloVC1vMno1UFI2cmpJR0stbTd5SVZocTNxVnRLUTdIUExvOHNLREJzVWljUVA0bF9CWjdLSUpiTTlaWnZVUVRkMnVGUEYyUjNRVktKU2tMUV9NMDNkM1hnLWJ5Y2EtcFF5dGhISDViTEFCQTFPY1JSTTlqTEZB?oc=5"
-    },
     {
       "time": "2026-10-12T08:16:44+09:00",
       "title": "삼성전자 107조 벌었는데 왜 주가는 떨어졌나… 외국인이 떠난 진짜 이유",
@@ -792,6 +780,18 @@
       "title": "[마켓 프리뷰] 삼성전자 역대급 분기 실적에도 '추락'…소부장은 강세",
       "source": "SBS Biz",
       "link": "https://news.google.com/rss/articles/CBMiU0FVX3lxTE5BRGpsRXF1N0ZlcjVJQ0FyWGd6YzlERmpXeHQzWklXVTV6M1M0X2xfSWZCUkV6ZkdTVS15MjljeGZPWjVUN2VBakZzbmxMZmx6a3V30gFYQVVfeXFMTnlZTGYyMnNLUGRtdV9xeVAwUzdUTzljWnpYYVh2R0V2NmZMd0RsMHhUUGFsYTNQNVJsOEphLUF5dHF2b21kbGZvN0tudkM2MEtXNTc0MEhuaw?oc=5"
+    },
+    {
+      "time": "2026-10-12T07:04:26+09:00",
+      "title": "“삼성전자 팔고 소부장 산다”…23조 ETF가 흔드는 반도체주",
+      "source": "이코노미스트",
+      "link": "https://news.google.com/rss/articles/CBMiYkFVX3lxTE1MNXZCemU0SDNoYVNVZmlrVmJXTHBQSHplQ0NseFVLTkd3bXFrMEpIZ1ozYWtnTjB2M0JzbV96WEFiNl8wWlplMVJXRDFvbGRxa1NGaEcyY0daVUo2OUR1bFhn?oc=5"
+    },
+    {
+      "time": "2026-10-12T07:54:02+09:00",
+      "title": "\"삼성전자, 이제 세계 1위 이익 기업…HBM4으로 내년 더 뛴다\" [종목+]",
+      "source": "한국경제",
+      "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE9MZzVZUTd1UHdyWkpWN1lJaVgyTVkxTUtNeEg5NlI4ZGtUSV9ucUpfVGFhU3A4V2w3MkgwaDVPckJJM25iZlA0cHhldUJkSVBSNTQ2WTl0ZTR4Zw?oc=5"
     }
   ],
   "top_news": [
@@ -808,18 +808,6 @@
       "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE5vekVLMFJzZUUybWpweTdVa3VNLXM4S2NISHUwZFB0bnhKUC1qTUtJYjNqckZfR2dSb1A4dS05cHVpZmxBQmswMUNLQmNMdkxoT1ZHWXJta2c3a19HU3VyRGNSUDFzVXF5OE5kblpHQTA?oc=5"
     },
     {
-      "time": "2026-10-12T08:34:00+09:00",
-      "title": "[리포트 브리핑]삼성전자, '사상 최초 DRAM 분기 매출 100조원 상회' 목표가 530,000원 - DS투자증권",
-      "source": "뉴스핌",
-      "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE5ILXUtTXBHdjZVOGQ4MmprZXJrc0t2QjFlT29qdEd2NXRwQXo5SVp0SmpORGk3ZFhnR0M0SUx1QlZETGNkTmpMS3FpbnhnWlJUcFdKbVY2Nmg1RDZC?oc=5"
-    },
-    {
-      "time": "2026-10-12T08:46:30+09:00",
-      "title": "하나증권 \"삼성전자, 주가 상승과 강도는 외국인 수급 전환에 달려\"",
-      "source": "글로벌이코노믹",
-      "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxPaWl1ai1FQkxVZVloVC1vMno1UFI2cmpJR0stbTd5SVZocTNxVnRLUTdIUExvOHNLREJzVWljUVA0bF9CWjdLSUpiTTlaWnZVUVRkMnVGUEYyUjNRVktKU2tMUV9NMDNkM1hnLWJ5Y2EtcFF5dGhISDViTEFCQTFPY1JSTTlqTEZB?oc=5"
-    },
-    {
       "time": "2026-10-12T09:02:02+09:00",
       "title": "\"삼성전자 3분기 실적, 환율도 메모리 호황 못 막았다\"-IBK - 머니투데이",
       "source": "머니투데이",
@@ -830,6 +818,18 @@
       "title": "삼성전자 역대급 실적에도 주가 '주춤'...증권가 시선은 주주환원으로 [주가동향]",
       "source": "조세일보",
       "link": "https://news.google.com/rss/articles/CBMiX0FVX3lxTE1tM3FZZER1Ti12Ri05dmVpU3NQanJ0UzUwREl4NTRKS3BJRDZLWTJyWG1HUnpENTltWFVzRWJoREdKWGtaT2pwcVAwMWlRY19QZURMRmhnajUxaVhaOUlj?oc=5"
+    },
+    {
+      "time": "2026-10-12T11:57:00+09:00",
+      "title": "[리포트 브리핑]삼성전자, '영업이익 100조원 시대 개막' 목표가 530,000원 - NH투자증권",
+      "source": "뉴스핌",
+      "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE5RUXFGcXBxT2RKTEk0Q04xU2htNFVQSHhoS0ZGU3dheXdyVkZ1RWxTZWRfZ1h3cVhIU2oxYm1FV1hjc3N2QTRDakFTWklUQTU4bE8wU2tfeHY2RVJk?oc=5"
+    },
+    {
+      "time": "2026-10-12T15:12:11+09:00",
+      "title": "삼성전자, 차세대 'z낸드' 개발영역 넓힌다…맞춤형 AI 메모리 전략",
+      "source": "지디넷코리아",
+      "link": "https://news.google.com/rss/articles/CBMiVkFVX3lxTE5KSUFQb0hhYjNpb3Q0cjRkRFBuZ253Zlp3UzdROWNkZzROeVh5S2Fsd3lOWnprMjU5TUh3VkY4LXZ6Qy1jT29lYnd4Y2R0Y29ldEZOVlNB?oc=5"
     }
   ],
   "disclosures": [
@@ -856,9 +856,9 @@
     "steady": 32,
     "upper": 1,
     "lower": 0,
-    "individual": 14745.0,
-    "foreign": -20128.0,
-    "institution": -1236.0,
+    "individual": 14701.0,
+    "foreign": -20082.0,
+    "institution": -1239.0,
     "prev_close": 6625.93,
     "open": 6578.17,
     "high": 6589.69,

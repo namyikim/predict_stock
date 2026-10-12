@@ -3,7 +3,7 @@
   "name": "SK하이닉스",
   "peer_name": "삼성전자",
   "session_date": "2026-10-12",
-  "generated_at": "2026-10-12 16:46 KST",
+  "generated_at": "2026-10-12 17:31 KST",
   "summary": {
     "prev_close": 1681000.0,
     "open": 1640000.0,
@@ -15,11 +15,11 @@
     "c2c": -0.04521118381915523,
     "high_vs_open": 0.007926829268292579,
     "low_vs_open": -0.021341463414634165,
-    "volume": 3264328.0,
-    "volume_ratio": 1.0309497668405336,
+    "volume": 3286263.0,
+    "volume_ratio": 1.0378773437064757,
     "kospi_c2c": -0.036476379164039785,
     "peer_c2c": -0.043893129770992356,
-    "usdkrw_chg": -0.008272574950185296,
+    "usdkrw_chg": -0.009389485732028358,
     "us_nights": 2,
     "sox_ret": -0.03778698805611891,
     "nasdaq_ret": -0.0062646238683091715,
@@ -74,19 +74,19 @@
     "ma_touches": [],
     "micron_ah": {
       "regular_close": 1028.135009765625,
-      "last": 1028.5001,
-      "ret": 0.0003550995062975293,
-      "low_ret": -0.001279024401595663,
-      "high_ret": 0.001998755236283234,
-      "last_time": "2026-10-10T08:55:00+09:00"
+      "last": 1029.0,
+      "ret": 0.000841319696498033,
+      "low_ret": 0.000841319696498033,
+      "high_ret": 0.000841319696498033,
+      "last_time": "2026-10-10T05:00:00+09:00"
     },
     "nvidia_ah": {
-      "regular_close": 229.33999633789062,
-      "last": 229.33,
-      "ret": -4.358741628252005e-05,
-      "low_ret": -0.0002241054273625087,
-      "high_ret": 0.000916559106417969,
-      "last_time": "2026-10-10T08:55:00+09:00"
+      "regular_close": 229.32000732421875,
+      "last": 229.28,
+      "ret": -0.0001744606791425074,
+      "low_ret": -0.0001744606791425074,
+      "high_ret": -0.0001744606791425074,
+      "last_time": "2026-10-10T05:00:00+09:00"
     },
     "session_cross": {
       "NQ=F": {
@@ -151,22 +151,22 @@
           "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE5sdWdaZTRkNS1xR3cxZkgwNzhGT3phOXV6dFFpbmlETG5TWG9YaEJleERjVXYweTRGbHQwZEcxUFhFX2w4X2pwRnh1ZUZ5RURmVzdkUGNOUVFMVzNXdFpTREtKNDBHSVdW?oc=5"
         },
         {
-          "time": "2026-10-12T08:01:56+09:00",
-          "title": "SK하이닉스, 역대급 실적 앞두고 뜻밖의 저평가? 마이크론과 격차 1.6배",
-          "source": "스마트비즈",
-          "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE9wd1FuNFQ3TkVYM3Uydjk5eHVhQ1drRnhUQkozRzZqam9rQUZLNEF6VkE5QXI2eXN6MFBwT1Y2U1g0MWJOcWNEQ1Z2T1F0MWFBMlNvSWY5aXJwSmMtRjZkT2xWOHpUVFZHblNXeQ?oc=5"
-        },
-        {
           "time": "2026-10-12T08:51:14+09:00",
           "title": "SK하이닉스, 용인·호남 투트랙…AI 메모리 생산능력 늘린다",
           "source": "더트래커",
           "link": "https://news.google.com/rss/articles/CBMiWEFVX3lxTFBlUWVrSEdmSktRZjBWRDZfck9LeE1vaFc4M3h3dHdoTGhJM3liZDd0b1FlOXZTckZjUWwzN1JobFJzVTFlX05lZ2JQeG56YzdEbmNVVTJqZmI?oc=5"
         },
         {
-          "time": "2026-10-12T09:14:28+09:00",
-          "title": "[특징주] 오픈AI 실적 논란⋯SK하이닉스 2%·SK스퀘어 5% 급락",
-          "source": "아이뉴스24",
-          "link": "https://news.google.com/rss/articles/CBMiTEFVX3lxTFA2Skl4VjdtWElBSF9rUVhWSWRDOUg0bG9tN0lLalpab210Uy1NY2MxWm5oMTF1RVEtaV81cHc3d3k2ZUc4bmlIVlJnQ3k?oc=5"
+          "time": "2026-10-12T08:22:52+09:00",
+          "title": "\"SK하이닉스, 3분기 영업익 80조 '깜짝 실적'…목표가↑\"-메리츠",
+          "source": "한국경제",
+          "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE80UzRVZmRBMDItcXlRemt0N1h0d3doTFgtajFOeHFBVlQzSEFBV3JPdmxDeFJ0dHhIYVpjWnhvanJnYkNjekxIOU1ubmhfMUFjWWZ5LXp1N3U2Zw?oc=5"
+        },
+        {
+          "time": "2026-10-12T08:28:01+09:00",
+          "title": "메리츠증권, SK하이닉스 목표가↑…\"3분기 영업익 80조원 전망\"",
+          "source": "매일경제 마켓",
+          "link": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE52U2h3a2gyMVczRjFEZ2xocGJ0blloU2p0WjgtOG1sZUJkb2xIZThWZ2pmY1VzSlpYR1NRdHMyaGNWQ0RUUlNzX0NNY1RiYXB2QVE?oc=5"
         }
       ]
     }
@@ -563,22 +563,22 @@
           "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE5sdWdaZTRkNS1xR3cxZkgwNzhGT3phOXV6dFFpbmlETG5TWG9YaEJleERjVXYweTRGbHQwZEcxUFhFX2w4X2pwRnh1ZUZ5RURmVzdkUGNOUVFMVzNXdFpTREtKNDBHSVdW?oc=5"
         },
         {
-          "time": "2026-10-12T08:01:56+09:00",
-          "title": "SK하이닉스, 역대급 실적 앞두고 뜻밖의 저평가? 마이크론과 격차 1.6배",
-          "source": "스마트비즈",
-          "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE9wd1FuNFQ3TkVYM3Uydjk5eHVhQ1drRnhUQkozRzZqam9rQUZLNEF6VkE5QXI2eXN6MFBwT1Y2U1g0MWJOcWNEQ1Z2T1F0MWFBMlNvSWY5aXJwSmMtRjZkT2xWOHpUVFZHblNXeQ?oc=5"
-        },
-        {
           "time": "2026-10-12T08:51:14+09:00",
           "title": "SK하이닉스, 용인·호남 투트랙…AI 메모리 생산능력 늘린다",
           "source": "더트래커",
           "link": "https://news.google.com/rss/articles/CBMiWEFVX3lxTFBlUWVrSEdmSktRZjBWRDZfck9LeE1vaFc4M3h3dHdoTGhJM3liZDd0b1FlOXZTckZjUWwzN1JobFJzVTFlX05lZ2JQeG56YzdEbmNVVTJqZmI?oc=5"
         },
         {
-          "time": "2026-10-12T09:14:28+09:00",
-          "title": "[특징주] 오픈AI 실적 논란⋯SK하이닉스 2%·SK스퀘어 5% 급락",
-          "source": "아이뉴스24",
-          "link": "https://news.google.com/rss/articles/CBMiTEFVX3lxTFA2Skl4VjdtWElBSF9rUVhWSWRDOUg0bG9tN0lLalpab210Uy1NY2MxWm5oMTF1RVEtaV81cHc3d3k2ZUc4bmlIVlJnQ3k?oc=5"
+          "time": "2026-10-12T08:22:52+09:00",
+          "title": "\"SK하이닉스, 3분기 영업익 80조 '깜짝 실적'…목표가↑\"-메리츠",
+          "source": "한국경제",
+          "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE80UzRVZmRBMDItcXlRemt0N1h0d3doTFgtajFOeHFBVlQzSEFBV3JPdmxDeFJ0dHhIYVpjWnhvanJnYkNjekxIOU1ubmhfMUFjWWZ5LXp1N3U2Zw?oc=5"
+        },
+        {
+          "time": "2026-10-12T08:28:01+09:00",
+          "title": "메리츠증권, SK하이닉스 목표가↑…\"3분기 영업익 80조원 전망\"",
+          "source": "매일경제 마켓",
+          "link": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE52U2h3a2gyMVczRjFEZ2xocGJ0blloU2p0WjgtOG1sZUJkb2xIZThWZ2pmY1VzSlpYR1NRdHMyaGNWQ0RUUlNzX0NNY1RiYXB2QVE?oc=5"
         }
       ],
       "price": 1639000.0,
@@ -591,12 +591,6 @@
       "title": "메리츠증권, SK하이닉스 목표주가 320만 원 상향",
       "source": "https://www.2news.co.kr/",
       "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE5sdWdaZTRkNS1xR3cxZkgwNzhGT3phOXV6dFFpbmlETG5TWG9YaEJleERjVXYweTRGbHQwZEcxUFhFX2w4X2pwRnh1ZUZ5RURmVzdkUGNOUVFMVzNXdFpTREtKNDBHSVdW?oc=5"
-    },
-    {
-      "time": "2026-10-12T08:01:56+09:00",
-      "title": "SK하이닉스, 역대급 실적 앞두고 뜻밖의 저평가? 마이크론과 격차 1.6배",
-      "source": "스마트비즈",
-      "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE9wd1FuNFQ3TkVYM3Uydjk5eHVhQ1drRnhUQkozRzZqam9rQUZLNEF6VkE5QXI2eXN6MFBwT1Y2U1g0MWJOcWNEQ1Z2T1F0MWFBMlNvSWY5aXJwSmMtRjZkT2xWOHpUVFZHblNXeQ?oc=5"
     },
     {
       "time": "2026-10-12T08:51:14+09:00",
@@ -615,6 +609,12 @@
       "title": "메리츠증권, SK하이닉스 목표가↑…\"3분기 영업익 80조원 전망\"",
       "source": "매일경제 마켓",
       "link": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE52U2h3a2gyMVczRjFEZ2xocGJ0blloU2p0WjgtOG1sZUJkb2xIZThWZ2pmY1VzSlpYR1NRdHMyaGNWQ0RUUlNzX0NNY1RiYXB2QVE?oc=5"
+    },
+    {
+      "time": "2026-10-12T08:50:00+09:00",
+      "title": "메리츠證 “SK하이닉스, 3분기 영업이익 80조원 서프라이즈 전망…목표가 320만원↑” - 조선비즈",
+      "source": "Chosunbiz",
+      "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxPbHlmQXpFdnhMOGRIZTlLSl9TbnE5RUNteGdiMWVQSlE2eXp6SkxHUnZVN3ctWDFiTFpqQ0lwMnI3bUxkRzgtRkVvMHRtOFA0UFJjQk1hbXlvYWoxX3NaLWFLQUdKeTJ0SFltNVMwSEM5TDl0RE42WExVMGF1OThSX3pXemQ4bXF20gGcAUFVX3lxTE15N0Z4Y0lJa0N3LVA4TEtnMzZuTmFGa3ZTcFZDaVhHeEsya2pEazBUUE1VTy1WTEFqdjdGaEc3QmhsckZBWHhhTWVhcTFDYWVnNUxJSkdadVRvRmZfemRqWVFwV1ZYNk4zVV9nNUJ3YUFydlJQaGdHbDRXQVVmRWRLZzZZYzhfaE9BRGtBbXhQbUdUUWZlS3ZKR05tUw?oc=5"
     }
   ],
   "top_news": [
@@ -672,9 +672,9 @@
     "steady": 32,
     "upper": 1,
     "lower": 0,
-    "individual": 14701.0,
-    "foreign": -20082.0,
-    "institution": -1239.0,
+    "individual": 14584.0,
+    "foreign": -19922.0,
+    "institution": -1270.0,
     "prev_close": 6625.93,
     "open": 6578.17,
     "high": 6589.69,

@@ -3,7 +3,7 @@
   "name": "SK하이닉스",
   "peer_name": "삼성전자",
   "session_date": "2026-10-12",
-  "generated_at": "2026-10-12 16:11 KST",
+  "generated_at": "2026-10-12 16:46 KST",
   "summary": {
     "prev_close": 1681000.0,
     "open": 1640000.0,
@@ -15,11 +15,11 @@
     "c2c": -0.04521118381915523,
     "high_vs_open": 0.007926829268292579,
     "low_vs_open": -0.021341463414634165,
-    "volume": 3252327.0,
-    "volume_ratio": 1.0271595753671727,
+    "volume": 3264328.0,
+    "volume_ratio": 1.0309497668405336,
     "kospi_c2c": -0.036476379164039785,
     "peer_c2c": -0.043893129770992356,
-    "usdkrw_chg": -0.008347017490088371,
+    "usdkrw_chg": -0.008272574950185296,
     "us_nights": 2,
     "sox_ret": -0.03778698805611891,
     "nasdaq_ret": -0.0062646238683091715,
@@ -81,11 +81,11 @@
       "last_time": "2026-10-10T08:55:00+09:00"
     },
     "nvidia_ah": {
-      "regular_close": 229.32000732421875,
+      "regular_close": 229.33999633789062,
       "last": 229.33,
-      "ret": 4.357524621534381e-05,
-      "low_ret": -0.00013695849998096588,
-      "high_ret": 0.0010038054614911474,
+      "ret": -4.358741628252005e-05,
+      "low_ret": -0.0002241054273625087,
+      "high_ret": 0.000916559106417969,
       "last_time": "2026-10-10T08:55:00+09:00"
     },
     "session_cross": {
@@ -157,16 +157,16 @@
           "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE9wd1FuNFQ3TkVYM3Uydjk5eHVhQ1drRnhUQkozRzZqam9rQUZLNEF6VkE5QXI2eXN6MFBwT1Y2U1g0MWJOcWNEQ1Z2T1F0MWFBMlNvSWY5aXJwSmMtRjZkT2xWOHpUVFZHblNXeQ?oc=5"
         },
         {
-          "time": "2026-10-12T08:29:00+09:00",
-          "title": "마이크론은 버티는데 SK하이닉스만 싸졌다…iM證 “외국인 이탈·솔리다임 상장설 영향” - 조선비즈",
-          "source": "Chosunbiz",
-          "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxOam9xN25KbkNwUHA5N1lBR0lTblIyazVWWWNFSUMzS01zd3kxUnBiVkpreGtHLXRoZFI4cUNYVlBxSkNVZ3ZLUDhPdXUwUjc3bU5jSjM3TC1XSUItNUhEM0tZX0tueWhlVVZrQ213WkdHLUVwVEt0NjdldEYtZXJ4Q1hpRl9jRjRJ0gGcAUFVX3lxTE94NmM1bG9HSnE2QThiOXpVQUEwVHA0M0Z5NmJvcnRzU1d0cmRGcS1lSW1HTTdFcnI1SGtlNDVWQ3RqVDU3R3luMVJ4bVBTUi1YRHV4WGd4d0hZLV9iVHAybDAxV1Bha1JkSFFDSEJIMFZGX1ZNeVAxZUNMTmNiSHpTRldFVTZMOFZwa1lZa3lTSUxZUms3b1EtZUU0Uw?oc=5"
-        },
-        {
           "time": "2026-10-12T08:51:14+09:00",
           "title": "SK하이닉스, 용인·호남 투트랙…AI 메모리 생산능력 늘린다",
           "source": "더트래커",
           "link": "https://news.google.com/rss/articles/CBMiWEFVX3lxTFBlUWVrSEdmSktRZjBWRDZfck9LeE1vaFc4M3h3dHdoTGhJM3liZDd0b1FlOXZTckZjUWwzN1JobFJzVTFlX05lZ2JQeG56YzdEbmNVVTJqZmI?oc=5"
+        },
+        {
+          "time": "2026-10-12T09:14:28+09:00",
+          "title": "[특징주] 오픈AI 실적 논란⋯SK하이닉스 2%·SK스퀘어 5% 급락",
+          "source": "아이뉴스24",
+          "link": "https://news.google.com/rss/articles/CBMiTEFVX3lxTFA2Skl4VjdtWElBSF9rUVhWSWRDOUg0bG9tN0lLalpab210Uy1NY2MxWm5oMTF1RVEtaV81cHc3d3k2ZUc4bmlIVlJnQ3k?oc=5"
         }
       ]
     }
@@ -569,16 +569,16 @@
           "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE9wd1FuNFQ3TkVYM3Uydjk5eHVhQ1drRnhUQkozRzZqam9rQUZLNEF6VkE5QXI2eXN6MFBwT1Y2U1g0MWJOcWNEQ1Z2T1F0MWFBMlNvSWY5aXJwSmMtRjZkT2xWOHpUVFZHblNXeQ?oc=5"
         },
         {
-          "time": "2026-10-12T08:29:00+09:00",
-          "title": "마이크론은 버티는데 SK하이닉스만 싸졌다…iM證 “외국인 이탈·솔리다임 상장설 영향” - 조선비즈",
-          "source": "Chosunbiz",
-          "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxOam9xN25KbkNwUHA5N1lBR0lTblIyazVWWWNFSUMzS01zd3kxUnBiVkpreGtHLXRoZFI4cUNYVlBxSkNVZ3ZLUDhPdXUwUjc3bU5jSjM3TC1XSUItNUhEM0tZX0tueWhlVVZrQ213WkdHLUVwVEt0NjdldEYtZXJ4Q1hpRl9jRjRJ0gGcAUFVX3lxTE94NmM1bG9HSnE2QThiOXpVQUEwVHA0M0Z5NmJvcnRzU1d0cmRGcS1lSW1HTTdFcnI1SGtlNDVWQ3RqVDU3R3luMVJ4bVBTUi1YRHV4WGd4d0hZLV9iVHAybDAxV1Bha1JkSFFDSEJIMFZGX1ZNeVAxZUNMTmNiSHpTRldFVTZMOFZwa1lZa3lTSUxZUms3b1EtZUU0Uw?oc=5"
-        },
-        {
           "time": "2026-10-12T08:51:14+09:00",
           "title": "SK하이닉스, 용인·호남 투트랙…AI 메모리 생산능력 늘린다",
           "source": "더트래커",
           "link": "https://news.google.com/rss/articles/CBMiWEFVX3lxTFBlUWVrSEdmSktRZjBWRDZfck9LeE1vaFc4M3h3dHdoTGhJM3liZDd0b1FlOXZTckZjUWwzN1JobFJzVTFlX05lZ2JQeG56YzdEbmNVVTJqZmI?oc=5"
+        },
+        {
+          "time": "2026-10-12T09:14:28+09:00",
+          "title": "[특징주] 오픈AI 실적 논란⋯SK하이닉스 2%·SK스퀘어 5% 급락",
+          "source": "아이뉴스24",
+          "link": "https://news.google.com/rss/articles/CBMiTEFVX3lxTFA2Skl4VjdtWElBSF9rUVhWSWRDOUg0bG9tN0lLalpab210Uy1NY2MxWm5oMTF1RVEtaV81cHc3d3k2ZUc4bmlIVlJnQ3k?oc=5"
         }
       ],
       "price": 1639000.0,
@@ -593,28 +593,28 @@
       "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE5sdWdaZTRkNS1xR3cxZkgwNzhGT3phOXV6dFFpbmlETG5TWG9YaEJleERjVXYweTRGbHQwZEcxUFhFX2w4X2pwRnh1ZUZ5RURmVzdkUGNOUVFMVzNXdFpTREtKNDBHSVdW?oc=5"
     },
     {
-      "time": "2026-10-12T07:30:00+09:00",
-      "title": "SK하이닉스, 호남 400조 반도체 투자 앞당겨...최태원 \"전력·용수 늦어도 공사 먼저\"",
-      "source": "뉴스후플러스",
-      "link": "https://news.google.com/rss/articles/CBMibkFVX3lxTE91TTQ2YkhYUlVQa0tMM3ZIVm5WNlZvSENkOVFMX2RUNnAtWE0zU0xVZUNpanp1UHgxajJTVTRfRENyRnAwM1NCZ0FXc0JIdFphUG4wc3ctb182R3dsZDVZQ1ktck9aeC1zVS1KcVNn?oc=5"
-    },
-    {
       "time": "2026-10-12T08:01:56+09:00",
       "title": "SK하이닉스, 역대급 실적 앞두고 뜻밖의 저평가? 마이크론과 격차 1.6배",
       "source": "스마트비즈",
       "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE9wd1FuNFQ3TkVYM3Uydjk5eHVhQ1drRnhUQkozRzZqam9rQUZLNEF6VkE5QXI2eXN6MFBwT1Y2U1g0MWJOcWNEQ1Z2T1F0MWFBMlNvSWY5aXJwSmMtRjZkT2xWOHpUVFZHblNXeQ?oc=5"
     },
     {
-      "time": "2026-10-12T08:29:00+09:00",
-      "title": "마이크론은 버티는데 SK하이닉스만 싸졌다…iM證 “외국인 이탈·솔리다임 상장설 영향” - 조선비즈",
-      "source": "Chosunbiz",
-      "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxOam9xN25KbkNwUHA5N1lBR0lTblIyazVWWWNFSUMzS01zd3kxUnBiVkpreGtHLXRoZFI4cUNYVlBxSkNVZ3ZLUDhPdXUwUjc3bU5jSjM3TC1XSUItNUhEM0tZX0tueWhlVVZrQ213WkdHLUVwVEt0NjdldEYtZXJ4Q1hpRl9jRjRJ0gGcAUFVX3lxTE94NmM1bG9HSnE2QThiOXpVQUEwVHA0M0Z5NmJvcnRzU1d0cmRGcS1lSW1HTTdFcnI1SGtlNDVWQ3RqVDU3R3luMVJ4bVBTUi1YRHV4WGd4d0hZLV9iVHAybDAxV1Bha1JkSFFDSEJIMFZGX1ZNeVAxZUNMTmNiSHpTRldFVTZMOFZwa1lZa3lTSUxZUms3b1EtZUU0Uw?oc=5"
-    },
-    {
       "time": "2026-10-12T08:51:14+09:00",
       "title": "SK하이닉스, 용인·호남 투트랙…AI 메모리 생산능력 늘린다",
       "source": "더트래커",
       "link": "https://news.google.com/rss/articles/CBMiWEFVX3lxTFBlUWVrSEdmSktRZjBWRDZfck9LeE1vaFc4M3h3dHdoTGhJM3liZDd0b1FlOXZTckZjUWwzN1JobFJzVTFlX05lZ2JQeG56YzdEbmNVVTJqZmI?oc=5"
+    },
+    {
+      "time": "2026-10-12T08:22:52+09:00",
+      "title": "\"SK하이닉스, 3분기 영업익 80조 '깜짝 실적'…목표가↑\"-메리츠",
+      "source": "한국경제",
+      "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE80UzRVZmRBMDItcXlRemt0N1h0d3doTFgtajFOeHFBVlQzSEFBV3JPdmxDeFJ0dHhIYVpjWnhvanJnYkNjekxIOU1ubmhfMUFjWWZ5LXp1N3U2Zw?oc=5"
+    },
+    {
+      "time": "2026-10-12T08:28:01+09:00",
+      "title": "메리츠증권, SK하이닉스 목표가↑…\"3분기 영업익 80조원 전망\"",
+      "source": "매일경제 마켓",
+      "link": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE52U2h3a2gyMVczRjFEZ2xocGJ0blloU2p0WjgtOG1sZUJkb2xIZThWZ2pmY1VzSlpYR1NRdHMyaGNWQ0RUUlNzX0NNY1RiYXB2QVE?oc=5"
     }
   ],
   "top_news": [
@@ -649,10 +649,10 @@
       "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE5SekplbWpfZmh0ZEd6ZWZGd25MMmJUc1FyblR1U09sV1R0WlRPTnRPTGNLMk5WQm12OVBiYU1TSDgzdlVaSVRDcEUyV0NXMU1YeEJJWnVVbUk4NUg0?oc=5"
     },
     {
-      "time": "2026-10-12T07:30:00+09:00",
-      "title": "SK하이닉스, 호남 400조 반도체 투자 앞당겨...최태원 \"전력·용수 늦어도 공사 먼저\"",
-      "source": "뉴스후플러스",
-      "link": "https://news.google.com/rss/articles/CBMibkFVX3lxTE91TTQ2YkhYUlVQa0tMM3ZIVm5WNlZvSENkOVFMX2RUNnAtWE0zU0xVZUNpanp1UHgxajJTVTRfRENyRnAwM1NCZ0FXc0JIdFphUG4wc3ctb182R3dsZDVZQ1ktck9aeC1zVS1KcVNn?oc=5"
+      "time": "2026-10-12T16:06:21+09:00",
+      "title": "삼성전자·SK하이닉스 자사주 매입 막바지…반도체 투톱에 외국인 매도 집중",
+      "source": "싱글리스트",
+      "link": "https://news.google.com/rss/articles/CBMiZkFVX3lxTE9CdGhkYTdxQS10c1lWeFFHU1Q2UjBEWFR3Ni1tUVdyZUxtaVhDYW5sUUdGR0hnMU44WEcydmpPVWJOTWI2a0V2eExBazcwd1NjdEI0YzRUVWdJd1NscU9kd00yQUpKZw?oc=5"
     }
   ],
   "disclosures": [],
@@ -672,9 +672,9 @@
     "steady": 32,
     "upper": 1,
     "lower": 0,
-    "individual": 14745.0,
-    "foreign": -20128.0,
-    "institution": -1236.0,
+    "individual": 14701.0,
+    "foreign": -20082.0,
+    "institution": -1239.0,
     "prev_close": 6625.93,
     "open": 6578.17,
     "high": 6589.69,

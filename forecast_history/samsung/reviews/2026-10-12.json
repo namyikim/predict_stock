@@ -3,82 +3,40 @@
   "name": "삼성전자",
   "peer_name": "SK하이닉스",
   "session_date": "2026-10-12",
-  "generated_at": "2026-10-12 17:31 KST",
+  "generated_at": "2026-10-13 01:42 KST",
   "summary": {
     "prev_close": 262000.0,
-    "open": 260000.0,
-    "high": 262500.0,
-    "low": 249500.0,
-    "close": 250500.0,
-    "gap": -0.007633587786259555,
-    "session": -0.03653846153846152,
-    "c2c": -0.043893129770992356,
-    "high_vs_open": 0.009615384615384581,
-    "low_vs_open": -0.04038461538461535,
-    "volume": 18881998.0,
-    "volume_ratio": 1.121555098260684,
-    "kospi_c2c": -0.036476379164039785,
-    "peer_c2c": -0.04521118381915523,
-    "usdkrw_chg": -0.008957646285044585,
+    "open": NaN,
+    "high": NaN,
+    "low": NaN,
+    "close": NaN,
+    "gap": NaN,
+    "session": NaN,
+    "c2c": NaN,
+    "high_vs_open": NaN,
+    "low_vs_open": NaN,
+    "volume": 21416243.0,
+    "volume_ratio": 1.272084475500934,
+    "kospi_c2c": NaN,
+    "peer_c2c": NaN,
+    "usdkrw_chg": -0.0066940113476244845,
     "us_nights": 2,
     "sox_ret": -0.03778698805611891,
     "nasdaq_ret": -0.0062646238683091715,
     "micron_ret": -0.05422794117647056,
     "prior_streak": -3,
-    "ma5": 265800.0,
-    "ma20": 265725.0,
+    "ma5": 269625.0,
+    "ma20": 266526.3157894737,
     "high20": 285500.0,
     "high252": 374087.44831391243,
     "price_context": {
-      "breakouts": {
-        "20": {
-          "prior_high": 285500.0,
-          "distance": -0.12259194395796846,
-          "close_breakout": false,
-          "intraday_breakout": false
-        },
-        "60": {
-          "prior_high": 298000.0,
-          "distance": -0.15939597315436238,
-          "close_breakout": false,
-          "intraday_breakout": false
-        }
-      },
-      "relative": {
-        "5": {
-          "start": "2026-10-01",
-          "end": "2026-10-12",
-          "own": -0.09239130434782605,
-          "peer": -0.12438625204582654,
-          "excess": 0.03199494769800049
-        },
-        "20": {
-          "start": "2026-09-08",
-          "end": "2026-10-12",
-          "own": -0.0705009276437848,
-          "peer": -0.10485220301171216,
-          "excess": 0.03435127536792737
-        },
-        "60": {
-          "start": "2026-07-10",
-          "end": "2026-10-12",
-          "own": -0.12105263157894741,
-          "peer": -0.2636018586597324,
-          "excess": 0.142549227080785
-        }
-      }
+      "breakouts": {},
+      "relative": {}
     },
-    "range": 0.05210420841683372,
-    "peer_range": 0.02990654205607468,
+    "range": NaN,
+    "peer_range": NaN,
     "prior_5d": -0.02420856610800748,
-    "ma_touches": [
-      {
-        "ma": 60,
-        "level": 257900.0,
-        "kind": "fail",
-        "price": 262500.0
-      }
-    ],
+    "ma_touches": [],
     "micron_ah": {
       "regular_close": 1028.135009765625,
       "last": 1029.0,
@@ -112,7 +70,6 @@
         "after_high": -0.0030867463961348207
       }
     },
-    "from_high": -0.043893129770992356,
     "buyback": [
       {
         "kind": "직접 취득",
@@ -122,14 +79,22 @@
         "purpose": "임직원 주식보상",
         "rcept_no": "20260821000616"
       }
-    ]
+    ],
+    "foreign_pressure": {
+      "state": "selling_eased",
+      "previous_ratio": -0.07855857791927925,
+      "recent_ratio": -0.07209035320371332,
+      "previous_daily_net": -1388805.0,
+      "recent_daily_net": -1203705.2
+    },
+    "buyback_transition": null
   },
   "classification": {
     "labels": [
-      "지수 동조"
+      "완만한 추세"
     ],
     "reasons": [
-      "KOSPI -3.65% vs 종목 -4.39%, 5분 수익률 상관 0.92 — 종목 고유 요인이 약함"
+      "특정 시각·갭·지수로 설명되는 큰 구간 없음"
     ]
   },
   "events": [
@@ -143,12 +108,6 @@
       "session_share": -0.3151949304311889,
       "score": 7.477300273241174,
       "news": [
-        {
-          "time": "2026-10-12T09:02:02+09:00",
-          "title": "\"삼성전자 3분기 실적, 환율도 메모리 호황 못 막았다\"-IBK - 머니투데이",
-          "source": "머니투데이",
-          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE9UaHlfcVpqdGhyVmVBN2tzM0pBWUN0WUdlaGVSWERFVkV0Tzkwa1ZPQ0otM09oNHN0OG00d3RYX1phdE5sdnNTVHA1SnRrMFNZYl9LRXFmQ3FxS0pBWWxiTlFKTllsdkxR0gFuQVVfeXFMTnl1bnJfTHc3bHFOR0c0S3hyc0dpNktjMUdGb1BPOHk4QmhWVzhpTGFfNUxBVDRiWDJlYV8ydW9jUlEyVnU5a3lzcjlnX1hUV2daVTlOeFNPNEY5T0tpOTZxT3pvNnc5S2d1dk5FMmc?oc=5"
-        },
         {
           "time": "2026-10-12T08:16:44+09:00",
           "title": "삼성전자 107조 벌었는데 왜 주가는 떨어졌나… 외국인이 떠난 진짜 이유",
@@ -172,6 +131,12 @@
           "title": "'영업익 100조' 과거와 달라진 삼성전자…증권가 시선은 주주환원으로",
           "source": "연합인포맥스",
           "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE1leGJNWUZBTUc5OFVRbHpZU2VXTHppTGRaRW5yRW1GUkZlSDRYc3lpQmt5eVhPckd6YWVRWWY4VFlUVG5tbjVncnFwVFpzeXdHOWVScGkwa2tfTGp5UUtSdmx5LWlQZEp1R1VBaEZ0ZjA?oc=5"
+        },
+        {
+          "time": "2026-10-12T08:54:13+09:00",
+          "title": "삼성전자 냉장고·이동스크린, 올해 포브스 '스마트홈 어워드' 선정",
+          "source": "글로벌이코노믹",
+          "link": "https://news.google.com/rss/articles/CBMihgFBVV95cUxQVm5aTGdMWUJqZzh6T1hucUVwV0w3VklHcVV2ZUwxdk4wNV9WbHBMUHQ3YjFERl9LOTFfUnR6NE4yVGZ1M2ZaZG81QlI2ZGplRzdCSGpRbDZFNUVFem5TUExHME9PN2lsaENQNG5lcmRCazFvVkJJV3V0R1R2RFo4bmcxWmdIUQ?oc=5"
         }
       ]
     },
@@ -186,12 +151,6 @@
       "score": 7.098911968392315,
       "news": [
         {
-          "time": "2026-10-12T09:02:02+09:00",
-          "title": "\"삼성전자 3분기 실적, 환율도 메모리 호황 못 막았다\"-IBK - 머니투데이",
-          "source": "머니투데이",
-          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE9UaHlfcVpqdGhyVmVBN2tzM0pBWUN0WUdlaGVSWERFVkV0Tzkwa1ZPQ0otM09oNHN0OG00d3RYX1phdE5sdnNTVHA1SnRrMFNZYl9LRXFmQ3FxS0pBWWxiTlFKTllsdkxR0gFuQVVfeXFMTnl1bnJfTHc3bHFOR0c0S3hyc0dpNktjMUdGb1BPOHk4QmhWVzhpTGFfNUxBVDRiWDJlYV8ydW9jUlEyVnU5a3lzcjlnX1hUV2daVTlOeFNPNEY5T0tpOTZxT3pvNnc5S2d1dk5FMmc?oc=5"
-        },
-        {
           "time": "2026-10-12T09:53:00+09:00",
           "title": "삼성전자 역대급 실적에도 주가 '주춤'...증권가 시선은 주주환원으로 [주가동향]",
           "source": "조세일보",
@@ -204,16 +163,22 @@
           "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE8yckVsWGM1OFZkdmFoZ0hVOWw3VDFtNkJ5NTlwOXZLcE5RYVJaQVRDM0wxU2RTWEdxX013c01pWXF0LXp6YlNqd3RwWnBIMnQtYUoyMlI5Z3JFNmVIdGNoLUpjSFllanpqTkJaQjh3aUHSAXRBVV95cUxQZmg1YUc5MUZBMEI5Y3JiUF9TWkxLX0JNNlRfNG90OWFGQzN2bjczX1kwQ3NFeC1JVjMwa1ZMM3JMdVJFUGlla2dMRnJiMTB2Z09fMU5fWVFBaDBsZXdLYng1MFJWQV8wTGRaUlRkVVVaZlRjSw?oc=5"
         },
         {
-          "time": "2026-10-12T10:05:00+09:00",
-          "title": "삼성전자, 역대급 실적에도 외국인 매도세 가속...지분율 17년만에 최저",
-          "source": "증권일보",
-          "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTFBFWFBFLTdpLTJLdUt3U3JCZDlGaV9HeUdhblAxbHk3MlZlQ25UOUlSN2x3TEwzS1NmenhGMWFZazBmVUE1dFc4bFViZzFjNHlNN1NmaUUyOThzRWZXNHAwMw?oc=5"
-        },
-        {
           "time": "2026-10-12T08:40:00+09:00",
           "title": "'영업익 100조' 과거와 달라진 삼성전자…증권가 시선은 주주환원으로",
           "source": "연합인포맥스",
           "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE1leGJNWUZBTUc5OFVRbHpZU2VXTHppTGRaRW5yRW1GUkZlSDRYc3lpQmt5eVhPckd6YWVRWWY4VFlUVG5tbjVncnFwVFpzeXdHOWVScGkwa2tfTGp5UUtSdmx5LWlQZEp1R1VBaEZ0ZjA?oc=5"
+        },
+        {
+          "time": "2026-10-12T09:56:30+09:00",
+          "title": "삼성전자, 美 포브스 '2026 스마트홈 어워드' 2개 제품 수상…'패밀리허브·무빙스타일'",
+          "source": "팍스경제TV",
+          "link": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTFBybDZSa21ZWXdVYXRLYWtKVkw3bHRrRk1SWW90dC1kQmpmOHJZaGN3S25Uc3VRbDB6dHF2a3A2SHNqQjhnZXFWY3pNMGQ2WjZvcm0yNnlQcVJ3VzB4QndPRkdNWEtabWM?oc=5"
+        },
+        {
+          "time": "2026-10-12T08:54:13+09:00",
+          "title": "삼성전자 냉장고·이동스크린, 올해 포브스 '스마트홈 어워드' 선정",
+          "source": "글로벌이코노믹",
+          "link": "https://news.google.com/rss/articles/CBMihgFBVV95cUxQVm5aTGdMWUJqZzh6T1hucUVwV0w3VklHcVV2ZUwxdk4wNV9WbHBMUHQ3YjFERl9LOTFfUnR6NE4yVGZ1M2ZaZG81QlI2ZGplRzdCSGpRbDZFNUVFem5TUExHME9PN2lsaENQNG5lcmRCazFvVkJJV3V0R1R2RFo4bmcxWmdIUQ?oc=5"
         }
       ]
     },
@@ -240,22 +205,22 @@
           "link": "https://news.google.com/rss/articles/CBMiVkFVX3lxTE5KSUFQb0hhYjNpb3Q0cjRkRFBuZ253Zlp3UzdROWNkZzROeVh5S2Fsd3lOWnprMjU5TUh3VkY4LXZ6Qy1jT29lYnd4Y2R0Y29ldEZOVlNB?oc=5"
         },
         {
-          "time": "2026-10-12T10:05:00+09:00",
-          "title": "삼성전자, 역대급 실적에도 외국인 매도세 가속...지분율 17년만에 최저",
-          "source": "증권일보",
-          "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTFBFWFBFLTdpLTJLdUt3U3JCZDlGaV9HeUdhblAxbHk3MlZlQ25UOUlSN2x3TEwzS1NmenhGMWFZazBmVUE1dFc4bFViZzFjNHlNN1NmaUUyOThzRWZXNHAwMw?oc=5"
-        },
-        {
           "time": "2026-10-12T10:05:36+09:00",
           "title": "삼성전자, 107조 넘게 벌고도 주가 뒷걸음…주가 반등 열쇠는?",
           "source": "매일신문",
           "link": "https://news.google.com/rss/articles/CBMiYkFVX3lxTE9TWjBRLXBHWnNTS29SaGQwc0luQlNNOHJDY2U5VDdnWXNWT01MRW14UFhHUVk4R3BWd1Q5S2hmbTlnVTR4WGMwUEZTTFpOZjF3OGQwR09maktVOUF3VzJYelNR?oc=5"
         },
         {
-          "time": "2026-10-12T10:15:54+09:00",
-          "title": "삼성전자, 청년SW·AI아카데미 역대 최대규모 모집…AI교육 강화",
-          "source": "연합뉴스",
-          "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTFBXNnh5VkJaN09QZEhhdmhsS3hkSHUtUXZkUDRvRm5zYXl0akRzTXlqRUFYT0NuU0lnaUxHZDVBallyUTRjWnR3VHVlMEN0U3pjWTU5UzQyTFpWWEFOVzV1aNIBYEFVX3lxTFBXNnh5VkJaN09QZEhhdmhsS3hkSHUtUXZkUDRvRm5zYXl0akRzTXlqRUFYT0NuU0lnaUxHZDVBallyUTRjWnR3VHVlMEN0U3pjWTU5UzQyTFpWWEFOVzV1aA?oc=5"
+          "time": "2026-10-12T10:40:49+09:00",
+          "title": "삼성전자 ‘비스포크 AI 패밀리허브·무빙스타일’, 美 포브스 스마트홈 어워드 수상",
+          "source": "스트레이트뉴스",
+          "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTFAzRWVFY19adHlOMUh1bGFsQXNfQjV2SUhyWWFoMFduTVlmRmRDXzNyeUl2SmJzOE5uZUNuakZkY0pZdWI0ZjN0akpFZU1lWlRrNXhxUWNYWjE3RU5BZlktc1NmcF9reGdZMG5MUGVleFRhaGvSAXdBVV95cUxNbUFpc0liSUZXWW9qZ0xKN0Y5OEVFeXN1VU9aOEdQMms0OTlWVjRUeGxQX3ppOGpiTGFOQXlWZ1J6TzhaMzRVX3lQdmVPeWxWdkpqbDQ4NmlDd3lDbjZKbU5wVGlJbGVudnhSUW16WUxEZElmNnBvZw?oc=5"
+        },
+        {
+          "time": "2026-10-12T09:56:30+09:00",
+          "title": "삼성전자, 美 포브스 '2026 스마트홈 어워드' 2개 제품 수상…'패밀리허브·무빙스타일'",
+          "source": "팍스경제TV",
+          "link": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTFBybDZSa21ZWXdVYXRLYWtKVkw3bHRrRk1SWW90dC1kQmpmOHJZaGN3S25Uc3VRbDB6dHF2a3A2SHNqQjhnZXFWY3pNMGQ2WjZvcm0yNnlQcVJ3VzB4QndPRkdNWEtabWM?oc=5"
         }
       ]
     }
@@ -267,9 +232,9 @@
     "low": -0.038461538461538436,
     "pattern": "고점 후 반락"
   },
-  "closing_share": 0.0816967792615877,
+  "closing_share": NaN,
   "intraday_corr_kospi": 0.9241965900576888,
-  "intraday_note": "장중 봉은 09:05~14:55까지만 있어 마감 구간(14:55~15:30)은 일봉 종가로만 봅니다(그 구간 -0.30%).",
+  "intraday_note": "장중 봉은 09:05~14:55까지만 있어 마감 구간(14:55~15:30)은 일봉 종가로만 봅니다(그 구간 +nan%).",
   "intraday_coverage": "09:05~14:55",
   "intraday_path": [
     {
@@ -625,7 +590,7 @@
     {
       "time": "2026-10-12T14:55:00+09:00",
       "price": 251250.0,
-      "volume": 299752.0
+      "volume": 299737.0
     }
   ],
   "timeline_items": [
@@ -639,12 +604,6 @@
       "session_share": -0.3151949304311889,
       "score": 7.477300273241174,
       "news": [
-        {
-          "time": "2026-10-12T09:02:02+09:00",
-          "title": "\"삼성전자 3분기 실적, 환율도 메모리 호황 못 막았다\"-IBK - 머니투데이",
-          "source": "머니투데이",
-          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE9UaHlfcVpqdGhyVmVBN2tzM0pBWUN0WUdlaGVSWERFVkV0Tzkwa1ZPQ0otM09oNHN0OG00d3RYX1phdE5sdnNTVHA1SnRrMFNZYl9LRXFmQ3FxS0pBWWxiTlFKTllsdkxR0gFuQVVfeXFMTnl1bnJfTHc3bHFOR0c0S3hyc0dpNktjMUdGb1BPOHk4QmhWVzhpTGFfNUxBVDRiWDJlYV8ydW9jUlEyVnU5a3lzcjlnX1hUV2daVTlOeFNPNEY5T0tpOTZxT3pvNnc5S2d1dk5FMmc?oc=5"
-        },
         {
           "time": "2026-10-12T08:16:44+09:00",
           "title": "삼성전자 107조 벌었는데 왜 주가는 떨어졌나… 외국인이 떠난 진짜 이유",
@@ -668,6 +627,12 @@
           "title": "'영업익 100조' 과거와 달라진 삼성전자…증권가 시선은 주주환원으로",
           "source": "연합인포맥스",
           "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE1leGJNWUZBTUc5OFVRbHpZU2VXTHppTGRaRW5yRW1GUkZlSDRYc3lpQmt5eVhPckd6YWVRWWY4VFlUVG5tbjVncnFwVFpzeXdHOWVScGkwa2tfTGp5UUtSdmx5LWlQZEp1R1VBaEZ0ZjA?oc=5"
+        },
+        {
+          "time": "2026-10-12T08:54:13+09:00",
+          "title": "삼성전자 냉장고·이동스크린, 올해 포브스 '스마트홈 어워드' 선정",
+          "source": "글로벌이코노믹",
+          "link": "https://news.google.com/rss/articles/CBMihgFBVV95cUxQVm5aTGdMWUJqZzh6T1hucUVwV0w3VklHcVV2ZUwxdk4wNV9WbHBMUHQ3YjFERl9LOTFfUnR6NE4yVGZ1M2ZaZG81QlI2ZGplRzdCSGpRbDZFNUVFem5TUExHME9PN2lsaENQNG5lcmRCazFvVkJJV3V0R1R2RFo4bmcxWmdIUQ?oc=5"
         }
       ],
       "price": 262000.0,
@@ -684,12 +649,6 @@
       "score": 7.098911968392315,
       "news": [
         {
-          "time": "2026-10-12T09:02:02+09:00",
-          "title": "\"삼성전자 3분기 실적, 환율도 메모리 호황 못 막았다\"-IBK - 머니투데이",
-          "source": "머니투데이",
-          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE9UaHlfcVpqdGhyVmVBN2tzM0pBWUN0WUdlaGVSWERFVkV0Tzkwa1ZPQ0otM09oNHN0OG00d3RYX1phdE5sdnNTVHA1SnRrMFNZYl9LRXFmQ3FxS0pBWWxiTlFKTllsdkxR0gFuQVVfeXFMTnl1bnJfTHc3bHFOR0c0S3hyc0dpNktjMUdGb1BPOHk4QmhWVzhpTGFfNUxBVDRiWDJlYV8ydW9jUlEyVnU5a3lzcjlnX1hUV2daVTlOeFNPNEY5T0tpOTZxT3pvNnc5S2d1dk5FMmc?oc=5"
-        },
-        {
           "time": "2026-10-12T09:53:00+09:00",
           "title": "삼성전자 역대급 실적에도 주가 '주춤'...증권가 시선은 주주환원으로 [주가동향]",
           "source": "조세일보",
@@ -702,16 +661,22 @@
           "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE8yckVsWGM1OFZkdmFoZ0hVOWw3VDFtNkJ5NTlwOXZLcE5RYVJaQVRDM0wxU2RTWEdxX013c01pWXF0LXp6YlNqd3RwWnBIMnQtYUoyMlI5Z3JFNmVIdGNoLUpjSFllanpqTkJaQjh3aUHSAXRBVV95cUxQZmg1YUc5MUZBMEI5Y3JiUF9TWkxLX0JNNlRfNG90OWFGQzN2bjczX1kwQ3NFeC1JVjMwa1ZMM3JMdVJFUGlla2dMRnJiMTB2Z09fMU5fWVFBaDBsZXdLYng1MFJWQV8wTGRaUlRkVVVaZlRjSw?oc=5"
         },
         {
-          "time": "2026-10-12T10:05:00+09:00",
-          "title": "삼성전자, 역대급 실적에도 외국인 매도세 가속...지분율 17년만에 최저",
-          "source": "증권일보",
-          "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTFBFWFBFLTdpLTJLdUt3U3JCZDlGaV9HeUdhblAxbHk3MlZlQ25UOUlSN2x3TEwzS1NmenhGMWFZazBmVUE1dFc4bFViZzFjNHlNN1NmaUUyOThzRWZXNHAwMw?oc=5"
-        },
-        {
           "time": "2026-10-12T08:40:00+09:00",
           "title": "'영업익 100조' 과거와 달라진 삼성전자…증권가 시선은 주주환원으로",
           "source": "연합인포맥스",
           "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE1leGJNWUZBTUc5OFVRbHpZU2VXTHppTGRaRW5yRW1GUkZlSDRYc3lpQmt5eVhPckd6YWVRWWY4VFlUVG5tbjVncnFwVFpzeXdHOWVScGkwa2tfTGp5UUtSdmx5LWlQZEp1R1VBaEZ0ZjA?oc=5"
+        },
+        {
+          "time": "2026-10-12T09:56:30+09:00",
+          "title": "삼성전자, 美 포브스 '2026 스마트홈 어워드' 2개 제품 수상…'패밀리허브·무빙스타일'",
+          "source": "팍스경제TV",
+          "link": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTFBybDZSa21ZWXdVYXRLYWtKVkw3bHRrRk1SWW90dC1kQmpmOHJZaGN3S25Uc3VRbDB6dHF2a3A2SHNqQjhnZXFWY3pNMGQ2WjZvcm0yNnlQcVJ3VzB4QndPRkdNWEtabWM?oc=5"
+        },
+        {
+          "time": "2026-10-12T08:54:13+09:00",
+          "title": "삼성전자 냉장고·이동스크린, 올해 포브스 '스마트홈 어워드' 선정",
+          "source": "글로벌이코노믹",
+          "link": "https://news.google.com/rss/articles/CBMihgFBVV95cUxQVm5aTGdMWUJqZzh6T1hucUVwV0w3VklHcVV2ZUwxdk4wNV9WbHBMUHQ3YjFERl9LOTFfUnR6NE4yVGZ1M2ZaZG81QlI2ZGplRzdCSGpRbDZFNUVFem5TUExHME9PN2lsaENQNG5lcmRCazFvVkJJV3V0R1R2RFo4bmcxWmdIUQ?oc=5"
         }
       ],
       "price": 255500.0,
@@ -740,22 +705,22 @@
           "link": "https://news.google.com/rss/articles/CBMiVkFVX3lxTE5KSUFQb0hhYjNpb3Q0cjRkRFBuZ253Zlp3UzdROWNkZzROeVh5S2Fsd3lOWnprMjU5TUh3VkY4LXZ6Qy1jT29lYnd4Y2R0Y29ldEZOVlNB?oc=5"
         },
         {
-          "time": "2026-10-12T10:05:00+09:00",
-          "title": "삼성전자, 역대급 실적에도 외국인 매도세 가속...지분율 17년만에 최저",
-          "source": "증권일보",
-          "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTFBFWFBFLTdpLTJLdUt3U3JCZDlGaV9HeUdhblAxbHk3MlZlQ25UOUlSN2x3TEwzS1NmenhGMWFZazBmVUE1dFc4bFViZzFjNHlNN1NmaUUyOThzRWZXNHAwMw?oc=5"
-        },
-        {
           "time": "2026-10-12T10:05:36+09:00",
           "title": "삼성전자, 107조 넘게 벌고도 주가 뒷걸음…주가 반등 열쇠는?",
           "source": "매일신문",
           "link": "https://news.google.com/rss/articles/CBMiYkFVX3lxTE9TWjBRLXBHWnNTS29SaGQwc0luQlNNOHJDY2U5VDdnWXNWT01MRW14UFhHUVk4R3BWd1Q5S2hmbTlnVTR4WGMwUEZTTFpOZjF3OGQwR09maktVOUF3VzJYelNR?oc=5"
         },
         {
-          "time": "2026-10-12T10:15:54+09:00",
-          "title": "삼성전자, 청년SW·AI아카데미 역대 최대규모 모집…AI교육 강화",
-          "source": "연합뉴스",
-          "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTFBXNnh5VkJaN09QZEhhdmhsS3hkSHUtUXZkUDRvRm5zYXl0akRzTXlqRUFYT0NuU0lnaUxHZDVBallyUTRjWnR3VHVlMEN0U3pjWTU5UzQyTFpWWEFOVzV1aNIBYEFVX3lxTFBXNnh5VkJaN09QZEhhdmhsS3hkSHUtUXZkUDRvRm5zYXl0akRzTXlqRUFYT0NuU0lnaUxHZDVBallyUTRjWnR3VHVlMEN0U3pjWTU5UzQyTFpWWEFOVzV1aA?oc=5"
+          "time": "2026-10-12T10:40:49+09:00",
+          "title": "삼성전자 ‘비스포크 AI 패밀리허브·무빙스타일’, 美 포브스 스마트홈 어워드 수상",
+          "source": "스트레이트뉴스",
+          "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTFAzRWVFY19adHlOMUh1bGFsQXNfQjV2SUhyWWFoMFduTVlmRmRDXzNyeUl2SmJzOE5uZUNuakZkY0pZdWI0ZjN0akpFZU1lWlRrNXhxUWNYWjE3RU5BZlktc1NmcF9reGdZMG5MUGVleFRhaGvSAXdBVV95cUxNbUFpc0liSUZXWW9qZ0xKN0Y5OEVFeXN1VU9aOEdQMms0OTlWVjRUeGxQX3ppOGpiTGFOQXlWZ1J6TzhaMzRVX3lQdmVPeWxWdkpqbDQ4NmlDd3lDbjZKbU5wVGlJbGVudnhSUW16WUxEZElmNnBvZw?oc=5"
+        },
+        {
+          "time": "2026-10-12T09:56:30+09:00",
+          "title": "삼성전자, 美 포브스 '2026 스마트홈 어워드' 2개 제품 수상…'패밀리허브·무빙스타일'",
+          "source": "팍스경제TV",
+          "link": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTFBybDZSa21ZWXdVYXRLYWtKVkw3bHRrRk1SWW90dC1kQmpmOHJZaGN3S25Uc3VRbDB6dHF2a3A2SHNqQjhnZXFWY3pNMGQ2WjZvcm0yNnlQcVJ3VzB4QndPRkdNWEtabWM?oc=5"
         }
       ],
       "price": 257500.0,
@@ -776,42 +741,30 @@
       "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE8yckVsWGM1OFZkdmFoZ0hVOWw3VDFtNkJ5NTlwOXZLcE5RYVJaQVRDM0wxU2RTWEdxX013c01pWXF0LXp6YlNqd3RwWnBIMnQtYUoyMlI5Z3JFNmVIdGNoLUpjSFllanpqTkJaQjh3aUHSAXRBVV95cUxQZmg1YUc5MUZBMEI5Y3JiUF9TWkxLX0JNNlRfNG90OWFGQzN2bjczX1kwQ3NFeC1JVjMwa1ZMM3JMdVJFUGlla2dMRnJiMTB2Z09fMU5fWVFBaDBsZXdLYng1MFJWQV8wTGRaUlRkVVVaZlRjSw?oc=5"
     },
     {
-      "time": "2026-10-12T06:48:00+09:00",
-      "title": "[마켓 프리뷰] 삼성전자 역대급 분기 실적에도 '추락'…소부장은 강세",
-      "source": "SBS Biz",
-      "link": "https://news.google.com/rss/articles/CBMiU0FVX3lxTE5BRGpsRXF1N0ZlcjVJQ0FyWGd6YzlERmpXeHQzWklXVTV6M1M0X2xfSWZCUkV6ZkdTVS15MjljeGZPWjVUN2VBakZzbmxMZmx6a3V30gFYQVVfeXFMTnlZTGYyMnNLUGRtdV9xeVAwUzdUTzljWnpYYVh2R0V2NmZMd0RsMHhUUGFsYTNQNVJsOEphLUF5dHF2b21kbGZvN0tudkM2MEtXNTc0MEhuaw?oc=5"
-    },
-    {
-      "time": "2026-10-12T07:04:26+09:00",
-      "title": "“삼성전자 팔고 소부장 산다”…23조 ETF가 흔드는 반도체주",
-      "source": "이코노미스트",
-      "link": "https://news.google.com/rss/articles/CBMiYkFVX3lxTE1MNXZCemU0SDNoYVNVZmlrVmJXTHBQSHplQ0NseFVLTkd3bXFrMEpIZ1ozYWtnTjB2M0JzbV96WEFiNl8wWlplMVJXRDFvbGRxa1NGaEcyY0daVUo2OUR1bFhn?oc=5"
-    },
-    {
       "time": "2026-10-12T07:54:02+09:00",
       "title": "\"삼성전자, 이제 세계 1위 이익 기업…HBM4으로 내년 더 뛴다\" [종목+]",
       "source": "한국경제",
       "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE9MZzVZUTd1UHdyWkpWN1lJaVgyTVkxTUtNeEg5NlI4ZGtUSV9ucUpfVGFhU3A4V2w3MkgwaDVPckJJM25iZlA0cHhldUJkSVBSNTQ2WTl0ZTR4Zw?oc=5"
+    },
+    {
+      "time": "2026-10-12T08:40:00+09:00",
+      "title": "'영업익 100조' 과거와 달라진 삼성전자…증권가 시선은 주주환원으로",
+      "source": "연합인포맥스",
+      "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE1leGJNWUZBTUc5OFVRbHpZU2VXTHppTGRaRW5yRW1GUkZlSDRYc3lpQmt5eVhPckd6YWVRWWY4VFlUVG5tbjVncnFwVFpzeXdHOWVScGkwa2tfTGp5UUtSdmx5LWlQZEp1R1VBaEZ0ZjA?oc=5"
+    },
+    {
+      "time": "2026-10-12T08:54:13+09:00",
+      "title": "삼성전자 냉장고·이동스크린, 올해 포브스 '스마트홈 어워드' 선정",
+      "source": "글로벌이코노믹",
+      "link": "https://news.google.com/rss/articles/CBMihgFBVV95cUxQVm5aTGdMWUJqZzh6T1hucUVwV0w3VklHcVV2ZUwxdk4wNV9WbHBMUHQ3YjFERl9LOTFfUnR6NE4yVGZ1M2ZaZG81QlI2ZGplRzdCSGpRbDZFNUVFem5TUExHME9PN2lsaENQNG5lcmRCazFvVkJJV3V0R1R2RFo4bmcxWmdIUQ?oc=5"
     }
   ],
   "top_news": [
-    {
-      "time": "2026-10-12T11:18:50+09:00",
-      "title": "100조원 영업이익에도 삼성전자 주가 왜 안올라? “감동이 없어서” [반도체 투자 리포트]",
-      "source": "세계일보",
-      "link": "https://news.google.com/rss/articles/CBMiWEFVX3lxTE5XemRncW9Ddl9VUVAtTkplVHJrcmpCUlRKR0hFZzlqUXZhUHhmbEJUUFZ1VGFzM0hScTR6eGctRGlBRE1WZFJETGFqNWlXR3BVSzJpZHZ1aFTSAVRBVV95cUxNSEpwcVVZaFh5Q21uWS1taENLY201d2RseE9kZ0F6X1lUNWYxZzJmQmlYeVlDcFM1Q1NjOWpxcFRpcnJSRGktNXFjVmhjZHJfa2R3Y2g?oc=5"
-    },
     {
       "time": "2026-10-12T14:11:00+09:00",
       "title": "\"D램·낸드가 끌고 HBM이 민다\"…삼성전자, 실적 질주 계속 By EBN",
       "source": "Investing.com 한국어",
       "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE5vekVLMFJzZUUybWpweTdVa3VNLXM4S2NISHUwZFB0bnhKUC1qTUtJYjNqckZfR2dSb1A4dS05cHVpZmxBQmswMUNLQmNMdkxoT1ZHWXJta2c3a19HU3VyRGNSUDFzVXF5OE5kblpHQTA?oc=5"
-    },
-    {
-      "time": "2026-10-12T09:02:02+09:00",
-      "title": "\"삼성전자 3분기 실적, 환율도 메모리 호황 못 막았다\"-IBK - 머니투데이",
-      "source": "머니투데이",
-      "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE9UaHlfcVpqdGhyVmVBN2tzM0pBWUN0WUdlaGVSWERFVkV0Tzkwa1ZPQ0otM09oNHN0OG00d3RYX1phdE5sdnNTVHA1SnRrMFNZYl9LRXFmQ3FxS0pBWWxiTlFKTllsdkxR0gFuQVVfeXFMTnl1bnJfTHc3bHFOR0c0S3hyc0dpNktjMUdGb1BPOHk4QmhWVzhpTGFfNUxBVDRiWDJlYV8ydW9jUlEyVnU5a3lzcjlnX1hUV2daVTlOeFNPNEY5T0tpOTZxT3pvNnc5S2d1dk5FMmc?oc=5"
     },
     {
       "time": "2026-10-12T09:53:00+09:00",
@@ -826,10 +779,22 @@
       "link": "https://news.google.com/rss/articles/CBMiVkFVX3lxTE5KSUFQb0hhYjNpb3Q0cjRkRFBuZ253Zlp3UzdROWNkZzROeVh5S2Fsd3lOWnprMjU5TUh3VkY4LXZ6Qy1jT29lYnd4Y2R0Y29ldEZOVlNB?oc=5"
     },
     {
-      "time": "2026-10-12T11:57:00+09:00",
-      "title": "[리포트 브리핑]삼성전자, '영업이익 100조원 시대 개막' 목표가 530,000원 - NH투자증권",
-      "source": "뉴스핌",
-      "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE5RUXFGcXBxT2RKTEk0Q04xU2htNFVQSHhoS0ZGU3dheXdyVkZ1RWxTZWRfZ1h3cVhIU2oxYm1FV1hjc3N2QTRDakFTWklUQTU4bE8wU2tfeHY2RVJk?oc=5"
+      "time": "2026-10-12T16:06:21+09:00",
+      "title": "삼성전자·SK하이닉스 자사주 매입 막바지…반도체 투톱에 외국인 매도 집중",
+      "source": "싱글리스트",
+      "link": "https://news.google.com/rss/articles/CBMiZkFVX3lxTE9CdGhkYTdxQS10c1lWeFFHU1Q2UjBEWFR3Ni1tUVdyZUxtaVhDYW5sUUdGR0hnMU44WEcydmpPVWJOTWI2a0V2eExBazcwd1NjdEI0YzRUVWdJd1NscU9kd00yQUpKZw?oc=5"
+    },
+    {
+      "time": "2026-10-12T16:08:35+09:00",
+      "title": "외국인 199조 ‘셀 코리아’…삼성전자 호실적에도 코스피 혼자 추락",
+      "source": "뉴스로드",
+      "link": "https://news.google.com/rss/articles/CBMia0FVX3lxTFBLODI5TFlrLXZzYjBNQVgxNDJHYk1ocWhvM1g1Q3o4YTdRQ2Y1VmtFRUNMN1FQcjRDQVFtd0pqUVRUYS1hNkpHV1dncU1acHFMbkVpNUtEZVFaR2hPVFh1WkE5amxuUzFJSzlV0gFvQVVfeXFMT3B2M0t5OWpsZWdqdlpwdjhhNl9KanFFRmtES242YmJybjQyd3RuNWdHQk9jbkM2RGhRVkR6NU1BcmVYUVFFcnNvaGswbF9yOVluc3pkYWhlSU9ibkowZ0VZRFJjMTM2enB0OHV2NHlN?oc=5"
+    },
+    {
+      "time": "2026-10-12T16:30:26+09:00",
+      "title": "삼성전자, 실적은 고공행진…AI 반도체 호황 지속성 놓고 전망 엇갈려",
+      "source": "폴리뉴스 Polinews",
+      "link": "https://news.google.com/rss/articles/CBMibkFVX3lxTFA3VGNYUlVSSFBXa2RnWHNZRTBXRmpkOFU1bWUwdVFoZG9uUWw0VEJQSUc4bElhYmlRUERqMVpJMkhtbmZjMEt6Vnh6WGgwMXFKLUdjRlBnOURBNUZQNlREb2VTdEVzaFhyYkhzTEdB?oc=5"
     }
   ],
   "disclosures": [
@@ -847,11 +812,12 @@
     }
   ],
   "disclosure_note": null,
-  "flows": null,
+  "flows": "외국인 -2,178,086 / 기관 -1,719,656",
   "flow_story": null,
   "flow_status": {
-    "state": "pending",
-    "detail": "최신 2026-10-08"
+    "state": "ok",
+    "detail": "naver+cache",
+    "krx_error": "pykrx 미설치"
   },
   "context": {},
   "market": {
@@ -862,9 +828,9 @@
     "steady": 32,
     "upper": 1,
     "lower": 0,
-    "individual": 14584.0,
-    "foreign": -19922.0,
-    "institution": -1270.0,
+    "individual": 14857.0,
+    "foreign": -20103.0,
+    "institution": -1345.0,
     "prev_close": 6625.93,
     "open": 6578.17,
     "high": 6589.69,
@@ -875,9 +841,9 @@
   "forecasts": [
     {
       "model": "No macro ensemble",
-      "hit": true,
-      "verdict": "맞음 — 예측 하락 43%, 실제 하락(-4.39%)",
-      "legs": "갭 -0.76%(보합) · 세션 -3.65%(하락)",
+      "hit": false,
+      "verdict": "틀림 — 예측 하락 43%, 실제 보합(+nan%)",
+      "legs": "갭 +nan%(보합) · 세션 +nan%(보합)",
       "where": "결과는 주로 장중에서 정해졌습니다.",
       "band": 0.0078579394079683,
       "probs": [
@@ -885,14 +851,14 @@
         0.3065935163156137,
         0.2600331593481525
       ],
-      "actual": "하락",
+      "actual": "보합",
       "predicted": "하락"
     },
     {
       "model": "Mean ensemble",
-      "hit": true,
-      "verdict": "맞음 — 예측 하락 44%, 실제 하락(-4.39%)",
-      "legs": "갭 -0.76%(보합) · 세션 -3.65%(하락)",
+      "hit": false,
+      "verdict": "틀림 — 예측 하락 44%, 실제 보합(+nan%)",
+      "legs": "갭 +nan%(보합) · 세션 +nan%(보합)",
       "where": "결과는 주로 장중에서 정해졌습니다.",
       "band": 0.0078579394079683,
       "probs": [
@@ -900,14 +866,14 @@
         0.2786592274565826,
         0.2800977347519824
       ],
-      "actual": "하락",
+      "actual": "보합",
       "predicted": "하락"
     },
     {
       "model": "Candidate expanding",
-      "hit": true,
-      "verdict": "맞음 — 예측 하락 46%, 실제 하락(-4.39%)",
-      "legs": "갭 -0.76%(보합) · 세션 -3.65%(하락)",
+      "hit": false,
+      "verdict": "틀림 — 예측 하락 46%, 실제 보합(+nan%)",
+      "legs": "갭 +nan%(보합) · 세션 +nan%(보합)",
       "where": "결과는 주로 장중에서 정해졌습니다.",
       "band": 0.0078579394079683,
       "probs": [
@@ -915,10 +881,10 @@
         0.2607768875975532,
         0.2835825474019586
       ],
-      "actual": "하락",
+      "actual": "보합",
       "predicted": "하락"
     }
   ],
-  "price_check": "1거래일 예상 구간 251,742~269,079원 · 종가 250,500원 → 구간 밖",
+  "price_check": "1거래일 예상 구간 251,742~269,079원 · 종가 nan원 → 구간 밖",
   "disclaimer": "시간이 맞는 것이지 원인 확정이 아닙니다. 뉴스 없이 움직이는 날(수급·프로그램·옵션 만기)이 많고, 기사 발행 시각은 실제 정보 유통보다 늦거나 앞섭니다. 이 절은 설명 도구이며 다음날 예측에 자동 반영되지 않습니다."
 }

@@ -3,7 +3,7 @@
   "name": "SK하이닉스",
   "peer_name": "삼성전자",
   "session_date": "2026-10-13",
-  "generated_at": "2026-10-13 16:48 KST",
+  "generated_at": "2026-10-13 17:31 KST",
   "summary": {
     "prev_close": 1681000.0,
     "open": 1538000.0,
@@ -15,11 +15,11 @@
     "c2c": -0.14158239143367046,
     "high_vs_open": 0.01040312093628093,
     "low_vs_open": -0.07347204161248377,
-    "volume": 5627896.0,
-    "volume_ratio": 1.7774188344439565,
+    "volume": 5675916.0,
+    "volume_ratio": 1.792584653504934,
     "kospi_c2c": -0.05464865417190956,
     "peer_c2c": -0.1145038167938931,
-    "usdkrw_chg": -0.00014143173637271023,
+    "usdkrw_chg": -0.0011988066651796858,
     "us_nights": 3,
     "sox_ret": -0.06347396339151035,
     "nasdaq_ret": -0.010631917070649699,
@@ -73,26 +73,26 @@
     "prior_5d": -0.05349099099099097,
     "ma_touches": [],
     "micron_ah": {
-      "regular_close": 988.969970703125,
-      "last": 975.2,
-      "ret": -0.013923547843758044,
-      "low_ret": -0.013974813303278433,
-      "high_ret": -3.525961774164532e-05,
-      "last_time": "2026-10-13T08:55:00+09:00"
+      "regular_close": 988.9299926757812,
+      "last": 989.04,
+      "ret": 0.00011123873786167415,
+      "low_ret": 0.00011123873786167415,
+      "high_ret": 0.00011123873786167415,
+      "last_time": "2026-10-13T05:00:00+09:00"
     },
     "nvidia_ah": {
-      "regular_close": 226.4199981689453,
-      "last": 224.4463,
-      "ret": -0.008716978115478224,
-      "low_ret": -0.008716978115478224,
-      "high_ret": -0.0005299804342183689,
-      "last_time": "2026-10-13T08:55:00+09:00"
+      "regular_close": 226.42999267578125,
+      "last": 226.32,
+      "ret": -0.0004857690206206966,
+      "low_ret": -0.0004857690206206966,
+      "high_ret": -0.0004857690206206966,
+      "last_time": "2026-10-13T05:00:00+09:00"
     },
     "session_cross": {
       "NQ=F": {
         "label": "나스닥100 선물",
-        "ret": -0.004753522554896694,
-        "after_high": -0.004753522554896694
+        "ret": -0.004753561114896665,
+        "after_high": -0.004753561114896665
       },
       "ZN=F": {
         "label": "미 10년물 국채 선물",
@@ -106,7 +106,16 @@
       }
     },
     "from_high": -0.059934853420195444,
-    "buyback": []
+    "buyback": [
+      {
+        "kind": "직접 취득",
+        "start": "2026-08-20",
+        "end": "2026-11-19",
+        "amount": "40,004,340,000,000",
+        "purpose": "자기주식 소각을 통한 \n주주가치 제고",
+        "rcept_no": "20260819000254"
+      }
+    ]
   },
   "classification": {
     "labels": [
@@ -116,26 +125,26 @@
     ],
     "reasons": [
       "갭 -8.51%가 종가→종가 -14.16%의 60%",
-      "09:00 봉 -8.69%(σ의 21.23배, 거래량 5.15배)가 세션 -6.18%의 132%",
-      "KOSPI -5.46% vs 종목 -14.16%, 5분 수익률 상관 0.85 — 종목 고유 요인이 약함"
+      "09:00 봉 -8.69%(σ의 21.19배, 거래량 5.15배)가 세션 -6.18%의 132%",
+      "KOSPI -5.46% vs 종목 -14.16%, 5분 수익률 상관 0.87 — 종목 고유 요인이 약함"
     ]
   },
   "events": [
     {
       "time": "2026-10-13T09:00:00+09:00",
       "ret": -0.08685306365258771,
-      "z": 21.23,
+      "z": 21.19,
       "volume_ratio": 5.15,
       "cum_before": 0.0,
       "cum_after": -0.0019505851755526882,
       "session_share": 1.3225743752245525,
-      "score": 23.228822309312548,
+      "score": 23.188413445520595,
       "news": [
         {
           "time": "2026-10-13T08:02:02+09:00",
           "title": "\"내년 영업익 405조\" SK하이닉스, 증권가 낙관론에도 마이크론보다 저평가",
           "source": "조세일보",
-          "link": "https://news.google.com/rss/articles/CBMiX0FVX3lxTE5WVjhHZUQxemE3azlHM3BZVkJJTWxwUUE2Qnk4b3p4NDdPMVZyTjctbjNsLXU5bDd3VTNuRzN4dHQzLTFFakVCMnZmWVJPZEZGVVZHNjVwM1VnSi1samE0?oc=5"
+          "link": "https://news.google.com/rss/articles/CBMib0FVX3lxTE1mc2tta3pCZWJpcnlLT3dPcWdROE1Na0ZVXzRzQlFvNUtnamtMbTAwZmJ3cERsRE9GczdSVXIyR2J0aDF1ZHd6TWJiODJmY1lsdEczTnd3cXNjTkZVcEllaU15ZVR0dFVKd2dYbnhRbw?oc=5"
         },
         {
           "time": "2026-10-13T08:57:09+09:00",
@@ -156,64 +165,22 @@
           "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE1IQ3JqZGY0TGRma0NWZ2NoaUE4V3FmaHU2Q2RtMVR0b195TDFXSkVkZ3pGNm9jN0k2NGxYcmlHR3FsZWFRZ0JMeHpTSndLX1N5SWdFU0tid3F0UVp3?oc=5"
         },
         {
-          "time": "2026-10-13T08:54:43+09:00",
-          "title": "SK하이닉스 목표가 360만원 유지, 왜?…\"실적도 주주환원도 기대\"",
-          "source": "뉴시스",
-          "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE80cm8yUi02dzVEM0U3NmJIQ2ZkUE9CZXE5aUxVQzdndEhoLUZGU0lqckxzMkhENks2OXJZQTBVeVhwMzVvYlpaX2RtZG0zQzFtbm90OEphejJlLUotdTU4eNIBeEFVX3lxTE9nRXMyV2gxd1N5ZjhraklWWlA4Y3VSbjM4eG5ZRGRGS0d3RWgxd1BxVGVlaW40eVkwekFmTkpmX04tV0huYUNmd3RVblA4LXhBTFF1MkRaRUNON2gtWWtBUHRZaWY0cGU5MU1fY19uc0VYNUh6N1U1eQ?oc=5"
-        }
-      ]
-    },
-    {
-      "time": "2026-10-13T14:35:00+09:00",
-      "ret": -0.014363885088919282,
-      "z": 3.51,
-      "volume_ratio": 75.98,
-      "cum_before": -0.04941482444733425,
-      "cum_after": -0.06306892067620284,
-      "session_share": 0.2187292600669093,
-      "score": 5.510853289456375,
-      "news": [
-        {
-          "time": "2026-10-13T13:42:57+09:00",
-          "title": "SK하이닉스, 목표주가 400만원 유지하는 이유…“환율 이기는 실적”[클릭e종목]",
-          "source": "아시아경제",
-          "link": "https://news.google.com/rss/articles/CBMiggFBVV95cUxNZ1RNbUk2ZFY2eDZ3LUF1Y1EwYWlOQUJ3SnlxZE9lMUtDMjNiamx2OHBabWxvQWJINkN5dGl3eVd3U19zalpydm90Q0wzWGdOV0VKTFlaN19lYlg1SC1taTlnaGtLQ1o5LWJ2X2FuVzhXTTQxcUtUZGlPSUtWcDJWTzlR?oc=5"
-        },
-        {
-          "time": "2026-10-13T14:12:03+09:00",
-          "title": "SK하이닉스 52주 최고가 대비 51.4% 하락… 9% 급락에도 증권사 목표주가 400만 원 유지",
-          "source": "경제시그널",
-          "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTE1tS2dKeTFPSzQxQUhMWnVfNjVxeS1ub3N5TkNNTmdkSlBjNHRwUHV6U0tYN2J3QzB2V2V2bXZ4YjVFNG9ub3RZcUo3VWZRa01iZzRfMDlWb0VyY194NWZJbGlUcFFuSVVrektHcTFNT1ZLMlU?oc=5"
-        },
-        {
-          "time": "2026-10-13T13:53:57+09:00",
-          "title": "\"SK하이닉스 3분기 영업익 77.9조 전망..D램 가격·HBM 출하 예상 웃돌아”",
-          "source": "포쓰저널",
-          "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE5DSkIzWFNSLXQxakFZQzdoOEVfNXBYVjdHS0xDUW5CdGdZNk83S2JIcEl3S3JTMWZ2VGZkeXRXVldrZUlXQ043UG5PZ1VXUHRCbVVhc3VjYk5ZeWlJNklNVHZlLVM?oc=5"
-        },
-        {
-          "time": "2026-10-13T14:10:29+09:00",
-          "title": "외국인 매도 폭탄에 삼성전자·SK하이닉스 휘청…자사주 효과도 약화",
-          "source": "핀포인트뉴스",
-          "link": "https://news.google.com/rss/articles/CBMid0FVX3lxTE5relRYLWg4aVdYXzVBeUNHcWJJN3N4RkpRc2xxVVViUmxMM2NRbklmQ2pYQ09SNmRHRVlXa09fR09aeWZ1QmZ6dU5XcDFZck1lRmVuZDFjNkhsQk1mRFhIWDk0QVlTZnZTNWVuM1ZPWjBrNTZPNm1j0gF3QVVfeXFMTmt6VFgtaDhpV1hfNUF5Q0dxYkk3c3hGSlFzbHFVVWJSbEwzY1FuSWZDalhDT1I2ZEdFWVdrT19HT1p5ZnVCZnp1TldwMVlyTWVGZW5kMWM2SGxCTWZEWEhYOTRBWVNmdlM1ZW4zVk9aMGs1Nk82bWM?oc=5"
-        },
-        {
-          "time": "2026-10-13T14:20:30+09:00",
-          "title": "HBM, 조연에서 주연으로…메모리 병목에 SK하이닉스가 내놓은 해법",
-          "source": "서울경제",
-          "link": "https://news.google.com/rss/articles/CBMiU0FVX3lxTFBZcTF6X2M5dXNOeFR5ckE5Y0VPZjlXbk1qcVRtczd1M2pRWEMtMjM0aENzWmJmNVRCSnh0ZGxCT24xR2gwZTJjYjdROGFCOFNvRmhN0gFTQVVfeXFMUFlxMXpfYzl1c054VHlyQTljRU9mOVduTWpxVG1zN3UzalFYQy0yMzRoQ3NaYmY1VEJKeHRkbEJPbjFHaDBlMmNiN1E4YUI4U29GaE0?oc=5"
+          "time": "2026-10-13T09:00:00+09:00",
+          "title": "중국 CXMT 4F² 기술 추격에 반도체주 급락…삼성·SK하이닉스의 진짜 위협은",
+          "source": "시사프리즘",
+          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE1aWlZUckxKR2ZjLU8xMVRGa0VXaFdJZ2g0ZVppdi1Uc0tFSmhkNkhSczBRM0ZTNEFUN1pnZk1nb3dfNWU2SEowcWQtVkdoZDI3T1I2VkJNWEF2UkZjZGlZb3B2dFdVeFQx?oc=5"
         }
       ]
     },
     {
       "time": "2026-10-13T09:50:00+09:00",
-      "ret": -0.017821782178217838,
-      "z": 4.36,
+      "ret": -0.01846965699208447,
+      "z": 4.51,
       "volume_ratio": 1.97,
-      "cum_before": -0.014954486345903795,
+      "cum_before": -0.014304291287386195,
       "cum_after": -0.032509752925877766,
-      "session_share": 0.271385158317812,
-      "score": 4.750319663844397,
+      "session_share": 0.2812508163745138,
+      "score": 4.90004327288485,
       "news": [
         {
           "time": "2026-10-13T08:57:09+09:00",
@@ -228,6 +195,12 @@
           "link": "https://news.google.com/rss/articles/CBMie0FVX3lxTE5fWXVCOUo4ZVhsTnEyVjdRSlREVnBzNVVZb1JiUHhiQ0lyMS1kSlIzQXhIenRuQmhzcXJ6RDhqazZWaVh2TW56NkFKa1NKV2JEakZfc015T3AxWmlGczY2LXZKVF9IcTRpY3ZOcWdIaGpncGYtc3JpSVVzUdIBgAFBVV95cUxPY2hXSVJvNlc3TnM4NGZXR0ZfSlk1UzQ0RXVqMGhmQ2RJUGI5cnRzV0FGRFQ5aDdkZFpmTDE5RVRkS21uVVoxM2JYMURPY2tLZnU1SHJsckFUTEE5YUs5c2g5SlNLZl9USzZCZ2NQdjNIQVdhX2JKRFNxWWVvN2dBVA?oc=5"
         },
         {
+          "time": "2026-10-13T09:40:33+09:00",
+          "title": "코스피, 외국인 매도 폭탄에 6100선 붕괴…삼성전자·SK하이닉스 5%대 급락",
+          "source": "산경투데이",
+          "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE9uOFFlZXZ3Y1VseXkxVEs3Y2p4LWltQkx5UFRRWmFsZG55NG1OTW5OZktJYm9lVlFtdEFKN3RNWTZTa24xajl1NUdHQTl6cFl5SVZBTjhrc0txQlNQU2J4V09zaHZPZ0RzNzZud1kwRm7SAXRBVV95cUxOZ3VkazREOHZqb1dNYXhBbnJ3ajE1WXcxOVFXc3JpVTRJX1VaTGdlZ01kTG1Zd1dWN1ZacURIMzdkU0o3MnhWdEY0SEJjVlBsWGNzRk5iWlpfVGZWY052OEVmY3U1QVM4dTdrQVdHM1BCN2oteg?oc=5"
+        },
+        {
           "time": "2026-10-13T08:24:42+09:00",
           "title": "주가는 연일 떨어지는데…SK하이닉스 목표가 400만원 유지하는 이유",
           "source": "매일경제 마켓",
@@ -238,12 +211,6 @@
           "title": "[리포트 브리핑]SK하이닉스, '컨센서스에 부합' 목표가 3,600,000원 - 하나증권",
           "source": "뉴스핌",
           "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE1IQ3JqZGY0TGRma0NWZ2NoaUE4V3FmaHU2Q2RtMVR0b195TDFXSkVkZ3pGNm9jN0k2NGxYcmlHR3FsZWFRZ0JMeHpTSndLX1N5SWdFU0tid3F0UVp3?oc=5"
-        },
-        {
-          "time": "2026-10-13T08:54:43+09:00",
-          "title": "SK하이닉스 목표가 360만원 유지, 왜?…\"실적도 주주환원도 기대\"",
-          "source": "뉴시스",
-          "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE80cm8yUi02dzVEM0U3NmJIQ2ZkUE9CZXE5aUxVQzdndEhoLUZGU0lqckxzMkhENks2OXJZQTBVeVhwMzVvYlpaX2RtZG0zQzFtbm90OEphejJlLUotdTU4eNIBeEFVX3lxTE9nRXMyV2gxd1N5ZjhraklWWlA4Y3VSbjM4eG5ZRGRGS0d3RWgxd1BxVGVlaW40eVkwekFmTkpmX04tV0huYUNmd3RVblA4LXhBTFF1MkRaRUNON2gtWWtBUHRZaWY0cGU5MU1fY19uc0VYNUh6N1U1eQ?oc=5"
         }
       ]
     }
@@ -256,7 +223,7 @@
     "pattern": "고점 후 반락"
   },
   "closing_share": -0.06759696736622295,
-  "intraday_corr_kospi": 0.8504312799242324,
+  "intraday_corr_kospi": 0.8739917248372172,
   "intraday_note": "장중 봉은 09:00~14:55까지만 있어 마감 구간(14:55~15:30)은 일봉 종가로만 봅니다(그 구간 +0.42%).",
   "intraday_coverage": "09:00~14:55",
   "intraday_path": [
@@ -307,13 +274,13 @@
     },
     {
       "time": "2026-10-13T09:45:00+09:00",
-      "price": 1515000.0,
-      "volume": 73221.0
+      "price": 1516000.0,
+      "volume": 73208.0
     },
     {
       "time": "2026-10-13T09:50:00+09:00",
       "price": 1488000.0,
-      "volume": 109655.0
+      "volume": 109668.0
     },
     {
       "time": "2026-10-13T09:55:00+09:00",
@@ -327,13 +294,13 @@
     },
     {
       "time": "2026-10-13T10:05:00+09:00",
-      "price": 1479000.0,
-      "volume": 92718.0
+      "price": 1480000.0,
+      "volume": 92746.0
     },
     {
       "time": "2026-10-13T10:10:00+09:00",
       "price": 1484000.0,
-      "volume": 76504.0
+      "volume": 76476.0
     },
     {
       "time": "2026-10-13T10:15:00+09:00",
@@ -348,12 +315,12 @@
     {
       "time": "2026-10-13T10:25:00+09:00",
       "price": 1461000.0,
-      "volume": 83069.0
+      "volume": 83085.0
     },
     {
       "time": "2026-10-13T10:30:00+09:00",
       "price": 1473000.0,
-      "volume": 82613.0
+      "volume": 82597.0
     },
     {
       "time": "2026-10-13T10:35:00+09:00",
@@ -468,12 +435,12 @@
     {
       "time": "2026-10-13T12:25:00+09:00",
       "price": 1465000.0,
-      "volume": 39589.0
+      "volume": 39588.0
     },
     {
       "time": "2026-10-13T12:30:00+09:00",
       "price": 1460000.0,
-      "volume": 43354.0
+      "volume": 43355.0
     },
     {
       "time": "2026-10-13T12:35:00+09:00",
@@ -591,9 +558,14 @@
       "volume": 62864.0
     },
     {
+      "time": "2026-10-13T14:30:00+09:00",
+      "price": 1449000.0,
+      "volume": 65707.0
+    },
+    {
       "time": "2026-10-13T14:35:00+09:00",
       "price": 1441000.0,
-      "volume": 4226457.0
+      "volume": 66831.0
     },
     {
       "time": "2026-10-13T14:40:00+09:00",
@@ -620,18 +592,18 @@
     {
       "time": "2026-10-13T09:00:00+09:00",
       "ret": -0.08685306365258771,
-      "z": 21.23,
+      "z": 21.19,
       "volume_ratio": 5.15,
       "cum_before": 0.0,
       "cum_after": -0.0019505851755526882,
       "session_share": 1.3225743752245525,
-      "score": 23.228822309312548,
+      "score": 23.188413445520595,
       "news": [
         {
           "time": "2026-10-13T08:02:02+09:00",
           "title": "\"내년 영업익 405조\" SK하이닉스, 증권가 낙관론에도 마이크론보다 저평가",
           "source": "조세일보",
-          "link": "https://news.google.com/rss/articles/CBMiX0FVX3lxTE5WVjhHZUQxemE3azlHM3BZVkJJTWxwUUE2Qnk4b3p4NDdPMVZyTjctbjNsLXU5bDd3VTNuRzN4dHQzLTFFakVCMnZmWVJPZEZGVVZHNjVwM1VnSi1samE0?oc=5"
+          "link": "https://news.google.com/rss/articles/CBMib0FVX3lxTE1mc2tta3pCZWJpcnlLT3dPcWdROE1Na0ZVXzRzQlFvNUtnamtMbTAwZmJ3cERsRE9GczdSVXIyR2J0aDF1ZHd6TWJiODJmY1lsdEczTnd3cXNjTkZVcEllaU15ZVR0dFVKd2dYbnhRbw?oc=5"
         },
         {
           "time": "2026-10-13T08:57:09+09:00",
@@ -652,10 +624,10 @@
           "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE1IQ3JqZGY0TGRma0NWZ2NoaUE4V3FmaHU2Q2RtMVR0b195TDFXSkVkZ3pGNm9jN0k2NGxYcmlHR3FsZWFRZ0JMeHpTSndLX1N5SWdFU0tid3F0UVp3?oc=5"
         },
         {
-          "time": "2026-10-13T08:54:43+09:00",
-          "title": "SK하이닉스 목표가 360만원 유지, 왜?…\"실적도 주주환원도 기대\"",
-          "source": "뉴시스",
-          "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE80cm8yUi02dzVEM0U3NmJIQ2ZkUE9CZXE5aUxVQzdndEhoLUZGU0lqckxzMkhENks2OXJZQTBVeVhwMzVvYlpaX2RtZG0zQzFtbm90OEphejJlLUotdTU4eNIBeEFVX3lxTE9nRXMyV2gxd1N5ZjhraklWWlA4Y3VSbjM4eG5ZRGRGS0d3RWgxd1BxVGVlaW40eVkwekFmTkpmX04tV0huYUNmd3RVblA4LXhBTFF1MkRaRUNON2gtWWtBUHRZaWY0cGU5MU1fY19uc0VYNUh6N1U1eQ?oc=5"
+          "time": "2026-10-13T09:00:00+09:00",
+          "title": "중국 CXMT 4F² 기술 추격에 반도체주 급락…삼성·SK하이닉스의 진짜 위협은",
+          "source": "시사프리즘",
+          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE1aWlZUckxKR2ZjLU8xMVRGa0VXaFdJZ2g0ZVppdi1Uc0tFSmhkNkhSczBRM0ZTNEFUN1pnZk1nb3dfNWU2SEowcWQtVkdoZDI3T1I2VkJNWEF2UkZjZGlZb3B2dFdVeFQx?oc=5"
         }
       ],
       "price": 1535000.0,
@@ -663,13 +635,13 @@
     },
     {
       "time": "2026-10-13T09:50:00+09:00",
-      "ret": -0.017821782178217838,
-      "z": 4.36,
+      "ret": -0.01846965699208447,
+      "z": 4.51,
       "volume_ratio": 1.97,
-      "cum_before": -0.014954486345903795,
+      "cum_before": -0.014304291287386195,
       "cum_after": -0.032509752925877766,
-      "session_share": 0.271385158317812,
-      "score": 4.750319663844397,
+      "session_share": 0.2812508163745138,
+      "score": 4.90004327288485,
       "news": [
         {
           "time": "2026-10-13T08:57:09+09:00",
@@ -684,6 +656,12 @@
           "link": "https://news.google.com/rss/articles/CBMie0FVX3lxTE5fWXVCOUo4ZVhsTnEyVjdRSlREVnBzNVVZb1JiUHhiQ0lyMS1kSlIzQXhIenRuQmhzcXJ6RDhqazZWaVh2TW56NkFKa1NKV2JEakZfc015T3AxWmlGczY2LXZKVF9IcTRpY3ZOcWdIaGpncGYtc3JpSVVzUdIBgAFBVV95cUxPY2hXSVJvNlc3TnM4NGZXR0ZfSlk1UzQ0RXVqMGhmQ2RJUGI5cnRzV0FGRFQ5aDdkZFpmTDE5RVRkS21uVVoxM2JYMURPY2tLZnU1SHJsckFUTEE5YUs5c2g5SlNLZl9USzZCZ2NQdjNIQVdhX2JKRFNxWWVvN2dBVA?oc=5"
         },
         {
+          "time": "2026-10-13T09:40:33+09:00",
+          "title": "코스피, 외국인 매도 폭탄에 6100선 붕괴…삼성전자·SK하이닉스 5%대 급락",
+          "source": "산경투데이",
+          "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE9uOFFlZXZ3Y1VseXkxVEs3Y2p4LWltQkx5UFRRWmFsZG55NG1OTW5OZktJYm9lVlFtdEFKN3RNWTZTa24xajl1NUdHQTl6cFl5SVZBTjhrc0txQlNQU2J4V09zaHZPZ0RzNzZud1kwRm7SAXRBVV95cUxOZ3VkazREOHZqb1dNYXhBbnJ3ajE1WXcxOVFXc3JpVTRJX1VaTGdlZ01kTG1Zd1dWN1ZacURIMzdkU0o3MnhWdEY0SEJjVlBsWGNzRk5iWlpfVGZWY052OEVmY3U1QVM4dTdrQVdHM1BCN2oteg?oc=5"
+        },
+        {
           "time": "2026-10-13T08:24:42+09:00",
           "title": "주가는 연일 떨어지는데…SK하이닉스 목표가 400만원 유지하는 이유",
           "source": "매일경제 마켓",
@@ -694,59 +672,9 @@
           "title": "[리포트 브리핑]SK하이닉스, '컨센서스에 부합' 목표가 3,600,000원 - 하나증권",
           "source": "뉴스핌",
           "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE1IQ3JqZGY0TGRma0NWZ2NoaUE4V3FmaHU2Q2RtMVR0b195TDFXSkVkZ3pGNm9jN0k2NGxYcmlHR3FsZWFRZ0JMeHpTSndLX1N5SWdFU0tid3F0UVp3?oc=5"
-        },
-        {
-          "time": "2026-10-13T08:54:43+09:00",
-          "title": "SK하이닉스 목표가 360만원 유지, 왜?…\"실적도 주주환원도 기대\"",
-          "source": "뉴시스",
-          "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE80cm8yUi02dzVEM0U3NmJIQ2ZkUE9CZXE5aUxVQzdndEhoLUZGU0lqckxzMkhENks2OXJZQTBVeVhwMzVvYlpaX2RtZG0zQzFtbm90OEphejJlLUotdTU4eNIBeEFVX3lxTE9nRXMyV2gxd1N5ZjhraklWWlA4Y3VSbjM4eG5ZRGRGS0d3RWgxd1BxVGVlaW40eVkwekFmTkpmX04tV0huYUNmd3RVblA4LXhBTFF1MkRaRUNON2gtWWtBUHRZaWY0cGU5MU1fY19uc0VYNUh6N1U1eQ?oc=5"
         }
       ],
       "price": 1488000.0,
-      "kind": "turn_down"
-    },
-    {
-      "time": "2026-10-13T14:35:00+09:00",
-      "ret": -0.014363885088919282,
-      "z": 3.51,
-      "volume_ratio": 75.98,
-      "cum_before": -0.04941482444733425,
-      "cum_after": -0.06306892067620284,
-      "session_share": 0.2187292600669093,
-      "score": 5.510853289456375,
-      "news": [
-        {
-          "time": "2026-10-13T13:42:57+09:00",
-          "title": "SK하이닉스, 목표주가 400만원 유지하는 이유…“환율 이기는 실적”[클릭e종목]",
-          "source": "아시아경제",
-          "link": "https://news.google.com/rss/articles/CBMiggFBVV95cUxNZ1RNbUk2ZFY2eDZ3LUF1Y1EwYWlOQUJ3SnlxZE9lMUtDMjNiamx2OHBabWxvQWJINkN5dGl3eVd3U19zalpydm90Q0wzWGdOV0VKTFlaN19lYlg1SC1taTlnaGtLQ1o5LWJ2X2FuVzhXTTQxcUtUZGlPSUtWcDJWTzlR?oc=5"
-        },
-        {
-          "time": "2026-10-13T14:12:03+09:00",
-          "title": "SK하이닉스 52주 최고가 대비 51.4% 하락… 9% 급락에도 증권사 목표주가 400만 원 유지",
-          "source": "경제시그널",
-          "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTE1tS2dKeTFPSzQxQUhMWnVfNjVxeS1ub3N5TkNNTmdkSlBjNHRwUHV6U0tYN2J3QzB2V2V2bXZ4YjVFNG9ub3RZcUo3VWZRa01iZzRfMDlWb0VyY194NWZJbGlUcFFuSVVrektHcTFNT1ZLMlU?oc=5"
-        },
-        {
-          "time": "2026-10-13T13:53:57+09:00",
-          "title": "\"SK하이닉스 3분기 영업익 77.9조 전망..D램 가격·HBM 출하 예상 웃돌아”",
-          "source": "포쓰저널",
-          "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE5DSkIzWFNSLXQxakFZQzdoOEVfNXBYVjdHS0xDUW5CdGdZNk83S2JIcEl3S3JTMWZ2VGZkeXRXVldrZUlXQ043UG5PZ1VXUHRCbVVhc3VjYk5ZeWlJNklNVHZlLVM?oc=5"
-        },
-        {
-          "time": "2026-10-13T14:10:29+09:00",
-          "title": "외국인 매도 폭탄에 삼성전자·SK하이닉스 휘청…자사주 효과도 약화",
-          "source": "핀포인트뉴스",
-          "link": "https://news.google.com/rss/articles/CBMid0FVX3lxTE5relRYLWg4aVdYXzVBeUNHcWJJN3N4RkpRc2xxVVViUmxMM2NRbklmQ2pYQ09SNmRHRVlXa09fR09aeWZ1QmZ6dU5XcDFZck1lRmVuZDFjNkhsQk1mRFhIWDk0QVlTZnZTNWVuM1ZPWjBrNTZPNm1j0gF3QVVfeXFMTmt6VFgtaDhpV1hfNUF5Q0dxYkk3c3hGSlFzbHFVVWJSbEwzY1FuSWZDalhDT1I2ZEdFWVdrT19HT1p5ZnVCZnp1TldwMVlyTWVGZW5kMWM2SGxCTWZEWEhYOTRBWVNmdlM1ZW4zVk9aMGs1Nk82bWM?oc=5"
-        },
-        {
-          "time": "2026-10-13T14:20:30+09:00",
-          "title": "HBM, 조연에서 주연으로…메모리 병목에 SK하이닉스가 내놓은 해법",
-          "source": "서울경제",
-          "link": "https://news.google.com/rss/articles/CBMiU0FVX3lxTFBZcTF6X2M5dXNOeFR5ckE5Y0VPZjlXbk1qcVRtczd1M2pRWEMtMjM0aENzWmJmNVRCSnh0ZGxCT24xR2gwZTJjYjdROGFCOFNvRmhN0gFTQVVfeXFMUFlxMXpfYzl1c054VHlyQTljRU9mOVduTWpxVG1zN3UzalFYQy0yMzRoQ3NaYmY1VEJKeHRkbEJPbjFHaDBlMmNiN1E4YUI4U29GaE0?oc=5"
-        }
-      ],
-      "price": 1441000.0,
       "kind": "turn_down"
     }
   ],
@@ -755,7 +683,7 @@
       "time": "2026-10-13T08:02:02+09:00",
       "title": "\"내년 영업익 405조\" SK하이닉스, 증권가 낙관론에도 마이크론보다 저평가",
       "source": "조세일보",
-      "link": "https://news.google.com/rss/articles/CBMiX0FVX3lxTE5WVjhHZUQxemE3azlHM3BZVkJJTWxwUUE2Qnk4b3p4NDdPMVZyTjctbjNsLXU5bDd3VTNuRzN4dHQzLTFFakVCMnZmWVJPZEZGVVZHNjVwM1VnSi1samE0?oc=5"
+      "link": "https://news.google.com/rss/articles/CBMib0FVX3lxTE1mc2tta3pCZWJpcnlLT3dPcWdROE1Na0ZVXzRzQlFvNUtnamtMbTAwZmJ3cERsRE9GczdSVXIyR2J0aDF1ZHd6TWJiODJmY1lsdEczTnd3cXNjTkZVcEllaU15ZVR0dFVKd2dYbnhRbw?oc=5"
     },
     {
       "time": "2026-10-13T08:57:09+09:00",
@@ -796,22 +724,22 @@
       "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTE1obHQta3FTQmVFLUtuZHRzUU9yWmZoc1F4UXpSN0w4OUFyeWV0QWhsMEtHSkNtbGxFVzUxc1ZacEduTUJybjJ5Z183b3RJUW1Pb2RTRlo4QWExc3hRZUFEUkJhWEdqNGw2anVVbFRucW5mMzA?oc=5"
     },
     {
-      "time": "2026-10-13T14:12:03+09:00",
-      "title": "SK하이닉스 52주 최고가 대비 51.4% 하락… 9% 급락에도 증권사 목표주가 400만 원 유지",
-      "source": "경제시그널",
-      "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTE1tS2dKeTFPSzQxQUhMWnVfNjVxeS1ub3N5TkNNTmdkSlBjNHRwUHV6U0tYN2J3QzB2V2V2bXZ4YjVFNG9ub3RZcUo3VWZRa01iZzRfMDlWb0VyY194NWZJbGlUcFFuSVVrektHcTFNT1ZLMlU?oc=5"
-    },
-    {
       "time": "2026-10-13T16:12:49+09:00",
       "title": "삼성전자·SK하이닉스 주가 급락, 외국인 대량 매도로 반도체 시장 '불안'",
       "source": "공감신문",
       "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE45UFJEdmFlZkNRVDlIX2FvRkVySTVvY0FnQzMzWUFyekpIcDQyRjgwa1BtVGV2Yy15bXdKOW9DVllyOVVLMjNIU1lXV3VOYTJrTWhPeWNkZVJLRENJb0Iya1R5Ui1KVFlR?oc=5"
     },
     {
+      "time": "2026-10-13T17:00:42+09:00",
+      "title": "중국 CXMT 'D램 신기술 확보' 주장에 삼성전자 SK하이닉스 주가 하락, 해외 증권사는 회의적",
+      "source": "비즈니스포스트",
+      "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTE1Bd1drektXLVkzZUhmYkdDdHFPSE9yT2NFdWNRM29DZDNPRjRBNUV5TXBfVHZKLUdLd1VEaWJNRk51T0dlQzM0VW5OcUhtbGpOV3FJXzYxWURadTBVVkhmSDE0SGlYLVRLUlNiVjh3aGZvOEU?oc=5"
+    },
+    {
       "time": "2026-10-13T08:02:02+09:00",
       "title": "\"내년 영업익 405조\" SK하이닉스, 증권가 낙관론에도 마이크론보다 저평가",
       "source": "조세일보",
-      "link": "https://news.google.com/rss/articles/CBMiX0FVX3lxTE5WVjhHZUQxemE3azlHM3BZVkJJTWxwUUE2Qnk4b3p4NDdPMVZyTjctbjNsLXU5bDd3VTNuRzN4dHQzLTFFakVCMnZmWVJPZEZGVVZHNjVwM1VnSi1samE0?oc=5"
+      "link": "https://news.google.com/rss/articles/CBMib0FVX3lxTE1mc2tta3pCZWJpcnlLT3dPcWdROE1Na0ZVXzRzQlFvNUtnamtMbTAwZmJ3cERsRE9GczdSVXIyR2J0aDF1ZHd6TWJiODJmY1lsdEczTnd3cXNjTkZVcEllaU15ZVR0dFVKd2dYbnhRbw?oc=5"
     },
     {
       "time": "2026-10-13T08:57:09+09:00",
@@ -820,8 +748,8 @@
       "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTFBqbjhTWS12VXRNR3BEa3hocU9TNzJFSGF2MXpCVUVYY1psdkZEUHBjVjE0SWhfTzFOOXg4V1EzamhjNFhmRmRyd1oyZGwwdW5fa3RBSHBONjVNOW5POFJPbGg2dDk0ZXIy0gFuQVVfeXFMTU5SVENrSGZ6TndTUjlUeXNUMy1RXzdOWXZEWFZQVllfbFNPNkluQkZEM2M3eWdqTnRmeGZBb05fUC1nMWsyV1YzZFdzU2VCTFpvWWszWmZPS2g4VC1Cd2I3aThVajZmSG40YUtwSnc?oc=5"
     }
   ],
-  "disclosures": null,
-  "disclosure_note": "DART 조회 실패(URLError)",
+  "disclosures": [],
+  "disclosure_note": null,
   "flows": null,
   "flow_story": null,
   "flow_status": {
@@ -837,8 +765,8 @@
     "steady": 41,
     "upper": 0,
     "lower": 0,
-    "individual": 22417.0,
-    "foreign": -45286.0,
+    "individual": 22581.0,
+    "foreign": -45450.0,
     "institution": 16901.0,
     "prev_close": 6384.24,
     "open": 6186.08,

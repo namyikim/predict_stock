@@ -3,96 +3,61 @@
   "name": "삼성전자",
   "peer_name": "SK하이닉스",
   "session_date": "2026-10-13",
-  "generated_at": "2026-10-13 17:31 KST",
+  "generated_at": "2026-10-14 00:10 KST",
   "summary": {
     "prev_close": 262000.0,
-    "open": 241500.0,
-    "high": 244000.0,
-    "low": 228000.0,
-    "close": 232000.0,
-    "gap": -0.0782442748091603,
-    "session": -0.039337474120082816,
-    "c2c": -0.1145038167938931,
-    "high_vs_open": 0.010351966873705987,
-    "low_vs_open": -0.05590062111801242,
-    "volume": 26427186.0,
-    "volume_ratio": 1.569725046628189,
-    "kospi_c2c": -0.05464865417190956,
-    "peer_c2c": -0.14158239143367046,
-    "usdkrw_chg": -0.0012435267257807636,
+    "open": NaN,
+    "high": NaN,
+    "low": NaN,
+    "close": NaN,
+    "gap": NaN,
+    "session": NaN,
+    "c2c": NaN,
+    "high_vs_open": NaN,
+    "low_vs_open": NaN,
+    "volume": 28850920.0,
+    "volume_ratio": 1.7136902787253303,
+    "kospi_c2c": NaN,
+    "peer_c2c": NaN,
+    "usdkrw_chg": -0.0012583425182156605,
     "us_nights": 3,
     "sox_ret": -0.06347396339151035,
     "nasdaq_ret": -0.010631917070649699,
     "micron_ret": -0.09095590254839725,
     "prior_streak": -3,
-    "ma5": 262100.0,
-    "ma20": 264800.0,
+    "ma5": 269625.0,
+    "ma20": 266526.3157894737,
     "high20": 285500.0,
     "high252": 374087.44831391243,
     "price_context": {
-      "breakouts": {
-        "20": {
-          "prior_high": 285500.0,
-          "distance": -0.18739054290718038,
-          "close_breakout": false,
-          "intraday_breakout": false
-        },
-        "60": {
-          "prior_high": 298000.0,
-          "distance": -0.2214765100671141,
-          "close_breakout": false,
-          "intraday_breakout": false
-        }
-      },
-      "relative": {
-        "5": {
-          "start": "2026-10-01",
-          "end": "2026-10-13",
-          "own": -0.1594202898550725,
-          "peer": -0.21276595744680848,
-          "excess": 0.05334566759173598
-        },
-        "20": {
-          "start": "2026-09-08",
-          "end": "2026-10-13",
-          "own": -0.13914656771799627,
-          "peer": -0.19520356943669825,
-          "excess": 0.05605700171870198
-        },
-        "60": {
-          "start": "2026-07-10",
-          "end": "2026-10-13",
-          "own": -0.18596491228070178,
-          "peer": -0.33792989535575946,
-          "excess": 0.15196498307505768
-        }
-      }
+      "breakouts": {},
+      "relative": {}
     },
-    "range": 0.07017543859649122,
-    "peer_range": 0.09052631578947379,
+    "range": NaN,
+    "peer_range": NaN,
     "prior_5d": -0.02420856610800748,
     "ma_touches": [],
     "micron_ah": {
-      "regular_close": 988.969970703125,
+      "regular_close": 988.9299926757812,
       "last": 989.04,
-      "ret": 7.081033696620942e-05,
-      "low_ret": 7.081033696620942e-05,
-      "high_ret": 7.081033696620942e-05,
+      "ret": 0.00011123873786167415,
+      "low_ret": 0.00011123873786167415,
+      "high_ret": 0.00011123873786167415,
       "last_time": "2026-10-13T05:00:00+09:00"
     },
     "nvidia_ah": {
-      "regular_close": 226.4199981689453,
+      "regular_close": 226.42999267578125,
       "last": 226.32,
-      "ret": -0.00044164901401821943,
-      "low_ret": -0.00044164901401821943,
-      "high_ret": -0.00044164901401821943,
+      "ret": -0.0004857690206206966,
+      "low_ret": -0.0004857690206206966,
+      "high_ret": -0.0004857690206206966,
       "last_time": "2026-10-13T05:00:00+09:00"
     },
     "session_cross": {
       "NQ=F": {
         "label": "나스닥100 선물",
-        "ret": -0.004753522554896694,
-        "after_high": -0.004753522554896694
+        "ret": -0.004753561114896665,
+        "after_high": -0.004753561114896665
       },
       "ZN=F": {
         "label": "미 10년물 국채 선물",
@@ -105,7 +70,6 @@
         "after_high": 0.00540688626687591
       }
     },
-    "from_high": -0.04132231404958675,
     "buyback": [
       {
         "kind": "직접 취득",
@@ -115,18 +79,22 @@
         "purpose": "임직원 주식보상",
         "rcept_no": "20260821000616"
       }
-    ]
+    ],
+    "foreign_pressure": {
+      "state": "selling_intensified",
+      "previous_ratio": -0.07855857791927925,
+      "recent_ratio": -0.10760949100736292,
+      "previous_daily_net": -1388805.0,
+      "recent_daily_net": -1956782.8
+    },
+    "buyback_transition": null
   },
   "classification": {
     "labels": [
-      "갭 주도",
-      "장중 급변 09:00 주도",
-      "지수 동조"
+      "장중 급변 09:00 주도"
     ],
     "reasons": [
-      "갭 -7.82%가 종가→종가 -11.45%의 68%",
-      "09:00 봉 -7.63%(σ의 15.85배, 거래량 4.49배)가 세션 -3.93%의 168%",
-      "KOSPI -5.46% vs 종목 -11.45%, 5분 수익률 상관 0.93 — 종목 고유 요인이 약함"
+      "09:00 봉 -7.63%(σ의 15.85배, 거래량 4.49배)가 세션 +nan%의 168%"
     ]
   },
   "events": [
@@ -138,21 +106,8 @@
       "cum_before": 0.0,
       "cum_after": 0.0020703933747412417,
       "session_share": 1.6759195003469811,
-      "score": 17.74811913933705,
-      "news": [
-        {
-          "time": "2026-10-13T09:04:33+09:00",
-          "title": "삼성전자, OCP서 AI 메모리·스토리지 혁신 청사진 공개",
-          "source": "전자신문",
-          "link": "https://news.google.com/rss/articles/CBMiTkFVX3lxTFBpUXR0cXR2U05yOWowYnU5eGNTUnFUdVBuYllsOUFzczJPWTRaU2loV1RKNXEyVk5nUnY5YUxscklvU19rc0dSLV8tT0ZuZw?oc=5"
-        },
-        {
-          "time": "2026-10-13T08:55:41+09:00",
-          "title": "삼성전자, 반도체 협력사 5만8000명에 '감사'…연말까지 상생 행사",
-          "source": "전자신문",
-          "link": "https://news.google.com/rss/articles/CBMiTkFVX3lxTFBSZzVpTHB3Qkt2QkRxVlRWS3dNVU9LdVpBSG5FVlZaYUZXTWJYQ05PTERCUllRWXhXR0dpVmZPaU5lR2Z6SjlEeVliNHg3dw?oc=5"
-        }
-      ]
+      "score": 17.748273560807228,
+      "news": []
     }
   ],
   "turning_point": {
@@ -162,9 +117,9 @@
     "low": -0.053830227743271175,
     "pattern": "고점 후 반락"
   },
-  "closing_share": -0.16542984358945356,
+  "closing_share": NaN,
   "intraday_corr_kospi": 0.9332561843261317,
-  "intraday_note": "장중 봉은 09:00~14:55까지만 있어 마감 구간(14:55~15:30)은 일봉 종가로만 봅니다(그 구간 +0.65%).",
+  "intraday_note": "장중 봉은 09:00~14:55까지만 있어 마감 구간(14:55~15:30)은 일봉 종가로만 봅니다(그 구간 +nan%).",
   "intraday_coverage": "09:00~14:55",
   "intraday_path": [
     {
@@ -190,12 +145,12 @@
     {
       "time": "2026-10-13T09:20:00+09:00",
       "price": 239250.0,
-      "volume": 358906.0
+      "volume": 358901.0
     },
     {
       "time": "2026-10-13T09:25:00+09:00",
       "price": 237500.0,
-      "volume": 293226.0
+      "volume": 293231.0
     },
     {
       "time": "2026-10-13T09:30:00+09:00",
@@ -215,12 +170,12 @@
     {
       "time": "2026-10-13T09:45:00+09:00",
       "price": 238500.0,
-      "volume": 252329.0
+      "volume": 252242.0
     },
     {
       "time": "2026-10-13T09:50:00+09:00",
       "price": 235750.0,
-      "volume": 577129.0
+      "volume": 577216.0
     },
     {
       "time": "2026-10-13T09:55:00+09:00",
@@ -235,12 +190,12 @@
     {
       "time": "2026-10-13T10:05:00+09:00",
       "price": 234750.0,
-      "volume": 566245.0
+      "volume": 566250.0
     },
     {
       "time": "2026-10-13T10:10:00+09:00",
       "price": 236000.0,
-      "volume": 468571.0
+      "volume": 468566.0
     },
     {
       "time": "2026-10-13T10:15:00+09:00",
@@ -260,12 +215,12 @@
     {
       "time": "2026-10-13T10:30:00+09:00",
       "price": 233500.0,
-      "volume": 248285.0
+      "volume": 248283.0
     },
     {
       "time": "2026-10-13T10:35:00+09:00",
       "price": 233500.0,
-      "volume": 272756.0
+      "volume": 272758.0
     },
     {
       "time": "2026-10-13T10:40:00+09:00",
@@ -290,12 +245,12 @@
     {
       "time": "2026-10-13T11:00:00+09:00",
       "price": 232000.0,
-      "volume": 214810.0
+      "volume": 214832.0
     },
     {
       "time": "2026-10-13T11:05:00+09:00",
       "price": 232500.0,
-      "volume": 294507.0
+      "volume": 294485.0
     },
     {
       "time": "2026-10-13T11:10:00+09:00",
@@ -400,12 +355,12 @@
     {
       "time": "2026-10-13T12:50:00+09:00",
       "price": 230500.0,
-      "volume": 180645.0
+      "volume": 180576.0
     },
     {
       "time": "2026-10-13T12:55:00+09:00",
       "price": 230500.0,
-      "volume": 61273.0
+      "volume": 61342.0
     },
     {
       "time": "2026-10-13T13:00:00+09:00",
@@ -505,12 +460,12 @@
     {
       "time": "2026-10-13T14:35:00+09:00",
       "price": 230250.0,
-      "volume": 309199.0
+      "volume": 309247.0
     },
     {
       "time": "2026-10-13T14:40:00+09:00",
       "price": 230500.0,
-      "volume": 269425.0
+      "volume": 269377.0
     },
     {
       "time": "2026-10-13T14:45:00+09:00",
@@ -537,21 +492,8 @@
       "cum_before": 0.0,
       "cum_after": 0.0020703933747412417,
       "session_share": 1.6759195003469811,
-      "score": 17.74811913933705,
-      "news": [
-        {
-          "time": "2026-10-13T09:04:33+09:00",
-          "title": "삼성전자, OCP서 AI 메모리·스토리지 혁신 청사진 공개",
-          "source": "전자신문",
-          "link": "https://news.google.com/rss/articles/CBMiTkFVX3lxTFBpUXR0cXR2U05yOWowYnU5eGNTUnFUdVBuYllsOUFzczJPWTRaU2loV1RKNXEyVk5nUnY5YUxscklvU19rc0dSLV8tT0ZuZw?oc=5"
-        },
-        {
-          "time": "2026-10-13T08:55:41+09:00",
-          "title": "삼성전자, 반도체 협력사 5만8000명에 '감사'…연말까지 상생 행사",
-          "source": "전자신문",
-          "link": "https://news.google.com/rss/articles/CBMiTkFVX3lxTFBSZzVpTHB3Qkt2QkRxVlRWS3dNVU9LdVpBSG5FVlZaYUZXTWJYQ05PTERCUllRWXhXR0dpVmZPaU5lR2Z6SjlEeVliNHg3dw?oc=5"
-        }
-      ],
+      "score": 17.748273560807228,
+      "news": [],
       "price": 242000.0,
       "kind": "turn_down"
     }
@@ -562,33 +504,9 @@
       "title": "삼성전자 '역대급 실적'도 소용없었다…힘 빠진 코스피, 왜?",
       "source": "뉴시스",
       "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE55SHNMNlRRUFpFOHpmSGVRVXVQUFlNNmhHMC12V2o2eUUxZmt6ck1Zc1ZpLURmMXVoZVFNR01DSFpOekw0bFJHbGZON3F0alBfUmhSU0xxUDFCbEczNHRQetIBeEFVX3lxTE5oYlhUS2dmYV9mTF85dEM3aHdhVTE0Zm5lY3E4ajVfaXg2Y3NWN0hJWHZhRVdRMS1yQklSajFWak81Wmg2R2tzRWs4SmR1ZTJ4WG9PNjRiMzlEOVhYWlZoM01tT0tvQ3lHaVhaZm9mQ242SDctSDRNeg?oc=5"
-    },
-    {
-      "time": "2026-10-13T08:55:41+09:00",
-      "title": "삼성전자, 반도체 협력사 5만8000명에 '감사'…연말까지 상생 행사",
-      "source": "전자신문",
-      "link": "https://news.google.com/rss/articles/CBMiTkFVX3lxTFBSZzVpTHB3Qkt2QkRxVlRWS3dNVU9LdVpBSG5FVlZaYUZXTWJYQ05PTERCUllRWXhXR0dpVmZPaU5lR2Z6SjlEeVliNHg3dw?oc=5"
     }
   ],
   "top_news": [
-    {
-      "time": "2026-10-13T10:12:57+09:00",
-      "title": "HBM 다음은?...삼성전자, 차세대 AI 메모리 제품군 확장",
-      "source": "지디넷코리아",
-      "link": "https://news.google.com/rss/articles/CBMiVkFVX3lxTE12b2FRWHAwLVAyV2RiNnV6d2ZpeDVkQ1h4Z0x0Q01DRnNsYWRheVBwUE5xcnhvOXJnRzl2SEZYNjR1ODhWNTJSNzBUaW5tRExNOGZ6NkRB?oc=5"
-    },
-    {
-      "time": "2026-10-13T11:32:59+09:00",
-      "title": "삼성전자, HBM 넘어 메모리 확장·저장까지 공략…AI 전략 다변화",
-      "source": "녹색경제신문",
-      "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE5aelBsTFVzWUNFUlhSZGtvN1c4bzkzMTlOcVVYMndlTGpETENqMzlLUGpyeXpLbzcxbEdGdUlYQktxNDhUX0UzMVhncm00TzdkMmg5MFgtUlVsYzNnLTREWW85a2h2di04?oc=5"
-    },
-    {
-      "time": "2026-10-13T15:40:48+09:00",
-      "title": "[IT/반도체] 삼성전자, '2026 OCP 서밋'서 차세대 AI 메모리 기술 공개…AMD 등 글로벌 협력 강화",
-      "source": "굿모닝베트남미디어",
-      "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTFB5a2hLNERRMC0tYVZRVXotWWQzZ2hpV0k4eWJaX2liNUZIVEhxWXNXSXhQVXBTVWZPRFdRV2h4TGRPZUVxTTZYMVZRcWpNLVhmX1JLWmRPVXU3eWJnMTFDUlpySWF5MndDMUp0SnFHZUM?oc=5"
-    },
     {
       "time": "2026-10-13T16:12:49+09:00",
       "title": "삼성전자·SK하이닉스 주가 급락, 외국인 대량 매도로 반도체 시장 '불안'",
@@ -596,16 +514,34 @@
       "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE45UFJEdmFlZkNRVDlIX2FvRkVySTVvY0FnQzMzWUFyekpIcDQyRjgwa1BtVGV2Yy15bXdKOW9DVllyOVVLMjNIU1lXV3VOYTJrTWhPeWNkZVJLRENJb0Iya1R5Ui1KVFlR?oc=5"
     },
     {
-      "time": "2026-10-13T17:00:42+09:00",
-      "title": "중국 CXMT 'D램 신기술 확보' 주장에 삼성전자 SK하이닉스 주가 하락, 해외 증권사는 회의적",
+      "time": "2026-10-13T18:37:00+09:00",
+      "title": "삼성전자 'HBM5·CXL' 새 AI 메모리 전략 공개",
+      "source": "인천일보",
+      "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE9EZUowUE9CZDRSalFIT0MwNXpYc1FqVlRyZHNVOTFDRE5vOFN5eGdUUU9ud2FIdVpvUFFTOWU4bDl1NlM1NThyRDlpM3lrd01JcU9ZWjFxdi1fVHVCbHpPQVlJRk1vT0JISHdDYU1WNkY?oc=5"
+    },
+    {
+      "time": "2026-10-13T17:48:47+09:00",
+      "title": "[오늘의 주목주] '반도체 투심 위축' SK스퀘어 주가 12%대 내려, 코스피 외국인 4조5천억 순매도에 6030선 급락",
       "source": "비즈니스포스트",
-      "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTE1Bd1drektXLVkzZUhmYkdDdHFPSE9yT2NFdWNRM29DZDNPRjRBNUV5TXBfVHZKLUdLd1VEaWJNRk51T0dlQzM0VW5OcUhtbGpOV3FJXzYxWURadTBVVkhmSDE0SGlYLVRLUlNiVjh3aGZvOEU?oc=5"
+      "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTFA3OXlyVFNlOHphMmNUeG9RN2VJUTlSaVpjbm50Q0UtZm9wTW41ZktNT2VETndJMFlhZ0ZuRW51ZmlxOFpYWV8tdEhmdG1FTjhobEVpQ1AtZmFaNHdIb3gxd3hZM1N4andOaEZaa2d2d2R2aTQ?oc=5"
     },
     {
       "time": "2026-10-13T07:00:00+09:00",
       "title": "삼성전자 '역대급 실적'도 소용없었다…힘 빠진 코스피, 왜?",
       "source": "뉴시스",
       "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE55SHNMNlRRUFpFOHpmSGVRVXVQUFlNNmhHMC12V2o2eUUxZmt6ck1Zc1ZpLURmMXVoZVFNR01DSFpOekw0bFJHbGZON3F0alBfUmhSU0xxUDFCbEczNHRQetIBeEFVX3lxTE5oYlhUS2dmYV9mTF85dEM3aHdhVTE0Zm5lY3E4ajVfaXg2Y3NWN0hJWHZhRVdRMS1yQklSajFWak81Wmg2R2tzRWs4SmR1ZTJ4WG9PNjRiMzlEOVhYWlZoM01tT0tvQ3lHaVhaZm9mQ242SDctSDRNeg?oc=5"
+    },
+    {
+      "time": "2026-10-13T15:12:00+09:00",
+      "title": "삼성화재, 삼성전자 주가하락 반영해 목표주가 ’하향’ By 알파경제 alphabiz",
+      "source": "Investing.com 한국어",
+      "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE9DRDZlVVYtN0I2Q2VoS0FySHBxOHBRVlUzWE9OMF8tbWY4bmR4b3BIdmRXaURTangteUNzR25RaFpwQXl2T0V4Y2J6aXBLR3o0c2Q5b2J2OXdVdDBSVW5BaDVwcklxUHhfM1MzT2JjWVI?oc=5"
+    },
+    {
+      "time": "2026-10-13T16:00:18+09:00",
+      "title": "삼성전자, 'OCP 글로벌 서밋 2026'서 HBM5·CXL 중심 차세대 메모리 전략 공개",
+      "source": "한국경제",
+      "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE9uRmlJbFZsLTJTR2k4M0VpWTIwSnN2eUU3cVBTM2R1UGdVTjR3ZDV3cW0tOVRHZXh3WHBhT0pXNEQ5VFhBck9TMUptak1jWmNSSGpzRXgyc1VkQQ?oc=5"
     }
   ],
   "disclosures": [
@@ -623,11 +559,12 @@
     }
   ],
   "disclosure_note": null,
-  "flows": null,
+  "flows": "외국인 -5,943,474 / 기관 +1,016,744",
   "flow_story": null,
   "flow_status": {
-    "state": "pending",
-    "detail": "최신 2026-10-12"
+    "state": "ok",
+    "detail": "naver+cache",
+    "krx_error": "pykrx 미설치"
   },
   "context": {},
   "market": {
@@ -638,9 +575,9 @@
     "steady": 41,
     "upper": 0,
     "lower": 0,
-    "individual": 22581.0,
-    "foreign": -45450.0,
-    "institution": 16901.0,
+    "individual": 23169.0,
+    "foreign": -45789.0,
+    "institution": 16685.0,
     "prev_close": 6384.24,
     "open": 6186.08,
     "high": 6198.46,

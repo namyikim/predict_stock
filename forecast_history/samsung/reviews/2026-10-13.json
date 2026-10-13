@@ -3,7 +3,7 @@
   "name": "삼성전자",
   "peer_name": "SK하이닉스",
   "session_date": "2026-10-13",
-  "generated_at": "2026-10-13 16:04 KST",
+  "generated_at": "2026-10-13 16:11 KST",
   "summary": {
     "prev_close": 262000.0,
     "open": 241500.0,
@@ -15,11 +15,11 @@
     "c2c": -0.1145038167938931,
     "high_vs_open": 0.010351966873705987,
     "low_vs_open": -0.05590062111801242,
-    "volume": 26164522.0,
-    "volume_ratio": 1.5541233000159107,
+    "volume": 26175371.0,
+    "volume_ratio": 1.554767710171077,
     "kospi_c2c": -0.05464865417190956,
     "peer_c2c": -0.14158239143367046,
-    "usdkrw_chg": -0.000580815421222014,
+    "usdkrw_chg": -0.00045419947728431165,
     "us_nights": 3,
     "sox_ret": -0.06347396339151035,
     "nasdaq_ret": -0.010631917070649699,
@@ -165,10 +165,10 @@
           "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTFBscUJnMkJVU3RGOXNhWG1OOGt1ekI5blNEWGZLUzRvUXk0UVlqZk9GaE91V3RXY29WMDhITDZyZzhNeGtBNTJJNWh6djNQdDlwWFZXbXZGUXJUenFUM2NYLdIBYEFVX3lxTFBscUJnMkJVU3RGOXNhWG1OOGt1ekI5blNEWGZLUzRvUXk0UVlqZk9GaE91V3RXY29WMDhITDZyZzhNeGtBNTJJNWh6djNQdDlwWFZXbXZGUXJUenFUM2NYLQ?oc=5"
         },
         {
-          "time": "2026-10-13T09:07:00+09:00",
-          "title": "코스피, 장중 6000선 붕괴...삼성전자 7%, SK하이닉스 9% 폭락",
-          "source": "조선일보",
-          "link": "https://news.google.com/rss/articles/CBMiiwFBVV95cUxNX1ZrR21rNE9XV3BrWmd5Z19hMUIyNlNiT3lxbFFFN21LOWxfb1dyNmpaOEROeXdiOTl5YW8zM0dqU2tmcFJLdGJtNzRJeVJ2MURlQlFVbUVtYWJwalo5MzhjaFFTb2tyM0VNSmtObFE0RzhGeGFXNDlLM2ZzdzNzRkVZR2s1XzBQVnNF?oc=5"
+          "time": "2026-10-13T08:55:41+09:00",
+          "title": "삼성전자, 반도체 협력사 5만8000명에 '감사'…연말까지 상생 행사",
+          "source": "전자신문",
+          "link": "https://news.google.com/rss/articles/CBMiTkFVX3lxTFBSZzVpTHB3Qkt2QkRxVlRWS3dNVU9LdVpBSG5FVlZaYUZXTWJYQ05PTERCUllRWXhXR0dpVmZPaU5lR2Z6SjlEeVliNHg3dw?oc=5"
         }
       ]
     }
@@ -582,10 +582,10 @@
           "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTFBscUJnMkJVU3RGOXNhWG1OOGt1ekI5blNEWGZLUzRvUXk0UVlqZk9GaE91V3RXY29WMDhITDZyZzhNeGtBNTJJNWh6djNQdDlwWFZXbXZGUXJUenFUM2NYLdIBYEFVX3lxTFBscUJnMkJVU3RGOXNhWG1OOGt1ekI5blNEWGZLUzRvUXk0UVlqZk9GaE91V3RXY29WMDhITDZyZzhNeGtBNTJJNWh6djNQdDlwWFZXbXZGUXJUenFUM2NYLQ?oc=5"
         },
         {
-          "time": "2026-10-13T09:07:00+09:00",
-          "title": "코스피, 장중 6000선 붕괴...삼성전자 7%, SK하이닉스 9% 폭락",
-          "source": "조선일보",
-          "link": "https://news.google.com/rss/articles/CBMiiwFBVV95cUxNX1ZrR21rNE9XV3BrWmd5Z19hMUIyNlNiT3lxbFFFN21LOWxfb1dyNmpaOEROeXdiOTl5YW8zM0dqU2tmcFJLdGJtNzRJeVJ2MURlQlFVbUVtYWJwalo5MzhjaFFTb2tyM0VNSmtObFE0RzhGeGFXNDlLM2ZzdzNzRkVZR2s1XzBQVnNF?oc=5"
+          "time": "2026-10-13T08:55:41+09:00",
+          "title": "삼성전자, 반도체 협력사 5만8000명에 '감사'…연말까지 상생 행사",
+          "source": "전자신문",
+          "link": "https://news.google.com/rss/articles/CBMiTkFVX3lxTFBSZzVpTHB3Qkt2QkRxVlRWS3dNVU9LdVpBSG5FVlZaYUZXTWJYQ05PTERCUllRWXhXR0dpVmZPaU5lR2Z6SjlEeVliNHg3dw?oc=5"
         }
       ],
       "price": 242000.0,
@@ -616,6 +616,12 @@
       "title": "삼성전자, 글로벌 미식 행사서 AI 주방가전 소개",
       "source": "연합뉴스",
       "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTFBscUJnMkJVU3RGOXNhWG1OOGt1ekI5blNEWGZLUzRvUXk0UVlqZk9GaE91V3RXY29WMDhITDZyZzhNeGtBNTJJNWh6djNQdDlwWFZXbXZGUXJUenFUM2NYLdIBYEFVX3lxTFBscUJnMkJVU3RGOXNhWG1OOGt1ekI5blNEWGZLUzRvUXk0UVlqZk9GaE91V3RXY29WMDhITDZyZzhNeGtBNTJJNWh6djNQdDlwWFZXbXZGUXJUenFUM2NYLQ?oc=5"
+    },
+    {
+      "time": "2026-10-13T08:55:41+09:00",
+      "title": "삼성전자, 반도체 협력사 5만8000명에 '감사'…연말까지 상생 행사",
+      "source": "전자신문",
+      "link": "https://news.google.com/rss/articles/CBMiTkFVX3lxTFBSZzVpTHB3Qkt2QkRxVlRWS3dNVU9LdVpBSG5FVlZaYUZXTWJYQ05PTERCUllRWXhXR0dpVmZPaU5lR2Z6SjlEeVliNHg3dw?oc=5"
     }
   ],
   "top_news": [
@@ -673,9 +679,9 @@
     "steady": 41,
     "upper": 0,
     "lower": 0,
-    "individual": 22341.0,
-    "foreign": -45186.0,
-    "institution": 16892.0,
+    "individual": 22431.0,
+    "foreign": -45284.0,
+    "institution": 16898.0,
     "prev_close": 6384.24,
     "open": 6186.08,
     "high": 6198.46,

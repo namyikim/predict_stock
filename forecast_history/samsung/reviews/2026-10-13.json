@@ -3,7 +3,7 @@
   "name": "삼성전자",
   "peer_name": "SK하이닉스",
   "session_date": "2026-10-13",
-  "generated_at": "2026-10-13 16:46 KST",
+  "generated_at": "2026-10-13 17:31 KST",
   "summary": {
     "prev_close": 262000.0,
     "open": 241500.0,
@@ -15,11 +15,11 @@
     "c2c": -0.1145038167938931,
     "high_vs_open": 0.010351966873705987,
     "low_vs_open": -0.05590062111801242,
-    "volume": 26292377.0,
-    "volume_ratio": 1.5617176460744222,
+    "volume": 26427186.0,
+    "volume_ratio": 1.569725046628189,
     "kospi_c2c": -0.05464865417190956,
     "peer_c2c": -0.14158239143367046,
-    "usdkrw_chg": -0.0005286420171873862,
+    "usdkrw_chg": -0.0012435267257807636,
     "us_nights": 3,
     "sox_ret": -0.06347396339151035,
     "nasdaq_ret": -0.010631917070649699,
@@ -73,26 +73,26 @@
     "prior_5d": -0.02420856610800748,
     "ma_touches": [],
     "micron_ah": {
-      "regular_close": 988.9299926757812,
-      "last": 975.2,
-      "ret": -0.013883685172325966,
-      "low_ret": -0.013934952704280246,
-      "high_ret": 5.164495218590304e-06,
-      "last_time": "2026-10-13T08:55:00+09:00"
+      "regular_close": 988.969970703125,
+      "last": 989.04,
+      "ret": 7.081033696620942e-05,
+      "low_ret": 7.081033696620942e-05,
+      "high_ret": 7.081033696620942e-05,
+      "last_time": "2026-10-13T05:00:00+09:00"
     },
     "nvidia_ah": {
-      "regular_close": 226.42999267578125,
-      "last": 224.4463,
-      "ret": -0.008760732853185349,
-      "low_ret": -0.008760732853185349,
-      "high_ret": -0.0005740965419159805,
-      "last_time": "2026-10-13T08:55:00+09:00"
+      "regular_close": 226.4199981689453,
+      "last": 226.32,
+      "ret": -0.00044164901401821943,
+      "low_ret": -0.00044164901401821943,
+      "high_ret": -0.00044164901401821943,
+      "last_time": "2026-10-13T05:00:00+09:00"
     },
     "session_cross": {
       "NQ=F": {
         "label": "나스닥100 선물",
-        "ret": -0.004753561114896665,
-        "after_high": -0.004753561114896665
+        "ret": -0.004753522554896694,
+        "after_high": -0.004753522554896694
       },
       "ZN=F": {
         "label": "미 10년물 국채 선물",
@@ -138,7 +138,7 @@
       "cum_before": 0.0,
       "cum_after": 0.0020703933747412417,
       "session_share": 1.6759195003469811,
-      "score": 17.748273560807228,
+      "score": 17.74811913933705,
       "news": [
         {
           "time": "2026-10-13T09:04:33+09:00",
@@ -151,18 +151,6 @@
           "title": "삼성전자, 반도체 협력사 5만8000명에 '감사'…연말까지 상생 행사",
           "source": "전자신문",
           "link": "https://news.google.com/rss/articles/CBMiTkFVX3lxTFBSZzVpTHB3Qkt2QkRxVlRWS3dNVU9LdVpBSG5FVlZaYUZXTWJYQ05PTERCUllRWXhXR0dpVmZPaU5lR2Z6SjlEeVliNHg3dw?oc=5"
-        },
-        {
-          "time": "2026-10-13T09:07:00+09:00",
-          "title": "코스피, 장중 6000선 붕괴...삼성전자 7%, SK하이닉스 9% 폭락",
-          "source": "조선일보",
-          "link": "https://news.google.com/rss/articles/CBMiiwFBVV95cUxNX1ZrR21rNE9XV3BrWmd5Z19hMUIyNlNiT3lxbFFFN21LOWxfb1dyNmpaOEROeXdiOTl5YW8zM0dqU2tmcFJLdGJtNzRJeVJ2MURlQlFVbUVtYWJwalo5MzhjaFFTb2tyM0VNSmtObFE0RzhGeGFXNDlLM2ZzdzNzRkVZR2s1XzBQVnNF?oc=5"
-        },
-        {
-          "time": "2026-10-13T09:01:41+09:00",
-          "title": "삼성전자, DS 협력사 임직원 5.8만명에 감사 인사…커피차·영화 이벤트",
-          "source": "지디넷코리아",
-          "link": "https://news.google.com/rss/articles/CBMiVkFVX3lxTFBSdjhOM3AwUHRFVGRkV1JnYU94R183Vkd6RzdPeUtoSjEyMVZUd3VxVHdvZzZzS2dGeVl4N1RNLWs0TG95UUZfd1lwZWVRcXlFVVNjczZn?oc=5"
         }
       ]
     }
@@ -202,12 +190,12 @@
     {
       "time": "2026-10-13T09:20:00+09:00",
       "price": 239250.0,
-      "volume": 358901.0
+      "volume": 358906.0
     },
     {
       "time": "2026-10-13T09:25:00+09:00",
       "price": 237500.0,
-      "volume": 293231.0
+      "volume": 293226.0
     },
     {
       "time": "2026-10-13T09:30:00+09:00",
@@ -227,12 +215,12 @@
     {
       "time": "2026-10-13T09:45:00+09:00",
       "price": 238500.0,
-      "volume": 252242.0
+      "volume": 252329.0
     },
     {
       "time": "2026-10-13T09:50:00+09:00",
       "price": 235750.0,
-      "volume": 577216.0
+      "volume": 577129.0
     },
     {
       "time": "2026-10-13T09:55:00+09:00",
@@ -247,12 +235,12 @@
     {
       "time": "2026-10-13T10:05:00+09:00",
       "price": 234750.0,
-      "volume": 566250.0
+      "volume": 566245.0
     },
     {
       "time": "2026-10-13T10:10:00+09:00",
       "price": 236000.0,
-      "volume": 468566.0
+      "volume": 468571.0
     },
     {
       "time": "2026-10-13T10:15:00+09:00",
@@ -272,12 +260,12 @@
     {
       "time": "2026-10-13T10:30:00+09:00",
       "price": 233500.0,
-      "volume": 248283.0
+      "volume": 248285.0
     },
     {
       "time": "2026-10-13T10:35:00+09:00",
       "price": 233500.0,
-      "volume": 272758.0
+      "volume": 272756.0
     },
     {
       "time": "2026-10-13T10:40:00+09:00",
@@ -302,12 +290,12 @@
     {
       "time": "2026-10-13T11:00:00+09:00",
       "price": 232000.0,
-      "volume": 214832.0
+      "volume": 214810.0
     },
     {
       "time": "2026-10-13T11:05:00+09:00",
       "price": 232500.0,
-      "volume": 294485.0
+      "volume": 294507.0
     },
     {
       "time": "2026-10-13T11:10:00+09:00",
@@ -412,12 +400,12 @@
     {
       "time": "2026-10-13T12:50:00+09:00",
       "price": 230500.0,
-      "volume": 180576.0
+      "volume": 180645.0
     },
     {
       "time": "2026-10-13T12:55:00+09:00",
       "price": 230500.0,
-      "volume": 61342.0
+      "volume": 61273.0
     },
     {
       "time": "2026-10-13T13:00:00+09:00",
@@ -517,12 +505,12 @@
     {
       "time": "2026-10-13T14:35:00+09:00",
       "price": 230250.0,
-      "volume": 309247.0
+      "volume": 309199.0
     },
     {
       "time": "2026-10-13T14:40:00+09:00",
       "price": 230500.0,
-      "volume": 269377.0
+      "volume": 269425.0
     },
     {
       "time": "2026-10-13T14:45:00+09:00",
@@ -549,7 +537,7 @@
       "cum_before": 0.0,
       "cum_after": 0.0020703933747412417,
       "session_share": 1.6759195003469811,
-      "score": 17.748273560807228,
+      "score": 17.74811913933705,
       "news": [
         {
           "time": "2026-10-13T09:04:33+09:00",
@@ -562,18 +550,6 @@
           "title": "삼성전자, 반도체 협력사 5만8000명에 '감사'…연말까지 상생 행사",
           "source": "전자신문",
           "link": "https://news.google.com/rss/articles/CBMiTkFVX3lxTFBSZzVpTHB3Qkt2QkRxVlRWS3dNVU9LdVpBSG5FVlZaYUZXTWJYQ05PTERCUllRWXhXR0dpVmZPaU5lR2Z6SjlEeVliNHg3dw?oc=5"
-        },
-        {
-          "time": "2026-10-13T09:07:00+09:00",
-          "title": "코스피, 장중 6000선 붕괴...삼성전자 7%, SK하이닉스 9% 폭락",
-          "source": "조선일보",
-          "link": "https://news.google.com/rss/articles/CBMiiwFBVV95cUxNX1ZrR21rNE9XV3BrWmd5Z19hMUIyNlNiT3lxbFFFN21LOWxfb1dyNmpaOEROeXdiOTl5YW8zM0dqU2tmcFJLdGJtNzRJeVJ2MURlQlFVbUVtYWJwalo5MzhjaFFTb2tyM0VNSmtObFE0RzhGeGFXNDlLM2ZzdzNzRkVZR2s1XzBQVnNF?oc=5"
-        },
-        {
-          "time": "2026-10-13T09:01:41+09:00",
-          "title": "삼성전자, DS 협력사 임직원 5.8만명에 감사 인사…커피차·영화 이벤트",
-          "source": "지디넷코리아",
-          "link": "https://news.google.com/rss/articles/CBMiVkFVX3lxTFBSdjhOM3AwUHRFVGRkV1JnYU94R183Vkd6RzdPeUtoSjEyMVZUd3VxVHdvZzZzS2dGeVl4N1RNLWs0TG95UUZfd1lwZWVRcXlFVVNjczZn?oc=5"
         }
       ],
       "price": 242000.0,
@@ -620,19 +596,32 @@
       "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE45UFJEdmFlZkNRVDlIX2FvRkVySTVvY0FnQzMzWUFyekpIcDQyRjgwa1BtVGV2Yy15bXdKOW9DVllyOVVLMjNIU1lXV3VOYTJrTWhPeWNkZVJLRENJb0Iya1R5Ui1KVFlR?oc=5"
     },
     {
+      "time": "2026-10-13T17:00:42+09:00",
+      "title": "중국 CXMT 'D램 신기술 확보' 주장에 삼성전자 SK하이닉스 주가 하락, 해외 증권사는 회의적",
+      "source": "비즈니스포스트",
+      "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTE1Bd1drektXLVkzZUhmYkdDdHFPSE9yT2NFdWNRM29DZDNPRjRBNUV5TXBfVHZKLUdLd1VEaWJNRk51T0dlQzM0VW5OcUhtbGpOV3FJXzYxWURadTBVVkhmSDE0SGlYLVRLUlNiVjh3aGZvOEU?oc=5"
+    },
+    {
       "time": "2026-10-13T07:00:00+09:00",
       "title": "삼성전자 '역대급 실적'도 소용없었다…힘 빠진 코스피, 왜?",
       "source": "뉴시스",
       "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE55SHNMNlRRUFpFOHpmSGVRVXVQUFlNNmhHMC12V2o2eUUxZmt6ck1Zc1ZpLURmMXVoZVFNR01DSFpOekw0bFJHbGZON3F0alBfUmhSU0xxUDFCbEczNHRQetIBeEFVX3lxTE5oYlhUS2dmYV9mTF85dEM3aHdhVTE0Zm5lY3E4ajVfaXg2Y3NWN0hJWHZhRVdRMS1yQklSajFWak81Wmg2R2tzRWs4SmR1ZTJ4WG9PNjRiMzlEOVhYWlZoM01tT0tvQ3lHaVhaZm9mQ242SDctSDRNeg?oc=5"
-    },
-    {
-      "time": "2026-10-13T09:04:33+09:00",
-      "title": "삼성전자, OCP서 AI 메모리·스토리지 혁신 청사진 공개",
-      "source": "전자신문",
-      "link": "https://news.google.com/rss/articles/CBMiTkFVX3lxTFBpUXR0cXR2U05yOWowYnU5eGNTUnFUdVBuYllsOUFzczJPWTRaU2loV1RKNXEyVk5nUnY5YUxscklvU19rc0dSLV8tT0ZuZw?oc=5"
     }
   ],
-  "disclosures": [],
+  "disclosures": [
+    {
+      "report_nm": "최대주주등소유주식변동신고서",
+      "rcept_dt": "20261013",
+      "rcept_no": "20261013800651",
+      "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261013800651"
+    },
+    {
+      "report_nm": "임원ㆍ주요주주특정증권등거래계획보고서",
+      "rcept_dt": "20261013",
+      "rcept_no": "20261013000379",
+      "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261013000379"
+    }
+  ],
   "disclosure_note": null,
   "flows": null,
   "flow_story": null,
@@ -649,8 +638,8 @@
     "steady": 41,
     "upper": 0,
     "lower": 0,
-    "individual": 22418.0,
-    "foreign": -45287.0,
+    "individual": 22581.0,
+    "foreign": -45450.0,
     "institution": 16901.0,
     "prev_close": 6384.24,
     "open": 6186.08,

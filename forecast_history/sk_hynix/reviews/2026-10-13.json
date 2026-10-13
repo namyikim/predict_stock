@@ -3,7 +3,7 @@
   "name": "SK하이닉스",
   "peer_name": "삼성전자",
   "session_date": "2026-10-13",
-  "generated_at": "2026-10-13 16:04 KST",
+  "generated_at": "2026-10-13 16:11 KST",
   "summary": {
     "prev_close": 1681000.0,
     "open": 1538000.0,
@@ -15,11 +15,11 @@
     "c2c": -0.14158239143367046,
     "high_vs_open": 0.01040312093628093,
     "low_vs_open": -0.07347204161248377,
-    "volume": 5598337.0,
-    "volume_ratio": 1.7680834232481333,
+    "volume": 5599081.0,
+    "volume_ratio": 1.7683183955384574,
     "kospi_c2c": -0.05464865417190956,
     "peer_c2c": -0.1145038167938931,
-    "usdkrw_chg": -0.000580815421222014,
+    "usdkrw_chg": -0.0006552579611251996,
     "us_nights": 3,
     "sox_ret": -0.06347396339151035,
     "nasdaq_ret": -0.010631917070649699,
@@ -189,12 +189,6 @@
           "link": "https://news.google.com/rss/articles/CBMiggFBVV95cUxNZ1RNbUk2ZFY2eDZ3LUF1Y1EwYWlOQUJ3SnlxZE9lMUtDMjNiamx2OHBabWxvQWJINkN5dGl3eVd3U19zalpydm90Q0wzWGdOV0VKTFlaN19lYlg1SC1taTlnaGtLQ1o5LWJ2X2FuVzhXTTQxcUtUZGlPSUtWcDJWTzlR?oc=5"
         },
         {
-          "time": "2026-10-13T14:12:03+09:00",
-          "title": "SK하이닉스 52주 최고가 대비 51.4% 하락… 9% 급락에도 증권사 목표주가 400만 원 유지",
-          "source": "경제시그널",
-          "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTE1tS2dKeTFPSzQxQUhMWnVfNjVxeS1ub3N5TkNNTmdkSlBjNHRwUHV6U0tYN2J3QzB2V2V2bXZ4YjVFNG9ub3RZcUo3VWZRa01iZzRfMDlWb0VyY194NWZJbGlUcFFuSVVrektHcTFNT1ZLMlU?oc=5"
-        },
-        {
           "time": "2026-10-13T13:53:57+09:00",
           "title": "\"SK하이닉스 3분기 영업익 77.9조 전망..D램 가격·HBM 출하 예상 웃돌아”",
           "source": "포쓰저널",
@@ -211,6 +205,12 @@
           "title": "두 달 만에 또 '창신메모리 쇼크'…삼성전자·SK하이닉스 급락에 코스피 6천선 붕괴",
           "source": "한국정경신문",
           "link": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE5yZUwwSXZmamtDaUxscVI4M2FXWkNYNG51bWtvcXhBT1pWVDNRVHdaZTRod19sdTBxLVBrMmUtbnlnSUYtMGdTNlVXMW5iT2NhYkE?oc=5"
+        },
+        {
+          "time": "2026-10-13T13:15:15+09:00",
+          "title": "최태원, 도쿄포럼서 한일 반도체 협력 모색···SK하이닉스 日 거점 주목",
+          "source": "뉴스웨이",
+          "link": "https://news.google.com/rss/articles/CBMiakFVX3lxTE9sVXFYVXhnd09yNHRKd3VMWWhBMTBwNjB1U24yM3VEcDdBV01GeUJ0a1h6M3l1ckYtb0ZWcjRrMGxyZkluR0ttZmhBZDNZcmotQ0h3YTVRVUFnSTc3ZlJJOVdFLVZXQWg5QXc?oc=5"
         }
       ]
     },
@@ -237,6 +237,12 @@
           "link": "https://news.google.com/rss/articles/CBMie0FVX3lxTE5fWXVCOUo4ZVhsTnEyVjdRSlREVnBzNVVZb1JiUHhiQ0lyMS1kSlIzQXhIenRuQmhzcXJ6RDhqazZWaVh2TW56NkFKa1NKV2JEakZfc015T3AxWmlGczY2LXZKVF9IcTRpY3ZOcWdIaGpncGYtc3JpSVVzUdIBgAFBVV95cUxPY2hXSVJvNlc3TnM4NGZXR0ZfSlk1UzQ0RXVqMGhmQ2RJUGI5cnRzV0FGRFQ5aDdkZFpmTDE5RVRkS21uVVoxM2JYMURPY2tLZnU1SHJsckFUTEE5YUs5c2g5SlNLZl9USzZCZ2NQdjNIQVdhX2JKRFNxWWVvN2dBVA?oc=5"
         },
         {
+          "time": "2026-10-13T09:40:33+09:00",
+          "title": "코스피, 외국인 매도 폭탄에 6100선 붕괴…삼성전자·SK하이닉스 5%대 급락",
+          "source": "산경투데이",
+          "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE9uOFFlZXZ3Y1VseXkxVEs3Y2p4LWltQkx5UFRRWmFsZG55NG1OTW5OZktJYm9lVlFtdEFKN3RNWTZTa24xajl1NUdHQTl6cFl5SVZBTjhrc0txQlNQU2J4V09zaHZPZ0RzNzZud1kwRm7SAXRBVV95cUxOZ3VkazREOHZqb1dNYXhBbnJ3ajE1WXcxOVFXc3JpVTRJX1VaTGdlZ01kTG1Zd1dWN1ZacURIMzdkU0o3MnhWdEY0SEJjVlBsWGNzRk5iWlpfVGZWY052OEVmY3U1QVM4dTdrQVdHM1BCN2oteg?oc=5"
+        },
+        {
           "time": "2026-10-13T08:24:42+09:00",
           "title": "주가는 연일 떨어지는데…SK하이닉스 목표가 400만원 유지하는 이유",
           "source": "매일경제 마켓",
@@ -247,12 +253,6 @@
           "title": "[리포트 브리핑]SK하이닉스, '컨센서스에 부합' 목표가 3,600,000원 - 하나증권",
           "source": "뉴스핌",
           "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE1IQ3JqZGY0TGRma0NWZ2NoaUE4V3FmaHU2Q2RtMVR0b195TDFXSkVkZ3pGNm9jN0k2NGxYcmlHR3FsZWFRZ0JMeHpTSndLX1N5SWdFU0tid3F0UVp3?oc=5"
-        },
-        {
-          "time": "2026-10-13T08:54:43+09:00",
-          "title": "SK하이닉스 목표가 360만원 유지, 왜?…\"실적도 주주환원도 기대\"",
-          "source": "뉴시스",
-          "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE80cm8yUi02dzVEM0U3NmJIQ2ZkUE9CZXE5aUxVQzdndEhoLUZGU0lqckxzMkhENks2OXJZQTBVeVhwMzVvYlpaX2RtZG0zQzFtbm90OEphejJlLUotdTU4eNIBeEFVX3lxTE9nRXMyV2gxd1N5ZjhraklWWlA4Y3VSbjM4eG5ZRGRGS0d3RWgxd1BxVGVlaW40eVkwekFmTkpmX04tV0huYUNmd3RVblA4LXhBTFF1MkRaRUNON2gtWWtBUHRZaWY0cGU5MU1fY19uc0VYNUh6N1U1eQ?oc=5"
         }
       ]
     }
@@ -693,6 +693,12 @@
           "link": "https://news.google.com/rss/articles/CBMie0FVX3lxTE5fWXVCOUo4ZVhsTnEyVjdRSlREVnBzNVVZb1JiUHhiQ0lyMS1kSlIzQXhIenRuQmhzcXJ6RDhqazZWaVh2TW56NkFKa1NKV2JEakZfc015T3AxWmlGczY2LXZKVF9IcTRpY3ZOcWdIaGpncGYtc3JpSVVzUdIBgAFBVV95cUxPY2hXSVJvNlc3TnM4NGZXR0ZfSlk1UzQ0RXVqMGhmQ2RJUGI5cnRzV0FGRFQ5aDdkZFpmTDE5RVRkS21uVVoxM2JYMURPY2tLZnU1SHJsckFUTEE5YUs5c2g5SlNLZl9USzZCZ2NQdjNIQVdhX2JKRFNxWWVvN2dBVA?oc=5"
         },
         {
+          "time": "2026-10-13T09:40:33+09:00",
+          "title": "코스피, 외국인 매도 폭탄에 6100선 붕괴…삼성전자·SK하이닉스 5%대 급락",
+          "source": "산경투데이",
+          "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE9uOFFlZXZ3Y1VseXkxVEs3Y2p4LWltQkx5UFRRWmFsZG55NG1OTW5OZktJYm9lVlFtdEFKN3RNWTZTa24xajl1NUdHQTl6cFl5SVZBTjhrc0txQlNQU2J4V09zaHZPZ0RzNzZud1kwRm7SAXRBVV95cUxOZ3VkazREOHZqb1dNYXhBbnJ3ajE1WXcxOVFXc3JpVTRJX1VaTGdlZ01kTG1Zd1dWN1ZacURIMzdkU0o3MnhWdEY0SEJjVlBsWGNzRk5iWlpfVGZWY052OEVmY3U1QVM4dTdrQVdHM1BCN2oteg?oc=5"
+        },
+        {
           "time": "2026-10-13T08:24:42+09:00",
           "title": "주가는 연일 떨어지는데…SK하이닉스 목표가 400만원 유지하는 이유",
           "source": "매일경제 마켓",
@@ -703,12 +709,6 @@
           "title": "[리포트 브리핑]SK하이닉스, '컨센서스에 부합' 목표가 3,600,000원 - 하나증권",
           "source": "뉴스핌",
           "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE1IQ3JqZGY0TGRma0NWZ2NoaUE4V3FmaHU2Q2RtMVR0b195TDFXSkVkZ3pGNm9jN0k2NGxYcmlHR3FsZWFRZ0JMeHpTSndLX1N5SWdFU0tid3F0UVp3?oc=5"
-        },
-        {
-          "time": "2026-10-13T08:54:43+09:00",
-          "title": "SK하이닉스 목표가 360만원 유지, 왜?…\"실적도 주주환원도 기대\"",
-          "source": "뉴시스",
-          "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE80cm8yUi02dzVEM0U3NmJIQ2ZkUE9CZXE5aUxVQzdndEhoLUZGU0lqckxzMkhENks2OXJZQTBVeVhwMzVvYlpaX2RtZG0zQzFtbm90OEphejJlLUotdTU4eNIBeEFVX3lxTE9nRXMyV2gxd1N5ZjhraklWWlA4Y3VSbjM4eG5ZRGRGS0d3RWgxd1BxVGVlaW40eVkwekFmTkpmX04tV0huYUNmd3RVblA4LXhBTFF1MkRaRUNON2gtWWtBUHRZaWY0cGU5MU1fY19uc0VYNUh6N1U1eQ?oc=5"
         }
       ],
       "price": 1488000.0,
@@ -731,12 +731,6 @@
           "link": "https://news.google.com/rss/articles/CBMiggFBVV95cUxNZ1RNbUk2ZFY2eDZ3LUF1Y1EwYWlOQUJ3SnlxZE9lMUtDMjNiamx2OHBabWxvQWJINkN5dGl3eVd3U19zalpydm90Q0wzWGdOV0VKTFlaN19lYlg1SC1taTlnaGtLQ1o5LWJ2X2FuVzhXTTQxcUtUZGlPSUtWcDJWTzlR?oc=5"
         },
         {
-          "time": "2026-10-13T14:12:03+09:00",
-          "title": "SK하이닉스 52주 최고가 대비 51.4% 하락… 9% 급락에도 증권사 목표주가 400만 원 유지",
-          "source": "경제시그널",
-          "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTE1tS2dKeTFPSzQxQUhMWnVfNjVxeS1ub3N5TkNNTmdkSlBjNHRwUHV6U0tYN2J3QzB2V2V2bXZ4YjVFNG9ub3RZcUo3VWZRa01iZzRfMDlWb0VyY194NWZJbGlUcFFuSVVrektHcTFNT1ZLMlU?oc=5"
-        },
-        {
           "time": "2026-10-13T13:53:57+09:00",
           "title": "\"SK하이닉스 3분기 영업익 77.9조 전망..D램 가격·HBM 출하 예상 웃돌아”",
           "source": "포쓰저널",
@@ -753,6 +747,12 @@
           "title": "두 달 만에 또 '창신메모리 쇼크'…삼성전자·SK하이닉스 급락에 코스피 6천선 붕괴",
           "source": "한국정경신문",
           "link": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE5yZUwwSXZmamtDaUxscVI4M2FXWkNYNG51bWtvcXhBT1pWVDNRVHdaZTRod19sdTBxLVBrMmUtbnlnSUYtMGdTNlVXMW5iT2NhYkE?oc=5"
+        },
+        {
+          "time": "2026-10-13T13:15:15+09:00",
+          "title": "최태원, 도쿄포럼서 한일 반도체 협력 모색···SK하이닉스 日 거점 주목",
+          "source": "뉴스웨이",
+          "link": "https://news.google.com/rss/articles/CBMiakFVX3lxTE9sVXFYVXhnd09yNHRKd3VMWWhBMTBwNjB1U24yM3VEcDdBV01GeUJ0a1h6M3l1ckYtb0ZWcjRrMGxyZkluR0ttZmhBZDNZcmotQ0h3YTVRVUFnSTc3ZlJJOVdFLVZXQWg5QXc?oc=5"
         }
       ],
       "price": 1441000.0,
@@ -760,12 +760,6 @@
     }
   ],
   "overnight_news": [
-    {
-      "time": "2026-10-13T05:30:00+09:00",
-      "title": "HBM 그 다음은?…삼성·SK하이닉스, 차세대 AI 메모리 기술 경쟁",
-      "source": "뉴시스",
-      "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE9yRVpBZUhtNldfay1SY2w4akJ0ZWJrQTE1OEJTSE1jdVRpSHJrUGd1azg0Qzg1a3Y2ekVyeHgxM1B0STJMQXQySGtjU09SRGdpSjFIcWZXWEFPdVBzUmFhcdIBeEFVX3lxTE5PaXI1aS1mMlJFbzhtQjZYS1k0N2h2akZybTB4TDN3WlVBZzIyeVRkdnNOVy1zLVh6N2E5eEM3S1NFVDhvcWZhdDNKSDhJRzhGM19NMldQbU8zNFpTTk1tcVVaeGVyd3J2S3dTOHM4eGJZUG5UQkNCaQ?oc=5"
-    },
     {
       "time": "2026-10-13T08:02:02+09:00",
       "title": "\"내년 영업익 405조\" SK하이닉스, 증권가 낙관론에도 마이크론보다 저평가",
@@ -785,10 +779,16 @@
       "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTFBqbjhTWS12VXRNR3BEa3hocU9TNzJFSGF2MXpCVUVYY1psdkZEUHBjVjE0SWhfTzFOOXg4V1EzamhjNFhmRmRyd1oyZGwwdW5fa3RBSHBONjVNOW5POFJPbGg2dDk0ZXIy0gFuQVVfeXFMTU5SVENrSGZ6TndTUjlUeXNUMy1RXzdOWXZEWFZQVllfbFNPNkluQkZEM2M3eWdqTnRmeGZBb05fUC1nMWsyV1YzZFdzU2VCTFpvWWszWmZPS2g4VC1Cd2I3aThVajZmSG40YUtwSnc?oc=5"
     },
     {
-      "time": "2026-10-13T05:45:00+09:00",
-      "title": "\"삼성·SK하이닉스 잡는다\"… 中 CXMT, 차세대 '4F² DRAM' 핵심 진전 발표",
-      "source": "글로벌이코노믹",
-      "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxNb1lmLWl4N0JwZXE1cWs2UVpsUzBmOVEwS2RCQW5MZUlrbkNNYjhETkJwZThfUzQtSzN5SmJ0Q1QybkFhSk40NzlLbVRKUWpoVFlHT1c5UktOSmVpeWwxTVJXNzhhaHVrVU5qQ0txaklXcnJKNm8wa3Z6LUtXYkprbzZkZ2hjbkRf?oc=5"
+      "time": "2026-10-13T07:00:02+09:00",
+      "title": "이익률 80% 넘보는 K-메모리…SK하이닉스로 이어질까",
+      "source": "비즈워치",
+      "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE5GMjA5OHhsNlIyeVNUX0JQaGgwSzRnbTJFaWJTM2pmU1BpM21vakU0OXZhaTdVVDY3ZnNOZjFHUHpPWDAzSnV3NEt3SVd2NF9rajRjQl9xT2tjRkExVGs4RHhVNXBoT0hiUXR4MA?oc=5"
+    },
+    {
+      "time": "2026-10-13T08:24:42+09:00",
+      "title": "주가는 연일 떨어지는데…SK하이닉스 목표가 400만원 유지하는 이유",
+      "source": "매일경제 마켓",
+      "link": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE9jSXpieW5xY2FCRXM4a0hzZFRxVEthLWczcWd6X3lLZUJ4aHlSSjlUS2hQTTFUZllSTVlLNjJGQ2NXaFk1Ni1IanRtaVZ4dzYxTGc?oc=5"
     }
   ],
   "top_news": [
@@ -797,12 +797,6 @@
       "title": "SK하이닉스, 목표주가 400만원 유지하는 이유…“환율 이기는 실적”[클릭e종목]",
       "source": "아시아경제",
       "link": "https://news.google.com/rss/articles/CBMiggFBVV95cUxNZ1RNbUk2ZFY2eDZ3LUF1Y1EwYWlOQUJ3SnlxZE9lMUtDMjNiamx2OHBabWxvQWJINkN5dGl3eVd3U19zalpydm90Q0wzWGdOV0VKTFlaN19lYlg1SC1taTlnaGtLQ1o5LWJ2X2FuVzhXTTQxcUtUZGlPSUtWcDJWTzlR?oc=5"
-    },
-    {
-      "time": "2026-10-13T05:30:00+09:00",
-      "title": "HBM 그 다음은?…삼성·SK하이닉스, 차세대 AI 메모리 기술 경쟁",
-      "source": "뉴시스",
-      "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE9yRVpBZUhtNldfay1SY2w4akJ0ZWJrQTE1OEJTSE1jdVRpSHJrUGd1azg0Qzg1a3Y2ekVyeHgxM1B0STJMQXQySGtjU09SRGdpSjFIcWZXWEFPdVBzUmFhcdIBeEFVX3lxTE5PaXI1aS1mMlJFbzhtQjZYS1k0N2h2akZybTB4TDN3WlVBZzIyeVRkdnNOVy1zLVh6N2E5eEM3S1NFVDhvcWZhdDNKSDhJRzhGM19NMldQbU8zNFpTTk1tcVVaeGVyd3J2S3dTOHM4eGJZUG5UQkNCaQ?oc=5"
     },
     {
       "time": "2026-10-13T10:37:50+09:00",
@@ -817,16 +811,22 @@
       "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTE0zSGVuSXRLYkdQSk03UXNZM29OZVl2Z2MtWDVuMmlqbjRtMjBiUDhieFVDejZSSjVhUEJ5eDUxWEVCd2EwSnQtRG1GdzRsN3AxYUZuSWxkTlBUTy1LaTdxaG1kWG9SUTB5bmU1elpjMVo4Mms?oc=5"
     },
     {
-      "time": "2026-10-13T14:12:03+09:00",
-      "title": "SK하이닉스 52주 최고가 대비 51.4% 하락… 9% 급락에도 증권사 목표주가 400만 원 유지",
-      "source": "경제시그널",
-      "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTE1tS2dKeTFPSzQxQUhMWnVfNjVxeS1ub3N5TkNNTmdkSlBjNHRwUHV6U0tYN2J3QzB2V2V2bXZ4YjVFNG9ub3RZcUo3VWZRa01iZzRfMDlWb0VyY194NWZJbGlUcFFuSVVrektHcTFNT1ZLMlU?oc=5"
-    },
-    {
       "time": "2026-10-13T08:02:02+09:00",
       "title": "\"내년 영업익 405조\" SK하이닉스, 증권가 낙관론에도 마이크론보다 저평가",
       "source": "조세일보",
       "link": "https://news.google.com/rss/articles/CBMiX0FVX3lxTE5WVjhHZUQxemE3azlHM3BZVkJJTWxwUUE2Qnk4b3p4NDdPMVZyTjctbjNsLXU5bDd3VTNuRzN4dHQzLTFFakVCMnZmWVJPZEZGVVZHNjVwM1VnSi1samE0?oc=5"
+    },
+    {
+      "time": "2026-10-13T08:18:45+09:00",
+      "title": "“SK하이닉스, 내년 영업이익 전망 405조원”…하나증권, 0.5%↑",
+      "source": "매일경제 마켓",
+      "link": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE9Sc3kzNG1PMHFtdzVRc2k1eVhFOWdyVlZEZVFmTi1jZXdDUmhkNmtlQ3g2RVllN0RGMUVOWkh5YndReXpEUkc5aGRyeF9NVUt3MFE?oc=5"
+    },
+    {
+      "time": "2026-10-13T08:57:09+09:00",
+      "title": "\"SK하이닉스 올해 실적 전망치 상향조정…영업이익 405조\"-하나 - 머니투데이",
+      "source": "머니투데이",
+      "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTFBqbjhTWS12VXRNR3BEa3hocU9TNzJFSGF2MXpCVUVYY1psdkZEUHBjVjE0SWhfTzFOOXg4V1EzamhjNFhmRmRyd1oyZGwwdW5fa3RBSHBONjVNOW5POFJPbGg2dDk0ZXIy0gFuQVVfeXFMTU5SVENrSGZ6TndTUjlUeXNUMy1RXzdOWXZEWFZQVllfbFNPNkluQkZEM2M3eWdqTnRmeGZBb05fUC1nMWsyV1YzZFdzU2VCTFpvWWszWmZPS2g4VC1Cd2I3aThVajZmSG40YUtwSnc?oc=5"
     }
   ],
   "disclosures": [],
@@ -846,9 +846,9 @@
     "steady": 41,
     "upper": 0,
     "lower": 0,
-    "individual": 22341.0,
-    "foreign": -45186.0,
-    "institution": 16892.0,
+    "individual": 22431.0,
+    "foreign": -45284.0,
+    "institution": 16898.0,
     "prev_close": 6384.24,
     "open": 6186.08,
     "high": 6198.46,

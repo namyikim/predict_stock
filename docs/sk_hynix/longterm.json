@@ -525,7 +525,19 @@
     "phase": "확장(YoY>0, 가속)",
     "since": "2025-07",
     "as_of": "2026-09",
-    "flash_note": null,
+    "flash_note": {
+      "rows": [
+        {
+          "month": "2026-10",
+          "days": 10,
+          "yoy": 1.7093222850019925
+        }
+      ],
+      "latest_month": "2026-10",
+      "latest_days": 10,
+      "latest_yoy": 1.7093222850019925,
+      "model_as_of": "2026-09"
+    },
     "months_so_far": 15,
     "episodes": [
       {
@@ -681,9 +693,9 @@
       "fresh": true,
       "fetch_error": null,
       "first": "2000-12-18",
-      "last": "2026-10-08",
-      "rows": 6389,
-      "snapshot_hash": "4ce780881c6e8f7f4a3f",
+      "last": "2026-10-13",
+      "rows": 6391,
+      "snapshot_hash": "a417a9ccf0d5413ff9ff",
       "enabled": true
     }
   },
@@ -958,7 +970,7 @@
     "krw": 1405.6209542410713
   },
   "chart_first": "2000-01-31",
-  "generated_at": "2026-10-12 16:29 KST",
+  "generated_at": "2026-10-13 16:51 KST",
   "macro_snapshot_hash": "064717b64854b17df0da",
   "macro_sources": {
     "leading_cycle": "KOSIS_API",
@@ -966,7 +978,7 @@
   },
   "frame_hash": "88632350a76d4120",
   "live_exports": {
-    "as_of": "2026-10-12",
+    "as_of": "2026-10-13",
     "price_last": "2026-09-30",
     "exports_last_month": "2026-10",
     "latest_period": {
@@ -978,7 +990,7 @@
       "basis": "partial_month_scenario"
     },
     "snapshot_hash": "3b6a47696acf99726920",
-    "generated_at": "2026-10-12 16:28 KST",
+    "generated_at": "2026-10-13 16:49 KST",
     "flash_info": {
       "enabled": true,
       "source": "customs_flash_api",
@@ -1028,7 +1040,7 @@
     "ticker": "000660.KS",
     "price": 1681000.0,
     "price_date": "2026-10-08",
-    "observed_on": "2026-10-12",
+    "observed_on": "2026-10-13",
     "financial_period": "2026-06-30",
     "eps_ttm": 232070.09450008773,
     "bps": 375948.7934903294,
@@ -1087,7 +1099,7 @@
     },
     "evaluation_status": "예측 성능 미검증 — 현재 가치 시나리오이며 도달 시점을 예측하지 않음",
     "basis_note": "분기 재무제표 최근 4분기 순이익(Net Income Common Stockholders) ÷ EPS 기준 주식 수 697,915,819주",
-    "retrieved_on": "2026-10-12",
+    "retrieved_on": "2026-10-13",
     "cached": false
   }
 }

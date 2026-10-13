@@ -3,7 +3,7 @@
   "name": "삼성전자",
   "peer_name": "SK하이닉스",
   "session_date": "2026-10-13",
-  "generated_at": "2026-10-14 00:10 KST",
+  "generated_at": "2026-10-14 01:29 KST",
   "summary": {
     "prev_close": 262000.0,
     "open": NaN,
@@ -19,7 +19,7 @@
     "volume_ratio": 1.7136902787253303,
     "kospi_c2c": NaN,
     "peer_c2c": NaN,
-    "usdkrw_chg": -0.0012583425182156605,
+    "usdkrw_chg": -0.001742355369234061,
     "us_nights": 3,
     "sox_ret": -0.06347396339151035,
     "nasdaq_ret": -0.010631917070649699,
@@ -38,26 +38,26 @@
     "prior_5d": -0.02420856610800748,
     "ma_touches": [],
     "micron_ah": {
-      "regular_close": 988.9299926757812,
+      "regular_close": 988.969970703125,
       "last": 989.04,
-      "ret": 0.00011123873786167415,
-      "low_ret": 0.00011123873786167415,
-      "high_ret": 0.00011123873786167415,
+      "ret": 7.081033696620942e-05,
+      "low_ret": 7.081033696620942e-05,
+      "high_ret": 7.081033696620942e-05,
       "last_time": "2026-10-13T05:00:00+09:00"
     },
     "nvidia_ah": {
-      "regular_close": 226.42999267578125,
+      "regular_close": 226.4199981689453,
       "last": 226.32,
-      "ret": -0.0004857690206206966,
-      "low_ret": -0.0004857690206206966,
-      "high_ret": -0.0004857690206206966,
+      "ret": -0.00044164901401821943,
+      "low_ret": -0.00044164901401821943,
+      "high_ret": -0.00044164901401821943,
       "last_time": "2026-10-13T05:00:00+09:00"
     },
     "session_cross": {
       "NQ=F": {
         "label": "나스닥100 선물",
-        "ret": -0.004753561114896665,
-        "after_high": -0.004753561114896665
+        "ret": -0.004753522554896694,
+        "after_high": -0.004753522554896694
       },
       "ZN=F": {
         "label": "미 10년물 국채 선물",
@@ -106,8 +106,15 @@
       "cum_before": 0.0,
       "cum_after": 0.0020703933747412417,
       "session_share": 1.6759195003469811,
-      "score": 17.748273560807228,
-      "news": []
+      "score": 17.74811913933705,
+      "news": [
+        {
+          "time": "2026-10-13T08:00:00+09:00",
+          "title": "일 잘하는 메모리 부장은 14억?…삼성 성과급 잔치 뒤 받을 청구서 - 머니투데이",
+          "source": "머니투데이",
+          "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE41WVdlTnh5MDdNWXpfSmtmQldFSXQwWFlsNXVZNWhnYk51N0RBSHpXU1BTQVVPNEE4cml0QUJEZ2MtV3AzcXVmUGVGVUN2X1pwQjl3UDZVcTc3SnV6TnBwUng1aVRZQUwwWjYzbdIBckFVX3lxTE0zdElsOVNUQ1BrN085WmJvaXNOeld6bnBXR244bk00ZGdRTWhJQUR3X0wybU9peTdCVGRONlZQbk5DLW9yMFlRRUx4VjM3ZDBRSXh3WkhBdGlhdWxkQjlRZEYxUlgybi1CWnV4RW45Ni1kZw?oc=5"
+        }
+      ]
     }
   ],
   "turning_point": {
@@ -145,12 +152,12 @@
     {
       "time": "2026-10-13T09:20:00+09:00",
       "price": 239250.0,
-      "volume": 358901.0
+      "volume": 358906.0
     },
     {
       "time": "2026-10-13T09:25:00+09:00",
       "price": 237500.0,
-      "volume": 293231.0
+      "volume": 293226.0
     },
     {
       "time": "2026-10-13T09:30:00+09:00",
@@ -170,12 +177,12 @@
     {
       "time": "2026-10-13T09:45:00+09:00",
       "price": 238500.0,
-      "volume": 252242.0
+      "volume": 252329.0
     },
     {
       "time": "2026-10-13T09:50:00+09:00",
       "price": 235750.0,
-      "volume": 577216.0
+      "volume": 577129.0
     },
     {
       "time": "2026-10-13T09:55:00+09:00",
@@ -190,12 +197,12 @@
     {
       "time": "2026-10-13T10:05:00+09:00",
       "price": 234750.0,
-      "volume": 566250.0
+      "volume": 566245.0
     },
     {
       "time": "2026-10-13T10:10:00+09:00",
       "price": 236000.0,
-      "volume": 468566.0
+      "volume": 468571.0
     },
     {
       "time": "2026-10-13T10:15:00+09:00",
@@ -215,12 +222,12 @@
     {
       "time": "2026-10-13T10:30:00+09:00",
       "price": 233500.0,
-      "volume": 248283.0
+      "volume": 248285.0
     },
     {
       "time": "2026-10-13T10:35:00+09:00",
       "price": 233500.0,
-      "volume": 272758.0
+      "volume": 272756.0
     },
     {
       "time": "2026-10-13T10:40:00+09:00",
@@ -245,12 +252,12 @@
     {
       "time": "2026-10-13T11:00:00+09:00",
       "price": 232000.0,
-      "volume": 214832.0
+      "volume": 214810.0
     },
     {
       "time": "2026-10-13T11:05:00+09:00",
       "price": 232500.0,
-      "volume": 294485.0
+      "volume": 294507.0
     },
     {
       "time": "2026-10-13T11:10:00+09:00",
@@ -355,12 +362,12 @@
     {
       "time": "2026-10-13T12:50:00+09:00",
       "price": 230500.0,
-      "volume": 180576.0
+      "volume": 180645.0
     },
     {
       "time": "2026-10-13T12:55:00+09:00",
       "price": 230500.0,
-      "volume": 61342.0
+      "volume": 61273.0
     },
     {
       "time": "2026-10-13T13:00:00+09:00",
@@ -460,12 +467,12 @@
     {
       "time": "2026-10-13T14:35:00+09:00",
       "price": 230250.0,
-      "volume": 309247.0
+      "volume": 309199.0
     },
     {
       "time": "2026-10-13T14:40:00+09:00",
       "price": 230500.0,
-      "volume": 269377.0
+      "volume": 269425.0
     },
     {
       "time": "2026-10-13T14:45:00+09:00",
@@ -492,8 +499,15 @@
       "cum_before": 0.0,
       "cum_after": 0.0020703933747412417,
       "session_share": 1.6759195003469811,
-      "score": 17.748273560807228,
-      "news": [],
+      "score": 17.74811913933705,
+      "news": [
+        {
+          "time": "2026-10-13T08:00:00+09:00",
+          "title": "일 잘하는 메모리 부장은 14억?…삼성 성과급 잔치 뒤 받을 청구서 - 머니투데이",
+          "source": "머니투데이",
+          "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE41WVdlTnh5MDdNWXpfSmtmQldFSXQwWFlsNXVZNWhnYk51N0RBSHpXU1BTQVVPNEE4cml0QUJEZ2MtV3AzcXVmUGVGVUN2X1pwQjl3UDZVcTc3SnV6TnBwUng1aVRZQUwwWjYzbdIBckFVX3lxTE0zdElsOVNUQ1BrN085WmJvaXNOeld6bnBXR244bk00ZGdRTWhJQUR3X0wybU9peTdCVGRONlZQbk5DLW9yMFlRRUx4VjM3ZDBRSXh3WkhBdGlhdWxkQjlRZEYxUlgybi1CWnV4RW45Ni1kZw?oc=5"
+        }
+      ],
       "price": 242000.0,
       "kind": "turn_down"
     }
@@ -504,6 +518,12 @@
       "title": "삼성전자 '역대급 실적'도 소용없었다…힘 빠진 코스피, 왜?",
       "source": "뉴시스",
       "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE55SHNMNlRRUFpFOHpmSGVRVXVQUFlNNmhHMC12V2o2eUUxZmt6ck1Zc1ZpLURmMXVoZVFNR01DSFpOekw0bFJHbGZON3F0alBfUmhSU0xxUDFCbEczNHRQetIBeEFVX3lxTE5oYlhUS2dmYV9mTF85dEM3aHdhVTE0Zm5lY3E4ajVfaXg2Y3NWN0hJWHZhRVdRMS1yQklSajFWak81Wmg2R2tzRWs4SmR1ZTJ4WG9PNjRiMzlEOVhYWlZoM01tT0tvQ3lHaVhaZm9mQ242SDctSDRNeg?oc=5"
+    },
+    {
+      "time": "2026-10-13T08:00:00+09:00",
+      "title": "일 잘하는 메모리 부장은 14억?…삼성 성과급 잔치 뒤 받을 청구서 - 머니투데이",
+      "source": "머니투데이",
+      "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE41WVdlTnh5MDdNWXpfSmtmQldFSXQwWFlsNXVZNWhnYk51N0RBSHpXU1BTQVVPNEE4cml0QUJEZ2MtV3AzcXVmUGVGVUN2X1pwQjl3UDZVcTc3SnV6TnBwUng1aVRZQUwwWjYzbdIBckFVX3lxTE0zdElsOVNUQ1BrN085WmJvaXNOeld6bnBXR244bk00ZGdRTWhJQUR3X0wybU9peTdCVGRONlZQbk5DLW9yMFlRRUx4VjM3ZDBRSXh3WkhBdGlhdWxkQjlRZEYxUlgybi1CWnV4RW45Ni1kZw?oc=5"
     }
   ],
   "top_news": [
@@ -538,10 +558,10 @@
       "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE9DRDZlVVYtN0I2Q2VoS0FySHBxOHBRVlUzWE9OMF8tbWY4bmR4b3BIdmRXaURTangteUNzR25RaFpwQXl2T0V4Y2J6aXBLR3o0c2Q5b2J2OXdVdDBSVW5BaDVwcklxUHhfM1MzT2JjWVI?oc=5"
     },
     {
-      "time": "2026-10-13T16:00:18+09:00",
-      "title": "삼성전자, 'OCP 글로벌 서밋 2026'서 HBM5·CXL 중심 차세대 메모리 전략 공개",
-      "source": "한국경제",
-      "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE9uRmlJbFZsLTJTR2k4M0VpWTIwSnN2eUU3cVBTM2R1UGdVTjR3ZDV3cW0tOVRHZXh3WHBhT0pXNEQ5VFhBck9TMUptak1jWmNSSGpzRXgyc1VkQQ?oc=5"
+      "time": "2026-10-13T16:11:00+09:00",
+      "title": "하이닉스 10%·삼성전자 7% 급락…실적 호황에도 반도체 PER 4배 붕괴 By EBN",
+      "source": "Investing.com 한국어",
+      "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE1HckJQX0ZWdUNqQTRNY0NNOWVVR2NkWnhqOTByczhyNjJHdWlYWFBxdGxPbjMyeHNmeEItSkVBX1ItcTdWQXN1dTNnQU5fX2JOUGpaSGd6NXdaZUdJVm9aaU93cXdnR3dObVpzS2dKS0I?oc=5"
     }
   ],
   "disclosures": [

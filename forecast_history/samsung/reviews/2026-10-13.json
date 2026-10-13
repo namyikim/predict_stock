@@ -3,7 +3,7 @@
   "name": "삼성전자",
   "peer_name": "SK하이닉스",
   "session_date": "2026-10-13",
-  "generated_at": "2026-10-13 16:11 KST",
+  "generated_at": "2026-10-13 16:46 KST",
   "summary": {
     "prev_close": 262000.0,
     "open": 241500.0,
@@ -15,11 +15,11 @@
     "c2c": -0.1145038167938931,
     "high_vs_open": 0.010351966873705987,
     "low_vs_open": -0.05590062111801242,
-    "volume": 26175371.0,
-    "volume_ratio": 1.554767710171077,
+    "volume": 26292377.0,
+    "volume_ratio": 1.5617176460744222,
     "kospi_c2c": -0.05464865417190956,
     "peer_c2c": -0.14158239143367046,
-    "usdkrw_chg": -0.00045419947728431165,
+    "usdkrw_chg": -0.0005286420171873862,
     "us_nights": 3,
     "sox_ret": -0.06347396339151035,
     "nasdaq_ret": -0.010631917070649699,
@@ -73,26 +73,26 @@
     "prior_5d": -0.02420856610800748,
     "ma_touches": [],
     "micron_ah": {
-      "regular_close": 988.969970703125,
+      "regular_close": 988.9299926757812,
       "last": 975.2,
-      "ret": -0.013923547843758044,
-      "low_ret": -0.013974813303278433,
-      "high_ret": -3.525961774164532e-05,
+      "ret": -0.013883685172325966,
+      "low_ret": -0.013934952704280246,
+      "high_ret": 5.164495218590304e-06,
       "last_time": "2026-10-13T08:55:00+09:00"
     },
     "nvidia_ah": {
-      "regular_close": 226.4199981689453,
+      "regular_close": 226.42999267578125,
       "last": 224.4463,
-      "ret": -0.008716978115478224,
-      "low_ret": -0.008716978115478224,
-      "high_ret": -0.0005299804342183689,
+      "ret": -0.008760732853185349,
+      "low_ret": -0.008760732853185349,
+      "high_ret": -0.0005740965419159805,
       "last_time": "2026-10-13T08:55:00+09:00"
     },
     "session_cross": {
       "NQ=F": {
         "label": "나스닥100 선물",
-        "ret": -0.004753522554896694,
-        "after_high": -0.004753522554896694
+        "ret": -0.004753561114896665,
+        "after_high": -0.004753561114896665
       },
       "ZN=F": {
         "label": "미 10년물 국채 선물",
@@ -138,14 +138,8 @@
       "cum_before": 0.0,
       "cum_after": 0.0020703933747412417,
       "session_share": 1.6759195003469811,
-      "score": 17.74811913933705,
+      "score": 17.748273560807228,
       "news": [
-        {
-          "time": "2026-10-13T07:50:00+09:00",
-          "title": "역대급 실적에도 '팝니다'…삼성전자 떠나는 외국인들 [지금이뉴스]",
-          "source": "YTN",
-          "link": "https://news.google.com/rss/articles/CBMiXkFVX3lxTE01UHhRTWNfdkhEdDdQNUl5NUYyRDJVenhkMHY2TFlMVFlRc1BIOXdKeXRFaGdhTmxURHJlRW5ZemVyMXcwczVWSGJqSmhuYzhnbmJ2TEtpVWJyZDBhckE?oc=5"
-        },
         {
           "time": "2026-10-13T09:04:33+09:00",
           "title": "삼성전자, OCP서 AI 메모리·스토리지 혁신 청사진 공개",
@@ -153,22 +147,22 @@
           "link": "https://news.google.com/rss/articles/CBMiTkFVX3lxTFBpUXR0cXR2U05yOWowYnU5eGNTUnFUdVBuYllsOUFzczJPWTRaU2loV1RKNXEyVk5nUnY5YUxscklvU19rc0dSLV8tT0ZuZw?oc=5"
         },
         {
-          "time": "2026-10-13T07:51:45+09:00",
-          "title": "삼성전자, 새 메모리 전략 공개…속도·확장성·영속성 초점",
-          "source": "연합뉴스",
-          "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE9Ja2ZLaUhBU2FMaTNzVkhORTVWR21YMVZSLVRpSFJnRzNUc3lJRzN6N09lLXlTUkNyVnhvZEJYT2g1M0l3TnZNcDJCbG14LXVpTDZ6WDVYMmJYcVdNblhLT9IBYEFVX3lxTE9Ja2ZLaUhBU2FMaTNzVkhORTVWR21YMVZSLVRpSFJnRzNUc3lJRzN6N09lLXlTUkNyVnhvZEJYT2g1M0l3TnZNcDJCbG14LXVpTDZ6WDVYMmJYcVdNblhLTw?oc=5"
-        },
-        {
-          "time": "2026-10-13T08:21:21+09:00",
-          "title": "삼성전자, 글로벌 미식 행사서 AI 주방가전 소개",
-          "source": "연합뉴스",
-          "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTFBscUJnMkJVU3RGOXNhWG1OOGt1ekI5blNEWGZLUzRvUXk0UVlqZk9GaE91V3RXY29WMDhITDZyZzhNeGtBNTJJNWh6djNQdDlwWFZXbXZGUXJUenFUM2NYLdIBYEFVX3lxTFBscUJnMkJVU3RGOXNhWG1OOGt1ekI5blNEWGZLUzRvUXk0UVlqZk9GaE91V3RXY29WMDhITDZyZzhNeGtBNTJJNWh6djNQdDlwWFZXbXZGUXJUenFUM2NYLQ?oc=5"
-        },
-        {
           "time": "2026-10-13T08:55:41+09:00",
           "title": "삼성전자, 반도체 협력사 5만8000명에 '감사'…연말까지 상생 행사",
           "source": "전자신문",
           "link": "https://news.google.com/rss/articles/CBMiTkFVX3lxTFBSZzVpTHB3Qkt2QkRxVlRWS3dNVU9LdVpBSG5FVlZaYUZXTWJYQ05PTERCUllRWXhXR0dpVmZPaU5lR2Z6SjlEeVliNHg3dw?oc=5"
+        },
+        {
+          "time": "2026-10-13T09:07:00+09:00",
+          "title": "코스피, 장중 6000선 붕괴...삼성전자 7%, SK하이닉스 9% 폭락",
+          "source": "조선일보",
+          "link": "https://news.google.com/rss/articles/CBMiiwFBVV95cUxNX1ZrR21rNE9XV3BrWmd5Z19hMUIyNlNiT3lxbFFFN21LOWxfb1dyNmpaOEROeXdiOTl5YW8zM0dqU2tmcFJLdGJtNzRJeVJ2MURlQlFVbUVtYWJwalo5MzhjaFFTb2tyM0VNSmtObFE0RzhGeGFXNDlLM2ZzdzNzRkVZR2s1XzBQVnNF?oc=5"
+        },
+        {
+          "time": "2026-10-13T09:01:41+09:00",
+          "title": "삼성전자, DS 협력사 임직원 5.8만명에 감사 인사…커피차·영화 이벤트",
+          "source": "지디넷코리아",
+          "link": "https://news.google.com/rss/articles/CBMiVkFVX3lxTFBSdjhOM3AwUHRFVGRkV1JnYU94R183Vkd6RzdPeUtoSjEyMVZUd3VxVHdvZzZzS2dGeVl4N1RNLWs0TG95UUZfd1lwZWVRcXlFVVNjczZn?oc=5"
         }
       ]
     }
@@ -208,12 +202,12 @@
     {
       "time": "2026-10-13T09:20:00+09:00",
       "price": 239250.0,
-      "volume": 358906.0
+      "volume": 358901.0
     },
     {
       "time": "2026-10-13T09:25:00+09:00",
       "price": 237500.0,
-      "volume": 293226.0
+      "volume": 293231.0
     },
     {
       "time": "2026-10-13T09:30:00+09:00",
@@ -233,12 +227,12 @@
     {
       "time": "2026-10-13T09:45:00+09:00",
       "price": 238500.0,
-      "volume": 252329.0
+      "volume": 252242.0
     },
     {
       "time": "2026-10-13T09:50:00+09:00",
       "price": 235750.0,
-      "volume": 577129.0
+      "volume": 577216.0
     },
     {
       "time": "2026-10-13T09:55:00+09:00",
@@ -253,12 +247,12 @@
     {
       "time": "2026-10-13T10:05:00+09:00",
       "price": 234750.0,
-      "volume": 566245.0
+      "volume": 566250.0
     },
     {
       "time": "2026-10-13T10:10:00+09:00",
       "price": 236000.0,
-      "volume": 468571.0
+      "volume": 468566.0
     },
     {
       "time": "2026-10-13T10:15:00+09:00",
@@ -278,12 +272,12 @@
     {
       "time": "2026-10-13T10:30:00+09:00",
       "price": 233500.0,
-      "volume": 248285.0
+      "volume": 248283.0
     },
     {
       "time": "2026-10-13T10:35:00+09:00",
       "price": 233500.0,
-      "volume": 272756.0
+      "volume": 272758.0
     },
     {
       "time": "2026-10-13T10:40:00+09:00",
@@ -308,12 +302,12 @@
     {
       "time": "2026-10-13T11:00:00+09:00",
       "price": 232000.0,
-      "volume": 214810.0
+      "volume": 214832.0
     },
     {
       "time": "2026-10-13T11:05:00+09:00",
       "price": 232500.0,
-      "volume": 294507.0
+      "volume": 294485.0
     },
     {
       "time": "2026-10-13T11:10:00+09:00",
@@ -418,12 +412,12 @@
     {
       "time": "2026-10-13T12:50:00+09:00",
       "price": 230500.0,
-      "volume": 180645.0
+      "volume": 180576.0
     },
     {
       "time": "2026-10-13T12:55:00+09:00",
       "price": 230500.0,
-      "volume": 61273.0
+      "volume": 61342.0
     },
     {
       "time": "2026-10-13T13:00:00+09:00",
@@ -523,12 +517,12 @@
     {
       "time": "2026-10-13T14:35:00+09:00",
       "price": 230250.0,
-      "volume": 309199.0
+      "volume": 309247.0
     },
     {
       "time": "2026-10-13T14:40:00+09:00",
       "price": 230500.0,
-      "volume": 269425.0
+      "volume": 269377.0
     },
     {
       "time": "2026-10-13T14:45:00+09:00",
@@ -555,14 +549,8 @@
       "cum_before": 0.0,
       "cum_after": 0.0020703933747412417,
       "session_share": 1.6759195003469811,
-      "score": 17.74811913933705,
+      "score": 17.748273560807228,
       "news": [
-        {
-          "time": "2026-10-13T07:50:00+09:00",
-          "title": "역대급 실적에도 '팝니다'…삼성전자 떠나는 외국인들 [지금이뉴스]",
-          "source": "YTN",
-          "link": "https://news.google.com/rss/articles/CBMiXkFVX3lxTE01UHhRTWNfdkhEdDdQNUl5NUYyRDJVenhkMHY2TFlMVFlRc1BIOXdKeXRFaGdhTmxURHJlRW5ZemVyMXcwczVWSGJqSmhuYzhnbmJ2TEtpVWJyZDBhckE?oc=5"
-        },
         {
           "time": "2026-10-13T09:04:33+09:00",
           "title": "삼성전자, OCP서 AI 메모리·스토리지 혁신 청사진 공개",
@@ -570,22 +558,22 @@
           "link": "https://news.google.com/rss/articles/CBMiTkFVX3lxTFBpUXR0cXR2U05yOWowYnU5eGNTUnFUdVBuYllsOUFzczJPWTRaU2loV1RKNXEyVk5nUnY5YUxscklvU19rc0dSLV8tT0ZuZw?oc=5"
         },
         {
-          "time": "2026-10-13T07:51:45+09:00",
-          "title": "삼성전자, 새 메모리 전략 공개…속도·확장성·영속성 초점",
-          "source": "연합뉴스",
-          "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE9Ja2ZLaUhBU2FMaTNzVkhORTVWR21YMVZSLVRpSFJnRzNUc3lJRzN6N09lLXlTUkNyVnhvZEJYT2g1M0l3TnZNcDJCbG14LXVpTDZ6WDVYMmJYcVdNblhLT9IBYEFVX3lxTE9Ja2ZLaUhBU2FMaTNzVkhORTVWR21YMVZSLVRpSFJnRzNUc3lJRzN6N09lLXlTUkNyVnhvZEJYT2g1M0l3TnZNcDJCbG14LXVpTDZ6WDVYMmJYcVdNblhLTw?oc=5"
-        },
-        {
-          "time": "2026-10-13T08:21:21+09:00",
-          "title": "삼성전자, 글로벌 미식 행사서 AI 주방가전 소개",
-          "source": "연합뉴스",
-          "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTFBscUJnMkJVU3RGOXNhWG1OOGt1ekI5blNEWGZLUzRvUXk0UVlqZk9GaE91V3RXY29WMDhITDZyZzhNeGtBNTJJNWh6djNQdDlwWFZXbXZGUXJUenFUM2NYLdIBYEFVX3lxTFBscUJnMkJVU3RGOXNhWG1OOGt1ekI5blNEWGZLUzRvUXk0UVlqZk9GaE91V3RXY29WMDhITDZyZzhNeGtBNTJJNWh6djNQdDlwWFZXbXZGUXJUenFUM2NYLQ?oc=5"
-        },
-        {
           "time": "2026-10-13T08:55:41+09:00",
           "title": "삼성전자, 반도체 협력사 5만8000명에 '감사'…연말까지 상생 행사",
           "source": "전자신문",
           "link": "https://news.google.com/rss/articles/CBMiTkFVX3lxTFBSZzVpTHB3Qkt2QkRxVlRWS3dNVU9LdVpBSG5FVlZaYUZXTWJYQ05PTERCUllRWXhXR0dpVmZPaU5lR2Z6SjlEeVliNHg3dw?oc=5"
+        },
+        {
+          "time": "2026-10-13T09:07:00+09:00",
+          "title": "코스피, 장중 6000선 붕괴...삼성전자 7%, SK하이닉스 9% 폭락",
+          "source": "조선일보",
+          "link": "https://news.google.com/rss/articles/CBMiiwFBVV95cUxNX1ZrR21rNE9XV3BrWmd5Z19hMUIyNlNiT3lxbFFFN21LOWxfb1dyNmpaOEROeXdiOTl5YW8zM0dqU2tmcFJLdGJtNzRJeVJ2MURlQlFVbUVtYWJwalo5MzhjaFFTb2tyM0VNSmtObFE0RzhGeGFXNDlLM2ZzdzNzRkVZR2s1XzBQVnNF?oc=5"
+        },
+        {
+          "time": "2026-10-13T09:01:41+09:00",
+          "title": "삼성전자, DS 협력사 임직원 5.8만명에 감사 인사…커피차·영화 이벤트",
+          "source": "지디넷코리아",
+          "link": "https://news.google.com/rss/articles/CBMiVkFVX3lxTFBSdjhOM3AwUHRFVGRkV1JnYU94R183Vkd6RzdPeUtoSjEyMVZUd3VxVHdvZzZzS2dGeVl4N1RNLWs0TG95UUZfd1lwZWVRcXlFVVNjczZn?oc=5"
         }
       ],
       "price": 242000.0,
@@ -598,24 +586,6 @@
       "title": "삼성전자 '역대급 실적'도 소용없었다…힘 빠진 코스피, 왜?",
       "source": "뉴시스",
       "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE55SHNMNlRRUFpFOHpmSGVRVXVQUFlNNmhHMC12V2o2eUUxZmt6ck1Zc1ZpLURmMXVoZVFNR01DSFpOekw0bFJHbGZON3F0alBfUmhSU0xxUDFCbEczNHRQetIBeEFVX3lxTE5oYlhUS2dmYV9mTF85dEM3aHdhVTE0Zm5lY3E4ajVfaXg2Y3NWN0hJWHZhRVdRMS1yQklSajFWak81Wmg2R2tzRWs4SmR1ZTJ4WG9PNjRiMzlEOVhYWlZoM01tT0tvQ3lHaVhaZm9mQ242SDctSDRNeg?oc=5"
-    },
-    {
-      "time": "2026-10-13T07:50:00+09:00",
-      "title": "역대급 실적에도 '팝니다'…삼성전자 떠나는 외국인들 [지금이뉴스]",
-      "source": "YTN",
-      "link": "https://news.google.com/rss/articles/CBMiXkFVX3lxTE01UHhRTWNfdkhEdDdQNUl5NUYyRDJVenhkMHY2TFlMVFlRc1BIOXdKeXRFaGdhTmxURHJlRW5ZemVyMXcwczVWSGJqSmhuYzhnbmJ2TEtpVWJyZDBhckE?oc=5"
-    },
-    {
-      "time": "2026-10-13T07:51:45+09:00",
-      "title": "삼성전자, 새 메모리 전략 공개…속도·확장성·영속성 초점",
-      "source": "연합뉴스",
-      "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE9Ja2ZLaUhBU2FMaTNzVkhORTVWR21YMVZSLVRpSFJnRzNUc3lJRzN6N09lLXlTUkNyVnhvZEJYT2g1M0l3TnZNcDJCbG14LXVpTDZ6WDVYMmJYcVdNblhLT9IBYEFVX3lxTE9Ja2ZLaUhBU2FMaTNzVkhORTVWR21YMVZSLVRpSFJnRzNUc3lJRzN6N09lLXlTUkNyVnhvZEJYT2g1M0l3TnZNcDJCbG14LXVpTDZ6WDVYMmJYcVdNblhLTw?oc=5"
-    },
-    {
-      "time": "2026-10-13T08:21:21+09:00",
-      "title": "삼성전자, 글로벌 미식 행사서 AI 주방가전 소개",
-      "source": "연합뉴스",
-      "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTFBscUJnMkJVU3RGOXNhWG1OOGt1ekI5blNEWGZLUzRvUXk0UVlqZk9GaE91V3RXY29WMDhITDZyZzhNeGtBNTJJNWh6djNQdDlwWFZXbXZGUXJUenFUM2NYLdIBYEFVX3lxTFBscUJnMkJVU3RGOXNhWG1OOGt1ekI5blNEWGZLUzRvUXk0UVlqZk9GaE91V3RXY29WMDhITDZyZzhNeGtBNTJJNWh6djNQdDlwWFZXbXZGUXJUenFUM2NYLQ?oc=5"
     },
     {
       "time": "2026-10-13T08:55:41+09:00",
@@ -632,12 +602,6 @@
       "link": "https://news.google.com/rss/articles/CBMiVkFVX3lxTE12b2FRWHAwLVAyV2RiNnV6d2ZpeDVkQ1h4Z0x0Q01DRnNsYWRheVBwUE5xcnhvOXJnRzl2SEZYNjR1ODhWNTJSNzBUaW5tRExNOGZ6NkRB?oc=5"
     },
     {
-      "time": "2026-10-13T11:01:08+09:00",
-      "title": "삼성전자 역대급 실적에도 주가 뒷걸음…증권가 “이익보다 기대치가 관건”",
-      "source": "한국금융신문",
-      "link": "https://news.google.com/rss/articles/CBMifEFVX3lxTE9pejBOdS1ldnppNjl2YzMwSXlhSHAtYmtQV2ZER3lSVHVZYXZINVpPWW0tajh3WVZTWEdEY2RZYWw3UEhGdk5OT20wS2dYbWd1cFBWclZVcFpkU0RkQTF5cnZxeW45cC12WEZxeHpMQjFwR1RxTzBad2IzZ20?oc=5"
-    },
-    {
       "time": "2026-10-13T11:32:59+09:00",
       "title": "삼성전자, HBM 넘어 메모리 확장·저장까지 공략…AI 전략 다변화",
       "source": "녹색경제신문",
@@ -650,16 +614,22 @@
       "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTFB5a2hLNERRMC0tYVZRVXotWWQzZ2hpV0k4eWJaX2liNUZIVEhxWXNXSXhQVXBTVWZPRFdRV2h4TGRPZUVxTTZYMVZRcWpNLVhmX1JLWmRPVXU3eWJnMTFDUlpySWF5MndDMUp0SnFHZUM?oc=5"
     },
     {
+      "time": "2026-10-13T16:12:49+09:00",
+      "title": "삼성전자·SK하이닉스 주가 급락, 외국인 대량 매도로 반도체 시장 '불안'",
+      "source": "공감신문",
+      "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE45UFJEdmFlZkNRVDlIX2FvRkVySTVvY0FnQzMzWUFyekpIcDQyRjgwa1BtVGV2Yy15bXdKOW9DVllyOVVLMjNIU1lXV3VOYTJrTWhPeWNkZVJLRENJb0Iya1R5Ui1KVFlR?oc=5"
+    },
+    {
       "time": "2026-10-13T07:00:00+09:00",
       "title": "삼성전자 '역대급 실적'도 소용없었다…힘 빠진 코스피, 왜?",
       "source": "뉴시스",
       "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE55SHNMNlRRUFpFOHpmSGVRVXVQUFlNNmhHMC12V2o2eUUxZmt6ck1Zc1ZpLURmMXVoZVFNR01DSFpOekw0bFJHbGZON3F0alBfUmhSU0xxUDFCbEczNHRQetIBeEFVX3lxTE5oYlhUS2dmYV9mTF85dEM3aHdhVTE0Zm5lY3E4ajVfaXg2Y3NWN0hJWHZhRVdRMS1yQklSajFWak81Wmg2R2tzRWs4SmR1ZTJ4WG9PNjRiMzlEOVhYWlZoM01tT0tvQ3lHaVhaZm9mQ242SDctSDRNeg?oc=5"
     },
     {
-      "time": "2026-10-13T07:50:00+09:00",
-      "title": "역대급 실적에도 '팝니다'…삼성전자 떠나는 외국인들 [지금이뉴스]",
-      "source": "YTN",
-      "link": "https://news.google.com/rss/articles/CBMiXkFVX3lxTE01UHhRTWNfdkhEdDdQNUl5NUYyRDJVenhkMHY2TFlMVFlRc1BIOXdKeXRFaGdhTmxURHJlRW5ZemVyMXcwczVWSGJqSmhuYzhnbmJ2TEtpVWJyZDBhckE?oc=5"
+      "time": "2026-10-13T09:04:33+09:00",
+      "title": "삼성전자, OCP서 AI 메모리·스토리지 혁신 청사진 공개",
+      "source": "전자신문",
+      "link": "https://news.google.com/rss/articles/CBMiTkFVX3lxTFBpUXR0cXR2U05yOWowYnU5eGNTUnFUdVBuYllsOUFzczJPWTRaU2loV1RKNXEyVk5nUnY5YUxscklvU19rc0dSLV8tT0ZuZw?oc=5"
     }
   ],
   "disclosures": [],
@@ -679,9 +649,9 @@
     "steady": 41,
     "upper": 0,
     "lower": 0,
-    "individual": 22431.0,
-    "foreign": -45284.0,
-    "institution": 16898.0,
+    "individual": 22418.0,
+    "foreign": -45287.0,
+    "institution": 16901.0,
     "prev_close": 6384.24,
     "open": 6186.08,
     "high": 6198.46,

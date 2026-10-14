@@ -3,7 +3,7 @@
   "name": "SK하이닉스",
   "peer_name": "삼성전자",
   "session_date": "2026-10-14",
-  "generated_at": "2026-10-14 16:11 KST",
+  "generated_at": "2026-10-14 16:46 KST",
   "summary": {
     "prev_close": 1443000.0,
     "open": 1458000.0,
@@ -15,11 +15,11 @@
     "c2c": -0.016632016632016633,
     "high_vs_open": 0.026748971193415683,
     "low_vs_open": -0.0384087791495199,
-    "volume": 3807431.0,
-    "volume_ratio": 1.1860241490106938,
+    "volume": 3824765.0,
+    "volume_ratio": 1.1914237327717525,
     "kospi_c2c": -0.0043974315711704515,
     "peer_c2c": 0.0,
-    "usdkrw_chg": 0.0009444430160578943,
+    "usdkrw_chg": 0.0006521067017482007,
     "us_nights": 1,
     "sox_ret": -0.0022881817789320857,
     "nasdaq_ret": -0.0015238817823868267,
@@ -137,14 +137,7 @@
       "cum_after": 0.008230452674897082,
       "session_share": -0.6344340762945405,
       "score": 9.255992038603994,
-      "news": [
-        {
-          "time": "2026-10-14T08:23:47+09:00",
-          "title": "'K-테크 싹쓸이 구상' 美 미시간 주지사, 현대차·SK하이닉스·HL만도 비밀리 훑고 간 이유",
-          "source": "더구루",
-          "link": "https://news.google.com/rss/articles/CBMiXkFVX3lxTFBFbzhmQXdRN2dDMVQ4WWYxOWl6a3phT2l0ME5vRGFCbTJid0RhTW12Ui0xd2xZamZIaXY2MlZvZi03bE1RVEJxTUtFRFk3WEw3WGVid01OdW55QlZuYlE?oc=5"
-        }
-      ]
+      "news": []
     },
     {
       "time": "2026-10-14T09:25:00+09:00",
@@ -156,12 +149,6 @@
       "session_share": -0.3452848955619782,
       "score": 4.278057760624711,
       "news": [
-        {
-          "time": "2026-10-14T08:23:47+09:00",
-          "title": "'K-테크 싹쓸이 구상' 美 미시간 주지사, 현대차·SK하이닉스·HL만도 비밀리 훑고 간 이유",
-          "source": "더구루",
-          "link": "https://news.google.com/rss/articles/CBMiXkFVX3lxTFBFbzhmQXdRN2dDMVQ4WWYxOWl6a3phT2l0ME5vRGFCbTJid0RhTW12Ui0xd2xZamZIaXY2MlZvZi03bE1RVEJxTUtFRFk3WEw3WGVid01OdW55QlZuYlE?oc=5"
-        },
         {
           "time": "2026-10-14T09:16:59+09:00",
           "title": "삼성전자·SK하이닉스에 쏠린 관심… 검색 상위 20개는 상승·하락 반반",
@@ -596,14 +583,7 @@
       "cum_after": 0.008230452674897082,
       "session_share": -0.6344340762945405,
       "score": 9.255992038603994,
-      "news": [
-        {
-          "time": "2026-10-14T08:23:47+09:00",
-          "title": "'K-테크 싹쓸이 구상' 美 미시간 주지사, 현대차·SK하이닉스·HL만도 비밀리 훑고 간 이유",
-          "source": "더구루",
-          "link": "https://news.google.com/rss/articles/CBMiXkFVX3lxTFBFbzhmQXdRN2dDMVQ4WWYxOWl6a3phT2l0ME5vRGFCbTJid0RhTW12Ui0xd2xZamZIaXY2MlZvZi03bE1RVEJxTUtFRFk3WEw3WGVid01OdW55QlZuYlE?oc=5"
-        }
-      ],
+      "news": [],
       "price": 1470000.0,
       "kind": "turn_up"
     },
@@ -617,12 +597,6 @@
       "session_share": -0.3452848955619782,
       "score": 4.278057760624711,
       "news": [
-        {
-          "time": "2026-10-14T08:23:47+09:00",
-          "title": "'K-테크 싹쓸이 구상' 美 미시간 주지사, 현대차·SK하이닉스·HL만도 비밀리 훑고 간 이유",
-          "source": "더구루",
-          "link": "https://news.google.com/rss/articles/CBMiXkFVX3lxTFBFbzhmQXdRN2dDMVQ4WWYxOWl6a3phT2l0ME5vRGFCbTJid0RhTW12Ui0xd2xZamZIaXY2MlZvZi03bE1RVEJxTUtFRFk3WEw3WGVid01OdW55QlZuYlE?oc=5"
-        },
         {
           "time": "2026-10-14T09:16:59+09:00",
           "title": "삼성전자·SK하이닉스에 쏠린 관심… 검색 상위 20개는 상승·하락 반반",
@@ -678,14 +652,7 @@
       "kind": "turn_down"
     }
   ],
-  "overnight_news": [
-    {
-      "time": "2026-10-14T08:23:47+09:00",
-      "title": "'K-테크 싹쓸이 구상' 美 미시간 주지사, 현대차·SK하이닉스·HL만도 비밀리 훑고 간 이유",
-      "source": "더구루",
-      "link": "https://news.google.com/rss/articles/CBMiXkFVX3lxTFBFbzhmQXdRN2dDMVQ4WWYxOWl6a3phT2l0ME5vRGFCbTJid0RhTW12Ui0xd2xZamZIaXY2MlZvZi03bE1RVEJxTUtFRFk3WEw3WGVid01OdW55QlZuYlE?oc=5"
-    }
-  ],
+  "overnight_news": [],
   "top_news": [
     {
       "time": "2026-10-14T12:53:19+09:00",
@@ -748,9 +715,9 @@
     "steady": 44,
     "upper": 4,
     "lower": 0,
-    "individual": -3130.0,
-    "foreign": -11761.0,
-    "institution": 8038.0,
+    "individual": -3151.0,
+    "foreign": -11736.0,
+    "institution": 8025.0,
     "prev_close": 6035.35,
     "open": 6062.08,
     "high": 6190.65,

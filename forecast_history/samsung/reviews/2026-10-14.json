@@ -3,7 +3,7 @@
   "name": "삼성전자",
   "peer_name": "SK하이닉스",
   "session_date": "2026-10-14",
-  "generated_at": "2026-10-14 16:47 KST",
+  "generated_at": "2026-10-14 17:34 KST",
   "summary": {
     "prev_close": 232000.0,
     "open": 233500.0,
@@ -15,11 +15,11 @@
     "c2c": 0.0,
     "high_vs_open": 0.03426124197002145,
     "low_vs_open": -0.01498929336188437,
-    "volume": 19509160.0,
-    "volume_ratio": 1.1336391877508423,
+    "volume": 19570933.0,
+    "volume_ratio": 1.1372286961430507,
     "kospi_c2c": -0.0043974315711704515,
     "peer_c2c": -0.016632016632016633,
-    "usdkrw_chg": 0.0006521067017482007,
+    "usdkrw_chg": 0.0009144316510834027,
     "us_nights": 1,
     "sox_ret": -0.0022881817789320857,
     "nasdaq_ret": -0.0015238817823868267,
@@ -74,25 +74,25 @@
     "ma_touches": [],
     "micron_ah": {
       "regular_close": 953.1900024414062,
-      "last": 956.2,
-      "ret": 0.003157814864700903,
-      "low_ret": -0.0012484420087897075,
-      "high_ret": 0.006095319447027903,
-      "last_time": "2026-10-14T08:55:00+09:00"
+      "last": 953.19,
+      "ret": -2.5613007270663957e-09,
+      "low_ret": -2.5613007270663957e-09,
+      "high_ret": -2.5613007270663957e-09,
+      "last_time": "2026-10-14T05:00:00+09:00"
     },
     "nvidia_ah": {
       "regular_close": 228.52000427246094,
-      "last": 228.96,
-      "ret": 0.0019254144902538517,
-      "low_ret": 0.0016169075819660872,
-      "high_ret": 0.0037195681412889314,
-      "last_time": "2026-10-14T08:55:00+09:00"
+      "last": 228.52,
+      "ret": -1.8696222903180626e-08,
+      "low_ret": -1.8696222903180626e-08,
+      "high_ret": -1.8696222903180626e-08,
+      "last_time": "2026-10-14T05:00:00+09:00"
     },
     "session_cross": {
       "NQ=F": {
         "label": "나스닥100 선물",
         "ret": 0.0007967350124389316,
-        "after_high": -0.0014762901315682475
+        "after_high": -0.001792071099001813
       },
       "ZN=F": {
         "label": "미 10년물 국채 선물",
@@ -102,20 +102,11 @@
       "KRW=X": {
         "label": "원/달러",
         "ret": -0.0011948338476338582,
-        "after_high": -0.0014184791424785015
+        "after_high": -0.0022378374273392954
       }
     },
     "from_high": -0.03734439834024894,
-    "buyback": [
-      {
-        "kind": "직접 취득",
-        "start": "2026-08-24",
-        "end": "2026-11-21",
-        "amount": "14,999,999,992,000",
-        "purpose": "임직원 주식보상",
-        "rcept_no": "20260821000616"
-      }
-    ]
+    "buyback": []
   },
   "classification": {
     "labels": [
@@ -163,12 +154,6 @@
           "title": "홍라희, 또 이재용에 지분 넘겼다…이번엔 삼성전자 2.6조",
           "source": "비즈워치",
           "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTFAwN01xRjFiRF9ZMjJUUG1PUWlGaWRHV2hsLWNCY2ZnYnRTREtGcXYxMFF6X0k3YXRXM3Z1dW04Qm1IbE9rdUY5cm1IVG9FVDZ5M29GNXA2VFgxS0VLT0RtTW1rTW5wWHFJTXZ1Ng?oc=5"
-        },
-        {
-          "time": "2026-10-14T09:16:59+09:00",
-          "title": "삼성전자·SK하이닉스에 쏠린 관심… 검색 상위 20개는 상승·하락 반반",
-          "source": "서울신문",
-          "link": "https://news.google.com/rss/articles/CBMifkFVX3lxTE5qczRtTEZkYmR5LWhUNEltLTRsMGwxY0JmeUhGZG5JYmp3S3Fla0ZYd0NaNTNLcDFRcWltREZpQVh3WWZsSGNRamRwYWVZZ3A4blk5NDJpa1RMY1JaSklVR2g5Wm5VUTVtWThIc1g5ZHhBMnhUdF93NzJDRTJfdw?oc=5"
         }
       ]
     },
@@ -180,25 +165,13 @@
       "cum_before": 0.0,
       "cum_after": -0.0064239828693790635,
       "session_share": 0.6666666666666744,
-      "score": 3.6817397816443505,
+      "score": 3.6817509842041356,
       "news": [
         {
           "time": "2026-10-14T14:59:19+09:00",
           "title": "삼성전자 '반도체대전' 참가‥HBM4E 등 AI 반도체 기술 선보인다",
           "source": "MBC 뉴스",
           "link": "https://news.google.com/rss/articles/CBMidEFVX3lxTE9QLWl1VjBqYUpRc3BydE96Y1c1N2JQNUJ4TTdmazF6NmRlb01JaHpYa3NSX2llQkRyUFU3S1JYOUxVbkp3N3VMOUlITWFoUEk2YlpkTDdmUzE3MUJwbG9LclBOQzNYNzkzZnJLcDdveDZKMkFG0gF0QVVfeXFMUG52cWpIVDZJZFNKelIwTmczTFJmVUtRTjVBYlI0ZEJtNkJYWWVYaWVRR1plUFR0M3pQUVZUdmF6RDJRNm5qWjlHNUFzNlZ0d2N6TV8tNm1RUldCMVh3b3l4eWhkdlBUOGMtSVZwMm5YUTlGUzg?oc=5"
-        },
-        {
-          "time": "2026-10-14T13:50:00+09:00",
-          "title": "‘월가 족집게’ 댄 아이브스 “삼성전자·SK하이닉스 저평가…AI 투자 수혜 지속”",
-          "source": "이코노미스트",
-          "link": "https://news.google.com/rss/articles/CBMiYkFVX3lxTFBZVXhMWU84UlctdnhOaW5PeGhleWhlWTlqMXB3RjNwLXhsX2FBMEFrUnNMNnJqekJwTXM4UElfQUFHWnA4Z0tvTzdxUTFfWTdGUUh3cEJOc0RDcks1WHdqU2dn?oc=5"
-        },
-        {
-          "time": "2026-10-14T14:32:42+09:00",
-          "title": "삼성·SK하이닉스, 차세대 메모리 경쟁서 '연산' 강조…전시회서 AI 반도체 놓고 맞불",
-          "source": "글로벌이코노믹",
-          "link": "https://news.google.com/rss/articles/CBMihgFBVV95cUxPVG12STJxZ0lJWjJaN0JhNlN1X0JWSHBBQ09aVzNscHVOelk1bG5vZ1REeVo3LUtHZGZtenNOcEpXY3N1YzVCMUVDQjZYTi1CeTIxZG9CbHQ1N0JWcEhmMTF1RDNPMVliTEdFS0dBY3gtZ1JhOG9tNTRnV19WMFVLaERCVFhXZw?oc=5"
         },
         {
           "time": "2026-10-14T13:46:24+09:00",
@@ -211,19 +184,31 @@
           "title": "삼성전자 HBM4E 살펴보는 관람객들",
           "source": "뉴스핌",
           "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE5XWHpFYzBkUkVQQjAzNklZS3hKZVo3MnEwaDM2NEpib0QxbUJRTUlzWmxqUDBXendYQzJTMkNES3pGdl9EOGtJR0E1MmpiY3RFNy1Uc3dnYmZoUnND?oc=5"
+        },
+        {
+          "time": "2026-10-14T14:10:21+09:00",
+          "title": "에이루트 子, 삼성전자·SK하이닉스 출신 반도체 노광장비 전문 인력 확보",
+          "source": "아시아경제",
+          "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE1NMnlLWTVDOUpvcXBWNHRuTTF1SEVYZTM1OUV5cnBkRlBmOTduVGlQa3BfN3pPMFJ3Q25vZGtHblJRNEFFelk5ejI2TkxaaXlJbWlwMmIwSXlGNmVPMFROaQ?oc=5"
+        },
+        {
+          "time": "2026-10-14T14:22:01+09:00",
+          "title": "삼성전자, 'AI 모듈러 홈'으로 K-녹색전환 이끈다",
+          "source": "www.ebn.co.kr",
+          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE0wckhycFdmNFRfMmNzVUh3M2VtU2xCZ3pHMjVSVEtuZnRtY0RyYkdxemJ2V1J5VVl6d1haRmt1TmRiWGFFZFloSzE0Yk9qTXJXa1BhUkN5VlV3aktJUE5QV2NDS1Fid2l0?oc=5"
         }
       ]
     }
   ],
   "turning_point": {
-    "high_time": "2026-10-14T09:25:00+09:00",
+    "high_time": "2026-10-14T09:30:00+09:00",
     "high": 0.032119914346895095,
     "low_time": "2026-10-14T14:55:00+09:00",
     "low": -0.009635974304068484,
     "pattern": "고점 후 반락"
   },
   "closing_share": -0.5048648648648559,
-  "intraday_corr_kospi": 0.9174542942395052,
+  "intraday_corr_kospi": 0.9214418932478797,
   "intraday_note": "장중 봉은 09:00~14:55까지만 있어 마감 구간(14:55~15:30)은 일봉 종가로만 봅니다(그 구간 +0.32%).",
   "intraday_coverage": "09:00~14:55",
   "intraday_path": [
@@ -254,13 +239,13 @@
     },
     {
       "time": "2026-10-14T09:25:00+09:00",
-      "price": 241000.0,
-      "volume": 273957.0
+      "price": 240750.0,
+      "volume": 274000.0
     },
     {
       "time": "2026-10-14T09:30:00+09:00",
       "price": 241000.0,
-      "volume": 320560.0
+      "volume": 320517.0
     },
     {
       "time": "2026-10-14T09:35:00+09:00",
@@ -355,12 +340,12 @@
     {
       "time": "2026-10-14T11:05:00+09:00",
       "price": 238000.0,
-      "volume": 63837.0
+      "volume": 63832.0
     },
     {
       "time": "2026-10-14T11:10:00+09:00",
       "price": 236500.0,
-      "volume": 180137.0
+      "volume": 180142.0
     },
     {
       "time": "2026-10-14T11:15:00+09:00",
@@ -380,12 +365,12 @@
     {
       "time": "2026-10-14T11:30:00+09:00",
       "price": 237500.0,
-      "volume": 95114.0
+      "volume": 95085.0
     },
     {
       "time": "2026-10-14T11:35:00+09:00",
       "price": 237500.0,
-      "volume": 54124.0
+      "volume": 54153.0
     },
     {
       "time": "2026-10-14T11:40:00+09:00",
@@ -580,7 +565,7 @@
     {
       "time": "2026-10-14T14:50:00+09:00",
       "price": 232000.0,
-      "volume": 448424.0
+      "volume": 448432.0
     },
     {
       "time": "2026-10-14T14:55:00+09:00",
@@ -622,12 +607,6 @@
           "title": "홍라희, 또 이재용에 지분 넘겼다…이번엔 삼성전자 2.6조",
           "source": "비즈워치",
           "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTFAwN01xRjFiRF9ZMjJUUG1PUWlGaWRHV2hsLWNCY2ZnYnRTREtGcXYxMFF6X0k3YXRXM3Z1dW04Qm1IbE9rdUY5cm1IVG9FVDZ5M29GNXA2VFgxS0VLT0RtTW1rTW5wWHFJTXZ1Ng?oc=5"
-        },
-        {
-          "time": "2026-10-14T09:16:59+09:00",
-          "title": "삼성전자·SK하이닉스에 쏠린 관심… 검색 상위 20개는 상승·하락 반반",
-          "source": "서울신문",
-          "link": "https://news.google.com/rss/articles/CBMifkFVX3lxTE5qczRtTEZkYmR5LWhUNEltLTRsMGwxY0JmeUhGZG5JYmp3S3Fla0ZYd0NaNTNLcDFRcWltREZpQVh3WWZsSGNRamRwYWVZZ3A4blk5NDJpa1RMY1JaSklVR2g5Wm5VUTVtWThIc1g5ZHhBMnhUdF93NzJDRTJfdw?oc=5"
         }
       ],
       "price": 239500.0,
@@ -641,25 +620,13 @@
       "cum_before": 0.0,
       "cum_after": -0.0064239828693790635,
       "session_share": 0.6666666666666744,
-      "score": 3.6817397816443505,
+      "score": 3.6817509842041356,
       "news": [
         {
           "time": "2026-10-14T14:59:19+09:00",
           "title": "삼성전자 '반도체대전' 참가‥HBM4E 등 AI 반도체 기술 선보인다",
           "source": "MBC 뉴스",
           "link": "https://news.google.com/rss/articles/CBMidEFVX3lxTE9QLWl1VjBqYUpRc3BydE96Y1c1N2JQNUJ4TTdmazF6NmRlb01JaHpYa3NSX2llQkRyUFU3S1JYOUxVbkp3N3VMOUlITWFoUEk2YlpkTDdmUzE3MUJwbG9LclBOQzNYNzkzZnJLcDdveDZKMkFG0gF0QVVfeXFMUG52cWpIVDZJZFNKelIwTmczTFJmVUtRTjVBYlI0ZEJtNkJYWWVYaWVRR1plUFR0M3pQUVZUdmF6RDJRNm5qWjlHNUFzNlZ0d2N6TV8tNm1RUldCMVh3b3l4eWhkdlBUOGMtSVZwMm5YUTlGUzg?oc=5"
-        },
-        {
-          "time": "2026-10-14T13:50:00+09:00",
-          "title": "‘월가 족집게’ 댄 아이브스 “삼성전자·SK하이닉스 저평가…AI 투자 수혜 지속”",
-          "source": "이코노미스트",
-          "link": "https://news.google.com/rss/articles/CBMiYkFVX3lxTFBZVXhMWU84UlctdnhOaW5PeGhleWhlWTlqMXB3RjNwLXhsX2FBMEFrUnNMNnJqekJwTXM4UElfQUFHWnA4Z0tvTzdxUTFfWTdGUUh3cEJOc0RDcks1WHdqU2dn?oc=5"
-        },
-        {
-          "time": "2026-10-14T14:32:42+09:00",
-          "title": "삼성·SK하이닉스, 차세대 메모리 경쟁서 '연산' 강조…전시회서 AI 반도체 놓고 맞불",
-          "source": "글로벌이코노믹",
-          "link": "https://news.google.com/rss/articles/CBMihgFBVV95cUxPVG12STJxZ0lJWjJaN0JhNlN1X0JWSHBBQ09aVzNscHVOelk1bG5vZ1REeVo3LUtHZGZtenNOcEpXY3N1YzVCMUVDQjZYTi1CeTIxZG9CbHQ1N0JWcEhmMTF1RDNPMVliTEdFS0dBY3gtZ1JhOG9tNTRnV19WMFVLaERCVFhXZw?oc=5"
         },
         {
           "time": "2026-10-14T13:46:24+09:00",
@@ -672,6 +639,18 @@
           "title": "삼성전자 HBM4E 살펴보는 관람객들",
           "source": "뉴스핌",
           "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE5XWHpFYzBkUkVQQjAzNklZS3hKZVo3MnEwaDM2NEpib0QxbUJRTUlzWmxqUDBXendYQzJTMkNES3pGdl9EOGtJR0E1MmpiY3RFNy1Uc3dnYmZoUnND?oc=5"
+        },
+        {
+          "time": "2026-10-14T14:10:21+09:00",
+          "title": "에이루트 子, 삼성전자·SK하이닉스 출신 반도체 노광장비 전문 인력 확보",
+          "source": "아시아경제",
+          "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE1NMnlLWTVDOUpvcXBWNHRuTTF1SEVYZTM1OUV5cnBkRlBmOTduVGlQa3BfN3pPMFJ3Q25vZGtHblJRNEFFelk5ejI2TkxaaXlJbWlwMmIwSXlGNmVPMFROaQ?oc=5"
+        },
+        {
+          "time": "2026-10-14T14:22:01+09:00",
+          "title": "삼성전자, 'AI 모듈러 홈'으로 K-녹색전환 이끈다",
+          "source": "www.ebn.co.kr",
+          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE0wckhycFdmNFRfMmNzVUh3M2VtU2xCZ3pHMjVSVEtuZnRtY0RyYkdxemJ2V1J5VVl6d1haRmt1TmRiWGFFZFloSzE0Yk9qTXJXa1BhUkN5VlV3aktJUE5QV2NDS1Fid2l0?oc=5"
         }
       ],
       "price": 232000.0,
@@ -718,10 +697,16 @@
       "link": "https://news.google.com/rss/articles/CBMidEFVX3lxTE9QLWl1VjBqYUpRc3BydE96Y1c1N2JQNUJ4TTdmazF6NmRlb01JaHpYa3NSX2llQkRyUFU3S1JYOUxVbkp3N3VMOUlITWFoUEk2YlpkTDdmUzE3MUJwbG9LclBOQzNYNzkzZnJLcDdveDZKMkFG0gF0QVVfeXFMUG52cWpIVDZJZFNKelIwTmczTFJmVUtRTjVBYlI0ZEJtNkJYWWVYaWVRR1plUFR0M3pQUVZUdmF6RDJRNm5qWjlHNUFzNlZ0d2N6TV8tNm1RUldCMVh3b3l4eWhkdlBUOGMtSVZwMm5YUTlGUzg?oc=5"
     },
     {
-      "time": "2026-10-14T16:00:04+09:00",
-      "title": "삼성전자·SK하이닉스, 반도체대전서 AI 메모리 솔루션 총공세",
-      "source": "한국아이닷컴",
-      "link": "https://news.google.com/rss/articles/CBMia0FVX3lxTE16c0x5SFpsLVpZVjlYUExNQm5aNU5pbWNwcmRUZ2xXcWhtMWR4bzgwQUF2bHMxTkV0aFBBWnR3WVV3aE9jNXIzd1FxUFlqMmVXQnJ2bUlTeEdVVDQwYmNXSWdETC1vMUlSNWZj0gFvQVVfeXFMUEtoaWpmVTdhaDFwcFhDUl8tYU9BOEVzS0tUeVJRN1RWLW1kQmJaVGoxa1k1NWFfN3VVamRhUEVKVHYtVzN5aVhhVXlpbFNrcTBBRFF1elFwOWxRd2N1UUphOWxqTFlRSUFYcnc5NmxZ?oc=5"
+      "time": "2026-10-14T16:42:51+09:00",
+      "title": "[SEDEX 2026] 삼성전자 'zHBM' vs 하이닉스 'HBF'…AI 메모리 청사진 대결",
+      "source": "녹색경제신문",
+      "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE16Tl9oTlJhWkFzZU5zdTdTb3hXLVAzMXZ1NVNzUC1yUWRLV3V1WEZzcDI0RmhYa3JOd2hwaFFIZHI3QnBHcngzR3JWcUhVeXZUZi1OMzNvakRfUUlFSENGMlpOd25XUzhV?oc=5"
+    },
+    {
+      "time": "2026-10-14T17:19:02+09:00",
+      "title": "삼성전자 'zHBM vs SK하닉 'HBF' 전면에…AI 반도체 경쟁 '후끈'",
+      "source": "뉴스1",
+      "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE9GcVhUVzhCSko4eDFPU1ktVm9fODVZYVB0bWRFS2duYVlRV3BjaExJSU1Pbmk5OEF5ZDdTMWJsUkE4R3NBdGVHU0lWd0Q0YW9TQ1BDWHJHdkNURDNHQWhZdHVTMkc?oc=5"
     },
     {
       "time": "2026-10-14T10:00:00+09:00",
@@ -730,20 +715,14 @@
       "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE9qdkI1U29zemRUWDUtVTIzUkluQTNyNVpHcFNtUjNGY2s1bGc3VFNMbE10NkFOczZrTkVXTzhIZzFscUk1NGdKeFg5VGp3bWtTOXlKZlJJcVhualoyR2w4Mg?oc=5"
     },
     {
-      "time": "2026-10-14T10:00:03+09:00",
-      "title": "삼성전자, AI 반도체 '풀 라인업' 공개…360조 용인 산단 청사진도 제시",
-      "source": "지디넷코리아",
-      "link": "https://news.google.com/rss/articles/CBMiVkFVX3lxTFBCMmpFNDFzaVU2NUxIVTVDSUtZbnJuWHg2NlQyVVRQeXR1d0Q2TDQ5c002S2tQUXZGQTZzb2FaTk5CVUJpN3h0anJOcUROcGdUTDRSamhn?oc=5"
-    },
-    {
       "time": "2026-10-14T10:30:00+09:00",
       "title": "AI가 반도체 설계·제조 어떻게 바꿀까…삼성전자가 답한다 - 머니투데이",
       "source": "머니투데이",
       "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTFBiUlBLMDlHbHk3RnFzcVRhdy05bzlmVm9CVXlYLWMwcmN3ZXdjYjJXaU0zdGM0M2RBOWRkRFFYem9SS1hWbXpuQV95Z1pfVDR4SnBYT1lfQkJaMVd4OXhGZDUxWUNneFJRY1NOSNIBckFVX3lxTE10MHNJc2hnc1g1bGQ2c1EwU0UyMzQ0Z0JQdU1HalM4QmZ5Q0dIQXNBQWs2MkltMm9PTTVLdm9RSGhXOG9VVTZjc3Nta0owSjlNbGVQQ3pnSEI1aHoxaWI2cmJ5b0FTNmJYaENoQ3NiYk9tUQ?oc=5"
     }
   ],
-  "disclosures": [],
-  "disclosure_note": null,
+  "disclosures": null,
+  "disclosure_note": "DART 조회 실패(URLError)",
   "flows": null,
   "flow_story": null,
   "flow_status": {
@@ -759,9 +738,9 @@
     "steady": 44,
     "upper": 4,
     "lower": 0,
-    "individual": -3151.0,
-    "foreign": -11736.0,
-    "institution": 8025.0,
+    "individual": -3119.0,
+    "foreign": -11726.0,
+    "institution": 7961.0,
     "prev_close": 6035.35,
     "open": 6062.08,
     "high": 6190.65,

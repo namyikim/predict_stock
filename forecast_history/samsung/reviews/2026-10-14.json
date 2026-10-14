@@ -3,7 +3,7 @@
   "name": "삼성전자",
   "peer_name": "SK하이닉스",
   "session_date": "2026-10-14",
-  "generated_at": "2026-10-14 17:34 KST",
+  "generated_at": "2026-10-14 21:51 KST",
   "summary": {
     "prev_close": 232000.0,
     "open": 233500.0,
@@ -15,11 +15,11 @@
     "c2c": 0.0,
     "high_vs_open": 0.03426124197002145,
     "low_vs_open": -0.01498929336188437,
-    "volume": 19570933.0,
-    "volume_ratio": 1.1372286961430507,
+    "volume": 21592423.0,
+    "volume_ratio": 1.2546935322326849,
     "kospi_c2c": -0.0043974315711704515,
     "peer_c2c": -0.016632016632016633,
-    "usdkrw_chg": 0.0009144316510834027,
+    "usdkrw_chg": 0.0038602118198480806,
     "us_nights": 1,
     "sox_ret": -0.0022881817789320857,
     "nasdaq_ret": -0.0015238817823868267,
@@ -106,7 +106,24 @@
       }
     },
     "from_high": -0.03734439834024894,
-    "buyback": []
+    "buyback": [
+      {
+        "kind": "직접 취득",
+        "start": "2026-08-24",
+        "end": "2026-11-21",
+        "amount": "14,999,999,992,000",
+        "purpose": "임직원 주식보상",
+        "rcept_no": "20260821000616"
+      }
+    ],
+    "foreign_pressure": {
+      "state": "selling_eased",
+      "previous_ratio": -0.12568425498288285,
+      "recent_ratio": -0.09806877055332022,
+      "previous_daily_net": -1774601.0,
+      "recent_daily_net": -2075328.4
+    },
+    "buyback_transition": null
   },
   "classification": {
     "labels": [
@@ -132,28 +149,10 @@
       "score": 7.430295031709438,
       "news": [
         {
-          "time": "2026-10-14T08:06:54+09:00",
-          "title": "삼성전자 \"차세대 메모리 핵심은 속도·확장·영속\"",
-          "source": "디일렉",
-          "link": "https://news.google.com/rss/articles/CBMiZkFVX3lxTE9tTGlHMGRwLUxWbEk5SXpRVVNTR3VpVjFrbW1SU1pCX1pKVkx4WjdjazlOWXNTaVpGU0ZNUDZKWFpiZ2xRNlA4NWJCaTdZNU9DVlpXcVdmZWt6TEh0NTdJLS04Y3AtUQ?oc=5"
-        },
-        {
           "time": "2026-10-14T07:56:18+09:00",
           "title": "천옌순 BOE 회장, 노태문 삼성전자 사장과 회동",
           "source": "디일렉",
           "link": "https://news.google.com/rss/articles/CBMiZkFVX3lxTE51cU1xaTk4MFBBZ3dtN21mM0JpLWVlWU1pMWcyeml5VjM2cjRiWklERmhjTHVQOGlHdUtRYW9jbGxOZVVfemloZEdubUJCLVdzVEUwZzN2Y203NkdMNUNLdDF3a1FGdw?oc=5"
-        },
-        {
-          "time": "2026-10-14T08:00:00+09:00",
-          "title": "삼성전자, 건강한 생활 습관을 이끄는 삼성 헬스 앱 업데이트",
-          "source": "samsung.com",
-          "link": "https://news.google.com/rss/articles/CBMiyAJBVV95cUxQUXFEdzJKTXZxQ1RSc0dILXF0SG9tMjQ4Uk11b1E1SnpDNnR5ekRqRUxvTUljWkRtMzcyNUNpWTBVbWZ0eG0wd29jdElQX0txWUl2b0w2MW5HX2V4TUM1NHlVbmstaHdDTDJKeHdDNE1tREg4TDk4anJwS0szclEtSHdWWG1GUUptczFXcHJjVDAyLUNTUFRBcklWUTdsSllTMHhpQVhNWUV4eEdtcEVvQ3RneFFfOFJUbUFsX3A2UHJ4LWQ2QzdrNGU5YXl5WFJncFNXSEVKTVpZYngzemc0M0RqU1hkbXBkOXc5ZHAtWFdpVk0xWjdxMThSbU1ZSU9hbFpMeEx3SWRsaGpCaGNmUnd1dmRjenl4VDBLenhNcTE4OFZTVFBsazlhaFFPYklSLWFxR1RtNmRKM1dFbm50VGh6M2gxZnlY?oc=5"
-        },
-        {
-          "time": "2026-10-14T08:35:02+09:00",
-          "title": "홍라희, 또 이재용에 지분 넘겼다…이번엔 삼성전자 2.6조",
-          "source": "비즈워치",
-          "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTFAwN01xRjFiRF9ZMjJUUG1PUWlGaWRHV2hsLWNCY2ZnYnRTREtGcXYxMFF6X0k3YXRXM3Z1dW04Qm1IbE9rdUY5cm1IVG9FVDZ5M29GNXA2VFgxS0VLT0RtTW1rTW5wWHFJTXZ1Ng?oc=5"
         }
       ]
     },
@@ -165,7 +164,7 @@
       "cum_before": 0.0,
       "cum_after": -0.0064239828693790635,
       "session_share": 0.6666666666666744,
-      "score": 3.6817509842041356,
+      "score": 3.6817397816443505,
       "news": [
         {
           "time": "2026-10-14T14:59:19+09:00",
@@ -174,28 +173,28 @@
           "link": "https://news.google.com/rss/articles/CBMidEFVX3lxTE9QLWl1VjBqYUpRc3BydE96Y1c1N2JQNUJ4TTdmazF6NmRlb01JaHpYa3NSX2llQkRyUFU3S1JYOUxVbkp3N3VMOUlITWFoUEk2YlpkTDdmUzE3MUJwbG9LclBOQzNYNzkzZnJLcDdveDZKMkFG0gF0QVVfeXFMUG52cWpIVDZJZFNKelIwTmczTFJmVUtRTjVBYlI0ZEJtNkJYWWVYaWVRR1plUFR0M3pQUVZUdmF6RDJRNm5qWjlHNUFzNlZ0d2N6TV8tNm1RUldCMVh3b3l4eWhkdlBUOGMtSVZwMm5YUTlGUzg?oc=5"
         },
         {
+          "time": "2026-10-14T13:30:12+09:00",
+          "title": "중국 CXMT 이어 YMTC도 '4F² D램' 개발 속도, 삼성전자와 SK하이닉스에 부담 가중",
+          "source": "비즈니스포스트",
+          "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTE43T0czRUJ5b2hRU1RkNGMwYVlYZDNmeGJPWmw5QzB3TFZIRkk5TEtydnV3am1MQjN0MXh2cldNWDdHUUVfZDFzUVk3TGtsMW5RMUE4QmFpWFMyamg1VC0xMnlkbFB2NzhiRWF0Q1pFQkVYUVU?oc=5"
+        },
+        {
           "time": "2026-10-14T13:46:24+09:00",
           "title": "삼성전자, AI 모듈러 홈 공개…실외기 하나로 냉난방·온수 해결",
           "source": "서울경제TV",
           "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE9QTVJId1dHWE5lR19pSWlNMXdZeWtaSHFNRVMyUXZxeC1ua0VYUjEtTWszWG5WclRwMEpWQXFaMzRTRHliZXZwdDRrUTFIZjh6TDNlbWdFeXhGZzFPNGJNVGhDbUY?oc=5"
         },
         {
-          "time": "2026-10-14T13:52:00+09:00",
-          "title": "삼성전자 HBM4E 살펴보는 관람객들",
-          "source": "뉴스핌",
-          "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE5XWHpFYzBkUkVQQjAzNklZS3hKZVo3MnEwaDM2NEpib0QxbUJRTUlzWmxqUDBXendYQzJTMkNES3pGdl9EOGtJR0E1MmpiY3RFNy1Uc3dnYmZoUnND?oc=5"
+          "time": "2026-10-14T14:28:29+09:00",
+          "title": "\"삼성전자 7만원, 하이닉스 20만원\"…반도체주 전망에 무슨 일이",
+          "source": "파이낸셜뉴스",
+          "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTFBWdzRkNGNmMXl4OEV1T1JMTU9pRW9jMXV6VlVnbHJxbF9ZQmptMHZfbjlQMFBpdTJHNXNNVHFZRzFKSkN2Y2NXbkxUblVMclVDWjZ2UUFSUHNHZw?oc=5"
         },
         {
-          "time": "2026-10-14T14:10:21+09:00",
-          "title": "에이루트 子, 삼성전자·SK하이닉스 출신 반도체 노광장비 전문 인력 확보",
-          "source": "아시아경제",
-          "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE1NMnlLWTVDOUpvcXBWNHRuTTF1SEVYZTM1OUV5cnBkRlBmOTduVGlQa3BfN3pPMFJ3Q25vZGtHblJRNEFFelk5ejI2TkxaaXlJbWlwMmIwSXlGNmVPMFROaQ?oc=5"
-        },
-        {
-          "time": "2026-10-14T14:22:01+09:00",
-          "title": "삼성전자, 'AI 모듈러 홈'으로 K-녹색전환 이끈다",
-          "source": "www.ebn.co.kr",
-          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE0wckhycFdmNFRfMmNzVUh3M2VtU2xCZ3pHMjVSVEtuZnRtY0RyYkdxemJ2V1J5VVl6d1haRmt1TmRiWGFFZFloSzE0Yk9qTXJXa1BhUkN5VlV3aktJUE5QV2NDS1Fid2l0?oc=5"
+          "time": "2026-10-14T14:33:35+09:00",
+          "title": "[포토] 삼성전자의 차세대 메모리",
+          "source": "전자신문",
+          "link": "https://news.google.com/rss/articles/CBMiTkFVX3lxTE9MeEhST3dnMFFkckxrMmowUktIXzdoWl9iTnJWT0hTY29fTnR4My1STVQzMjJXcnozaXlHQmtxb014cDlCNFJDRHJzYjl5dw?oc=5"
         }
       ]
     }
@@ -560,12 +559,12 @@
     {
       "time": "2026-10-14T14:45:00+09:00",
       "price": 233500.0,
-      "volume": 315329.0
+      "volume": 315211.0
     },
     {
       "time": "2026-10-14T14:50:00+09:00",
       "price": 232000.0,
-      "volume": 448432.0
+      "volume": 448424.0
     },
     {
       "time": "2026-10-14T14:55:00+09:00",
@@ -585,28 +584,10 @@
       "score": 7.430295031709438,
       "news": [
         {
-          "time": "2026-10-14T08:06:54+09:00",
-          "title": "삼성전자 \"차세대 메모리 핵심은 속도·확장·영속\"",
-          "source": "디일렉",
-          "link": "https://news.google.com/rss/articles/CBMiZkFVX3lxTE9tTGlHMGRwLUxWbEk5SXpRVVNTR3VpVjFrbW1SU1pCX1pKVkx4WjdjazlOWXNTaVpGU0ZNUDZKWFpiZ2xRNlA4NWJCaTdZNU9DVlpXcVdmZWt6TEh0NTdJLS04Y3AtUQ?oc=5"
-        },
-        {
           "time": "2026-10-14T07:56:18+09:00",
           "title": "천옌순 BOE 회장, 노태문 삼성전자 사장과 회동",
           "source": "디일렉",
           "link": "https://news.google.com/rss/articles/CBMiZkFVX3lxTE51cU1xaTk4MFBBZ3dtN21mM0JpLWVlWU1pMWcyeml5VjM2cjRiWklERmhjTHVQOGlHdUtRYW9jbGxOZVVfemloZEdubUJCLVdzVEUwZzN2Y203NkdMNUNLdDF3a1FGdw?oc=5"
-        },
-        {
-          "time": "2026-10-14T08:00:00+09:00",
-          "title": "삼성전자, 건강한 생활 습관을 이끄는 삼성 헬스 앱 업데이트",
-          "source": "samsung.com",
-          "link": "https://news.google.com/rss/articles/CBMiyAJBVV95cUxQUXFEdzJKTXZxQ1RSc0dILXF0SG9tMjQ4Uk11b1E1SnpDNnR5ekRqRUxvTUljWkRtMzcyNUNpWTBVbWZ0eG0wd29jdElQX0txWUl2b0w2MW5HX2V4TUM1NHlVbmstaHdDTDJKeHdDNE1tREg4TDk4anJwS0szclEtSHdWWG1GUUptczFXcHJjVDAyLUNTUFRBcklWUTdsSllTMHhpQVhNWUV4eEdtcEVvQ3RneFFfOFJUbUFsX3A2UHJ4LWQ2QzdrNGU5YXl5WFJncFNXSEVKTVpZYngzemc0M0RqU1hkbXBkOXc5ZHAtWFdpVk0xWjdxMThSbU1ZSU9hbFpMeEx3SWRsaGpCaGNmUnd1dmRjenl4VDBLenhNcTE4OFZTVFBsazlhaFFPYklSLWFxR1RtNmRKM1dFbm50VGh6M2gxZnlY?oc=5"
-        },
-        {
-          "time": "2026-10-14T08:35:02+09:00",
-          "title": "홍라희, 또 이재용에 지분 넘겼다…이번엔 삼성전자 2.6조",
-          "source": "비즈워치",
-          "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTFAwN01xRjFiRF9ZMjJUUG1PUWlGaWRHV2hsLWNCY2ZnYnRTREtGcXYxMFF6X0k3YXRXM3Z1dW04Qm1IbE9rdUY5cm1IVG9FVDZ5M29GNXA2VFgxS0VLT0RtTW1rTW5wWHFJTXZ1Ng?oc=5"
         }
       ],
       "price": 239500.0,
@@ -620,7 +601,7 @@
       "cum_before": 0.0,
       "cum_after": -0.0064239828693790635,
       "session_share": 0.6666666666666744,
-      "score": 3.6817509842041356,
+      "score": 3.6817397816443505,
       "news": [
         {
           "time": "2026-10-14T14:59:19+09:00",
@@ -629,28 +610,28 @@
           "link": "https://news.google.com/rss/articles/CBMidEFVX3lxTE9QLWl1VjBqYUpRc3BydE96Y1c1N2JQNUJ4TTdmazF6NmRlb01JaHpYa3NSX2llQkRyUFU3S1JYOUxVbkp3N3VMOUlITWFoUEk2YlpkTDdmUzE3MUJwbG9LclBOQzNYNzkzZnJLcDdveDZKMkFG0gF0QVVfeXFMUG52cWpIVDZJZFNKelIwTmczTFJmVUtRTjVBYlI0ZEJtNkJYWWVYaWVRR1plUFR0M3pQUVZUdmF6RDJRNm5qWjlHNUFzNlZ0d2N6TV8tNm1RUldCMVh3b3l4eWhkdlBUOGMtSVZwMm5YUTlGUzg?oc=5"
         },
         {
+          "time": "2026-10-14T13:30:12+09:00",
+          "title": "중국 CXMT 이어 YMTC도 '4F² D램' 개발 속도, 삼성전자와 SK하이닉스에 부담 가중",
+          "source": "비즈니스포스트",
+          "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTE43T0czRUJ5b2hRU1RkNGMwYVlYZDNmeGJPWmw5QzB3TFZIRkk5TEtydnV3am1MQjN0MXh2cldNWDdHUUVfZDFzUVk3TGtsMW5RMUE4QmFpWFMyamg1VC0xMnlkbFB2NzhiRWF0Q1pFQkVYUVU?oc=5"
+        },
+        {
           "time": "2026-10-14T13:46:24+09:00",
           "title": "삼성전자, AI 모듈러 홈 공개…실외기 하나로 냉난방·온수 해결",
           "source": "서울경제TV",
           "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE9QTVJId1dHWE5lR19pSWlNMXdZeWtaSHFNRVMyUXZxeC1ua0VYUjEtTWszWG5WclRwMEpWQXFaMzRTRHliZXZwdDRrUTFIZjh6TDNlbWdFeXhGZzFPNGJNVGhDbUY?oc=5"
         },
         {
-          "time": "2026-10-14T13:52:00+09:00",
-          "title": "삼성전자 HBM4E 살펴보는 관람객들",
-          "source": "뉴스핌",
-          "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE5XWHpFYzBkUkVQQjAzNklZS3hKZVo3MnEwaDM2NEpib0QxbUJRTUlzWmxqUDBXendYQzJTMkNES3pGdl9EOGtJR0E1MmpiY3RFNy1Uc3dnYmZoUnND?oc=5"
+          "time": "2026-10-14T14:28:29+09:00",
+          "title": "\"삼성전자 7만원, 하이닉스 20만원\"…반도체주 전망에 무슨 일이",
+          "source": "파이낸셜뉴스",
+          "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTFBWdzRkNGNmMXl4OEV1T1JMTU9pRW9jMXV6VlVnbHJxbF9ZQmptMHZfbjlQMFBpdTJHNXNNVHFZRzFKSkN2Y2NXbkxUblVMclVDWjZ2UUFSUHNHZw?oc=5"
         },
         {
-          "time": "2026-10-14T14:10:21+09:00",
-          "title": "에이루트 子, 삼성전자·SK하이닉스 출신 반도체 노광장비 전문 인력 확보",
-          "source": "아시아경제",
-          "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE1NMnlLWTVDOUpvcXBWNHRuTTF1SEVYZTM1OUV5cnBkRlBmOTduVGlQa3BfN3pPMFJ3Q25vZGtHblJRNEFFelk5ejI2TkxaaXlJbWlwMmIwSXlGNmVPMFROaQ?oc=5"
-        },
-        {
-          "time": "2026-10-14T14:22:01+09:00",
-          "title": "삼성전자, 'AI 모듈러 홈'으로 K-녹색전환 이끈다",
-          "source": "www.ebn.co.kr",
-          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE0wckhycFdmNFRfMmNzVUh3M2VtU2xCZ3pHMjVSVEtuZnRtY0RyYkdxemJ2V1J5VVl6d1haRmt1TmRiWGFFZFloSzE0Yk9qTXJXa1BhUkN5VlV3aktJUE5QV2NDS1Fid2l0?oc=5"
+          "time": "2026-10-14T14:33:35+09:00",
+          "title": "[포토] 삼성전자의 차세대 메모리",
+          "source": "전자신문",
+          "link": "https://news.google.com/rss/articles/CBMiTkFVX3lxTE9MeEhST3dnMFFkckxrMmowUktIXzdoWl9iTnJWT0hTY29fTnR4My1STVQzMjJXcnozaXlHQmtxb014cDlCNFJDRHJzYjl5dw?oc=5"
         }
       ],
       "price": 232000.0,
@@ -659,36 +640,18 @@
   ],
   "overnight_news": [
     {
-      "time": "2026-10-14T08:06:54+09:00",
-      "title": "삼성전자 \"차세대 메모리 핵심은 속도·확장·영속\"",
-      "source": "디일렉",
-      "link": "https://news.google.com/rss/articles/CBMiZkFVX3lxTE9tTGlHMGRwLUxWbEk5SXpRVVNTR3VpVjFrbW1SU1pCX1pKVkx4WjdjazlOWXNTaVpGU0ZNUDZKWFpiZ2xRNlA4NWJCaTdZNU9DVlpXcVdmZWt6TEh0NTdJLS04Y3AtUQ?oc=5"
-    },
-    {
       "time": "2026-10-14T07:56:18+09:00",
       "title": "천옌순 BOE 회장, 노태문 삼성전자 사장과 회동",
       "source": "디일렉",
       "link": "https://news.google.com/rss/articles/CBMiZkFVX3lxTE51cU1xaTk4MFBBZ3dtN21mM0JpLWVlWU1pMWcyeml5VjM2cjRiWklERmhjTHVQOGlHdUtRYW9jbGxOZVVfemloZEdubUJCLVdzVEUwZzN2Y203NkdMNUNLdDF3a1FGdw?oc=5"
-    },
-    {
-      "time": "2026-10-14T08:00:00+09:00",
-      "title": "삼성전자, 건강한 생활 습관을 이끄는 삼성 헬스 앱 업데이트",
-      "source": "samsung.com",
-      "link": "https://news.google.com/rss/articles/CBMiyAJBVV95cUxQUXFEdzJKTXZxQ1RSc0dILXF0SG9tMjQ4Uk11b1E1SnpDNnR5ekRqRUxvTUljWkRtMzcyNUNpWTBVbWZ0eG0wd29jdElQX0txWUl2b0w2MW5HX2V4TUM1NHlVbmstaHdDTDJKeHdDNE1tREg4TDk4anJwS0szclEtSHdWWG1GUUptczFXcHJjVDAyLUNTUFRBcklWUTdsSllTMHhpQVhNWUV4eEdtcEVvQ3RneFFfOFJUbUFsX3A2UHJ4LWQ2QzdrNGU5YXl5WFJncFNXSEVKTVpZYngzemc0M0RqU1hkbXBkOXc5ZHAtWFdpVk0xWjdxMThSbU1ZSU9hbFpMeEx3SWRsaGpCaGNmUnd1dmRjenl4VDBLenhNcTE4OFZTVFBsazlhaFFPYklSLWFxR1RtNmRKM1dFbm50VGh6M2gxZnlY?oc=5"
-    },
-    {
-      "time": "2026-10-14T08:35:02+09:00",
-      "title": "홍라희, 또 이재용에 지분 넘겼다…이번엔 삼성전자 2.6조",
-      "source": "비즈워치",
-      "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTFAwN01xRjFiRF9ZMjJUUG1PUWlGaWRHV2hsLWNCY2ZnYnRTREtGcXYxMFF6X0k3YXRXM3Z1dW04Qm1IbE9rdUY5cm1IVG9FVDZ5M29GNXA2VFgxS0VLT0RtTW1rTW5wWHFJTXZ1Ng?oc=5"
     }
   ],
   "top_news": [
     {
-      "time": "2026-10-14T10:00:02+09:00",
-      "title": "삼성전자, 반도체 대전서 HBM4E 등 AI 반도체 기술 총망라",
-      "source": "연합뉴스",
-      "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE00akFMV0U5NWo3OFFCcDNINk9GU2s3cXJ2TkxQaU91SFhmdWNTRTRCbjVSMWEyVi1PbE92cDdaUFpmcENIaHN0cTlNdml0YVYwc2RRRmU1bFBzdk1nNE55TtIBYEFVX3lxTE00akFMV0U5NWo3OFFCcDNINk9GU2s3cXJ2TkxQaU91SFhmdWNTRTRCbjVSMWEyVi1PbE92cDdaUFpmcENIaHN0cTlNdml0YVYwc2RRRmU1bFBzdk1nNE55Tg?oc=5"
+      "time": "2026-10-14T17:51:29+09:00",
+      "title": "삼성전자·SK하이닉스, 목표주가 괴리 확대에 반도체 투자 기대와 금리 부담 교차",
+      "source": "Traders Union",
+      "link": "https://news.google.com/rss/articles/CBMisgFBVV95cUxOanU0TU9URzNNSnBESC11a0JsSTFIMU02bjVqVE5JVlR4MTRQV2tmd1FaVkdSOG9IaDNjSTlXZXp5MktXdU9PQ0tPb1FkZV94N2FmUTNTRXZNLW9YR1ZKcngwMnZla1hWbHdNZDVELXE4ZEt5aVdkZ3J1QS1HaU12dlhNUHhvWC1oajUybG1tSW9PRWlILXptbHRYWEUzTFhhYXdUaVR0MzJQZnJJY3JOeVZB?oc=5"
     },
     {
       "time": "2026-10-14T14:59:19+09:00",
@@ -700,7 +663,7 @@
       "time": "2026-10-14T16:42:51+09:00",
       "title": "[SEDEX 2026] 삼성전자 'zHBM' vs 하이닉스 'HBF'…AI 메모리 청사진 대결",
       "source": "녹색경제신문",
-      "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE16Tl9oTlJhWkFzZU5zdTdTb3hXLVAzMXZ1NVNzUC1yUWRLV3V1WEZzcDI0RmhYa3JOd2hwaFFIZHI3QnBHcngzR3JWcUhVeXZUZi1OMzNvakRfUUlFSENGMlpOd25XUzhV?oc=5"
+      "link": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE92bG0wR1FxMzJzYmJuM0FUNFg5alhMNVBzN2tVRE9td2lrV2Y3TnpnWEVPal8zOVloOTVYM2xkWWpYZ2ZreEttUC0xYXYxb3RmQ0RhLTM0aE5RS1VXVnBkQjA2N3hLZWM?oc=5"
     },
     {
       "time": "2026-10-14T17:19:02+09:00",
@@ -709,25 +672,76 @@
       "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE9GcVhUVzhCSko4eDFPU1ktVm9fODVZYVB0bWRFS2duYVlRV3BjaExJSU1Pbmk5OEF5ZDdTMWJsUkE4R3NBdGVHU0lWd0Q0YW9TQ1BDWHJHdkNURDNHQWhZdHVTMkc?oc=5"
     },
     {
-      "time": "2026-10-14T10:00:00+09:00",
-      "title": "삼성전자, 반도체대전서 HBM4E·'용인 산단' 비전 공개",
-      "source": "아시아경제",
-      "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE9qdkI1U29zemRUWDUtVTIzUkluQTNyNVpHcFNtUjNGY2s1bGc3VFNMbE10NkFOczZrTkVXTzhIZzFscUk1NGdKeFg5VGp3bWtTOXlKZlJJcVhualoyR2w4Mg?oc=5"
+      "time": "2026-10-14T17:25:00+09:00",
+      "title": "[SEDEX 2026] 삼성전자, 메모리부터 패키징까지…AI 반도체 미래 제시",
+      "source": "뉴스투데이",
+      "link": "https://news.google.com/rss/articles/CBMiXkFVX3lxTFBRZ2l3WnpqQVJmUERUaWNPZ1R5Q3dMblp6LXRhQ2plOHM4bGJoNlozY3RPNFBKdmE4aUx0VXhqTHFmTDlzWHhhWHNuQXNEYWhDcVhCU09UUjlGWHRiRFE?oc=5"
     },
     {
-      "time": "2026-10-14T10:30:00+09:00",
-      "title": "AI가 반도체 설계·제조 어떻게 바꿀까…삼성전자가 답한다 - 머니투데이",
-      "source": "머니투데이",
-      "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTFBiUlBLMDlHbHk3RnFzcVRhdy05bzlmVm9CVXlYLWMwcmN3ZXdjYjJXaU0zdGM0M2RBOWRkRFFYem9SS1hWbXpuQV95Z1pfVDR4SnBYT1lfQkJaMVd4OXhGZDUxWUNneFJRY1NOSNIBckFVX3lxTE10MHNJc2hnc1g1bGQ2c1EwU0UyMzQ0Z0JQdU1HalM4QmZ5Q0dIQXNBQWs2MkltMm9PTTVLdm9RSGhXOG9VVTZjc3Nta0owSjlNbGVQQ3pnSEI1aHoxaWI2cmJ5b0FTNmJYaENoQ3NiYk9tUQ?oc=5"
+      "time": "2026-10-14T16:43:12+09:00",
+      "title": "'연산' 엔비디아와 '메모리' 마이크론의 주가 엇갈려",
+      "source": "중기이코노미",
+      "link": "https://news.google.com/rss/articles/CBMiakFVX3lxTE55NkRVRENNODZMNmRsZ21ndzZ3NzltZmFHOVhvLWlwVG1rcjU0MnZ6U1FxcVFVMEliREI0VkdKWXU1b2h1V0V6bkxQU0YzaUVXMzRZbzNZM2V6d215VU5RSzdab3NjcUFUTVE?oc=5"
     }
   ],
-  "disclosures": null,
-  "disclosure_note": "DART 조회 실패(URLError)",
-  "flows": null,
-  "flow_story": null,
+  "disclosures": [],
+  "disclosure_note": null,
+  "flows": "외국인 -829,758 / 기관 +310,050",
+  "flow_story": {
+    "direction": "flat",
+    "c2c": 0.0,
+    "actors": [
+      {
+        "key": "foreign_net",
+        "name": "외국인",
+        "shares": -829758.0,
+        "won": -192503856000.0,
+        "vs_usual": 0.3174280188935467
+      },
+      {
+        "key": "inst_net",
+        "name": "기관",
+        "shares": 310050.0,
+        "won": 71931600000.0,
+        "vs_usual": 0.18575523642693437
+      },
+      {
+        "key": "indiv_net",
+        "name": "개인",
+        "shares": 505494.0,
+        "won": 117274608000.0,
+        "vs_usual": 0.1613936660136345
+      }
+    ],
+    "lead": {
+      "key": "foreign_net",
+      "name": "외국인",
+      "shares": -829758.0,
+      "won": -192503856000.0,
+      "vs_usual": 0.3174280188935467
+    },
+    "counter": null,
+    "all_one_side": false,
+    "observations": [
+      "전일까지 20거래일 고점: 종가 돌파 없음 · 종가 위치 -18.74%.",
+      "전일까지 60거래일 고점: 종가 돌파 없음 · 종가 위치 -19.44%.",
+      "같은 5거래일 수익률: 이 종목 -14.71%, SK하이닉스 -19.97% · 차이 +5.26%p.",
+      "같은 20거래일 수익률: 이 종목 -13.75%, SK하이닉스 -23.42% · 차이 +9.67%p.",
+      "같은 60거래일 수익률: 이 종목 -11.79%, SK하이닉스 -25.81% · 차이 +14.02%p.",
+      "외국인 순매도 지속·거래량 대비 강도 약화: 직전 5일 → 최근 5일 순매수/거래량 -12.57% → -9.81% (일평균 -1,774,601주 → -2,075,328주). 향후 상승을 뜻하는 신호는 아닙니다.",
+      "원/달러 +0.39%(원화 약세) — 외국인 매도와 같은 방향의 환율 움직임입니다.",
+      "종가가 당일 범위(저가 230,000~고가 241,500원)의 아래쪽 17% 지점 — 저가 부근에서 마감했습니다.",
+      "우리 장중(09:00~15:30) 나스닥100 선물 +0.08%, 이 종목 고점 이후 -0.18% · 미 10년물 국채 선물 +0.12%(금리 하락), 이 종목 고점 이후 +0.13% · 원/달러 -0.12%(원화 강세), 이 종목 고점 이후 -0.22%.",
+      "자사주 매입 기간 중(직접 취득 2026-08-24~2026-11-21, 14,999,999,992,000, DART 공시) — 회사 자신의 매수는 기타 법인으로 잡힙니다.",
+      "마감가가 장중 고가보다 -3.73% 아래 — 오른 폭을 장중에 꽤 반납했습니다."
+    ],
+    "estimated_indiv": false,
+    "source_note": "출처 naver+cache · 장 마감 직후 잠정치라 저녁 확정치와 다를 수 있습니다 · KRX는 받지 못함(pykrx 미설치)"
+  },
   "flow_status": {
-    "state": "pending",
-    "detail": "최신 2026-10-13"
+    "state": "ok",
+    "detail": "naver+cache",
+    "krx_error": "pykrx 미설치"
   },
   "context": {},
   "market": {
@@ -738,9 +752,9 @@
     "steady": 44,
     "upper": 4,
     "lower": 0,
-    "individual": -3119.0,
-    "foreign": -11726.0,
-    "institution": 7961.0,
+    "individual": -3203.0,
+    "foreign": -11614.0,
+    "institution": 7876.0,
     "prev_close": 6035.35,
     "open": 6062.08,
     "high": 6190.65,

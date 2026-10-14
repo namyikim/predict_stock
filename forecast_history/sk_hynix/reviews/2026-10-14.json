@@ -1,0 +1,810 @@
+{
+  "target": "sk_hynix",
+  "name": "SK하이닉스",
+  "peer_name": "삼성전자",
+  "session_date": "2026-10-14",
+  "generated_at": "2026-10-14 16:11 KST",
+  "summary": {
+    "prev_close": 1443000.0,
+    "open": 1458000.0,
+    "high": 1497000.0,
+    "low": 1402000.0,
+    "close": 1419000.0,
+    "gap": 0.01039501039501034,
+    "session": -0.026748971193415683,
+    "c2c": -0.016632016632016633,
+    "high_vs_open": 0.026748971193415683,
+    "low_vs_open": -0.0384087791495199,
+    "volume": 3807431.0,
+    "volume_ratio": 1.1860241490106938,
+    "kospi_c2c": -0.0043974315711704515,
+    "peer_c2c": 0.0,
+    "usdkrw_chg": 0.0009444430160578943,
+    "us_nights": 1,
+    "sox_ret": -0.0022881817789320857,
+    "nasdaq_ret": -0.0015238817823868267,
+    "micron_ret": -0.03624724620074593,
+    "prior_streak": -5,
+    "ma5": 1574200.0,
+    "ma20": 1737850.0,
+    "high20": 1935000.0,
+    "high252": 2986352.5777339735,
+    "price_context": {
+      "breakouts": {
+        "20": {
+          "prior_high": 1935000.0,
+          "distance": -0.2666666666666667,
+          "close_breakout": false,
+          "intraday_breakout": false
+        },
+        "60": {
+          "prior_high": 2170529.329911143,
+          "distance": -0.34624242094066016,
+          "close_breakout": false,
+          "intraday_breakout": false
+        }
+      },
+      "relative": {
+        "5": {
+          "start": "2026-10-06",
+          "end": "2026-10-14",
+          "own": -0.1996615905245347,
+          "peer": -0.1470588235294118,
+          "excess": -0.052602766995122896
+        },
+        "20": {
+          "start": "2026-09-10",
+          "end": "2026-10-14",
+          "own": -0.234214786832164,
+          "peer": -0.137546468401487,
+          "excess": -0.09666831843067702
+        },
+        "60": {
+          "start": "2026-07-14",
+          "end": "2026-10-14",
+          "own": -0.25807228723530107,
+          "peer": -0.11787072243346008,
+          "excess": -0.14020156480184098
+        }
+      }
+    },
+    "range": 0.06776034236804573,
+    "peer_range": 0.050000000000000044,
+    "prior_5d": -0.2161868549701249,
+    "ma_touches": [],
+    "micron_ah": {
+      "regular_close": 953.1900024414062,
+      "last": 956.2,
+      "ret": 0.003157814864700903,
+      "low_ret": -0.0012484420087897075,
+      "high_ret": 0.006095319447027903,
+      "last_time": "2026-10-14T08:55:00+09:00"
+    },
+    "nvidia_ah": {
+      "regular_close": 228.52000427246094,
+      "last": 228.96,
+      "ret": 0.0019254144902538517,
+      "low_ret": 0.0016169075819660872,
+      "high_ret": 0.0037195681412889314,
+      "last_time": "2026-10-14T08:55:00+09:00"
+    },
+    "session_cross": {
+      "NQ=F": {
+        "label": "나스닥100 선물",
+        "ret": 0.0007967350124389316,
+        "after_high": -0.001792071099001813
+      },
+      "ZN=F": {
+        "label": "미 10년물 국채 선물",
+        "ret": 0.0011934954497985206,
+        "after_high": 0.0013428827215755668
+      },
+      "KRW=X": {
+        "label": "원/달러",
+        "ret": -0.0011948338476338582,
+        "after_high": -0.0022378374273392954
+      }
+    },
+    "from_high": -0.05083612040133789,
+    "buyback": [
+      {
+        "kind": "직접 취득",
+        "start": "2026-08-20",
+        "end": "2026-11-19",
+        "amount": "40,004,340,000,000",
+        "purpose": "자기주식 소각을 통한 \n주주가치 제고",
+        "rcept_no": "20260819000254"
+      }
+    ]
+  },
+  "classification": {
+    "labels": [
+      "장중 급변 09:00 주도",
+      "지수 동조"
+    ],
+    "reasons": [
+      "09:00 봉 +1.87%(σ의 7.26배, 거래량 8.04배)가 세션 -2.67%의 63%",
+      "KOSPI -0.44% vs 종목 -1.66%, 5분 수익률 상관 0.89 — 종목 고유 요인이 약함"
+    ]
+  },
+  "events": [
+    {
+      "time": "2026-10-14T09:00:00+09:00",
+      "ret": 0.018711018711018657,
+      "z": 7.26,
+      "volume_ratio": 8.04,
+      "cum_before": 0.0,
+      "cum_after": 0.008230452674897082,
+      "session_share": -0.6344340762945405,
+      "score": 9.255992038603994,
+      "news": [
+        {
+          "time": "2026-10-14T08:23:47+09:00",
+          "title": "'K-테크 싹쓸이 구상' 美 미시간 주지사, 현대차·SK하이닉스·HL만도 비밀리 훑고 간 이유",
+          "source": "더구루",
+          "link": "https://news.google.com/rss/articles/CBMiXkFVX3lxTFBFbzhmQXdRN2dDMVQ4WWYxOWl6a3phT2l0ME5vRGFCbTJid0RhTW12Ui0xd2xZamZIaXY2MlZvZi03bE1RVEJxTUtFRFk3WEw3WGVid01OdW55QlZuYlE?oc=5"
+        }
+      ]
+    },
+    {
+      "time": "2026-10-14T09:25:00+09:00",
+      "ret": 0.010183299389002087,
+      "z": 3.95,
+      "volume_ratio": 1.65,
+      "cum_before": 0.010288065843621297,
+      "cum_after": 0.020576131687242816,
+      "session_share": -0.3452848955619782,
+      "score": 4.278057760624711,
+      "news": [
+        {
+          "time": "2026-10-14T08:23:47+09:00",
+          "title": "'K-테크 싹쓸이 구상' 美 미시간 주지사, 현대차·SK하이닉스·HL만도 비밀리 훑고 간 이유",
+          "source": "더구루",
+          "link": "https://news.google.com/rss/articles/CBMiXkFVX3lxTFBFbzhmQXdRN2dDMVQ4WWYxOWl6a3phT2l0ME5vRGFCbTJid0RhTW12Ui0xd2xZamZIaXY2MlZvZi03bE1RVEJxTUtFRFk3WEw3WGVid01OdW55QlZuYlE?oc=5"
+        },
+        {
+          "time": "2026-10-14T09:16:59+09:00",
+          "title": "삼성전자·SK하이닉스에 쏠린 관심… 검색 상위 20개는 상승·하락 반반",
+          "source": "서울신문",
+          "link": "https://news.google.com/rss/articles/CBMifkFVX3lxTE5qczRtTEZkYmR5LWhUNEltLTRsMGwxY0JmeUhGZG5JYmp3S3Fla0ZYd0NaNTNLcDFRcWltREZpQVh3WWZsSGNRamRwYWVZZ3A4blk5NDJpa1RMY1JaSklVR2g5Wm5VUTVtWThIc1g5ZHhBMnhUdF93NzJDRTJfdw?oc=5"
+        }
+      ]
+    },
+    {
+      "time": "2026-10-14T14:30:00+09:00",
+      "ret": -0.009027777777777746,
+      "z": 3.5,
+      "volume_ratio": 2.3,
+      "cum_before": -0.012345679012345734,
+      "cum_after": -0.02126200274348422,
+      "session_share": 0.30610465116279006,
+      "score": 3.9608317097636303,
+      "news": [
+        {
+          "time": "2026-10-14T13:23:00+09:00",
+          "title": "\"AI 데이터, HBM·D램만으론 어렵다\"…SK하이닉스, 다음 단계 메모리 준비",
+          "source": "더팩트",
+          "link": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE5Sb05mRmZSdlZ6aFRQTFBBeS1LZW4xbWt3ZGZPc3VCQlRfZTZLdmtpN1IyVGZNZ2lSTENEUHhacVNyWTdsOUpocE01WDZsVUo5MVJxcNIBVEFVX3lxTE5Sb05mRmZSdlZ6aFRQTFBBeS1LZW4xbWt3ZGZPc3VCQlRfZTZLdmtpN1IyVGZNZ2lSTENEUHhacVNyWTdsOUpocE01WDZsVUo5MVJxcA?oc=5"
+        },
+        {
+          "time": "2026-10-14T13:09:36+09:00",
+          "title": "SK하이닉스, AI 메모리 병목 해법 제시… HBM 넘어 차세대 시장 공략",
+          "source": "Korea IT Times",
+          "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE5uZVNjM1JUZUw4akpqZENYSWNBRHV3QWY1MzlsX284TGdSSzUwbE02SEhSWGhiQXY4T3Vvc3hrTDV6azc4Nk5ON2R5SkxQNk91T1dackFGR2pMSkNqWU4xSW9rTWNsVkNHU1NUUEhpNGo?oc=5"
+        },
+        {
+          "time": "2026-10-14T13:30:22+09:00",
+          "title": "SK하이닉스, '메모리 반도체 판' 다시 짠다…AI 추론 병목 겨냥한 차세대 승부수",
+          "source": "경인방송 뉴스",
+          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE5hRGloQjFFOExHU24zdHNWNXNCbFZSdE45dkRmNTExMnRobk9DY2tYRGRyWjc4RzJ4YVV1Q0RMbGRlUWFTcm5XNkpiREtyQjFBNHBuYk11TlZtYk0zRnY3TWRZM281WFgz0gFoQVVfeXFMTmFEaWhCMUU4TEdTbjN0c1Y1c0JsVlJ0Tjl2RGY1MTEydGhuT0Nja1hEZHJaNzhHMnhhVXVDRExsZGVRYVNyblc2SmJES3JCMUE0cG5iTXVOVm1iTTNGdjdNZFkzbzVYWDM?oc=5"
+        },
+        {
+          "time": "2026-10-14T14:09:47+09:00",
+          "title": "SK하이닉스, HBM 다음은 '10배 용량의 메모리계층'…HBF·3D D램 개발",
+          "source": "서울이코노미뉴스",
+          "link": "https://news.google.com/rss/articles/CBMibkFVX3lxTE4zaVdDV09oeXJTNFB3ZkFiZXcyTElkM2hFZmczTkRUWVBkd3RwQU45MWRSNlNzbGFlMV81TndRWWl2TDRyNTdpbDlhQ3pEZ0F3ajQyQmdxc0s3OUw1VlVWVlBiajVxTUYtRXNMQWdR?oc=5"
+        },
+        {
+          "time": "2026-10-14T14:32:34+09:00",
+          "title": "SK하이닉스, HBM 넘어 차세대 메모리 확장…AI 추론 병목 해소 추진",
+          "source": "NSP통신",
+          "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE9xbUxkZng4WUxvRmlfVWxaeVh3SDFyZ2JTQnZucGZYS2RzamhxYjAzcUhQdDZ2Y19yUmJHZG5zZDNOXzBDY0E1M1lKUzNHQndrdFMtNEZBZ2pDeUFrZ0RrXw?oc=5"
+        }
+      ]
+    }
+  ],
+  "turning_point": {
+    "high_time": "2026-10-14T09:30:00+09:00",
+    "high": 0.025377229080932873,
+    "low_time": "2026-10-14T14:55:00+09:00",
+    "low": -0.029492455418381303,
+    "pattern": "고점 후 반락"
+  },
+  "closing_share": -0.10568089154661817,
+  "intraday_corr_kospi": 0.8890569848134352,
+  "intraday_note": "장중 봉은 09:00~14:55까지만 있어 마감 구간(14:55~15:30)은 일봉 종가로만 봅니다(그 구간 +0.28%).",
+  "intraday_coverage": "09:00~14:55",
+  "intraday_path": [
+    {
+      "time": "2026-10-14T09:00:00+09:00",
+      "price": 1470000.0,
+      "volume": 235078.0
+    },
+    {
+      "time": "2026-10-14T09:05:00+09:00",
+      "price": 1484000.0,
+      "volume": 124049.0
+    },
+    {
+      "time": "2026-10-14T09:10:00+09:00",
+      "price": 1478000.0,
+      "volume": 59078.0
+    },
+    {
+      "time": "2026-10-14T09:15:00+09:00",
+      "price": 1478000.0,
+      "volume": 55783.0
+    },
+    {
+      "time": "2026-10-14T09:20:00+09:00",
+      "price": 1473000.0,
+      "volume": 43952.0
+    },
+    {
+      "time": "2026-10-14T09:25:00+09:00",
+      "price": 1488000.0,
+      "volume": 48127.0
+    },
+    {
+      "time": "2026-10-14T09:30:00+09:00",
+      "price": 1495000.0,
+      "volume": 78198.0
+    },
+    {
+      "time": "2026-10-14T09:35:00+09:00",
+      "price": 1487000.0,
+      "volume": 59312.0
+    },
+    {
+      "time": "2026-10-14T09:40:00+09:00",
+      "price": 1477000.0,
+      "volume": 44696.0
+    },
+    {
+      "time": "2026-10-14T09:45:00+09:00",
+      "price": 1468000.0,
+      "volume": 59610.0
+    },
+    {
+      "time": "2026-10-14T09:50:00+09:00",
+      "price": 1467000.0,
+      "volume": 49610.0
+    },
+    {
+      "time": "2026-10-14T09:55:00+09:00",
+      "price": 1468000.0,
+      "volume": 39313.0
+    },
+    {
+      "time": "2026-10-14T10:00:00+09:00",
+      "price": 1461000.0,
+      "volume": 50652.0
+    },
+    {
+      "time": "2026-10-14T10:05:00+09:00",
+      "price": 1461000.0,
+      "volume": 39002.0
+    },
+    {
+      "time": "2026-10-14T10:10:00+09:00",
+      "price": 1462000.0,
+      "volume": 46850.0
+    },
+    {
+      "time": "2026-10-14T10:15:00+09:00",
+      "price": 1452000.0,
+      "volume": 57877.0
+    },
+    {
+      "time": "2026-10-14T10:20:00+09:00",
+      "price": 1458000.0,
+      "volume": 40331.0
+    },
+    {
+      "time": "2026-10-14T10:25:00+09:00",
+      "price": 1461000.0,
+      "volume": 41538.0
+    },
+    {
+      "time": "2026-10-14T10:30:00+09:00",
+      "price": 1461000.0,
+      "volume": 46398.0
+    },
+    {
+      "time": "2026-10-14T10:35:00+09:00",
+      "price": 1460000.0,
+      "volume": 31376.0
+    },
+    {
+      "time": "2026-10-14T10:40:00+09:00",
+      "price": 1460000.0,
+      "volume": 24219.0
+    },
+    {
+      "time": "2026-10-14T10:45:00+09:00",
+      "price": 1462000.0,
+      "volume": 34061.0
+    },
+    {
+      "time": "2026-10-14T10:50:00+09:00",
+      "price": 1469000.0,
+      "volume": 33163.0
+    },
+    {
+      "time": "2026-10-14T10:55:00+09:00",
+      "price": 1472000.0,
+      "volume": 28364.0
+    },
+    {
+      "time": "2026-10-14T11:00:00+09:00",
+      "price": 1474000.0,
+      "volume": 28154.0
+    },
+    {
+      "time": "2026-10-14T11:05:00+09:00",
+      "price": 1476000.0,
+      "volume": 26298.0
+    },
+    {
+      "time": "2026-10-14T11:10:00+09:00",
+      "price": 1470000.0,
+      "volume": 27453.0
+    },
+    {
+      "time": "2026-10-14T11:15:00+09:00",
+      "price": 1465000.0,
+      "volume": 23984.0
+    },
+    {
+      "time": "2026-10-14T11:20:00+09:00",
+      "price": 1469000.0,
+      "volume": 22465.0
+    },
+    {
+      "time": "2026-10-14T11:25:00+09:00",
+      "price": 1470000.0,
+      "volume": 21385.0
+    },
+    {
+      "time": "2026-10-14T11:30:00+09:00",
+      "price": 1469000.0,
+      "volume": 16550.0
+    },
+    {
+      "time": "2026-10-14T11:35:00+09:00",
+      "price": 1469000.0,
+      "volume": 21212.0
+    },
+    {
+      "time": "2026-10-14T11:40:00+09:00",
+      "price": 1472000.0,
+      "volume": 19755.0
+    },
+    {
+      "time": "2026-10-14T11:45:00+09:00",
+      "price": 1471000.0,
+      "volume": 17414.0
+    },
+    {
+      "time": "2026-10-14T11:50:00+09:00",
+      "price": 1474000.0,
+      "volume": 17845.0
+    },
+    {
+      "time": "2026-10-14T11:55:00+09:00",
+      "price": 1473000.0,
+      "volume": 20159.0
+    },
+    {
+      "time": "2026-10-14T12:00:00+09:00",
+      "price": 1471000.0,
+      "volume": 17776.0
+    },
+    {
+      "time": "2026-10-14T12:05:00+09:00",
+      "price": 1469000.0,
+      "volume": 18870.0
+    },
+    {
+      "time": "2026-10-14T12:10:00+09:00",
+      "price": 1478000.0,
+      "volume": 31296.0
+    },
+    {
+      "time": "2026-10-14T12:15:00+09:00",
+      "price": 1475000.0,
+      "volume": 26186.0
+    },
+    {
+      "time": "2026-10-14T12:20:00+09:00",
+      "price": 1470500.0,
+      "volume": 21774.0
+    },
+    {
+      "time": "2026-10-14T12:25:00+09:00",
+      "price": 1467000.0,
+      "volume": 17350.0
+    },
+    {
+      "time": "2026-10-14T12:30:00+09:00",
+      "price": 1468500.0,
+      "volume": 28758.0
+    },
+    {
+      "time": "2026-10-14T12:35:00+09:00",
+      "price": 1463000.0,
+      "volume": 22154.0
+    },
+    {
+      "time": "2026-10-14T12:40:00+09:00",
+      "price": 1462000.0,
+      "volume": 15284.0
+    },
+    {
+      "time": "2026-10-14T12:45:00+09:00",
+      "price": 1462000.0,
+      "volume": 20238.0
+    },
+    {
+      "time": "2026-10-14T12:50:00+09:00",
+      "price": 1460000.0,
+      "volume": 15697.0
+    },
+    {
+      "time": "2026-10-14T12:55:00+09:00",
+      "price": 1461000.0,
+      "volume": 15774.0
+    },
+    {
+      "time": "2026-10-14T13:00:00+09:00",
+      "price": 1466000.0,
+      "volume": 17551.0
+    },
+    {
+      "time": "2026-10-14T13:05:00+09:00",
+      "price": 1460000.0,
+      "volume": 14883.0
+    },
+    {
+      "time": "2026-10-14T13:10:00+09:00",
+      "price": 1459000.0,
+      "volume": 19155.0
+    },
+    {
+      "time": "2026-10-14T13:15:00+09:00",
+      "price": 1459000.0,
+      "volume": 41033.0
+    },
+    {
+      "time": "2026-10-14T13:20:00+09:00",
+      "price": 1456000.0,
+      "volume": 17350.0
+    },
+    {
+      "time": "2026-10-14T13:25:00+09:00",
+      "price": 1455000.0,
+      "volume": 28587.0
+    },
+    {
+      "time": "2026-10-14T13:30:00+09:00",
+      "price": 1455000.0,
+      "volume": 15950.0
+    },
+    {
+      "time": "2026-10-14T13:35:00+09:00",
+      "price": 1455000.0,
+      "volume": 20110.0
+    },
+    {
+      "time": "2026-10-14T13:40:00+09:00",
+      "price": 1453000.0,
+      "volume": 18609.0
+    },
+    {
+      "time": "2026-10-14T13:45:00+09:00",
+      "price": 1451000.0,
+      "volume": 26570.0
+    },
+    {
+      "time": "2026-10-14T13:50:00+09:00",
+      "price": 1456000.0,
+      "volume": 20916.0
+    },
+    {
+      "time": "2026-10-14T13:55:00+09:00",
+      "price": 1452000.0,
+      "volume": 22045.0
+    },
+    {
+      "time": "2026-10-14T14:00:00+09:00",
+      "price": 1446000.0,
+      "volume": 83520.0
+    },
+    {
+      "time": "2026-10-14T14:05:00+09:00",
+      "price": 1437000.0,
+      "volume": 43979.0
+    },
+    {
+      "time": "2026-10-14T14:10:00+09:00",
+      "price": 1444000.0,
+      "volume": 42645.0
+    },
+    {
+      "time": "2026-10-14T14:15:00+09:00",
+      "price": 1449000.0,
+      "volume": 31613.0
+    },
+    {
+      "time": "2026-10-14T14:20:00+09:00",
+      "price": 1439000.0,
+      "volume": 29746.0
+    },
+    {
+      "time": "2026-10-14T14:25:00+09:00",
+      "price": 1440000.0,
+      "volume": 34826.0
+    },
+    {
+      "time": "2026-10-14T14:30:00+09:00",
+      "price": 1427000.0,
+      "volume": 67269.0
+    },
+    {
+      "time": "2026-10-14T14:35:00+09:00",
+      "price": 1428000.0,
+      "volume": 48305.0
+    },
+    {
+      "time": "2026-10-14T14:40:00+09:00",
+      "price": 1428000.0,
+      "volume": 38561.0
+    },
+    {
+      "time": "2026-10-14T14:45:00+09:00",
+      "price": 1425000.0,
+      "volume": 69721.0
+    },
+    {
+      "time": "2026-10-14T14:50:00+09:00",
+      "price": 1417000.0,
+      "volume": 76283.0
+    },
+    {
+      "time": "2026-10-14T14:55:00+09:00",
+      "price": 1415000.0,
+      "volume": 70221.0
+    }
+  ],
+  "timeline_items": [
+    {
+      "time": "2026-10-14T09:00:00+09:00",
+      "ret": 0.018711018711018657,
+      "z": 7.26,
+      "volume_ratio": 8.04,
+      "cum_before": 0.0,
+      "cum_after": 0.008230452674897082,
+      "session_share": -0.6344340762945405,
+      "score": 9.255992038603994,
+      "news": [
+        {
+          "time": "2026-10-14T08:23:47+09:00",
+          "title": "'K-테크 싹쓸이 구상' 美 미시간 주지사, 현대차·SK하이닉스·HL만도 비밀리 훑고 간 이유",
+          "source": "더구루",
+          "link": "https://news.google.com/rss/articles/CBMiXkFVX3lxTFBFbzhmQXdRN2dDMVQ4WWYxOWl6a3phT2l0ME5vRGFCbTJid0RhTW12Ui0xd2xZamZIaXY2MlZvZi03bE1RVEJxTUtFRFk3WEw3WGVid01OdW55QlZuYlE?oc=5"
+        }
+      ],
+      "price": 1470000.0,
+      "kind": "turn_up"
+    },
+    {
+      "time": "2026-10-14T09:25:00+09:00",
+      "ret": 0.010183299389002087,
+      "z": 3.95,
+      "volume_ratio": 1.65,
+      "cum_before": 0.010288065843621297,
+      "cum_after": 0.020576131687242816,
+      "session_share": -0.3452848955619782,
+      "score": 4.278057760624711,
+      "news": [
+        {
+          "time": "2026-10-14T08:23:47+09:00",
+          "title": "'K-테크 싹쓸이 구상' 美 미시간 주지사, 현대차·SK하이닉스·HL만도 비밀리 훑고 간 이유",
+          "source": "더구루",
+          "link": "https://news.google.com/rss/articles/CBMiXkFVX3lxTFBFbzhmQXdRN2dDMVQ4WWYxOWl6a3phT2l0ME5vRGFCbTJid0RhTW12Ui0xd2xZamZIaXY2MlZvZi03bE1RVEJxTUtFRFk3WEw3WGVid01OdW55QlZuYlE?oc=5"
+        },
+        {
+          "time": "2026-10-14T09:16:59+09:00",
+          "title": "삼성전자·SK하이닉스에 쏠린 관심… 검색 상위 20개는 상승·하락 반반",
+          "source": "서울신문",
+          "link": "https://news.google.com/rss/articles/CBMifkFVX3lxTE5qczRtTEZkYmR5LWhUNEltLTRsMGwxY0JmeUhGZG5JYmp3S3Fla0ZYd0NaNTNLcDFRcWltREZpQVh3WWZsSGNRamRwYWVZZ3A4blk5NDJpa1RMY1JaSklVR2g5Wm5VUTVtWThIc1g5ZHhBMnhUdF93NzJDRTJfdw?oc=5"
+        }
+      ],
+      "price": 1488000.0,
+      "kind": "turn_up"
+    },
+    {
+      "time": "2026-10-14T14:30:00+09:00",
+      "ret": -0.009027777777777746,
+      "z": 3.5,
+      "volume_ratio": 2.3,
+      "cum_before": -0.012345679012345734,
+      "cum_after": -0.02126200274348422,
+      "session_share": 0.30610465116279006,
+      "score": 3.9608317097636303,
+      "news": [
+        {
+          "time": "2026-10-14T13:23:00+09:00",
+          "title": "\"AI 데이터, HBM·D램만으론 어렵다\"…SK하이닉스, 다음 단계 메모리 준비",
+          "source": "더팩트",
+          "link": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE5Sb05mRmZSdlZ6aFRQTFBBeS1LZW4xbWt3ZGZPc3VCQlRfZTZLdmtpN1IyVGZNZ2lSTENEUHhacVNyWTdsOUpocE01WDZsVUo5MVJxcNIBVEFVX3lxTE5Sb05mRmZSdlZ6aFRQTFBBeS1LZW4xbWt3ZGZPc3VCQlRfZTZLdmtpN1IyVGZNZ2lSTENEUHhacVNyWTdsOUpocE01WDZsVUo5MVJxcA?oc=5"
+        },
+        {
+          "time": "2026-10-14T13:09:36+09:00",
+          "title": "SK하이닉스, AI 메모리 병목 해법 제시… HBM 넘어 차세대 시장 공략",
+          "source": "Korea IT Times",
+          "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE5uZVNjM1JUZUw4akpqZENYSWNBRHV3QWY1MzlsX284TGdSSzUwbE02SEhSWGhiQXY4T3Vvc3hrTDV6azc4Nk5ON2R5SkxQNk91T1dackFGR2pMSkNqWU4xSW9rTWNsVkNHU1NUUEhpNGo?oc=5"
+        },
+        {
+          "time": "2026-10-14T13:30:22+09:00",
+          "title": "SK하이닉스, '메모리 반도체 판' 다시 짠다…AI 추론 병목 겨냥한 차세대 승부수",
+          "source": "경인방송 뉴스",
+          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE5hRGloQjFFOExHU24zdHNWNXNCbFZSdE45dkRmNTExMnRobk9DY2tYRGRyWjc4RzJ4YVV1Q0RMbGRlUWFTcm5XNkpiREtyQjFBNHBuYk11TlZtYk0zRnY3TWRZM281WFgz0gFoQVVfeXFMTmFEaWhCMUU4TEdTbjN0c1Y1c0JsVlJ0Tjl2RGY1MTEydGhuT0Nja1hEZHJaNzhHMnhhVXVDRExsZGVRYVNyblc2SmJES3JCMUE0cG5iTXVOVm1iTTNGdjdNZFkzbzVYWDM?oc=5"
+        },
+        {
+          "time": "2026-10-14T14:09:47+09:00",
+          "title": "SK하이닉스, HBM 다음은 '10배 용량의 메모리계층'…HBF·3D D램 개발",
+          "source": "서울이코노미뉴스",
+          "link": "https://news.google.com/rss/articles/CBMibkFVX3lxTE4zaVdDV09oeXJTNFB3ZkFiZXcyTElkM2hFZmczTkRUWVBkd3RwQU45MWRSNlNzbGFlMV81TndRWWl2TDRyNTdpbDlhQ3pEZ0F3ajQyQmdxc0s3OUw1VlVWVlBiajVxTUYtRXNMQWdR?oc=5"
+        },
+        {
+          "time": "2026-10-14T14:32:34+09:00",
+          "title": "SK하이닉스, HBM 넘어 차세대 메모리 확장…AI 추론 병목 해소 추진",
+          "source": "NSP통신",
+          "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE9xbUxkZng4WUxvRmlfVWxaeVh3SDFyZ2JTQnZucGZYS2RzamhxYjAzcUhQdDZ2Y19yUmJHZG5zZDNOXzBDY0E1M1lKUzNHQndrdFMtNEZBZ2pDeUFrZ0RrXw?oc=5"
+        }
+      ],
+      "price": 1427000.0,
+      "kind": "turn_down"
+    }
+  ],
+  "overnight_news": [
+    {
+      "time": "2026-10-14T08:23:47+09:00",
+      "title": "'K-테크 싹쓸이 구상' 美 미시간 주지사, 현대차·SK하이닉스·HL만도 비밀리 훑고 간 이유",
+      "source": "더구루",
+      "link": "https://news.google.com/rss/articles/CBMiXkFVX3lxTFBFbzhmQXdRN2dDMVQ4WWYxOWl6a3phT2l0ME5vRGFCbTJid0RhTW12Ui0xd2xZamZIaXY2MlZvZi03bE1RVEJxTUtFRFk3WEw3WGVid01OdW55QlZuYlE?oc=5"
+    }
+  ],
+  "top_news": [
+    {
+      "time": "2026-10-14T12:53:19+09:00",
+      "title": "SK하이닉스, HBM 넘어 HBF·3D 적층 D램으로…AI 메모리 판 바꾼다",
+      "source": "테크월드",
+      "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE5zMEs3c2RIME5RdURYS051OXctWFR5ZDZwU1M1WU5Qc2h5cldWN1pRcVhNcE8tSzg0MU8yZHBmNHQtN0p0YTllRG9Ud1ZHanN6b0R5WlFiRDRmX1J2aVk3ZWtpMjdiMXRz?oc=5"
+    },
+    {
+      "time": "2026-10-14T12:54:34+09:00",
+      "title": "칩 위에 D램 얹고 낸드에 HBM 이식… SK하이닉스가 그리는 `메모리 신세계`",
+      "source": "디지털데일리",
+      "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE1IUTNSdzQ0NDhqeDVvcVNORlJZWHlRbGV3LXhmYS01Wk1FcmUzMDhEd3ZJLW1reHVSTHJOQ0VfaDI0RjY2dkxHdE9aS2k2R0E2WGljdHRMeEt0cHI5SXYwN1l6bUk?oc=5"
+    },
+    {
+      "time": "2026-10-14T13:23:00+09:00",
+      "title": "\"AI 데이터, HBM·D램만으론 어렵다\"…SK하이닉스, 다음 단계 메모리 준비",
+      "source": "더팩트",
+      "link": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE5Sb05mRmZSdlZ6aFRQTFBBeS1LZW4xbWt3ZGZPc3VCQlRfZTZLdmtpN1IyVGZNZ2lSTENEUHhacVNyWTdsOUpocE01WDZsVUo5MVJxcNIBVEFVX3lxTE5Sb05mRmZSdlZ6aFRQTFBBeS1LZW4xbWt3ZGZPc3VCQlRfZTZLdmtpN1IyVGZNZ2lSTENEUHhacVNyWTdsOUpocE01WDZsVUo5MVJxcA?oc=5"
+    },
+    {
+      "time": "2026-10-14T15:14:38+09:00",
+      "title": "SK하이닉스, AI '메모리 병목' 넘어설 대안 제시 \"HBM 넘어 3D D램·HBF로\"",
+      "source": "오피니언뉴스",
+      "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTFBISXF1bWpBRUxIWDU4R09DUUlzZHRfTnpOenhkNjVwVUVoSGZwdWJIZThZQlM2NWYtaE14ZEZHOFEyVWk1QnVKNVdMWlJZSUNIanc4UFl3d2U1emtseVRScDhycnhjRUMzTU9TUnBLSjM?oc=5"
+    },
+    {
+      "time": "2026-10-14T12:28:00+09:00",
+      "title": "SK하이닉스 안현 “AI는 이제 시작”…HBM 넘어 3D 적층 D램·HBF 개발 강조 - 조선비즈",
+      "source": "Chosunbiz",
+      "link": "https://news.google.com/rss/articles/CBMilgFBVV95cUxNOE9wY2QyN2tTaXZjR0ZHQUhxb3FDUlBqSUJES25ZckV1Wk1JRTMzWkJnMWlzN0tsUzZrMXFqbGNGcXFCcWF4WDFHeFoybUx0T1gwVWhOT1NVaU1OUUgtZDFTamg2dklhYzVKenV5R185Mk1PU1MxeDBwRGpGSWtuYkNtUlg5QlFuSDJLTEN3UFg2UGlWcHfSAZYBQVVfeXFMTThPcGNkMjdrU2l2Y0dGR0FIcW9xQ1JQaklCREtuWXJFdVpNSUUzM1pCZzFpczdLbFM2azFxamxjRnFxQnFheFgxR3haMm1MdE9YMFVoTk9TVWlNTlFILWQxU2poNnZJYWM1Snp1eUdfOTJNT1NTMXgwcERqRklrbmJDbVJYOUJRbkgyS0xDd1BYNlBpVnB3?oc=5"
+    },
+    {
+      "time": "2026-10-14T13:09:36+09:00",
+      "title": "SK하이닉스, AI 메모리 병목 해법 제시… HBM 넘어 차세대 시장 공략",
+      "source": "Korea IT Times",
+      "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE5uZVNjM1JUZUw4akpqZENYSWNBRHV3QWY1MzlsX284TGdSSzUwbE02SEhSWGhiQXY4T3Vvc3hrTDV6azc4Nk5ON2R5SkxQNk91T1dackFGR2pMSkNqWU4xSW9rTWNsVkNHU1NUUEhpNGo?oc=5"
+    }
+  ],
+  "disclosures": [
+    {
+      "report_nm": "기업설명회(IR)개최(안내공시)",
+      "rcept_dt": "20261014",
+      "rcept_no": "20261014800385",
+      "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261014800385"
+    }
+  ],
+  "disclosure_note": null,
+  "flows": null,
+  "flow_story": null,
+  "flow_status": {
+    "state": "pending",
+    "detail": "최신 2026-10-13"
+  },
+  "context": {},
+  "market": {
+    "index": "KOSPI",
+    "date": "2026-10-14",
+    "rise": 503,
+    "fall": 371,
+    "steady": 44,
+    "upper": 4,
+    "lower": 0,
+    "individual": -3130.0,
+    "foreign": -11761.0,
+    "institution": 8038.0,
+    "prev_close": 6035.35,
+    "open": 6062.08,
+    "high": 6190.65,
+    "low": 5944.65,
+    "close": 6008.81
+  },
+  "earnings_reactions": null,
+  "forecasts": [
+    {
+      "model": "No macro ensemble",
+      "hit": false,
+      "verdict": "틀림 — 예측 상승 47%, 실제 하락(-1.66%)",
+      "legs": "갭 +1.04%(보합) · 세션 -2.67%(하락)",
+      "where": "갭은 예측 방향이었으나 장중에 반대로 움직여 결과가 뒤집혔습니다.",
+      "band": 0.0112285913816558,
+      "probs": [
+        0.2812209870801319,
+        0.2492371362396238,
+        0.4695418766802443
+      ],
+      "actual": "하락",
+      "predicted": "상승"
+    },
+    {
+      "model": "Mean ensemble",
+      "hit": false,
+      "verdict": "틀림 — 예측 상승 46%, 실제 하락(-1.66%)",
+      "legs": "갭 +1.04%(보합) · 세션 -2.67%(하락)",
+      "where": "갭은 예측 방향이었으나 장중에 반대로 움직여 결과가 뒤집혔습니다.",
+      "band": 0.0112285913816558,
+      "probs": [
+        0.3272933294275957,
+        0.2118748866492203,
+        0.4608317839231839
+      ],
+      "actual": "하락",
+      "predicted": "상승"
+    },
+    {
+      "model": "Candidate expanding",
+      "hit": false,
+      "verdict": "틀림 — 예측 상승 48%, 실제 하락(-1.66%)",
+      "legs": "갭 +1.04%(보합) · 세션 -2.67%(하락)",
+      "where": "갭은 예측 방향이었으나 장중에 반대로 움직여 결과가 뒤집혔습니다.",
+      "band": 0.0112285913816558,
+      "probs": [
+        0.2543250132180891,
+        0.2636947024083293,
+        0.4819802843735815
+      ],
+      "actual": "하락",
+      "predicted": "상승"
+    }
+  ],
+  "price_check": "1거래일 예상 구간 1,384,143~1,518,069원 · 종가 1,419,000원 → 구간 안",
+  "disclaimer": "시간이 맞는 것이지 원인 확정이 아닙니다. 뉴스 없이 움직이는 날(수급·프로그램·옵션 만기)이 많고, 기사 발행 시각은 실제 정보 유통보다 늦거나 앞섭니다. 이 절은 설명 도구이며 다음날 예측에 자동 반영되지 않습니다."
+}

@@ -3,7 +3,7 @@
   "name": "SK하이닉스",
   "peer_name": "삼성전자",
   "session_date": "2026-10-14",
-  "generated_at": "2026-10-14 17:32 KST",
+  "generated_at": "2026-10-14 21:51 KST",
   "summary": {
     "prev_close": 1443000.0,
     "open": 1458000.0,
@@ -15,11 +15,11 @@
     "c2c": -0.016632016632016633,
     "high_vs_open": 0.026748971193415683,
     "low_vs_open": -0.0384087791495199,
-    "volume": 3846941.0,
-    "volume_ratio": 1.198331611477489,
+    "volume": 4101349.0,
+    "volume_ratio": 1.2775803310738554,
     "kospi_c2c": -0.0043974315711704515,
     "peer_c2c": 0.0,
-    "usdkrw_chg": 0.000966951539788985,
+    "usdkrw_chg": 0.003785274905475644,
     "us_nights": 1,
     "sox_ret": -0.0022881817789320857,
     "nasdaq_ret": -0.0015238817823868267,
@@ -115,7 +115,15 @@
         "purpose": "자기주식 소각을 통한 \n주주가치 제고",
         "rcept_no": "20260819000254"
       }
-    ]
+    ],
+    "foreign_pressure": {
+      "state": "selling_intensified",
+      "previous_ratio": -0.16979112451391837,
+      "recent_ratio": -0.2174244933071487,
+      "previous_daily_net": -450587.0,
+      "recent_daily_net": -804134.4
+    },
+    "buyback_transition": null
   },
   "classification": {
     "labels": [
@@ -161,34 +169,34 @@
       "score": 3.9608317097636303,
       "news": [
         {
-          "time": "2026-10-14T13:23:00+09:00",
-          "title": "\"AI 데이터, HBM·D램만으론 어렵다\"…SK하이닉스, 다음 단계 메모리 준비",
-          "source": "더팩트",
-          "link": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE5Sb05mRmZSdlZ6aFRQTFBBeS1LZW4xbWt3ZGZPc3VCQlRfZTZLdmtpN1IyVGZNZ2lSTENEUHhacVNyWTdsOUpocE01WDZsVUo5MVJxcNIBVEFVX3lxTE5Sb05mRmZSdlZ6aFRQTFBBeS1LZW4xbWt3ZGZPc3VCQlRfZTZLdmtpN1IyVGZNZ2lSTENEUHhacVNyWTdsOUpocE01WDZsVUo5MVJxcA?oc=5"
-        },
-        {
-          "time": "2026-10-14T13:28:21+09:00",
-          "title": "SK하이닉스, '메모리 반도체 판' 다시 짠다…AI 추론 병목 겨냥한 차세대 승부수",
-          "source": "경인방송 뉴스",
-          "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE1WTXhXNF9VOG1LZjU5bVR5NG82WnNkOHgxTVlFSlV2a1U3Q2pKclJGSU1oc3Q1aDI2Q01lVFlUcDlSaWF4aVgzcy1nNFB2d2ZxbTNBVjE5TG4zcGxqOW9GSlFDR3jSAWhBVV95cUxOYURpaEIxRThMR1NuM3RzVjVzQmxWUnROOXZEZjUxMTJ0aG5PQ2NrWERkclo3OEcyeGFVdUNETGxkZVFhU3JuVzZKYkRLckIxQTRwbmJNdU5WbWJNM0Z2N01kWTNvNVhYMw?oc=5"
-        },
-        {
           "time": "2026-10-14T14:30:16+09:00",
           "title": "SK하이닉스, 中추격에 ‘3D 스택 D램’ 등 차세대 AI 메모리 ‘속도’",
           "source": "시사저널e",
-          "link": "https://news.google.com/rss/articles/CBMickFVX3lxTFB5UHlBVDdUX2hYOWFfczYxLURhVVRZbVROalc1T0dVdVZqdXlETzc2ZlpYUE9ab01PajNDTXVURml4YkZ3OUhsN1ZqYmFiOVZIR1o1T25oaUFNdDRVLWxVbjVuWWhyN29wR0w5eFRpX0tZdw?oc=5"
-        },
-        {
-          "time": "2026-10-14T14:32:34+09:00",
-          "title": "SK하이닉스, HBM 넘어 차세대 메모리 확장…AI 추론 병목 해소 추진",
-          "source": "NSP통신",
-          "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE9xbUxkZng4WUxvRmlfVWxaeVh3SDFyZ2JTQnZucGZYS2RzamhxYjAzcUhQdDZ2Y19yUmJHZG5zZDNOXzBDY0E1M1lKUzNHQndrdFMtNEZBZ2pDeUFrZ0RrXw?oc=5"
+          "link": "https://news.google.com/rss/articles/CBMickFVX3lxTFB5UHlBVDdUX2hYOWFfczYxLURhVVRZbVROalc1T0dVdVZqdXlETzc2ZlpYUE9ab01PajNDTXVURml4YkZ3OUhsN1ZqYmFiOVZIR1o1T25oaUFNdDRVLWxVbjVuWWhyN29wR0w5eFRpX0tZd9IBdkFVX3lxTE9HdmhqQmFuT0pfRnd6ZFMtWWhmc0lNM2pkX0Rrbm5OM21fcTY3bC1HM2RhU2Q2WHBnNTd6MHVOeGRnVTA2WWdMeVVqeWh4amlrU3Z5TjlkekFOSFZGRW5kRXkzSFBPaEoyOHhNUU82MGdJNF85NVE?oc=5"
         },
         {
           "time": "2026-10-14T14:32:42+09:00",
           "title": "삼성·SK하이닉스, 차세대 메모리 경쟁서 '연산' 강조…전시회서 AI 반도체 놓고 맞불",
           "source": "글로벌이코노믹",
           "link": "https://news.google.com/rss/articles/CBMihgFBVV95cUxPVG12STJxZ0lJWjJaN0JhNlN1X0JWSHBBQ09aVzNscHVOelk1bG5vZ1REeVo3LUtHZGZtenNOcEpXY3N1YzVCMUVDQjZYTi1CeTIxZG9CbHQ1N0JWcEhmMTF1RDNPMVliTEdFS0dBY3gtZ1JhOG9tNTRnV19WMFVLaERCVFhXZw?oc=5"
+        },
+        {
+          "time": "2026-10-14T13:06:42+09:00",
+          "title": "안현 SK하이닉스 사장 \"HBM 넘어 새로운 메모리 시대 열겠다\" - 머니투데이",
+          "source": "머니투데이",
+          "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTFAtR1VMZFFVODh4S3NVODRNaTE0SWFBb3RTOGY5Tm0tdU1jMXRfWTc0eUxNbnRVLTFDd1hQQXhUSDdqTFBCampycjJPLUt5M0tzTndTSUtyTHR2d0xoejVpc0VvbFFRNDJTbjhldNIBckFVX3lxTE02N25scHcyRnVkcGtZZ1BSUldVOXBvTExlYUcyY0poUlZhSDlYa095UlRDenpQZlFwLW10eU42VDJFZ2xjeF91Unh3ZlRTbzVQWjByZExjRlJ6RE9QY3lMb0tfZXlWQ2xnZGJ6VUxlTmZ2Zw?oc=5"
+        },
+        {
+          "time": "2026-10-14T13:16:32+09:00",
+          "title": "SK하이닉스 \"'메모리 간 데이터 이동' 新 병목…3D 적층 D램·HBF로 해결\"",
+          "source": "아시아경제",
+          "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE1lejFUVXd4MktDcEs5X0hwdW9yWnEzUldQN21qSS00V05UUWszOHYwbTc4YmFLaldEZ0dCRkc5c213UGRvejVacHptdzFLb3Y0T05jTTZBWlh3UGF6dkd3RA?oc=5"
+        },
+        {
+          "time": "2026-10-14T13:38:08+09:00",
+          "title": "SK하이닉스 안현 “HBF·3D D램으로 메모리 병목 해결”",
+          "source": "IT조선",
+          "link": "https://news.google.com/rss/articles/CBMidEFVX3lxTFA2WmZfcFVoLVo2N2h2LXdTZDQ5X1p1Ukx1Z2o3eE5iYjZ6U3JNVHE4U0tOMVkxNnNtbURoYnFzTjgyMjhiR1FMd2FPNklmbE5iSmZRcVNfckNoNUhMOHNVdmpBWWlfZjlyQ1cyczRpN2VhWXpQ0gF0QVVfeXFMUDZaZl9wVWgtWjY3aHYtd1NkNDlfWnVSTHVnajd4TmJiNnpTck1UcThTS04xWTE2c21tRGhicXNOODIyOGJHUUx3YU82SWZsTmJKZlFxU19yQ2g1SEw4c1V2akFZaV9mOXJDVzJzNGk3ZWFZelA?oc=5"
         }
       ]
     }
@@ -604,34 +612,34 @@
       "score": 3.9608317097636303,
       "news": [
         {
-          "time": "2026-10-14T13:23:00+09:00",
-          "title": "\"AI 데이터, HBM·D램만으론 어렵다\"…SK하이닉스, 다음 단계 메모리 준비",
-          "source": "더팩트",
-          "link": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE5Sb05mRmZSdlZ6aFRQTFBBeS1LZW4xbWt3ZGZPc3VCQlRfZTZLdmtpN1IyVGZNZ2lSTENEUHhacVNyWTdsOUpocE01WDZsVUo5MVJxcNIBVEFVX3lxTE5Sb05mRmZSdlZ6aFRQTFBBeS1LZW4xbWt3ZGZPc3VCQlRfZTZLdmtpN1IyVGZNZ2lSTENEUHhacVNyWTdsOUpocE01WDZsVUo5MVJxcA?oc=5"
-        },
-        {
-          "time": "2026-10-14T13:28:21+09:00",
-          "title": "SK하이닉스, '메모리 반도체 판' 다시 짠다…AI 추론 병목 겨냥한 차세대 승부수",
-          "source": "경인방송 뉴스",
-          "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE1WTXhXNF9VOG1LZjU5bVR5NG82WnNkOHgxTVlFSlV2a1U3Q2pKclJGSU1oc3Q1aDI2Q01lVFlUcDlSaWF4aVgzcy1nNFB2d2ZxbTNBVjE5TG4zcGxqOW9GSlFDR3jSAWhBVV95cUxOYURpaEIxRThMR1NuM3RzVjVzQmxWUnROOXZEZjUxMTJ0aG5PQ2NrWERkclo3OEcyeGFVdUNETGxkZVFhU3JuVzZKYkRLckIxQTRwbmJNdU5WbWJNM0Z2N01kWTNvNVhYMw?oc=5"
-        },
-        {
           "time": "2026-10-14T14:30:16+09:00",
           "title": "SK하이닉스, 中추격에 ‘3D 스택 D램’ 등 차세대 AI 메모리 ‘속도’",
           "source": "시사저널e",
-          "link": "https://news.google.com/rss/articles/CBMickFVX3lxTFB5UHlBVDdUX2hYOWFfczYxLURhVVRZbVROalc1T0dVdVZqdXlETzc2ZlpYUE9ab01PajNDTXVURml4YkZ3OUhsN1ZqYmFiOVZIR1o1T25oaUFNdDRVLWxVbjVuWWhyN29wR0w5eFRpX0tZdw?oc=5"
-        },
-        {
-          "time": "2026-10-14T14:32:34+09:00",
-          "title": "SK하이닉스, HBM 넘어 차세대 메모리 확장…AI 추론 병목 해소 추진",
-          "source": "NSP통신",
-          "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE9xbUxkZng4WUxvRmlfVWxaeVh3SDFyZ2JTQnZucGZYS2RzamhxYjAzcUhQdDZ2Y19yUmJHZG5zZDNOXzBDY0E1M1lKUzNHQndrdFMtNEZBZ2pDeUFrZ0RrXw?oc=5"
+          "link": "https://news.google.com/rss/articles/CBMickFVX3lxTFB5UHlBVDdUX2hYOWFfczYxLURhVVRZbVROalc1T0dVdVZqdXlETzc2ZlpYUE9ab01PajNDTXVURml4YkZ3OUhsN1ZqYmFiOVZIR1o1T25oaUFNdDRVLWxVbjVuWWhyN29wR0w5eFRpX0tZd9IBdkFVX3lxTE9HdmhqQmFuT0pfRnd6ZFMtWWhmc0lNM2pkX0Rrbm5OM21fcTY3bC1HM2RhU2Q2WHBnNTd6MHVOeGRnVTA2WWdMeVVqeWh4amlrU3Z5TjlkekFOSFZGRW5kRXkzSFBPaEoyOHhNUU82MGdJNF85NVE?oc=5"
         },
         {
           "time": "2026-10-14T14:32:42+09:00",
           "title": "삼성·SK하이닉스, 차세대 메모리 경쟁서 '연산' 강조…전시회서 AI 반도체 놓고 맞불",
           "source": "글로벌이코노믹",
           "link": "https://news.google.com/rss/articles/CBMihgFBVV95cUxPVG12STJxZ0lJWjJaN0JhNlN1X0JWSHBBQ09aVzNscHVOelk1bG5vZ1REeVo3LUtHZGZtenNOcEpXY3N1YzVCMUVDQjZYTi1CeTIxZG9CbHQ1N0JWcEhmMTF1RDNPMVliTEdFS0dBY3gtZ1JhOG9tNTRnV19WMFVLaERCVFhXZw?oc=5"
+        },
+        {
+          "time": "2026-10-14T13:06:42+09:00",
+          "title": "안현 SK하이닉스 사장 \"HBM 넘어 새로운 메모리 시대 열겠다\" - 머니투데이",
+          "source": "머니투데이",
+          "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTFAtR1VMZFFVODh4S3NVODRNaTE0SWFBb3RTOGY5Tm0tdU1jMXRfWTc0eUxNbnRVLTFDd1hQQXhUSDdqTFBCampycjJPLUt5M0tzTndTSUtyTHR2d0xoejVpc0VvbFFRNDJTbjhldNIBckFVX3lxTE02N25scHcyRnVkcGtZZ1BSUldVOXBvTExlYUcyY0poUlZhSDlYa095UlRDenpQZlFwLW10eU42VDJFZ2xjeF91Unh3ZlRTbzVQWjByZExjRlJ6RE9QY3lMb0tfZXlWQ2xnZGJ6VUxlTmZ2Zw?oc=5"
+        },
+        {
+          "time": "2026-10-14T13:16:32+09:00",
+          "title": "SK하이닉스 \"'메모리 간 데이터 이동' 新 병목…3D 적층 D램·HBF로 해결\"",
+          "source": "아시아경제",
+          "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE1lejFUVXd4MktDcEs5X0hwdW9yWnEzUldQN21qSS00V05UUWszOHYwbTc4YmFLaldEZ0dCRkc5c213UGRvejVacHptdzFLb3Y0T05jTTZBWlh3UGF6dkd3RA?oc=5"
+        },
+        {
+          "time": "2026-10-14T13:38:08+09:00",
+          "title": "SK하이닉스 안현 “HBF·3D D램으로 메모리 병목 해결”",
+          "source": "IT조선",
+          "link": "https://news.google.com/rss/articles/CBMidEFVX3lxTFA2WmZfcFVoLVo2N2h2LXdTZDQ5X1p1Ukx1Z2o3eE5iYjZ6U3JNVHE4U0tOMVkxNnNtbURoYnFzTjgyMjhiR1FMd2FPNklmbE5iSmZRcVNfckNoNUhMOHNVdmpBWWlfZjlyQ1cyczRpN2VhWXpQ0gF0QVVfeXFMUDZaZl9wVWgtWjY3aHYtd1NkNDlfWnVSTHVnajd4TmJiNnpTck1UcThTS04xWTE2c21tRGhicXNOODIyOGJHUUx3YU82SWZsTmJKZlFxU19yQ2g1SEw4c1V2akFZaV9mOXJDVzJzNGk3ZWFZelA?oc=5"
         }
       ],
       "price": 1427000.0,
@@ -640,18 +648,6 @@
   ],
   "overnight_news": [],
   "top_news": [
-    {
-      "time": "2026-10-14T12:53:19+09:00",
-      "title": "SK하이닉스, HBM 넘어 HBF·3D 적층 D램으로…AI 메모리 판 바꾼다",
-      "source": "테크월드",
-      "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE5zMEs3c2RIME5RdURYS051OXctWFR5ZDZwU1M1WU5Qc2h5cldWN1pRcVhNcE8tSzg0MU8yZHBmNHQtN0p0YTllRG9Ud1ZHanN6b0R5WlFiRDRmX1J2aVk3ZWtpMjdiMXRz?oc=5"
-    },
-    {
-      "time": "2026-10-14T13:23:00+09:00",
-      "title": "\"AI 데이터, HBM·D램만으론 어렵다\"…SK하이닉스, 다음 단계 메모리 준비",
-      "source": "더팩트",
-      "link": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE5Sb05mRmZSdlZ6aFRQTFBBeS1LZW4xbWt3ZGZPc3VCQlRfZTZLdmtpN1IyVGZNZ2lSTENEUHhacVNyWTdsOUpocE01WDZsVUo5MVJxcNIBVEFVX3lxTE5Sb05mRmZSdlZ6aFRQTFBBeS1LZW4xbWt3ZGZPc3VCQlRfZTZLdmtpN1IyVGZNZ2lSTENEUHhacVNyWTdsOUpocE01WDZsVUo5MVJxcA?oc=5"
-    },
     {
       "time": "2026-10-14T15:14:38+09:00",
       "title": "SK하이닉스, AI '메모리 병목' 넘어설 대안 제시 \"HBM 넘어 3D D램·HBF로\"",
@@ -665,16 +661,28 @@
       "link": "https://news.google.com/rss/articles/CBMidkFVX3lxTE95NjFCZWRzTENfUHlDNW1oa0ZtRXE0Wms4VlF5eGJETmtteUtaaGxIQW90MVNsLTVDbF9ieUR3U0h2OXBac2ZkUkc0bU1PbkdfNXFibW9VWDItLWcxSmxXNFV4azZpbG8zdTR2aGlOeWNPc0dqdlHSAWZBVV95cUxORl92MmhUUnViRjR0U0JWN3FtQWVlZzZvRTlYaVpnd0FFU2dQUFczLVZ6R0psMDk5OG90NGR6WnZlSEtuVnN5amdTbkdXUkdjTnRERDdEazZSUnd0ektrWDZCRkluMUE?oc=5"
     },
     {
-      "time": "2026-10-14T13:28:21+09:00",
-      "title": "SK하이닉스, '메모리 반도체 판' 다시 짠다…AI 추론 병목 겨냥한 차세대 승부수",
-      "source": "경인방송 뉴스",
-      "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE1WTXhXNF9VOG1LZjU5bVR5NG82WnNkOHgxTVlFSlV2a1U3Q2pKclJGSU1oc3Q1aDI2Q01lVFlUcDlSaWF4aVgzcy1nNFB2d2ZxbTNBVjE5TG4zcGxqOW9GSlFDR3jSAWhBVV95cUxOYURpaEIxRThMR1NuM3RzVjVzQmxWUnROOXZEZjUxMTJ0aG5PQ2NrWERkclo3OEcyeGFVdUNETGxkZVFhU3JuVzZKYkRLckIxQTRwbmJNdU5WbWJNM0Z2N01kWTNvNVhYMw?oc=5"
-    },
-    {
       "time": "2026-10-14T14:30:16+09:00",
       "title": "SK하이닉스, 中추격에 ‘3D 스택 D램’ 등 차세대 AI 메모리 ‘속도’",
       "source": "시사저널e",
-      "link": "https://news.google.com/rss/articles/CBMickFVX3lxTFB5UHlBVDdUX2hYOWFfczYxLURhVVRZbVROalc1T0dVdVZqdXlETzc2ZlpYUE9ab01PajNDTXVURml4YkZ3OUhsN1ZqYmFiOVZIR1o1T25oaUFNdDRVLWxVbjVuWWhyN29wR0w5eFRpX0tZdw?oc=5"
+      "link": "https://news.google.com/rss/articles/CBMickFVX3lxTFB5UHlBVDdUX2hYOWFfczYxLURhVVRZbVROalc1T0dVdVZqdXlETzc2ZlpYUE9ab01PajNDTXVURml4YkZ3OUhsN1ZqYmFiOVZIR1o1T25oaUFNdDRVLWxVbjVuWWhyN29wR0w5eFRpX0tZd9IBdkFVX3lxTE9HdmhqQmFuT0pfRnd6ZFMtWWhmc0lNM2pkX0Rrbm5OM21fcTY3bC1HM2RhU2Q2WHBnNTd6MHVOeGRnVTA2WWdMeVVqeWh4amlrU3Z5TjlkekFOSFZGRW5kRXkzSFBPaEoyOHhNUU82MGdJNF85NVE?oc=5"
+    },
+    {
+      "time": "2026-10-14T14:32:42+09:00",
+      "title": "삼성·SK하이닉스, 차세대 메모리 경쟁서 '연산' 강조…전시회서 AI 반도체 놓고 맞불",
+      "source": "글로벌이코노믹",
+      "link": "https://news.google.com/rss/articles/CBMihgFBVV95cUxPVG12STJxZ0lJWjJaN0JhNlN1X0JWSHBBQ09aVzNscHVOelk1bG5vZ1REeVo3LUtHZGZtenNOcEpXY3N1YzVCMUVDQjZYTi1CeTIxZG9CbHQ1N0JWcEhmMTF1RDNPMVliTEdFS0dBY3gtZ1JhOG9tNTRnV19WMFVLaERCVFhXZw?oc=5"
+    },
+    {
+      "time": "2026-10-14T14:52:42+09:00",
+      "title": "SK하이닉스, \"AI 메모리 계층 최적화 추진…HBM 넘어 HBF로 확장\"",
+      "source": "파이낸셜신문",
+      "link": "https://news.google.com/rss/articles/CBMia0FVX3lxTE1MRk4xVDhiZDhXcUl3d1I0QXBrOW4zNXMwVUhlQkhHci1RQkZxckxHOVVGdVBnS0s1b282QzZtdDlveHVCM0tYMHQ5bHNybjRmYlRJR0g3cW9aWkFGZzNJRHA0bk1TWXB0OGdj?oc=5"
+    },
+    {
+      "time": "2026-10-14T15:08:20+09:00",
+      "title": "안현 SK하이닉스 사장 \"3D 적층 D램·HBF로 AI 메모리 병목 해결\"",
+      "source": "아이뉴스24",
+      "link": "https://news.google.com/rss/articles/CBMiS0FVX3lxTE9YWm45Y3IxbVNMWHh1OXFEOGd4ZXBkYzdJaWhLcC1mUklnSVk0NFhwanFQcm85bmFSS3VDSlk5LWRZM21zazZtNzFmZw?oc=5"
     }
   ],
   "disclosures": [
@@ -686,11 +694,80 @@
     }
   ],
   "disclosure_note": null,
-  "flows": null,
-  "flow_story": null,
+  "flows": "외국인 -487,662 / 기관 +123,833",
+  "flow_story": {
+    "direction": "down",
+    "c2c": -0.016632016632016633,
+    "actors": [
+      {
+        "key": "foreign_net",
+        "name": "외국인",
+        "shares": -487662.0,
+        "won": -691992378000.0,
+        "vs_usual": 0.7477786277047273
+      },
+      {
+        "key": "inst_net",
+        "name": "기관",
+        "shares": 123833.0,
+        "won": 175719027000.0,
+        "vs_usual": 0.7975808438385104
+      },
+      {
+        "key": "indiv_net",
+        "name": "개인",
+        "shares": -85326.0,
+        "won": -121077594000.0,
+        "vs_usual": 0.20957865788456617
+      },
+      {
+        "key": "other_net",
+        "name": "기타 법인 등(추정)",
+        "shares": 449155.0,
+        "won": 637350945000.0,
+        "vs_usual": null
+      }
+    ],
+    "lead": {
+      "key": "foreign_net",
+      "name": "외국인",
+      "shares": -487662.0,
+      "won": -691992378000.0,
+      "vs_usual": 0.7477786277047273
+    },
+    "counter": {
+      "key": "other_net",
+      "name": "기타 법인 등(추정)",
+      "shares": 449155.0,
+      "won": 637350945000.0,
+      "vs_usual": null
+    },
+    "all_one_side": false,
+    "observations": [
+      "전일까지 20거래일 고점: 종가 돌파 없음 · 종가 위치 -26.67%.",
+      "전일까지 60거래일 고점: 종가 돌파 없음 · 종가 위치 -34.62%.",
+      "같은 5거래일 수익률: 이 종목 -19.97%, 삼성전자 -14.71% · 차이 -5.26%p.",
+      "같은 20거래일 수익률: 이 종목 -23.42%, 삼성전자 -13.75% · 차이 -9.67%p.",
+      "같은 60거래일 수익률: 이 종목 -25.81%, 삼성전자 -11.79% · 차이 -14.02%p.",
+      "외국인 순매도 지속·거래량 대비 강도 강화: 직전 5일 → 최근 5일 순매수/거래량 -16.98% → -21.74% (일평균 -450,587주 → -804,134주). 향후 상승을 뜻하는 신호는 아닙니다.",
+      "코스피도 -0.44%였지만 이 종목(-1.66%)이 훨씬 크게 움직였습니다.",
+      "삼성전자는 반대로 +0.00% — 업종 전체의 움직임은 아니었습니다.",
+      "원/달러 +0.38%(원화 약세) — 외국인 매도와 같은 방향의 환율 움직임입니다.",
+      "전날 밤 마이크론 -3.62% — 미국 메모리 회사와 같은 방향입니다.",
+      "6거래일 연속 하락이 이어졌습니다.",
+      "종가가 당일 범위(저가 1,402,000~고가 1,497,000원)의 아래쪽 18% 지점 — 저가 부근에서 마감했습니다.",
+      "우리 장중(09:00~15:30) 나스닥100 선물 +0.08%, 이 종목 고점 이후 -0.18% · 미 10년물 국채 선물 +0.12%(금리 하락), 이 종목 고점 이후 +0.13% · 원/달러 -0.12%(원화 강세), 이 종목 고점 이후 -0.22%.",
+      "자사주 매입 기간 중(직접 취득 2026-08-20~2026-11-19, 40,004,340,000,000, DART 공시) — 회사 자신의 매수는 기타 법인으로 잡힙니다.",
+      "마감가가 장중 고가보다 -5.08% 아래 — 오른 폭을 장중에 꽤 반납했습니다.",
+      "기타 법인 등(추정) 순매수 +6,374억원 — 회사의 자사주 매입 기간이라 회사 매입과 맞는 모양입니다."
+    ],
+    "estimated_indiv": false,
+    "source_note": "출처 naver+cache · 장 마감 직후 잠정치라 저녁 확정치와 다를 수 있습니다 · KRX는 받지 못함(pykrx 미설치)"
+  },
   "flow_status": {
-    "state": "pending",
-    "detail": "최신 2026-10-13"
+    "state": "ok",
+    "detail": "naver+cache",
+    "krx_error": "pykrx 미설치"
   },
   "context": {},
   "market": {
@@ -701,9 +778,9 @@
     "steady": 44,
     "upper": 4,
     "lower": 0,
-    "individual": -3117.0,
-    "foreign": -11728.0,
-    "institution": 7961.0,
+    "individual": -3203.0,
+    "foreign": -11614.0,
+    "institution": 7876.0,
     "prev_close": 6035.35,
     "open": 6062.08,
     "high": 6190.65,

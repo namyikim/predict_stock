@@ -1,12 +1,12 @@
 {
   "target": "sk_hynix",
   "method": "krx_yahoo_ohlc_v1",
-  "attempt": "2026-10-15/2026-10-14/krx_yahoo_ohlc_v1",
-  "attempted_at": "2026-10-15T02:28:22.069969+00:00",
-  "completed_session": "2026-10-14",
+  "attempt": "2026-10-15/2026-10-15/krx_yahoo_ohlc_v1",
+  "attempted_at": "2026-10-15T07:39:35.561679+00:00",
+  "completed_session": "2026-10-15",
   "status": "partial",
-  "accepted_bars": 238,
-  "observed_at": "2026-10-15T02:28:35.774906+00:00",
+  "accepted_bars": 237,
+  "observed_at": "2026-10-15T07:39:50.671102+00:00",
   "issues": [
     {
       "session": "2025-11-27",
@@ -35,24 +35,28 @@
     {
       "session": "2026-08-28",
       "reason": "corporate_action_unresolved"
+    },
+    {
+      "session": "2026-10-15",
+      "reason": "ohlc_mismatch"
     }
   ],
   "reason_counts": {
     "corporate_action_unresolved": 4,
-    "ohlc_mismatch": 3
+    "ohlc_mismatch": 4
   },
   "quality": {
-    "observed_at": "2026-10-15T02:28:35.774906+00:00",
+    "observed_at": "2026-10-15T07:39:50.671102+00:00",
     "timeframe": "1d",
-    "received_bars": 238,
-    "new_versions": 1,
+    "received_bars": 237,
+    "new_versions": 0,
     "expected_bars": 247,
-    "missing_bars": 9,
-    "missing_ratio": 0.03643724696356275,
+    "missing_bars": 10,
+    "missing_ratio": 0.04048582995951417,
     "coverage_basis": "이번 수집 응답의 완료 봉",
-    "collection_interval_seconds": 65650.416711,
+    "collection_interval_seconds": 18674.896196,
     "latest_bar_end": "2026-10-14T06:30:00+00:00",
-    "latest_bar_age_seconds": 71915.774906,
+    "latest_bar_age_seconds": 90590.671102,
     "corporate_action_bars": 0,
     "daily_range_note": "응답 시작 이전 자료의 누락은 판정하지 않음"
   }

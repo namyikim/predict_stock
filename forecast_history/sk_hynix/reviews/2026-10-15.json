@@ -3,7 +3,7 @@
   "name": "SK하이닉스",
   "peer_name": "삼성전자",
   "session_date": "2026-10-15",
-  "generated_at": "2026-10-15 16:46 KST",
+  "generated_at": "2026-10-15 17:32 KST",
   "summary": {
     "prev_close": 1419000.0,
     "open": 1304000.0,
@@ -15,11 +15,11 @@
     "c2c": -0.11064129668780831,
     "high_vs_open": 0.021472392638036908,
     "low_vs_open": -0.04141104294478526,
-    "volume": 6237456.0,
-    "volume_ratio": 1.9657549055543044,
+    "volume": 6298297.0,
+    "volume_ratio": 1.984929148099475,
     "kospi_c2c": -0.07565388809384133,
     "peer_c2c": -0.09482758620689657,
-    "usdkrw_chg": 0.0021486691038650196,
+    "usdkrw_chg": 0.0015667834263222158,
     "us_nights": 1,
     "sox_ret": -0.04295349126097914,
     "nasdaq_ret": -0.018802549537668578,
@@ -69,30 +69,30 @@
       }
     },
     "range": 0.0656000000000001,
-    "peer_range": 0.08180708180708174,
+    "peer_range": 0.08312958435207829,
     "prior_5d": -0.1996615905245347,
     "ma_touches": [],
     "micron_ah": {
       "regular_close": 913.9149780273438,
-      "last": 889.1,
-      "ret": -0.027152392316521667,
+      "last": 889.4268,
+      "ret": -0.026794809819399967,
       "low_ret": -0.02835600537292915,
       "high_ret": 0.0002352756851851101,
       "last_time": "2026-10-15T08:55:00+09:00"
     },
     "nvidia_ah": {
       "regular_close": 221.5,
-      "last": 217.8935,
-      "ret": -0.01628216704288943,
-      "low_ret": -0.01628216704288943,
+      "last": 217.9455,
+      "ret": -0.016047404063205373,
+      "low_ret": -0.016047404063205373,
       "high_ret": 0.0014221218961625315,
       "last_time": "2026-10-15T08:55:00+09:00"
     },
     "session_cross": {
       "NQ=F": {
         "label": "나스닥100 선물",
-        "ret": -0.004096309150370403,
-        "after_high": -0.004096309150370403
+        "ret": -0.0040796235733832065,
+        "after_high": -0.0040796235733832065
       },
       "ZN=F": {
         "label": "미 10년물 국채 선물",
@@ -105,7 +105,7 @@
         "after_high": 0.002311896347658937
       }
     },
-    "from_high": -0.05112781954887213,
+    "from_high": -0.05040015683380217,
     "buyback": [
       {
         "kind": "직접 취득",
@@ -125,7 +125,7 @@
     ],
     "reasons": [
       "갭 -8.10%가 종가→종가 -11.06%의 73%",
-      "09:00 봉 -6.27%(σ의 15.54배, 거래량 7.88배)가 세션 -3.22%의 154%",
+      "09:00 봉 -6.27%(σ의 15.54배, 거래량 7.88배)가 세션 -3.22%의 152%",
       "KOSPI -7.57% vs 종목 -11.06%, 5분 수익률 상관 0.91 — 종목 고유 요인이 약함"
     ]
   },
@@ -136,8 +136,8 @@
       "z": 15.54,
       "volume_ratio": 7.88,
       "cum_before": 0.0,
-      "cum_after": 0.019938650306748462,
-      "session_share": 1.5431542276649757,
+      "cum_after": 0.019157088122605304,
+      "session_share": 1.515738783180644,
       "score": 17.543506807859217,
       "news": [
         {
@@ -145,18 +145,6 @@
           "title": "SK하이닉스 \"데이터 이동 병목, 3D D램·HBF로 해결\" [1분 브리프]",
           "source": "아시아경제",
           "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTFB5cmhYMU9DZTVsSG9IQmpXb0NyX0xMbGo5RUlWbDdlcWxOckdWeEFMX2lzNlJNdm5FdXhyMEc3U1RoX0g0QktFUklaYXRTU2JfanRzbkdmZnZHWGVGOHFiTg?oc=5"
-        },
-        {
-          "time": "2026-10-15T08:53:00+09:00",
-          "title": "[특징주] 美 반도체주 급락 여파…프리마켓서 삼성전자 6%·SK하이닉스 7%대↓",
-          "source": "뉴스핌",
-          "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE5XV3ZmR1pSQXQ4NGdaeFUzMTFGQ0JFY19vQlpkZ1pvUzNhRjZOdUV6Z2U5R2FHRGNfei1iWEJTRlJrQ1VWUlJmMkVHdFMtd0k4NEhPOEI2VlNhdWtn?oc=5"
-        },
-        {
-          "time": "2026-10-15T08:44:22+09:00",
-          "title": "삼전닉스 프리마켓서 동반 급락…SK하이닉스 시총 1000조 원 하회",
-          "source": "부산일보",
-          "link": "https://news.google.com/rss/articles/CBMifEFVX3lxTE4xSXJMb2tyODJDRVd2MjRXTk4yUTBwYVBKT3c4QkQxVWRWVUFhX2daQl83TlFkYXJQWnFVbms3eDMySk9EWi13cWNWVnhtX2h6S1gzQmpRZWNzWFJsWmZieUhWTnBlMWRuMEJoN0J1WDRuYzZmUW9veC1LY1o?oc=5"
         },
         {
           "time": "2026-10-15T08:51:21+09:00",
@@ -175,25 +163,25 @@
   ],
   "turning_point": {
     "high_time": "2026-10-15T09:00:00+09:00",
-    "high": 0.019938650306748462,
+    "high": 0.019157088122605304,
     "low_time": "2026-10-15T14:45:00+09:00",
-    "low": -0.04141104294478526,
+    "low": -0.04214559386973182,
     "pattern": "고점 후 반락"
   },
   "closing_share": -0.2730006471013691,
-  "intraday_corr_kospi": 0.911468257357739,
+  "intraday_corr_kospi": 0.9101808377712106,
   "intraday_note": "장중 봉은 09:00~14:50까지만 있어 마감 구간(14:50~15:30)은 일봉 종가로만 봅니다(그 구간 +0.88%).",
   "intraday_coverage": "09:00~14:50",
   "intraday_path": [
     {
       "time": "2026-10-15T09:00:00+09:00",
       "price": 1330000.0,
-      "volume": 447495.0
+      "volume": 447245.0
     },
     {
       "time": "2026-10-15T09:05:00+09:00",
       "price": 1323000.0,
-      "volume": 117876.0
+      "volume": 118126.0
     },
     {
       "time": "2026-10-15T09:10:00+09:00",
@@ -237,13 +225,13 @@
     },
     {
       "time": "2026-10-15T09:50:00+09:00",
-      "price": 1274000.0,
-      "volume": 81486.0
+      "price": 1274500.0,
+      "volume": 81415.0
     },
     {
       "time": "2026-10-15T09:55:00+09:00",
       "price": 1271000.0,
-      "volume": 107141.0
+      "volume": 107212.0
     },
     {
       "time": "2026-10-15T10:00:00+09:00",
@@ -258,12 +246,12 @@
     {
       "time": "2026-10-15T10:10:00+09:00",
       "price": 1268000.0,
-      "volume": 71487.0
+      "volume": 71478.0
     },
     {
       "time": "2026-10-15T10:15:00+09:00",
       "price": 1260000.0,
-      "volume": 75331.0
+      "volume": 75340.0
     },
     {
       "time": "2026-10-15T10:20:00+09:00",
@@ -307,13 +295,13 @@
     },
     {
       "time": "2026-10-15T11:00:00+09:00",
-      "price": 1259000.0,
-      "volume": 46194.0
+      "price": 1260000.0,
+      "volume": 46196.0
     },
     {
       "time": "2026-10-15T11:05:00+09:00",
       "price": 1269000.0,
-      "volume": 51975.0
+      "volume": 51973.0
     },
     {
       "time": "2026-10-15T11:10:00+09:00",
@@ -488,12 +476,12 @@
     {
       "time": "2026-10-15T14:25:00+09:00",
       "price": 1257000.0,
-      "volume": 55285.0
+      "volume": 55284.0
     },
     {
       "time": "2026-10-15T14:30:00+09:00",
       "price": 1253000.0,
-      "volume": 42041.0
+      "volume": 42042.0
     },
     {
       "time": "2026-10-15T14:35:00+09:00",
@@ -523,8 +511,8 @@
       "z": 15.54,
       "volume_ratio": 7.88,
       "cum_before": 0.0,
-      "cum_after": 0.019938650306748462,
-      "session_share": 1.5431542276649757,
+      "cum_after": 0.019157088122605304,
+      "session_share": 1.515738783180644,
       "score": 17.543506807859217,
       "news": [
         {
@@ -532,18 +520,6 @@
           "title": "SK하이닉스 \"데이터 이동 병목, 3D D램·HBF로 해결\" [1분 브리프]",
           "source": "아시아경제",
           "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTFB5cmhYMU9DZTVsSG9IQmpXb0NyX0xMbGo5RUlWbDdlcWxOckdWeEFMX2lzNlJNdm5FdXhyMEc3U1RoX0g0QktFUklaYXRTU2JfanRzbkdmZnZHWGVGOHFiTg?oc=5"
-        },
-        {
-          "time": "2026-10-15T08:53:00+09:00",
-          "title": "[특징주] 美 반도체주 급락 여파…프리마켓서 삼성전자 6%·SK하이닉스 7%대↓",
-          "source": "뉴스핌",
-          "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE5XV3ZmR1pSQXQ4NGdaeFUzMTFGQ0JFY19vQlpkZ1pvUzNhRjZOdUV6Z2U5R2FHRGNfei1iWEJTRlJrQ1VWUlJmMkVHdFMtd0k4NEhPOEI2VlNhdWtn?oc=5"
-        },
-        {
-          "time": "2026-10-15T08:44:22+09:00",
-          "title": "삼전닉스 프리마켓서 동반 급락…SK하이닉스 시총 1000조 원 하회",
-          "source": "부산일보",
-          "link": "https://news.google.com/rss/articles/CBMifEFVX3lxTE4xSXJMb2tyODJDRVd2MjRXTk4yUTBwYVBKT3c4QkQxVWRWVUFhX2daQl83TlFkYXJQWnFVbms3eDMySk9EWi13cWNWVnhtX2h6S1gzQmpRZWNzWFJsWmZieUhWTnBlMWRuMEJoN0J1WDRuYzZmUW9veC1LY1o?oc=5"
         },
         {
           "time": "2026-10-15T08:51:21+09:00",
@@ -576,22 +552,16 @@
       "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTFB5cmhYMU9DZTVsSG9IQmpXb0NyX0xMbGo5RUlWbDdlcWxOckdWeEFMX2lzNlJNdm5FdXhyMEc3U1RoX0g0QktFUklaYXRTU2JfanRzbkdmZnZHWGVGOHFiTg?oc=5"
     },
     {
-      "time": "2026-10-15T08:53:00+09:00",
-      "title": "[특징주] 美 반도체주 급락 여파…프리마켓서 삼성전자 6%·SK하이닉스 7%대↓",
-      "source": "뉴스핌",
-      "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE5XV3ZmR1pSQXQ4NGdaeFUzMTFGQ0JFY19vQlpkZ1pvUzNhRjZOdUV6Z2U5R2FHRGNfei1iWEJTRlJrQ1VWUlJmMkVHdFMtd0k4NEhPOEI2VlNhdWtn?oc=5"
-    },
-    {
       "time": "2026-10-15T07:00:02+09:00",
       "title": "“삼성전자·SK하이닉스 지금이 저점 잡을 때… 용기 내볼 시점”",
       "source": "주간동아",
       "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE9OZ1h2OC1zSUhJX1lTM3hfX2JXSTFSNG55emV5ZkE2UUlxVnY3UEpIV2VHNWxoYThLeTRhRWpHc3hfQUxIT2h1WlRDSzRsRm45NHZzYnBYVGVycGpwdVBPRXMxaUZmS2JU?oc=5"
     },
     {
-      "time": "2026-10-15T08:44:22+09:00",
-      "title": "삼전닉스 프리마켓서 동반 급락…SK하이닉스 시총 1000조 원 하회",
-      "source": "부산일보",
-      "link": "https://news.google.com/rss/articles/CBMifEFVX3lxTE4xSXJMb2tyODJDRVd2MjRXTk4yUTBwYVBKT3c4QkQxVWRWVUFhX2daQl83TlFkYXJQWnFVbms3eDMySk9EWi13cWNWVnhtX2h6S1gzQmpRZWNzWFJsWmZieUhWTnBlMWRuMEJoN0J1WDRuYzZmUW9veC1LY1o?oc=5"
+      "time": "2026-10-15T08:51:21+09:00",
+      "title": "초고수의 선택은 SK하이닉스…삼성전자·LG엔솔은 순매도",
+      "source": "한국경제",
+      "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTFBoRVMwaUYtQ2JZd3U4Z0tGVHBGS0xlMGRLeVR2Uy1xWU5kc25WWTEyaHNQdWxld1ZZVmdjNnB1ZWRfRTBKTGNiUmdxVGhMR2htY2NoeUlYcl9lQQ?oc=5"
     }
   ],
   "top_news": [
@@ -626,10 +596,10 @@
       "link": "https://news.google.com/rss/articles/CBMiS0FVX3lxTE9YYnNsdmlNTjVWc0pOeWpIeFBOSkhfMjgyRnYxMFJXUHF1aW94VTY1VENab3AxQlBOMzdaUmVWek9JanoxUkJmMTJFZw?oc=5"
     },
     {
-      "time": "2026-10-15T10:32:23+09:00",
-      "title": "'AI 수익성 논란 재부각' 코스피 급락 CPI 부담까지…SK하이닉스 11%↓",
-      "source": "중소기업신문",
-      "link": "https://news.google.com/rss/articles/CBMibkFVX3lxTE9RWUktM0FUMzAwaDRPeHRrYUoxU1pMbXNMWkdGR0o4My1mMVJRVFROWVV2NmJER0J1eWRKRFREdHZIcktUQjFydTdLUW9TU2syTTVQSVZuUFRpazZfS2t3WWZzaEZwYVhKdk1QdkNR?oc=5"
+      "time": "2026-10-15T16:58:00+09:00",
+      "title": "日, 美 반도체 공장건설에 28조원 투자…글로벌파운드리 주가↑ [이상은의 워싱턴나우]",
+      "source": "한국경제",
+      "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE5MZXlITEZFSWdZcVJlSThCcVRfclo3MFYtLWF5dXpGR0Z5MTdHUDVyQ3A4NktGYm5FQlRVQ3dqMHRVTnhBejVYcDJsSDBVZVdGTkxveVgwMnZDUQ?oc=5"
     }
   ],
   "disclosures": [],
@@ -649,9 +619,9 @@
     "steady": 15,
     "upper": 2,
     "lower": 0,
-    "individual": 14428.0,
-    "foreign": -37584.0,
-    "institution": 16727.0,
+    "individual": 14801.0,
+    "foreign": -37906.0,
+    "institution": 16668.0,
     "prev_close": 6008.81,
     "open": 5673.01,
     "high": 5751.45,

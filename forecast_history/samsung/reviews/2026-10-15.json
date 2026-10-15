@@ -3,7 +3,7 @@
   "name": "삼성전자",
   "peer_name": "SK하이닉스",
   "session_date": "2026-10-15",
-  "generated_at": "2026-10-15 16:47 KST",
+  "generated_at": "2026-10-15 17:32 KST",
   "summary": {
     "prev_close": 232000.0,
     "open": 216500.0,
@@ -15,11 +15,11 @@
     "c2c": -0.09482758620689657,
     "high_vs_open": 0.023094688221708903,
     "low_vs_open": -0.05427251732101612,
-    "volume": 34000149.0,
-    "volume_ratio": 1.9960261934434145,
+    "volume": 34360515.0,
+    "volume_ratio": 2.0171819823555874,
     "kospi_c2c": -0.07565388809384133,
     "peer_c2c": -0.11064129668780831,
-    "usdkrw_chg": 0.0017458391849776156,
+    "usdkrw_chg": 0.0015443786874465015,
     "us_nights": 1,
     "sox_ret": -0.04295349126097914,
     "nasdaq_ret": -0.018802549537668578,
@@ -143,10 +143,10 @@
       "score": 15.530593748070682,
       "news": [
         {
-          "time": "2026-10-15T08:30:40+09:00",
-          "title": "삼성전자, 동남아 AI 가전·공조시장 공략…B2B 솔루션까지 확대",
-          "source": "글로벌이코노믹",
-          "link": "https://news.google.com/rss/articles/CBMihgFBVV95cUxQQWlPVE50XzdvWVdGWW5Nek1FaktmWUNsNmtQV3RjejlvTUUxX3RsOEtOaFpIM3pLY1BoQ1NSRmpBRDMwU29BV0dRNWNiLXoxMEU0THhoYzhKeWo4Qlh3TGpuWWRsWmlDeTEtWHJySUJRUERIcmV3Q3czc08xNjBtNjI0MFN4dw?oc=5"
+          "time": "2026-10-15T09:10:00+09:00",
+          "title": "[요즘투자] 삼성 일가 판단(?) \"삼성전자 주가는 지금이 바닥\"",
+          "source": "저스트 이코노믹스",
+          "link": "https://news.google.com/rss/articles/CBMiX0FVX3lxTFBUaEdSSU9OZDZ1UXFqeTgxdHhaci1tc3VPc2NBeEMxU3FUOFpTV013WVVhd0FUU3NGOExJWFI1UkhtVlFxUkRBZDdRbWRUZ2JUTW05OEVBOXlxLUNCT0Jr?oc=5"
         },
         {
           "time": "2026-10-15T08:39:05+09:00",
@@ -155,22 +155,22 @@
           "link": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE1uaXplcGZLSGc0cDdnem5LTENhWnpjTndyOU80OHQ1a051ZEtEX0hDOE1QZi14RlROMVpxUHIzdDBhOGx3dVlwaDRsMEZwM2ppdXpSdVc1Q01RdWVSZVVGTFYxaTlFR00?oc=5"
         },
         {
-          "time": "2026-10-15T08:55:00+09:00",
-          "title": "AI·위성으로 넓히는 6G…삼성전자, 실리콘밸리서 차세대 통신 논의",
-          "source": "경북매일",
-          "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE1rNjc2NjkxZHFyS3VFXzdNQnN3aEtmYndxOG1FaDZxa3hLbE55MHVpNVNWOVNwVkpuVlc4WU5iM0d2LWFOZ1l5Y3dsLXhlOW1OSHdZZXF4SFphZw?oc=5"
-        },
-        {
-          "time": "2026-10-15T08:38:58+09:00",
-          "title": "삼성전자, 베트남서 동남아 가전 테크세미나 '더 브리프' 개최",
+          "time": "2026-10-15T08:42:54+09:00",
+          "title": "삼성전자 실리콘밸리 미래통신서밋 개최…차세대 네트워크 조명",
           "source": "연합뉴스",
-          "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE1JVlZNOThZMEhxeGE1cTAzdkg2R2R5cUxyUjNZOFFxMmZqVUhHTUxNR0RLMDVCeW9XRUFyVlBrbE5WXzU0bGJrWFdRSnUzZzdUMEtnS0ZxcERvSXfSAWBBVV95cUxNYU9SeFNkMi1xblB5bnpXZXZxMTMzUk9hVEhvVFVoTmczOGtkMHVjVzh4Uy1nMmgyMzlSdFpXSnB5RHA5ZDh0SXlQOEpRYmlKUUMxcjlRemhPcG9DaUtJaVg?oc=5"
+          "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE9QaDZCaVVOek5IMHVoTEJSRlF1T3NHMzRvdlFaZGNCOHlNOFNNZTNmT0dQdXU3anRkZWxmU1RWdDJBbEU2bExYelcwVnU1UlBNdXNYRk5Qa3o4QnliTERhU9IBYEFVX3lxTE9QaDZCaVVOek5IMHVoTEJSRlF1T3NHMzRvdlFaZGNCOHlNOFNNZTNmT0dQdXU3anRkZWxmU1RWdDJBbEU2bExYelcwVnU1UlBNdXNYRk5Qa3o4QnliTERhUw?oc=5"
         },
         {
           "time": "2026-10-15T08:52:04+09:00",
           "title": "CXMT 추격은 착시…\"삼성전자 기술 진입장벽 높다\"-KB - 머니투데이",
           "source": "머니투데이",
           "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTFBKald3TjE0UU1vUjE5NDlhVXh2QURJS3daWVpleXlDSW5OMHV2d2ZUdXBIUDVXYlFabGpkZ2ZNYU15bXNuWV83Y0YzSFp0XzNMVk9KVUd2M2t6bnNYdmN3MkpDVGx3UFpr0gFuQVVfeXFMTzFpWWlVRFZNOElrWi1jLXFPenBOWnc5NWVoTi1xdW0zeE5USkl1dHRhTWpWTEwxWDhiSVByZ1NlMWFVRXgzWHBQb0sybW5jUXU2ZDNaenFBano2bFBOMGhOX1ExUjVwM0FZaUJPd2c?oc=5"
+        },
+        {
+          "time": "2026-10-15T08:55:53+09:00",
+          "title": "삼성전자, 日서 네이버웹툰과 협업…'애플 첫 폴더블' 선제 대응",
+          "source": "더구루",
+          "link": "https://news.google.com/rss/articles/CBMiY0FVX3lxTE1GOW4xMTFNMld3SXlEQWMyZ3lPWlVkTXZleWhpY2xPeEdXcTJ5N21jeHNIZEYwWHZ2MFJ2QWhmaU5GWkNEV0RQRVNTU0NKMmJlOExacEtjbU55VmVqa3ZjRkh2WQ?oc=5"
         }
       ]
     },
@@ -209,10 +209,10 @@
           "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE5QS0tEU3ZBdkl1eTByOTVaRHVIZnB3M1RJM1F3eFZoWjY0T1REQlAxcmpQVkRVc1hWMjlYU1hpWUlWaElIZGRMMjFkclJxVmtyV2RTZVM0bDJhajdZNkx2cA?oc=5"
         },
         {
-          "time": "2026-10-15T13:19:02+09:00",
-          "title": "삼성전자, 글로벌 무대서 AI·디자인·통신 혁신 역량 총집결",
-          "source": "천지일보",
-          "link": "https://news.google.com/rss/articles/CBMiakFVX3lxTFBpX2JQUmxveTBtZ3lqb0hVSi15eXh0VENyVmdIV1VOUG91NDZnanVpQTJpRjRuRW0tOUl0WHJfOHR5Y1RfeThzT2RsZDVpNWR3YzBnREE1TjlkcFpvVkZ2c1hpallmZ0NOemc?oc=5"
+          "time": "2026-10-15T12:57:12+09:00",
+          "title": "코스피·코스닥, 동반 서킷 브레이커…삼성전자 9.70%·하이닉스 11.35%↓",
+          "source": "디지털데일리",
+          "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE45elhYZWVhdWlkN2s3UmtmWm8tUHVRWl9tZXFXNW5QVTloTnJZUm1PM0pDa1p6NWo5SnplYmI0SjctVGlpV1B0UGYxTkZKN0VoVGpaS2RCXzR0Vi1fa3k3QWVVcS0?oc=5"
         }
       ]
     }
@@ -572,10 +572,10 @@
       "score": 15.530593748070682,
       "news": [
         {
-          "time": "2026-10-15T08:30:40+09:00",
-          "title": "삼성전자, 동남아 AI 가전·공조시장 공략…B2B 솔루션까지 확대",
-          "source": "글로벌이코노믹",
-          "link": "https://news.google.com/rss/articles/CBMihgFBVV95cUxQQWlPVE50XzdvWVdGWW5Nek1FaktmWUNsNmtQV3RjejlvTUUxX3RsOEtOaFpIM3pLY1BoQ1NSRmpBRDMwU29BV0dRNWNiLXoxMEU0THhoYzhKeWo4Qlh3TGpuWWRsWmlDeTEtWHJySUJRUERIcmV3Q3czc08xNjBtNjI0MFN4dw?oc=5"
+          "time": "2026-10-15T09:10:00+09:00",
+          "title": "[요즘투자] 삼성 일가 판단(?) \"삼성전자 주가는 지금이 바닥\"",
+          "source": "저스트 이코노믹스",
+          "link": "https://news.google.com/rss/articles/CBMiX0FVX3lxTFBUaEdSSU9OZDZ1UXFqeTgxdHhaci1tc3VPc2NBeEMxU3FUOFpTV013WVVhd0FUU3NGOExJWFI1UkhtVlFxUkRBZDdRbWRUZ2JUTW05OEVBOXlxLUNCT0Jr?oc=5"
         },
         {
           "time": "2026-10-15T08:39:05+09:00",
@@ -584,22 +584,22 @@
           "link": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE1uaXplcGZLSGc0cDdnem5LTENhWnpjTndyOU80OHQ1a051ZEtEX0hDOE1QZi14RlROMVpxUHIzdDBhOGx3dVlwaDRsMEZwM2ppdXpSdVc1Q01RdWVSZVVGTFYxaTlFR00?oc=5"
         },
         {
-          "time": "2026-10-15T08:55:00+09:00",
-          "title": "AI·위성으로 넓히는 6G…삼성전자, 실리콘밸리서 차세대 통신 논의",
-          "source": "경북매일",
-          "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE1rNjc2NjkxZHFyS3VFXzdNQnN3aEtmYndxOG1FaDZxa3hLbE55MHVpNVNWOVNwVkpuVlc4WU5iM0d2LWFOZ1l5Y3dsLXhlOW1OSHdZZXF4SFphZw?oc=5"
-        },
-        {
-          "time": "2026-10-15T08:38:58+09:00",
-          "title": "삼성전자, 베트남서 동남아 가전 테크세미나 '더 브리프' 개최",
+          "time": "2026-10-15T08:42:54+09:00",
+          "title": "삼성전자 실리콘밸리 미래통신서밋 개최…차세대 네트워크 조명",
           "source": "연합뉴스",
-          "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE1JVlZNOThZMEhxeGE1cTAzdkg2R2R5cUxyUjNZOFFxMmZqVUhHTUxNR0RLMDVCeW9XRUFyVlBrbE5WXzU0bGJrWFdRSnUzZzdUMEtnS0ZxcERvSXfSAWBBVV95cUxNYU9SeFNkMi1xblB5bnpXZXZxMTMzUk9hVEhvVFVoTmczOGtkMHVjVzh4Uy1nMmgyMzlSdFpXSnB5RHA5ZDh0SXlQOEpRYmlKUUMxcjlRemhPcG9DaUtJaVg?oc=5"
+          "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE9QaDZCaVVOek5IMHVoTEJSRlF1T3NHMzRvdlFaZGNCOHlNOFNNZTNmT0dQdXU3anRkZWxmU1RWdDJBbEU2bExYelcwVnU1UlBNdXNYRk5Qa3o4QnliTERhU9IBYEFVX3lxTE9QaDZCaVVOek5IMHVoTEJSRlF1T3NHMzRvdlFaZGNCOHlNOFNNZTNmT0dQdXU3anRkZWxmU1RWdDJBbEU2bExYelcwVnU1UlBNdXNYRk5Qa3o4QnliTERhUw?oc=5"
         },
         {
           "time": "2026-10-15T08:52:04+09:00",
           "title": "CXMT 추격은 착시…\"삼성전자 기술 진입장벽 높다\"-KB - 머니투데이",
           "source": "머니투데이",
           "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTFBKald3TjE0UU1vUjE5NDlhVXh2QURJS3daWVpleXlDSW5OMHV2d2ZUdXBIUDVXYlFabGpkZ2ZNYU15bXNuWV83Y0YzSFp0XzNMVk9KVUd2M2t6bnNYdmN3MkpDVGx3UFpr0gFuQVVfeXFMTzFpWWlVRFZNOElrWi1jLXFPenBOWnc5NWVoTi1xdW0zeE5USkl1dHRhTWpWTEwxWDhiSVByZ1NlMWFVRXgzWHBQb0sybW5jUXU2ZDNaenFBano2bFBOMGhOX1ExUjVwM0FZaUJPd2c?oc=5"
+        },
+        {
+          "time": "2026-10-15T08:55:53+09:00",
+          "title": "삼성전자, 日서 네이버웹툰과 협업…'애플 첫 폴더블' 선제 대응",
+          "source": "더구루",
+          "link": "https://news.google.com/rss/articles/CBMiY0FVX3lxTE1GOW4xMTFNMld3SXlEQWMyZ3lPWlVkTXZleWhpY2xPeEdXcTJ5N21jeHNIZEYwWHZ2MFJ2QWhmaU5GWkNEV0RQRVNTU0NKMmJlOExacEtjbU55VmVqa3ZjRkh2WQ?oc=5"
         }
       ],
       "price": 221000.0,
@@ -640,10 +640,10 @@
           "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE5QS0tEU3ZBdkl1eTByOTVaRHVIZnB3M1RJM1F3eFZoWjY0T1REQlAxcmpQVkRVc1hWMjlYU1hpWUlWaElIZGRMMjFkclJxVmtyV2RTZVM0bDJhajdZNkx2cA?oc=5"
         },
         {
-          "time": "2026-10-15T13:19:02+09:00",
-          "title": "삼성전자, 글로벌 무대서 AI·디자인·통신 혁신 역량 총집결",
-          "source": "천지일보",
-          "link": "https://news.google.com/rss/articles/CBMiakFVX3lxTFBpX2JQUmxveTBtZ3lqb0hVSi15eXh0VENyVmdIV1VOUG91NDZnanVpQTJpRjRuRW0tOUl0WHJfOHR5Y1RfeThzT2RsZDVpNWR3YzBnREE1TjlkcFpvVkZ2c1hpallmZ0NOemc?oc=5"
+          "time": "2026-10-15T12:57:12+09:00",
+          "title": "코스피·코스닥, 동반 서킷 브레이커…삼성전자 9.70%·하이닉스 11.35%↓",
+          "source": "디지털데일리",
+          "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE45elhYZWVhdWlkN2s3UmtmWm8tUHVRWl9tZXFXNW5QVTloTnJZUm1PM0pDa1p6NWo5SnplYmI0SjctVGlpV1B0UGYxTkZKN0VoVGpaS2RCXzR0Vi1fa3k3QWVVcS0?oc=5"
         }
       ],
       "price": 209750.0,
@@ -652,43 +652,31 @@
   ],
   "overnight_news": [
     {
-      "time": "2026-10-15T08:30:40+09:00",
-      "title": "삼성전자, 동남아 AI 가전·공조시장 공략…B2B 솔루션까지 확대",
-      "source": "글로벌이코노믹",
-      "link": "https://news.google.com/rss/articles/CBMihgFBVV95cUxQQWlPVE50XzdvWVdGWW5Nek1FaktmWUNsNmtQV3RjejlvTUUxX3RsOEtOaFpIM3pLY1BoQ1NSRmpBRDMwU29BV0dRNWNiLXoxMEU0THhoYzhKeWo4Qlh3TGpuWWRsWmlDeTEtWHJySUJRUERIcmV3Q3czc08xNjBtNjI0MFN4dw?oc=5"
-    },
-    {
       "time": "2026-10-15T08:39:05+09:00",
       "title": "삼성전자, 동남아 AI 가전·공조 시장 공략…식재료 인식부터 건물 통합 제어까지",
       "source": "인공지능신문",
       "link": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE1uaXplcGZLSGc0cDdnem5LTENhWnpjTndyOU80OHQ1a051ZEtEX0hDOE1QZi14RlROMVpxUHIzdDBhOGx3dVlwaDRsMEZwM2ppdXpSdVc1Q01RdWVSZVVGTFYxaTlFR00?oc=5"
     },
     {
-      "time": "2026-10-15T08:55:00+09:00",
-      "title": "AI·위성으로 넓히는 6G…삼성전자, 실리콘밸리서 차세대 통신 논의",
-      "source": "경북매일",
-      "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE1rNjc2NjkxZHFyS3VFXzdNQnN3aEtmYndxOG1FaDZxa3hLbE55MHVpNVNWOVNwVkpuVlc4WU5iM0d2LWFOZ1l5Y3dsLXhlOW1OSHdZZXF4SFphZw?oc=5"
-    },
-    {
-      "time": "2026-10-15T08:38:58+09:00",
-      "title": "삼성전자, 베트남서 동남아 가전 테크세미나 '더 브리프' 개최",
+      "time": "2026-10-15T08:42:54+09:00",
+      "title": "삼성전자 실리콘밸리 미래통신서밋 개최…차세대 네트워크 조명",
       "source": "연합뉴스",
-      "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE1JVlZNOThZMEhxeGE1cTAzdkg2R2R5cUxyUjNZOFFxMmZqVUhHTUxNR0RLMDVCeW9XRUFyVlBrbE5WXzU0bGJrWFdRSnUzZzdUMEtnS0ZxcERvSXfSAWBBVV95cUxNYU9SeFNkMi1xblB5bnpXZXZxMTMzUk9hVEhvVFVoTmczOGtkMHVjVzh4Uy1nMmgyMzlSdFpXSnB5RHA5ZDh0SXlQOEpRYmlKUUMxcjlRemhPcG9DaUtJaVg?oc=5"
+      "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE9QaDZCaVVOek5IMHVoTEJSRlF1T3NHMzRvdlFaZGNCOHlNOFNNZTNmT0dQdXU3anRkZWxmU1RWdDJBbEU2bExYelcwVnU1UlBNdXNYRk5Qa3o4QnliTERhU9IBYEFVX3lxTE9QaDZCaVVOek5IMHVoTEJSRlF1T3NHMzRvdlFaZGNCOHlNOFNNZTNmT0dQdXU3anRkZWxmU1RWdDJBbEU2bExYelcwVnU1UlBNdXNYRk5Qa3o4QnliTERhUw?oc=5"
     },
     {
       "time": "2026-10-15T08:52:04+09:00",
       "title": "CXMT 추격은 착시…\"삼성전자 기술 진입장벽 높다\"-KB - 머니투데이",
       "source": "머니투데이",
       "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTFBKald3TjE0UU1vUjE5NDlhVXh2QURJS3daWVpleXlDSW5OMHV2d2ZUdXBIUDVXYlFabGpkZ2ZNYU15bXNuWV83Y0YzSFp0XzNMVk9KVUd2M2t6bnNYdmN3MkpDVGx3UFpr0gFuQVVfeXFMTzFpWWlVRFZNOElrWi1jLXFPenBOWnc5NWVoTi1xdW0zeE5USkl1dHRhTWpWTEwxWDhiSVByZ1NlMWFVRXgzWHBQb0sybW5jUXU2ZDNaenFBano2bFBOMGhOX1ExUjVwM0FZaUJPd2c?oc=5"
+    },
+    {
+      "time": "2026-10-15T08:55:53+09:00",
+      "title": "삼성전자, 日서 네이버웹툰과 협업…'애플 첫 폴더블' 선제 대응",
+      "source": "더구루",
+      "link": "https://news.google.com/rss/articles/CBMiY0FVX3lxTE1GOW4xMTFNMld3SXlEQWMyZ3lPWlVkTXZleWhpY2xPeEdXcTJ5N21jeHNIZEYwWHZ2MFJ2QWhmaU5GWkNEV0RQRVNTU0NKMmJlOExacEtjbU55VmVqa3ZjRkh2WQ?oc=5"
     }
   ],
   "top_news": [
-    {
-      "time": "2026-10-15T14:37:09+09:00",
-      "title": "AI 본토에 확산하는 '투자 과열론', 삼성전자·SK하이닉스 메모리 수익성 여파 촉각",
-      "source": "비즈니스포스트",
-      "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTE5xNm94Zng4cFI5YkZsX0Nmd0lCa19GZ016QkhsUHplTlRjZG4xbUY2azdXQ1M0UjlKb0VtdTZ2Q1dVRzJOenBveDVnWEowblJCbXJVM3FmLW5pSjB2Tmk3ZzBzX2YtRVFDV2FaVDNTSEN1QW8?oc=5"
-    },
     {
       "time": "2026-10-15T16:44:58+09:00",
       "title": "TSMC \"반도체 수요 둔화 징후 전혀 없다\"…AI 투자 우려 반박[종합]",
@@ -696,10 +684,16 @@
       "link": "https://news.google.com/rss/articles/CBMiS0FVX3lxTE9YYnNsdmlNTjVWc0pOeWpIeFBOSkhfMjgyRnYxMFJXUHF1aW94VTY1VENab3AxQlBOMzdaUmVWek9JanoxUkJmMTJFZw?oc=5"
     },
     {
-      "time": "2026-10-15T10:40:00+09:00",
-      "title": "삼성전자, 최근 주가 하락은 과도...창신메모리 기술격차 최대 7년",
-      "source": "증권일보",
-      "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTFBGVjUwdmxLQVFxeEJtVzdGaVp6T2hHWkxsbFBTeHdOa0cwa1F2d0FLNmlJcHZPS1lYXzN6UXN2Vk84NTZQRjAwa280MXN0RWJzcFY3Ni1ibVZXa1VkdldfWQ?oc=5"
+      "time": "2026-10-15T16:58:00+09:00",
+      "title": "日, 美 반도체 공장건설에 28조원 투자…글로벌파운드리 주가↑ [이상은의 워싱턴나우]",
+      "source": "한국경제",
+      "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE5MZXlITEZFSWdZcVJlSThCcVRfclo3MFYtLWF5dXpGR0Z5MTdHUDVyQ3A4NktGYm5FQlRVQ3dqMHRVTnhBejVYcDJsSDBVZVdGTkxveVgwMnZDUQ?oc=5"
+    },
+    {
+      "time": "2026-10-15T09:10:00+09:00",
+      "title": "[요즘투자] 삼성 일가 판단(?) \"삼성전자 주가는 지금이 바닥\"",
+      "source": "저스트 이코노믹스",
+      "link": "https://news.google.com/rss/articles/CBMiX0FVX3lxTFBUaEdSSU9OZDZ1UXFqeTgxdHhaci1tc3VPc2NBeEMxU3FUOFpTV013WVVhd0FUU3NGOExJWFI1UkhtVlFxUkRBZDdRbWRUZ2JUTW05OEVBOXlxLUNCT0Jr?oc=5"
     },
     {
       "time": "2026-10-15T11:00:00+09:00",
@@ -737,9 +731,9 @@
     "steady": 15,
     "upper": 2,
     "lower": 0,
-    "individual": 14414.0,
-    "foreign": -37563.0,
-    "institution": 16722.0,
+    "individual": 14801.0,
+    "foreign": -37906.0,
+    "institution": 16668.0,
     "prev_close": 6008.81,
     "open": 5673.01,
     "high": 5751.45,

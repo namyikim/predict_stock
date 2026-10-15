@@ -3,7 +3,7 @@
   "name": "SK하이닉스",
   "peer_name": "삼성전자",
   "session_date": "2026-10-15",
-  "generated_at": "2026-10-15 17:32 KST",
+  "generated_at": "2026-10-15 21:38 KST",
   "summary": {
     "prev_close": 1419000.0,
     "open": 1304000.0,
@@ -15,11 +15,11 @@
     "c2c": -0.11064129668780831,
     "high_vs_open": 0.021472392638036908,
     "low_vs_open": -0.04141104294478526,
-    "volume": 6298297.0,
-    "volume_ratio": 1.984929148099475,
+    "volume": 6549594.0,
+    "volume_ratio": 2.0641262294898817,
     "kospi_c2c": -0.07565388809384133,
     "peer_c2c": -0.09482758620689657,
-    "usdkrw_chg": 0.0015667834263222158,
+    "usdkrw_chg": 0.004103528108839738,
     "us_nights": 1,
     "sox_ret": -0.04295349126097914,
     "nasdaq_ret": -0.018802549537668578,
@@ -69,30 +69,30 @@
       }
     },
     "range": 0.0656000000000001,
-    "peer_range": 0.08312958435207829,
+    "peer_range": 0.08180708180708174,
     "prior_5d": -0.1996615905245347,
     "ma_touches": [],
     "micron_ah": {
       "regular_close": 913.9149780273438,
-      "last": 889.4268,
-      "ret": -0.026794809819399967,
+      "last": 889.1,
+      "ret": -0.027152392316521667,
       "low_ret": -0.02835600537292915,
       "high_ret": 0.0002352756851851101,
       "last_time": "2026-10-15T08:55:00+09:00"
     },
     "nvidia_ah": {
       "regular_close": 221.5,
-      "last": 217.9455,
-      "ret": -0.016047404063205373,
-      "low_ret": -0.016047404063205373,
+      "last": 217.8935,
+      "ret": -0.01628216704288943,
+      "low_ret": -0.01628216704288943,
       "high_ret": 0.0014221218961625315,
       "last_time": "2026-10-15T08:55:00+09:00"
     },
     "session_cross": {
       "NQ=F": {
         "label": "나스닥100 선물",
-        "ret": -0.0040796235733832065,
-        "after_high": -0.0040796235733832065
+        "ret": -0.004096309150370403,
+        "after_high": -0.004096309150370403
       },
       "ZN=F": {
         "label": "미 10년물 국채 선물",
@@ -105,7 +105,7 @@
         "after_high": 0.002311896347658937
       }
     },
-    "from_high": -0.05040015683380217,
+    "from_high": -0.05112781954887213,
     "buyback": [
       {
         "kind": "직접 취득",
@@ -115,7 +115,15 @@
         "purpose": "자기주식 소각을 통한 \n주주가치 제고",
         "rcept_no": "20260819000254"
       }
-    ]
+    ],
+    "foreign_pressure": {
+      "state": "selling_intensified",
+      "previous_ratio": -0.16643862108679655,
+      "recent_ratio": -0.18867297737615138,
+      "previous_daily_net": -430999.6,
+      "recent_daily_net": -832503.4
+    },
+    "buyback_transition": null
   },
   "classification": {
     "labels": [
@@ -125,7 +133,7 @@
     ],
     "reasons": [
       "갭 -8.10%가 종가→종가 -11.06%의 73%",
-      "09:00 봉 -6.27%(σ의 15.54배, 거래량 7.88배)가 세션 -3.22%의 152%",
+      "09:00 봉 -6.27%(σ의 15.54배, 거래량 7.88배)가 세션 -3.22%의 154%",
       "KOSPI -7.57% vs 종목 -11.06%, 5분 수익률 상관 0.91 — 종목 고유 요인이 약함"
     ]
   },
@@ -136,8 +144,8 @@
       "z": 15.54,
       "volume_ratio": 7.88,
       "cum_before": 0.0,
-      "cum_after": 0.019157088122605304,
-      "session_share": 1.515738783180644,
+      "cum_after": 0.019938650306748462,
+      "session_share": 1.5431542276649757,
       "score": 17.543506807859217,
       "news": [
         {
@@ -145,43 +153,31 @@
           "title": "SK하이닉스 \"데이터 이동 병목, 3D D램·HBF로 해결\" [1분 브리프]",
           "source": "아시아경제",
           "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTFB5cmhYMU9DZTVsSG9IQmpXb0NyX0xMbGo5RUlWbDdlcWxOckdWeEFMX2lzNlJNdm5FdXhyMEc3U1RoX0g0QktFUklaYXRTU2JfanRzbkdmZnZHWGVGOHFiTg?oc=5"
-        },
-        {
-          "time": "2026-10-15T08:51:21+09:00",
-          "title": "초고수의 선택은 SK하이닉스…삼성전자·LG엔솔은 순매도",
-          "source": "한국경제",
-          "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTFBoRVMwaUYtQ2JZd3U4Z0tGVHBGS0xlMGRLeVR2Uy1xWU5kc25WWTEyaHNQdWxld1ZZVmdjNnB1ZWRfRTBKTGNiUmdxVGhMR2htY2NoeUlYcl9lQQ?oc=5"
-        },
-        {
-          "time": "2026-10-15T09:01:00+09:00",
-          "title": "[특징주] 삼전닉스, 프리마켓에서 6~7% 급락 …SK하이닉스 시가총액 1000조 하회 - 조선비즈",
-          "source": "Chosunbiz",
-          "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxQMXBVcU5UNzJhejlkRXdFSTNjekNWd1NoWmVPTmw1QlpfSVVoSC1tWXZRVVhUdGdnZ05HNzVMUTZSeFcwYzZReTVsbUcwdWlqX1JLa1dKLXNkdFhPenpEbk9GRW5TRVhOQ2JIQzJtZVhnODI4cm00Z2d6YmdVSHZzUzB5M0VyNFMw0gGcAUFVX3lxTFB2NURJd1Q0WDZEd0xuVzNRMWRwS2V1Mk5LUFBoLUo5SW02UWJnRWtpU3pKZXNJYkpWODZfV04xMC1TUks3aTFJanl6dUNLREJUOUhLTDNBRExqNVU5Y0tXWVg0ZWhBWXZHeGNtSGl1cXMtLU1ybENPejZwMVhDRHc5bEpwUXBNYm1SQmV0b0Z4b1A3cVVkZXFWWjRDeA?oc=5"
         }
       ]
     }
   ],
   "turning_point": {
     "high_time": "2026-10-15T09:00:00+09:00",
-    "high": 0.019157088122605304,
+    "high": 0.019938650306748462,
     "low_time": "2026-10-15T14:45:00+09:00",
-    "low": -0.04214559386973182,
+    "low": -0.04141104294478526,
     "pattern": "고점 후 반락"
   },
   "closing_share": -0.2730006471013691,
-  "intraday_corr_kospi": 0.9101808377712106,
+  "intraday_corr_kospi": 0.911468257357739,
   "intraday_note": "장중 봉은 09:00~14:50까지만 있어 마감 구간(14:50~15:30)은 일봉 종가로만 봅니다(그 구간 +0.88%).",
   "intraday_coverage": "09:00~14:50",
   "intraday_path": [
     {
       "time": "2026-10-15T09:00:00+09:00",
       "price": 1330000.0,
-      "volume": 447245.0
+      "volume": 447495.0
     },
     {
       "time": "2026-10-15T09:05:00+09:00",
       "price": 1323000.0,
-      "volume": 118126.0
+      "volume": 117876.0
     },
     {
       "time": "2026-10-15T09:10:00+09:00",
@@ -225,13 +221,13 @@
     },
     {
       "time": "2026-10-15T09:50:00+09:00",
-      "price": 1274500.0,
-      "volume": 81415.0
+      "price": 1274000.0,
+      "volume": 81486.0
     },
     {
       "time": "2026-10-15T09:55:00+09:00",
       "price": 1271000.0,
-      "volume": 107212.0
+      "volume": 107141.0
     },
     {
       "time": "2026-10-15T10:00:00+09:00",
@@ -246,12 +242,12 @@
     {
       "time": "2026-10-15T10:10:00+09:00",
       "price": 1268000.0,
-      "volume": 71478.0
+      "volume": 71487.0
     },
     {
       "time": "2026-10-15T10:15:00+09:00",
       "price": 1260000.0,
-      "volume": 75340.0
+      "volume": 75331.0
     },
     {
       "time": "2026-10-15T10:20:00+09:00",
@@ -295,13 +291,13 @@
     },
     {
       "time": "2026-10-15T11:00:00+09:00",
-      "price": 1260000.0,
-      "volume": 46196.0
+      "price": 1259000.0,
+      "volume": 46194.0
     },
     {
       "time": "2026-10-15T11:05:00+09:00",
       "price": 1269000.0,
-      "volume": 51973.0
+      "volume": 51975.0
     },
     {
       "time": "2026-10-15T11:10:00+09:00",
@@ -476,12 +472,12 @@
     {
       "time": "2026-10-15T14:25:00+09:00",
       "price": 1257000.0,
-      "volume": 55284.0
+      "volume": 55285.0
     },
     {
       "time": "2026-10-15T14:30:00+09:00",
       "price": 1253000.0,
-      "volume": 42042.0
+      "volume": 42041.0
     },
     {
       "time": "2026-10-15T14:35:00+09:00",
@@ -511,8 +507,8 @@
       "z": 15.54,
       "volume_ratio": 7.88,
       "cum_before": 0.0,
-      "cum_after": 0.019157088122605304,
-      "session_share": 1.515738783180644,
+      "cum_after": 0.019938650306748462,
+      "session_share": 1.5431542276649757,
       "score": 17.543506807859217,
       "news": [
         {
@@ -520,18 +516,6 @@
           "title": "SK하이닉스 \"데이터 이동 병목, 3D D램·HBF로 해결\" [1분 브리프]",
           "source": "아시아경제",
           "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTFB5cmhYMU9DZTVsSG9IQmpXb0NyX0xMbGo5RUlWbDdlcWxOckdWeEFMX2lzNlJNdm5FdXhyMEc3U1RoX0g0QktFUklaYXRTU2JfanRzbkdmZnZHWGVGOHFiTg?oc=5"
-        },
-        {
-          "time": "2026-10-15T08:51:21+09:00",
-          "title": "초고수의 선택은 SK하이닉스…삼성전자·LG엔솔은 순매도",
-          "source": "한국경제",
-          "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTFBoRVMwaUYtQ2JZd3U4Z0tGVHBGS0xlMGRLeVR2Uy1xWU5kc25WWTEyaHNQdWxld1ZZVmdjNnB1ZWRfRTBKTGNiUmdxVGhMR2htY2NoeUlYcl9lQQ?oc=5"
-        },
-        {
-          "time": "2026-10-15T09:01:00+09:00",
-          "title": "[특징주] 삼전닉스, 프리마켓에서 6~7% 급락 …SK하이닉스 시가총액 1000조 하회 - 조선비즈",
-          "source": "Chosunbiz",
-          "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxQMXBVcU5UNzJhejlkRXdFSTNjekNWd1NoWmVPTmw1QlpfSVVoSC1tWXZRVVhUdGdnZ05HNzVMUTZSeFcwYzZReTVsbUcwdWlqX1JLa1dKLXNkdFhPenpEbk9GRW5TRVhOQ2JIQzJtZVhnODI4cm00Z2d6YmdVSHZzUzB5M0VyNFMw0gGcAUFVX3lxTFB2NURJd1Q0WDZEd0xuVzNRMWRwS2V1Mk5LUFBoLUo5SW02UWJnRWtpU3pKZXNJYkpWODZfV04xMC1TUks3aTFJanl6dUNLREJUOUhLTDNBRExqNVU5Y0tXWVg0ZWhBWXZHeGNtSGl1cXMtLU1ybENPejZwMVhDRHc5bEpwUXBNYm1SQmV0b0Z4b1A3cVVkZXFWWjRDeA?oc=5"
         }
       ],
       "price": 1330000.0,
@@ -539,12 +523,6 @@
     }
   ],
   "overnight_news": [
-    {
-      "time": "2026-10-15T07:00:00+09:00",
-      "title": "[현장] AI가 부른 ‘메모리 병목’…SK하이닉스, HBM 넘어 다음 승부수",
-      "source": "이코노미톡뉴스",
-      "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE5aelJZeTVaYWdjUjVRS01HVThQbGM1S0VReHBPVUZvcmRjVDJNS3Nva0FLYnV4dGdaand3QmsyU0c1bFJFd1h0elZmUExLQU5Xd0gydER4UVFvLXNLQTBlWTB2eDU4NFFXUG0xaQ?oc=5"
-    },
     {
       "time": "2026-10-15T08:00:00+09:00",
       "title": "SK하이닉스 \"데이터 이동 병목, 3D D램·HBF로 해결\" [1분 브리프]",
@@ -556,59 +534,126 @@
       "title": "“삼성전자·SK하이닉스 지금이 저점 잡을 때… 용기 내볼 시점”",
       "source": "주간동아",
       "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE9OZ1h2OC1zSUhJX1lTM3hfX2JXSTFSNG55emV5ZkE2UUlxVnY3UEpIV2VHNWxoYThLeTRhRWpHc3hfQUxIT2h1WlRDSzRsRm45NHZzYnBYVGVycGpwdVBPRXMxaUZmS2JU?oc=5"
-    },
-    {
-      "time": "2026-10-15T08:51:21+09:00",
-      "title": "초고수의 선택은 SK하이닉스…삼성전자·LG엔솔은 순매도",
-      "source": "한국경제",
-      "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTFBoRVMwaUYtQ2JZd3U4Z0tGVHBGS0xlMGRLeVR2Uy1xWU5kc25WWTEyaHNQdWxld1ZZVmdjNnB1ZWRfRTBKTGNiUmdxVGhMR2htY2NoeUlYcl9lQQ?oc=5"
     }
   ],
   "top_news": [
     {
-      "time": "2026-10-15T11:37:00+09:00",
-      "title": "HBM4E 넘어 차세대 메모리까지…삼성·SK하이닉스, AI 반도체 기술 경쟁 격화 - 조선비즈",
-      "source": "Chosunbiz",
-      "link": "https://news.google.com/rss/articles/CBMiggFBVV95cUxNUlZFMWotVkJOWUVXTmNXMGJJOXNtbFNuc25ra2NfVTBzcG1JWm9Ka19DOWdMU1NtSFJ5cHNLTHR5dkNZb0d6aV9CeUhMVTVTZWU5QkdjSzZqckVibGwxb3VfRWNVTERreGgybVhQTGhDaWVnNU41cUtxakFXRXFyZWJn0gGWAUFVX3lxTE5Odkhwc3JBa3laaDJLS2YxT2RZVWdUNEFCcHNMV1VRSnEyY1NmWWo3SGRVLXVhME9VV0lFVElGbmhmMlVwNUJlRWRkb1ZlSHVtcXd0eGg4VVlYOFg1QUFxdW50SHROb3RES0xFZHo2Mk9HUElpVmwyTWk4UkNScUR0dExPRDl0OWZkZnhvM2NNaklIQWNyQQ?oc=5"
-    },
-    {
-      "time": "2026-10-15T07:00:00+09:00",
-      "title": "[현장] AI가 부른 ‘메모리 병목’…SK하이닉스, HBM 넘어 다음 승부수",
-      "source": "이코노미톡뉴스",
-      "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE5aelJZeTVaYWdjUjVRS01HVThQbGM1S0VReHBPVUZvcmRjVDJNS3Nva0FLYnV4dGdaand3QmsyU0c1bFJFd1h0elZmUExLQU5Xd0gydER4UVFvLXNLQTBlWTB2eDU4NFFXUG0xaQ?oc=5"
-    },
-    {
-      "time": "2026-10-15T11:40:01+09:00",
-      "title": "SK하이닉스, 美 공장 투자 조건으로 中 반도체 증설 허가 추진",
-      "source": "블루밍비트",
-      "link": "https://news.google.com/rss/articles/CBMiUEFVX3lxTFBTdW9yNGxpUjhSeEVIdm5CbVUxSWpGNXVRTTMzWGZ5YjlCRS1oa21FQUZiRERPYTJkZFV5OEtJU0hEZ216SUdWR3gyZkJVZ0kt?oc=5"
-    },
-    {
       "time": "2026-10-15T14:37:09+09:00",
-      "title": "AI 본토에 확산하는 '투자 과열론', 삼성전자·SK하이닉스 메모리 수익성 여파 촉각",
+      "title": "미국서 불붙은 AI 투자 과열론, 삼성전자·SK하이닉스 메모리 수익성 여파 촉각",
       "source": "비즈니스포스트",
       "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTE5xNm94Zng4cFI5YkZsX0Nmd0lCa19GZ016QkhsUHplTlRjZG4xbUY2azdXQ1M0UjlKb0VtdTZ2Q1dVRzJOenBveDVnWEowblJCbXJVM3FmLW5pSjB2Tmk3ZzBzX2YtRVFDV2FaVDNTSEN1QW8?oc=5"
+    },
+    {
+      "time": "2026-10-15T17:00:01+09:00",
+      "title": "SK하이닉스, 'SEDEX 2026'서 AI 메모리 총출동…HBM부터 LPDDR6까지",
+      "source": "포인트데일리",
+      "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE1MTDUzVWdYTmdicDdmQVNwR01ydkdiTkxPSHg2Z0RBWU5IeHpEVzZQM2lqYWY4VkpvWWlIRHNiWVlKMFZPYU1Ya0dnQy1ZbW55UDg3SFpuVnc0eVN1blJ0T3VXUTBXWGxFZ2czV0piOFbSAXRBVV95cUxONHpsUXJSMEFzeUstQ1dlUlJrWk04NzRDMmo1Zy0teUFKTHBhYWM2cGtrZGw1UmloUmZ2SlJEa3k3OFB5SVJ2allXazlac1J4V3ktU2tHTlYwV3ZXM01VOW93TEg5cnJscVdHZ19udF9USWZ5Sw?oc=5"
     },
     {
       "time": "2026-10-15T16:44:58+09:00",
       "title": "TSMC \"반도체 수요 둔화 징후 전혀 없다\"…AI 투자 우려 반박[종합]",
       "source": "아이뉴스24",
-      "link": "https://news.google.com/rss/articles/CBMiS0FVX3lxTE9YYnNsdmlNTjVWc0pOeWpIeFBOSkhfMjgyRnYxMFJXUHF1aW94VTY1VENab3AxQlBOMzdaUmVWek9JanoxUkJmMTJFZw?oc=5"
+      "link": "https://news.google.com/rss/articles/CBMiR0FVX3lxTE9GakpGTzQwUnJKUkFvRmF1VXlJUVhseEZRcGpUQUdFRG05ek5lb1F6RDZLdkhLbE1QMWFfcVlMUE10QXpaQjl3?oc=5"
     },
     {
-      "time": "2026-10-15T16:58:00+09:00",
-      "title": "日, 美 반도체 공장건설에 28조원 투자…글로벌파운드리 주가↑ [이상은의 워싱턴나우]",
-      "source": "한국경제",
-      "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE5MZXlITEZFSWdZcVJlSThCcVRfclo3MFYtLWF5dXpGR0Z5MTdHUDVyQ3A4NktGYm5FQlRVQ3dqMHRVTnhBejVYcDJsSDBVZVdGTkxveVgwMnZDUQ?oc=5"
+      "time": "2026-10-15T11:00:00+09:00",
+      "title": "삼성전자 zHBM·SK하이닉스 HBF…차세대 메모리 맞대결",
+      "source": "자본시장뉴스",
+      "link": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE9Nd1BHQ1NKQ2FPYnBCOFRLQV9MTUNJbGdKVi1Oal9tY0JDQk1ub3VDNlVXTXRSYTJqdl9tdWNYOUlnSUxGNERhY0lrMUZiOVBlOFlqSWZYLVNCUFNNSENsaVpRRS1qckE?oc=5"
+    },
+    {
+      "time": "2026-10-15T12:37:00+09:00",
+      "title": "SK하이닉스, 중국 공장 연계해 미국 반도체 장비 수출 승인 요청 By Investing.com",
+      "source": "Investing.com 한국어",
+      "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE9yTjZpOWhnSHdzU2pKTmRicnlrRVFGUWIxQTRsM1drY3VuS2h6dkUxUjVlTVVYbU1weTUzaUJ2QUljcFN6TXZzejAyMTFzY2E3YmN1cWVoOGpLVFp2ZVdCQ2MzY2YzRHFfejFWSXh4Vjk?oc=5"
+    },
+    {
+      "time": "2026-10-15T13:00:00+09:00",
+      "title": "SK하이닉스, 美 공장 투자 카드로 中 반도체 규제 협상",
+      "source": "엠에스투데이",
+      "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE9NMEtKenN0VVpObGZYRU02SzY5YkdZbTdhcGxrdnZLcnBLTkVBVkhybWJOWEpCSjU3VTVhUFYwQnoycW94VDBNNWJpaEJ1MzFzdTRvd0w0TjN0VUZqM3dHcGRsbDg1SWdPbjhNN9IBcEFVX3lxTE10SHJfUWI1RkN3dEhvYU5tcFVjM1BvZUNQVVVxcHNlZjFHWGRld0Q2UzBSR3BVaDhDNVk3NVo3Y3JLbUxSdy1ta2VYckE0OVJ1djlYMmd1OWRtbUFIbDdGbGpld2xKeF9ZcEM5MHoyeF8?oc=5"
     }
   ],
   "disclosures": [],
   "disclosure_note": null,
-  "flows": null,
-  "flow_story": null,
+  "flows": "외국인 -929,630 / 기관 +60,585",
+  "flow_story": {
+    "direction": "down",
+    "c2c": -0.11064129668780831,
+    "actors": [
+      {
+        "key": "foreign_net",
+        "name": "외국인",
+        "shares": -929630.0,
+        "won": -1173193060000.0,
+        "vs_usual": 1.4786674194435787
+      },
+      {
+        "key": "inst_net",
+        "name": "기관",
+        "shares": 60585.0,
+        "won": 76458270000.0,
+        "vs_usual": 0.41188787893208967
+      },
+      {
+        "key": "indiv_net",
+        "name": "개인",
+        "shares": 406988.0,
+        "won": 513618856000.0,
+        "vs_usual": 0.9976301296123983
+      },
+      {
+        "key": "other_net",
+        "name": "기타 법인 등(추정)",
+        "shares": 462057.0,
+        "won": 583115934000.0,
+        "vs_usual": null
+      }
+    ],
+    "lead": {
+      "key": "foreign_net",
+      "name": "외국인",
+      "shares": -929630.0,
+      "won": -1173193060000.0,
+      "vs_usual": 1.4786674194435787
+    },
+    "counter": {
+      "key": "other_net",
+      "name": "기타 법인 등(추정)",
+      "shares": 462057.0,
+      "won": 583115934000.0,
+      "vs_usual": null
+    },
+    "all_one_side": false,
+    "observations": [
+      "전일까지 20거래일 고점: 종가 돌파 없음 · 종가 위치 -34.78%.",
+      "전일까지 60거래일 고점: 종가 돌파 없음 · 종가 위치 -41.86%.",
+      "같은 5거래일 수익률: 이 종목 -26.76%, 삼성전자 -21.79% · 차이 -4.97%p.",
+      "같은 20거래일 수익률: 이 종목 -30.35%, 삼성전자 -19.08% · 차이 -11.28%p.",
+      "같은 60거래일 수익률: 이 종목 -39.37%, 삼성전자 -24.87% · 차이 -14.51%p.",
+      "외국인 순매도 지속·거래량 대비 강도 강화: 직전 5일 → 최근 5일 순매수/거래량 -16.64% → -18.87% (일평균 -431,000주 → -832,503주). 향후 상승을 뜻하는 신호는 아닙니다.",
+      "코스피도 -7.57% — 시장 전체가 같은 방향이었습니다.",
+      "삼성전자 -9.48% — 반도체 업종이 함께 움직였습니다.",
+      "원/달러 +0.41%(원화 약세) — 외국인 매도와 같은 방향의 환율 움직임입니다.",
+      "전날 밤 미국 반도체지수(SOX) -4.30% — 미국 반도체 흐름과 같은 방향입니다.",
+      "전날 밤 마이크론 -4.08% — 미국 메모리 회사와 같은 방향입니다.",
+      "7거래일 연속 하락이 이어졌습니다.",
+      "거래량이 20일 평균의 2.1배였습니다.",
+      "종가가 당일 범위(저가 1,250,000~고가 1,332,000원)의 아래쪽 15% 지점 — 저가 부근에서 마감했습니다.",
+      "마이크론은 미국 정규장 마감 뒤 시간외에서 -2.72%(장중 -2.84%~+0.02%) — 정규장 등락에 안 보이는 반응입니다.",
+      "엔비디아는 미국 정규장 마감 뒤 시간외에서 -1.63%(장중 -1.63%~+0.14%) — 정규장 등락에 안 보이는 반응입니다.",
+      "우리 장중(09:00~15:30) 나스닥100 선물 -0.41%, 이 종목 고점 이후 -0.41% · 미 10년물 국채 선물 +0.27%(금리 하락), 이 종목 고점 이후 +0.27% · 원/달러 +0.23%(원화 약세), 이 종목 고점 이후 +0.23%.",
+      "자사주 매입 기간 중(직접 취득 2026-08-20~2026-11-19, 40,004,340,000,000, DART 공시) — 회사 자신의 매수는 기타 법인으로 잡힙니다.",
+      "마감가가 장중 고가보다 -5.11% 아래 — 오른 폭을 장중에 꽤 반납했습니다.",
+      "기타 법인 등(추정) 순매수 +5,831억원 — 회사의 자사주 매입 기간이라 회사 매입과 맞는 모양입니다."
+    ],
+    "estimated_indiv": false,
+    "source_note": "출처 naver+cache · 장 마감 직후 잠정치라 저녁 확정치와 다를 수 있습니다 · KRX는 받지 못함(pykrx 미설치)"
+  },
   "flow_status": {
-    "state": "pending",
-    "detail": "최신 2026-10-14"
+    "state": "ok",
+    "detail": "naver+cache",
+    "krx_error": "pykrx 미설치"
   },
   "context": {},
   "market": {
@@ -619,9 +664,9 @@
     "steady": 15,
     "upper": 2,
     "lower": 0,
-    "individual": 14801.0,
-    "foreign": -37906.0,
-    "institution": 16668.0,
+    "individual": 13967.0,
+    "foreign": -37637.0,
+    "institution": 17176.0,
     "prev_close": 6008.81,
     "open": 5673.01,
     "high": 5751.45,

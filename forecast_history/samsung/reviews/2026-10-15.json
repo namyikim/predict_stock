@@ -1,0 +1,885 @@
+{
+  "target": "samsung",
+  "name": "삼성전자",
+  "peer_name": "SK하이닉스",
+  "session_date": "2026-10-15",
+  "generated_at": "2026-10-15 16:12 KST",
+  "summary": {
+    "prev_close": 232000.0,
+    "open": 216500.0,
+    "high": 221500.0,
+    "low": 204500.0,
+    "close": 210000.0,
+    "gap": -0.06681034482758619,
+    "session": -0.03002309468822173,
+    "c2c": -0.09482758620689657,
+    "high_vs_open": 0.023094688221708903,
+    "low_vs_open": -0.05542725173210161,
+    "volume": 33423608.0,
+    "volume_ratio": 1.9621795494891758,
+    "kospi_c2c": -0.07565388809384133,
+    "peer_c2c": -0.11064129668780831,
+    "usdkrw_chg": -0.00047004413551410273,
+    "us_nights": 1,
+    "sox_ret": -0.04295349126097914,
+    "nasdaq_ret": -0.018802549537668578,
+    "micron_ret": -0.04082728173515471,
+    "prior_streak": 0,
+    "ma5": 237300.0,
+    "ma20": 259525.0,
+    "high20": 285500.0,
+    "high252": 374087.44831391243,
+    "price_context": {
+      "breakouts": {
+        "20": {
+          "prior_high": 285500.0,
+          "distance": -0.2644483362521891,
+          "close_breakout": false,
+          "intraday_breakout": false
+        },
+        "60": {
+          "prior_high": 288000.0,
+          "distance": -0.27083333333333337,
+          "close_breakout": false,
+          "intraday_breakout": false
+        }
+      },
+      "relative": {
+        "5": {
+          "start": "2026-10-07",
+          "end": "2026-10-15",
+          "own": -0.2178770949720671,
+          "peer": -0.2675565873476494,
+          "excess": 0.049679492375582335
+        },
+        "20": {
+          "start": "2026-09-11",
+          "end": "2026-10-15",
+          "own": -0.19075144508670516,
+          "peer": -0.30353200883002207,
+          "excess": 0.11278056374331691
+        },
+        "60": {
+          "start": "2026-07-15",
+          "end": "2026-10-15",
+          "own": -0.24865831842576025,
+          "peer": -0.3937206247103644,
+          "excess": 0.14506230628460415
+        }
+      }
+    },
+    "range": 0.08312958435207829,
+    "peer_range": 0.0656000000000001,
+    "prior_5d": -0.1470588235294118,
+    "ma_touches": [],
+    "micron_ah": {
+      "regular_close": 913.9149780273438,
+      "last": 889.1,
+      "ret": -0.027152392316521667,
+      "low_ret": -0.02835600537292915,
+      "high_ret": 0.0002352756851851101,
+      "last_time": "2026-10-15T08:55:00+09:00"
+    },
+    "nvidia_ah": {
+      "regular_close": 221.5,
+      "last": 217.8935,
+      "ret": -0.01628216704288943,
+      "low_ret": -0.01628216704288943,
+      "high_ret": 0.0014221218961625315,
+      "last_time": "2026-10-15T08:55:00+09:00"
+    },
+    "session_cross": {
+      "NQ=F": {
+        "label": "나스닥100 선물",
+        "ret": -0.0040796235733832065,
+        "after_high": -0.0040796235733832065
+      },
+      "ZN=F": {
+        "label": "미 10년물 국채 선물",
+        "ret": 0.0026753864447086606,
+        "after_high": 0.0026753864447086606
+      },
+      "KRW=X": {
+        "label": "원/달러",
+        "ret": 0.002311896347658937,
+        "after_high": 0.002311896347658937
+      }
+    },
+    "from_high": -0.04977375565610864,
+    "buyback": [
+      {
+        "kind": "직접 취득",
+        "start": "2026-08-24",
+        "end": "2026-11-21",
+        "amount": "14,999,999,992,000",
+        "purpose": "임직원 주식보상",
+        "rcept_no": "20260821000616"
+      }
+    ]
+  },
+  "classification": {
+    "labels": [
+      "갭 주도",
+      "장중 급변 09:00 주도",
+      "지수 동조",
+      "마감 구간 쏠림(14:50~종가)"
+    ],
+    "reasons": [
+      "갭 -6.68%가 종가→종가 -9.48%의 70%",
+      "09:00 봉 -4.74%(σ의 13.53배, 거래량 8.38배)가 세션 -3.00%의 103%",
+      "KOSPI -7.57% vs 종목 -9.48%, 5분 수익률 상관 0.85 — 종목 고유 요인이 약함",
+      "14:50~종가 구간이 세션 -3.00%의 56% (5분봉이 없는 구간, 일봉 종가 기준)"
+    ]
+  },
+  "events": [
+    {
+      "time": "2026-10-15T09:00:00+09:00",
+      "ret": -0.04741379310344829,
+      "z": 13.53,
+      "volume_ratio": 8.38,
+      "cum_before": 0.0,
+      "cum_after": 0.020785219399538146,
+      "session_share": 1.026508620689655,
+      "score": 15.530593748070682,
+      "news": [
+        {
+          "time": "2026-10-15T09:00:40+09:00",
+          "title": "KB증권 \"삼성전자 역사적 저평가…창신메모리 추격 우려 과도\"",
+          "source": "뉴스1",
+          "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE9OUlItTFNJTWFGbWpGY25kRUhoMDNtZ0pGWE1vbEY2a2Y2YmNXVUZ4Tl9fdmZqM0lVVy1IaEhXQ1JiNU1aN0owdXF6N0xWdUQtUkhXNHRlb3dxdHc?oc=5"
+        },
+        {
+          "time": "2026-10-15T09:10:00+09:00",
+          "title": "[요즘투자] 삼성 일가 판단(?) \"삼성전자 주가는 지금이 바닥\"",
+          "source": "저스트 이코노믹스",
+          "link": "https://news.google.com/rss/articles/CBMiX0FVX3lxTFBUaEdSSU9OZDZ1UXFqeTgxdHhaci1tc3VPc2NBeEMxU3FUOFpTV013WVVhd0FUU3NGOExJWFI1UkhtVlFxUkRBZDdRbWRUZ2JUTW05OEVBOXlxLUNCT0Jr?oc=5"
+        },
+        {
+          "time": "2026-10-15T08:30:40+09:00",
+          "title": "삼성전자, 동남아 AI 가전·공조시장 공략…B2B 솔루션까지 확대",
+          "source": "글로벌이코노믹",
+          "link": "https://news.google.com/rss/articles/CBMihgFBVV95cUxQQWlPVE50XzdvWVdGWW5Nek1FaktmWUNsNmtQV3RjejlvTUUxX3RsOEtOaFpIM3pLY1BoQ1NSRmpBRDMwU29BV0dRNWNiLXoxMEU0THhoYzhKeWo4Qlh3TGpuWWRsWmlDeTEtWHJySUJRUERIcmV3Q3czc08xNjBtNjI0MFN4dw?oc=5"
+        },
+        {
+          "time": "2026-10-15T08:34:00+09:00",
+          "title": "삼성전자, 동남아 AI 가전 공략…베트남서 신기술 선보여",
+          "source": "SBS Biz",
+          "link": "https://news.google.com/rss/articles/CBMiU0FVX3lxTE9CUFhsYWE2UUNWQnh6dUFQcHN1TTVVZGV6VDJ4dnJWLUJfdVRObjFzMHZCbXhWTHd2UUxId2s4N2lIb0x2WF9jRUF4amVCYm9CbnFV0gFYQVVfeXFMUE1ZazRkd0dFVTJsa2dWdUJjZnhqYjlqczBtTkphdXBKWW5iRTM0ZjY5MVUxTEhUR0gwRXBGUVY5SU42RlpVWUVpQUpfMjFUbU9jQlh4SnBfTw?oc=5"
+        },
+        {
+          "time": "2026-10-15T08:39:05+09:00",
+          "title": "삼성전자, 동남아 AI 가전·공조 시장 공략…식재료 인식부터 건물 통합 제어까지",
+          "source": "인공지능신문",
+          "link": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE1uaXplcGZLSGc0cDdnem5LTENhWnpjTndyOU80OHQ1a051ZEtEX0hDOE1QZi14RlROMVpxUHIzdDBhOGx3dVlwaDRsMEZwM2ppdXpSdVc1Q01RdWVSZVVGTFYxaTlFR00?oc=5"
+        }
+      ]
+    },
+    {
+      "time": "2026-10-15T10:15:00+09:00",
+      "ret": -0.011737089201877882,
+      "z": 3.35,
+      "volume_ratio": 1.94,
+      "cum_before": -0.0161662817551963,
+      "cum_after": -0.02771362586605086,
+      "session_share": 0.25410798122065603,
+      "score": 3.7373114006023087,
+      "news": [
+        {
+          "time": "2026-10-15T09:00:40+09:00",
+          "title": "KB증권 \"삼성전자 역사적 저평가…창신메모리 추격 우려 과도\"",
+          "source": "뉴스1",
+          "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE9OUlItTFNJTWFGbWpGY25kRUhoMDNtZ0pGWE1vbEY2a2Y2YmNXVUZ4Tl9fdmZqM0lVVy1IaEhXQ1JiNU1aN0owdXF6N0xWdUQtUkhXNHRlb3dxdHc?oc=5"
+        },
+        {
+          "time": "2026-10-15T09:10:00+09:00",
+          "title": "[요즘투자] 삼성 일가 판단(?) \"삼성전자 주가는 지금이 바닥\"",
+          "source": "저스트 이코노믹스",
+          "link": "https://news.google.com/rss/articles/CBMiX0FVX3lxTFBUaEdSSU9OZDZ1UXFqeTgxdHhaci1tc3VPc2NBeEMxU3FUOFpTV013WVVhd0FUU3NGOExJWFI1UkhtVlFxUkRBZDdRbWRUZ2JUTW05OEVBOXlxLUNCT0Jr?oc=5"
+        },
+        {
+          "time": "2026-10-15T08:53:00+09:00",
+          "title": "[특징주] 美 반도체주 급락 여파…프리마켓서 삼성전자 6%·SK하이닉스 7%대↓",
+          "source": "뉴스핌",
+          "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE5XV3ZmR1pSQXQ4NGdaeFUzMTFGQ0JFY19vQlpkZ1pvUzNhRjZOdUV6Z2U5R2FHRGNfei1iWEJTRlJrQ1VWUlJmMkVHdFMtd0k4NEhPOEI2VlNhdWtn?oc=5"
+        },
+        {
+          "time": "2026-10-15T08:55:00+09:00",
+          "title": "AI·위성으로 넓히는 6G…삼성전자, 실리콘밸리서 차세대 통신 논의",
+          "source": "경북매일",
+          "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE1rNjc2NjkxZHFyS3VFXzdNQnN3aEtmYndxOG1FaDZxa3hLbE55MHVpNVNWOVNwVkpuVlc4WU5iM0d2LWFOZ1l5Y3dsLXhlOW1OSHdZZXF4SFphZw?oc=5"
+        },
+        {
+          "time": "2026-10-15T09:28:41+09:00",
+          "title": "KB증권 \"삼성전자, 중국의 기술 추격 우려 과도.. 장벽 높아\"",
+          "source": "글로벌이코노믹",
+          "link": "https://news.google.com/rss/articles/CBMihwFBVV95cUxQODVHTXJ4Mkt2SnZsbU1heEQyV2VUeVZCWjk2ZFBOSndIWV9DT0QyaHFfbWZiTUJSSnNqUUVRREpvYmZSQnlwZ3VMVEpWNkRESXdJMUdEd0xsRHlySERaVFBHTVF3R1FmN3hvRFd0M1BJbDJuWXE0UEwzUWFub0I0ejZEMGpPRUE?oc=5"
+        }
+      ]
+    },
+    {
+      "time": "2026-10-15T13:15:00+09:00",
+      "ret": 0.010843373493975905,
+      "z": 3.09,
+      "volume_ratio": 1.35,
+      "cum_before": -0.04157043879907618,
+      "cum_after": -0.03117782909930711,
+      "session_share": -0.23475903614457827,
+      "score": 3.3644457359999387,
+      "news": [
+        {
+          "time": "2026-10-15T11:52:55+09:00",
+          "title": "삼성전자, 실리콘밸리서 6G 기술 공개…AI·위성통신 협력 확대",
+          "source": "뉴스토마토",
+          "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE1UNUtkNEtxNlhhM1dhUjBBZTZoS1hzOWhoTzBtSktzQklXUmhYc2ZBMnJZQjRfSWEtWDBzWjhCR3FpcS0yMnptSTNwaV9TQ1lGTGVEalRIbUZsenRSRXhTaQ?oc=5"
+        },
+        {
+          "time": "2026-10-15T11:59:00+09:00",
+          "title": "분기 영업익 세계 1위 삼성전자, 주가는 왜 또 폭락한 건데?",
+          "source": "인베스트조선",
+          "link": "https://news.google.com/rss/articles/CBMigwFBVV95cUxQUVd4UlcyOERaZC1leldsOGJPU1hRTmR5UU5RS2YtRXlfVkRYOGhMYTBCckVEU0tmZlZVRzZWdXNHSUlhZnQ1cnlTN2p5U1NWQzIwNXVqSFlBLVA0VnVNek9tV3RYYWNiQm1wUGtnRnJzOERQTnppUDJweXd0Z3hkdWtCNA?oc=5"
+        },
+        {
+          "time": "2026-10-15T12:05:02+09:00",
+          "title": "삼성전자, 하노이서 띄운 'AI 홈' 비전…동남아 맞춤형 가전·공조 솔루션 공략 본격화",
+          "source": "오피니언뉴스",
+          "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE5jNnNYMi1vUlNpbW1HZ0lWcExiVjJYX3JQdlBNUnowUGRsT0lFdzEtNWJMX2pSQk5HcFY4SVRObW52cjBheUlHdGdHRjNPS3RlSVN2cWUxM1cwdDVuUVltTm80eldURHVzZkVka0Rqc04?oc=5"
+        },
+        {
+          "time": "2026-10-15T12:56:18+09:00",
+          "title": "삼성전자, 베트남서 AI 홈·공조 기술 소개…동남아 공략 가속",
+          "source": "메트로신문",
+          "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE5QS0tEU3ZBdkl1eTByOTVaRHVIZnB3M1RJM1F3eFZoWjY0T1REQlAxcmpQVkRVc1hWMjlYU1hpWUlWaElIZGRMMjFkclJxVmtyV2RTZVM0bDJhajdZNkx2cA?oc=5"
+        },
+        {
+          "time": "2026-10-15T13:19:02+09:00",
+          "title": "삼성전자, 글로벌 무대서 AI·디자인·통신 혁신 역량 총집결",
+          "source": "천지일보",
+          "link": "https://news.google.com/rss/articles/CBMiakFVX3lxTFBpX2JQUmxveTBtZ3lqb0hVSi15eXh0VENyVmdIV1VOUG91NDZnanVpQTJpRjRuRW0tOUl0WHJfOHR5Y1RfeThzT2RsZDVpNWR3YzBnREE1TjlkcFpvVkZ2c1hpallmZ0NOemc?oc=5"
+        }
+      ]
+    }
+  ],
+  "turning_point": {
+    "high_time": "2026-10-15T09:00:00+09:00",
+    "high": 0.020785219399538146,
+    "low_time": "2026-10-15T14:45:00+09:00",
+    "low": -0.05427251732101612,
+    "pattern": "고점 후 반락"
+  },
+  "closing_share": -0.5645371577574948,
+  "intraday_corr_kospi": 0.8541705903122213,
+  "intraday_note": "장중 봉은 09:00~14:50까지만 있어 마감 구간(14:50~15:30)은 일봉 종가로만 봅니다(그 구간 +1.69%).",
+  "intraday_coverage": "09:00~14:50",
+  "intraday_path": [
+    {
+      "time": "2026-10-15T09:00:00+09:00",
+      "price": 221000.0,
+      "volume": 2648166.0
+    },
+    {
+      "time": "2026-10-15T09:05:00+09:00",
+      "price": 218000.0,
+      "volume": 772430.0
+    },
+    {
+      "time": "2026-10-15T09:10:00+09:00",
+      "price": 217000.0,
+      "volume": 638571.0
+    },
+    {
+      "time": "2026-10-15T09:15:00+09:00",
+      "price": 214500.0,
+      "volume": 819793.0
+    },
+    {
+      "time": "2026-10-15T09:20:00+09:00",
+      "price": 216500.0,
+      "volume": 570106.0
+    },
+    {
+      "time": "2026-10-15T09:25:00+09:00",
+      "price": 216250.0,
+      "volume": 529391.0
+    },
+    {
+      "time": "2026-10-15T09:30:00+09:00",
+      "price": 215500.0,
+      "volume": 393143.0
+    },
+    {
+      "time": "2026-10-15T09:35:00+09:00",
+      "price": 214750.0,
+      "volume": 399743.0
+    },
+    {
+      "time": "2026-10-15T09:40:00+09:00",
+      "price": 215000.0,
+      "volume": 484507.0
+    },
+    {
+      "time": "2026-10-15T09:45:00+09:00",
+      "price": 214000.0,
+      "volume": 263806.0
+    },
+    {
+      "time": "2026-10-15T09:50:00+09:00",
+      "price": 213750.0,
+      "volume": 390828.0
+    },
+    {
+      "time": "2026-10-15T09:55:00+09:00",
+      "price": 214500.0,
+      "volume": 379017.0
+    },
+    {
+      "time": "2026-10-15T10:00:00+09:00",
+      "price": 214000.0,
+      "volume": 735846.0
+    },
+    {
+      "time": "2026-10-15T10:05:00+09:00",
+      "price": 213750.0,
+      "volume": 439855.0
+    },
+    {
+      "time": "2026-10-15T10:10:00+09:00",
+      "price": 213000.0,
+      "volume": 338863.0
+    },
+    {
+      "time": "2026-10-15T10:15:00+09:00",
+      "price": 210500.0,
+      "volume": 613071.0
+    },
+    {
+      "time": "2026-10-15T10:20:00+09:00",
+      "price": 211500.0,
+      "volume": 597310.0
+    },
+    {
+      "time": "2026-10-15T10:25:00+09:00",
+      "price": 211250.0,
+      "volume": 311279.0
+    },
+    {
+      "time": "2026-10-15T10:30:00+09:00",
+      "price": 210750.0,
+      "volume": 603045.0
+    },
+    {
+      "time": "2026-10-15T10:35:00+09:00",
+      "price": 210500.0,
+      "volume": 928215.0
+    },
+    {
+      "time": "2026-10-15T10:40:00+09:00",
+      "price": 211000.0,
+      "volume": 201869.0
+    },
+    {
+      "time": "2026-10-15T10:45:00+09:00",
+      "price": 210000.0,
+      "volume": 470412.0
+    },
+    {
+      "time": "2026-10-15T10:50:00+09:00",
+      "price": 210500.0,
+      "volume": 277959.0
+    },
+    {
+      "time": "2026-10-15T10:55:00+09:00",
+      "price": 210000.0,
+      "volume": 320967.0
+    },
+    {
+      "time": "2026-10-15T11:00:00+09:00",
+      "price": 210500.0,
+      "volume": 335085.0
+    },
+    {
+      "time": "2026-10-15T11:05:00+09:00",
+      "price": 212500.0,
+      "volume": 267377.0
+    },
+    {
+      "time": "2026-10-15T11:10:00+09:00",
+      "price": 212000.0,
+      "volume": 185550.0
+    },
+    {
+      "time": "2026-10-15T11:15:00+09:00",
+      "price": 213750.0,
+      "volume": 230791.0
+    },
+    {
+      "time": "2026-10-15T11:20:00+09:00",
+      "price": 213000.0,
+      "volume": 270661.0
+    },
+    {
+      "time": "2026-10-15T11:25:00+09:00",
+      "price": 211500.0,
+      "volume": 360256.0
+    },
+    {
+      "time": "2026-10-15T11:30:00+09:00",
+      "price": 210500.0,
+      "volume": 242553.0
+    },
+    {
+      "time": "2026-10-15T11:35:00+09:00",
+      "price": 210250.0,
+      "volume": 111387.0
+    },
+    {
+      "time": "2026-10-15T11:40:00+09:00",
+      "price": 209750.0,
+      "volume": 274529.0
+    },
+    {
+      "time": "2026-10-15T11:45:00+09:00",
+      "price": 210000.0,
+      "volume": 94161.0
+    },
+    {
+      "time": "2026-10-15T11:50:00+09:00",
+      "price": 210500.0,
+      "volume": 159026.0
+    },
+    {
+      "time": "2026-10-15T11:55:00+09:00",
+      "price": 210500.0,
+      "volume": 77845.0
+    },
+    {
+      "time": "2026-10-15T12:00:00+09:00",
+      "price": 210000.0,
+      "volume": 198236.0
+    },
+    {
+      "time": "2026-10-15T12:05:00+09:00",
+      "price": 210250.0,
+      "volume": 147971.0
+    },
+    {
+      "time": "2026-10-15T12:10:00+09:00",
+      "price": 210500.0,
+      "volume": 81504.0
+    },
+    {
+      "time": "2026-10-15T12:15:00+09:00",
+      "price": 209750.0,
+      "volume": 224187.0
+    },
+    {
+      "time": "2026-10-15T12:20:00+09:00",
+      "price": 209500.0,
+      "volume": 297173.0
+    },
+    {
+      "time": "2026-10-15T12:25:00+09:00",
+      "price": 209500.0,
+      "volume": 109283.0
+    },
+    {
+      "time": "2026-10-15T12:30:00+09:00",
+      "price": 209500.0,
+      "volume": 114921.0
+    },
+    {
+      "time": "2026-10-15T12:35:00+09:00",
+      "price": 209500.0,
+      "volume": 94245.0
+    },
+    {
+      "time": "2026-10-15T13:05:00+09:00",
+      "price": 209500.0,
+      "volume": 855258.0
+    },
+    {
+      "time": "2026-10-15T13:10:00+09:00",
+      "price": 207500.0,
+      "volume": 730099.0
+    },
+    {
+      "time": "2026-10-15T13:15:00+09:00",
+      "price": 209750.0,
+      "volume": 426837.0
+    },
+    {
+      "time": "2026-10-15T13:20:00+09:00",
+      "price": 212000.0,
+      "volume": 367629.0
+    },
+    {
+      "time": "2026-10-15T13:25:00+09:00",
+      "price": 211500.0,
+      "volume": 360096.0
+    },
+    {
+      "time": "2026-10-15T13:30:00+09:00",
+      "price": 211000.0,
+      "volume": 214282.0
+    },
+    {
+      "time": "2026-10-15T13:35:00+09:00",
+      "price": 211000.0,
+      "volume": 147489.0
+    },
+    {
+      "time": "2026-10-15T13:40:00+09:00",
+      "price": 212000.0,
+      "volume": 265958.0
+    },
+    {
+      "time": "2026-10-15T13:45:00+09:00",
+      "price": 211000.0,
+      "volume": 273923.0
+    },
+    {
+      "time": "2026-10-15T13:50:00+09:00",
+      "price": 212000.0,
+      "volume": 251864.0
+    },
+    {
+      "time": "2026-10-15T13:55:00+09:00",
+      "price": 211500.0,
+      "volume": 229837.0
+    },
+    {
+      "time": "2026-10-15T14:00:00+09:00",
+      "price": 211250.0,
+      "volume": 280095.0
+    },
+    {
+      "time": "2026-10-15T14:05:00+09:00",
+      "price": 211000.0,
+      "volume": 130405.0
+    },
+    {
+      "time": "2026-10-15T14:10:00+09:00",
+      "price": 211000.0,
+      "volume": 252147.0
+    },
+    {
+      "time": "2026-10-15T14:15:00+09:00",
+      "price": 209250.0,
+      "volume": 436687.0
+    },
+    {
+      "time": "2026-10-15T14:20:00+09:00",
+      "price": 208000.0,
+      "volume": 309086.0
+    },
+    {
+      "time": "2026-10-15T14:25:00+09:00",
+      "price": 207000.0,
+      "volume": 480639.0
+    },
+    {
+      "time": "2026-10-15T14:30:00+09:00",
+      "price": 206500.0,
+      "volume": 371793.0
+    },
+    {
+      "time": "2026-10-15T14:35:00+09:00",
+      "price": 206500.0,
+      "volume": 286996.0
+    },
+    {
+      "time": "2026-10-15T14:40:00+09:00",
+      "price": 206000.0,
+      "volume": 345294.0
+    },
+    {
+      "time": "2026-10-15T14:45:00+09:00",
+      "price": 204750.0,
+      "volume": 483960.0
+    },
+    {
+      "time": "2026-10-15T14:50:00+09:00",
+      "price": 206500.0,
+      "volume": 500285.0
+    }
+  ],
+  "timeline_items": [
+    {
+      "time": "2026-10-15T09:00:00+09:00",
+      "ret": -0.04741379310344829,
+      "z": 13.53,
+      "volume_ratio": 8.38,
+      "cum_before": 0.0,
+      "cum_after": 0.020785219399538146,
+      "session_share": 1.026508620689655,
+      "score": 15.530593748070682,
+      "news": [
+        {
+          "time": "2026-10-15T09:00:40+09:00",
+          "title": "KB증권 \"삼성전자 역사적 저평가…창신메모리 추격 우려 과도\"",
+          "source": "뉴스1",
+          "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE9OUlItTFNJTWFGbWpGY25kRUhoMDNtZ0pGWE1vbEY2a2Y2YmNXVUZ4Tl9fdmZqM0lVVy1IaEhXQ1JiNU1aN0owdXF6N0xWdUQtUkhXNHRlb3dxdHc?oc=5"
+        },
+        {
+          "time": "2026-10-15T09:10:00+09:00",
+          "title": "[요즘투자] 삼성 일가 판단(?) \"삼성전자 주가는 지금이 바닥\"",
+          "source": "저스트 이코노믹스",
+          "link": "https://news.google.com/rss/articles/CBMiX0FVX3lxTFBUaEdSSU9OZDZ1UXFqeTgxdHhaci1tc3VPc2NBeEMxU3FUOFpTV013WVVhd0FUU3NGOExJWFI1UkhtVlFxUkRBZDdRbWRUZ2JUTW05OEVBOXlxLUNCT0Jr?oc=5"
+        },
+        {
+          "time": "2026-10-15T08:30:40+09:00",
+          "title": "삼성전자, 동남아 AI 가전·공조시장 공략…B2B 솔루션까지 확대",
+          "source": "글로벌이코노믹",
+          "link": "https://news.google.com/rss/articles/CBMihgFBVV95cUxQQWlPVE50XzdvWVdGWW5Nek1FaktmWUNsNmtQV3RjejlvTUUxX3RsOEtOaFpIM3pLY1BoQ1NSRmpBRDMwU29BV0dRNWNiLXoxMEU0THhoYzhKeWo4Qlh3TGpuWWRsWmlDeTEtWHJySUJRUERIcmV3Q3czc08xNjBtNjI0MFN4dw?oc=5"
+        },
+        {
+          "time": "2026-10-15T08:34:00+09:00",
+          "title": "삼성전자, 동남아 AI 가전 공략…베트남서 신기술 선보여",
+          "source": "SBS Biz",
+          "link": "https://news.google.com/rss/articles/CBMiU0FVX3lxTE9CUFhsYWE2UUNWQnh6dUFQcHN1TTVVZGV6VDJ4dnJWLUJfdVRObjFzMHZCbXhWTHd2UUxId2s4N2lIb0x2WF9jRUF4amVCYm9CbnFV0gFYQVVfeXFMUE1ZazRkd0dFVTJsa2dWdUJjZnhqYjlqczBtTkphdXBKWW5iRTM0ZjY5MVUxTEhUR0gwRXBGUVY5SU42RlpVWUVpQUpfMjFUbU9jQlh4SnBfTw?oc=5"
+        },
+        {
+          "time": "2026-10-15T08:39:05+09:00",
+          "title": "삼성전자, 동남아 AI 가전·공조 시장 공략…식재료 인식부터 건물 통합 제어까지",
+          "source": "인공지능신문",
+          "link": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE1uaXplcGZLSGc0cDdnem5LTENhWnpjTndyOU80OHQ1a051ZEtEX0hDOE1QZi14RlROMVpxUHIzdDBhOGx3dVlwaDRsMEZwM2ppdXpSdVc1Q01RdWVSZVVGTFYxaTlFR00?oc=5"
+        }
+      ],
+      "price": 221000.0,
+      "kind": "turn_down"
+    },
+    {
+      "time": "2026-10-15T10:15:00+09:00",
+      "ret": -0.011737089201877882,
+      "z": 3.35,
+      "volume_ratio": 1.94,
+      "cum_before": -0.0161662817551963,
+      "cum_after": -0.02771362586605086,
+      "session_share": 0.25410798122065603,
+      "score": 3.7373114006023087,
+      "news": [
+        {
+          "time": "2026-10-15T09:00:40+09:00",
+          "title": "KB증권 \"삼성전자 역사적 저평가…창신메모리 추격 우려 과도\"",
+          "source": "뉴스1",
+          "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE9OUlItTFNJTWFGbWpGY25kRUhoMDNtZ0pGWE1vbEY2a2Y2YmNXVUZ4Tl9fdmZqM0lVVy1IaEhXQ1JiNU1aN0owdXF6N0xWdUQtUkhXNHRlb3dxdHc?oc=5"
+        },
+        {
+          "time": "2026-10-15T09:10:00+09:00",
+          "title": "[요즘투자] 삼성 일가 판단(?) \"삼성전자 주가는 지금이 바닥\"",
+          "source": "저스트 이코노믹스",
+          "link": "https://news.google.com/rss/articles/CBMiX0FVX3lxTFBUaEdSSU9OZDZ1UXFqeTgxdHhaci1tc3VPc2NBeEMxU3FUOFpTV013WVVhd0FUU3NGOExJWFI1UkhtVlFxUkRBZDdRbWRUZ2JUTW05OEVBOXlxLUNCT0Jr?oc=5"
+        },
+        {
+          "time": "2026-10-15T08:53:00+09:00",
+          "title": "[특징주] 美 반도체주 급락 여파…프리마켓서 삼성전자 6%·SK하이닉스 7%대↓",
+          "source": "뉴스핌",
+          "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE5XV3ZmR1pSQXQ4NGdaeFUzMTFGQ0JFY19vQlpkZ1pvUzNhRjZOdUV6Z2U5R2FHRGNfei1iWEJTRlJrQ1VWUlJmMkVHdFMtd0k4NEhPOEI2VlNhdWtn?oc=5"
+        },
+        {
+          "time": "2026-10-15T08:55:00+09:00",
+          "title": "AI·위성으로 넓히는 6G…삼성전자, 실리콘밸리서 차세대 통신 논의",
+          "source": "경북매일",
+          "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE1rNjc2NjkxZHFyS3VFXzdNQnN3aEtmYndxOG1FaDZxa3hLbE55MHVpNVNWOVNwVkpuVlc4WU5iM0d2LWFOZ1l5Y3dsLXhlOW1OSHdZZXF4SFphZw?oc=5"
+        },
+        {
+          "time": "2026-10-15T09:28:41+09:00",
+          "title": "KB증권 \"삼성전자, 중국의 기술 추격 우려 과도.. 장벽 높아\"",
+          "source": "글로벌이코노믹",
+          "link": "https://news.google.com/rss/articles/CBMihwFBVV95cUxQODVHTXJ4Mkt2SnZsbU1heEQyV2VUeVZCWjk2ZFBOSndIWV9DT0QyaHFfbWZiTUJSSnNqUUVRREpvYmZSQnlwZ3VMVEpWNkRESXdJMUdEd0xsRHlySERaVFBHTVF3R1FmN3hvRFd0M1BJbDJuWXE0UEwzUWFub0I0ejZEMGpPRUE?oc=5"
+        }
+      ],
+      "price": 210500.0,
+      "kind": "turn_down"
+    },
+    {
+      "time": "2026-10-15T13:15:00+09:00",
+      "ret": 0.010843373493975905,
+      "z": 3.09,
+      "volume_ratio": 1.35,
+      "cum_before": -0.04157043879907618,
+      "cum_after": -0.03117782909930711,
+      "session_share": -0.23475903614457827,
+      "score": 3.3644457359999387,
+      "news": [
+        {
+          "time": "2026-10-15T11:52:55+09:00",
+          "title": "삼성전자, 실리콘밸리서 6G 기술 공개…AI·위성통신 협력 확대",
+          "source": "뉴스토마토",
+          "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE1UNUtkNEtxNlhhM1dhUjBBZTZoS1hzOWhoTzBtSktzQklXUmhYc2ZBMnJZQjRfSWEtWDBzWjhCR3FpcS0yMnptSTNwaV9TQ1lGTGVEalRIbUZsenRSRXhTaQ?oc=5"
+        },
+        {
+          "time": "2026-10-15T11:59:00+09:00",
+          "title": "분기 영업익 세계 1위 삼성전자, 주가는 왜 또 폭락한 건데?",
+          "source": "인베스트조선",
+          "link": "https://news.google.com/rss/articles/CBMigwFBVV95cUxQUVd4UlcyOERaZC1leldsOGJPU1hRTmR5UU5RS2YtRXlfVkRYOGhMYTBCckVEU0tmZlZVRzZWdXNHSUlhZnQ1cnlTN2p5U1NWQzIwNXVqSFlBLVA0VnVNek9tV3RYYWNiQm1wUGtnRnJzOERQTnppUDJweXd0Z3hkdWtCNA?oc=5"
+        },
+        {
+          "time": "2026-10-15T12:05:02+09:00",
+          "title": "삼성전자, 하노이서 띄운 'AI 홈' 비전…동남아 맞춤형 가전·공조 솔루션 공략 본격화",
+          "source": "오피니언뉴스",
+          "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE5jNnNYMi1vUlNpbW1HZ0lWcExiVjJYX3JQdlBNUnowUGRsT0lFdzEtNWJMX2pSQk5HcFY4SVRObW52cjBheUlHdGdHRjNPS3RlSVN2cWUxM1cwdDVuUVltTm80eldURHVzZkVka0Rqc04?oc=5"
+        },
+        {
+          "time": "2026-10-15T12:56:18+09:00",
+          "title": "삼성전자, 베트남서 AI 홈·공조 기술 소개…동남아 공략 가속",
+          "source": "메트로신문",
+          "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE5QS0tEU3ZBdkl1eTByOTVaRHVIZnB3M1RJM1F3eFZoWjY0T1REQlAxcmpQVkRVc1hWMjlYU1hpWUlWaElIZGRMMjFkclJxVmtyV2RTZVM0bDJhajdZNkx2cA?oc=5"
+        },
+        {
+          "time": "2026-10-15T13:19:02+09:00",
+          "title": "삼성전자, 글로벌 무대서 AI·디자인·통신 혁신 역량 총집결",
+          "source": "천지일보",
+          "link": "https://news.google.com/rss/articles/CBMiakFVX3lxTFBpX2JQUmxveTBtZ3lqb0hVSi15eXh0VENyVmdIV1VOUG91NDZnanVpQTJpRjRuRW0tOUl0WHJfOHR5Y1RfeThzT2RsZDVpNWR3YzBnREE1TjlkcFpvVkZ2c1hpallmZ0NOemc?oc=5"
+        }
+      ],
+      "price": 209750.0,
+      "kind": "turn_up"
+    }
+  ],
+  "overnight_news": [
+    {
+      "time": "2026-10-15T08:30:40+09:00",
+      "title": "삼성전자, 동남아 AI 가전·공조시장 공략…B2B 솔루션까지 확대",
+      "source": "글로벌이코노믹",
+      "link": "https://news.google.com/rss/articles/CBMihgFBVV95cUxQQWlPVE50XzdvWVdGWW5Nek1FaktmWUNsNmtQV3RjejlvTUUxX3RsOEtOaFpIM3pLY1BoQ1NSRmpBRDMwU29BV0dRNWNiLXoxMEU0THhoYzhKeWo4Qlh3TGpuWWRsWmlDeTEtWHJySUJRUERIcmV3Q3czc08xNjBtNjI0MFN4dw?oc=5"
+    },
+    {
+      "time": "2026-10-15T08:34:00+09:00",
+      "title": "삼성전자, 동남아 AI 가전 공략…베트남서 신기술 선보여",
+      "source": "SBS Biz",
+      "link": "https://news.google.com/rss/articles/CBMiU0FVX3lxTE9CUFhsYWE2UUNWQnh6dUFQcHN1TTVVZGV6VDJ4dnJWLUJfdVRObjFzMHZCbXhWTHd2UUxId2s4N2lIb0x2WF9jRUF4amVCYm9CbnFV0gFYQVVfeXFMUE1ZazRkd0dFVTJsa2dWdUJjZnhqYjlqczBtTkphdXBKWW5iRTM0ZjY5MVUxTEhUR0gwRXBGUVY5SU42RlpVWUVpQUpfMjFUbU9jQlh4SnBfTw?oc=5"
+    },
+    {
+      "time": "2026-10-15T08:39:05+09:00",
+      "title": "삼성전자, 동남아 AI 가전·공조 시장 공략…식재료 인식부터 건물 통합 제어까지",
+      "source": "인공지능신문",
+      "link": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE1uaXplcGZLSGc0cDdnem5LTENhWnpjTndyOU80OHQ1a051ZEtEX0hDOE1QZi14RlROMVpxUHIzdDBhOGx3dVlwaDRsMEZwM2ppdXpSdVc1Q01RdWVSZVVGTFYxaTlFR00?oc=5"
+    },
+    {
+      "time": "2026-10-15T08:53:00+09:00",
+      "title": "[특징주] 美 반도체주 급락 여파…프리마켓서 삼성전자 6%·SK하이닉스 7%대↓",
+      "source": "뉴스핌",
+      "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE5XV3ZmR1pSQXQ4NGdaeFUzMTFGQ0JFY19vQlpkZ1pvUzNhRjZOdUV6Z2U5R2FHRGNfei1iWEJTRlJrQ1VWUlJmMkVHdFMtd0k4NEhPOEI2VlNhdWtn?oc=5"
+    },
+    {
+      "time": "2026-10-15T08:55:00+09:00",
+      "title": "AI·위성으로 넓히는 6G…삼성전자, 실리콘밸리서 차세대 통신 논의",
+      "source": "경북매일",
+      "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE1rNjc2NjkxZHFyS3VFXzdNQnN3aEtmYndxOG1FaDZxa3hLbE55MHVpNVNWOVNwVkpuVlc4WU5iM0d2LWFOZ1l5Y3dsLXhlOW1OSHdZZXF4SFphZw?oc=5"
+    }
+  ],
+  "top_news": [
+    {
+      "time": "2026-10-15T14:37:09+09:00",
+      "title": "AI 본토에 확산하는 '투자 과열론', 삼성전자·SK하이닉스 메모리 수익성 여파 촉각",
+      "source": "비즈니스포스트",
+      "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTE5xNm94Zng4cFI5YkZsX0Nmd0lCa19GZ016QkhsUHplTlRjZG4xbUY2azdXQ1M0UjlKb0VtdTZ2Q1dVRzJOenBveDVnWEowblJCbXJVM3FmLW5pSjB2Tmk3ZzBzX2YtRVFDV2FaVDNTSEN1QW8?oc=5"
+    },
+    {
+      "time": "2026-10-15T09:00:40+09:00",
+      "title": "KB증권 \"삼성전자 역사적 저평가…창신메모리 추격 우려 과도\"",
+      "source": "뉴스1",
+      "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE9OUlItTFNJTWFGbWpGY25kRUhoMDNtZ0pGWE1vbEY2a2Y2YmNXVUZ4Tl9fdmZqM0lVVy1IaEhXQ1JiNU1aN0owdXF6N0xWdUQtUkhXNHRlb3dxdHc?oc=5"
+    },
+    {
+      "time": "2026-10-15T09:10:00+09:00",
+      "title": "[요즘투자] 삼성 일가 판단(?) \"삼성전자 주가는 지금이 바닥\"",
+      "source": "저스트 이코노믹스",
+      "link": "https://news.google.com/rss/articles/CBMiX0FVX3lxTFBUaEdSSU9OZDZ1UXFqeTgxdHhaci1tc3VPc2NBeEMxU3FUOFpTV013WVVhd0FUU3NGOExJWFI1UkhtVlFxUkRBZDdRbWRUZ2JUTW05OEVBOXlxLUNCT0Jr?oc=5"
+    },
+    {
+      "time": "2026-10-15T10:40:00+09:00",
+      "title": "삼성전자, 최근 주가 하락은 과도...창신메모리 기술격차 최대 7년",
+      "source": "증권일보",
+      "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTFBGVjUwdmxLQVFxeEJtVzdGaVp6T2hHWkxsbFBTeHdOa0cwa1F2d0FLNmlJcHZPS1lYXzN6UXN2Vk84NTZQRjAwa280MXN0RWJzcFY3Ni1ibVZXa1VkdldfWQ?oc=5"
+    },
+    {
+      "time": "2026-10-15T11:00:00+09:00",
+      "title": "삼성전자 zHBM·SK하이닉스 HBF…차세대 메모리 맞대결",
+      "source": "자본시장뉴스",
+      "link": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE9Nd1BHQ1NKQ2FPYnBCOFRLQV9MTUNJbGdKVi1Oal9tY0JDQk1ub3VDNlVXTXRSYTJqdl9tdWNYOUlnSUxGNERhY0lrMUZiOVBlOFlqSWZYLVNCUFNNSENsaVpRRS1qckE?oc=5"
+    },
+    {
+      "time": "2026-10-15T08:30:40+09:00",
+      "title": "삼성전자, 동남아 AI 가전·공조시장 공략…B2B 솔루션까지 확대",
+      "source": "글로벌이코노믹",
+      "link": "https://news.google.com/rss/articles/CBMihgFBVV95cUxQQWlPVE50XzdvWVdGWW5Nek1FaktmWUNsNmtQV3RjejlvTUUxX3RsOEtOaFpIM3pLY1BoQ1NSRmpBRDMwU29BV0dRNWNiLXoxMEU0THhoYzhKeWo4Qlh3TGpuWWRsWmlDeTEtWHJySUJRUERIcmV3Q3czc08xNjBtNjI0MFN4dw?oc=5"
+    }
+  ],
+  "disclosures": [],
+  "disclosure_note": null,
+  "flows": null,
+  "flow_story": null,
+  "flow_status": {
+    "state": "pending",
+    "detail": "최신 2026-10-14"
+  },
+  "context": {},
+  "market": {
+    "index": "KOSPI",
+    "date": "2026-10-15",
+    "rise": 113,
+    "fall": 789,
+    "steady": 15,
+    "upper": 2,
+    "lower": 0,
+    "individual": 13390.0,
+    "foreign": -36694.0,
+    "institution": 16876.0,
+    "prev_close": 6008.81,
+    "open": 5673.01,
+    "high": 5751.45,
+    "low": 5450.81,
+    "close": 5554.22
+  },
+  "earnings_reactions": null,
+  "forecasts": [
+    {
+      "model": "No macro ensemble",
+      "hit": true,
+      "verdict": "맞음 — 예측 하락 45%, 실제 하락(-9.48%)",
+      "legs": "갭 -6.68%(하락) · 세션 -3.00%(하락)",
+      "where": "결과는 주로 갭(밤사이)에서 정해졌습니다.",
+      "band": 0.0096086268586151,
+      "probs": [
+        0.4519619402728663,
+        0.2866509350077063,
+        0.2613871247194273
+      ],
+      "actual": "하락",
+      "predicted": "하락"
+    },
+    {
+      "model": "Mean ensemble",
+      "hit": true,
+      "verdict": "맞음 — 예측 하락 48%, 실제 하락(-9.48%)",
+      "legs": "갭 -6.68%(하락) · 세션 -3.00%(하락)",
+      "where": "결과는 주로 갭(밤사이)에서 정해졌습니다.",
+      "band": 0.0096086268586151,
+      "probs": [
+        0.4849219468016712,
+        0.2575304821627914,
+        0.2575475710355374
+      ],
+      "actual": "하락",
+      "predicted": "하락"
+    },
+    {
+      "model": "Candidate expanding",
+      "hit": true,
+      "verdict": "맞음 — 예측 하락 40%, 실제 하락(-9.48%)",
+      "legs": "갭 -6.68%(하락) · 세션 -3.00%(하락)",
+      "where": "결과는 주로 갭(밤사이)에서 정해졌습니다.",
+      "band": 0.0096086268586151,
+      "probs": [
+        0.4008720022806508,
+        0.2552475300601802,
+        0.3438804676591689
+      ],
+      "actual": "하락",
+      "predicted": "하락"
+    }
+  ],
+  "price_check": "1거래일 예상 구간 220,449~239,208원 · 종가 210,000원 → 구간 밖",
+  "disclaimer": "시간이 맞는 것이지 원인 확정이 아닙니다. 뉴스 없이 움직이는 날(수급·프로그램·옵션 만기)이 많고, 기사 발행 시각은 실제 정보 유통보다 늦거나 앞섭니다. 이 절은 설명 도구이며 다음날 예측에 자동 반영되지 않습니다."
+}

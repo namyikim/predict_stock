@@ -3,7 +3,7 @@
   "name": "SK하이닉스",
   "peer_name": "삼성전자",
   "session_date": "2026-10-15",
-  "generated_at": "2026-10-15 16:12 KST",
+  "generated_at": "2026-10-15 16:46 KST",
   "summary": {
     "prev_close": 1419000.0,
     "open": 1304000.0,
@@ -15,11 +15,11 @@
     "c2c": -0.11064129668780831,
     "high_vs_open": 0.021472392638036908,
     "low_vs_open": -0.04141104294478526,
-    "volume": 6197206.0,
-    "volume_ratio": 1.9530699848192226,
+    "volume": 6237456.0,
+    "volume_ratio": 1.9657549055543044,
     "kospi_c2c": -0.07565388809384133,
     "peer_c2c": -0.09482758620689657,
-    "usdkrw_chg": -0.0005297901058487486,
+    "usdkrw_chg": 0.0021486691038650196,
     "us_nights": 1,
     "sox_ret": -0.04295349126097914,
     "nasdaq_ret": -0.018802549537668578,
@@ -69,7 +69,7 @@
       }
     },
     "range": 0.0656000000000001,
-    "peer_range": 0.08312958435207829,
+    "peer_range": 0.08180708180708174,
     "prior_5d": -0.1996615905245347,
     "ma_touches": [],
     "micron_ah": {
@@ -91,8 +91,8 @@
     "session_cross": {
       "NQ=F": {
         "label": "나스닥100 선물",
-        "ret": -0.0040796235733832065,
-        "after_high": -0.0040796235733832065
+        "ret": -0.004096309150370403,
+        "after_high": -0.004096309150370403
       },
       "ZN=F": {
         "label": "미 10년물 국채 선물",
@@ -105,7 +105,7 @@
         "after_high": 0.002311896347658937
       }
     },
-    "from_high": -0.05040015683380217,
+    "from_high": -0.05112781954887213,
     "buyback": [
       {
         "kind": "직접 취득",
@@ -125,7 +125,7 @@
     ],
     "reasons": [
       "갭 -8.10%가 종가→종가 -11.06%의 73%",
-      "09:00 봉 -6.27%(σ의 15.54배, 거래량 7.88배)가 세션 -3.22%의 152%",
+      "09:00 봉 -6.27%(σ의 15.54배, 거래량 7.88배)가 세션 -3.22%의 154%",
       "KOSPI -7.57% vs 종목 -11.06%, 5분 수익률 상관 0.91 — 종목 고유 요인이 약함"
     ]
   },
@@ -136,16 +136,10 @@
       "z": 15.54,
       "volume_ratio": 7.88,
       "cum_before": 0.0,
-      "cum_after": 0.019157088122605304,
-      "session_share": 1.515738783180644,
+      "cum_after": 0.019938650306748462,
+      "session_share": 1.5431542276649757,
       "score": 17.543506807859217,
       "news": [
-        {
-          "time": "2026-10-15T08:45:36+09:00",
-          "title": "삼성전자·SK하이닉스, AI 반도체 주도권 노린다..'반도체대전' 첨단솔루션 공개",
-          "source": "한국정경신문",
-          "link": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE1ZZVhKNzhMa1daUHZkTWhPcGN3WlpYTEZ1dkdvUGRXcGhTMW9QYVdKdjQ4bWZNeEN6UmtyRVltNVVwNHVjM242bnFsVDVYLTEwcnc?oc=5"
-        },
         {
           "time": "2026-10-15T08:00:00+09:00",
           "title": "SK하이닉스 \"데이터 이동 병목, 3D D램·HBF로 해결\" [1분 브리프]",
@@ -159,41 +153,47 @@
           "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE5XV3ZmR1pSQXQ4NGdaeFUzMTFGQ0JFY19vQlpkZ1pvUzNhRjZOdUV6Z2U5R2FHRGNfei1iWEJTRlJrQ1VWUlJmMkVHdFMtd0k4NEhPOEI2VlNhdWtn?oc=5"
         },
         {
-          "time": "2026-10-15T08:32:45+09:00",
-          "title": "[속보] SK하이닉스, 프리마켓서 7%대 급락...시가총액 1000조원 붕괴",
-          "source": "핀포인트뉴스",
-          "link": "https://news.google.com/rss/articles/CBMid0FVX3lxTE02VUl4VUlINi1pb1ZvZ04ycFh4SUhEdVc0RW9OTEtFLXVwakEydkNLSHUzcERQQjNfZHpyZ0ZrWVJ0d2FtOGl6em5FYjZBZlhIS0lsUFZHQ1BUOFlyYm04dUtRa1pxaWFVMUpvRE5kcXVLNmdrWjVj0gF3QVVfeXFMTTZVSXhVSUg2LWlvVm9nTjJwWHhJSER1VzRFb05MS0UtdXBqQTJ2Q0tIdTNwRFBCM19kenJnRmtZUnR3YW04aXp6bkViNkFmWEhLSWxQVkdDUFQ4WXJibTh1S1FrWnFpYVUxSm9ETmRxdUs2Z2taNWM?oc=5"
-        },
-        {
           "time": "2026-10-15T08:44:22+09:00",
           "title": "삼전닉스 프리마켓서 동반 급락…SK하이닉스 시총 1000조 원 하회",
           "source": "부산일보",
           "link": "https://news.google.com/rss/articles/CBMifEFVX3lxTE4xSXJMb2tyODJDRVd2MjRXTk4yUTBwYVBKT3c4QkQxVWRWVUFhX2daQl83TlFkYXJQWnFVbms3eDMySk9EWi13cWNWVnhtX2h6S1gzQmpRZWNzWFJsWmZieUhWTnBlMWRuMEJoN0J1WDRuYzZmUW9veC1LY1o?oc=5"
+        },
+        {
+          "time": "2026-10-15T08:51:21+09:00",
+          "title": "초고수의 선택은 SK하이닉스…삼성전자·LG엔솔은 순매도",
+          "source": "한국경제",
+          "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTFBoRVMwaUYtQ2JZd3U4Z0tGVHBGS0xlMGRLeVR2Uy1xWU5kc25WWTEyaHNQdWxld1ZZVmdjNnB1ZWRfRTBKTGNiUmdxVGhMR2htY2NoeUlYcl9lQQ?oc=5"
+        },
+        {
+          "time": "2026-10-15T09:01:00+09:00",
+          "title": "[특징주] 삼전닉스, 프리마켓에서 6~7% 급락 …SK하이닉스 시가총액 1000조 하회 - 조선비즈",
+          "source": "Chosunbiz",
+          "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxQMXBVcU5UNzJhejlkRXdFSTNjekNWd1NoWmVPTmw1QlpfSVVoSC1tWXZRVVhUdGdnZ05HNzVMUTZSeFcwYzZReTVsbUcwdWlqX1JLa1dKLXNkdFhPenpEbk9GRW5TRVhOQ2JIQzJtZVhnODI4cm00Z2d6YmdVSHZzUzB5M0VyNFMw0gGcAUFVX3lxTFB2NURJd1Q0WDZEd0xuVzNRMWRwS2V1Mk5LUFBoLUo5SW02UWJnRWtpU3pKZXNJYkpWODZfV04xMC1TUks3aTFJanl6dUNLREJUOUhLTDNBRExqNVU5Y0tXWVg0ZWhBWXZHeGNtSGl1cXMtLU1ybENPejZwMVhDRHc5bEpwUXBNYm1SQmV0b0Z4b1A3cVVkZXFWWjRDeA?oc=5"
         }
       ]
     }
   ],
   "turning_point": {
     "high_time": "2026-10-15T09:00:00+09:00",
-    "high": 0.019157088122605304,
+    "high": 0.019938650306748462,
     "low_time": "2026-10-15T14:45:00+09:00",
-    "low": -0.04214559386973182,
+    "low": -0.04141104294478526,
     "pattern": "고점 후 반락"
   },
   "closing_share": -0.2730006471013691,
-  "intraday_corr_kospi": 0.9101808377712106,
+  "intraday_corr_kospi": 0.911468257357739,
   "intraday_note": "장중 봉은 09:00~14:50까지만 있어 마감 구간(14:50~15:30)은 일봉 종가로만 봅니다(그 구간 +0.88%).",
   "intraday_coverage": "09:00~14:50",
   "intraday_path": [
     {
       "time": "2026-10-15T09:00:00+09:00",
       "price": 1330000.0,
-      "volume": 447245.0
+      "volume": 447495.0
     },
     {
       "time": "2026-10-15T09:05:00+09:00",
       "price": 1323000.0,
-      "volume": 118126.0
+      "volume": 117876.0
     },
     {
       "time": "2026-10-15T09:10:00+09:00",
@@ -237,13 +237,13 @@
     },
     {
       "time": "2026-10-15T09:50:00+09:00",
-      "price": 1274500.0,
-      "volume": 81415.0
+      "price": 1274000.0,
+      "volume": 81486.0
     },
     {
       "time": "2026-10-15T09:55:00+09:00",
       "price": 1271000.0,
-      "volume": 107212.0
+      "volume": 107141.0
     },
     {
       "time": "2026-10-15T10:00:00+09:00",
@@ -258,12 +258,12 @@
     {
       "time": "2026-10-15T10:10:00+09:00",
       "price": 1268000.0,
-      "volume": 71478.0
+      "volume": 71487.0
     },
     {
       "time": "2026-10-15T10:15:00+09:00",
       "price": 1260000.0,
-      "volume": 75340.0
+      "volume": 75331.0
     },
     {
       "time": "2026-10-15T10:20:00+09:00",
@@ -307,13 +307,13 @@
     },
     {
       "time": "2026-10-15T11:00:00+09:00",
-      "price": 1260000.0,
-      "volume": 46196.0
+      "price": 1259000.0,
+      "volume": 46194.0
     },
     {
       "time": "2026-10-15T11:05:00+09:00",
       "price": 1269000.0,
-      "volume": 51973.0
+      "volume": 51975.0
     },
     {
       "time": "2026-10-15T11:10:00+09:00",
@@ -488,12 +488,12 @@
     {
       "time": "2026-10-15T14:25:00+09:00",
       "price": 1257000.0,
-      "volume": 55284.0
+      "volume": 55285.0
     },
     {
       "time": "2026-10-15T14:30:00+09:00",
       "price": 1253000.0,
-      "volume": 42042.0
+      "volume": 42041.0
     },
     {
       "time": "2026-10-15T14:35:00+09:00",
@@ -523,16 +523,10 @@
       "z": 15.54,
       "volume_ratio": 7.88,
       "cum_before": 0.0,
-      "cum_after": 0.019157088122605304,
-      "session_share": 1.515738783180644,
+      "cum_after": 0.019938650306748462,
+      "session_share": 1.5431542276649757,
       "score": 17.543506807859217,
       "news": [
-        {
-          "time": "2026-10-15T08:45:36+09:00",
-          "title": "삼성전자·SK하이닉스, AI 반도체 주도권 노린다..'반도체대전' 첨단솔루션 공개",
-          "source": "한국정경신문",
-          "link": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE1ZZVhKNzhMa1daUHZkTWhPcGN3WlpYTEZ1dkdvUGRXcGhTMW9QYVdKdjQ4bWZNeEN6UmtyRVltNVVwNHVjM242bnFsVDVYLTEwcnc?oc=5"
-        },
         {
           "time": "2026-10-15T08:00:00+09:00",
           "title": "SK하이닉스 \"데이터 이동 병목, 3D D램·HBF로 해결\" [1분 브리프]",
@@ -546,16 +540,22 @@
           "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE5XV3ZmR1pSQXQ4NGdaeFUzMTFGQ0JFY19vQlpkZ1pvUzNhRjZOdUV6Z2U5R2FHRGNfei1iWEJTRlJrQ1VWUlJmMkVHdFMtd0k4NEhPOEI2VlNhdWtn?oc=5"
         },
         {
-          "time": "2026-10-15T08:32:45+09:00",
-          "title": "[속보] SK하이닉스, 프리마켓서 7%대 급락...시가총액 1000조원 붕괴",
-          "source": "핀포인트뉴스",
-          "link": "https://news.google.com/rss/articles/CBMid0FVX3lxTE02VUl4VUlINi1pb1ZvZ04ycFh4SUhEdVc0RW9OTEtFLXVwakEydkNLSHUzcERQQjNfZHpyZ0ZrWVJ0d2FtOGl6em5FYjZBZlhIS0lsUFZHQ1BUOFlyYm04dUtRa1pxaWFVMUpvRE5kcXVLNmdrWjVj0gF3QVVfeXFMTTZVSXhVSUg2LWlvVm9nTjJwWHhJSER1VzRFb05MS0UtdXBqQTJ2Q0tIdTNwRFBCM19kenJnRmtZUnR3YW04aXp6bkViNkFmWEhLSWxQVkdDUFQ4WXJibTh1S1FrWnFpYVUxSm9ETmRxdUs2Z2taNWM?oc=5"
-        },
-        {
           "time": "2026-10-15T08:44:22+09:00",
           "title": "삼전닉스 프리마켓서 동반 급락…SK하이닉스 시총 1000조 원 하회",
           "source": "부산일보",
           "link": "https://news.google.com/rss/articles/CBMifEFVX3lxTE4xSXJMb2tyODJDRVd2MjRXTk4yUTBwYVBKT3c4QkQxVWRWVUFhX2daQl83TlFkYXJQWnFVbms3eDMySk9EWi13cWNWVnhtX2h6S1gzQmpRZWNzWFJsWmZieUhWTnBlMWRuMEJoN0J1WDRuYzZmUW9veC1LY1o?oc=5"
+        },
+        {
+          "time": "2026-10-15T08:51:21+09:00",
+          "title": "초고수의 선택은 SK하이닉스…삼성전자·LG엔솔은 순매도",
+          "source": "한국경제",
+          "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTFBoRVMwaUYtQ2JZd3U4Z0tGVHBGS0xlMGRLeVR2Uy1xWU5kc25WWTEyaHNQdWxld1ZZVmdjNnB1ZWRfRTBKTGNiUmdxVGhMR2htY2NoeUlYcl9lQQ?oc=5"
+        },
+        {
+          "time": "2026-10-15T09:01:00+09:00",
+          "title": "[특징주] 삼전닉스, 프리마켓에서 6~7% 급락 …SK하이닉스 시가총액 1000조 하회 - 조선비즈",
+          "source": "Chosunbiz",
+          "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxQMXBVcU5UNzJhejlkRXdFSTNjekNWd1NoWmVPTmw1QlpfSVVoSC1tWXZRVVhUdGdnZ05HNzVMUTZSeFcwYzZReTVsbUcwdWlqX1JLa1dKLXNkdFhPenpEbk9GRW5TRVhOQ2JIQzJtZVhnODI4cm00Z2d6YmdVSHZzUzB5M0VyNFMw0gGcAUFVX3lxTFB2NURJd1Q0WDZEd0xuVzNRMWRwS2V1Mk5LUFBoLUo5SW02UWJnRWtpU3pKZXNJYkpWODZfV04xMC1TUks3aTFJanl6dUNLREJUOUhLTDNBRExqNVU5Y0tXWVg0ZWhBWXZHeGNtSGl1cXMtLU1ybENPejZwMVhDRHc5bEpwUXBNYm1SQmV0b0Z4b1A3cVVkZXFWWjRDeA?oc=5"
         }
       ],
       "price": 1330000.0,
@@ -570,28 +570,28 @@
       "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE5aelJZeTVaYWdjUjVRS01HVThQbGM1S0VReHBPVUZvcmRjVDJNS3Nva0FLYnV4dGdaand3QmsyU0c1bFJFd1h0elZmUExLQU5Xd0gydER4UVFvLXNLQTBlWTB2eDU4NFFXUG0xaQ?oc=5"
     },
     {
-      "time": "2026-10-15T08:45:36+09:00",
-      "title": "삼성전자·SK하이닉스, AI 반도체 주도권 노린다..'반도체대전' 첨단솔루션 공개",
-      "source": "한국정경신문",
-      "link": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE1ZZVhKNzhMa1daUHZkTWhPcGN3WlpYTEZ1dkdvUGRXcGhTMW9QYVdKdjQ4bWZNeEN6UmtyRVltNVVwNHVjM242bnFsVDVYLTEwcnc?oc=5"
+      "time": "2026-10-15T08:00:00+09:00",
+      "title": "SK하이닉스 \"데이터 이동 병목, 3D D램·HBF로 해결\" [1분 브리프]",
+      "source": "아시아경제",
+      "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTFB5cmhYMU9DZTVsSG9IQmpXb0NyX0xMbGo5RUlWbDdlcWxOckdWeEFMX2lzNlJNdm5FdXhyMEc3U1RoX0g0QktFUklaYXRTU2JfanRzbkdmZnZHWGVGOHFiTg?oc=5"
     },
     {
-      "time": "2026-10-15T00:30:00+09:00",
-      "title": "삼성전자-SK하이닉스, 7세대 HBM 선보이며 “中보다 기술 우위”",
-      "source": "동아일보",
-      "link": "https://news.google.com/rss/articles/CBMidkFVX3lxTE1nQkR4cWxqcFZWM2VuZUNScF9qYnFVckp4WTBTc3VnalpiNkw5ZzRmZGlxdnExWVM2bHZRdFpoN21PN2s5U0VwVGVpOVNRbnpzcGYySS1SQXJOem5Db1RSZGJZNTJuam83azh5YzFSdzl4UlF6Z3fSAWZBVV95cUxQS0RVZ0VaZzBkRnJBSGVSZ1hoV1JXcnVORmQ4aHVtc2oxLU9Pekk5MFpidmNVTDJnRm9zRlN6WFN1Sm1VM3BydjhkRDBHbng1QWo3RlhNcm8xeFRXR2d2SVRFbG8xM1E?oc=5"
+      "time": "2026-10-15T08:53:00+09:00",
+      "title": "[특징주] 美 반도체주 급락 여파…프리마켓서 삼성전자 6%·SK하이닉스 7%대↓",
+      "source": "뉴스핌",
+      "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE5XV3ZmR1pSQXQ4NGdaeFUzMTFGQ0JFY19vQlpkZ1pvUzNhRjZOdUV6Z2U5R2FHRGNfei1iWEJTRlJrQ1VWUlJmMkVHdFMtd0k4NEhPOEI2VlNhdWtn?oc=5"
     },
     {
-      "time": "2026-10-15T06:46:35+09:00",
-      "title": "최태원 SK그룹 회장, 미국 앤디 김 상원의원 만나 반도체 등 한미 경제협력 논의...유정준 SK하이닉스 부회장 배석",
-      "source": "녹색경제신문",
-      "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE5ablowdW9IZVd2VkFTb1NrWmgxellZaDhVTDhybFdiY3ZGLWJscXhURDBRdlZGTlBrbmFiYnJjNFJhMU0yNGcyOGU5U1NDVm12UFNzb2kwamZRenE3b0NwanB6VzFTZXlh?oc=5"
+      "time": "2026-10-15T07:00:02+09:00",
+      "title": "“삼성전자·SK하이닉스 지금이 저점 잡을 때… 용기 내볼 시점”",
+      "source": "주간동아",
+      "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE9OZ1h2OC1zSUhJX1lTM3hfX2JXSTFSNG55emV5ZkE2UUlxVnY3UEpIV2VHNWxoYThLeTRhRWpHc3hfQUxIT2h1WlRDSzRsRm45NHZzYnBYVGVycGpwdVBPRXMxaUZmS2JU?oc=5"
     },
     {
-      "time": "2026-10-15T07:05:00+09:00",
-      "title": "[국장 방향 예측] 코스피 2.98% ↓ SK하이닉스 3.75% ↓",
-      "source": "디지털애셋",
-      "link": "https://news.google.com/rss/articles/CBMickFVX3lxTE10cjZkU295WE41TF9GN3NIcFBHZXlVazRzQUp4WGNBMURNS3g2aFdsclh3OU9SY1Jwd1JwYTg2WnJFaFpwNjZhQndVbFZxSFdTLUY2WXFCdzdRUk80eWFETmlhNi1wbzZhbXlQZFgxZV9kdw?oc=5"
+      "time": "2026-10-15T08:44:22+09:00",
+      "title": "삼전닉스 프리마켓서 동반 급락…SK하이닉스 시총 1000조 원 하회",
+      "source": "부산일보",
+      "link": "https://news.google.com/rss/articles/CBMifEFVX3lxTE4xSXJMb2tyODJDRVd2MjRXTk4yUTBwYVBKT3c4QkQxVWRWVUFhX2daQl83TlFkYXJQWnFVbms3eDMySk9EWi13cWNWVnhtX2h6S1gzQmpRZWNzWFJsWmZieUhWTnBlMWRuMEJoN0J1WDRuYzZmUW9veC1LY1o?oc=5"
     }
   ],
   "top_news": [
@@ -614,22 +614,22 @@
       "link": "https://news.google.com/rss/articles/CBMiUEFVX3lxTFBTdW9yNGxpUjhSeEVIdm5CbVUxSWpGNXVRTTMzWGZ5YjlCRS1oa21FQUZiRERPYTJkZFV5OEtJU0hEZ216SUdWR3gyZkJVZ0kt?oc=5"
     },
     {
-      "time": "2026-10-15T13:35:35+09:00",
-      "title": "SK하이닉스 주가 11% 급락···미 CPI 강세·연준 금리인상 전망·AI 자금조달 우려 영향",
-      "source": "Benzinga",
-      "link": "https://news.google.com/rss/articles/CBMiwAJBVV95cUxPeEJPZFlvUERYY1pjdVkwdFlYckVPS0dIQ3ZDd3dGYm5vQ0pPcjRKRlFQb0txbVZYV3N4WHMyaS1UcDc5NFkxQ3AyWW03M0V1aDFqLUVybzdLU2hfQWk0NlpqYkp6NDhFTURQdHhIamFMS0FJRkItYXU3d2U3NllRUnhHVF9qdlJ1MW1pYk5PbUQtUWhvS2lMTWs1djVxUFZJdUl1VE55VnFzRjVjMGZnWld5a3VrLU9RZGlWMThJVkxIZUdEaEJGeVpMWUZkU2hJWVZOTkZpR1Y5STV0dTlWdjlqbTBtQlY5Z0YxWHNkblNDRzZPM2l3YlFWZTlZRnB4MlZ6QXR1Vnd6SlBFai13S3RRQkh1S0JIazNONTQtbThWR2xDRkZWTnItY0pKb3VNdzVhbVJ5VTNCaGMwV2VGVw?oc=5"
-    },
-    {
       "time": "2026-10-15T14:37:09+09:00",
       "title": "AI 본토에 확산하는 '투자 과열론', 삼성전자·SK하이닉스 메모리 수익성 여파 촉각",
       "source": "비즈니스포스트",
       "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTE5xNm94Zng4cFI5YkZsX0Nmd0lCa19GZ016QkhsUHplTlRjZG4xbUY2azdXQ1M0UjlKb0VtdTZ2Q1dVRzJOenBveDVnWEowblJCbXJVM3FmLW5pSjB2Tmk3ZzBzX2YtRVFDV2FaVDNTSEN1QW8?oc=5"
     },
     {
-      "time": "2026-10-15T08:45:36+09:00",
-      "title": "삼성전자·SK하이닉스, AI 반도체 주도권 노린다..'반도체대전' 첨단솔루션 공개",
-      "source": "한국정경신문",
-      "link": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE1ZZVhKNzhMa1daUHZkTWhPcGN3WlpYTEZ1dkdvUGRXcGhTMW9QYVdKdjQ4bWZNeEN6UmtyRVltNVVwNHVjM242bnFsVDVYLTEwcnc?oc=5"
+      "time": "2026-10-15T16:44:58+09:00",
+      "title": "TSMC \"반도체 수요 둔화 징후 전혀 없다\"…AI 투자 우려 반박[종합]",
+      "source": "아이뉴스24",
+      "link": "https://news.google.com/rss/articles/CBMiS0FVX3lxTE9YYnNsdmlNTjVWc0pOeWpIeFBOSkhfMjgyRnYxMFJXUHF1aW94VTY1VENab3AxQlBOMzdaUmVWek9JanoxUkJmMTJFZw?oc=5"
+    },
+    {
+      "time": "2026-10-15T10:32:23+09:00",
+      "title": "'AI 수익성 논란 재부각' 코스피 급락 CPI 부담까지…SK하이닉스 11%↓",
+      "source": "중소기업신문",
+      "link": "https://news.google.com/rss/articles/CBMibkFVX3lxTE9RWUktM0FUMzAwaDRPeHRrYUoxU1pMbXNMWkdGR0o4My1mMVJRVFROWVV2NmJER0J1eWRKRFREdHZIcktUQjFydTdLUW9TU2syTTVQSVZuUFRpazZfS2t3WWZzaEZwYVhKdk1QdkNR?oc=5"
     }
   ],
   "disclosures": [],
@@ -649,9 +649,9 @@
     "steady": 15,
     "upper": 2,
     "lower": 0,
-    "individual": 13390.0,
-    "foreign": -36694.0,
-    "institution": 16876.0,
+    "individual": 14428.0,
+    "foreign": -37584.0,
+    "institution": 16727.0,
     "prev_close": 6008.81,
     "open": 5673.01,
     "high": 5751.45,

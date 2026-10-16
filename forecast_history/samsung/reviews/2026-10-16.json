@@ -3,7 +3,7 @@
   "name": "삼성전자",
   "peer_name": "SK하이닉스",
   "session_date": "2026-10-16",
-  "generated_at": "2026-10-16 17:32 KST",
+  "generated_at": "2026-10-16 21:22 KST",
   "summary": {
     "prev_close": 210000.0,
     "open": 215000.0,
@@ -15,11 +15,11 @@
     "c2c": 0.026190476190476097,
     "high_vs_open": 0.03488372093023262,
     "low_vs_open": -0.020930232558139528,
-    "volume": 19303733.0,
-    "volume_ratio": 1.0692520346458514,
+    "volume": 20296806.0,
+    "volume_ratio": 1.1242592876886623,
     "kospi_c2c": 0.020494252197552187,
     "peer_c2c": 0.007923930269413626,
-    "usdkrw_chg": -0.005995467535183985,
+    "usdkrw_chg": -0.005823665882698226,
     "us_nights": 1,
     "sox_ret": -0.008829730196187935,
     "nasdaq_ret": 0.000755263742679313,
@@ -115,7 +115,15 @@
         "purpose": "임직원 주식보상",
         "rcept_no": "20260821000616"
       }
-    ]
+    ],
+    "foreign_pressure": {
+      "state": "selling_intensified",
+      "previous_ratio": -0.06065998439112198,
+      "recent_ratio": -0.12749592674386073,
+      "previous_daily_net": -919735.2,
+      "recent_daily_net": -3064984.0
+    },
+    "buyback_transition": null
   },
   "classification": {
     "labels": [
@@ -141,10 +149,16 @@
       "score": 6.205926145789338,
       "news": [
         {
+          "time": "2026-10-16T08:06:01+09:00",
+          "title": "\"삼성전자 제발 10만원까지 빠져라\"…주가 하락 반기는 익명 글에 투자자들 '부글부글'",
+          "source": "아시아경제",
+          "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTFBZY0NNVWxSY3lBclp5N1lkejFrWUxCbjN1Yl9INGd6emNNemF5MkZWYVNWTWpMYm8zQnpmM0NlNFRsc0lNaURBVGtSNEs4ZzhNMVhsRjdsREIybXZtam5JMA?oc=5"
+        },
+        {
           "time": "2026-10-16T08:25:48+09:00",
           "title": "KB증권 \"삼성전자·SK하이닉스 급락 과도…실적은 오히려 개선\"",
           "source": "연합뉴스",
-          "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTFBWbUJSNGFCZ1U3UF9FVlRaZVRvYkpVdGtzdFhTSGg5Q1ZYQmM2aWFCdXNMVnc1aTZGUjgwLUd4RjNMUVRVSGpxejl4X3d5bWRGOTMxMFluMDU5WkxFMU9aWNIBYEFVX3lxTFBWbUJSNGFCZ1U3UF9FVlRaZVRvYkpVdGtzdFhTSGg5Q1ZYQmM2aWFCdXNMVnc1aTZGUjgwLUd4RjNMUVRVSGpxejl4X3d5bWRGOTMxMFluMDU5WkxFMU9aWA?oc=5"
+          "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTFBHVktWSjVJemdPQXZUQTFzbXhkX0JfZkU5T0Z3bS1GSWRJdWVxUDlZMnpVcmVhSWJpdXJTQkZURlVkU3ZtVzJsOC1RYzJ0S2g3dXB6UGxod3k3dUnSAWBBVV95cUxQVm1CUjRhQmdVN1BfRVZUWmVUb2JKVXRrc3RYU0hoOUNWWEJjNmlhQnVzTFZ3NWk2RlI4MC1HeEYzTFFUVUhqcXo5eF93eW1kRjkzMTBZbjA1OVpMRTFPWlg?oc=5"
         },
         {
           "time": "2026-10-16T08:58:42+09:00",
@@ -163,12 +177,6 @@
           "title": "'폭락' 삼성전자·SK하이닉스, 프리마켓서 4% 반등",
           "source": "뉴스1",
           "link": "https://news.google.com/rss/articles/CBMiX0FVX3lxTE9ERnpsbzlMRlZMNE4xQV84YUl3SmFXaUNwcENic04xTkR6T1ktNzVhaDdRUkhuSktyRGhjYmk4OG1nMWExSmo4LUNYUjVpZVpMMlRUTTl5Nk9qZDIwY2lj?oc=5"
-        },
-        {
-          "time": "2026-10-16T08:27:46+09:00",
-          "title": "삼성전자 제품 3종, 美 타임지 ‘2026 최고의 발명품’ 선정",
-          "source": "한국NGO신문",
-          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE5oUHpkTGJma2g4V3lKQmc2MzQ4X2ZJX2ZqNnV1WExhMGVucnhXS0k5SUVWQnpZbUlPYWpBczlXRTh4TGNUOThodTV0VzFWRHNGTEpGYU1vTHlGWTVFemVOZ0piYUh5Z0lu?oc=5"
         }
       ]
     },
@@ -183,10 +191,16 @@
       "score": 4.9053431844009605,
       "news": [
         {
+          "time": "2026-10-16T08:06:01+09:00",
+          "title": "\"삼성전자 제발 10만원까지 빠져라\"…주가 하락 반기는 익명 글에 투자자들 '부글부글'",
+          "source": "아시아경제",
+          "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTFBZY0NNVWxSY3lBclp5N1lkejFrWUxCbjN1Yl9INGd6emNNemF5MkZWYVNWTWpMYm8zQnpmM0NlNFRsc0lNaURBVGtSNEs4ZzhNMVhsRjdsREIybXZtam5JMA?oc=5"
+        },
+        {
           "time": "2026-10-16T08:25:48+09:00",
           "title": "KB증권 \"삼성전자·SK하이닉스 급락 과도…실적은 오히려 개선\"",
           "source": "연합뉴스",
-          "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTFBWbUJSNGFCZ1U3UF9FVlRaZVRvYkpVdGtzdFhTSGg5Q1ZYQmM2aWFCdXNMVnc1aTZGUjgwLUd4RjNMUVRVSGpxejl4X3d5bWRGOTMxMFluMDU5WkxFMU9aWNIBYEFVX3lxTFBWbUJSNGFCZ1U3UF9FVlRaZVRvYkpVdGtzdFhTSGg5Q1ZYQmM2aWFCdXNMVnc1aTZGUjgwLUd4RjNMUVRVSGpxejl4X3d5bWRGOTMxMFluMDU5WkxFMU9aWA?oc=5"
+          "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTFBHVktWSjVJemdPQXZUQTFzbXhkX0JfZkU5T0Z3bS1GSWRJdWVxUDlZMnpVcmVhSWJpdXJTQkZURlVkU3ZtVzJsOC1RYzJ0S2g3dXB6UGxod3k3dUnSAWBBVV95cUxQVm1CUjRhQmdVN1BfRVZUWmVUb2JKVXRrc3RYU0hoOUNWWEJjNmlhQnVzTFZ3NWk2RlI4MC1HeEYzTFFUVUhqcXo5eF93eW1kRjkzMTBZbjA1OVpMRTFPWlg?oc=5"
         },
         {
           "time": "2026-10-16T08:58:42+09:00",
@@ -205,12 +219,6 @@
           "title": "'폭락' 삼성전자·SK하이닉스, 프리마켓서 4% 반등",
           "source": "뉴스1",
           "link": "https://news.google.com/rss/articles/CBMiX0FVX3lxTE9ERnpsbzlMRlZMNE4xQV84YUl3SmFXaUNwcENic04xTkR6T1ktNzVhaDdRUkhuSktyRGhjYmk4OG1nMWExSmo4LUNYUjVpZVpMMlRUTTl5Nk9qZDIwY2lj?oc=5"
-        },
-        {
-          "time": "2026-10-16T08:27:46+09:00",
-          "title": "삼성전자 제품 3종, 美 타임지 ‘2026 최고의 발명품’ 선정",
-          "source": "한국NGO신문",
-          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE5oUHpkTGJma2g4V3lKQmc2MzQ4X2ZJX2ZqNnV1WExhMGVucnhXS0k5SUVWQnpZbUlPYWpBczlXRTh4TGNUOThodTV0VzFWRHNGTEpGYU1vTHlGWTVFemVOZ0piYUh5Z0lu?oc=5"
         }
       ]
     }
@@ -600,10 +608,16 @@
       "score": 6.205926145789338,
       "news": [
         {
+          "time": "2026-10-16T08:06:01+09:00",
+          "title": "\"삼성전자 제발 10만원까지 빠져라\"…주가 하락 반기는 익명 글에 투자자들 '부글부글'",
+          "source": "아시아경제",
+          "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTFBZY0NNVWxSY3lBclp5N1lkejFrWUxCbjN1Yl9INGd6emNNemF5MkZWYVNWTWpMYm8zQnpmM0NlNFRsc0lNaURBVGtSNEs4ZzhNMVhsRjdsREIybXZtam5JMA?oc=5"
+        },
+        {
           "time": "2026-10-16T08:25:48+09:00",
           "title": "KB증권 \"삼성전자·SK하이닉스 급락 과도…실적은 오히려 개선\"",
           "source": "연합뉴스",
-          "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTFBWbUJSNGFCZ1U3UF9FVlRaZVRvYkpVdGtzdFhTSGg5Q1ZYQmM2aWFCdXNMVnc1aTZGUjgwLUd4RjNMUVRVSGpxejl4X3d5bWRGOTMxMFluMDU5WkxFMU9aWNIBYEFVX3lxTFBWbUJSNGFCZ1U3UF9FVlRaZVRvYkpVdGtzdFhTSGg5Q1ZYQmM2aWFCdXNMVnc1aTZGUjgwLUd4RjNMUVRVSGpxejl4X3d5bWRGOTMxMFluMDU5WkxFMU9aWA?oc=5"
+          "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTFBHVktWSjVJemdPQXZUQTFzbXhkX0JfZkU5T0Z3bS1GSWRJdWVxUDlZMnpVcmVhSWJpdXJTQkZURlVkU3ZtVzJsOC1RYzJ0S2g3dXB6UGxod3k3dUnSAWBBVV95cUxQVm1CUjRhQmdVN1BfRVZUWmVUb2JKVXRrc3RYU0hoOUNWWEJjNmlhQnVzTFZ3NWk2RlI4MC1HeEYzTFFUVUhqcXo5eF93eW1kRjkzMTBZbjA1OVpMRTFPWlg?oc=5"
         },
         {
           "time": "2026-10-16T08:58:42+09:00",
@@ -622,12 +636,6 @@
           "title": "'폭락' 삼성전자·SK하이닉스, 프리마켓서 4% 반등",
           "source": "뉴스1",
           "link": "https://news.google.com/rss/articles/CBMiX0FVX3lxTE9ERnpsbzlMRlZMNE4xQV84YUl3SmFXaUNwcENic04xTkR6T1ktNzVhaDdRUkhuSktyRGhjYmk4OG1nMWExSmo4LUNYUjVpZVpMMlRUTTl5Nk9qZDIwY2lj?oc=5"
-        },
-        {
-          "time": "2026-10-16T08:27:46+09:00",
-          "title": "삼성전자 제품 3종, 美 타임지 ‘2026 최고의 발명품’ 선정",
-          "source": "한국NGO신문",
-          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE5oUHpkTGJma2g4V3lKQmc2MzQ4X2ZJX2ZqNnV1WExhMGVucnhXS0k5SUVWQnpZbUlPYWpBczlXRTh4TGNUOThodTV0VzFWRHNGTEpGYU1vTHlGWTVFemVOZ0piYUh5Z0lu?oc=5"
         }
       ],
       "price": 213000.0,
@@ -644,10 +652,16 @@
       "score": 4.9053431844009605,
       "news": [
         {
+          "time": "2026-10-16T08:06:01+09:00",
+          "title": "\"삼성전자 제발 10만원까지 빠져라\"…주가 하락 반기는 익명 글에 투자자들 '부글부글'",
+          "source": "아시아경제",
+          "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTFBZY0NNVWxSY3lBclp5N1lkejFrWUxCbjN1Yl9INGd6emNNemF5MkZWYVNWTWpMYm8zQnpmM0NlNFRsc0lNaURBVGtSNEs4ZzhNMVhsRjdsREIybXZtam5JMA?oc=5"
+        },
+        {
           "time": "2026-10-16T08:25:48+09:00",
           "title": "KB증권 \"삼성전자·SK하이닉스 급락 과도…실적은 오히려 개선\"",
           "source": "연합뉴스",
-          "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTFBWbUJSNGFCZ1U3UF9FVlRaZVRvYkpVdGtzdFhTSGg5Q1ZYQmM2aWFCdXNMVnc1aTZGUjgwLUd4RjNMUVRVSGpxejl4X3d5bWRGOTMxMFluMDU5WkxFMU9aWNIBYEFVX3lxTFBWbUJSNGFCZ1U3UF9FVlRaZVRvYkpVdGtzdFhTSGg5Q1ZYQmM2aWFCdXNMVnc1aTZGUjgwLUd4RjNMUVRVSGpxejl4X3d5bWRGOTMxMFluMDU5WkxFMU9aWA?oc=5"
+          "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTFBHVktWSjVJemdPQXZUQTFzbXhkX0JfZkU5T0Z3bS1GSWRJdWVxUDlZMnpVcmVhSWJpdXJTQkZURlVkU3ZtVzJsOC1RYzJ0S2g3dXB6UGxod3k3dUnSAWBBVV95cUxQVm1CUjRhQmdVN1BfRVZUWmVUb2JKVXRrc3RYU0hoOUNWWEJjNmlhQnVzTFZ3NWk2RlI4MC1HeEYzTFFUVUhqcXo5eF93eW1kRjkzMTBZbjA1OVpMRTFPWlg?oc=5"
         },
         {
           "time": "2026-10-16T08:58:42+09:00",
@@ -666,12 +680,6 @@
           "title": "'폭락' 삼성전자·SK하이닉스, 프리마켓서 4% 반등",
           "source": "뉴스1",
           "link": "https://news.google.com/rss/articles/CBMiX0FVX3lxTE9ERnpsbzlMRlZMNE4xQV84YUl3SmFXaUNwcENic04xTkR6T1ktNzVhaDdRUkhuSktyRGhjYmk4OG1nMWExSmo4LUNYUjVpZVpMMlRUTTl5Nk9qZDIwY2lj?oc=5"
-        },
-        {
-          "time": "2026-10-16T08:27:46+09:00",
-          "title": "삼성전자 제품 3종, 美 타임지 ‘2026 최고의 발명품’ 선정",
-          "source": "한국NGO신문",
-          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE5oUHpkTGJma2g4V3lKQmc2MzQ4X2ZJX2ZqNnV1WExhMGVucnhXS0k5SUVWQnpZbUlPYWpBczlXRTh4TGNUOThodTV0VzFWRHNGTEpGYU1vTHlGWTVFemVOZ0piYUh5Z0lu?oc=5"
         }
       ],
       "price": 211500.0,
@@ -680,10 +688,16 @@
   ],
   "overnight_news": [
     {
+      "time": "2026-10-16T08:06:01+09:00",
+      "title": "\"삼성전자 제발 10만원까지 빠져라\"…주가 하락 반기는 익명 글에 투자자들 '부글부글'",
+      "source": "아시아경제",
+      "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTFBZY0NNVWxSY3lBclp5N1lkejFrWUxCbjN1Yl9INGd6emNNemF5MkZWYVNWTWpMYm8zQnpmM0NlNFRsc0lNaURBVGtSNEs4ZzhNMVhsRjdsREIybXZtam5JMA?oc=5"
+    },
+    {
       "time": "2026-10-16T08:25:48+09:00",
       "title": "KB증권 \"삼성전자·SK하이닉스 급락 과도…실적은 오히려 개선\"",
       "source": "연합뉴스",
-      "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTFBWbUJSNGFCZ1U3UF9FVlRaZVRvYkpVdGtzdFhTSGg5Q1ZYQmM2aWFCdXNMVnc1aTZGUjgwLUd4RjNMUVRVSGpxejl4X3d5bWRGOTMxMFluMDU5WkxFMU9aWNIBYEFVX3lxTFBWbUJSNGFCZ1U3UF9FVlRaZVRvYkpVdGtzdFhTSGg5Q1ZYQmM2aWFCdXNMVnc1aTZGUjgwLUd4RjNMUVRVSGpxejl4X3d5bWRGOTMxMFluMDU5WkxFMU9aWA?oc=5"
+      "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTFBHVktWSjVJemdPQXZUQTFzbXhkX0JfZkU5T0Z3bS1GSWRJdWVxUDlZMnpVcmVhSWJpdXJTQkZURlVkU3ZtVzJsOC1RYzJ0S2g3dXB6UGxod3k3dUnSAWBBVV95cUxQVm1CUjRhQmdVN1BfRVZUWmVUb2JKVXRrc3RYU0hoOUNWWEJjNmlhQnVzTFZ3NWk2RlI4MC1HeEYzTFFUVUhqcXo5eF93eW1kRjkzMTBZbjA1OVpMRTFPWlg?oc=5"
     },
     {
       "time": "2026-10-16T08:58:42+09:00",
@@ -702,15 +716,15 @@
       "title": "\"AI에 일 맡겼더니, 뜻밖의 문제가…\" 삼성전자에 기회 왔다",
       "source": "한국경제",
       "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE5hQm01VmJHTUZTZVRkazdrRWJkS29mWDBYZURfRFFJbm5sUmFZSGJXVXdxZmRhOUhnX2pnRVE4UU11YkFPV1V2R0dLS2p1OURpeHppd25ZNllpdw?oc=5"
-    },
-    {
-      "time": "2026-10-16T08:18:06+09:00",
-      "title": "'폭락' 삼성전자·SK하이닉스, 프리마켓서 4% 반등",
-      "source": "뉴스1",
-      "link": "https://news.google.com/rss/articles/CBMiX0FVX3lxTE9ERnpsbzlMRlZMNE4xQV84YUl3SmFXaUNwcENic04xTkR6T1ktNzVhaDdRUkhuSktyRGhjYmk4OG1nMWExSmo4LUNYUjVpZVpMMlRUTTl5Nk9qZDIwY2lj?oc=5"
     }
   ],
   "top_news": [
+    {
+      "time": "2026-10-16T18:04:55+09:00",
+      "title": "TSMC 사상 최대 실적에도 코스피 7.57% 폭락…'검은 목요일' 부른 금리·AI 빚",
+      "source": "ISSUE ON (이슈온)",
+      "link": "https://news.google.com/rss/articles/CBMia0FVX3lxTE9reGk4clJpOTBNb2dTOUZWa2UtOVhYUTdlMUNzNDdRSklIekhWejhTVHcwcEE1d3ZhVl9iT1c1d2VWTXh4aHlYVGxIbERRTHhJQUptQjRsQl9LZlNqVmpKdWRxWGs2WG1YOFkw?oc=5"
+    },
     {
       "time": "2026-10-16T13:14:11+09:00",
       "title": "엔비디아, AI칩 전량 TSMC에...헛물 켠 삼성전자",
@@ -718,34 +732,28 @@
       "link": "https://news.google.com/rss/articles/CBMiZkFVX3lxTE0zSkFTTzk2eklLUk9DcXdEOUUzUWtHMXBaNXpRcE1hWmxGVkgwc2RueXJvRjA1VG0weS00VUk5RFhSUHNOTmI3MndsVjNVeFdESG5UaEJpQ2F4bUFQLTJsTTNPNC1sQdIBakFVX3lxTE9EdmpDNlRvTFN0VzlCREE1VTJyYkpJZU1FRExPZjhzVk52SnJYcmtsU2tmN3l2VUdCaUZUV1p2S0VoUV93LThucllLNzJTdW5fZFQxSHpLWUNUNG90bTNHcUxubkQxQmpZMHc?oc=5"
     },
     {
+      "time": "2026-10-16T16:01:42+09:00",
+      "title": "美도 AI·반도체 시총 1340조원 증발…금리·AI 투자·중국 3중고[마켓무버]",
+      "source": "서울경제",
+      "link": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE1SZXE1bElCeE1iN0RpWW5XYjhRWnJxVHFfZUhDRjV2bzFtanRpLXFfS005aGdxSnF4WllENDQyTXJhOW1vbGU0aXhrUTNDa0JJeVHSAVNBVV95cUxOTklCdkZJZ0Zsd2traW9FWVdfUHFoMEJrRlVudmxaM1U0cXpIdFVhNVcyajJuZEZGZW92bVpwRmJjTlYxS0hleGFLMUhCMEtDTVcwSQ?oc=5"
+    },
+    {
+      "time": "2026-10-16T08:06:01+09:00",
+      "title": "\"삼성전자 제발 10만원까지 빠져라\"…주가 하락 반기는 익명 글에 투자자들 '부글부글'",
+      "source": "아시아경제",
+      "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTFBZY0NNVWxSY3lBclp5N1lkejFrWUxCbjN1Yl9INGd6emNNemF5MkZWYVNWTWpMYm8zQnpmM0NlNFRsc0lNaURBVGtSNEs4ZzhNMVhsRjdsREIybXZtam5JMA?oc=5"
+    },
+    {
       "time": "2026-10-16T08:25:48+09:00",
       "title": "KB증권 \"삼성전자·SK하이닉스 급락 과도…실적은 오히려 개선\"",
       "source": "연합뉴스",
-      "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTFBWbUJSNGFCZ1U3UF9FVlRaZVRvYkpVdGtzdFhTSGg5Q1ZYQmM2aWFCdXNMVnc1aTZGUjgwLUd4RjNMUVRVSGpxejl4X3d5bWRGOTMxMFluMDU5WkxFMU9aWNIBYEFVX3lxTFBWbUJSNGFCZ1U3UF9FVlRaZVRvYkpVdGtzdFhTSGg5Q1ZYQmM2aWFCdXNMVnc1aTZGUjgwLUd4RjNMUVRVSGpxejl4X3d5bWRGOTMxMFluMDU5WkxFMU9aWA?oc=5"
+      "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTFBHVktWSjVJemdPQXZUQTFzbXhkX0JfZkU5T0Z3bS1GSWRJdWVxUDlZMnpVcmVhSWJpdXJTQkZURlVkU3ZtVzJsOC1RYzJ0S2g3dXB6UGxod3k3dUnSAWBBVV95cUxQVm1CUjRhQmdVN1BfRVZUWmVUb2JKVXRrc3RYU0hoOUNWWEJjNmlhQnVzTFZ3NWk2RlI4MC1HeEYzTFFUVUhqcXo5eF93eW1kRjkzMTBZbjA1OVpMRTFPWlg?oc=5"
     },
     {
       "time": "2026-10-16T08:58:42+09:00",
       "title": "삼성전자, 美 테일러 제2공장 내달 전격 착공…AI 반도체 생산기지 확대 속도",
       "source": "더구루",
       "link": "https://news.google.com/rss/articles/CBMiXkFVX3lxTE55ZlpyTDZndDBxY0dLWlJoWUMtQV9RUFBHSUhHZFhKQUhjc0w5aEZzZ0NtOEgtOTFTRlowNV96c2FZOU45MjJ1YUZyUWJNMnF1cTc3Y2daVUdzNmJ6clE?oc=5"
-    },
-    {
-      "time": "2026-10-16T11:49:28+09:00",
-      "title": "삼성전자 주가 장중 2%대 올라, 저가매수세 유입에 반도체주 강세",
-      "source": "비즈니스포스트",
-      "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTE5NZEp1eE50STBnWGxqU2Nkc2NqN2J5SlRMZUNBcUFid19HMnVfUmlSUzRWUFVMdGRTYTJsYkNEc3cyanBvbXVsU3hSOUJfRWI0SlVibkhQcHdLQ1BDZGVDSGxWWVM1UGtKV3huSzRZQlVoUmc?oc=5"
-    },
-    {
-      "time": "2026-10-16T15:07:04+09:00",
-      "title": "삼성전자, AI 가전 앞세워 해외시장 공략…실적 부진 돌파구 찾는다",
-      "source": "폴리뉴스 Polinews",
-      "link": "https://news.google.com/rss/articles/CBMibkFVX3lxTFBtZ084ay1kRHNPb2h4bUIwcnE1Y1RiV1hQNHBnWl9QbENxLXMtNEI1WVZmcGFQTTFsVjV1RTd3REdEb0RjRERWdWpQblh0cS1vLWgybEIzZ2JMX3Jub3pNOVBmSHlBSkc5WUZRWnNR?oc=5"
-    },
-    {
-      "time": "2026-10-16T16:39:14+09:00",
-      "title": "\"삼성전자 제발 10만원까지 빠져라\"…주가 하락 반기는 익명 글에 투자자들 '부글부글'",
-      "source": "아시아경제",
-      "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTFBZY0NNVWxSY3lBclp5N1lkejFrWUxCbjN1Yl9INGd6emNNemF5MkZWYVNWTWpMYm8zQnpmM0NlNFRsc0lNaURBVGtSNEs4ZzhNMVhsRjdsREIybXZtam5JMA?oc=5"
     }
   ],
   "disclosures": [
@@ -763,11 +771,79 @@
     }
   ],
   "disclosure_note": null,
-  "flows": null,
-  "flow_story": null,
+  "flows": "외국인 +906,438 / 기관 -1,447,523",
+  "flow_story": {
+    "direction": "up",
+    "c2c": 0.026190476190476097,
+    "actors": [
+      {
+        "key": "foreign_net",
+        "name": "외국인",
+        "shares": 906438.0,
+        "won": 195337389000.0,
+        "vs_usual": 0.35484475791404424
+      },
+      {
+        "key": "inst_net",
+        "name": "기관",
+        "shares": -1447523.0,
+        "won": -311941206500.0,
+        "vs_usual": 0.9777730223976715
+      },
+      {
+        "key": "indiv_net",
+        "name": "개인",
+        "shares": -40774.0,
+        "won": -8786797000.0,
+        "vs_usual": 0.012796401667166453
+      },
+      {
+        "key": "other_net",
+        "name": "기타 법인 등(추정)",
+        "shares": 581859.0,
+        "won": 125390614500.0,
+        "vs_usual": null
+      }
+    ],
+    "lead": {
+      "key": "foreign_net",
+      "name": "외국인",
+      "shares": 906438.0,
+      "won": 195337389000.0,
+      "vs_usual": 0.35484475791404424
+    },
+    "counter": {
+      "key": "inst_net",
+      "name": "기관",
+      "shares": -1447523.0,
+      "won": -311941206500.0,
+      "vs_usual": 0.9777730223976715
+    },
+    "all_one_side": false,
+    "observations": [
+      "전일까지 20거래일 고점: 종가 돌파 없음 · 종가 위치 -24.52%.",
+      "전일까지 60거래일 고점: 종가 돌파 없음 · 종가 위치 -25.17%.",
+      "같은 5거래일 수익률: 이 종목 -17.75%, SK하이닉스 -24.33% · 차이 +6.58%p.",
+      "같은 20거래일 수익률: 이 종목 -13.45%, SK하이닉스 -25.04% · 차이 +11.59%p.",
+      "같은 60거래일 수익률: 이 종목 -15.49%, SK하이닉스 -30.93% · 차이 +15.44%p.",
+      "외국인 순매도 지속·거래량 대비 강도 강화: 직전 5일 → 최근 5일 순매수/거래량 -6.07% → -12.75% (일평균 -919,735주 → -3,064,984주). 향후 상승을 뜻하는 신호는 아닙니다.",
+      "코스피도 +2.05% — 시장 전체가 같은 방향이었습니다.",
+      "SK하이닉스도 +0.79%였지만 이 종목이 더 크게 움직였습니다.",
+      "원/달러 -0.58%(원화 강세) — 외국인 매수와 같은 방향의 환율 움직임입니다.",
+      "전날 밤 SOX는 -0.88%로 반대 방향이어서 미국 반도체 흐름으로는 설명되지 않습니다.",
+      "직전 5거래일 -21.79% 내린 뒤의 매수 — 저가 매수와 맞는 모양입니다.",
+      "우리 장중(09:00~15:30) 나스닥100 선물 +0.44%, 이 종목 고점 이후 -0.18% · 미 10년물 국채 선물 +0.07%, 이 종목 고점 이후 +0.07% · 원/달러 -0.66%(원화 강세), 이 종목 고점 이후 -0.74%.",
+      "자사주 매입 기간 중(직접 취득 2026-08-24~2026-11-21, 14,999,999,992,000, DART 공시) — 회사 자신의 매수는 기타 법인으로 잡힙니다.",
+      "마감가가 장중 고가보다 -2.49% 아래 — 오른 폭을 장중에 꽤 반납했습니다.",
+      "기타 법인 등(추정) 순매수 +1,254억원 — 회사의 자사주 매입 기간이라 회사 매입과 맞는 모양입니다."
+    ],
+    "estimated_indiv": false,
+    "source_note": "출처 naver+cache · 장 마감 직후 잠정치라 저녁 확정치와 다를 수 있습니다 · KRX는 받지 못함(pykrx 미설치)"
+  },
   "flow_status": {
-    "state": "pending",
-    "detail": "최신 2026-10-15"
+    "state": "ok",
+    "detail": "naver+cache",
+    "krx_error": "pykrx 미설치"
   },
   "context": {},
   "market": {
@@ -778,9 +854,9 @@
     "steady": 22,
     "upper": 2,
     "lower": 0,
-    "individual": -5080.0,
-    "foreign": 3607.0,
-    "institution": -6812.0,
+    "individual": -5126.0,
+    "foreign": 3637.0,
+    "institution": -6815.0,
     "prev_close": 5554.22,
     "open": 5653.99,
     "high": 5809.94,

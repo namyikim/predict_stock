@@ -3,7 +3,7 @@
   "name": "SK하이닉스",
   "peer_name": "삼성전자",
   "session_date": "2026-10-16",
-  "generated_at": "2026-10-16 16:11 KST",
+  "generated_at": "2026-10-16 16:47 KST",
   "summary": {
     "prev_close": 1262000.0,
     "open": 1290000.0,
@@ -15,11 +15,11 @@
     "c2c": 0.007923930269413626,
     "high_vs_open": 0.027131782945736482,
     "low_vs_open": -0.033333333333333326,
-    "volume": 4705384.0,
-    "volume_ratio": 1.41018279272646,
+    "volume": 4720289.0,
+    "volume_ratio": 1.4146497553644908,
     "kospi_c2c": 0.020494252197552187,
     "peer_c2c": 0.026190476190476097,
-    "usdkrw_chg": -0.005711744169566879,
+    "usdkrw_chg": -0.005353284806581926,
     "us_nights": 1,
     "sox_ret": -0.008829730196187935,
     "nasdaq_ret": 0.000755263742679313,
@@ -167,10 +167,10 @@
           "link": "https://news.google.com/rss/articles/CBMia0FVX3lxTE1qb1pDM0ZudGtyV1VlNXdldUh1Y1pwa0d0SzYtU2pkV2VGQ2UtMUFSRWRvcnZKMUg0SjZEdHRULVdwNFZKc0JMRV92LXNZLTBSLXpqM1hBbk9RLWIwaEJseHdFMEZWUzN5dTMw?oc=5"
         },
         {
-          "time": "2026-10-16T10:39:20+09:00",
-          "title": "日, 美 반도체 팹에 대규모 투자…삼성·SK하이닉스 '예의주시'",
-          "source": "뉴시스",
-          "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE9CLXM0dVVRckp1eUJZTXBaSDlibC1objQyU2FKNE5Ha0IzODFKeENpV2o4U0VOYU1JaHJROGxwRUpueG95Q2R1eUpGWG5tcFhvNG1KMGl0SlJidTR0NHFBV9IBeEFVX3lxTE1QZ2x6emZWNUhUTWc2YVFPNGRUdE04Zmx3YVlUWUxaV3psNDEyd3FSeW85cVpDTmltY2EwNW5PWDZ1dFBKc1NyeFpDQ2hTNFFXc285N0lFN2tHUEZ0WXNDTTV1UlVnSW9hNlhwMWE0SDZ3UVB6RmRrZg?oc=5"
+          "time": "2026-10-16T10:37:34+09:00",
+          "title": "SK하이닉스, ‘메모리 중심 AI 랙’ 공개…CXL·HBF로 AI 병목 해법 제시",
+          "source": "라이센스뉴스",
+          "link": "https://news.google.com/rss/articles/CBMia0FVX3lxTE5SelU3UUtKYUlqWXdmNHdyRGZ3THZEd1poVkxnUm9OSm0xWVJlVFBMeDBGUUZDYVMwQjlkUWY3N29kMTYyUkVaVjlkSmFjeTg1cHVqVkdfa1hYN0xCN1R0bV9ybmdpVnlrSWMw?oc=5"
         }
       ]
     },
@@ -203,16 +203,16 @@
           "link": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE5jWHVWZ3pJOC1vTDJ5VzFxRi1VbFpVZjF0bXc2UVlTSzFIOThjNHp3VGxQYWFmbmpWdmFZX2pFZ0RhQWdnaFgweHRFRFBvQ0I3b0otQzM5b21LdnZuM2U0WHZ1bEtJbTg?oc=5"
         },
         {
-          "time": "2026-10-16T08:00:28+09:00",
-          "title": "[SK하이닉스 솔리다임 상장] 최대 '1500억달러' 가치…中 비중 줄이고 美 확대 현실화",
-          "source": "DealSite경제TV",
-          "link": "https://news.google.com/rss/articles/CBMiV0FVX3lxTE9EME1mNk1Id1llTFI4VThCaDA5NTZweDROdVFiSnQwbTlzc2xoWjNyUlBQZmp4NS1MOTlsTURvUDJRQXUyU21aOExja1Z5WTl5OUFacDdLWQ?oc=5"
-        },
-        {
           "time": "2026-10-16T08:18:06+09:00",
           "title": "'폭락' 삼성전자·SK하이닉스, 프리마켓서 4% 반등",
           "source": "뉴스1",
           "link": "https://news.google.com/rss/articles/CBMiX0FVX3lxTE9ERnpsbzlMRlZMNE4xQV84YUl3SmFXaUNwcENic04xTkR6T1ktNzVhaDdRUkhuSktyRGhjYmk4OG1nMWExSmo4LUNYUjVpZVpMMlRUTTl5Nk9qZDIwY2lj?oc=5"
+        },
+        {
+          "time": "2026-10-16T08:20:54+09:00",
+          "title": "구직자가 뽑은 관심기업 1위 SK하이닉스…현대차 2위",
+          "source": "매일경제 마켓",
+          "link": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE5hTEc1TmNqNDlLMW9xTkIyMGtNa2l2TkhoSTlBQnZibzNoWlFvNjNaZlhBRjMtMWlOSDFFZVFjNWFySjI1RnllYVBDd3FMODNOVGc?oc=5"
         }
       ]
     }
@@ -620,16 +620,16 @@
           "link": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE5jWHVWZ3pJOC1vTDJ5VzFxRi1VbFpVZjF0bXc2UVlTSzFIOThjNHp3VGxQYWFmbmpWdmFZX2pFZ0RhQWdnaFgweHRFRFBvQ0I3b0otQzM5b21LdnZuM2U0WHZ1bEtJbTg?oc=5"
         },
         {
-          "time": "2026-10-16T08:00:28+09:00",
-          "title": "[SK하이닉스 솔리다임 상장] 최대 '1500억달러' 가치…中 비중 줄이고 美 확대 현실화",
-          "source": "DealSite경제TV",
-          "link": "https://news.google.com/rss/articles/CBMiV0FVX3lxTE9EME1mNk1Id1llTFI4VThCaDA5NTZweDROdVFiSnQwbTlzc2xoWjNyUlBQZmp4NS1MOTlsTURvUDJRQXUyU21aOExja1Z5WTl5OUFacDdLWQ?oc=5"
-        },
-        {
           "time": "2026-10-16T08:18:06+09:00",
           "title": "'폭락' 삼성전자·SK하이닉스, 프리마켓서 4% 반등",
           "source": "뉴스1",
           "link": "https://news.google.com/rss/articles/CBMiX0FVX3lxTE9ERnpsbzlMRlZMNE4xQV84YUl3SmFXaUNwcENic04xTkR6T1ktNzVhaDdRUkhuSktyRGhjYmk4OG1nMWExSmo4LUNYUjVpZVpMMlRUTTl5Nk9qZDIwY2lj?oc=5"
+        },
+        {
+          "time": "2026-10-16T08:20:54+09:00",
+          "title": "구직자가 뽑은 관심기업 1위 SK하이닉스…현대차 2위",
+          "source": "매일경제 마켓",
+          "link": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE5hTEc1TmNqNDlLMW9xTkIyMGtNa2l2TkhoSTlBQnZibzNoWlFvNjNaZlhBRjMtMWlOSDFFZVFjNWFySjI1RnllYVBDd3FMODNOVGc?oc=5"
         }
       ],
       "price": 1255000.0,
@@ -670,10 +670,10 @@
           "link": "https://news.google.com/rss/articles/CBMia0FVX3lxTE1qb1pDM0ZudGtyV1VlNXdldUh1Y1pwa0d0SzYtU2pkV2VGQ2UtMUFSRWRvcnZKMUg0SjZEdHRULVdwNFZKc0JMRV92LXNZLTBSLXpqM1hBbk9RLWIwaEJseHdFMEZWUzN5dTMw?oc=5"
         },
         {
-          "time": "2026-10-16T10:39:20+09:00",
-          "title": "日, 美 반도체 팹에 대규모 투자…삼성·SK하이닉스 '예의주시'",
-          "source": "뉴시스",
-          "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE9CLXM0dVVRckp1eUJZTXBaSDlibC1objQyU2FKNE5Ha0IzODFKeENpV2o4U0VOYU1JaHJROGxwRUpueG95Q2R1eUpGWG5tcFhvNG1KMGl0SlJidTR0NHFBV9IBeEFVX3lxTE1QZ2x6emZWNUhUTWc2YVFPNGRUdE04Zmx3YVlUWUxaV3psNDEyd3FSeW85cVpDTmltY2EwNW5PWDZ1dFBKc1NyeFpDQ2hTNFFXc285N0lFN2tHUEZ0WXNDTTV1UlVnSW9hNlhwMWE0SDZ3UVB6RmRrZg?oc=5"
+          "time": "2026-10-16T10:37:34+09:00",
+          "title": "SK하이닉스, ‘메모리 중심 AI 랙’ 공개…CXL·HBF로 AI 병목 해법 제시",
+          "source": "라이센스뉴스",
+          "link": "https://news.google.com/rss/articles/CBMia0FVX3lxTE5SelU3UUtKYUlqWXdmNHdyRGZ3THZEd1poVkxnUm9OSm0xWVJlVFBMeDBGUUZDYVMwQjlkUWY3N29kMTYyUkVaVjlkSmFjeTg1cHVqVkdfa1hYN0xCN1R0bV9ybmdpVnlrSWMw?oc=5"
         }
       ],
       "price": 1299000.0,
@@ -688,28 +688,28 @@
       "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTFBWbUJSNGFCZ1U3UF9FVlRaZVRvYkpVdGtzdFhTSGg5Q1ZYQmM2aWFCdXNMVnc1aTZGUjgwLUd4RjNMUVRVSGpxejl4X3d5bWRGOTMxMFluMDU5WkxFMU9aWNIBYEFVX3lxTFBWbUJSNGFCZ1U3UF9FVlRaZVRvYkpVdGtzdFhTSGg5Q1ZYQmM2aWFCdXNMVnc1aTZGUjgwLUd4RjNMUVRVSGpxejl4X3d5bWRGOTMxMFluMDU5WkxFMU9aWA?oc=5"
     },
     {
-      "time": "2026-10-16T06:27:00+09:00",
-      "title": "범대위, SK하이닉스 공문 공개 파문...“범대위도 안성시도 모르는 상생협약? SK와 안성시는 진상 밝혀라!”",
-      "source": "시사안성",
-      "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE54SUpzR2xLb0Zzb3pwd3dTNmdPVUh0bjJGLWtlYmZ4U3Q5eEpXTDh4UDJ0aHVFb3FhY3YwNmxLMUhuUThUM0d1UktGUXRHMEgxc0FDOFFtblBMMW54OXlaMU5oaHBVYjgwWkU0cw?oc=5"
-    },
-    {
-      "time": "2026-10-16T07:36:00+09:00",
-      "title": "취준생이 주목한 기업은? SK하이닉스 1위",
-      "source": "한경매거진&북",
-      "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE9EdEdyMUN0cDBGdzVicTBfaU9xb1hBQ2VMejZSLTJKN1VRbjBic010MzFZZEdYakpqRmV4Yl9nNzdjNEtFSndZa1kzbFRyV0ZtQ2ZaaF9HZXNZRHlwS3BlR2Y4Zi1Fak13SllzRg?oc=5"
-    },
-    {
-      "time": "2026-10-16T08:00:28+09:00",
-      "title": "[SK하이닉스 솔리다임 상장] 최대 '1500억달러' 가치…中 비중 줄이고 美 확대 현실화",
-      "source": "DealSite경제TV",
-      "link": "https://news.google.com/rss/articles/CBMiV0FVX3lxTE9EME1mNk1Id1llTFI4VThCaDA5NTZweDROdVFiSnQwbTlzc2xoWjNyUlBQZmp4NS1MOTlsTURvUDJRQXUyU21aOExja1Z5WTl5OUFacDdLWQ?oc=5"
-    },
-    {
       "time": "2026-10-16T08:18:06+09:00",
       "title": "'폭락' 삼성전자·SK하이닉스, 프리마켓서 4% 반등",
       "source": "뉴스1",
       "link": "https://news.google.com/rss/articles/CBMiX0FVX3lxTE9ERnpsbzlMRlZMNE4xQV84YUl3SmFXaUNwcENic04xTkR6T1ktNzVhaDdRUkhuSktyRGhjYmk4OG1nMWExSmo4LUNYUjVpZVpMMlRUTTl5Nk9qZDIwY2lj?oc=5"
+    },
+    {
+      "time": "2026-10-16T08:20:54+09:00",
+      "title": "구직자가 뽑은 관심기업 1위 SK하이닉스…현대차 2위",
+      "source": "매일경제 마켓",
+      "link": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE5hTEc1TmNqNDlLMW9xTkIyMGtNa2l2TkhoSTlBQnZibzNoWlFvNjNaZlhBRjMtMWlOSDFFZVFjNWFySjI1RnllYVBDd3FMODNOVGc?oc=5"
+    },
+    {
+      "time": "2026-10-16T08:33:00+09:00",
+      "title": "구직자 관심기업 1위 SK하이닉스, 현대차 2위",
+      "source": "연합뉴스TV",
+      "link": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE50dnEyWXZzNlBQNDZ0Z2lLY0J2dG1HbUtMeWo3TFhqTkNUY2tBSEJ0OHZ0X1ZnbU9sbFh4Vnh3allIajhpaHV5eTZhZnZvMmtNVlJGRGJPTUNoTC1iU2FDWFZ2WmRUdnM?oc=5"
+    },
+    {
+      "time": "2026-10-16T08:46:54+09:00",
+      "title": "구직자 관심기업 1위 SK하이닉스…현대차 2위·인천공항 3위",
+      "source": "서울경제TV",
+      "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE9CUXFib3VFcHpnTFpXLU93RTNaTWNGbnFCaHUtQkJhTWZ5dURxYmpUM3FsV29jQTRzeGZSVlpDYU1uYU1SVWNjQ1RaUFpvV2hHOFpBbE1WVFpPLV9KRFExa1hzNEw?oc=5"
     }
   ],
   "top_news": [
@@ -744,10 +744,10 @@
       "link": "https://news.google.com/rss/articles/CBMia0FVX3lxTE1qb1pDM0ZudGtyV1VlNXdldUh1Y1pwa0d0SzYtU2pkV2VGQ2UtMUFSRWRvcnZKMUg0SjZEdHRULVdwNFZKc0JMRV92LXNZLTBSLXpqM1hBbk9RLWIwaEJseHdFMEZWUzN5dTMw?oc=5"
     },
     {
-      "time": "2026-10-16T10:39:20+09:00",
-      "title": "日, 美 반도체 팹에 대규모 투자…삼성·SK하이닉스 '예의주시'",
-      "source": "뉴시스",
-      "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE9CLXM0dVVRckp1eUJZTXBaSDlibC1objQyU2FKNE5Ha0IzODFKeENpV2o4U0VOYU1JaHJROGxwRUpueG95Q2R1eUpGWG5tcFhvNG1KMGl0SlJidTR0NHFBV9IBeEFVX3lxTE1QZ2x6emZWNUhUTWc2YVFPNGRUdE04Zmx3YVlUWUxaV3psNDEyd3FSeW85cVpDTmltY2EwNW5PWDZ1dFBKc1NyeFpDQ2hTNFFXc285N0lFN2tHUEZ0WXNDTTV1UlVnSW9hNlhwMWE0SDZ3UVB6RmRrZg?oc=5"
+      "time": "2026-10-16T10:37:34+09:00",
+      "title": "SK하이닉스, ‘메모리 중심 AI 랙’ 공개…CXL·HBF로 AI 병목 해법 제시",
+      "source": "라이센스뉴스",
+      "link": "https://news.google.com/rss/articles/CBMia0FVX3lxTE5SelU3UUtKYUlqWXdmNHdyRGZ3THZEd1poVkxnUm9OSm0xWVJlVFBMeDBGUUZDYVMwQjlkUWY3N29kMTYyUkVaVjlkSmFjeTg1cHVqVkdfa1hYN0xCN1R0bV9ybmdpVnlrSWMw?oc=5"
     }
   ],
   "disclosures": [],
@@ -767,9 +767,9 @@
     "steady": 22,
     "upper": 2,
     "lower": 0,
-    "individual": -4913.0,
-    "foreign": 3455.0,
-    "institution": -6813.0,
+    "individual": -5131.0,
+    "foreign": 3663.0,
+    "institution": -6812.0,
     "prev_close": 5554.22,
     "open": 5653.99,
     "high": 5809.94,

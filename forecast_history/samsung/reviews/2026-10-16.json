@@ -3,7 +3,7 @@
   "name": "삼성전자",
   "peer_name": "SK하이닉스",
   "session_date": "2026-10-16",
-  "generated_at": "2026-10-16 16:47 KST",
+  "generated_at": "2026-10-16 17:32 KST",
   "summary": {
     "prev_close": 210000.0,
     "open": 215000.0,
@@ -15,11 +15,11 @@
     "c2c": 0.026190476190476097,
     "high_vs_open": 0.03488372093023262,
     "low_vs_open": -0.020930232558139528,
-    "volume": 19209752.0,
-    "volume_ratio": 1.0640463381379246,
+    "volume": 19303733.0,
+    "volume_ratio": 1.0692520346458514,
     "kospi_c2c": 0.020494252197552187,
     "peer_c2c": 0.007923930269413626,
-    "usdkrw_chg": -0.005353284806581926,
+    "usdkrw_chg": -0.005995467535183985,
     "us_nights": 1,
     "sox_ret": -0.008829730196187935,
     "nasdaq_ret": 0.000755263742679313,
@@ -159,16 +159,16 @@
           "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE5hQm01VmJHTUZTZVRkazdrRWJkS29mWDBYZURfRFFJbm5sUmFZSGJXVXdxZmRhOUhnX2pnRVE4UU11YkFPV1V2R0dLS2p1OURpeHppd25ZNllpdw?oc=5"
         },
         {
-          "time": "2026-10-16T08:29:37+09:00",
-          "title": "\"주가 더 떨어져라\"… 삼성전자 일부 직원 글에 주주들 분통",
-          "source": "서울경제TV",
-          "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE5Rc0JuUks2ZGowR1lNS2xJTzQ0VXRjcUo4VWtISl8tbTRrVGZzOGcyaC10U0c5aDNCN0tFOTdhNTFRcjh2NzZaTnJvb0Izdl93VUFuOUlISnNqU1dpNXZ1Tnl3UXc?oc=5"
-        },
-        {
           "time": "2026-10-16T08:18:06+09:00",
           "title": "'폭락' 삼성전자·SK하이닉스, 프리마켓서 4% 반등",
           "source": "뉴스1",
           "link": "https://news.google.com/rss/articles/CBMiX0FVX3lxTE9ERnpsbzlMRlZMNE4xQV84YUl3SmFXaUNwcENic04xTkR6T1ktNzVhaDdRUkhuSktyRGhjYmk4OG1nMWExSmo4LUNYUjVpZVpMMlRUTTl5Nk9qZDIwY2lj?oc=5"
+        },
+        {
+          "time": "2026-10-16T08:27:46+09:00",
+          "title": "삼성전자 제품 3종, 美 타임지 ‘2026 최고의 발명품’ 선정",
+          "source": "한국NGO신문",
+          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE5oUHpkTGJma2g4V3lKQmc2MzQ4X2ZJX2ZqNnV1WExhMGVucnhXS0k5SUVWQnpZbUlPYWpBczlXRTh4TGNUOThodTV0VzFWRHNGTEpGYU1vTHlGWTVFemVOZ0piYUh5Z0lu?oc=5"
         }
       ]
     },
@@ -201,16 +201,16 @@
           "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE5hQm01VmJHTUZTZVRkazdrRWJkS29mWDBYZURfRFFJbm5sUmFZSGJXVXdxZmRhOUhnX2pnRVE4UU11YkFPV1V2R0dLS2p1OURpeHppd25ZNllpdw?oc=5"
         },
         {
-          "time": "2026-10-16T08:29:37+09:00",
-          "title": "\"주가 더 떨어져라\"… 삼성전자 일부 직원 글에 주주들 분통",
-          "source": "서울경제TV",
-          "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE5Rc0JuUks2ZGowR1lNS2xJTzQ0VXRjcUo4VWtISl8tbTRrVGZzOGcyaC10U0c5aDNCN0tFOTdhNTFRcjh2NzZaTnJvb0Izdl93VUFuOUlISnNqU1dpNXZ1Tnl3UXc?oc=5"
-        },
-        {
           "time": "2026-10-16T08:18:06+09:00",
           "title": "'폭락' 삼성전자·SK하이닉스, 프리마켓서 4% 반등",
           "source": "뉴스1",
           "link": "https://news.google.com/rss/articles/CBMiX0FVX3lxTE9ERnpsbzlMRlZMNE4xQV84YUl3SmFXaUNwcENic04xTkR6T1ktNzVhaDdRUkhuSktyRGhjYmk4OG1nMWExSmo4LUNYUjVpZVpMMlRUTTl5Nk9qZDIwY2lj?oc=5"
+        },
+        {
+          "time": "2026-10-16T08:27:46+09:00",
+          "title": "삼성전자 제품 3종, 美 타임지 ‘2026 최고의 발명품’ 선정",
+          "source": "한국NGO신문",
+          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE5oUHpkTGJma2g4V3lKQmc2MzQ4X2ZJX2ZqNnV1WExhMGVucnhXS0k5SUVWQnpZbUlPYWpBczlXRTh4TGNUOThodTV0VzFWRHNGTEpGYU1vTHlGWTVFemVOZ0piYUh5Z0lu?oc=5"
         }
       ]
     }
@@ -618,16 +618,16 @@
           "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE5hQm01VmJHTUZTZVRkazdrRWJkS29mWDBYZURfRFFJbm5sUmFZSGJXVXdxZmRhOUhnX2pnRVE4UU11YkFPV1V2R0dLS2p1OURpeHppd25ZNllpdw?oc=5"
         },
         {
-          "time": "2026-10-16T08:29:37+09:00",
-          "title": "\"주가 더 떨어져라\"… 삼성전자 일부 직원 글에 주주들 분통",
-          "source": "서울경제TV",
-          "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE5Rc0JuUks2ZGowR1lNS2xJTzQ0VXRjcUo4VWtISl8tbTRrVGZzOGcyaC10U0c5aDNCN0tFOTdhNTFRcjh2NzZaTnJvb0Izdl93VUFuOUlISnNqU1dpNXZ1Tnl3UXc?oc=5"
-        },
-        {
           "time": "2026-10-16T08:18:06+09:00",
           "title": "'폭락' 삼성전자·SK하이닉스, 프리마켓서 4% 반등",
           "source": "뉴스1",
           "link": "https://news.google.com/rss/articles/CBMiX0FVX3lxTE9ERnpsbzlMRlZMNE4xQV84YUl3SmFXaUNwcENic04xTkR6T1ktNzVhaDdRUkhuSktyRGhjYmk4OG1nMWExSmo4LUNYUjVpZVpMMlRUTTl5Nk9qZDIwY2lj?oc=5"
+        },
+        {
+          "time": "2026-10-16T08:27:46+09:00",
+          "title": "삼성전자 제품 3종, 美 타임지 ‘2026 최고의 발명품’ 선정",
+          "source": "한국NGO신문",
+          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE5oUHpkTGJma2g4V3lKQmc2MzQ4X2ZJX2ZqNnV1WExhMGVucnhXS0k5SUVWQnpZbUlPYWpBczlXRTh4TGNUOThodTV0VzFWRHNGTEpGYU1vTHlGWTVFemVOZ0piYUh5Z0lu?oc=5"
         }
       ],
       "price": 213000.0,
@@ -662,16 +662,16 @@
           "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE5hQm01VmJHTUZTZVRkazdrRWJkS29mWDBYZURfRFFJbm5sUmFZSGJXVXdxZmRhOUhnX2pnRVE4UU11YkFPV1V2R0dLS2p1OURpeHppd25ZNllpdw?oc=5"
         },
         {
-          "time": "2026-10-16T08:29:37+09:00",
-          "title": "\"주가 더 떨어져라\"… 삼성전자 일부 직원 글에 주주들 분통",
-          "source": "서울경제TV",
-          "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE5Rc0JuUks2ZGowR1lNS2xJTzQ0VXRjcUo4VWtISl8tbTRrVGZzOGcyaC10U0c5aDNCN0tFOTdhNTFRcjh2NzZaTnJvb0Izdl93VUFuOUlISnNqU1dpNXZ1Tnl3UXc?oc=5"
-        },
-        {
           "time": "2026-10-16T08:18:06+09:00",
           "title": "'폭락' 삼성전자·SK하이닉스, 프리마켓서 4% 반등",
           "source": "뉴스1",
           "link": "https://news.google.com/rss/articles/CBMiX0FVX3lxTE9ERnpsbzlMRlZMNE4xQV84YUl3SmFXaUNwcENic04xTkR6T1ktNzVhaDdRUkhuSktyRGhjYmk4OG1nMWExSmo4LUNYUjVpZVpMMlRUTTl5Nk9qZDIwY2lj?oc=5"
+        },
+        {
+          "time": "2026-10-16T08:27:46+09:00",
+          "title": "삼성전자 제품 3종, 美 타임지 ‘2026 최고의 발명품’ 선정",
+          "source": "한국NGO신문",
+          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE5oUHpkTGJma2g4V3lKQmc2MzQ4X2ZJX2ZqNnV1WExhMGVucnhXS0k5SUVWQnpZbUlPYWpBczlXRTh4TGNUOThodTV0VzFWRHNGTEpGYU1vTHlGWTVFemVOZ0piYUh5Z0lu?oc=5"
         }
       ],
       "price": 211500.0,
@@ -704,10 +704,10 @@
       "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE5hQm01VmJHTUZTZVRkazdrRWJkS29mWDBYZURfRFFJbm5sUmFZSGJXVXdxZmRhOUhnX2pnRVE4UU11YkFPV1V2R0dLS2p1OURpeHppd25ZNllpdw?oc=5"
     },
     {
-      "time": "2026-10-16T08:29:37+09:00",
-      "title": "\"주가 더 떨어져라\"… 삼성전자 일부 직원 글에 주주들 분통",
-      "source": "서울경제TV",
-      "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE5Rc0JuUks2ZGowR1lNS2xJTzQ0VXRjcUo4VWtISl8tbTRrVGZzOGcyaC10U0c5aDNCN0tFOTdhNTFRcjh2NzZaTnJvb0Izdl93VUFuOUlISnNqU1dpNXZ1Tnl3UXc?oc=5"
+      "time": "2026-10-16T08:18:06+09:00",
+      "title": "'폭락' 삼성전자·SK하이닉스, 프리마켓서 4% 반등",
+      "source": "뉴스1",
+      "link": "https://news.google.com/rss/articles/CBMiX0FVX3lxTE9ERnpsbzlMRlZMNE4xQV84YUl3SmFXaUNwcENic04xTkR6T1ktNzVhaDdRUkhuSktyRGhjYmk4OG1nMWExSmo4LUNYUjVpZVpMMlRUTTl5Nk9qZDIwY2lj?oc=5"
     }
   ],
   "top_news": [
@@ -742,13 +742,26 @@
       "link": "https://news.google.com/rss/articles/CBMibkFVX3lxTFBtZ084ay1kRHNPb2h4bUIwcnE1Y1RiV1hQNHBnWl9QbENxLXMtNEI1WVZmcGFQTTFsVjV1RTd3REdEb0RjRERWdWpQblh0cS1vLWgybEIzZ2JMX3Jub3pNOVBmSHlBSkc5WUZRWnNR?oc=5"
     },
     {
-      "time": "2026-10-16T15:43:37+09:00",
-      "title": "중국의 '반도체 굴기'는 애플이라는 거대 고객사도 품을까 : 삼성전자 SK하이닉스 메모리 공급부족 국면 변화에 '촉각'",
-      "source": "허프포스트코리아",
-      "link": "https://news.google.com/rss/articles/CBMiV0FVX3lxTFAyTExHWXdtUEVua3dSX0Q4UHltREktclJySklmakFDdnRVTXFsN3laM3psV3ZCSmI0NWZ5Z28ybkFRUWJnbnhCejlIaHBfQ2Y4OVNfUFF5RQ?oc=5"
+      "time": "2026-10-16T16:39:14+09:00",
+      "title": "\"삼성전자 제발 10만원까지 빠져라\"…주가 하락 반기는 익명 글에 투자자들 '부글부글'",
+      "source": "아시아경제",
+      "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTFBZY0NNVWxSY3lBclp5N1lkejFrWUxCbjN1Yl9INGd6emNNemF5MkZWYVNWTWpMYm8zQnpmM0NlNFRsc0lNaURBVGtSNEs4ZzhNMVhsRjdsREIybXZtam5JMA?oc=5"
     }
   ],
-  "disclosures": [],
+  "disclosures": [
+    {
+      "report_nm": "주식등의대량보유상황보고서(일반)",
+      "rcept_dt": "20261016",
+      "rcept_no": "20261016000505",
+      "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261016000505"
+    },
+    {
+      "report_nm": "임원ㆍ주요주주특정증권등소유상황보고서",
+      "rcept_dt": "20261016",
+      "rcept_no": "20261016000492",
+      "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261016000492"
+    }
+  ],
   "disclosure_note": null,
   "flows": null,
   "flow_story": null,
@@ -765,8 +778,8 @@
     "steady": 22,
     "upper": 2,
     "lower": 0,
-    "individual": -5131.0,
-    "foreign": 3663.0,
+    "individual": -5080.0,
+    "foreign": 3607.0,
     "institution": -6812.0,
     "prev_close": 5554.22,
     "open": 5653.99,

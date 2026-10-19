@@ -3,7 +3,7 @@
   "name": "SK하이닉스",
   "peer_name": "삼성전자",
   "session_date": "2026-10-19",
-  "generated_at": "2026-10-19 16:46 KST",
+  "generated_at": "2026-10-19 17:31 KST",
   "summary": {
     "prev_close": 1272000.0,
     "open": 1212000.0,
@@ -15,11 +15,11 @@
     "c2c": 0.0039308176100629755,
     "high_vs_open": 0.05363036303630353,
     "low_vs_open": -0.0033003300330033403,
-    "volume": 3738027.0,
-    "volume_ratio": 1.1109556570364378,
+    "volume": 3795104.0,
+    "volume_ratio": 1.1279191557047645,
     "kospi_c2c": 0.017635688531676852,
     "peer_c2c": 0.011600928074245953,
-    "usdkrw_chg": -0.0072112474194501175,
+    "usdkrw_chg": -0.007919755027327113,
     "us_nights": 1,
     "sox_ret": -0.0383310486013384,
     "nasdaq_ret": -0.021450206699957897,
@@ -115,7 +115,15 @@
         "purpose": "자기주식 소각을 통한 \n주주가치 제고",
         "rcept_no": "20260819000254"
       }
-    ]
+    ],
+    "foreign_pressure": {
+      "state": "selling_eased",
+      "previous_ratio": -0.20462696961656524,
+      "recent_ratio": -0.13924122263460534,
+      "previous_daily_net": -563903.8,
+      "recent_daily_net": -653045.4
+    },
+    "buyback_transition": null
   },
   "classification": {
     "labels": [
@@ -603,6 +611,12 @@
       "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE5BeV9mTEo3clQ0OVJSWGF6YjZXZjVHaGVEWHlHcTFJa3g1Wk9VZFBfRVI1aTFBdDBVLWdhekJEVUxQUURLY1ZMTkxmRkZqVjlCT01vS0xNN21nRVByVTBFTVFnMlBkaG96cEtyWdIBbEFVX3lxTE5BeV9mTEo3clQ0OVJSWGF6YjZXZjVHaGVEWHlHcTFJa3g1Wk9VZFBfRVI1aTFBdDBVLWdhekJEVUxQUURLY1ZMTkxmRkZqVjlCT01vS0xNN21nRVByVTBFTVFnMlBkaG96cEtyWQ?oc=5"
     },
     {
+      "time": "2026-10-19T17:20:00+09:00",
+      "title": "SK하이닉스 또 사상 최대 실적 예고…HBM4·메모리값 상승 '겹호재' - 머니투데이",
+      "source": "머니투데이",
+      "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE55ajAxV1lYRTJkUGpqY2lPdWZZYldYTzJZTkVDazk3Zks3cVF0QnpxOEhLdlIydFZ5a0tONlY0SVVrc2I3UElxVkx2NHl0dFhOVmVuMWFxN0NwUFVORzlMZkJ0bEQ5aG9YajVqT9IBckFVX3lxTFBLeTZpY0thY2NSOFIwNGN3blcxdVpDUjkxQUh1Q3Z2N3d3SlRlRGw1RHZZUGo3U0NueFdDZ2NBdkRNR2JmT2F6SnNEb082dDZ0M2hGTUw5d2tSN2J6MjJwREEtU0RWdGp4azdqRW5CY2Vjdw?oc=5"
+    },
+    {
       "time": "2026-10-19T16:21:34+09:00",
       "title": "하나증권 \"메모리 가격은 예상보다 양호한데…반도체주 짓누른 AI 공포\"",
       "source": "핀포인트뉴스",
@@ -616,30 +630,87 @@
     },
     {
       "time": "2026-10-19T15:00:00+09:00",
-      "title": "SK하이닉스, 반도체 소부장 기업에 2조 지원…대출 한도↑ 금리↓",
-      "source": "뉴스1",
-      "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE5jNTd4NnZNUVJKVThTMVo1SXFNLWpIOWVtaWlIQTVOenpJX280bEJocGhvVVZSUUxFMGlNSGlUV1lneGNMNFQ0QklLeWtDVUtZSVZsc0s1Nkl2SHFlM3BvUlNFTUw?oc=5"
+      "title": "SK하이닉스, 반도체 소부장 상생 지원…'수출공급망 강화 보증' 출범",
+      "source": "뉴시스",
+      "link": "https://news.google.com/rss/articles/CBMieEFVX3lxTE1RU1NRMVNyc2FneHRfWW02UzY3SXdLMnFHMlFMOHg2NzZwZXdvaXFJeUh2THJVOFIxTGVsUzNUMVp3Yk1OZ0xvZHlKZVVMRDZUVDNySzR0RmJfRjhROXNQZWtia2xtNFZTWWVRYy1EekFhc1NjWEN2WtIBeEFVX3lxTE1RU1NRMVNyc2FneHRfWW02UzY3SXdLMnFHMlFMOHg2NzZwZXdvaXFJeUh2THJVOFIxTGVsUzNUMVp3Yk1OZ0xvZHlKZVVMRDZUVDNySzR0RmJfRjhROXNQZWtia2xtNFZTWWVRYy1EekFhc1NjWEN2Wg?oc=5"
     },
     {
       "time": "2026-10-19T15:00:00+09:00",
-      "title": "SK하이닉스 반도체 소부장 지원 나서, 2조 규모 '수출공급망 강화보증' 출범",
-      "source": "비즈니스포스트",
-      "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTE8tLTFRLUtrTHpoQnJnWHdhY1RFazhvNFhNYjJnckppN0JXbGRtREZxQWNwVWd4N20xemhkRFVpMDhyei1KNGNuT0lpbkFXY1BDRnJEMEhHcHVVOVFScS0yUWVheWZYSUZVaWZrcElzWGkxb2M?oc=5"
-    },
-    {
-      "time": "2026-10-19T15:00:04+09:00",
-      "title": "SK하이닉스, 2조원 '수출공급망 강화보증' 출범…'반도체 생태계' 맞손",
-      "source": "서울경제TV",
-      "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE5rZ0VWRjJ1dTFHVG5Xd1FBOE9QSWxHRjNHeEJhUEJoSzZ0MDQyVEY5X09DWU1rcUlhblNLTEtBMjRJc3dOZmkyZndhWTFBbFVHTTFKZlNOU3lOUFdEZHl5Q2thM2c?oc=5"
+      "title": "SK하이닉스, 반도체 소부장 기업에 2조 지원…대출 한도↑ 금리↓",
+      "source": "뉴스1",
+      "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE5jNTd4NnZNUVJKVThTMVo1SXFNLWpIOWVtaWlIQTVOenpJX280bEJocGhvVVZSUUxFMGlNSGlUV1lneGNMNFQ0QklLeWtDVUtZSVZsc0s1Nkl2SHFlM3BvUlNFTUw?oc=5"
     }
   ],
   "disclosures": [],
   "disclosure_note": null,
-  "flows": null,
-  "flow_story": null,
+  "flows": "외국인 -169,360 / 기관 -190,620",
+  "flow_story": {
+    "direction": "up",
+    "c2c": 0.0039308176100629755,
+    "actors": [
+      {
+        "key": "foreign_net",
+        "name": "외국인",
+        "shares": -169360.0,
+        "won": -216272720000.0,
+        "vs_usual": 0.2883668020273194
+      },
+      {
+        "key": "inst_net",
+        "name": "기관",
+        "shares": -190620.0,
+        "won": -243421740000.0,
+        "vs_usual": 1.38387052512594
+      },
+      {
+        "key": "indiv_net",
+        "name": "개인",
+        "shares": -125512.0,
+        "won": -160278824000.0,
+        "vs_usual": 0.33320771762721973
+      },
+      {
+        "key": "other_net",
+        "name": "기타 법인 등(추정)",
+        "shares": 485492.0,
+        "won": 619973284000.0,
+        "vs_usual": null
+      }
+    ],
+    "lead": {
+      "key": "inst_net",
+      "name": "기관",
+      "shares": -190620.0,
+      "won": -243421740000.0,
+      "vs_usual": 1.38387052512594
+    },
+    "counter": null,
+    "all_one_side": true,
+    "observations": [
+      "전일까지 20거래일 고점: 종가 돌파 없음 · 종가 위치 -34.01%.",
+      "전일까지 60거래일 고점: 종가 돌파 없음 · 종가 위치 -36.33%.",
+      "같은 5거래일 수익률: 이 종목 -20.44%, 삼성전자 -12.97% · 차이 -7.46%p.",
+      "같은 20거래일 수익률: 이 종목 -24.44%, 삼성전자 -12.27% · 차이 -12.16%p.",
+      "같은 60거래일 수익률: 이 종목 -27.59%, 삼성전자 -10.66% · 차이 -16.94%p.",
+      "외국인 순매도 지속·거래량 대비 강도 약화: 직전 5일 → 최근 5일 순매수/거래량 -20.46% → -13.92% (일평균 -563,904주 → -653,045주). 향후 상승을 뜻하는 신호는 아닙니다.",
+      "코스피도 +1.76% — 시장 전체가 같은 방향이었습니다.",
+      "삼성전자 +1.16% — 반도체 업종이 함께 움직였습니다.",
+      "원화는 오히려 강세(-0.79%)여서 외국인 매도가 환율로는 설명되지 않습니다.",
+      "전날 밤 SOX는 -3.83%로 반대 방향이어서 미국 반도체 흐름으로는 설명되지 않습니다.",
+      "전날 밤 마이크론은 -5.63%로 반대 방향이었습니다.",
+      "직전 5거래일 -24.33% 내린 뒤의 매수 — 저가 매수와 맞는 모양입니다.",
+      "종가가 당일 범위(저가 1,208,000~고가 1,277,000원)의 위쪽 100% 지점 — 고가 부근에서 마감했습니다.",
+      "우리 장중(09:00~15:30) 나스닥100 선물 +0.55% · 미 10년물 국채 선물 -0.07% · 원/달러 -0.34%(원화 강세).",
+      "자사주 매입 기간 중(직접 취득 2026-08-20~2026-11-19, 40,004,340,000,000, DART 공시) — 회사 자신의 매수는 기타 법인으로 잡힙니다.",
+      "기타 법인 등(추정) 순매수 +6,200억원 — 회사의 자사주 매입 기간이라 회사 매입과 맞는 모양입니다."
+    ],
+    "estimated_indiv": false,
+    "source_note": "출처 naver+cache · 장 마감 직후 잠정치라 저녁 확정치와 다를 수 있습니다 · KRX는 받지 못함(pykrx 미설치)"
+  },
   "flow_status": {
-    "state": "pending",
-    "detail": "최신 2026-10-16"
+    "state": "ok",
+    "detail": "naver+cache",
+    "krx_error": "pykrx 미설치"
   },
   "context": {},
   "market": {
@@ -650,9 +721,9 @@
     "steady": 33,
     "upper": 2,
     "lower": 1,
-    "individual": -11248.0,
-    "foreign": -16.0,
-    "institution": 5768.0,
+    "individual": -12042.0,
+    "foreign": 726.0,
+    "institution": 5780.0,
     "prev_close": 5668.05,
     "open": 5488.41,
     "high": 5768.01,

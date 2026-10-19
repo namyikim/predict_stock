@@ -48,7 +48,7 @@
     "last_days": 10,
     "yoy_rows": 7
   },
-  "exports_snapshot_hash": "3b6a47696acf99726920",
+  "exports_snapshot_hash": "5d213ab8719e93d21bcc",
   "point": null,
   "raw_point": null,
   "nowcast_model": "level_ridge",
@@ -304,7 +304,7 @@
     "estimate_basis": "partial_month_scenario",
     "interval_note": "속보와 확정치의 차이를 과거 시점별로 검증하지 않아 예측 구간을 제공하지 않습니다. 아래 월 전체 자료 기준의 검증 성적은 이 속보 기반 시나리오의 성적이 아닙니다."
   },
-  "generated_at": "2026-10-19 15:40 KST",
+  "generated_at": "2026-10-19 16:43 KST",
   "estimate_basis": "partial_month_scenario",
   "interval_note": "속보와 확정치의 차이를 과거 시점별로 검증하지 않아 예측 구간을 제공하지 않습니다. 아래 월 전체 자료 기준의 검증 성적은 이 속보 기반 시나리오의 성적이 아닙니다.",
   "announced_actual": null,

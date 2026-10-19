@@ -1028,6 +1028,8 @@ def render_fragment(result):
     parts.append(render_live(r.get("live_exports")))
     from valuation_reference import render as render_valuation
     parts.append(render_valuation(r.get("valuation")))
+    from policy_inflation import render as render_policy_inflation
+    parts.append(render_policy_inflation(r.get("policy_inflation")))
     parts.append('<div style="background:#fdf8ec;border-left:4px solid #c8952a;padding:12px 16px;border-radius:0 5px 5px 0;font-size:13px">'
                  '수출액 추세와 주가의 <b>수준</b>이 상관이 높은 것은 둘 다 우상향하기 때문이며 예측력의 근거가 아닙니다. '
                  'HP 필터처럼 미래 자료를 쓰는 양방향 추세도 쓰지 않았습니다. 아래는 그 시점까지의 자료로 계산한 지표가 '
@@ -1209,7 +1211,7 @@ def analyse(target, out_dir, fetch=True):
     loaded = []
     for name in ("leading_cycle.csv", "semiconductor_exports.csv", "cli_g20.csv",
                  "cli_kor.csv", "kospi_monthly.csv", "korea_exports.csv",
-                 "news_sentiment.csv", "term_spread.csv"):
+                 "news_sentiment.csv", "term_spread.csv", "policy_inflation.csv"):
         try:
             text = github_pages.fetch(f"macro_history/{name}", tok)
             if text:
@@ -1365,6 +1367,13 @@ def main():
     from valuation_reference import load as load_valuation
     result["valuation"] = load_valuation(TARGETS[args.target]["ticker"], out_dir / "cache",
                                          fetch=not args.no_fetch)
+    # 금리·물가는 관측 자료 그림에만 사용한다(2026-10-19). 기존 예측 특징·원장과 분리한다.
+    import policy_inflation
+    policy_cache = out_dir / "macro_cache" / policy_inflation.CACHE_NAME
+    result["policy_inflation"] = policy_inflation.load(
+        policy_cache, fetch=not args.no_fetch,
+        fallback_paths=(out_dir / "macro_fallback" / policy_inflation.CACHE_NAME,
+                        ROOT / "macro_history" / policy_inflation.CACHE_NAME))
     fragment = render_fragment(result)
     saved = dict(result)
     if result.get("stock_value"):        # 월별 틀 대신 식·적합도·마지막 달만 남긴다
@@ -1393,6 +1402,10 @@ def main():
         tok = github_pages.token()
         # 이 블록의 발행은 모두 한 커밋으로 올라간다(발행 묶기 ①, 2026-09-23).
         with github_pages.batch(f"longterm: {args.target} {result['as_of']}"):
+            if result["policy_inflation"].get("fresh") and policy_cache.exists():
+                github_pages.publish_history(f"macro_history/{policy_inflation.CACHE_NAME}",
+                                             policy_cache.read_text(encoding="utf-8"), tok,
+                                             "macro: 기준금리·소비자물가 보관본")
             # 이번에 새로 받은 보조 자료를 '마지막 성공분'으로 남긴다(다음에 API가 막혀도 계속 돌 수 있게).
             for name, key in (("cli_g20.csv", "cli_info"), ("news_sentiment.csv", None), ("term_spread.csv", None)):
                 cache = out_dir / "macro_cache" / name

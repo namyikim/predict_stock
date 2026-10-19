@@ -3,7 +3,7 @@
   "name": "SK하이닉스",
   "peer_name": "삼성전자",
   "session_date": "2026-10-19",
-  "generated_at": "2026-10-19 16:11 KST",
+  "generated_at": "2026-10-19 16:46 KST",
   "summary": {
     "prev_close": 1272000.0,
     "open": 1212000.0,
@@ -15,11 +15,11 @@
     "c2c": 0.0039308176100629755,
     "high_vs_open": 0.05363036303630353,
     "low_vs_open": -0.0033003300330033403,
-    "volume": 3718504.0,
-    "volume_ratio": 1.105153348146662,
+    "volume": 3738027.0,
+    "volume_ratio": 1.1109556570364378,
     "kospi_c2c": 0.017635688531676852,
     "peer_c2c": 0.011600928074245953,
-    "usdkrw_chg": -0.007427541146331262,
+    "usdkrw_chg": -0.0072112474194501175,
     "us_nights": 1,
     "sox_ret": -0.0383310486013384,
     "nasdaq_ret": -0.021450206699957897,
@@ -603,6 +603,12 @@
       "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE5BeV9mTEo3clQ0OVJSWGF6YjZXZjVHaGVEWHlHcTFJa3g1Wk9VZFBfRVI1aTFBdDBVLWdhekJEVUxQUURLY1ZMTkxmRkZqVjlCT01vS0xNN21nRVByVTBFTVFnMlBkaG96cEtyWdIBbEFVX3lxTE5BeV9mTEo3clQ0OVJSWGF6YjZXZjVHaGVEWHlHcTFJa3g1Wk9VZFBfRVI1aTFBdDBVLWdhekJEVUxQUURLY1ZMTkxmRkZqVjlCT01vS0xNN21nRVByVTBFTVFnMlBkaG96cEtyWQ?oc=5"
     },
     {
+      "time": "2026-10-19T16:21:34+09:00",
+      "title": "하나증권 \"메모리 가격은 예상보다 양호한데…반도체주 짓누른 AI 공포\"",
+      "source": "핀포인트뉴스",
+      "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTE4wbVZUM1FDeWNhNHZXM2NDeWxYa0JJcGFpZzRYU2k1VGI3QkJhc0tRaDhYVTA1WkFLVjJaOWEwemh0dzhiUDUwbkMxVktVRXlZUzFJSTF0VE9YeUhRNjVRVHNodlRFUjZPaW9aemlBV1l1M1U?oc=5"
+    },
+    {
       "time": "2026-10-19T14:01:00+09:00",
       "title": "中 CXMT, 7조 쏟아 붓는다…삼성·SK하이닉스 'D램 투자전쟁'",
       "source": "뉴스핌",
@@ -621,16 +627,10 @@
       "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTE8tLTFRLUtrTHpoQnJnWHdhY1RFazhvNFhNYjJnckppN0JXbGRtREZxQWNwVWd4N20xemhkRFVpMDhyei1KNGNuT0lpbkFXY1BDRnJEMEhHcHVVOVFScS0yUWVheWZYSUZVaWZrcElzWGkxb2M?oc=5"
     },
     {
-      "time": "2026-10-19T15:00:00+09:00",
-      "title": "SK하이닉스, 반도체 소부장 상생 지원…'수출공급망 강화 보증' 출범",
-      "source": "뉴시스",
-      "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE1VcXFmeWRjNkdxcXRmcDRRRU9GQ3N6bk1yRTV5aWIwWkt6dzJSN19fWnQ5SWl3QVpUOV9JODI1Y1BZMEJCbUpIT3hwbmhuaEg0WGJXVXU5NDFOREdXcVplQdIBeEFVX3lxTE1RU1NRMVNyc2FneHRfWW02UzY3SXdLMnFHMlFMOHg2NzZwZXdvaXFJeUh2THJVOFIxTGVsUzNUMVp3Yk1OZ0xvZHlKZVVMRDZUVDNySzR0RmJfRjhROXNQZWtia2xtNFZTWWVRYy1EekFhc1NjWEN2Wg?oc=5"
-    },
-    {
-      "time": "2026-10-19T15:00:00+09:00",
-      "title": "SK하이닉스, 반도체 소부장 기업에 2조원 금융 지원…‘수출공급망 강화보증’ 출범",
-      "source": "인더뉴스",
-      "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE5Na0FMdjlDYjR5ZUZHVWpzQkR6V1dSa1luNVJ2VU1Jai1fSUJKck1QZi1fcVZuVDFzMFdzdW1KcjBlQV84eHhkV18wNlJ0dEZUZXdWOThDd3hZU0xXbUxYTDlxRWQ?oc=5"
+      "time": "2026-10-19T15:00:04+09:00",
+      "title": "SK하이닉스, 2조원 '수출공급망 강화보증' 출범…'반도체 생태계' 맞손",
+      "source": "서울경제TV",
+      "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE5rZ0VWRjJ1dTFHVG5Xd1FBOE9QSWxHRjNHeEJhUEJoSzZ0MDQyVEY5X09DWU1rcUlhblNLTEtBMjRJc3dOZmkyZndhWTFBbFVHTTFKZlNOU3lOUFdEZHl5Q2thM2c?oc=5"
     }
   ],
   "disclosures": [],
@@ -650,9 +650,9 @@
     "steady": 33,
     "upper": 2,
     "lower": 1,
-    "individual": -10931.0,
-    "foreign": -325.0,
-    "institution": 5760.0,
+    "individual": -11248.0,
+    "foreign": -16.0,
+    "institution": 5768.0,
     "prev_close": 5668.05,
     "open": 5488.41,
     "high": 5768.01,

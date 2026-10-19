@@ -970,7 +970,7 @@
     "krw": 1405.6209542410713
   },
   "chart_first": "2000-01-31",
-  "generated_at": "2026-10-18 15:05 KST",
+  "generated_at": "2026-10-19 14:56 KST",
   "macro_snapshot_hash": "064717b64854b17df0da",
   "macro_sources": {
     "leading_cycle": "KOSIS_API",
@@ -978,7 +978,7 @@
   },
   "frame_hash": "34c0b091703cdbfd",
   "live_exports": {
-    "as_of": "2026-10-18",
+    "as_of": "2026-10-19",
     "price_last": "2026-09-30",
     "exports_last_month": "2026-10",
     "latest_period": {
@@ -990,7 +990,7 @@
       "basis": "partial_month_scenario"
     },
     "snapshot_hash": "3b6a47696acf99726920",
-    "generated_at": "2026-10-18 15:03 KST",
+    "generated_at": "2026-10-19 14:55 KST",
     "flash_info": {
       "enabled": true,
       "source": "customs_flash_api",
@@ -1040,7 +1040,7 @@
     "ticker": "000660.KS",
     "price": 1272000.0,
     "price_date": "2026-10-16",
-    "observed_on": "2026-10-18",
+    "observed_on": "2026-10-19",
     "financial_period": "2026-06-30",
     "eps_ttm": 232070.09450008773,
     "bps": 375948.7934903294,
@@ -1099,7 +1099,633 @@
     },
     "evaluation_status": "예측 성능 미검증 — 현재 가치 시나리오이며 도달 시점을 예측하지 않음",
     "basis_note": "분기 재무제표 최근 4분기 순이익(Net Income Common Stockholders) ÷ EPS 기준 주식 수 697,915,819주",
-    "retrieved_on": "2026-10-18",
+    "retrieved_on": "2026-10-19",
     "cached": false
+  },
+  "policy_inflation": {
+    "rows": [
+      {
+        "month": "2016-09",
+        "policy_rate": 1.25,
+        "inflation": 1.3489038182086244
+      },
+      {
+        "month": "2016-10",
+        "policy_rate": 1.25,
+        "inflation": 1.4879009329654913
+      },
+      {
+        "month": "2016-11",
+        "policy_rate": 1.25,
+        "inflation": 1.5308167872892575
+      },
+      {
+        "month": "2016-12",
+        "policy_rate": 1.25,
+        "inflation": 1.3379615020511215
+      },
+      {
+        "month": "2017-01",
+        "policy_rate": 1.25,
+        "inflation": 2.2408434139784994
+      },
+      {
+        "month": "2017-02",
+        "policy_rate": 1.25,
+        "inflation": 2.0828105395232166
+      },
+      {
+        "month": "2017-03",
+        "policy_rate": 1.25,
+        "inflation": 2.27689662763515
+      },
+      {
+        "month": "2017-04",
+        "policy_rate": 1.25,
+        "inflation": 1.9555732267481307
+      },
+      {
+        "month": "2017-05",
+        "policy_rate": 1.25,
+        "inflation": 2.0035553696538866
+      },
+      {
+        "month": "2017-06",
+        "policy_rate": 1.25,
+        "inflation": 1.806277520368993
+      },
+      {
+        "month": "2017-07",
+        "policy_rate": 1.25,
+        "inflation": 2.167010719787066
+      },
+      {
+        "month": "2017-08",
+        "policy_rate": 1.25,
+        "inflation": 2.4885813727437034
+      },
+      {
+        "month": "2017-09",
+        "policy_rate": 1.25,
+        "inflation": 2.0000623396053907
+      },
+      {
+        "month": "2017-10",
+        "policy_rate": 1.25,
+        "inflation": 1.76179458180723
+      },
+      {
+        "month": "2017-11",
+        "policy_rate": 1.2583333333333333,
+        "inflation": 1.1534025374855927
+      },
+      {
+        "month": "2017-12",
+        "policy_rate": 1.5,
+        "inflation": 1.4074858317244754
+      },
+      {
+        "month": "2018-01",
+        "policy_rate": 1.5,
+        "inflation": 0.7600188977671785
+      },
+      {
+        "month": "2018-02",
+        "policy_rate": 1.5,
+        "inflation": 1.2526630612913703
+      },
+      {
+        "month": "2018-03",
+        "policy_rate": 1.5,
+        "inflation": 1.2155998565059223
+      },
+      {
+        "month": "2018-04",
+        "policy_rate": 1.5,
+        "inflation": 1.528088503930558
+      },
+      {
+        "month": "2018-05",
+        "policy_rate": 1.5,
+        "inflation": 1.469050499251634
+      },
+      {
+        "month": "2018-06",
+        "policy_rate": 1.5,
+        "inflation": 1.4804084735663414
+      },
+      {
+        "month": "2018-07",
+        "policy_rate": 1.5,
+        "inflation": 1.118985835752162
+      },
+      {
+        "month": "2018-08",
+        "policy_rate": 1.5,
+        "inflation": 1.4318056660343803
+      },
+      {
+        "month": "2018-09",
+        "policy_rate": 1.5,
+        "inflation": 2.0871531597604243
+      },
+      {
+        "month": "2018-10",
+        "policy_rate": 1.5,
+        "inflation": 2.002508233326883
+      },
+      {
+        "month": "2018-11",
+        "policy_rate": 1.5083333333333333,
+        "inflation": 2.037042743998274
+      },
+      {
+        "month": "2018-12",
+        "policy_rate": 1.75,
+        "inflation": 1.320395504513927
+      },
+      {
+        "month": "2019-01",
+        "policy_rate": 1.75,
+        "inflation": 0.7930197949157058
+      },
+      {
+        "month": "2019-02",
+        "policy_rate": 1.75,
+        "inflation": 0.46128167518082464
+      },
+      {
+        "month": "2019-03",
+        "policy_rate": 1.75,
+        "inflation": 0.3746797500784771
+      },
+      {
+        "month": "2019-04",
+        "policy_rate": 1.75,
+        "inflation": 0.5559430310013935
+      },
+      {
+        "month": "2019-05",
+        "policy_rate": 1.75,
+        "inflation": 0.6799422099637242
+      },
+      {
+        "month": "2019-06",
+        "policy_rate": 1.75,
+        "inflation": 0.7208009799653858
+      },
+      {
+        "month": "2019-07",
+        "policy_rate": 1.6370967741935485,
+        "inflation": 0.6055380870270799
+      },
+      {
+        "month": "2019-08",
+        "policy_rate": 1.5,
+        "inflation": -0.037200136735648925
+      },
+      {
+        "month": "2019-09",
+        "policy_rate": 1.5,
+        "inflation": -0.42605841091188923
+      },
+      {
+        "month": "2019-10",
+        "policy_rate": 1.3709677419354838,
+        "inflation": 0.0
+      },
+      {
+        "month": "2019-11",
+        "policy_rate": 1.25,
+        "inflation": 0.15201852411155237
+      },
+      {
+        "month": "2019-12",
+        "policy_rate": 1.25,
+        "inflation": 0.73847335030508
+      },
+      {
+        "month": "2020-01",
+        "policy_rate": 1.25,
+        "inflation": 1.2196108571659758
+      },
+      {
+        "month": "2020-02",
+        "policy_rate": 1.25,
+        "inflation": 0.8548901934327446
+      },
+      {
+        "month": "2020-03",
+        "policy_rate": 1.0080645161290323,
+        "inflation": 0.8262628504555058
+      },
+      {
+        "month": "2020-04",
+        "policy_rate": 0.75,
+        "inflation": 0.019099124455923544
+      },
+      {
+        "month": "2020-05",
+        "policy_rate": 0.717741935483871,
+        "inflation": -0.212740336370576
+      },
+      {
+        "month": "2020-06",
+        "policy_rate": 0.5,
+        "inflation": 0.22012041290166984
+      },
+      {
+        "month": "2020-07",
+        "policy_rate": 0.5,
+        "inflation": 0.44663111093188324
+      },
+      {
+        "month": "2020-08",
+        "policy_rate": 0.5,
+        "inflation": 0.7694241890872533
+      },
+      {
+        "month": "2020-09",
+        "policy_rate": 0.5,
+        "inflation": 0.9479527827324308
+      },
+      {
+        "month": "2020-10",
+        "policy_rate": 0.5,
+        "inflation": 0.1389430333563313
+      },
+      {
+        "month": "2020-11",
+        "policy_rate": 0.5,
+        "inflation": 0.6121771996662861
+      },
+      {
+        "month": "2020-12",
+        "policy_rate": 0.5,
+        "inflation": 0.6127217481121994
+      },
+      {
+        "month": "2021-01",
+        "policy_rate": 0.5,
+        "inflation": 0.9491457688080684
+      },
+      {
+        "month": "2021-02",
+        "policy_rate": 0.5,
+        "inflation": 1.417731629392982
+      },
+      {
+        "month": "2021-03",
+        "policy_rate": 0.5,
+        "inflation": 1.9011406844106515
+      },
+      {
+        "month": "2021-04",
+        "policy_rate": 0.5,
+        "inflation": 2.492462311557797
+      },
+      {
+        "month": "2021-05",
+        "policy_rate": 0.5,
+        "inflation": 2.62469831053902
+      },
+      {
+        "month": "2021-06",
+        "policy_rate": 0.5,
+        "inflation": 2.3468057366362594
+      },
+      {
+        "month": "2021-07",
+        "policy_rate": 0.5,
+        "inflation": 2.6397671384121413
+      },
+      {
+        "month": "2021-08",
+        "policy_rate": 0.5483870967741935,
+        "inflation": 2.555145224074251
+      },
+      {
+        "month": "2021-09",
+        "policy_rate": 0.75,
+        "inflation": 2.4121500893389047
+      },
+      {
+        "month": "2021-10",
+        "policy_rate": 0.75,
+        "inflation": 3.164304252345773
+      },
+      {
+        "month": "2021-11",
+        "policy_rate": 0.8,
+        "inflation": 3.776601059046869
+      },
+      {
+        "month": "2021-12",
+        "policy_rate": 1.0,
+        "inflation": 3.6977972690122707
+      },
+      {
+        "month": "2022-01",
+        "policy_rate": 1.1451612903225807,
+        "inflation": 3.7707838479809963
+      },
+      {
+        "month": "2022-02",
+        "policy_rate": 1.25,
+        "inflation": 3.780271707028948
+      },
+      {
+        "month": "2022-03",
+        "policy_rate": 1.25,
+        "inflation": 4.183032207384119
+      },
+      {
+        "month": "2022-04",
+        "policy_rate": 1.3916666666666666,
+        "inflation": 4.755834477348486
+      },
+      {
+        "month": "2022-05",
+        "policy_rate": 1.5483870967741935,
+        "inflation": 5.340519353258211
+      },
+      {
+        "month": "2022-06",
+        "policy_rate": 1.75,
+        "inflation": 6.036256736893675
+      },
+      {
+        "month": "2022-07",
+        "policy_rate": 2.056451612903226,
+        "inflation": 6.327009583414833
+      },
+      {
+        "month": "2022-08",
+        "policy_rate": 2.306451612903226,
+        "inflation": 5.722627737226271
+      },
+      {
+        "month": "2022-09",
+        "policy_rate": 2.5,
+        "inflation": 5.476398177764841
+      },
+      {
+        "month": "2022-10",
+        "policy_rate": 2.8225806451612905,
+        "inflation": 5.621673923560722
+      },
+      {
+        "month": "2022-11",
+        "policy_rate": 3.058333333333333,
+        "inflation": 5.0062578222778376
+      },
+      {
+        "month": "2022-12",
+        "policy_rate": 3.25,
+        "inflation": 5.017301038062283
+      },
+      {
+        "month": "2023-01",
+        "policy_rate": 3.403225806451613,
+        "inflation": 4.978540772532192
+      },
+      {
+        "month": "2023-02",
+        "policy_rate": 3.5,
+        "inflation": 4.6575602352494805
+      },
+      {
+        "month": "2023-03",
+        "policy_rate": 3.5,
+        "inflation": 4.165881244109326
+      },
+      {
+        "month": "2023-04",
+        "policy_rate": 3.5,
+        "inflation": 3.6881025929046185
+      },
+      {
+        "month": "2023-05",
+        "policy_rate": 3.5,
+        "inflation": 3.3767441860464986
+      },
+      {
+        "month": "2023-06",
+        "policy_rate": 3.5,
+        "inflation": 2.7261805748082457
+      },
+      {
+        "month": "2023-07",
+        "policy_rate": 3.5,
+        "inflation": 2.3544559919065566
+      },
+      {
+        "month": "2023-08",
+        "policy_rate": 3.5,
+        "inflation": 3.3600294577925016
+      },
+      {
+        "month": "2023-09",
+        "policy_rate": 3.5,
+        "inflation": 3.703363352324951
+      },
+      {
+        "month": "2023-10",
+        "policy_rate": 3.5,
+        "inflation": 3.765115426896304
+      },
+      {
+        "month": "2023-11",
+        "policy_rate": 3.5,
+        "inflation": 3.3098010452003335
+      },
+      {
+        "month": "2023-12",
+        "policy_rate": 3.5,
+        "inflation": 3.1759106717920593
+      },
+      {
+        "month": "2024-01",
+        "policy_rate": 3.5,
+        "inflation": 2.816389570273481
+      },
+      {
+        "month": "2024-02",
+        "policy_rate": 3.5,
+        "inflation": 3.1269826882987406
+      },
+      {
+        "month": "2024-03",
+        "policy_rate": 3.5,
+        "inflation": 3.1035106768005916
+      },
+      {
+        "month": "2024-04",
+        "policy_rate": 3.5,
+        "inflation": 2.9249796876410716
+      },
+      {
+        "month": "2024-05",
+        "policy_rate": 3.5,
+        "inflation": 2.672545667236559
+      },
+      {
+        "month": "2024-06",
+        "policy_rate": 3.5,
+        "inflation": 2.4109391867578323
+      },
+      {
+        "month": "2024-07",
+        "policy_rate": 3.5,
+        "inflation": 2.5518914547578264
+      },
+      {
+        "month": "2024-08",
+        "policy_rate": 3.5,
+        "inflation": 2.012825080156766
+      },
+      {
+        "month": "2024-09",
+        "policy_rate": 3.5,
+        "inflation": 1.5950376606114425
+      },
+      {
+        "month": "2024-10",
+        "policy_rate": 3.3306451612903225,
+        "inflation": 1.2536417409728884
+      },
+      {
+        "month": "2024-11",
+        "policy_rate": 3.225,
+        "inflation": 1.5264465743698885
+      },
+      {
+        "month": "2024-12",
+        "policy_rate": 3.0,
+        "inflation": 1.9338241816730273
+      },
+      {
+        "month": "2025-01",
+        "policy_rate": 3.0,
+        "inflation": 2.2444110630025493
+      },
+      {
+        "month": "2025-02",
+        "policy_rate": 2.9642857142857144,
+        "inflation": 2.0214448936544116
+      },
+      {
+        "month": "2025-03",
+        "policy_rate": 2.75,
+        "inflation": 2.0535322509872778
+      },
+      {
+        "month": "2025-04",
+        "policy_rate": 2.75,
+        "inflation": 2.0787650206122166
+      },
+      {
+        "month": "2025-05",
+        "policy_rate": 2.725806451612903,
+        "inflation": 1.9018404907975572
+      },
+      {
+        "month": "2025-06",
+        "policy_rate": 2.5,
+        "inflation": 2.169711876317648
+      },
+      {
+        "month": "2025-07",
+        "policy_rate": 2.5,
+        "inflation": 2.0941032156313044
+      },
+      {
+        "month": "2025-08",
+        "policy_rate": 2.5,
+        "inflation": 1.6675397241138423
+      },
+      {
+        "month": "2025-09",
+        "policy_rate": 2.5,
+        "inflation": 2.1020497165285645
+      },
+      {
+        "month": "2025-10",
+        "policy_rate": 2.5,
+        "inflation": 2.3803295840962635
+      },
+      {
+        "month": "2025-11",
+        "policy_rate": 2.5,
+        "inflation": 2.447552447552437
+      },
+      {
+        "month": "2025-12",
+        "policy_rate": 2.5,
+        "inflation": 2.3148551039944287
+      },
+      {
+        "month": "2026-01",
+        "policy_rate": 2.5,
+        "inflation": 2.0050125313283207
+      },
+      {
+        "month": "2026-02",
+        "policy_rate": 2.5,
+        "inflation": 1.9986216402481105
+      },
+      {
+        "month": "2026-03",
+        "policy_rate": 2.5,
+        "inflation": 2.158397110671584
+      },
+      {
+        "month": "2026-04",
+        "policy_rate": 2.5,
+        "inflation": 2.5691699604743157
+      },
+      {
+        "month": "2026-05",
+        "policy_rate": 2.5,
+        "inflation": 3.1392448610991774
+      },
+      {
+        "month": "2026-06",
+        "policy_rate": 2.5,
+        "inflation": 3.1639583870690435
+      },
+      {
+        "month": "2026-07",
+        "policy_rate": 2.629032258064516,
+        "inflation": 2.7892207346378317
+      },
+      {
+        "month": "2026-08",
+        "policy_rate": 2.7903225806451615,
+        "inflation": 3.091455560326306
+      },
+      {
+        "month": "2026-09",
+        "policy_rate": 3.0,
+        "inflation": 2.878865539039821
+      }
+    ],
+    "latest": {
+      "month": "2026-09",
+      "policy_rate": 3.0,
+      "inflation": 2.878865539039821,
+      "gap": 0.12113446096017899
+    },
+    "last": {
+      "policy_rate": "2026-09",
+      "inflation": "2026-09"
+    },
+    "fresh": [
+      "policy_rate",
+      "cpi_index"
+    ],
+    "failed": {},
+    "checked_at": "2026-10-19T14:56:23.376497",
+    "stale": false
   }
 }

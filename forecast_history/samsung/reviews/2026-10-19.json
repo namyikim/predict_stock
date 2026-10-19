@@ -3,7 +3,7 @@
   "name": "삼성전자",
   "peer_name": "SK하이닉스",
   "session_date": "2026-10-19",
-  "generated_at": "2026-10-19 16:46 KST",
+  "generated_at": "2026-10-19 17:31 KST",
   "summary": {
     "prev_close": 215500.0,
     "open": 207000.0,
@@ -15,11 +15,11 @@
     "c2c": 0.011600928074245953,
     "high_vs_open": 0.06038647342995174,
     "low_vs_open": -0.0024154589371980784,
-    "volume": 17194346.0,
-    "volume_ratio": 0.9494332836941309,
+    "volume": 17456835.0,
+    "volume_ratio": 0.9639273384958423,
     "kospi_c2c": 0.017635688531676852,
     "peer_c2c": 0.0039308176100629755,
-    "usdkrw_chg": -0.007166550357203261,
+    "usdkrw_chg": -0.00796445208957397,
     "us_nights": 1,
     "sox_ret": -0.0383310486013384,
     "nasdaq_ret": -0.021450206699957897,
@@ -81,11 +81,11 @@
       "last_time": "2026-10-17T08:55:00+09:00"
     },
     "nvidia_ah": {
-      "regular_close": 214.1300048828125,
+      "regular_close": 214.13999938964844,
       "last": 213.7494,
-      "ret": -0.001777447691278855,
-      "low_ret": -0.00223884963284271,
-      "high_ret": 0.0034558216985633994,
+      "ret": -0.001824037502389686,
+      "low_ret": -0.002285417909047127,
+      "high_ret": 0.003408987636276395,
       "last_time": "2026-10-17T08:55:00+09:00"
     },
     "session_cross": {
@@ -115,7 +115,15 @@
         "purpose": "임직원 주식보상",
         "rcept_no": "20260821000616"
       }
-    ]
+    ],
+    "foreign_pressure": {
+      "state": "selling_intensified",
+      "previous_ratio": -0.07353872818492858,
+      "recent_ratio": -0.10487512760639482,
+      "previous_daily_net": -1203705.2,
+      "recent_daily_net": -2443505.0
+    },
+    "buyback_transition": null
   },
   "classification": {
     "labels": [
@@ -123,27 +131,21 @@
       "지수 동조"
     ],
     "reasons": [
-      "09:40 봉 +1.65%(σ의 4.75배, 거래량 2.47배)가 세션 +5.31%의 94%",
-      "KOSPI +1.76% vs 종목 +1.16%, 5분 수익률 상관 0.88 — 종목 고유 요인이 약함"
+      "09:40 봉 +1.65%(σ의 4.78배, 거래량 2.47배)가 세션 +5.31%의 94%",
+      "KOSPI +1.76% vs 종목 +1.16%, 5분 수익률 상관 0.87 — 종목 고유 요인이 약함"
     ]
   },
   "events": [
     {
       "time": "2026-10-19T09:40:00+09:00",
       "ret": 0.01650943396226423,
-      "z": 4.75,
+      "z": 4.78,
       "volume_ratio": 2.47,
       "cum_before": -0.0023529411764705577,
       "cum_after": 0.014117647058823568,
       "session_share": 0.9355345911949764,
-      "score": 5.249650307275938,
+      "score": 5.277485385273638,
       "news": [
-        {
-          "time": "2026-10-19T09:00:00+09:00",
-          "title": "역대급 실적에도 주가는 연일 급락…삼성·SK ‘호남 반도체 속도전’ 변수는",
-          "source": "에너지경제신문",
-          "link": "https://news.google.com/rss/articles/CBMiY0FVX3lxTE5SM0lUN0ZYTlVFTnJ4ZVdjQkdkc1RtSW4wa09KZmFSXy1ZOTZKMTBYeW80OUx2X1YyLVZEVTctV2Jsa3Fld3NDZml3cTdncUNWTUw1eHZfYXBNc2wwbGM1ZzdNSQ?oc=5"
-        },
         {
           "time": "2026-10-19T08:54:18+09:00",
           "title": "美 반도체주 급락 충격…삼성전자·SK하이닉스 프리마켓 5%대 급락",
@@ -167,25 +169,25 @@
           "title": "저평가된 삼성전자, 배당보다 소각이 낫다는데…주주환원 셈법은 |",
           "source": "연합인포맥스",
           "link": "https://news.google.com/rss/articles/CBMidEFVX3lxTE5YeVBEUmM0VWM3S2dLdVI0WnVfWUo0RkNGdkM1VWl5QlJGZ2h0cnZzQkNFSzgtRnVZM1ZjWGJENG9uUC1WNmVUSTFGY2FtdE55QkVvSS1NdDgxSE9QQjlOLTFKNzhJcWJxdFJpcGE4Snp1QXdL?oc=5"
+        },
+        {
+          "time": "2026-10-19T09:52:00+09:00",
+          "title": "[특징주] 삼성전자·SK하이닉스, 美 반도체주 급락 여파에 동반 하락",
+          "source": "뉴스핌",
+          "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE9PZkFmU1M2eDBZZzFlXzA4WTFUckxCdDlJQXdzOU4xQklMMk9VcGdyaUIxSFJBSEZNYXQ0OU1TNDFzOVEtdHQ3NmE0LXVCYVBwZVcydGRiaEdQcEFV?oc=5"
         }
       ]
     },
     {
       "time": "2026-10-19T10:15:00+09:00",
-      "ret": 0.01041666666666674,
-      "z": 3.0,
+      "ret": 0.012761020881670637,
+      "z": 3.7,
       "volume_ratio": 2.55,
-      "cum_before": 0.016470588235294015,
+      "cum_before": 0.014117647058823568,
       "cum_after": 0.027058823529411802,
-      "session_share": 0.5902777777777841,
-      "score": 3.509643907979928,
+      "session_share": 0.7231245166280054,
+      "score": 4.206270483552388,
       "news": [
-        {
-          "time": "2026-10-19T09:00:00+09:00",
-          "title": "역대급 실적에도 주가는 연일 급락…삼성·SK ‘호남 반도체 속도전’ 변수는",
-          "source": "에너지경제신문",
-          "link": "https://news.google.com/rss/articles/CBMiY0FVX3lxTE5SM0lUN0ZYTlVFTnJ4ZVdjQkdkc1RtSW4wa09KZmFSXy1ZOTZKMTBYeW80OUx2X1YyLVZEVTctV2Jsa3Fld3NDZml3cTdncUNWTUw1eHZfYXBNc2wwbGM1ZzdNSQ?oc=5"
-        },
         {
           "time": "2026-10-19T08:54:18+09:00",
           "title": "美 반도체주 급락 충격…삼성전자·SK하이닉스 프리마켓 5%대 급락",
@@ -209,6 +211,12 @@
           "title": "저평가된 삼성전자, 배당보다 소각이 낫다는데…주주환원 셈법은 |",
           "source": "연합인포맥스",
           "link": "https://news.google.com/rss/articles/CBMidEFVX3lxTE5YeVBEUmM0VWM3S2dLdVI0WnVfWUo0RkNGdkM1VWl5QlJGZ2h0cnZzQkNFSzgtRnVZM1ZjWGJENG9uUC1WNmVUSTFGY2FtdE55QkVvSS1NdDgxSE9QQjlOLTFKNzhJcWJxdFJpcGE4Snp1QXdL?oc=5"
+        },
+        {
+          "time": "2026-10-19T09:52:00+09:00",
+          "title": "[특징주] 삼성전자·SK하이닉스, 美 반도체주 급락 여파에 동반 하락",
+          "source": "뉴스핌",
+          "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE9PZkFmU1M2eDBZZzFlXzA4WTFUckxCdDlJQXdzOU4xQklMMk9VcGdyaUIxSFJBSEZNYXQ0OU1TNDFzOVEtdHQ3NmE0LXVCYVBwZVcydGRiaEdQcEFV?oc=5"
         }
       ]
     }
@@ -221,7 +229,7 @@
     "pattern": "저점 후 반등"
   },
   "closing_share": 0.15228586442459158,
-  "intraday_corr_kospi": 0.8820852266254855,
+  "intraday_corr_kospi": 0.8725477579402908,
   "intraday_note": "장중 봉은 09:05~14:55까지만 있어 마감 구간(14:55~15:30)은 일봉 종가로만 봅니다(그 구간 +0.81%).",
   "intraday_coverage": "09:05~14:55",
   "intraday_path": [
@@ -253,12 +261,12 @@
     {
       "time": "2026-10-19T09:30:00+09:00",
       "price": 212000.0,
-      "volume": 221708.0
+      "volume": 221622.0
     },
     {
       "time": "2026-10-19T09:35:00+09:00",
       "price": 212000.0,
-      "volume": 226928.0
+      "volume": 227014.0
     },
     {
       "time": "2026-10-19T09:40:00+09:00",
@@ -292,13 +300,13 @@
     },
     {
       "time": "2026-10-19T10:10:00+09:00",
-      "price": 216000.0,
-      "volume": 258762.0
+      "price": 215500.0,
+      "volume": 258817.0
     },
     {
       "time": "2026-10-19T10:15:00+09:00",
       "price": 218250.0,
-      "volume": 352772.0
+      "volume": 352717.0
     },
     {
       "time": "2026-10-19T10:20:00+09:00",
@@ -348,12 +356,12 @@
     {
       "time": "2026-10-19T11:05:00+09:00",
       "price": 215000.0,
-      "volume": 139725.0
+      "volume": 139724.0
     },
     {
       "time": "2026-10-19T11:10:00+09:00",
       "price": 216000.0,
-      "volume": 138460.0
+      "volume": 138461.0
     },
     {
       "time": "2026-10-19T11:15:00+09:00",
@@ -423,12 +431,12 @@
     {
       "time": "2026-10-19T12:20:00+09:00",
       "price": 217000.0,
-      "volume": 189886.0
+      "volume": 189903.0
     },
     {
       "time": "2026-10-19T12:25:00+09:00",
       "price": 217000.0,
-      "volume": 75790.0
+      "volume": 75773.0
     },
     {
       "time": "2026-10-19T12:30:00+09:00",
@@ -585,19 +593,13 @@
     {
       "time": "2026-10-19T09:40:00+09:00",
       "ret": 0.01650943396226423,
-      "z": 4.75,
+      "z": 4.78,
       "volume_ratio": 2.47,
       "cum_before": -0.0023529411764705577,
       "cum_after": 0.014117647058823568,
       "session_share": 0.9355345911949764,
-      "score": 5.249650307275938,
+      "score": 5.277485385273638,
       "news": [
-        {
-          "time": "2026-10-19T09:00:00+09:00",
-          "title": "역대급 실적에도 주가는 연일 급락…삼성·SK ‘호남 반도체 속도전’ 변수는",
-          "source": "에너지경제신문",
-          "link": "https://news.google.com/rss/articles/CBMiY0FVX3lxTE5SM0lUN0ZYTlVFTnJ4ZVdjQkdkc1RtSW4wa09KZmFSXy1ZOTZKMTBYeW80OUx2X1YyLVZEVTctV2Jsa3Fld3NDZml3cTdncUNWTUw1eHZfYXBNc2wwbGM1ZzdNSQ?oc=5"
-        },
         {
           "time": "2026-10-19T08:54:18+09:00",
           "title": "美 반도체주 급락 충격…삼성전자·SK하이닉스 프리마켓 5%대 급락",
@@ -621,6 +623,12 @@
           "title": "저평가된 삼성전자, 배당보다 소각이 낫다는데…주주환원 셈법은 |",
           "source": "연합인포맥스",
           "link": "https://news.google.com/rss/articles/CBMidEFVX3lxTE5YeVBEUmM0VWM3S2dLdVI0WnVfWUo0RkNGdkM1VWl5QlJGZ2h0cnZzQkNFSzgtRnVZM1ZjWGJENG9uUC1WNmVUSTFGY2FtdE55QkVvSS1NdDgxSE9QQjlOLTFKNzhJcWJxdFJpcGE4Snp1QXdL?oc=5"
+        },
+        {
+          "time": "2026-10-19T09:52:00+09:00",
+          "title": "[특징주] 삼성전자·SK하이닉스, 美 반도체주 급락 여파에 동반 하락",
+          "source": "뉴스핌",
+          "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE9PZkFmU1M2eDBZZzFlXzA4WTFUckxCdDlJQXdzOU4xQklMMk9VcGdyaUIxSFJBSEZNYXQ0OU1TNDFzOVEtdHQ3NmE0LXVCYVBwZVcydGRiaEdQcEFV?oc=5"
         }
       ],
       "price": 215500.0,
@@ -628,20 +636,14 @@
     },
     {
       "time": "2026-10-19T10:15:00+09:00",
-      "ret": 0.01041666666666674,
-      "z": 3.0,
+      "ret": 0.012761020881670637,
+      "z": 3.7,
       "volume_ratio": 2.55,
-      "cum_before": 0.016470588235294015,
+      "cum_before": 0.014117647058823568,
       "cum_after": 0.027058823529411802,
-      "session_share": 0.5902777777777841,
-      "score": 3.509643907979928,
+      "session_share": 0.7231245166280054,
+      "score": 4.206270483552388,
       "news": [
-        {
-          "time": "2026-10-19T09:00:00+09:00",
-          "title": "역대급 실적에도 주가는 연일 급락…삼성·SK ‘호남 반도체 속도전’ 변수는",
-          "source": "에너지경제신문",
-          "link": "https://news.google.com/rss/articles/CBMiY0FVX3lxTE5SM0lUN0ZYTlVFTnJ4ZVdjQkdkc1RtSW4wa09KZmFSXy1ZOTZKMTBYeW80OUx2X1YyLVZEVTctV2Jsa3Fld3NDZml3cTdncUNWTUw1eHZfYXBNc2wwbGM1ZzdNSQ?oc=5"
-        },
         {
           "time": "2026-10-19T08:54:18+09:00",
           "title": "美 반도체주 급락 충격…삼성전자·SK하이닉스 프리마켓 5%대 급락",
@@ -665,6 +667,12 @@
           "title": "저평가된 삼성전자, 배당보다 소각이 낫다는데…주주환원 셈법은 |",
           "source": "연합인포맥스",
           "link": "https://news.google.com/rss/articles/CBMidEFVX3lxTE5YeVBEUmM0VWM3S2dLdVI0WnVfWUo0RkNGdkM1VWl5QlJGZ2h0cnZzQkNFSzgtRnVZM1ZjWGJENG9uUC1WNmVUSTFGY2FtdE55QkVvSS1NdDgxSE9QQjlOLTFKNzhJcWJxdFJpcGE4Snp1QXdL?oc=5"
+        },
+        {
+          "time": "2026-10-19T09:52:00+09:00",
+          "title": "[특징주] 삼성전자·SK하이닉스, 美 반도체주 급락 여파에 동반 하락",
+          "source": "뉴스핌",
+          "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE9PZkFmU1M2eDBZZzFlXzA4WTFUckxCdDlJQXdzOU4xQklMMk9VcGdyaUIxSFJBSEZNYXQ0OU1TNDFzOVEtdHQ3NmE0LXVCYVBwZVcydGRiaEdQcEFV?oc=5"
         }
       ],
       "price": 218250.0,
@@ -673,28 +681,16 @@
   ],
   "overnight_news": [
     {
-      "time": "2026-10-19T09:00:00+09:00",
-      "title": "역대급 실적에도 주가는 연일 급락…삼성·SK ‘호남 반도체 속도전’ 변수는",
-      "source": "에너지경제신문",
-      "link": "https://news.google.com/rss/articles/CBMiY0FVX3lxTE5SM0lUN0ZYTlVFTnJ4ZVdjQkdkc1RtSW4wa09KZmFSXy1ZOTZKMTBYeW80OUx2X1YyLVZEVTctV2Jsa3Fld3NDZml3cTdncUNWTUw1eHZfYXBNc2wwbGM1ZzdNSQ?oc=5"
-    },
-    {
       "time": "2026-10-19T08:54:18+09:00",
       "title": "美 반도체주 급락 충격…삼성전자·SK하이닉스 프리마켓 5%대 급락",
       "source": "www.ebn.co.kr",
       "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE5YSjQzS1VzX0J6OWdyZ0x5VkU4aXlRSWR0Z3dPX0dmNzdQckNxY3RjNkc1NHNrVFhZaVJjdWhqTVVnTkoxcVJqUkVoa1pIQ3lacVZTVUgzemExejNrcGgycUdyd2k2UktC?oc=5"
     },
     {
-      "time": "2026-10-19T07:48:00+09:00",
-      "title": "[증시키워드] SK하이닉스 솔리다임 美 상장 검토⋯삼성전자 노조 갈등 고조",
-      "source": "이투데이",
-      "link": "https://news.google.com/rss/articles/CBMiVEFVX3lxTFBCNFRzSzBrQzZsNmRVcy0yaUw2dWJRX09VRnNwS1FFZ2x4LWFSZ3hEbWRzTlJ0ZzBBMTZzZlBtMkJBNHNNVk1Mc2x1M2tEeDBBcVhMRw?oc=5"
-    },
-    {
       "time": "2026-10-19T07:55:56+09:00",
       "title": "삼성전자·SK하이닉스, 폭락장 속 엇갈린 전망…딥시크 충격 넘어 반등 가능성은",
       "source": "조세일보",
-      "link": "https://news.google.com/rss/articles/CBMidEFVX3lxTE9hVHZ0eVFIRXVfSzZxZGxQUUZLa1R1emZVZXppeFZGem5ZTmJRdlNsNWxObm1ab3FCUjRWOG5QR2xFUlM3TGx3bTBMdEdQSmI1ZmxMNnFRSHFoSzFTUlRYNHRVRV8wdUZUcGZ1LVJYRGxVSUNR?oc=5"
+      "link": "https://news.google.com/rss/articles/CBMiX0FVX3lxTE1RcEZqUTBwa3E1cV9NTkZkY2I5czZwU0dwNTVKLTdQN0NNQ2xtUDNlbXlzNzZaQ0hJbjZWUzBQYUU3V2V1MU9lYnI4UUtZMWUwZGtOeEJITmowNEZUQVhv?oc=5"
     },
     {
       "time": "2026-10-19T08:45:38+09:00",
@@ -705,10 +701,22 @@
   ],
   "top_news": [
     {
-      "time": "2026-10-19T15:00:59+09:00",
-      "title": "AI 투자 수익성 우려에 반도체주 출렁…삼성전자는 장중 소폭 반등",
-      "source": "한국공공정책신문",
-      "link": "https://news.google.com/rss/articles/CBMiQ0FVX3lxTFA4N21GS3FGUmo1OXd6Q3BPVzNPSTFvWGlLNEVDSnBhVGNqel9rekFhaTFTNGR4S3pkWkcwYm03SXNyaXM?oc=5"
+      "time": "2026-10-19T17:26:15+09:00",
+      "title": "삼성전자, 엔비디아 차세대 메모리 관련 TSMC에 손 내밀어···마이크론·SK하이닉스도 동일 요청: 보도",
+      "source": "Benzinga",
+      "link": "https://news.google.com/rss/articles/CBMi1AJBVV95cUxQblVONl9jLWRzNENpS2s1dnZHSjZhMnlJRXNrTl9rSHJaR2o2dFduMDBJbkVzaHljQXlQeGZESFByLTZZekZpNmVPMVIwZkd2em5QQ2h6UXVMNXE5aUJaUmtqekJrTm9tVm1YYmViLXF4ZjNudFhPR2U5LVNjLWZpWTlBd1JhV1YwQndOYTRnOE5wOXI2QXpJUjBtRS1XTUFwWlhYWGY3MFNfWDZpOEVFeFZFYlBvQlpmQWxkMFVkUDczVTJMczY3aGlVTmlCUXZTckxMRjMyd2VDNkdqc0xrU2dTRTdyd1hZbHhWRGw5aS1JeEdMcnZFZmF4M1EyWTJkWkcxSlpDcmlsMXdNTHc5OGZvSUo2SnRpN2ZnZnNyQUNpY09XbXpvRThmQlVLMERqN0VPWTRvQmpGYVZ5Ry1vazgzOXozYTF0Nm1scTdZSW53NUU4?oc=5"
+    },
+    {
+      "time": "2026-10-19T13:30:20+09:00",
+      "title": "삼성전자, 엔비디아용 메모리 일부 부품 TSMC에 맡긴다",
+      "source": "진일보 | 전남일보",
+      "link": "https://news.google.com/rss/articles/CBMib0FVX3lxTE5NMDc3eHYwWFRIc3hjcGNXRXg0enprb2Z1N25leWlWcnZyQ05aMGVObWtDd08xZWxDXy0zRUtRSWI5MFZFbG03WkxZS0hlZHVYOVU0MC1RUExJY1pGQms0QzhTV2RBTHFkWjVMa1U2QQ?oc=5"
+    },
+    {
+      "time": "2026-10-19T16:27:44+09:00",
+      "title": "[영상] 삼성전자, 엔비디아 차세대 HBM 베이스다이 TSMC 공정 활용",
+      "source": "nbn 시사경제",
+      "link": "https://news.google.com/rss/articles/CBMiakFVX3lxTE1nNDI5NU4ybWVKbUV4QmNlRFphRU51c01OQ0JoWUZ1T3l1TlZjODVadFVYaWFqRnZxdWNVSE1TbkFMMGcxSHphM2NZcW9wdV9tMnVkQnliS3BvWnB0bmdDOGFsVXRZOEZIMkE?oc=5"
     },
     {
       "time": "2026-10-19T16:34:00+09:00",
@@ -727,27 +735,90 @@
       "title": "\"실적은 최고인데 주가는 폭락\"…삼성전자·SK하이닉스 반등 시점은",
       "source": "뉴시스",
       "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE5Ra3pTUDlQUnFjcVpxamkwWFRtSUM1T2QtUWdZX3hfczg1eWRjSUEtVmQzNDV1MVY3V0FSYVM2ZXNEY2x6S2prNEVQZDlLV21adkN6eHVialRuT1M1MjJmSNIBeEFVX3lxTE9tSkhhdlBJM3Bva0s3ZmlhWWFCN2t5Tm5CRm82WmFFVDlEMGZndjZRUXRxcEdxNFVUdGI4djg3bGY1aENsN3daREx3VGVvWnJEMjF4WWRkX2hrYjJnMzdaeXRTM05paGNkaGVsNno3ZHFRVjBGZ19UWA?oc=5"
-    },
-    {
-      "time": "2026-10-19T13:42:45+09:00",
-      "title": "창신메모리, 낸드플래시 시장 진출 추진…삼성전자·YMTC와 메모리 경쟁 확대",
-      "source": "제민일보",
-      "link": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE1mNlhUek1wbUI1OUtYNlpWQmxXTkNiXzM5U2lFOUxRbEZ0UFVGMnNsdzE3UEdUMHNxaEkwelk5SGdFVmpCUUpkTC1tUE1kYWV6NVdXRnprUDRsaUJYazBaRmVIQ01mNFE?oc=5"
-    },
-    {
-      "time": "2026-10-19T15:52:19+09:00",
-      "title": "美AI 충격 이겨낸 코스피 5760대로 저가 매수세 유입…삼성전자 1%↑",
-      "source": "중소기업신문",
-      "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE56bVZOQTBfT2EwbkRoTDlnMVdLc1FPcmlQdlE5RFBlbVZBOHl6cllNOHVhQTlJQ1VUWW1BUVRnWXRnYzRZVEZTMVNJekNqRkszWkRtRzBRZFp5QlB3TU1hQlRCN1BBOUZlY0VMOQ?oc=5"
     }
   ],
-  "disclosures": [],
+  "disclosures": [
+    {
+      "report_nm": "임원ㆍ주요주주특정증권등소유상황보고서",
+      "rcept_dt": "20261019",
+      "rcept_no": "20261019000318",
+      "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261019000318"
+    }
+  ],
   "disclosure_note": null,
-  "flows": null,
-  "flow_story": null,
+  "flows": "외국인 +929,309 / 기관 +24,778",
+  "flow_story": {
+    "direction": "up",
+    "c2c": 0.011600928074245953,
+    "actors": [
+      {
+        "key": "foreign_net",
+        "name": "외국인",
+        "shares": 929309.0,
+        "won": 202589362000.0,
+        "vs_usual": 0.3829916430903586
+      },
+      {
+        "key": "inst_net",
+        "name": "기관",
+        "shares": 24778.0,
+        "won": 5401604000.0,
+        "vs_usual": 0.01694855431800298
+      },
+      {
+        "key": "indiv_net",
+        "name": "개인",
+        "shares": -654313.0,
+        "won": -142640234000.0,
+        "vs_usual": 0.21738927118048484
+      },
+      {
+        "key": "other_net",
+        "name": "기타 법인 등(추정)",
+        "shares": -299774.0,
+        "won": -65350732000.0,
+        "vs_usual": null
+      }
+    ],
+    "lead": {
+      "key": "foreign_net",
+      "name": "외국인",
+      "shares": 929309.0,
+      "won": 202589362000.0,
+      "vs_usual": 0.3829916430903586
+    },
+    "counter": {
+      "key": "indiv_net",
+      "name": "개인",
+      "shares": -654313.0,
+      "won": -142640234000.0,
+      "vs_usual": 0.21738927118048484
+    },
+    "all_one_side": false,
+    "observations": [
+      "전일까지 20거래일 고점: 종가 돌파 없음 · 종가 위치 -23.64%.",
+      "전일까지 60거래일 고점: 종가 돌파 없음 · 종가 위치 -24.31%.",
+      "같은 5거래일 수익률: 이 종목 -12.97%, SK하이닉스 -20.44% · 차이 +7.46%p.",
+      "같은 20거래일 수익률: 이 종목 -12.27%, SK하이닉스 -24.44% · 차이 +12.16%p.",
+      "같은 60거래일 수익률: 이 종목 -10.66%, SK하이닉스 -27.59% · 차이 +16.94%p.",
+      "외국인 순매도 지속·거래량 대비 강도 강화: 직전 5일 → 최근 5일 순매수/거래량 -7.35% → -10.49% (일평균 -1,203,705주 → -2,443,505주). 향후 상승을 뜻하는 신호는 아닙니다.",
+      "코스피도 +1.76% — 시장 전체가 같은 방향이었습니다.",
+      "SK하이닉스도 +0.39%였지만 이 종목이 더 크게 움직였습니다.",
+      "원/달러 -0.80%(원화 강세) — 외국인 매수와 같은 방향의 환율 움직임입니다.",
+      "전날 밤 SOX는 -3.83%로 반대 방향이어서 미국 반도체 흐름으로는 설명되지 않습니다.",
+      "전날 밤 마이크론은 -5.63%로 반대 방향이었습니다.",
+      "직전 5거래일 -17.75% 내린 뒤의 매수 — 저가 매수와 맞는 모양입니다.",
+      "종가가 당일 범위(저가 206,500~고가 219,500원)의 위쪽 88% 지점 — 고가 부근에서 마감했습니다.",
+      "우리 장중(09:00~15:30) 나스닥100 선물 +0.55% · 미 10년물 국채 선물 -0.07% · 원/달러 -0.34%(원화 강세).",
+      "자사주 매입 기간 중(직접 취득 2026-08-24~2026-11-21, 14,999,999,992,000, DART 공시) — 회사 자신의 매수는 기타 법인으로 잡힙니다."
+    ],
+    "estimated_indiv": false,
+    "source_note": "출처 naver+cache · 장 마감 직후 잠정치라 저녁 확정치와 다를 수 있습니다 · KRX는 받지 못함(pykrx 미설치)"
+  },
   "flow_status": {
-    "state": "pending",
-    "detail": "최신 2026-10-16"
+    "state": "ok",
+    "detail": "naver+cache",
+    "krx_error": "pykrx 미설치"
   },
   "context": {},
   "market": {
@@ -758,9 +829,9 @@
     "steady": 33,
     "upper": 2,
     "lower": 1,
-    "individual": -11248.0,
-    "foreign": -16.0,
-    "institution": 5768.0,
+    "individual": -12042.0,
+    "foreign": 726.0,
+    "institution": 5780.0,
     "prev_close": 5668.05,
     "open": 5488.41,
     "high": 5768.01,

@@ -94,6 +94,16 @@ def render(result, name, table, TD, TDR, TH, THR):
     parts = ['<h4 style="font-size:14px;margin:18px 0 6px">과거 수출·환율 관계와 주가 '
              '<span style="font-size:11px;color:#8a9199;font-weight:400">과거 수출·환율 관계에 따른 기준값</span></h4>',
              f'<div style="border:1px solid #e5e5e5;border-radius:6px;padding:8px">{svg}</div>']
+    data_info = result.get("data_info") or {}
+    added = data_info.get("months_added") or []
+    source_label = "관세청 보관본 환산 잠정치" if data_info.get("source") == "customs_cache" else "관세청 환산 잠정치"
+    source_note = (f' · {source_label} {e(", ".join(added))} 보완(배율 {data_info["scale"]:.3f})'
+                   if added else '')
+    parts.insert(1, '<div style="font-size:12px;color:#6b7178;margin:6px 0">'
+                 f'주가·수출·환율 공통 관측월 <b>{e(str(last))}</b> · KOSIS 원본 '
+                 f'{e(str(data_info.get("kosis_last") or last))}{source_note}. '
+                 '완료된 월만 표시합니다. 10일·20일 추정은 이 그래프에 넣지 않습니다. '
+                 f'수출 스냅샷 확인 {e(str(data_info.get("checked_at") or "시각 미기록"))}.</div>')
     state = ("과거 관계의 기준값보다 높습니다" if end["gap"] > 0.05 else "과거 관계의 기준값보다 낮습니다" if end["gap"] < -0.05
              else "과거 관계의 기준값 부근입니다")
     gap = out["gap"]

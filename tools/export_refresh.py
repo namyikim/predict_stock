@@ -45,9 +45,11 @@ def resolve_exports(monthly, flash, now=None):
     return out.sort_index(), applied
 
 
-def snapshot(exports, applied, flash_info, generated_at):
+def snapshot(exports, applied, flash_info, generated_at, monthly_info=None):
     rows = [{'month': f'{m:%Y-%m}', 'value': float(v)} for m, v in exports.items()]
     payload = {'series': rows, 'applied': applied, 'flash_info': flash_info}
+    if monthly_info is not None:
+        payload['monthly_info'] = monthly_info
     digest = hashlib.sha256(json.dumps(payload, sort_keys=True).encode()).hexdigest()[:20]
     return {**payload, 'snapshot_hash': digest, 'generated_at': generated_at}
 

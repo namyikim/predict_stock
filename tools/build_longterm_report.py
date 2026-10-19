@@ -688,6 +688,7 @@ def korea_cli_outlook(out_dir, fallback_dir, fetch=True, chart_start="2011-01"):
     import run_cli_forecast as cf
 
     cli = None
+    cli_fresh, cli_errors = False, []
     if fetch:
         try:
             frame = oecd_module.fetch_oecd_cli("KOR", "1995-01-01")
@@ -696,7 +697,9 @@ def korea_cli_outlook(out_dir, fallback_dir, fetch=True, chart_start="2011-01"):
             (out_dir / "macro_cache").mkdir(parents=True, exist_ok=True)
             (out_dir / "macro_cache" / "cli_kor.csv").write_text(frame.to_csv(index=False), encoding="utf-8")
             cli = frame.set_index("month")["value"]
+            cli_fresh = True
         except Exception as exc:
+            cli_errors.append("OECD 조회 실패")
             print("  한국 선행지수 조회 실패 → 보관본:", exc, flush=True)
     if cli is None:
         path = fallback_dir / "cli_kor.csv"
@@ -713,6 +716,20 @@ def korea_cli_outlook(out_dir, fallback_dir, fetch=True, chart_start="2011-01"):
     if path.exists():
         k = pd.read_csv(path, parse_dates=["month"])
         kospi = k.set_index("month")["value"].asfreq("MS").dropna()
+    kospi_fresh = False
+    if fetch:
+        try:
+            # 보관본만 읽던 코스피도 일일 실행에서 월말 확정 종가를 새로 확인한다.
+            received = monthly_prices("^KS11", out_dir / "cache", fetch=True)
+            received.index = received.index.to_period("M").to_timestamp()
+            if not received.empty:
+                kospi = received.combine_first(kospi) if kospi is not None else received
+                kospi_fresh = True
+                (out_dir / "macro_cache").mkdir(parents=True, exist_ok=True)
+                kospi.rename_axis("month").reset_index(name="value").to_csv(
+                    out_dir / "macro_cache" / "kospi_monthly.csv", index=False)
+        except Exception:
+            pass  # 기존 보관본은 유지하고 화면에는 별도 조회 상태를 표시한다.
 
     table_rows = cf.walk_forward(cli, [], min_train=cf.MIN_TRAIN, lags=2)
     scores = cf.evaluate(table_rows)
@@ -723,6 +740,12 @@ def korea_cli_outlook(out_dir, fallback_dir, fetch=True, chart_start="2011-01"):
     end = ahead.iloc[-1]
     return {
         "svg": svg, "last_month": f"{cli.index[-1]:%Y-%m}", "last_value": last_value,
+        "data_info": {"last": f"{cli.index[-1]:%Y-%m}", "fresh": cli_fresh,
+                      "source": "OECD API" if cli_fresh else "OECD 보관본", "errors": cli_errors,
+                      "checked_at": datetime.now(KST).strftime("%Y-%m-%d %H:%M KST")},
+        "kospi_info": {"last": f"{kospi.index[-1]:%Y-%m}" if kospi is not None and len(kospi) else None,
+                       "fresh": kospi_fresh, "source": "Yahoo Finance" if kospi_fresh else "코스피 보관본",
+                       "checked_at": datetime.now(KST).strftime("%Y-%m-%d %H:%M KST")},
         "rows": ahead.to_dict("records"),
         "change_6m": float(end["point"]) - last_value,
         "model": str(end["model"]), "reason": str(end["reason"]),
@@ -745,6 +768,9 @@ def render_cli_outlook(outlook):
     level = ("100 위에 머뭅니다" if float(end["point"]) > 100 else "100 아래로 내려갑니다")
     parts = ['<h4 style="font-size:14px;margin:22px 0 6px">경기선행지수는 앞으로 어디로 가는가 '
              '<span style="font-weight:400;color:#8a9199;font-size:12px">&nbsp;OECD 한국 · 6개월</span></h4>']
+    from longterm_freshness import note
+    parts.append(note("한국 선행지수", outlook.get("data_info")))
+    parts.append(note("코스피 월말 종가", outlook.get("kospi_info")))
     parts.append(f'<div style="border:1px solid #e5e5e5;border-radius:6px;padding:8px">{outlook["svg"]}</div>')
     body = ""
     for row in outlook["rows"]:
@@ -796,25 +822,12 @@ def g20_exports_outlook(out_dir, fallback_dir, fetch=True, chart_start="2000-01"
             g20 = frame.set_index("month")["value"].asfreq("MS").dropna()
             break
 
-    exports, fresh = None, False
-    if fetch:
-        try:
-            key = oecd_module.fred_key()
-            if key:
-                frame = oecd_module.fetch_fred_monthly(KOREA_EXPORTS_SERIES, key, "1995-01-01")
-                cache = out_dir / "macro_cache"
-                cache.mkdir(parents=True, exist_ok=True)
-                (cache / "korea_exports.csv").write_text(frame.to_csv(index=False), encoding="utf-8")
-                exports, fresh = frame.set_index("month")["value"], True
-        except Exception as exc:
-            print("  한국 수출(FRED) 조회 실패 → 보관본:", exc, flush=True)
-    if exports is None:
-        path = fallback_dir / "korea_exports.csv"
-        if path.exists():
-            exports = pd.read_csv(path, parse_dates=["month"]).set_index("month")["value"]
-    if g20 is None or exports is None or len(g20) < cf.MIN_TRAIN + 24:
+    from longterm_freshness import load_exports
+    exports, exports_info = load_exports(out_dir / "macro_cache" / "korea_exports.csv",
+                                        [fallback_dir / "korea_exports.csv"], fetch=fetch)
+    if g20 is None or exports.empty or len(g20) < cf.MIN_TRAIN + 24:
         return None
-    exports = exports.asfreq("MS").dropna()
+    exports = exports.asfreq("MS")
     growth = (exports / exports.shift(12) - 1).dropna()
     if len(growth) < cf.MIN_TRAIN + 24:
         return None
@@ -835,7 +848,7 @@ def g20_exports_outlook(out_dir, fallback_dir, fetch=True, chart_start="2000-01"
         "growth_last_month": f"{growth.index[-1]:%Y-%m}", "growth_last": float(growth.iloc[-1]),
         "exports_record": bool(exports.iloc[-1] >= exports.max()),
         "lead_months": int(found[0]) if found else None, "corr": float(found[1]) if found else None,
-        "exports_fresh": fresh,
+        "exports_fresh": exports_info["fresh"], "exports_info": exports_info,
     }
 
 
@@ -850,6 +863,12 @@ def render_g20_exports_outlook(outlook):
     parts = ['<h4 style="font-size:14px;margin:22px 0 6px">세계 경기와 한국 수출은 같이 가는가 '
              '<span style="font-weight:400;color:#8a9199;font-size:12px">&nbsp;OECD G20 선행지수 · '
              '한국 수출 증가율 · 2000년부터</span></h4>']
+    from longterm_freshness import note
+    parts.append(note("G20 선행지수", outlook.get("g20_info")))
+    parts.append(note("한국 총수출(계절조정)", outlook.get("exports_info")))
+    parts.append('<div style="font-size:12px;color:#6b7178">총수출은 '
+                 '<a href="https://fred.stlouisfed.org/series/XTEXVA01KRM667S">OECD/FRED 계절조정 계열</a>입니다. '
+                 '더 빠른 관세청 미조정 수출과 정의가 달라 그대로 이어 붙이지 않습니다.</div>')
     parts.append(f'<div style="border:1px solid #e5e5e5;border-radius:6px;padding:8px">{outlook["svg"]}</div>')
     body = ""
     for row in rows:
@@ -1043,6 +1062,13 @@ def render_fragment(result):
     if r.get("chart_svg"):
         first = r.get("chart_first", "")
         parts.append('<h4 style="font-size:14px;margin:18px 0 6px">실제 통계치와 주가 — 추세를 빼고 겹쳐 보기</h4>')
+        from longterm_freshness import note
+        for key, label in (("semiconductor_exports", "반도체 수출 원본"), ("leading_cycle", "선행지수 원본")):
+            source = r.get("macro_sources", {}).get(key, "")
+            parts.append(note(label, {"last": r.get("macro_last", {}).get(key), "source": source,
+                                     "fresh": source == "KOSIS_API", "checked_at": r.get("generated_at")}))
+        parts.append(f'<div style="font-size:12px;color:#6b7178">주가 기준 {e(r["price_last"])} 월말. '
+                     '이 그림은 과거 검증과 같은 발표 지연을 적용합니다. 최신 수출 잠정치는 위 시나리오와 아래 수출·환율 참고 그래프에서 구분해 보여줍니다.</div>')
         parts.append(f'<div style="border:1px solid #e5e5e5;border-radius:6px;padding:8px">{r["chart_svg"]}</div>')
         parts.append(f'<div style="font-size:11px;color:#8a9199;margin-top:4px">시세는 Yahoo Finance 월말 수정종가({e(first)}부터 제공). '
                      '<b>읽는 법: 붉은·초록 선은 발표 지연만큼 2개월 오른쪽으로 밀려 있습니다.</b> KOSIS 통계는 두 달 뒤에야 볼 수 있어 '
@@ -1189,14 +1215,14 @@ def render_fragment(result):
             lines.append(f'<li><b>{label}</b>: 점 예측하지 않음 — {e(str(reason))}. '
                          f'위 국면별 분포와 유사 시기를 참고하세요.</li>')
     parts.append('<ul style="font-size:13px;margin:4px 0 0;padding-left:20px">' + "".join(lines) + '</ul>')
-    parts.append(f'<div style="font-size:11px;color:#8a9199;margin-top:8px">월 1회 갱신 · 시세 {e(r["price_last"])}까지 · '
+    parts.append(f'<div style="font-size:11px;color:#8a9199;margin-top:8px">하루 1회 새 자료 확인 · 월간 지표는 발표 후 반영 · 시세 {e(r["price_last"])}까지 · '
                  f'수출액 최신월 {e(r["macro_last"].get("semiconductor_exports", "?"))} · 선행지수 최신월 {e(r["macro_last"].get("leading_cycle", "?"))} · '
                  f'생성 {e(r["generated_at"])} · 이 절은 연구·교육용이며 투자 자문이 아닙니다.</div>')
     return "".join(parts)
 
 
 # ---------------------------------------------------------------------------
-def analyse(target, out_dir, fetch=True):
+def analyse(target, out_dir, fetch=True, exports_snapshot=None):
     spec = TARGETS[target]
     cache = out_dir / "cache"
     monthly = monthly_prices(spec["ticker"], cache, fetch=fetch)
@@ -1291,6 +1317,7 @@ def analyse(target, out_dir, fetch=True):
     try:
         g20_outlook = g20_exports_outlook(out_dir, fallback_dir, fetch=fetch)
         if g20_outlook:
+            g20_outlook["g20_info"] = {**cli_info, "checked_at": datetime.now(KST).strftime("%Y-%m-%d %H:%M KST")}
             print(f"  G20 선행지수·수출 증가율: {g20_outlook['g20_last_month']} "
                   f"{g20_outlook['g20_last']:.2f} · 수출 증가율 {g20_outlook['growth_last'] * 100:+.0f}%",
                   flush=True)
@@ -1300,8 +1327,12 @@ def analyse(target, out_dir, fetch=True):
     # 주가 결정 요인과 평가(2026-09-28): 반도체 수출액·원/달러 회귀의 적정 주가와 괴리. 실패하면 뺀다.
     try:
         import stock_valuation
-        stock_value = stock_valuation.analyse(spec["ticker"], macro, cache, fetch=fetch)
+        from longterm_freshness import monthly_exports
+        chart_exports, chart_info = monthly_exports(macro["semiconductor_exports"], exports_snapshot)
+        chart_macro = {**macro, "semiconductor_exports": chart_exports}
+        stock_value = stock_valuation.analyse(spec["ticker"], chart_macro, cache, fetch=fetch)
         if stock_value:
+            stock_value["data_info"] = chart_info
             sv = stock_value["out"].iloc[-1]
             print(f"  적정 주가: {stock_value['out'].index[-1]} 주가 {sv['price']:,.0f} · 적정 {sv['fair']:,.0f} · "
                   f"괴리 {sv['gap'] * 100:+.1f}% · R² {stock_value['fit']['r2']:.3f} · 뒤 절반 R² {stock_value['fit']['oos_r2']:+.2f}",
@@ -1358,10 +1389,11 @@ def main():
     args = parser.parse_args()
     out_dir = args.out / args.target
     out_dir.mkdir(parents=True, exist_ok=True)
-    result, frame = analyse(args.target, out_dir, fetch=not args.no_fetch)
+    exports_snapshot = (json.loads(args.exports_snapshot.read_text(encoding="utf-8"))
+                        if args.exports_snapshot else None)
+    result, frame = analyse(args.target, out_dir, fetch=not args.no_fetch, exports_snapshot=exports_snapshot)
     if args.exports_snapshot:
         from export_refresh import live_scenario
-        exports_snapshot = json.loads(args.exports_snapshot.read_text(encoding="utf-8"))
         result["live_exports"] = live_scenario(frame, result["features"], exports_snapshot,
                                                 result["evaluation"])
     from valuation_reference import load as load_valuation
@@ -1379,6 +1411,7 @@ def main():
     if result.get("stock_value"):        # 월별 틀 대신 식·적합도·마지막 달만 남긴다
         sv_out = result["stock_value"]["out"]
         saved["stock_value"] = {**result["stock_value"]["fit"], "month": str(sv_out.index[-1]),
+                                "data_info": result["stock_value"].get("data_info", {}),
                                 **{k: float(sv_out[k].iloc[-1]) for k in ("price", "fair", "gap", "exp12", "krw")}}
     (out_dir / "longterm.json").write_text(json.dumps(saved, ensure_ascii=False, indent=2, default=str), encoding="utf-8")
     (out_dir / "longterm.html").write_text(fragment, encoding="utf-8")
@@ -1402,6 +1435,10 @@ def main():
         tok = github_pages.token()
         # 이 블록의 발행은 모두 한 커밋으로 올라간다(발행 묶기 ①, 2026-09-23).
         with github_pages.batch(f"longterm: {args.target} {result['as_of']}"):
+            kospi_cache = out_dir / "macro_cache" / "kospi_monthly.csv"
+            if (result.get("cli_outlook") or {}).get("kospi_info", {}).get("fresh") and kospi_cache.exists():
+                github_pages.publish_history("macro_history/kospi_monthly.csv", kospi_cache.read_text(encoding="utf-8"),
+                                             tok, "macro: 코스피 월말 종가 갱신")
             if result["policy_inflation"].get("fresh") and policy_cache.exists():
                 github_pages.publish_history(f"macro_history/{policy_inflation.CACHE_NAME}",
                                              policy_cache.read_text(encoding="utf-8"), tok,

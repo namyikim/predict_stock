@@ -1857,7 +1857,9 @@ def analyse(target, out_dir, fetch=True):
     # 같은 실행의 장기 전망도 정확히 같은 수출 계열을 사용한다.
     from export_refresh import snapshot
     exports_snapshot = snapshot(exports, flash_applied, flash_info,
-                                datetime.now(KST).strftime("%Y-%m-%d %H:%M KST"))
+                                datetime.now(KST).strftime("%Y-%m-%d %H:%M KST"),
+                                monthly_info={"customs": customs_info,
+                                              "kosis_sources": macro_info.get("sources", {})})
     (out_dir / "exports_snapshot.json").write_text(
         json.dumps(exports_snapshot, ensure_ascii=False, indent=2), encoding="utf-8")
     last_actual_quarter = profit.index[-1]

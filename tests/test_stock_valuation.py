@@ -60,7 +60,8 @@ class RenderTests(unittest.TestCase):
 
     def test_wired_into_the_long_term_report(self):
         src = (ROOT / "tools" / "build_longterm_report.py").read_text(encoding="utf-8")
-        self.assertIn("stock_valuation.analyse(spec[\"ticker\"], macro, cache, fetch=fetch)", src)
+        self.assertIn("stock_valuation.analyse(spec[\"ticker\"], chart_macro, cache, fetch=fetch)", src)
+        self.assertIn('chart_macro = {**macro, "semiconductor_exports": chart_exports}', src)
         self.assertIn("stock_valuation.render(r.get(\"stock_value\")", src)
 
 

@@ -42,6 +42,30 @@ class PolicyInflationTests(unittest.TestCase):
         self.assertEqual(paths[0].attrib['d'].count('M'), 2)
         self.assertNotIn('L', paths[0].attrib['d'])
 
+    def test_real_rate_line_has_positive_negative_zero_and_gaps(self):
+        import xml.etree.ElementTree as ET
+        rows = [{'month': f'2026-0{i+1}', 'policy_rate': rate, 'inflation': inflation}
+                for i, (rate, inflation) in enumerate([(3., 2.), (2., 3.), (2., 2.), (None, 2.), (3., 2.)])]
+        svg = pi.chart(rows)
+        root = ET.fromstring(svg)
+        ns = {'s': 'http://www.w3.org/2000/svg'}
+        line = root.find('s:path[@data-series="real_rate"]', ns)
+        self.assertIsNotNone(line)
+        self.assertEqual(line.attrib['d'].count('M'), 2)
+        self.assertIsNotNone(root.find('s:line[@data-role="zero-line"]', ns))
+        self.assertIn('실질금리 참고값: +1.00%', svg)
+        self.assertIn('실질금리 참고값: -1.00%', svg)
+        self.assertIn('실질금리 참고값: +0.00%', svg)
+
+    def test_latest_real_rate_status_and_rounded_zero(self):
+        for gap, label in [(1., '양수(+)'), (-1., '음수(−)'), (0., '0 수준'), (-.001, '0 수준')]:
+            result = {'rows': [{'month': '2026-09', 'policy_rate': 2.+gap, 'inflation': 2.}],
+                      'latest': {'month': '2026-09', 'policy_rate': 2.+gap, 'inflation': 2., 'gap': gap}}
+            text = pi.render(result)
+            self.assertIn(label, text)
+            self.assertIn('기대물가', text)
+            self.assertIn('근사', text)
+
     def test_partial_failure_preserves_cache_and_marks_failed_series(self):
         with tempfile.TemporaryDirectory() as d:
             path = Path(d) / 'policy_inflation.csv'

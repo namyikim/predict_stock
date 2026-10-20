@@ -3,7 +3,7 @@
   "name": "삼성전자",
   "peer_name": "SK하이닉스",
   "session_date": "2026-10-20",
-  "generated_at": "2026-10-20 16:11 KST",
+  "generated_at": "2026-10-20 16:46 KST",
   "summary": {
     "prev_close": 218000.0,
     "open": 219500.0,
@@ -15,11 +15,11 @@
     "c2c": -0.029816513761467878,
     "high_vs_open": 0.0,
     "low_vs_open": -0.048974943052391806,
-    "volume": 16043527.0,
-    "volume_ratio": 0.8710214262440836,
+    "volume": 16111795.0,
+    "volume_ratio": 0.8747277740270138,
     "kospi_c2c": -0.03732128411656288,
     "peer_c2c": -0.04228660924040717,
-    "usdkrw_chg": -0.004814683700465228,
+    "usdkrw_chg": -0.004919687069819156,
     "us_nights": 1,
     "sox_ret": 0.01607660427801627,
     "nasdaq_ret": 0.011127046753531156,
@@ -149,22 +149,22 @@
           "link": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE53UmdZaXB6RG5MdDdFdzBObGltTTBoRGpXQk40NVdyRm5rRjc0d3FaUEctX3pWUEdHaGpLbFZ0VjdxT2VZSHJ4UTFBZWgwVzJNQVE?oc=5"
         },
         {
-          "time": "2026-10-20T08:00:00+09:00",
-          "title": "지역마다 다른 일상, AI 가전 경험도 다르게…삼성전자 ‘더 브리프’ 글로벌 현장",
-          "source": "samsung.com",
-          "link": "https://news.google.com/rss/articles/CBMivwJBVV95cUxOeDZfUlRVbXRSN3JUUkhtQlJ6VjNxX2NOVzJFNU12dnNEZ08xb3BJTTdiZVJKRWRMdHZXTXVVZFpJaEVJRE1aeFFOblh3QzJTM2R6WloxME1IT1pFYk1nd3N6SzQyTDI5eFJJSnM2WnVIcjRGYk9LVEh3Y1VrSVJpeXFwdnhnVlYxZGhSZGh6cEZaUU9XdzJ3TnB4czhYTkswQXFUajgwc29UdzV6eXFpa0lxdjI3TXk1S25wV1BrRE5fU1IzanExcHJuc2ZKdXVpc19yOTFjQUxHcURVOW1JTnpuRmt5M2RucGxtTjlfUnJ2Y2JHWUVPbnJ0czF4MHJIOUI2MEQzLVZwemVlcXdaSUwwb3JMVHV6cnJyYmhTU1pRNWx3cEZ1RjZJdDNnd25zZ240S2FiUjRQUE4tVktB?oc=5"
-        },
-        {
           "time": "2026-10-20T08:19:04+09:00",
           "title": "삼성전자가 투자한 美 ‘엘리먼트 바이오사이언스’社, 서울에서 글로벌 로드쇼 ‘Shift Your Science’ 개최",
           "source": "samsung.com",
           "link": "https://news.google.com/rss/articles/CBMiwwJBVV95cUxOdzRNWmNCUHFuVkxCYkp4TDAwQmdiY0NtSlFpdXJxTlNyRF9wdkZObjF4LWpJN1Q1blVNZkJERVZnSWFZNDUxNW4yY2lmN3BZQUxQQlA2MndYMXFMNmtpUlhNZ0psYk9QbFRqWnBDN1lWbXdwSTQyZ1FhV3Q5VmtXbGdqVnI0b21rYTlVMGRrNzlPdW9adzBWNXZ2X3cxajNaTTNzSUpSeHhJOTlPTnJzME5Zbm9SSUVVdURleGlub2pTdEJvSTZqSU1zcGZOMmlnQ2VsRjdEdkpXd0FTUGFqcklCLVppTXdFMFplNkhOSENSUll2a2RqbVNsaUpnRFRod1R1SnV5RHl3cElza0pRSWhsS3JmMWRfaFdWZ2FFbk5oS2pEemtUbGJwbFlZd1NSR09GS1k5T245ajZadUNDcGxTUQ?oc=5"
         },
         {
-          "time": "2026-10-20T08:19:23+09:00",
-          "title": "美 반도체 반등…프리마켓 삼성전자 1%↑·SK하이닉스 강보합",
-          "source": "뉴스1",
-          "link": "https://news.google.com/rss/articles/CBMiX0FVX3lxTE9IZ3hDblpwaHdCN0c4RE9UQ2J5YlpEc1dWSTdnVC1OVXNHQmhFZVd6bFJldWpIRk1XNE1MZHZ4cXRjakNXMjMzZWNjWThKUDdoal9RbWU1bVQzME5NSllv?oc=5"
+          "time": "2026-10-20T08:43:26+09:00",
+          "title": "삼성전자 투자 미국 DNA분석장비사, 서울서 글로벌 로드쇼",
+          "source": "연합뉴스",
+          "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE4zV2ZBZ1dNV1d1Z0NCVFZTY2wwRHd5NGVOV1pJN3BqT3JGT1JHakhuU2VJclZEdFlLRWNFSlVqQXQ5UDljSzdscFd3Ti1WV1gzVGhMa3prMmVRUjjSAWBBVV95cUxQS29kdFFVWGxOc3hSbG92N3JnRG9SbVhFdkJvV2pjZ3ZlVW04SEUzTG1MQUFhSVRZVGVoMzA4X3plbC1LMVNQZkdjbnRCQzFmb2RyamhZRlBrM0Z2NDdVTlc?oc=5"
+        },
+        {
+          "time": "2026-10-20T07:58:38+09:00",
+          "title": "\"삼성전자, 내년 영업익 555조원 전망…성장 동력 흔들리지 않아\"-KB",
+          "source": "한국경제",
+          "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE9QT09ZSExKRnJ0TzlBMVdaS0Qwc3FXNDhWYXgyU19tYWEwV3E3dXFxYTFCenR6ZEIzb01EWW5FeDJSQm9ERkpBZFhXcEtucXd0SllNLXliVFNaUQ?oc=5"
         }
       ]
     },
@@ -185,28 +185,28 @@
           "link": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE53UmdZaXB6RG5MdDdFdzBObGltTTBoRGpXQk40NVdyRm5rRjc0d3FaUEctX3pWUEdHaGpLbFZ0VjdxT2VZSHJ4UTFBZWgwVzJNQVE?oc=5"
         },
         {
-          "time": "2026-10-20T09:30:33+09:00",
-          "title": "[버핏 리포트] 삼성전자, 내년 메모리 80% 장기계약 확보...’HBM’ 가격 최대 150% 상승 전망 - KB",
-          "source": "버핏연구소",
-          "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE5uQ0RnMjRHM21rQzlxLUVTTVMtbU5RMGt2d3BMeXNUVVJpOGtuTkVZUE5jeGh4VG5YM1VLVTVyOXpGNEVjYy1DOG1LanVKNUxBc3Y0LWRXN05WY3A1?oc=5"
-        },
-        {
           "time": "2026-10-20T08:43:26+09:00",
           "title": "삼성전자 투자 미국 DNA분석장비사, 서울서 글로벌 로드쇼",
           "source": "연합뉴스",
           "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE4zV2ZBZ1dNV1d1Z0NCVFZTY2wwRHd5NGVOV1pJN3BqT3JGT1JHakhuU2VJclZEdFlLRWNFSlVqQXQ5UDljSzdscFd3Ti1WV1gzVGhMa3prMmVRUjjSAWBBVV95cUxQS29kdFFVWGxOc3hSbG92N3JnRG9SbVhFdkJvV2pjZ3ZlVW04SEUzTG1MQUFhSVRZVGVoMzA4X3plbC1LMVNQZkdjbnRCQzFmb2RyamhZRlBrM0Z2NDdVTlc?oc=5"
         },
         {
-          "time": "2026-10-20T08:52:35+09:00",
-          "title": "\"삼성전자, 내년 영업이익 555조…사실상 이익 증가 확정\"-KB - 머니투데이",
-          "source": "머니투데이",
-          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTFBiMjVBVGFTdF9fUGJqODQwaWpvWk45OFZvR25NdUpJcHpiRGMxY091ZGpNZXhYcWVOdHd4MnJMWlhBM3duaGVISEJabWIzLUZEYW5QdlYySExDOFhELXQwTnNVNzZJTnQx0gFuQVVfeXFMTUhTaDFwOW5uN0xRQ0F2Uks0djlBTzgyemJZMGk0T3FjMG9sSjFfZXJUc0hQVlliQVpKU1dtakxzMlMzQjN6VEp3UlBLTy1pUmlDbjZZSHAxSEtpLTRIMHFUT0JNSC1BQThPNm1hSnc?oc=5"
+          "time": "2026-10-20T09:41:00+09:00",
+          "title": "’삼성전자 투자’ 美 엘리먼트, 차세대 유전자 분석 기술 서울서 공개 By EBN",
+          "source": "Investing.com 한국어",
+          "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTFB3OUQ3MVgwbGNMWXhYN2xNeHJBUDBpSzF2TFBHdDBkT0dNVVJ0UVd4a2JLMmsxUG9WT1JldlBjRUFLa3BxT2trVWc5NVN3bzd2eHZ3R0sxYmFTS0Z2SG9mX0cxbXdqeE9zLW50Q2M1bVk?oc=5"
         },
         {
           "time": "2026-10-20T09:54:32+09:00",
           "title": "삼성전자, 주가 하락에도 이익 성장 전망은 ‘유효’",
           "source": "진일보 | 전남일보",
           "link": "https://news.google.com/rss/articles/CBMib0FVX3lxTE5EMDZaVnl0WEs1aEU5YjVubldCby0zSWhWNS1GbTJWX3UxWlBTdy1WblZiMl9DY251cjhkSWk1UUc1OXVjbHdVczh0VmxIX0UzclhPVHZkV19XUUl1Zk5lYTFUMTc0YVVXT1d2NWY5aw?oc=5"
+        },
+        {
+          "time": "2026-10-20T10:01:43+09:00",
+          "title": "[특징주] 삼성전자·SK하이닉스, 美 반도체주 반등에도 동반 '약세'",
+          "source": "글로벌이코노믹",
+          "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxOYlpNTTcxOG5oYUtITjcxV0ZvZDhET19qRjNJeDdueGxFV1RoOGJQdmllal9fQ0FIZkpGMTc0c0ZtUW9rTEtFLUZEaVdNVUF6WGk3N1hMc2JfUTl1VEZQeUFZaDlNWmYyUUhRTXN3RHhBZUdPMFE2NlZBT1haTl9SQWV1bElxdDhE?oc=5"
         }
       ]
     }
@@ -608,22 +608,22 @@
           "link": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE53UmdZaXB6RG5MdDdFdzBObGltTTBoRGpXQk40NVdyRm5rRjc0d3FaUEctX3pWUEdHaGpLbFZ0VjdxT2VZSHJ4UTFBZWgwVzJNQVE?oc=5"
         },
         {
-          "time": "2026-10-20T08:00:00+09:00",
-          "title": "지역마다 다른 일상, AI 가전 경험도 다르게…삼성전자 ‘더 브리프’ 글로벌 현장",
-          "source": "samsung.com",
-          "link": "https://news.google.com/rss/articles/CBMivwJBVV95cUxOeDZfUlRVbXRSN3JUUkhtQlJ6VjNxX2NOVzJFNU12dnNEZ08xb3BJTTdiZVJKRWRMdHZXTXVVZFpJaEVJRE1aeFFOblh3QzJTM2R6WloxME1IT1pFYk1nd3N6SzQyTDI5eFJJSnM2WnVIcjRGYk9LVEh3Y1VrSVJpeXFwdnhnVlYxZGhSZGh6cEZaUU9XdzJ3TnB4czhYTkswQXFUajgwc29UdzV6eXFpa0lxdjI3TXk1S25wV1BrRE5fU1IzanExcHJuc2ZKdXVpc19yOTFjQUxHcURVOW1JTnpuRmt5M2RucGxtTjlfUnJ2Y2JHWUVPbnJ0czF4MHJIOUI2MEQzLVZwemVlcXdaSUwwb3JMVHV6cnJyYmhTU1pRNWx3cEZ1RjZJdDNnd25zZ240S2FiUjRQUE4tVktB?oc=5"
-        },
-        {
           "time": "2026-10-20T08:19:04+09:00",
           "title": "삼성전자가 투자한 美 ‘엘리먼트 바이오사이언스’社, 서울에서 글로벌 로드쇼 ‘Shift Your Science’ 개최",
           "source": "samsung.com",
           "link": "https://news.google.com/rss/articles/CBMiwwJBVV95cUxOdzRNWmNCUHFuVkxCYkp4TDAwQmdiY0NtSlFpdXJxTlNyRF9wdkZObjF4LWpJN1Q1blVNZkJERVZnSWFZNDUxNW4yY2lmN3BZQUxQQlA2MndYMXFMNmtpUlhNZ0psYk9QbFRqWnBDN1lWbXdwSTQyZ1FhV3Q5VmtXbGdqVnI0b21rYTlVMGRrNzlPdW9adzBWNXZ2X3cxajNaTTNzSUpSeHhJOTlPTnJzME5Zbm9SSUVVdURleGlub2pTdEJvSTZqSU1zcGZOMmlnQ2VsRjdEdkpXd0FTUGFqcklCLVppTXdFMFplNkhOSENSUll2a2RqbVNsaUpnRFRod1R1SnV5RHl3cElza0pRSWhsS3JmMWRfaFdWZ2FFbk5oS2pEemtUbGJwbFlZd1NSR09GS1k5T245ajZadUNDcGxTUQ?oc=5"
         },
         {
-          "time": "2026-10-20T08:19:23+09:00",
-          "title": "美 반도체 반등…프리마켓 삼성전자 1%↑·SK하이닉스 강보합",
-          "source": "뉴스1",
-          "link": "https://news.google.com/rss/articles/CBMiX0FVX3lxTE9IZ3hDblpwaHdCN0c4RE9UQ2J5YlpEc1dWSTdnVC1OVXNHQmhFZVd6bFJldWpIRk1XNE1MZHZ4cXRjakNXMjMzZWNjWThKUDdoal9RbWU1bVQzME5NSllv?oc=5"
+          "time": "2026-10-20T08:43:26+09:00",
+          "title": "삼성전자 투자 미국 DNA분석장비사, 서울서 글로벌 로드쇼",
+          "source": "연합뉴스",
+          "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE4zV2ZBZ1dNV1d1Z0NCVFZTY2wwRHd5NGVOV1pJN3BqT3JGT1JHakhuU2VJclZEdFlLRWNFSlVqQXQ5UDljSzdscFd3Ti1WV1gzVGhMa3prMmVRUjjSAWBBVV95cUxQS29kdFFVWGxOc3hSbG92N3JnRG9SbVhFdkJvV2pjZ3ZlVW04SEUzTG1MQUFhSVRZVGVoMzA4X3plbC1LMVNQZkdjbnRCQzFmb2RyamhZRlBrM0Z2NDdVTlc?oc=5"
+        },
+        {
+          "time": "2026-10-20T07:58:38+09:00",
+          "title": "\"삼성전자, 내년 영업익 555조원 전망…성장 동력 흔들리지 않아\"-KB",
+          "source": "한국경제",
+          "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE9QT09ZSExKRnJ0TzlBMVdaS0Qwc3FXNDhWYXgyU19tYWEwV3E3dXFxYTFCenR6ZEIzb01EWW5FeDJSQm9ERkpBZFhXcEtucXd0SllNLXliVFNaUQ?oc=5"
         }
       ],
       "price": 215500.0,
@@ -646,28 +646,28 @@
           "link": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE53UmdZaXB6RG5MdDdFdzBObGltTTBoRGpXQk40NVdyRm5rRjc0d3FaUEctX3pWUEdHaGpLbFZ0VjdxT2VZSHJ4UTFBZWgwVzJNQVE?oc=5"
         },
         {
-          "time": "2026-10-20T09:30:33+09:00",
-          "title": "[버핏 리포트] 삼성전자, 내년 메모리 80% 장기계약 확보...’HBM’ 가격 최대 150% 상승 전망 - KB",
-          "source": "버핏연구소",
-          "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE5uQ0RnMjRHM21rQzlxLUVTTVMtbU5RMGt2d3BMeXNUVVJpOGtuTkVZUE5jeGh4VG5YM1VLVTVyOXpGNEVjYy1DOG1LanVKNUxBc3Y0LWRXN05WY3A1?oc=5"
-        },
-        {
           "time": "2026-10-20T08:43:26+09:00",
           "title": "삼성전자 투자 미국 DNA분석장비사, 서울서 글로벌 로드쇼",
           "source": "연합뉴스",
           "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE4zV2ZBZ1dNV1d1Z0NCVFZTY2wwRHd5NGVOV1pJN3BqT3JGT1JHakhuU2VJclZEdFlLRWNFSlVqQXQ5UDljSzdscFd3Ti1WV1gzVGhMa3prMmVRUjjSAWBBVV95cUxQS29kdFFVWGxOc3hSbG92N3JnRG9SbVhFdkJvV2pjZ3ZlVW04SEUzTG1MQUFhSVRZVGVoMzA4X3plbC1LMVNQZkdjbnRCQzFmb2RyamhZRlBrM0Z2NDdVTlc?oc=5"
         },
         {
-          "time": "2026-10-20T08:52:35+09:00",
-          "title": "\"삼성전자, 내년 영업이익 555조…사실상 이익 증가 확정\"-KB - 머니투데이",
-          "source": "머니투데이",
-          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTFBiMjVBVGFTdF9fUGJqODQwaWpvWk45OFZvR25NdUpJcHpiRGMxY091ZGpNZXhYcWVOdHd4MnJMWlhBM3duaGVISEJabWIzLUZEYW5QdlYySExDOFhELXQwTnNVNzZJTnQx0gFuQVVfeXFMTUhTaDFwOW5uN0xRQ0F2Uks0djlBTzgyemJZMGk0T3FjMG9sSjFfZXJUc0hQVlliQVpKU1dtakxzMlMzQjN6VEp3UlBLTy1pUmlDbjZZSHAxSEtpLTRIMHFUT0JNSC1BQThPNm1hSnc?oc=5"
+          "time": "2026-10-20T09:41:00+09:00",
+          "title": "’삼성전자 투자’ 美 엘리먼트, 차세대 유전자 분석 기술 서울서 공개 By EBN",
+          "source": "Investing.com 한국어",
+          "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTFB3OUQ3MVgwbGNMWXhYN2xNeHJBUDBpSzF2TFBHdDBkT0dNVVJ0UVd4a2JLMmsxUG9WT1JldlBjRUFLa3BxT2trVWc5NVN3bzd2eHZ3R0sxYmFTS0Z2SG9mX0cxbXdqeE9zLW50Q2M1bVk?oc=5"
         },
         {
           "time": "2026-10-20T09:54:32+09:00",
           "title": "삼성전자, 주가 하락에도 이익 성장 전망은 ‘유효’",
           "source": "진일보 | 전남일보",
           "link": "https://news.google.com/rss/articles/CBMib0FVX3lxTE5EMDZaVnl0WEs1aEU5YjVubldCby0zSWhWNS1GbTJWX3UxWlBTdy1WblZiMl9DY251cjhkSWk1UUc1OXVjbHdVczh0VmxIX0UzclhPVHZkV19XUUl1Zk5lYTFUMTc0YVVXT1d2NWY5aw?oc=5"
+        },
+        {
+          "time": "2026-10-20T10:01:43+09:00",
+          "title": "[특징주] 삼성전자·SK하이닉스, 美 반도체주 반등에도 동반 '약세'",
+          "source": "글로벌이코노믹",
+          "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxOYlpNTTcxOG5oYUtITjcxV0ZvZDhET19qRjNJeDdueGxFV1RoOGJQdmllal9fQ0FIZkpGMTc0c0ZtUW9rTEtFLUZEaVdNVUF6WGk3N1hMc2JfUTl1VEZQeUFZaDlNWmYyUUhRTXN3RHhBZUdPMFE2NlZBT1haTl9SQWV1bElxdDhE?oc=5"
         }
       ],
       "price": 210750.0,
@@ -688,22 +688,22 @@
       "link": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE53UmdZaXB6RG5MdDdFdzBObGltTTBoRGpXQk40NVdyRm5rRjc0d3FaUEctX3pWUEdHaGpLbFZ0VjdxT2VZSHJ4UTFBZWgwVzJNQVE?oc=5"
     },
     {
-      "time": "2026-10-20T08:00:00+09:00",
-      "title": "지역마다 다른 일상, AI 가전 경험도 다르게…삼성전자 ‘더 브리프’ 글로벌 현장",
-      "source": "samsung.com",
-      "link": "https://news.google.com/rss/articles/CBMivwJBVV95cUxOeDZfUlRVbXRSN3JUUkhtQlJ6VjNxX2NOVzJFNU12dnNEZ08xb3BJTTdiZVJKRWRMdHZXTXVVZFpJaEVJRE1aeFFOblh3QzJTM2R6WloxME1IT1pFYk1nd3N6SzQyTDI5eFJJSnM2WnVIcjRGYk9LVEh3Y1VrSVJpeXFwdnhnVlYxZGhSZGh6cEZaUU9XdzJ3TnB4czhYTkswQXFUajgwc29UdzV6eXFpa0lxdjI3TXk1S25wV1BrRE5fU1IzanExcHJuc2ZKdXVpc19yOTFjQUxHcURVOW1JTnpuRmt5M2RucGxtTjlfUnJ2Y2JHWUVPbnJ0czF4MHJIOUI2MEQzLVZwemVlcXdaSUwwb3JMVHV6cnJyYmhTU1pRNWx3cEZ1RjZJdDNnd25zZ240S2FiUjRQUE4tVktB?oc=5"
-    },
-    {
       "time": "2026-10-20T08:19:04+09:00",
       "title": "삼성전자가 투자한 美 ‘엘리먼트 바이오사이언스’社, 서울에서 글로벌 로드쇼 ‘Shift Your Science’ 개최",
       "source": "samsung.com",
       "link": "https://news.google.com/rss/articles/CBMiwwJBVV95cUxOdzRNWmNCUHFuVkxCYkp4TDAwQmdiY0NtSlFpdXJxTlNyRF9wdkZObjF4LWpJN1Q1blVNZkJERVZnSWFZNDUxNW4yY2lmN3BZQUxQQlA2MndYMXFMNmtpUlhNZ0psYk9QbFRqWnBDN1lWbXdwSTQyZ1FhV3Q5VmtXbGdqVnI0b21rYTlVMGRrNzlPdW9adzBWNXZ2X3cxajNaTTNzSUpSeHhJOTlPTnJzME5Zbm9SSUVVdURleGlub2pTdEJvSTZqSU1zcGZOMmlnQ2VsRjdEdkpXd0FTUGFqcklCLVppTXdFMFplNkhOSENSUll2a2RqbVNsaUpnRFRod1R1SnV5RHl3cElza0pRSWhsS3JmMWRfaFdWZ2FFbk5oS2pEemtUbGJwbFlZd1NSR09GS1k5T245ajZadUNDcGxTUQ?oc=5"
     },
     {
-      "time": "2026-10-20T08:19:23+09:00",
-      "title": "美 반도체 반등…프리마켓 삼성전자 1%↑·SK하이닉스 강보합",
-      "source": "뉴스1",
-      "link": "https://news.google.com/rss/articles/CBMiX0FVX3lxTE9IZ3hDblpwaHdCN0c4RE9UQ2J5YlpEc1dWSTdnVC1OVXNHQmhFZVd6bFJldWpIRk1XNE1MZHZ4cXRjakNXMjMzZWNjWThKUDdoal9RbWU1bVQzME5NSllv?oc=5"
+      "time": "2026-10-20T08:43:26+09:00",
+      "title": "삼성전자 투자 미국 DNA분석장비사, 서울서 글로벌 로드쇼",
+      "source": "연합뉴스",
+      "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE4zV2ZBZ1dNV1d1Z0NCVFZTY2wwRHd5NGVOV1pJN3BqT3JGT1JHakhuU2VJclZEdFlLRWNFSlVqQXQ5UDljSzdscFd3Ti1WV1gzVGhMa3prMmVRUjjSAWBBVV95cUxQS29kdFFVWGxOc3hSbG92N3JnRG9SbVhFdkJvV2pjZ3ZlVW04SEUzTG1MQUFhSVRZVGVoMzA4X3plbC1LMVNQZkdjbnRCQzFmb2RyamhZRlBrM0Z2NDdVTlc?oc=5"
+    },
+    {
+      "time": "2026-10-20T07:58:38+09:00",
+      "title": "\"삼성전자, 내년 영업익 555조원 전망…성장 동력 흔들리지 않아\"-KB",
+      "source": "한국경제",
+      "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE9QT09ZSExKRnJ0TzlBMVdaS0Qwc3FXNDhWYXgyU19tYWEwV3E3dXFxYTFCenR6ZEIzb01EWW5FeDJSQm9ERkpBZFhXcEtucXd0SllNLXliVFNaUQ?oc=5"
     }
   ],
   "top_news": [
@@ -720,28 +720,28 @@
       "link": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE53UmdZaXB6RG5MdDdFdzBObGltTTBoRGpXQk40NVdyRm5rRjc0d3FaUEctX3pWUEdHaGpLbFZ0VjdxT2VZSHJ4UTFBZWgwVzJNQVE?oc=5"
     },
     {
-      "time": "2026-10-20T09:30:33+09:00",
-      "title": "[버핏 리포트] 삼성전자, 내년 메모리 80% 장기계약 확보...’HBM’ 가격 최대 150% 상승 전망 - KB",
-      "source": "버핏연구소",
-      "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE5uQ0RnMjRHM21rQzlxLUVTTVMtbU5RMGt2d3BMeXNUVVJpOGtuTkVZUE5jeGh4VG5YM1VLVTVyOXpGNEVjYy1DOG1LanVKNUxBc3Y0LWRXN05WY3A1?oc=5"
-    },
-    {
       "time": "2026-10-20T10:39:00+09:00",
       "title": "삼성전자, 내년 메모리 생산량 80% 확보...영업이익 555조 전망 By 알파경제 alphabiz",
       "source": "Investing.com 한국어",
       "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE8xSzZVUG9YUktYZlB3UlhSY01XdEJtcGs2RjVVaF9hZWxKbll1bGszVmR1SXhweXNZaWExdWQ1RlUyZUhkWFNRWGlLbnFyRHdtdW5OX1d2UzktX0UzVVJ1LWV4Z0V1UGRMb3E2aU5IcWc?oc=5"
     },
     {
+      "time": "2026-10-20T16:10:00+09:00",
+      "title": "삼성전자, 주가 급락에도 증권가 '낙관론'...내년 영업익 555조 전망 [주가동향]",
+      "source": "조세일보",
+      "link": "https://news.google.com/rss/articles/CBMib0FVX3lxTE13MFhSaGVCU2FreEtvOUo1NTY2bnRfanp1WVZKeW56NnRIN3NTYndRWGNBMDRzbXNTVTVKWlY2dFFzdm9fcHFuSmpGOWt4ZGpnRUlQYlkwN25fcVF4dkI0b3RwM3lLSy1tVGNTcXA1dw?oc=5"
+    },
+    {
+      "time": "2026-10-20T16:16:52+09:00",
+      "title": "삼성전자 주가 21만원인데…KB증권 “목표가 60만원·내년 영업익 555조”",
+      "source": "디지털데일리",
+      "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTFBWc1pPZkVXbk5NcXpqblNiaFFrd3Z6MkE0U3VfeEtQVUpZZng4N0g2MmZUY3haeGtFUWhlRUNRRTBfTG91SWpid3lGclRzdVpXcEtZMmd3aWEteDcxeGIwQXVkN3Q?oc=5"
+    },
+    {
       "time": "2026-10-20T16:03:09+09:00",
       "title": "코스피, 외국인·기관 동반 매도에 3.73% 급락한 5550선 후퇴...반도체·2차전지 동반 약세",
       "source": "핀포인트뉴스",
       "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTE5RY2dOajNweWd5dFVPSXRJcjVtSkZlblVhMGhBbFpGOGNwX3ZUYTROV1IyTEl5TEVZdzZiZmhTOGtxX1R0dlFialFPX3kyN0Nhc1RtdEVEWUlWSGRHQnN3Vjc1UDBQSDhkck9MT3pkN2FlLWPSAXdBVV95cUxPMlhvQjI3MVJrWnZwUVhmaE40ekhYQlZaRkZrcVpOd0J1a3dGcWdQNzhzdGNlY2MzU0pKalJ4M0d3azZFNVJoRlFibkgwdFFqUGpzUG9DTkJZWWtZRmR5RXNQNmFRT196eWY0bDZ3TDY3RnE2YWttaw?oc=5"
-    },
-    {
-      "time": "2026-10-20T08:00:00+09:00",
-      "title": "지역마다 다른 일상, AI 가전 경험도 다르게…삼성전자 ‘더 브리프’ 글로벌 현장",
-      "source": "samsung.com",
-      "link": "https://news.google.com/rss/articles/CBMivwJBVV95cUxOeDZfUlRVbXRSN3JUUkhtQlJ6VjNxX2NOVzJFNU12dnNEZ08xb3BJTTdiZVJKRWRMdHZXTXVVZFpJaEVJRE1aeFFOblh3QzJTM2R6WloxME1IT1pFYk1nd3N6SzQyTDI5eFJJSnM2WnVIcjRGYk9LVEh3Y1VrSVJpeXFwdnhnVlYxZGhSZGh6cEZaUU9XdzJ3TnB4czhYTkswQXFUajgwc29UdzV6eXFpa0lxdjI3TXk1S25wV1BrRE5fU1IzanExcHJuc2ZKdXVpc19yOTFjQUxHcURVOW1JTnpuRmt5M2RucGxtTjlfUnJ2Y2JHWUVPbnJ0czF4MHJIOUI2MEQzLVZwemVlcXdaSUwwb3JMVHV6cnJyYmhTU1pRNWx3cEZ1RjZJdDNnd25zZ240S2FiUjRQUE4tVktB?oc=5"
     }
   ],
   "disclosures": [],
@@ -761,9 +761,9 @@
     "steady": 24,
     "upper": 2,
     "lower": 0,
-    "individual": 8998.0,
-    "foreign": -5377.0,
-    "institution": -9977.0,
+    "individual": 8953.0,
+    "foreign": -5302.0,
+    "institution": -9997.0,
     "prev_close": 5768.01,
     "open": 5733.57,
     "high": 5733.57,

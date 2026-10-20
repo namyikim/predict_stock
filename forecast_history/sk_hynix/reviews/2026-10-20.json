@@ -3,7 +3,7 @@
   "name": "SK하이닉스",
   "peer_name": "삼성전자",
   "session_date": "2026-10-20",
-  "generated_at": "2026-10-20 16:11 KST",
+  "generated_at": "2026-10-20 16:48 KST",
   "summary": {
     "prev_close": 1277000.0,
     "open": 1265000.0,
@@ -15,11 +15,11 @@
     "c2c": -0.04228660924040717,
     "high_vs_open": 0.0015810276679841806,
     "low_vs_open": -0.06482213438735174,
-    "volume": 3504628.0,
-    "volume_ratio": 1.0262597826774789,
+    "volume": 3514223.0,
+    "volume_ratio": 1.0290694853377298,
     "kospi_c2c": -0.03732128411656288,
     "peer_c2c": -0.029816513761467878,
-    "usdkrw_chg": -0.0050921599101529935,
+    "usdkrw_chg": -0.0056096699772481,
     "us_nights": 1,
     "sox_ret": 0.01607660427801627,
     "nasdaq_ret": 0.011127046753531156,
@@ -106,16 +106,7 @@
       }
     },
     "from_high": -0.019246190858059342,
-    "buyback": [
-      {
-        "kind": "직접 취득",
-        "start": "2026-08-20",
-        "end": "2026-11-19",
-        "amount": "40,004,340,000,000",
-        "purpose": "자기주식 소각을 통한 \n주주가치 제고",
-        "rcept_no": "20260819000254"
-      }
-    ]
+    "buyback": []
   },
   "classification": {
     "labels": [
@@ -123,20 +114,20 @@
       "지수 동조"
     ],
     "reasons": [
-      "09:00 봉 -3.05%(σ의 8.39배, 거래량 7.9배)가 세션 -3.32%의 80%",
+      "09:00 봉 -3.01%(σ의 8.26배, 거래량 7.9배)가 세션 -3.32%의 79%",
       "KOSPI -3.73% vs 종목 -4.23%, 5분 수익률 상관 0.90 — 종목 고유 요인이 약함"
     ]
   },
   "events": [
     {
       "time": "2026-10-20T09:00:00+09:00",
-      "ret": -0.030540328895849678,
-      "z": 8.39,
+      "ret": -0.030148786217697676,
+      "z": 8.26,
       "volume_ratio": 7.9,
       "cum_before": 0.0,
-      "cum_after": -0.02134387351778655,
-      "session_share": 0.8048649177760383,
-      "score": 10.39070595404138,
+      "cum_after": -0.020948616600790504,
+      "session_share": 0.7945461367789074,
+      "score": 10.256019290967249,
       "news": [
         {
           "time": "2026-10-20T08:41:53+09:00",
@@ -145,46 +136,34 @@
           "link": "https://news.google.com/rss/articles/CBMiTkFVX3lxTE8zSkhZSFJEMXp6Z1RVVm5vX2lKS1ktRHJsNmJKcHBIYWpyNXNNS01IcVNmajFsck1OVTZHVnBSWEs4VmtBWUR4Rm43SEs1dw?oc=5"
         },
         {
-          "time": "2026-10-20T08:55:42+09:00",
-          "title": "KB국민은행·SK하이닉스, 반도체 협력사에 2500억원 우대보증 지원",
-          "source": "한국NGO신문",
-          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTFBzMTNtekhEbjhDYUloMHdBUU50YXBnOExWQlduSnQtMWRTNHNHYUxrME1FZkhrOVFraG42U011ZlM4dHl2Ukt5ZWZvVDFZc0tHZXc3dXU4eVNBYkdEUllmb09GZHJaN1o5?oc=5"
-        },
-        {
-          "time": "2026-10-20T09:00:00+09:00",
-          "title": "4대 은행, SK하이닉스와 손잡고 반도체 협력사에 2조원 금융지원",
-          "source": "뉴스핌",
-          "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE1TNE80bjFuQ0hEM1hQOWRsZGJLUnQwWjcwQXJZUkxGa1EyZ0drQ2gyVl8wajBnZ29fOVAtejBIeHhqem1jTDZZSUdFS1JwUzREay1sT3N1UWdpMkpI?oc=5"
-        },
-        {
-          "time": "2026-10-20T08:56:15+09:00",
-          "title": "하나은행, SK하이닉스 협력사에 7500억원 금융지원",
-          "source": "더트래커",
-          "link": "https://news.google.com/rss/articles/CBMiWEFVX3lxTFBVcGpIYm4wX25QckF5VmFIM2xLeVJrWGQtVWdDT2lkQ20tZTNFY09KMW9fa2dLZER2dS1kVlFOSFNteUpoNWJLWnB2bGZ1dEhNTjB5ZzVPTlU?oc=5"
-        },
-        {
           "time": "2026-10-20T09:00:28+09:00",
           "title": "청주시, SK하이닉스 등 16개 기업·단체와 상생협약",
           "source": "연합뉴스",
-          "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE5CYlo1UnMyRkV5MjhOY24wQXhMSGVoOUVLVDFzQnRiUF9sQmdSSVpmSzJBYkxIemRYc1l2RFpxNjJQSG1BUmx1S2Qxdkl5ZlVHNEFraENSWGQzazDSAWBBVV95cUxOcmNycjNKWE5GeGUzeWZ5NXJhR2poQUNpbmhlclhERW9Id3Q4d1dJeTNDQ3N2Z2NTbmJiYmptb2FQNnB6dTBlUExQNVE1cFRzYWJPYjAxckdiVXlRVXRERkE?oc=5"
+          "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE5yY3JyM0pYTkZ4ZTN5Znk1cmFHamhBQ2luaGVyWERFb0h3dDh3V0l5M0NDc3ZnY1NuYmJiam1vYVA2cHp1MGVQTFA1UTVwVHNhYk9iMDFyR2JVeVFVdERGQdIBYEFVX3lxTE5yY3JyM0pYTkZ4ZTN5Znk1cmFHamhBQ2luaGVyWERFb0h3dDh3V0l5M0NDc3ZnY1NuYmJiam1vYVA2cHp1MGVQTFA1UTVwVHNhYk9iMDFyR2JVeVFVdERGQQ?oc=5"
+        },
+        {
+          "time": "2026-10-20T09:14:11+09:00",
+          "title": "검색 상위 20개 중 14개 하락… 삼성전자·SK하이닉스 동반 약세",
+          "source": "서울신문",
+          "link": "https://news.google.com/rss/articles/CBMifkFVX3lxTE9QWHIwUHBMSnc5TzBlMXEwLWFFV002RFI2ZGpYYmRVMlVia1kxZ1R1bE96ajJVWlk0VHI4VDRMYzZCUXJDSlVnM3loX0NjNFUtNG9uRGVKWG54b1Q5NEZXVWJCQ2dHMjZJVWNuX1hLUmduVDNxRUdtN0ktX0dQZw?oc=5"
         }
       ]
     },
     {
       "time": "2026-10-20T10:10:00+09:00",
       "ret": -0.010815307820299491,
-      "z": 2.97,
+      "z": 2.96,
       "volume_ratio": 3.82,
       "cum_before": -0.04980237154150202,
       "cum_after": -0.060079051383399196,
       "session_share": 0.28502842484747615,
-      "score": 4.734480611121474,
+      "score": 4.724754151401207,
       "news": [
         {
-          "time": "2026-10-20T09:41:37+09:00",
-          "title": "KB국민은행, SK하이닉스·무역보험공사와 ‘반도체 수출공급망 강화’ 협약",
-          "source": "아이티데일리",
-          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTFA2Q2hLWERSWkNDS0hCZ1JRTDNOekVsN1dfTDAxNUt5TUk2amZTNFQ0YWdVTTBpVXlreklIMWM4WGRRUFdDVFdueU5fSDZPSS1JVHZOS0NVV3B2NGRwRDBoRDJhbEdNT0I4?oc=5"
+          "time": "2026-10-20T09:26:06+09:00",
+          "title": "KB국민은행, SK하이닉스·한국무역보험공사와 ‘반도체 산업 수출공급망 강화 업무협약’ 체결",
+          "source": "www.intn.co.kr",
+          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE9BSTRGTzRUbjhHN05zT28wdlBhY25fVWRDODNSSzlTSnZKemxlMHBDQU1YSFNBRWNZV3RkX2s2OUNVcGtWUmRZNmkxbGk0TzBMM3hGZFROT0phRG12RHJYVk8xSVVHUW5C?oc=5"
         },
         {
           "time": "2026-10-20T08:41:53+09:00",
@@ -193,46 +172,10 @@
           "link": "https://news.google.com/rss/articles/CBMiTkFVX3lxTE8zSkhZSFJEMXp6Z1RVVm5vX2lKS1ktRHJsNmJKcHBIYWpyNXNNS01IcVNmajFsck1OVTZHVnBSWEs4VmtBWUR4Rm43SEs1dw?oc=5"
         },
         {
-          "time": "2026-10-20T08:55:42+09:00",
-          "title": "KB국민은행·SK하이닉스, 반도체 협력사에 2500억원 우대보증 지원",
-          "source": "한국NGO신문",
-          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTFBzMTNtekhEbjhDYUloMHdBUU50YXBnOExWQlduSnQtMWRTNHNHYUxrME1FZkhrOVFraG42U011ZlM4dHl2Ukt5ZWZvVDFZc0tHZXc3dXU4eVNBYkdEUllmb09GZHJaN1o5?oc=5"
-        },
-        {
-          "time": "2026-10-20T09:00:00+09:00",
-          "title": "4대 은행, SK하이닉스와 손잡고 반도체 협력사에 2조원 금융지원",
-          "source": "뉴스핌",
-          "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE1TNE80bjFuQ0hEM1hQOWRsZGJLUnQwWjcwQXJZUkxGa1EyZ0drQ2gyVl8wajBnZ29fOVAtejBIeHhqem1jTDZZSUdFS1JwUzREay1sT3N1UWdpMkpI?oc=5"
-        },
-        {
-          "time": "2026-10-20T09:23:00+09:00",
-          "title": "코스피, 나스닥 반등에도 '팔자'폭 확대…SK하이닉스 4% 약세",
-          "source": "연합인포맥스",
-          "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE9GWDlFR08tSkdyMXZ2b3VNQV9kUjIzNkkyLWtlSlFQeFJsb1ZxUmV3RTZtN3BBa2JiTEY4aTE1UU0zaXMzX1BaX2EyWXE4M1NBcDFaTzhsUExJRFNsVmkwVjVUTWZiZ0dzMzM2dE1Na1Y?oc=5"
-        }
-      ]
-    },
-    {
-      "time": "2026-10-20T10:40:00+09:00",
-      "ret": 0.009038619556285932,
-      "z": 2.48,
-      "volume_ratio": 3.05,
-      "cum_before": -0.037944664031620556,
-      "cum_after": -0.029249011857707563,
-      "session_share": -0.23820528622295215,
-      "score": 4.093625358953105,
-      "news": [
-        {
-          "time": "2026-10-20T09:41:37+09:00",
-          "title": "KB국민은행, SK하이닉스·무역보험공사와 ‘반도체 수출공급망 강화’ 협약",
-          "source": "아이티데일리",
-          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTFA2Q2hLWERSWkNDS0hCZ1JRTDNOekVsN1dfTDAxNUt5TUk2amZTNFQ0YWdVTTBpVXlreklIMWM4WGRRUFdDVFdueU5fSDZPSS1JVHZOS0NVV3B2NGRwRDBoRDJhbEdNT0I4?oc=5"
-        },
-        {
-          "time": "2026-10-20T10:40:00+09:00",
-          "title": "KB국민은행-SK하이닉스-국무역보험공사, 반도체 산업 수출공급망 강화 ‘맞손’",
-          "source": "테크월드",
-          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE93aGV0dUtWQ212Ni10TlhWdFFLZjV5ekpvVzJUT015RnRlRWZUU1ZYX0NMZURxRGg5eFZKcVRwWjdGRjFVMTAzaEJ0eWZuX3dieExPY1ZsZFhMa2t3UTdQOWVlaWlxaF9X?oc=5"
+          "time": "2026-10-20T09:17:25+09:00",
+          "title": "SK하이닉스 3%대 하락…AI 수익성 논란 여전히 발목 - 머니투데이",
+          "source": "머니투데이",
+          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE1sU2RiRERvVVhTQ2ZiWjNTWEZHNk1JME9vUHEwVHlBNU04bHZiN1o5d3RiTDN6NmdpcGtsOVRYZmFkR2dReUc5LVREcEN3SFdTUFFWc2UyLWVBYVFNM2t2M1ZWLXZpTDl50gFuQVVfeXFMTmJob2h6VEhQZW9QenZhTjZxNzJHbnBDdmxiS3lGRGtKSDRfbWVIWklYdXZzakV5Q29UcTJxbWhjNFRUVGhpLWI2RnpIUkFkVHlibEcyZmFoZnhLamVadl9SWTFJWDRzS0UyeEUzYkE?oc=5"
         },
         {
           "time": "2026-10-20T09:23:00+09:00",
@@ -245,12 +188,48 @@
           "title": "코스피 하락 출발...SK하이닉스 장중 5% 급락",
           "source": "YTN",
           "link": "https://news.google.com/rss/articles/CBMiXkFVX3lxTFBMQmMyQjVtN1lzRFFsb0hPTmlhTnBqY3duRXViX0ZFVG52bm5aeGliMWNCTTBDRFh4M2F5UmZCanE5NXNLd1hrQk9VSXkwdHZGd2x4Qno2aE1CYkNfQkE?oc=5"
+        }
+      ]
+    },
+    {
+      "time": "2026-10-20T10:40:00+09:00",
+      "ret": 0.009038619556285932,
+      "z": 2.48,
+      "volume_ratio": 3.05,
+      "cum_before": -0.037944664031620556,
+      "cum_after": -0.029249011857707563,
+      "session_share": -0.23820528622295215,
+      "score": 4.085496716615619,
+      "news": [
+        {
+          "time": "2026-10-20T09:26:06+09:00",
+          "title": "KB국민은행, SK하이닉스·한국무역보험공사와 ‘반도체 산업 수출공급망 강화 업무협약’ 체결",
+          "source": "www.intn.co.kr",
+          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE9BSTRGTzRUbjhHN05zT28wdlBhY25fVWRDODNSSzlTSnZKemxlMHBDQU1YSFNBRWNZV3RkX2s2OUNVcGtWUmRZNmkxbGk0TzBMM3hGZFROT0phRG12RHJYVk8xSVVHUW5C?oc=5"
         },
         {
-          "time": "2026-10-20T09:41:05+09:00",
-          "title": "[특징주] SK하이닉스 4% 급락⋯美 반도체주 '엇박자'",
-          "source": "아이뉴스24",
-          "link": "https://news.google.com/rss/articles/CBMiS0FVX3lxTE5CQW5VaURXV254cmdrckhEb3pFVDRjUWhMOF9zZHBSMnNPMjRMV1FLNzhJV3BabWhhcmU3WnhiY0pYTTh0YmN5SEdxMA?oc=5"
+          "time": "2026-10-20T10:40:00+09:00",
+          "title": "KB국민은행-SK하이닉스-국무역보험공사, 반도체 산업 수출공급망 강화 ‘맞손’",
+          "source": "테크월드",
+          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE93aGV0dUtWQ212Ni10TlhWdFFLZjV5ekpvVzJUT015RnRlRWZUU1ZYX0NMZURxRGg5eFZKcVRwWjdGRjFVMTAzaEJ0eWZuX3dieExPY1ZsZFhMa2t3UTdQOWVlaWlxaF9X?oc=5"
+        },
+        {
+          "time": "2026-10-20T09:17:25+09:00",
+          "title": "SK하이닉스 3%대 하락…AI 수익성 논란 여전히 발목 - 머니투데이",
+          "source": "머니투데이",
+          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE1sU2RiRERvVVhTQ2ZiWjNTWEZHNk1JME9vUHEwVHlBNU04bHZiN1o5d3RiTDN6NmdpcGtsOVRYZmFkR2dReUc5LVREcEN3SFdTUFFWc2UyLWVBYVFNM2t2M1ZWLXZpTDl50gFuQVVfeXFMTmJob2h6VEhQZW9QenZhTjZxNzJHbnBDdmxiS3lGRGtKSDRfbWVIWklYdXZzakV5Q29UcTJxbWhjNFRUVGhpLWI2RnpIUkFkVHlibEcyZmFoZnhLamVadl9SWTFJWDRzS0UyeEUzYkE?oc=5"
+        },
+        {
+          "time": "2026-10-20T09:23:00+09:00",
+          "title": "코스피, 나스닥 반등에도 '팔자'폭 확대…SK하이닉스 4% 약세",
+          "source": "연합인포맥스",
+          "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE9GWDlFR08tSkdyMXZ2b3VNQV9kUjIzNkkyLWtlSlFQeFJsb1ZxUmV3RTZtN3BBa2JiTEY4aTE1UU0zaXMzX1BaX2EyWXE4M1NBcDFaTzhsUExJRFNsVmkwVjVUTWZiZ0dzMzM2dE1Na1Y?oc=5"
+        },
+        {
+          "time": "2026-10-20T09:39:00+09:00",
+          "title": "코스피 하락 출발...SK하이닉스 장중 5% 급락",
+          "source": "YTN",
+          "link": "https://news.google.com/rss/articles/CBMiXkFVX3lxTFBMQmMyQjVtN1lzRFFsb0hPTmlhTnBqY3duRXViX0ZFVG52bm5aeGliMWNCTTBDRFh4M2F5UmZCanE5NXNLd1hrQk9VSXkwdHZGd2x4Qno2aE1CYkNfQkE?oc=5"
         }
       ]
     }
@@ -263,24 +242,24 @@
     "pattern": "저점 후 반등"
   },
   "closing_share": -0.14849160699612285,
-  "intraday_corr_kospi": 0.8980506311680828,
+  "intraday_corr_kospi": 0.8969006971516956,
   "intraday_note": "장중 봉은 09:00~14:55까지만 있어 마감 구간(14:55~15:30)은 일봉 종가로만 봅니다(그 구간 +0.49%).",
   "intraday_coverage": "09:00~14:55",
   "intraday_path": [
     {
       "time": "2026-10-20T09:00:00+09:00",
-      "price": 1238000.0,
-      "volume": 219887.0
+      "price": 1238500.0,
+      "volume": 219882.0
     },
     {
       "time": "2026-10-20T09:05:00+09:00",
       "price": 1224000.0,
-      "volume": 155735.0
+      "volume": 155787.0
     },
     {
       "time": "2026-10-20T09:10:00+09:00",
       "price": 1227000.0,
-      "volume": 135805.0
+      "volume": 135758.0
     },
     {
       "time": "2026-10-20T09:15:00+09:00",
@@ -355,12 +334,12 @@
     {
       "time": "2026-10-20T10:25:00+09:00",
       "price": 1212000.0,
-      "volume": 35186.0
+      "volume": 35204.0
     },
     {
       "time": "2026-10-20T10:30:00+09:00",
       "price": 1219000.0,
-      "volume": 84729.0
+      "volume": 84711.0
     },
     {
       "time": "2026-10-20T10:35:00+09:00",
@@ -425,7 +404,7 @@
     {
       "time": "2026-10-20T11:35:00+09:00",
       "price": 1233000.0,
-      "volume": 27414.0
+      "volume": 27413.0
     },
     {
       "time": "2026-10-20T11:40:00+09:00",
@@ -435,12 +414,12 @@
     {
       "time": "2026-10-20T11:45:00+09:00",
       "price": 1241000.0,
-      "volume": 25671.0
+      "volume": 25670.0
     },
     {
       "time": "2026-10-20T11:50:00+09:00",
       "price": 1245000.0,
-      "volume": 21184.0
+      "volume": 21186.0
     },
     {
       "time": "2026-10-20T11:55:00+09:00",
@@ -450,12 +429,12 @@
     {
       "time": "2026-10-20T12:00:00+09:00",
       "price": 1240000.0,
-      "volume": 19017.0
+      "volume": 19016.0
     },
     {
       "time": "2026-10-20T12:05:00+09:00",
       "price": 1238000.0,
-      "volume": 21852.0
+      "volume": 21853.0
     },
     {
       "time": "2026-10-20T12:10:00+09:00",
@@ -569,13 +548,13 @@
     },
     {
       "time": "2026-10-20T14:00:00+09:00",
-      "price": 1214000.0,
-      "volume": 33620.0
+      "price": 1213000.0,
+      "volume": 33613.0
     },
     {
       "time": "2026-10-20T14:05:00+09:00",
       "price": 1212000.0,
-      "volume": 29065.0
+      "volume": 29072.0
     },
     {
       "time": "2026-10-20T14:10:00+09:00",
@@ -625,69 +604,57 @@
     {
       "time": "2026-10-20T14:55:00+09:00",
       "price": 1217000.0,
-      "volume": 29868.0
+      "volume": 29844.0
     }
   ],
   "timeline_items": [
     {
       "time": "2026-10-20T09:00:00+09:00",
-      "ret": -0.030540328895849678,
-      "z": 8.39,
+      "ret": -0.030148786217697676,
+      "z": 8.26,
       "volume_ratio": 7.9,
       "cum_before": 0.0,
-      "cum_after": -0.02134387351778655,
-      "session_share": 0.8048649177760383,
-      "score": 10.39070595404138,
+      "cum_after": -0.020948616600790504,
+      "session_share": 0.7945461367789074,
+      "score": 10.256019290967249,
       "news": [
         {
           "time": "2026-10-20T08:41:53+09:00",
           "title": "KB국민은행, SK하이닉스·무보와 2500억원 규모 반도체 협력사 금융지원",
           "source": "전자신문",
           "link": "https://news.google.com/rss/articles/CBMiTkFVX3lxTE8zSkhZSFJEMXp6Z1RVVm5vX2lKS1ktRHJsNmJKcHBIYWpyNXNNS01IcVNmajFsck1OVTZHVnBSWEs4VmtBWUR4Rm43SEs1dw?oc=5"
-        },
-        {
-          "time": "2026-10-20T08:55:42+09:00",
-          "title": "KB국민은행·SK하이닉스, 반도체 협력사에 2500억원 우대보증 지원",
-          "source": "한국NGO신문",
-          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTFBzMTNtekhEbjhDYUloMHdBUU50YXBnOExWQlduSnQtMWRTNHNHYUxrME1FZkhrOVFraG42U011ZlM4dHl2Ukt5ZWZvVDFZc0tHZXc3dXU4eVNBYkdEUllmb09GZHJaN1o5?oc=5"
-        },
-        {
-          "time": "2026-10-20T09:00:00+09:00",
-          "title": "4대 은행, SK하이닉스와 손잡고 반도체 협력사에 2조원 금융지원",
-          "source": "뉴스핌",
-          "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE1TNE80bjFuQ0hEM1hQOWRsZGJLUnQwWjcwQXJZUkxGa1EyZ0drQ2gyVl8wajBnZ29fOVAtejBIeHhqem1jTDZZSUdFS1JwUzREay1sT3N1UWdpMkpI?oc=5"
-        },
-        {
-          "time": "2026-10-20T08:56:15+09:00",
-          "title": "하나은행, SK하이닉스 협력사에 7500억원 금융지원",
-          "source": "더트래커",
-          "link": "https://news.google.com/rss/articles/CBMiWEFVX3lxTFBVcGpIYm4wX25QckF5VmFIM2xLeVJrWGQtVWdDT2lkQ20tZTNFY09KMW9fa2dLZER2dS1kVlFOSFNteUpoNWJLWnB2bGZ1dEhNTjB5ZzVPTlU?oc=5"
         },
         {
           "time": "2026-10-20T09:00:28+09:00",
           "title": "청주시, SK하이닉스 등 16개 기업·단체와 상생협약",
           "source": "연합뉴스",
-          "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE5CYlo1UnMyRkV5MjhOY24wQXhMSGVoOUVLVDFzQnRiUF9sQmdSSVpmSzJBYkxIemRYc1l2RFpxNjJQSG1BUmx1S2Qxdkl5ZlVHNEFraENSWGQzazDSAWBBVV95cUxOcmNycjNKWE5GeGUzeWZ5NXJhR2poQUNpbmhlclhERW9Id3Q4d1dJeTNDQ3N2Z2NTbmJiYmptb2FQNnB6dTBlUExQNVE1cFRzYWJPYjAxckdiVXlRVXRERkE?oc=5"
+          "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE5yY3JyM0pYTkZ4ZTN5Znk1cmFHamhBQ2luaGVyWERFb0h3dDh3V0l5M0NDc3ZnY1NuYmJiam1vYVA2cHp1MGVQTFA1UTVwVHNhYk9iMDFyR2JVeVFVdERGQdIBYEFVX3lxTE5yY3JyM0pYTkZ4ZTN5Znk1cmFHamhBQ2luaGVyWERFb0h3dDh3V0l5M0NDc3ZnY1NuYmJiam1vYVA2cHp1MGVQTFA1UTVwVHNhYk9iMDFyR2JVeVFVdERGQQ?oc=5"
+        },
+        {
+          "time": "2026-10-20T09:14:11+09:00",
+          "title": "검색 상위 20개 중 14개 하락… 삼성전자·SK하이닉스 동반 약세",
+          "source": "서울신문",
+          "link": "https://news.google.com/rss/articles/CBMifkFVX3lxTE9QWHIwUHBMSnc5TzBlMXEwLWFFV002RFI2ZGpYYmRVMlVia1kxZ1R1bE96ajJVWlk0VHI4VDRMYzZCUXJDSlVnM3loX0NjNFUtNG9uRGVKWG54b1Q5NEZXVWJCQ2dHMjZJVWNuX1hLUmduVDNxRUdtN0ktX0dQZw?oc=5"
         }
       ],
-      "price": 1238000.0,
+      "price": 1238500.0,
       "kind": "turn_down"
     },
     {
       "time": "2026-10-20T10:10:00+09:00",
       "ret": -0.010815307820299491,
-      "z": 2.97,
+      "z": 2.96,
       "volume_ratio": 3.82,
       "cum_before": -0.04980237154150202,
       "cum_after": -0.060079051383399196,
       "session_share": 0.28502842484747615,
-      "score": 4.734480611121474,
+      "score": 4.724754151401207,
       "news": [
         {
-          "time": "2026-10-20T09:41:37+09:00",
-          "title": "KB국민은행, SK하이닉스·무역보험공사와 ‘반도체 수출공급망 강화’ 협약",
-          "source": "아이티데일리",
-          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTFA2Q2hLWERSWkNDS0hCZ1JRTDNOekVsN1dfTDAxNUt5TUk2amZTNFQ0YWdVTTBpVXlreklIMWM4WGRRUFdDVFdueU5fSDZPSS1JVHZOS0NVV3B2NGRwRDBoRDJhbEdNT0I4?oc=5"
+          "time": "2026-10-20T09:26:06+09:00",
+          "title": "KB국민은행, SK하이닉스·한국무역보험공사와 ‘반도체 산업 수출공급망 강화 업무협약’ 체결",
+          "source": "www.intn.co.kr",
+          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE9BSTRGTzRUbjhHN05zT28wdlBhY25fVWRDODNSSzlTSnZKemxlMHBDQU1YSFNBRWNZV3RkX2s2OUNVcGtWUmRZNmkxbGk0TzBMM3hGZFROT0phRG12RHJYVk8xSVVHUW5C?oc=5"
         },
         {
           "time": "2026-10-20T08:41:53+09:00",
@@ -696,22 +663,22 @@
           "link": "https://news.google.com/rss/articles/CBMiTkFVX3lxTE8zSkhZSFJEMXp6Z1RVVm5vX2lKS1ktRHJsNmJKcHBIYWpyNXNNS01IcVNmajFsck1OVTZHVnBSWEs4VmtBWUR4Rm43SEs1dw?oc=5"
         },
         {
-          "time": "2026-10-20T08:55:42+09:00",
-          "title": "KB국민은행·SK하이닉스, 반도체 협력사에 2500억원 우대보증 지원",
-          "source": "한국NGO신문",
-          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTFBzMTNtekhEbjhDYUloMHdBUU50YXBnOExWQlduSnQtMWRTNHNHYUxrME1FZkhrOVFraG42U011ZlM4dHl2Ukt5ZWZvVDFZc0tHZXc3dXU4eVNBYkdEUllmb09GZHJaN1o5?oc=5"
-        },
-        {
-          "time": "2026-10-20T09:00:00+09:00",
-          "title": "4대 은행, SK하이닉스와 손잡고 반도체 협력사에 2조원 금융지원",
-          "source": "뉴스핌",
-          "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE1TNE80bjFuQ0hEM1hQOWRsZGJLUnQwWjcwQXJZUkxGa1EyZ0drQ2gyVl8wajBnZ29fOVAtejBIeHhqem1jTDZZSUdFS1JwUzREay1sT3N1UWdpMkpI?oc=5"
+          "time": "2026-10-20T09:17:25+09:00",
+          "title": "SK하이닉스 3%대 하락…AI 수익성 논란 여전히 발목 - 머니투데이",
+          "source": "머니투데이",
+          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE1sU2RiRERvVVhTQ2ZiWjNTWEZHNk1JME9vUHEwVHlBNU04bHZiN1o5d3RiTDN6NmdpcGtsOVRYZmFkR2dReUc5LVREcEN3SFdTUFFWc2UyLWVBYVFNM2t2M1ZWLXZpTDl50gFuQVVfeXFMTmJob2h6VEhQZW9QenZhTjZxNzJHbnBDdmxiS3lGRGtKSDRfbWVIWklYdXZzakV5Q29UcTJxbWhjNFRUVGhpLWI2RnpIUkFkVHlibEcyZmFoZnhLamVadl9SWTFJWDRzS0UyeEUzYkE?oc=5"
         },
         {
           "time": "2026-10-20T09:23:00+09:00",
           "title": "코스피, 나스닥 반등에도 '팔자'폭 확대…SK하이닉스 4% 약세",
           "source": "연합인포맥스",
           "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE9GWDlFR08tSkdyMXZ2b3VNQV9kUjIzNkkyLWtlSlFQeFJsb1ZxUmV3RTZtN3BBa2JiTEY4aTE1UU0zaXMzX1BaX2EyWXE4M1NBcDFaTzhsUExJRFNsVmkwVjVUTWZiZ0dzMzM2dE1Na1Y?oc=5"
+        },
+        {
+          "time": "2026-10-20T09:39:00+09:00",
+          "title": "코스피 하락 출발...SK하이닉스 장중 5% 급락",
+          "source": "YTN",
+          "link": "https://news.google.com/rss/articles/CBMiXkFVX3lxTFBMQmMyQjVtN1lzRFFsb0hPTmlhTnBqY3duRXViX0ZFVG52bm5aeGliMWNCTTBDRFh4M2F5UmZCanE5NXNLd1hrQk9VSXkwdHZGd2x4Qno2aE1CYkNfQkE?oc=5"
         }
       ],
       "price": 1189000.0,
@@ -725,19 +692,25 @@
       "cum_before": -0.037944664031620556,
       "cum_after": -0.029249011857707563,
       "session_share": -0.23820528622295215,
-      "score": 4.093625358953105,
+      "score": 4.085496716615619,
       "news": [
         {
-          "time": "2026-10-20T09:41:37+09:00",
-          "title": "KB국민은행, SK하이닉스·무역보험공사와 ‘반도체 수출공급망 강화’ 협약",
-          "source": "아이티데일리",
-          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTFA2Q2hLWERSWkNDS0hCZ1JRTDNOekVsN1dfTDAxNUt5TUk2amZTNFQ0YWdVTTBpVXlreklIMWM4WGRRUFdDVFdueU5fSDZPSS1JVHZOS0NVV3B2NGRwRDBoRDJhbEdNT0I4?oc=5"
+          "time": "2026-10-20T09:26:06+09:00",
+          "title": "KB국민은행, SK하이닉스·한국무역보험공사와 ‘반도체 산업 수출공급망 강화 업무협약’ 체결",
+          "source": "www.intn.co.kr",
+          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE9BSTRGTzRUbjhHN05zT28wdlBhY25fVWRDODNSSzlTSnZKemxlMHBDQU1YSFNBRWNZV3RkX2s2OUNVcGtWUmRZNmkxbGk0TzBMM3hGZFROT0phRG12RHJYVk8xSVVHUW5C?oc=5"
         },
         {
           "time": "2026-10-20T10:40:00+09:00",
           "title": "KB국민은행-SK하이닉스-국무역보험공사, 반도체 산업 수출공급망 강화 ‘맞손’",
           "source": "테크월드",
           "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE93aGV0dUtWQ212Ni10TlhWdFFLZjV5ekpvVzJUT015RnRlRWZUU1ZYX0NMZURxRGg5eFZKcVRwWjdGRjFVMTAzaEJ0eWZuX3dieExPY1ZsZFhMa2t3UTdQOWVlaWlxaF9X?oc=5"
+        },
+        {
+          "time": "2026-10-20T09:17:25+09:00",
+          "title": "SK하이닉스 3%대 하락…AI 수익성 논란 여전히 발목 - 머니투데이",
+          "source": "머니투데이",
+          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE1sU2RiRERvVVhTQ2ZiWjNTWEZHNk1JME9vUHEwVHlBNU04bHZiN1o5d3RiTDN6NmdpcGtsOVRYZmFkR2dReUc5LVREcEN3SFdTUFFWc2UyLWVBYVFNM2t2M1ZWLXZpTDl50gFuQVVfeXFMTmJob2h6VEhQZW9QenZhTjZxNzJHbnBDdmxiS3lGRGtKSDRfbWVIWklYdXZzakV5Q29UcTJxbWhjNFRUVGhpLWI2RnpIUkFkVHlibEcyZmFoZnhLamVadl9SWTFJWDRzS0UyeEUzYkE?oc=5"
         },
         {
           "time": "2026-10-20T09:23:00+09:00",
@@ -750,12 +723,6 @@
           "title": "코스피 하락 출발...SK하이닉스 장중 5% 급락",
           "source": "YTN",
           "link": "https://news.google.com/rss/articles/CBMiXkFVX3lxTFBMQmMyQjVtN1lzRFFsb0hPTmlhTnBqY3duRXViX0ZFVG52bm5aeGliMWNCTTBDRFh4M2F5UmZCanE5NXNLd1hrQk9VSXkwdHZGd2x4Qno2aE1CYkNfQkE?oc=5"
-        },
-        {
-          "time": "2026-10-20T09:41:05+09:00",
-          "title": "[특징주] SK하이닉스 4% 급락⋯美 반도체주 '엇박자'",
-          "source": "아이뉴스24",
-          "link": "https://news.google.com/rss/articles/CBMiS0FVX3lxTE5CQW5VaURXV254cmdrckhEb3pFVDRjUWhMOF9zZHBSMnNPMjRMV1FLNzhJV3BabWhhcmU3WnhiY0pYTTh0YmN5SEdxMA?oc=5"
         }
       ],
       "price": 1228000.0,
@@ -768,38 +735,26 @@
       "title": "KB국민은행, SK하이닉스·무보와 2500억원 규모 반도체 협력사 금융지원",
       "source": "전자신문",
       "link": "https://news.google.com/rss/articles/CBMiTkFVX3lxTE8zSkhZSFJEMXp6Z1RVVm5vX2lKS1ktRHJsNmJKcHBIYWpyNXNNS01IcVNmajFsck1OVTZHVnBSWEs4VmtBWUR4Rm43SEs1dw?oc=5"
-    },
-    {
-      "time": "2026-10-20T08:55:42+09:00",
-      "title": "KB국민은행·SK하이닉스, 반도체 협력사에 2500억원 우대보증 지원",
-      "source": "한국NGO신문",
-      "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTFBzMTNtekhEbjhDYUloMHdBUU50YXBnOExWQlduSnQtMWRTNHNHYUxrME1FZkhrOVFraG42U011ZlM4dHl2Ukt5ZWZvVDFZc0tHZXc3dXU4eVNBYkdEUllmb09GZHJaN1o5?oc=5"
-    },
-    {
-      "time": "2026-10-20T09:00:00+09:00",
-      "title": "4대 은행, SK하이닉스와 손잡고 반도체 협력사에 2조원 금융지원",
-      "source": "뉴스핌",
-      "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE1TNE80bjFuQ0hEM1hQOWRsZGJLUnQwWjcwQXJZUkxGa1EyZ0drQ2gyVl8wajBnZ29fOVAtejBIeHhqem1jTDZZSUdFS1JwUzREay1sT3N1UWdpMkpI?oc=5"
-    },
-    {
-      "time": "2026-10-20T08:56:15+09:00",
-      "title": "하나은행, SK하이닉스 협력사에 7500억원 금융지원",
-      "source": "더트래커",
-      "link": "https://news.google.com/rss/articles/CBMiWEFVX3lxTFBVcGpIYm4wX25QckF5VmFIM2xLeVJrWGQtVWdDT2lkQ20tZTNFY09KMW9fa2dLZER2dS1kVlFOSFNteUpoNWJLWnB2bGZ1dEhNTjB5ZzVPTlU?oc=5"
     }
   ],
   "top_news": [
     {
-      "time": "2026-10-20T09:41:37+09:00",
-      "title": "KB국민은행, SK하이닉스·무역보험공사와 ‘반도체 수출공급망 강화’ 협약",
-      "source": "아이티데일리",
-      "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTFA2Q2hLWERSWkNDS0hCZ1JRTDNOekVsN1dfTDAxNUt5TUk2amZTNFQ0YWdVTTBpVXlreklIMWM4WGRRUFdDVFdueU5fSDZPSS1JVHZOS0NVV3B2NGRwRDBoRDJhbEdNT0I4?oc=5"
+      "time": "2026-10-20T09:26:06+09:00",
+      "title": "KB국민은행, SK하이닉스·한국무역보험공사와 ‘반도체 산업 수출공급망 강화 업무협약’ 체결",
+      "source": "www.intn.co.kr",
+      "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE9BSTRGTzRUbjhHN05zT28wdlBhY25fVWRDODNSSzlTSnZKemxlMHBDQU1YSFNBRWNZV3RkX2s2OUNVcGtWUmRZNmkxbGk0TzBMM3hGZFROT0phRG12RHJYVk8xSVVHUW5C?oc=5"
     },
     {
       "time": "2026-10-20T10:40:00+09:00",
       "title": "KB국민은행-SK하이닉스-국무역보험공사, 반도체 산업 수출공급망 강화 ‘맞손’",
       "source": "테크월드",
       "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE93aGV0dUtWQ212Ni10TlhWdFFLZjV5ekpvVzJUT015RnRlRWZUU1ZYX0NMZURxRGg5eFZKcVRwWjdGRjFVMTAzaEJ0eWZuX3dieExPY1ZsZFhMa2t3UTdQOWVlaWlxaF9X?oc=5"
+    },
+    {
+      "time": "2026-10-20T14:14:32+09:00",
+      "title": "신한은행, SK하이닉스·한국무역보험공사와 반도체 수출공급망 금융지원 협약 체결",
+      "source": "디지털비즈온",
+      "link": "https://news.google.com/rss/articles/CBMidEFVX3lxTFBsV0RhRHNOeWw2ZXQ4U2ZnWUYtcHJsSmJJcnBjNzlfTzZSLTYwUkxVUFpnT3BhNkZTMmtSOFdvWkR2OG01eXJzeFBOWWdJMld1VkJwUGZEd3VuVlRhSU82clVEMUlWcHA5T1g3M3RPMjRoX0Jz0gF0QVVfeXFMUGxXRGFEc055bDZldDhTZmdZRi1wcmxKYklycGM3OV9PNlItNjBSTFVQWmdPcGE2RlMya1I4V29aRHY4bTV5cnN4UE5ZZ0kyV3VWQnBQZkR3dW5WVGFJTzZyVUQxSVZwcDlPWDczdE8yNGhfQnM?oc=5"
     },
     {
       "time": "2026-10-20T14:15:19+09:00",
@@ -810,24 +765,18 @@
     {
       "time": "2026-10-20T15:04:00+09:00",
       "title": "신한은행, SK하이닉스·한국무역보험공사와 반도체 수출공급망 금융지원 협약",
-      "source": "Daily NTN",
-      "link": "https://news.google.com/rss/articles/CBMiakFVX3lxTE10NE1aX1JuelJvbGFfZWNlMm9KalkxY2pLUVRSaHlpcnV4QVhPYTRuS2RjblVDUkJObGRaWWMtUldhMEZVLUxrYmxoWjZZUndtR3JfY3hOMmFRT1RxZHExbk5tZTAzSWZFSlE?oc=5"
+      "source": "www.intn.co.kr",
+      "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTFBBRTdiWWg0ODlNdHJfemVZS3ZzRVl5X21PRkR1YzdkMzJ5SXY3ZDRKeFJCZ0Q1RDlwalMwc3dnV21ycmhGOWlDbHVoTVhVR1RNWkkwMnJuang1blU0VEpZSXNTYTBhR1hG?oc=5"
     },
     {
-      "time": "2026-10-20T15:09:36+09:00",
-      "title": "하나은행, SK하이닉스·한국무역보험공사와 함께 K-반도체 산업 수출 공급망 강화를 위한 업무협약 체결",
-      "source": "파이낸스투데이",
-      "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE9GMVNpeFMwNmdSWlRKRXhGYkx4bFFwUXpRX0o1aFZ4VE02Tl8xOUdadU9IU2FWUjR6Qm5DRDlLRkVfRUl5Ymg2U2IxSWt4MTFTcWd1U2c2R1UyWU5hLVIyWG1taENtT05rSUtraw?oc=5"
-    },
-    {
-      "time": "2026-10-20T15:25:29+09:00",
-      "title": "하나은행·SK하이닉스 K-반도체 수출 공급망 업무협약 체결",
-      "source": "글로벌뉴스통신GNA",
-      "link": "https://news.google.com/rss/articles/CBMidEFVX3lxTE05dG9sRGdQaXA0T1VxZFc3NEZTVkdKWFNpZ2RoazY3b0hZMkdCblg4YVZYV0hEUGNwdkU0STByQmJzeHhucXdKUG5yNUxKQVhucTZCSm1ZSFF5UDV4MGlOdjljVG1PcWloeXRKeC1HYnJTNkJO?oc=5"
+      "time": "2026-10-20T15:06:05+09:00",
+      "title": "[은행 Talk Talk] KB국민은행, SK하이닉스와 반도체 수출망 강화 협력 ​外",
+      "source": "DealSite경제TV",
+      "link": "https://news.google.com/rss/articles/CBMiVkFVX3lxTE5qQjI2TDdod1NoSWQxWEd3LXNsX0Zjd3NBOGVYQmtZU1R2QUwweGh0RUhieS1qWU91SUwxZGNrdHNGT3lmX2FlVHNyYmZ0ekhXd1lmd1B3?oc=5"
     }
   ],
-  "disclosures": [],
-  "disclosure_note": null,
+  "disclosures": null,
+  "disclosure_note": "DART 조회 실패(URLError)",
   "flows": null,
   "flow_story": null,
   "flow_status": {
@@ -843,9 +792,9 @@
     "steady": 24,
     "upper": 2,
     "lower": 0,
-    "individual": 8998.0,
-    "foreign": -5377.0,
-    "institution": -9977.0,
+    "individual": 8948.0,
+    "foreign": -5298.0,
+    "institution": -9997.0,
     "prev_close": 5768.01,
     "open": 5733.57,
     "high": 5733.57,

@@ -1,0 +1,905 @@
+{
+  "target": "sk_hynix",
+  "name": "SK하이닉스",
+  "peer_name": "삼성전자",
+  "session_date": "2026-10-20",
+  "generated_at": "2026-10-20 16:11 KST",
+  "summary": {
+    "prev_close": 1277000.0,
+    "open": 1265000.0,
+    "high": 1267000.0,
+    "low": 1183000.0,
+    "close": 1223000.0,
+    "gap": -0.009397024275646038,
+    "session": -0.033201581027668015,
+    "c2c": -0.04228660924040717,
+    "high_vs_open": 0.0015810276679841806,
+    "low_vs_open": -0.06482213438735174,
+    "volume": 3504628.0,
+    "volume_ratio": 1.0262597826774789,
+    "kospi_c2c": -0.03732128411656288,
+    "peer_c2c": -0.029816513761467878,
+    "usdkrw_chg": -0.0050921599101529935,
+    "us_nights": 1,
+    "sox_ret": 0.01607660427801627,
+    "nasdaq_ret": 0.011127046753531156,
+    "micron_ret": 0.029652720361221574,
+    "prior_streak": 2,
+    "ma5": 1290600.0,
+    "ma20": 1641650.0,
+    "high20": 1935000.0,
+    "high252": 2986352.5777339735,
+    "price_context": {
+      "breakouts": {
+        "20": {
+          "prior_high": 1935000.0,
+          "distance": -0.3679586563307493,
+          "close_breakout": false,
+          "intraday_breakout": false
+        },
+        "60": {
+          "prior_high": 2005565.0926229507,
+          "distance": -0.3901968056292223,
+          "close_breakout": false,
+          "intraday_breakout": false
+        }
+      },
+      "relative": {
+        "5": {
+          "start": "2026-10-13",
+          "end": "2026-10-20",
+          "own": -0.15246015246015243,
+          "peer": -0.08836206896551724,
+          "excess": -0.0640980834946352
+        },
+        "20": {
+          "start": "2026-09-16",
+          "end": "2026-10-20",
+          "own": -0.30471859010801594,
+          "peer": -0.16568047337278102,
+          "excess": -0.13903811673523492
+        },
+        "60": {
+          "start": "2026-07-21",
+          "end": "2026-10-20",
+          "own": -0.33373356533714826,
+          "peer": -0.18339768339768336,
+          "excess": -0.1503358819394649
+        }
+      }
+    },
+    "range": 0.07100591715976323,
+    "peer_range": 0.05149700598802398,
+    "prior_5d": -0.20436137071651095,
+    "ma_touches": [],
+    "micron_ah": {
+      "regular_close": 905.3499755859375,
+      "last": 905.26,
+      "ret": -9.938210456050811e-05,
+      "low_ret": -0.0012149727901915597,
+      "high_ret": 0.005357071347932285,
+      "last_time": "2026-10-20T08:55:00+09:00"
+    },
+    "nvidia_ah": {
+      "regular_close": 217.08999633789062,
+      "last": 217.18,
+      "ret": 0.00041459147647371353,
+      "low_ret": -0.0006909408098988434,
+      "high_ret": 0.002579592203952874,
+      "last_time": "2026-10-20T08:55:00+09:00"
+    },
+    "session_cross": {
+      "NQ=F": {
+        "label": "나스닥100 선물",
+        "ret": -0.002564641580828253,
+        "after_high": -0.003737454331667611
+      },
+      "ZN=F": {
+        "label": "미 10년물 국채 선물",
+        "ret": 0.0016342296835536452,
+        "after_high": 0.0007421701053882401
+      },
+      "KRW=X": {
+        "label": "원/달러",
+        "ret": -0.0002259369348128759,
+        "after_high": -0.0017524922998498615
+      }
+    },
+    "from_high": -0.019246190858059342,
+    "buyback": [
+      {
+        "kind": "직접 취득",
+        "start": "2026-08-20",
+        "end": "2026-11-19",
+        "amount": "40,004,340,000,000",
+        "purpose": "자기주식 소각을 통한 \n주주가치 제고",
+        "rcept_no": "20260819000254"
+      }
+    ]
+  },
+  "classification": {
+    "labels": [
+      "장중 급변 09:00 주도",
+      "지수 동조"
+    ],
+    "reasons": [
+      "09:00 봉 -3.05%(σ의 8.39배, 거래량 7.9배)가 세션 -3.32%의 80%",
+      "KOSPI -3.73% vs 종목 -4.23%, 5분 수익률 상관 0.90 — 종목 고유 요인이 약함"
+    ]
+  },
+  "events": [
+    {
+      "time": "2026-10-20T09:00:00+09:00",
+      "ret": -0.030540328895849678,
+      "z": 8.39,
+      "volume_ratio": 7.9,
+      "cum_before": 0.0,
+      "cum_after": -0.02134387351778655,
+      "session_share": 0.8048649177760383,
+      "score": 10.39070595404138,
+      "news": [
+        {
+          "time": "2026-10-20T08:41:53+09:00",
+          "title": "KB국민은행, SK하이닉스·무보와 2500억원 규모 반도체 협력사 금융지원",
+          "source": "전자신문",
+          "link": "https://news.google.com/rss/articles/CBMiTkFVX3lxTE8zSkhZSFJEMXp6Z1RVVm5vX2lKS1ktRHJsNmJKcHBIYWpyNXNNS01IcVNmajFsck1OVTZHVnBSWEs4VmtBWUR4Rm43SEs1dw?oc=5"
+        },
+        {
+          "time": "2026-10-20T08:55:42+09:00",
+          "title": "KB국민은행·SK하이닉스, 반도체 협력사에 2500억원 우대보증 지원",
+          "source": "한국NGO신문",
+          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTFBzMTNtekhEbjhDYUloMHdBUU50YXBnOExWQlduSnQtMWRTNHNHYUxrME1FZkhrOVFraG42U011ZlM4dHl2Ukt5ZWZvVDFZc0tHZXc3dXU4eVNBYkdEUllmb09GZHJaN1o5?oc=5"
+        },
+        {
+          "time": "2026-10-20T09:00:00+09:00",
+          "title": "4대 은행, SK하이닉스와 손잡고 반도체 협력사에 2조원 금융지원",
+          "source": "뉴스핌",
+          "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE1TNE80bjFuQ0hEM1hQOWRsZGJLUnQwWjcwQXJZUkxGa1EyZ0drQ2gyVl8wajBnZ29fOVAtejBIeHhqem1jTDZZSUdFS1JwUzREay1sT3N1UWdpMkpI?oc=5"
+        },
+        {
+          "time": "2026-10-20T08:56:15+09:00",
+          "title": "하나은행, SK하이닉스 협력사에 7500억원 금융지원",
+          "source": "더트래커",
+          "link": "https://news.google.com/rss/articles/CBMiWEFVX3lxTFBVcGpIYm4wX25QckF5VmFIM2xLeVJrWGQtVWdDT2lkQ20tZTNFY09KMW9fa2dLZER2dS1kVlFOSFNteUpoNWJLWnB2bGZ1dEhNTjB5ZzVPTlU?oc=5"
+        },
+        {
+          "time": "2026-10-20T09:00:28+09:00",
+          "title": "청주시, SK하이닉스 등 16개 기업·단체와 상생협약",
+          "source": "연합뉴스",
+          "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE5CYlo1UnMyRkV5MjhOY24wQXhMSGVoOUVLVDFzQnRiUF9sQmdSSVpmSzJBYkxIemRYc1l2RFpxNjJQSG1BUmx1S2Qxdkl5ZlVHNEFraENSWGQzazDSAWBBVV95cUxOcmNycjNKWE5GeGUzeWZ5NXJhR2poQUNpbmhlclhERW9Id3Q4d1dJeTNDQ3N2Z2NTbmJiYmptb2FQNnB6dTBlUExQNVE1cFRzYWJPYjAxckdiVXlRVXRERkE?oc=5"
+        }
+      ]
+    },
+    {
+      "time": "2026-10-20T10:10:00+09:00",
+      "ret": -0.010815307820299491,
+      "z": 2.97,
+      "volume_ratio": 3.82,
+      "cum_before": -0.04980237154150202,
+      "cum_after": -0.060079051383399196,
+      "session_share": 0.28502842484747615,
+      "score": 4.734480611121474,
+      "news": [
+        {
+          "time": "2026-10-20T09:41:37+09:00",
+          "title": "KB국민은행, SK하이닉스·무역보험공사와 ‘반도체 수출공급망 강화’ 협약",
+          "source": "아이티데일리",
+          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTFA2Q2hLWERSWkNDS0hCZ1JRTDNOekVsN1dfTDAxNUt5TUk2amZTNFQ0YWdVTTBpVXlreklIMWM4WGRRUFdDVFdueU5fSDZPSS1JVHZOS0NVV3B2NGRwRDBoRDJhbEdNT0I4?oc=5"
+        },
+        {
+          "time": "2026-10-20T08:41:53+09:00",
+          "title": "KB국민은행, SK하이닉스·무보와 2500억원 규모 반도체 협력사 금융지원",
+          "source": "전자신문",
+          "link": "https://news.google.com/rss/articles/CBMiTkFVX3lxTE8zSkhZSFJEMXp6Z1RVVm5vX2lKS1ktRHJsNmJKcHBIYWpyNXNNS01IcVNmajFsck1OVTZHVnBSWEs4VmtBWUR4Rm43SEs1dw?oc=5"
+        },
+        {
+          "time": "2026-10-20T08:55:42+09:00",
+          "title": "KB국민은행·SK하이닉스, 반도체 협력사에 2500억원 우대보증 지원",
+          "source": "한국NGO신문",
+          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTFBzMTNtekhEbjhDYUloMHdBUU50YXBnOExWQlduSnQtMWRTNHNHYUxrME1FZkhrOVFraG42U011ZlM4dHl2Ukt5ZWZvVDFZc0tHZXc3dXU4eVNBYkdEUllmb09GZHJaN1o5?oc=5"
+        },
+        {
+          "time": "2026-10-20T09:00:00+09:00",
+          "title": "4대 은행, SK하이닉스와 손잡고 반도체 협력사에 2조원 금융지원",
+          "source": "뉴스핌",
+          "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE1TNE80bjFuQ0hEM1hQOWRsZGJLUnQwWjcwQXJZUkxGa1EyZ0drQ2gyVl8wajBnZ29fOVAtejBIeHhqem1jTDZZSUdFS1JwUzREay1sT3N1UWdpMkpI?oc=5"
+        },
+        {
+          "time": "2026-10-20T09:23:00+09:00",
+          "title": "코스피, 나스닥 반등에도 '팔자'폭 확대…SK하이닉스 4% 약세",
+          "source": "연합인포맥스",
+          "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE9GWDlFR08tSkdyMXZ2b3VNQV9kUjIzNkkyLWtlSlFQeFJsb1ZxUmV3RTZtN3BBa2JiTEY4aTE1UU0zaXMzX1BaX2EyWXE4M1NBcDFaTzhsUExJRFNsVmkwVjVUTWZiZ0dzMzM2dE1Na1Y?oc=5"
+        }
+      ]
+    },
+    {
+      "time": "2026-10-20T10:40:00+09:00",
+      "ret": 0.009038619556285932,
+      "z": 2.48,
+      "volume_ratio": 3.05,
+      "cum_before": -0.037944664031620556,
+      "cum_after": -0.029249011857707563,
+      "session_share": -0.23820528622295215,
+      "score": 4.093625358953105,
+      "news": [
+        {
+          "time": "2026-10-20T09:41:37+09:00",
+          "title": "KB국민은행, SK하이닉스·무역보험공사와 ‘반도체 수출공급망 강화’ 협약",
+          "source": "아이티데일리",
+          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTFA2Q2hLWERSWkNDS0hCZ1JRTDNOekVsN1dfTDAxNUt5TUk2amZTNFQ0YWdVTTBpVXlreklIMWM4WGRRUFdDVFdueU5fSDZPSS1JVHZOS0NVV3B2NGRwRDBoRDJhbEdNT0I4?oc=5"
+        },
+        {
+          "time": "2026-10-20T10:40:00+09:00",
+          "title": "KB국민은행-SK하이닉스-국무역보험공사, 반도체 산업 수출공급망 강화 ‘맞손’",
+          "source": "테크월드",
+          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE93aGV0dUtWQ212Ni10TlhWdFFLZjV5ekpvVzJUT015RnRlRWZUU1ZYX0NMZURxRGg5eFZKcVRwWjdGRjFVMTAzaEJ0eWZuX3dieExPY1ZsZFhMa2t3UTdQOWVlaWlxaF9X?oc=5"
+        },
+        {
+          "time": "2026-10-20T09:23:00+09:00",
+          "title": "코스피, 나스닥 반등에도 '팔자'폭 확대…SK하이닉스 4% 약세",
+          "source": "연합인포맥스",
+          "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE9GWDlFR08tSkdyMXZ2b3VNQV9kUjIzNkkyLWtlSlFQeFJsb1ZxUmV3RTZtN3BBa2JiTEY4aTE1UU0zaXMzX1BaX2EyWXE4M1NBcDFaTzhsUExJRFNsVmkwVjVUTWZiZ0dzMzM2dE1Na1Y?oc=5"
+        },
+        {
+          "time": "2026-10-20T09:39:00+09:00",
+          "title": "코스피 하락 출발...SK하이닉스 장중 5% 급락",
+          "source": "YTN",
+          "link": "https://news.google.com/rss/articles/CBMiXkFVX3lxTFBMQmMyQjVtN1lzRFFsb0hPTmlhTnBqY3duRXViX0ZFVG52bm5aeGliMWNCTTBDRFh4M2F5UmZCanE5NXNLd1hrQk9VSXkwdHZGd2x4Qno2aE1CYkNfQkE?oc=5"
+        },
+        {
+          "time": "2026-10-20T09:41:05+09:00",
+          "title": "[특징주] SK하이닉스 4% 급락⋯美 반도체주 '엇박자'",
+          "source": "아이뉴스24",
+          "link": "https://news.google.com/rss/articles/CBMiS0FVX3lxTE5CQW5VaURXV254cmdrckhEb3pFVDRjUWhMOF9zZHBSMnNPMjRMV1FLNzhJV3BabWhhcmU3WnhiY0pYTTh0YmN5SEdxMA?oc=5"
+        }
+      ]
+    }
+  ],
+  "turning_point": {
+    "high_time": "2026-10-20T11:55:00+09:00",
+    "high": -0.014229249011857736,
+    "low_time": "2026-10-20T10:10:00+09:00",
+    "low": -0.060079051383399196,
+    "pattern": "저점 후 반등"
+  },
+  "closing_share": -0.14849160699612285,
+  "intraday_corr_kospi": 0.8980506311680828,
+  "intraday_note": "장중 봉은 09:00~14:55까지만 있어 마감 구간(14:55~15:30)은 일봉 종가로만 봅니다(그 구간 +0.49%).",
+  "intraday_coverage": "09:00~14:55",
+  "intraday_path": [
+    {
+      "time": "2026-10-20T09:00:00+09:00",
+      "price": 1238000.0,
+      "volume": 219887.0
+    },
+    {
+      "time": "2026-10-20T09:05:00+09:00",
+      "price": 1224000.0,
+      "volume": 155735.0
+    },
+    {
+      "time": "2026-10-20T09:10:00+09:00",
+      "price": 1227000.0,
+      "volume": 135805.0
+    },
+    {
+      "time": "2026-10-20T09:15:00+09:00",
+      "price": 1226000.0,
+      "volume": 84161.0
+    },
+    {
+      "time": "2026-10-20T09:20:00+09:00",
+      "price": 1228000.0,
+      "volume": 53510.0
+    },
+    {
+      "time": "2026-10-20T09:25:00+09:00",
+      "price": 1230000.0,
+      "volume": 43874.0
+    },
+    {
+      "time": "2026-10-20T09:30:00+09:00",
+      "price": 1225000.0,
+      "volume": 38358.0
+    },
+    {
+      "time": "2026-10-20T09:35:00+09:00",
+      "price": 1223000.0,
+      "volume": 28079.0
+    },
+    {
+      "time": "2026-10-20T09:40:00+09:00",
+      "price": 1214000.0,
+      "volume": 62317.0
+    },
+    {
+      "time": "2026-10-20T09:45:00+09:00",
+      "price": 1202000.0,
+      "volume": 74260.0
+    },
+    {
+      "time": "2026-10-20T09:50:00+09:00",
+      "price": 1206000.0,
+      "volume": 53345.0
+    },
+    {
+      "time": "2026-10-20T09:55:00+09:00",
+      "price": 1209000.0,
+      "volume": 42664.0
+    },
+    {
+      "time": "2026-10-20T10:00:00+09:00",
+      "price": 1202000.0,
+      "volume": 41846.0
+    },
+    {
+      "time": "2026-10-20T10:05:00+09:00",
+      "price": 1202000.0,
+      "volume": 31428.0
+    },
+    {
+      "time": "2026-10-20T10:10:00+09:00",
+      "price": 1189000.0,
+      "volume": 106247.0
+    },
+    {
+      "time": "2026-10-20T10:15:00+09:00",
+      "price": 1198000.0,
+      "volume": 74873.0
+    },
+    {
+      "time": "2026-10-20T10:20:00+09:00",
+      "price": 1202000.0,
+      "volume": 37777.0
+    },
+    {
+      "time": "2026-10-20T10:25:00+09:00",
+      "price": 1212000.0,
+      "volume": 35186.0
+    },
+    {
+      "time": "2026-10-20T10:30:00+09:00",
+      "price": 1219000.0,
+      "volume": 84729.0
+    },
+    {
+      "time": "2026-10-20T10:35:00+09:00",
+      "price": 1217000.0,
+      "volume": 58827.0
+    },
+    {
+      "time": "2026-10-20T10:40:00+09:00",
+      "price": 1228000.0,
+      "volume": 84982.0
+    },
+    {
+      "time": "2026-10-20T10:45:00+09:00",
+      "price": 1229000.0,
+      "volume": 38031.0
+    },
+    {
+      "time": "2026-10-20T10:50:00+09:00",
+      "price": 1230000.0,
+      "volume": 27616.0
+    },
+    {
+      "time": "2026-10-20T10:55:00+09:00",
+      "price": 1236000.0,
+      "volume": 32030.0
+    },
+    {
+      "time": "2026-10-20T11:00:00+09:00",
+      "price": 1230000.0,
+      "volume": 30654.0
+    },
+    {
+      "time": "2026-10-20T11:05:00+09:00",
+      "price": 1226000.0,
+      "volume": 25616.0
+    },
+    {
+      "time": "2026-10-20T11:10:00+09:00",
+      "price": 1231000.0,
+      "volume": 24274.0
+    },
+    {
+      "time": "2026-10-20T11:15:00+09:00",
+      "price": 1240000.0,
+      "volume": 47072.0
+    },
+    {
+      "time": "2026-10-20T11:20:00+09:00",
+      "price": 1242000.0,
+      "volume": 27368.0
+    },
+    {
+      "time": "2026-10-20T11:25:00+09:00",
+      "price": 1235000.0,
+      "volume": 22324.0
+    },
+    {
+      "time": "2026-10-20T11:30:00+09:00",
+      "price": 1234000.0,
+      "volume": 19334.0
+    },
+    {
+      "time": "2026-10-20T11:35:00+09:00",
+      "price": 1233000.0,
+      "volume": 27414.0
+    },
+    {
+      "time": "2026-10-20T11:40:00+09:00",
+      "price": 1235000.0,
+      "volume": 19808.0
+    },
+    {
+      "time": "2026-10-20T11:45:00+09:00",
+      "price": 1241000.0,
+      "volume": 25671.0
+    },
+    {
+      "time": "2026-10-20T11:50:00+09:00",
+      "price": 1245000.0,
+      "volume": 21184.0
+    },
+    {
+      "time": "2026-10-20T11:55:00+09:00",
+      "price": 1247000.0,
+      "volume": 20686.0
+    },
+    {
+      "time": "2026-10-20T12:00:00+09:00",
+      "price": 1240000.0,
+      "volume": 19017.0
+    },
+    {
+      "time": "2026-10-20T12:05:00+09:00",
+      "price": 1238000.0,
+      "volume": 21852.0
+    },
+    {
+      "time": "2026-10-20T12:10:00+09:00",
+      "price": 1238000.0,
+      "volume": 18572.0
+    },
+    {
+      "time": "2026-10-20T12:15:00+09:00",
+      "price": 1231000.0,
+      "volume": 17775.0
+    },
+    {
+      "time": "2026-10-20T12:20:00+09:00",
+      "price": 1230000.0,
+      "volume": 20506.0
+    },
+    {
+      "time": "2026-10-20T12:25:00+09:00",
+      "price": 1230000.0,
+      "volume": 15421.0
+    },
+    {
+      "time": "2026-10-20T12:30:00+09:00",
+      "price": 1234000.0,
+      "volume": 25884.0
+    },
+    {
+      "time": "2026-10-20T12:35:00+09:00",
+      "price": 1229500.0,
+      "volume": 18968.0
+    },
+    {
+      "time": "2026-10-20T12:40:00+09:00",
+      "price": 1228000.0,
+      "volume": 21395.0
+    },
+    {
+      "time": "2026-10-20T12:45:00+09:00",
+      "price": 1228000.0,
+      "volume": 14651.0
+    },
+    {
+      "time": "2026-10-20T12:50:00+09:00",
+      "price": 1227000.0,
+      "volume": 18815.0
+    },
+    {
+      "time": "2026-10-20T12:55:00+09:00",
+      "price": 1224000.0,
+      "volume": 31930.0
+    },
+    {
+      "time": "2026-10-20T13:00:00+09:00",
+      "price": 1217000.0,
+      "volume": 25318.0
+    },
+    {
+      "time": "2026-10-20T13:05:00+09:00",
+      "price": 1215000.0,
+      "volume": 33804.0
+    },
+    {
+      "time": "2026-10-20T13:10:00+09:00",
+      "price": 1216000.0,
+      "volume": 21732.0
+    },
+    {
+      "time": "2026-10-20T13:15:00+09:00",
+      "price": 1216000.0,
+      "volume": 22473.0
+    },
+    {
+      "time": "2026-10-20T13:20:00+09:00",
+      "price": 1213000.0,
+      "volume": 25618.0
+    },
+    {
+      "time": "2026-10-20T13:25:00+09:00",
+      "price": 1211000.0,
+      "volume": 35022.0
+    },
+    {
+      "time": "2026-10-20T13:30:00+09:00",
+      "price": 1216000.0,
+      "volume": 26905.0
+    },
+    {
+      "time": "2026-10-20T13:35:00+09:00",
+      "price": 1215000.0,
+      "volume": 20999.0
+    },
+    {
+      "time": "2026-10-20T13:40:00+09:00",
+      "price": 1213000.0,
+      "volume": 20217.0
+    },
+    {
+      "time": "2026-10-20T13:45:00+09:00",
+      "price": 1210000.0,
+      "volume": 21436.0
+    },
+    {
+      "time": "2026-10-20T13:50:00+09:00",
+      "price": 1215000.0,
+      "volume": 20570.0
+    },
+    {
+      "time": "2026-10-20T13:55:00+09:00",
+      "price": 1216000.0,
+      "volume": 25258.0
+    },
+    {
+      "time": "2026-10-20T14:00:00+09:00",
+      "price": 1214000.0,
+      "volume": 33620.0
+    },
+    {
+      "time": "2026-10-20T14:05:00+09:00",
+      "price": 1212000.0,
+      "volume": 29065.0
+    },
+    {
+      "time": "2026-10-20T14:10:00+09:00",
+      "price": 1217000.0,
+      "volume": 49825.0
+    },
+    {
+      "time": "2026-10-20T14:15:00+09:00",
+      "price": 1211000.0,
+      "volume": 22354.0
+    },
+    {
+      "time": "2026-10-20T14:20:00+09:00",
+      "price": 1213000.0,
+      "volume": 28122.0
+    },
+    {
+      "time": "2026-10-20T14:25:00+09:00",
+      "price": 1215000.0,
+      "volume": 23321.0
+    },
+    {
+      "time": "2026-10-20T14:30:00+09:00",
+      "price": 1215000.0,
+      "volume": 23390.0
+    },
+    {
+      "time": "2026-10-20T14:35:00+09:00",
+      "price": 1219000.0,
+      "volume": 26733.0
+    },
+    {
+      "time": "2026-10-20T14:40:00+09:00",
+      "price": 1220000.0,
+      "volume": 38812.0
+    },
+    {
+      "time": "2026-10-20T14:45:00+09:00",
+      "price": 1223000.0,
+      "volume": 37484.0
+    },
+    {
+      "time": "2026-10-20T14:50:00+09:00",
+      "price": 1221000.0,
+      "volume": 31874.0
+    },
+    {
+      "time": "2026-10-20T14:55:00+09:00",
+      "price": 1217000.0,
+      "volume": 29868.0
+    }
+  ],
+  "timeline_items": [
+    {
+      "time": "2026-10-20T09:00:00+09:00",
+      "ret": -0.030540328895849678,
+      "z": 8.39,
+      "volume_ratio": 7.9,
+      "cum_before": 0.0,
+      "cum_after": -0.02134387351778655,
+      "session_share": 0.8048649177760383,
+      "score": 10.39070595404138,
+      "news": [
+        {
+          "time": "2026-10-20T08:41:53+09:00",
+          "title": "KB국민은행, SK하이닉스·무보와 2500억원 규모 반도체 협력사 금융지원",
+          "source": "전자신문",
+          "link": "https://news.google.com/rss/articles/CBMiTkFVX3lxTE8zSkhZSFJEMXp6Z1RVVm5vX2lKS1ktRHJsNmJKcHBIYWpyNXNNS01IcVNmajFsck1OVTZHVnBSWEs4VmtBWUR4Rm43SEs1dw?oc=5"
+        },
+        {
+          "time": "2026-10-20T08:55:42+09:00",
+          "title": "KB국민은행·SK하이닉스, 반도체 협력사에 2500억원 우대보증 지원",
+          "source": "한국NGO신문",
+          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTFBzMTNtekhEbjhDYUloMHdBUU50YXBnOExWQlduSnQtMWRTNHNHYUxrME1FZkhrOVFraG42U011ZlM4dHl2Ukt5ZWZvVDFZc0tHZXc3dXU4eVNBYkdEUllmb09GZHJaN1o5?oc=5"
+        },
+        {
+          "time": "2026-10-20T09:00:00+09:00",
+          "title": "4대 은행, SK하이닉스와 손잡고 반도체 협력사에 2조원 금융지원",
+          "source": "뉴스핌",
+          "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE1TNE80bjFuQ0hEM1hQOWRsZGJLUnQwWjcwQXJZUkxGa1EyZ0drQ2gyVl8wajBnZ29fOVAtejBIeHhqem1jTDZZSUdFS1JwUzREay1sT3N1UWdpMkpI?oc=5"
+        },
+        {
+          "time": "2026-10-20T08:56:15+09:00",
+          "title": "하나은행, SK하이닉스 협력사에 7500억원 금융지원",
+          "source": "더트래커",
+          "link": "https://news.google.com/rss/articles/CBMiWEFVX3lxTFBVcGpIYm4wX25QckF5VmFIM2xLeVJrWGQtVWdDT2lkQ20tZTNFY09KMW9fa2dLZER2dS1kVlFOSFNteUpoNWJLWnB2bGZ1dEhNTjB5ZzVPTlU?oc=5"
+        },
+        {
+          "time": "2026-10-20T09:00:28+09:00",
+          "title": "청주시, SK하이닉스 등 16개 기업·단체와 상생협약",
+          "source": "연합뉴스",
+          "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE5CYlo1UnMyRkV5MjhOY24wQXhMSGVoOUVLVDFzQnRiUF9sQmdSSVpmSzJBYkxIemRYc1l2RFpxNjJQSG1BUmx1S2Qxdkl5ZlVHNEFraENSWGQzazDSAWBBVV95cUxOcmNycjNKWE5GeGUzeWZ5NXJhR2poQUNpbmhlclhERW9Id3Q4d1dJeTNDQ3N2Z2NTbmJiYmptb2FQNnB6dTBlUExQNVE1cFRzYWJPYjAxckdiVXlRVXRERkE?oc=5"
+        }
+      ],
+      "price": 1238000.0,
+      "kind": "turn_down"
+    },
+    {
+      "time": "2026-10-20T10:10:00+09:00",
+      "ret": -0.010815307820299491,
+      "z": 2.97,
+      "volume_ratio": 3.82,
+      "cum_before": -0.04980237154150202,
+      "cum_after": -0.060079051383399196,
+      "session_share": 0.28502842484747615,
+      "score": 4.734480611121474,
+      "news": [
+        {
+          "time": "2026-10-20T09:41:37+09:00",
+          "title": "KB국민은행, SK하이닉스·무역보험공사와 ‘반도체 수출공급망 강화’ 협약",
+          "source": "아이티데일리",
+          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTFA2Q2hLWERSWkNDS0hCZ1JRTDNOekVsN1dfTDAxNUt5TUk2amZTNFQ0YWdVTTBpVXlreklIMWM4WGRRUFdDVFdueU5fSDZPSS1JVHZOS0NVV3B2NGRwRDBoRDJhbEdNT0I4?oc=5"
+        },
+        {
+          "time": "2026-10-20T08:41:53+09:00",
+          "title": "KB국민은행, SK하이닉스·무보와 2500억원 규모 반도체 협력사 금융지원",
+          "source": "전자신문",
+          "link": "https://news.google.com/rss/articles/CBMiTkFVX3lxTE8zSkhZSFJEMXp6Z1RVVm5vX2lKS1ktRHJsNmJKcHBIYWpyNXNNS01IcVNmajFsck1OVTZHVnBSWEs4VmtBWUR4Rm43SEs1dw?oc=5"
+        },
+        {
+          "time": "2026-10-20T08:55:42+09:00",
+          "title": "KB국민은행·SK하이닉스, 반도체 협력사에 2500억원 우대보증 지원",
+          "source": "한국NGO신문",
+          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTFBzMTNtekhEbjhDYUloMHdBUU50YXBnOExWQlduSnQtMWRTNHNHYUxrME1FZkhrOVFraG42U011ZlM4dHl2Ukt5ZWZvVDFZc0tHZXc3dXU4eVNBYkdEUllmb09GZHJaN1o5?oc=5"
+        },
+        {
+          "time": "2026-10-20T09:00:00+09:00",
+          "title": "4대 은행, SK하이닉스와 손잡고 반도체 협력사에 2조원 금융지원",
+          "source": "뉴스핌",
+          "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE1TNE80bjFuQ0hEM1hQOWRsZGJLUnQwWjcwQXJZUkxGa1EyZ0drQ2gyVl8wajBnZ29fOVAtejBIeHhqem1jTDZZSUdFS1JwUzREay1sT3N1UWdpMkpI?oc=5"
+        },
+        {
+          "time": "2026-10-20T09:23:00+09:00",
+          "title": "코스피, 나스닥 반등에도 '팔자'폭 확대…SK하이닉스 4% 약세",
+          "source": "연합인포맥스",
+          "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE9GWDlFR08tSkdyMXZ2b3VNQV9kUjIzNkkyLWtlSlFQeFJsb1ZxUmV3RTZtN3BBa2JiTEY4aTE1UU0zaXMzX1BaX2EyWXE4M1NBcDFaTzhsUExJRFNsVmkwVjVUTWZiZ0dzMzM2dE1Na1Y?oc=5"
+        }
+      ],
+      "price": 1189000.0,
+      "kind": "volume"
+    },
+    {
+      "time": "2026-10-20T10:40:00+09:00",
+      "ret": 0.009038619556285932,
+      "z": 2.48,
+      "volume_ratio": 3.05,
+      "cum_before": -0.037944664031620556,
+      "cum_after": -0.029249011857707563,
+      "session_share": -0.23820528622295215,
+      "score": 4.093625358953105,
+      "news": [
+        {
+          "time": "2026-10-20T09:41:37+09:00",
+          "title": "KB국민은행, SK하이닉스·무역보험공사와 ‘반도체 수출공급망 강화’ 협약",
+          "source": "아이티데일리",
+          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTFA2Q2hLWERSWkNDS0hCZ1JRTDNOekVsN1dfTDAxNUt5TUk2amZTNFQ0YWdVTTBpVXlreklIMWM4WGRRUFdDVFdueU5fSDZPSS1JVHZOS0NVV3B2NGRwRDBoRDJhbEdNT0I4?oc=5"
+        },
+        {
+          "time": "2026-10-20T10:40:00+09:00",
+          "title": "KB국민은행-SK하이닉스-국무역보험공사, 반도체 산업 수출공급망 강화 ‘맞손’",
+          "source": "테크월드",
+          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE93aGV0dUtWQ212Ni10TlhWdFFLZjV5ekpvVzJUT015RnRlRWZUU1ZYX0NMZURxRGg5eFZKcVRwWjdGRjFVMTAzaEJ0eWZuX3dieExPY1ZsZFhMa2t3UTdQOWVlaWlxaF9X?oc=5"
+        },
+        {
+          "time": "2026-10-20T09:23:00+09:00",
+          "title": "코스피, 나스닥 반등에도 '팔자'폭 확대…SK하이닉스 4% 약세",
+          "source": "연합인포맥스",
+          "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE9GWDlFR08tSkdyMXZ2b3VNQV9kUjIzNkkyLWtlSlFQeFJsb1ZxUmV3RTZtN3BBa2JiTEY4aTE1UU0zaXMzX1BaX2EyWXE4M1NBcDFaTzhsUExJRFNsVmkwVjVUTWZiZ0dzMzM2dE1Na1Y?oc=5"
+        },
+        {
+          "time": "2026-10-20T09:39:00+09:00",
+          "title": "코스피 하락 출발...SK하이닉스 장중 5% 급락",
+          "source": "YTN",
+          "link": "https://news.google.com/rss/articles/CBMiXkFVX3lxTFBMQmMyQjVtN1lzRFFsb0hPTmlhTnBqY3duRXViX0ZFVG52bm5aeGliMWNCTTBDRFh4M2F5UmZCanE5NXNLd1hrQk9VSXkwdHZGd2x4Qno2aE1CYkNfQkE?oc=5"
+        },
+        {
+          "time": "2026-10-20T09:41:05+09:00",
+          "title": "[특징주] SK하이닉스 4% 급락⋯美 반도체주 '엇박자'",
+          "source": "아이뉴스24",
+          "link": "https://news.google.com/rss/articles/CBMiS0FVX3lxTE5CQW5VaURXV254cmdrckhEb3pFVDRjUWhMOF9zZHBSMnNPMjRMV1FLNzhJV3BabWhhcmU3WnhiY0pYTTh0YmN5SEdxMA?oc=5"
+        }
+      ],
+      "price": 1228000.0,
+      "kind": "volume"
+    }
+  ],
+  "overnight_news": [
+    {
+      "time": "2026-10-20T08:41:53+09:00",
+      "title": "KB국민은행, SK하이닉스·무보와 2500억원 규모 반도체 협력사 금융지원",
+      "source": "전자신문",
+      "link": "https://news.google.com/rss/articles/CBMiTkFVX3lxTE8zSkhZSFJEMXp6Z1RVVm5vX2lKS1ktRHJsNmJKcHBIYWpyNXNNS01IcVNmajFsck1OVTZHVnBSWEs4VmtBWUR4Rm43SEs1dw?oc=5"
+    },
+    {
+      "time": "2026-10-20T08:55:42+09:00",
+      "title": "KB국민은행·SK하이닉스, 반도체 협력사에 2500억원 우대보증 지원",
+      "source": "한국NGO신문",
+      "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTFBzMTNtekhEbjhDYUloMHdBUU50YXBnOExWQlduSnQtMWRTNHNHYUxrME1FZkhrOVFraG42U011ZlM4dHl2Ukt5ZWZvVDFZc0tHZXc3dXU4eVNBYkdEUllmb09GZHJaN1o5?oc=5"
+    },
+    {
+      "time": "2026-10-20T09:00:00+09:00",
+      "title": "4대 은행, SK하이닉스와 손잡고 반도체 협력사에 2조원 금융지원",
+      "source": "뉴스핌",
+      "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE1TNE80bjFuQ0hEM1hQOWRsZGJLUnQwWjcwQXJZUkxGa1EyZ0drQ2gyVl8wajBnZ29fOVAtejBIeHhqem1jTDZZSUdFS1JwUzREay1sT3N1UWdpMkpI?oc=5"
+    },
+    {
+      "time": "2026-10-20T08:56:15+09:00",
+      "title": "하나은행, SK하이닉스 협력사에 7500억원 금융지원",
+      "source": "더트래커",
+      "link": "https://news.google.com/rss/articles/CBMiWEFVX3lxTFBVcGpIYm4wX25QckF5VmFIM2xLeVJrWGQtVWdDT2lkQ20tZTNFY09KMW9fa2dLZER2dS1kVlFOSFNteUpoNWJLWnB2bGZ1dEhNTjB5ZzVPTlU?oc=5"
+    }
+  ],
+  "top_news": [
+    {
+      "time": "2026-10-20T09:41:37+09:00",
+      "title": "KB국민은행, SK하이닉스·무역보험공사와 ‘반도체 수출공급망 강화’ 협약",
+      "source": "아이티데일리",
+      "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTFA2Q2hLWERSWkNDS0hCZ1JRTDNOekVsN1dfTDAxNUt5TUk2amZTNFQ0YWdVTTBpVXlreklIMWM4WGRRUFdDVFdueU5fSDZPSS1JVHZOS0NVV3B2NGRwRDBoRDJhbEdNT0I4?oc=5"
+    },
+    {
+      "time": "2026-10-20T10:40:00+09:00",
+      "title": "KB국민은행-SK하이닉스-국무역보험공사, 반도체 산업 수출공급망 강화 ‘맞손’",
+      "source": "테크월드",
+      "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE93aGV0dUtWQ212Ni10TlhWdFFLZjV5ekpvVzJUT015RnRlRWZUU1ZYX0NMZURxRGg5eFZKcVRwWjdGRjFVMTAzaEJ0eWZuX3dieExPY1ZsZFhMa2t3UTdQOWVlaWlxaF9X?oc=5"
+    },
+    {
+      "time": "2026-10-20T14:15:19+09:00",
+      "title": "[아이포럼 2026] AI 성능 가르는 메모리…SK하이닉스의 새 성장 공식은",
+      "source": "아이뉴스24",
+      "link": "https://news.google.com/rss/articles/CBMiS0FVX3lxTE1lRFFCcXk2UGw2OWhzT21mamsxTm5qSTVULXlPdjBIT3VULVhlYzlqcXlhMzdhLUhuajRuc1R2REVlQXE5cXlYcmZtWQ?oc=5"
+    },
+    {
+      "time": "2026-10-20T15:04:00+09:00",
+      "title": "신한은행, SK하이닉스·한국무역보험공사와 반도체 수출공급망 금융지원 협약",
+      "source": "Daily NTN",
+      "link": "https://news.google.com/rss/articles/CBMiakFVX3lxTE10NE1aX1JuelJvbGFfZWNlMm9KalkxY2pLUVRSaHlpcnV4QVhPYTRuS2RjblVDUkJObGRaWWMtUldhMEZVLUxrYmxoWjZZUndtR3JfY3hOMmFRT1RxZHExbk5tZTAzSWZFSlE?oc=5"
+    },
+    {
+      "time": "2026-10-20T15:09:36+09:00",
+      "title": "하나은행, SK하이닉스·한국무역보험공사와 함께 K-반도체 산업 수출 공급망 강화를 위한 업무협약 체결",
+      "source": "파이낸스투데이",
+      "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE9GMVNpeFMwNmdSWlRKRXhGYkx4bFFwUXpRX0o1aFZ4VE02Tl8xOUdadU9IU2FWUjR6Qm5DRDlLRkVfRUl5Ymg2U2IxSWt4MTFTcWd1U2c2R1UyWU5hLVIyWG1taENtT05rSUtraw?oc=5"
+    },
+    {
+      "time": "2026-10-20T15:25:29+09:00",
+      "title": "하나은행·SK하이닉스 K-반도체 수출 공급망 업무협약 체결",
+      "source": "글로벌뉴스통신GNA",
+      "link": "https://news.google.com/rss/articles/CBMidEFVX3lxTE05dG9sRGdQaXA0T1VxZFc3NEZTVkdKWFNpZ2RoazY3b0hZMkdCblg4YVZYV0hEUGNwdkU0STByQmJzeHhucXdKUG5yNUxKQVhucTZCSm1ZSFF5UDV4MGlOdjljVG1PcWloeXRKeC1HYnJTNkJO?oc=5"
+    }
+  ],
+  "disclosures": [],
+  "disclosure_note": null,
+  "flows": null,
+  "flow_story": null,
+  "flow_status": {
+    "state": "pending",
+    "detail": "최신 2026-10-19"
+  },
+  "context": {},
+  "market": {
+    "index": "KOSPI",
+    "date": "2026-10-20",
+    "rise": 118,
+    "fall": 773,
+    "steady": 24,
+    "upper": 2,
+    "lower": 0,
+    "individual": 8998.0,
+    "foreign": -5377.0,
+    "institution": -9977.0,
+    "prev_close": 5768.01,
+    "open": 5733.57,
+    "high": 5733.57,
+    "low": 5493.24,
+    "close": 5552.74
+  },
+  "earnings_reactions": null,
+  "forecasts": [
+    {
+      "model": "No macro ensemble",
+      "hit": false,
+      "verdict": "틀림 — 예측 상승 43%, 실제 하락(-4.23%)",
+      "legs": "갭 -0.94%(보합) · 세션 -3.32%(하락)",
+      "where": "결과는 주로 장중에서 정해졌습니다.",
+      "band": 0.0127051439606396,
+      "probs": [
+        0.2489548929854478,
+        0.3191838063208139,
+        0.4318613006937383
+      ],
+      "actual": "하락",
+      "predicted": "상승"
+    },
+    {
+      "model": "Mean ensemble",
+      "hit": false,
+      "verdict": "틀림 — 예측 상승 42%, 실제 하락(-4.23%)",
+      "legs": "갭 -0.94%(보합) · 세션 -3.32%(하락)",
+      "where": "결과는 주로 장중에서 정해졌습니다.",
+      "band": 0.0127051439606396,
+      "probs": [
+        0.2540316694555558,
+        0.3303054257928586,
+        0.4156629047515856
+      ],
+      "actual": "하락",
+      "predicted": "상승"
+    },
+    {
+      "model": "Candidate expanding",
+      "hit": false,
+      "verdict": "틀림 — 예측 상승 43%, 실제 하락(-4.23%)",
+      "legs": "갭 -0.94%(보합) · 세션 -3.32%(하락)",
+      "where": "결과는 주로 장중에서 정해졌습니다.",
+      "band": 0.0127051439606396,
+      "probs": [
+        0.2633697387989157,
+        0.3069493755675423,
+        0.4296808856335419
+      ],
+      "actual": "하락",
+      "predicted": "상승"
+    }
+  ],
+  "price_check": "1거래일 예상 구간 1,217,183~1,351,016원 · 종가 1,223,000원 → 구간 안",
+  "disclaimer": "시간이 맞는 것이지 원인 확정이 아닙니다. 뉴스 없이 움직이는 날(수급·프로그램·옵션 만기)이 많고, 기사 발행 시각은 실제 정보 유통보다 늦거나 앞섭니다. 이 절은 설명 도구이며 다음날 예측에 자동 반영되지 않습니다."
+}

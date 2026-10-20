@@ -3,7 +3,7 @@
   "name": "삼성전자",
   "peer_name": "SK하이닉스",
   "session_date": "2026-10-20",
-  "generated_at": "2026-10-20 17:31 KST",
+  "generated_at": "2026-10-20 21:42 KST",
   "summary": {
     "prev_close": 218000.0,
     "open": 219500.0,
@@ -15,11 +15,11 @@
     "c2c": -0.029816513761467878,
     "high_vs_open": 0.0,
     "low_vs_open": -0.048974943052391806,
-    "volume": 16221581.0,
-    "volume_ratio": 0.8806881815048478,
+    "volume": 17602165.0,
+    "volume_ratio": 0.9556416655317556,
     "kospi_c2c": -0.03732128411656288,
     "peer_c2c": -0.04228660924040717,
-    "usdkrw_chg": -0.005947108878240903,
+    "usdkrw_chg": NaN,
     "us_nights": 1,
     "sox_ret": 0.01607660427801627,
     "nasdaq_ret": 0.011127046753531156,
@@ -115,7 +115,15 @@
         "purpose": "임직원 주식보상",
         "rcept_no": "20260821000616"
       }
-    ]
+    ],
+    "foreign_pressure": {
+      "state": "selling_eased",
+      "previous_ratio": -0.11953988400869599,
+      "recent_ratio": -0.03871040129738634,
+      "previous_daily_net": -2322211.6,
+      "recent_daily_net": -832024.0
+    },
+    "buyback_transition": null
   },
   "classification": {
     "labels": [
@@ -136,24 +144,6 @@
       "session_share": 0.2954668105774419,
       "score": 5.260291915889312,
       "news": [
-        {
-          "time": "2026-10-20T08:59:31+09:00",
-          "title": "삼성전자 주가 19% 떨어졌는데…KB증권 “내년 이익성장 이미 확보”",
-          "source": "매일경제",
-          "link": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE53UmdZaXB6RG5MdDdFdzBObGltTTBoRGpXQk40NVdyRm5rRjc0d3FaUEctX3pWUEdHaGpLbFZ0VjdxT2VZSHJ4UTFBZWgwVzJNQVE?oc=5"
-        },
-        {
-          "time": "2026-10-20T08:00:00+09:00",
-          "title": "지역마다 다른 일상, AI 가전 경험도 다르게…삼성전자 ‘더 브리프’ 글로벌 현장",
-          "source": "samsung.com",
-          "link": "https://news.google.com/rss/articles/CBMivwJBVV95cUxOeDZfUlRVbXRSN3JUUkhtQlJ6VjNxX2NOVzJFNU12dnNEZ08xb3BJTTdiZVJKRWRMdHZXTXVVZFpJaEVJRE1aeFFOblh3QzJTM2R6WloxME1IT1pFYk1nd3N6SzQyTDI5eFJJSnM2WnVIcjRGYk9LVEh3Y1VrSVJpeXFwdnhnVlYxZGhSZGh6cEZaUU9XdzJ3TnB4czhYTkswQXFUajgwc29UdzV6eXFpa0lxdjI3TXk1S25wV1BrRE5fU1IzanExcHJuc2ZKdXVpc19yOTFjQUxHcURVOW1JTnpuRmt5M2RucGxtTjlfUnJ2Y2JHWUVPbnJ0czF4MHJIOUI2MEQzLVZwemVlcXdaSUwwb3JMVHV6cnJyYmhTU1pRNWx3cEZ1RjZJdDNnd25zZ240S2FiUjRQUE4tVktB?oc=5"
-        },
-        {
-          "time": "2026-10-20T08:19:04+09:00",
-          "title": "삼성전자가 투자한 美 ‘엘리먼트 바이오사이언스’社, 서울에서 글로벌 로드쇼 ‘Shift Your Science’ 개최",
-          "source": "samsung.com",
-          "link": "https://news.google.com/rss/articles/CBMiwwJBVV95cUxOdzRNWmNCUHFuVkxCYkp4TDAwQmdiY0NtSlFpdXJxTlNyRF9wdkZObjF4LWpJN1Q1blVNZkJERVZnSWFZNDUxNW4yY2lmN3BZQUxQQlA2MndYMXFMNmtpUlhNZ0psYk9QbFRqWnBDN1lWbXdwSTQyZ1FhV3Q5VmtXbGdqVnI0b21rYTlVMGRrNzlPdW9adzBWNXZ2X3cxajNaTTNzSUpSeHhJOTlPTnJzME5Zbm9SSUVVdURleGlub2pTdEJvSTZqSU1zcGZOMmlnQ2VsRjdEdkpXd0FTUGFqcklCLVppTXdFMFplNkhOSENSUll2a2RqbVNsaUpnRFRod1R1SnV5RHl3cElza0pRSWhsS3JmMWRfaFdWZ2FFbk5oS2pEemtUbGJwbFlZd1NSR09GS1k5T245ajZadUNDcGxTUQ?oc=5"
-        },
         {
           "time": "2026-10-20T07:58:38+09:00",
           "title": "\"삼성전자, 내년 영업익 555조원 전망…성장 동력 흔들리지 않아\"-KB",
@@ -179,12 +169,6 @@
       "score": 3.235819740046299,
       "news": [
         {
-          "time": "2026-10-20T08:59:31+09:00",
-          "title": "삼성전자 주가 19% 떨어졌는데…KB증권 “내년 이익성장 이미 확보”",
-          "source": "매일경제",
-          "link": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE53UmdZaXB6RG5MdDdFdzBObGltTTBoRGpXQk40NVdyRm5rRjc0d3FaUEctX3pWUEdHaGpLbFZ0VjdxT2VZSHJ4UTFBZWgwVzJNQVE?oc=5"
-        },
-        {
           "time": "2026-10-20T09:54:32+09:00",
           "title": "삼성전자, 주가 하락에도 이익 성장 전망은 ‘유효’",
           "source": "진일보 | 전남일보",
@@ -207,6 +191,12 @@
           "title": "[특징주] 삼성전자·SK하이닉스, 美 기술주 훈풍에도 약세",
           "source": "뉴스핌",
           "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE5OMUFEZ2RJd2l4NU5LQm9pcEVWQWVIM0k3M0hDOGVPSFdfaHd4N1JYU0RFMEs1UFV3cUhZbV95YU02SWE1ZVlFcHdBSnBSeUd1SmpBT0laRjZCSHBD?oc=5"
+        },
+        {
+          "time": "2026-10-20T09:41:49+09:00",
+          "title": "삼성전자, 삼성 아트 스토어에 '아트 바젤 파리 2026' 컬렉션 공개",
+          "source": "전자신문",
+          "link": "https://news.google.com/rss/articles/CBMiTkFVX3lxTFBmdnlpSWhBMnROQy1RTWQxUE8ybFU2Y0o5N19UcnAydjNxRkQ1RHZaRjNreGV6bUtCSEN5ZVZ5aTluT0tvc3dkaTBRX19sUQ?oc=5"
         }
       ]
     }
@@ -596,24 +586,6 @@
       "score": 5.260291915889312,
       "news": [
         {
-          "time": "2026-10-20T08:59:31+09:00",
-          "title": "삼성전자 주가 19% 떨어졌는데…KB증권 “내년 이익성장 이미 확보”",
-          "source": "매일경제",
-          "link": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE53UmdZaXB6RG5MdDdFdzBObGltTTBoRGpXQk40NVdyRm5rRjc0d3FaUEctX3pWUEdHaGpLbFZ0VjdxT2VZSHJ4UTFBZWgwVzJNQVE?oc=5"
-        },
-        {
-          "time": "2026-10-20T08:00:00+09:00",
-          "title": "지역마다 다른 일상, AI 가전 경험도 다르게…삼성전자 ‘더 브리프’ 글로벌 현장",
-          "source": "samsung.com",
-          "link": "https://news.google.com/rss/articles/CBMivwJBVV95cUxOeDZfUlRVbXRSN3JUUkhtQlJ6VjNxX2NOVzJFNU12dnNEZ08xb3BJTTdiZVJKRWRMdHZXTXVVZFpJaEVJRE1aeFFOblh3QzJTM2R6WloxME1IT1pFYk1nd3N6SzQyTDI5eFJJSnM2WnVIcjRGYk9LVEh3Y1VrSVJpeXFwdnhnVlYxZGhSZGh6cEZaUU9XdzJ3TnB4czhYTkswQXFUajgwc29UdzV6eXFpa0lxdjI3TXk1S25wV1BrRE5fU1IzanExcHJuc2ZKdXVpc19yOTFjQUxHcURVOW1JTnpuRmt5M2RucGxtTjlfUnJ2Y2JHWUVPbnJ0czF4MHJIOUI2MEQzLVZwemVlcXdaSUwwb3JMVHV6cnJyYmhTU1pRNWx3cEZ1RjZJdDNnd25zZ240S2FiUjRQUE4tVktB?oc=5"
-        },
-        {
-          "time": "2026-10-20T08:19:04+09:00",
-          "title": "삼성전자가 투자한 美 ‘엘리먼트 바이오사이언스’社, 서울에서 글로벌 로드쇼 ‘Shift Your Science’ 개최",
-          "source": "samsung.com",
-          "link": "https://news.google.com/rss/articles/CBMiwwJBVV95cUxOdzRNWmNCUHFuVkxCYkp4TDAwQmdiY0NtSlFpdXJxTlNyRF9wdkZObjF4LWpJN1Q1blVNZkJERVZnSWFZNDUxNW4yY2lmN3BZQUxQQlA2MndYMXFMNmtpUlhNZ0psYk9QbFRqWnBDN1lWbXdwSTQyZ1FhV3Q5VmtXbGdqVnI0b21rYTlVMGRrNzlPdW9adzBWNXZ2X3cxajNaTTNzSUpSeHhJOTlPTnJzME5Zbm9SSUVVdURleGlub2pTdEJvSTZqSU1zcGZOMmlnQ2VsRjdEdkpXd0FTUGFqcklCLVppTXdFMFplNkhOSENSUll2a2RqbVNsaUpnRFRod1R1SnV5RHl3cElza0pRSWhsS3JmMWRfaFdWZ2FFbk5oS2pEemtUbGJwbFlZd1NSR09GS1k5T245ajZadUNDcGxTUQ?oc=5"
-        },
-        {
           "time": "2026-10-20T07:58:38+09:00",
           "title": "\"삼성전자, 내년 영업익 555조원 전망…성장 동력 흔들리지 않아\"-KB",
           "source": "한국경제",
@@ -640,12 +612,6 @@
       "score": 3.235819740046299,
       "news": [
         {
-          "time": "2026-10-20T08:59:31+09:00",
-          "title": "삼성전자 주가 19% 떨어졌는데…KB증권 “내년 이익성장 이미 확보”",
-          "source": "매일경제",
-          "link": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE53UmdZaXB6RG5MdDdFdzBObGltTTBoRGpXQk40NVdyRm5rRjc0d3FaUEctX3pWUEdHaGpLbFZ0VjdxT2VZSHJ4UTFBZWgwVzJNQVE?oc=5"
-        },
-        {
           "time": "2026-10-20T09:54:32+09:00",
           "title": "삼성전자, 주가 하락에도 이익 성장 전망은 ‘유효’",
           "source": "진일보 | 전남일보",
@@ -668,6 +634,12 @@
           "title": "[특징주] 삼성전자·SK하이닉스, 美 기술주 훈풍에도 약세",
           "source": "뉴스핌",
           "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE5OMUFEZ2RJd2l4NU5LQm9pcEVWQWVIM0k3M0hDOGVPSFdfaHd4N1JYU0RFMEs1UFV3cUhZbV95YU02SWE1ZVlFcHdBSnBSeUd1SmpBT0laRjZCSHBD?oc=5"
+        },
+        {
+          "time": "2026-10-20T09:41:49+09:00",
+          "title": "삼성전자, 삼성 아트 스토어에 '아트 바젤 파리 2026' 컬렉션 공개",
+          "source": "전자신문",
+          "link": "https://news.google.com/rss/articles/CBMiTkFVX3lxTFBmdnlpSWhBMnROQy1RTWQxUE8ybFU2Y0o5N19UcnAydjNxRkQ1RHZaRjNreGV6bUtCSEN5ZVZ5aTluT0tvc3dkaTBRX19sUQ?oc=5"
         }
       ],
       "price": 210750.0,
@@ -675,24 +647,6 @@
     }
   ],
   "overnight_news": [
-    {
-      "time": "2026-10-20T08:59:31+09:00",
-      "title": "삼성전자 주가 19% 떨어졌는데…KB증권 “내년 이익성장 이미 확보”",
-      "source": "매일경제",
-      "link": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE53UmdZaXB6RG5MdDdFdzBObGltTTBoRGpXQk40NVdyRm5rRjc0d3FaUEctX3pWUEdHaGpLbFZ0VjdxT2VZSHJ4UTFBZWgwVzJNQVE?oc=5"
-    },
-    {
-      "time": "2026-10-20T08:00:00+09:00",
-      "title": "지역마다 다른 일상, AI 가전 경험도 다르게…삼성전자 ‘더 브리프’ 글로벌 현장",
-      "source": "samsung.com",
-      "link": "https://news.google.com/rss/articles/CBMivwJBVV95cUxOeDZfUlRVbXRSN3JUUkhtQlJ6VjNxX2NOVzJFNU12dnNEZ08xb3BJTTdiZVJKRWRMdHZXTXVVZFpJaEVJRE1aeFFOblh3QzJTM2R6WloxME1IT1pFYk1nd3N6SzQyTDI5eFJJSnM2WnVIcjRGYk9LVEh3Y1VrSVJpeXFwdnhnVlYxZGhSZGh6cEZaUU9XdzJ3TnB4czhYTkswQXFUajgwc29UdzV6eXFpa0lxdjI3TXk1S25wV1BrRE5fU1IzanExcHJuc2ZKdXVpc19yOTFjQUxHcURVOW1JTnpuRmt5M2RucGxtTjlfUnJ2Y2JHWUVPbnJ0czF4MHJIOUI2MEQzLVZwemVlcXdaSUwwb3JMVHV6cnJyYmhTU1pRNWx3cEZ1RjZJdDNnd25zZ240S2FiUjRQUE4tVktB?oc=5"
-    },
-    {
-      "time": "2026-10-20T08:19:04+09:00",
-      "title": "삼성전자가 투자한 美 ‘엘리먼트 바이오사이언스’社, 서울에서 글로벌 로드쇼 ‘Shift Your Science’ 개최",
-      "source": "samsung.com",
-      "link": "https://news.google.com/rss/articles/CBMiwwJBVV95cUxOdzRNWmNCUHFuVkxCYkp4TDAwQmdiY0NtSlFpdXJxTlNyRF9wdkZObjF4LWpJN1Q1blVNZkJERVZnSWFZNDUxNW4yY2lmN3BZQUxQQlA2MndYMXFMNmtpUlhNZ0psYk9QbFRqWnBDN1lWbXdwSTQyZ1FhV3Q5VmtXbGdqVnI0b21rYTlVMGRrNzlPdW9adzBWNXZ2X3cxajNaTTNzSUpSeHhJOTlPTnJzME5Zbm9SSUVVdURleGlub2pTdEJvSTZqSU1zcGZOMmlnQ2VsRjdEdkpXd0FTUGFqcklCLVppTXdFMFplNkhOSENSUll2a2RqbVNsaUpnRFRod1R1SnV5RHl3cElza0pRSWhsS3JmMWRfaFdWZ2FFbk5oS2pEemtUbGJwbFlZd1NSR09GS1k5T245ajZadUNDcGxTUQ?oc=5"
-    },
     {
       "time": "2026-10-20T07:58:38+09:00",
       "title": "\"삼성전자, 내년 영업익 555조원 전망…성장 동력 흔들리지 않아\"-KB",
@@ -708,12 +662,6 @@
   ],
   "top_news": [
     {
-      "time": "2026-10-20T08:59:31+09:00",
-      "title": "삼성전자 주가 19% 떨어졌는데…KB증권 “내년 이익성장 이미 확보”",
-      "source": "매일경제",
-      "link": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE53UmdZaXB6RG5MdDdFdzBObGltTTBoRGpXQk40NVdyRm5rRjc0d3FaUEctX3pWUEdHaGpLbFZ0VjdxT2VZSHJ4UTFBZWgwVzJNQVE?oc=5"
-    },
-    {
       "time": "2026-10-20T10:39:00+09:00",
       "title": "삼성전자, 내년 메모리 생산량 80% 확보...영업이익 555조 전망 By 알파경제 alphabiz",
       "source": "Investing.com 한국어",
@@ -723,7 +671,7 @@
       "time": "2026-10-20T16:10:00+09:00",
       "title": "삼성전자, 주가 급락에도 증권가 '낙관론'...내년 영업익 555조 전망 [주가동향]",
       "source": "조세일보",
-      "link": "https://news.google.com/rss/articles/CBMib0FVX3lxTE13MFhSaGVCU2FreEtvOUo1NTY2bnRfanp1WVZKeW56NnRIN3NTYndRWGNBMDRzbXNTVTVKWlY2dFFzdm9fcHFuSmpGOWt4ZGpnRUlQYlkwN25fcVF4dkI0b3RwM3lLSy1tVGNTcXA1dw?oc=5"
+      "link": "https://news.google.com/rss/articles/CBMiX0FVX3lxTE5fb2NWclNkWDBRZEtJbzl0Z2VrSUQ0M2p1UXlPQVE0UWh0cE56eXlEMlYzdlFaa2VFeGdLNEwwT1RDNEQzQU1GVXpqX1BSTEdQbEZEaGl1RnhqVVVNT0Y0?oc=5"
     },
     {
       "time": "2026-10-20T16:16:52+09:00",
@@ -738,19 +686,85 @@
       "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE5OU0RqMlQxYU1lN3VodWI4U0dDUzBQMW5UVlNHemxDS1dwbV9QV0VHcTkzLXViU2JqdGZRN0VONXNnVm8talFWX1FiZnEyUVlDZGIwZnRoeTEyZw?oc=5"
     },
     {
-      "time": "2026-10-20T17:14:51+09:00",
-      "title": "노무라증권 \"메모리 공급 부족 2028년까지 지속, 삼성전자·SK하이닉스 '매수' 의견\"",
-      "source": "비즈니스포스트",
-      "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTFBDQUpjTmZEUXJyV0M1UkFDbHlwbW9vdzFMVTVsQmJibWE3Q1FLOUp3eDFXRTdzSzVaUTJEWFIzYUZmRFp3YW04aVhPSXVhZVZHRXZSUmxOV25KdWNEbW5vWjdjR2RPYXlsRWNDMkFMMG5SQ2s?oc=5"
+      "time": "2026-10-20T16:09:12+09:00",
+      "title": "코스피, 외국인·기관 동반 매도에 3.73% 급락한 5550선 후퇴...반도체·2차전지 동반 약세",
+      "source": "핀포인트뉴스",
+      "link": "https://news.google.com/rss/articles/CBMid0FVX3lxTE8yWG9CMjcxUmtadnBRWGZoTjR6SFhCVlpGRmtxWk53QnVrd0ZxZ1A3OHN0Y2VjYzNTSkpqUngzR3drNkU1UmhGUWJuSDB0UWpQanNQb0NOQllZa1lGZHlFc1A2YVFPX3p5ZjRsNndMNjdGcTZha21r0gF3QVVfeXFMTzJYb0IyNzFSa1p2cFFYZmhONHpIWEJWWkZGa3FaTndCdWt3RnFnUDc4c3RjZWNjM1NKSmpSeDNHd2s2RTVSaEZRYm5IMHRRalBqc1BvQ05CWVlrWUZkeUVzUDZhUU9fenlmNGw2d0w2N0ZxNmFrbWs?oc=5"
+    },
+    {
+      "time": "2026-10-20T21:33:17+09:00",
+      "title": "코스피 3.73% 급락, AI 부채 우려에 반도체 흔들",
+      "source": "톱스타뉴스",
+      "link": "https://news.google.com/rss/articles/CBMickFVX3lxTE5vSElmRE9PSUNjT09zeFFveVk3dVFWQVBCM2NxR0tOUDBqSHkwZkNQNkxoUjVlS0RzZ0hhS0h3ZE5kajhDRGJxNGxPRHhiUEhiamdMQWk1NERmWnpCTHZBX2pmZmNleFBNRHUxSG9qZHd1dw?oc=5"
     }
   ],
   "disclosures": [],
   "disclosure_note": null,
-  "flows": null,
-  "flow_story": null,
+  "flows": "외국인 +1,801,659 / 기관 -2,760,235",
+  "flow_story": {
+    "direction": "down",
+    "c2c": -0.029816513761467878,
+    "actors": [
+      {
+        "key": "foreign_net",
+        "name": "외국인",
+        "shares": 1801659.0,
+        "won": 381050878500.0,
+        "vs_usual": 0.7401672133177423
+      },
+      {
+        "key": "inst_net",
+        "name": "기관",
+        "shares": -2760235.0,
+        "won": -583789702500.0,
+        "vs_usual": 2.0476510897824864
+      },
+      {
+        "key": "indiv_net",
+        "name": "개인",
+        "shares": 903908.0,
+        "won": 191176542000.0,
+        "vs_usual": 0.3028283309393557
+      }
+    ],
+    "lead": {
+      "key": "inst_net",
+      "name": "기관",
+      "shares": -2760235.0,
+      "won": -583789702500.0,
+      "vs_usual": 2.0476510897824864
+    },
+    "counter": {
+      "key": "foreign_net",
+      "name": "외국인",
+      "shares": 1801659.0,
+      "won": 381050878500.0,
+      "vs_usual": 0.7401672133177423
+    },
+    "all_one_side": false,
+    "observations": [
+      "전일까지 20거래일 고점: 종가 돌파 없음 · 종가 위치 -25.92%.",
+      "전일까지 60거래일 고점: 종가 돌파 없음 · 종가 위치 -26.56%.",
+      "같은 5거래일 수익률: 이 종목 -8.84%, SK하이닉스 -15.25% · 차이 +6.41%p.",
+      "같은 20거래일 수익률: 이 종목 -16.57%, SK하이닉스 -30.47% · 차이 +13.90%p.",
+      "같은 60거래일 수익률: 이 종목 -18.34%, SK하이닉스 -33.37% · 차이 +15.03%p.",
+      "외국인 순매도 지속·거래량 대비 강도 약화: 직전 5일 → 최근 5일 순매수/거래량 -11.95% → -3.87% (일평균 -2,322,212주 → -832,024주). 향후 상승을 뜻하는 신호는 아닙니다.",
+      "코스피도 -3.73% — 시장 전체가 같은 방향이었습니다.",
+      "SK하이닉스 -4.23% — 반도체 업종이 함께 움직였습니다.",
+      "전날 밤 SOX는 +1.61%로 반대 방향이어서 미국 반도체 흐름으로는 설명되지 않습니다.",
+      "전날 밤 마이크론은 +2.97%로 반대 방향이었습니다.",
+      "우리 장중(09:00~15:30) 나스닥100 선물 -0.26%, 이 종목 고점 이후 -0.02% · 미 10년물 국채 선물 +0.16%(금리 하락), 이 종목 고점 이후 +0.10% · 원/달러 -0.02%, 이 종목 고점 이후 -0.08%.",
+      "자사주 매입 기간 중(직접 취득 2026-08-24~2026-11-21, 14,999,999,992,000, DART 공시) — 회사 자신의 매수는 기타 법인으로 잡힙니다.",
+      "마감가가 장중 고가보다 -2.53% 아래 — 오른 폭을 장중에 꽤 반납했습니다.",
+      "기관의 순매도 규모가 최근 20거래일 평균의 2.0배로 컸습니다."
+    ],
+    "estimated_indiv": false,
+    "source_note": "출처 naver+cache · 장 마감 직후 잠정치라 저녁 확정치와 다를 수 있습니다 · KRX는 받지 못함(pykrx 미설치)"
+  },
   "flow_status": {
-    "state": "pending",
-    "detail": "최신 2026-10-19"
+    "state": "ok",
+    "detail": "naver+cache",
+    "krx_error": "pykrx 미설치"
   },
   "context": {},
   "market": {
@@ -761,9 +775,9 @@
     "steady": 24,
     "upper": 2,
     "lower": 0,
-    "individual": 8856.0,
-    "foreign": -5176.0,
-    "institution": -9987.0,
+    "individual": 8475.0,
+    "foreign": -4884.0,
+    "institution": -9901.0,
     "prev_close": 5768.01,
     "open": 5733.57,
     "high": 5733.57,

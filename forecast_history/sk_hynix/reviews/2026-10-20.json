@@ -3,7 +3,7 @@
   "name": "SK하이닉스",
   "peer_name": "삼성전자",
   "session_date": "2026-10-20",
-  "generated_at": "2026-10-20 17:31 KST",
+  "generated_at": "2026-10-20 21:42 KST",
   "summary": {
     "prev_close": 1277000.0,
     "open": 1265000.0,
@@ -15,11 +15,11 @@
     "c2c": -0.04228660924040717,
     "high_vs_open": 0.0015810276679841806,
     "low_vs_open": -0.06482213438735174,
-    "volume": 3537952.0,
-    "volume_ratio": 1.0360180454654107,
+    "volume": 3680655.0,
+    "volume_ratio": 1.077805747260701,
     "kospi_c2c": -0.03732128411656288,
     "peer_c2c": -0.029816513761467878,
-    "usdkrw_chg": -0.005624591990504135,
+    "usdkrw_chg": -0.004927193849494027,
     "us_nights": 1,
     "sox_ret": 0.01607660427801627,
     "nasdaq_ret": 0.011127046753531156,
@@ -115,7 +115,15 @@
         "purpose": "자기주식 소각을 통한 \n주주가치 제고",
         "rcept_no": "20260819000254"
       }
-    ]
+    ],
+    "foreign_pressure": {
+      "state": "selling_eased",
+      "previous_ratio": -0.2510106362045084,
+      "recent_ratio": -0.08843480141025535,
+      "previous_daily_net": -863591.2,
+      "recent_daily_net": -382340.4
+    },
+    "buyback_transition": null
   },
   "classification": {
     "labels": [
@@ -137,26 +145,7 @@
       "cum_after": -0.020948616600790504,
       "session_share": 0.7945461367789074,
       "score": 10.256019290967249,
-      "news": [
-        {
-          "time": "2026-10-20T08:41:53+09:00",
-          "title": "KB국민은행, SK하이닉스·무보와 2500억원 규모 반도체 협력사 금융지원",
-          "source": "전자신문",
-          "link": "https://news.google.com/rss/articles/CBMiTkFVX3lxTE8zSkhZSFJEMXp6Z1RVVm5vX2lKS1ktRHJsNmJKcHBIYWpyNXNNS01IcVNmajFsck1OVTZHVnBSWEs4VmtBWUR4Rm43SEs1dw?oc=5"
-        },
-        {
-          "time": "2026-10-20T09:00:28+09:00",
-          "title": "청주시, SK하이닉스 등 16개 기업·단체와 상생협약",
-          "source": "연합뉴스",
-          "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE5yY3JyM0pYTkZ4ZTN5Znk1cmFHamhBQ2luaGVyWERFb0h3dDh3V0l5M0NDc3ZnY1NuYmJiam1vYVA2cHp1MGVQTFA1UTVwVHNhYk9iMDFyR2JVeVFVdERGQdIBYEFVX3lxTE5yY3JyM0pYTkZ4ZTN5Znk1cmFHamhBQ2luaGVyWERFb0h3dDh3V0l5M0NDc3ZnY1NuYmJiam1vYVA2cHp1MGVQTFA1UTVwVHNhYk9iMDFyR2JVeVFVdERGQQ?oc=5"
-        },
-        {
-          "time": "2026-10-20T09:14:11+09:00",
-          "title": "검색 상위 20개 중 14개 하락… 삼성전자·SK하이닉스 동반 약세",
-          "source": "서울신문",
-          "link": "https://news.google.com/rss/articles/CBMifkFVX3lxTE9QWHIwUHBMSnc5TzBlMXEwLWFFV002RFI2ZGpYYmRVMlVia1kxZ1R1bE96ajJVWlk0VHI4VDRMYzZCUXJDSlVnM3loX0NjNFUtNG9uRGVKWG54b1Q5NEZXVWJCQ2dHMjZJVWNuX1hLUmduVDNxRUdtN0ktX0dQZw?oc=5"
-        }
-      ]
+      "news": []
     },
     {
       "time": "2026-10-20T10:10:00+09:00",
@@ -167,38 +156,7 @@
       "cum_after": -0.060079051383399196,
       "session_share": 0.28502842484747615,
       "score": 4.724754151401207,
-      "news": [
-        {
-          "time": "2026-10-20T08:41:53+09:00",
-          "title": "KB국민은행, SK하이닉스·무보와 2500억원 규모 반도체 협력사 금융지원",
-          "source": "전자신문",
-          "link": "https://news.google.com/rss/articles/CBMiTkFVX3lxTE8zSkhZSFJEMXp6Z1RVVm5vX2lKS1ktRHJsNmJKcHBIYWpyNXNNS01IcVNmajFsck1OVTZHVnBSWEs4VmtBWUR4Rm43SEs1dw?oc=5"
-        },
-        {
-          "time": "2026-10-20T09:17:25+09:00",
-          "title": "SK하이닉스 3%대 하락…AI 수익성 논란 여전히 발목 - 머니투데이",
-          "source": "머니투데이",
-          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE1sU2RiRERvVVhTQ2ZiWjNTWEZHNk1JME9vUHEwVHlBNU04bHZiN1o5d3RiTDN6NmdpcGtsOVRYZmFkR2dReUc5LVREcEN3SFdTUFFWc2UyLWVBYVFNM2t2M1ZWLXZpTDl50gFuQVVfeXFMTmJob2h6VEhQZW9QenZhTjZxNzJHbnBDdmxiS3lGRGtKSDRfbWVIWklYdXZzakV5Q29UcTJxbWhjNFRUVGhpLWI2RnpIUkFkVHlibEcyZmFoZnhLamVadl9SWTFJWDRzS0UyeEUzYkE?oc=5"
-        },
-        {
-          "time": "2026-10-20T09:23:00+09:00",
-          "title": "코스피, 나스닥 반등에도 '팔자'폭 확대…SK하이닉스 4% 약세",
-          "source": "연합인포맥스",
-          "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE9GWDlFR08tSkdyMXZ2b3VNQV9kUjIzNkkyLWtlSlFQeFJsb1ZxUmV3RTZtN3BBa2JiTEY4aTE1UU0zaXMzX1BaX2EyWXE4M1NBcDFaTzhsUExJRFNsVmkwVjVUTWZiZ0dzMzM2dE1Na1Y?oc=5"
-        },
-        {
-          "time": "2026-10-20T09:39:00+09:00",
-          "title": "코스피 하락 출발...SK하이닉스 장중 5% 급락",
-          "source": "YTN",
-          "link": "https://news.google.com/rss/articles/CBMiXkFVX3lxTFBMQmMyQjVtN1lzRFFsb0hPTmlhTnBqY3duRXViX0ZFVG52bm5aeGliMWNCTTBDRFh4M2F5UmZCanE5NXNLd1hrQk9VSXkwdHZGd2x4Qno2aE1CYkNfQkE?oc=5"
-        },
-        {
-          "time": "2026-10-20T10:01:43+09:00",
-          "title": "[특징주] 삼성전자·SK하이닉스, 美 반도체주 반등에도 동반 '약세'",
-          "source": "글로벌이코노믹",
-          "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxOYlpNTTcxOG5oYUtITjcxV0ZvZDhET19qRjNJeDdueGxFV1RoOGJQdmllal9fQ0FIZkpGMTc0c0ZtUW9rTEtFLUZEaVdNVUF6WGk3N1hMc2JfUTl1VEZQeUFZaDlNWmYyUUhRTXN3RHhBZUdPMFE2NlZBT1haTl9SQWV1bElxdDhE?oc=5"
-        }
-      ]
+      "news": []
     },
     {
       "time": "2026-10-20T10:40:00+09:00",
@@ -209,38 +167,7 @@
       "cum_after": -0.029249011857707563,
       "session_share": -0.23820528622295215,
       "score": 4.085496716615619,
-      "news": [
-        {
-          "time": "2026-10-20T09:17:25+09:00",
-          "title": "SK하이닉스 3%대 하락…AI 수익성 논란 여전히 발목 - 머니투데이",
-          "source": "머니투데이",
-          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE1sU2RiRERvVVhTQ2ZiWjNTWEZHNk1JME9vUHEwVHlBNU04bHZiN1o5d3RiTDN6NmdpcGtsOVRYZmFkR2dReUc5LVREcEN3SFdTUFFWc2UyLWVBYVFNM2t2M1ZWLXZpTDl50gFuQVVfeXFMTmJob2h6VEhQZW9QenZhTjZxNzJHbnBDdmxiS3lGRGtKSDRfbWVIWklYdXZzakV5Q29UcTJxbWhjNFRUVGhpLWI2RnpIUkFkVHlibEcyZmFoZnhLamVadl9SWTFJWDRzS0UyeEUzYkE?oc=5"
-        },
-        {
-          "time": "2026-10-20T09:23:00+09:00",
-          "title": "코스피, 나스닥 반등에도 '팔자'폭 확대…SK하이닉스 4% 약세",
-          "source": "연합인포맥스",
-          "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE9GWDlFR08tSkdyMXZ2b3VNQV9kUjIzNkkyLWtlSlFQeFJsb1ZxUmV3RTZtN3BBa2JiTEY4aTE1UU0zaXMzX1BaX2EyWXE4M1NBcDFaTzhsUExJRFNsVmkwVjVUTWZiZ0dzMzM2dE1Na1Y?oc=5"
-        },
-        {
-          "time": "2026-10-20T09:39:00+09:00",
-          "title": "코스피 하락 출발...SK하이닉스 장중 5% 급락",
-          "source": "YTN",
-          "link": "https://news.google.com/rss/articles/CBMiXkFVX3lxTFBMQmMyQjVtN1lzRFFsb0hPTmlhTnBqY3duRXViX0ZFVG52bm5aeGliMWNCTTBDRFh4M2F5UmZCanE5NXNLd1hrQk9VSXkwdHZGd2x4Qno2aE1CYkNfQkE?oc=5"
-        },
-        {
-          "time": "2026-10-20T10:01:43+09:00",
-          "title": "[특징주] 삼성전자·SK하이닉스, 美 반도체주 반등에도 동반 '약세'",
-          "source": "글로벌이코노믹",
-          "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxOYlpNTTcxOG5oYUtITjcxV0ZvZDhET19qRjNJeDdueGxFV1RoOGJQdmllal9fQ0FIZkpGMTc0c0ZtUW9rTEtFLUZEaVdNVUF6WGk3N1hMc2JfUTl1VEZQeUFZaDlNWmYyUUhRTXN3RHhBZUdPMFE2NlZBT1haTl9SQWV1bElxdDhE?oc=5"
-        },
-        {
-          "time": "2026-10-20T10:21:04+09:00",
-          "title": "4대 은행, SK하이닉스와 반도체 협력사 지원…총 2조 규모",
-          "source": "아시아경제",
-          "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE0wTjUwcWsyX0FIMGRGX2ZVc0QwT0pjM1pOalRXRXFETEFzZElRRUVLYzh5REh5WnZORmZ1dTUtYWRNVGEzdDU4dVgwWHhLNHlLNm1DZGJUSjd2ZFJEbjFpbw?oc=5"
-        }
-      ]
+      "news": []
     }
   ],
   "turning_point": {
@@ -626,26 +553,7 @@
       "cum_after": -0.020948616600790504,
       "session_share": 0.7945461367789074,
       "score": 10.256019290967249,
-      "news": [
-        {
-          "time": "2026-10-20T08:41:53+09:00",
-          "title": "KB국민은행, SK하이닉스·무보와 2500억원 규모 반도체 협력사 금융지원",
-          "source": "전자신문",
-          "link": "https://news.google.com/rss/articles/CBMiTkFVX3lxTE8zSkhZSFJEMXp6Z1RVVm5vX2lKS1ktRHJsNmJKcHBIYWpyNXNNS01IcVNmajFsck1OVTZHVnBSWEs4VmtBWUR4Rm43SEs1dw?oc=5"
-        },
-        {
-          "time": "2026-10-20T09:00:28+09:00",
-          "title": "청주시, SK하이닉스 등 16개 기업·단체와 상생협약",
-          "source": "연합뉴스",
-          "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE5yY3JyM0pYTkZ4ZTN5Znk1cmFHamhBQ2luaGVyWERFb0h3dDh3V0l5M0NDc3ZnY1NuYmJiam1vYVA2cHp1MGVQTFA1UTVwVHNhYk9iMDFyR2JVeVFVdERGQdIBYEFVX3lxTE5yY3JyM0pYTkZ4ZTN5Znk1cmFHamhBQ2luaGVyWERFb0h3dDh3V0l5M0NDc3ZnY1NuYmJiam1vYVA2cHp1MGVQTFA1UTVwVHNhYk9iMDFyR2JVeVFVdERGQQ?oc=5"
-        },
-        {
-          "time": "2026-10-20T09:14:11+09:00",
-          "title": "검색 상위 20개 중 14개 하락… 삼성전자·SK하이닉스 동반 약세",
-          "source": "서울신문",
-          "link": "https://news.google.com/rss/articles/CBMifkFVX3lxTE9QWHIwUHBMSnc5TzBlMXEwLWFFV002RFI2ZGpYYmRVMlVia1kxZ1R1bE96ajJVWlk0VHI4VDRMYzZCUXJDSlVnM3loX0NjNFUtNG9uRGVKWG54b1Q5NEZXVWJCQ2dHMjZJVWNuX1hLUmduVDNxRUdtN0ktX0dQZw?oc=5"
-        }
-      ],
+      "news": [],
       "price": 1238500.0,
       "kind": "turn_down"
     },
@@ -658,38 +566,7 @@
       "cum_after": -0.060079051383399196,
       "session_share": 0.28502842484747615,
       "score": 4.724754151401207,
-      "news": [
-        {
-          "time": "2026-10-20T08:41:53+09:00",
-          "title": "KB국민은행, SK하이닉스·무보와 2500억원 규모 반도체 협력사 금융지원",
-          "source": "전자신문",
-          "link": "https://news.google.com/rss/articles/CBMiTkFVX3lxTE8zSkhZSFJEMXp6Z1RVVm5vX2lKS1ktRHJsNmJKcHBIYWpyNXNNS01IcVNmajFsck1OVTZHVnBSWEs4VmtBWUR4Rm43SEs1dw?oc=5"
-        },
-        {
-          "time": "2026-10-20T09:17:25+09:00",
-          "title": "SK하이닉스 3%대 하락…AI 수익성 논란 여전히 발목 - 머니투데이",
-          "source": "머니투데이",
-          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE1sU2RiRERvVVhTQ2ZiWjNTWEZHNk1JME9vUHEwVHlBNU04bHZiN1o5d3RiTDN6NmdpcGtsOVRYZmFkR2dReUc5LVREcEN3SFdTUFFWc2UyLWVBYVFNM2t2M1ZWLXZpTDl50gFuQVVfeXFMTmJob2h6VEhQZW9QenZhTjZxNzJHbnBDdmxiS3lGRGtKSDRfbWVIWklYdXZzakV5Q29UcTJxbWhjNFRUVGhpLWI2RnpIUkFkVHlibEcyZmFoZnhLamVadl9SWTFJWDRzS0UyeEUzYkE?oc=5"
-        },
-        {
-          "time": "2026-10-20T09:23:00+09:00",
-          "title": "코스피, 나스닥 반등에도 '팔자'폭 확대…SK하이닉스 4% 약세",
-          "source": "연합인포맥스",
-          "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE9GWDlFR08tSkdyMXZ2b3VNQV9kUjIzNkkyLWtlSlFQeFJsb1ZxUmV3RTZtN3BBa2JiTEY4aTE1UU0zaXMzX1BaX2EyWXE4M1NBcDFaTzhsUExJRFNsVmkwVjVUTWZiZ0dzMzM2dE1Na1Y?oc=5"
-        },
-        {
-          "time": "2026-10-20T09:39:00+09:00",
-          "title": "코스피 하락 출발...SK하이닉스 장중 5% 급락",
-          "source": "YTN",
-          "link": "https://news.google.com/rss/articles/CBMiXkFVX3lxTFBMQmMyQjVtN1lzRFFsb0hPTmlhTnBqY3duRXViX0ZFVG52bm5aeGliMWNCTTBDRFh4M2F5UmZCanE5NXNLd1hrQk9VSXkwdHZGd2x4Qno2aE1CYkNfQkE?oc=5"
-        },
-        {
-          "time": "2026-10-20T10:01:43+09:00",
-          "title": "[특징주] 삼성전자·SK하이닉스, 美 반도체주 반등에도 동반 '약세'",
-          "source": "글로벌이코노믹",
-          "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxOYlpNTTcxOG5oYUtITjcxV0ZvZDhET19qRjNJeDdueGxFV1RoOGJQdmllal9fQ0FIZkpGMTc0c0ZtUW9rTEtFLUZEaVdNVUF6WGk3N1hMc2JfUTl1VEZQeUFZaDlNWmYyUUhRTXN3RHhBZUdPMFE2NlZBT1haTl9SQWV1bElxdDhE?oc=5"
-        }
-      ],
+      "news": [],
       "price": 1189000.0,
       "kind": "volume"
     },
@@ -702,95 +579,81 @@
       "cum_after": -0.029249011857707563,
       "session_share": -0.23820528622295215,
       "score": 4.085496716615619,
-      "news": [
-        {
-          "time": "2026-10-20T09:17:25+09:00",
-          "title": "SK하이닉스 3%대 하락…AI 수익성 논란 여전히 발목 - 머니투데이",
-          "source": "머니투데이",
-          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE1sU2RiRERvVVhTQ2ZiWjNTWEZHNk1JME9vUHEwVHlBNU04bHZiN1o5d3RiTDN6NmdpcGtsOVRYZmFkR2dReUc5LVREcEN3SFdTUFFWc2UyLWVBYVFNM2t2M1ZWLXZpTDl50gFuQVVfeXFMTmJob2h6VEhQZW9QenZhTjZxNzJHbnBDdmxiS3lGRGtKSDRfbWVIWklYdXZzakV5Q29UcTJxbWhjNFRUVGhpLWI2RnpIUkFkVHlibEcyZmFoZnhLamVadl9SWTFJWDRzS0UyeEUzYkE?oc=5"
-        },
-        {
-          "time": "2026-10-20T09:23:00+09:00",
-          "title": "코스피, 나스닥 반등에도 '팔자'폭 확대…SK하이닉스 4% 약세",
-          "source": "연합인포맥스",
-          "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE9GWDlFR08tSkdyMXZ2b3VNQV9kUjIzNkkyLWtlSlFQeFJsb1ZxUmV3RTZtN3BBa2JiTEY4aTE1UU0zaXMzX1BaX2EyWXE4M1NBcDFaTzhsUExJRFNsVmkwVjVUTWZiZ0dzMzM2dE1Na1Y?oc=5"
-        },
-        {
-          "time": "2026-10-20T09:39:00+09:00",
-          "title": "코스피 하락 출발...SK하이닉스 장중 5% 급락",
-          "source": "YTN",
-          "link": "https://news.google.com/rss/articles/CBMiXkFVX3lxTFBMQmMyQjVtN1lzRFFsb0hPTmlhTnBqY3duRXViX0ZFVG52bm5aeGliMWNCTTBDRFh4M2F5UmZCanE5NXNLd1hrQk9VSXkwdHZGd2x4Qno2aE1CYkNfQkE?oc=5"
-        },
-        {
-          "time": "2026-10-20T10:01:43+09:00",
-          "title": "[특징주] 삼성전자·SK하이닉스, 美 반도체주 반등에도 동반 '약세'",
-          "source": "글로벌이코노믹",
-          "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxOYlpNTTcxOG5oYUtITjcxV0ZvZDhET19qRjNJeDdueGxFV1RoOGJQdmllal9fQ0FIZkpGMTc0c0ZtUW9rTEtFLUZEaVdNVUF6WGk3N1hMc2JfUTl1VEZQeUFZaDlNWmYyUUhRTXN3RHhBZUdPMFE2NlZBT1haTl9SQWV1bElxdDhE?oc=5"
-        },
-        {
-          "time": "2026-10-20T10:21:04+09:00",
-          "title": "4대 은행, SK하이닉스와 반도체 협력사 지원…총 2조 규모",
-          "source": "아시아경제",
-          "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE0wTjUwcWsyX0FIMGRGX2ZVc0QwT0pjM1pOalRXRXFETEFzZElRRUVLYzh5REh5WnZORmZ1dTUtYWRNVGEzdDU4dVgwWHhLNHlLNm1DZGJUSjd2ZFJEbjFpbw?oc=5"
-        }
-      ],
+      "news": [],
       "price": 1228000.0,
       "kind": "volume"
     }
   ],
-  "overnight_news": [
-    {
-      "time": "2026-10-20T08:41:53+09:00",
-      "title": "KB국민은행, SK하이닉스·무보와 2500억원 규모 반도체 협력사 금융지원",
-      "source": "전자신문",
-      "link": "https://news.google.com/rss/articles/CBMiTkFVX3lxTE8zSkhZSFJEMXp6Z1RVVm5vX2lKS1ktRHJsNmJKcHBIYWpyNXNNS01IcVNmajFsck1OVTZHVnBSWEs4VmtBWUR4Rm43SEs1dw?oc=5"
-    }
-  ],
-  "top_news": [
-    {
-      "time": "2026-10-20T14:14:32+09:00",
-      "title": "신한은행, SK하이닉스·한국무역보험공사와 반도체 수출공급망 금융지원 협약 체결",
-      "source": "디지털비즈온",
-      "link": "https://news.google.com/rss/articles/CBMidEFVX3lxTFBsV0RhRHNOeWw2ZXQ4U2ZnWUYtcHJsSmJJcnBjNzlfTzZSLTYwUkxVUFpnT3BhNkZTMmtSOFdvWkR2OG01eXJzeFBOWWdJMld1VkJwUGZEd3VuVlRhSU82clVEMUlWcHA5T1g3M3RPMjRoX0Jz0gF0QVVfeXFMUGxXRGFEc055bDZldDhTZmdZRi1wcmxKYklycGM3OV9PNlItNjBSTFVQWmdPcGE2RlMya1I4V29aRHY4bTV5cnN4UE5ZZ0kyV3VWQnBQZkR3dW5WVGFJTzZyVUQxSVZwcDlPWDczdE8yNGhfQnM?oc=5"
-    },
-    {
-      "time": "2026-10-20T14:15:19+09:00",
-      "title": "[아이포럼 2026] AI 성능 가르는 메모리…SK하이닉스의 새 성장 공식은",
-      "source": "아이뉴스24",
-      "link": "https://news.google.com/rss/articles/CBMiS0FVX3lxTE1lRFFCcXk2UGw2OWhzT21mamsxTm5qSTVULXlPdjBIT3VULVhlYzlqcXlhMzdhLUhuajRuc1R2REVlQXE5cXlYcmZtWQ?oc=5"
-    },
-    {
-      "time": "2026-10-20T15:04:00+09:00",
-      "title": "신한은행, SK하이닉스·한국무역보험공사와 반도체 수출공급망 금융지원 협약",
-      "source": "www.intn.co.kr",
-      "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTFBBRTdiWWg0ODlNdHJfemVZS3ZzRVl5X21PRkR1YzdkMzJ5SXY3ZDRKeFJCZ0Q1RDlwalMwc3dnV21ycmhGOWlDbHVoTVhVR1RNWkkwMnJuang1blU0VEpZSXNTYTBhR1hG?oc=5"
-    },
-    {
-      "time": "2026-10-20T15:06:05+09:00",
-      "title": "[은행 Talk Talk] KB국민은행, SK하이닉스와 반도체 수출망 강화 협력 ​外",
-      "source": "DealSite경제TV",
-      "link": "https://news.google.com/rss/articles/CBMiVkFVX3lxTE5qQjI2TDdod1NoSWQxWEd3LXNsX0Zjd3NBOGVYQmtZU1R2QUwweGh0RUhieS1qWU91SUwxZGNrdHNGT3lmX2FlVHNyYmZ0ekhXd1lmd1B3?oc=5"
-    },
-    {
-      "time": "2026-10-20T15:09:36+09:00",
-      "title": "하나은행, SK하이닉스·한국무역보험공사와 함께 K-반도체 산업 수출 공급망 강화를 위한 업무협약 체결",
-      "source": "파이낸스투데이",
-      "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE9GMVNpeFMwNmdSWlRKRXhGYkx4bFFwUXpRX0o1aFZ4VE02Tl8xOUdadU9IU2FWUjR6Qm5DRDlLRkVfRUl5Ymg2U2IxSWt4MTFTcWd1U2c2R1UyWU5hLVIyWG1taENtT05rSUtraw?oc=5"
-    },
-    {
-      "time": "2026-10-20T15:25:29+09:00",
-      "title": "하나은행·SK하이닉스 K-반도체 수출 공급망 업무협약 체결",
-      "source": "글로벌뉴스통신GNA",
-      "link": "https://news.google.com/rss/articles/CBMidEFVX3lxTE05dG9sRGdQaXA0T1VxZFc3NEZTVkdKWFNpZ2RoazY3b0hZMkdCblg4YVZYV0hEUGNwdkU0STByQmJzeHhucXdKUG5yNUxKQVhucTZCSm1ZSFF5UDV4MGlOdjljVG1PcWloeXRKeC1HYnJTNkJO?oc=5"
-    }
-  ],
+  "overnight_news": [],
+  "top_news": [],
   "disclosures": [],
   "disclosure_note": null,
-  "flows": null,
-  "flow_story": null,
+  "flows": "외국인 -288,990 / 기관 -126,084",
+  "flow_story": {
+    "direction": "down",
+    "c2c": -0.04228660924040717,
+    "actors": [
+      {
+        "key": "foreign_net",
+        "name": "외국인",
+        "shares": -288990.0,
+        "won": -353434770000.0,
+        "vs_usual": 0.5114826971716772
+      },
+      {
+        "key": "inst_net",
+        "name": "기관",
+        "shares": -126084.0,
+        "won": -154200732000.0,
+        "vs_usual": 0.8844108592219423
+      },
+      {
+        "key": "indiv_net",
+        "name": "개인",
+        "shares": -83997.0,
+        "won": -102728331000.0,
+        "vs_usual": 0.21952346809288842
+      },
+      {
+        "key": "other_net",
+        "name": "기타 법인 등(추정)",
+        "shares": 499071.0,
+        "won": 610363833000.0,
+        "vs_usual": null
+      }
+    ],
+    "lead": {
+      "key": "foreign_net",
+      "name": "외국인",
+      "shares": -288990.0,
+      "won": -353434770000.0,
+      "vs_usual": 0.5114826971716772
+    },
+    "counter": null,
+    "all_one_side": true,
+    "observations": [
+      "전일까지 20거래일 고점: 종가 돌파 없음 · 종가 위치 -36.80%.",
+      "전일까지 60거래일 고점: 종가 돌파 없음 · 종가 위치 -39.02%.",
+      "같은 5거래일 수익률: 이 종목 -15.25%, 삼성전자 -8.84% · 차이 -6.41%p.",
+      "같은 20거래일 수익률: 이 종목 -30.47%, 삼성전자 -16.57% · 차이 -13.90%p.",
+      "같은 60거래일 수익률: 이 종목 -33.37%, 삼성전자 -18.34% · 차이 -15.03%p.",
+      "외국인 순매도 지속·거래량 대비 강도 약화: 직전 5일 → 최근 5일 순매수/거래량 -25.10% → -8.84% (일평균 -863,591주 → -382,340주). 향후 상승을 뜻하는 신호는 아닙니다.",
+      "코스피도 -3.73% — 시장 전체가 같은 방향이었습니다.",
+      "삼성전자 -2.98% — 반도체 업종이 함께 움직였습니다.",
+      "원화는 오히려 강세(-0.49%)여서 외국인 매도가 환율로는 설명되지 않습니다.",
+      "전날 밤 SOX는 +1.61%로 반대 방향이어서 미국 반도체 흐름으로는 설명되지 않습니다.",
+      "전날 밤 마이크론은 +2.97%로 반대 방향이었습니다.",
+      "우리 장중(09:00~15:30) 나스닥100 선물 -0.26%, 이 종목 고점 이후 -0.37% · 미 10년물 국채 선물 +0.16%(금리 하락), 이 종목 고점 이후 +0.07% · 원/달러 -0.02%, 이 종목 고점 이후 -0.18%.",
+      "자사주 매입 기간 중(직접 취득 2026-08-20~2026-11-19, 40,004,340,000,000, DART 공시) — 회사 자신의 매수는 기타 법인으로 잡힙니다.",
+      "기타 법인 등(추정) 순매수 +6,104억원 — 회사의 자사주 매입 기간이라 회사 매입과 맞는 모양입니다."
+    ],
+    "estimated_indiv": false,
+    "source_note": "출처 naver+cache · 장 마감 직후 잠정치라 저녁 확정치와 다를 수 있습니다 · KRX는 받지 못함(pykrx 미설치)"
+  },
   "flow_status": {
-    "state": "pending",
-    "detail": "최신 2026-10-19"
+    "state": "ok",
+    "detail": "naver+cache",
+    "krx_error": "pykrx 미설치"
   },
   "context": {},
   "market": {
@@ -801,9 +664,9 @@
     "steady": 24,
     "upper": 2,
     "lower": 0,
-    "individual": 8856.0,
-    "foreign": -5176.0,
-    "institution": -9987.0,
+    "individual": 8475.0,
+    "foreign": -4884.0,
+    "institution": -9901.0,
     "prev_close": 5768.01,
     "open": 5733.57,
     "high": 5733.57,

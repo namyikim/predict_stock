@@ -3,7 +3,7 @@
   "name": "SK하이닉스",
   "peer_name": "삼성전자",
   "session_date": "2026-10-21",
-  "generated_at": "2026-10-21 17:31 KST",
+  "generated_at": "2026-10-21 21:54 KST",
   "summary": {
     "prev_close": 1223000.0,
     "open": 1260000.0,
@@ -15,11 +15,11 @@
     "c2c": 0.05805396565821752,
     "high_vs_open": 0.05476190476190479,
     "low_vs_open": -0.004761904761904745,
-    "volume": 4300547.0,
-    "volume_ratio": 1.2482412920846897,
+    "volume": 4522003.0,
+    "volume_ratio": 1.312519283600631,
     "kospi_c2c": 0.03294227969509711,
     "peer_c2c": 0.05673758865248235,
-    "usdkrw_chg": -0.004180495183270683,
+    "usdkrw_chg": -0.002939875323073271,
     "us_nights": 1,
     "sox_ret": -0.0028746285359630974,
     "nasdaq_ret": -0.0002296673459144527,
@@ -99,12 +99,12 @@
       "NQ=F": {
         "label": "나스닥100 선물",
         "ret": -0.0006026718451802582,
-        "after_high": -0.004361277195440216
+        "after_high": -0.004635187408296604
       },
       "ZN=F": {
         "label": "미 10년물 국채 선물",
         "ret": 0.0001484340210775592,
-        "after_high": 0.00044543429844101645
+        "after_high": 0.0002969121140141695
       },
       "KRW=X": {
         "label": "원/달러",
@@ -122,7 +122,15 @@
         "purpose": "자기주식 소각을 통한 \n주주가치 제고",
         "rcept_no": "20260819000254"
       }
-    ]
+    ],
+    "foreign_pressure": {
+      "state": "selling_eased",
+      "previous_ratio": -0.22176004807748523,
+      "recent_ratio": -0.05742737971940256,
+      "previous_daily_net": -804134.4,
+      "recent_daily_net": -254782.6
+    },
+    "buyback_transition": null
   },
   "classification": {
     "labels": [
@@ -130,7 +138,7 @@
       "지수 동조"
     ],
     "reasons": [
-      "09:00 봉 +3.68%(σ의 10.58배, 거래량 8.0배)가 세션 +2.70%의 172%",
+      "09:00 봉 +3.68%(σ의 9.21배, 거래량 8.0배)가 세션 +2.70%의 172%",
       "KOSPI +3.29% vs 종목 +5.81%, 5분 수익률 상관 0.84 — 종목 고유 요인이 약함"
     ]
   },
@@ -138,30 +146,18 @@
     {
       "time": "2026-10-21T09:00:00+09:00",
       "ret": 0.03679476696647588,
-      "z": 10.58,
+      "z": 9.21,
       "volume_ratio": 8.0,
       "cum_before": 0.0,
       "cum_after": 0.006349206349206327,
       "session_share": 1.7170891251022138,
-      "score": 12.580463991287356,
+      "score": 11.20933594274849,
       "news": [
-        {
-          "time": "2026-10-21T07:44:00+09:00",
-          "title": "SK하이닉스, 반도체 소부장에 2조원 금융 지원…공급망 경쟁력 높인다",
-          "source": "테크월드",
-          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE5GengzSnlMbWhneEVxWGJwSFNsMkJXX1F5eTZJdnNsUEJ5OFhnUEtvVk1IVERReG1zdks2SEduMUhSSWxzTmNVS0MwS0cyMG1QU2xVaWw1c19POGZZQUx3elIyT3BwZlhq?oc=5"
-        },
         {
           "time": "2026-10-21T08:44:39+09:00",
           "title": "마이크론 파업 예고…삼성전자·SK하이닉스 반사이익 기대",
           "source": "연합인포맥스",
           "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE1zTWNnOU1Lc0Q2eEFqcGtYeUJITWRxNXpRVlhuZE5DXzhnV01oN1Iza3J0TFg2czV3ODJXUTVtdDNyY01paERDRUd4ak1yMmVxUkQtUVFKTE5jT29hUGdTQ0VUMXY3Wm1ZbTlSQmhOOXo?oc=5"
-        },
-        {
-          "time": "2026-10-21T08:46:33+09:00",
-          "title": "안성시의회, SK하이닉스 반도체 처리수 방류 철회·상생협약 파기 촉구",
-          "source": "매일일보",
-          "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE5DUGctTW8xQzRWdWlkMWpVbXF3Rlp2N1NDVXNpT3Z1M20zdHNKalplNkh6eFhtYVZ3dFR6dkFmVW9ydEoxNDBnMExteFE0MDktaURXbEJMZ2I5LU1fUmxjTnJDR18?oc=5"
         },
         {
           "time": "2026-10-21T09:00:10+09:00",
@@ -170,10 +166,16 @@
           "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE5iWFRidlJ5elZWWGZzTllnbmtXZ3l4Qy1iRHMybHhlTUxEZFNZOUk2Nl9fUm56dUkxUXhkRDB1ek1TbW1JbHc1cy14aTk2VjQ3WGhoMUZMTFhUZw?oc=5"
         },
         {
-          "time": "2026-10-21T09:03:24+09:00",
-          "title": "금융당국 “솔리다임 중복상장 대상”…SK하이닉스 주가 영향은",
-          "source": "서울경제TV",
-          "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE1ZUkdHbkxXTDBhdk5vWl9McDZkU0xsTHpwT0Y5NVoxV0UteHNSaWU5RkJSdE1LTlhwTFZTRjdEaXJOYThFajlRWjd4Y0xGNzdNemZrT3VWaWlkSGFpcTBNZkRWQno?oc=5"
+          "time": "2026-10-21T09:00:00+09:00",
+          "title": "[진단] SK하이닉스, 솔리다임 美 상장 추진… 안철수, 국민연금 ‘제동’ 촉구",
+          "source": "이코노미톡뉴스",
+          "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE5NY0s5MFNZbmxWZC1GcTNrQUc1VTRMODRjbVRHcVhYZS1TelN1b1lvTWFvX2dJMHNFSGZ0QjVLd0lKSl9NYm1teHExRG56RzE2R1NFd3lQZGljdzJ1ZDBYaHlBMlBFYTFzSHlmVw?oc=5"
+        },
+        {
+          "time": "2026-10-21T09:12:37+09:00",
+          "title": "SK하이닉스 3.6%·삼성전자 2.84% 상승, 검색 상위주 동반 강세",
+          "source": "서울신문",
+          "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTFBSQnpLbTdvcnB0Z1BkOWFYTFhaUTg5bV9VVkdjcGhIM0s0Y2ZHOFh0TEhBN3VmSDlobk4yTk4xUTVJZnFVT2FjOXdOcjRWZ2stMWpKM1R1WDVXVE13RzBQUzdqWC0?oc=5"
         }
       ]
     }
@@ -186,7 +188,7 @@
     "pattern": "고점 후 반락"
   },
   "closing_share": 0.20156314273961407,
-  "intraday_corr_kospi": 0.8426254089035273,
+  "intraday_corr_kospi": 0.8439184505863673,
   "intraday_note": "장중 봉은 09:00~14:55까지만 있어 마감 구간(14:55~15:30)은 일봉 종가로만 봅니다(그 구간 +0.54%).",
   "intraday_coverage": "09:00~14:55",
   "intraday_path": [
@@ -248,12 +250,12 @@
     {
       "time": "2026-10-21T09:55:00+09:00",
       "price": 1292000.0,
-      "volume": 64243.0
+      "volume": 64228.0
     },
     {
       "time": "2026-10-21T10:00:00+09:00",
       "price": 1293000.0,
-      "volume": 64825.0
+      "volume": 64840.0
     },
     {
       "time": "2026-10-21T10:05:00+09:00",
@@ -283,12 +285,12 @@
     {
       "time": "2026-10-21T10:30:00+09:00",
       "price": 1302000.0,
-      "volume": 43611.0
+      "volume": 43606.0
     },
     {
       "time": "2026-10-21T10:35:00+09:00",
       "price": 1301000.0,
-      "volume": 60311.0
+      "volume": 60316.0
     },
     {
       "time": "2026-10-21T10:40:00+09:00",
@@ -322,13 +324,13 @@
     },
     {
       "time": "2026-10-21T11:10:00+09:00",
-      "price": 1313000.0,
-      "volume": 42220.0
+      "price": 1314000.0,
+      "volume": 42216.0
     },
     {
       "time": "2026-10-21T11:15:00+09:00",
       "price": 1315000.0,
-      "volume": 35227.0
+      "volume": 35231.0
     },
     {
       "time": "2026-10-21T11:20:00+09:00",
@@ -512,13 +514,13 @@
     },
     {
       "time": "2026-10-21T14:20:00+09:00",
-      "price": 1281000.0,
-      "volume": 23086.0
+      "price": 1280000.0,
+      "volume": 23087.0
     },
     {
       "time": "2026-10-21T14:25:00+09:00",
       "price": 1286000.0,
-      "volume": 25766.0
+      "volume": 25765.0
     },
     {
       "time": "2026-10-21T14:30:00+09:00",
@@ -555,30 +557,18 @@
     {
       "time": "2026-10-21T09:00:00+09:00",
       "ret": 0.03679476696647588,
-      "z": 10.58,
+      "z": 9.21,
       "volume_ratio": 8.0,
       "cum_before": 0.0,
       "cum_after": 0.006349206349206327,
       "session_share": 1.7170891251022138,
-      "score": 12.580463991287356,
+      "score": 11.20933594274849,
       "news": [
-        {
-          "time": "2026-10-21T07:44:00+09:00",
-          "title": "SK하이닉스, 반도체 소부장에 2조원 금융 지원…공급망 경쟁력 높인다",
-          "source": "테크월드",
-          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE5GengzSnlMbWhneEVxWGJwSFNsMkJXX1F5eTZJdnNsUEJ5OFhnUEtvVk1IVERReG1zdks2SEduMUhSSWxzTmNVS0MwS0cyMG1QU2xVaWw1c19POGZZQUx3elIyT3BwZlhq?oc=5"
-        },
         {
           "time": "2026-10-21T08:44:39+09:00",
           "title": "마이크론 파업 예고…삼성전자·SK하이닉스 반사이익 기대",
           "source": "연합인포맥스",
           "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE1zTWNnOU1Lc0Q2eEFqcGtYeUJITWRxNXpRVlhuZE5DXzhnV01oN1Iza3J0TFg2czV3ODJXUTVtdDNyY01paERDRUd4ak1yMmVxUkQtUVFKTE5jT29hUGdTQ0VUMXY3Wm1ZbTlSQmhOOXo?oc=5"
-        },
-        {
-          "time": "2026-10-21T08:46:33+09:00",
-          "title": "안성시의회, SK하이닉스 반도체 처리수 방류 철회·상생협약 파기 촉구",
-          "source": "매일일보",
-          "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE5DUGctTW8xQzRWdWlkMWpVbXF3Rlp2N1NDVXNpT3Z1M20zdHNKalplNkh6eFhtYVZ3dFR6dkFmVW9ydEoxNDBnMExteFE0MDktaURXbEJMZ2I5LU1fUmxjTnJDR18?oc=5"
         },
         {
           "time": "2026-10-21T09:00:10+09:00",
@@ -587,10 +577,16 @@
           "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE5iWFRidlJ5elZWWGZzTllnbmtXZ3l4Qy1iRHMybHhlTUxEZFNZOUk2Nl9fUm56dUkxUXhkRDB1ek1TbW1JbHc1cy14aTk2VjQ3WGhoMUZMTFhUZw?oc=5"
         },
         {
-          "time": "2026-10-21T09:03:24+09:00",
-          "title": "금융당국 “솔리다임 중복상장 대상”…SK하이닉스 주가 영향은",
-          "source": "서울경제TV",
-          "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE1ZUkdHbkxXTDBhdk5vWl9McDZkU0xsTHpwT0Y5NVoxV0UteHNSaWU5RkJSdE1LTlhwTFZTRjdEaXJOYThFajlRWjd4Y0xGNzdNemZrT3VWaWlkSGFpcTBNZkRWQno?oc=5"
+          "time": "2026-10-21T09:00:00+09:00",
+          "title": "[진단] SK하이닉스, 솔리다임 美 상장 추진… 안철수, 국민연금 ‘제동’ 촉구",
+          "source": "이코노미톡뉴스",
+          "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE5NY0s5MFNZbmxWZC1GcTNrQUc1VTRMODRjbVRHcVhYZS1TelN1b1lvTWFvX2dJMHNFSGZ0QjVLd0lKSl9NYm1teHExRG56RzE2R1NFd3lQZGljdzJ1ZDBYaHlBMlBFYTFzSHlmVw?oc=5"
+        },
+        {
+          "time": "2026-10-21T09:12:37+09:00",
+          "title": "SK하이닉스 3.6%·삼성전자 2.84% 상승, 검색 상위주 동반 강세",
+          "source": "서울신문",
+          "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTFBSQnpLbTdvcnB0Z1BkOWFYTFhaUTg5bV9VVkdjcGhIM0s0Y2ZHOFh0TEhBN3VmSDlobk4yTk4xUTVJZnFVT2FjOXdOcjRWZ2stMWpKM1R1WDVXVE13RzBQUzdqWC0?oc=5"
         }
       ],
       "price": 1268000.0,
@@ -599,16 +595,10 @@
   ],
   "overnight_news": [
     {
-      "time": "2026-10-21T06:00:37+09:00",
+      "time": "2026-10-21T06:07:00+09:00",
       "title": "초호황에 숨겨진 SK하이닉스의 걱정거리… “HBM4 시장서 우위 약화” - 조선비즈",
       "source": "Chosunbiz",
       "link": "https://news.google.com/rss/articles/CBMiggFBVV95cUxOS0hPTEJpM0dvMDIzRmZNNHhpWHl6dURVMGhTRnBCQXk1V3N0ZGp5N0d1UUhyNnM0RjAwVVNCd2wwV3N2OWpWempCZUs3LWxySkcyQ1dxaGRYbGlGY3g1VlN6Nm9Va0JlRXBOLW5qek04VkJqVmlIODVNU044TENkYlZR0gGWAUFVX3lxTFBheEtOY3RZczZQQVhIZUttSzRSckVNVE5Uck5SMDF3cmJGdUdraHVzSEg2dm8xX0F1bTB5MEJ3NnRNRTBmOEJWYXpiR3NoRG9qYjY1S2tMNHFxcFdfUlhaZ0lfNWpoYWFZT2E3UnRTb0E3NEt3UzExelNnZEJyWDA3QS1KdDF2MnZPcG1iWEc2MTdiOXlidw?oc=5"
-    },
-    {
-      "time": "2026-10-21T07:44:00+09:00",
-      "title": "SK하이닉스, 반도체 소부장에 2조원 금융 지원…공급망 경쟁력 높인다",
-      "source": "테크월드",
-      "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE5GengzSnlMbWhneEVxWGJwSFNsMkJXX1F5eTZJdnNsUEJ5OFhnUEtvVk1IVERReG1zdks2SEduMUhSSWxzTmNVS0MwS0cyMG1QU2xVaWw1c19POGZZQUx3elIyT3BwZlhq?oc=5"
     },
     {
       "time": "2026-10-21T08:44:39+09:00",
@@ -617,16 +607,16 @@
       "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE1zTWNnOU1Lc0Q2eEFqcGtYeUJITWRxNXpRVlhuZE5DXzhnV01oN1Iza3J0TFg2czV3ODJXUTVtdDNyY01paERDRUd4ak1yMmVxUkQtUVFKTE5jT29hUGdTQ0VUMXY3Wm1ZbTlSQmhOOXo?oc=5"
     },
     {
-      "time": "2026-10-21T08:46:33+09:00",
-      "title": "안성시의회, SK하이닉스 반도체 처리수 방류 철회·상생협약 파기 촉구",
-      "source": "매일일보",
-      "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE5DUGctTW8xQzRWdWlkMWpVbXF3Rlp2N1NDVXNpT3Z1M20zdHNKalplNkh6eFhtYVZ3dFR6dkFmVW9ydEoxNDBnMExteFE0MDktaURXbEJMZ2I5LU1fUmxjTnJDR18?oc=5"
-    },
-    {
       "time": "2026-10-21T06:00:00+09:00",
       "title": "[IB토마토]SK하이닉스, 솔리다임 IPO에 자금 활용 방안 '관심'",
       "source": "뉴스토마토",
-      "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE00T2tpZE5YZ296YXduZGY4cU8wTlJSUEVsLWRIR3NZUmF0WGljUTVEWTNwcmdoZFBXaGFYU0s3LVZwY0VlVHdKam10LUUxUXZ2SWtlQU9PNDY2d1cyOUVEUw?oc=5"
+      "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE1EMnFGRThHaVh1VkxPRnlac1loMnZhZExRVE8yOUNZTzRjYUlQVWhndWVMNmEyZk9PLXdRZ21BUVhFTkhxTjlLMGpBUzc2WGRJU0FwUGxQVTczd2lfRDQwSQ?oc=5"
+    },
+    {
+      "time": "2026-10-21T09:00:00+09:00",
+      "title": "[진단] SK하이닉스, 솔리다임 美 상장 추진… 안철수, 국민연금 ‘제동’ 촉구",
+      "source": "이코노미톡뉴스",
+      "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE5NY0s5MFNZbmxWZC1GcTNrQUc1VTRMODRjbVRHcVhYZS1TelN1b1lvTWFvX2dJMHNFSGZ0QjVLd0lKSl9NYm1teHExRG56RzE2R1NFd3lQZGljdzJ1ZDBYaHlBMlBFYTFzSHlmVw?oc=5"
     }
   ],
   "top_news": [
@@ -643,22 +633,22 @@
       "link": "https://news.google.com/rss/articles/CBMibkFVX3lxTE82UzhNS3BJcHNkcGk1NHR5b2gtMk1Vb1A1MzFlRENqdm9TVWpLbWhNUUR5NFM1MnJ6bzhId2ViMHk1NEVoUUl2bVM5NV9YMERBdWZadlVGblVublRIU0VKWEdYdVFBSjZNMUhqNUtB?oc=5"
     },
     {
-      "time": "2026-10-21T09:29:03+09:00",
-      "title": "코스피, 반도체주 강세에 1%대 반등...삼성전자 3%·SK하이닉스 4%↑",
-      "source": "M이코노미뉴스",
-      "link": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE5QLXhBVlhoSGxfNzJsaDN0MkIzdDgyYnhWcDJnZDFYTm1Qa3g3dVVoOUpPTEp0bUFKOFVFTFYzSTI2NXl1bFRueXQwMXl6bzRVXzY0ZlkwbjBVVjRpRlRGVjVld1FGRzQ?oc=5"
+      "time": "2026-10-21T17:18:33+09:00",
+      "title": "\"AI 반도체 경쟁, 연산 넘어 메모리 중심으로\"···SK하이닉스의 미래 전략",
+      "source": "스마트비즈",
+      "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTFBjU2I2eGd4WTN0MV84bm1NZmtlZWMyZ2JBU3hmM3FSY0ZKazZlU0ZWekJGb0xHckVjcnpacVdNUUhZZGttWnlvUWlOb1B0ZDBJbTExRkM1YjRDTGVmb2ZMMk5sbTVYb0JNRUN0QQ?oc=5"
     },
     {
-      "time": "2026-10-21T10:03:02+09:00",
-      "title": "엔비디아 공급난에 AI 수요 재확인…삼성전자 4%·SK하이닉스 5%대 반등",
-      "source": "뉴스퀘스트",
-      "link": "https://news.google.com/rss/articles/CBMib0FVX3lxTFBPVHZlU0IyR0JuelFMWWZZeUdDX3BET0cxVEFMQzdxTEVPeGFQRzFfZjlZYzBGeVA3all2NmFSbUkwZ2pOdHdRNWR6UzhLRVB3LXlIQVBoMlRmZHpVM0Z3LVduUkFFb0h4SVZfTkctSQ?oc=5"
+      "time": "2026-10-21T17:34:07+09:00",
+      "title": "곽노정 SK하이닉스 사장, AI 메모리 성과에 부회장 승진론 부상…HBM 격차 수성 과제",
+      "source": "필드뉴스",
+      "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE1DYnc0S242V216X3I3M0FJb1dhTHBVWWRmaGltdHFLMW9UQmlpYmpNQkF5Ql9POGF2WVpBU3A5N1EtUDBSVGFjMDhNdG4takFGNDJzTENtTHlKdnoyNnA0bzVNZUFMdncwZzZWRdIBbEFVX3lxTE1DYnc0S242V216X3I3M0FJb1dhTHBVWWRmaGltdHFLMW9UQmlpYmpNQkF5Ql9POGF2WVpBU3A5N1EtUDBSVGFjMDhNdG4takFGNDJzTENtTHlKdnoyNnA0bzVNZUFMdncwZzZWRQ?oc=5"
     },
     {
-      "time": "2026-10-21T10:13:03+09:00",
-      "title": "KB증권 \"마이크론 대만 공장 파업 예고, 삼성전자·SK하이닉스 반사이익 기대\"",
+      "time": "2026-10-21T17:24:03+09:00",
+      "title": "[오늘의 주목주] '반도체 투심 회복' SK 주가 12%대 상승, 코스피 '외국인 순매수'에 5730선 상승 마감",
       "source": "비즈니스포스트",
-      "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTE1fTk5mcWZYZXpWQTA4QnNaZ2phVi10aEhXbkZNWFREVzVKZWdwQ0pLWklnNll2WVVsYnpHaHFXM1M0SV9NRndTVmJrVWFoSEtuZmRUN28zZzRLVGdIaGIxS3ZwQW4wbDEycUhnUGxVcEJrRnc?oc=5"
+      "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTFBYNXB3SHNtdGYyUjVrY2ptZHd5QjhFQnBZXzZkdmIzdzF6MGdHTm1rR3l6U2N6NGU0U3hZQ2JibHItN3hoSEE4VGc3TVNxdWVPN1ZvSWU3X21MajB3WFdJRVpjUDVMbDlFWkVMRGY5WHo0UUU?oc=5"
     },
     {
       "time": "2026-10-21T10:32:13+09:00",
@@ -669,11 +659,80 @@
   ],
   "disclosures": [],
   "disclosure_note": null,
-  "flows": null,
-  "flow_story": null,
+  "flows": "외국인 +150,127 / 기관 -16,885",
+  "flow_story": {
+    "direction": "up",
+    "c2c": 0.05805396565821752,
+    "actors": [
+      {
+        "key": "foreign_net",
+        "name": "외국인",
+        "shares": 150127.0,
+        "won": 194264338000.0,
+        "vs_usual": 0.26509161232177075
+      },
+      {
+        "key": "inst_net",
+        "name": "기관",
+        "shares": -16885.0,
+        "won": -21849190000.0,
+        "vs_usual": 0.12234722628295214
+      },
+      {
+        "key": "indiv_net",
+        "name": "개인",
+        "shares": -569645.0,
+        "won": -737120630000.0,
+        "vs_usual": 1.5982170738160282
+      },
+      {
+        "key": "other_net",
+        "name": "기타 법인 등(추정)",
+        "shares": 436403.0,
+        "won": 564705482000.0,
+        "vs_usual": null
+      }
+    ],
+    "lead": {
+      "key": "other_net",
+      "name": "기타 법인 등(추정)",
+      "shares": 436403.0,
+      "won": 564705482000.0,
+      "vs_usual": null
+    },
+    "counter": {
+      "key": "indiv_net",
+      "name": "개인",
+      "shares": -569645.0,
+      "won": -737120630000.0,
+      "vs_usual": 1.5982170738160282
+    },
+    "all_one_side": false,
+    "observations": [
+      "전일까지 20거래일 고점: 종가 돌파 없음 · 종가 위치 -33.13%.",
+      "전일까지 60거래일 고점: 종가 돌파 없음 · 종가 위치 -35.48%.",
+      "같은 5거래일 수익률: 이 종목 -8.81%, 삼성전자 -3.66% · 차이 -5.15%p.",
+      "같은 20거래일 수익률: 이 종목 -25.85%, 삼성전자 -11.49% · 차이 -14.36%p.",
+      "같은 60거래일 수익률: 이 종목 -29.27%, 삼성전자 -14.20% · 차이 -15.07%p.",
+      "외국인 순매도 지속·거래량 대비 강도 약화: 직전 5일 → 최근 5일 순매수/거래량 -22.18% → -5.74% (일평균 -804,134주 → -254,783주). 향후 상승을 뜻하는 신호는 아닙니다.",
+      "코스피도 +3.29% — 시장 전체가 같은 방향이었습니다.",
+      "삼성전자 +5.67% — 반도체 업종이 함께 움직였습니다.",
+      "직전 5거래일 -15.25% 내린 뒤의 매수 — 저가 매수와 맞는 모양입니다.",
+      "장중 5일선(1,290,600원) 아래로 빠졌다가 그 위로 되돌아와 마감했습니다.",
+      "마이크론은 미국 정규장 마감 뒤 시간외에서 +2.15%(장중 +0.06%~+2.95%) — 정규장 등락에 안 보이는 반응입니다.",
+      "엔비디아는 미국 정규장 마감 뒤 시간외에서 +2.09%(장중 +0.09%~+2.32%) — 정규장 등락에 안 보이는 반응입니다.",
+      "우리 장중(09:00~15:30) 나스닥100 선물 -0.06%, 이 종목 고점 이후 -0.46% · 미 10년물 국채 선물 +0.01%, 이 종목 고점 이후 +0.03% · 원/달러 -0.02%, 이 종목 고점 이후 -0.26%.",
+      "자사주 매입 기간 중(직접 취득 2026-08-20~2026-11-19, 40,004,340,000,000, DART 공시) — 회사 자신의 매수는 기타 법인으로 잡힙니다.",
+      "마감가가 장중 고가보다 -2.41% 아래 — 오른 폭을 장중에 꽤 반납했습니다.",
+      "기타 법인 등(추정) 순매수 +5,647억원 — 회사의 자사주 매입 기간이라 회사 매입과 맞는 모양입니다."
+    ],
+    "estimated_indiv": false,
+    "source_note": "출처 naver+cache · 장 마감 직후 잠정치라 저녁 확정치와 다를 수 있습니다 · KRX는 받지 못함(pykrx 미설치)"
+  },
   "flow_status": {
-    "state": "pending",
-    "detail": "최신 2026-10-20"
+    "state": "ok",
+    "detail": "naver+cache",
+    "krx_error": "pykrx 미설치"
   },
   "context": {},
   "market": {
@@ -684,9 +743,9 @@
     "steady": 53,
     "upper": 1,
     "lower": 0,
-    "individual": -11261.0,
-    "foreign": 6555.0,
-    "institution": -733.0,
+    "individual": -11159.0,
+    "foreign": 6462.0,
+    "institution": -781.0,
     "prev_close": 5552.74,
     "open": 5666.34,
     "high": 5816.43,

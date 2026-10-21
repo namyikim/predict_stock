@@ -1022,81 +1022,79 @@
     },
     {
       "month": "2026-04",
-      "value": 31906661024.0
+      "value": 31906680488.0
     },
     {
       "month": "2026-05",
-      "value": 37162343114.0
+      "value": 37162342802.0
     },
     {
       "month": "2026-06",
-      "value": 44816398836.0
+      "value": 44816396848.0
     },
     {
       "month": "2026-07",
-      "value": 41015104140.0
+      "value": 41016201419.0
     },
     {
       "month": "2026-08",
-      "value": 46670721377.0
+      "value": 46671640766.0
     },
     {
       "month": "2026-09",
-      "value": 54460406534.83949
+      "value": 60327711368.0
     },
     {
       "month": "2026-10",
-      "value": 42564878412.230354
+      "value": 50662091436.39659
     }
   ],
   "applied": [
     {
       "month": "2026-10",
-      "days": 10,
-      "yoy": 1.7093222850019925,
-      "observed_usd": 12197797000.0,
-      "monthly_usd": 42564878412.230354,
+      "days": 20,
+      "yoy": 2.22472278680346,
+      "observed_usd": 27516150000.0,
+      "monthly_usd": 50662091436.39659,
       "basis": "partial_month_scenario"
     }
   ],
   "flash_info": {
     "enabled": true,
     "source": "customs_flash_api",
-    "rows": 43,
+    "rows": 44,
     "first": "2025-08",
     "last": "2026-10",
-    "last_days": 10,
-    "yoy_rows": 7
+    "last_days": 20,
+    "yoy_rows": 8
   },
   "monthly_info": {
     "customs": {
-      "enabled": true,
+      "enabled": false,
+      "reason": "최근 6개월 배율이 중앙값 1.249 대비 최대 10.8% 흔들립니다(허용 10%) — 관계가 불안정해 환산하지 않습니다.",
       "source": "customs_api",
       "first": "2025-04",
       "last": "2026-09",
       "same_size": false,
-      "ratio_median": 0.8272528806256424,
-      "overlap": 17,
+      "ratio_median": 0.823787130149656,
+      "overlap": 18,
       "window": 6,
-      "scale": 1.249065853129181,
-      "spread": 0.0580717998581155,
+      "scale": 1.249066228864939,
+      "spread": 0.10773490429286436,
       "ratios": {
-        "2026-03": 1.3029,
         "2026-04": 1.2491,
         "2026-05": 1.2491,
         "2026-06": 1.3216,
-        "2026-07": 1.239,
-        "2026-08": 1.2088
-      },
-      "months_added": [
-        "2026-09"
-      ]
+        "2026-07": 1.2391,
+        "2026-08": 1.2088,
+        "2026-09": 1.3836
+      }
     },
     "kosis_sources": {
       "leading_cycle": "KOSIS_API",
       "semiconductor_exports": "KOSIS_API"
     }
   },
-  "snapshot_hash": "5d213ab8719e93d21bcc",
-  "generated_at": "2026-10-20 15:01 KST"
+  "snapshot_hash": "cecabf61a809c8ab4f2c",
+  "generated_at": "2026-10-21 15:05 KST"
 }

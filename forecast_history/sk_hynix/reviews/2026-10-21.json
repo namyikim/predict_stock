@@ -3,7 +3,7 @@
   "name": "SK하이닉스",
   "peer_name": "삼성전자",
   "session_date": "2026-10-21",
-  "generated_at": "2026-10-21 16:11 KST",
+  "generated_at": "2026-10-21 16:46 KST",
   "summary": {
     "prev_close": 1223000.0,
     "open": 1260000.0,
@@ -15,11 +15,11 @@
     "c2c": 0.05805396565821752,
     "high_vs_open": 0.05476190476190479,
     "low_vs_open": -0.004761904761904745,
-    "volume": 4270375.0,
-    "volume_ratio": 1.2394838162880575,
+    "volume": 4277323.0,
+    "volume_ratio": 1.2415004854460516,
     "kospi_c2c": 0.03294227969509711,
     "peer_c2c": 0.05673758865248235,
-    "usdkrw_chg": -0.0037217677984022757,
+    "usdkrw_chg": -0.00481204843162597,
     "us_nights": 1,
     "sox_ret": -0.0028746285359630974,
     "nasdaq_ret": -0.0002296673459144527,
@@ -99,12 +99,12 @@
       "NQ=F": {
         "label": "나스닥100 선물",
         "ret": -0.0006026718451802582,
-        "after_high": -0.004635187408296604
+        "after_high": -0.004361277195440216
       },
       "ZN=F": {
         "label": "미 10년물 국채 선물",
         "ret": 0.0001484340210775592,
-        "after_high": 0.0002969121140141695
+        "after_high": 0.00044543429844101645
       },
       "KRW=X": {
         "label": "원/달러",
@@ -130,7 +130,7 @@
       "지수 동조"
     ],
     "reasons": [
-      "09:00 봉 +3.68%(σ의 9.21배, 거래량 8.0배)가 세션 +2.70%의 172%",
+      "09:00 봉 +3.68%(σ의 10.58배, 거래량 8.0배)가 세션 +2.70%의 172%",
       "KOSPI +3.29% vs 종목 +5.81%, 5분 수익률 상관 0.84 — 종목 고유 요인이 약함"
     ]
   },
@@ -138,19 +138,13 @@
     {
       "time": "2026-10-21T09:00:00+09:00",
       "ret": 0.03679476696647588,
-      "z": 9.21,
+      "z": 10.58,
       "volume_ratio": 8.0,
       "cum_before": 0.0,
       "cum_after": 0.006349206349206327,
       "session_share": 1.7170891251022138,
-      "score": 11.20933594274849,
+      "score": 12.580463991287356,
       "news": [
-        {
-          "time": "2026-10-21T08:46:35+09:00",
-          "title": "\"반도체 '비관론' 과해...삼성전자·SK하이닉스 투자적기\"",
-          "source": "파이낸셜뉴스",
-          "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE1raVRLdjI1eTFlQ1VpNkQzNTVYSEVnQ1k3SV9FLVFsSUItY3JaalF1MlNSZ05sYnR1bE1nbHpwdWNveFR1dlBfVjgtVkYwbnJYVVNxa1NSWWxwdw?oc=5"
-        },
         {
           "time": "2026-10-21T07:44:00+09:00",
           "title": "SK하이닉스, 반도체 소부장에 2조원 금융 지원…공급망 경쟁력 높인다",
@@ -174,6 +168,12 @@
           "title": "SK證 “메모리, 구조적 수요 강세…삼성전자·SK하이닉스 매수 적기”",
           "source": "팝콘뉴스",
           "link": "https://news.google.com/rss/articles/CBMickFVX3lxTFBDX0VLY3dzWWlVOGZpLXB3dWRxQTkzalJ3Nkx3eG9wQmtod1J0c2ROa0VJZ2h6Zm52UUNZa1hVbER0RDNiZVludzBNaUtwMVRxRXVfU3EyRXl6S0lLTnFLY0c4dDdOMWsyVC1kQThnQkw2QdIBckFVX3lxTFBDX0VLY3dzWWlVOGZpLXB3dWRxQTkzalJ3Nkx3eG9wQmtod1J0c2ROa0VJZ2h6Zm52UUNZa1hVbER0RDNiZVludzBNaUtwMVRxRXVfU3EyRXl6S0lLTnFLY0c4dDdOMWsyVC1kQThnQkw2QQ?oc=5"
+        },
+        {
+          "time": "2026-10-21T09:00:10+09:00",
+          "title": "반도체 떨어지자 '줍줍'…초고수, SK하이닉스 사고 라온시큐어 팔았다",
+          "source": "한국경제",
+          "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE5iWFRidlJ5elZWWGZzTllnbmtXZ3l4Qy1iRHMybHhlTUxEZFNZOUk2Nl9fUm56dUkxUXhkRDB1ek1TbW1JbHc1cy14aTk2VjQ3WGhoMUZMTFhUZw?oc=5"
         }
       ]
     }
@@ -186,7 +186,7 @@
     "pattern": "고점 후 반락"
   },
   "closing_share": 0.20156314273961407,
-  "intraday_corr_kospi": 0.8439184505863673,
+  "intraday_corr_kospi": 0.8426254089035273,
   "intraday_note": "장중 봉은 09:00~14:55까지만 있어 마감 구간(14:55~15:30)은 일봉 종가로만 봅니다(그 구간 +0.54%).",
   "intraday_coverage": "09:00~14:55",
   "intraday_path": [
@@ -248,12 +248,12 @@
     {
       "time": "2026-10-21T09:55:00+09:00",
       "price": 1292000.0,
-      "volume": 64228.0
+      "volume": 64243.0
     },
     {
       "time": "2026-10-21T10:00:00+09:00",
       "price": 1293000.0,
-      "volume": 64840.0
+      "volume": 64825.0
     },
     {
       "time": "2026-10-21T10:05:00+09:00",
@@ -283,12 +283,12 @@
     {
       "time": "2026-10-21T10:30:00+09:00",
       "price": 1302000.0,
-      "volume": 43606.0
+      "volume": 43611.0
     },
     {
       "time": "2026-10-21T10:35:00+09:00",
       "price": 1301000.0,
-      "volume": 60316.0
+      "volume": 60311.0
     },
     {
       "time": "2026-10-21T10:40:00+09:00",
@@ -322,13 +322,13 @@
     },
     {
       "time": "2026-10-21T11:10:00+09:00",
-      "price": 1314000.0,
-      "volume": 42216.0
+      "price": 1313000.0,
+      "volume": 42220.0
     },
     {
       "time": "2026-10-21T11:15:00+09:00",
       "price": 1315000.0,
-      "volume": 35231.0
+      "volume": 35227.0
     },
     {
       "time": "2026-10-21T11:20:00+09:00",
@@ -512,13 +512,13 @@
     },
     {
       "time": "2026-10-21T14:20:00+09:00",
-      "price": 1280000.0,
-      "volume": 23087.0
+      "price": 1281000.0,
+      "volume": 23086.0
     },
     {
       "time": "2026-10-21T14:25:00+09:00",
       "price": 1286000.0,
-      "volume": 25765.0
+      "volume": 25766.0
     },
     {
       "time": "2026-10-21T14:30:00+09:00",
@@ -555,19 +555,13 @@
     {
       "time": "2026-10-21T09:00:00+09:00",
       "ret": 0.03679476696647588,
-      "z": 9.21,
+      "z": 10.58,
       "volume_ratio": 8.0,
       "cum_before": 0.0,
       "cum_after": 0.006349206349206327,
       "session_share": 1.7170891251022138,
-      "score": 11.20933594274849,
+      "score": 12.580463991287356,
       "news": [
-        {
-          "time": "2026-10-21T08:46:35+09:00",
-          "title": "\"반도체 '비관론' 과해...삼성전자·SK하이닉스 투자적기\"",
-          "source": "파이낸셜뉴스",
-          "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE1raVRLdjI1eTFlQ1VpNkQzNTVYSEVnQ1k3SV9FLVFsSUItY3JaalF1MlNSZ05sYnR1bE1nbHpwdWNveFR1dlBfVjgtVkYwbnJYVVNxa1NSWWxwdw?oc=5"
-        },
         {
           "time": "2026-10-21T07:44:00+09:00",
           "title": "SK하이닉스, 반도체 소부장에 2조원 금융 지원…공급망 경쟁력 높인다",
@@ -591,6 +585,12 @@
           "title": "SK證 “메모리, 구조적 수요 강세…삼성전자·SK하이닉스 매수 적기”",
           "source": "팝콘뉴스",
           "link": "https://news.google.com/rss/articles/CBMickFVX3lxTFBDX0VLY3dzWWlVOGZpLXB3dWRxQTkzalJ3Nkx3eG9wQmtod1J0c2ROa0VJZ2h6Zm52UUNZa1hVbER0RDNiZVludzBNaUtwMVRxRXVfU3EyRXl6S0lLTnFLY0c4dDdOMWsyVC1kQThnQkw2QdIBckFVX3lxTFBDX0VLY3dzWWlVOGZpLXB3dWRxQTkzalJ3Nkx3eG9wQmtod1J0c2ROa0VJZ2h6Zm52UUNZa1hVbER0RDNiZVludzBNaUtwMVRxRXVfU3EyRXl6S0lLTnFLY0c4dDdOMWsyVC1kQThnQkw2QQ?oc=5"
+        },
+        {
+          "time": "2026-10-21T09:00:10+09:00",
+          "title": "반도체 떨어지자 '줍줍'…초고수, SK하이닉스 사고 라온시큐어 팔았다",
+          "source": "한국경제",
+          "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE5iWFRidlJ5elZWWGZzTllnbmtXZ3l4Qy1iRHMybHhlTUxEZFNZOUk2Nl9fUm56dUkxUXhkRDB1ek1TbW1JbHc1cy14aTk2VjQ3WGhoMUZMTFhUZw?oc=5"
         }
       ],
       "price": 1268000.0,
@@ -598,12 +598,6 @@
     }
   ],
   "overnight_news": [
-    {
-      "time": "2026-10-21T08:46:35+09:00",
-      "title": "\"반도체 '비관론' 과해...삼성전자·SK하이닉스 투자적기\"",
-      "source": "파이낸셜뉴스",
-      "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE1raVRLdjI1eTFlQ1VpNkQzNTVYSEVnQ1k3SV9FLVFsSUItY3JaalF1MlNSZ05sYnR1bE1nbHpwdWNveFR1dlBfVjgtVkYwbnJYVVNxa1NSWWxwdw?oc=5"
-    },
     {
       "time": "2026-10-21T06:00:37+09:00",
       "title": "초호황에 숨겨진 SK하이닉스의 걱정거리… “HBM4 시장서 우위 약화” - 조선비즈",
@@ -627,20 +621,26 @@
       "title": "안성시의회, SK하이닉스 반도체 처리수 방류 철회·상생협약 파기 촉구",
       "source": "매일일보",
       "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE5DUGctTW8xQzRWdWlkMWpVbXF3Rlp2N1NDVXNpT3Z1M20zdHNKalplNkh6eFhtYVZ3dFR6dkFmVW9ydEoxNDBnMExteFE0MDktaURXbEJMZ2I5LU1fUmxjTnJDR18?oc=5"
+    },
+    {
+      "time": "2026-10-21T08:54:00+09:00",
+      "title": "SK證 “메모리, 구조적 수요 강세…삼성전자·SK하이닉스 매수 적기”",
+      "source": "팝콘뉴스",
+      "link": "https://news.google.com/rss/articles/CBMickFVX3lxTFBDX0VLY3dzWWlVOGZpLXB3dWRxQTkzalJ3Nkx3eG9wQmtod1J0c2ROa0VJZ2h6Zm52UUNZa1hVbER0RDNiZVludzBNaUtwMVRxRXVfU3EyRXl6S0lLTnFLY0c4dDdOMWsyVC1kQThnQkw2QdIBckFVX3lxTFBDX0VLY3dzWWlVOGZpLXB3dWRxQTkzalJ3Nkx3eG9wQmtod1J0c2ROa0VJZ2h6Zm52UUNZa1hVbER0RDNiZVludzBNaUtwMVRxRXVfU3EyRXl6S0lLTnFLY0c4dDdOMWsyVC1kQThnQkw2QQ?oc=5"
     }
   ],
   "top_news": [
+    {
+      "time": "2026-10-21T16:32:55+09:00",
+      "title": "AI 투자 열풍, 코스피 5,800 돌파! 삼성전자·SK하이닉스 주가 급등",
+      "source": "공감신문",
+      "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTFBNRVpJdTBVd3loSWhEMlAtOUdSSVpJdFJNQ2xZSllZalZaR3VIdm92WFl3a016QW92RXNvRzhCMXlqTkZVbnljaTctb1FuNmxWRU10aS1KOUUyNjBuejktQ2lUOFJGYVJF?oc=5"
+    },
     {
       "time": "2026-10-21T15:19:18+09:00",
       "title": "삼성·SK하이닉스, 美엔비디아 HBM 공정표준화 요청에 대처…승부처는 1c D램",
       "source": "서울이코노미뉴스",
       "link": "https://news.google.com/rss/articles/CBMibkFVX3lxTE82UzhNS3BJcHNkcGk1NHR5b2gtMk1Vb1A1MzFlRENqdm9TVWpLbWhNUUR5NFM1MnJ6bzhId2ViMHk1NEVoUUl2bVM5NV9YMERBdWZadlVGblVublRIU0VKWEdYdVFBSjZNMUhqNUtB?oc=5"
-    },
-    {
-      "time": "2026-10-21T08:46:35+09:00",
-      "title": "\"반도체 '비관론' 과해...삼성전자·SK하이닉스 투자적기\"",
-      "source": "파이낸셜뉴스",
-      "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE1raVRLdjI1eTFlQ1VpNkQzNTVYSEVnQ1k3SV9FLVFsSUItY3JaalF1MlNSZ05sYnR1bE1nbHpwdWNveFR1dlBfVjgtVkYwbnJYVVNxa1NSWWxwdw?oc=5"
     },
     {
       "time": "2026-10-21T09:18:33+09:00",
@@ -684,9 +684,9 @@
     "steady": 53,
     "upper": 1,
     "lower": 0,
-    "individual": -11302.0,
-    "foreign": 6585.0,
-    "institution": -714.0,
+    "individual": -11275.0,
+    "foreign": 6583.0,
+    "institution": -740.0,
     "prev_close": 5552.74,
     "open": 5666.34,
     "high": 5816.43,

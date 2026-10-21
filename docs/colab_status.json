@@ -6,7 +6,7 @@
   {
    "file": "semiconductor_exports.csv",
    "label": "반도체 수출액(KOSIS)",
-   "have": "2026-08",
+   "have": "2026-09",
    "expected": "2026-08",
    "late": false
   },
@@ -34,7 +34,7 @@
   {
    "file": "customs_flash.csv",
    "label": "수출 속보 1~10일·1~20일(관세청)",
-   "have": "2026-10 1~10일",
+   "have": "2026-10 1~20일",
    "expected": "2026-10 1~10일",
    "late": false
   },

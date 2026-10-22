@@ -1,12 +1,12 @@
 {
   "target": "samsung",
   "method": "krx_yahoo_ohlc_v1",
-  "attempt": "2026-10-22/2026-10-21/krx_yahoo_ohlc_v1",
-  "attempted_at": "2026-10-22T02:34:31.010730+00:00",
-  "completed_session": "2026-10-21",
+  "attempt": "2026-10-22/2026-10-22/krx_yahoo_ohlc_v1",
+  "attempted_at": "2026-10-22T07:57:37.699358+00:00",
+  "completed_session": "2026-10-22",
   "status": "partial",
-  "accepted_bars": 240,
-  "observed_at": "2026-10-22T02:34:46.975223+00:00",
+  "accepted_bars": 239,
+  "observed_at": "2026-10-22T07:57:56.410043+00:00",
   "issues": [
     {
       "session": "2025-12-29",
@@ -27,24 +27,28 @@
     {
       "session": "2026-06-29",
       "reason": "corporate_action_unresolved"
+    },
+    {
+      "session": "2026-10-22",
+      "reason": "ohlc_mismatch"
     }
   ],
   "reason_counts": {
     "corporate_action_unresolved": 3,
-    "ohlc_mismatch": 2
+    "ohlc_mismatch": 3
   },
   "quality": {
-    "observed_at": "2026-10-22T02:34:46.975223+00:00",
+    "observed_at": "2026-10-22T07:57:56.410043+00:00",
     "timeframe": "1d",
-    "received_bars": 240,
-    "new_versions": 1,
+    "received_bars": 239,
+    "new_versions": 0,
     "expected_bars": 247,
-    "missing_bars": 7,
-    "missing_ratio": 0.02834008097165992,
+    "missing_bars": 8,
+    "missing_ratio": 0.032388663967611336,
     "coverage_basis": "이번 수집 응답의 완료 봉",
-    "collection_interval_seconds": 66850.482849,
+    "collection_interval_seconds": 19389.43482,
     "latest_bar_end": "2026-10-21T06:30:00+00:00",
-    "latest_bar_age_seconds": 72286.975223,
+    "latest_bar_age_seconds": 91676.410043,
     "corporate_action_bars": 0,
     "daily_range_note": "응답 시작 이전 자료의 누락은 판정하지 않음"
   }

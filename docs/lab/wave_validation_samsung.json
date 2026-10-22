@@ -2481,7 +2481,7 @@
   },
   "selection_rule": "선택 기간의 비용 차감 수익률 최대, 완료 거래가 있는 후보만, 동률은 이름순",
   "evidence": "insufficient",
-  "input_sha256": "8e09c49e26e16b8267a8b09ebadff932870665799a730854556d69bb4d2c11f9",
+  "input_sha256": "ecb13a446070a4cb850b73fd6f2a2bd5924df1f4e46e39e945a02e668cd6fb42",
   "config_sha256": "446ce4c45217a58b06a8bf26afe398f37e705eb92c65519e8b86409b7afdd458",
   "engine_sha256": "e2dde81bbe01004fdb3846391ac20bcbf78eb4bbc9fffe3d0f8a62501d493dbb",
   "calendar_version": "4.13.2",
@@ -2547,6 +2547,6 @@
     "기간 경계는 5거래일 분리, 학습 모델 추가 없음, 기존 예측은 사전 원장만 사용",
     "평가를 본 뒤 규칙을 바꾸면 새 버전·새 평가 구간이 필요"
   ],
-  "generated_at_utc": "2026-10-21T08:00:58.690509+00:00",
-  "source_revision": "fc27a3be4749dd677ce447b930819748528d5e2f"
+  "generated_at_utc": "2026-10-22T02:35:02.874108+00:00",
+  "source_revision": "b388319fe0d8f9d176f4fedefc0076eedfd5404d"
 }

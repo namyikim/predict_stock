@@ -3,7 +3,7 @@
   "name": "SK하이닉스",
   "peer_name": "삼성전자",
   "session_date": "2026-10-22",
-  "generated_at": "2026-10-22 16:46 KST",
+  "generated_at": "2026-10-22 17:31 KST",
   "summary": {
     "prev_close": 1294000.0,
     "open": 1273000.0,
@@ -15,11 +15,11 @@
     "c2c": -0.05486862442040186,
     "high_vs_open": 0.01885310290651998,
     "low_vs_open": -0.05420267085624508,
-    "volume": 2601905.0,
-    "volume_ratio": 0.7399003364494028,
+    "volume": 2611124.0,
+    "volume_ratio": 0.7425219314737127,
     "kospi_c2c": -0.03519911068977044,
     "peer_c2c": -0.04026845637583898,
-    "usdkrw_chg": -0.0017523047809845371,
+    "usdkrw_chg": -0.002009088196666786,
     "us_nights": 1,
     "sox_ret": 0.019652050898077977,
     "nasdaq_ret": 0.010521890374727505,
@@ -144,24 +144,6 @@
       "score": 3.3862268395963184,
       "news": [
         {
-          "time": "2026-10-22T09:05:40+09:00",
-          "title": "SK하이닉스, 40조 자사주 매입 완료…주가 하락 속 추가 환원책 주목",
-          "source": "리더스팩트",
-          "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE1lMzJuVkZqMkpGZFF1QUh2WTFBV0c1V0NYMmVwR3RtZUMyVUhtaURKVTdvUldTLVBhUFU0Z2hmN1RvYlVUUjhMN01iVy1EUXRWcThhRlIwUlZwVHk2M1A0QlQtSjVYS0d5X1Z2b2pjRFU?oc=5"
-        },
-        {
-          "time": "2026-10-22T08:44:00+09:00",
-          "title": "삼성·SK하이닉스 레버리지 투자 손실 6조3,130억원…70대 계좌당 3,000만원, 누가 위험을 설명했나",
-          "source": "시사프리즘",
-          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE52ZUdHRUFkaU1FR1RENXY1a0xLYXpJM2lhWm9OeUlMTE1KZWNBVWUtZVd0bUtJNWFDWnk2MnlBRGUzWi05d0tvdUk5NWowNTVOYzUyenRsYUNKUFZQMU5Za0d6Y1pNUFlp?oc=5"
-        },
-        {
-          "time": "2026-10-22T08:55:13+09:00",
-          "title": "희망브리지 전국재해구호협회, SK하이닉스와 용인시에 ‘AI 산불 감지시스템’ 구축",
-          "source": "글로벌이코노믹",
-          "link": "https://news.google.com/rss/articles/CBMiiwFBVV95cUxNMHdHNWVkQWFTMkw4dFNJWE52VEk3TWpqcGpkMDJRVEwxSWZXNVVPRHBneEdlWHNVZ2Zublo4a3ZUVExUY3dDQXhwQWdpUDJvdTNkZF8wMWphUk1OWGd5MVNvTV9pTXdzYTNCUm1VeTVyYm43V19OUUk2eEJjVW04VUlkMDVzN3JsZFh3?oc=5"
-        },
-        {
           "time": "2026-10-22T08:59:54+09:00",
           "title": "SK하이닉스 자사주 매입도 끝 이제 누가 수급을 받쳐주나",
           "source": "연합인포맥스",
@@ -172,6 +154,24 @@
           "title": "[솔리다임 논란①] SK하이닉스 던지는 외국인…한 달째 16조 줄매도",
           "source": "연합인포맥스",
           "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE9faV9kNFBYZ0x2Y2J0YTVHSXY4UUtLYkZ5ZHZ4NDZudG5xdkJaZWdZX3FsMWdaQ01iVVh6UjRWbk5JTmdmMGdBb2JDTGRta3htX2tOd3ZiTHNkTVcwZ3RzQlFwTUZ1QW5wREpBU1ZlOF8?oc=5"
+        },
+        {
+          "time": "2026-10-22T09:34:25+09:00",
+          "title": "美 반도체주 날았는데…삼성전자·SK하이닉스는 나란히 '주춤'[핫스탁]",
+          "source": "뉴시스",
+          "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE5zd0pnNmlSSHlDcUs1SmtOSWxLamsyTlhUTG9kZXlrUjQ3YlViUl9pX080aEdIakNsSlE5SUdfN0RUb0lQd2hVTkFoS0xUdlNVbnNKcFVzVXllNmo0N0pKWtIBeEFVX3lxTE1qX3pRakpNRGE0SjkyeWtnRVNBWElqNC03a3JHNUdpSzBuaVltV2ljVGpUeklzaXFwOWd6VGxDMDU1MzhpaENtM05aeUNmRlV2cnRDa1V0dTRnbk5RQ3BHSDNYdmxpbExvVkxTMXc2VG14VjFXSVJIUQ?oc=5"
+        },
+        {
+          "time": "2026-10-22T08:45:37+09:00",
+          "title": "SK하이닉스 주주환원과 스페이스X發 나스닥 상승 등 이시각 주요뉴스",
+          "source": "연합인포맥스",
+          "link": "https://news.google.com/rss/articles/CBMidEFVX3lxTE93aVJaQ09WV2hLS2d3dTY2VWtwVmpSbzhJUWRZejhtVEh3Y2ktYVNZaDg0LWF4V3JJcXBoWjBMNTJRMnNyMTkxYWxIeEF4TkhpTUFHZ1BEUHNqYy1aVFJiRHlQOWhTbnQ4WHplRFNBc1ZOOVJm0gF0QVVfeXFMT3dpUlpDT1ZXaEtLZ3d1NjZVa3BWalJvOElRZFl6OG1USHdjaS1hU1loODQtYXhXcklxcGhaMEw1MlEyc3IxOTFhbEh4QXhOSGlNQUdnUERQc2pjLVpUUmJEeVA5aFNudDhYemVEU0FzVk45UmY?oc=5"
+        },
+        {
+          "time": "2026-10-22T09:19:00+09:00",
+          "title": "거래대금 1·2위는 SK하이닉스·삼성전자… 삼성SDI 2.53% 하락",
+          "source": "서울신문",
+          "link": "https://news.google.com/rss/articles/CBMifkFVX3lxTFB6VkFvS0VfNHVJVE16VE9oTHRpOUJBcXZNalN3NWx0UVctZ3N0M0Y3R2xGMU9aV3ZjTEZnRWxVVHlfYkUxVUZZemhyNXBub3M1c3IzUExVRTFUeGRqQXhJUHdtd0JLOUFDd1lrM2JpWUNGQkg4LUlvX1dpekZqUQ?oc=5"
         }
       ]
     },
@@ -186,34 +186,34 @@
       "score": 3.294960950338465,
       "news": [
         {
-          "time": "2026-10-22T07:55:53+09:00",
-          "title": "KB증권 \"삼성전자·SK하이닉스 저평가…연말 코스피 반등 전망\"",
-          "source": "블루밍비트",
-          "link": "https://news.google.com/rss/articles/CBMiUEFVX3lxTFBwTkozc0tKcHpRMkoxN25ya2JkZlgxeC1KQk55VDNxOEYtQ2pCTzRnMk1kUGVRd3FJUWR1bjA0YUJFN3QwS0VOQlI5Y3N3ZDlS?oc=5"
+          "time": "2026-10-22T08:59:54+09:00",
+          "title": "SK하이닉스 자사주 매입도 끝 이제 누가 수급을 받쳐주나",
+          "source": "연합인포맥스",
+          "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE1xVGtRbFNVNnQwZjNOdkppRkExNHRwSUlDdnJXOVo3YjRJRWp3Wm1mcDR1b2RwWEFWbThjdmY4WXRQSXNXNVcwTWJucHo1MTFmaG5sZm5XenVQUDNQQk1UZDJLX0xENWFqX3Z4a0VvY3bSAXRBVV95cUxQemkzNnh0VENmWmhzTmFiTnVTU2c1aWhUNEdzdHJyaWdpdDlEV0FRZ000UmlYSURGNHlvd2Rha25IMHdEelF1Q2hkN0NONnhrMjZJS0pGOTJxWXdMdmhLN2lyOV8xeGFIZFJJSXMxM0ptNFE0SA?oc=5"
         },
         {
-          "time": "2026-10-22T09:05:40+09:00",
-          "title": "SK하이닉스, 40조 자사주 매입 완료…주가 하락 속 추가 환원책 주목",
-          "source": "리더스팩트",
-          "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE1lMzJuVkZqMkpGZFF1QUh2WTFBV0c1V0NYMmVwR3RtZUMyVUhtaURKVTdvUldTLVBhUFU0Z2hmN1RvYlVUUjhMN01iVy1EUXRWcThhRlIwUlZwVHk2M1A0QlQtSjVYS0d5X1Z2b2pjRFU?oc=5"
+          "time": "2026-10-22T09:10:00+09:00",
+          "title": "[솔리다임 논란①] SK하이닉스 던지는 외국인…한 달째 16조 줄매도",
+          "source": "연합인포맥스",
+          "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE9faV9kNFBYZ0x2Y2J0YTVHSXY4UUtLYkZ5ZHZ4NDZudG5xdkJaZWdZX3FsMWdaQ01iVVh6UjRWbk5JTmdmMGdBb2JDTGRta3htX2tOd3ZiTHNkTVcwZ3RzQlFwTUZ1QW5wREpBU1ZlOF8?oc=5"
         },
         {
-          "time": "2026-10-22T07:53:00+09:00",
-          "title": "SK하이닉스, 솔리다임 상장 앞두고 '3% 지분 매각'…외국인 이탈에 주주권 논쟁도",
-          "source": "조세일보",
-          "link": "https://news.google.com/rss/articles/CBMiX0FVX3lxTE15X2xsUVZzNFVld3VlbllQYXlyeTNoeUNTSGFCenhRRU9FbUlaWDU5MUVWQUNieVJRN25iWnk0LXBHNnRLQW85TnJQMmJWdVhwN1Vmb19idVlPYjIxTG9V?oc=5"
+          "time": "2026-10-22T08:45:37+09:00",
+          "title": "SK하이닉스 주주환원과 스페이스X發 나스닥 상승 등 이시각 주요뉴스",
+          "source": "연합인포맥스",
+          "link": "https://news.google.com/rss/articles/CBMidEFVX3lxTE93aVJaQ09WV2hLS2d3dTY2VWtwVmpSbzhJUWRZejhtVEh3Y2ktYVNZaDg0LWF4V3JJcXBoWjBMNTJRMnNyMTkxYWxIeEF4TkhpTUFHZ1BEUHNqYy1aVFJiRHlQOWhTbnQ4WHplRFNBc1ZOOVJm0gF0QVVfeXFMT3dpUlpDT1ZXaEtLZ3d1NjZVa3BWalJvOElRZFl6OG1USHdjaS1hU1loODQtYXhXcklxcGhaMEw1MlEyc3IxOTFhbEh4QXhOSGlNQUdnUERQc2pjLVpUUmJEeVA5aFNudDhYemVEU0FzVk45UmY?oc=5"
         },
         {
-          "time": "2026-10-22T08:44:00+09:00",
-          "title": "삼성·SK하이닉스 레버리지 투자 손실 6조3,130억원…70대 계좌당 3,000만원, 누가 위험을 설명했나",
-          "source": "시사프리즘",
-          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE52ZUdHRUFkaU1FR1RENXY1a0xLYXpJM2lhWm9OeUlMTE1KZWNBVWUtZVd0bUtJNWFDWnk2MnlBRGUzWi05d0tvdUk5NWowNTVOYzUyenRsYUNKUFZQMU5Za0d6Y1pNUFlp?oc=5"
+          "time": "2026-10-22T09:19:00+09:00",
+          "title": "거래대금 1·2위는 SK하이닉스·삼성전자… 삼성SDI 2.53% 하락",
+          "source": "서울신문",
+          "link": "https://news.google.com/rss/articles/CBMifkFVX3lxTFB6VkFvS0VfNHVJVE16VE9oTHRpOUJBcXZNalN3NWx0UVctZ3N0M0Y3R2xGMU9aV3ZjTEZnRWxVVHlfYkUxVUZZemhyNXBub3M1c3IzUExVRTFUeGRqQXhJUHdtd0JLOUFDd1lrM2JpWUNGQkg4LUlvX1dpekZqUQ?oc=5"
         },
         {
-          "time": "2026-10-22T08:55:13+09:00",
-          "title": "희망브리지 전국재해구호협회, SK하이닉스와 용인시에 ‘AI 산불 감지시스템’ 구축",
-          "source": "글로벌이코노믹",
-          "link": "https://news.google.com/rss/articles/CBMiiwFBVV95cUxNMHdHNWVkQWFTMkw4dFNJWE52VEk3TWpqcGpkMDJRVEwxSWZXNVVPRHBneEdlWHNVZ2Zublo4a3ZUVExUY3dDQXhwQWdpUDJvdTNkZF8wMWphUk1OWGd5MVNvTV9pTXdzYTNCUm1VeTVyYm43V19OUUk2eEJjVW04VUlkMDVzN3JsZFh3?oc=5"
+          "time": "2026-10-22T09:10:14+09:00",
+          "title": "[솔리다임 논란④] 5조 적자 견딘 하이닉스…AI컴퍼니 과실은 누구 몫",
+          "source": "연합인포맥스",
+          "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE5Lb0s5VFZFaElSRU5UYnBBZkxQUEZ2aWVpd2ItbHpoV3UxM2pwa2xMM0ItbVJVT1BxSUgwVWVrTkQwM3hRS2ZwMUtLc01UUE14aWl6eFpxa0ZWcGYtdWg4dmQ5ZUFhbEYzMGJfLTFSdE0?oc=5"
         }
       ]
     },
@@ -234,18 +234,6 @@
           "link": "https://news.google.com/rss/articles/CBMib0FVX3lxTFB1c3RseTdyZmlTOFUzV0NwU0U4VjFING1BQmY3elcwSURweHlOUEc3VDRBU3d4OHBXLV9PakZEUFlKT0pURFk4bGt3U1ZWS0RrOFFMQXpDVkNNc3d4Y2FvS1liYW9qdnpqbU8wa1JBYw?oc=5"
         },
         {
-          "time": "2026-10-22T12:56:11+09:00",
-          "title": "[HBM 관련주] 삼성전자·SK하이닉스 동반 하락…전반 약세, 코스피·코스닥도 내림세",
-          "source": "CBC뉴스",
-          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTFByNUFSdzV0dXJYN2pESFJMcWIzWDdUVG0wZ1lYS3pJbDJwSlZhV0hMamJvejBNaV84elRIclB3WXd5THBjd3VHbjdNVXJoekFvVUx0TlVVWTZ3d21HQmk2V0dFcHJfVWpR?oc=5"
-        },
-        {
-          "time": "2026-10-22T11:54:11+09:00",
-          "title": "증권가 “메모리반도체 우려, 지금이 최악… 연말 반등”",
-          "source": "IT조선",
-          "link": "https://news.google.com/rss/articles/CBMidEFVX3lxTFBqYTQ1X19BV1hCSVpyUTFsUWtmMXVYMmxEa1F6TExrNGdKZk0tdDNjUGliV3daYXRoZGYtYVN5WHZ3bFBoOEtJeUZ0VVU3bWRoQ0FDX2VUeTVLYjFRWmNKMWNmV2JBTUVuRDF5Um5nTldqekZB0gF0QVVfeXFMUGphNDVfX0FXWEJJWnJRMWxRa2YxdVgybERrUXpMTGs0Z0pmTS10M2NQaWJXd1phdGhkZi1hU3lYdndsUGg4S0l5RnRVVTdtZGhDQUNfZVR5NUtiMVFaY0oxY2ZXYkFNRW5EMXlSbmdOV2p6RkE?oc=5"
-        },
-        {
           "time": "2026-10-22T11:52:46+09:00",
           "title": "SK하이닉스, '반도체의 날' 동탑산업훈장 등 5관왕",
           "source": "연합뉴스",
@@ -255,7 +243,19 @@
           "time": "2026-10-22T12:36:00+09:00",
           "title": "“연기 피어오르면 즉시 감지”…희망브리지·SK하이닉스, 용인에 ‘AI 산불 감시망’ 구축",
           "source": "비즈월드",
-          "link": "https://news.google.com/rss/articles/CBMiakFVX3lxTE15dUJIbDRVM1dtT0J4MzZtVlhGRDRIampoMUtSSW1JUF95bE1KTkpBR3dRa1RTakRtWXZYeDRCSHRQUkN0c1lnOUtoWGloaWZ5Y0RuTWVBVzNkc3A5TDM1Szl4TGxzanh2N0E?oc=5"
+          "link": "https://news.google.com/rss/articles/CBMia0FVX3lxTFAtby1UMlNhUk9MLUxtYUhpeEZDcEdCRnc3cEQ3VDk1ai1zV2dLRXdNd2gzZ3ZSZldxazFaLTl1RUNuNmNfOUFGdlUyTExiaWR6YnRKU3piYlRPLUx6SWZuR0tORzRGcEs0SHh3?oc=5"
+        },
+        {
+          "time": "2026-10-22T12:42:35+09:00",
+          "title": "SK하이닉스, 빅테크 실적 훈풍 타나…주주환원·솔리다임 상장이 변수 [뉴스큐]",
+          "source": "www.newsq.co.kr",
+          "link": "https://news.google.com/rss/articles/CBMiakFVX3lxTE5JOWthX0ZCSVJmVkFaem5tQWhTUXNnaUlWZGJFTHNLbTJEY25XbWQxVXlVV0N4RzNsOWhjQXlRUXJNOUR4T3VzN0tyZVVka1Y5WFd5aUtvRTMtekp2Y1VRNGFJMWcwUWxicGc?oc=5"
+        },
+        {
+          "time": "2026-10-22T12:55:53+09:00",
+          "title": "[아이포럼 2026] SK하이닉스, AI '공급의 벽' 첫 제시…\"수요 감당 어려워\"",
+          "source": "아이뉴스24",
+          "link": "https://news.google.com/rss/articles/CBMiS0FVX3lxTE8yR29JWTVOeHc2OUw1VktodlM1elVXelIwZTc5VDYyLS1lcXBjWmlhd3BWQ29ZWHFXMEpzbnRVUng2VUd2SVRlWVdqSQ?oc=5"
         }
       ]
     }
@@ -645,34 +645,34 @@
       "score": 3.294960950338465,
       "news": [
         {
-          "time": "2026-10-22T07:55:53+09:00",
-          "title": "KB증권 \"삼성전자·SK하이닉스 저평가…연말 코스피 반등 전망\"",
-          "source": "블루밍비트",
-          "link": "https://news.google.com/rss/articles/CBMiUEFVX3lxTFBwTkozc0tKcHpRMkoxN25ya2JkZlgxeC1KQk55VDNxOEYtQ2pCTzRnMk1kUGVRd3FJUWR1bjA0YUJFN3QwS0VOQlI5Y3N3ZDlS?oc=5"
+          "time": "2026-10-22T08:59:54+09:00",
+          "title": "SK하이닉스 자사주 매입도 끝 이제 누가 수급을 받쳐주나",
+          "source": "연합인포맥스",
+          "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE1xVGtRbFNVNnQwZjNOdkppRkExNHRwSUlDdnJXOVo3YjRJRWp3Wm1mcDR1b2RwWEFWbThjdmY4WXRQSXNXNVcwTWJucHo1MTFmaG5sZm5XenVQUDNQQk1UZDJLX0xENWFqX3Z4a0VvY3bSAXRBVV95cUxQemkzNnh0VENmWmhzTmFiTnVTU2c1aWhUNEdzdHJyaWdpdDlEV0FRZ000UmlYSURGNHlvd2Rha25IMHdEelF1Q2hkN0NONnhrMjZJS0pGOTJxWXdMdmhLN2lyOV8xeGFIZFJJSXMxM0ptNFE0SA?oc=5"
         },
         {
-          "time": "2026-10-22T09:05:40+09:00",
-          "title": "SK하이닉스, 40조 자사주 매입 완료…주가 하락 속 추가 환원책 주목",
-          "source": "리더스팩트",
-          "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE1lMzJuVkZqMkpGZFF1QUh2WTFBV0c1V0NYMmVwR3RtZUMyVUhtaURKVTdvUldTLVBhUFU0Z2hmN1RvYlVUUjhMN01iVy1EUXRWcThhRlIwUlZwVHk2M1A0QlQtSjVYS0d5X1Z2b2pjRFU?oc=5"
+          "time": "2026-10-22T09:10:00+09:00",
+          "title": "[솔리다임 논란①] SK하이닉스 던지는 외국인…한 달째 16조 줄매도",
+          "source": "연합인포맥스",
+          "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE9faV9kNFBYZ0x2Y2J0YTVHSXY4UUtLYkZ5ZHZ4NDZudG5xdkJaZWdZX3FsMWdaQ01iVVh6UjRWbk5JTmdmMGdBb2JDTGRta3htX2tOd3ZiTHNkTVcwZ3RzQlFwTUZ1QW5wREpBU1ZlOF8?oc=5"
         },
         {
-          "time": "2026-10-22T07:53:00+09:00",
-          "title": "SK하이닉스, 솔리다임 상장 앞두고 '3% 지분 매각'…외국인 이탈에 주주권 논쟁도",
-          "source": "조세일보",
-          "link": "https://news.google.com/rss/articles/CBMiX0FVX3lxTE15X2xsUVZzNFVld3VlbllQYXlyeTNoeUNTSGFCenhRRU9FbUlaWDU5MUVWQUNieVJRN25iWnk0LXBHNnRLQW85TnJQMmJWdVhwN1Vmb19idVlPYjIxTG9V?oc=5"
+          "time": "2026-10-22T08:45:37+09:00",
+          "title": "SK하이닉스 주주환원과 스페이스X發 나스닥 상승 등 이시각 주요뉴스",
+          "source": "연합인포맥스",
+          "link": "https://news.google.com/rss/articles/CBMidEFVX3lxTE93aVJaQ09WV2hLS2d3dTY2VWtwVmpSbzhJUWRZejhtVEh3Y2ktYVNZaDg0LWF4V3JJcXBoWjBMNTJRMnNyMTkxYWxIeEF4TkhpTUFHZ1BEUHNqYy1aVFJiRHlQOWhTbnQ4WHplRFNBc1ZOOVJm0gF0QVVfeXFMT3dpUlpDT1ZXaEtLZ3d1NjZVa3BWalJvOElRZFl6OG1USHdjaS1hU1loODQtYXhXcklxcGhaMEw1MlEyc3IxOTFhbEh4QXhOSGlNQUdnUERQc2pjLVpUUmJEeVA5aFNudDhYemVEU0FzVk45UmY?oc=5"
         },
         {
-          "time": "2026-10-22T08:44:00+09:00",
-          "title": "삼성·SK하이닉스 레버리지 투자 손실 6조3,130억원…70대 계좌당 3,000만원, 누가 위험을 설명했나",
-          "source": "시사프리즘",
-          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE52ZUdHRUFkaU1FR1RENXY1a0xLYXpJM2lhWm9OeUlMTE1KZWNBVWUtZVd0bUtJNWFDWnk2MnlBRGUzWi05d0tvdUk5NWowNTVOYzUyenRsYUNKUFZQMU5Za0d6Y1pNUFlp?oc=5"
+          "time": "2026-10-22T09:19:00+09:00",
+          "title": "거래대금 1·2위는 SK하이닉스·삼성전자… 삼성SDI 2.53% 하락",
+          "source": "서울신문",
+          "link": "https://news.google.com/rss/articles/CBMifkFVX3lxTFB6VkFvS0VfNHVJVE16VE9oTHRpOUJBcXZNalN3NWx0UVctZ3N0M0Y3R2xGMU9aV3ZjTEZnRWxVVHlfYkUxVUZZemhyNXBub3M1c3IzUExVRTFUeGRqQXhJUHdtd0JLOUFDd1lrM2JpWUNGQkg4LUlvX1dpekZqUQ?oc=5"
         },
         {
-          "time": "2026-10-22T08:55:13+09:00",
-          "title": "희망브리지 전국재해구호협회, SK하이닉스와 용인시에 ‘AI 산불 감지시스템’ 구축",
-          "source": "글로벌이코노믹",
-          "link": "https://news.google.com/rss/articles/CBMiiwFBVV95cUxNMHdHNWVkQWFTMkw4dFNJWE52VEk3TWpqcGpkMDJRVEwxSWZXNVVPRHBneEdlWHNVZ2Zublo4a3ZUVExUY3dDQXhwQWdpUDJvdTNkZF8wMWphUk1OWGd5MVNvTV9pTXdzYTNCUm1VeTVyYm43V19OUUk2eEJjVW04VUlkMDVzN3JsZFh3?oc=5"
+          "time": "2026-10-22T09:10:14+09:00",
+          "title": "[솔리다임 논란④] 5조 적자 견딘 하이닉스…AI컴퍼니 과실은 누구 몫",
+          "source": "연합인포맥스",
+          "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE5Lb0s5VFZFaElSRU5UYnBBZkxQUEZ2aWVpd2ItbHpoV3UxM2pwa2xMM0ItbVJVT1BxSUgwVWVrTkQwM3hRS2ZwMUtLc01UUE14aWl6eFpxa0ZWcGYtdWg4dmQ5ZUFhbEYzMGJfLTFSdE0?oc=5"
         }
       ],
       "price": 1289000.0,
@@ -689,24 +689,6 @@
       "score": 3.3862268395963184,
       "news": [
         {
-          "time": "2026-10-22T09:05:40+09:00",
-          "title": "SK하이닉스, 40조 자사주 매입 완료…주가 하락 속 추가 환원책 주목",
-          "source": "리더스팩트",
-          "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE1lMzJuVkZqMkpGZFF1QUh2WTFBV0c1V0NYMmVwR3RtZUMyVUhtaURKVTdvUldTLVBhUFU0Z2hmN1RvYlVUUjhMN01iVy1EUXRWcThhRlIwUlZwVHk2M1A0QlQtSjVYS0d5X1Z2b2pjRFU?oc=5"
-        },
-        {
-          "time": "2026-10-22T08:44:00+09:00",
-          "title": "삼성·SK하이닉스 레버리지 투자 손실 6조3,130억원…70대 계좌당 3,000만원, 누가 위험을 설명했나",
-          "source": "시사프리즘",
-          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE52ZUdHRUFkaU1FR1RENXY1a0xLYXpJM2lhWm9OeUlMTE1KZWNBVWUtZVd0bUtJNWFDWnk2MnlBRGUzWi05d0tvdUk5NWowNTVOYzUyenRsYUNKUFZQMU5Za0d6Y1pNUFlp?oc=5"
-        },
-        {
-          "time": "2026-10-22T08:55:13+09:00",
-          "title": "희망브리지 전국재해구호협회, SK하이닉스와 용인시에 ‘AI 산불 감지시스템’ 구축",
-          "source": "글로벌이코노믹",
-          "link": "https://news.google.com/rss/articles/CBMiiwFBVV95cUxNMHdHNWVkQWFTMkw4dFNJWE52VEk3TWpqcGpkMDJRVEwxSWZXNVVPRHBneEdlWHNVZ2Zublo4a3ZUVExUY3dDQXhwQWdpUDJvdTNkZF8wMWphUk1OWGd5MVNvTV9pTXdzYTNCUm1VeTVyYm43V19OUUk2eEJjVW04VUlkMDVzN3JsZFh3?oc=5"
-        },
-        {
           "time": "2026-10-22T08:59:54+09:00",
           "title": "SK하이닉스 자사주 매입도 끝 이제 누가 수급을 받쳐주나",
           "source": "연합인포맥스",
@@ -717,6 +699,24 @@
           "title": "[솔리다임 논란①] SK하이닉스 던지는 외국인…한 달째 16조 줄매도",
           "source": "연합인포맥스",
           "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE9faV9kNFBYZ0x2Y2J0YTVHSXY4UUtLYkZ5ZHZ4NDZudG5xdkJaZWdZX3FsMWdaQ01iVVh6UjRWbk5JTmdmMGdBb2JDTGRta3htX2tOd3ZiTHNkTVcwZ3RzQlFwTUZ1QW5wREpBU1ZlOF8?oc=5"
+        },
+        {
+          "time": "2026-10-22T09:34:25+09:00",
+          "title": "美 반도체주 날았는데…삼성전자·SK하이닉스는 나란히 '주춤'[핫스탁]",
+          "source": "뉴시스",
+          "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE5zd0pnNmlSSHlDcUs1SmtOSWxLamsyTlhUTG9kZXlrUjQ3YlViUl9pX080aEdIakNsSlE5SUdfN0RUb0lQd2hVTkFoS0xUdlNVbnNKcFVzVXllNmo0N0pKWtIBeEFVX3lxTE1qX3pRakpNRGE0SjkyeWtnRVNBWElqNC03a3JHNUdpSzBuaVltV2ljVGpUeklzaXFwOWd6VGxDMDU1MzhpaENtM05aeUNmRlV2cnRDa1V0dTRnbk5RQ3BHSDNYdmxpbExvVkxTMXc2VG14VjFXSVJIUQ?oc=5"
+        },
+        {
+          "time": "2026-10-22T08:45:37+09:00",
+          "title": "SK하이닉스 주주환원과 스페이스X發 나스닥 상승 등 이시각 주요뉴스",
+          "source": "연합인포맥스",
+          "link": "https://news.google.com/rss/articles/CBMidEFVX3lxTE93aVJaQ09WV2hLS2d3dTY2VWtwVmpSbzhJUWRZejhtVEh3Y2ktYVNZaDg0LWF4V3JJcXBoWjBMNTJRMnNyMTkxYWxIeEF4TkhpTUFHZ1BEUHNqYy1aVFJiRHlQOWhTbnQ4WHplRFNBc1ZOOVJm0gF0QVVfeXFMT3dpUlpDT1ZXaEtLZ3d1NjZVa3BWalJvOElRZFl6OG1USHdjaS1hU1loODQtYXhXcklxcGhaMEw1MlEyc3IxOTFhbEh4QXhOSGlNQUdnUERQc2pjLVpUUmJEeVA5aFNudDhYemVEU0FzVk45UmY?oc=5"
+        },
+        {
+          "time": "2026-10-22T09:19:00+09:00",
+          "title": "거래대금 1·2위는 SK하이닉스·삼성전자… 삼성SDI 2.53% 하락",
+          "source": "서울신문",
+          "link": "https://news.google.com/rss/articles/CBMifkFVX3lxTFB6VkFvS0VfNHVJVE16VE9oTHRpOUJBcXZNalN3NWx0UVctZ3N0M0Y3R2xGMU9aV3ZjTEZnRWxVVHlfYkUxVUZZemhyNXBub3M1c3IzUExVRTFUeGRqQXhJUHdtd0JLOUFDd1lrM2JpWUNGQkg4LUlvX1dpekZqUQ?oc=5"
         }
       ],
       "price": 1276000.0,
@@ -739,18 +739,6 @@
           "link": "https://news.google.com/rss/articles/CBMib0FVX3lxTFB1c3RseTdyZmlTOFUzV0NwU0U4VjFING1BQmY3elcwSURweHlOUEc3VDRBU3d4OHBXLV9PakZEUFlKT0pURFk4bGt3U1ZWS0RrOFFMQXpDVkNNc3d4Y2FvS1liYW9qdnpqbU8wa1JBYw?oc=5"
         },
         {
-          "time": "2026-10-22T12:56:11+09:00",
-          "title": "[HBM 관련주] 삼성전자·SK하이닉스 동반 하락…전반 약세, 코스피·코스닥도 내림세",
-          "source": "CBC뉴스",
-          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTFByNUFSdzV0dXJYN2pESFJMcWIzWDdUVG0wZ1lYS3pJbDJwSlZhV0hMamJvejBNaV84elRIclB3WXd5THBjd3VHbjdNVXJoekFvVUx0TlVVWTZ3d21HQmk2V0dFcHJfVWpR?oc=5"
-        },
-        {
-          "time": "2026-10-22T11:54:11+09:00",
-          "title": "증권가 “메모리반도체 우려, 지금이 최악… 연말 반등”",
-          "source": "IT조선",
-          "link": "https://news.google.com/rss/articles/CBMidEFVX3lxTFBqYTQ1X19BV1hCSVpyUTFsUWtmMXVYMmxEa1F6TExrNGdKZk0tdDNjUGliV3daYXRoZGYtYVN5WHZ3bFBoOEtJeUZ0VVU3bWRoQ0FDX2VUeTVLYjFRWmNKMWNmV2JBTUVuRDF5Um5nTldqekZB0gF0QVVfeXFMUGphNDVfX0FXWEJJWnJRMWxRa2YxdVgybERrUXpMTGs0Z0pmTS10M2NQaWJXd1phdGhkZi1hU3lYdndsUGg4S0l5RnRVVTdtZGhDQUNfZVR5NUtiMVFaY0oxY2ZXYkFNRW5EMXlSbmdOV2p6RkE?oc=5"
-        },
-        {
           "time": "2026-10-22T11:52:46+09:00",
           "title": "SK하이닉스, '반도체의 날' 동탑산업훈장 등 5관왕",
           "source": "연합뉴스",
@@ -760,7 +748,19 @@
           "time": "2026-10-22T12:36:00+09:00",
           "title": "“연기 피어오르면 즉시 감지”…희망브리지·SK하이닉스, 용인에 ‘AI 산불 감시망’ 구축",
           "source": "비즈월드",
-          "link": "https://news.google.com/rss/articles/CBMiakFVX3lxTE15dUJIbDRVM1dtT0J4MzZtVlhGRDRIampoMUtSSW1JUF95bE1KTkpBR3dRa1RTakRtWXZYeDRCSHRQUkN0c1lnOUtoWGloaWZ5Y0RuTWVBVzNkc3A5TDM1Szl4TGxzanh2N0E?oc=5"
+          "link": "https://news.google.com/rss/articles/CBMia0FVX3lxTFAtby1UMlNhUk9MLUxtYUhpeEZDcEdCRnc3cEQ3VDk1ai1zV2dLRXdNd2gzZ3ZSZldxazFaLTl1RUNuNmNfOUFGdlUyTExiaWR6YnRKU3piYlRPLUx6SWZuR0tORzRGcEs0SHh3?oc=5"
+        },
+        {
+          "time": "2026-10-22T12:42:35+09:00",
+          "title": "SK하이닉스, 빅테크 실적 훈풍 타나…주주환원·솔리다임 상장이 변수 [뉴스큐]",
+          "source": "www.newsq.co.kr",
+          "link": "https://news.google.com/rss/articles/CBMiakFVX3lxTE5JOWthX0ZCSVJmVkFaem5tQWhTUXNnaUlWZGJFTHNLbTJEY25XbWQxVXlVV0N4RzNsOWhjQXlRUXJNOUR4T3VzN0tyZVVka1Y5WFd5aUtvRTMtekp2Y1VRNGFJMWcwUWxicGc?oc=5"
+        },
+        {
+          "time": "2026-10-22T12:55:53+09:00",
+          "title": "[아이포럼 2026] SK하이닉스, AI '공급의 벽' 첫 제시…\"수요 감당 어려워\"",
+          "source": "아이뉴스24",
+          "link": "https://news.google.com/rss/articles/CBMiS0FVX3lxTE8yR29JWTVOeHc2OUw1VktodlM1elVXelIwZTc5VDYyLS1lcXBjWmlhd3BWQ29ZWHFXMEpzbnRVUng2VUd2SVRlWVdqSQ?oc=5"
         }
       ],
       "price": 1220000.0,
@@ -769,34 +769,34 @@
   ],
   "overnight_news": [
     {
-      "time": "2026-10-22T07:55:53+09:00",
-      "title": "KB증권 \"삼성전자·SK하이닉스 저평가…연말 코스피 반등 전망\"",
-      "source": "블루밍비트",
-      "link": "https://news.google.com/rss/articles/CBMiUEFVX3lxTFBwTkozc0tKcHpRMkoxN25ya2JkZlgxeC1KQk55VDNxOEYtQ2pCTzRnMk1kUGVRd3FJUWR1bjA0YUJFN3QwS0VOQlI5Y3N3ZDlS?oc=5"
-    },
-    {
-      "time": "2026-10-21T17:45:51+09:00",
-      "title": "[속보]수급공백 올까…SK하이닉스, 40조원 규모 자사주 매입 완료",
-      "source": "문화일보",
-      "link": "https://news.google.com/rss/articles/CBMiUEFVX3lxTE9LT1hmT2o3bGZTTWQ1TXIzN1U4bk1uV2xxVjNBRUROclAzeER3TGdzVUx5aUpqTzRSZ0FwOFZxT2pSX1BUeC13b1NWRnY0WXgz?oc=5"
-    },
-    {
-      "time": "2026-10-22T06:45:16+09:00",
-      "title": "성과금 갈등에 멈춰 선 대만 마이크론…삼성·SK하이닉스 보상체계 소환하며 하루 경고 파업 결행",
-      "source": "글로벌이코노믹",
-      "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxQbWJsUXhMZ0JMTmg1RGdWX1RJMEp2ZzBCOUtHTHByY2xkY3FUVDNvMFFySUUxNDlETnlDaXlDbTRmMXAwMmptNWlISEZwTDNXYmc3M1QxR1BIeVlrRW1YRWgwZlB2RURISF9jRlJXbl95YlNNLUZneF8tQmVVdEd3MV9DMjhMYlFV?oc=5"
-    },
-    {
       "time": "2026-10-22T07:00:02+09:00",
       "title": "‘솔리다임 상장 논란’ SK하이닉스, 외국인 지분율 50% 미만으로 급감",
       "source": "주간동아",
       "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE1CX2ZCbnlISW1waDU5V0ctT3h3YjJ0VDZtRERQUHJVT214eDNIZ1hWM3dsRUh6X3REaTdCSnRyeHV6Zmp6Tl9HWVl0Mk5rTVFzZ0JkTkh5elhQbDF1RmJMaC1tOVI?oc=5"
     },
     {
-      "time": "2026-10-22T07:11:41+09:00",
-      "title": "SK하이닉스 40조 자사주 매입 완료…55조 ‘수급 방어막’ 사라졌다",
-      "source": "뉴시안",
-      "link": "https://news.google.com/rss/articles/CBMiakFVX3lxTE52WUt3bGVGbkE3anM4V3BuR3czVUdwYkZicF9SV2NvemlZSm95dEtnNjdfMEgxbFJaMTRNVkxuR0NRTVNEWm1KRXU2OU5Nemgta0VILTlxM21weE9waFRxd19PXzJPcC0wWFE?oc=5"
+      "time": "2026-10-22T07:31:00+09:00",
+      "title": "SK하이닉스, 40조원 자사주 매입 조기 완료…28일 추가 주주환원 주목 By EBN",
+      "source": "Investing.com 한국어",
+      "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTFBFclU1THJLcklVVDdIalZiQTY4Q1JWdG1Iem8zLW1Bb19CejJiUDd2VE1VMHpQMlRyTHJUVW9EcjluQnNjYnhzMXN4RlJ1Qk5FY2FYMFNmT0NndllyRmdRbVdRZlJFNGw3TW1RYTFMREM?oc=5"
+    },
+    {
+      "time": "2026-10-22T08:59:54+09:00",
+      "title": "SK하이닉스 자사주 매입도 끝 이제 누가 수급을 받쳐주나",
+      "source": "연합인포맥스",
+      "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE1xVGtRbFNVNnQwZjNOdkppRkExNHRwSUlDdnJXOVo3YjRJRWp3Wm1mcDR1b2RwWEFWbThjdmY4WXRQSXNXNVcwTWJucHo1MTFmaG5sZm5XenVQUDNQQk1UZDJLX0xENWFqX3Z4a0VvY3bSAXRBVV95cUxQemkzNnh0VENmWmhzTmFiTnVTU2c1aWhUNEdzdHJyaWdpdDlEV0FRZ000UmlYSURGNHlvd2Rha25IMHdEelF1Q2hkN0NONnhrMjZJS0pGOTJxWXdMdmhLN2lyOV8xeGFIZFJJSXMxM0ptNFE0SA?oc=5"
+    },
+    {
+      "time": "2026-10-21T22:00:01+09:00",
+      "title": "\"정말 피가 마릅니다\"…SK하이닉스 폭등에도 개미들은 '한숨' [분석+]",
+      "source": "한국경제",
+      "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE1OV09uTTRXLUVDbTNXTlVXam5acHplNHB1UDhjLUdFMm9DbG9Xa3BDT3ZPa0JKN2tJMmhGM2VBVElpOVhaMEpMajFlUUdfR1VDUTVpT2hwOHJoZw?oc=5"
+    },
+    {
+      "time": "2026-10-22T07:00:02+09:00",
+      "title": "SK하이닉스, 정부와 손잡고 소부장 협력사에 2조 금융 지원",
+      "source": "주간동아",
+      "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE9la3pTT2h2Q1F6alFXaldhSlFoUENYeWdLRXZ5ck5uT0p0LVNybjFyV2dBZ3FuYVVXb0dYdTllS21VYXlvR3piU1g5aTJtajNLRGhqdWlRQlQzeEFqX1l6YnlER08?oc=5"
     }
   ],
   "top_news": [
@@ -807,34 +807,34 @@
       "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE0yamczWnJYTEY1bVI2SUp1NkVzRDIwd3lNT1UtWnBHSGdIQ2ZlejkwZ2pPUHFuU2JqaHNoMjdqdjFOTEZ3cjNScUlOVXZHNnFmVTgxR3paTXhtWEhhUGl2NXYwTjZHUENj?oc=5"
     },
     {
+      "time": "2026-10-22T13:59:52+09:00",
+      "title": "SK하이닉스, '반도체의 날' 5관왕…HBM·D램·낸드 기술력 인정",
+      "source": "비즈니스플러스",
+      "link": "https://news.google.com/rss/articles/CBMib0FVX3lxTE9iTkdmSHhzNGRZY3NQSTZROWsyWlRySzhwLXNMcGgycV9BTDM2dUVRTmx3OU40VlhEVDlCN2xMdWhsXzQxTW5HdFZQSDlQVFBMTkhmTUNFVHBMVWFTSjU5N2VFRWdUZVgzZGp6M3dVNA?oc=5"
+    },
+    {
       "time": "2026-10-22T12:12:46+09:00",
       "title": "AI 반도체 주도권 쥔 HBM 양산 기술…SK하이닉스 권재순 부사장 동탑훈장",
       "source": "비즈체크",
       "link": "https://news.google.com/rss/articles/CBMib0FVX3lxTFB1c3RseTdyZmlTOFUzV0NwU0U4VjFING1BQmY3elcwSURweHlOUEc3VDRBU3d4OHBXLV9PakZEUFlKT0pURFk4bGt3U1ZWS0RrOFFMQXpDVkNNc3d4Y2FvS1liYW9qdnpqbU8wa1JBYw?oc=5"
     },
     {
+      "time": "2026-10-22T15:46:00+09:00",
+      "title": "[마감시황] 코스피, AI 투자 우려에 3.52%↓⋯SK하이닉스 5%대 급락",
+      "source": "브릿지경제",
+      "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE5kSW93V0Z4LVJBVG93QmFCaFpTZmVwcTgtbC02WHBNY0Q3emN3WGdSSU5kWHJiYjZUby1rVjZ2WVpvNGFkT2ZkS0c4dHppa0toYVVQTUtQbm9iQQ?oc=5"
+    },
+    {
+      "time": "2026-10-22T15:05:09+09:00",
+      "title": "코스피 또 급락…AI 호실적에도 투자 수익성 의혹에 불안 지속",
+      "source": "연합뉴스",
+      "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE54N2pxMDNjSzJVYzFEekhQaVB3X2ExZTQ4ZXpmcVJoS0h6OHBmQlJINzZEMkJmUVB1T2NWaFJfOUFBQkJpRTRwSjg2aW1CZWQ1VVZXWDlDRVAwQ3ZXUVhKM9IBYEFVX3lxTE54N2pxMDNjSzJVYzFEekhQaVB3X2ExZTQ4ZXpmcVJoS0h6OHBmQlJINzZEMkJmUVB1T2NWaFJfOUFBQkJpRTRwSjg2aW1CZWQ1VVZXWDlDRVAwQ3ZXUVhKMw?oc=5"
+    },
+    {
       "time": "2026-10-22T16:29:51+09:00",
       "title": "코스피 또 급락…AI 호실적에도 투자 수익성 의혹에 불안 지속(종합)",
       "source": "연합뉴스",
       "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE0ydERZcVhCNXc4TGdnVzhxS3BfN2RTVGVIeEN3dlE3S1YwbUFKZ0JKbmo4OEo5WG5CaTFsVVBfZkJGNkhvaGVqdEN6SEc1d0Y4UFZwNmZHbmN5M1HSAWBBVV95cUxQMmpzM2dzbWFEN2U2cmdjX2l6M3lkalotdHZ2T0plTzVNeGxkWWctV3VMZjNtN1pCNi1ZamxhNHlKZ3RpQkVpNHl4TWNPYjRYYnBFczUtY1lqQ1JjUzFqbl8?oc=5"
-    },
-    {
-      "time": "2026-10-22T07:55:53+09:00",
-      "title": "KB증권 \"삼성전자·SK하이닉스 저평가…연말 코스피 반등 전망\"",
-      "source": "블루밍비트",
-      "link": "https://news.google.com/rss/articles/CBMiUEFVX3lxTFBwTkozc0tKcHpRMkoxN25ya2JkZlgxeC1KQk55VDNxOEYtQ2pCTzRnMk1kUGVRd3FJUWR1bjA0YUJFN3QwS0VOQlI5Y3N3ZDlS?oc=5"
-    },
-    {
-      "time": "2026-10-22T09:05:40+09:00",
-      "title": "SK하이닉스, 40조 자사주 매입 완료…주가 하락 속 추가 환원책 주목",
-      "source": "리더스팩트",
-      "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE1lMzJuVkZqMkpGZFF1QUh2WTFBV0c1V0NYMmVwR3RtZUMyVUhtaURKVTdvUldTLVBhUFU0Z2hmN1RvYlVUUjhMN01iVy1EUXRWcThhRlIwUlZwVHk2M1A0QlQtSjVYS0d5X1Z2b2pjRFU?oc=5"
-    },
-    {
-      "time": "2026-10-22T10:16:30+09:00",
-      "title": "삼성전자 SK하이닉스에 중국 관영매체 러브콜, \"수출 증대를 현지 투자 확대 기회로\"",
-      "source": "비즈니스포스트",
-      "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTE56MFJPNWgwbDVqYTNEUUJCYlZTNXlaeE1iUGNhd0VyajBOb0ctWmxfSXRmZDJVRlRTU1pGdWl3dEV4dmQ3dXAxY3dRTzV1TVk5cXllZTlNWGE0bFJrMU4zcUdCR0lIb0xJWGZYSkpkbFkyb0k?oc=5"
     }
   ],
   "disclosures": [],
@@ -854,9 +854,9 @@
     "steady": 32,
     "upper": 0,
     "lower": 0,
-    "individual": 3814.0,
-    "foreign": 580.0,
-    "institution": -4602.0,
+    "individual": 3747.0,
+    "foreign": 647.0,
+    "institution": -4600.0,
     "prev_close": 5735.66,
     "open": 5670.11,
     "high": 5740.28,

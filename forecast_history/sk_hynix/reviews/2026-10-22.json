@@ -1,0 +1,916 @@
+{
+  "target": "sk_hynix",
+  "name": "SK하이닉스",
+  "peer_name": "삼성전자",
+  "session_date": "2026-10-22",
+  "generated_at": "2026-10-22 16:11 KST",
+  "summary": {
+    "prev_close": 1294000.0,
+    "open": 1273000.0,
+    "high": 1297000.0,
+    "low": 1204000.0,
+    "close": 1223000.0,
+    "gap": -0.016228748068006227,
+    "session": -0.03927729772191668,
+    "c2c": -0.05486862442040186,
+    "high_vs_open": 0.01885310290651998,
+    "low_vs_open": -0.05420267085624508,
+    "volume": 2597027.0,
+    "volume_ratio": 0.7385131859419092,
+    "kospi_c2c": -0.03519911068977044,
+    "peer_c2c": -0.04026845637583898,
+    "usdkrw_chg": NaN,
+    "us_nights": 1,
+    "sox_ret": 0.019652050898077977,
+    "nasdaq_ret": 0.010521890374727505,
+    "micron_ret": 0.01964129525827274,
+    "prior_streak": 1,
+    "ma5": 1257800.0,
+    "ma20": 1587400.0,
+    "high20": 1935000.0,
+    "high252": 2986352.5777339735,
+    "price_context": {
+      "breakouts": {
+        "20": {
+          "prior_high": 1935000.0,
+          "distance": -0.3679586563307493,
+          "close_breakout": false,
+          "intraday_breakout": false
+        },
+        "60": {
+          "prior_high": 1947577.713392392,
+          "distance": -0.372040462575578,
+          "close_breakout": false,
+          "intraday_breakout": false
+        }
+      },
+      "relative": {
+        "5": {
+          "start": "2026-10-15",
+          "end": "2026-10-22",
+          "own": -0.030903328050713164,
+          "peer": 0.021428571428571352,
+          "excess": -0.052331899479284516
+        },
+        "20": {
+          "start": "2026-09-18",
+          "end": "2026-10-22",
+          "own": -0.3414108777598277,
+          "peer": -0.17816091954022983,
+          "excess": -0.16324995821959787
+        },
+        "60": {
+          "start": "2026-07-23",
+          "end": "2026-10-22",
+          "own": -0.3625507144852662,
+          "peer": -0.2055555555555556,
+          "excess": -0.1569951589297106
+        }
+      }
+    },
+    "range": 0.0772425249169435,
+    "peer_range": 0.0660377358490567,
+    "prior_5d": -0.08809020436927417,
+    "ma_touches": [
+      {
+        "ma": 5,
+        "level": 1265600.0,
+        "kind": "fail",
+        "price": 1297000.0
+      }
+    ],
+    "micron_ah": {
+      "regular_close": 913.6199951171875,
+      "last": 898.31,
+      "ret": -0.016757508810020916,
+      "low_ret": -0.016757508810020916,
+      "high_ret": 0.0024736815031314308,
+      "last_time": "2026-10-22T08:55:00+09:00"
+    },
+    "nvidia_ah": {
+      "regular_close": 221.8699951171875,
+      "last": 219.2585,
+      "ret": -0.011770384345157425,
+      "low_ret": -0.011770384345157425,
+      "high_ret": 0.003111754171391423,
+      "last_time": "2026-10-22T08:55:00+09:00"
+    },
+    "session_cross": {
+      "NQ=F": {
+        "label": "나스닥100 선물",
+        "ret": -0.010120829455219305,
+        "after_high": -0.010170628432482287
+      },
+      "ZN=F": {
+        "label": "미 10년물 국채 선물",
+        "ret": 0.0011865915158706386,
+        "after_high": 0.0014836795252226587
+      },
+      "KRW=X": {
+        "label": "원/달러",
+        "ret": -0.0035474321019436372,
+        "after_high": -0.001931303359023917
+      }
+    },
+    "from_high": -0.05193798449612408,
+    "buyback": [
+      {
+        "kind": "직접 취득",
+        "start": "2026-08-20",
+        "end": "2026-11-19",
+        "amount": "40,004,340,000,000",
+        "purpose": "자기주식 소각을 통한 \n주주가치 제고",
+        "rcept_no": "20260819000254"
+      }
+    ]
+  },
+  "classification": {
+    "labels": [
+      "지수 동조"
+    ],
+    "reasons": [
+      "KOSPI -3.52% vs 종목 -5.49%, 5분 수익률 상관 0.88 — 종목 고유 요인이 약함"
+    ]
+  },
+  "events": [
+    {
+      "time": "2026-10-22T09:50:00+09:00",
+      "ret": -0.010852713178294615,
+      "z": 3.01,
+      "volume_ratio": 1.89,
+      "cum_before": 0.01335428122545168,
+      "cum_after": 0.002356637863315081,
+      "session_share": 0.27631007751938125,
+      "score": 3.3862268395963184,
+      "news": [
+        {
+          "time": "2026-10-22T08:24:44+09:00",
+          "title": "SK하이닉스도 40조 자사주 끝…반도체株 누가 받치나",
+          "source": "한스경제",
+          "link": "https://news.google.com/rss/articles/CBMia0FVX3lxTFBTdFZsSlNGZERrR2dTV2k3WWpsQkZZNUdwdDdXNjd0eE1NOFBaWHlTRWtzNXJ4MWdyNWxRV3Jka09nMHZ1QjgtQ0JaVUZMWmpaUklHSm1PZURVaGE2RkRwcUpnM3owVGlGZzNj0gFvQVVfeXFMT0N5c2trU2FiRWM1V2pOVzR5SGxYZUEtQkctc3RrWExCSGw4aTZ3Mjk2bEFMOWRKdE1UMk5PazZndGs5Q1lTVGRxTWVIcGtsYzF4OUZucHhac2ZfYUpxRVRmTHVidWQxdjRxb3c3dUg0?oc=5"
+        },
+        {
+          "time": "2026-10-22T09:05:40+09:00",
+          "title": "SK하이닉스, 40조 자사주 매입 완료…주가 하락 속 추가 환원책 주목",
+          "source": "리더스팩트",
+          "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE1lMzJuVkZqMkpGZFF1QUh2WTFBV0c1V0NYMmVwR3RtZUMyVUhtaURKVTdvUldTLVBhUFU0Z2hmN1RvYlVUUjhMN01iVy1EUXRWcThhRlIwUlZwVHk2M1A0QlQtSjVYS0d5X1Z2b2pjRFU?oc=5"
+        },
+        {
+          "time": "2026-10-22T08:44:00+09:00",
+          "title": "삼성·SK하이닉스 레버리지 투자 손실 6조3,130억원…70대 계좌당 3,000만원, 누가 위험을 설명했나",
+          "source": "시사프리즘",
+          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE52ZUdHRUFkaU1FR1RENXY1a0xLYXpJM2lhWm9OeUlMTE1KZWNBVWUtZVd0bUtJNWFDWnk2MnlBRGUzWi05d0tvdUk5NWowNTVOYzUyenRsYUNKUFZQMU5Za0d6Y1pNUFlp?oc=5"
+        },
+        {
+          "time": "2026-10-22T08:55:13+09:00",
+          "title": "희망브리지 전국재해구호협회, SK하이닉스와 용인시에 ‘AI 산불 감지시스템’ 구축",
+          "source": "글로벌이코노믹",
+          "link": "https://news.google.com/rss/articles/CBMiiwFBVV95cUxNMHdHNWVkQWFTMkw4dFNJWE52VEk3TWpqcGpkMDJRVEwxSWZXNVVPRHBneEdlWHNVZ2Zublo4a3ZUVExUY3dDQXhwQWdpUDJvdTNkZF8wMWphUk1OWGd5MVNvTV9pTXdzYTNCUm1VeTVyYm43V19OUUk2eEJjVW04VUlkMDVzN3JsZFh3?oc=5"
+        },
+        {
+          "time": "2026-10-22T08:59:54+09:00",
+          "title": "SK하이닉스 자사주 매입도 끝 이제 누가 수급을 받쳐주나",
+          "source": "연합인포맥스",
+          "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE1xVGtRbFNVNnQwZjNOdkppRkExNHRwSUlDdnJXOVo3YjRJRWp3Wm1mcDR1b2RwWEFWbThjdmY4WXRQSXNXNVcwTWJucHo1MTFmaG5sZm5XenVQUDNQQk1UZDJLX0xENWFqX3Z4a0VvY3bSAXRBVV95cUxQemkzNnh0VENmWmhzTmFiTnVTU2c1aWhUNEdzdHJyaWdpdDlEV0FRZ000UmlYSURGNHlvd2Rha25IMHdEelF1Q2hkN0NONnhrMjZJS0pGOTJxWXdMdmhLN2lyOV8xeGFIZFJJSXMxM0ptNFE0SA?oc=5"
+        }
+      ]
+    },
+    {
+      "time": "2026-10-22T09:10:00+09:00",
+      "ret": 0.00546021840873645,
+      "z": 1.51,
+      "volume_ratio": 3.91,
+      "cum_before": 0.0070699135899450205,
+      "cum_after": 0.01256873527101332,
+      "session_share": -0.1390171606864302,
+      "score": 3.294960950338465,
+      "news": [
+        {
+          "time": "2026-10-22T07:55:53+09:00",
+          "title": "KB증권 \"삼성전자·SK하이닉스 저평가…연말 코스피 반등 전망\"",
+          "source": "블루밍비트",
+          "link": "https://news.google.com/rss/articles/CBMiUEFVX3lxTFBwTkozc0tKcHpRMkoxN25ya2JkZlgxeC1KQk55VDNxOEYtQ2pCTzRnMk1kUGVRd3FJUWR1bjA0YUJFN3QwS0VOQlI5Y3N3ZDlS?oc=5"
+        },
+        {
+          "time": "2026-10-22T08:24:44+09:00",
+          "title": "SK하이닉스도 40조 자사주 끝…반도체株 누가 받치나",
+          "source": "한스경제",
+          "link": "https://news.google.com/rss/articles/CBMia0FVX3lxTFBTdFZsSlNGZERrR2dTV2k3WWpsQkZZNUdwdDdXNjd0eE1NOFBaWHlTRWtzNXJ4MWdyNWxRV3Jka09nMHZ1QjgtQ0JaVUZMWmpaUklHSm1PZURVaGE2RkRwcUpnM3owVGlGZzNj0gFvQVVfeXFMT0N5c2trU2FiRWM1V2pOVzR5SGxYZUEtQkctc3RrWExCSGw4aTZ3Mjk2bEFMOWRKdE1UMk5PazZndGs5Q1lTVGRxTWVIcGtsYzF4OUZucHhac2ZfYUpxRVRmTHVidWQxdjRxb3c3dUg0?oc=5"
+        },
+        {
+          "time": "2026-10-22T09:05:40+09:00",
+          "title": "SK하이닉스, 40조 자사주 매입 완료…주가 하락 속 추가 환원책 주목",
+          "source": "리더스팩트",
+          "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE1lMzJuVkZqMkpGZFF1QUh2WTFBV0c1V0NYMmVwR3RtZUMyVUhtaURKVTdvUldTLVBhUFU0Z2hmN1RvYlVUUjhMN01iVy1EUXRWcThhRlIwUlZwVHk2M1A0QlQtSjVYS0d5X1Z2b2pjRFU?oc=5"
+        },
+        {
+          "time": "2026-10-22T07:43:00+09:00",
+          "title": "[증시키워드] 삼성전자 ‘코어팀’ 신설⋯SK하이닉스 40조 자사주 매입 완료",
+          "source": "이투데이",
+          "link": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE9RQ3E2X0NWcFRiYWVCUXFOZ1FjSUdlcjYtUF92NnhTUzd4SGYxVnl3SzhrcVgwOVZMTElYdmVIaTFHb3M1Vm55QUlRQ2xHNDMwMGdTRA?oc=5"
+        },
+        {
+          "time": "2026-10-22T07:45:27+09:00",
+          "title": "\"본전만 찾으면 팔려고 했는데\" 삼성전자·SK하이닉스 투자자들의 눈물",
+          "source": "스마트비즈",
+          "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE5WLThCRTd6MldMYkRZbDZvVDNtenVTVVNoX0RWTW83VS16NlhobFBxdnQ1bDRqampkczFKZXhfbm1wY3NSMEVoVDNYYlN1YXRQc2dfamZHX3pxV1lsd19UcDlkczN2Wkg2ejhabg?oc=5"
+        }
+      ]
+    },
+    {
+      "time": "2026-10-22T13:20:00+09:00",
+      "ret": -0.004081632653061273,
+      "z": 1.13,
+      "volume_ratio": 4.12,
+      "cum_before": -0.03770620581304007,
+      "cum_after": -0.04163393558523176,
+      "session_share": 0.10391836734694015,
+      "score": 2.9549328305321327,
+      "news": [
+        {
+          "time": "2026-10-22T12:12:46+09:00",
+          "title": "AI 반도체 주도권 쥔 HBM 양산 기술…SK하이닉스 권재순 부사장 동탑훈장",
+          "source": "비즈체크",
+          "link": "https://news.google.com/rss/articles/CBMib0FVX3lxTFB1c3RseTdyZmlTOFUzV0NwU0U4VjFING1BQmY3elcwSURweHlOUEc3VDRBU3d4OHBXLV9PakZEUFlKT0pURFk4bGt3U1ZWS0RrOFFMQXpDVkNNc3d4Y2FvS1liYW9qdnpqbU8wa1JBYw?oc=5"
+        },
+        {
+          "time": "2026-10-22T12:56:11+09:00",
+          "title": "[HBM 관련주] 삼성전자·SK하이닉스 동반 하락…전반 약세, 코스피·코스닥도 내림세",
+          "source": "CBC뉴스",
+          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTFByNUFSdzV0dXJYN2pESFJMcWIzWDdUVG0wZ1lYS3pJbDJwSlZhV0hMamJvejBNaV84elRIclB3WXd5THBjd3VHbjdNVXJoekFvVUx0TlVVWTZ3d21HQmk2V0dFcHJfVWpR?oc=5"
+        },
+        {
+          "time": "2026-10-22T11:52:46+09:00",
+          "title": "SK하이닉스, '반도체의 날' 동탑산업훈장 등 5관왕",
+          "source": "연합뉴스",
+          "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE1DMzlPaWxadzZBMUFFQkZ1SmZGTWVEQUpOa3RjX0tuV3A1MGd1OVpFMU9GMnloX05oMVlHRnZVOHI1eUtFVXdVandPdnRoRzZPUGQxcVctcFZTWWhzMmNMetIBYEFVX3lxTE1DMzlPaWxadzZBMUFFQkZ1SmZGTWVEQUpOa3RjX0tuV3A1MGd1OVpFMU9GMnloX05oMVlHRnZVOHI1eUtFVXdVandPdnRoRzZPUGQxcVctcFZTWWhzMmNMeg?oc=5"
+        },
+        {
+          "time": "2026-10-22T12:36:00+09:00",
+          "title": "“연기 피어오르면 즉시 감지”…희망브리지·SK하이닉스, 용인에 ‘AI 산불 감시망’ 구축",
+          "source": "비즈월드",
+          "link": "https://news.google.com/rss/articles/CBMiakFVX3lxTE15dUJIbDRVM1dtT0J4MzZtVlhGRDRIampoMUtSSW1JUF95bE1KTkpBR3dRa1RTakRtWXZYeDRCSHRQUkN0c1lnOUtoWGloaWZ5Y0RuTWVBVzNkc3A5TDM1Szl4TGxzanh2N0E?oc=5"
+        },
+        {
+          "time": "2026-10-22T12:42:35+09:00",
+          "title": "SK하이닉스, 빅테크 실적 훈풍 타나…주주환원·솔리다임 상장이 변수 [뉴스큐]",
+          "source": "www.newsq.co.kr",
+          "link": "https://news.google.com/rss/articles/CBMiakFVX3lxTE5JOWthX0ZCSVJmVkFaem5tQWhTUXNnaUlWZGJFTHNLbTJEY25XbWQxVXlVV0N4RzNsOWhjQXlRUXJNOUR4T3VzN0tyZVVka1Y5WFd5aUtvRTMtekp2Y1VRNGFJMWcwUWxicGc?oc=5"
+        }
+      ]
+    }
+  ],
+  "turning_point": {
+    "high_time": "2026-10-22T09:45:00+09:00",
+    "high": 0.01335428122545168,
+    "low_time": "2026-10-22T13:35:00+09:00",
+    "low": -0.052631578947368474,
+    "pattern": "고점 후 반락"
+  },
+  "closing_share": -0.0,
+  "intraday_corr_kospi": 0.8801832534612081,
+  "intraday_note": "장중 봉은 09:00~14:55까지만 있어 마감 구간(14:55~15:30)은 일봉 종가로만 봅니다(그 구간 +0.00%).",
+  "intraday_coverage": "09:00~14:55",
+  "intraday_path": [
+    {
+      "time": "2026-10-22T09:00:00+09:00",
+      "price": 1284000.0,
+      "volume": 183387.0
+    },
+    {
+      "time": "2026-10-22T09:05:00+09:00",
+      "price": 1282000.0,
+      "volume": 74033.0
+    },
+    {
+      "time": "2026-10-22T09:10:00+09:00",
+      "price": 1289000.0,
+      "volume": 81707.0
+    },
+    {
+      "time": "2026-10-22T09:15:00+09:00",
+      "price": 1288000.0,
+      "volume": 60029.0
+    },
+    {
+      "time": "2026-10-22T09:20:00+09:00",
+      "price": 1276000.0,
+      "volume": 38654.0
+    },
+    {
+      "time": "2026-10-22T09:25:00+09:00",
+      "price": 1279000.0,
+      "volume": 16389.0
+    },
+    {
+      "time": "2026-10-22T09:30:00+09:00",
+      "price": 1274000.0,
+      "volume": 33685.0
+    },
+    {
+      "time": "2026-10-22T09:35:00+09:00",
+      "price": 1273000.0,
+      "volume": 25795.0
+    },
+    {
+      "time": "2026-10-22T09:40:00+09:00",
+      "price": 1281000.0,
+      "volume": 34369.0
+    },
+    {
+      "time": "2026-10-22T09:45:00+09:00",
+      "price": 1290000.0,
+      "volume": 56512.0
+    },
+    {
+      "time": "2026-10-22T09:50:00+09:00",
+      "price": 1276000.0,
+      "volume": 39589.0
+    },
+    {
+      "time": "2026-10-22T09:55:00+09:00",
+      "price": 1278000.0,
+      "volume": 27856.0
+    },
+    {
+      "time": "2026-10-22T10:00:00+09:00",
+      "price": 1275000.0,
+      "volume": 13053.0
+    },
+    {
+      "time": "2026-10-22T10:05:00+09:00",
+      "price": 1276000.0,
+      "volume": 20960.0
+    },
+    {
+      "time": "2026-10-22T10:10:00+09:00",
+      "price": 1272000.0,
+      "volume": 15879.0
+    },
+    {
+      "time": "2026-10-22T10:15:00+09:00",
+      "price": 1271000.0,
+      "volume": 9729.0
+    },
+    {
+      "time": "2026-10-22T10:20:00+09:00",
+      "price": 1269000.0,
+      "volume": 20286.0
+    },
+    {
+      "time": "2026-10-22T10:25:00+09:00",
+      "price": 1268000.0,
+      "volume": 12273.0
+    },
+    {
+      "time": "2026-10-22T10:30:00+09:00",
+      "price": 1267000.0,
+      "volume": 14351.0
+    },
+    {
+      "time": "2026-10-22T10:35:00+09:00",
+      "price": 1259000.0,
+      "volume": 52973.0
+    },
+    {
+      "time": "2026-10-22T10:40:00+09:00",
+      "price": 1254000.0,
+      "volume": 43304.0
+    },
+    {
+      "time": "2026-10-22T10:45:00+09:00",
+      "price": 1255000.0,
+      "volume": 16532.0
+    },
+    {
+      "time": "2026-10-22T10:50:00+09:00",
+      "price": 1253000.0,
+      "volume": 16884.0
+    },
+    {
+      "time": "2026-10-22T10:55:00+09:00",
+      "price": 1256000.0,
+      "volume": 12582.0
+    },
+    {
+      "time": "2026-10-22T11:00:00+09:00",
+      "price": 1252000.0,
+      "volume": 9284.0
+    },
+    {
+      "time": "2026-10-22T11:05:00+09:00",
+      "price": 1248000.0,
+      "volume": 21976.0
+    },
+    {
+      "time": "2026-10-22T11:10:00+09:00",
+      "price": 1251000.0,
+      "volume": 18417.0
+    },
+    {
+      "time": "2026-10-22T11:15:00+09:00",
+      "price": 1250000.0,
+      "volume": 15092.0
+    },
+    {
+      "time": "2026-10-22T11:20:00+09:00",
+      "price": 1247000.0,
+      "volume": 16759.0
+    },
+    {
+      "time": "2026-10-22T11:25:00+09:00",
+      "price": 1249000.0,
+      "volume": 16286.0
+    },
+    {
+      "time": "2026-10-22T11:30:00+09:00",
+      "price": 1248000.0,
+      "volume": 11909.0
+    },
+    {
+      "time": "2026-10-22T11:35:00+09:00",
+      "price": 1248000.0,
+      "volume": 7619.0
+    },
+    {
+      "time": "2026-10-22T11:40:00+09:00",
+      "price": 1243000.0,
+      "volume": 20840.0
+    },
+    {
+      "time": "2026-10-22T11:45:00+09:00",
+      "price": 1246000.0,
+      "volume": 18583.0
+    },
+    {
+      "time": "2026-10-22T11:50:00+09:00",
+      "price": 1246000.0,
+      "volume": 10218.0
+    },
+    {
+      "time": "2026-10-22T11:55:00+09:00",
+      "price": 1249000.0,
+      "volume": 7612.0
+    },
+    {
+      "time": "2026-10-22T12:00:00+09:00",
+      "price": 1241000.0,
+      "volume": 30326.0
+    },
+    {
+      "time": "2026-10-22T12:05:00+09:00",
+      "price": 1243000.0,
+      "volume": 11810.0
+    },
+    {
+      "time": "2026-10-22T12:10:00+09:00",
+      "price": 1238000.0,
+      "volume": 12095.0
+    },
+    {
+      "time": "2026-10-22T12:15:00+09:00",
+      "price": 1235000.0,
+      "volume": 15852.0
+    },
+    {
+      "time": "2026-10-22T12:20:00+09:00",
+      "price": 1243000.0,
+      "volume": 21531.0
+    },
+    {
+      "time": "2026-10-22T12:25:00+09:00",
+      "price": 1243000.0,
+      "volume": 32793.0
+    },
+    {
+      "time": "2026-10-22T12:30:00+09:00",
+      "price": 1234000.0,
+      "volume": 18819.0
+    },
+    {
+      "time": "2026-10-22T12:35:00+09:00",
+      "price": 1229000.0,
+      "volume": 24247.0
+    },
+    {
+      "time": "2026-10-22T12:40:00+09:00",
+      "price": 1235000.0,
+      "volume": 24258.0
+    },
+    {
+      "time": "2026-10-22T12:45:00+09:00",
+      "price": 1237000.0,
+      "volume": 20677.0
+    },
+    {
+      "time": "2026-10-22T12:50:00+09:00",
+      "price": 1230500.0,
+      "volume": 19963.0
+    },
+    {
+      "time": "2026-10-22T12:55:00+09:00",
+      "price": 1237000.0,
+      "volume": 26389.0
+    },
+    {
+      "time": "2026-10-22T13:00:00+09:00",
+      "price": 1230000.0,
+      "volume": 18274.0
+    },
+    {
+      "time": "2026-10-22T13:05:00+09:00",
+      "price": 1232000.0,
+      "volume": 20043.0
+    },
+    {
+      "time": "2026-10-22T13:10:00+09:00",
+      "price": 1227000.0,
+      "volume": 24326.0
+    },
+    {
+      "time": "2026-10-22T13:15:00+09:00",
+      "price": 1225000.0,
+      "volume": 32934.0
+    },
+    {
+      "time": "2026-10-22T13:20:00+09:00",
+      "price": 1220000.0,
+      "volume": 86095.0
+    },
+    {
+      "time": "2026-10-22T13:25:00+09:00",
+      "price": 1217000.0,
+      "volume": 24737.0
+    },
+    {
+      "time": "2026-10-22T13:30:00+09:00",
+      "price": 1214000.0,
+      "volume": 23936.0
+    },
+    {
+      "time": "2026-10-22T13:35:00+09:00",
+      "price": 1206000.0,
+      "volume": 57920.0
+    },
+    {
+      "time": "2026-10-22T13:40:00+09:00",
+      "price": 1209000.0,
+      "volume": 41108.0
+    },
+    {
+      "time": "2026-10-22T13:45:00+09:00",
+      "price": 1218000.0,
+      "volume": 53471.0
+    },
+    {
+      "time": "2026-10-22T13:50:00+09:00",
+      "price": 1217000.0,
+      "volume": 21517.0
+    },
+    {
+      "time": "2026-10-22T13:55:00+09:00",
+      "price": 1220000.0,
+      "volume": 22872.0
+    },
+    {
+      "time": "2026-10-22T14:00:00+09:00",
+      "price": 1218000.0,
+      "volume": 27417.0
+    },
+    {
+      "time": "2026-10-22T14:05:00+09:00",
+      "price": 1220000.0,
+      "volume": 31273.0
+    },
+    {
+      "time": "2026-10-22T14:10:00+09:00",
+      "price": 1216000.0,
+      "volume": 12605.0
+    },
+    {
+      "time": "2026-10-22T14:15:00+09:00",
+      "price": 1213000.0,
+      "volume": 17632.0
+    },
+    {
+      "time": "2026-10-22T14:20:00+09:00",
+      "price": 1213000.0,
+      "volume": 15346.0
+    },
+    {
+      "time": "2026-10-22T14:25:00+09:00",
+      "price": 1215000.0,
+      "volume": 14487.0
+    },
+    {
+      "time": "2026-10-22T14:30:00+09:00",
+      "price": 1211000.0,
+      "volume": 14265.0
+    },
+    {
+      "time": "2026-10-22T14:35:00+09:00",
+      "price": 1212000.0,
+      "volume": 14014.0
+    },
+    {
+      "time": "2026-10-22T14:40:00+09:00",
+      "price": 1210000.0,
+      "volume": 16998.0
+    },
+    {
+      "time": "2026-10-22T14:45:00+09:00",
+      "price": 1208000.0,
+      "volume": 38629.0
+    },
+    {
+      "time": "2026-10-22T14:50:00+09:00",
+      "price": 1213000.0,
+      "volume": 22735.0
+    },
+    {
+      "time": "2026-10-22T14:55:00+09:00",
+      "price": 1223000.0,
+      "volume": 28583.0
+    }
+  ],
+  "timeline_items": [
+    {
+      "time": "2026-10-22T09:10:00+09:00",
+      "ret": 0.00546021840873645,
+      "z": 1.51,
+      "volume_ratio": 3.91,
+      "cum_before": 0.0070699135899450205,
+      "cum_after": 0.01256873527101332,
+      "session_share": -0.1390171606864302,
+      "score": 3.294960950338465,
+      "news": [
+        {
+          "time": "2026-10-22T07:55:53+09:00",
+          "title": "KB증권 \"삼성전자·SK하이닉스 저평가…연말 코스피 반등 전망\"",
+          "source": "블루밍비트",
+          "link": "https://news.google.com/rss/articles/CBMiUEFVX3lxTFBwTkozc0tKcHpRMkoxN25ya2JkZlgxeC1KQk55VDNxOEYtQ2pCTzRnMk1kUGVRd3FJUWR1bjA0YUJFN3QwS0VOQlI5Y3N3ZDlS?oc=5"
+        },
+        {
+          "time": "2026-10-22T08:24:44+09:00",
+          "title": "SK하이닉스도 40조 자사주 끝…반도체株 누가 받치나",
+          "source": "한스경제",
+          "link": "https://news.google.com/rss/articles/CBMia0FVX3lxTFBTdFZsSlNGZERrR2dTV2k3WWpsQkZZNUdwdDdXNjd0eE1NOFBaWHlTRWtzNXJ4MWdyNWxRV3Jka09nMHZ1QjgtQ0JaVUZMWmpaUklHSm1PZURVaGE2RkRwcUpnM3owVGlGZzNj0gFvQVVfeXFMT0N5c2trU2FiRWM1V2pOVzR5SGxYZUEtQkctc3RrWExCSGw4aTZ3Mjk2bEFMOWRKdE1UMk5PazZndGs5Q1lTVGRxTWVIcGtsYzF4OUZucHhac2ZfYUpxRVRmTHVidWQxdjRxb3c3dUg0?oc=5"
+        },
+        {
+          "time": "2026-10-22T09:05:40+09:00",
+          "title": "SK하이닉스, 40조 자사주 매입 완료…주가 하락 속 추가 환원책 주목",
+          "source": "리더스팩트",
+          "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE1lMzJuVkZqMkpGZFF1QUh2WTFBV0c1V0NYMmVwR3RtZUMyVUhtaURKVTdvUldTLVBhUFU0Z2hmN1RvYlVUUjhMN01iVy1EUXRWcThhRlIwUlZwVHk2M1A0QlQtSjVYS0d5X1Z2b2pjRFU?oc=5"
+        },
+        {
+          "time": "2026-10-22T07:43:00+09:00",
+          "title": "[증시키워드] 삼성전자 ‘코어팀’ 신설⋯SK하이닉스 40조 자사주 매입 완료",
+          "source": "이투데이",
+          "link": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE9RQ3E2X0NWcFRiYWVCUXFOZ1FjSUdlcjYtUF92NnhTUzd4SGYxVnl3SzhrcVgwOVZMTElYdmVIaTFHb3M1Vm55QUlRQ2xHNDMwMGdTRA?oc=5"
+        },
+        {
+          "time": "2026-10-22T07:45:27+09:00",
+          "title": "\"본전만 찾으면 팔려고 했는데\" 삼성전자·SK하이닉스 투자자들의 눈물",
+          "source": "스마트비즈",
+          "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE5WLThCRTd6MldMYkRZbDZvVDNtenVTVVNoX0RWTW83VS16NlhobFBxdnQ1bDRqampkczFKZXhfbm1wY3NSMEVoVDNYYlN1YXRQc2dfamZHX3pxV1lsd19UcDlkczN2Wkg2ejhabg?oc=5"
+        }
+      ],
+      "price": 1289000.0,
+      "kind": "volume"
+    },
+    {
+      "time": "2026-10-22T09:50:00+09:00",
+      "ret": -0.010852713178294615,
+      "z": 3.01,
+      "volume_ratio": 1.89,
+      "cum_before": 0.01335428122545168,
+      "cum_after": 0.002356637863315081,
+      "session_share": 0.27631007751938125,
+      "score": 3.3862268395963184,
+      "news": [
+        {
+          "time": "2026-10-22T08:24:44+09:00",
+          "title": "SK하이닉스도 40조 자사주 끝…반도체株 누가 받치나",
+          "source": "한스경제",
+          "link": "https://news.google.com/rss/articles/CBMia0FVX3lxTFBTdFZsSlNGZERrR2dTV2k3WWpsQkZZNUdwdDdXNjd0eE1NOFBaWHlTRWtzNXJ4MWdyNWxRV3Jka09nMHZ1QjgtQ0JaVUZMWmpaUklHSm1PZURVaGE2RkRwcUpnM3owVGlGZzNj0gFvQVVfeXFMT0N5c2trU2FiRWM1V2pOVzR5SGxYZUEtQkctc3RrWExCSGw4aTZ3Mjk2bEFMOWRKdE1UMk5PazZndGs5Q1lTVGRxTWVIcGtsYzF4OUZucHhac2ZfYUpxRVRmTHVidWQxdjRxb3c3dUg0?oc=5"
+        },
+        {
+          "time": "2026-10-22T09:05:40+09:00",
+          "title": "SK하이닉스, 40조 자사주 매입 완료…주가 하락 속 추가 환원책 주목",
+          "source": "리더스팩트",
+          "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE1lMzJuVkZqMkpGZFF1QUh2WTFBV0c1V0NYMmVwR3RtZUMyVUhtaURKVTdvUldTLVBhUFU0Z2hmN1RvYlVUUjhMN01iVy1EUXRWcThhRlIwUlZwVHk2M1A0QlQtSjVYS0d5X1Z2b2pjRFU?oc=5"
+        },
+        {
+          "time": "2026-10-22T08:44:00+09:00",
+          "title": "삼성·SK하이닉스 레버리지 투자 손실 6조3,130억원…70대 계좌당 3,000만원, 누가 위험을 설명했나",
+          "source": "시사프리즘",
+          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE52ZUdHRUFkaU1FR1RENXY1a0xLYXpJM2lhWm9OeUlMTE1KZWNBVWUtZVd0bUtJNWFDWnk2MnlBRGUzWi05d0tvdUk5NWowNTVOYzUyenRsYUNKUFZQMU5Za0d6Y1pNUFlp?oc=5"
+        },
+        {
+          "time": "2026-10-22T08:55:13+09:00",
+          "title": "희망브리지 전국재해구호협회, SK하이닉스와 용인시에 ‘AI 산불 감지시스템’ 구축",
+          "source": "글로벌이코노믹",
+          "link": "https://news.google.com/rss/articles/CBMiiwFBVV95cUxNMHdHNWVkQWFTMkw4dFNJWE52VEk3TWpqcGpkMDJRVEwxSWZXNVVPRHBneEdlWHNVZ2Zublo4a3ZUVExUY3dDQXhwQWdpUDJvdTNkZF8wMWphUk1OWGd5MVNvTV9pTXdzYTNCUm1VeTVyYm43V19OUUk2eEJjVW04VUlkMDVzN3JsZFh3?oc=5"
+        },
+        {
+          "time": "2026-10-22T08:59:54+09:00",
+          "title": "SK하이닉스 자사주 매입도 끝 이제 누가 수급을 받쳐주나",
+          "source": "연합인포맥스",
+          "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE1xVGtRbFNVNnQwZjNOdkppRkExNHRwSUlDdnJXOVo3YjRJRWp3Wm1mcDR1b2RwWEFWbThjdmY4WXRQSXNXNVcwTWJucHo1MTFmaG5sZm5XenVQUDNQQk1UZDJLX0xENWFqX3Z4a0VvY3bSAXRBVV95cUxQemkzNnh0VENmWmhzTmFiTnVTU2c1aWhUNEdzdHJyaWdpdDlEV0FRZ000UmlYSURGNHlvd2Rha25IMHdEelF1Q2hkN0NONnhrMjZJS0pGOTJxWXdMdmhLN2lyOV8xeGFIZFJJSXMxM0ptNFE0SA?oc=5"
+        }
+      ],
+      "price": 1276000.0,
+      "kind": "turn_down"
+    },
+    {
+      "time": "2026-10-22T13:20:00+09:00",
+      "ret": -0.004081632653061273,
+      "z": 1.13,
+      "volume_ratio": 4.12,
+      "cum_before": -0.03770620581304007,
+      "cum_after": -0.04163393558523176,
+      "session_share": 0.10391836734694015,
+      "score": 2.9549328305321327,
+      "news": [
+        {
+          "time": "2026-10-22T12:12:46+09:00",
+          "title": "AI 반도체 주도권 쥔 HBM 양산 기술…SK하이닉스 권재순 부사장 동탑훈장",
+          "source": "비즈체크",
+          "link": "https://news.google.com/rss/articles/CBMib0FVX3lxTFB1c3RseTdyZmlTOFUzV0NwU0U4VjFING1BQmY3elcwSURweHlOUEc3VDRBU3d4OHBXLV9PakZEUFlKT0pURFk4bGt3U1ZWS0RrOFFMQXpDVkNNc3d4Y2FvS1liYW9qdnpqbU8wa1JBYw?oc=5"
+        },
+        {
+          "time": "2026-10-22T12:56:11+09:00",
+          "title": "[HBM 관련주] 삼성전자·SK하이닉스 동반 하락…전반 약세, 코스피·코스닥도 내림세",
+          "source": "CBC뉴스",
+          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTFByNUFSdzV0dXJYN2pESFJMcWIzWDdUVG0wZ1lYS3pJbDJwSlZhV0hMamJvejBNaV84elRIclB3WXd5THBjd3VHbjdNVXJoekFvVUx0TlVVWTZ3d21HQmk2V0dFcHJfVWpR?oc=5"
+        },
+        {
+          "time": "2026-10-22T11:52:46+09:00",
+          "title": "SK하이닉스, '반도체의 날' 동탑산업훈장 등 5관왕",
+          "source": "연합뉴스",
+          "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE1DMzlPaWxadzZBMUFFQkZ1SmZGTWVEQUpOa3RjX0tuV3A1MGd1OVpFMU9GMnloX05oMVlHRnZVOHI1eUtFVXdVandPdnRoRzZPUGQxcVctcFZTWWhzMmNMetIBYEFVX3lxTE1DMzlPaWxadzZBMUFFQkZ1SmZGTWVEQUpOa3RjX0tuV3A1MGd1OVpFMU9GMnloX05oMVlHRnZVOHI1eUtFVXdVandPdnRoRzZPUGQxcVctcFZTWWhzMmNMeg?oc=5"
+        },
+        {
+          "time": "2026-10-22T12:36:00+09:00",
+          "title": "“연기 피어오르면 즉시 감지”…희망브리지·SK하이닉스, 용인에 ‘AI 산불 감시망’ 구축",
+          "source": "비즈월드",
+          "link": "https://news.google.com/rss/articles/CBMiakFVX3lxTE15dUJIbDRVM1dtT0J4MzZtVlhGRDRIampoMUtSSW1JUF95bE1KTkpBR3dRa1RTakRtWXZYeDRCSHRQUkN0c1lnOUtoWGloaWZ5Y0RuTWVBVzNkc3A5TDM1Szl4TGxzanh2N0E?oc=5"
+        },
+        {
+          "time": "2026-10-22T12:42:35+09:00",
+          "title": "SK하이닉스, 빅테크 실적 훈풍 타나…주주환원·솔리다임 상장이 변수 [뉴스큐]",
+          "source": "www.newsq.co.kr",
+          "link": "https://news.google.com/rss/articles/CBMiakFVX3lxTE5JOWthX0ZCSVJmVkFaem5tQWhTUXNnaUlWZGJFTHNLbTJEY25XbWQxVXlVV0N4RzNsOWhjQXlRUXJNOUR4T3VzN0tyZVVka1Y5WFd5aUtvRTMtekp2Y1VRNGFJMWcwUWxicGc?oc=5"
+        }
+      ],
+      "price": 1220000.0,
+      "kind": "volume"
+    }
+  ],
+  "overnight_news": [
+    {
+      "time": "2026-10-22T07:55:53+09:00",
+      "title": "KB증권 \"삼성전자·SK하이닉스 저평가…연말 코스피 반등 전망\"",
+      "source": "블루밍비트",
+      "link": "https://news.google.com/rss/articles/CBMiUEFVX3lxTFBwTkozc0tKcHpRMkoxN25ya2JkZlgxeC1KQk55VDNxOEYtQ2pCTzRnMk1kUGVRd3FJUWR1bjA0YUJFN3QwS0VOQlI5Y3N3ZDlS?oc=5"
+    },
+    {
+      "time": "2026-10-22T08:24:44+09:00",
+      "title": "SK하이닉스도 40조 자사주 끝…반도체株 누가 받치나",
+      "source": "한스경제",
+      "link": "https://news.google.com/rss/articles/CBMia0FVX3lxTFBTdFZsSlNGZERrR2dTV2k3WWpsQkZZNUdwdDdXNjd0eE1NOFBaWHlTRWtzNXJ4MWdyNWxRV3Jka09nMHZ1QjgtQ0JaVUZMWmpaUklHSm1PZURVaGE2RkRwcUpnM3owVGlGZzNj0gFvQVVfeXFMT0N5c2trU2FiRWM1V2pOVzR5SGxYZUEtQkctc3RrWExCSGw4aTZ3Mjk2bEFMOWRKdE1UMk5PazZndGs5Q1lTVGRxTWVIcGtsYzF4OUZucHhac2ZfYUpxRVRmTHVidWQxdjRxb3c3dUg0?oc=5"
+    },
+    {
+      "time": "2026-10-21T17:45:51+09:00",
+      "title": "[속보]수급공백 올까…SK하이닉스, 40조원 규모 자사주 매입 완료",
+      "source": "문화일보",
+      "link": "https://news.google.com/rss/articles/CBMiUEFVX3lxTE9LT1hmT2o3bGZTTWQ1TXIzN1U4bk1uV2xxVjNBRUROclAzeER3TGdzVUx5aUpqTzRSZ0FwOFZxT2pSX1BUeC13b1NWRnY0WXgz?oc=5"
+    },
+    {
+      "time": "2026-10-22T06:04:16+09:00",
+      "title": "美 반도체주 일제히 반등…AMD 3.4%·SK하이닉스 ADR 2.5%↑",
+      "source": "뉴스1",
+      "link": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE1aUlBBRUJnTjJaeFZ4UXg4OC1nZWZFVVZYWlMwTEVIeFVCSU1RanNrdHAxRVdwbnlLUjBSOUdhcy1aVGJOUHU2cUZZVHVpWGw4ei1qemhkd3k0T0ptU2E4MWdIakx1d2s?oc=5"
+    },
+    {
+      "time": "2026-10-22T06:45:16+09:00",
+      "title": "성과금 갈등에 멈춰 선 대만 마이크론…삼성·SK하이닉스 보상체계 소환하며 하루 경고 파업 결행",
+      "source": "글로벌이코노믹",
+      "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxQbWJsUXhMZ0JMTmg1RGdWX1RJMEp2ZzBCOUtHTHByY2xkY3FUVDNvMFFySUUxNDlETnlDaXlDbTRmMXAwMmptNWlISEZwTDNXYmc3M1QxR1BIeVlrRW1YRWgwZlB2RURISF9jRlJXbl95YlNNLUZneF8tQmVVdEd3MV9DMjhMYlFV?oc=5"
+    }
+  ],
+  "top_news": [
+    {
+      "time": "2026-10-22T13:49:30+09:00",
+      "title": "SK하이닉스, '반도체의 날' 5관왕…HBM·D램·낸드 기술혁신 공로",
+      "source": "www.ebn.co.kr",
+      "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE0yamczWnJYTEY1bVI2SUp1NkVzRDIwd3lNT1UtWnBHSGdIQ2ZlejkwZ2pPUHFuU2JqaHNoMjdqdjFOTEZ3cjNScUlOVXZHNnFmVTgxR3paTXhtWEhhUGl2NXYwTjZHUENj?oc=5"
+    },
+    {
+      "time": "2026-10-22T12:12:46+09:00",
+      "title": "AI 반도체 주도권 쥔 HBM 양산 기술…SK하이닉스 권재순 부사장 동탑훈장",
+      "source": "비즈체크",
+      "link": "https://news.google.com/rss/articles/CBMib0FVX3lxTFB1c3RseTdyZmlTOFUzV0NwU0U4VjFING1BQmY3elcwSURweHlOUEc3VDRBU3d4OHBXLV9PakZEUFlKT0pURFk4bGt3U1ZWS0RrOFFMQXpDVkNNc3d4Y2FvS1liYW9qdnpqbU8wa1JBYw?oc=5"
+    },
+    {
+      "time": "2026-10-22T07:55:53+09:00",
+      "title": "KB증권 \"삼성전자·SK하이닉스 저평가…연말 코스피 반등 전망\"",
+      "source": "블루밍비트",
+      "link": "https://news.google.com/rss/articles/CBMiUEFVX3lxTFBwTkozc0tKcHpRMkoxN25ya2JkZlgxeC1KQk55VDNxOEYtQ2pCTzRnMk1kUGVRd3FJUWR1bjA0YUJFN3QwS0VOQlI5Y3N3ZDlS?oc=5"
+    },
+    {
+      "time": "2026-10-22T08:24:44+09:00",
+      "title": "SK하이닉스도 40조 자사주 끝…반도체株 누가 받치나",
+      "source": "한스경제",
+      "link": "https://news.google.com/rss/articles/CBMia0FVX3lxTFBTdFZsSlNGZERrR2dTV2k3WWpsQkZZNUdwdDdXNjd0eE1NOFBaWHlTRWtzNXJ4MWdyNWxRV3Jka09nMHZ1QjgtQ0JaVUZMWmpaUklHSm1PZURVaGE2RkRwcUpnM3owVGlGZzNj0gFvQVVfeXFMT0N5c2trU2FiRWM1V2pOVzR5SGxYZUEtQkctc3RrWExCSGw4aTZ3Mjk2bEFMOWRKdE1UMk5PazZndGs5Q1lTVGRxTWVIcGtsYzF4OUZucHhac2ZfYUpxRVRmTHVidWQxdjRxb3c3dUg0?oc=5"
+    },
+    {
+      "time": "2026-10-22T09:05:40+09:00",
+      "title": "SK하이닉스, 40조 자사주 매입 완료…주가 하락 속 추가 환원책 주목",
+      "source": "리더스팩트",
+      "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE1lMzJuVkZqMkpGZFF1QUh2WTFBV0c1V0NYMmVwR3RtZUMyVUhtaURKVTdvUldTLVBhUFU0Z2hmN1RvYlVUUjhMN01iVy1EUXRWcThhRlIwUlZwVHk2M1A0QlQtSjVYS0d5X1Z2b2pjRFU?oc=5"
+    },
+    {
+      "time": "2026-10-22T10:16:30+09:00",
+      "title": "삼성전자 SK하이닉스에 중국 관영매체 러브콜, \"수출 증대를 현지 투자 확대 기회로\"",
+      "source": "비즈니스포스트",
+      "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTE56MFJPNWgwbDVqYTNEUUJCYlZTNXlaeE1iUGNhd0VyajBOb0ctWmxfSXRmZDJVRlRTU1pGdWl3dEV4dmQ3dXAxY3dRTzV1TVk5cXllZTlNWGE0bFJrMU4zcUdCR0lIb0xJWGZYSkpkbFkyb0k?oc=5"
+    }
+  ],
+  "disclosures": [],
+  "disclosure_note": null,
+  "flows": null,
+  "flow_story": null,
+  "flow_status": {
+    "state": "pending",
+    "detail": "최신 2026-10-21"
+  },
+  "context": {},
+  "market": {
+    "index": "KOSPI",
+    "date": "2026-10-22",
+    "rise": 174,
+    "fall": 709,
+    "steady": 32,
+    "upper": 0,
+    "lower": 0,
+    "individual": 3817.0,
+    "foreign": 607.0,
+    "institution": -4630.0,
+    "prev_close": 5735.66,
+    "open": 5670.11,
+    "high": 5740.28,
+    "low": 5485.98,
+    "close": 5533.77
+  },
+  "earnings_reactions": null,
+  "forecasts": [
+    {
+      "model": "No macro ensemble",
+      "hit": false,
+      "verdict": "틀림 — 예측 상승 49%, 실제 하락(-5.49%)",
+      "legs": "갭 -1.62%(하락) · 세션 -3.93%(하락)",
+      "where": "결과는 주로 장중에서 정해졌습니다.",
+      "band": 0.013246832107634,
+      "probs": [
+        0.2184528225169268,
+        0.2878362918804946,
+        0.4937108856025786
+      ],
+      "actual": "하락",
+      "predicted": "상승"
+    },
+    {
+      "model": "Mean ensemble",
+      "hit": false,
+      "verdict": "틀림 — 예측 상승 49%, 실제 하락(-5.49%)",
+      "legs": "갭 -1.62%(하락) · 세션 -3.93%(하락)",
+      "where": "결과는 주로 장중에서 정해졌습니다.",
+      "band": 0.013246832107634,
+      "probs": [
+        0.21573650335981,
+        0.2943870213399961,
+        0.4898764753001939
+      ],
+      "actual": "하락",
+      "predicted": "상승"
+    },
+    {
+      "model": "Candidate expanding",
+      "hit": false,
+      "verdict": "틀림 — 예측 상승 50%, 실제 하락(-5.49%)",
+      "legs": "갭 -1.62%(하락) · 세션 -3.93%(하락)",
+      "where": "결과는 주로 장중에서 정해졌습니다.",
+      "band": 0.013246832107634,
+      "probs": [
+        0.2092836860668041,
+        0.2864082202642288,
+        0.504308093668967
+      ],
+      "actual": "하락",
+      "predicted": "상승"
+    }
+  ],
+  "price_check": "1거래일 예상 구간 1,235,378~1,376,402원 · 종가 1,223,000원 → 구간 밖",
+  "disclaimer": "시간이 맞는 것이지 원인 확정이 아닙니다. 뉴스 없이 움직이는 날(수급·프로그램·옵션 만기)이 많고, 기사 발행 시각은 실제 정보 유통보다 늦거나 앞섭니다. 이 절은 설명 도구이며 다음날 예측에 자동 반영되지 않습니다."
+}

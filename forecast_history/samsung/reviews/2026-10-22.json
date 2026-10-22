@@ -3,7 +3,7 @@
   "name": "삼성전자",
   "peer_name": "SK하이닉스",
   "session_date": "2026-10-22",
-  "generated_at": "2026-10-22 16:11 KST",
+  "generated_at": "2026-10-22 16:46 KST",
   "summary": {
     "prev_close": 223500.0,
     "open": 221500.0,
@@ -15,11 +15,11 @@
     "c2c": -0.04026845637583898,
     "high_vs_open": 0.020316027088036037,
     "low_vs_open": -0.04176072234762984,
-    "volume": 12025503.0,
-    "volume_ratio": 0.635212025803288,
+    "volume": 12040305.0,
+    "volume_ratio": 0.6359938981628841,
     "kospi_c2c": -0.03519911068977044,
     "peer_c2c": -0.05486862442040186,
-    "usdkrw_chg": -0.0012462063362160825,
+    "usdkrw_chg": -0.0017523047809845371,
     "us_nights": 1,
     "sox_ret": 0.019652050898077977,
     "nasdaq_ret": 0.010521890374727505,
@@ -150,16 +150,16 @@
           "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE9kS2VUR1lILU1vLV85QXMyMEgtNDcxWVA0bWNyV1p4VFYzZ04tb0dxNXJ2ajA4WlZrVnRka3ZKOG1NWTNmdG1RRVZUWHp5ajNVbEpEZjlfUWhzc0dBa213WNIBYEFVX3lxTE9kS2VUR1lILU1vLV85QXMyMEgtNDcxWVA0bWNyV1p4VFYzZ04tb0dxNXJ2ajA4WlZrVnRka3ZKOG1NWTNmdG1RRVZUWHp5ajNVbEpEZjlfUWhzc0dBa213WA?oc=5"
         },
         {
+          "time": "2026-10-22T10:16:31+09:00",
+          "title": "마이크론 대만 공장 멈췄다…삼성전자·SK하이닉스는 웃을 수 있을까",
+          "source": "중기이코노미",
+          "link": "https://news.google.com/rss/articles/CBMiakFVX3lxTE41YnZSOGFuWVlfQ25Qdi1NV3VYWEtXZVZobkJrcUNEcmRjYzVHaHF3VkNfdjNZeW1nYzBXR040ekZxeTJWQnlMaHk4NG9pd09vVG9TaHp5cUlLSEJDUUJ1TWlPWnN0WlFscFE?oc=5"
+        },
+        {
           "time": "2026-10-22T10:30:00+09:00",
           "title": "\"코스피, 바닥 찍었다\"...삼성전자·SK하이닉스 11~12월 반등 전망",
           "source": "조세일보",
           "link": "https://news.google.com/rss/articles/CBMiX0FVX3lxTFB3UFRJXzliNXNoMmlZTWVqdVN1dTV5ZXYxV3FkQUFwclkwdFpucHl2MFM3M3Y4VHhLRDZNUWNfT0RtcXNWbjNxUUhrakpTczNkT2RqbjlCb1doOU1jd1hv?oc=5"
-        },
-        {
-          "time": "2026-10-22T10:32:54+09:00",
-          "title": "자회사 반도체 기술 유출한 전직 삼성전자 직원들 재판행",
-          "source": "뉴스1",
-          "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE8tR09za2xLNHNWQ1VfSUc1dU5idF9qMk9VSkJSTzZFLXd6aDlZYmJUWHZDX1dEWmZROUY4V0xMRzR5cU9ha1BqX3JscDR5ZFgzcGRLNjdERkdLU3lKYS1UdmlCZVI?oc=5"
         },
         {
           "time": "2026-10-22T09:19:00+09:00",
@@ -192,12 +192,6 @@
           "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE94Ym5yWEVRMF9uTWRVQnVGaENhdHhNY1ByZE1BLXlnWHhackprWGlzUHBuZUQyQ3VnenhuX3ZweEE3MGdoZUZPbTdFa1pvZzRRT05ERnVhemlvRTdVX2c0QW82cmFZX0pDaDFTc2w3WVY?oc=5"
         },
         {
-          "time": "2026-10-22T08:35:20+09:00",
-          "title": "구미 주민·상공계, 삼성전자 로봇 투자 환영…시민감사패 전달",
-          "source": "매일일보",
-          "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTFB1UUowWDVnV1EtdTNXX2JIVlhOMFpHckZFMUdXTjN5UExXUXRId0c5VlRBam1MWlZuVXF1MU5Pcm81eGpCTUlsS0Z4ODNfTjFCczI2aVJCcUVkRkpDMmtJUnRQZ3o?oc=5"
-        },
-        {
           "time": "2026-10-22T09:00:00+09:00",
           "title": "이재용 삼성전자 1.75%로…홍라희 배당 몫 넘어온다",
           "source": "자본시장뉴스",
@@ -214,6 +208,12 @@
           "title": "결국 아마존까지 손 잡았다…삼성전자 '중고폰 영토' 세계 1위 커머스로 진격",
           "source": "더구루",
           "link": "https://news.google.com/rss/articles/CBMiXkFVX3lxTE91azZ5U1A5NHNrWDJ3aS1QaUJfMkRUY1JjMHZLMTZmem1tM3lEQjE3RzVIRk9TemJlR2tEdUNWZVVUcEJWVzhMZVlWallkeFBlWlJiV3lMemp5NnNZb1E?oc=5"
+        },
+        {
+          "time": "2026-10-22T09:19:00+09:00",
+          "title": "거래대금 1·2위는 SK하이닉스·삼성전자… 삼성SDI 2.53% 하락",
+          "source": "서울신문",
+          "link": "https://news.google.com/rss/articles/CBMifkFVX3lxTFB6VkFvS0VfNHVJVE16VE9oTHRpOUJBcXZNalN3NWx0UVctZ3N0M0Y3R2xGMU9aV3ZjTEZnRWxVVHlfYkUxVUZZemhyNXBub3M1c3IzUExVRTFUeGRqQXhJUHdtd0JLOUFDd1lrM2JpWUNGQkg4LUlvX1dpekZqUQ?oc=5"
         }
       ]
     }
@@ -609,12 +609,6 @@
           "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE94Ym5yWEVRMF9uTWRVQnVGaENhdHhNY1ByZE1BLXlnWHhackprWGlzUHBuZUQyQ3VnenhuX3ZweEE3MGdoZUZPbTdFa1pvZzRRT05ERnVhemlvRTdVX2c0QW82cmFZX0pDaDFTc2w3WVY?oc=5"
         },
         {
-          "time": "2026-10-22T08:35:20+09:00",
-          "title": "구미 주민·상공계, 삼성전자 로봇 투자 환영…시민감사패 전달",
-          "source": "매일일보",
-          "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTFB1UUowWDVnV1EtdTNXX2JIVlhOMFpHckZFMUdXTjN5UExXUXRId0c5VlRBam1MWlZuVXF1MU5Pcm81eGpCTUlsS0Z4ODNfTjFCczI2aVJCcUVkRkpDMmtJUnRQZ3o?oc=5"
-        },
-        {
           "time": "2026-10-22T09:00:00+09:00",
           "title": "이재용 삼성전자 1.75%로…홍라희 배당 몫 넘어온다",
           "source": "자본시장뉴스",
@@ -631,6 +625,12 @@
           "title": "결국 아마존까지 손 잡았다…삼성전자 '중고폰 영토' 세계 1위 커머스로 진격",
           "source": "더구루",
           "link": "https://news.google.com/rss/articles/CBMiXkFVX3lxTE91azZ5U1A5NHNrWDJ3aS1QaUJfMkRUY1JjMHZLMTZmem1tM3lEQjE3RzVIRk9TemJlR2tEdUNWZVVUcEJWVzhMZVlWallkeFBlWlJiV3lMemp5NnNZb1E?oc=5"
+        },
+        {
+          "time": "2026-10-22T09:19:00+09:00",
+          "title": "거래대금 1·2위는 SK하이닉스·삼성전자… 삼성SDI 2.53% 하락",
+          "source": "서울신문",
+          "link": "https://news.google.com/rss/articles/CBMifkFVX3lxTFB6VkFvS0VfNHVJVE16VE9oTHRpOUJBcXZNalN3NWx0UVctZ3N0M0Y3R2xGMU9aV3ZjTEZnRWxVVHlfYkUxVUZZemhyNXBub3M1c3IzUExVRTFUeGRqQXhJUHdtd0JLOUFDd1lrM2JpWUNGQkg4LUlvX1dpekZqUQ?oc=5"
         }
       ],
       "price": 224000.0,
@@ -653,16 +653,16 @@
           "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE9kS2VUR1lILU1vLV85QXMyMEgtNDcxWVA0bWNyV1p4VFYzZ04tb0dxNXJ2ajA4WlZrVnRka3ZKOG1NWTNmdG1RRVZUWHp5ajNVbEpEZjlfUWhzc0dBa213WNIBYEFVX3lxTE9kS2VUR1lILU1vLV85QXMyMEgtNDcxWVA0bWNyV1p4VFYzZ04tb0dxNXJ2ajA4WlZrVnRka3ZKOG1NWTNmdG1RRVZUWHp5ajNVbEpEZjlfUWhzc0dBa213WA?oc=5"
         },
         {
+          "time": "2026-10-22T10:16:31+09:00",
+          "title": "마이크론 대만 공장 멈췄다…삼성전자·SK하이닉스는 웃을 수 있을까",
+          "source": "중기이코노미",
+          "link": "https://news.google.com/rss/articles/CBMiakFVX3lxTE41YnZSOGFuWVlfQ25Qdi1NV3VYWEtXZVZobkJrcUNEcmRjYzVHaHF3VkNfdjNZeW1nYzBXR040ekZxeTJWQnlMaHk4NG9pd09vVG9TaHp5cUlLSEJDUUJ1TWlPWnN0WlFscFE?oc=5"
+        },
+        {
           "time": "2026-10-22T10:30:00+09:00",
           "title": "\"코스피, 바닥 찍었다\"...삼성전자·SK하이닉스 11~12월 반등 전망",
           "source": "조세일보",
           "link": "https://news.google.com/rss/articles/CBMiX0FVX3lxTFB3UFRJXzliNXNoMmlZTWVqdVN1dTV5ZXYxV3FkQUFwclkwdFpucHl2MFM3M3Y4VHhLRDZNUWNfT0RtcXNWbjNxUUhrakpTczNkT2RqbjlCb1doOU1jd1hv?oc=5"
-        },
-        {
-          "time": "2026-10-22T10:32:54+09:00",
-          "title": "자회사 반도체 기술 유출한 전직 삼성전자 직원들 재판행",
-          "source": "뉴스1",
-          "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE8tR09za2xLNHNWQ1VfSUc1dU5idF9qMk9VSkJSTzZFLXd6aDlZYmJUWHZDX1dEWmZROUY4V0xMRzR5cU9ha1BqX3JscDR5ZFgzcGRLNjdERkdLU3lKYS1UdmlCZVI?oc=5"
         },
         {
           "time": "2026-10-22T09:19:00+09:00",
@@ -689,48 +689,42 @@
       "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE94Ym5yWEVRMF9uTWRVQnVGaENhdHhNY1ByZE1BLXlnWHhackprWGlzUHBuZUQyQ3VnenhuX3ZweEE3MGdoZUZPbTdFa1pvZzRRT05ERnVhemlvRTdVX2c0QW82cmFZX0pDaDFTc2w3WVY?oc=5"
     },
     {
-      "time": "2026-10-22T08:35:20+09:00",
-      "title": "구미 주민·상공계, 삼성전자 로봇 투자 환영…시민감사패 전달",
-      "source": "매일일보",
-      "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTFB1UUowWDVnV1EtdTNXX2JIVlhOMFpHckZFMUdXTjN5UExXUXRId0c5VlRBam1MWlZuVXF1MU5Pcm81eGpCTUlsS0Z4ODNfTjFCczI2aVJCcUVkRkpDMmtJUnRQZ3o?oc=5"
-    },
-    {
       "time": "2026-10-22T09:00:00+09:00",
       "title": "이재용 삼성전자 1.75%로…홍라희 배당 몫 넘어온다",
       "source": "자본시장뉴스",
       "link": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTFB4b01tRTJhenZfUDlRcGc5QVgxaGJoSHpyYkNMS2tXOXg3OXdWQ0RtUGtCRG1YZXkzLXFieXM0MzVnMzEwNlFvemtGdzBoeDhWTzh3N0pmbUN3SmJlTlY3ZXNPNEdGUW8?oc=5"
     },
     {
-      "time": "2026-10-22T04:50:04+09:00",
-      "title": "‘2000억 베팅’ 슈퍼개미, 삼성전자와 7년 드라마 결말은",
-      "source": "쿠키뉴스",
-      "link": "https://news.google.com/rss/articles/CBMiY0FVX3lxTE10SUFDYVBHSTFsMWVuNDlOTUpLa3Y4eGdBOVBaOXk1NWw2Sng2aDFZUnBRSGZVc2phbUZhc0g5UjJ4NkN6bXZxUVZqZGYySXVidHFScUFhc2RaYmhma3FRcjZDTQ?oc=5"
-    },
-    {
       "time": "2026-10-22T05:29:00+09:00",
       "title": "삼성전자, 24일부터 JBL 80주년 기념행사",
       "source": "연합뉴스TV",
       "link": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE9CUlFZUlU1dTdvVjFTWFU4QTR3UkNrRFpmUkJCNGVscWd0Q3VNZVViTVdmbEFSeVk4dFpaQUktX2dSZ2NWLU11ZTFJNE5WTUQ0a3NyN1FfbmRWaDZuQlJlcEx3T2FOSWc?oc=5"
+    },
+    {
+      "time": "2026-10-22T08:22:40+09:00",
+      "title": "[단독] 삼성전자 '제조 로봇' 핵심기지 中 쑤저우에 구축…DX 첫 해외 연구소 전격 가동",
+      "source": "더구루",
+      "link": "https://news.google.com/rss/articles/CBMiXkFVX3lxTE4yakpYdmh0LVVEanprUnZWZE9mX0plZHQtTHU1N01PMl9BTDc5Tm5hUHlXWFlUZDB3UlR5VmQ0MEVaMEtqYTN3QXU2VnlvZlBVanpTNFA5NjFJWWQtY2c?oc=5"
+    },
+    {
+      "time": "2026-10-22T08:53:51+09:00",
+      "title": "결국 아마존까지 손 잡았다…삼성전자 '중고폰 영토' 세계 1위 커머스로 진격",
+      "source": "더구루",
+      "link": "https://news.google.com/rss/articles/CBMiXkFVX3lxTE91azZ5U1A5NHNrWDJ3aS1QaUJfMkRUY1JjMHZLMTZmem1tM3lEQjE3RzVIRk9TemJlR2tEdUNWZVVUcEJWVzhMZVlWallkeFBlWlJiV3lMemp5NnNZb1E?oc=5"
     }
   ],
   "top_news": [
+    {
+      "time": "2026-10-22T15:05:09+09:00",
+      "title": "코스피 또 급락…AI 호실적에도 투자 수익성 의혹에 불안 지속",
+      "source": "연합뉴스",
+      "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE54N2pxMDNjSzJVYzFEekhQaVB3X2ExZTQ4ZXpmcVJoS0h6OHBmQlJINzZEMkJmUVB1T2NWaFJfOUFBQkJpRTRwSjg2aW1CZWQ1VVZXWDlDRVAwQ3ZXUVhKM9IBYEFVX3lxTE54N2pxMDNjSzJVYzFEekhQaVB3X2ExZTQ4ZXpmcVJoS0h6OHBmQlJINzZEMkJmUVB1T2NWaFJfOUFBQkJpRTRwSjg2aW1CZWQ1VVZXWDlDRVAwQ3ZXUVhKMw?oc=5"
+    },
     {
       "time": "2026-10-22T10:31:40+09:00",
       "title": "삼성전자 반도체노조, 비메모리 사업부 성과급 격차 개선 추진",
       "source": "연합뉴스",
       "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE9kS2VUR1lILU1vLV85QXMyMEgtNDcxWVA0bWNyV1p4VFYzZ04tb0dxNXJ2ajA4WlZrVnRka3ZKOG1NWTNmdG1RRVZUWHp5ajNVbEpEZjlfUWhzc0dBa213WNIBYEFVX3lxTE9kS2VUR1lILU1vLV85QXMyMEgtNDcxWVA0bWNyV1p4VFYzZ04tb0dxNXJ2ajA4WlZrVnRka3ZKOG1NWTNmdG1RRVZUWHp5ajNVbEpEZjlfUWhzc0dBa213WA?oc=5"
-    },
-    {
-      "time": "2026-10-22T12:56:11+09:00",
-      "title": "[HBM 관련주] 삼성전자·SK하이닉스 동반 하락…전반 약세, 코스피·코스닥도 내림세",
-      "source": "CBC뉴스",
-      "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTFByNUFSdzV0dXJYN2pESFJMcWIzWDdUVG0wZ1lYS3pJbDJwSlZhV0hMamJvejBNaV84elRIclB3WXd5THBjd3VHbjdNVXJoekFvVUx0TlVVWTZ3d21HQmk2V0dFcHJfVWpR?oc=5"
-    },
-    {
-      "time": "2026-10-22T13:53:59+09:00",
-      "title": "삼성전자 반도체 노조, 비메모리 사업부 성과급 격차 개선안 추진",
-      "source": "SBS 뉴스",
-      "link": "https://news.google.com/rss/articles/CBMiakFVX3lxTE8ybVV0TFNpSkl1SkVRZGFaenRMc244R1dsVDloQ3VQR0FYMzBtZDJOSXhYWjJoUUJRN2N0QTc0bG9GdnAwLUdNeGtQUTJZNk02Yzd1ZnYwaktobmJ4LWtmTHNFNWNvRnN0Wnc?oc=5"
     },
     {
       "time": "2026-10-22T14:11:17+09:00",
@@ -739,16 +733,22 @@
       "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE1qSEkwelNSV291ZUQ5VE9PeTdSOWExcm96SlQyaFBhb285U1gwN2M1T3pGY3BFc210R3BkWEJ3OWR0WDMxNHVIQ1hjVkRjNVFyLU0yTW0zc3FCd9IBWEFVX3lxTE52NjRUbDd1STQ2RGtjN3NNRWM0MERVWFNFaldnOHZibUl6SWdpUnZNS2FFYTlVQlJWRWVDeU5jNmptZnhDQTlpV3U3YmlVcGNJMnNxbXhaaWI?oc=5"
     },
     {
-      "time": "2026-10-22T08:02:00+09:00",
-      "title": "삼성전자, 차세대 메모리 개발 ’코어팀’ 꾸려…\"핵심 R&D 인력 보상 강화\" By EBN",
-      "source": "Investing.com 한국어",
-      "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE94Ym5yWEVRMF9uTWRVQnVGaENhdHhNY1ByZE1BLXlnWHhackprWGlzUHBuZUQyQ3VnenhuX3ZweEE3MGdoZUZPbTdFa1pvZzRRT05ERnVhemlvRTdVX2c0QW82cmFZX0pDaDFTc2w3WVY?oc=5"
+      "time": "2026-10-22T16:13:46+09:00",
+      "title": "삼성전자 4.03%·SK하이닉스 5.49% 하락…AI 투자 우려 지속",
+      "source": "스페셜타임스",
+      "link": "https://news.google.com/rss/articles/CBMickFVX3lxTFBaSVpLWVJFS2xCa0pjSTdSTElWTjBMWGRyV3dQd2FEY1NWa2NRWWQ0TzNKcFF6Z3BnZWwzV1RCZDJaOEtIQ1Yxb2g0RzhNRDEyZFhQZEJPRzBmb1NfOFhuUnowM29YNjN3bzRRbDRUVmNWUQ?oc=5"
     },
     {
-      "time": "2026-10-22T08:35:20+09:00",
-      "title": "구미 주민·상공계, 삼성전자 로봇 투자 환영…시민감사패 전달",
-      "source": "매일일보",
-      "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTFB1UUowWDVnV1EtdTNXX2JIVlhOMFpHckZFMUdXTjN5UExXUXRId0c5VlRBam1MWlZuVXF1MU5Pcm81eGpCTUlsS0Z4ODNfTjFCczI2aVJCcUVkRkpDMmtJUnRQZ3o?oc=5"
+      "time": "2026-10-22T16:07:56+09:00",
+      "title": "엔비디아와 손잡은 삼성전기, 주가 하락에도 \"반도체 기판 공급 부족 장기화\"",
+      "source": "한국경제",
+      "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE1LMm82cURSbGhWbVdYVHByeXBTMU5uVTZ1Y0JBUVZxd2dqSGhManZqUHc0T0pkMUt4T0g3N0lpeGlhUWI4WEQzS091R3gzZUxzSVNRa190V2RLdw?oc=5"
+    },
+    {
+      "time": "2026-10-22T16:09:05+09:00",
+      "title": "신한투자증권 \"K-방산 유도무기 핵심 부품 만든다…옵토닉스, FOG 증설로 성장 시동\"",
+      "source": "핀포인트뉴스",
+      "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTE85dDE1TG0zUEZBdDNPa2xDSGxOUWtmMlJGWEcxTDJIM1RLaUoydFgzMmVZdVNuUkFwYlBaQ25KRy1jSDJMZFVqX1QyNnR1YThEWkdtMXNSaU9ONk1lbHdkTmVxWnR3TXJ5Y2pNdF9uSnZmU2M?oc=5"
     }
   ],
   "disclosures": [],
@@ -768,9 +768,9 @@
     "steady": 32,
     "upper": 0,
     "lower": 0,
-    "individual": 3817.0,
-    "foreign": 607.0,
-    "institution": -4630.0,
+    "individual": 3814.0,
+    "foreign": 580.0,
+    "institution": -4602.0,
     "prev_close": 5735.66,
     "open": 5670.11,
     "high": 5740.28,

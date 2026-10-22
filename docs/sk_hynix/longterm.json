@@ -433,13 +433,13 @@
       "last": "2026-06-30",
       "corr_spearman": 0.35382376795000237,
       "sign_hit": 0.625,
-      "shrink_slope": 0.341017411212465,
+      "shrink_slope": 0.3410174112124651,
       "n_calibration": 66,
-      "mae_model": 0.21132281409840198,
+      "mae_model": 0.21132281409840195,
       "mae_zero": 0.22302765655181556,
-      "mae_diff": -0.01170484245341359,
-      "mae_diff_lo": -0.027232714135849854,
-      "mae_diff_hi": 0.006330844451867597,
+      "mae_diff": -0.011704842453413593,
+      "mae_diff_lo": -0.027232714135849875,
+      "mae_diff_hi": 0.006330844451867602,
       "beats_zero": false,
       "enough_samples": true,
       "n_evaluation": 68
@@ -456,9 +456,9 @@
       "n_calibration": 59,
       "mae_model": 0.3484854398535758,
       "mae_zero": 0.3631773575254263,
-      "mae_diff": -0.014691917671850536,
+      "mae_diff": -0.014691917671850538,
       "mae_diff_lo": -0.023964686363859223,
-      "mae_diff_hi": -0.005668133815384444,
+      "mae_diff_hi": -0.005668133815384445,
       "beats_zero": false,
       "enough_samples": false,
       "n_evaluation": 65,
@@ -476,7 +476,7 @@
       "n_calibration": 48,
       "mae_model": 0.47740415581846024,
       "mae_zero": 0.5873724688016501,
-      "mae_diff": -0.10996831298318993,
+      "mae_diff": -0.10996831298318994,
       "mae_diff_lo": -0.1552599696809658,
       "mae_diff_hi": -0.062358621055576366,
       "beats_zero": false,
@@ -487,16 +487,16 @@
   },
   "forecast": {
     "3": {
-      "raw": -0.005177782572231879,
-      "point": -0.0017657140086035333
+      "raw": -0.0051777825722317955,
+      "point": -0.0017657140086035055
     },
     "6": {
-      "raw": 0.477567555396918,
-      "point": 0.06851025384932728
+      "raw": 0.47756755539691786,
+      "point": 0.06851025384932727
     },
     "12": {
-      "raw": 0.41389748752526456,
-      "point": 0.2518211348447986
+      "raw": 0.4138974875252645,
+      "point": 0.25182113484479857
     }
   },
   "similar": [
@@ -531,11 +531,16 @@
           "month": "2026-10",
           "days": 10,
           "yoy": 1.7093222850019925
+        },
+        {
+          "month": "2026-10",
+          "days": 20,
+          "yoy": 2.22472278680346
         }
       ],
       "latest_month": "2026-10",
-      "latest_days": 10,
-      "latest_yoy": 1.7093222850019925,
+      "latest_days": 20,
+      "latest_yoy": 2.22472278680346,
       "model_as_of": "2026-09"
     },
     "months_so_far": 15,
@@ -628,7 +633,7 @@
   "cli_active": true,
   "cli_ablation": {
     "3": {
-      "mae_with": 0.21132281409840198,
+      "mae_with": 0.21132281409840195,
       "mae_without": 0.20450267078079692,
       "corr_with": 0.35382376795000237,
       "corr_without": 0.3110824865225895
@@ -649,7 +654,7 @@
   "cycle_active": true,
   "cycle_ablation": {
     "3": {
-      "mae_with": 0.21132281409840198,
+      "mae_with": 0.21132281409840195,
       "mae_without": 0.20105567186061993,
       "corr_with": 0.35382376795000237,
       "corr_without": 0.16731569805518381
@@ -675,11 +680,11 @@
   ],
   "extra_info": {
     "nsi": {
-      "source": "last_successful_fetch",
+      "source": "ECOS_API",
       "stat_code": "523Y001",
       "item_code": "A001",
-      "fresh": false,
-      "fetch_error": "ECOS API 조회 실패(URLError TimeoutError: timed out). 키·연결을 확인하거나 macro_inputs/news_sentiment.csv를 사용하세요.",
+      "fresh": true,
+      "fetch_error": null,
       "first": "2005-01-01",
       "last": "2026-10-18",
       "rows": 7961,
@@ -689,13 +694,13 @@
       "enabled": true
     },
     "term_spread": {
-      "source": "last_successful_fetch",
-      "fresh": false,
-      "fetch_error": "ECOS API 조회 실패(URLError TimeoutError: timed out). 키·연결을 확인하거나 macro_inputs/news_sentiment.csv를 사용하세요.",
+      "source": "ECOS_API",
+      "fresh": true,
+      "fetch_error": null,
       "first": "2000-12-18",
-      "last": "2026-10-20",
-      "rows": 6396,
-      "snapshot_hash": "cb61647352739a149284",
+      "last": "2026-10-21",
+      "rows": 6397,
+      "snapshot_hash": "e5d9451a2e1ccf3cc3e8",
       "enabled": true
     }
   },
@@ -713,13 +718,13 @@
       "fresh": true,
       "source": "OECD API",
       "errors": [],
-      "checked_at": "2026-10-21 15:16 KST"
+      "checked_at": "2026-10-22 15:20 KST"
     },
     "kospi_info": {
       "last": "2026-09",
       "fresh": true,
       "source": "Yahoo Finance",
-      "checked_at": "2026-10-21 15:16 KST"
+      "checked_at": "2026-10-22 15:20 KST"
     },
     "rows": [
       {
@@ -965,7 +970,7 @@
       "source": "FRED API",
       "fresh": true,
       "errors": [],
-      "checked_at": "2026-10-21 15:16 KST",
+      "checked_at": "2026-10-22 15:20 KST",
       "definition": "한국 총수출(달러·계절조정, OECD/FRED)",
       "last": "2026-08"
     },
@@ -981,7 +986,7 @@
       "note": "OECD G20 경기선행지수(OECD 데이터 API). 참조월+1개월 20일 이후에만 사용. 매달 소급 수정되므로 백테스트는 최종 수정치 기준이라 낙관적",
       "snapshot_hash": "27d9ee19f3c2392d1a20",
       "enabled": true,
-      "checked_at": "2026-10-21 15:16 KST"
+      "checked_at": "2026-10-22 15:20 KST"
     }
   },
   "stock_value": {
@@ -1002,7 +1007,7 @@
       "months_added": [],
       "scale": 1.249066228864939,
       "source": "customs_api",
-      "checked_at": "2026-10-21 15:09 KST",
+      "checked_at": "2026-10-22 15:19 KST",
       "kosis_last": "2026-09",
       "last": "2026-09"
     },
@@ -1013,15 +1018,15 @@
     "krw": 1358.2609141956675
   },
   "chart_first": "2000-01-31",
-  "generated_at": "2026-10-21 15:16 KST",
+  "generated_at": "2026-10-22 15:20 KST",
   "macro_snapshot_hash": "062ab4e90ce19ad6c76e",
   "macro_sources": {
     "leading_cycle": "KOSIS_API",
     "semiconductor_exports": "KOSIS_API"
   },
-  "frame_hash": "db79b78381c679cc",
+  "frame_hash": "760246e8c39acdc4",
   "live_exports": {
-    "as_of": "2026-10-21",
+    "as_of": "2026-10-22",
     "price_last": "2026-09-30",
     "exports_last_month": "2026-10",
     "latest_period": {
@@ -1033,7 +1038,7 @@
       "basis": "partial_month_scenario"
     },
     "snapshot_hash": "cecabf61a809c8ab4f2c",
-    "generated_at": "2026-10-21 15:09 KST",
+    "generated_at": "2026-10-22 15:19 KST",
     "flash_info": {
       "enabled": true,
       "source": "customs_flash_api",
@@ -1081,14 +1086,14 @@
   "valuation": {
     "status": "available",
     "ticker": "000660.KS",
-    "price": 1223000.0,
-    "price_date": "2026-10-20",
-    "observed_on": "2026-10-21",
+    "price": 1294000.0,
+    "price_date": "2026-10-21",
+    "observed_on": "2026-10-22",
     "financial_period": "2026-06-30",
     "eps_ttm": 232070.09450008773,
     "bps": 375948.7934903294,
-    "per": 5.2699595035479145,
-    "pbr": 3.2531026064629716,
+    "per": 5.575901551587083,
+    "pbr": 3.4419581134612307,
     "source": "https://finance.yahoo.com/quote/000660.KS/key-statistics/",
     "assumptions": {
       "version": 1,
@@ -1109,40 +1114,40 @@
         {
           "multiple": 8,
           "price": 1856560.7560007018,
-          "upside": 0.5180382305811135
+          "upside": 0.43474556105154694
         },
         {
           "multiple": 12,
           "price": 2784841.134001053,
-          "upside": 1.2770573458716705
+          "upside": 1.1521183415773208
         },
         {
           "multiple": 16,
           "price": 3713121.5120014036,
-          "upside": 2.036076461162227
+          "upside": 1.8694911221030939
         }
       ],
       "pbr": [
         {
           "multiple": 1,
           "price": 375948.7934903294,
-          "upside": -0.6926011500487903
+          "upside": -0.7094677020940268
         },
         {
           "multiple": 1.5,
           "price": 563923.1902354942,
-          "upside": -0.5389017250731855
+          "upside": -0.56420155314104
         },
         {
           "multiple": 2,
           "price": 751897.5869806588,
-          "upside": -0.3852023000975807
+          "upside": -0.4189354041880534
         }
       ]
     },
     "evaluation_status": "예측 성능 미검증 — 현재 가치 시나리오이며 도달 시점을 예측하지 않음",
     "basis_note": "분기 재무제표 최근 4분기 순이익(Net Income Common Stockholders) ÷ EPS 기준 주식 수 697,915,819주",
-    "retrieved_on": "2026-10-21",
+    "retrieved_on": "2026-10-22",
     "cached": false
   },
   "policy_inflation": {
@@ -1359,7 +1364,7 @@
       },
       {
         "month": "2020-03",
-        "policy_rate": 1.0080645161290325,
+        "policy_rate": 1.0080645161290323,
         "inflation": 0.8262628504555058
       },
       {
@@ -1744,7 +1749,7 @@
       },
       {
         "month": "2026-08",
-        "policy_rate": 2.790322580645161,
+        "policy_rate": 2.7903225806451615,
         "inflation": 3.091455560326306
       },
       {
@@ -1763,12 +1768,12 @@
       "policy_rate": "2026-09",
       "inflation": "2026-09"
     },
-    "fresh": [],
-    "failed": {
-      "policy_rate": "조회 실패 또는 API 키 미설정",
-      "cpi_index": "조회 실패 또는 API 키 미설정"
-    },
-    "checked_at": "2026-10-21T15:16:43.105362",
+    "fresh": [
+      "policy_rate",
+      "cpi_index"
+    ],
+    "failed": {},
+    "checked_at": "2026-10-22T15:20:29.450686",
     "stale": false
   }
 }

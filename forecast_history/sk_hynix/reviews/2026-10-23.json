@@ -3,7 +3,7 @@
   "name": "SK하이닉스",
   "peer_name": "삼성전자",
   "session_date": "2026-10-23",
-  "generated_at": "2026-10-23 16:21 KST",
+  "generated_at": "2026-10-23 16:46 KST",
   "summary": {
     "prev_close": 1223000.0,
     "open": 1200000.0,
@@ -15,11 +15,11 @@
     "c2c": 0.044153720359771054,
     "high_vs_open": 0.07000000000000006,
     "low_vs_open": -0.02416666666666667,
-    "volume": 3586776.0,
-    "volume_ratio": 1.0486376499834429,
+    "volume": 3891976.0,
+    "volume_ratio": 1.137866587272793,
     "kospi_c2c": 0.0029870748328733043,
     "peer_c2c": 0.004662004662004726,
-    "usdkrw_chg": 0.0004451511446526002,
+    "usdkrw_chg": 0.0002565558727767314,
     "us_nights": 1,
     "sox_ret": -0.06723524369545197,
     "nasdaq_ret": -0.02598972605344818,
@@ -659,10 +659,10 @@
       "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE5BZzNfei1OUmxYb3R0SkR1V2s1SWtMZ3YyY1NPanVFYjlTTUJTd1Y1TnVPYnJsaG5xN2I4WktwemRSVzNmMkVBd1ppNXh0N05kM2pDYWRDT19uVVBFM1FVRw?oc=5"
     },
     {
-      "time": "2026-10-23T16:00:29+09:00",
-      "title": "AI 투자 불안 딛고 코스피 상승 마감…솔리다임 상장 중단에 하닉 4%대↑[마켓시그널]",
-      "source": "서울경제",
-      "link": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE5RZldUa3czRTV2UkFnSTR2NWNhcE1KYVotal9TWF9SQlBkeXNNUnh0bVdIZXpCeUY4T2xJUWhpSzAwWGk5blgwWF96QlYxRVFlRWfSAVNBVV95cUxOYlRCcXpjTHpXdENqXy0zX1czLV91WEFJQ0NLeElRWTlNVzJBOTJkbkF3ZzNITXA2bzYyNkFFMGYwbjBPMkMtUE8zbnF2eVplYkg3MA?oc=5"
+      "time": "2026-10-23T16:34:40+09:00",
+      "title": "美 빅테크 'AI 충격'에도 코스피 반등…SK하이닉스 '구원투수'",
+      "source": "청년일보",
+      "link": "https://news.google.com/rss/articles/CBMiakFVX3lxTE9RMTRZUlV2YTBvY1llRDhkazhZSWRqUnNfVkJNaVlqZGcxYndubkVYdXdBQURJS28tbnVkRkhOSDJPM1ZKZmhuYlFTRndiYnR5MWFjWTZ6TE0zZ3BJeV9GM01VSGVBckdQYUE?oc=5"
     }
   ],
   "disclosures": [
@@ -689,9 +689,9 @@
     "steady": 23,
     "upper": 2,
     "lower": 0,
-    "individual": 381.0,
-    "foreign": -9763.0,
-    "institution": 8689.0,
+    "individual": 285.0,
+    "foreign": -9677.0,
+    "institution": 8690.0,
     "prev_close": 5533.77,
     "open": 5403.17,
     "high": 5550.3,

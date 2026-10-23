@@ -3,7 +3,7 @@
   "name": "삼성전자",
   "peer_name": "SK하이닉스",
   "session_date": "2026-10-23",
-  "generated_at": "2026-10-23 17:31 KST",
+  "generated_at": "2026-10-23 21:36 KST",
   "summary": {
     "prev_close": 214500.0,
     "open": 206000.0,
@@ -15,11 +15,11 @@
     "c2c": 0.004662004662004726,
     "high_vs_open": 0.04611650485436902,
     "low_vs_open": -0.012135922330097082,
-    "volume": 16939471.0,
-    "volume_ratio": 0.9092350498417401,
+    "volume": 17377679.0,
+    "volume_ratio": 0.9327560956123576,
     "kospi_c2c": 0.0029870748328733043,
     "peer_c2c": 0.044153720359771054,
-    "usdkrw_chg": 0.0003395267418979664,
+    "usdkrw_chg": -0.0008750157584794804,
     "us_nights": 1,
     "sox_ret": -0.06723524369545197,
     "nasdaq_ret": -0.02598972605344818,
@@ -115,7 +115,15 @@
         "purpose": "임직원 주식보상",
         "rcept_no": "20260821000616"
       }
-    ]
+    ],
+    "foreign_pressure": {
+      "state": "turned_buying",
+      "previous_ratio": -0.12898565112359714,
+      "recent_ratio": 0.04537921585118723,
+      "previous_daily_net": -3064984.0,
+      "recent_daily_net": 728739.4
+    },
+    "buyback_transition": null
   },
   "classification": {
     "labels": [
@@ -139,18 +147,6 @@
       "score": 10.239858551957974,
       "news": [
         {
-          "time": "2026-10-23T08:17:37+09:00",
-          "title": "美 반도체 급락…프리마켓서 삼성전자 3%·SK하이닉스 2%↓",
-          "source": "뉴스1",
-          "link": "https://news.google.com/rss/articles/CBMiX0FVX3lxTE5fVkhZSFhNdlVka3Vla2Y0czlsRmUtNTYxTlpXdm1ya0Npay1WOUo2VVlZa0dWN2dYVi1sTU9JSkhjRlRTMUFma3dtdDZIc3NqSWZqM2FMaE9WcmtzSURB?oc=5"
-        },
-        {
-          "time": "2026-10-23T08:24:00+09:00",
-          "title": "삼성전자·SK하이닉스 프리마켓 하락, 반도체 대형주 흔들리나",
-          "source": "https://www.2news.co.kr/",
-          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTFBITHBSdkJRWkVlNHNjeVc0dVNBU1RTT01qbnFjcXJEaUZIT2VJcDFpdlNMc21XLXVqbTY4amYzeVlHMHdkUklybGRoUzg2cGJkeXJIZzg4RGhyalBEUVkzSEpVbUxiWVpU?oc=5"
-        },
-        {
           "time": "2026-10-23T09:10:29+09:00",
           "title": "美 반도체주 급락에 'S7' 동반하락…삼성전자 3%↓ - 머니투데이",
           "source": "머니투데이",
@@ -163,10 +159,10 @@
           "link": "https://news.google.com/rss/articles/CBMiakFVX3lxTE1aWTN1ZXRTNjFNM2tKS3N2cHczYWFXandicGxFTnFjM2MzdkdpWGNNd0xQMG5fQ3hjWDJnSWJuRWpTOHl6UnI0R0t0UEx5RFBCeFlOalh0WjlPZ0R2WVBjT3ZhYmQ5cU0tNFE?oc=5"
         },
         {
-          "time": "2026-10-23T08:15:00+09:00",
-          "title": "[포토] UAE 출장 마친 이재용 삼성전자 회장",
-          "source": "천지일보",
-          "link": "https://news.google.com/rss/articles/CBMiakFVX3lxTE15MlpERmJVNm1qRnVSWVVsbEZuVHU5Zm1uaHh4Tkxoekg4N19iLVA5SDdON2s0akdJdTNsaGI4X3RUdzhNUEZKNDRNa094Z2sweFNpMWpIUUNlUDlGbVk0b3pBX3hFMUdRZEE?oc=5"
+          "time": "2026-10-23T09:04:00+09:00",
+          "title": "BNK證 “삼성화재, 주주환원과 삼성전자 지분가치 고려하면 매력적인 방어주” - 조선비즈",
+          "source": "Chosunbiz",
+          "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxObUdJb3NwYTNuRDJkbkt0Qm12MTNTcWllcXlaREI5SUZjYjJmWXNjVVBGVVdMUFBYWjVTTHk5WndQR19oNDFCZEVzRlJJanZadUhpVmNrbXJ1UjI5VXY0LU5WSmdfOTlxaW1VZWNka0VZM3hyc2RNS3FLR1NhT1NUdE1VT3JONkNI0gGcAUFVX3lxTE9TcTRYa1MxSGVnbEExUlNkQUdWRE43Wkl6ZXlzWkJmZ0ZNYmNCcUwwbmVqbjlZNGpNUXZSajBlQ3ZKLWI1THJsV0pDN2dOMlhJXzN0TXRqVkVrSUJDNUVBVnNvRkFENWV2MU1tbDZ4OHh3NXVNbEZ1ekxnNVFmd25rV19qTWJFbU5WZWtCd003MV94NHNxT3hlTy1rVA?oc=5"
         }
       ]
     }
@@ -531,7 +527,7 @@
     {
       "time": "2026-10-23T14:45:00+09:00",
       "price": 214250.0,
-      "volume": 208572.0
+      "volume": 208246.0
     },
     {
       "time": "2026-10-23T14:50:00+09:00",
@@ -556,18 +552,6 @@
       "score": 10.239858551957974,
       "news": [
         {
-          "time": "2026-10-23T08:17:37+09:00",
-          "title": "美 반도체 급락…프리마켓서 삼성전자 3%·SK하이닉스 2%↓",
-          "source": "뉴스1",
-          "link": "https://news.google.com/rss/articles/CBMiX0FVX3lxTE5fVkhZSFhNdlVka3Vla2Y0czlsRmUtNTYxTlpXdm1ya0Npay1WOUo2VVlZa0dWN2dYVi1sTU9JSkhjRlRTMUFma3dtdDZIc3NqSWZqM2FMaE9WcmtzSURB?oc=5"
-        },
-        {
-          "time": "2026-10-23T08:24:00+09:00",
-          "title": "삼성전자·SK하이닉스 프리마켓 하락, 반도체 대형주 흔들리나",
-          "source": "https://www.2news.co.kr/",
-          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTFBITHBSdkJRWkVlNHNjeVc0dVNBU1RTT01qbnFjcXJEaUZIT2VJcDFpdlNMc21XLXVqbTY4amYzeVlHMHdkUklybGRoUzg2cGJkeXJIZzg4RGhyalBEUVkzSEpVbUxiWVpU?oc=5"
-        },
-        {
           "time": "2026-10-23T09:10:29+09:00",
           "title": "美 반도체주 급락에 'S7' 동반하락…삼성전자 3%↓ - 머니투데이",
           "source": "머니투데이",
@@ -580,10 +564,10 @@
           "link": "https://news.google.com/rss/articles/CBMiakFVX3lxTE1aWTN1ZXRTNjFNM2tKS3N2cHczYWFXandicGxFTnFjM2MzdkdpWGNNd0xQMG5fQ3hjWDJnSWJuRWpTOHl6UnI0R0t0UEx5RFBCeFlOalh0WjlPZ0R2WVBjT3ZhYmQ5cU0tNFE?oc=5"
         },
         {
-          "time": "2026-10-23T08:15:00+09:00",
-          "title": "[포토] UAE 출장 마친 이재용 삼성전자 회장",
-          "source": "천지일보",
-          "link": "https://news.google.com/rss/articles/CBMiakFVX3lxTE15MlpERmJVNm1qRnVSWVVsbEZuVHU5Zm1uaHh4Tkxoekg4N19iLVA5SDdON2s0akdJdTNsaGI4X3RUdzhNUEZKNDRNa094Z2sweFNpMWpIUUNlUDlGbVk0b3pBX3hFMUdRZEE?oc=5"
+          "time": "2026-10-23T09:04:00+09:00",
+          "title": "BNK證 “삼성화재, 주주환원과 삼성전자 지분가치 고려하면 매력적인 방어주” - 조선비즈",
+          "source": "Chosunbiz",
+          "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxObUdJb3NwYTNuRDJkbkt0Qm12MTNTcWllcXlaREI5SUZjYjJmWXNjVVBGVVdMUFBYWjVTTHk5WndQR19oNDFCZEVzRlJJanZadUhpVmNrbXJ1UjI5VXY0LU5WSmdfOTlxaW1VZWNka0VZM3hyc2RNS3FLR1NhT1NUdE1VT3JONkNI0gGcAUFVX3lxTE9TcTRYa1MxSGVnbEExUlNkQUdWRE43Wkl6ZXlzWkJmZ0ZNYmNCcUwwbmVqbjlZNGpNUXZSajBlQ3ZKLWI1THJsV0pDN2dOMlhJXzN0TXRqVkVrSUJDNUVBVnNvRkFENWV2MU1tbDZ4OHh3NXVNbEZ1ekxnNVFmd25rV19qTWJFbU5WZWtCd003MV94NHNxT3hlTy1rVA?oc=5"
         }
       ],
       "price": 206750.0,
@@ -604,18 +588,6 @@
       "link": "https://news.google.com/rss/articles/CBMiWEFVX3lxTE9sdlJXUzBDUlNxVmhMU3NvNjE1N2pGeWxHRm90al9tU2dxYlFIbGJaSVI0ZG1NWmFxbE0zTmpOWTRWR21nWVpxQTZieEpiREhSVXd0d1hoejY?oc=5"
     },
     {
-      "time": "2026-10-23T08:17:37+09:00",
-      "title": "美 반도체 급락…프리마켓서 삼성전자 3%·SK하이닉스 2%↓",
-      "source": "뉴스1",
-      "link": "https://news.google.com/rss/articles/CBMiX0FVX3lxTE5fVkhZSFhNdlVka3Vla2Y0czlsRmUtNTYxTlpXdm1ya0Npay1WOUo2VVlZa0dWN2dYVi1sTU9JSkhjRlRTMUFma3dtdDZIc3NqSWZqM2FMaE9WcmtzSURB?oc=5"
-    },
-    {
-      "time": "2026-10-23T08:24:00+09:00",
-      "title": "삼성전자·SK하이닉스 프리마켓 하락, 반도체 대형주 흔들리나",
-      "source": "https://www.2news.co.kr/",
-      "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTFBITHBSdkJRWkVlNHNjeVc0dVNBU1RTT01qbnFjcXJEaUZIT2VJcDFpdlNMc21XLXVqbTY4amYzeVlHMHdkUklybGRoUzg2cGJkeXJIZzg4RGhyalBEUVkzSEpVbUxiWVpU?oc=5"
-    },
-    {
       "time": "2026-10-23T08:15:00+09:00",
       "title": "[포토] 이재용 삼성전자 회장, 중동 출장 마치고 귀국",
       "source": "천지일보",
@@ -623,18 +595,6 @@
     }
   ],
   "top_news": [
-    {
-      "time": "2026-10-23T11:10:39+09:00",
-      "title": "마이크론 메모리반도체 기술 로드맵에 증권가 호평, 삼성전자 SK하이닉스와 경쟁 격화",
-      "source": "비즈니스포스트",
-      "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTFBLY08tbkJDNk5EYjNrRmFYc1ZJdW5NMTJOcUdPWTRUQTZhMUZiNEFKenJoSFFuc05oZEJMLWUxeDJ0MWVtTWRRVHQzZ1hpQlh1VnJLN1JhekVJQVVxQmpheUd0ZmN5RDdkMjhQOGt0Z0VvZm8?oc=5"
-    },
-    {
-      "time": "2026-10-23T10:57:00+09:00",
-      "title": "[리포트 브리핑]삼성화재, '높은 주주환원과 삼성전자 지분가치 및 특별배당 감안하면 방어주 및 배당주로도 매력적' 목표가 720,000원 - BNK투자증권",
-      "source": "뉴스핌",
-      "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTFBJdlNYSllTZ2dkeWFsU0g5Y2FwbDlDMjFERVQzZk52WjlzYnJLRkpWc3A3T1JPd3U1V0hMYnhacHRLcXVtTmNJN3V5X2ZiVUFvd042THUxaWpNcDF1?oc=5"
-    },
     {
       "time": "2026-10-23T14:13:00+09:00",
       "title": "삼성전자, 미국 텍사스 반도체 공장 추가 설비 투자 시작 - 보도",
@@ -654,19 +614,112 @@
       "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE05eFAwQmFOZEdIRWI4ck44Mm9iZmtWakZScGZMejNrZ19URUloYVZUbVl6WW8yTURVVmUzVi1oREw0STBpdS0xRTVwVFJxOE9BZl9LRXVDUVRiN2xmdkZrcNIBYEFVX3lxTE05eFAwQmFOZEdIRWI4ck44Mm9iZmtWakZScGZMejNrZ19URUloYVZUbVl6WW8yTURVVmUzVi1oREw0STBpdS0xRTVwVFJxOE9BZl9LRXVDUVRiN2xmdkZrcA?oc=5"
     },
     {
-      "time": "2026-10-23T16:00:29+09:00",
-      "title": "AI 투자 불안 딛고 코스피 상승 마감…솔리다임 상장 중단에 하닉 4%대↑[마켓시그널]",
-      "source": "서울경제",
-      "link": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE5RZldUa3czRTV2UkFnSTR2NWNhcE1KYVotal9TWF9SQlBkeXNNUnh0bVdIZXpCeUY4T2xJUWhpSzAwWGk5blgwWF96QlYxRVFlRWfSAVNBVV95cUxOYlRCcXpjTHpXdENqXy0zX1czLV91WEFJQ0NLeElRWTlNVzJBOTJkbkF3ZzNITXA2bzYyNkFFMGYwbjBPMkMtUE8zbnF2eVplYkg3MA?oc=5"
+      "time": "2026-10-23T16:25:21+09:00",
+      "title": "[오늘증시] 코스피, 장중 4% 급락 딛고 극적 반등 '5500선 방어'…반도체주가 지수 끌어올렸다",
+      "source": "Queen 이코노미퀸",
+      "link": "https://news.google.com/rss/articles/CBMiakFVX3lxTE5WaTBnaGswQUxsTDdUd0tOeWpaX0F0c2s3bEdDMUx1di05SkJjWHcwX0w2ZmZaN1hsMjBDNTZxeHg5elg5dDdSUktWOHJsUkZ6WTU3cFpORW4tSDhMUUJRWHZiWUI4SWswZUE?oc=5"
+    },
+    {
+      "time": "2026-10-23T07:25:31+09:00",
+      "title": "[단독]삼성전자, 美 상업용 위성 항법 스타트업 ‘Xona' 추가 투자",
+      "source": "더트래커",
+      "link": "https://news.google.com/rss/articles/CBMiWEFVX3lxTE9sdlJXUzBDUlNxVmhMU3NvNjE1N2pGeWxHRm90al9tU2dxYlFIbGJaSVI0ZG1NWmFxbE0zTmpOWTRWR21nWVpxQTZieEpiREhSVXd0d1hoejY?oc=5"
+    },
+    {
+      "time": "2026-10-23T09:10:29+09:00",
+      "title": "美 반도체주 급락에 'S7' 동반하락…삼성전자 3%↓ - 머니투데이",
+      "source": "머니투데이",
+      "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTFBTM2RKeERyT1RCYjVWVHMwSDMxRnVfWEdxeko1OUVEX0drVVk0Yk9wUVFWUS15RlVmVVkxN0h6UEhjeDE0R3dCZHMwRWV1NDdJREY3dWhxajVEQ1ltUG9icWJVU2dXY0st0gFuQVVfeXFMTzhKUWs1NHdYUDhFVTlBREp2YzNmVXBGNmJCQndPQVFnNjM2OHZTblpxNHNZbDljZ29tVXVvRUxfM1g5dWlQZFpHeXJBcFBzOGh0TklsRWVDMTV1MVNndk9GNHlhVDBOeDFrcExRTUE?oc=5"
     }
   ],
-  "disclosures": [],
+  "disclosures": [
+    {
+      "report_nm": "주식등의대량보유상황보고서(일반)",
+      "rcept_dt": "20261023",
+      "rcept_no": "20261023000484",
+      "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261023000484"
+    },
+    {
+      "report_nm": "임원ㆍ주요주주특정증권등소유상황보고서",
+      "rcept_dt": "20261023",
+      "rcept_no": "20261023000478",
+      "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261023000478"
+    }
+  ],
   "disclosure_note": null,
-  "flows": null,
-  "flow_story": null,
+  "flows": "외국인 -868,997 / 기관 +627,670",
+  "flow_story": {
+    "direction": "up",
+    "c2c": 0.004662004662004726,
+    "actors": [
+      {
+        "key": "foreign_net",
+        "name": "외국인",
+        "shares": -868997.0,
+        "won": -187268853500.0,
+        "vs_usual": 0.3668641266522346
+      },
+      {
+        "key": "inst_net",
+        "name": "기관",
+        "shares": 627670.0,
+        "won": 135262885000.0,
+        "vs_usual": 0.48599979589665554
+      },
+      {
+        "key": "indiv_net",
+        "name": "개인",
+        "shares": -61043.0,
+        "won": -13154766500.0,
+        "vs_usual": 0.020637232142254942
+      },
+      {
+        "key": "other_net",
+        "name": "기타 법인 등(추정)",
+        "shares": 302370.0,
+        "won": 65160735000.0,
+        "vs_usual": null
+      }
+    ],
+    "lead": {
+      "key": "inst_net",
+      "name": "기관",
+      "shares": 627670.0,
+      "won": 135262885000.0,
+      "vs_usual": 0.48599979589665554
+    },
+    "counter": {
+      "key": "foreign_net",
+      "name": "외국인",
+      "shares": -868997.0,
+      "won": -187268853500.0,
+      "vs_usual": 0.3668641266522346
+    },
+    "all_one_side": false,
+    "observations": [
+      "전일까지 20거래일 고점: 종가 돌파 없음 · 종가 위치 -24.52%.",
+      "전일까지 60거래일 고점: 종가 돌파 없음 · 종가 위치 -25.17%.",
+      "같은 5거래일 수익률: 이 종목 +0.00%, SK하이닉스 +0.39% · 차이 -0.39%p.",
+      "같은 20거래일 수익률: 이 종목 -21.35%, SK하이닉스 -31.64% · 차이 +10.29%p.",
+      "같은 60거래일 수익률: 이 종목 -13.63%, SK하이닉스 -27.39% · 차이 +13.76%p.",
+      "외국인 5일 합계 순매수 전환: 직전 5일 → 최근 5일 순매수/거래량 -12.90% → +4.54% (일평균 -3,064,984주 → +728,739주). 향후 상승을 뜻하는 신호는 아닙니다.",
+      "코스피도 +0.30% — 시장 전체가 같은 방향이었습니다.",
+      "SK하이닉스 +4.42% — 반도체 업종이 함께 움직였습니다.",
+      "전날 밤 SOX는 -6.72%로 반대 방향이어서 미국 반도체 흐름으로는 설명되지 않습니다.",
+      "전날 밤 마이크론은 -6.26%로 반대 방향이었습니다.",
+      "종가가 당일 범위(저가 203,500~고가 215,500원)의 위쪽 100% 지점 — 고가 부근에서 마감했습니다.",
+      "마이크론은 미국 정규장 마감 뒤 시간외에서 -1.32%(장중 -1.93%~+0.40%) — 정규장 등락에 안 보이는 반응입니다.",
+      "우리 장중(09:00~15:30) 나스닥100 선물 +0.57% · 미 10년물 국채 선물 -0.18%(금리 상승) · 원/달러 -0.06%.",
+      "자사주 매입 기간 중(직접 취득 2026-08-24~2026-11-21, 14,999,999,992,000, DART 공시) — 회사 자신의 매수는 기타 법인으로 잡힙니다.",
+      "기타 법인 등(추정) 순매수 +652억원 — 회사의 자사주 매입 기간이라 회사 매입과 맞는 모양입니다."
+    ],
+    "estimated_indiv": false,
+    "source_note": "출처 naver+cache · 장 마감 직후 잠정치라 저녁 확정치와 다를 수 있습니다 · KRX는 받지 못함(pykrx 미설치)"
+  },
   "flow_status": {
-    "state": "pending",
-    "detail": "최신 2026-10-22"
+    "state": "ok",
+    "detail": "naver+cache",
+    "krx_error": "pykrx 미설치"
   },
   "context": {},
   "market": {
@@ -677,9 +730,9 @@
     "steady": 23,
     "upper": 2,
     "lower": 0,
-    "individual": 264.0,
-    "foreign": -9657.0,
-    "institution": 8677.0,
+    "individual": 422.0,
+    "foreign": -9811.0,
+    "institution": 8682.0,
     "prev_close": 5533.77,
     "open": 5403.17,
     "high": 5550.3,

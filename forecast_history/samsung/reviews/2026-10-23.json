@@ -3,7 +3,7 @@
   "name": "삼성전자",
   "peer_name": "SK하이닉스",
   "session_date": "2026-10-23",
-  "generated_at": "2026-10-23 16:46 KST",
+  "generated_at": "2026-10-23 17:31 KST",
   "summary": {
     "prev_close": 214500.0,
     "open": 206000.0,
@@ -15,11 +15,11 @@
     "c2c": 0.004662004662004726,
     "high_vs_open": 0.04611650485436902,
     "low_vs_open": -0.012135922330097082,
-    "volume": 16834961.0,
-    "volume_ratio": 0.9036254204112247,
+    "volume": 16939471.0,
+    "volume_ratio": 0.9092350498417401,
     "kospi_c2c": 0.0029870748328733043,
     "peer_c2c": 0.044153720359771054,
-    "usdkrw_chg": 0.0005959905271395449,
+    "usdkrw_chg": 0.0003395267418979664,
     "us_nights": 1,
     "sox_ret": -0.06723524369545197,
     "nasdaq_ret": -0.02598972605344818,
@@ -151,12 +151,6 @@
           "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTFBITHBSdkJRWkVlNHNjeVc0dVNBU1RTT01qbnFjcXJEaUZIT2VJcDFpdlNMc21XLXVqbTY4amYzeVlHMHdkUklybGRoUzg2cGJkeXJIZzg4RGhyalBEUVkzSEpVbUxiWVpU?oc=5"
         },
         {
-          "time": "2026-10-23T08:30:08+09:00",
-          "title": "美 기술주 폭락, 코스피 톱 110 모두 '파란불'...삼성전자 4% ↓",
-          "source": "오피니언뉴스",
-          "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTFA3RUJKaHhha0daX1AzQmJYU3Z0blhWYnpqblJJV1o4U25LU3pEYnZIOXlrTG5zd0hqZkc0RlBycDU3eFI2c1RGSExHR1NXRks0ek5uUTVabEhyWUlkUFlMaWlVMlJ4VEpMeFphenNfU3Y?oc=5"
-        },
-        {
           "time": "2026-10-23T09:10:29+09:00",
           "title": "美 반도체주 급락에 'S7' 동반하락…삼성전자 3%↓ - 머니투데이",
           "source": "머니투데이",
@@ -167,6 +161,12 @@
           "title": "[포토] 이재용 삼성전자 회장, 중동 출장 마치고 귀국",
           "source": "천지일보",
           "link": "https://news.google.com/rss/articles/CBMiakFVX3lxTE1aWTN1ZXRTNjFNM2tKS3N2cHczYWFXandicGxFTnFjM2MzdkdpWGNNd0xQMG5fQ3hjWDJnSWJuRWpTOHl6UnI0R0t0UEx5RFBCeFlOalh0WjlPZ0R2WVBjT3ZhYmQ5cU0tNFE?oc=5"
+        },
+        {
+          "time": "2026-10-23T08:15:00+09:00",
+          "title": "[포토] UAE 출장 마친 이재용 삼성전자 회장",
+          "source": "천지일보",
+          "link": "https://news.google.com/rss/articles/CBMiakFVX3lxTE15MlpERmJVNm1qRnVSWVVsbEZuVHU5Zm1uaHh4Tkxoekg4N19iLVA5SDdON2s0akdJdTNsaGI4X3RUdzhNUEZKNDRNa094Z2sweFNpMWpIUUNlUDlGbVk0b3pBX3hFMUdRZEE?oc=5"
         }
       ]
     }
@@ -568,12 +568,6 @@
           "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTFBITHBSdkJRWkVlNHNjeVc0dVNBU1RTT01qbnFjcXJEaUZIT2VJcDFpdlNMc21XLXVqbTY4amYzeVlHMHdkUklybGRoUzg2cGJkeXJIZzg4RGhyalBEUVkzSEpVbUxiWVpU?oc=5"
         },
         {
-          "time": "2026-10-23T08:30:08+09:00",
-          "title": "美 기술주 폭락, 코스피 톱 110 모두 '파란불'...삼성전자 4% ↓",
-          "source": "오피니언뉴스",
-          "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTFA3RUJKaHhha0daX1AzQmJYU3Z0blhWYnpqblJJV1o4U25LU3pEYnZIOXlrTG5zd0hqZkc0RlBycDU3eFI2c1RGSExHR1NXRks0ek5uUTVabEhyWUlkUFlMaWlVMlJ4VEpMeFphenNfU3Y?oc=5"
-        },
-        {
           "time": "2026-10-23T09:10:29+09:00",
           "title": "美 반도체주 급락에 'S7' 동반하락…삼성전자 3%↓ - 머니투데이",
           "source": "머니투데이",
@@ -584,6 +578,12 @@
           "title": "[포토] 이재용 삼성전자 회장, 중동 출장 마치고 귀국",
           "source": "천지일보",
           "link": "https://news.google.com/rss/articles/CBMiakFVX3lxTE1aWTN1ZXRTNjFNM2tKS3N2cHczYWFXandicGxFTnFjM2MzdkdpWGNNd0xQMG5fQ3hjWDJnSWJuRWpTOHl6UnI0R0t0UEx5RFBCeFlOalh0WjlPZ0R2WVBjT3ZhYmQ5cU0tNFE?oc=5"
+        },
+        {
+          "time": "2026-10-23T08:15:00+09:00",
+          "title": "[포토] UAE 출장 마친 이재용 삼성전자 회장",
+          "source": "천지일보",
+          "link": "https://news.google.com/rss/articles/CBMiakFVX3lxTE15MlpERmJVNm1qRnVSWVVsbEZuVHU5Zm1uaHh4Tkxoekg4N19iLVA5SDdON2s0akdJdTNsaGI4X3RUdzhNUEZKNDRNa094Z2sweFNpMWpIUUNlUDlGbVk0b3pBX3hFMUdRZEE?oc=5"
         }
       ],
       "price": 206750.0,
@@ -616,10 +616,10 @@
       "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTFBITHBSdkJRWkVlNHNjeVc0dVNBU1RTT01qbnFjcXJEaUZIT2VJcDFpdlNMc21XLXVqbTY4amYzeVlHMHdkUklybGRoUzg2cGJkeXJIZzg4RGhyalBEUVkzSEpVbUxiWVpU?oc=5"
     },
     {
-      "time": "2026-10-23T08:30:08+09:00",
-      "title": "美 기술주 폭락, 코스피 톱 110 모두 '파란불'...삼성전자 4% ↓",
-      "source": "오피니언뉴스",
-      "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTFA3RUJKaHhha0daX1AzQmJYU3Z0blhWYnpqblJJV1o4U25LU3pEYnZIOXlrTG5zd0hqZkc0RlBycDU3eFI2c1RGSExHR1NXRks0ek5uUTVabEhyWUlkUFlMaWlVMlJ4VEpMeFphenNfU3Y?oc=5"
+      "time": "2026-10-23T08:15:00+09:00",
+      "title": "[포토] 이재용 삼성전자 회장, 중동 출장 마치고 귀국",
+      "source": "천지일보",
+      "link": "https://news.google.com/rss/articles/CBMiakFVX3lxTE1aWTN1ZXRTNjFNM2tKS3N2cHczYWFXandicGxFTnFjM2MzdkdpWGNNd0xQMG5fQ3hjWDJnSWJuRWpTOHl6UnI0R0t0UEx5RFBCeFlOalh0WjlPZ0R2WVBjT3ZhYmQ5cU0tNFE?oc=5"
     }
   ],
   "top_news": [
@@ -677,9 +677,9 @@
     "steady": 23,
     "upper": 2,
     "lower": 0,
-    "individual": 285.0,
-    "foreign": -9677.0,
-    "institution": 8690.0,
+    "individual": 264.0,
+    "foreign": -9657.0,
+    "institution": 8677.0,
     "prev_close": 5533.77,
     "open": 5403.17,
     "high": 5550.3,

@@ -3,7 +3,7 @@
   "name": "SK하이닉스",
   "peer_name": "삼성전자",
   "session_date": "2026-10-23",
-  "generated_at": "2026-10-23 16:46 KST",
+  "generated_at": "2026-10-23 17:31 KST",
   "summary": {
     "prev_close": 1223000.0,
     "open": 1200000.0,
@@ -15,11 +15,11 @@
     "c2c": 0.044153720359771054,
     "high_vs_open": 0.07000000000000006,
     "low_vs_open": -0.02416666666666667,
-    "volume": 3891976.0,
-    "volume_ratio": 1.137866587272793,
+    "volume": 3915526.0,
+    "volume_ratio": 1.1447517166081935,
     "kospi_c2c": 0.0029870748328733043,
     "peer_c2c": 0.004662004662004726,
-    "usdkrw_chg": 0.0002565558727767314,
+    "usdkrw_chg": 0.000286668496752851,
     "us_nights": 1,
     "sox_ret": -0.06723524369545197,
     "nasdaq_ret": -0.02598972605344818,
@@ -142,38 +142,7 @@
       "cum_after": -0.004166666666666652,
       "session_share": -0.3981655942265977,
       "score": 6.198355849760547,
-      "news": [
-        {
-          "time": "2026-10-23T08:31:03+09:00",
-          "title": "SK하이닉스, 솔리다임 美상장 전격 중단…프리마켓 주가 관망",
-          "source": "비즈워치",
-          "link": "https://news.google.com/rss/articles/CBMiakFVX3lxTE55cWxHWWpiSWVzb195SG5oR0gwS2NVeGxHNnBmQjd2QjUwY1Bhc2NEdUR3elNONGpwa1RkbXdYSm9MQVB1dXJDODROQkY0eFFFcVJoT0wzazhWSXhPSzV5bFU2UHZ3Y3d2Smc?oc=5"
-        },
-        {
-          "time": "2026-10-23T07:38:00+09:00",
-          "title": "SK하이닉스, 솔리다임 프리IPO 및 IPO 검토 중단…\"주주 이익 모색\"",
-          "source": "JTBC",
-          "link": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE9RdlNkTi1XN1hYeTJfYXFELVM5Z044OGJEekE4NUFCUTZtOFVMYmlaZm5OSnNKNU82d01CdEpiTjdYcXV0Vk1oem94YVdiUUxqNXFlWg?oc=5"
-        },
-        {
-          "time": "2026-10-23T07:40:00+09:00",
-          "title": "[속보]SK하이닉스, ‘중복상장 논란’ 솔리다임 미 상장 추진 중단",
-          "source": "경향신문",
-          "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE1kcVItWVpLRTFNSERfcEVRcUd1V2FJVVp6VGtsQUIwTDNLbDkyb0hic2x1QkRpUVdzdmlRTHhPYXQzUXBMbUVBSnBrLVJSZkZqRERiNkZ4WmVsQdIBX0FVX3lxTE9jSHpYYVlRakZOQWFKMEk1Y1hDRERqbHFZOVJLTlpNVHFZbmhWdXptSjNuUGJXYUxFUjhwdXVOcFBxdGRoZk5PZjNVQ09tcFEyWmVxeGt0azd6aHpkbmpv?oc=5"
-        },
-        {
-          "time": "2026-10-23T07:41:00+09:00",
-          "title": "중복상장 논란에... SK하이닉스, 솔리다임 美상장 중단",
-          "source": "조선일보",
-          "link": "https://news.google.com/rss/articles/CBMigwFBVV95cUxQZ2V3ZXN0YWU1QjBLRTVsckcxTHNrdjZhVU43dWNneExoWXRLSFJLUVl5VDBCTEl2TXRsUzVFbDVQcEtocmdpNkhWN0NLNUwxZVJzbVFfMzJ5UFRHM0djdDRTN3VLZjA4aENuUlplOFVBUXpVZDE5R2RkSWVRdEFTcUo1UQ?oc=5"
-        },
-        {
-          "time": "2026-10-23T07:43:00+09:00",
-          "title": "[속보] SK하이닉스, 솔리다임 IPO 검토 중단···“금융시장 상황 고려”",
-          "source": "경향신문",
-          "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE95d2NwbldPeS1TUW1XU1AxRktkMEE0Q2xiX1QzbEJKU2hhVllEYzBNU1ZKY21ZODRPZHMwZXZzT2xaR0NUZUdCMVdGZV9nTXl4aXZZZllkT054QdIBX0FVX3lxTE1BU3hlUDk3OEx1MkF0MUFJZ1puVjIzX1RBNFQxREhYRkJmRmlnME5Xb3I4QmNCVmRCT21KZ3FzNXVpOXpFa2wyVWpCRGY5X2IwS0JBbWVIa0dKc1hjcGc4?oc=5"
-        }
-      ]
+      "news": []
     }
   ],
   "turning_point": {
@@ -559,112 +528,13 @@
       "cum_after": -0.004166666666666652,
       "session_share": -0.3981655942265977,
       "score": 6.198355849760547,
-      "news": [
-        {
-          "time": "2026-10-23T08:31:03+09:00",
-          "title": "SK하이닉스, 솔리다임 美상장 전격 중단…프리마켓 주가 관망",
-          "source": "비즈워치",
-          "link": "https://news.google.com/rss/articles/CBMiakFVX3lxTE55cWxHWWpiSWVzb195SG5oR0gwS2NVeGxHNnBmQjd2QjUwY1Bhc2NEdUR3elNONGpwa1RkbXdYSm9MQVB1dXJDODROQkY0eFFFcVJoT0wzazhWSXhPSzV5bFU2UHZ3Y3d2Smc?oc=5"
-        },
-        {
-          "time": "2026-10-23T07:38:00+09:00",
-          "title": "SK하이닉스, 솔리다임 프리IPO 및 IPO 검토 중단…\"주주 이익 모색\"",
-          "source": "JTBC",
-          "link": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE9RdlNkTi1XN1hYeTJfYXFELVM5Z044OGJEekE4NUFCUTZtOFVMYmlaZm5OSnNKNU82d01CdEpiTjdYcXV0Vk1oem94YVdiUUxqNXFlWg?oc=5"
-        },
-        {
-          "time": "2026-10-23T07:40:00+09:00",
-          "title": "[속보]SK하이닉스, ‘중복상장 논란’ 솔리다임 미 상장 추진 중단",
-          "source": "경향신문",
-          "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE1kcVItWVpLRTFNSERfcEVRcUd1V2FJVVp6VGtsQUIwTDNLbDkyb0hic2x1QkRpUVdzdmlRTHhPYXQzUXBMbUVBSnBrLVJSZkZqRERiNkZ4WmVsQdIBX0FVX3lxTE9jSHpYYVlRakZOQWFKMEk1Y1hDRERqbHFZOVJLTlpNVHFZbmhWdXptSjNuUGJXYUxFUjhwdXVOcFBxdGRoZk5PZjNVQ09tcFEyWmVxeGt0azd6aHpkbmpv?oc=5"
-        },
-        {
-          "time": "2026-10-23T07:41:00+09:00",
-          "title": "중복상장 논란에... SK하이닉스, 솔리다임 美상장 중단",
-          "source": "조선일보",
-          "link": "https://news.google.com/rss/articles/CBMigwFBVV95cUxQZ2V3ZXN0YWU1QjBLRTVsckcxTHNrdjZhVU43dWNneExoWXRLSFJLUVl5VDBCTEl2TXRsUzVFbDVQcEtocmdpNkhWN0NLNUwxZVJzbVFfMzJ5UFRHM0djdDRTN3VLZjA4aENuUlplOFVBUXpVZDE5R2RkSWVRdEFTcUo1UQ?oc=5"
-        },
-        {
-          "time": "2026-10-23T07:43:00+09:00",
-          "title": "[속보] SK하이닉스, 솔리다임 IPO 검토 중단···“금융시장 상황 고려”",
-          "source": "경향신문",
-          "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE95d2NwbldPeS1TUW1XU1AxRktkMEE0Q2xiX1QzbEJKU2hhVllEYzBNU1ZKY21ZODRPZHMwZXZzT2xaR0NUZUdCMVdGZV9nTXl4aXZZZllkT054QdIBX0FVX3lxTE1BU3hlUDk3OEx1MkF0MUFJZ1puVjIzX1RBNFQxREhYRkJmRmlnME5Xb3I4QmNCVmRCT21KZ3FzNXVpOXpFa2wyVWpCRGY5X2IwS0JBbWVIa0dKc1hjcGc4?oc=5"
-        }
-      ],
+      "news": [],
       "price": 1195000.0,
       "kind": "turn_down"
     }
   ],
-  "overnight_news": [
-    {
-      "time": "2026-10-23T08:31:03+09:00",
-      "title": "SK하이닉스, 솔리다임 美상장 전격 중단…프리마켓 주가 관망",
-      "source": "비즈워치",
-      "link": "https://news.google.com/rss/articles/CBMiakFVX3lxTE55cWxHWWpiSWVzb195SG5oR0gwS2NVeGxHNnBmQjd2QjUwY1Bhc2NEdUR3elNONGpwa1RkbXdYSm9MQVB1dXJDODROQkY0eFFFcVJoT0wzazhWSXhPSzV5bFU2UHZ3Y3d2Smc?oc=5"
-    },
-    {
-      "time": "2026-10-23T03:00:02+09:00",
-      "title": "[단독] SK하이닉스, 솔리다임 美 상장 전격 철회",
-      "source": "한국경제",
-      "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE1HejhZSGo1b1Rya2NkNVZ6ZDJieWpKeXJSZ1UwektCTDd6bkotSk5BeUpXRkFlc1NfV0VlTHYwQm54RXhuNzNtZTRLUWFfeFBhM0lOY3FKcDJDZw?oc=5"
-    },
-    {
-      "time": "2026-10-23T07:38:00+09:00",
-      "title": "SK하이닉스, 솔리다임 프리IPO 및 IPO 검토 중단…\"주주 이익 모색\"",
-      "source": "JTBC",
-      "link": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE9RdlNkTi1XN1hYeTJfYXFELVM5Z044OGJEekE4NUFCUTZtOFVMYmlaZm5OSnNKNU82d01CdEpiTjdYcXV0Vk1oem94YVdiUUxqNXFlWg?oc=5"
-    },
-    {
-      "time": "2026-10-23T07:40:00+09:00",
-      "title": "[속보]SK하이닉스, ‘중복상장 논란’ 솔리다임 미 상장 추진 중단",
-      "source": "경향신문",
-      "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE1kcVItWVpLRTFNSERfcEVRcUd1V2FJVVp6VGtsQUIwTDNLbDkyb0hic2x1QkRpUVdzdmlRTHhPYXQzUXBMbUVBSnBrLVJSZkZqRERiNkZ4WmVsQdIBX0FVX3lxTE9jSHpYYVlRakZOQWFKMEk1Y1hDRERqbHFZOVJLTlpNVHFZbmhWdXptSjNuUGJXYUxFUjhwdXVOcFBxdGRoZk5PZjNVQ09tcFEyWmVxeGt0azd6aHpkbmpv?oc=5"
-    },
-    {
-      "time": "2026-10-23T07:41:00+09:00",
-      "title": "중복상장 논란에... SK하이닉스, 솔리다임 美상장 중단",
-      "source": "조선일보",
-      "link": "https://news.google.com/rss/articles/CBMigwFBVV95cUxQZ2V3ZXN0YWU1QjBLRTVsckcxTHNrdjZhVU43dWNneExoWXRLSFJLUVl5VDBCTEl2TXRsUzVFbDVQcEtocmdpNkhWN0NLNUwxZVJzbVFfMzJ5UFRHM0djdDRTN3VLZjA4aENuUlplOFVBUXpVZDE5R2RkSWVRdEFTcUo1UQ?oc=5"
-    }
-  ],
-  "top_news": [
-    {
-      "time": "2026-10-23T11:30:45+09:00",
-      "title": "솔리다임 IPO 접은 SK하이닉스…美 낸드 투자 재원 확보 '새 과제’",
-      "source": "블로터",
-      "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE96WUEtNUI3MV9ObE5GNXA2R3RfR3NmTUY0bVdDVXV5NXRTcVBGSHZ6OWE4cU9USFVfUVBGSW94YmRrLXFZVTZDZFRfWnJWWUdTQ1JqY28teUJsYU5mR2Z0al92d3FtVlc4ZUZyZ9IBbEFVX3lxTE96WUEtNUI3MV9ObE5GNXA2R3RfR3NmTUY0bVdDVXV5NXRTcVBGSHZ6OWE4cU9USFVfUVBGSW94YmRrLXFZVTZDZFRfWnJWWUdTQ1JqY28teUJsYU5mR2Z0al92d3FtVlc4ZUZyZw?oc=5"
-    },
-    {
-      "time": "2026-10-23T13:43:36+09:00",
-      "title": "낸드값 치솟는데…SK하이닉스, 투자 '골든타임' 놓치나 - 머니투데이",
-      "source": "머니투데이",
-      "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE94enpaNTlhblhyVUpHLTdQR0tOTFRHSGJSZnZwYUl4cWJUNDFyVWhwV216OWZ5cGtMOFVqMGRsOUZXNElNLUZWVndONDFTODV3aklHeEtPalRjVGNDTnNxVWdLQzU4NTNqdGlYS9IBckFVX3lxTE5obkRzUXBiYjUxSDNYS3FfZ1gtRUdzdnlHM1BTck5LaGpXZi1jYnZvWkpxRGZUQ1pBNk92a1Z4ejhmWmJRVlEtM2YxMEltcmU2WFk2VW1NQzZra3lReFRhWEtMRnFHc0ZGcTJTNnJDWWsxZw?oc=5"
-    },
-    {
-      "time": "2026-10-23T14:17:00+09:00",
-      "title": "SK하이닉스, 솔리다임 IPO 검토 중단···증권가는 ‘주주가치 제고’ 기대 By 투데이코리아",
-      "source": "Investing.com 한국어",
-      "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE5qT01TZGM0bEdLOFAzaXdFbG5aVEJfbjlpOVdvUUdObTZBNFVXTkhUR0dWTXdPMFRwNGk4V1lBTl9Fd3JFellsUnB5S3dQdjRncTNZNE9oVF9rZEdZclppNG92Wjg0Y20zUzhwdlItVTE?oc=5"
-    },
-    {
-      "time": "2026-10-23T14:25:00+09:00",
-      "title": "[카드뉴스] SK하이닉스 결단 떴다! 'SOL AI반도체TOP2플러스' 향방은?",
-      "source": "인포스탁데일리",
-      "link": "https://news.google.com/rss/articles/CBMidkFVX3lxTE5kamtEQUxqdm5UNjBZdmFsV281eVlFUW1UUTc3VXFYN0g1NnF1VjBMbjR0S0RodVhBM19pNW93V2ZKTnRvZGlHZHNfVDl1dG1FZ3NYdGtVUXZvREtiU0tIeXk2cmU3R0JfZDEzVmhUdlhHQzN6d1E?oc=5"
-    },
-    {
-      "time": "2026-10-23T15:38:50+09:00",
-      "title": "[마감시황] ‘AI 쇼크'에 4% 밀렸던 코스피, 막판 반전…SK하이닉스 4%↑",
-      "source": "메트로신문",
-      "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE5BZzNfei1OUmxYb3R0SkR1V2s1SWtMZ3YyY1NPanVFYjlTTUJTd1Y1TnVPYnJsaG5xN2I4WktwemRSVzNmMkVBd1ppNXh0N05kM2pDYWRDT19uVVBFM1FVRw?oc=5"
-    },
-    {
-      "time": "2026-10-23T16:34:40+09:00",
-      "title": "美 빅테크 'AI 충격'에도 코스피 반등…SK하이닉스 '구원투수'",
-      "source": "청년일보",
-      "link": "https://news.google.com/rss/articles/CBMiakFVX3lxTE9RMTRZUlV2YTBvY1llRDhkazhZSWRqUnNfVkJNaVlqZGcxYndubkVYdXdBQURJS28tbnVkRkhOSDJPM1ZKZmhuYlFTRndiYnR5MWFjWTZ6TE0zZ3BJeV9GM01VSGVBckdQYUE?oc=5"
-    }
-  ],
+  "overnight_news": [],
+  "top_news": [],
   "disclosures": [
     {
       "report_nm": "풍문또는보도에대한해명",
@@ -689,9 +559,9 @@
     "steady": 23,
     "upper": 2,
     "lower": 0,
-    "individual": 285.0,
-    "foreign": -9677.0,
-    "institution": 8690.0,
+    "individual": 264.0,
+    "foreign": -9657.0,
+    "institution": 8677.0,
     "prev_close": 5533.77,
     "open": 5403.17,
     "high": 5550.3,

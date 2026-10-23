@@ -3,7 +3,7 @@
   "name": "삼성전자",
   "peer_name": "SK하이닉스",
   "session_date": "2026-10-23",
-  "generated_at": "2026-10-23 16:21 KST",
+  "generated_at": "2026-10-23 16:46 KST",
   "summary": {
     "prev_close": 214500.0,
     "open": 206000.0,
@@ -15,11 +15,11 @@
     "c2c": 0.004662004662004726,
     "high_vs_open": 0.04611650485436902,
     "low_vs_open": -0.012135922330097082,
-    "volume": 15558058.0,
-    "volume_ratio": 0.835086977690784,
+    "volume": 16834961.0,
+    "volume_ratio": 0.9036254204112247,
     "kospi_c2c": 0.0029870748328733043,
     "peer_c2c": 0.044153720359771054,
-    "usdkrw_chg": 0.0006186440607729438,
+    "usdkrw_chg": 0.0005959905271395449,
     "us_nights": 1,
     "sox_ret": -0.06723524369545197,
     "nasdaq_ret": -0.02598972605344818,
@@ -642,16 +642,16 @@
       "link": "https://news.google.com/rss/articles/CBMid0FVX3lxTFB6a1dsRURzQmJqRVZXM3ZhX09QWFNtcVFDUDh0WlhHMkJzSnJrOWhRekt5WFFBRmw4Tjd4S1JoOEJCYmVJOGwzQ0pBVG02bURyeUtBZDJhbjd1Q0t1UE9ycGtBdnY0MXEycWNiNF9SYWt3QVgwQ0hF?oc=5"
     },
     {
+      "time": "2026-10-23T16:34:26+09:00",
+      "title": "“3분기 투자 손실? 걱정 마…삼성화재, 4분기 삼성전자 배당 6800억 터진다”",
+      "source": "뉴스퀘스트",
+      "link": "https://news.google.com/rss/articles/CBMib0FVX3lxTE40LTY2VUhtTEIxcV9ZY1pOdk13ZmtPWkxTYUpqNG1yT0Z2UVIzZENSRzVXOWw1M1pGdi1zaHlNZnNnZkt5TkJ2V0V6MjljRG9iaEJUcUtiMTZucjJ4VlBhb0Q3Z0RncVozUHc5alJYYw?oc=5"
+    },
+    {
       "time": "2026-10-23T09:21:33+09:00",
       "title": "[특징주] 반도체주, AI 투자 수익성 우려 지속에 장 초반 급락",
       "source": "연합뉴스",
       "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE05eFAwQmFOZEdIRWI4ck44Mm9iZmtWakZScGZMejNrZ19URUloYVZUbVl6WW8yTURVVmUzVi1oREw0STBpdS0xRTVwVFJxOE9BZl9LRXVDUVRiN2xmdkZrcNIBYEFVX3lxTE05eFAwQmFOZEdIRWI4ck44Mm9iZmtWakZScGZMejNrZ19URUloYVZUbVl6WW8yTURVVmUzVi1oREw0STBpdS0xRTVwVFJxOE9BZl9LRXVDUVRiN2xmdkZrcA?oc=5"
-    },
-    {
-      "time": "2026-10-23T12:51:30+09:00",
-      "title": "D램 쇼티지가 부른 HBM 설계 변화… 삼성 파운드리 주목받는 까닭",
-      "source": "디지털데일리",
-      "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE1rVlFxYmY2UWtvbHVXTzdpdl90VjRMeHRzM2psSnduaC1aSmR3aTNmUTMxOVM0SG5fSXhOS1NqNnc2N2kyT2JxeHV2aVpaa3pyRUlpczdVcWhqZC1GZ2RkWkN5b0g?oc=5"
     },
     {
       "time": "2026-10-23T16:00:29+09:00",
@@ -677,9 +677,9 @@
     "steady": 23,
     "upper": 2,
     "lower": 0,
-    "individual": 381.0,
-    "foreign": -9763.0,
-    "institution": 8689.0,
+    "individual": 285.0,
+    "foreign": -9677.0,
+    "institution": 8690.0,
     "prev_close": 5533.77,
     "open": 5403.17,
     "high": 5550.3,

@@ -412,9 +412,16 @@ def forecast_svg(series, ahead, months=48, width=900, height=340, overlay=None,
     labels = ""
     step = max(len(points) // 6, 1)
     for i, (month, _) in enumerate(points):
-        if i % step == 0:
+        # 긴 이력에서는 7월 눈금이 9월 경계선에 붙어 현재처럼 보였다(2026-10-23).
+        # 경계선 날짜를 따로 적고 그 주변의 일반 눈금은 생략한다.
+        if i % step == 0 and x_of(i) < bridge_x - 75:
             labels += (f'<text x="{x_of(i):.1f}" y="{height - bottom + 18}" text-anchor="middle" '
                        f'font-size="10" fill="#8a9199">{month}</text>')
+    labels += (f'<text data-role="latest-observation-month" x="{bridge_x:.1f}" '
+               f'y="{height - bottom + 18}" text-anchor="end" font-size="10" '
+               f'font-weight="700" fill="#4c78a8">{points[-1][0]}</text>'
+               f'<text x="{bridge_x:.1f}" y="{height - bottom + 31}" text-anchor="end" '
+               f'font-size="9" fill="#4c78a8">최근 관측월</text>')
     # 전망 점은 모두 찍되 **숫자와 달은 1·3·6개월에만** 적는다. 여섯 달을 다 적으면 겹친다.
     marks = ""
     for i, (month, v, _, _) in enumerate(future):

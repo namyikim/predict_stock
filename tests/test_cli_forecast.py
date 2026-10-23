@@ -258,6 +258,25 @@ class OverlayOutlookTests(unittest.TestCase):
 
 
 class ChartTests(unittest.TestCase):
+    def test_latest_observation_label_matches_boundary_not_nearby_tick(self):
+        """장기 축의 7월 눈금이 9월 경계선 날짜처럼 보이던 회귀를 막는다."""
+        import xml.etree.ElementTree as ET
+        series = pd.Series(np.linspace(99, 101, 321),
+                           index=pd.date_range("2000-01-01", periods=321, freq="MS"))
+        ahead = pd.DataFrame([{"month": f"{series.index[-1] + pd.DateOffset(months=h):%Y-%m}",
+                               "point": 101., "low": None, "high": None}
+                              for h in range(1, 7)])
+        root = ET.fromstring(cf.forecast_svg(series, ahead, start="2000-01"))
+        ns = {"s": "http://www.w3.org/2000/svg"}
+        boundary = root.find("s:line[@stroke-dasharray='2 3']", ns)
+        label = root.find("s:text[@data-role='latest-observation-month']", ns)
+        self.assertIsNotNone(label)
+        self.assertEqual(label.text, "2026-09")
+        self.assertEqual(label.get("x"), boundary.get("x1"))
+        texts = [n.text for n in root.findall("s:text", ns)]
+        self.assertNotIn("2026-07", texts)
+        self.assertIn("최근 관측월", texts)
+
     def test_the_chart_separates_confirmed_from_forecast(self):
         series = monthly(np.linspace(100.0, 100.5, 60))
         table = cf.walk_forward(series, [], min_train=40, lags=2)

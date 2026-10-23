@@ -864,6 +864,7 @@ def saving_investment_chart(frame, start_year=1990):
 # 왼쪽 메뉴(2026-09-28 요청: 모든 그림이 한 페이지에 이어져 스크롤이 길다). 절(그림) 하나가 메뉴 하나다.
 # 열쇠는 절 제목의 앞부분이다. 목록에 없는 절(한눈에 보는 쉬운 요약)은 첫 메뉴 '한눈에'에 들어간다.
 MACRO_TABS = (
+    ("금리·경기 점검", ("금리·경기 점검",)),
     ("원/달러 결정 요인", ("원/달러 결정 요인",)),
     ("원/달러 · 위안/달러", ("원/달러와 위안/달러",)),
     ("한·미 실질금리차", ("원/달러와 한·미 실질금리차",)),
@@ -877,7 +878,8 @@ MACRO_TABS = (
 # 보관본만 갱신한 경우(2026-10-01: 장기 전망 작업이 term_spread 에 10월 값을 더함)와 코드가 바뀌었는데 페이지를 다시
 # 만들지 않은 경우를 테스트가 구별한다. 앞의 경우까지 실패로 보면 push 실행의 일일 보고서가 건너뛰어진다.
 PAGE_INPUTS = ("fx_inputs.csv", "us_jp_rates.csv", "us_market_daily.csv", "korea_saving_investment.csv",
-               "leading_cycle.csv", "coincident_cycle.csv", "news_sentiment.csv", "term_spread.csv", "kospi_monthly.csv")
+               "leading_cycle.csv", "coincident_cycle.csv", "news_sentiment.csv", "term_spread.csv", "kospi_monthly.csv",
+               "korea_rates_daily.csv", "policy_inflation.csv")
 
 
 def inputs_fingerprint(history=None):
@@ -925,6 +927,13 @@ def build_page(now=None, fx_frame=None, fx_info=None, us_jp_frame=None, us_jp_in
         body += cycle_phase_html(cycle)
     except Exception as exc:
         print(f"  ⚠️ 경기 국면 절 실패({type(exc).__name__}: {str(exc)[:120]})", flush=True)
+    # 영상의 전망 대신 금리·경기·주가를 같은 날짜/월로 맞춰 관찰한다(2026-10-23 요청).
+    from monetary_watch import build_watch, watch_html
+    try:
+        body += watch_html(build_watch(now=now, fetch=cycle_fetch))
+    except Exception as exc:
+        print(f"  ⚠️ 금리·경기 점검 실패({type(exc).__name__})", flush=True)
+        body += watch_html(None)
     if fx_frame is not None:
         body += fx_decomposition_section(fx_frame, fx_info)
         body += fx_overlay_chart(fx_frame)
@@ -964,6 +973,7 @@ def build_page(now=None, fx_frame=None, fx_info=None, us_jp_frame=None, us_jp_in
         '<!doctype html>\n<html lang="ko"><head><meta charset="utf-8">'
         '<meta name="viewport" content="width=device-width, initial-scale=1">'
         f'<meta name="macro-inputs" content="{inputs_fingerprint()}">'
+        f'<meta name="macro-asof" content="{now.isoformat()}">'
         f'<title>{escape(TITLE)}</title>{_STYLE}</head><body>'
         '<div class="wrap">'
         + BACK_BUTTON +

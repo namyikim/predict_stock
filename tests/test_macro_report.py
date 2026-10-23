@@ -18,7 +18,7 @@ import build_macro_report as macro  # noqa: E402
 
 class PageTests(unittest.TestCase):
     def page(self):
-        return macro.build_page(datetime(2026, 9, 15, 9, 0, tzinfo=timezone(timedelta(hours=9))))
+        return macro.build_page(datetime(2026, 9, 15, 9, 0, tzinfo=timezone(timedelta(hours=9))), cycle_fetch=False)
 
     def test_has_the_standard_back_button(self):
         html = self.page()
@@ -45,6 +45,13 @@ class PageTests(unittest.TestCase):
         self.assertIn("예측이 아니라 자료 정리입니다", html)
         self.assertIn("투자 자문이 아닙니다", html)
 
+    def test_monetary_watch_menu_and_data_render(self):
+        html = macro.build_page(datetime(2026, 10, 23, 23, tzinfo=macro.KST), cycle_fetch=False)
+        self.assertIn("금리·경기 점검", html)
+        self.assertIn("국고채 10년−3년", html)
+        self.assertNotIn("금리·경기 점검 자료를 읽지 못했습니다", html)
+        self.assertIn("진행 중인 달은 월간 비교와 그림에서 제외", html)
+
     def test_tag_balance(self):
         import re
         html = self.page()
@@ -66,12 +73,15 @@ class PageTests(unittest.TestCase):
         us_jp, us_jp_info = macro.load_us_jp(fetch=False)
         us_market, us_market_info = macro.load_us_market(fetch=False)
         saving, saving_info = macro.load_saving_investment(fetch=False)
-        generated = macro.build_page(datetime(2026, 9, 15, 9, 0, tzinfo=timezone(timedelta(hours=9))),
+        committed = (ROOT / "docs" / "macro" / "index.html").read_text(encoding="utf-8")
+        # 완료 월·자료 지연 판정은 발행 시각으로 재현한다(2026-10-23). 조회는 하지 않는다.
+        published_at = re.search(r'<meta name="macro-asof" content="([^"]+)">', committed)
+        asof = datetime.fromisoformat(published_at.group(1)) if published_at else datetime(2026, 9, 15, 9, 0, tzinfo=macro.KST)
+        generated = macro.build_page(asof,
                                      fx_frame=frame, fx_info=info,
                                      us_jp_frame=us_jp, us_jp_info=us_jp_info,
                                      us_market_frame=us_market, us_market_info=us_market_info,
-                                     saving_frame=saving, saving_info=saving_info)
-        committed = (ROOT / "docs" / "macro" / "index.html").read_text(encoding="utf-8")
+                                     saving_frame=saving, saving_info=saving_info, cycle_fetch=False)
         made_from = re.search(r'<meta name="macro-inputs" content="([0-9a-f]+)">', committed)
         if not made_from or made_from.group(1) != macro.inputs_fingerprint():
             # 페이지를 만든 뒤 다른 작업이 보관본만 갱신했다 — 다음 거시 실행이 다시 만든다. 코드 변경 누락이 아니다.
@@ -109,7 +119,7 @@ class PageTests(unittest.TestCase):
         workflow = (ROOT / ".github" / "workflows" / "macro-report.yml").read_text(encoding="utf-8")
         self.assertIn("  push:\n", workflow)
         for path in ("tools/build_macro_report.py", "tools/macro_summary.py", "data_sources/fx_inputs.py",
-                     "data_sources/ecos.py", "data_sources/fred.py"):
+                     "data_sources/ecos.py", "data_sources/fred.py", "tools/monetary_watch.py"):
             self.assertIn(f'      - "{path}"', workflow)
 
 

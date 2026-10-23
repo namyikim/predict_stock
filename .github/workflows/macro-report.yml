@@ -11,6 +11,7 @@ on:
       - "data_sources/ecos.py"
       - "data_sources/fred.py"
       - "tools/cycle_phase.py"       # 경기 국면 절(2026-10-01)
+      - "tools/monetary_watch.py"    # 같은 기간의 금리·경기·주가 비교(2026-10-23)
       - "data_sources/kosis.py"
   schedule:
     # 평일 07:40 KST. 야후 환율은 전일 종가가 확정된 뒤여야 월평균이 흔들리지 않는다.

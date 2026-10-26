@@ -1,12 +1,12 @@
 {
   "target": "sk_hynix",
   "method": "krx_yahoo_ohlc_v1",
-  "attempt": "2026-10-23/2026-10-23/krx_yahoo_ohlc_v1",
-  "attempted_at": "2026-10-23T07:56:42.662389+00:00",
+  "attempt": "2026-10-26/2026-10-23/krx_yahoo_ohlc_v1",
+  "attempted_at": "2026-10-26T02:25:28.599746+00:00",
   "completed_session": "2026-10-23",
   "status": "partial",
   "accepted_bars": 238,
-  "observed_at": "2026-10-23T07:56:55.329386+00:00",
+  "observed_at": "2026-10-26T02:25:44.306520+00:00",
   "issues": [
     {
       "session": "2025-11-27",
@@ -42,7 +42,7 @@
     "ohlc_mismatch": 3
   },
   "quality": {
-    "observed_at": "2026-10-23T07:56:55.329386+00:00",
+    "observed_at": "2026-10-26T02:25:44.306520+00:00",
     "timeframe": "1d",
     "received_bars": 238,
     "new_versions": 1,
@@ -50,9 +50,9 @@
     "missing_bars": 9,
     "missing_ratio": 0.03643724696356275,
     "coverage_basis": "이번 수집 응답의 완료 봉",
-    "collection_interval_seconds": 19043.113126,
+    "collection_interval_seconds": 239328.977134,
     "latest_bar_end": "2026-10-23T06:30:00+00:00",
-    "latest_bar_age_seconds": 5215.329386,
+    "latest_bar_age_seconds": 244544.30652,
     "corporate_action_bars": 0,
     "daily_range_note": "응답 시작 이전 자료의 누락은 판정하지 않음"
   }

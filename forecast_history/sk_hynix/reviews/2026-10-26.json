@@ -3,7 +3,7 @@
   "name": "SK하이닉스",
   "peer_name": "삼성전자",
   "session_date": "2026-10-26",
-  "generated_at": "2026-10-26 16:46 KST",
+  "generated_at": "2026-10-26 17:31 KST",
   "summary": {
     "prev_close": 1277000.0,
     "open": 1279000.0,
@@ -15,11 +15,11 @@
     "c2c": -0.001566170712607673,
     "high_vs_open": 0.028146989835809322,
     "low_vs_open": -0.009382329945269774,
-    "volume": 2578631.0,
-    "volume_ratio": 0.7410458952805764,
+    "volume": 2585169.0,
+    "volume_ratio": 0.7429247829784844,
     "kospi_c2c": -0.014563103379656273,
     "peer_c2c": -0.011600928074245953,
-    "usdkrw_chg": -0.0023906997553971854,
+    "usdkrw_chg": -0.0007617024057975375,
     "us_nights": 1,
     "sox_ret": 0.004424112802455582,
     "nasdaq_ret": -0.002057742343804736,
@@ -147,28 +147,16 @@
           "link": "https://news.google.com/rss/articles/CBMiYkFVX3lxTE9Ub3RONmJNNW1zdmFrTV9tR2dLcFFtcHlZT3V6cy05NXU1QkZSWW1aTVBqZkM2ZVFPUTFMb29uaEZSYnhYQjA4RU1tb2RJeWxIeTZ4S2NxOUFCU1U5amtzQ2xn?oc=5"
         },
         {
-          "time": "2026-10-26T08:48:00+09:00",
-          "title": "5300선 찍고 반등한 코스피…삼성전자·SK하이닉스 주주환원에 쏠린 눈",
-          "source": "경북매일",
-          "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE5aVVBMaTR1cjBaTFc5VEN6V1RlWnVfN2VQQmJMc0Y4T0s1cVNZSlRsQWhYZWpwV3htXzZ5dEozaUt4V0NfTGs0OXBCeDFDMFRobHdCbWZTYjZBUQ?oc=5"
-        },
-        {
-          "time": "2026-10-26T09:13:55+09:00",
-          "title": "\"16조 특별배당 푼다\" 들썩…'중복상장 일단락' SK하이닉스, 2% 쑥 - 머니투데이",
-          "source": "머니투데이",
-          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE5rTkxKYUpablcwVlNqdGRpNkVsVEJhcVVSQ3MtTHF4a2NWRldUZWFmVU1PMkQ2ZmdIQkdwRHVtN0hJMWJ0Ulg3ZkxaVDl5R2RWa1NEbFJza01rUVpjMVA5bzdEYmNFaG030gFuQVVfeXFMT2Z3TmlCYlFfRjZWRUdhaWFqampxc0tnVEhYUFFPN0dMcUFzRDA3dWFmbS1GOWxzMmFLQU9LVWVwU3VmVHpoTDJSeEZWNlR1LXNDT2xNc21DdHFLV01MUzVSZ2tGSUhFcU9fNmtoRFE?oc=5"
-        },
-        {
-          "time": "2026-10-26T07:46:45+09:00",
-          "title": "\"SK하이닉스, 솔리다임 IPO 철회로 주주환원 강화 기대\"-메리츠",
-          "source": "한국경제",
-          "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE55eFF2bVAxRnc5QkJZcHFHRXYtZEJGSjk3dUI3U3FsX013U1YzRG1wbXo1Uy1aTnRZeHVWaGkzT1BBNVR5UHYydUg5M3laRlFlNEtXRXZWLXN5UQ?oc=5"
-        },
-        {
           "time": "2026-10-26T08:17:00+09:00",
           "title": "[특징주] '삼전닉스' 프리마켓 동반 상승…SK하이닉스 1%↑",
           "source": "뉴스핌",
           "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTFBGRkkzRnQ1VEhCOUdwTUpxUlBPaldJTVcxVU9NRTlXRVZjelc2RTRibHE3eWxTUW9qU3NzZUhaYVYwVGFvSjBmMWN6bnl0OHZMVG1GUVZ5YXFfZVdt?oc=5"
+        },
+        {
+          "time": "2026-10-26T08:44:53+09:00",
+          "title": "SK하닉, 3Q 컨콜서 추가 주주환원 발표…키옥시아 지분차익 배당 주목 |",
+          "source": "연합인포맥스",
+          "link": "https://news.google.com/rss/articles/CBMidEFVX3lxTE1OUjJrV0FYeHFYSEttZXFSSF94eWZNdWFLSUhDd0ViNEdzUmRCUENYM1RUYW5USTZNR0R1UXc3M3FTRWppREh6bWNKZTZzbFhjSE9MQm9CRl9lNjdwQTVQdE5BY3hpZHhvR2s5WHVFcFZvdUZu?oc=5"
         }
       ]
     },
@@ -183,34 +171,34 @@
       "score": 4.98855864428657,
       "news": [
         {
-          "time": "2026-10-26T09:13:55+09:00",
-          "title": "\"16조 특별배당 푼다\" 들썩…'중복상장 일단락' SK하이닉스, 2% 쑥 - 머니투데이",
-          "source": "머니투데이",
-          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE5rTkxKYUpablcwVlNqdGRpNkVsVEJhcVVSQ3MtTHF4a2NWRldUZWFmVU1PMkQ2ZmdIQkdwRHVtN0hJMWJ0Ulg3ZkxaVDl5R2RWa1NEbFJza01rUVpjMVA5bzdEYmNFaG030gFuQVVfeXFMT2Z3TmlCYlFfRjZWRUdhaWFqampxc0tnVEhYUFFPN0dMcUFzRDA3dWFmbS1GOWxzMmFLQU9LVWVwU3VmVHpoTDJSeEZWNlR1LXNDT2xNc21DdHFLV01MUzVSZ2tGSUhFcU9fNmtoRFE?oc=5"
-        },
-        {
-          "time": "2026-10-26T09:27:56+09:00",
-          "title": "[특징주] SK하이닉스 '특별배당' 기대 2% 강세⋯삼성전자 약보합",
-          "source": "아이뉴스24",
-          "link": "https://news.google.com/rss/articles/CBMiS0FVX3lxTFBWeFVTVjFMeW12UFJuSXdiX0dQaExvdEZ5dWQ3R1VvWDZPMVhhbXE0UGJHejNqYjdoMzFBMTg1UnZMRENXdnhBdGFMZw?oc=5"
-        },
-        {
           "time": "2026-10-26T09:29:59+09:00",
           "title": "[특징주] SK하이닉스, \"약 16조원 특별 배당\" 보도.. '강세'",
           "source": "글로벌이코노믹",
           "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxQOHY2czgzZzMzdEhtOVZYS0x2Q00tamcwNlI0THRIUFEtcWZac1dnZGdjVnNyNVZVaUQ5Tkw5dWV2SXFBenZLUzAyOGlLUTBzc2pXamQ3YmdXQmVya2lkTWVnZXNXNk1rTVpFSVNUU0E5bG9VQnJINkpFdG5JcFk1QVF2VzNwMW9p?oc=5"
         },
         {
-          "time": "2026-10-26T09:49:31+09:00",
-          "title": "삼성전자·SK하이닉스 실적 발표 임박…'추가 주주환원' 주목",
-          "source": "BBS불교방송",
-          "link": "https://news.google.com/rss/articles/CBMia0FVX3lxTE5pbGlkTmtEZC16eXNuZ3I0WFI1TVA0QUROeU4yZkFaeGRkWFd1VncwSjQ1bHdzWm9lWm9McHgzaFhzTktEZmF4SF9pWFNKaGZwMGV6Zy1reUd0R25ldHZ1RU52UkxacUZVUng0?oc=5"
-        },
-        {
           "time": "2026-10-26T10:19:05+09:00",
           "title": "[개장시황] SK하이닉스 1.64% 올라…코스피 약보합 버텨",
           "source": "자본시장뉴스",
           "link": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTFA5V1RMbmltWEM5N0JodFVwcmIybWlpZzllYVBwTy1VNXRBcGwxcEtGUGZNMlRvNzVISU9YVDRYN1B4ZkFqcDVMd1hlNlZpMGVybkdnbzloclJSbW1SQTZJdDVqY2FoRlk?oc=5"
+        },
+        {
+          "time": "2026-10-26T10:20:11+09:00",
+          "title": "SK하이닉스, 솔리다임 美 상장 검토 중단…발표 뒤 주가는 ‘반등’",
+          "source": "뉴스21 통신",
+          "link": "https://news.google.com/rss/articles/CBMiVkFVX3lxTE80MlRoTm1DNXhTdHBUdHowMmpLdDMwbFVpR2NLZmRaVDRWRnlsNFRpSl9DZXp0UzJ2alU5aEhFX3NTZzMwTk1jVjZzdnlfam1UMC12TWR3?oc=5"
+        },
+        {
+          "time": "2026-10-26T10:37:05+09:00",
+          "title": "SK하이닉스, 16조원 특별배당 검토 보도에 강세…회사 \"확정된 바 없어\"",
+          "source": "블루밍비트",
+          "link": "https://news.google.com/rss/articles/CBMiUEFVX3lxTFBsM00tZm80cFMtM0NWQm1Palh1STR0UDhkSm1ZY1AxNGxEUElQRWNiZ0ctSVZXOFVUUlN6bjN1Ty1MUUFuN2JBZ2h1QjhBYkFY?oc=5"
+        },
+        {
+          "time": "2026-10-26T10:38:00+09:00",
+          "title": "SK하이닉스, 28일 추가 주주환원안 발표…16조 배당 꺼내나",
+          "source": "뉴스핌",
+          "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE1leFRFVHk5QUFSNVg1MzFabzVFSERJVVlUeVJiOFhmTnVKV1o3V2RObzZUQWhBTldJS0c0U1RfQzRPYlZFaUN1UW4wMVJGc3VuY0FaQkpsYTZmTnpw?oc=5"
         }
       ]
     },
@@ -231,12 +219,6 @@
           "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE10cVpsWG5VeWVOVl9ZOGlyT29aN1c0dDhPQjBSQ1ZaYTZRVUNqdXJZYmJzVmdCWWx4cVZ0N21PRmhMWmxLTlU1M0RGMkM1R2xZTV9pNXpRTjd3cFJN?oc=5"
         },
         {
-          "time": "2026-10-26T13:38:00+09:00",
-          "title": "SK하이닉스, 추가 주주환원안 이사회 거쳐 발표… 키옥시아 차익 특별배당엔 “미확정” - 조선비즈",
-          "source": "Chosunbiz",
-          "link": "https://news.google.com/rss/articles/CBMilgFBVV95cUxQZnFWTFk1RG05RkV2bXo2ZmZRaUZ4Q0FjM1ZYbFBFUm9MOEFnVWw5Yk0wWFg1QURvc2JnQlQ1LV8zcHZMaDBhMzVmRk1JeVFXVjhtSnJadHItZHZSZG9DS01oaXpNRDBORjg5c3hHZHVVazBqSjVTRkN4dFJHeUpNckZxd0c1S0k0b0puZDlidjZpTEZoZkHSAZYBQVVfeXFMUGZxVkxZNURtOUZFdm16NmZmUWlGeENBYzNWWGxQRVJvTDhBZ1VsOWJNMFhYNUFEb3NiZ0JUNS1fM3B2TGgwYTM1ZkZNSXlRV1Y4bUpyWnRyLWR2UmRvQ0tNaGl6TUQwTkY4OXN4R2R1VWswako1U0ZDeHRSR3lKTXJGcXdHNUtJNG9KbmQ5YnY2aUxGaGZB?oc=5"
-        },
-        {
           "time": "2026-10-26T13:47:57+09:00",
           "title": "SK하이닉스 \"16조 특별배당 확정된 바 없어…28일 발표”",
           "source": "인더스트리뉴스",
@@ -253,6 +235,12 @@
           "title": "SK하이닉스,'키옥시아 차익 16조 특별배당' 보도에 \"미확정…28일 공개\"",
           "source": "메디컬투데이",
           "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTFByazBYRmdJU0kyMzk0NUEyOGVTU1VlOUNldzZWdDFFU19vZ0JUellCSkRyckN1QXY1VFFLTGkxZk9vckVVMjFqRUpYOEVPN0ctZTZHOHpmb250Vy04RG9aU2tIa3hhMDh2a0dnZQ?oc=5"
+        },
+        {
+          "time": "2026-10-26T13:55:30+09:00",
+          "title": "[아이TV] '아이포럼 2026' 명석주 SK하이닉스 AI Infra / HBM Marketing 팀장 발표",
+          "source": "아이뉴스24",
+          "link": "https://news.google.com/rss/articles/CBMiS0FVX3lxTE4tdDhIV2p5ZXdqMVdJekxjNkV0Y2lhLUgyQno5MUhwcnZieU9aSUNuNURCcG9tVm1uVUQyU1hjVlV0RGFPcXZqZUdHdw?oc=5"
         }
       ]
     }
@@ -638,28 +626,16 @@
           "link": "https://news.google.com/rss/articles/CBMiYkFVX3lxTE9Ub3RONmJNNW1zdmFrTV9tR2dLcFFtcHlZT3V6cy05NXU1QkZSWW1aTVBqZkM2ZVFPUTFMb29uaEZSYnhYQjA4RU1tb2RJeWxIeTZ4S2NxOUFCU1U5amtzQ2xn?oc=5"
         },
         {
-          "time": "2026-10-26T08:48:00+09:00",
-          "title": "5300선 찍고 반등한 코스피…삼성전자·SK하이닉스 주주환원에 쏠린 눈",
-          "source": "경북매일",
-          "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE5aVVBMaTR1cjBaTFc5VEN6V1RlWnVfN2VQQmJMc0Y4T0s1cVNZSlRsQWhYZWpwV3htXzZ5dEozaUt4V0NfTGs0OXBCeDFDMFRobHdCbWZTYjZBUQ?oc=5"
-        },
-        {
-          "time": "2026-10-26T09:13:55+09:00",
-          "title": "\"16조 특별배당 푼다\" 들썩…'중복상장 일단락' SK하이닉스, 2% 쑥 - 머니투데이",
-          "source": "머니투데이",
-          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE5rTkxKYUpablcwVlNqdGRpNkVsVEJhcVVSQ3MtTHF4a2NWRldUZWFmVU1PMkQ2ZmdIQkdwRHVtN0hJMWJ0Ulg3ZkxaVDl5R2RWa1NEbFJza01rUVpjMVA5bzdEYmNFaG030gFuQVVfeXFMT2Z3TmlCYlFfRjZWRUdhaWFqampxc0tnVEhYUFFPN0dMcUFzRDA3dWFmbS1GOWxzMmFLQU9LVWVwU3VmVHpoTDJSeEZWNlR1LXNDT2xNc21DdHFLV01MUzVSZ2tGSUhFcU9fNmtoRFE?oc=5"
-        },
-        {
-          "time": "2026-10-26T07:46:45+09:00",
-          "title": "\"SK하이닉스, 솔리다임 IPO 철회로 주주환원 강화 기대\"-메리츠",
-          "source": "한국경제",
-          "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE55eFF2bVAxRnc5QkJZcHFHRXYtZEJGSjk3dUI3U3FsX013U1YzRG1wbXo1Uy1aTnRZeHVWaGkzT1BBNVR5UHYydUg5M3laRlFlNEtXRXZWLXN5UQ?oc=5"
-        },
-        {
           "time": "2026-10-26T08:17:00+09:00",
           "title": "[특징주] '삼전닉스' 프리마켓 동반 상승…SK하이닉스 1%↑",
           "source": "뉴스핌",
           "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTFBGRkkzRnQ1VEhCOUdwTUpxUlBPaldJTVcxVU9NRTlXRVZjelc2RTRibHE3eWxTUW9qU3NzZUhaYVYwVGFvSjBmMWN6bnl0OHZMVG1GUVZ5YXFfZVdt?oc=5"
+        },
+        {
+          "time": "2026-10-26T08:44:53+09:00",
+          "title": "SK하닉, 3Q 컨콜서 추가 주주환원 발표…키옥시아 지분차익 배당 주목 |",
+          "source": "연합인포맥스",
+          "link": "https://news.google.com/rss/articles/CBMidEFVX3lxTE1OUjJrV0FYeHFYSEttZXFSSF94eWZNdWFLSUhDd0ViNEdzUmRCUENYM1RUYW5USTZNR0R1UXc3M3FTRWppREh6bWNKZTZzbFhjSE9MQm9CRl9lNjdwQTVQdE5BY3hpZHhvR2s5WHVFcFZvdUZu?oc=5"
         }
       ],
       "price": 1308000.0,
@@ -676,34 +652,34 @@
       "score": 4.98855864428657,
       "news": [
         {
-          "time": "2026-10-26T09:13:55+09:00",
-          "title": "\"16조 특별배당 푼다\" 들썩…'중복상장 일단락' SK하이닉스, 2% 쑥 - 머니투데이",
-          "source": "머니투데이",
-          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE5rTkxKYUpablcwVlNqdGRpNkVsVEJhcVVSQ3MtTHF4a2NWRldUZWFmVU1PMkQ2ZmdIQkdwRHVtN0hJMWJ0Ulg3ZkxaVDl5R2RWa1NEbFJza01rUVpjMVA5bzdEYmNFaG030gFuQVVfeXFMT2Z3TmlCYlFfRjZWRUdhaWFqampxc0tnVEhYUFFPN0dMcUFzRDA3dWFmbS1GOWxzMmFLQU9LVWVwU3VmVHpoTDJSeEZWNlR1LXNDT2xNc21DdHFLV01MUzVSZ2tGSUhFcU9fNmtoRFE?oc=5"
-        },
-        {
-          "time": "2026-10-26T09:27:56+09:00",
-          "title": "[특징주] SK하이닉스 '특별배당' 기대 2% 강세⋯삼성전자 약보합",
-          "source": "아이뉴스24",
-          "link": "https://news.google.com/rss/articles/CBMiS0FVX3lxTFBWeFVTVjFMeW12UFJuSXdiX0dQaExvdEZ5dWQ3R1VvWDZPMVhhbXE0UGJHejNqYjdoMzFBMTg1UnZMRENXdnhBdGFMZw?oc=5"
-        },
-        {
           "time": "2026-10-26T09:29:59+09:00",
           "title": "[특징주] SK하이닉스, \"약 16조원 특별 배당\" 보도.. '강세'",
           "source": "글로벌이코노믹",
           "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxQOHY2czgzZzMzdEhtOVZYS0x2Q00tamcwNlI0THRIUFEtcWZac1dnZGdjVnNyNVZVaUQ5Tkw5dWV2SXFBenZLUzAyOGlLUTBzc2pXamQ3YmdXQmVya2lkTWVnZXNXNk1rTVpFSVNUU0E5bG9VQnJINkpFdG5JcFk1QVF2VzNwMW9p?oc=5"
         },
         {
-          "time": "2026-10-26T09:49:31+09:00",
-          "title": "삼성전자·SK하이닉스 실적 발표 임박…'추가 주주환원' 주목",
-          "source": "BBS불교방송",
-          "link": "https://news.google.com/rss/articles/CBMia0FVX3lxTE5pbGlkTmtEZC16eXNuZ3I0WFI1TVA0QUROeU4yZkFaeGRkWFd1VncwSjQ1bHdzWm9lWm9McHgzaFhzTktEZmF4SF9pWFNKaGZwMGV6Zy1reUd0R25ldHZ1RU52UkxacUZVUng0?oc=5"
-        },
-        {
           "time": "2026-10-26T10:19:05+09:00",
           "title": "[개장시황] SK하이닉스 1.64% 올라…코스피 약보합 버텨",
           "source": "자본시장뉴스",
           "link": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTFA5V1RMbmltWEM5N0JodFVwcmIybWlpZzllYVBwTy1VNXRBcGwxcEtGUGZNMlRvNzVISU9YVDRYN1B4ZkFqcDVMd1hlNlZpMGVybkdnbzloclJSbW1SQTZJdDVqY2FoRlk?oc=5"
+        },
+        {
+          "time": "2026-10-26T10:20:11+09:00",
+          "title": "SK하이닉스, 솔리다임 美 상장 검토 중단…발표 뒤 주가는 ‘반등’",
+          "source": "뉴스21 통신",
+          "link": "https://news.google.com/rss/articles/CBMiVkFVX3lxTE80MlRoTm1DNXhTdHBUdHowMmpLdDMwbFVpR2NLZmRaVDRWRnlsNFRpSl9DZXp0UzJ2alU5aEhFX3NTZzMwTk1jVjZzdnlfam1UMC12TWR3?oc=5"
+        },
+        {
+          "time": "2026-10-26T10:37:05+09:00",
+          "title": "SK하이닉스, 16조원 특별배당 검토 보도에 강세…회사 \"확정된 바 없어\"",
+          "source": "블루밍비트",
+          "link": "https://news.google.com/rss/articles/CBMiUEFVX3lxTFBsM00tZm80cFMtM0NWQm1Palh1STR0UDhkSm1ZY1AxNGxEUElQRWNiZ0ctSVZXOFVUUlN6bjN1Ty1MUUFuN2JBZ2h1QjhBYkFY?oc=5"
+        },
+        {
+          "time": "2026-10-26T10:38:00+09:00",
+          "title": "SK하이닉스, 28일 추가 주주환원안 발표…16조 배당 꺼내나",
+          "source": "뉴스핌",
+          "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE1leFRFVHk5QUFSNVg1MzFabzVFSERJVVlUeVJiOFhmTnVKV1o3V2RObzZUQWhBTldJS0c0U1RfQzRPYlZFaUN1UW4wMVJGc3VuY0FaQkpsYTZmTnpw?oc=5"
         }
       ],
       "price": 1274000.0,
@@ -726,12 +702,6 @@
           "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE10cVpsWG5VeWVOVl9ZOGlyT29aN1c0dDhPQjBSQ1ZaYTZRVUNqdXJZYmJzVmdCWWx4cVZ0N21PRmhMWmxLTlU1M0RGMkM1R2xZTV9pNXpRTjd3cFJN?oc=5"
         },
         {
-          "time": "2026-10-26T13:38:00+09:00",
-          "title": "SK하이닉스, 추가 주주환원안 이사회 거쳐 발표… 키옥시아 차익 특별배당엔 “미확정” - 조선비즈",
-          "source": "Chosunbiz",
-          "link": "https://news.google.com/rss/articles/CBMilgFBVV95cUxQZnFWTFk1RG05RkV2bXo2ZmZRaUZ4Q0FjM1ZYbFBFUm9MOEFnVWw5Yk0wWFg1QURvc2JnQlQ1LV8zcHZMaDBhMzVmRk1JeVFXVjhtSnJadHItZHZSZG9DS01oaXpNRDBORjg5c3hHZHVVazBqSjVTRkN4dFJHeUpNckZxd0c1S0k0b0puZDlidjZpTEZoZkHSAZYBQVVfeXFMUGZxVkxZNURtOUZFdm16NmZmUWlGeENBYzNWWGxQRVJvTDhBZ1VsOWJNMFhYNUFEb3NiZ0JUNS1fM3B2TGgwYTM1ZkZNSXlRV1Y4bUpyWnRyLWR2UmRvQ0tNaGl6TUQwTkY4OXN4R2R1VWswako1U0ZDeHRSR3lKTXJGcXdHNUtJNG9KbmQ5YnY2aUxGaGZB?oc=5"
-        },
-        {
           "time": "2026-10-26T13:47:57+09:00",
           "title": "SK하이닉스 \"16조 특별배당 확정된 바 없어…28일 발표”",
           "source": "인더스트리뉴스",
@@ -748,6 +718,12 @@
           "title": "SK하이닉스,'키옥시아 차익 16조 특별배당' 보도에 \"미확정…28일 공개\"",
           "source": "메디컬투데이",
           "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTFByazBYRmdJU0kyMzk0NUEyOGVTU1VlOUNldzZWdDFFU19vZ0JUellCSkRyckN1QXY1VFFLTGkxZk9vckVVMjFqRUpYOEVPN0ctZTZHOHpmb250Vy04RG9aU2tIa3hhMDh2a0dnZQ?oc=5"
+        },
+        {
+          "time": "2026-10-26T13:55:30+09:00",
+          "title": "[아이TV] '아이포럼 2026' 명석주 SK하이닉스 AI Infra / HBM Marketing 팀장 발표",
+          "source": "아이뉴스24",
+          "link": "https://news.google.com/rss/articles/CBMiS0FVX3lxTE4tdDhIV2p5ZXdqMVdJekxjNkV0Y2lhLUgyQno5MUhwcnZieU9aSUNuNURCcG9tVm1uVUQyU1hjVlV0RGFPcXZqZUdHdw?oc=5"
         }
       ],
       "price": 1292000.0,
@@ -762,28 +738,22 @@
       "link": "https://news.google.com/rss/articles/CBMidkFVX3lxTE13SXZsSDhVZV8xeURSTlhFalpfLVZhODk4eldqQmZVbHptcWw5SmZaal9WRVdqaWxob0NsMHFFNEhVM2ZuRmVORUJ2R24yRDFkQWZTaVd3WnBTb01vNFE2V0NiRmpZQlRYR0FYWXV2d2J4Z0QtcHfSAWZBVV95cUxOVTktRUQ1RWNTeUZ0SHNMTjJYZDZzSjRYY3FCVDl3SVJZaFpaLUNYWUNLNURxdy13S3UtZlRmbEYybTJyZkx2bnZZcEhENkpFVVUyWkUwM05JQ3FYU1hNbEEtbUVMWkE?oc=5"
     },
     {
-      "time": "2026-10-26T07:07:18+09:00",
-      "title": "SK하이닉스에 밀린 삼성의 반격…HBM4 판 뒤집을 ‘비장의 카드’",
-      "source": "이코노미스트",
-      "link": "https://news.google.com/rss/articles/CBMiYkFVX3lxTE44c25YUzZIaHE1QjF4anhkbGV5cjljOFlNWm5ONWZSaENIVDhxSWpET3pTZEJtV2ZFaXk5NWxZYW85N0lIMHp4cjhEaFZCUDJvbXZUNUFxM0lUWFgwUjJiR213?oc=5"
-    },
-    {
       "time": "2026-10-26T08:02:23+09:00",
       "title": "AI 거품이라는데…SK하이닉스가 54조 쏟아붓는 이유",
       "source": "이코노미스트",
       "link": "https://news.google.com/rss/articles/CBMiYkFVX3lxTE9Ub3RONmJNNW1zdmFrTV9tR2dLcFFtcHlZT3V6cy05NXU1QkZSWW1aTVBqZkM2ZVFPUTFMb29uaEZSYnhYQjA4RU1tb2RJeWxIeTZ4S2NxOUFCU1U5amtzQ2xn?oc=5"
     },
     {
-      "time": "2026-10-26T08:48:00+09:00",
-      "title": "5300선 찍고 반등한 코스피…삼성전자·SK하이닉스 주주환원에 쏠린 눈",
-      "source": "경북매일",
-      "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE5aVVBMaTR1cjBaTFc5VEN6V1RlWnVfN2VQQmJMc0Y4T0s1cVNZSlRsQWhYZWpwV3htXzZ5dEozaUt4V0NfTGs0OXBCeDFDMFRobHdCbWZTYjZBUQ?oc=5"
+      "time": "2026-10-26T08:17:00+09:00",
+      "title": "[특징주] '삼전닉스' 프리마켓 동반 상승…SK하이닉스 1%↑",
+      "source": "뉴스핌",
+      "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTFBGRkkzRnQ1VEhCOUdwTUpxUlBPaldJTVcxVU9NRTlXRVZjelc2RTRibHE3eWxTUW9qU3NzZUhaYVYwVGFvSjBmMWN6bnl0OHZMVG1GUVZ5YXFfZVdt?oc=5"
     },
     {
-      "time": "2026-10-26T07:46:45+09:00",
-      "title": "\"SK하이닉스, 솔리다임 IPO 철회로 주주환원 강화 기대\"-메리츠",
-      "source": "한국경제",
-      "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE55eFF2bVAxRnc5QkJZcHFHRXYtZEJGSjk3dUI3U3FsX013U1YzRG1wbXo1Uy1aTnRZeHVWaGkzT1BBNVR5UHYydUg5M3laRlFlNEtXRXZWLXN5UQ?oc=5"
+      "time": "2026-10-26T08:44:53+09:00",
+      "title": "SK하닉, 3Q 컨콜서 추가 주주환원 발표…키옥시아 지분차익 배당 주목 |",
+      "source": "연합인포맥스",
+      "link": "https://news.google.com/rss/articles/CBMidEFVX3lxTE1OUjJrV0FYeHFYSEttZXFSSF94eWZNdWFLSUhDd0ViNEdzUmRCUENYM1RUYW5USTZNR0R1UXc3M3FTRWppREh6bWNKZTZzbFhjSE9MQm9CRl9lNjdwQTVQdE5BY3hpZHhvR2s5WHVFcFZvdUZu?oc=5"
     }
   ],
   "top_news": [
@@ -794,34 +764,34 @@
       "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE1MQ3JxY1FWOV9hMFg5eEowYVVTNUl0VGpaYXIydzVhQ0tpYWpXRnpmTDJCUkhKNFBiNEVJSXNpeXVyRjRvQ1NyWVM1VWtlclYyTThzckVsMFViMzRJNHI1UU9LOE0?oc=5"
     },
     {
+      "time": "2026-10-26T16:37:01+09:00",
+      "title": "하나증권 \"AI 투자 우려에 흔들린 반도체주…시장은 2027년을 본다\"",
+      "source": "핀포인트뉴스",
+      "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTE5JRTNtb1d4RWFFenlTenViM2NveXVTRlJwWlQ5bTRlQVRWcXhacXAtTDlPMFVxZXlla19rX0lZY01VbWRDejVldklQNl9aZ0dIbDhEZnl0a2NORWtJSC1QM0t6VnhjYlR6cUxmX2RuNks5THM?oc=5"
+    },
+    {
       "time": "2026-10-26T15:43:00+09:00",
       "title": "삼성전자·SK하이닉스, 올해 사상 최대 설비투자에도… 메모리 공급 확대는 2028년부터 본격화 - 조선비즈",
       "source": "Chosunbiz",
       "link": "https://news.google.com/rss/articles/CBMiggFBVV95cUxNYnVIM2FKM01IeXJtVjh5UmJpbl9OSHczT3dpcVVCcGN5UGEyOV9yaFBWUzRqVFQyWlBDdkxrV2d3MHA2d1c4Zkc4LVRHX2Jtdk1kTFZNWDYyWTNkS00yMlJpUmZaa3d5M2hmejczWHVoVk93WHM3cWI5aElYZDNHNG530gGWAUFVX3lxTE8xc0dEZUJmWjVlS3Y0eF9YR0wyeVdjejFHb2txa19KSmYyaDkzeW02NjdZR2tFZ0tXYjREWk9hRXAydEFkMXB1Y09kMEdHaUpnSlRYdUxuc09BSVU0ejByN2haSzNtRG1ETlF6d2tXbXVlSlJKQ0lfRUo5Umh6RzREblZqY2xoNnRTUEpsaHYtaHJfV1lBdw?oc=5"
     },
     {
+      "time": "2026-10-26T17:07:17+09:00",
+      "title": "AI 투자 확대에도 자금 조달은 엇갈려…SK하이닉스 상장 검토 중단, 스페이스X는 400억 달러 차입 성사 주장",
+      "source": "한국공공정책신문",
+      "link": "https://news.google.com/rss/articles/CBMiQ0FVX3lxTE05UkNhVFFTWTRNOG9lQkdlQ05tZTVWQ19uZGFvVUJRMVJaSzB0OEVsT0hWY3FEQTk2S2Q3R0Q2N29Bd1U?oc=5"
+    },
+    {
+      "time": "2026-10-26T16:47:23+09:00",
+      "title": "외국인 7억 매도에 코스피 1.46% 하락···반도체 호재도 못 막은 ‘중동 리스크’",
+      "source": "스마트비즈",
+      "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTFBpY2hpd1BjT3Q1M3ZWeFp4WWxmeHpwclhicllFTTk1Z2lvcFJmbks5ZHY2Zm1GeTBQWEpLTDJZelBLd3NVSnBTd2hCcHl1RXlUNFUxeURudVJ2QnFHaW9PREhSeWZkZEdqbGNqbQ?oc=5"
+    },
+    {
       "time": "2026-10-26T04:30:00+09:00",
       "title": "[단독]SK하이닉스, 日 키옥시아 지분 차익 16조원 특별배당 추진",
       "source": "동아일보",
       "link": "https://news.google.com/rss/articles/CBMidkFVX3lxTE13SXZsSDhVZV8xeURSTlhFalpfLVZhODk4eldqQmZVbHptcWw5SmZaal9WRVdqaWxob0NsMHFFNEhVM2ZuRmVORUJ2R24yRDFkQWZTaVd3WnBTb01vNFE2V0NiRmpZQlRYR0FYWXV2d2J4Z0QtcHfSAWZBVV95cUxOVTktRUQ1RWNTeUZ0SHNMTjJYZDZzSjRYY3FCVDl3SVJZaFpaLUNYWUNLNURxdy13S3UtZlRmbEYybTJyZkx2bnZZcEhENkpFVVUyWkUwM05JQ3FYU1hNbEEtbUVMWkE?oc=5"
-    },
-    {
-      "time": "2026-10-26T07:07:18+09:00",
-      "title": "SK하이닉스에 밀린 삼성의 반격…HBM4 판 뒤집을 ‘비장의 카드’",
-      "source": "이코노미스트",
-      "link": "https://news.google.com/rss/articles/CBMiYkFVX3lxTE44c25YUzZIaHE1QjF4anhkbGV5cjljOFlNWm5ONWZSaENIVDhxSWpET3pTZEJtV2ZFaXk5NWxZYW85N0lIMHp4cjhEaFZCUDJvbXZUNUFxM0lUWFgwUjJiR213?oc=5"
-    },
-    {
-      "time": "2026-10-26T08:02:23+09:00",
-      "title": "AI 거품이라는데…SK하이닉스가 54조 쏟아붓는 이유",
-      "source": "이코노미스트",
-      "link": "https://news.google.com/rss/articles/CBMiYkFVX3lxTE9Ub3RONmJNNW1zdmFrTV9tR2dLcFFtcHlZT3V6cy05NXU1QkZSWW1aTVBqZkM2ZVFPUTFMb29uaEZSYnhYQjA4RU1tb2RJeWxIeTZ4S2NxOUFCU1U5amtzQ2xn?oc=5"
-    },
-    {
-      "time": "2026-10-26T08:48:00+09:00",
-      "title": "5300선 찍고 반등한 코스피…삼성전자·SK하이닉스 주주환원에 쏠린 눈",
-      "source": "경북매일",
-      "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE5aVVBMaTR1cjBaTFc5VEN6V1RlWnVfN2VQQmJMc0Y4T0s1cVNZSlRsQWhYZWpwV3htXzZ5dEozaUt4V0NfTGs0OXBCeDFDMFRobHdCbWZTYjZBUQ?oc=5"
     }
   ],
   "disclosures": [
@@ -866,9 +836,9 @@
     "steady": 22,
     "upper": 0,
     "lower": 0,
-    "individual": 605.0,
-    "foreign": -6946.0,
-    "institution": 5972.0,
+    "individual": 665.0,
+    "foreign": -6993.0,
+    "institution": 5960.0,
     "prev_close": 5550.3,
     "open": 5499.05,
     "high": 5565.67,

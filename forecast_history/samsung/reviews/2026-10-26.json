@@ -3,7 +3,7 @@
   "name": "삼성전자",
   "peer_name": "SK하이닉스",
   "session_date": "2026-10-26",
-  "generated_at": "2026-10-26 16:46 KST",
+  "generated_at": "2026-10-26 17:31 KST",
   "summary": {
     "prev_close": 215500.0,
     "open": 213500.0,
@@ -15,11 +15,11 @@
     "c2c": -0.011600928074245953,
     "high_vs_open": 0.011709601873536313,
     "low_vs_open": -0.00936768149882905,
-    "volume": 12248756.0,
-    "volume_ratio": 0.6684292142990406,
+    "volume": 12270159.0,
+    "volume_ratio": 0.6695972015194278,
     "kospi_c2c": -0.014563103379656273,
     "peer_c2c": -0.001566170712607673,
-    "usdkrw_chg": -0.002586694971972392,
+    "usdkrw_chg": -0.0008973984834076409,
     "us_nights": 1,
     "sox_ret": 0.004424112802455582,
     "nasdaq_ret": -0.002057742343804736,
@@ -80,11 +80,11 @@
       }
     ],
     "micron_ah": {
-      "regular_close": 877.6099243164062,
+      "regular_close": 877.1099853515625,
       "last": 879.9,
-      "ret": 0.0026094459738219555,
-      "low_ret": -0.004580536528842716,
-      "high_ret": 0.0038628502135893417,
+      "ret": 0.003180917667148897,
+      "low_ret": -0.0040131630130189055,
+      "high_ret": 0.0044350363277170235,
       "last_time": "2026-10-24T08:55:00+09:00"
     },
     "nvidia_ah": {
@@ -112,7 +112,7 @@
         "after_high": -0.0012838735033345872
       }
     },
-    "from_high": -0.020859935773784644,
+    "from_high": -0.018545183848900026,
     "buyback": [
       {
         "kind": "직접 취득",
@@ -132,7 +132,7 @@
     ],
     "reasons": [
       "갭 -0.93%가 종가→종가 -1.16%의 80%",
-      "10:20 봉 +0.94%(σ의 5.37배, 거래량 2.7배)가 세션 -0.23%의 99%",
+      "10:20 봉 +0.94%(σ의 5.37배, 거래량 2.7배)가 세션 -0.23%의 132%",
       "KOSPI -1.46% vs 종목 -1.16%, 5분 수익률 상관 0.87 — 종목 고유 요인이 약함"
     ]
   },
@@ -142,10 +142,10 @@
       "ret": 0.00936768149882905,
       "z": 5.37,
       "volume_ratio": 2.7,
-      "cum_before": 0.009456264775413725,
-      "cum_after": 0.01891252955082745,
-      "session_share": 0.9906323185011706,
-      "score": 5.910676923964009,
+      "cum_before": 0.007075471698113178,
+      "cum_after": 0.01650943396226423,
+      "session_share": 1.3239656518345113,
+      "score": 5.910679112052057,
       "news": [
         {
           "time": "2026-10-26T09:13:00+09:00",
@@ -154,28 +154,28 @@
           "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE56cU40VVBjNVlOTTU5R2JXRFl5WXYtbEFyUTdDVjlRRExlcndOcHo4VVlyWTFHaGZOQXdYUklTZjdsVDJOUzVXNmNNTVdpNzFlVTlCakx3d0J1VktM?oc=5"
         },
         {
-          "time": "2026-10-26T09:18:03+09:00",
-          "title": "[삼성] 美 ITC, 삼성전자 DRAM 특허침해 조사 종결",
-          "source": "www.ebn.co.kr",
-          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE1NNHpFVUJTVWl0TkRUcDloQWp6NGVBcHVoWTJWOFZzTUI0Ym14Xy01TVlnQ2E5WlhDZzNjNkVfU0E3eUl3ZFUweGU3UDl4Q2lpd0NIaENBOFpxamtqRDVBWENMaVotaFE4?oc=5"
-        },
-        {
           "time": "2026-10-26T09:27:56+09:00",
           "title": "[특징주] SK하이닉스 '특별배당' 기대 2% 강세⋯삼성전자 약보합",
           "source": "아이뉴스24",
           "link": "https://news.google.com/rss/articles/CBMiS0FVX3lxTFBWeFVTVjFMeW12UFJuSXdiX0dQaExvdEZ5dWQ3R1VvWDZPMVhhbXE0UGJHejNqYjdoMzFBMTg1UnZMRENXdnhBdGFMZw?oc=5"
         },
         {
-          "time": "2026-10-26T09:49:31+09:00",
-          "title": "삼성전자·SK하이닉스 실적 발표 임박…'추가 주주환원' 주목",
-          "source": "BBS불교방송",
-          "link": "https://news.google.com/rss/articles/CBMia0FVX3lxTE5pbGlkTmtEZC16eXNuZ3I0WFI1TVA0QUROeU4yZkFaeGRkWFd1VncwSjQ1bHdzWm9lWm9McHgzaFhzTktEZmF4SF9pWFNKaGZwMGV6Zy1reUd0R25ldHZ1RU52UkxacUZVUng0?oc=5"
-        },
-        {
           "time": "2026-10-26T09:52:06+09:00",
           "title": "삼성전자는 왜 HBM 25% 프리미엄 관측에 휩싸였나… 납기 신뢰와 4나노 무기화",
           "source": "글로벌이코노믹",
           "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxQbFBsTjNOdUZhVThrUWhFUDhUNGdKb09OWWRVVTZBWDNJakREOGYwWG5Yd3h6NkFZbHhCRWpqY21rTkJlUTRWRXZqZXFON1poLXBIeUtjWjRHdDBuUUpXR3FhdE9Pcm51ZlVTdjY3UTZVdzdremhVaWFSMHk3d19qOHBBZkYxekI1?oc=5"
+        },
+        {
+          "time": "2026-10-26T09:12:00+09:00",
+          "title": "'러닝족 겨냥'…삼성전자, 첫 클립형 무선 이어폰 출시",
+          "source": "SBS Biz",
+          "link": "https://news.google.com/rss/articles/CBMiU0FVX3lxTE5TekVhR1NkT09vTGlFYUl3N28yb3FqMndYcmtGWkZKOGt3dENNTHlTSnRuZ3ZuYlRtc09DSHhOTjJwN0JFX0lQa2QwTC1rMk9HNTBJ0gFYQVVfeXFMTUJ6Zlp1cWxGZ01TR25Kam1LU3RselpSUjNrcWE5ZUdMZU00QjdLMDQyQ3Vqak9JUzdNZENHYkdHRmdxVXVNRjlpd21GNWt4SEd6WHdHWjNvMQ?oc=5"
+        },
+        {
+          "time": "2026-10-26T10:31:29+09:00",
+          "title": "삼성전자, 클립형 무선 ‘갤럭시 버즈 온’ 선보여",
+          "source": "IT조선",
+          "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTFAzby1xaWc3bnhpcUljcjI4bjFEdUdVdWx6azctOVZzcTA1RXAzQy1yRWg0blJyanZyNG1uTDFmNHJnS0tXR3BTMmNVYXZWeUtCblZWRllEdGxwT0VzQl9ua1FNd2VsNlZFRFFhUkZua0TSAXRBVV95cUxPTTZaeF8teE84Y0RkRTl0Z3hZdF92Xzc4bUtRN01mR3p5N2EzT24tOU9kQXF5NXBSZnp1Zk4tcmc0Xzh1aHY5S2FwSzNfQ2N1b2lyZ185T2p1RS05b21sM2YzSkp3RHV4cFhMeFZCQUJaTzY5TA?oc=5"
         }
       ]
     },
@@ -184,9 +184,9 @@
       "ret": -0.008168028004667427,
       "z": 4.68,
       "volume_ratio": 2.46,
-      "cum_before": 0.013002364066193817,
-      "cum_after": 0.004728132387706863,
-      "session_share": -0.8637689614935792,
+      "cum_before": 0.010613207547169878,
+      "cum_after": 0.002358490566037652,
+      "session_share": -1.1544146246596678,
       "score": 5.174697991588181,
       "news": [
         {
@@ -196,28 +196,28 @@
           "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE56cU40VVBjNVlOTTU5R2JXRFl5WXYtbEFyUTdDVjlRRExlcndOcHo4VVlyWTFHaGZOQXdYUklTZjdsVDJOUzVXNmNNTVdpNzFlVTlCakx3d0J1VktM?oc=5"
         },
         {
-          "time": "2026-10-26T09:18:03+09:00",
-          "title": "[삼성] 美 ITC, 삼성전자 DRAM 특허침해 조사 종결",
-          "source": "www.ebn.co.kr",
-          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE1NNHpFVUJTVWl0TkRUcDloQWp6NGVBcHVoWTJWOFZzTUI0Ym14Xy01TVlnQ2E5WlhDZzNjNkVfU0E3eUl3ZFUweGU3UDl4Q2lpd0NIaENBOFpxamtqRDVBWENMaVotaFE4?oc=5"
-        },
-        {
           "time": "2026-10-26T09:27:56+09:00",
           "title": "[특징주] SK하이닉스 '특별배당' 기대 2% 강세⋯삼성전자 약보합",
           "source": "아이뉴스24",
           "link": "https://news.google.com/rss/articles/CBMiS0FVX3lxTFBWeFVTVjFMeW12UFJuSXdiX0dQaExvdEZ5dWQ3R1VvWDZPMVhhbXE0UGJHejNqYjdoMzFBMTg1UnZMRENXdnhBdGFMZw?oc=5"
         },
         {
-          "time": "2026-10-26T09:49:31+09:00",
-          "title": "삼성전자·SK하이닉스 실적 발표 임박…'추가 주주환원' 주목",
-          "source": "BBS불교방송",
-          "link": "https://news.google.com/rss/articles/CBMia0FVX3lxTE5pbGlkTmtEZC16eXNuZ3I0WFI1TVA0QUROeU4yZkFaeGRkWFd1VncwSjQ1bHdzWm9lWm9McHgzaFhzTktEZmF4SF9pWFNKaGZwMGV6Zy1reUd0R25ldHZ1RU52UkxacUZVUng0?oc=5"
-        },
-        {
           "time": "2026-10-26T09:52:06+09:00",
           "title": "삼성전자는 왜 HBM 25% 프리미엄 관측에 휩싸였나… 납기 신뢰와 4나노 무기화",
           "source": "글로벌이코노믹",
           "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxQbFBsTjNOdUZhVThrUWhFUDhUNGdKb09OWWRVVTZBWDNJakREOGYwWG5Yd3h6NkFZbHhCRWpqY21rTkJlUTRWRXZqZXFON1poLXBIeUtjWjRHdDBuUUpXR3FhdE9Pcm51ZlVTdjY3UTZVdzdremhVaWFSMHk3d19qOHBBZkYxekI1?oc=5"
+        },
+        {
+          "time": "2026-10-26T09:12:00+09:00",
+          "title": "'러닝족 겨냥'…삼성전자, 첫 클립형 무선 이어폰 출시",
+          "source": "SBS Biz",
+          "link": "https://news.google.com/rss/articles/CBMiU0FVX3lxTE5TekVhR1NkT09vTGlFYUl3N28yb3FqMndYcmtGWkZKOGt3dENNTHlTSnRuZ3ZuYlRtc09DSHhOTjJwN0JFX0lQa2QwTC1rMk9HNTBJ0gFYQVVfeXFMTUJ6Zlp1cWxGZ01TR25Kam1LU3RselpSUjNrcWE5ZUdMZU00QjdLMDQyQ3Vqak9JUzdNZENHYkdHRmdxVXVNRjlpd21GNWt4SEd6WHdHWjNvMQ?oc=5"
+        },
+        {
+          "time": "2026-10-26T10:31:29+09:00",
+          "title": "삼성전자, 클립형 무선 ‘갤럭시 버즈 온’ 선보여",
+          "source": "IT조선",
+          "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTFAzby1xaWc3bnhpcUljcjI4bjFEdUdVdWx6azctOVZzcTA1RXAzQy1yRWg0blJyanZyNG1uTDFmNHJnS0tXR3BTMmNVYXZWeUtCblZWRllEdGxwT0VzQl9ua1FNd2VsNlZFRFFhUkZua0TSAXRBVV95cUxPTTZaeF8teE84Y0RkRTl0Z3hZdF92Xzc4bUtRN01mR3p5N2EzT24tOU9kQXF5NXBSZnp1Zk4tcmc0Xzh1aHY5S2FwSzNfQ2N1b2lyZ185T2p1RS05b21sM2YzSkp3RHV4cFhMeFZCQUJaTzY5TA?oc=5"
         }
       ]
     },
@@ -226,9 +226,9 @@
       "ret": -0.0046511627906976605,
       "z": 2.67,
       "volume_ratio": 5.22,
-      "cum_before": 0.016548463356973908,
-      "cum_after": 0.011820330969267046,
-      "session_share": -0.4918604651162769,
+      "cum_before": 0.014150943396226356,
+      "cum_after": 0.009433962264151052,
+      "session_share": -0.6573643410852721,
       "score": 4.666591374674812,
       "news": [
         {
@@ -244,31 +244,31 @@
           "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE56cU40VVBjNVlOTTU5R2JXRFl5WXYtbEFyUTdDVjlRRExlcndOcHo4VVlyWTFHaGZOQXdYUklTZjdsVDJOUzVXNmNNTVdpNzFlVTlCakx3d0J1VktM?oc=5"
         },
         {
-          "time": "2026-10-26T09:18:03+09:00",
-          "title": "[삼성] 美 ITC, 삼성전자 DRAM 특허침해 조사 종결",
-          "source": "www.ebn.co.kr",
-          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE1NNHpFVUJTVWl0TkRUcDloQWp6NGVBcHVoWTJWOFZzTUI0Ym14Xy01TVlnQ2E5WlhDZzNjNkVfU0E3eUl3ZFUweGU3UDl4Q2lpd0NIaENBOFpxamtqRDVBWENMaVotaFE4?oc=5"
-        },
-        {
-          "time": "2026-10-26T08:00:00+09:00",
-          "title": "[인사 풍향계 ①] 삼성전자 영업익 107조에 MX는 적자…상벌 원칙 시험대",
-          "source": "자본시장뉴스",
-          "link": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE9HYWVJdlZXbjdHd2ZIa1p6czd1MVdPZ3poRGJaMmdVcnVLOFFnMEFTZGFSb1hjTlVEM013MEtPNm1mTVBVNGdEckFNU3h2cG93QmtYVTZtLU5IVjVkdXB3UDFOUTEwMFk?oc=5"
-        },
-        {
           "time": "2026-10-26T08:48:45+09:00",
           "title": "삼성전자",
           "source": "매일경제 마켓",
           "link": "https://news.google.com/rss/articles/CBMilwFBVV95cUxNdmNDZVFYZUZoMUpSdjVnUnJXeTkwSXMxNzRndW9iT2ZNLXpnSnZNLTN6SEJ6UEJuNjJWSFo0TEFNMEJlOVJVdU90U3VoVmZreUFHeUVmMUljMktSUUtNUmF1cFF4ZTAwR0JYV2dXbEVCVXhYSFQ5VnJCS3pTem5CWVVTMktBUkZoU2VWWHlXdFRtbFFjcVdJ?oc=5"
+        },
+        {
+          "time": "2026-10-26T09:12:00+09:00",
+          "title": "'러닝족 겨냥'…삼성전자, 첫 클립형 무선 이어폰 출시",
+          "source": "SBS Biz",
+          "link": "https://news.google.com/rss/articles/CBMiU0FVX3lxTE5TekVhR1NkT09vTGlFYUl3N28yb3FqMndYcmtGWkZKOGt3dENNTHlTSnRuZ3ZuYlRtc09DSHhOTjJwN0JFX0lQa2QwTC1rMk9HNTBJ0gFYQVVfeXFMTUJ6Zlp1cWxGZ01TR25Kam1LU3RselpSUjNrcWE5ZUdMZU00QjdLMDQyQ3Vqak9JUzdNZENHYkdHRmdxVXVNRjlpd21GNWt4SEd6WHdHWjNvMQ?oc=5"
+        },
+        {
+          "time": "2026-10-26T08:39:06+09:00",
+          "title": "삼성전자, 클립형 무선 이어폰 '갤럭시 버즈 온' 27일 국내 출시",
+          "source": "글로벌이코노믹",
+          "link": "https://news.google.com/rss/articles/CBMihgFBVV95cUxQUjNsdGljNVRrSGtpcl96TzhSX1Q3akxoTWR3bm5KSExueWp2cHZJZTA0MEJXNWdrNTNJcVdXQlNnUzJjN0VjZFRRMXV5R0gzRDR5NGo3Ukd2QjRWM1AzblFBcmJZV0tqZTFSY0h6SGp0RkxZQjU1ZktSRmVHeGRmVTVFMWhvZw?oc=5"
         }
       ]
     }
   ],
   "turning_point": {
     "high_time": "2026-10-26T10:20:00+09:00",
-    "high": 0.01891252955082745,
+    "high": 0.01650943396226423,
     "low_time": "2026-10-26T12:15:00+09:00",
-    "low": 0.0,
+    "low": -0.002358490566037763,
     "pattern": "고점 후 반락"
   },
   "closing_share": 1.0,
@@ -354,12 +354,12 @@
     {
       "time": "2026-10-26T10:20:00+09:00",
       "price": 215500.0,
-      "volume": 246802.0
+      "volume": 246803.0
     },
     {
       "time": "2026-10-26T10:25:00+09:00",
       "price": 215500.0,
-      "volume": 151063.0
+      "volume": 151062.0
     },
     {
       "time": "2026-10-26T10:30:00+09:00",
@@ -479,12 +479,12 @@
     {
       "time": "2026-10-26T12:25:00+09:00",
       "price": 212500.0,
-      "volume": 37657.0
+      "volume": 37658.0
     },
     {
       "time": "2026-10-26T12:30:00+09:00",
       "price": 213000.0,
-      "volume": 100155.0
+      "volume": 100154.0
     },
     {
       "time": "2026-10-26T12:35:00+09:00",
@@ -638,9 +638,9 @@
       "ret": -0.0046511627906976605,
       "z": 2.67,
       "volume_ratio": 5.22,
-      "cum_before": 0.016548463356973908,
-      "cum_after": 0.011820330969267046,
-      "session_share": -0.4918604651162769,
+      "cum_before": 0.014150943396226356,
+      "cum_after": 0.009433962264151052,
+      "session_share": -0.6573643410852721,
       "score": 4.666591374674812,
       "news": [
         {
@@ -656,22 +656,22 @@
           "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE56cU40VVBjNVlOTTU5R2JXRFl5WXYtbEFyUTdDVjlRRExlcndOcHo4VVlyWTFHaGZOQXdYUklTZjdsVDJOUzVXNmNNTVdpNzFlVTlCakx3d0J1VktM?oc=5"
         },
         {
-          "time": "2026-10-26T09:18:03+09:00",
-          "title": "[삼성] 美 ITC, 삼성전자 DRAM 특허침해 조사 종결",
-          "source": "www.ebn.co.kr",
-          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE1NNHpFVUJTVWl0TkRUcDloQWp6NGVBcHVoWTJWOFZzTUI0Ym14Xy01TVlnQ2E5WlhDZzNjNkVfU0E3eUl3ZFUweGU3UDl4Q2lpd0NIaENBOFpxamtqRDVBWENMaVotaFE4?oc=5"
-        },
-        {
-          "time": "2026-10-26T08:00:00+09:00",
-          "title": "[인사 풍향계 ①] 삼성전자 영업익 107조에 MX는 적자…상벌 원칙 시험대",
-          "source": "자본시장뉴스",
-          "link": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE9HYWVJdlZXbjdHd2ZIa1p6czd1MVdPZ3poRGJaMmdVcnVLOFFnMEFTZGFSb1hjTlVEM013MEtPNm1mTVBVNGdEckFNU3h2cG93QmtYVTZtLU5IVjVkdXB3UDFOUTEwMFk?oc=5"
-        },
-        {
           "time": "2026-10-26T08:48:45+09:00",
           "title": "삼성전자",
           "source": "매일경제 마켓",
           "link": "https://news.google.com/rss/articles/CBMilwFBVV95cUxNdmNDZVFYZUZoMUpSdjVnUnJXeTkwSXMxNzRndW9iT2ZNLXpnSnZNLTN6SEJ6UEJuNjJWSFo0TEFNMEJlOVJVdU90U3VoVmZreUFHeUVmMUljMktSUUtNUmF1cFF4ZTAwR0JYV2dXbEVCVXhYSFQ5VnJCS3pTem5CWVVTMktBUkZoU2VWWHlXdFRtbFFjcVdJ?oc=5"
+        },
+        {
+          "time": "2026-10-26T09:12:00+09:00",
+          "title": "'러닝족 겨냥'…삼성전자, 첫 클립형 무선 이어폰 출시",
+          "source": "SBS Biz",
+          "link": "https://news.google.com/rss/articles/CBMiU0FVX3lxTE5TekVhR1NkT09vTGlFYUl3N28yb3FqMndYcmtGWkZKOGt3dENNTHlTSnRuZ3ZuYlRtc09DSHhOTjJwN0JFX0lQa2QwTC1rMk9HNTBJ0gFYQVVfeXFMTUJ6Zlp1cWxGZ01TR25Kam1LU3RselpSUjNrcWE5ZUdMZU00QjdLMDQyQ3Vqak9JUzdNZENHYkdHRmdxVXVNRjlpd21GNWt4SEd6WHdHWjNvMQ?oc=5"
+        },
+        {
+          "time": "2026-10-26T08:39:06+09:00",
+          "title": "삼성전자, 클립형 무선 이어폰 '갤럭시 버즈 온' 27일 국내 출시",
+          "source": "글로벌이코노믹",
+          "link": "https://news.google.com/rss/articles/CBMihgFBVV95cUxQUjNsdGljNVRrSGtpcl96TzhSX1Q3akxoTWR3bm5KSExueWp2cHZJZTA0MEJXNWdrNTNJcVdXQlNnUzJjN0VjZFRRMXV5R0gzRDR5NGo3Ukd2QjRWM1AzblFBcmJZV0tqZTFSY0h6SGp0RkxZQjU1ZktSRmVHeGRmVTVFMWhvZw?oc=5"
         }
       ],
       "price": 214000.0,
@@ -682,10 +682,10 @@
       "ret": 0.00936768149882905,
       "z": 5.37,
       "volume_ratio": 2.7,
-      "cum_before": 0.009456264775413725,
-      "cum_after": 0.01891252955082745,
-      "session_share": 0.9906323185011706,
-      "score": 5.910676923964009,
+      "cum_before": 0.007075471698113178,
+      "cum_after": 0.01650943396226423,
+      "session_share": 1.3239656518345113,
+      "score": 5.910679112052057,
       "news": [
         {
           "time": "2026-10-26T09:13:00+09:00",
@@ -694,28 +694,28 @@
           "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE56cU40VVBjNVlOTTU5R2JXRFl5WXYtbEFyUTdDVjlRRExlcndOcHo4VVlyWTFHaGZOQXdYUklTZjdsVDJOUzVXNmNNTVdpNzFlVTlCakx3d0J1VktM?oc=5"
         },
         {
-          "time": "2026-10-26T09:18:03+09:00",
-          "title": "[삼성] 美 ITC, 삼성전자 DRAM 특허침해 조사 종결",
-          "source": "www.ebn.co.kr",
-          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE1NNHpFVUJTVWl0TkRUcDloQWp6NGVBcHVoWTJWOFZzTUI0Ym14Xy01TVlnQ2E5WlhDZzNjNkVfU0E3eUl3ZFUweGU3UDl4Q2lpd0NIaENBOFpxamtqRDVBWENMaVotaFE4?oc=5"
-        },
-        {
           "time": "2026-10-26T09:27:56+09:00",
           "title": "[특징주] SK하이닉스 '특별배당' 기대 2% 강세⋯삼성전자 약보합",
           "source": "아이뉴스24",
           "link": "https://news.google.com/rss/articles/CBMiS0FVX3lxTFBWeFVTVjFMeW12UFJuSXdiX0dQaExvdEZ5dWQ3R1VvWDZPMVhhbXE0UGJHejNqYjdoMzFBMTg1UnZMRENXdnhBdGFMZw?oc=5"
         },
         {
-          "time": "2026-10-26T09:49:31+09:00",
-          "title": "삼성전자·SK하이닉스 실적 발표 임박…'추가 주주환원' 주목",
-          "source": "BBS불교방송",
-          "link": "https://news.google.com/rss/articles/CBMia0FVX3lxTE5pbGlkTmtEZC16eXNuZ3I0WFI1TVA0QUROeU4yZkFaeGRkWFd1VncwSjQ1bHdzWm9lWm9McHgzaFhzTktEZmF4SF9pWFNKaGZwMGV6Zy1reUd0R25ldHZ1RU52UkxacUZVUng0?oc=5"
-        },
-        {
           "time": "2026-10-26T09:52:06+09:00",
           "title": "삼성전자는 왜 HBM 25% 프리미엄 관측에 휩싸였나… 납기 신뢰와 4나노 무기화",
           "source": "글로벌이코노믹",
           "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxQbFBsTjNOdUZhVThrUWhFUDhUNGdKb09OWWRVVTZBWDNJakREOGYwWG5Yd3h6NkFZbHhCRWpqY21rTkJlUTRWRXZqZXFON1poLXBIeUtjWjRHdDBuUUpXR3FhdE9Pcm51ZlVTdjY3UTZVdzdremhVaWFSMHk3d19qOHBBZkYxekI1?oc=5"
+        },
+        {
+          "time": "2026-10-26T09:12:00+09:00",
+          "title": "'러닝족 겨냥'…삼성전자, 첫 클립형 무선 이어폰 출시",
+          "source": "SBS Biz",
+          "link": "https://news.google.com/rss/articles/CBMiU0FVX3lxTE5TekVhR1NkT09vTGlFYUl3N28yb3FqMndYcmtGWkZKOGt3dENNTHlTSnRuZ3ZuYlRtc09DSHhOTjJwN0JFX0lQa2QwTC1rMk9HNTBJ0gFYQVVfeXFMTUJ6Zlp1cWxGZ01TR25Kam1LU3RselpSUjNrcWE5ZUdMZU00QjdLMDQyQ3Vqak9JUzdNZENHYkdHRmdxVXVNRjlpd21GNWt4SEd6WHdHWjNvMQ?oc=5"
+        },
+        {
+          "time": "2026-10-26T10:31:29+09:00",
+          "title": "삼성전자, 클립형 무선 ‘갤럭시 버즈 온’ 선보여",
+          "source": "IT조선",
+          "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTFAzby1xaWc3bnhpcUljcjI4bjFEdUdVdWx6azctOVZzcTA1RXAzQy1yRWg0blJyanZyNG1uTDFmNHJnS0tXR3BTMmNVYXZWeUtCblZWRllEdGxwT0VzQl9ua1FNd2VsNlZFRFFhUkZua0TSAXRBVV95cUxPTTZaeF8teE84Y0RkRTl0Z3hZdF92Xzc4bUtRN01mR3p5N2EzT24tOU9kQXF5NXBSZnp1Zk4tcmc0Xzh1aHY5S2FwSzNfQ2N1b2lyZ185T2p1RS05b21sM2YzSkp3RHV4cFhMeFZCQUJaTzY5TA?oc=5"
         }
       ],
       "price": 215500.0,
@@ -726,9 +726,9 @@
       "ret": -0.008168028004667427,
       "z": 4.68,
       "volume_ratio": 2.46,
-      "cum_before": 0.013002364066193817,
-      "cum_after": 0.004728132387706863,
-      "session_share": -0.8637689614935792,
+      "cum_before": 0.010613207547169878,
+      "cum_after": 0.002358490566037652,
+      "session_share": -1.1544146246596678,
       "score": 5.174697991588181,
       "news": [
         {
@@ -738,28 +738,28 @@
           "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE56cU40VVBjNVlOTTU5R2JXRFl5WXYtbEFyUTdDVjlRRExlcndOcHo4VVlyWTFHaGZOQXdYUklTZjdsVDJOUzVXNmNNTVdpNzFlVTlCakx3d0J1VktM?oc=5"
         },
         {
-          "time": "2026-10-26T09:18:03+09:00",
-          "title": "[삼성] 美 ITC, 삼성전자 DRAM 특허침해 조사 종결",
-          "source": "www.ebn.co.kr",
-          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE1NNHpFVUJTVWl0TkRUcDloQWp6NGVBcHVoWTJWOFZzTUI0Ym14Xy01TVlnQ2E5WlhDZzNjNkVfU0E3eUl3ZFUweGU3UDl4Q2lpd0NIaENBOFpxamtqRDVBWENMaVotaFE4?oc=5"
-        },
-        {
           "time": "2026-10-26T09:27:56+09:00",
           "title": "[특징주] SK하이닉스 '특별배당' 기대 2% 강세⋯삼성전자 약보합",
           "source": "아이뉴스24",
           "link": "https://news.google.com/rss/articles/CBMiS0FVX3lxTFBWeFVTVjFMeW12UFJuSXdiX0dQaExvdEZ5dWQ3R1VvWDZPMVhhbXE0UGJHejNqYjdoMzFBMTg1UnZMRENXdnhBdGFMZw?oc=5"
         },
         {
-          "time": "2026-10-26T09:49:31+09:00",
-          "title": "삼성전자·SK하이닉스 실적 발표 임박…'추가 주주환원' 주목",
-          "source": "BBS불교방송",
-          "link": "https://news.google.com/rss/articles/CBMia0FVX3lxTE5pbGlkTmtEZC16eXNuZ3I0WFI1TVA0QUROeU4yZkFaeGRkWFd1VncwSjQ1bHdzWm9lWm9McHgzaFhzTktEZmF4SF9pWFNKaGZwMGV6Zy1reUd0R25ldHZ1RU52UkxacUZVUng0?oc=5"
-        },
-        {
           "time": "2026-10-26T09:52:06+09:00",
           "title": "삼성전자는 왜 HBM 25% 프리미엄 관측에 휩싸였나… 납기 신뢰와 4나노 무기화",
           "source": "글로벌이코노믹",
           "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxQbFBsTjNOdUZhVThrUWhFUDhUNGdKb09OWWRVVTZBWDNJakREOGYwWG5Yd3h6NkFZbHhCRWpqY21rTkJlUTRWRXZqZXFON1poLXBIeUtjWjRHdDBuUUpXR3FhdE9Pcm51ZlVTdjY3UTZVdzdremhVaWFSMHk3d19qOHBBZkYxekI1?oc=5"
+        },
+        {
+          "time": "2026-10-26T09:12:00+09:00",
+          "title": "'러닝족 겨냥'…삼성전자, 첫 클립형 무선 이어폰 출시",
+          "source": "SBS Biz",
+          "link": "https://news.google.com/rss/articles/CBMiU0FVX3lxTE5TekVhR1NkT09vTGlFYUl3N28yb3FqMndYcmtGWkZKOGt3dENNTHlTSnRuZ3ZuYlRtc09DSHhOTjJwN0JFX0lQa2QwTC1rMk9HNTBJ0gFYQVVfeXFMTUJ6Zlp1cWxGZ01TR25Kam1LU3RselpSUjNrcWE5ZUdMZU00QjdLMDQyQ3Vqak9JUzdNZENHYkdHRmdxVXVNRjlpd21GNWt4SEd6WHdHWjNvMQ?oc=5"
+        },
+        {
+          "time": "2026-10-26T10:31:29+09:00",
+          "title": "삼성전자, 클립형 무선 ‘갤럭시 버즈 온’ 선보여",
+          "source": "IT조선",
+          "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTFAzby1xaWc3bnhpcUljcjI4bjFEdUdVdWx6azctOVZzcTA1RXAzQy1yRWg0blJyanZyNG1uTDFmNHJnS0tXR3BTMmNVYXZWeUtCblZWRllEdGxwT0VzQl9ua1FNd2VsNlZFRFFhUkZua0TSAXRBVV95cUxPTTZaeF8teE84Y0RkRTl0Z3hZdF92Xzc4bUtRN01mR3p5N2EzT24tOU9kQXF5NXBSZnp1Zk4tcmc0Xzh1aHY5S2FwSzNfQ2N1b2lyZ185T2p1RS05b21sM2YzSkp3RHV4cFhMeFZCQUJaTzY5TA?oc=5"
         }
       ],
       "price": 212500.0,
@@ -768,22 +768,10 @@
   ],
   "overnight_news": [
     {
-      "time": "2026-10-25T19:02:00+09:00",
-      "title": "삼성전자·SK하이닉스 영업이익 180조 전망...주주환원책 '주목'",
-      "source": "YTN",
-      "link": "https://news.google.com/rss/articles/CBMiXkFVX3lxTE50c0ZDdkhfWFhTal9uQlVaalJWZEJqRERZTC1Lc1haeGF6eGVEdm5LNUxJVGZDWUtja1ZnWU1BU3BaRGZQT3NIUGN4dHRCRlM4ZFptUHRYTEtxVFJ2ZFE?oc=5"
-    },
-    {
       "time": "2026-10-26T08:48:00+09:00",
       "title": "5300선 찍고 반등한 코스피…삼성전자·SK하이닉스 주주환원에 쏠린 눈",
       "source": "경북매일",
       "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE5aVVBMaTR1cjBaTFc5VEN6V1RlWnVfN2VQQmJMc0Y4T0s1cVNZSlRsQWhYZWpwV3htXzZ5dEozaUt4V0NfTGs0OXBCeDFDMFRobHdCbWZTYjZBUQ?oc=5"
-    },
-    {
-      "time": "2026-10-26T08:00:00+09:00",
-      "title": "[인사 풍향계 ①] 삼성전자 영업익 107조에 MX는 적자…상벌 원칙 시험대",
-      "source": "자본시장뉴스",
-      "link": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE9HYWVJdlZXbjdHd2ZIa1p6czd1MVdPZ3poRGJaMmdVcnVLOFFnMEFTZGFSb1hjTlVEM013MEtPNm1mTVBVNGdEckFNU3h2cG93QmtYVTZtLU5IVjVkdXB3UDFOUTEwMFk?oc=5"
     },
     {
       "time": "2026-10-26T08:48:45+09:00",
@@ -792,18 +780,36 @@
       "link": "https://news.google.com/rss/articles/CBMilwFBVV95cUxNdmNDZVFYZUZoMUpSdjVnUnJXeTkwSXMxNzRndW9iT2ZNLXpnSnZNLTN6SEJ6UEJuNjJWSFo0TEFNMEJlOVJVdU90U3VoVmZreUFHeUVmMUljMktSUUtNUmF1cFF4ZTAwR0JYV2dXbEVCVXhYSFQ5VnJCS3pTem5CWVVTMktBUkZoU2VWWHlXdFRtbFFjcVdJ?oc=5"
     },
     {
-      "time": "2026-10-26T08:13:00+09:00",
-      "title": "삼성전자, 첫 클립형 이어폰 '갤럭시 버즈 온' 27일 출시",
-      "source": "뉴스핌",
-      "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE1hWFJJa2lQdk5UVjRrWnVGQV9vT0NVeEpUcVZueUUySE42d2hFRnpkU1RYckxZMFEtREZUYVlvdDNZZjZtdUs5WHBjN29sWkJTYm5ZcFFyOVZvNlRO?oc=5"
+      "time": "2026-10-26T08:39:06+09:00",
+      "title": "삼성전자, 클립형 무선 이어폰 '갤럭시 버즈 온' 27일 국내 출시",
+      "source": "글로벌이코노믹",
+      "link": "https://news.google.com/rss/articles/CBMihgFBVV95cUxQUjNsdGljNVRrSGtpcl96TzhSX1Q3akxoTWR3bm5KSExueWp2cHZJZTA0MEJXNWdrNTNJcVdXQlNnUzJjN0VjZFRRMXV5R0gzRDR5NGo3Ukd2QjRWM1AzblFBcmJZV0tqZTFSY0h6SGp0RkxZQjU1ZktSRmVHeGRmVTVFMWhvZw?oc=5"
+    },
+    {
+      "time": "2026-10-26T08:46:42+09:00",
+      "title": "삼성전자, 첫 클립형 무선 이어폰 '갤럭시 버즈 온' 출시",
+      "source": "신아일보",
+      "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE05YkJfRWE1WlY2eUNKX01ILXVMZkFwX05HSXdkaUo2ZWFUeFhnaFVNMVlZZGxnZVhINXNyd1NYUjBOczZDR2w1R0VEcVhZaDlnejBsaEsydmRIb3VZamZLZ2NlNFFxaHM5elpnRDNDWDQ?oc=5"
     }
   ],
   "top_news": [
+    {
+      "time": "2026-10-26T16:37:01+09:00",
+      "title": "하나증권 \"AI 투자 우려에 흔들린 반도체주…시장은 2027년을 본다\"",
+      "source": "핀포인트뉴스",
+      "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTE5JRTNtb1d4RWFFenlTenViM2NveXVTRlJwWlQ5bTRlQVRWcXhacXAtTDlPMFVxZXlla19rX0lZY01VbWRDejVldklQNl9aZ0dIbDhEZnl0a2NORWtJSC1QM0t6VnhjYlR6cUxmX2RuNks5THM?oc=5"
+    },
     {
       "time": "2026-10-26T11:39:38+09:00",
       "title": "\"메모리반도체 장기 계약도 불황 막기 역부족\", 삼성전자와 SK하이닉스에 새 시험대",
       "source": "비즈니스포스트",
       "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTE1WNGhwNDItRnAzbjJVZklQTnBPWkFMZDd6WHlLLWROQlVHYlJMdjJWcUtBOWxTXzhkT0JoZDVnOThtdlNHOU43Rkh3UmJkcGNGV0RDcDE4YmxlSUR5cGFKWWhaSGcwWDJLS21yYUNBb29PZVU?oc=5"
+    },
+    {
+      "time": "2026-10-26T13:46:39+09:00",
+      "title": "삼성전자, AI로 반도체 신물질 개발기간 3년 앞당긴다",
+      "source": "www.dt.co.kr",
+      "link": "https://news.google.com/rss/articles/CBMiTkFVX3lxTE85UzM0RDB6bllZQk4tOXpWQkVueGdTT2xXc2Zsd1V4THlOWHBfcmRXMWZWMjgxZExzNzdSMlhJN0c4ZE5CNC0zSXkyQTJxZw?oc=5"
     },
     {
       "time": "2026-10-26T14:54:31+09:00",
@@ -822,18 +828,6 @@
       "title": "삼성전자, AI로 반도체 신소재 개발 기간 5년서 2년으로 단축 추진 By EBN",
       "source": "Investing.com 한국어",
       "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE9vcVVWd1FNNU4ydjU1NkJjZC14dk0wa1RxQXJsRUg0TFFKbjlQVTB3QkNEUWZ4WFZnRlQyb29sSF9fT0xRcngwX1VaY09Pc01jMGMxd1RDM3JhWlp6dVFrajE3UEpZZ3plY1ZZdmFiT20?oc=5"
-    },
-    {
-      "time": "2026-10-26T15:39:57+09:00",
-      "title": "'이재용 4년' 삼성전자, 메모리 부활·AI 호황 날개…조직 안정은 숙제",
-      "source": "데일리한국",
-      "link": "https://news.google.com/rss/articles/CBMib0FVX3lxTFBWM0FYY1VmVG1objdQZTVjVnRZN1ZQRzc5SFNFNEprOHlUMTRSNzFJei11VlVlYVFNZmU0SWhHOENsRWZVSXVDTEtNSHR0WkU1aXZlRHZzdVo3SmtlSlRlbWNWYTRoNTFUUldIcGZSQdIBc0FVX3lxTE1ickdieXl2V3VLN2g4SFU2bjBldms5WFRsdHdjdWZJT1BvSEJ6TkJWRHhyeWNDRVp2NW1LY1pFX3hsNUtOSlN6dHhmQTBtYlgzWUM1T2syY3ZJbnlPWXFla09LX1cweDJQY1JKLWxwT3NOQWs?oc=5"
-    },
-    {
-      "time": "2026-10-26T15:43:00+09:00",
-      "title": "삼성전자·SK하이닉스, 올해 사상 최대 설비투자에도… 메모리 공급 확대는 2028년부터 본격화 - 조선비즈",
-      "source": "Chosunbiz",
-      "link": "https://news.google.com/rss/articles/CBMiggFBVV95cUxNYnVIM2FKM01IeXJtVjh5UmJpbl9OSHczT3dpcVVCcGN5UGEyOV9yaFBWUzRqVFQyWlBDdkxrV2d3MHA2d1c4Zkc4LVRHX2Jtdk1kTFZNWDYyWTNkS00yMlJpUmZaa3d5M2hmejczWHVoVk93WHM3cWI5aElYZDNHNG530gGWAUFVX3lxTE8xc0dEZUJmWjVlS3Y0eF9YR0wyeVdjejFHb2txa19KSmYyaDkzeW02NjdZR2tFZ0tXYjREWk9hRXAydEFkMXB1Y09kMEdHaUpnSlRYdUxuc09BSVU0ejByN2haSzNtRG1ETlF6d2tXbXVlSlJKQ0lfRUo5Umh6RzREblZqY2xoNnRTUEpsaHYtaHJfV1lBdw?oc=5"
     }
   ],
   "disclosures": [
@@ -860,9 +854,9 @@
     "steady": 22,
     "upper": 0,
     "lower": 0,
-    "individual": 605.0,
-    "foreign": -6946.0,
-    "institution": 5972.0,
+    "individual": 665.0,
+    "foreign": -6993.0,
+    "institution": 5960.0,
     "prev_close": 5550.3,
     "open": 5499.05,
     "high": 5565.67,

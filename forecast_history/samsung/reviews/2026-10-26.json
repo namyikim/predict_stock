@@ -3,7 +3,7 @@
   "name": "삼성전자",
   "peer_name": "SK하이닉스",
   "session_date": "2026-10-26",
-  "generated_at": "2026-10-26 16:11 KST",
+  "generated_at": "2026-10-26 16:46 KST",
   "summary": {
     "prev_close": 215500.0,
     "open": 213500.0,
@@ -15,11 +15,11 @@
     "c2c": -0.011600928074245953,
     "high_vs_open": 0.011709601873536313,
     "low_vs_open": -0.00936768149882905,
-    "volume": 12234151.0,
-    "volume_ratio": 0.6676322020412376,
+    "volume": 12248756.0,
+    "volume_ratio": 0.6684292142990406,
     "kospi_c2c": -0.014563103379656273,
     "peer_c2c": -0.001566170712607673,
-    "usdkrw_chg": -0.0026168905713320756,
+    "usdkrw_chg": -0.002586694971972392,
     "us_nights": 1,
     "sox_ret": 0.004424112802455582,
     "nasdaq_ret": -0.002057742343804736,
@@ -80,11 +80,11 @@
       }
     ],
     "micron_ah": {
-      "regular_close": 877.1099853515625,
+      "regular_close": 877.6099243164062,
       "last": 879.9,
-      "ret": 0.003180917667148897,
-      "low_ret": -0.0040131630130189055,
-      "high_ret": 0.0044350363277170235,
+      "ret": 0.0026094459738219555,
+      "low_ret": -0.004580536528842716,
+      "high_ret": 0.0038628502135893417,
       "last_time": "2026-10-24T08:55:00+09:00"
     },
     "nvidia_ah": {
@@ -112,7 +112,7 @@
         "after_high": -0.0012838735033345872
       }
     },
-    "from_high": -0.018545183848900026,
+    "from_high": -0.020859935773784644,
     "buyback": [
       {
         "kind": "직접 취득",
@@ -132,7 +132,7 @@
     ],
     "reasons": [
       "갭 -0.93%가 종가→종가 -1.16%의 80%",
-      "10:20 봉 +0.94%(σ의 5.37배, 거래량 2.7배)가 세션 -0.23%의 132%",
+      "10:20 봉 +0.94%(σ의 5.37배, 거래량 2.7배)가 세션 -0.23%의 99%",
       "KOSPI -1.46% vs 종목 -1.16%, 5분 수익률 상관 0.87 — 종목 고유 요인이 약함"
     ]
   },
@@ -142,10 +142,10 @@
       "ret": 0.00936768149882905,
       "z": 5.37,
       "volume_ratio": 2.7,
-      "cum_before": 0.007075471698113178,
-      "cum_after": 0.01650943396226423,
-      "session_share": 1.3239656518345113,
-      "score": 5.910679112052057,
+      "cum_before": 0.009456264775413725,
+      "cum_after": 0.01891252955082745,
+      "session_share": 0.9906323185011706,
+      "score": 5.910676923964009,
       "news": [
         {
           "time": "2026-10-26T09:13:00+09:00",
@@ -184,9 +184,9 @@
       "ret": -0.008168028004667427,
       "z": 4.68,
       "volume_ratio": 2.46,
-      "cum_before": 0.010613207547169878,
-      "cum_after": 0.002358490566037652,
-      "session_share": -1.1544146246596678,
+      "cum_before": 0.013002364066193817,
+      "cum_after": 0.004728132387706863,
+      "session_share": -0.8637689614935792,
       "score": 5.174697991588181,
       "news": [
         {
@@ -226,9 +226,9 @@
       "ret": -0.0046511627906976605,
       "z": 2.67,
       "volume_ratio": 5.22,
-      "cum_before": 0.014150943396226356,
-      "cum_after": 0.009433962264151052,
-      "session_share": -0.6573643410852721,
+      "cum_before": 0.016548463356973908,
+      "cum_after": 0.011820330969267046,
+      "session_share": -0.4918604651162769,
       "score": 4.666591374674812,
       "news": [
         {
@@ -266,9 +266,9 @@
   ],
   "turning_point": {
     "high_time": "2026-10-26T10:20:00+09:00",
-    "high": 0.01650943396226423,
+    "high": 0.01891252955082745,
     "low_time": "2026-10-26T12:15:00+09:00",
-    "low": -0.002358490566037763,
+    "low": 0.0,
     "pattern": "고점 후 반락"
   },
   "closing_share": 1.0,
@@ -354,12 +354,12 @@
     {
       "time": "2026-10-26T10:20:00+09:00",
       "price": 215500.0,
-      "volume": 246803.0
+      "volume": 246802.0
     },
     {
       "time": "2026-10-26T10:25:00+09:00",
       "price": 215500.0,
-      "volume": 151062.0
+      "volume": 151063.0
     },
     {
       "time": "2026-10-26T10:30:00+09:00",
@@ -479,12 +479,12 @@
     {
       "time": "2026-10-26T12:25:00+09:00",
       "price": 212500.0,
-      "volume": 37658.0
+      "volume": 37657.0
     },
     {
       "time": "2026-10-26T12:30:00+09:00",
       "price": 213000.0,
-      "volume": 100154.0
+      "volume": 100155.0
     },
     {
       "time": "2026-10-26T12:35:00+09:00",
@@ -638,9 +638,9 @@
       "ret": -0.0046511627906976605,
       "z": 2.67,
       "volume_ratio": 5.22,
-      "cum_before": 0.014150943396226356,
-      "cum_after": 0.009433962264151052,
-      "session_share": -0.6573643410852721,
+      "cum_before": 0.016548463356973908,
+      "cum_after": 0.011820330969267046,
+      "session_share": -0.4918604651162769,
       "score": 4.666591374674812,
       "news": [
         {
@@ -682,10 +682,10 @@
       "ret": 0.00936768149882905,
       "z": 5.37,
       "volume_ratio": 2.7,
-      "cum_before": 0.007075471698113178,
-      "cum_after": 0.01650943396226423,
-      "session_share": 1.3239656518345113,
-      "score": 5.910679112052057,
+      "cum_before": 0.009456264775413725,
+      "cum_after": 0.01891252955082745,
+      "session_share": 0.9906323185011706,
+      "score": 5.910676923964009,
       "news": [
         {
           "time": "2026-10-26T09:13:00+09:00",
@@ -726,9 +726,9 @@
       "ret": -0.008168028004667427,
       "z": 4.68,
       "volume_ratio": 2.46,
-      "cum_before": 0.010613207547169878,
-      "cum_after": 0.002358490566037652,
-      "session_share": -1.1544146246596678,
+      "cum_before": 0.013002364066193817,
+      "cum_after": 0.004728132387706863,
+      "session_share": -0.8637689614935792,
       "score": 5.174697991588181,
       "news": [
         {
@@ -792,10 +792,10 @@
       "link": "https://news.google.com/rss/articles/CBMilwFBVV95cUxNdmNDZVFYZUZoMUpSdjVnUnJXeTkwSXMxNzRndW9iT2ZNLXpnSnZNLTN6SEJ6UEJuNjJWSFo0TEFNMEJlOVJVdU90U3VoVmZreUFHeUVmMUljMktSUUtNUmF1cFF4ZTAwR0JYV2dXbEVCVXhYSFQ5VnJCS3pTem5CWVVTMktBUkZoU2VWWHlXdFRtbFFjcVdJ?oc=5"
     },
     {
-      "time": "2026-10-26T08:59:00+09:00",
-      "title": "삼성전자·SK하이닉스가 독일과 일본을 한꺼번에 넘었다, 대한민국 경상흑자 세계 2위의 비밀",
-      "source": "네이버 프리미엄콘텐츠",
-      "link": "https://news.google.com/rss/articles/CBMijAFBVV95cUxPemxuLVkyQ2tOTTBmVHBEYmdYS2hlam4tU2dGSXQzU28xSXJrWFZMclVPcHRDeFBPS2tFcktZWXlkaEpScEZ1czJmRldYMDAtZWlkVFlkOXFUSDUxeGJyRHBnSnF1TXUtcG41Yk84a1c1TnAtTVNad3BaR0I3UUVWQm5BcTJOTW9vOWFZMg?oc=5"
+      "time": "2026-10-26T08:13:00+09:00",
+      "title": "삼성전자, 첫 클립형 이어폰 '갤럭시 버즈 온' 27일 출시",
+      "source": "뉴스핌",
+      "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE1hWFJJa2lQdk5UVjRrWnVGQV9vT0NVeEpUcVZueUUySE42d2hFRnpkU1RYckxZMFEtREZUYVlvdDNZZjZtdUs5WHBjN29sWkJTYm5ZcFFyOVZvNlRO?oc=5"
     }
   ],
   "top_news": [
@@ -860,9 +860,9 @@
     "steady": 22,
     "upper": 0,
     "lower": 0,
-    "individual": 568.0,
-    "foreign": -6962.0,
-    "institution": 6023.0,
+    "individual": 605.0,
+    "foreign": -6946.0,
+    "institution": 5972.0,
     "prev_close": 5550.3,
     "open": 5499.05,
     "high": 5565.67,

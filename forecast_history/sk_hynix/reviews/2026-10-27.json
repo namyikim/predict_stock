@@ -3,7 +3,7 @@
   "name": "SK하이닉스",
   "peer_name": "삼성전자",
   "session_date": "2026-10-27",
-  "generated_at": "2026-10-27 17:31 KST",
+  "generated_at": "2026-10-27 22:09 KST",
   "summary": {
     "prev_close": 1275000.0,
     "open": 1346000.0,
@@ -15,11 +15,11 @@
     "c2c": 0.051764705882352935,
     "high_vs_open": 0.026002971768201988,
     "low_vs_open": -0.007429420505200568,
-    "volume": 3163993.0,
-    "volume_ratio": 0.917051481091416,
+    "volume": 3441073.0,
+    "volume_ratio": 0.9973603263956912,
     "kospi_c2c": 0.030874951736266976,
     "peer_c2c": 0.04225352112676051,
-    "usdkrw_chg": 0.003230555849550232,
+    "usdkrw_chg": 0.004191410711148924,
     "us_nights": 1,
     "sox_ret": 0.028202689812538706,
     "nasdaq_ret": 0.008246511774205878,
@@ -81,18 +81,18 @@
       "last_time": "2026-10-27T08:55:00+09:00"
     },
     "nvidia_ah": {
-      "regular_close": 215.97999572753906,
+      "regular_close": 215.97000122070312,
       "last": 216.5,
-      "ret": 0.002407650165513253,
-      "low_ret": -0.00027778372407583074,
-      "high_ret": 0.003068359503520579,
+      "ret": 0.002454038877164555,
+      "low_ret": -0.00023151928703302183,
+      "high_ret": 0.0031147787910110747,
       "last_time": "2026-10-27T08:55:00+09:00"
     },
     "session_cross": {
       "NQ=F": {
         "label": "나스닥100 선물",
-        "ret": -0.007837997801640295,
-        "after_high": -0.005601505033727694
+        "ret": -0.007879940815895159,
+        "after_high": -0.005626784851746058
       },
       "ZN=F": {
         "label": "미 10년물 국채 선물",
@@ -115,7 +115,15 @@
         "purpose": "자기주식 소각을 통한 \n주주가치 제고",
         "rcept_no": "20260819000254"
       }
-    ]
+    ],
+    "foreign_pressure": {
+      "state": "selling_eased",
+      "previous_ratio": -0.08932838368222548,
+      "recent_ratio": -0.038287687551047354,
+      "previous_daily_net": -382340.4,
+      "recent_daily_net": -131201.2
+    },
+    "buyback_transition": null
   },
   "classification": {
     "labels": [
@@ -141,12 +149,6 @@
       "score": 21.85372143964112,
       "news": [
         {
-          "time": "2026-10-27T07:30:00+09:00",
-          "title": "[10.27 개장 전 주요공시] SK하이닉스 40조 원 자사주 매입 완료 외",
-          "source": "자본시장뉴스",
-          "link": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE5BTnFVeVFWX0FxN0RLUUFWb0RsZDdMREtQVkRsaVVZeTBwYUt0UU8tT24taE1aMlEyZHRNUGxZMXNycy05Vld3aGNsOTdtR2RjMEROdW12YjZFVTZ2RmtmUlBDeXJQQ2M?oc=5"
-        },
-        {
           "time": "2026-10-27T07:48:55+09:00",
           "title": "SK하이닉스 내일 3분기 실적 공개…주가 하락에 커진 \"환원 기대\"",
           "source": "진일보 | 전남일보",
@@ -169,6 +171,12 @@
           "title": "SK하이닉스 내일 3분기 실적 발표...주주환원 관심",
           "source": "YTN",
           "link": "https://news.google.com/rss/articles/CBMiXkFVX3lxTE91LV9QeHRmRUFLU3pSUUVIWmQ0Mk9Sam9ZMmhKMkJhZ2dLR3dSVEk4WUhIc0psWmtxQWxXWnVmVHFVZ1lyR2dYaHh3NGZSaU40ZG1ZeFVndUVPdDJSakE?oc=5"
+        },
+        {
+          "time": "2026-10-27T08:54:04+09:00",
+          "title": "[남승표의 궁변통구] SK하이닉스 실적발표서 듣고 싶은 말 |",
+          "source": "연합인포맥스",
+          "link": "https://news.google.com/rss/articles/CBMidEFVX3lxTE5ZV3RDRDJ2NzJzMWZhbjlaeDVTaEVjRXdFaUcweUpPTHZMMU96MHdLMVlnYkZiU3ZBWHNvU0d6X2pGVFQ2LU9wSlp2UUpEQ2dfLWFrU21rbk9wVENBMFpDYjQ2LXVnRzh3WHVsT2l4VGdRWENs?oc=5"
         }
       ]
     }
@@ -181,7 +189,7 @@
     "pattern": "고점 후 반락"
   },
   "closing_share": 1.0,
-  "intraday_corr_kospi": 0.8536889169051785,
+  "intraday_corr_kospi": 0.8504000414300619,
   "intraday_note": "장중 봉은 09:00~14:55까지만 있어 마감 구간(14:55~15:30)은 일봉 종가로만 봅니다(그 구간 -0.37%).",
   "intraday_coverage": "09:00~14:55",
   "intraday_path": [
@@ -218,12 +226,12 @@
     {
       "time": "2026-10-27T09:30:00+09:00",
       "price": 1366000.0,
-      "volume": 49157.0
+      "volume": 49159.0
     },
     {
       "time": "2026-10-27T09:35:00+09:00",
       "price": 1359000.0,
-      "volume": 50761.0
+      "volume": 50759.0
     },
     {
       "time": "2026-10-27T09:40:00+09:00",
@@ -257,13 +265,13 @@
     },
     {
       "time": "2026-10-27T10:10:00+09:00",
-      "price": 1368000.0,
-      "volume": 25200.0
+      "price": 1367000.0,
+      "volume": 25196.0
     },
     {
       "time": "2026-10-27T10:15:00+09:00",
       "price": 1368000.0,
-      "volume": 70960.0
+      "volume": 70964.0
     },
     {
       "time": "2026-10-27T10:20:00+09:00",
@@ -298,12 +306,12 @@
     {
       "time": "2026-10-27T10:50:00+09:00",
       "price": 1365000.0,
-      "volume": 48570.0
+      "volume": 48535.0
     },
     {
       "time": "2026-10-27T10:55:00+09:00",
       "price": 1363000.0,
-      "volume": 24560.0
+      "volume": 24595.0
     },
     {
       "time": "2026-10-27T11:00:00+09:00",
@@ -318,12 +326,12 @@
     {
       "time": "2026-10-27T11:10:00+09:00",
       "price": 1363000.0,
-      "volume": 24498.0
+      "volume": 24499.0
     },
     {
       "time": "2026-10-27T11:15:00+09:00",
       "price": 1359000.0,
-      "volume": 20541.0
+      "volume": 20540.0
     },
     {
       "time": "2026-10-27T11:20:00+09:00",
@@ -332,13 +340,13 @@
     },
     {
       "time": "2026-10-27T11:25:00+09:00",
-      "price": 1359000.0,
-      "volume": 14563.0
+      "price": 1360000.0,
+      "volume": 14562.0
     },
     {
       "time": "2026-10-27T11:30:00+09:00",
       "price": 1357000.0,
-      "volume": 14040.0
+      "volume": 14041.0
     },
     {
       "time": "2026-10-27T11:35:00+09:00",
@@ -558,12 +566,6 @@
       "score": 21.85372143964112,
       "news": [
         {
-          "time": "2026-10-27T07:30:00+09:00",
-          "title": "[10.27 개장 전 주요공시] SK하이닉스 40조 원 자사주 매입 완료 외",
-          "source": "자본시장뉴스",
-          "link": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE5BTnFVeVFWX0FxN0RLUUFWb0RsZDdMREtQVkRsaVVZeTBwYUt0UU8tT24taE1aMlEyZHRNUGxZMXNycy05Vld3aGNsOTdtR2RjMEROdW12YjZFVTZ2RmtmUlBDeXJQQ2M?oc=5"
-        },
-        {
           "time": "2026-10-27T07:48:55+09:00",
           "title": "SK하이닉스 내일 3분기 실적 공개…주가 하락에 커진 \"환원 기대\"",
           "source": "진일보 | 전남일보",
@@ -586,6 +588,12 @@
           "title": "SK하이닉스 내일 3분기 실적 발표...주주환원 관심",
           "source": "YTN",
           "link": "https://news.google.com/rss/articles/CBMiXkFVX3lxTE91LV9QeHRmRUFLU3pSUUVIWmQ0Mk9Sam9ZMmhKMkJhZ2dLR3dSVEk4WUhIc0psWmtxQWxXWnVmVHFVZ1lyR2dYaHh3NGZSaU40ZG1ZeFVndUVPdDJSakE?oc=5"
+        },
+        {
+          "time": "2026-10-27T08:54:04+09:00",
+          "title": "[남승표의 궁변통구] SK하이닉스 실적발표서 듣고 싶은 말 |",
+          "source": "연합인포맥스",
+          "link": "https://news.google.com/rss/articles/CBMidEFVX3lxTE5ZV3RDRDJ2NzJzMWZhbjlaeDVTaEVjRXdFaUcweUpPTHZMMU96MHdLMVlnYkZiU3ZBWHNvU0d6X2pGVFQ2LU9wSlp2UUpEQ2dfLWFrU21rbk9wVENBMFpDYjQ2LXVnRzh3WHVsT2l4VGdRWENs?oc=5"
         }
       ],
       "price": 1358000.0,
@@ -600,28 +608,28 @@
       "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE0wXzZjMlo5NjdIOEdUdS1lMW9jdWZHUldCMmdHWVF2SzZYX25laUM2QkFKdExuZHQ3UWRhaFdnNGhRQ1hHVF9zNFJmMC1ZMTFGcDVWS0hLOTN6emhTSnliVg?oc=5"
     },
     {
-      "time": "2026-10-27T05:18:02+09:00",
-      "title": "美 반도체주 일제히 상승…마이크론 3%·SK하이닉스 ADR 4%↑",
-      "source": "뉴스1",
-      "link": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTFB6ZTBDQ0QySXc4LXlxcUJBZmZ6Wk52VURfdVRCdmJfTWwxY0MxME9SMU15U0xERzYyR1dhZVR3cklndFdDTjZfeHhYaDhobFpPT0NwM0NKblQ5TXVuLU5zbV9FLXBOVXc?oc=5"
-    },
-    {
-      "time": "2026-10-27T07:16:44+09:00",
-      "title": "실적은 역대급, 주가는 뒷걸음…SK하이닉스, 주주 달랠 카드 꺼낼까",
-      "source": "www.ebn.co.kr",
-      "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTFBkZTF2S0d2aFVjdllGOExzQ2ttLXJVb3ItMzh3b3RfSnZoQzV5X19YVWlfdmNsX0dVdXNmMnBnWjRtTmtjNWEyaERQa2VuZnF0V0VmQTd1YUtweVZCdFU4Y0g3S2hXcWJB?oc=5"
-    },
-    {
-      "time": "2026-10-27T07:30:00+09:00",
-      "title": "[10.27 개장 전 주요공시] SK하이닉스 40조 원 자사주 매입 완료 외",
-      "source": "자본시장뉴스",
-      "link": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE5BTnFVeVFWX0FxN0RLUUFWb0RsZDdMREtQVkRsaVVZeTBwYUt0UU8tT24taE1aMlEyZHRNUGxZMXNycy05Vld3aGNsOTdtR2RjMEROdW12YjZFVTZ2RmtmUlBDeXJQQ2M?oc=5"
-    },
-    {
       "time": "2026-10-27T07:48:55+09:00",
       "title": "SK하이닉스 내일 3분기 실적 공개…주가 하락에 커진 \"환원 기대\"",
       "source": "진일보 | 전남일보",
       "link": "https://news.google.com/rss/articles/CBMib0FVX3lxTE5PN3NyZjhYU0hWanNvVnhWSXNfWXQxNnVyMXpVT01TUjJxOVdVV2NqVzhPSmpzb2p3WlF3TUlXeDlkcnFtTUlPS2x6Z3Bxd21MTkRpNE5LTVIwYWg1Qnk5Zkt6TnR0SjMxRXRLT0Jmaw?oc=5"
+    },
+    {
+      "time": "2026-10-27T06:01:00+09:00",
+      "title": "SK하이닉스 내일 3분기 실적공개…주주환원 카드 나오나",
+      "source": "연합뉴스",
+      "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE85Q3ZTMG0zSE0yUDhGVGVGb3JFU0k0LUM0SlRmcDVvTDZNWWJJbTFRdkx2clg5NmVfMkRjc2xKZklnSlczYlJLVV9TWjlBTi1DZlFTZlVuY1lEY0HSAWBBVV95cUxQeGZHY0gzSjNSRkJ0TlRqTThiN1I1d1Nta2NXV3FiYjB4U0l0V1I2bXNXbkNqR0dKcmNheTRyR3pLc1pkV3l0UUJZWHVtak8tUzEyNno3eko0dEZkc2plVzg?oc=5"
+    },
+    {
+      "time": "2026-10-27T08:06:38+09:00",
+      "title": "[이슈체크] SK하이닉스 내일 3Q 실적공개…주주환원 60조 풀까",
+      "source": "조세금융신문",
+      "link": "https://news.google.com/rss/articles/CBMiY0FVX3lxTE05OFBpanZPTzFuZHNoMzhkUWxiaEZnNmgwYkRBNzhWR2ZoaGpiam1IMlRfOXR4TVNBUnlPN25BYkhzTGdQZVRPT1BqVzdqY29ieG1Wc2liOVM3eW9xMWhiN25Cdw?oc=5"
+    },
+    {
+      "time": "2026-10-27T08:43:00+09:00",
+      "title": "SK하이닉스 3분기에도 ’깜짝 실적’ 낼까…내일 발표",
+      "source": "연합뉴스TV",
+      "link": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE1ESTV2dFZjVkdBOVBYdlF3NXZQUnY3clNWRFJ1Y3RaMXVSSGZzYWdBOGEtRXgwRjNEVC1COHhaWFppdE5Wczh5dW5YNVE4TFJTY21jRjdBRE5qZGJiYXpDVVJ2c2tma28?oc=5"
     }
   ],
   "top_news": [
@@ -644,31 +652,93 @@
       "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTFBZSnNlaU5WcF9UMnlMSmx6b0tQclRBWFlyaDdFRjF1S2dXdTkzejdqNnI5N0h0WHp6ZzBjaGpNbHZmaWM4Y2kzWWh3YzlfM2RVRlpTdFh0QlA4dw?oc=5"
     },
     {
-      "time": "2026-10-27T05:18:02+09:00",
-      "title": "美 반도체주 일제히 상승…마이크론 3%·SK하이닉스 ADR 4%↑",
-      "source": "뉴스1",
-      "link": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTFB6ZTBDQ0QySXc4LXlxcUJBZmZ6Wk52VURfdVRCdmJfTWwxY0MxME9SMU15U0xERzYyR1dhZVR3cklndFdDTjZfeHhYaDhobFpPT0NwM0NKblQ5TXVuLU5zbV9FLXBOVXc?oc=5"
+      "time": "2026-10-27T07:48:55+09:00",
+      "title": "SK하이닉스 내일 3분기 실적 공개…주가 하락에 커진 \"환원 기대\"",
+      "source": "진일보 | 전남일보",
+      "link": "https://news.google.com/rss/articles/CBMib0FVX3lxTE5PN3NyZjhYU0hWanNvVnhWSXNfWXQxNnVyMXpVT01TUjJxOVdVV2NqVzhPSmpzb2p3WlF3TUlXeDlkcnFtTUlPS2x6Z3Bxd21MTkRpNE5LTVIwYWg1Qnk5Zkt6TnR0SjMxRXRLT0Jmaw?oc=5"
     },
     {
-      "time": "2026-10-27T07:16:44+09:00",
-      "title": "실적은 역대급, 주가는 뒷걸음…SK하이닉스, 주주 달랠 카드 꺼낼까",
-      "source": "www.ebn.co.kr",
-      "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTFBkZTF2S0d2aFVjdllGOExzQ2ttLXJVb3ItMzh3b3RfSnZoQzV5X19YVWlfdmNsX0dVdXNmMnBnWjRtTmtjNWEyaERQa2VuZnF0V0VmQTd1YUtweVZCdFU4Y0g3S2hXcWJB?oc=5"
+      "time": "2026-10-27T09:49:28+09:00",
+      "title": "SK하이닉스, 사상 최대 실적에도 주가 -31% 폭락…주주 달래기 카드 낼까",
+      "source": "파이낸스투데이",
+      "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE41ZFFpRWc0R1kzUnNORmg1ay1rdDdRTXNYYjBaX3VuSXRJWERwRXROYkp6cjU1YlI5VzA3RDJuZ1hGQm1BdVhRMUZqWXJoM1QwR1NxMGRxVjIya1QwOGtBb0xibklIemZhX2FxOA?oc=5"
     },
     {
-      "time": "2026-10-27T07:30:00+09:00",
-      "title": "[10.27 개장 전 주요공시] SK하이닉스 40조 원 자사주 매입 완료 외",
-      "source": "자본시장뉴스",
-      "link": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE5BTnFVeVFWX0FxN0RLUUFWb0RsZDdMREtQVkRsaVVZeTBwYUt0UU8tT24taE1aMlEyZHRNUGxZMXNycy05Vld3aGNsOTdtR2RjMEROdW12YjZFVTZ2RmtmUlBDeXJQQ2M?oc=5"
+      "time": "2026-10-27T10:16:13+09:00",
+      "title": "SK하이닉스 주가 장중 6%대 올라, 앤트로픽 훈풍과 실적 발표 기대감",
+      "source": "비즈니스포스트",
+      "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTE5JeS1ScjhlbzdKLTREeWxBaXRnRVZXZXg1MHBjNG81TmtQX0tNVTBfN2YxSDRzbFNwUzRVMWJSUFBFMTNTbWNoV2ZET2plYUtfOHhmRUtQRXdLLWNSTkszeUpJdjJsNEdGTFJnZm5QcVVSYzA?oc=5"
     }
   ],
   "disclosures": [],
   "disclosure_note": null,
-  "flows": null,
-  "flow_story": null,
+  "flows": "외국인 -51,049 / 기관 +113,396",
+  "flow_story": {
+    "direction": "up",
+    "c2c": 0.051764705882352935,
+    "actors": [
+      {
+        "key": "foreign_net",
+        "name": "외국인",
+        "shares": -51049.0,
+        "won": -68456709000.0,
+        "vs_usual": 0.09933224270037219
+      },
+      {
+        "key": "inst_net",
+        "name": "기관",
+        "shares": 113396.0,
+        "won": 152064036000.0,
+        "vs_usual": 0.7006461124199774
+      },
+      {
+        "key": "indiv_net",
+        "name": "개인",
+        "shares": -67933.0,
+        "won": -91098153000.0,
+        "vs_usual": 0.2348650052594231
+      }
+    ],
+    "lead": {
+      "key": "inst_net",
+      "name": "기관",
+      "shares": 113396.0,
+      "won": 152064036000.0,
+      "vs_usual": 0.7006461124199774
+    },
+    "counter": {
+      "key": "indiv_net",
+      "name": "개인",
+      "shares": -67933.0,
+      "won": -91098153000.0,
+      "vs_usual": 0.2348650052594231
+    },
+    "all_one_side": false,
+    "observations": [
+      "전일까지 20거래일 고점: 종가 돌파 없음 · 종가 위치 -29.42%.",
+      "전일까지 60거래일 고점: 종가 돌파 없음 · 종가 위치 -30.70%.",
+      "같은 5거래일 수익률: 이 종목 +9.65%, 삼성전자 +4.96% · 차이 +4.68%p.",
+      "같은 20거래일 수익률: 이 종목 -27.98%, 삼성전자 -22.24% · 차이 -5.74%p.",
+      "같은 60거래일 수익률: 이 종목 -13.47%, 삼성전자 +0.91% · 차이 -14.37%p.",
+      "외국인 순매도 지속·거래량 대비 강도 약화: 직전 5일 → 최근 5일 순매수/거래량 -8.93% → -3.83% (일평균 -382,340주 → -131,201주). 향후 상승을 뜻하는 신호는 아닙니다.",
+      "코스피도 +3.09% — 시장 전체가 같은 방향이었습니다.",
+      "삼성전자 +4.23% — 반도체 업종이 함께 움직였습니다.",
+      "원/달러 +0.42%(원화 약세) — 외국인 매도와 같은 방향의 환율 움직임입니다.",
+      "전날 밤 미국 반도체지수(SOX) +2.82% — 미국 반도체 흐름과 같은 방향입니다.",
+      "전날 밤 마이크론 +2.98% — 미국 메모리 회사와 같은 방향입니다.",
+      "종가가 당일 범위(저가 1,336,000~고가 1,381,000원)의 아래쪽 11% 지점 — 저가 부근에서 마감했습니다.",
+      "마이크론은 미국 정규장 마감 뒤 시간외에서 +1.06%(장중 +0.10%~+1.06%) — 정규장 등락에 안 보이는 반응입니다.",
+      "우리 장중(09:00~15:30) 나스닥100 선물 -0.79%, 이 종목 고점 이후 -0.56% · 미 10년물 국채 선물 +0.13%(금리 하락), 이 종목 고점 이후 +0.10% · 원/달러 -0.10%(원화 강세), 이 종목 고점 이후 -0.10%.",
+      "자사주 매입 기간 중(직접 취득 2026-08-20~2026-11-19, 40,004,340,000,000, DART 공시) — 회사 자신의 매수는 기타 법인으로 잡힙니다.",
+      "마감가가 장중 고가보다 -2.69% 아래 — 오른 폭을 장중에 꽤 반납했습니다."
+    ],
+    "estimated_indiv": false,
+    "source_note": "출처 naver+cache · 장 마감 직후 잠정치라 저녁 확정치와 다를 수 있습니다 · KRX는 받지 못함(pykrx 미설치)"
+  },
   "flow_status": {
-    "state": "pending",
-    "detail": "최신 2026-10-26"
+    "state": "ok",
+    "detail": "naver+cache",
+    "krx_error": "pykrx 미설치"
   },
   "context": {},
   "market": {
@@ -679,9 +749,9 @@
     "steady": 45,
     "upper": 0,
     "lower": 0,
-    "individual": -9606.0,
-    "foreign": 6015.0,
-    "institution": 2863.0,
+    "individual": -9407.0,
+    "foreign": 5826.0,
+    "institution": 2824.0,
     "prev_close": 5469.47,
     "open": 5658.65,
     "high": 5737.61,

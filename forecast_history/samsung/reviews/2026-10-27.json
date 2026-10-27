@@ -3,7 +3,7 @@
   "name": "삼성전자",
   "peer_name": "SK하이닉스",
   "session_date": "2026-10-27",
-  "generated_at": "2026-10-27 17:31 KST",
+  "generated_at": "2026-10-27 22:09 KST",
   "summary": {
     "prev_close": 213000.0,
     "open": 222000.0,
@@ -15,11 +15,11 @@
     "c2c": 0.04225352112676051,
     "high_vs_open": 0.015765765765765716,
     "low_vs_open": -0.009009009009009028,
-    "volume": 15273981.0,
-    "volume_ratio": 0.849233103301001,
+    "volume": 16033321.0,
+    "volume_ratio": 0.8914523953546302,
     "kospi_c2c": 0.030874951736266976,
     "peer_c2c": 0.051764705882352935,
-    "usdkrw_chg": 0.0030943331543504815,
+    "usdkrw_chg": 0.004304821877050946,
     "us_nights": 1,
     "sox_ret": 0.028202689812538706,
     "nasdaq_ret": 0.008246511774205878,
@@ -81,18 +81,18 @@
       "last_time": "2026-10-27T08:55:00+09:00"
     },
     "nvidia_ah": {
-      "regular_close": 215.97000122070312,
+      "regular_close": 215.97999572753906,
       "last": 216.5,
-      "ret": 0.002454038877164555,
-      "low_ret": -0.00023151928703302183,
-      "high_ret": 0.0031147787910110747,
+      "ret": 0.002407650165513253,
+      "low_ret": -0.00027778372407583074,
+      "high_ret": 0.003068359503520579,
       "last_time": "2026-10-27T08:55:00+09:00"
     },
     "session_cross": {
       "NQ=F": {
         "label": "나스닥100 선물",
-        "ret": -0.007879940815895159,
-        "after_high": -0.006620105820105859
+        "ret": -0.007837997801640295,
+        "after_high": -0.006611696183671412
       },
       "ZN=F": {
         "label": "미 10년물 국채 선물",
@@ -115,7 +115,15 @@
         "purpose": "임직원 주식보상",
         "rcept_no": "20260821000616"
       }
-    ]
+    ],
+    "foreign_pressure": {
+      "state": "turned_buying",
+      "previous_ratio": -0.03908902057165743,
+      "recent_ratio": 0.009248121643442802,
+      "previous_daily_net": -832024.0,
+      "recent_daily_net": 133715.6
+    },
+    "buyback_transition": null
   },
   "classification": {
     "labels": [
@@ -125,20 +133,20 @@
     ],
     "reasons": [
       "갭 +4.23%가 종가→종가 +4.23%의 100%",
-      "09:00 봉 +4.23%(σ의 12.73배, 거래량 8.25배)가 세션 +0.00%의 1876%",
-      "KOSPI +3.09% vs 종목 +4.23%, 5분 수익률 상관 0.86 — 종목 고유 요인이 약함"
+      "09:00 봉 +4.23%(σ의 12.76배, 거래량 8.25배)가 세션 +0.00%의 1876%",
+      "KOSPI +3.09% vs 종목 +4.23%, 5분 수익률 상관 0.87 — 종목 고유 요인이 약함"
     ]
   },
   "events": [
     {
       "time": "2026-10-27T09:00:00+09:00",
       "ret": 0.04225352112676051,
-      "z": 12.73,
+      "z": 12.76,
       "volume_ratio": 8.25,
       "cum_before": 0.0,
       "cum_after": 0.0,
       "session_share": 18.76056338028093,
-      "score": 14.725059709235358,
+      "score": 14.760696200237456,
       "news": []
     }
   ],
@@ -150,7 +158,7 @@
     "pattern": "고점 후 반락"
   },
   "closing_share": NaN,
-  "intraday_corr_kospi": 0.8602831939063743,
+  "intraday_corr_kospi": 0.8663924218254933,
   "intraday_note": "장중 봉은 09:00~14:55까지만 있어 마감 구간(14:55~15:30)은 일봉 종가로만 봅니다(그 구간 -0.22%).",
   "intraday_coverage": "09:00~14:55",
   "intraday_path": [
@@ -182,12 +190,12 @@
     {
       "time": "2026-10-27T09:25:00+09:00",
       "price": 224000.0,
-      "volume": 327049.0
+      "volume": 327040.0
     },
     {
       "time": "2026-10-27T09:30:00+09:00",
       "price": 224000.0,
-      "volume": 258282.0
+      "volume": 258291.0
     },
     {
       "time": "2026-10-27T09:35:00+09:00",
@@ -336,13 +344,13 @@
     },
     {
       "time": "2026-10-27T12:00:00+09:00",
-      "price": 221750.0,
-      "volume": 107181.0
+      "price": 221500.0,
+      "volume": 107184.0
     },
     {
       "time": "2026-10-27T12:05:00+09:00",
       "price": 221750.0,
-      "volume": 94232.0
+      "volume": 94229.0
     },
     {
       "time": "2026-10-27T12:10:00+09:00",
@@ -491,13 +499,13 @@
     },
     {
       "time": "2026-10-27T14:35:00+09:00",
-      "price": 221500.0,
-      "volume": 70249.0
+      "price": 221750.0,
+      "volume": 70102.0
     },
     {
       "time": "2026-10-27T14:40:00+09:00",
       "price": 220250.0,
-      "volume": 357471.0
+      "volume": 357618.0
     },
     {
       "time": "2026-10-27T14:45:00+09:00",
@@ -519,63 +527,85 @@
     {
       "time": "2026-10-27T09:00:00+09:00",
       "ret": 0.04225352112676051,
-      "z": 12.73,
+      "z": 12.76,
       "volume_ratio": 8.25,
       "cum_before": 0.0,
       "cum_after": 0.0,
       "session_share": 18.76056338028093,
-      "score": 14.725059709235358,
+      "score": 14.760696200237456,
       "news": [],
       "price": 222000.0,
       "kind": "turn_up"
     }
   ],
   "overnight_news": [],
-  "top_news": [
-    {
-      "time": "2026-10-27T15:13:00+09:00",
-      "title": "‘이재용 회장 취임 4주년’ 삼성전자 최대 숙원은… “파운드리 사업 반등이 열쇠”",
-      "source": "Chosunbiz",
-      "link": "https://news.google.com/rss/articles/CBMiggFBVV95cUxNWHR5TjlIQzNRdEpnek5LckV2QlZZVzk5NE5hMFFiUG1aQkRGWnNfS2RXdTdKVWNzODdTc3puZmZkNGxYSEFIaVpsMHFmT25kQUQ1ZUEyQ3VFMnN2eFBTZkRVN3pDdjlENGc5Rl84ZlE1eWFZQjZsekRHOHhQalJvQWRn0gGWAUFVX3lxTE1RLU1PUWhjNnE1VDViWW5rd0pzYXpRWUJ3ZW1WUWZPdzR1SE1lMG5LQVNTb2t6UlM4TE5JWC1nSndvWElHWUIyMWVLQlNRejI4T3RsLVpMWjBtRXFoSmU2SlhVdEdrZ2FfM3VNMHlRMnpjU2oyVDNWUEZNeWRFaU9QN1FpZXlaZWE0a2FoMm1jV1FadGFBZw?oc=5"
-    },
-    {
-      "time": "2026-10-27T15:33:01+09:00",
-      "title": "삼성전자 내년 600조 벌면...메모리 성과급 7.6억→12억",
-      "source": "한국금융신문",
-      "link": "https://news.google.com/rss/articles/CBMifEFVX3lxTE5GTEcwQzY4ckRuaERDYzB6RWstT0ZhRS1iS2VRN1A3Tk5HT09UOVVCNVFjSnFUbnlfcGh2Q0R3VlIzenlvWlQxYk9XU29OOG1QXzF4ODl6Zk5DWWVPTldWNUppbXhmNHNXX3hpSnktUFE3NlgzMWZwenk1R3g?oc=5"
-    },
-    {
-      "time": "2026-10-27T16:14:06+09:00",
-      "title": "'삼성전자 우선주 매입' 행동주의 펀드 요구에 외신 평가 부정적, \"한국 투자자 반발 우려\"",
-      "source": "비즈니스포스트",
-      "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTFBTcmhlUktkLVk2NjRqbmpwdUhtX2tfTVVGX3prTk4yWHI4VjZPNDl3YUpsZW10WGtjSWVSaEVaM0s5eHN5Nzl5WW5mU3NDWHVRQ0lzcjQ3ZkZhVkdyaGRhbDRoel9QLWpFQ05MREhCSWFlZmc?oc=5"
-    },
-    {
-      "time": "2026-10-27T16:09:13+09:00",
-      "title": "\"이익 눈높이 높아진 삼전닉스…빅테크 실적에 주가향방 달려\"",
-      "source": "매일경제",
-      "link": "https://news.google.com/rss/articles/CBMiX0FVX3lxTFBZdWFsZzhsTWthYkVQZnQ0aGhoV25KQ0RRaUJtRHJHdVBpZ0wwcENnR2xBSWZBeGQ2Umk0WkN3TlFGQ2lTcjJuZ19zZTd1M3lXdzJoT2JnOU82OXVkd2ZN?oc=5"
-    },
-    {
-      "time": "2026-10-27T16:14:10+09:00",
-      "title": "'앤트로픽 IPO 효과' 반도체 우려 '해소'⋯코스피 3% 올라 '5630선'",
-      "source": "아이뉴스24",
-      "link": "https://news.google.com/rss/articles/CBMiS0FVX3lxTE5GMUhOLUVIdDN0emNtWGJ6V2dVYlBFT3lqczJlX3BIWTFac2VaNDVIeFRhcE9mZ2gxd2pUb2hkQ3dsRmRmT3lFVElucw?oc=5"
-    },
-    {
-      "time": "2026-10-27T16:23:49+09:00",
-      "title": "신한투자증권, 거래 줄고 운용손실... 3분기 순익 77%↓",
-      "source": "매일일보",
-      "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE95LUFEeHZRSmdKeWdjS0hSQnE1MVZQc3BGckVoOXBtT0o4bXVndENxX0lzd2xOMGtHZ0VTaXo1QmRXMmZncWcyUTE2MEJQTXVOMmg3a1ZXUGpvLUo1dmFhOElXVEQ?oc=5"
-    }
-  ],
+  "top_news": [],
   "disclosures": [],
   "disclosure_note": null,
-  "flows": null,
-  "flow_story": null,
+  "flows": "외국인 +1,052,520 / 기관 +412,198",
+  "flow_story": {
+    "direction": "up",
+    "c2c": 0.04225352112676051,
+    "actors": [
+      {
+        "key": "foreign_net",
+        "name": "외국인",
+        "shares": 1052520.0,
+        "won": 233659440000.0,
+        "vs_usual": 0.4731760472091696
+      },
+      {
+        "key": "inst_net",
+        "name": "기관",
+        "shares": 412198.0,
+        "won": 91507956000.0,
+        "vs_usual": 0.3641389906366266
+      },
+      {
+        "key": "indiv_net",
+        "name": "개인",
+        "shares": -1576114.0,
+        "won": -349897308000.0,
+        "vs_usual": 0.6752256321101744
+      }
+    ],
+    "lead": {
+      "key": "foreign_net",
+      "name": "외국인",
+      "shares": 1052520.0,
+      "won": 233659440000.0,
+      "vs_usual": 0.4731760472091696
+    },
+    "counter": {
+      "key": "indiv_net",
+      "name": "개인",
+      "shares": -1576114.0,
+      "won": -349897308000.0,
+      "vs_usual": 0.6752256321101744
+    },
+    "all_one_side": false,
+    "observations": [
+      "전일까지 20거래일 고점: 종가 돌파 없음 · 종가 위치 -22.24%.",
+      "전일까지 60거래일 고점: 종가 돌파 없음 · 종가 위치 -22.92%.",
+      "같은 5거래일 수익률: 이 종목 +4.96%, SK하이닉스 +9.65% · 차이 -4.68%p.",
+      "같은 20거래일 수익률: 이 종목 -22.24%, SK하이닉스 -27.98% · 차이 +5.74%p.",
+      "같은 60거래일 수익률: 이 종목 +0.91%, SK하이닉스 -13.47% · 차이 +14.37%p.",
+      "외국인 5일 합계 순매수 전환: 직전 5일 → 최근 5일 순매수/거래량 -3.91% → +0.92% (일평균 -832,024주 → +133,716주). 향후 상승을 뜻하는 신호는 아닙니다.",
+      "코스피도 +3.09% — 시장 전체가 같은 방향이었습니다.",
+      "SK하이닉스 +5.18% — 반도체 업종이 함께 움직였습니다.",
+      "전날 밤 미국 반도체지수(SOX) +2.82% — 미국 반도체 흐름과 같은 방향입니다.",
+      "전날 밤 마이크론 +2.98% — 미국 메모리 회사와 같은 방향입니다.",
+      "마이크론은 미국 정규장 마감 뒤 시간외에서 +1.06%(장중 +0.10%~+1.06%) — 정규장 등락에 안 보이는 반응입니다.",
+      "우리 장중(09:00~15:30) 나스닥100 선물 -0.78%, 이 종목 고점 이후 -0.66% · 미 10년물 국채 선물 +0.13%(금리 하락), 이 종목 고점 이후 +0.07% · 원/달러 -0.10%(원화 강세), 이 종목 고점 이후 +0.00%.",
+      "자사주 매입 기간 중(직접 취득 2026-08-24~2026-11-21, 14,999,999,992,000, DART 공시) — 회사 자신의 매수는 기타 법인으로 잡힙니다."
+    ],
+    "estimated_indiv": false,
+    "source_note": "출처 naver+cache · 장 마감 직후 잠정치라 저녁 확정치와 다를 수 있습니다 · KRX는 받지 못함(pykrx 미설치)"
+  },
   "flow_status": {
-    "state": "pending",
-    "detail": "최신 2026-10-26"
+    "state": "ok",
+    "detail": "naver+cache",
+    "krx_error": "pykrx 미설치"
   },
   "context": {},
   "market": {
@@ -586,9 +616,9 @@
     "steady": 45,
     "upper": 0,
     "lower": 0,
-    "individual": -9606.0,
-    "foreign": 6015.0,
-    "institution": 2863.0,
+    "individual": -9407.0,
+    "foreign": 5826.0,
+    "institution": 2824.0,
     "prev_close": 5469.47,
     "open": 5658.65,
     "high": 5737.61,

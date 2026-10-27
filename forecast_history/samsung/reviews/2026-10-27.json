@@ -3,7 +3,7 @@
   "name": "삼성전자",
   "peer_name": "SK하이닉스",
   "session_date": "2026-10-27",
-  "generated_at": "2026-10-27 16:11 KST",
+  "generated_at": "2026-10-27 16:46 KST",
   "summary": {
     "prev_close": 213000.0,
     "open": 222000.0,
@@ -15,11 +15,11 @@
     "c2c": 0.04225352112676051,
     "high_vs_open": 0.015765765765765716,
     "low_vs_open": -0.009009009009009028,
-    "volume": 15188267.0,
-    "volume_ratio": 0.8444674062495027,
+    "volume": 15215352.0,
+    "volume_ratio": 0.845973331823386,
     "kospi_c2c": 0.030874951736266976,
     "peer_c2c": 0.051764705882352935,
-    "usdkrw_chg": 0.0018082062029258772,
+    "usdkrw_chg": 0.002201635817536518,
     "us_nights": 1,
     "sox_ret": 0.028202689812538706,
     "nasdaq_ret": 0.008246511774205878,
@@ -139,14 +139,7 @@
       "cum_after": 0.0,
       "session_share": 18.76056338028093,
       "score": 14.760696200237456,
-      "news": [
-        {
-          "time": "2026-10-27T09:03:53+09:00",
-          "title": "[속보]삼성전자·SK하이닉스 4% 상승 출발",
-          "source": "뉴시스",
-          "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE9RZHIzLU5hMzhRdnNrVlpsU2JibVY0azFkdkpCTFczWG8wMGUxQ0Q5aklfaGs3dU1ZcmtHYmItZ0NaNE1tdTZOUWs2TzQ2dWZTc0JjQjQ1Y2M1S1RycFl5VtIBeEFVX3lxTE54VXNHUXQ3UWJTYnRyMWg5eUJ0bnZjX3Y5UHlWdmNUR3pwVlRJeWFEV01RTENrOUZETk8wc1VfOUFjX0I4T3NVWU44VC1TQkVsREVwMUtaT29KVi1OVHNIR0ZuNVVBV2VjaHVreE5IRTZlYUpSWTB4Nw?oc=5"
-        }
-      ]
+      "news": []
     }
   ],
   "turning_point": {
@@ -532,14 +525,7 @@
       "cum_after": 0.0,
       "session_share": 18.76056338028093,
       "score": 14.760696200237456,
-      "news": [
-        {
-          "time": "2026-10-27T09:03:53+09:00",
-          "title": "[속보]삼성전자·SK하이닉스 4% 상승 출발",
-          "source": "뉴시스",
-          "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE9RZHIzLU5hMzhRdnNrVlpsU2JibVY0azFkdkpCTFczWG8wMGUxQ0Q5aklfaGs3dU1ZcmtHYmItZ0NaNE1tdTZOUWs2TzQ2dWZTc0JjQjQ1Y2M1S1RycFl5VtIBeEFVX3lxTE54VXNHUXQ3UWJTYnRyMWg5eUJ0bnZjX3Y5UHlWdmNUR3pwVlRJeWFEV01RTENrOUZETk8wc1VfOUFjX0I4T3NVWU44VC1TQkVsREVwMUtaT29KVi1OVHNIR0ZuNVVBV2VjaHVreE5IRTZlYUpSWTB4Nw?oc=5"
-        }
-      ],
+      "news": [],
       "price": 222000.0,
       "kind": "turn_up"
     }
@@ -562,25 +548,25 @@
       "time": "2026-10-27T16:01:03+09:00",
       "title": "앤트로픽 IPO 소식에 반도체주 급등…삼성전자 4.23%·SK하이닉스 5.18%↑",
       "source": "스페셜타임스",
-      "link": "https://news.google.com/rss/articles/CBMickFVX3lxTE1ieGdtWFUtSkJPYzFfODl0LXBUdk5sVGw0RXRHUm5FYkhsVHhrTzc4Skc5LTZ5QWZhWG1tc0R1NTA0d1F0Ujc0dWVQajhLd2EyY042SlhvbTQ4aVo0eGoxOEFVWnprMVNzQ3hibjhBVkhGQQ?oc=5"
+      "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTFBjVXBaU2pBTWFjR0xnd0ZYVE80R3RJVEJRZWZvYTMxRUEycHgxR0REZzVQNmNFLXVCVUU2RzIyVFlyZVNQMjJUalduYU1uYUNIYWxoVlRvdUVIeTA3UnppR0FBSG42VnA3S0k2MEl1NnNGWG8?oc=5"
     },
     {
-      "time": "2026-10-27T09:03:53+09:00",
-      "title": "[속보]삼성전자·SK하이닉스 4% 상승 출발",
-      "source": "뉴시스",
-      "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE9RZHIzLU5hMzhRdnNrVlpsU2JibVY0azFkdkpCTFczWG8wMGUxQ0Q5aklfaGs3dU1ZcmtHYmItZ0NaNE1tdTZOUWs2TzQ2dWZTc0JjQjQ1Y2M1S1RycFl5VtIBeEFVX3lxTE54VXNHUXQ3UWJTYnRyMWg5eUJ0bnZjX3Y5UHlWdmNUR3pwVlRJeWFEV01RTENrOUZETk8wc1VfOUFjX0I4T3NVWU44VC1TQkVsREVwMUtaT29KVi1OVHNIR0ZuNVVBV2VjaHVreE5IRTZlYUpSWTB4Nw?oc=5"
+      "time": "2026-10-27T16:14:06+09:00",
+      "title": "'삼성전자 우선주 매입' 행동주의 펀드 요구에 외신 평가 부정적, \"한국 투자자 반발 우려\"",
+      "source": "비즈니스포스트",
+      "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTFBTcmhlUktkLVk2NjRqbmpwdUhtX2tfTVVGX3prTk4yWHI4VjZPNDl3YUpsZW10WGtjSWVSaEVaM0s5eHN5Nzl5WW5mU3NDWHVRQ0lzcjQ3ZkZhVkdyaGRhbDRoel9QLWpFQ05MREhCSWFlZmc?oc=5"
     },
     {
-      "time": "2026-10-27T10:46:45+09:00",
-      "title": "[특징주] 美 앤트로픽 IPO 기대감...삼성전자·하이닉스 동반 강세",
-      "source": "메트로신문",
-      "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTFBYZC1ORENkeklCa25UMDVlVVM4d0h5bmV0eGdIRWx2UVAtdnBHTXVVNFl4Y1hJZDdnOEJMV0NGanZ5VkxqR19KMzMyOHZpWEpNSmlVM0xUbGNFOEZYNnlpbA?oc=5"
+      "time": "2026-10-27T16:14:10+09:00",
+      "title": "'앤트로픽 IPO 효과' 반도체 우려 '해소'⋯코스피 3% 올라 '5630선'",
+      "source": "아이뉴스24",
+      "link": "https://news.google.com/rss/articles/CBMiS0FVX3lxTE5GMUhOLUVIdDN0emNtWGJ6V2dVYlBFT3lqczJlX3BIWTFac2VaNDVIeFRhcE9mZ2gxd2pUb2hkQ3dsRmRmT3lFVElucw?oc=5"
     },
     {
-      "time": "2026-10-27T11:02:30+09:00",
-      "title": "'삼성전자 기밀유출' 안승호 前부사장 2심 징역 3년…법정구속",
-      "source": "연합뉴스",
-      "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE1maHhfOE52Nzl5bmxRU1FCWnFNeVdiNFV6N0pSemtEazd5ZFZCVlRRMXZjeEhHbXJzSE90a2xKVUVuNzFlcjJYR2txZ0VWdVEyS2pxRFdsd2lZQjTSAWBBVV95cUxQeDZQaFVhMUNQdEtic3hjUFFtNFU3OWtDRFZ4OEQ4bWJETU1QMUxwREp3Z05TVmtCaUVnUzZ6R2NVZXJSaFNhM21hem53TFFZWWRrLUp0aWhEZ3dpcV9GMWU?oc=5"
+      "time": "2026-10-27T16:23:49+09:00",
+      "title": "신한투자증권, 거래 줄고 운용손실... 3분기 순익 77%↓",
+      "source": "매일일보",
+      "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE95LUFEeHZRSmdKeWdjS0hSQnE1MVZQc3BGckVoOXBtT0o4bXVndENxX0lzd2xOMGtHZ0VTaXo1QmRXMmZncWcyUTE2MEJQTXVOMmg3a1ZXUGpvLUo1dmFhOElXVEQ?oc=5"
     }
   ],
   "disclosures": [],
@@ -600,9 +586,9 @@
     "steady": 45,
     "upper": 0,
     "lower": 0,
-    "individual": -9510.0,
-    "foreign": 5942.0,
-    "institution": 2825.0,
+    "individual": -9572.0,
+    "foreign": 6000.0,
+    "institution": 2831.0,
     "prev_close": 5469.47,
     "open": 5658.65,
     "high": 5737.61,

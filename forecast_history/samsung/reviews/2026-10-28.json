@@ -3,7 +3,7 @@
   "name": "삼성전자",
   "peer_name": "SK하이닉스",
   "session_date": "2026-10-28",
-  "generated_at": "2026-10-28 16:11 KST",
+  "generated_at": "2026-10-28 16:46 KST",
   "summary": {
     "prev_close": 222000.0,
     "open": 231000.0,
@@ -15,11 +15,11 @@
     "c2c": 0.09009009009009006,
     "high_vs_open": 0.051948051948051965,
     "low_vs_open": -0.012987012987012991,
-    "volume": 18445646.0,
-    "volume_ratio": 1.0449463734542386,
+    "volume": 18507447.0,
+    "volume_ratio": 1.0484474018717764,
     "kospi_c2c": 0.06634933473741089,
     "peer_c2c": 0.10887397464578674,
-    "usdkrw_chg": 0.00999418015140452,
+    "usdkrw_chg": 0.009518622225482165,
     "us_nights": 1,
     "sox_ret": 0.03600228838819208,
     "nasdaq_ret": 0.011785899298015101,
@@ -83,7 +83,7 @@
       "regular_close": 929.1599731445312,
       "last": 942.0,
       "ret": 0.013818962532377022,
-      "low_ret": -0.006974012367968574,
+      "low_ret": -0.007092398871024308,
       "high_ret": 0.013818962532377022,
       "last_time": "2026-10-28T08:55:00+09:00"
     },
@@ -104,7 +104,7 @@
       "ZN=F": {
         "label": "미 10년물 국채 선물",
         "ret": -0.0019157088122605526,
-        "after_high": -0.0007376807317792666
+        "after_high": -0.0008850862959138839
       },
       "KRW=X": {
         "label": "원/달러",
@@ -130,7 +130,7 @@
       "지수 동조"
     ],
     "reasons": [
-      "09:00 봉 +2.93%(σ의 7.63배, 거래량 5.36배)가 세션 +4.76%의 71%",
+      "09:00 봉 +2.93%(σ의 7.64배, 거래량 5.36배)가 세션 +4.76%의 71%",
       "KOSPI +6.63% vs 종목 +9.01%, 5분 수익률 상관 0.84 — 종목 고유 요인이 약함"
     ]
   },
@@ -138,12 +138,12 @@
     {
       "time": "2026-10-28T09:00:00+09:00",
       "ret": 0.029279279279279313,
-      "z": 7.63,
+      "z": 7.64,
       "volume_ratio": 5.36,
       "cum_before": 0.0,
       "cum_after": -0.010822510822510845,
       "session_share": 0.7119487908961603,
-      "score": 9.63401813723354,
+      "score": 9.638759763405655,
       "news": []
     },
     {
@@ -154,7 +154,7 @@
       "cum_before": 0.031385281385281294,
       "cum_after": 0.04220779220779214,
       "session_share": 0.25514994201137536,
-      "score": 4.371421676620409,
+      "score": 4.37297151659713,
       "news": [
         {
           "time": "2026-10-28T10:03:00+09:00",
@@ -163,28 +163,10 @@
           "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE9NUHlET0NteHBmWDV0Uk05V21YQldwSDR2VzVuR1pyVEVBanRsaGNPd0FXMDVMVjc2OUxHNzJma1FhU3lmYlp5Q1FycDZmbHNnbWd4aTF6ZHBuYm4wOEdSU2pjcnA2dGpNUC1SSUhlLV8?oc=5"
         },
         {
-          "time": "2026-10-28T09:50:00+09:00",
-          "title": "[특징주] 삼성전자 23만원 돌파…실적 기대에 그룹주 동반 급등",
-          "source": "뉴스핌",
-          "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE5qMTlidHV4MllvRUpYYTZtSWZ0Z1hWZWdqczdVU2ZpaXM2cDc0b0k5R1lXYWc5N0JvV2YzZDc2X3dnNnY0S1U3cnVmRkxVdUJPSm56UmFDUXZhYlFV?oc=5"
-        },
-        {
-          "time": "2026-10-28T09:31:07+09:00",
-          "title": "삼성전자, 리센느와 '갤럭시 Z 폴드8' 캠페인",
-          "source": "디일렉",
-          "link": "https://news.google.com/rss/articles/CBMiZkFVX3lxTE1EZ2ZjNlpnT2xwUG1neHpHbG9NTFZjOE9BcF82WlV2c3U1MW1pZUR5SUVCLUtMUkwyLXhMLWppQkdiQldUUld1M3NSNjNGOHBzZE5fMi1qajltRDc1Y0NqR2lXR2M3UQ?oc=5"
-        },
-        {
           "time": "2026-10-28T09:50:41+09:00",
           "title": "삼성전자, 걸그룹 리센느와 '갤럭시Z폴드8' 캠페인",
           "source": "전자신문",
           "link": "https://news.google.com/rss/articles/CBMiTkFVX3lxTFBUS3AtNk5QcUlVcVlZZWFZbDFMUnJhT256MXM2VTFLRHZPTXljSmhQd3lyYTZacENEUDRERDJIT2tpMVBVeGNvcE8wb3d2UQ?oc=5"
-        },
-        {
-          "time": "2026-10-28T10:06:13+09:00",
-          "title": "삼성전자, 갤럭시 워치 수면 무호흡 기능 고도화…식약처 허가 획득",
-          "source": "메트로신문",
-          "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTFBHd2UtV2RPQUNzZU5YZGNoNkpzRjlkOUJYOEpyQkZVN1FNWlJGcmR2SXlxajF5dmJ0ZmtsVW1aTXM1QXMzU1ktNUh4Z240NW4zX2R1OXdwU1V2REM0RUx5Xw?oc=5"
         }
       ]
     }
@@ -197,7 +179,7 @@
     "pattern": "저점 후 반등"
   },
   "closing_share": 0.130977130977132,
-  "intraday_corr_kospi": 0.8400489478638309,
+  "intraday_corr_kospi": 0.8430332462953802,
   "intraday_note": "장중 봉은 09:00~14:55까지만 있어 마감 구간(14:55~15:30)은 일봉 종가로만 봅니다(그 구간 +0.62%).",
   "intraday_coverage": "09:00~14:55",
   "intraday_path": [
@@ -274,22 +256,22 @@
     {
       "time": "2026-10-28T10:10:00+09:00",
       "price": 237500.0,
-      "volume": 191119.0
+      "volume": 191106.0
     },
     {
       "time": "2026-10-28T10:15:00+09:00",
       "price": 238250.0,
-      "volume": 253421.0
+      "volume": 253434.0
     },
     {
       "time": "2026-10-28T10:20:00+09:00",
       "price": 240750.0,
-      "volume": 561223.0
+      "volume": 561091.0
     },
     {
       "time": "2026-10-28T10:25:00+09:00",
       "price": 240500.0,
-      "volume": 326557.0
+      "volume": 326689.0
     },
     {
       "time": "2026-10-28T10:30:00+09:00",
@@ -304,12 +286,12 @@
     {
       "time": "2026-10-28T10:40:00+09:00",
       "price": 242000.0,
-      "volume": 312272.0
+      "volume": 312270.0
     },
     {
       "time": "2026-10-28T10:45:00+09:00",
       "price": 241500.0,
-      "volume": 186805.0
+      "volume": 186807.0
     },
     {
       "time": "2026-10-28T10:50:00+09:00",
@@ -323,13 +305,13 @@
     },
     {
       "time": "2026-10-28T11:00:00+09:00",
-      "price": 241000.0,
-      "volume": 122682.0
+      "price": 241250.0,
+      "volume": 122664.0
     },
     {
       "time": "2026-10-28T11:05:00+09:00",
       "price": 240000.0,
-      "volume": 197729.0
+      "volume": 197747.0
     },
     {
       "time": "2026-10-28T11:10:00+09:00",
@@ -383,13 +365,13 @@
     },
     {
       "time": "2026-10-28T12:00:00+09:00",
-      "price": 239500.0,
-      "volume": 153990.0
+      "price": 239750.0,
+      "volume": 154001.0
     },
     {
       "time": "2026-10-28T12:05:00+09:00",
       "price": 240750.0,
-      "volume": 94012.0
+      "volume": 94001.0
     },
     {
       "time": "2026-10-28T12:10:00+09:00",
@@ -439,27 +421,27 @@
     {
       "time": "2026-10-28T12:55:00+09:00",
       "price": 241500.0,
-      "volume": 190860.0
+      "volume": 191125.0
     },
     {
       "time": "2026-10-28T13:00:00+09:00",
-      "price": 241000.0,
-      "volume": 98768.0
+      "price": 241500.0,
+      "volume": 98512.0
     },
     {
       "time": "2026-10-28T13:05:00+09:00",
       "price": 240500.0,
-      "volume": 131107.0
+      "volume": 131098.0
     },
     {
       "time": "2026-10-28T13:10:00+09:00",
       "price": 241000.0,
-      "volume": 73889.0
+      "volume": 73899.0
     },
     {
       "time": "2026-10-28T13:15:00+09:00",
       "price": 241250.0,
-      "volume": 124141.0
+      "volume": 124131.0
     },
     {
       "time": "2026-10-28T13:20:00+09:00",
@@ -559,19 +541,19 @@
     {
       "time": "2026-10-28T14:55:00+09:00",
       "price": 240500.0,
-      "volume": 266452.0
+      "volume": 266454.0
     }
   ],
   "timeline_items": [
     {
       "time": "2026-10-28T09:00:00+09:00",
       "ret": 0.029279279279279313,
-      "z": 7.63,
+      "z": 7.64,
       "volume_ratio": 5.36,
       "cum_before": 0.0,
       "cum_after": -0.010822510822510845,
       "session_share": 0.7119487908961603,
-      "score": 9.63401813723354,
+      "score": 9.638759763405655,
       "news": [],
       "price": 228500.0,
       "kind": "turn_up"
@@ -584,7 +566,7 @@
       "cum_before": 0.031385281385281294,
       "cum_after": 0.04220779220779214,
       "session_share": 0.25514994201137536,
-      "score": 4.371421676620409,
+      "score": 4.37297151659713,
       "news": [
         {
           "time": "2026-10-28T10:03:00+09:00",
@@ -593,28 +575,10 @@
           "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE9NUHlET0NteHBmWDV0Uk05V21YQldwSDR2VzVuR1pyVEVBanRsaGNPd0FXMDVMVjc2OUxHNzJma1FhU3lmYlp5Q1FycDZmbHNnbWd4aTF6ZHBuYm4wOEdSU2pjcnA2dGpNUC1SSUhlLV8?oc=5"
         },
         {
-          "time": "2026-10-28T09:50:00+09:00",
-          "title": "[특징주] 삼성전자 23만원 돌파…실적 기대에 그룹주 동반 급등",
-          "source": "뉴스핌",
-          "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE5qMTlidHV4MllvRUpYYTZtSWZ0Z1hWZWdqczdVU2ZpaXM2cDc0b0k5R1lXYWc5N0JvV2YzZDc2X3dnNnY0S1U3cnVmRkxVdUJPSm56UmFDUXZhYlFV?oc=5"
-        },
-        {
-          "time": "2026-10-28T09:31:07+09:00",
-          "title": "삼성전자, 리센느와 '갤럭시 Z 폴드8' 캠페인",
-          "source": "디일렉",
-          "link": "https://news.google.com/rss/articles/CBMiZkFVX3lxTE1EZ2ZjNlpnT2xwUG1neHpHbG9NTFZjOE9BcF82WlV2c3U1MW1pZUR5SUVCLUtMUkwyLXhMLWppQkdiQldUUld1M3NSNjNGOHBzZE5fMi1qajltRDc1Y0NqR2lXR2M3UQ?oc=5"
-        },
-        {
           "time": "2026-10-28T09:50:41+09:00",
           "title": "삼성전자, 걸그룹 리센느와 '갤럭시Z폴드8' 캠페인",
           "source": "전자신문",
           "link": "https://news.google.com/rss/articles/CBMiTkFVX3lxTFBUS3AtNk5QcUlVcVlZZWFZbDFMUnJhT256MXM2VTFLRHZPTXljSmhQd3lyYTZacENEUDRERDJIT2tpMVBVeGNvcE8wb3d2UQ?oc=5"
-        },
-        {
-          "time": "2026-10-28T10:06:13+09:00",
-          "title": "삼성전자, 갤럭시 워치 수면 무호흡 기능 고도화…식약처 허가 획득",
-          "source": "메트로신문",
-          "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTFBHd2UtV2RPQUNzZU5YZGNoNkpzRjlkOUJYOEpyQkZVN1FNWlJGcmR2SXlxajF5dmJ0ZmtsVW1aTXM1QXMzU1ktNUh4Z240NW4zX2R1OXdwU1V2REM0RUx5Xw?oc=5"
         }
       ],
       "price": 240750.0,
@@ -677,9 +641,9 @@
     "steady": 44,
     "upper": 0,
     "lower": 0,
-    "individual": -18044.0,
-    "foreign": 8190.0,
-    "institution": 9611.0,
+    "individual": -18033.0,
+    "foreign": 8185.0,
+    "institution": 9632.0,
     "prev_close": 5638.34,
     "open": 5763.85,
     "high": 6032.28,

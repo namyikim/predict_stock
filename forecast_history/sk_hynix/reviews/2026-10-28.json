@@ -3,7 +3,7 @@
   "name": "SK하이닉스",
   "peer_name": "삼성전자",
   "session_date": "2026-10-28",
-  "generated_at": "2026-10-28 16:46 KST",
+  "generated_at": "2026-10-28 17:31 KST",
   "summary": {
     "prev_close": 1341000.0,
     "open": 1390000.0,
@@ -15,11 +15,11 @@
     "c2c": 0.10887397464578674,
     "high_vs_open": 0.07553956834532372,
     "low_vs_open": -0.02302158273381294,
-    "volume": 4228336.0,
-    "volume_ratio": 1.222196869401299,
+    "volume": 4252731.0,
+    "volume_ratio": 1.2292482230848862,
     "kospi_c2c": 0.06634933473741089,
     "peer_c2c": 0.09009009009009006,
-    "usdkrw_chg": 0.009450711705930592,
+    "usdkrw_chg": 0.011118896300175818,
     "us_nights": 1,
     "sox_ret": 0.03600228838819208,
     "nasdaq_ret": 0.011785899298015101,
@@ -794,18 +794,6 @@
   ],
   "top_news": [
     {
-      "time": "2026-10-28T13:46:37+09:00",
-      "title": "SK하이닉스 \"D램·HBM, 2029년까지 물량 완판…AI 투자 수요 이어질 것\"",
-      "source": "딜사이트",
-      "link": "https://news.google.com/rss/articles/CBMiT0FVX3lxTFBYal80bE9yenExaHRER0g3aDNsMzNYWkVoZGtpeHJSOWVlU1ZBTElWMHJ6bFlxSEdOS1FYRFIyOVNkUkpJXzMwY3pidUZ2bm8?oc=5"
-    },
-    {
-      "time": "2026-10-28T11:29:00+09:00",
-      "title": "SK하이닉스 메모리 위기론 일축...\"“2029년까지 D램·HBM 완판” \"",
-      "source": "국제신문",
-      "link": "https://news.google.com/rss/articles/CBMimAFBVV95cUxOSzQtYkp2VFNsM2RQMnRkQ1R1aERTUW93SWNyR0psNk5yU3VCNVl4MzFxZkhPamRYSTlrU25hN3Vqb0Y5QzhHY3E4X0pSblU1Q2xLZlVtOXRQUmpKaUhfTWtZUTBxUGxaX1ZSOURleThCSWNxM0JZZ0hxQWVXT2lEQ25yVWhkTC1oS0Z0VzlTa05DbGphMHdDTg?oc=5"
-    },
-    {
       "time": "2026-10-28T14:56:00+09:00",
       "title": "[리포트 브리핑]SK하이닉스, '실적이 증명할 성장의 지속성' 목표가 3,150,000원 - 한화투자증권",
       "source": "뉴스핌",
@@ -824,10 +812,22 @@
       "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE5JaE5JUUtSbEZtM2UyTHM0RUQzRllHSnA1SU5NanhBTHQyV1Rra0VGM1ZLSkFWanFqdElhWTRzWk84S2pMNVEwaEVNME9qRGQxWlQyamhNMGoydEnSAWBBVV95cUxPeGRlWFdkZjZKT1ZFa0owaGhrbnp4eEVtZGFqYld6a0dpWGw1SEhwYVk2amVWa18zcXFwQzViMDdmR1dsYXplOW1vejZ2OHpmcTI4N3FkY0lVWnZXT083Mkk?oc=5"
     },
     {
-      "time": "2026-10-28T10:18:00+09:00",
-      "title": "SK하이닉스 역대급 실적…코스피 매수 사이드카",
-      "source": "연합뉴스TV",
-      "link": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTFBSNXNBMGx1OG5zbTFnV1Fmd2NrQUdzVjNvZU9PNGVsZWpldjlMalljSFVNSEw2UlpVcThkUi15cl80Q1Y5Tm9zZU9XRlBDZTBYR3BVdG00anFXU1hOb3JsaUZuQ2xLVXM?oc=5"
+      "time": "2026-10-28T12:34:00+09:00",
+      "title": "[컨콜 종합] SK하이닉스, 반도체 고점론에 성장 자신감…HBM4·장기계약 승부 By EBN",
+      "source": "Investing.com 한국어",
+      "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE9HWWF0alhaNTExTFRLOXo4dEl4WmNnZVR1U19QMXZEcjBEUUJsU0lFQjhfMGprVU5XWVFvN3FETGxvSk1QeEE0WU5aWTlrN0xsTDM0MnhBc0NSRC1iR1oxWHRXMTlrRjFXUm5Ea19qT1Y?oc=5"
+    },
+    {
+      "time": "2026-10-28T13:31:00+09:00",
+      "title": "[컨콜] SK하이닉스 “D램·HBM, 2029년까지 사실상 솔드아웃” By 투데이코리아",
+      "source": "Investing.com 한국어",
+      "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE5MSUFibWt0XzlRRUR5OEtXeTczQzZfTTVYckpaUmJpanJWbkxXTlotRXB0OG9UYVU5Rm5WRFhhRV80SHhxZjdrT044djdXYTlFNkZaTVBadEFnQnI0THIxbE1wMXJLa3FkRGFsWnlxWnU?oc=5"
+    },
+    {
+      "time": "2026-10-28T14:44:00+09:00",
+      "title": "실적보다 강했던 ‘2030년 청사진’… SK하이닉스, ‘AI 고점론’ 잠재웠다",
+      "source": "Chosunbiz",
+      "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxQZFpxekJxekVBdGlkcTRBQW5mYUkzdmlLZXFhd0MyRFk2WkhtRVk1ZlpkQzN3QjhlSXVfQUU5ME5oa1FiS2JzWDdFTmdaT2I4NjdkLTNGYldNSExUMTg1MDhWS0FOTDNVN1hFLXBkUDdtamptYVd5bXJ2OFB5OEhSZmpRMW1HWEhk0gGcAUFVX3lxTE1QWXF1V0FuUkRjMVlPZGVrd3JtblRldUJ2cGUtbWRlZUlqYktIanZUMklzRGhQdUdrNFNiNlk5QVRmakJNUThyUzA3YW9QQkpoeEYxcnRzWDRyU3YwUWVLSDVhcFFnMGhEOWpkeWRiOFNpeDZhcGhidldmVUx5VjhTTHN4bE5ONWFybGhIUndDUUVWSkxBd2VfaV9xYQ?oc=5"
     }
   ],
   "disclosures": [
@@ -884,9 +884,9 @@
     "steady": 44,
     "upper": 0,
     "lower": 0,
-    "individual": -18033.0,
-    "foreign": 8185.0,
-    "institution": 9632.0,
+    "individual": -17963.0,
+    "foreign": 8099.0,
+    "institution": 9624.0,
     "prev_close": 5638.34,
     "open": 5763.85,
     "high": 6032.28,
@@ -896,18 +896,18 @@
   "earnings_reactions": {
     "n": 47,
     "down": 23,
-    "mean": 0.0018330258114683405,
+    "mean": 0.0018330462824095828,
     "first": "2015-04-23",
     "last": "2026-10-28",
     "prior_up": {
       "n": 25,
       "down": 13,
-      "mean": -0.0008362305274315318
+      "mean": -0.0008362207847864545
     },
     "prior_down": {
       "n": 22,
       "down": 10,
-      "mean": 0.004866271651127286,
+      "mean": 0.004866304313314171,
       "next5_n": 21,
       "next5_up": 17
     },
@@ -915,37 +915,37 @@
       {
         "date": "2025-01-23",
         "ret": -0.026607579411918825,
-        "prior20": 0.3382790571486769,
+        "prior20": 0.33827893147207977,
         "next5": -0.09430520321721847
       },
       {
         "date": "2025-04-24",
-        "ret": -0.014917174390067456,
-        "prior20": -0.15420557932554801,
-        "next5": 0.04318561141538213
+        "ret": -0.014917175685804529,
+        "prior20": -0.154205590654643,
+        "next5": 0.04318570340083694
       },
       {
         "date": "2025-07-24",
-        "ret": 0.0018587403970913297,
+        "ret": 0.001858857078848919,
         "prior20": -0.05944058668522689,
-        "next5": 0.014842335128839812
+        "next5": 0.014842216934958019
       },
       {
         "date": "2025-10-29",
-        "ret": 0.07101727377937483,
-        "prior20": 0.4432132461345226,
-        "next5": 0.037634359681047336
+        "ret": 0.07101720934952827,
+        "prior20": 0.4432133329547969,
+        "next5": 0.037634472018395426
       },
       {
         "date": "2026-01-28",
-        "ret": 0.05125005500520774,
-        "prior20": 0.3355591400941682,
-        "next5": 0.07015454050961645
+        "ret": 0.05124997269314635,
+        "prior20": 0.33555910500366215,
+        "next5": 0.07015461499163678
       },
       {
         "date": "2026-04-23",
-        "ret": 0.0016353375232764922,
-        "prior20": 0.2291457624937414,
+        "ret": 0.0016354399374329809,
+        "prior20": 0.22914571405464934,
         "next5": 0.049795850202904335
       },
       {

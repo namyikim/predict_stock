@@ -3,7 +3,7 @@
   "name": "SK하이닉스",
   "peer_name": "삼성전자",
   "session_date": "2026-10-28",
-  "generated_at": "2026-10-28 17:31 KST",
+  "generated_at": "2026-10-28 22:59 KST",
   "summary": {
     "prev_close": 1341000.0,
     "open": 1390000.0,
@@ -15,11 +15,11 @@
     "c2c": 0.10887397464578674,
     "high_vs_open": 0.07553956834532372,
     "low_vs_open": -0.02302158273381294,
-    "volume": 4252731.0,
-    "volume_ratio": 1.2292482230848862,
+    "volume": 4566843.0,
+    "volume_ratio": 1.3200420254320462,
     "kospi_c2c": 0.06634933473741089,
     "peer_c2c": 0.09009009009009006,
-    "usdkrw_chg": 0.011118896300175818,
+    "usdkrw_chg": 0.012560681781072613,
     "us_nights": 1,
     "sox_ret": 0.03600228838819208,
     "nasdaq_ret": 0.011785899298015101,
@@ -115,7 +115,15 @@
         "purpose": "자기주식 소각을 통한 \n주주가치 제고",
         "rcept_no": "20260819000254"
       }
-    ]
+    ],
+    "foreign_pressure": {
+      "state": "selling_eased",
+      "previous_ratio": -0.05819625253580993,
+      "recent_ratio": -0.03190883174287322,
+      "previous_daily_net": -254782.6,
+      "recent_daily_net": -109555.4
+    },
+    "buyback_transition": null
   },
   "classification": {
     "labels": [
@@ -794,10 +802,22 @@
   ],
   "top_news": [
     {
-      "time": "2026-10-28T14:56:00+09:00",
-      "title": "[리포트 브리핑]SK하이닉스, '실적이 증명할 성장의 지속성' 목표가 3,150,000원 - 한화투자증권",
+      "time": "2026-10-28T18:38:15+09:00",
+      "title": "연준의 결정과 실적 발표를 앞두고 SK하이닉스가 반도체 주가를 끌어올리면서 나스닥 선물 지수가 상승했다",
+      "source": "TradingView",
+      "link": "https://news.google.com/rss/articles/CBMid0FVX3lxTE9oSy1CT2x1LTVOYnIxRVdMQllTMUhrZzVacE1CZ0E2TXo5cWJqZU9zTUVRNllJMXc1NnJsNnpMS2tqNEtRZWFqRjNRLUhTbHEybGpGRTB5VnJPT1g1Ykx6YXpmd3RhSEE4U3FDN2hlTXlmZ3pEZElR?oc=5"
+    },
+    {
+      "time": "2026-10-28T21:53:00+09:00",
+      "title": "뉴욕증시 프리뷰, 주가 선물 상승…SK하이닉스 호실적에 반도체주 강세, 연준 결정 주시",
       "source": "뉴스핌",
-      "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE1jTWVfdWNWQ2tFS2pwUndRZk5iTFJhRzh6NHRzV1F6aTl0b05MMC1wTm9rLVQwUlNBWGF0T3hNOTQxS2lBSE1lUlI3MlVmV3hON21zcU9YOFBkelpm?oc=5"
+      "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE9IdFNiYjFDVHVTUERjZ1JjYWVEdjIxQUJQVVdhQmFvZ05XSkhBQWhnb1hnNnJpMXN4SDhsN0RhQm5RMloyTnFEcVZ6bDl6SnBUWGttS1N6ZzB1d0Vo?oc=5"
+    },
+    {
+      "time": "2026-10-28T22:26:00+09:00",
+      "title": "[AI MY 뉴스] 뉴욕 반도체주 프리뷰...SK하이닉스 호실적에 美 반도체주 강세",
+      "source": "뉴스핌",
+      "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTFBscUJFQklHMTFTdlc4T3lzV0JyUElycG1mM2s1ellqTFpHREpMZ2JxdE1vaHpIdGRuczhsTUFZWURKdUd3YzRlQUI1UEdWZU4zUHI3dFpBSGg3Tnkx?oc=5"
     },
     {
       "time": "2026-10-28T08:38:00+09:00",
@@ -806,28 +826,16 @@
       "link": "https://news.google.com/rss/articles/CBMiXkFVX3lxTE9vMmVQVWtFRHNVM0IwVk1aTjZWdnM1ZDZDNmRZOXRXVDNubGZWWGRkN2ZpSWdOemJJYnVSTXE4cWl6ZmtWQnR3UkR1d2lDU2g2akxJTzNjMzNwcnZOdHc?oc=5"
     },
     {
-      "time": "2026-10-28T10:07:48+09:00",
-      "title": "SK하이닉스 \"2029년까지 3년간 D램·HBM 사실상 완판\"",
-      "source": "연합뉴스",
-      "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE5JaE5JUUtSbEZtM2UyTHM0RUQzRllHSnA1SU5NanhBTHQyV1Rra0VGM1ZLSkFWanFqdElhWTRzWk84S2pMNVEwaEVNME9qRGQxWlQyamhNMGoydEnSAWBBVV95cUxPeGRlWFdkZjZKT1ZFa0owaGhrbnp4eEVtZGFqYld6a0dpWGw1SEhwYVk2amVWa18zcXFwQzViMDdmR1dsYXplOW1vejZ2OHpmcTI4N3FkY0lVWnZXT083Mkk?oc=5"
+      "time": "2026-10-28T15:46:14+09:00",
+      "title": "SK하이닉스 호실적에 코스피 6.63% 급등... 6000선 회복 [마감시황]",
+      "source": "매일일보",
+      "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE5sdkhKVFdCSW1mZDJvdW1yQk9tVEdNZldud1RCRHdpeFFnSEhGZTF1QzF5NG1HeWN6RFU1YmU3MUVETXBqdGNCV2F0NmZCRm9weTdyZk5Gd1UxdU9NRTc4NVNfS0c?oc=5"
     },
     {
-      "time": "2026-10-28T12:34:00+09:00",
-      "title": "[컨콜 종합] SK하이닉스, 반도체 고점론에 성장 자신감…HBM4·장기계약 승부 By EBN",
-      "source": "Investing.com 한국어",
-      "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE9HWWF0alhaNTExTFRLOXo4dEl4WmNnZVR1U19QMXZEcjBEUUJsU0lFQjhfMGprVU5XWVFvN3FETGxvSk1QeEE0WU5aWTlrN0xsTDM0MnhBc0NSRC1iR1oxWHRXMTlrRjFXUm5Ea19qT1Y?oc=5"
-    },
-    {
-      "time": "2026-10-28T13:31:00+09:00",
-      "title": "[컨콜] SK하이닉스 “D램·HBM, 2029년까지 사실상 솔드아웃” By 투데이코리아",
-      "source": "Investing.com 한국어",
-      "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE5MSUFibWt0XzlRRUR5OEtXeTczQzZfTTVYckpaUmJpanJWbkxXTlotRXB0OG9UYVU5Rm5WRFhhRV80SHhxZjdrT044djdXYTlFNkZaTVBadEFnQnI0THIxbE1wMXJLa3FkRGFsWnlxWnU?oc=5"
-    },
-    {
-      "time": "2026-10-28T14:44:00+09:00",
-      "title": "실적보다 강했던 ‘2030년 청사진’… SK하이닉스, ‘AI 고점론’ 잠재웠다",
-      "source": "Chosunbiz",
-      "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxQZFpxekJxekVBdGlkcTRBQW5mYUkzdmlLZXFhd0MyRFk2WkhtRVk1ZlpkQzN3QjhlSXVfQUU5ME5oa1FiS2JzWDdFTmdaT2I4NjdkLTNGYldNSExUMTg1MDhWS0FOTDNVN1hFLXBkUDdtamptYVd5bXJ2OFB5OEhSZmpRMW1HWEhk0gGcAUFVX3lxTE1QWXF1V0FuUkRjMVlPZGVrd3JtblRldUJ2cGUtbWRlZUlqYktIanZUMklzRGhQdUdrNFNiNlk5QVRmakJNUThyUzA3YW9QQkpoeEYxcnRzWDRyU3YwUWVLSDVhcFFnMGhEOWpkeWRiOFNpeDZhcGhidldmVUx5VjhTTHN4bE5ONWFybGhIUndDUUVWSkxBd2VfaV9xYQ?oc=5"
+      "time": "2026-10-28T16:35:03+09:00",
+      "title": "역대급 실적·주주환원책 내놓은 SK하이닉스…향후 주가 전망은? - 머니투데이",
+      "source": "머니투데이",
+      "link": "https://news.google.com/rss/articles/CBMibkFVX3lxTE1raGhISmJyaW5EcFNtT21Tc1RJcDVOTkh3aVloTGN2X0tRM1JDd28tX0tXd05CeGFHME5rWm9IUjZZM3daTXZLWnRnOE1vQWd2aENjeVpYdEtMS29sRG1PeUhkWlFFai01LXM3STV30gFuQVVfeXFMTWtoaEhKYnJpbkRwU21PbVNzVElwNU5OSHdpWWhMY3ZfS1EzUkN3by1fS1d3TkJ4YUcwTmtab0hSNlkzd1pNdktadGc4TW9BZ3ZoQ2N5Wlh0S0xLb2xEbU95SGRaUUVqLTUtczdJNXc?oc=5"
     }
   ],
   "disclosures": [
@@ -869,11 +877,71 @@
     }
   ],
   "disclosure_note": null,
-  "flows": null,
-  "flow_story": null,
+  "flows": "외국인 +258,356 / 기관 +149,385",
+  "flow_story": {
+    "direction": "up",
+    "c2c": 0.10887397464578674,
+    "actors": [
+      {
+        "key": "foreign_net",
+        "name": "외국인",
+        "shares": 258356.0,
+        "won": 384175372000.0,
+        "vs_usual": 0.5330747837960996
+      },
+      {
+        "key": "inst_net",
+        "name": "기관",
+        "shares": 149385.0,
+        "won": 222135495000.0,
+        "vs_usual": 0.9257451788559393
+      },
+      {
+        "key": "indiv_net",
+        "name": "개인",
+        "shares": -406617.0,
+        "won": -604639479000.0,
+        "vs_usual": 1.4139629436184116
+      }
+    ],
+    "lead": {
+      "key": "foreign_net",
+      "name": "외국인",
+      "shares": 258356.0,
+      "won": 384175372000.0,
+      "vs_usual": 0.5330747837960996
+    },
+    "counter": {
+      "key": "indiv_net",
+      "name": "개인",
+      "shares": -406617.0,
+      "won": -604639479000.0,
+      "vs_usual": 1.4139629436184116
+    },
+    "all_one_side": false,
+    "observations": [
+      "전일까지 20거래일 고점: 종가 돌파 없음 · 종가 위치 -19.84%.",
+      "전일까지 60거래일 고점: 종가 돌파 없음 · 종가 위치 -23.15%.",
+      "같은 5거래일 수익률: 이 종목 +14.91%, 삼성전자 +8.28% · 차이 +6.64%p.",
+      "같은 20거래일 수익률: 이 종목 -15.89%, 삼성전자 -10.37% · 차이 -5.52%p.",
+      "같은 60거래일 수익률: 이 종목 +6.16%, 삼성전자 +16.07% · 차이 -9.91%p.",
+      "외국인 순매도 지속·거래량 대비 강도 약화: 직전 5일 → 최근 5일 순매수/거래량 -5.82% → -3.19% (일평균 -254,783주 → -109,555주). 향후 상승을 뜻하는 신호는 아닙니다.",
+      "코스피도 +6.63% — 시장 전체가 같은 방향이었습니다.",
+      "삼성전자 +9.01% — 반도체 업종이 함께 움직였습니다.",
+      "전날 밤 미국 반도체지수(SOX) +3.60% — 미국 반도체 흐름과 같은 방향입니다.",
+      "전날 밤 마이크론 +2.77% — 미국 메모리 회사와 같은 방향입니다.",
+      "종가가 당일 범위(저가 1,358,000~고가 1,495,000원)의 위쪽 94% 지점 — 고가 부근에서 마감했습니다.",
+      "마이크론은 미국 정규장 마감 뒤 시간외에서 +1.38%(장중 -0.71%~+1.38%) — 정규장 등락에 안 보이는 반응입니다.",
+      "우리 장중(09:00~15:30) 나스닥100 선물 +0.42% · 미 10년물 국채 선물 -0.19%(금리 상승) · 원/달러 +0.81%(원화 약세).",
+      "자사주 매입 기간 중(직접 취득 2026-08-20~2026-11-19, 40,004,340,000,000, DART 공시) — 회사 자신의 매수는 기타 법인으로 잡힙니다."
+    ],
+    "estimated_indiv": false,
+    "source_note": "출처 naver+cache · 장 마감 직후 잠정치라 저녁 확정치와 다를 수 있습니다 · KRX는 받지 못함(pykrx 미설치)"
+  },
   "flow_status": {
-    "state": "pending",
-    "detail": "최신 2026-10-27"
+    "state": "ok",
+    "detail": "naver+cache",
+    "krx_error": "pykrx 미설치"
   },
   "context": {},
   "market": {
@@ -884,9 +952,9 @@
     "steady": 44,
     "upper": 0,
     "lower": 0,
-    "individual": -17963.0,
-    "foreign": 8099.0,
-    "institution": 9624.0,
+    "individual": -17037.0,
+    "foreign": 7677.0,
+    "institution": 9131.0,
     "prev_close": 5638.34,
     "open": 5763.85,
     "high": 6032.28,
@@ -896,56 +964,56 @@
   "earnings_reactions": {
     "n": 47,
     "down": 23,
-    "mean": 0.0018330462824095828,
+    "mean": 0.001833056894978468,
     "first": "2015-04-23",
     "last": "2026-10-28",
     "prior_up": {
       "n": 25,
       "down": 13,
-      "mean": -0.0008362207847864545
+      "mean": -0.0008362035724354743
     },
     "prior_down": {
       "n": 22,
       "down": 10,
-      "mean": 0.004866304313314171,
+      "mean": 0.004866307426130675,
       "next5_n": 21,
       "next5_up": 17
     },
     "rows": [
       {
         "date": "2025-01-23",
-        "ret": -0.026607579411918825,
-        "prior20": 0.33827893147207977,
-        "next5": -0.09430520321721847
+        "ret": -0.02660750924036559,
+        "prior20": 0.3382788057955064,
+        "next5": -0.09430534059814677
       },
       {
         "date": "2025-04-24",
-        "ret": -0.014917175685804529,
-        "prior20": -0.154205590654643,
-        "next5": 0.04318570340083694
+        "ret": -0.014917259956414353,
+        "prior20": -0.1542055058580758,
+        "next5": 0.04318561141538213
       },
       {
         "date": "2025-07-24",
         "ret": 0.001858857078848919,
-        "prior20": -0.05944058668522689,
+        "prior20": -0.05944048346246433,
         "next5": 0.014842216934958019
       },
       {
         "date": "2025-10-29",
-        "ret": 0.07101720934952827,
-        "prior20": 0.4432133329547969,
+        "ret": 0.07101727377937483,
+        "prior20": 0.4432132461345226,
         "next5": 0.037634472018395426
       },
       {
         "date": "2026-01-28",
-        "ret": 0.05124997269314635,
-        "prior20": 0.33555910500366215,
-        "next5": 0.07015461499163678
+        "ret": 0.05125013330443573,
+        "prior20": 0.3355591400941682,
+        "next5": 0.07015453528436488
       },
       {
         "date": "2026-04-23",
-        "ret": 0.0016354399374329809,
-        "prior20": 0.22914571405464934,
+        "ret": 0.0016353375232764922,
+        "prior20": 0.2291457624937414,
         "next5": 0.049795850202904335
       },
       {

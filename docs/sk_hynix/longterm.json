@@ -698,9 +698,9 @@
       "fresh": true,
       "fetch_error": null,
       "first": "2000-12-18",
-      "last": "2026-10-26",
-      "rows": 6400,
-      "snapshot_hash": "463651677b28bd9909f2",
+      "last": "2026-10-27",
+      "rows": 6401,
+      "snapshot_hash": "d367d2c6c1c981b1796d",
       "enabled": true
     }
   },
@@ -718,13 +718,13 @@
       "fresh": true,
       "source": "OECD API",
       "errors": [],
-      "checked_at": "2026-10-27 15:40 KST"
+      "checked_at": "2026-10-28 16:00 KST"
     },
     "kospi_info": {
       "last": "2026-09",
       "fresh": true,
       "source": "Yahoo Finance",
-      "checked_at": "2026-10-27 15:40 KST"
+      "checked_at": "2026-10-28 16:00 KST"
     },
     "rows": [
       {
@@ -970,7 +970,7 @@
       "source": "FRED API",
       "fresh": true,
       "errors": [],
-      "checked_at": "2026-10-27 15:40 KST",
+      "checked_at": "2026-10-28 16:00 KST",
       "definition": "한국 총수출(달러·계절조정, OECD/FRED)",
       "last": "2026-08"
     },
@@ -986,7 +986,7 @@
       "note": "OECD G20 경기선행지수(OECD 데이터 API). 참조월+1개월 20일 이후에만 사용. 매달 소급 수정되므로 백테스트는 최종 수정치 기준이라 낙관적",
       "snapshot_hash": "27d9ee19f3c2392d1a20",
       "enabled": true,
-      "checked_at": "2026-10-27 15:40 KST"
+      "checked_at": "2026-10-28 16:00 KST"
     }
   },
   "stock_value": {
@@ -1007,7 +1007,7 @@
       "months_added": [],
       "scale": 1.249066228864939,
       "source": "customs_api",
-      "checked_at": "2026-10-27 15:38 KST",
+      "checked_at": "2026-10-28 15:58 KST",
       "kosis_last": "2026-09",
       "last": "2026-09"
     },
@@ -1018,7 +1018,7 @@
     "krw": 1358.2609141956675
   },
   "chart_first": "2000-01-31",
-  "generated_at": "2026-10-27 15:40 KST",
+  "generated_at": "2026-10-28 16:00 KST",
   "macro_snapshot_hash": "062ab4e90ce19ad6c76e",
   "macro_sources": {
     "leading_cycle": "KOSIS_API",
@@ -1026,7 +1026,7 @@
   },
   "frame_hash": "760246e8c39acdc4",
   "live_exports": {
-    "as_of": "2026-10-27",
+    "as_of": "2026-10-28",
     "price_last": "2026-09-30",
     "exports_last_month": "2026-10",
     "latest_period": {
@@ -1038,7 +1038,7 @@
       "basis": "partial_month_scenario"
     },
     "snapshot_hash": "cecabf61a809c8ab4f2c",
-    "generated_at": "2026-10-27 15:38 KST",
+    "generated_at": "2026-10-28 15:58 KST",
     "flash_info": {
       "enabled": true,
       "source": "customs_flash_api",
@@ -1086,14 +1086,14 @@
   "valuation": {
     "status": "available",
     "ticker": "000660.KS",
-    "price": 1275000.0,
-    "price_date": "2026-10-26",
-    "observed_on": "2026-10-27",
+    "price": 1341000.0,
+    "price_date": "2026-10-27",
+    "observed_on": "2026-10-28",
     "financial_period": "2026-06-30",
     "eps_ttm": 232070.09450008773,
     "bps": 375948.7934903294,
-    "per": 5.494029735914629,
-    "pbr": 3.3914193158138093,
+    "per": 5.778426569303151,
+    "pbr": 3.5669751392206415,
     "source": "https://finance.yahoo.com/quote/000660.KS/key-statistics/",
     "assumptions": {
       "version": 1,
@@ -1114,40 +1114,40 @@
         {
           "multiple": 8,
           "price": 1856560.7560007018,
-          "upside": 0.45612608313780534
+          "upside": 0.3844599224464591
         },
         {
           "multiple": 12,
           "price": 2784841.134001053,
-          "upside": 1.184189124706708
+          "upside": 1.076689883669689
         },
         {
           "multiple": 16,
           "price": 3713121.5120014036,
-          "upside": 1.9122521662756107
+          "upside": 1.7689198448929182
         }
       ],
       "pbr": [
         {
           "multiple": 1,
           "price": 375948.7934903294,
-          "upside": -0.7051382011840553
+          "upside": -0.7196504149960258
         },
         {
           "multiple": 1.5,
           "price": 563923.1902354942,
-          "upside": -0.557707301776083
+          "upside": -0.5794756224940387
         },
         {
           "multiple": 2,
           "price": 751897.5869806588,
-          "upside": -0.4102764023681107
+          "upside": -0.43930082999205156
         }
       ]
     },
     "evaluation_status": "예측 성능 미검증 — 현재 가치 시나리오이며 도달 시점을 예측하지 않음",
     "basis_note": "분기 재무제표 최근 4분기 순이익(Net Income Common Stockholders) ÷ EPS 기준 주식 수 697,915,819주",
-    "retrieved_on": "2026-10-27",
+    "retrieved_on": "2026-10-28",
     "cached": false
   },
   "policy_inflation": {
@@ -1773,7 +1773,7 @@
       "cpi_index"
     ],
     "failed": {},
-    "checked_at": "2026-10-27T15:40:11.344314",
+    "checked_at": "2026-10-28T16:00:14.544013",
     "stale": false
   }
 }

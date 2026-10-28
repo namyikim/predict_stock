@@ -3,7 +3,7 @@
   "name": "SK하이닉스",
   "peer_name": "삼성전자",
   "session_date": "2026-10-28",
-  "generated_at": "2026-10-28 16:12 KST",
+  "generated_at": "2026-10-28 16:46 KST",
   "summary": {
     "prev_close": 1341000.0,
     "open": 1390000.0,
@@ -15,11 +15,11 @@
     "c2c": 0.10887397464578674,
     "high_vs_open": 0.07553956834532372,
     "low_vs_open": -0.02302158273381294,
-    "volume": 4217120.0,
-    "volume_ratio": 1.2189548942869266,
+    "volume": 4228336.0,
+    "volume_ratio": 1.222196869401299,
     "kospi_c2c": 0.06634933473741089,
     "peer_c2c": 0.09009009009009006,
-    "usdkrw_chg": 0.009933825483417813,
+    "usdkrw_chg": 0.009450711705930592,
     "us_nights": 1,
     "sox_ret": 0.03600228838819208,
     "nasdaq_ret": 0.011785899298015101,
@@ -76,7 +76,7 @@
       "regular_close": 929.1599731445312,
       "last": 942.0,
       "ret": 0.013818962532377022,
-      "low_ret": -0.006974012367968574,
+      "low_ret": -0.007092398871024308,
       "high_ret": 0.013818962532377022,
       "last_time": "2026-10-28T08:55:00+09:00"
     },
@@ -438,12 +438,12 @@
     {
       "time": "2026-10-28T11:50:00+09:00",
       "price": 1464000.0,
-      "volume": 23459.0
+      "volume": 23463.0
     },
     {
       "time": "2026-10-28T11:55:00+09:00",
       "price": 1457000.0,
-      "volume": 20114.0
+      "volume": 20110.0
     },
     {
       "time": "2026-10-28T12:00:00+09:00",
@@ -463,12 +463,12 @@
     {
       "time": "2026-10-28T12:15:00+09:00",
       "price": 1467000.0,
-      "volume": 29560.0
+      "volume": 29565.0
     },
     {
       "time": "2026-10-28T12:20:00+09:00",
       "price": 1470000.0,
-      "volume": 32041.0
+      "volume": 32036.0
     },
     {
       "time": "2026-10-28T12:25:00+09:00",
@@ -523,12 +523,12 @@
     {
       "time": "2026-10-28T13:15:00+09:00",
       "price": 1475000.0,
-      "volume": 19503.0
+      "volume": 19583.0
     },
     {
       "time": "2026-10-28T13:20:00+09:00",
       "price": 1478000.0,
-      "volume": 16979.0
+      "volume": 16899.0
     },
     {
       "time": "2026-10-28T13:25:00+09:00",
@@ -800,16 +800,10 @@
       "link": "https://news.google.com/rss/articles/CBMiT0FVX3lxTFBYal80bE9yenExaHRER0g3aDNsMzNYWkVoZGtpeHJSOWVlU1ZBTElWMHJ6bFlxSEdOS1FYRFIyOVNkUkpJXzMwY3pidUZ2bm8?oc=5"
     },
     {
-      "time": "2026-10-28T10:13:31+09:00",
-      "title": "SK하이닉스 \"AI 투자 지속 전망…메모리 수요 공급 압도\"",
-      "source": "연합인포맥스",
-      "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE16RW9iT25STUZGZHVMdHYwZ3E4VjBnUjhVZml3ZnhwbmU2MXNpczhycXZ4Z2RQYmZaX0FjdVdpVW5RX2lMSzdmdTBSTWFfY3ZNTVZPQmRCOEZDV28wNTl2OXlCNEhfcVJGOGx0RS1nd2Q?oc=5"
-    },
-    {
       "time": "2026-10-28T11:29:00+09:00",
       "title": "SK하이닉스 메모리 위기론 일축...\"“2029년까지 D램·HBM 완판” \"",
       "source": "국제신문",
-      "link": "https://news.google.com/rss/articles/CBMilAFBVV95cUxNejk3QmZzbzNNN2hJOVdtUzNaMFlsZE1NbkNlcXpmR1YyaFBSM01LYW9zRkNFbU50eFp6eDhsNG5VTnJrTDQzenpFTms4bUU0QXhBYzhZMWwxN2h1ZXZCcmRuRXh4V3VmS3gyR2ZZV25FaEY2ZHk3a1pBX2pxRDdQaDZWLXIzNjdHb3c3Q051S3hWUXJy?oc=5"
+      "link": "https://news.google.com/rss/articles/CBMimAFBVV95cUxOSzQtYkp2VFNsM2RQMnRkQ1R1aERTUW93SWNyR0psNk5yU3VCNVl4MzFxZkhPamRYSTlrU25hN3Vqb0Y5QzhHY3E4X0pSblU1Q2xLZlVtOXRQUmpKaUhfTWtZUTBxUGxaX1ZSOURleThCSWNxM0JZZ0hxQWVXT2lEQ25yVWhkTC1oS0Z0VzlTa05DbGphMHdDTg?oc=5"
     },
     {
       "time": "2026-10-28T14:56:00+09:00",
@@ -828,6 +822,12 @@
       "title": "SK하이닉스 \"2029년까지 3년간 D램·HBM 사실상 완판\"",
       "source": "연합뉴스",
       "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE5JaE5JUUtSbEZtM2UyTHM0RUQzRllHSnA1SU5NanhBTHQyV1Rra0VGM1ZLSkFWanFqdElhWTRzWk84S2pMNVEwaEVNME9qRGQxWlQyamhNMGoydEnSAWBBVV95cUxPeGRlWFdkZjZKT1ZFa0owaGhrbnp4eEVtZGFqYld6a0dpWGw1SEhwYVk2amVWa18zcXFwQzViMDdmR1dsYXplOW1vejZ2OHpmcTI4N3FkY0lVWnZXT083Mkk?oc=5"
+    },
+    {
+      "time": "2026-10-28T10:18:00+09:00",
+      "title": "SK하이닉스 역대급 실적…코스피 매수 사이드카",
+      "source": "연합뉴스TV",
+      "link": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTFBSNXNBMGx1OG5zbTFnV1Fmd2NrQUdzVjNvZU9PNGVsZWpldjlMalljSFVNSEw2UlpVcThkUi15cl80Q1Y5Tm9zZU9XRlBDZTBYR3BVdG00anFXU1hOb3JsaUZuQ2xLVXM?oc=5"
     }
   ],
   "disclosures": [
@@ -884,9 +884,9 @@
     "steady": 44,
     "upper": 0,
     "lower": 0,
-    "individual": -18044.0,
-    "foreign": 8190.0,
-    "institution": 9611.0,
+    "individual": -18033.0,
+    "foreign": 8185.0,
+    "institution": 9632.0,
     "prev_close": 5638.34,
     "open": 5763.85,
     "high": 6032.28,
@@ -896,51 +896,51 @@
   "earnings_reactions": {
     "n": 47,
     "down": 23,
-    "mean": 0.0018330516043133563,
+    "mean": 0.0018330258114683405,
     "first": "2015-04-23",
     "last": "2026-10-28",
     "prior_up": {
       "n": 25,
       "down": 13,
-      "mean": -0.000836211974110479
+      "mean": -0.0008362305274315318
     },
     "prior_down": {
       "n": 22,
       "down": 10,
-      "mean": 0.004866305670704078,
+      "mean": 0.004866271651127286,
       "next5_n": 21,
       "next5_up": 17
     },
     "rows": [
       {
         "date": "2025-01-23",
-        "ret": -0.026607439068812244,
-        "prior20": 0.33827893147207977,
-        "next5": -0.09430526171003051
+        "ret": -0.026607579411918825,
+        "prior20": 0.3382790571486769,
+        "next5": -0.09430520321721847
       },
       {
         "date": "2025-04-24",
         "ret": -0.014917174390067456,
-        "prior20": -0.15420551718716535,
-        "next5": 0.043185523237932344
+        "prior20": -0.15420557932554801,
+        "next5": 0.04318561141538213
       },
       {
         "date": "2025-07-24",
-        "ret": 0.001858506816722505,
-        "prior20": -0.059440476939101594,
-        "next5": 0.014842569788041216
+        "ret": 0.0018587403970913297,
+        "prior20": -0.05944058668522689,
+        "next5": 0.014842335128839812
       },
       {
         "date": "2025-10-29",
-        "ret": 0.07101732966476137,
-        "prior20": 0.44321345825498537,
-        "next5": 0.037634355453303625
+        "ret": 0.07101727377937483,
+        "prior20": 0.4432132461345226,
+        "next5": 0.037634359681047336
       },
       {
         "date": "2026-01-28",
-        "ret": 0.05125013330443573,
+        "ret": 0.05125005500520774,
         "prior20": 0.3355591400941682,
-        "next5": 0.07015453528436488
+        "next5": 0.07015454050961645
       },
       {
         "date": "2026-04-23",

@@ -3,7 +3,7 @@
   "name": "삼성전자",
   "peer_name": "SK하이닉스",
   "session_date": "2026-10-29",
-  "generated_at": "2026-10-29 17:32 KST",
+  "generated_at": "2026-10-29 23:13 KST",
   "summary": {
     "prev_close": 242000.0,
     "open": 241000.0,
@@ -15,11 +15,11 @@
     "c2c": -0.04132231404958675,
     "high_vs_open": 0.03319502074688807,
     "low_vs_open": -0.06120331950207469,
-    "volume": 25881114.0,
-    "volume_ratio": 1.4808699845395075,
+    "volume": 24975596.0,
+    "volume_ratio": 1.4290579015410612,
     "kospi_c2c": -0.012437510542310681,
     "peer_c2c": 0.02622730329522538,
-    "usdkrw_chg": 0.007514241121816534,
+    "usdkrw_chg": 0.008795472870750443,
     "us_nights": 1,
     "sox_ret": 0.01754844328325711,
     "nasdaq_ret": 0.002720733361712968,
@@ -122,7 +122,15 @@
         "purpose": "임직원 주식보상",
         "rcept_no": "20260821000616"
       }
-    ]
+    ],
+    "foreign_pressure": {
+      "state": "other",
+      "previous_ratio": 0.06622808747267027,
+      "recent_ratio": 0.002397894448378581,
+      "previous_daily_net": 1083826.4,
+      "recent_daily_net": 40541.2
+    },
+    "buyback_transition": null
   },
   "classification": {
     "labels": [
@@ -152,7 +160,7 @@
           "link": "https://news.google.com/rss/articles/CBMidEFVX3lxTFBIbjh2SlRNc3hELXZvbUpqeHFDUGNtLVVHMjlMTi03Unpzd3ZfckNPblFSc1RfeVltZW43QTFpMFNHVE5fM0Q1b0FXeURDVFIteE5fM3NOb0JjbzBKTWFNdE9GWFdhNmFkMGplUy1aQmZpd1RE0gF0QVVfeXFMT2V6VUM3R3lLWHE0TUI0ZXp3SjdqeFF0V2VTY2VxY1BVYXg2c0NJSDBuSnQwNHIxY29pU1N0ZFZ6dTZ3Q3RnVXJzbHFFZnBRR1lPVFRkOTg0eWZwODRTdWhLSWhiWWEzODFNc2pqV1pjdndWV2I?oc=5"
         },
         {
-          "time": "2026-10-29T10:05:02+09:00",
+          "time": "2026-10-29T10:03:00+09:00",
           "title": "107조원 벌고도 주가는 하락…삼성전자 \"4분기도 실적 성장\"",
           "source": "JTBC",
           "link": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE5GaXk2U3kyRjg0cUhCX2FxMGZkSlJkVVJJcXFBUURtbjY5X0FCZm82YW0wdVEtOVpURTdLS1c4SnBUVmlkWG9CTjllOXhqZWVVUUstNQ?oc=5"
@@ -170,10 +178,10 @@
           "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE9QdnJxeGpyV2pNX2ItZTlqMUxSTjlNSHRkT0dNRVoxd3lhUjFEcVEyV2tieFlJU0RxOURRSk96MzJJS2hNMTJfMjJodTJCNTZsNWZaMXBJWFBuQVVGaGlVVHRRVkRLbmtGTUc2UdIBckFVX3lxTE54TGdBT0gyeTJjQWpGMjJmaDloaHhxQW5mQWZLbXJkSVpocmZVM2ZxQUZ5a3lZOHhLa1IyQWNiTDVSTmlRQ2FRdDMydUFYWHdMNGpqdDNaeWRtYzVxazVjZk1fc2x0T0g3ZEt2R2daZ1U2QQ?oc=5"
         },
         {
-          "time": "2026-10-29T09:57:48+09:00",
-          "title": "[속보] 삼성전자, 3분기 30조 현금배당 확정…올해 최대 110조 주주환원",
-          "source": "서울경제",
-          "link": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE5YM0wtU1M3dWk0Nng0U2ZWRmhkVzNaWUtYUzlNZ2RQUmhqOVctRWNDWWtZUVdYamtXc0FMUE8xdzluSUliZDhPcmk0bUp4RlZQdnfSAVNBVV95cUxQRWZxZlFvbXpXU1lYZXpScklXd1ZiaTBYY2oydmZYVGFaZXdXTVdKdk1GNDdtQlQtSWY4TTYxVDVkT3hNd1NqWTVjMzk2bk9EYnphdw?oc=5"
+          "time": "2026-10-29T09:56:43+09:00",
+          "title": "[속보] 삼성전자, 3분기 주당 4601원 배당",
+          "source": "한국경제",
+          "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE1VWjRUWlZrOGNTZkxEZTR1UHQ1alBaNFViQU9jOVZvS3ozdk10dXJiRTNubC1DZWhvRXdrYjduV19VUkgxc0pEblFfWld1eXQzRXZLZ3BRWFBEZw?oc=5"
         }
       ]
     },
@@ -200,7 +208,7 @@
           "link": "https://news.google.com/rss/articles/CBMidEFVX3lxTFBIbjh2SlRNc3hELXZvbUpqeHFDUGNtLVVHMjlMTi03Unpzd3ZfckNPblFSc1RfeVltZW43QTFpMFNHVE5fM0Q1b0FXeURDVFIteE5fM3NOb0JjbzBKTWFNdE9GWFdhNmFkMGplUy1aQmZpd1RE0gF0QVVfeXFMT2V6VUM3R3lLWHE0TUI0ZXp3SjdqeFF0V2VTY2VxY1BVYXg2c0NJSDBuSnQwNHIxY29pU1N0ZFZ6dTZ3Q3RnVXJzbHFFZnBRR1lPVFRkOTg0eWZwODRTdWhLSWhiWWEzODFNc2pqV1pjdndWV2I?oc=5"
         },
         {
-          "time": "2026-10-29T10:05:02+09:00",
+          "time": "2026-10-29T10:03:00+09:00",
           "title": "107조원 벌고도 주가는 하락…삼성전자 \"4분기도 실적 성장\"",
           "source": "JTBC",
           "link": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE5GaXk2U3kyRjg0cUhCX2FxMGZkSlJkVVJJcXFBUURtbjY5X0FCZm82YW0wdVEtOVpURTdLS1c4SnBUVmlkWG9CTjllOXhqZWVVUUstNQ?oc=5"
@@ -242,7 +250,7 @@
           "link": "https://news.google.com/rss/articles/CBMidEFVX3lxTFBIbjh2SlRNc3hELXZvbUpqeHFDUGNtLVVHMjlMTi03Unpzd3ZfckNPblFSc1RfeVltZW43QTFpMFNHVE5fM0Q1b0FXeURDVFIteE5fM3NOb0JjbzBKTWFNdE9GWFdhNmFkMGplUy1aQmZpd1RE0gF0QVVfeXFMT2V6VUM3R3lLWHE0TUI0ZXp3SjdqeFF0V2VTY2VxY1BVYXg2c0NJSDBuSnQwNHIxY29pU1N0ZFZ6dTZ3Q3RnVXJzbHFFZnBRR1lPVFRkOTg0eWZwODRTdWhLSWhiWWEzODFNc2pqV1pjdndWV2I?oc=5"
         },
         {
-          "time": "2026-10-29T10:05:02+09:00",
+          "time": "2026-10-29T10:03:00+09:00",
           "title": "107조원 벌고도 주가는 하락…삼성전자 \"4분기도 실적 성장\"",
           "source": "JTBC",
           "link": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE5GaXk2U3kyRjg0cUhCX2FxMGZkSlJkVVJJcXFBUURtbjY5X0FCZm82YW0wdVEtOVpURTdLS1c4SnBUVmlkWG9CTjllOXhqZWVVUUstNQ?oc=5"
@@ -254,10 +262,10 @@
           "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE1ibmQ3OVdqRDJXUkZBSkpNT0NTZnRubEwzWkdlTFBMU1l0bkZvUlhKNVdUaXROY3kwVFRmVTR0ZUxBUGF3UUprNzE0b21FZmxjbHRVNmdwUUFuaGh5bXZ4Y0t5THFOSXZMUVJoXzkyY3U?oc=5"
         },
         {
-          "time": "2026-10-29T11:10:00+09:00",
-          "title": "코스피, 삼성전자 실적 발표 후 2%대 급락…6천선 다시 하회",
-          "source": "연합인포맥스",
-          "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE43ZnVqNVRGUVg5X240cXFxd24wYWJDYnJjZVN0ZnVwclJ4LWpEOUlzanRJbnJMOUxibHRueHNfeklXc0l1YVV4LXlOLXZYSnpNeUlITnRvd2g4Rm80Z1lXSHItLVUxUmgtQnYwNVRyQ0Q?oc=5"
+          "time": "2026-10-29T11:08:24+09:00",
+          "title": "코스피, '세부실적' 삼성전자 급락에 하락전환…2%대 하락세",
+          "source": "연합뉴스",
+          "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE9SbG91QlR3Q2M2V1NweURNRW04VnVkQ0VIRUUwU3cwYUlNMmRiUlJDeW8yVi1MLUc1bnh3X0hnSnBKWFhjV1B1eU92R2pEVWRxUVhKUzFUcDNNTlJ3R3Y2VdIBYEFVX3lxTE9SbG91QlR3Q2M2V1NweURNRW04VnVkQ0VIRUUwU3cwYUlNMmRiUlJDeW8yVi1MLUc1bnh3X0hnSnBKWFhjV1B1eU92R2pEVWRxUVhKUzFUcDNNTlJ3R3Y2VQ?oc=5"
         }
       ]
     }
@@ -653,7 +661,7 @@
           "link": "https://news.google.com/rss/articles/CBMidEFVX3lxTFBIbjh2SlRNc3hELXZvbUpqeHFDUGNtLVVHMjlMTi03Unpzd3ZfckNPblFSc1RfeVltZW43QTFpMFNHVE5fM0Q1b0FXeURDVFIteE5fM3NOb0JjbzBKTWFNdE9GWFdhNmFkMGplUy1aQmZpd1RE0gF0QVVfeXFMT2V6VUM3R3lLWHE0TUI0ZXp3SjdqeFF0V2VTY2VxY1BVYXg2c0NJSDBuSnQwNHIxY29pU1N0ZFZ6dTZ3Q3RnVXJzbHFFZnBRR1lPVFRkOTg0eWZwODRTdWhLSWhiWWEzODFNc2pqV1pjdndWV2I?oc=5"
         },
         {
-          "time": "2026-10-29T10:05:02+09:00",
+          "time": "2026-10-29T10:03:00+09:00",
           "title": "107조원 벌고도 주가는 하락…삼성전자 \"4분기도 실적 성장\"",
           "source": "JTBC",
           "link": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE5GaXk2U3kyRjg0cUhCX2FxMGZkSlJkVVJJcXFBUURtbjY5X0FCZm82YW0wdVEtOVpURTdLS1c4SnBUVmlkWG9CTjllOXhqZWVVUUstNQ?oc=5"
@@ -671,10 +679,10 @@
           "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE9QdnJxeGpyV2pNX2ItZTlqMUxSTjlNSHRkT0dNRVoxd3lhUjFEcVEyV2tieFlJU0RxOURRSk96MzJJS2hNMTJfMjJodTJCNTZsNWZaMXBJWFBuQVVGaGlVVHRRVkRLbmtGTUc2UdIBckFVX3lxTE54TGdBT0gyeTJjQWpGMjJmaDloaHhxQW5mQWZLbXJkSVpocmZVM2ZxQUZ5a3lZOHhLa1IyQWNiTDVSTmlRQ2FRdDMydUFYWHdMNGpqdDNaeWRtYzVxazVjZk1fc2x0T0g3ZEt2R2daZ1U2QQ?oc=5"
         },
         {
-          "time": "2026-10-29T09:57:48+09:00",
-          "title": "[속보] 삼성전자, 3분기 30조 현금배당 확정…올해 최대 110조 주주환원",
-          "source": "서울경제",
-          "link": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE5YM0wtU1M3dWk0Nng0U2ZWRmhkVzNaWUtYUzlNZ2RQUmhqOVctRWNDWWtZUVdYamtXc0FMUE8xdzluSUliZDhPcmk0bUp4RlZQdnfSAVNBVV95cUxQRWZxZlFvbXpXU1lYZXpScklXd1ZiaTBYY2oydmZYVGFaZXdXTVdKdk1GNDdtQlQtSWY4TTYxVDVkT3hNd1NqWTVjMzk2bk9EYnphdw?oc=5"
+          "time": "2026-10-29T09:56:43+09:00",
+          "title": "[속보] 삼성전자, 3분기 주당 4601원 배당",
+          "source": "한국경제",
+          "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE1VWjRUWlZrOGNTZkxEZTR1UHQ1alBaNFViQU9jOVZvS3ozdk10dXJiRTNubC1DZWhvRXdrYjduV19VUkgxc0pEblFfWld1eXQzRXZLZ3BRWFBEZw?oc=5"
         }
       ],
       "price": 239000.0,
@@ -703,7 +711,7 @@
           "link": "https://news.google.com/rss/articles/CBMidEFVX3lxTFBIbjh2SlRNc3hELXZvbUpqeHFDUGNtLVVHMjlMTi03Unpzd3ZfckNPblFSc1RfeVltZW43QTFpMFNHVE5fM0Q1b0FXeURDVFIteE5fM3NOb0JjbzBKTWFNdE9GWFdhNmFkMGplUy1aQmZpd1RE0gF0QVVfeXFMT2V6VUM3R3lLWHE0TUI0ZXp3SjdqeFF0V2VTY2VxY1BVYXg2c0NJSDBuSnQwNHIxY29pU1N0ZFZ6dTZ3Q3RnVXJzbHFFZnBRR1lPVFRkOTg0eWZwODRTdWhLSWhiWWEzODFNc2pqV1pjdndWV2I?oc=5"
         },
         {
-          "time": "2026-10-29T10:05:02+09:00",
+          "time": "2026-10-29T10:03:00+09:00",
           "title": "107조원 벌고도 주가는 하락…삼성전자 \"4분기도 실적 성장\"",
           "source": "JTBC",
           "link": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE5GaXk2U3kyRjg0cUhCX2FxMGZkSlJkVVJJcXFBUURtbjY5X0FCZm82YW0wdVEtOVpURTdLS1c4SnBUVmlkWG9CTjllOXhqZWVVUUstNQ?oc=5"
@@ -747,7 +755,7 @@
           "link": "https://news.google.com/rss/articles/CBMidEFVX3lxTFBIbjh2SlRNc3hELXZvbUpqeHFDUGNtLVVHMjlMTi03Unpzd3ZfckNPblFSc1RfeVltZW43QTFpMFNHVE5fM0Q1b0FXeURDVFIteE5fM3NOb0JjbzBKTWFNdE9GWFdhNmFkMGplUy1aQmZpd1RE0gF0QVVfeXFMT2V6VUM3R3lLWHE0TUI0ZXp3SjdqeFF0V2VTY2VxY1BVYXg2c0NJSDBuSnQwNHIxY29pU1N0ZFZ6dTZ3Q3RnVXJzbHFFZnBRR1lPVFRkOTg0eWZwODRTdWhLSWhiWWEzODFNc2pqV1pjdndWV2I?oc=5"
         },
         {
-          "time": "2026-10-29T10:05:02+09:00",
+          "time": "2026-10-29T10:03:00+09:00",
           "title": "107조원 벌고도 주가는 하락…삼성전자 \"4분기도 실적 성장\"",
           "source": "JTBC",
           "link": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE5GaXk2U3kyRjg0cUhCX2FxMGZkSlJkVVJJcXFBUURtbjY5X0FCZm82YW0wdVEtOVpURTdLS1c4SnBUVmlkWG9CTjllOXhqZWVVUUstNQ?oc=5"
@@ -759,10 +767,10 @@
           "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE1ibmQ3OVdqRDJXUkZBSkpNT0NTZnRubEwzWkdlTFBMU1l0bkZvUlhKNVdUaXROY3kwVFRmVTR0ZUxBUGF3UUprNzE0b21FZmxjbHRVNmdwUUFuaGh5bXZ4Y0t5THFOSXZMUVJoXzkyY3U?oc=5"
         },
         {
-          "time": "2026-10-29T11:10:00+09:00",
-          "title": "코스피, 삼성전자 실적 발표 후 2%대 급락…6천선 다시 하회",
-          "source": "연합인포맥스",
-          "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE43ZnVqNVRGUVg5X240cXFxd24wYWJDYnJjZVN0ZnVwclJ4LWpEOUlzanRJbnJMOUxibHRueHNfeklXc0l1YVV4LXlOLXZYSnpNeUlITnRvd2g4Rm80Z1lXSHItLVUxUmgtQnYwNVRyQ0Q?oc=5"
+          "time": "2026-10-29T11:08:24+09:00",
+          "title": "코스피, '세부실적' 삼성전자 급락에 하락전환…2%대 하락세",
+          "source": "연합뉴스",
+          "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE9SbG91QlR3Q2M2V1NweURNRW04VnVkQ0VIRUUwU3cwYUlNMmRiUlJDeW8yVi1MLUc1bnh3X0hnSnBKWFhjV1B1eU92R2pEVWRxUVhKUzFUcDNNTlJ3R3Y2VdIBYEFVX3lxTE9SbG91QlR3Q2M2V1NweURNRW04VnVkQ0VIRUUwU3cwYUlNMmRiUlJDeW8yVi1MLUc1bnh3X0hnSnBKWFhjV1B1eU92R2pEVWRxUVhKUzFUcDNNTlJ3R3Y2VQ?oc=5"
         }
       ],
       "price": 229000.0,
@@ -771,6 +779,12 @@
   ],
   "overnight_news": [],
   "top_news": [
+    {
+      "time": "2026-10-29T17:01:32+09:00",
+      "title": "[실적분석] 삼성전자 3분기 영업이익 107조, 분기배당 30조 글로벌급 신기록...주가급락은 왜?",
+      "source": "https://www.moneystorm.kr/",
+      "link": "https://news.google.com/rss/articles/CBMiakFVX3lxTE5PUUh2aTB0WE9fbEQ2V1h5MFhiZFV1Xzc0ZFhRc096UlFLSVFrb0pfNG5ydXRZMVZqWWZkQ3E1Mi1XSDRFS1RjQmRmSVJIc2JaZ3RLQnFaTEhFMGlIVGRHaGJqaEttVFlJR3c?oc=5"
+    },
     {
       "time": "2026-10-29T10:12:49+09:00",
       "title": "삼성전자, 실적·배당 공개…코스피, 하락 전환",
@@ -781,13 +795,7 @@
       "time": "2026-10-29T11:39:08+09:00",
       "title": "삼성전자 3분기 반도체 영업익 106조…\"내년도 기록적 AI투자\"(종합2보)",
       "source": "연합뉴스",
-      "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE1ycUpRVXVkalpRWm1pRk5XSDFPZFVfQVJxclZjamViY3A0Q1dnSW1pMDNFQkpBU2J1WEZDa0lqaHlEOFlveXdSQ2tDMnYtNVpDVjJkYjVXb3phaVnSAWBBVV95cUxOSVB5UVJDRlQzdVJSaEYzREljalZON0FTdmxsZUtKYVUyS2Uyc3h5VEMxSjJjY01IX3JzSGZMU0ZiWHRJb0xKeWphUUd4eFY0UDgyZ1BndFBSazdkMGd0R3c?oc=5"
-    },
-    {
-      "time": "2026-10-29T11:50:00+09:00",
-      "title": "삼성전자 3분기 반도체 영업이익 106조…현금배당 30조 푼다",
-      "source": "연합뉴스TV",
-      "link": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE1rMTJzalFMT1BqeGNNMi1Td2pEd0piaFJHYVROUE1XVnNPYmxXVmZBbUdRazNmRW91QVM5eWhPVzVtd2tGRWRhd3h0aUlRMm44dHBRRVdLUWlDY2gxaWFJdzZFNkV6eEU?oc=5"
+      "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE5JUHlRUkNGVDN1UlJoRjNESWNqVk43QVN2bGxlS0phVTJLZTJzeHlUQzFKMmNjTUhfcnNIZkxTRmJYdElvTEp5amFRR3h4VjRQODJnUGd0UFJrN2QwZ3RHd9IBYEFVX3lxTE5JUHlRUkNGVDN1UlJoRjNESWNqVk43QVN2bGxlS0phVTJLZTJzeHlUQzFKMmNjTUhfcnNIZkxTRmJYdElvTEp5amFRR3h4VjRQODJnUGd0UFJrN2QwZ3RHdw?oc=5"
     },
     {
       "time": "2026-10-29T14:52:00+09:00",
@@ -889,11 +897,81 @@
     }
   ],
   "disclosure_note": null,
-  "flows": null,
-  "flow_story": null,
+  "flows": "외국인 -518,762 / 기관 +245,680",
+  "flow_story": {
+    "direction": "down",
+    "c2c": -0.04132231404958675,
+    "actors": [
+      {
+        "key": "foreign_net",
+        "name": "외국인",
+        "shares": -518762.0,
+        "won": -120352784000.0,
+        "vs_usual": 0.27631457245616775
+      },
+      {
+        "key": "inst_net",
+        "name": "기관",
+        "shares": 245680.0,
+        "won": 56997760000.0,
+        "vs_usual": 0.23493896636035091
+      },
+      {
+        "key": "indiv_net",
+        "name": "개인",
+        "shares": 614637.0,
+        "won": 142595784000.0,
+        "vs_usual": 0.32025432477533916
+      },
+      {
+        "key": "other_net",
+        "name": "기타 법인 등(추정)",
+        "shares": -341555.0,
+        "won": -79240760000.0,
+        "vs_usual": null
+      }
+    ],
+    "lead": {
+      "key": "foreign_net",
+      "name": "외국인",
+      "shares": -518762.0,
+      "won": -120352784000.0,
+      "vs_usual": 0.27631457245616775
+    },
+    "counter": {
+      "key": "indiv_net",
+      "name": "개인",
+      "shares": 614637.0,
+      "won": 142595784000.0,
+      "vs_usual": 0.32025432477533916
+    },
+    "all_one_side": false,
+    "observations": [
+      "전일까지 20거래일 고점: 종가 돌파 없음 · 종가 위치 -16.99%.",
+      "전일까지 60거래일 고점: 종가 돌파 없음 · 종가 위치 -19.44%.",
+      "같은 5거래일 수익률: 이 종목 +8.16%, SK하이닉스 +24.78% · 차이 -16.62%p.",
+      "같은 20거래일 수익률: 이 종목 -14.86%, SK하이닉스 -13.54% · 차이 -1.32%p.",
+      "같은 60거래일 수익률: 이 종목 +12.08%, SK하이닉스 +15.46% · 차이 -3.38%p.",
+      "외국인 5일 수급 비교: 직전 5일 → 최근 5일 순매수/거래량 +6.62% → +0.24% (일평균 +1,083,826주 → +40,541주). 향후 상승을 뜻하는 신호는 아닙니다.",
+      "코스피도 -1.24%였지만 이 종목(-4.13%)이 훨씬 크게 움직였습니다.",
+      "SK하이닉스는 반대로 +2.62% — 업종 전체의 움직임은 아니었습니다.",
+      "원/달러 +0.88%(원화 약세) — 외국인 매도와 같은 방향의 환율 움직임입니다.",
+      "전날 밤 SOX는 +1.75%로 반대 방향이어서 미국 반도체 흐름으로는 설명되지 않습니다.",
+      "전날 밤 마이크론은 +5.86%로 반대 방향이었습니다.",
+      "직전 5거래일 +8.28% 오른 뒤의 매도 — 차익 실현과 맞는 모양입니다.",
+      "장중 20일선(239,775원) 위로 올랐다가 그 아래로 밀려 마감했습니다.",
+      "마이크론은 미국 정규장 마감 뒤 시간외에서 -2.35%(장중 -2.55%~+0.38%) — 정규장 등락에 안 보이는 반응입니다.",
+      "우리 장중(09:00~15:30) 나스닥100 선물 -0.04%, 이 종목 고점 이후 -0.26% · 미 10년물 국채 선물 +0.12%(금리 하락), 이 종목 고점 이후 +0.22% · 원/달러 -0.24%(원화 강세), 이 종목 고점 이후 -0.07%.",
+      "자사주 매입 기간 중(직접 취득 2026-08-24~2026-11-21, 14,999,999,992,000, DART 공시) — 회사 자신의 매수는 기타 법인으로 잡힙니다.",
+      "마감가가 장중 고가보다 -5.79% 아래 — 오른 폭을 장중에 꽤 반납했습니다."
+    ],
+    "estimated_indiv": false,
+    "source_note": "출처 naver+cache · 장 마감 직후 잠정치라 저녁 확정치와 다를 수 있습니다 · KRX는 받지 못함(pykrx 미설치)"
+  },
   "flow_status": {
-    "state": "pending",
-    "detail": "최신 2026-10-28"
+    "state": "ok",
+    "detail": "naver+cache",
+    "krx_error": "pykrx 미설치"
   },
   "context": {},
   "market": {
@@ -904,9 +982,9 @@
     "steady": 47,
     "upper": 1,
     "lower": 0,
-    "individual": 262.0,
-    "foreign": 833.0,
-    "institution": -4463.0,
+    "individual": -429.0,
+    "foreign": 1221.0,
+    "institution": -4132.0,
     "prev_close": 6012.44,
     "open": 6017.22,
     "high": 6100.11,
@@ -916,56 +994,56 @@
   "earnings_reactions": {
     "n": 45,
     "down": 25,
-    "mean": 0.004491720582504782,
+    "mean": 0.004491704762415432,
     "first": "2015-04-07",
     "last": "2026-10-08",
     "prior_up": {
       "n": 27,
       "down": 16,
-      "mean": 0.005655334103814288
+      "mean": 0.0056552875074388385
     },
     "prior_down": {
       "n": 18,
       "down": 9,
-      "mean": 0.0027463003005405223,
+      "mean": 0.0027463306448803227,
       "next5_n": 18,
       "next5_up": 8
     },
     "rows": [
       {
         "date": "2024-07-05",
-        "ret": 0.029550624122250957,
-        "prior20": 0.09789851234261726,
-        "next5": -0.030998700593081296
+        "ret": 0.029550818588921057,
+        "prior20": 0.09789852264134513,
+        "next5": -0.030998790775496055
       },
       {
         "date": "2024-10-08",
-        "ret": -0.011475342246353937,
-        "prior20": -0.17550725654583976,
-        "next5": -0.013266995681315064
+        "ret": -0.011475473634683375,
+        "prior20": -0.17550711223721005,
+        "next5": -0.013266996568085054
       },
       {
         "date": "2025-01-08",
-        "ret": 0.03429607257566447,
-        "prior20": 0.038691759055365926,
-        "next5": -0.06282726207437195
+        "ret": 0.03429592557854533,
+        "prior20": 0.038691834110668566,
+        "next5": -0.06282712673685709
       },
       {
         "date": "2025-04-08",
-        "ret": 0.0056390392516327825,
-        "prior20": -0.0034249873791928342,
-        "next5": 0.05794397222748904
+        "ret": 0.005639114054833083,
+        "prior20": -0.0034250616708649817,
+        "next5": 0.057943819149915754
       },
       {
         "date": "2025-10-14",
-        "ret": -0.018220878273630836,
-        "prior20": 0.3484355968820865,
-        "next5": 0.06441047837827907
+        "ret": -0.01822079386417541,
+        "prior20": 0.3484357503620068,
+        "next5": 0.06441038686451694
       },
       {
         "date": "2026-04-07",
         "ret": 0.017607433616103174,
-        "prior20": 0.11527197433303193,
+        "prior20": 0.11527187357539503,
         "next5": 0.05089058828005988
       },
       {

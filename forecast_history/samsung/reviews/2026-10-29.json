@@ -3,23 +3,23 @@
   "name": "삼성전자",
   "peer_name": "SK하이닉스",
   "session_date": "2026-10-29",
-  "generated_at": "2026-10-29 16:12 KST",
+  "generated_at": "2026-10-29 16:46 KST",
   "summary": {
     "prev_close": 242000.0,
     "open": 241000.0,
     "high": 249000.0,
-    "low": 226000.0,
+    "low": 226250.0,
     "close": 232000.0,
     "gap": -0.004132231404958664,
     "session": -0.03734439834024894,
     "c2c": -0.04132231404958675,
     "high_vs_open": 0.03319502074688807,
-    "low_vs_open": -0.06224066390041494,
-    "volume": 25651657.0,
-    "volume_ratio": 1.4677408748712573,
+    "low_vs_open": -0.06120331950207469,
+    "volume": 25711922.0,
+    "volume_ratio": 1.4711891278953841,
     "kospi_c2c": -0.012437510542310681,
     "peer_c2c": 0.02622730329522538,
-    "usdkrw_chg": 0.00687362524734958,
+    "usdkrw_chg": 0.007122308962513202,
     "us_nights": 1,
     "sox_ret": 0.01754844328325711,
     "nasdaq_ret": 0.002720733361712968,
@@ -68,7 +68,7 @@
         }
       }
     },
-    "range": 0.10176991150442483,
+    "range": 0.10055248618784529,
     "peer_range": 0.0730223123732252,
     "prior_5d": 0.08277404921700215,
     "ma_touches": [
@@ -130,7 +130,7 @@
       "지수 동조"
     ],
     "reasons": [
-      "09:55 봉 -2.15%(σ의 5.55배, 거래량 4.52배)가 세션 -3.73%의 58%",
+      "09:55 봉 -2.15%(σ의 5.54배, 거래량 4.52배)가 세션 -3.73%의 58%",
       "KOSPI -1.24% vs 종목 -4.13%, 5분 수익률 상관 0.90 — 종목 고유 요인이 약함"
     ]
   },
@@ -138,12 +138,12 @@
     {
       "time": "2026-10-29T09:55:00+09:00",
       "ret": -0.02149437052200609,
-      "z": 5.55,
+      "z": 5.54,
       "volume_ratio": 4.52,
       "cum_before": 0.013485477178423189,
       "cum_after": -0.008298755186721962,
       "session_share": 0.5755714773114967,
-      "score": 7.449172488446869,
+      "score": 7.442609140719337,
       "news": [
         {
           "time": "2026-10-29T09:57:20+09:00",
@@ -152,7 +152,7 @@
           "link": "https://news.google.com/rss/articles/CBMidEFVX3lxTFBIbjh2SlRNc3hELXZvbUpqeHFDUGNtLVVHMjlMTi03Unpzd3ZfckNPblFSc1RfeVltZW43QTFpMFNHVE5fM0Q1b0FXeURDVFIteE5fM3NOb0JjbzBKTWFNdE9GWFdhNmFkMGplUy1aQmZpd1RE0gF0QVVfeXFMT2V6VUM3R3lLWHE0TUI0ZXp3SjdqeFF0V2VTY2VxY1BVYXg2c0NJSDBuSnQwNHIxY29pU1N0ZFZ6dTZ3Q3RnVXJzbHFFZnBRR1lPVFRkOTg0eWZwODRTdWhLSWhiWWEzODFNc2pqV1pjdndWV2I?oc=5"
         },
         {
-          "time": "2026-10-29T10:03:00+09:00",
+          "time": "2026-10-29T10:04:06+09:00",
           "title": "107조원 벌고도 주가는 하락…삼성전자 \"4분기도 실적 성장\"",
           "source": "JTBC",
           "link": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE5GaXk2U3kyRjg0cUhCX2FxMGZkSlJkVVJJcXFBUURtbjY5X0FCZm82YW0wdVEtOVpURTdLS1c4SnBUVmlkWG9CTjllOXhqZWVVUUstNQ?oc=5"
@@ -170,10 +170,10 @@
           "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE9QdnJxeGpyV2pNX2ItZTlqMUxSTjlNSHRkT0dNRVoxd3lhUjFEcVEyV2tieFlJU0RxOURRSk96MzJJS2hNMTJfMjJodTJCNTZsNWZaMXBJWFBuQVVGaGlVVHRRVkRLbmtGTUc2UdIBckFVX3lxTE54TGdBT0gyeTJjQWpGMjJmaDloaHhxQW5mQWZLbXJkSVpocmZVM2ZxQUZ5a3lZOHhLa1IyQWNiTDVSTmlRQ2FRdDMydUFYWHdMNGpqdDNaeWRtYzVxazVjZk1fc2x0T0g3ZEt2R2daZ1U2QQ?oc=5"
         },
         {
-          "time": "2026-10-29T09:56:00+09:00",
-          "title": "삼성전자, 3분기 현금배당 30조원 확정… 보통주·우선주 주당 4601원 지급",
-          "source": "Chosunbiz",
-          "link": "https://news.google.com/rss/articles/CBMiggFBVV95cUxPQjZIUTg2NHAyeGJpUWRNU2pvcmlpR1VuYy0tOWJFbUVWbEcwa0hPWFA2VmdKQjB2NHV3NG04Q25xVTgtRVIwSDRjZW9SZmpVakt1bldWU0JIOWNKd2pZRXVtMDFxNWowV0QyWHBTZzNfVEthT1ZmVV9LNXp0NzQwYjdR0gGWAUFVX3lxTE13eWFiRG5fSV9sNGhxeWdhS0hKekFIY2w1RFhhYXp3aHdLWlhjOTlvMTJTMnRfdjlFbkNVcmRWT3NqVWFoZlE0QnF4UjRQTkl3cFFhbG03WnNFODl6Yy1uZGRWYWdCVld4aUVFcDZhS2xRNUk0aTRIeDBydGF3MHAtNUZ3TVBjSXpORHVkYk8wcGY4WC1uZw?oc=5"
+          "time": "2026-10-29T09:56:43+09:00",
+          "title": "[속보] 삼성전자, 3분기 주당 4601원 배당",
+          "source": "한국경제",
+          "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE1VWjRUWlZrOGNTZkxEZTR1UHQ1alBaNFViQU9jOVZvS3ozdk10dXJiRTNubC1DZWhvRXdrYjduV19VUkgxc0pEblFfWld1eXQzRXZLZ3BRWFBEZw?oc=5"
         }
       ]
     },
@@ -185,7 +185,7 @@
       "cum_before": -0.026970954356846488,
       "cum_after": -0.03526970954356845,
       "session_share": 0.22838190002369102,
-      "score": 4.082288741337461,
+      "score": 4.079548391348392,
       "news": [
         {
           "time": "2026-10-29T10:12:49+09:00",
@@ -200,7 +200,7 @@
           "link": "https://news.google.com/rss/articles/CBMidEFVX3lxTFBIbjh2SlRNc3hELXZvbUpqeHFDUGNtLVVHMjlMTi03Unpzd3ZfckNPblFSc1RfeVltZW43QTFpMFNHVE5fM0Q1b0FXeURDVFIteE5fM3NOb0JjbzBKTWFNdE9GWFdhNmFkMGplUy1aQmZpd1RE0gF0QVVfeXFMT2V6VUM3R3lLWHE0TUI0ZXp3SjdqeFF0V2VTY2VxY1BVYXg2c0NJSDBuSnQwNHIxY29pU1N0ZFZ6dTZ3Q3RnVXJzbHFFZnBRR1lPVFRkOTg0eWZwODRTdWhLSWhiWWEzODFNc2pqV1pjdndWV2I?oc=5"
         },
         {
-          "time": "2026-10-29T10:03:00+09:00",
+          "time": "2026-10-29T10:04:06+09:00",
           "title": "107조원 벌고도 주가는 하락…삼성전자 \"4분기도 실적 성장\"",
           "source": "JTBC",
           "link": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE5GaXk2U3kyRjg0cUhCX2FxMGZkSlJkVVJJcXFBUURtbjY5X0FCZm82YW0wdVEtOVpURTdLS1c4SnBUVmlkWG9CTjllOXhqZWVVUUstNQ?oc=5"
@@ -212,10 +212,10 @@
           "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE1ibmQ3OVdqRDJXUkZBSkpNT0NTZnRubEwzWkdlTFBMU1l0bkZvUlhKNVdUaXROY3kwVFRmVTR0ZUxBUGF3UUprNzE0b21FZmxjbHRVNmdwUUFuaGh5bXZ4Y0t5THFOSXZMUVJoXzkyY3U?oc=5"
         },
         {
-          "time": "2026-10-29T10:20:00+09:00",
-          "title": "[속보] 삼성전자 \"AI 에이전트 도입 가속…반도체 전반 강한 수요 지속\"",
-          "source": "연합뉴스TV",
-          "link": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTFBhWC1JZHA1ekFHc2tLRWl2Q3dGQUkxYzd4eUtTQkZFbWpmYkpFaGZ4ak1ucEUzVVo5cFBKcm1RMFU3eHdNS3hCRWJveC1sVTYzc2FoSWxVcVhLcElKLXZnZHdKNHM5QnM?oc=5"
+          "time": "2026-10-29T09:53:05+09:00",
+          "title": "[속보]삼성전자, 3분기 영업이익 107.4조…4개 분기 연속 신기록 - 머니투데이",
+          "source": "머니투데이",
+          "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE9QdnJxeGpyV2pNX2ItZTlqMUxSTjlNSHRkT0dNRVoxd3lhUjFEcVEyV2tieFlJU0RxOURRSk96MzJJS2hNMTJfMjJodTJCNTZsNWZaMXBJWFBuQVVGaGlVVHRRVkRLbmtGTUc2UdIBckFVX3lxTE54TGdBT0gyeTJjQWpGMjJmaDloaHhxQW5mQWZLbXJkSVpocmZVM2ZxQUZ5a3lZOHhLa1IyQWNiTDVSTmlRQ2FRdDMydUFYWHdMNGpqdDNaeWRtYzVxazVjZk1fc2x0T0g3ZEt2R2daZ1U2QQ?oc=5"
         }
       ]
     },
@@ -227,7 +227,7 @@
       "cum_before": -0.06224066390041494,
       "cum_after": -0.049792531120331995,
       "session_share": -0.35545722713864086,
-      "score": 3.664020401947257,
+      "score": 3.6599670576174224,
       "news": [
         {
           "time": "2026-10-29T10:12:49+09:00",
@@ -242,7 +242,7 @@
           "link": "https://news.google.com/rss/articles/CBMidEFVX3lxTFBIbjh2SlRNc3hELXZvbUpqeHFDUGNtLVVHMjlMTi03Unpzd3ZfckNPblFSc1RfeVltZW43QTFpMFNHVE5fM0Q1b0FXeURDVFIteE5fM3NOb0JjbzBKTWFNdE9GWFdhNmFkMGplUy1aQmZpd1RE0gF0QVVfeXFMT2V6VUM3R3lLWHE0TUI0ZXp3SjdqeFF0V2VTY2VxY1BVYXg2c0NJSDBuSnQwNHIxY29pU1N0ZFZ6dTZ3Q3RnVXJzbHFFZnBRR1lPVFRkOTg0eWZwODRTdWhLSWhiWWEzODFNc2pqV1pjdndWV2I?oc=5"
         },
         {
-          "time": "2026-10-29T10:03:00+09:00",
+          "time": "2026-10-29T10:04:06+09:00",
           "title": "107조원 벌고도 주가는 하락…삼성전자 \"4분기도 실적 성장\"",
           "source": "JTBC",
           "link": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE5GaXk2U3kyRjg0cUhCX2FxMGZkSlJkVVJJcXFBUURtbjY5X0FCZm82YW0wdVEtOVpURTdLS1c4SnBUVmlkWG9CTjllOXhqZWVVUUstNQ?oc=5"
@@ -254,10 +254,10 @@
           "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE1ibmQ3OVdqRDJXUkZBSkpNT0NTZnRubEwzWkdlTFBMU1l0bkZvUlhKNVdUaXROY3kwVFRmVTR0ZUxBUGF3UUprNzE0b21FZmxjbHRVNmdwUUFuaGh5bXZ4Y0t5THFOSXZMUVJoXzkyY3U?oc=5"
         },
         {
-          "time": "2026-10-29T10:20:00+09:00",
-          "title": "[속보] 삼성전자 \"AI 에이전트 도입 가속…반도체 전반 강한 수요 지속\"",
-          "source": "연합뉴스TV",
-          "link": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTFBhWC1JZHA1ekFHc2tLRWl2Q3dGQUkxYzd4eUtTQkZFbWpmYkpFaGZ4ak1ucEUzVVo5cFBKcm1RMFU3eHdNS3hCRWJveC1sVTYzc2FoSWxVcVhLcElKLXZnZHdKNHM5QnM?oc=5"
+          "time": "2026-10-29T11:08:24+09:00",
+          "title": "코스피, '세부실적' 삼성전자 급락에 하락전환…2%대 하락세",
+          "source": "연합뉴스",
+          "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE9SbG91QlR3Q2M2V1NweURNRW04VnVkQ0VIRUUwU3cwYUlNMmRiUlJDeW8yVi1MLUc1bnh3X0hnSnBKWFhjV1B1eU92R2pEVWRxUVhKUzFUcDNNTlJ3R3Y2VdIBYEFVX3lxTE9SbG91QlR3Q2M2V1NweURNRW04VnVkQ0VIRUUwU3cwYUlNMmRiUlJDeW8yVi1MLUc1bnh3X0hnSnBKWFhjV1B1eU92R2pEVWRxUVhKUzFUcDNNTlJ3R3Y2VQ?oc=5"
         }
       ]
     }
@@ -270,7 +270,7 @@
     "pattern": "고점 후 반락"
   },
   "closing_share": -0.0,
-  "intraday_corr_kospi": 0.9043723140136158,
+  "intraday_corr_kospi": 0.9015300278419998,
   "intraday_note": "장중 봉은 09:00~14:55까지만 있어 마감 구간(14:55~15:30)은 일봉 종가로만 봅니다(그 구간 +0.00%).",
   "intraday_coverage": "09:00~14:55",
   "intraday_path": [
@@ -306,13 +306,13 @@
     },
     {
       "time": "2026-10-29T09:30:00+09:00",
-      "price": 245500.0,
-      "volume": 449776.0
+      "price": 245750.0,
+      "volume": 449745.0
     },
     {
       "time": "2026-10-29T09:35:00+09:00",
       "price": 245000.0,
-      "volume": 470471.0
+      "volume": 470502.0
     },
     {
       "time": "2026-10-29T09:40:00+09:00",
@@ -352,22 +352,22 @@
     {
       "time": "2026-10-29T10:15:00+09:00",
       "price": 234500.0,
-      "volume": 843808.0
+      "volume": 843944.0
     },
     {
       "time": "2026-10-29T10:20:00+09:00",
       "price": 232500.0,
-      "volume": 881617.0
+      "volume": 881481.0
     },
     {
       "time": "2026-10-29T10:25:00+09:00",
-      "price": 231500.0,
-      "volume": 618334.0
+      "price": 231000.0,
+      "volume": 618335.0
     },
     {
       "time": "2026-10-29T10:30:00+09:00",
       "price": 231500.0,
-      "volume": 699035.0
+      "volume": 699034.0
     },
     {
       "time": "2026-10-29T10:35:00+09:00",
@@ -457,22 +457,22 @@
     {
       "time": "2026-10-29T12:00:00+09:00",
       "price": 229750.0,
-      "volume": 83364.0
+      "volume": 83362.0
     },
     {
       "time": "2026-10-29T12:05:00+09:00",
       "price": 229250.0,
-      "volume": 84926.0
+      "volume": 84928.0
     },
     {
       "time": "2026-10-29T12:10:00+09:00",
       "price": 227750.0,
-      "volume": 122663.0
+      "volume": 122714.0
     },
     {
       "time": "2026-10-29T12:15:00+09:00",
       "price": 228000.0,
-      "volume": 111057.0
+      "volume": 111006.0
     },
     {
       "time": "2026-10-29T12:20:00+09:00",
@@ -497,12 +497,12 @@
     {
       "time": "2026-10-29T12:40:00+09:00",
       "price": 229000.0,
-      "volume": 102857.0
+      "volume": 102851.0
     },
     {
       "time": "2026-10-29T12:45:00+09:00",
       "price": 228750.0,
-      "volume": 118863.0
+      "volume": 118869.0
     },
     {
       "time": "2026-10-29T12:50:00+09:00",
@@ -541,13 +541,13 @@
     },
     {
       "time": "2026-10-29T13:25:00+09:00",
-      "price": 230750.0,
-      "volume": 112577.0
+      "price": 231000.0,
+      "volume": 112586.0
     },
     {
       "time": "2026-10-29T13:30:00+09:00",
       "price": 229750.0,
-      "volume": 177379.0
+      "volume": 177370.0
     },
     {
       "time": "2026-10-29T13:35:00+09:00",
@@ -596,13 +596,13 @@
     },
     {
       "time": "2026-10-29T14:20:00+09:00",
-      "price": 232000.0,
-      "volume": 282693.0
+      "price": 232250.0,
+      "volume": 282738.0
     },
     {
       "time": "2026-10-29T14:25:00+09:00",
       "price": 232000.0,
-      "volume": 145755.0
+      "volume": 145710.0
     },
     {
       "time": "2026-10-29T14:30:00+09:00",
@@ -632,19 +632,19 @@
     {
       "time": "2026-10-29T14:55:00+09:00",
       "price": 232000.0,
-      "volume": 166067.0
+      "volume": 166066.0
     }
   ],
   "timeline_items": [
     {
       "time": "2026-10-29T09:55:00+09:00",
       "ret": -0.02149437052200609,
-      "z": 5.55,
+      "z": 5.54,
       "volume_ratio": 4.52,
       "cum_before": 0.013485477178423189,
       "cum_after": -0.008298755186721962,
       "session_share": 0.5755714773114967,
-      "score": 7.449172488446869,
+      "score": 7.442609140719337,
       "news": [
         {
           "time": "2026-10-29T09:57:20+09:00",
@@ -653,7 +653,7 @@
           "link": "https://news.google.com/rss/articles/CBMidEFVX3lxTFBIbjh2SlRNc3hELXZvbUpqeHFDUGNtLVVHMjlMTi03Unpzd3ZfckNPblFSc1RfeVltZW43QTFpMFNHVE5fM0Q1b0FXeURDVFIteE5fM3NOb0JjbzBKTWFNdE9GWFdhNmFkMGplUy1aQmZpd1RE0gF0QVVfeXFMT2V6VUM3R3lLWHE0TUI0ZXp3SjdqeFF0V2VTY2VxY1BVYXg2c0NJSDBuSnQwNHIxY29pU1N0ZFZ6dTZ3Q3RnVXJzbHFFZnBRR1lPVFRkOTg0eWZwODRTdWhLSWhiWWEzODFNc2pqV1pjdndWV2I?oc=5"
         },
         {
-          "time": "2026-10-29T10:03:00+09:00",
+          "time": "2026-10-29T10:04:06+09:00",
           "title": "107조원 벌고도 주가는 하락…삼성전자 \"4분기도 실적 성장\"",
           "source": "JTBC",
           "link": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE5GaXk2U3kyRjg0cUhCX2FxMGZkSlJkVVJJcXFBUURtbjY5X0FCZm82YW0wdVEtOVpURTdLS1c4SnBUVmlkWG9CTjllOXhqZWVVUUstNQ?oc=5"
@@ -671,10 +671,10 @@
           "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE9QdnJxeGpyV2pNX2ItZTlqMUxSTjlNSHRkT0dNRVoxd3lhUjFEcVEyV2tieFlJU0RxOURRSk96MzJJS2hNMTJfMjJodTJCNTZsNWZaMXBJWFBuQVVGaGlVVHRRVkRLbmtGTUc2UdIBckFVX3lxTE54TGdBT0gyeTJjQWpGMjJmaDloaHhxQW5mQWZLbXJkSVpocmZVM2ZxQUZ5a3lZOHhLa1IyQWNiTDVSTmlRQ2FRdDMydUFYWHdMNGpqdDNaeWRtYzVxazVjZk1fc2x0T0g3ZEt2R2daZ1U2QQ?oc=5"
         },
         {
-          "time": "2026-10-29T09:56:00+09:00",
-          "title": "삼성전자, 3분기 현금배당 30조원 확정… 보통주·우선주 주당 4601원 지급",
-          "source": "Chosunbiz",
-          "link": "https://news.google.com/rss/articles/CBMiggFBVV95cUxPQjZIUTg2NHAyeGJpUWRNU2pvcmlpR1VuYy0tOWJFbUVWbEcwa0hPWFA2VmdKQjB2NHV3NG04Q25xVTgtRVIwSDRjZW9SZmpVakt1bldWU0JIOWNKd2pZRXVtMDFxNWowV0QyWHBTZzNfVEthT1ZmVV9LNXp0NzQwYjdR0gGWAUFVX3lxTE13eWFiRG5fSV9sNGhxeWdhS0hKekFIY2w1RFhhYXp3aHdLWlhjOTlvMTJTMnRfdjlFbkNVcmRWT3NqVWFoZlE0QnF4UjRQTkl3cFFhbG03WnNFODl6Yy1uZGRWYWdCVld4aUVFcDZhS2xRNUk0aTRIeDBydGF3MHAtNUZ3TVBjSXpORHVkYk8wcGY4WC1uZw?oc=5"
+          "time": "2026-10-29T09:56:43+09:00",
+          "title": "[속보] 삼성전자, 3분기 주당 4601원 배당",
+          "source": "한국경제",
+          "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE1VWjRUWlZrOGNTZkxEZTR1UHQ1alBaNFViQU9jOVZvS3ozdk10dXJiRTNubC1DZWhvRXdrYjduV19VUkgxc0pEblFfWld1eXQzRXZLZ3BRWFBEZw?oc=5"
         }
       ],
       "price": 239000.0,
@@ -688,7 +688,7 @@
       "cum_before": -0.026970954356846488,
       "cum_after": -0.03526970954356845,
       "session_share": 0.22838190002369102,
-      "score": 4.082288741337461,
+      "score": 4.079548391348392,
       "news": [
         {
           "time": "2026-10-29T10:12:49+09:00",
@@ -703,7 +703,7 @@
           "link": "https://news.google.com/rss/articles/CBMidEFVX3lxTFBIbjh2SlRNc3hELXZvbUpqeHFDUGNtLVVHMjlMTi03Unpzd3ZfckNPblFSc1RfeVltZW43QTFpMFNHVE5fM0Q1b0FXeURDVFIteE5fM3NOb0JjbzBKTWFNdE9GWFdhNmFkMGplUy1aQmZpd1RE0gF0QVVfeXFMT2V6VUM3R3lLWHE0TUI0ZXp3SjdqeFF0V2VTY2VxY1BVYXg2c0NJSDBuSnQwNHIxY29pU1N0ZFZ6dTZ3Q3RnVXJzbHFFZnBRR1lPVFRkOTg0eWZwODRTdWhLSWhiWWEzODFNc2pqV1pjdndWV2I?oc=5"
         },
         {
-          "time": "2026-10-29T10:03:00+09:00",
+          "time": "2026-10-29T10:04:06+09:00",
           "title": "107조원 벌고도 주가는 하락…삼성전자 \"4분기도 실적 성장\"",
           "source": "JTBC",
           "link": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE5GaXk2U3kyRjg0cUhCX2FxMGZkSlJkVVJJcXFBUURtbjY5X0FCZm82YW0wdVEtOVpURTdLS1c4SnBUVmlkWG9CTjllOXhqZWVVUUstNQ?oc=5"
@@ -715,10 +715,10 @@
           "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE1ibmQ3OVdqRDJXUkZBSkpNT0NTZnRubEwzWkdlTFBMU1l0bkZvUlhKNVdUaXROY3kwVFRmVTR0ZUxBUGF3UUprNzE0b21FZmxjbHRVNmdwUUFuaGh5bXZ4Y0t5THFOSXZMUVJoXzkyY3U?oc=5"
         },
         {
-          "time": "2026-10-29T10:20:00+09:00",
-          "title": "[속보] 삼성전자 \"AI 에이전트 도입 가속…반도체 전반 강한 수요 지속\"",
-          "source": "연합뉴스TV",
-          "link": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTFBhWC1JZHA1ekFHc2tLRWl2Q3dGQUkxYzd4eUtTQkZFbWpmYkpFaGZ4ak1ucEUzVVo5cFBKcm1RMFU3eHdNS3hCRWJveC1sVTYzc2FoSWxVcVhLcElKLXZnZHdKNHM5QnM?oc=5"
+          "time": "2026-10-29T09:53:05+09:00",
+          "title": "[속보]삼성전자, 3분기 영업이익 107.4조…4개 분기 연속 신기록 - 머니투데이",
+          "source": "머니투데이",
+          "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE9QdnJxeGpyV2pNX2ItZTlqMUxSTjlNSHRkT0dNRVoxd3lhUjFEcVEyV2tieFlJU0RxOURRSk96MzJJS2hNMTJfMjJodTJCNTZsNWZaMXBJWFBuQVVGaGlVVHRRVkRLbmtGTUc2UdIBckFVX3lxTE54TGdBT0gyeTJjQWpGMjJmaDloaHhxQW5mQWZLbXJkSVpocmZVM2ZxQUZ5a3lZOHhLa1IyQWNiTDVSTmlRQ2FRdDMydUFYWHdMNGpqdDNaeWRtYzVxazVjZk1fc2x0T0g3ZEt2R2daZ1U2QQ?oc=5"
         }
       ],
       "price": 232500.0,
@@ -732,7 +732,7 @@
       "cum_before": -0.06224066390041494,
       "cum_after": -0.049792531120331995,
       "session_share": -0.35545722713864086,
-      "score": 3.664020401947257,
+      "score": 3.6599670576174224,
       "news": [
         {
           "time": "2026-10-29T10:12:49+09:00",
@@ -747,7 +747,7 @@
           "link": "https://news.google.com/rss/articles/CBMidEFVX3lxTFBIbjh2SlRNc3hELXZvbUpqeHFDUGNtLVVHMjlMTi03Unpzd3ZfckNPblFSc1RfeVltZW43QTFpMFNHVE5fM0Q1b0FXeURDVFIteE5fM3NOb0JjbzBKTWFNdE9GWFdhNmFkMGplUy1aQmZpd1RE0gF0QVVfeXFMT2V6VUM3R3lLWHE0TUI0ZXp3SjdqeFF0V2VTY2VxY1BVYXg2c0NJSDBuSnQwNHIxY29pU1N0ZFZ6dTZ3Q3RnVXJzbHFFZnBRR1lPVFRkOTg0eWZwODRTdWhLSWhiWWEzODFNc2pqV1pjdndWV2I?oc=5"
         },
         {
-          "time": "2026-10-29T10:03:00+09:00",
+          "time": "2026-10-29T10:04:06+09:00",
           "title": "107조원 벌고도 주가는 하락…삼성전자 \"4분기도 실적 성장\"",
           "source": "JTBC",
           "link": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE5GaXk2U3kyRjg0cUhCX2FxMGZkSlJkVVJJcXFBUURtbjY5X0FCZm82YW0wdVEtOVpURTdLS1c4SnBUVmlkWG9CTjllOXhqZWVVUUstNQ?oc=5"
@@ -759,10 +759,10 @@
           "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE1ibmQ3OVdqRDJXUkZBSkpNT0NTZnRubEwzWkdlTFBMU1l0bkZvUlhKNVdUaXROY3kwVFRmVTR0ZUxBUGF3UUprNzE0b21FZmxjbHRVNmdwUUFuaGh5bXZ4Y0t5THFOSXZMUVJoXzkyY3U?oc=5"
         },
         {
-          "time": "2026-10-29T10:20:00+09:00",
-          "title": "[속보] 삼성전자 \"AI 에이전트 도입 가속…반도체 전반 강한 수요 지속\"",
-          "source": "연합뉴스TV",
-          "link": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTFBhWC1JZHA1ekFHc2tLRWl2Q3dGQUkxYzd4eUtTQkZFbWpmYkpFaGZ4ak1ucEUzVVo5cFBKcm1RMFU3eHdNS3hCRWJveC1sVTYzc2FoSWxVcVhLcElKLXZnZHdKNHM5QnM?oc=5"
+          "time": "2026-10-29T11:08:24+09:00",
+          "title": "코스피, '세부실적' 삼성전자 급락에 하락전환…2%대 하락세",
+          "source": "연합뉴스",
+          "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE9SbG91QlR3Q2M2V1NweURNRW04VnVkQ0VIRUUwU3cwYUlNMmRiUlJDeW8yVi1MLUc1bnh3X0hnSnBKWFhjV1B1eU92R2pEVWRxUVhKUzFUcDNNTlJ3R3Y2VdIBYEFVX3lxTE9SbG91QlR3Q2M2V1NweURNRW04VnVkQ0VIRUUwU3cwYUlNMmRiUlJDeW8yVi1MLUc1bnh3X0hnSnBKWFhjV1B1eU92R2pEVWRxUVhKUzFUcDNNTlJ3R3Y2VQ?oc=5"
         }
       ],
       "price": 229000.0,
@@ -839,6 +839,42 @@
       "rcept_dt": "20261029",
       "rcept_no": "20261029800087",
       "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261029800087"
+    },
+    {
+      "report_nm": "특수관계인에대한증여",
+      "rcept_dt": "20261029",
+      "rcept_no": "20261029000567",
+      "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261029000567"
+    },
+    {
+      "report_nm": "특수관계인에대한증여",
+      "rcept_dt": "20261029",
+      "rcept_no": "20261029000564",
+      "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261029000564"
+    },
+    {
+      "report_nm": "특수관계인에대한증여",
+      "rcept_dt": "20261029",
+      "rcept_no": "20261029000557",
+      "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261029000557"
+    },
+    {
+      "report_nm": "주요사항보고서(자기주식처분결정)",
+      "rcept_dt": "20261029",
+      "rcept_no": "20261029000539",
+      "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261029000539"
+    },
+    {
+      "report_nm": "특수관계인과의보험거래",
+      "rcept_dt": "20261029",
+      "rcept_no": "20261029000525",
+      "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261029000525"
+    },
+    {
+      "report_nm": "특수관계인에대한출자",
+      "rcept_dt": "20261029",
+      "rcept_no": "20261029000501",
+      "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261029000501"
     }
   ],
   "disclosure_note": null,
@@ -857,9 +893,9 @@
     "steady": 47,
     "upper": 1,
     "lower": 0,
-    "individual": 316.0,
-    "foreign": 767.0,
-    "institution": -4467.0,
+    "individual": 404.0,
+    "foreign": 694.0,
+    "institution": -4476.0,
     "prev_close": 6012.44,
     "open": 6017.22,
     "high": 6100.11,
@@ -869,18 +905,18 @@
   "earnings_reactions": {
     "n": 45,
     "down": 25,
-    "mean": 0.004491755191111347,
+    "mean": 0.0044917382300986766,
     "first": "2015-04-07",
     "last": "2026-10-08",
     "prior_up": {
       "n": 27,
       "down": 16,
-      "mean": 0.00565537743905461
+      "mean": 0.005655324325333054
     },
     "prior_down": {
       "n": 18,
       "down": 9,
-      "mean": 0.0027463218191964536,
+      "mean": 0.0027463590872471113,
       "next5_n": 18,
       "next5_up": 8
     },
@@ -888,19 +924,19 @@
       {
         "date": "2024-07-05",
         "ret": 0.02955081575743268,
-        "prior20": 0.09789851234261726,
-        "next5": -0.03099888095789405
+        "prior20": 0.09789816585257483,
+        "next5": -0.03099897402526819
       },
       {
         "date": "2024-10-08",
-        "ret": -0.011475342246353937,
-        "prior20": -0.17550725654583976,
-        "next5": -0.013266995681315064
+        "ret": -0.011475473634683375,
+        "prior20": -0.17550720206890336,
+        "next5": -0.013266929727789534
       },
       {
         "date": "2025-01-08",
-        "ret": 0.034296144835121556,
-        "prior20": 0.03869183701469603,
+        "ret": 0.034295995359787446,
+        "prior20": 0.03869183120664155,
         "next5": -0.06282725768504516
       },
       {
@@ -913,12 +949,12 @@
         "date": "2025-10-14",
         "ret": -0.01822079386417541,
         "prior20": 0.3484355968820865,
-        "next5": 0.06441047284052348
+        "next5": 0.06441038686451694
       },
       {
         "date": "2026-04-07",
         "ret": 0.017607433616103174,
-        "prior20": 0.11527197433303193,
+        "prior20": 0.11527187357539503,
         "next5": 0.05089058828005988
       },
       {

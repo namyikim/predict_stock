@@ -27,7 +27,7 @@
   {
    "file": "leading_cycle.csv",
    "label": "경기선행지수 순환변동치(KOSIS)",
-   "have": "2026-08",
+   "have": "2026-09",
    "expected": "2026-08",
    "late": false
   },
@@ -41,14 +41,14 @@
   {
    "file": "investor_flows_005930.csv",
    "label": "삼성전자 외국인·기관 수급",
-   "have": "2026-10-29",
+   "have": "2026-10-30",
    "expected": "2026-10-26 이후",
    "late": false
   },
   {
    "file": "investor_flows_000660.csv",
    "label": "SK하이닉스 외국인·기관 수급",
-   "have": "2026-10-29",
+   "have": "2026-10-30",
    "expected": "2026-10-26 이후",
    "late": false
   }

@@ -3,7 +3,7 @@
   "name": "삼성전자",
   "peer_name": "SK하이닉스",
   "session_date": "2026-10-30",
-  "generated_at": "2026-10-30 16:11 KST",
+  "generated_at": "2026-10-30 16:46 KST",
   "summary": {
     "prev_close": 232000.0,
     "open": 223500.0,
@@ -15,11 +15,11 @@
     "c2c": -0.030172413793103425,
     "high_vs_open": 0.02684563758389258,
     "low_vs_open": -0.031319910514541416,
-    "volume": 21421778.0,
-    "volume_ratio": 1.194908126987006,
+    "volume": 21447939.0,
+    "volume_ratio": 1.1963673892158513,
     "kospi_c2c": -0.03484873105396502,
     "peer_c2c": -0.07077326343381385,
-    "usdkrw_chg": -0.004804707440256517,
+    "usdkrw_chg": -0.005550786812282049,
     "us_nights": 1,
     "sox_ret": -0.01419032905576001,
     "nasdaq_ret": -0.013752579077550342,
@@ -156,7 +156,7 @@
           "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxNZFNUOW5icFRrUTFEUWRiamFZeXpTQUhMMzNWMEZFRWNCazZzOXliSUhHR1lDVFNOM2J2VGRhOXJPUEtBWHdCQTE5VFpwbjlhN2ZXSmFrOUVuSl94cXpfUHE3SnpoYkY5NDcxYkN2dTVxbi05ZkNrejlXSHVKQ2RQbmRJM3pQeGdx?oc=5"
         },
         {
-          "time": "2026-10-30T08:39:00+09:00",
+          "time": "2026-10-30T08:45:45+09:00",
           "title": "미국 기술주 덮친 AI 투자 우려… 삼성전자·SK하이닉스 반등에도 걸림돌",
           "source": "조선일보",
           "link": "https://news.google.com/rss/articles/CBMiiwFBVV95cUxOSS1MemdtTkx4eDkyR2NNMW9qTHFJQzhMVVg2YUNNQmNoQ0Z1LWZxYkQxM3JYV3BpaHU2ZHFnVmF1ZHgyV1dSc2xrV0pwNHhkYzJmNWs2YXczdk9COG5aVkgzMWhuRWlDc3FCSWlnczg2ZmE1QzlHdHFRMDFhSThWSGFMdnJ5MGxqVzBF?oc=5"
@@ -174,10 +174,10 @@
           "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxPbWpWallyWnpfX3NIajVtbHd5c2NVQU9VRmNNTjI2VUxiSC1FQmxheXhFanF4Uy1BM2lRNEVKT2tHYWxlNDRONHhqdmNjTktCVldlYjNkN0lrQWhqWEpxYTVCa0JNNV9yczQyRFR5X3BYWUZJNDZoMWNsX2lwVnY0MmlaT1BxeUtP0gGcAUFVX3lxTFByQTBnYV9UYmdmbFpfckZWaUNPMkpTMHpZSzU0QV96aGUwMUZacWQtOGZtR2JqNHBXRkVYeWpDQktvakI3VXQ2VGR5WUo1SDduekNKTjU4R2xhTmhidFJDSWtZeWtzeVZJdk1taEVMbDJjT0tMVUxXSk84eVR4eUJYVi0zTTRQNlZrRDhYZ2JKR00zZmZJM2dyMm1tQg?oc=5"
         },
         {
-          "time": "2026-10-30T08:48:00+09:00",
-          "title": "전영현 삼성전자 부회장 \"반도체 기술 경쟁력 충분히 회복 못 해\"",
-          "source": "연합인포맥스",
-          "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE8yUWgxbHF4bkZYTS1Gd2hMRnhlU1FoblpFY3NoaW9DZDZFQVpyYXBmZDdET3JDRExDS1pHZ2VIMTFGa3lBSHZKUHdfdDU0d3JpUFpPNGo5WmJBb1Q1VFVON3ZOOE15LXVBbHR6Y2kyZ1o?oc=5"
+          "time": "2026-10-30T08:49:02+09:00",
+          "title": "평택시-삼성전자, 반도체 방류수 미량오염물질 관리 손잡았다",
+          "source": "문화일보",
+          "link": "https://news.google.com/rss/articles/CBMiUEFVX3lxTE1lUHNBWEpnY0lIdXZmSEpsM2VjN1dyZUQzNzJhajF4STk5WmZhdmdmQTFIRW9MQ2d4b3Y1TkhMVU9XRUR2S195NmJCMTNnRFlM?oc=5"
         }
       ]
     }
@@ -190,7 +190,7 @@
     "pattern": "저점 후 반등"
   },
   "closing_share": 1.8436445444319292,
-  "intraday_corr_kospi": 0.8382085369804385,
+  "intraday_corr_kospi": 0.8366056272807074,
   "intraday_note": "장중 봉은 09:00~14:55까지만 있어 마감 구간(14:55~15:30)은 일봉 종가로만 봅니다(그 구간 +1.24%).",
   "intraday_coverage": "09:00~14:55",
   "intraday_path": [
@@ -252,12 +252,12 @@
     {
       "time": "2026-10-30T09:55:00+09:00",
       "price": 221500.0,
-      "volume": 110889.0
+      "volume": 111203.0
     },
     {
       "time": "2026-10-30T10:00:00+09:00",
       "price": 220250.0,
-      "volume": 227219.0
+      "volume": 226905.0
     },
     {
       "time": "2026-10-30T10:05:00+09:00",
@@ -516,13 +516,13 @@
     },
     {
       "time": "2026-10-30T14:20:00+09:00",
-      "price": 224000.0,
-      "volume": 108490.0
+      "price": 223750.0,
+      "volume": 107788.0
     },
     {
       "time": "2026-10-30T14:25:00+09:00",
       "price": 222750.0,
-      "volume": 137963.0
+      "volume": 138665.0
     },
     {
       "time": "2026-10-30T14:30:00+09:00",
@@ -573,7 +573,7 @@
           "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxNZFNUOW5icFRrUTFEUWRiamFZeXpTQUhMMzNWMEZFRWNCazZzOXliSUhHR1lDVFNOM2J2VGRhOXJPUEtBWHdCQTE5VFpwbjlhN2ZXSmFrOUVuSl94cXpfUHE3SnpoYkY5NDcxYkN2dTVxbi05ZkNrejlXSHVKQ2RQbmRJM3pQeGdx?oc=5"
         },
         {
-          "time": "2026-10-30T08:39:00+09:00",
+          "time": "2026-10-30T08:45:45+09:00",
           "title": "미국 기술주 덮친 AI 투자 우려… 삼성전자·SK하이닉스 반등에도 걸림돌",
           "source": "조선일보",
           "link": "https://news.google.com/rss/articles/CBMiiwFBVV95cUxOSS1MemdtTkx4eDkyR2NNMW9qTHFJQzhMVVg2YUNNQmNoQ0Z1LWZxYkQxM3JYV3BpaHU2ZHFnVmF1ZHgyV1dSc2xrV0pwNHhkYzJmNWs2YXczdk9COG5aVkgzMWhuRWlDc3FCSWlnczg2ZmE1QzlHdHFRMDFhSThWSGFMdnJ5MGxqVzBF?oc=5"
@@ -591,10 +591,10 @@
           "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxPbWpWallyWnpfX3NIajVtbHd5c2NVQU9VRmNNTjI2VUxiSC1FQmxheXhFanF4Uy1BM2lRNEVKT2tHYWxlNDRONHhqdmNjTktCVldlYjNkN0lrQWhqWEpxYTVCa0JNNV9yczQyRFR5X3BYWUZJNDZoMWNsX2lwVnY0MmlaT1BxeUtP0gGcAUFVX3lxTFByQTBnYV9UYmdmbFpfckZWaUNPMkpTMHpZSzU0QV96aGUwMUZacWQtOGZtR2JqNHBXRkVYeWpDQktvakI3VXQ2VGR5WUo1SDduekNKTjU4R2xhTmhidFJDSWtZeWtzeVZJdk1taEVMbDJjT0tMVUxXSk84eVR4eUJYVi0zTTRQNlZrRDhYZ2JKR00zZmZJM2dyMm1tQg?oc=5"
         },
         {
-          "time": "2026-10-30T08:48:00+09:00",
-          "title": "전영현 삼성전자 부회장 \"반도체 기술 경쟁력 충분히 회복 못 해\"",
-          "source": "연합인포맥스",
-          "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE8yUWgxbHF4bkZYTS1Gd2hMRnhlU1FoblpFY3NoaW9DZDZFQVpyYXBmZDdET3JDRExDS1pHZ2VIMTFGa3lBSHZKUHdfdDU0d3JpUFpPNGo5WmJBb1Q1VFVON3ZOOE15LXVBbHR6Y2kyZ1o?oc=5"
+          "time": "2026-10-30T08:49:02+09:00",
+          "title": "평택시-삼성전자, 반도체 방류수 미량오염물질 관리 손잡았다",
+          "source": "문화일보",
+          "link": "https://news.google.com/rss/articles/CBMiUEFVX3lxTE1lUHNBWEpnY0lIdXZmSEpsM2VjN1dyZUQzNzJhajF4STk5WmZhdmdmQTFIRW9MQ2d4b3Y1TkhMVU9XRUR2S195NmJCMTNnRFlM?oc=5"
         }
       ],
       "price": 225500.0,
@@ -603,7 +603,7 @@
   ],
   "overnight_news": [
     {
-      "time": "2026-10-30T08:39:00+09:00",
+      "time": "2026-10-30T08:45:45+09:00",
       "title": "미국 기술주 덮친 AI 투자 우려… 삼성전자·SK하이닉스 반등에도 걸림돌",
       "source": "조선일보",
       "link": "https://news.google.com/rss/articles/CBMiiwFBVV95cUxOSS1MemdtTkx4eDkyR2NNMW9qTHFJQzhMVVg2YUNNQmNoQ0Z1LWZxYkQxM3JYV3BpaHU2ZHFnVmF1ZHgyV1dSc2xrV0pwNHhkYzJmNWs2YXczdk9COG5aVkgzMWhuRWlDc3FCSWlnczg2ZmE1QzlHdHFRMDFhSThWSGFMdnJ5MGxqVzBF?oc=5"
@@ -613,12 +613,6 @@
       "title": "IBK證 “삼성전자, 부족한 주주환원으로 주가 상승 제한적일 것…목표가 하향\"",
       "source": "Chosunbiz",
       "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxPbWpWallyWnpfX3NIajVtbHd5c2NVQU9VRmNNTjI2VUxiSC1FQmxheXhFanF4Uy1BM2lRNEVKT2tHYWxlNDRONHhqdmNjTktCVldlYjNkN0lrQWhqWEpxYTVCa0JNNV9yczQyRFR5X3BYWUZJNDZoMWNsX2lwVnY0MmlaT1BxeUtP0gGcAUFVX3lxTFByQTBnYV9UYmdmbFpfckZWaUNPMkpTMHpZSzU0QV96aGUwMUZacWQtOGZtR2JqNHBXRkVYeWpDQktvakI3VXQ2VGR5WUo1SDduekNKTjU4R2xhTmhidFJDSWtZeWtzeVZJdk1taEVMbDJjT0tMVUxXSk84eVR4eUJYVi0zTTRQNlZrRDhYZ2JKR00zZmZJM2dyMm1tQg?oc=5"
-    },
-    {
-      "time": "2026-10-30T08:48:00+09:00",
-      "title": "전영현 삼성전자 부회장 \"반도체 기술 경쟁력 충분히 회복 못 해\"",
-      "source": "연합인포맥스",
-      "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE8yUWgxbHF4bkZYTS1Gd2hMRnhlU1FoblpFY3NoaW9DZDZFQVpyYXBmZDdET3JDRExDS1pHZ2VIMTFGa3lBSHZKUHdfdDU0d3JpUFpPNGo5WmJBb1Q1VFVON3ZOOE15LXVBbHR6Y2kyZ1o?oc=5"
     },
     {
       "time": "2026-10-30T08:49:02+09:00",
@@ -631,6 +625,12 @@
       "title": "영업익 100조 삼성전자 \"자축보다 기술 경쟁력 확보할 때\"",
       "source": "연합뉴스",
       "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE51a211eWJsalliZHlLQWdjNS1kc1VmQjRkbkhTYjQ0bEpHX2o1LWs5cUFTYnhmVGgweHMxTUlXUVNPb3pjR2l2WHhXM0p5YTJzODhjd19YWV9ucWfSAWBBVV95cUxOMWh1Yy13RFA0WUNtVWtGWVhfdHlMeWp3dTZ2V3RScWVScUVOUHloem8tZ3ZTM1hyazlFQVQ1eHZYUXF3Y2VWWkhhS3RzTVBiYzZabEtKc3YwZzQ0UXgxMEI?oc=5"
+    },
+    {
+      "time": "2026-10-30T08:59:38+09:00",
+      "title": "삼성전자 노태문 사장 \"한 발 앞서 준비·대응하는 기업만 성장\"",
+      "source": "연합인포맥스",
+      "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE1YLXlnWUJYRExPRmJHblNnalFVUy1Dbm81WU5hbHN2dEdwdlNNcmJCbHd5eTdIT2ZlWnpiSTIwT0FuajhmNzhSbDNPZWJuMC1pUVdOWHRxWmp0a1VtZnNqZW9pVE9JN212TTdIS3k1SlE?oc=5"
     }
   ],
   "top_news": [
@@ -653,25 +653,32 @@
       "link": "https://news.google.com/rss/articles/CBMiYkFVX3lxTE14ZFpGdENGOGZwZkZmdE1sSG45V203aDNJbEJzQVlVNHhEVG43YVp5alpleXBGNjRFNFFvU2dscXlrU3pYZGVhN1RaM0gxWUlPWE0zajB3ZTh6bmI5Q0hnNmRR?oc=5"
     },
     {
-      "time": "2026-10-30T08:39:00+09:00",
-      "title": "미국 기술주 덮친 AI 투자 우려… 삼성전자·SK하이닉스 반등에도 걸림돌",
-      "source": "조선일보",
-      "link": "https://news.google.com/rss/articles/CBMiiwFBVV95cUxOSS1MemdtTkx4eDkyR2NNMW9qTHFJQzhMVVg2YUNNQmNoQ0Z1LWZxYkQxM3JYV3BpaHU2ZHFnVmF1ZHgyV1dSc2xrV0pwNHhkYzJmNWs2YXczdk9COG5aVkgzMWhuRWlDc3FCSWlnczg2ZmE1QzlHdHFRMDFhSThWSGFMdnJ5MGxqVzBF?oc=5"
+      "time": "2026-10-30T16:08:20+09:00",
+      "title": "\"AI 반도체 성패 달렸다\"…삼성전자, 사업별 실적 개선 시험대",
+      "source": "폴리뉴스 Polinews",
+      "link": "https://news.google.com/rss/articles/CBMibkFVX3lxTFBTTldZZExpQ3pxQmFDUTRCN3JnYkFucURacWRvQlJWZkllblBTRGdVRTVkV2Ntci03bDRnTlF6SEVCcGdhM1BYdGlOMmRwanhmMkM1OWtZV1lDdk0yQzlWcWJWbFpmMDdXVnp0Rndn?oc=5"
     },
     {
-      "time": "2026-10-30T09:14:00+09:00",
-      "title": "코스피 장 초반 4% 급락…미국발 AI 우려에 삼성전자·SK하이닉스 동반 약세",
-      "source": "조선일보",
-      "link": "https://news.google.com/rss/articles/CBMiiwFBVV95cUxOb0JTMVlDODBCM0stTjdycFdEOTJ1aU1QMGdEWGF1Ql9XanJTdWVmVmd6UVRZd0xmVW1IaVdxd2p2YTBjeEZ1eUl2UmQyN3loV3F5dmlYZkdPMkx5endzeDVycHBYNUFZd2h3TXpKQkp1akNFVExQNWpTTExYaUJLbzg2NTI2NWpzQ2xJ?oc=5"
+      "time": "2026-10-30T16:13:00+09:00",
+      "title": "[리포트 브리핑]삼성전자, '3Q26 Review: 사상 최대 실적, 메모리가 이끌었다' 목표가 500,000원 - 교보증권",
+      "source": "뉴스핌",
+      "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE1MQkFNY2h0M0xPSF9JRUpGNUtwTVdUMzBnOFQxUUdyUEpkMWU5akR3RWlSdVM1dk5ZSDdsaUk0YVI1LXM5aFJhUzB0V0lWZUoycVZrVlZaN1pqX0tt?oc=5"
     },
     {
-      "time": "2026-10-30T11:02:02+09:00",
-      "title": "삼성전자 역대급 실적에도 주가는 4% 하락, 왜 그럴까?",
-      "source": "네이버페이 머니스토리",
-      "link": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE1nUFZNMmNkZFZNcGc0QzF0UzJSTmRKU1pUMi1WWWRiUkdfZkNoWEpVLWJTZUh5WFZKWExudm53cWViMnZZckJIdWl4WTgtZHVoS0E?oc=5"
+      "time": "2026-10-30T16:26:41+09:00",
+      "title": "[오늘증시] AI 실적 쇼크에 코스피 3%대 급락…외국인 1.6조 순매도·사이드카 발동",
+      "source": "Queen 이코노미퀸",
+      "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE5Sb202Rk5kRDdGcTVNT29pcUlsamxtY2JYdElseTFZbG10bW9zMWtwNFYtOF9ibXRRbGZ1V082ZVhVRjRCanBNVHFvU0w2bzh0U1JiZ2JZT19ENXlJcWt2dnQ5R2FRcXlj?oc=5"
     }
   ],
-  "disclosures": [],
+  "disclosures": [
+    {
+      "report_nm": "특수관계인으로부터주식의취득",
+      "rcept_dt": "20261030",
+      "rcept_no": "20261030000586",
+      "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261030000586"
+    }
+  ],
   "disclosure_note": null,
   "flows": null,
   "flow_story": null,
@@ -688,9 +695,9 @@
     "steady": 22,
     "upper": 2,
     "lower": 0,
-    "individual": 6213.0,
-    "foreign": -16198.0,
-    "institution": 7445.0,
+    "individual": 6184.0,
+    "foreign": -16182.0,
+    "institution": 7443.0,
     "prev_close": 5937.66,
     "open": 5760.35,
     "high": 5784.98,

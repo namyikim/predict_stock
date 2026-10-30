@@ -3,7 +3,7 @@
   "name": "삼성전자",
   "peer_name": "SK하이닉스",
   "session_date": "2026-10-30",
-  "generated_at": "2026-10-30 16:46 KST",
+  "generated_at": "2026-10-30 17:31 KST",
   "summary": {
     "prev_close": 232000.0,
     "open": 223500.0,
@@ -15,11 +15,11 @@
     "c2c": -0.030172413793103425,
     "high_vs_open": 0.02684563758389258,
     "low_vs_open": -0.031319910514541416,
-    "volume": 21447939.0,
-    "volume_ratio": 1.1963673892158513,
+    "volume": 21506914.0,
+    "volume_ratio": 1.1996570184328592,
     "kospi_c2c": -0.03484873105396502,
     "peer_c2c": -0.07077326343381385,
-    "usdkrw_chg": -0.005550786812282049,
+    "usdkrw_chg": -0.004804707440256517,
     "us_nights": 1,
     "sox_ret": -0.01419032905576001,
     "nasdaq_ret": -0.013752579077550342,
@@ -150,12 +150,6 @@
       "score": 10.310115954787307,
       "news": [
         {
-          "time": "2026-10-30T09:04:09+09:00",
-          "title": "NH투자증권 \"삼성전자, HBM4 등 가격 상승이 실적 개선 이끌어\"",
-          "source": "글로벌이코노믹",
-          "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxNZFNUOW5icFRrUTFEUWRiamFZeXpTQUhMMzNWMEZFRWNCazZzOXliSUhHR1lDVFNOM2J2VGRhOXJPUEtBWHdCQTE5VFpwbjlhN2ZXSmFrOUVuSl94cXpfUHE3SnpoYkY5NDcxYkN2dTVxbi05ZkNrejlXSHVKQ2RQbmRJM3pQeGdx?oc=5"
-        },
-        {
           "time": "2026-10-30T08:45:45+09:00",
           "title": "미국 기술주 덮친 AI 투자 우려… 삼성전자·SK하이닉스 반등에도 걸림돌",
           "source": "조선일보",
@@ -168,16 +162,22 @@
           "link": "https://news.google.com/rss/articles/CBMiiwFBVV95cUxOb0JTMVlDODBCM0stTjdycFdEOTJ1aU1QMGdEWGF1Ql9XanJTdWVmVmd6UVRZd0xmVW1IaVdxd2p2YTBjeEZ1eUl2UmQyN3loV3F5dmlYZkdPMkx5endzeDVycHBYNUFZd2h3TXpKQkp1akNFVExQNWpTTExYaUJLbzg2NTI2NWpzQ2xJ?oc=5"
         },
         {
-          "time": "2026-10-30T08:33:00+09:00",
-          "title": "IBK證 “삼성전자, 부족한 주주환원으로 주가 상승 제한적일 것…목표가 하향\"",
-          "source": "Chosunbiz",
-          "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxPbWpWallyWnpfX3NIajVtbHd5c2NVQU9VRmNNTjI2VUxiSC1FQmxheXhFanF4Uy1BM2lRNEVKT2tHYWxlNDRONHhqdmNjTktCVldlYjNkN0lrQWhqWEpxYTVCa0JNNV9yczQyRFR5X3BYWUZJNDZoMWNsX2lwVnY0MmlaT1BxeUtP0gGcAUFVX3lxTFByQTBnYV9UYmdmbFpfckZWaUNPMkpTMHpZSzU0QV96aGUwMUZacWQtOGZtR2JqNHBXRkVYeWpDQktvakI3VXQ2VGR5WUo1SDduekNKTjU4R2xhTmhidFJDSWtZeWtzeVZJdk1taEVMbDJjT0tMVUxXSk84eVR4eUJYVi0zTTRQNlZrRDhYZ2JKR00zZmZJM2dyMm1tQg?oc=5"
+          "time": "2026-10-30T09:00:01+09:00",
+          "title": "[게시판] 가스안전공사·삼성전자, 반도체 사업장 가스시설 안전협약",
+          "source": "연합뉴스",
+          "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE5sdzdwYlZxdUZPOWw1MldlTlBiVFZaR1l0MjFacUhHMTNGN2RwMHNQa3FvSmc4azZKTWhEaFJNWkxndVN1NWNYNGFTSjV2OHdvc2gtRUVxaWxFYXVFY29naNIBYEFVX3lxTE5sdzdwYlZxdUZPOWw1MldlTlBiVFZaR1l0MjFacUhHMTNGN2RwMHNQa3FvSmc4azZKTWhEaFJNWkxndVN1NWNYNGFTSjV2OHdvc2gtRUVxaWxFYXVFY29naA?oc=5"
         },
         {
-          "time": "2026-10-30T08:49:02+09:00",
-          "title": "평택시-삼성전자, 반도체 방류수 미량오염물질 관리 손잡았다",
-          "source": "문화일보",
-          "link": "https://news.google.com/rss/articles/CBMiUEFVX3lxTE1lUHNBWEpnY0lIdXZmSEpsM2VjN1dyZUQzNzJhajF4STk5WmZhdmdmQTFIRW9MQ2d4b3Y1TkhMVU9XRUR2S195NmJCMTNnRFlM?oc=5"
+          "time": "2026-10-30T08:44:17+09:00",
+          "title": "영업익 100조 삼성전자 \"자축보다 기술 경쟁력 확보할 때\"",
+          "source": "연합뉴스",
+          "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE51a211eWJsalliZHlLQWdjNS1kc1VmQjRkbkhTYjQ0bEpHX2o1LWs5cUFTYnhmVGgweHMxTUlXUVNPb3pjR2l2WHhXM0p5YTJzODhjd19YWV9ucWfSAWBBVV95cUxOMWh1Yy13RFA0WUNtVWtGWVhfdHlMeWp3dTZ2V3RScWVScUVOUHloem8tZ3ZTM1hyazlFQVQ1eHZYUXF3Y2VWWkhhS3RzTVBiYzZabEtKc3YwZzQ0UXgxMEI?oc=5"
+        },
+        {
+          "time": "2026-10-30T08:59:38+09:00",
+          "title": "삼성전자 노태문 사장 \"한 발 앞서 준비·대응하는 기업만 성장\"",
+          "source": "연합인포맥스",
+          "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE1YLXlnWUJYRExPRmJHblNnalFVUy1Dbm81WU5hbHN2dEdwdlNNcmJCbHd5eTdIT2ZlWnpiSTIwT0FuajhmNzhSbDNPZWJuMC1pUVdOWHRxWmp0a1VtZnNqZW9pVE9JN212TTdIS3k1SlE?oc=5"
         }
       ]
     }
@@ -567,12 +567,6 @@
       "score": 10.310115954787307,
       "news": [
         {
-          "time": "2026-10-30T09:04:09+09:00",
-          "title": "NH투자증권 \"삼성전자, HBM4 등 가격 상승이 실적 개선 이끌어\"",
-          "source": "글로벌이코노믹",
-          "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxNZFNUOW5icFRrUTFEUWRiamFZeXpTQUhMMzNWMEZFRWNCazZzOXliSUhHR1lDVFNOM2J2VGRhOXJPUEtBWHdCQTE5VFpwbjlhN2ZXSmFrOUVuSl94cXpfUHE3SnpoYkY5NDcxYkN2dTVxbi05ZkNrejlXSHVKQ2RQbmRJM3pQeGdx?oc=5"
-        },
-        {
           "time": "2026-10-30T08:45:45+09:00",
           "title": "미국 기술주 덮친 AI 투자 우려… 삼성전자·SK하이닉스 반등에도 걸림돌",
           "source": "조선일보",
@@ -585,16 +579,22 @@
           "link": "https://news.google.com/rss/articles/CBMiiwFBVV95cUxOb0JTMVlDODBCM0stTjdycFdEOTJ1aU1QMGdEWGF1Ql9XanJTdWVmVmd6UVRZd0xmVW1IaVdxd2p2YTBjeEZ1eUl2UmQyN3loV3F5dmlYZkdPMkx5endzeDVycHBYNUFZd2h3TXpKQkp1akNFVExQNWpTTExYaUJLbzg2NTI2NWpzQ2xJ?oc=5"
         },
         {
-          "time": "2026-10-30T08:33:00+09:00",
-          "title": "IBK證 “삼성전자, 부족한 주주환원으로 주가 상승 제한적일 것…목표가 하향\"",
-          "source": "Chosunbiz",
-          "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxPbWpWallyWnpfX3NIajVtbHd5c2NVQU9VRmNNTjI2VUxiSC1FQmxheXhFanF4Uy1BM2lRNEVKT2tHYWxlNDRONHhqdmNjTktCVldlYjNkN0lrQWhqWEpxYTVCa0JNNV9yczQyRFR5X3BYWUZJNDZoMWNsX2lwVnY0MmlaT1BxeUtP0gGcAUFVX3lxTFByQTBnYV9UYmdmbFpfckZWaUNPMkpTMHpZSzU0QV96aGUwMUZacWQtOGZtR2JqNHBXRkVYeWpDQktvakI3VXQ2VGR5WUo1SDduekNKTjU4R2xhTmhidFJDSWtZeWtzeVZJdk1taEVMbDJjT0tMVUxXSk84eVR4eUJYVi0zTTRQNlZrRDhYZ2JKR00zZmZJM2dyMm1tQg?oc=5"
+          "time": "2026-10-30T09:00:01+09:00",
+          "title": "[게시판] 가스안전공사·삼성전자, 반도체 사업장 가스시설 안전협약",
+          "source": "연합뉴스",
+          "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE5sdzdwYlZxdUZPOWw1MldlTlBiVFZaR1l0MjFacUhHMTNGN2RwMHNQa3FvSmc4azZKTWhEaFJNWkxndVN1NWNYNGFTSjV2OHdvc2gtRUVxaWxFYXVFY29naNIBYEFVX3lxTE5sdzdwYlZxdUZPOWw1MldlTlBiVFZaR1l0MjFacUhHMTNGN2RwMHNQa3FvSmc4azZKTWhEaFJNWkxndVN1NWNYNGFTSjV2OHdvc2gtRUVxaWxFYXVFY29naA?oc=5"
         },
         {
-          "time": "2026-10-30T08:49:02+09:00",
-          "title": "평택시-삼성전자, 반도체 방류수 미량오염물질 관리 손잡았다",
-          "source": "문화일보",
-          "link": "https://news.google.com/rss/articles/CBMiUEFVX3lxTE1lUHNBWEpnY0lIdXZmSEpsM2VjN1dyZUQzNzJhajF4STk5WmZhdmdmQTFIRW9MQ2d4b3Y1TkhMVU9XRUR2S195NmJCMTNnRFlM?oc=5"
+          "time": "2026-10-30T08:44:17+09:00",
+          "title": "영업익 100조 삼성전자 \"자축보다 기술 경쟁력 확보할 때\"",
+          "source": "연합뉴스",
+          "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE51a211eWJsalliZHlLQWdjNS1kc1VmQjRkbkhTYjQ0bEpHX2o1LWs5cUFTYnhmVGgweHMxTUlXUVNPb3pjR2l2WHhXM0p5YTJzODhjd19YWV9ucWfSAWBBVV95cUxOMWh1Yy13RFA0WUNtVWtGWVhfdHlMeWp3dTZ2V3RScWVScUVOUHloem8tZ3ZTM1hyazlFQVQ1eHZYUXF3Y2VWWkhhS3RzTVBiYzZabEtKc3YwZzQ0UXgxMEI?oc=5"
+        },
+        {
+          "time": "2026-10-30T08:59:38+09:00",
+          "title": "삼성전자 노태문 사장 \"한 발 앞서 준비·대응하는 기업만 성장\"",
+          "source": "연합인포맥스",
+          "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE1YLXlnWUJYRExPRmJHblNnalFVUy1Dbm81WU5hbHN2dEdwdlNNcmJCbHd5eTdIT2ZlWnpiSTIwT0FuajhmNzhSbDNPZWJuMC1pUVdOWHRxWmp0a1VtZnNqZW9pVE9JN212TTdIS3k1SlE?oc=5"
         }
       ],
       "price": 225500.0,
@@ -609,18 +609,6 @@
       "link": "https://news.google.com/rss/articles/CBMiiwFBVV95cUxOSS1MemdtTkx4eDkyR2NNMW9qTHFJQzhMVVg2YUNNQmNoQ0Z1LWZxYkQxM3JYV3BpaHU2ZHFnVmF1ZHgyV1dSc2xrV0pwNHhkYzJmNWs2YXczdk9COG5aVkgzMWhuRWlDc3FCSWlnczg2ZmE1QzlHdHFRMDFhSThWSGFMdnJ5MGxqVzBF?oc=5"
     },
     {
-      "time": "2026-10-30T08:33:00+09:00",
-      "title": "IBK證 “삼성전자, 부족한 주주환원으로 주가 상승 제한적일 것…목표가 하향\"",
-      "source": "Chosunbiz",
-      "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxPbWpWallyWnpfX3NIajVtbHd5c2NVQU9VRmNNTjI2VUxiSC1FQmxheXhFanF4Uy1BM2lRNEVKT2tHYWxlNDRONHhqdmNjTktCVldlYjNkN0lrQWhqWEpxYTVCa0JNNV9yczQyRFR5X3BYWUZJNDZoMWNsX2lwVnY0MmlaT1BxeUtP0gGcAUFVX3lxTFByQTBnYV9UYmdmbFpfckZWaUNPMkpTMHpZSzU0QV96aGUwMUZacWQtOGZtR2JqNHBXRkVYeWpDQktvakI3VXQ2VGR5WUo1SDduekNKTjU4R2xhTmhidFJDSWtZeWtzeVZJdk1taEVMbDJjT0tMVUxXSk84eVR4eUJYVi0zTTRQNlZrRDhYZ2JKR00zZmZJM2dyMm1tQg?oc=5"
-    },
-    {
-      "time": "2026-10-30T08:49:02+09:00",
-      "title": "평택시-삼성전자, 반도체 방류수 미량오염물질 관리 손잡았다",
-      "source": "문화일보",
-      "link": "https://news.google.com/rss/articles/CBMiUEFVX3lxTE1lUHNBWEpnY0lIdXZmSEpsM2VjN1dyZUQzNzJhajF4STk5WmZhdmdmQTFIRW9MQ2d4b3Y1TkhMVU9XRUR2S195NmJCMTNnRFlM?oc=5"
-    },
-    {
       "time": "2026-10-30T08:44:17+09:00",
       "title": "영업익 100조 삼성전자 \"자축보다 기술 경쟁력 확보할 때\"",
       "source": "연합뉴스",
@@ -631,21 +619,21 @@
       "title": "삼성전자 노태문 사장 \"한 발 앞서 준비·대응하는 기업만 성장\"",
       "source": "연합인포맥스",
       "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE1YLXlnWUJYRExPRmJHblNnalFVUy1Dbm81WU5hbHN2dEdwdlNNcmJCbHd5eTdIT2ZlWnpiSTIwT0FuajhmNzhSbDNPZWJuMC1pUVdOWHRxWmp0a1VtZnNqZW9pVE9JN212TTdIS3k1SlE?oc=5"
+    },
+    {
+      "time": "2026-10-30T08:38:49+09:00",
+      "title": "삼성전자, 11월 한달간 코리아 페스티벌…가전·모바일 할인",
+      "source": "연합뉴스",
+      "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE5lVVNhUnRQTWZpNFJMMHJoaTEyMklHVHd5YnlxRlI2VUhXTTZkVGJ4dHlHejdPcFlqOWdRVk81dFZzcnpHT25HNm5FbzJqTEgxOGhfZ0JnMHBMR2fSAWBBVV95cUxNNExIQlc5SXNydFhNOWNIY3FZb0Y4d3hlbHVKSkVIeURfNG9VbThkTTUyZTVKMjVtRkFkejlrS3B3U2paRzNDVkJYWEM4RFFlbXU1MENQYnRkT3Z3bTNrdEU?oc=5"
+    },
+    {
+      "time": "2026-10-30T05:00:00+09:00",
+      "title": "삼전 340% 폭등 맞힌 男…“다음엔 이 종목 엄청나게 뛸 것”",
+      "source": "중앙일보",
+      "link": "https://news.google.com/rss/articles/CBMiVkFVX3lxTE8zR3Y2cmM1Z19ZQzQtbWRteGhzaktieldZV1hCVXA2S0pZU2N6OTJyUHozc05QMVZBNjNUOFp2TlpfNjl4Rl9kM3M4SGFpN0ppTVowd19B?oc=5"
     }
   ],
   "top_news": [
-    {
-      "time": "2026-10-30T09:04:09+09:00",
-      "title": "NH투자증권 \"삼성전자, HBM4 등 가격 상승이 실적 개선 이끌어\"",
-      "source": "글로벌이코노믹",
-      "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxNZFNUOW5icFRrUTFEUWRiamFZeXpTQUhMMzNWMEZFRWNCazZzOXliSUhHR1lDVFNOM2J2VGRhOXJPUEtBWHdCQTE5VFpwbjlhN2ZXSmFrOUVuSl94cXpfUHE3SnpoYkY5NDcxYkN2dTVxbi05ZkNrejlXSHVKQ2RQbmRJM3pQeGdx?oc=5"
-    },
-    {
-      "time": "2026-10-30T15:30:52+09:00",
-      "title": "삼성전자, 반도체 영업익 106조원 돌파 \"AI 메모리 초호황에 역대급 실적\"",
-      "source": "마일드경제",
-      "link": "https://news.google.com/rss/articles/CBMia0FVX3lxTFAzc1N2MWtTWDBmQnI3Vi1fOV83bXZ5am9nZ2xzZVRsX1p6bE1pVlNVS2o3NXNCNEstWGF1ZmNuWUc3dXA3Z0lpcmNjdE94LTJLUnZkOUtmdTJ1RnVLaUhfMjRtM25PRU1SUW5V?oc=5"
-    },
     {
       "time": "2026-10-30T14:06:33+09:00",
       "title": "삼성전자 목표주가 69만원 vs 35만원…증권가 전망 엇갈린 이유",
@@ -669,9 +657,33 @@
       "title": "[오늘증시] AI 실적 쇼크에 코스피 3%대 급락…외국인 1.6조 순매도·사이드카 발동",
       "source": "Queen 이코노미퀸",
       "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE5Sb202Rk5kRDdGcTVNT29pcUlsamxtY2JYdElseTFZbG10bW9zMWtwNFYtOF9ibXRRbGZ1V082ZVhVRjRCanBNVHFvU0w2bzh0U1JiZ2JZT19ENXlJcWt2dnQ5R2FRcXlj?oc=5"
+    },
+    {
+      "time": "2026-10-30T08:45:45+09:00",
+      "title": "미국 기술주 덮친 AI 투자 우려… 삼성전자·SK하이닉스 반등에도 걸림돌",
+      "source": "조선일보",
+      "link": "https://news.google.com/rss/articles/CBMiiwFBVV95cUxOSS1MemdtTkx4eDkyR2NNMW9qTHFJQzhMVVg2YUNNQmNoQ0Z1LWZxYkQxM3JYV3BpaHU2ZHFnVmF1ZHgyV1dSc2xrV0pwNHhkYzJmNWs2YXczdk9COG5aVkgzMWhuRWlDc3FCSWlnczg2ZmE1QzlHdHFRMDFhSThWSGFMdnJ5MGxqVzBF?oc=5"
+    },
+    {
+      "time": "2026-10-30T09:14:00+09:00",
+      "title": "코스피 장 초반 4% 급락…미국발 AI 우려에 삼성전자·SK하이닉스 동반 약세",
+      "source": "조선일보",
+      "link": "https://news.google.com/rss/articles/CBMiiwFBVV95cUxOb0JTMVlDODBCM0stTjdycFdEOTJ1aU1QMGdEWGF1Ql9XanJTdWVmVmd6UVRZd0xmVW1IaVdxd2p2YTBjeEZ1eUl2UmQyN3loV3F5dmlYZkdPMkx5endzeDVycHBYNUFZd2h3TXpKQkp1akNFVExQNWpTTExYaUJLbzg2NTI2NWpzQ2xJ?oc=5"
     }
   ],
   "disclosures": [
+    {
+      "report_nm": "임원ㆍ주요주주특정증권등소유상황보고서",
+      "rcept_dt": "20261030",
+      "rcept_no": "20261030000719",
+      "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261030000719"
+    },
+    {
+      "report_nm": "주식등의대량보유상황보고서(일반)",
+      "rcept_dt": "20261030",
+      "rcept_no": "20261030000716",
+      "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261030000716"
+    },
     {
       "report_nm": "특수관계인으로부터주식의취득",
       "rcept_dt": "20261030",
@@ -695,9 +707,9 @@
     "steady": 22,
     "upper": 2,
     "lower": 0,
-    "individual": 6184.0,
-    "foreign": -16182.0,
-    "institution": 7443.0,
+    "individual": 6277.0,
+    "foreign": -16288.0,
+    "institution": 7448.0,
     "prev_close": 5937.66,
     "open": 5760.35,
     "high": 5784.98,

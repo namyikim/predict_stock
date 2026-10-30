@@ -3,7 +3,7 @@
   "name": "SK하이닉스",
   "peer_name": "삼성전자",
   "session_date": "2026-10-30",
-  "generated_at": "2026-10-30 16:46 KST",
+  "generated_at": "2026-10-30 17:31 KST",
   "summary": {
     "prev_close": 1526000.0,
     "open": 1444000.0,
@@ -15,11 +15,11 @@
     "c2c": -0.07077326343381385,
     "high_vs_open": 0.003462603878116255,
     "low_vs_open": -0.0436288088642659,
-    "volume": 4094708.0,
-    "volume_ratio": 1.141470904500954,
+    "volume": 4116291.0,
+    "volume_ratio": 1.1474875402493014,
     "kospi_c2c": -0.03484873105396502,
     "peer_c2c": -0.030172413793103425,
-    "usdkrw_chg": -0.005550786812282049,
+    "usdkrw_chg": -0.004804707440256517,
     "us_nights": 1,
     "sox_ret": -0.01419032905576001,
     "nasdaq_ret": -0.013752579077550342,
@@ -156,14 +156,7 @@
       "cum_after": -0.006925207756232732,
       "session_share": 2.1764089121887316,
       "score": 21.112092387033577,
-      "news": [
-        {
-          "time": "2026-10-30T09:14:00+09:00",
-          "title": "코스피 장 초반 4% 급락…미국발 AI 우려에 삼성전자·SK하이닉스 동반 약세",
-          "source": "조선일보",
-          "link": "https://news.google.com/rss/articles/CBMiiwFBVV95cUxOb0JTMVlDODBCM0stTjdycFdEOTJ1aU1QMGdEWGF1Ql9XanJTdWVmVmd6UVRZd0xmVW1IaVdxd2p2YTBjeEZ1eUl2UmQyN3loV3F5dmlYZkdPMkx5endzeDVycHBYNUFZd2h3TXpKQkp1akNFVExQNWpTTExYaUJLbzg2NTI2NWpzQ2xJ?oc=5"
-        }
-      ]
+      "news": []
     },
     {
       "time": "2026-10-30T12:20:00+09:00",
@@ -175,6 +168,12 @@
       "session_share": -0.4155395683453282,
       "score": 3.940898436876653,
       "news": [
+        {
+          "time": "2026-10-30T11:02:43+09:00",
+          "title": "'안정 속 쇄신' SK하이닉스, 곽노정 체제 유지…美·HBM 사장 재편",
+          "source": "블로터",
+          "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE5wMzdwbGxOcTg1QVBPNEJuSE44SmdyaTVYTnpBUHVYZDdGSHg3VHhwSW1Ba3NvWmZxcnV6MmlTQUFBT1ZHMDlHZWk0b3R2SDU0bE83RzdTM0dSbVlBd2lBTEpnZkZCTWJYaFZtMtIBbEFVX3lxTE5wMzdwbGxOcTg1QVBPNEJuSE44SmdyaTVYTnpBUHVYZDdGSHg3VHhwSW1Ba3NvWmZxcnV6MmlTQUFBT1ZHMDlHZWk0b3R2SDU0bE83RzdTM0dSbVlBd2lBTEpnZkZCTWJYaFZtMg?oc=5"
+        },
         {
           "time": "2026-10-30T11:07:50+09:00",
           "title": "“현금흐름이 깨뜨린 AI 낙관론”...삼성전자·SK하이닉스 동반 급락",
@@ -198,12 +197,6 @@
           "title": "SK하이닉스, 美 사장급 조직 신설…안현 사장 선임",
           "source": "지디넷코리아",
           "link": "https://news.google.com/rss/articles/CBMiVkFVX3lxTE51UERVWjVCX29PRkVyNGJGR0RFOVZwaGdYNUttemdFcEVNUjBPWXpTbDF5WUp6a0NQVjJIbjBGdmEzTXNUZ3lncWlhSDBRMFZ6a1Y5RC1B?oc=5"
-        },
-        {
-          "time": "2026-10-30T11:07:23+09:00",
-          "title": "SK하이닉스, 안현 사장 미주총괄로…곽노정 단독대표 체제 유지",
-          "source": "매일일보",
-          "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE9wNV9MY2VNZTJORjZGc1M3bGdlb2VqMU5HOVNEZUYtNm5ORG1SV3V3eWhiZm9MUV9oYmhyZ1AwaVpnT2xNQU10NTVTTURSbjhvYVdTTmtCNURFLTdKbmsyQW0tZkw?oc=5"
         }
       ]
     }
@@ -591,14 +584,7 @@
       "cum_after": -0.006925207756232732,
       "session_share": 2.1764089121887316,
       "score": 21.112092387033577,
-      "news": [
-        {
-          "time": "2026-10-30T09:14:00+09:00",
-          "title": "코스피 장 초반 4% 급락…미국발 AI 우려에 삼성전자·SK하이닉스 동반 약세",
-          "source": "조선일보",
-          "link": "https://news.google.com/rss/articles/CBMiiwFBVV95cUxOb0JTMVlDODBCM0stTjdycFdEOTJ1aU1QMGdEWGF1Ql9XanJTdWVmVmd6UVRZd0xmVW1IaVdxd2p2YTBjeEZ1eUl2UmQyN3loV3F5dmlYZkdPMkx5endzeDVycHBYNUFZd2h3TXpKQkp1akNFVExQNWpTTExYaUJLbzg2NTI2NWpzQ2xJ?oc=5"
-        }
-      ],
+      "news": [],
       "price": 1434000.0,
       "kind": "turn_down"
     },
@@ -612,6 +598,12 @@
       "session_share": -0.4155395683453282,
       "score": 3.940898436876653,
       "news": [
+        {
+          "time": "2026-10-30T11:02:43+09:00",
+          "title": "'안정 속 쇄신' SK하이닉스, 곽노정 체제 유지…美·HBM 사장 재편",
+          "source": "블로터",
+          "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE5wMzdwbGxOcTg1QVBPNEJuSE44SmdyaTVYTnpBUHVYZDdGSHg3VHhwSW1Ba3NvWmZxcnV6MmlTQUFBT1ZHMDlHZWk0b3R2SDU0bE83RzdTM0dSbVlBd2lBTEpnZkZCTWJYaFZtMtIBbEFVX3lxTE5wMzdwbGxOcTg1QVBPNEJuSE44SmdyaTVYTnpBUHVYZDdGSHg3VHhwSW1Ba3NvWmZxcnV6MmlTQUFBT1ZHMDlHZWk0b3R2SDU0bE83RzdTM0dSbVlBd2lBTEpnZkZCTWJYaFZtMg?oc=5"
+        },
         {
           "time": "2026-10-30T11:07:50+09:00",
           "title": "“현금흐름이 깨뜨린 AI 낙관론”...삼성전자·SK하이닉스 동반 급락",
@@ -635,32 +627,19 @@
           "title": "SK하이닉스, 美 사장급 조직 신설…안현 사장 선임",
           "source": "지디넷코리아",
           "link": "https://news.google.com/rss/articles/CBMiVkFVX3lxTE51UERVWjVCX29PRkVyNGJGR0RFOVZwaGdYNUttemdFcEVNUjBPWXpTbDF5WUp6a0NQVjJIbjBGdmEzTXNUZ3lncWlhSDBRMFZ6a1Y5RC1B?oc=5"
-        },
-        {
-          "time": "2026-10-30T11:07:23+09:00",
-          "title": "SK하이닉스, 안현 사장 미주총괄로…곽노정 단독대표 체제 유지",
-          "source": "매일일보",
-          "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE9wNV9MY2VNZTJORjZGc1M3bGdlb2VqMU5HOVNEZUYtNm5ORG1SV3V3eWhiZm9MUV9oYmhyZ1AwaVpnT2xNQU10NTVTTURSbjhvYVdTTmtCNURFLTdKbmsyQW0tZkw?oc=5"
         }
       ],
       "price": 1406000.0,
       "kind": "turn_up"
     }
   ],
-  "overnight_news": [
-    {
-      "time": "2026-10-30T07:18:39+09:00",
-      "title": "SK하이닉스, 목표 주가 370만원?…내년 영업익 600조라구요?",
-      "source": "문화일보",
-      "link": "https://news.google.com/rss/articles/CBMiUEFVX3lxTE81VE9VQXpyLUUwbXNpUENFamU4MThrUkQtYWsxVy04Z3dxa3ZkbU80OVVBUmFaa2steV9YR3RINkhEbG05T0hTbHNLLWo2OHBO?oc=5"
-    }
-  ],
+  "overnight_news": [],
   "top_news": [
     {
-      "time": "2026-10-30T15:59:00+09:00",
-      "title": "SK하이닉스, 사장단 재배치로 AI 메모리 2막 준비…\"HBM 성공 방정식 바꾼다\" By EBN",
-      "source": "Investing.com 한국어",
-      "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE1MUjYwdl9IN3QycldRNkdKbl9tZXhnbzg3dEgxYy1WblpNOFI1enpHMHdFaU9nWHh5WmJlSjE5TTJrREI1VmFRbmt2dEZJWnZDWTlYUVdYczRtcnd0aGlqZTByYzNrbFhoSGlRM3NYVzM?oc=5"
+      "time": "2026-10-30T15:01:47+09:00",
+      "title": "SK하이닉스, 사장단 재배치로 AI 메모리 2막 준비…\"HBM 성공 방정식 바꾼다\"",
+      "source": "www.ebn.co.kr",
+      "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE8wX3FXZ1VsWVF2eFRxTlN1alltRmdoMkgzUWo3aEFwZkRkUDhReGZEYW1ZT0VvVlVvZXBWWGp4MGhVaUplejhWU2p0U0dnQ0dTUkkyLU9ULTYwUWdqN2VCLUtaMm0wbHNX?oc=5"
     },
     {
       "time": "2026-10-30T16:24:00+09:00",
@@ -675,12 +654,6 @@
       "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE5Sb202Rk5kRDdGcTVNT29pcUlsamxtY2JYdElseTFZbG10bW9zMWtwNFYtOF9ibXRRbGZ1V082ZVhVRjRCanBNVHFvU0w2bzh0U1JiZ2JZT19ENXlJcWt2dnQ5R2FRcXlj?oc=5"
     },
     {
-      "time": "2026-10-30T09:14:00+09:00",
-      "title": "코스피 장 초반 4% 급락…미국발 AI 우려에 삼성전자·SK하이닉스 동반 약세",
-      "source": "조선일보",
-      "link": "https://news.google.com/rss/articles/CBMiiwFBVV95cUxOb0JTMVlDODBCM0stTjdycFdEOTJ1aU1QMGdEWGF1Ql9XanJTdWVmVmd6UVRZd0xmVW1IaVdxd2p2YTBjeEZ1eUl2UmQyN3loV3F5dmlYZkdPMkx5endzeDVycHBYNUFZd2h3TXpKQkp1akNFVExQNWpTTExYaUJLbzg2NTI2NWpzQ2xJ?oc=5"
-    },
-    {
       "time": "2026-10-30T14:20:28+09:00",
       "title": "한미반도체, SK하이닉스서 감사패…10년 HBM 기술협력 공로",
       "source": "매일경제 마켓",
@@ -691,6 +664,12 @@
       "title": "한미반도체, SK하이닉스서 HBM 기술혁신 공로 감사패 수상",
       "source": "www.ebn.co.kr",
       "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE83NHR1LU9BdFg2YXdMNjUxenZ4S1hqMVF5Slp2eGZjNXFHbUg5aFBLRlFtVkEyN0k3RXd4TXNkMjBCY0ZEZGlWYk02cHpfcEtUalA3UjJSMUlKVUttUGdaNWNwTk5WeTQ2?oc=5"
+    },
+    {
+      "time": "2026-10-30T14:21:10+09:00",
+      "title": "한미반도체, SK하이닉스 감사패 수령…HBM 양산 지원 공로",
+      "source": "뉴시스",
+      "link": "https://news.google.com/rss/articles/CBMieEFVX3lxTFBibFktWGsyM18xUGx4eGRuT0lKNk9hcUpBaFhlNWw1d3B3X2FPSUxndTVvSWNqeUZZdGh1c2wtVnhKTmttRGFjQW5lYUM2WDE3THdfc045amloa0xOZTFUQk1rZ240c2VabkdZMEdtVS1sSDBxM0F4ZdIBeEFVX3lxTFBibFktWGsyM18xUGx4eGRuT0lKNk9hcUpBaFhlNWw1d3B3X2FPSUxndTVvSWNqeUZZdGh1c2wtVnhKTmttRGFjQW5lYUM2WDE3THdfc045amloa0xOZTFUQk1rZ240c2VabkdZMEdtVS1sSDBxM0F4ZQ?oc=5"
     }
   ],
   "disclosures": [],
@@ -710,9 +689,9 @@
     "steady": 22,
     "upper": 2,
     "lower": 0,
-    "individual": 6184.0,
-    "foreign": -16182.0,
-    "institution": 7443.0,
+    "individual": 6277.0,
+    "foreign": -16288.0,
+    "institution": 7448.0,
     "prev_close": 5937.66,
     "open": 5760.35,
     "high": 5784.98,

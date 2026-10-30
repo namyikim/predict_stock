@@ -3,7 +3,7 @@
   "name": "삼성전자",
   "peer_name": "SK하이닉스",
   "session_date": "2026-10-30",
-  "generated_at": "2026-10-30 17:31 KST",
+  "generated_at": "2026-10-30 23:04 KST",
   "summary": {
     "prev_close": 232000.0,
     "open": 223500.0,
@@ -15,11 +15,11 @@
     "c2c": -0.030172413793103425,
     "high_vs_open": 0.02684563758389258,
     "low_vs_open": -0.031319910514541416,
-    "volume": 21506914.0,
-    "volume_ratio": 1.1996570184328592,
+    "volume": 19668075.0,
+    "volume_ratio": 1.097086463116645,
     "kospi_c2c": -0.03484873105396502,
     "peer_c2c": -0.07077326343381385,
-    "usdkrw_chg": -0.004804707440256517,
+    "usdkrw_chg": -0.004886765242282265,
     "us_nights": 1,
     "sox_ret": -0.01419032905576001,
     "nasdaq_ret": -0.013752579077550342,
@@ -122,7 +122,15 @@
         "purpose": "임직원 주식보상",
         "rcept_no": "20260821000616"
       }
-    ]
+    ],
+    "foreign_pressure": {
+      "state": "turned_selling",
+      "previous_ratio": 0.046086172498926326,
+      "recent_ratio": -1.26849510147393e-05,
+      "previous_daily_net": 728739.4,
+      "recent_daily_net": -223.4
+    },
+    "buyback_transition": null
   },
   "classification": {
     "labels": [
@@ -150,16 +158,16 @@
       "score": 10.310115954787307,
       "news": [
         {
+          "time": "2026-10-30T07:54:00+09:00",
+          "title": "삼성전자 3분기 30조 배당에 주가 ‘뚝’…하이닉스와 왜 엇갈렸나",
+          "source": "KBS 뉴스",
+          "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE1xbEJSTUtOdzFCakFSOHQ5cGtjZ2ZPNlhiTVE5SHRPT002aWVxR3pPeDc1VzE3VWRvcjJnY2hEWW1pR2VlSVZxZXN3bWdiSzVvYlFsZ0JFYk5XNmc?oc=5"
+        },
+        {
           "time": "2026-10-30T08:45:45+09:00",
           "title": "미국 기술주 덮친 AI 투자 우려… 삼성전자·SK하이닉스 반등에도 걸림돌",
           "source": "조선일보",
           "link": "https://news.google.com/rss/articles/CBMiiwFBVV95cUxOSS1MemdtTkx4eDkyR2NNMW9qTHFJQzhMVVg2YUNNQmNoQ0Z1LWZxYkQxM3JYV3BpaHU2ZHFnVmF1ZHgyV1dSc2xrV0pwNHhkYzJmNWs2YXczdk9COG5aVkgzMWhuRWlDc3FCSWlnczg2ZmE1QzlHdHFRMDFhSThWSGFMdnJ5MGxqVzBF?oc=5"
-        },
-        {
-          "time": "2026-10-30T09:14:00+09:00",
-          "title": "코스피 장 초반 4% 급락…미국발 AI 우려에 삼성전자·SK하이닉스 동반 약세",
-          "source": "조선일보",
-          "link": "https://news.google.com/rss/articles/CBMiiwFBVV95cUxOb0JTMVlDODBCM0stTjdycFdEOTJ1aU1QMGdEWGF1Ql9XanJTdWVmVmd6UVRZd0xmVW1IaVdxd2p2YTBjeEZ1eUl2UmQyN3loV3F5dmlYZkdPMkx5endzeDVycHBYNUFZd2h3TXpKQkp1akNFVExQNWpTTExYaUJLbzg2NTI2NWpzQ2xJ?oc=5"
         },
         {
           "time": "2026-10-30T09:00:01+09:00",
@@ -174,10 +182,10 @@
           "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE51a211eWJsalliZHlLQWdjNS1kc1VmQjRkbkhTYjQ0bEpHX2o1LWs5cUFTYnhmVGgweHMxTUlXUVNPb3pjR2l2WHhXM0p5YTJzODhjd19YWV9ucWfSAWBBVV95cUxOMWh1Yy13RFA0WUNtVWtGWVhfdHlMeWp3dTZ2V3RScWVScUVOUHloem8tZ3ZTM1hyazlFQVQ1eHZYUXF3Y2VWWkhhS3RzTVBiYzZabEtKc3YwZzQ0UXgxMEI?oc=5"
         },
         {
-          "time": "2026-10-30T08:59:38+09:00",
-          "title": "삼성전자 노태문 사장 \"한 발 앞서 준비·대응하는 기업만 성장\"",
-          "source": "연합인포맥스",
-          "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE1YLXlnWUJYRExPRmJHblNnalFVUy1Dbm81WU5hbHN2dEdwdlNNcmJCbHd5eTdIT2ZlWnpiSTIwT0FuajhmNzhSbDNPZWJuMC1pUVdOWHRxWmp0a1VtZnNqZW9pVE9JN212TTdIS3k1SlE?oc=5"
+          "time": "2026-10-30T08:50:02+09:00",
+          "title": "급락한 삼성전자 사들인 상위 1%…삼성전기·대우건설도 '줍줍'",
+          "source": "한국경제",
+          "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTFAwOGhkNTg3eEVrLXEzQXVBZTNHdE9Eem50ZUVYcnpIckV6NHJlVUFwNE1DU0RsZ0Q2YThuRkN2Nk5XRjBOX2pPMUczeDgwQkk5dUZwdC1rMzI1Zw?oc=5"
         }
       ]
     }
@@ -567,16 +575,16 @@
       "score": 10.310115954787307,
       "news": [
         {
+          "time": "2026-10-30T07:54:00+09:00",
+          "title": "삼성전자 3분기 30조 배당에 주가 ‘뚝’…하이닉스와 왜 엇갈렸나",
+          "source": "KBS 뉴스",
+          "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE1xbEJSTUtOdzFCakFSOHQ5cGtjZ2ZPNlhiTVE5SHRPT002aWVxR3pPeDc1VzE3VWRvcjJnY2hEWW1pR2VlSVZxZXN3bWdiSzVvYlFsZ0JFYk5XNmc?oc=5"
+        },
+        {
           "time": "2026-10-30T08:45:45+09:00",
           "title": "미국 기술주 덮친 AI 투자 우려… 삼성전자·SK하이닉스 반등에도 걸림돌",
           "source": "조선일보",
           "link": "https://news.google.com/rss/articles/CBMiiwFBVV95cUxOSS1MemdtTkx4eDkyR2NNMW9qTHFJQzhMVVg2YUNNQmNoQ0Z1LWZxYkQxM3JYV3BpaHU2ZHFnVmF1ZHgyV1dSc2xrV0pwNHhkYzJmNWs2YXczdk9COG5aVkgzMWhuRWlDc3FCSWlnczg2ZmE1QzlHdHFRMDFhSThWSGFMdnJ5MGxqVzBF?oc=5"
-        },
-        {
-          "time": "2026-10-30T09:14:00+09:00",
-          "title": "코스피 장 초반 4% 급락…미국발 AI 우려에 삼성전자·SK하이닉스 동반 약세",
-          "source": "조선일보",
-          "link": "https://news.google.com/rss/articles/CBMiiwFBVV95cUxOb0JTMVlDODBCM0stTjdycFdEOTJ1aU1QMGdEWGF1Ql9XanJTdWVmVmd6UVRZd0xmVW1IaVdxd2p2YTBjeEZ1eUl2UmQyN3loV3F5dmlYZkdPMkx5endzeDVycHBYNUFZd2h3TXpKQkp1akNFVExQNWpTTExYaUJLbzg2NTI2NWpzQ2xJ?oc=5"
         },
         {
           "time": "2026-10-30T09:00:01+09:00",
@@ -591,10 +599,10 @@
           "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE51a211eWJsalliZHlLQWdjNS1kc1VmQjRkbkhTYjQ0bEpHX2o1LWs5cUFTYnhmVGgweHMxTUlXUVNPb3pjR2l2WHhXM0p5YTJzODhjd19YWV9ucWfSAWBBVV95cUxOMWh1Yy13RFA0WUNtVWtGWVhfdHlMeWp3dTZ2V3RScWVScUVOUHloem8tZ3ZTM1hyazlFQVQ1eHZYUXF3Y2VWWkhhS3RzTVBiYzZabEtKc3YwZzQ0UXgxMEI?oc=5"
         },
         {
-          "time": "2026-10-30T08:59:38+09:00",
-          "title": "삼성전자 노태문 사장 \"한 발 앞서 준비·대응하는 기업만 성장\"",
-          "source": "연합인포맥스",
-          "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE1YLXlnWUJYRExPRmJHblNnalFVUy1Dbm81WU5hbHN2dEdwdlNNcmJCbHd5eTdIT2ZlWnpiSTIwT0FuajhmNzhSbDNPZWJuMC1pUVdOWHRxWmp0a1VtZnNqZW9pVE9JN212TTdIS3k1SlE?oc=5"
+          "time": "2026-10-30T08:50:02+09:00",
+          "title": "급락한 삼성전자 사들인 상위 1%…삼성전기·대우건설도 '줍줍'",
+          "source": "한국경제",
+          "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTFAwOGhkNTg3eEVrLXEzQXVBZTNHdE9Eem50ZUVYcnpIckV6NHJlVUFwNE1DU0RsZ0Q2YThuRkN2Nk5XRjBOX2pPMUczeDgwQkk5dUZwdC1rMzI1Zw?oc=5"
         }
       ],
       "price": 225500.0,
@@ -602,6 +610,12 @@
     }
   ],
   "overnight_news": [
+    {
+      "time": "2026-10-30T07:54:00+09:00",
+      "title": "삼성전자 3분기 30조 배당에 주가 ‘뚝’…하이닉스와 왜 엇갈렸나",
+      "source": "KBS 뉴스",
+      "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE1xbEJSTUtOdzFCakFSOHQ5cGtjZ2ZPNlhiTVE5SHRPT002aWVxR3pPeDc1VzE3VWRvcjJnY2hEWW1pR2VlSVZxZXN3bWdiSzVvYlFsZ0JFYk5XNmc?oc=5"
+    },
     {
       "time": "2026-10-30T08:45:45+09:00",
       "title": "미국 기술주 덮친 AI 투자 우려… 삼성전자·SK하이닉스 반등에도 걸림돌",
@@ -615,22 +629,16 @@
       "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE51a211eWJsalliZHlLQWdjNS1kc1VmQjRkbkhTYjQ0bEpHX2o1LWs5cUFTYnhmVGgweHMxTUlXUVNPb3pjR2l2WHhXM0p5YTJzODhjd19YWV9ucWfSAWBBVV95cUxOMWh1Yy13RFA0WUNtVWtGWVhfdHlMeWp3dTZ2V3RScWVScUVOUHloem8tZ3ZTM1hyazlFQVQ1eHZYUXF3Y2VWWkhhS3RzTVBiYzZabEtKc3YwZzQ0UXgxMEI?oc=5"
     },
     {
-      "time": "2026-10-30T08:59:38+09:00",
-      "title": "삼성전자 노태문 사장 \"한 발 앞서 준비·대응하는 기업만 성장\"",
-      "source": "연합인포맥스",
-      "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE1YLXlnWUJYRExPRmJHblNnalFVUy1Dbm81WU5hbHN2dEdwdlNNcmJCbHd5eTdIT2ZlWnpiSTIwT0FuajhmNzhSbDNPZWJuMC1pUVdOWHRxWmp0a1VtZnNqZW9pVE9JN212TTdIS3k1SlE?oc=5"
+      "time": "2026-10-30T08:50:02+09:00",
+      "title": "급락한 삼성전자 사들인 상위 1%…삼성전기·대우건설도 '줍줍'",
+      "source": "한국경제",
+      "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTFAwOGhkNTg3eEVrLXEzQXVBZTNHdE9Eem50ZUVYcnpIckV6NHJlVUFwNE1DU0RsZ0Q2YThuRkN2Nk5XRjBOX2pPMUczeDgwQkk5dUZwdC1rMzI1Zw?oc=5"
     },
     {
       "time": "2026-10-30T08:38:49+09:00",
       "title": "삼성전자, 11월 한달간 코리아 페스티벌…가전·모바일 할인",
       "source": "연합뉴스",
-      "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE5lVVNhUnRQTWZpNFJMMHJoaTEyMklHVHd5YnlxRlI2VUhXTTZkVGJ4dHlHejdPcFlqOWdRVk81dFZzcnpHT25HNm5FbzJqTEgxOGhfZ0JnMHBMR2fSAWBBVV95cUxNNExIQlc5SXNydFhNOWNIY3FZb0Y4d3hlbHVKSkVIeURfNG9VbThkTTUyZTVKMjVtRkFkejlrS3B3U2paRzNDVkJYWEM4RFFlbXU1MENQYnRkT3Z3bTNrdEU?oc=5"
-    },
-    {
-      "time": "2026-10-30T05:00:00+09:00",
-      "title": "삼전 340% 폭등 맞힌 男…“다음엔 이 종목 엄청나게 뛸 것”",
-      "source": "중앙일보",
-      "link": "https://news.google.com/rss/articles/CBMiVkFVX3lxTE8zR3Y2cmM1Z19ZQzQtbWRteGhzaktieldZV1hCVXA2S0pZU2N6OTJyUHozc05QMVZBNjNUOFp2TlpfNjl4Rl9kM3M4SGFpN0ppTVowd19B?oc=5"
+      "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE00TEhCVzlJc3J0WE05Y0hjcVlvRjh3eGVsdUpKRUh5RF80b1VtOGRNNTJlNUoyNW1GQWR6OWtLcHdTalpHM0NWQlhYQzhEUWVtdTUwQ1BidGRPdndtM2t0RdIBYEFVX3lxTE00TEhCVzlJc3J0WE05Y0hjcVlvRjh3eGVsdUpKRUh5RF80b1VtOGRNNTJlNUoyNW1GQWR6OWtLcHdTalpHM0NWQlhYQzhEUWVtdTUwQ1BidGRPdndtM2t0RQ?oc=5"
     }
   ],
   "top_news": [
@@ -638,7 +646,7 @@
       "time": "2026-10-30T14:06:33+09:00",
       "title": "삼성전자 목표주가 69만원 vs 35만원…증권가 전망 엇갈린 이유",
       "source": "디지털데일리",
-      "link": "https://news.google.com/rss/articles/CBMiYkFVX3lxTE14ZFpGdENGOGZwZkZmdE1sSG45V203aDNJbEJzQVlVNHhEVG43YVp5alpleXBGNjRFNFFvU2dscXlrU3pYZGVhN1RaM0gxWUlPWE0zajB3ZTh6bmI5Q0hnNmRR?oc=5"
+      "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTFBNb0xpYWpQRFhua0JmMXJNUmhTcnFCaHpFUzJRTmt1YWwxQmc3d1Fva2h6QXRGUWQ0VUJqejRPMUJQczBEdWJwZ0ZLNm5RMk1lNzJhLWQ3TzNNSGVEdHdvcGJRWWE?oc=5"
     },
     {
       "time": "2026-10-30T16:08:20+09:00",
@@ -647,16 +655,10 @@
       "link": "https://news.google.com/rss/articles/CBMibkFVX3lxTFBTTldZZExpQ3pxQmFDUTRCN3JnYkFucURacWRvQlJWZkllblBTRGdVRTVkV2Ntci03bDRnTlF6SEVCcGdhM1BYdGlOMmRwanhmMkM1OWtZV1lDdk0yQzlWcWJWbFpmMDdXVnp0Rndn?oc=5"
     },
     {
-      "time": "2026-10-30T16:13:00+09:00",
-      "title": "[리포트 브리핑]삼성전자, '3Q26 Review: 사상 최대 실적, 메모리가 이끌었다' 목표가 500,000원 - 교보증권",
-      "source": "뉴스핌",
-      "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE1MQkFNY2h0M0xPSF9JRUpGNUtwTVdUMzBnOFQxUUdyUEpkMWU5akR3RWlSdVM1dk5ZSDdsaUk0YVI1LXM5aFJhUzB0V0lWZUoycVZrVlZaN1pqX0tt?oc=5"
-    },
-    {
-      "time": "2026-10-30T16:26:41+09:00",
-      "title": "[오늘증시] AI 실적 쇼크에 코스피 3%대 급락…외국인 1.6조 순매도·사이드카 발동",
-      "source": "Queen 이코노미퀸",
-      "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE5Sb202Rk5kRDdGcTVNT29pcUlsamxtY2JYdElseTFZbG10bW9zMWtwNFYtOF9ibXRRbGZ1V082ZVhVRjRCanBNVHFvU0w2bzh0U1JiZ2JZT19ENXlJcWt2dnQ5R2FRcXlj?oc=5"
+      "time": "2026-10-30T07:54:00+09:00",
+      "title": "삼성전자 3분기 30조 배당에 주가 ‘뚝’…하이닉스와 왜 엇갈렸나",
+      "source": "KBS 뉴스",
+      "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE1xbEJSTUtOdzFCakFSOHQ5cGtjZ2ZPNlhiTVE5SHRPT002aWVxR3pPeDc1VzE3VWRvcjJnY2hEWW1pR2VlSVZxZXN3bWdiSzVvYlFsZ0JFYk5XNmc?oc=5"
     },
     {
       "time": "2026-10-30T08:45:45+09:00",
@@ -665,10 +667,16 @@
       "link": "https://news.google.com/rss/articles/CBMiiwFBVV95cUxOSS1MemdtTkx4eDkyR2NNMW9qTHFJQzhMVVg2YUNNQmNoQ0Z1LWZxYkQxM3JYV3BpaHU2ZHFnVmF1ZHgyV1dSc2xrV0pwNHhkYzJmNWs2YXczdk9COG5aVkgzMWhuRWlDc3FCSWlnczg2ZmE1QzlHdHFRMDFhSThWSGFMdnJ5MGxqVzBF?oc=5"
     },
     {
-      "time": "2026-10-30T09:14:00+09:00",
+      "time": "2026-10-30T09:16:32+09:00",
       "title": "코스피 장 초반 4% 급락…미국발 AI 우려에 삼성전자·SK하이닉스 동반 약세",
       "source": "조선일보",
       "link": "https://news.google.com/rss/articles/CBMiiwFBVV95cUxOb0JTMVlDODBCM0stTjdycFdEOTJ1aU1QMGdEWGF1Ql9XanJTdWVmVmd6UVRZd0xmVW1IaVdxd2p2YTBjeEZ1eUl2UmQyN3loV3F5dmlYZkdPMkx5endzeDVycHBYNUFZd2h3TXpKQkp1akNFVExQNWpTTExYaUJLbzg2NTI2NWpzQ2xJ?oc=5"
+    },
+    {
+      "time": "2026-10-30T16:17:31+09:00",
+      "title": "코스피, 美 빅테크 실적 충격에 3%대 급락…삼성전자 3%·SK하이닉스 7% 하락",
+      "source": "전자신문",
+      "link": "https://news.google.com/rss/articles/CBMiTkFVX3lxTE9JZFdhMTVsZ08xZzJBUzZTeElOT1g3NXlieDFSR2J5M0k0V0dKVy16VEw2cVB5ZDVCTUhYYXJEVTRoUVJ3NTZfcUgxUHdpUQ?oc=5"
     }
   ],
   "disclosures": [
@@ -692,11 +700,81 @@
     }
   ],
   "disclosure_note": null,
-  "flows": null,
-  "flow_story": null,
+  "flows": "외국인 -1,072,820 / 기관 +1,742,739",
+  "flow_story": {
+    "direction": "down",
+    "c2c": -0.030172413793103425,
+    "actors": [
+      {
+        "key": "foreign_net",
+        "name": "외국인",
+        "shares": -1072820.0,
+        "won": -241384500000.0,
+        "vs_usual": 0.6034020147784617
+      },
+      {
+        "key": "inst_net",
+        "name": "기관",
+        "shares": 1742739.0,
+        "won": 392116275000.0,
+        "vs_usual": 1.6513930989952805
+      },
+      {
+        "key": "indiv_net",
+        "name": "개인",
+        "shares": -85248.0,
+        "won": -19180800000.0,
+        "vs_usual": 0.044196665414268824
+      },
+      {
+        "key": "other_net",
+        "name": "기타 법인 등(추정)",
+        "shares": -584671.0,
+        "won": -131550975000.0,
+        "vs_usual": null
+      }
+    ],
+    "lead": {
+      "key": "foreign_net",
+      "name": "외국인",
+      "shares": -1072820.0,
+      "won": -241384500000.0,
+      "vs_usual": 0.6034020147784617
+    },
+    "counter": {
+      "key": "inst_net",
+      "name": "기관",
+      "shares": 1742739.0,
+      "won": 392116275000.0,
+      "vs_usual": 1.6513930989952805
+    },
+    "all_one_side": false,
+    "observations": [
+      "전일까지 20거래일 고점: 종가 돌파 없음 · 종가 위치 -19.50%.",
+      "전일까지 60거래일 고점: 종가 돌파 없음 · 종가 위치 -21.88%.",
+      "같은 5거래일 수익률: 이 종목 +4.41%, SK하이닉스 +11.04% · 차이 -6.63%p.",
+      "같은 20거래일 수익률: 이 종목 -16.20%, SK하이닉스 -20.16% · 차이 +3.96%p.",
+      "같은 60거래일 수익률: 이 종목 -14.29%, SK하이닉스 -17.44% · 차이 +3.16%p.",
+      "외국인 5일 합계 순매도 전환: 직전 5일 → 최근 5일 순매수/거래량 +4.61% → -0.00% (일평균 +728,739주 → -223주). 향후 상승을 뜻하는 신호는 아닙니다.",
+      "코스피도 -3.48% — 시장 전체가 같은 방향이었습니다.",
+      "SK하이닉스 -7.08% — 반도체 업종이 함께 움직였습니다.",
+      "원화는 오히려 강세(-0.49%)여서 외국인 매도가 환율로는 설명되지 않습니다.",
+      "전날 밤 미국 반도체지수(SOX) -1.42% — 미국 반도체 흐름과 같은 방향입니다.",
+      "전날 밤 마이크론 -4.98% — 미국 메모리 회사와 같은 방향입니다.",
+      "직전 5거래일 +8.16% 오른 뒤의 매도 — 차익 실현과 맞는 모양입니다.",
+      "장중 5일선(224,900원) 아래로 빠졌다가 그 위로 되돌아와 마감했습니다.",
+      "마이크론은 미국 정규장 마감 뒤 시간외에서 -3.43%(장중 -4.19%~-1.24%) — 정규장 등락에 안 보이는 반응입니다.",
+      "엔비디아는 미국 정규장 마감 뒤 시간외에서 -1.67%(장중 -2.33%~-0.66%) — 정규장 등락에 안 보이는 반응입니다.",
+      "우리 장중(09:00~15:30) 나스닥100 선물 -0.31% · 미 10년물 국채 선물 +0.12%(금리 하락) · 원/달러 -0.13%(원화 강세).",
+      "자사주 매입 기간 중(직접 취득 2026-08-24~2026-11-21, 14,999,999,992,000, DART 공시) — 회사 자신의 매수는 기타 법인으로 잡힙니다."
+    ],
+    "estimated_indiv": false,
+    "source_note": "출처 naver+cache · 장 마감 직후 잠정치라 저녁 확정치와 다를 수 있습니다 · KRX는 받지 못함(pykrx 미설치)"
+  },
   "flow_status": {
-    "state": "pending",
-    "detail": "최신 2026-10-29"
+    "state": "ok",
+    "detail": "naver+cache",
+    "krx_error": "pykrx 미설치"
   },
   "context": {},
   "market": {
@@ -707,9 +785,9 @@
     "steady": 22,
     "upper": 2,
     "lower": 0,
-    "individual": 6277.0,
-    "foreign": -16288.0,
-    "institution": 7448.0,
+    "individual": 6028.0,
+    "foreign": -16149.0,
+    "institution": 7540.0,
     "prev_close": 5937.66,
     "open": 5760.35,
     "high": 5784.98,

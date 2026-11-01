@@ -1046,38 +1046,38 @@
     },
     {
       "month": "2026-10",
-      "value": 50662091436.39659
+      "value": 56702143000.0
     }
   ],
   "applied": [
     {
       "month": "2026-10",
-      "days": 20,
-      "yoy": 2.22472278680346,
-      "observed_usd": 27516150000.0,
-      "monthly_usd": 50662091436.39659,
-      "basis": "partial_month_scenario"
+      "days": 31,
+      "yoy": 2.5747226227259286,
+      "observed_usd": 56702143000.0,
+      "monthly_usd": 56702143000.0,
+      "basis": "full_month_preliminary"
     }
   ],
   "flash_info": {
     "enabled": true,
     "source": "customs_flash_api",
-    "rows": 44,
-    "first": "2025-08",
+    "rows": 42,
+    "first": "2025-09",
     "last": "2026-10",
-    "last_days": 20,
-    "yoy_rows": 8
+    "last_days": 31,
+    "yoy_rows": 6
   },
   "monthly_info": {
     "customs": {
       "enabled": false,
       "reason": "최근 6개월 배율이 중앙값 1.249 대비 최대 10.8% 흔들립니다(허용 10%) — 관계가 불안정해 환산하지 않습니다.",
       "source": "customs_api",
-      "first": "2025-04",
+      "first": "2025-05",
       "last": "2026-09",
       "same_size": false,
-      "ratio_median": 0.823787130149656,
-      "overlap": 18,
+      "ratio_median": 0.8203376758052427,
+      "overlap": 17,
       "window": 6,
       "scale": 1.249066228864939,
       "spread": 0.10773490429286436,
@@ -1095,6 +1095,6 @@
       "semiconductor_exports": "KOSIS_API"
     }
   },
-  "snapshot_hash": "cecabf61a809c8ab4f2c",
-  "generated_at": "2026-10-31 16:06 KST"
+  "snapshot_hash": "5eb138ffaa44fc56cda6",
+  "generated_at": "2026-11-01 16:38 KST"
 }

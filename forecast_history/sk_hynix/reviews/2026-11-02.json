@@ -3,7 +3,7 @@
   "name": "SK하이닉스",
   "peer_name": "삼성전자",
   "session_date": "2026-11-02",
-  "generated_at": "2026-11-02 16:11 KST",
+  "generated_at": "2026-11-02 16:46 KST",
   "summary": {
     "prev_close": 1418000.0,
     "open": 1402000.0,
@@ -15,11 +15,11 @@
     "c2c": 0.038081805359661436,
     "high_vs_open": 0.0684736091298146,
     "low_vs_open": -0.00927246790299574,
-    "volume": 2638976.0,
-    "volume_ratio": 0.7297663895331246,
+    "volume": 2650530.0,
+    "volume_ratio": 0.7329614624950105,
     "kospi_c2c": 0.02239498537731177,
     "peer_c2c": 0.01777777777777767,
-    "usdkrw_chg": 0.0038116979778357596,
+    "usdkrw_chg": 0.004334929455441561,
     "us_nights": 1,
     "sox_ret": -0.07200781168593828,
     "nasdaq_ret": -0.028555611175022477,
@@ -105,12 +105,12 @@
       "NQ=F": {
         "label": "나스닥100 선물",
         "ret": 0.0025432660064625967,
-        "after_high": -0.00048627573570914073
+        "after_high": -0.0008680178811683037
       },
       "ZN=F": {
         "label": "미 10년물 국채 선물",
         "ret": 0.0005866823115283637,
-        "after_high": -0.0002930832356389246
+        "after_high": 0.0
       },
       "KRW=X": {
         "label": "원/달러",
@@ -542,12 +542,12 @@
     {
       "time": "2026-11-02T14:00:00+09:00",
       "price": 1484000.0,
-      "volume": 30743.0
+      "volume": 30746.0
     },
     {
       "time": "2026-11-02T14:05:00+09:00",
       "price": 1484000.0,
-      "volume": 37089.0
+      "volume": 37086.0
     },
     {
       "time": "2026-11-02T14:10:00+09:00",
@@ -704,12 +704,6 @@
       "link": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE1ESE44NlNhYTdiY1c4aWtDeUdCTE80aGhabDA4WHNkS3hVWDFaUk5KYVJETU1Oc2ZVVlkzOWRZVGpvdW80cFRHbllWZF9HRFRCOVE?oc=5"
     },
     {
-      "time": "2026-11-02T07:05:00+09:00",
-      "title": "[국장방향예측] 코스피 1.52%↓ SK하이닉스 0.39%↓",
-      "source": "디지털애셋",
-      "link": "https://news.google.com/rss/articles/CBMickFVX3lxTE1GNEFPOS13ZTVpTTFsV2xLenNqeFo2ZUNhTjVGZzRvYlFLdFdCM2M1YUlSNGxQVDk3N2FQblRfVlBSSm84UnZWM0VDRFlYUzI4Vkl0THpnaGprQWkzeUFWS3k5TVdNbXRtOW9ZWk40VXdxdw?oc=5"
-    },
-    {
       "time": "2026-11-02T08:56:52+09:00",
       "title": "\"1억 상금에 SKCT 면제라더니\"…SK하이닉스 AI해커톤, 시스템 장애 중단",
       "source": "서울경제TV",
@@ -720,6 +714,12 @@
       "title": "\"SK하이닉스, 4분기 영업익 사상 첫 100조 돌파 전망\"-KB",
       "source": "한국경제",
       "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE1wcXo2MHVKOHRYWFdqUVFTLUJ0VndzS1dYV3N3VV9EcTg2QnQ1bGE2NXo5X1ZXQklRLWo3YWRhQ3ZjQ09RZk1VVUM3Sjl2eDllaG1Eb01UUGV4Zw?oc=5"
+    },
+    {
+      "time": "2026-11-02T08:24:00+09:00",
+      "title": "[특징주] ‘인텔 쇼크’에 삼성전자·SK하이닉스 프리마켓서 3%대 급락",
+      "source": "Chosunbiz",
+      "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxOWF9vZ1dhN2VWV1pVVHlvSHk2QkdDcUUxdlo3SF9mMkxHdjRpOXFaQ1Z1eGk0NFFnNWp2REE2UTFIQ1VBY3hRNldjMUdlRUV0V2Q0eXctOEtRSTNlSWFmZDRIZUlfM1puNzRoSHlnalIwQmIycjZfUkxPRjJvejhqbW14bDJPUGJS0gGcAUFVX3lxTE1OMjlST1lSTk51SUxsenlzUG5PejdTMV9QRzF2RXF4REZGazAteVZMb3hvU3Y1Y1ZlWWRENWQ5ekl0OVU4Q0tVWTBZYUtsUHlKNldER0wtdkR4Tmd1dGVCTEtfaDJodDhZYUFka2xpVTJtQWg5OGU2YVB2U1B0YmIxNmlKa0Vld0JBVlNSN3dJejlzSDhtdnZubFJMMg?oc=5"
     }
   ],
   "top_news": [
@@ -728,6 +728,12 @@
       "title": "\"반도체 자사주매입은 주가하락 완충 역할…관건은 외국인 수급\"",
       "source": "연합뉴스",
       "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE84LWcxMXU1TGNjbHdnbzZ0Ym1hVHBiTks4MzlWNE51dFpzTHplM0xieWVRZE9fWGNxWEdRc3hEYUFXa3B1dXJMTDBIaXVUQ3o2S29EMXFsTk9USURBR0VLNtIBYEFVX3lxTE84LWcxMXU1TGNjbHdnbzZ0Ym1hVHBiTks4MzlWNE51dFpzTHplM0xieWVRZE9fWGNxWEdRc3hEYUFXa3B1dXJMTDBIaXVUQ3o2S29EMXFsTk9USURBR0VLNg?oc=5"
+    },
+    {
+      "time": "2026-11-02T16:28:08+09:00",
+      "title": "반도체 자사주 매입 55조원, 코스피 하락 막았지만 반등은 못 이끌었다 [주가동향]",
+      "source": "조세일보",
+      "link": "https://news.google.com/rss/articles/CBMidEFVX3lxTFBvLXZUcjZ5TDZ6UTZ0RmFmNElaekhEWUZEVXFRM1YzbURRblBLaGRVZS1TWllrcnJMM2VsanpVLXlpWWR4UXdONFY3d3ctU1JFSHEwcXlLXzRQZVd3RWUyNmVKTVpXNHI2eUxZbGEtUWRWSGpL?oc=5"
     },
     {
       "time": "2026-11-02T08:15:59+09:00",
@@ -752,12 +758,6 @@
       "title": "미국발 삭풍 피한 코스피 5790대로 자사주 매입…SK하이닉스 1.5%↑",
       "source": "중소기업신문",
       "link": "https://news.google.com/rss/articles/CBMibkFVX3lxTE96Ni1icXp4ODA5dEVabmx5U1o2c1RFT18yejdYd1dMQXlQMUI3QWR3aEpvRmJzZjFDLUNQeDNPbGZUUVA3X2tGREcwVEVEa0lhY0hFX1J2VkF5VTFiV1VnZDNKYVpXV0JHWTVHbUNR?oc=5"
-    },
-    {
-      "time": "2026-11-02T11:15:32+09:00",
-      "title": "삼성전자·SK하이닉스 자사주 46조 매입에도…코스피 반등 지속성 '불투명'",
-      "source": "산경투데이",
-      "link": "https://news.google.com/rss/articles/CBMidEFVX3lxTE93ZkJWdUJCeHJGWDFNX0pVd1BLU0ZlWGJOYUpaU1J3Zjh4WXZzRENPdjVFbWJ3bmJFMXdwMTdQTzN2WWlyVVFFOV9oaEdJWmR1U3ZSdWRRRGtkaEMyT2ZsN0NXQ2JGeEhWNXZBTk9IWTQ5MFps0gF0QVVfeXFMT3dmQlZ1QkJ4ckZYMU1fSlV3UEtTRmVYYk5hSlpTUndmOHhZdnNEQ092NUVtYnduYkUxd3AxN1BPM3ZZaXJVUUU5X2hoR0laZHVTdlJ1ZFFEa2RoQzJPZmw3Q1dDYkZ4SFY1dkFOT0hZNDkwWmw?oc=5"
     }
   ],
   "disclosures": [],
@@ -777,9 +777,9 @@
     "steady": 29,
     "upper": 4,
     "lower": 0,
-    "individual": -13446.0,
-    "foreign": -3759.0,
-    "institution": 12327.0,
+    "individual": -13336.0,
+    "foreign": -3861.0,
+    "institution": 12311.0,
     "prev_close": 5730.74,
     "open": 5637.77,
     "high": 5910.83,

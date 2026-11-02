@@ -3,7 +3,7 @@
   "name": "SK하이닉스",
   "peer_name": "삼성전자",
   "session_date": "2026-11-02",
-  "generated_at": "2026-11-02 16:46 KST",
+  "generated_at": "2026-11-02 17:31 KST",
   "summary": {
     "prev_close": 1418000.0,
     "open": 1402000.0,
@@ -15,11 +15,11 @@
     "c2c": 0.038081805359661436,
     "high_vs_open": 0.0684736091298146,
     "low_vs_open": -0.00927246790299574,
-    "volume": 2650530.0,
-    "volume_ratio": 0.7329614624950105,
+    "volume": 2673202.0,
+    "volume_ratio": 0.7392310396277676,
     "kospi_c2c": 0.02239498537731177,
     "peer_c2c": 0.01777777777777767,
-    "usdkrw_chg": 0.004334929455441561,
+    "usdkrw_chg": 0.003131633909122078,
     "us_nights": 1,
     "sox_ret": -0.07200781168593828,
     "nasdaq_ret": -0.028555611175022477,
@@ -158,12 +158,6 @@
       "score": 5.097244194326136,
       "news": [
         {
-          "time": "2026-11-02T08:43:06+09:00",
-          "title": "\"반도체 자사주매입은 주가하락 완충 역할…관건은 외국인 수급\"",
-          "source": "연합뉴스",
-          "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE84LWcxMXU1TGNjbHdnbzZ0Ym1hVHBiTks4MzlWNE51dFpzTHplM0xieWVRZE9fWGNxWEdRc3hEYUFXa3B1dXJMTDBIaXVUQ3o2S29EMXFsTk9USURBR0VLNtIBYEFVX3lxTE84LWcxMXU1TGNjbHdnbzZ0Ym1hVHBiTks4MzlWNE51dFpzTHplM0xieWVRZE9fWGNxWEdRc3hEYUFXa3B1dXJMTDBIaXVUQ3o2S29EMXFsTk9USURBR0VLNg?oc=5"
-        },
-        {
           "time": "2026-11-02T08:15:59+09:00",
           "title": "“SK하이닉스, 목표주가 350만원”…‘역사적 저평가’ 해소될 거라는데",
           "source": "매일경제",
@@ -186,6 +180,12 @@
           "title": "SK하이닉스 'AI 해커톤 2026' 예선 시스템 장애로 전면 재시험",
           "source": "전자신문",
           "link": "https://news.google.com/rss/articles/CBMiTkFVX3lxTE1GdGc2YktXeDhFeF9hWGJpdXh0UXBUTFB2TFJPbDZ0Y2p4ZmxJUnVTWGVLTHRRTHU3X0M2UnpuXzI3aVFVdFYyandYelBDZw?oc=5"
+        },
+        {
+          "time": "2026-11-02T08:24:00+09:00",
+          "title": "[특징주] ‘인텔 쇼크’에 삼성전자·SK하이닉스 프리마켓서 3%대 급락",
+          "source": "Chosunbiz",
+          "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxOWF9vZ1dhN2VWV1pVVHlvSHk2QkdDcUUxdlo3SF9mMkxHdjRpOXFaQ1Z1eGk0NFFnNWp2REE2UTFIQ1VBY3hRNldjMUdlRUV0V2Q0eXctOEtRSTNlSWFmZDRIZUlfM1puNzRoSHlnalIwQmIycjZfUkxPRjJvejhqbW14bDJPUGJS0gGcAUFVX3lxTE1OMjlST1lSTk51SUxsenlzUG5PejdTMV9QRzF2RXF4REZGazAteVZMb3hvU3Y1Y1ZlWWRENWQ5ekl0OVU4Q0tVWTBZYUtsUHlKNldER0wtdkR4Tmd1dGVCTEtfaDJodDhZYUFka2xpVTJtQWg5OGU2YVB2U1B0YmIxNmlKa0Vld0JBVlNSN3dJejlzSDhtdnZubFJMMg?oc=5"
         }
       ]
     },
@@ -199,12 +199,6 @@
       "session_share": 0.18558540695945203,
       "score": 3.492631715990439,
       "news": [
-        {
-          "time": "2026-11-02T08:43:06+09:00",
-          "title": "\"반도체 자사주매입은 주가하락 완충 역할…관건은 외국인 수급\"",
-          "source": "연합뉴스",
-          "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE84LWcxMXU1TGNjbHdnbzZ0Ym1hVHBiTks4MzlWNE51dFpzTHplM0xieWVRZE9fWGNxWEdRc3hEYUFXa3B1dXJMTDBIaXVUQ3o2S29EMXFsTk9USURBR0VLNtIBYEFVX3lxTE84LWcxMXU1TGNjbHdnbzZ0Ym1hVHBiTks4MzlWNE51dFpzTHplM0xieWVRZE9fWGNxWEdRc3hEYUFXa3B1dXJMTDBIaXVUQ3o2S29EMXFsTk9USURBR0VLNg?oc=5"
-        },
         {
           "time": "2026-11-02T09:53:10+09:00",
           "title": "메모리반도체 호황 장기화에 외신 전망 낙관적, \"SK하이닉스 독보적 수혜\"",
@@ -228,6 +222,12 @@
           "title": "KB증권 “삼성전자-SK하이닉스 저평가 해소 전환점”",
           "source": "BBS불교방송",
           "link": "https://news.google.com/rss/articles/CBMia0FVX3lxTE81SlhtaERwbUlfajZITTFXdFZ0RXVLaUJDQWhPNFJzZ1RicVUyZzl4VHFiaGw5Y1d0a1VGWGpEeDNxbnpPQUdSSUU1NW5uNklNRHVGcGFfYUtKaGNoOXJQbkxoekE5NWtSWk1F?oc=5"
+        },
+        {
+          "time": "2026-11-02T09:32:59+09:00",
+          "title": "SK하이닉스 'AI 해커톤 2026' 예선 시스템 장애로 전면 재시험",
+          "source": "전자신문",
+          "link": "https://news.google.com/rss/articles/CBMiTkFVX3lxTE1GdGc2YktXeDhFeF9hWGJpdXh0UXBUTFB2TFJPbDZ0Y2p4ZmxJUnVTWGVLTHRRTHU3X0M2UnpuXzI3aVFVdFYyandYelBDZw?oc=5"
         }
       ]
     }
@@ -612,12 +612,6 @@
       "score": 5.097244194326136,
       "news": [
         {
-          "time": "2026-11-02T08:43:06+09:00",
-          "title": "\"반도체 자사주매입은 주가하락 완충 역할…관건은 외국인 수급\"",
-          "source": "연합뉴스",
-          "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE84LWcxMXU1TGNjbHdnbzZ0Ym1hVHBiTks4MzlWNE51dFpzTHplM0xieWVRZE9fWGNxWEdRc3hEYUFXa3B1dXJMTDBIaXVUQ3o2S29EMXFsTk9USURBR0VLNtIBYEFVX3lxTE84LWcxMXU1TGNjbHdnbzZ0Ym1hVHBiTks4MzlWNE51dFpzTHplM0xieWVRZE9fWGNxWEdRc3hEYUFXa3B1dXJMTDBIaXVUQ3o2S29EMXFsTk9USURBR0VLNg?oc=5"
-        },
-        {
           "time": "2026-11-02T08:15:59+09:00",
           "title": "“SK하이닉스, 목표주가 350만원”…‘역사적 저평가’ 해소될 거라는데",
           "source": "매일경제",
@@ -640,6 +634,12 @@
           "title": "SK하이닉스 'AI 해커톤 2026' 예선 시스템 장애로 전면 재시험",
           "source": "전자신문",
           "link": "https://news.google.com/rss/articles/CBMiTkFVX3lxTE1GdGc2YktXeDhFeF9hWGJpdXh0UXBUTFB2TFJPbDZ0Y2p4ZmxJUnVTWGVLTHRRTHU3X0M2UnpuXzI3aVFVdFYyandYelBDZw?oc=5"
+        },
+        {
+          "time": "2026-11-02T08:24:00+09:00",
+          "title": "[특징주] ‘인텔 쇼크’에 삼성전자·SK하이닉스 프리마켓서 3%대 급락",
+          "source": "Chosunbiz",
+          "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxOWF9vZ1dhN2VWV1pVVHlvSHk2QkdDcUUxdlo3SF9mMkxHdjRpOXFaQ1Z1eGk0NFFnNWp2REE2UTFIQ1VBY3hRNldjMUdlRUV0V2Q0eXctOEtRSTNlSWFmZDRIZUlfM1puNzRoSHlnalIwQmIycjZfUkxPRjJvejhqbW14bDJPUGJS0gGcAUFVX3lxTE1OMjlST1lSTk51SUxsenlzUG5PejdTMV9QRzF2RXF4REZGazAteVZMb3hvU3Y1Y1ZlWWRENWQ5ekl0OVU4Q0tVWTBZYUtsUHlKNldER0wtdkR4Tmd1dGVCTEtfaDJodDhZYUFka2xpVTJtQWg5OGU2YVB2U1B0YmIxNmlKa0Vld0JBVlNSN3dJejlzSDhtdnZubFJMMg?oc=5"
         }
       ],
       "price": 1423000.0,
@@ -655,12 +655,6 @@
       "session_share": 0.18558540695945203,
       "score": 3.492631715990439,
       "news": [
-        {
-          "time": "2026-11-02T08:43:06+09:00",
-          "title": "\"반도체 자사주매입은 주가하락 완충 역할…관건은 외국인 수급\"",
-          "source": "연합뉴스",
-          "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE84LWcxMXU1TGNjbHdnbzZ0Ym1hVHBiTks4MzlWNE51dFpzTHplM0xieWVRZE9fWGNxWEdRc3hEYUFXa3B1dXJMTDBIaXVUQ3o2S29EMXFsTk9USURBR0VLNtIBYEFVX3lxTE84LWcxMXU1TGNjbHdnbzZ0Ym1hVHBiTks4MzlWNE51dFpzTHplM0xieWVRZE9fWGNxWEdRc3hEYUFXa3B1dXJMTDBIaXVUQ3o2S29EMXFsTk9USURBR0VLNg?oc=5"
-        },
         {
           "time": "2026-11-02T09:53:10+09:00",
           "title": "메모리반도체 호황 장기화에 외신 전망 낙관적, \"SK하이닉스 독보적 수혜\"",
@@ -684,6 +678,12 @@
           "title": "KB증권 “삼성전자-SK하이닉스 저평가 해소 전환점”",
           "source": "BBS불교방송",
           "link": "https://news.google.com/rss/articles/CBMia0FVX3lxTE81SlhtaERwbUlfajZITTFXdFZ0RXVLaUJDQWhPNFJzZ1RicVUyZzl4VHFiaGw5Y1d0a1VGWGpEeDNxbnpPQUdSSUU1NW5uNklNRHVGcGFfYUtKaGNoOXJQbkxoekE5NWtSWk1F?oc=5"
+        },
+        {
+          "time": "2026-11-02T09:32:59+09:00",
+          "title": "SK하이닉스 'AI 해커톤 2026' 예선 시스템 장애로 전면 재시험",
+          "source": "전자신문",
+          "link": "https://news.google.com/rss/articles/CBMiTkFVX3lxTE1GdGc2YktXeDhFeF9hWGJpdXh0UXBUTFB2TFJPbDZ0Y2p4ZmxJUnVTWGVLTHRRTHU3X0M2UnpuXzI3aVFVdFYyandYelBDZw?oc=5"
         }
       ],
       "price": 1457000.0,
@@ -692,16 +692,16 @@
   ],
   "overnight_news": [
     {
-      "time": "2026-11-02T08:43:06+09:00",
-      "title": "\"반도체 자사주매입은 주가하락 완충 역할…관건은 외국인 수급\"",
-      "source": "연합뉴스",
-      "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE84LWcxMXU1TGNjbHdnbzZ0Ym1hVHBiTks4MzlWNE51dFpzTHplM0xieWVRZE9fWGNxWEdRc3hEYUFXa3B1dXJMTDBIaXVUQ3o2S29EMXFsTk9USURBR0VLNtIBYEFVX3lxTE84LWcxMXU1TGNjbHdnbzZ0Ym1hVHBiTks4MzlWNE51dFpzTHplM0xieWVRZE9fWGNxWEdRc3hEYUFXa3B1dXJMTDBIaXVUQ3o2S29EMXFsTk9USURBR0VLNg?oc=5"
-    },
-    {
       "time": "2026-11-02T08:15:59+09:00",
       "title": "“SK하이닉스, 목표주가 350만원”…‘역사적 저평가’ 해소될 거라는데",
       "source": "매일경제",
       "link": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE1ESE44NlNhYTdiY1c4aWtDeUdCTE80aGhabDA4WHNkS3hVWDFaUk5KYVJETU1Oc2ZVVlkzOWRZVGpvdW80cFRHbllWZF9HRFRCOVE?oc=5"
+    },
+    {
+      "time": "2026-11-02T07:05:00+09:00",
+      "title": "[국장방향예측] 코스피 1.52%↓ SK하이닉스 0.39%↓",
+      "source": "디지털애셋",
+      "link": "https://news.google.com/rss/articles/CBMickFVX3lxTE1GNEFPOS13ZTVpTTFsV2xLenNqeFo2ZUNhTjVGZzRvYlFLdFdCM2M1YUlSNGxQVDk3N2FQblRfVlBSSm84UnZWM0VDRFlYUzI4Vkl0THpnaGprQWkzeUFWS3k5TVdNbXRtOW9ZWk40VXdxdw?oc=5"
     },
     {
       "time": "2026-11-02T08:56:52+09:00",
@@ -724,16 +724,16 @@
   ],
   "top_news": [
     {
-      "time": "2026-11-02T08:43:06+09:00",
-      "title": "\"반도체 자사주매입은 주가하락 완충 역할…관건은 외국인 수급\"",
-      "source": "연합뉴스",
-      "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE84LWcxMXU1TGNjbHdnbzZ0Ym1hVHBiTks4MzlWNE51dFpzTHplM0xieWVRZE9fWGNxWEdRc3hEYUFXa3B1dXJMTDBIaXVUQ3o2S29EMXFsTk9USURBR0VLNtIBYEFVX3lxTE84LWcxMXU1TGNjbHdnbzZ0Ym1hVHBiTks4MzlWNE51dFpzTHplM0xieWVRZE9fWGNxWEdRc3hEYUFXa3B1dXJMTDBIaXVUQ3o2S29EMXFsTk9USURBR0VLNg?oc=5"
+      "time": "2026-11-02T17:03:00+09:00",
+      "title": "글로벌 AI 반도체주 투자자 기준 엄격해져, 삼성전자 SK하이닉스 '실적 증명' 부담 가중",
+      "source": "비즈니스포스트",
+      "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTE1USkJUdFpFZXNIelVjd2hSYkVJNkxKRmMtdG41ZmdhLXZaV0ZTWnRDUG5EQm1WM0tLWUNJLS1oSUFBaV9EOTdmYWItRUs1Q2Exa0NHbzhKOGZnVmlWMUY5eldzSmQ1WXBOd0UwYWN4LS01NjA?oc=5"
     },
     {
       "time": "2026-11-02T16:28:08+09:00",
       "title": "반도체 자사주 매입 55조원, 코스피 하락 막았지만 반등은 못 이끌었다 [주가동향]",
       "source": "조세일보",
-      "link": "https://news.google.com/rss/articles/CBMidEFVX3lxTFBvLXZUcjZ5TDZ6UTZ0RmFmNElaekhEWUZEVXFRM1YzbURRblBLaGRVZS1TWllrcnJMM2VsanpVLXlpWWR4UXdONFY3d3ctU1JFSHEwcXlLXzRQZVd3RWUyNmVKTVpXNHI2eUxZbGEtUWRWSGpL?oc=5"
+      "link": "https://news.google.com/rss/articles/CBMiX0FVX3lxTFBYY3dzSUNsa0dDSEJtajFtRUREOTl2bWwxRWZOOHVjeTFQOVJCcllodWsyTnFKZFlHR05Pem5Zck1iSWZ1bXo2eTN2WWt1WGllWFpFRlc0NktzUU91VnVB?oc=5"
     },
     {
       "time": "2026-11-02T08:15:59+09:00",
@@ -754,10 +754,10 @@
       "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTE5nY3M2WHVOdlhUYlNwMjhTak4ybmpFOUtTdTJKX1A5QlNjZ1FWX2ZDYTF5bHRydzQzaTE5cWp1TUpSMkVyWVBJS2xvM2JXM3lWbVBNS2h1M1cyUUg5SDhzMGRLRm91Z0F2UXZndVlGd1U1LUU?oc=5"
     },
     {
-      "time": "2026-11-02T10:46:34+09:00",
-      "title": "미국발 삭풍 피한 코스피 5790대로 자사주 매입…SK하이닉스 1.5%↑",
-      "source": "중소기업신문",
-      "link": "https://news.google.com/rss/articles/CBMibkFVX3lxTE96Ni1icXp4ODA5dEVabmx5U1o2c1RFT18yejdYd1dMQXlQMUI3QWR3aEpvRmJzZjFDLUNQeDNPbGZUUVA3X2tGREcwVEVEa0lhY0hFX1J2VkF5VTFiV1VnZDNKYVpXV0JHWTVHbUNR?oc=5"
+      "time": "2026-11-02T14:27:05+09:00",
+      "title": "SK스퀘어, SK하이닉스 호실적에 6조 배당 수입...주주환원 확대",
+      "source": "한스경제",
+      "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE1kTTNwS1ppbExheUJGNXNtcjcxajlNclZtT2tzdmpJbDVEUENZQUN1d0tyM0FOU19uWnVFR1ZKSXpBM2RCSWlPLS1QRE9pc1N4Vnp1MkNTVFY2U2JkWlpyWjZLSHhDS3N5dC1TZdIBb0FVX3lxTE9Zeml6WUJCOFJrbm1mOUJNY1EyczR5bVd5b2R6ck1fbkd0TGJYd01BV085d3lMMlMtQWhjSW9UZ0xhdG5MTmtCNk5YN1ZiME1va2xvWk16eFNKSmplWjlfanhtRnA3OEFZNHNnMVI4Yw?oc=5"
     }
   ],
   "disclosures": [],
@@ -777,8 +777,8 @@
     "steady": 29,
     "upper": 4,
     "lower": 0,
-    "individual": -13336.0,
-    "foreign": -3861.0,
+    "individual": -13316.0,
+    "foreign": -3878.0,
     "institution": 12311.0,
     "prev_close": 5730.74,
     "open": 5637.77,

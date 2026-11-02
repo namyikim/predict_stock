@@ -3,88 +3,40 @@
   "name": "SK하이닉스",
   "peer_name": "삼성전자",
   "session_date": "2026-11-02",
-  "generated_at": "2026-11-02 17:31 KST",
+  "generated_at": "2026-11-03 02:00 KST",
   "summary": {
     "prev_close": 1418000.0,
-    "open": 1402000.0,
-    "high": 1498000.0,
-    "low": 1389000.0,
-    "close": 1472000.0,
-    "gap": -0.01128349788434413,
-    "session": 0.049928673323823114,
-    "c2c": 0.038081805359661436,
-    "high_vs_open": 0.0684736091298146,
-    "low_vs_open": -0.00927246790299574,
-    "volume": 2673202.0,
-    "volume_ratio": 0.7392310396277676,
-    "kospi_c2c": 0.02239498537731177,
-    "peer_c2c": 0.01777777777777767,
-    "usdkrw_chg": 0.003131633909122078,
+    "open": NaN,
+    "high": NaN,
+    "low": NaN,
+    "close": NaN,
+    "gap": NaN,
+    "session": NaN,
+    "c2c": NaN,
+    "high_vs_open": NaN,
+    "low_vs_open": NaN,
+    "volume": 2794895.0,
+    "volume_ratio": 0.7728832824831231,
+    "kospi_c2c": NaN,
+    "peer_c2c": NaN,
+    "usdkrw_chg": 0.004910438463416433,
     "us_nights": 1,
     "sox_ret": -0.07200781168593828,
     "nasdaq_ret": -0.028555611175022477,
     "micron_ret": -0.05301468340140636,
     "prior_streak": -1,
-    "ma5": 1448800.0,
-    "ma20": 1441600.0,
+    "ma5": 1443000.0,
+    "ma20": 1440000.0,
     "high20": 1855000.0,
     "high252": 2986352.5777339735,
     "price_context": {
-      "breakouts": {
-        "20": {
-          "prior_high": 1855000.0,
-          "distance": -0.2064690026954178,
-          "close_breakout": false,
-          "intraday_breakout": false
-        },
-        "60": {
-          "prior_high": 1935000.0,
-          "distance": -0.23927648578811367,
-          "close_breakout": false,
-          "intraday_breakout": false
-        }
-      },
-      "relative": {
-        "5": {
-          "start": "2026-10-26",
-          "end": "2026-11-02",
-          "own": 0.15450980392156866,
-          "peer": 0.07511737089201875,
-          "excess": 0.0793924330295499
-        },
-        "20": {
-          "start": "2026-10-01",
-          "end": "2026-11-02",
-          "own": -0.19694489907255863,
-          "peer": -0.17028985507246375,
-          "excess": -0.026655044000094885
-        },
-        "60": {
-          "start": "2026-08-03",
-          "end": "2026-11-02",
-          "own": -0.06042168364200218,
-          "peer": -0.04384133611691021,
-          "excess": -0.016580347525091965
-        }
-      }
+      "breakouts": {},
+      "relative": {}
     },
-    "range": 0.0784737221022318,
-    "peer_range": 0.06912442396313367,
+    "range": NaN,
+    "peer_range": NaN,
     "prior_5d": 0.11041503523884111,
-    "ma_touches": [
-      {
-        "ma": 5,
-        "level": 1409400.0,
-        "kind": "reclaim",
-        "price": 1389000.0
-      },
-      {
-        "ma": 20,
-        "level": 1459650.0,
-        "kind": "reclaim",
-        "price": 1389000.0
-      }
-    ],
+    "ma_touches": [],
     "micron_ah": {
       "regular_close": 884.8900146484375,
       "last": 889.2,
@@ -118,7 +70,6 @@
         "after_high": -0.00030500548701051233
       }
     },
-    "from_high": -0.015297356481865254,
     "buyback": [
       {
         "kind": "직접 취득",
@@ -136,14 +87,22 @@
         "purpose": "주주가치 제고 및 임직원 주식 보상",
         "rcept_no": "20261028000014"
       }
-    ]
+    ],
+    "foreign_pressure": {
+      "state": "turned_buying",
+      "previous_ratio": -0.052104101774319796,
+      "recent_ratio": 0.002266554686758914,
+      "previous_daily_net": -178789.4,
+      "recent_daily_net": 8425.0
+    },
+    "buyback_transition": null
   },
   "classification": {
     "labels": [
-      "지수 동조"
+      "완만한 추세"
     ],
     "reasons": [
-      "KOSPI +2.24% vs 종목 +3.81%, 5분 수익률 상관 0.91 — 종목 고유 요인이 약함"
+      "특정 시각·갭·지수로 설명되는 큰 구간 없음"
     ]
   },
   "events": [
@@ -206,12 +165,6 @@
           "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTFBNeVd5YzNyNHJHOTNOZ205Rjh5Q1oxZTgwVkhRaTlueTZwSW1aQ2Z1cjRUTXAwb1drdEN3bFFCbEZlRzlqenkwSFFfNkZKUG5GUnI3WmxSbzJxMlNwNUEtWm8wejdtQjVFWWJTbWd6NHlFWW8?oc=5"
         },
         {
-          "time": "2026-11-02T10:19:11+09:00",
-          "title": "KB증권 \"SK하이닉스 내년 영업이익 470조 전망, 주주환원 정책도 강화\"",
-          "source": "비즈니스포스트",
-          "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTE5nY3M2WHVOdlhUYlNwMjhTak4ybmpFOUtTdTJKX1A5QlNjZ1FWX2ZDYTF5bHRydzQzaTE5cWp1TUpSMkVyWVBJS2xvM2JXM3lWbVBNS2h1M1cyUUg5SDhzMGRLRm91Z0F2UXZndVlGd1U1LUU?oc=5"
-        },
-        {
           "time": "2026-11-02T08:56:52+09:00",
           "title": "\"1억 상금에 SKCT 면제라더니\"…SK하이닉스 AI해커톤, 시스템 장애 중단",
           "source": "서울경제TV",
@@ -228,6 +181,12 @@
           "title": "SK하이닉스 'AI 해커톤 2026' 예선 시스템 장애로 전면 재시험",
           "source": "전자신문",
           "link": "https://news.google.com/rss/articles/CBMiTkFVX3lxTE1GdGc2YktXeDhFeF9hWGJpdXh0UXBUTFB2TFJPbDZ0Y2p4ZmxJUnVTWGVLTHRRTHU3X0M2UnpuXzI3aVFVdFYyandYelBDZw?oc=5"
+        },
+        {
+          "time": "2026-11-02T09:58:09+09:00",
+          "title": "[특징주] 삼성전자·SK하이닉스, 美 반도체주 급락에도 '선방'",
+          "source": "글로벌이코노믹",
+          "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxNNnM4a0lZSlJRTzFYcTdNaU5STWw5X1UtZGxpS0tqa3ZKUHBxVFdzd3VCeGM4c2YwcTFremdueW9oUS1LaEdzWGc1SVdEYVU1X0pSVElqY2ROZWo5dEpzVmxIUGRVTjNtSEp6cFJJSU5rRk53ZHhnX2VvRnVUZWg5Nk5CaFY3UGsy?oc=5"
         }
       ]
     }
@@ -239,9 +198,9 @@
     "low": -0.008547008547008517,
     "pattern": "저점 후 반등"
   },
-  "closing_share": -0.21536098310291837,
+  "closing_share": NaN,
   "intraday_corr_kospi": 0.9144212706685114,
-  "intraday_note": "장중 봉은 09:05~14:55까지만 있어 마감 구간(14:55~15:30)은 일봉 종가로만 봅니다(그 구간 -1.08%).",
+  "intraday_note": "장중 봉은 09:05~14:55까지만 있어 마감 구간(14:55~15:30)은 일봉 종가로만 봅니다(그 구간 +nan%).",
   "intraday_coverage": "09:05~14:55",
   "intraday_path": [
     {
@@ -662,12 +621,6 @@
           "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTFBNeVd5YzNyNHJHOTNOZ205Rjh5Q1oxZTgwVkhRaTlueTZwSW1aQ2Z1cjRUTXAwb1drdEN3bFFCbEZlRzlqenkwSFFfNkZKUG5GUnI3WmxSbzJxMlNwNUEtWm8wejdtQjVFWWJTbWd6NHlFWW8?oc=5"
         },
         {
-          "time": "2026-11-02T10:19:11+09:00",
-          "title": "KB증권 \"SK하이닉스 내년 영업이익 470조 전망, 주주환원 정책도 강화\"",
-          "source": "비즈니스포스트",
-          "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTE5nY3M2WHVOdlhUYlNwMjhTak4ybmpFOUtTdTJKX1A5QlNjZ1FWX2ZDYTF5bHRydzQzaTE5cWp1TUpSMkVyWVBJS2xvM2JXM3lWbVBNS2h1M1cyUUg5SDhzMGRLRm91Z0F2UXZndVlGd1U1LUU?oc=5"
-        },
-        {
           "time": "2026-11-02T08:56:52+09:00",
           "title": "\"1억 상금에 SKCT 면제라더니\"…SK하이닉스 AI해커톤, 시스템 장애 중단",
           "source": "서울경제TV",
@@ -684,6 +637,12 @@
           "title": "SK하이닉스 'AI 해커톤 2026' 예선 시스템 장애로 전면 재시험",
           "source": "전자신문",
           "link": "https://news.google.com/rss/articles/CBMiTkFVX3lxTE1GdGc2YktXeDhFeF9hWGJpdXh0UXBUTFB2TFJPbDZ0Y2p4ZmxJUnVTWGVLTHRRTHU3X0M2UnpuXzI3aVFVdFYyandYelBDZw?oc=5"
+        },
+        {
+          "time": "2026-11-02T09:58:09+09:00",
+          "title": "[특징주] 삼성전자·SK하이닉스, 美 반도체주 급락에도 '선방'",
+          "source": "글로벌이코노믹",
+          "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxNNnM4a0lZSlJRTzFYcTdNaU5STWw5X1UtZGxpS0tqa3ZKUHBxVFdzd3VCeGM4c2YwcTFremdueW9oUS1LaEdzWGc1SVdEYVU1X0pSVElqY2ROZWo5dEpzVmxIUGRVTjNtSEp6cFJJSU5rRk53ZHhnX2VvRnVUZWg5Nk5CaFY3UGsy?oc=5"
         }
       ],
       "price": 1457000.0,
@@ -696,12 +655,6 @@
       "title": "“SK하이닉스, 목표주가 350만원”…‘역사적 저평가’ 해소될 거라는데",
       "source": "매일경제",
       "link": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE1ESE44NlNhYTdiY1c4aWtDeUdCTE80aGhabDA4WHNkS3hVWDFaUk5KYVJETU1Oc2ZVVlkzOWRZVGpvdW80cFRHbllWZF9HRFRCOVE?oc=5"
-    },
-    {
-      "time": "2026-11-02T07:05:00+09:00",
-      "title": "[국장방향예측] 코스피 1.52%↓ SK하이닉스 0.39%↓",
-      "source": "디지털애셋",
-      "link": "https://news.google.com/rss/articles/CBMickFVX3lxTE1GNEFPOS13ZTVpTTFsV2xLenNqeFo2ZUNhTjVGZzRvYlFLdFdCM2M1YUlSNGxQVDk3N2FQblRfVlBSSm84UnZWM0VDRFlYUzI4Vkl0THpnaGprQWkzeUFWS3k5TVdNbXRtOW9ZWk40VXdxdw?oc=5"
     },
     {
       "time": "2026-11-02T08:56:52+09:00",
@@ -730,10 +683,22 @@
       "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTE1USkJUdFpFZXNIelVjd2hSYkVJNkxKRmMtdG41ZmdhLXZaV0ZTWnRDUG5EQm1WM0tLWUNJLS1oSUFBaV9EOTdmYWItRUs1Q2Exa0NHbzhKOGZnVmlWMUY5eldzSmQ1WXBOd0UwYWN4LS01NjA?oc=5"
     },
     {
-      "time": "2026-11-02T16:28:08+09:00",
-      "title": "반도체 자사주 매입 55조원, 코스피 하락 막았지만 반등은 못 이끌었다 [주가동향]",
-      "source": "조세일보",
-      "link": "https://news.google.com/rss/articles/CBMiX0FVX3lxTFBYY3dzSUNsa0dDSEJtajFtRUREOTl2bWwxRWZOOHVjeTFQOVJCcllodWsyTnFKZFlHR05Pem5Zck1iSWZ1bXo2eTN2WWt1WGllWFpFRlc0NktzUU91VnVB?oc=5"
+      "time": "2026-11-02T18:06:38+09:00",
+      "title": "'역대급 실적·20조 자사주'··· SK하이닉스, 코스피 6000선 이끌까",
+      "source": "그린포스트코리아",
+      "link": "https://news.google.com/rss/articles/CBMidkFVX3lxTE5XZEo2ZVp5S3pUU3J5S0Uwb0ZZYzhmcDlSVDN5V0dTWFpPdU5TOW9RX2RSZ2dPWU85U2ZtMU0xMnFzbTFrcXF4OHlqV2czZ2FuMl9KdTAwTmRncElZQ0J5X0NTRlNuTjJVSDl4STIzUHQzajZRZEHSAXpBVV95cUxQcVJVM1dRMy16SFFnUThPLWc5Z3J2NlQtRXA5TC1hdmVOSzJDTzk2enUzVlBvZVh4VTFxOWtEbUpfdTZjcS1BZUVsQkNQMENSVEdPbVV1RlJQRjVQZ1JaN2hVRTI5WFd1UHI3Z3piNVpRNmNpTzJfd01GZw?oc=5"
+    },
+    {
+      "time": "2026-11-02T21:26:00+09:00",
+      "title": "[반도체] 삼성전자·SK하이닉스 자사주 매입이 코스피 하방 경직성 지탱했다",
+      "source": "CBC뉴스",
+      "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE9hZjYxRm9CNktaWDJTUGVwYmRvVGQyV19hNDRVSy1FT1JSaWg3U3loOWg2cHBqaWZTeDBNN1VGMGI5ZldwWFZ1TzdmWFNfcXVmd1JuaXJUQ25GMlh1bUdtQ1h4RFByYjdt?oc=5"
+    },
+    {
+      "time": "2026-11-02T21:27:51+09:00",
+      "title": "AI 투자에 현금 마른 빅테크… 美 반도체 주가 줄줄이 급락",
+      "source": "조선일보",
+      "link": "https://news.google.com/rss/articles/CBMigwFBVV95cUxPb2drcy1iejE0bVBjMXpsQWUwT1JnREJLdEc5TnVRWmM1ZlZyUlk5RGtQR3VRTHVkSmY4bmNUaEI0NzZfUTFVVmFKM0FmVEJyZTBqQjdqQ1BLa2hubWJnRE9GYWtTS21DX01GMWFwcjlIblFkc0lPS1JOdVlBOWNDX0NYNA?oc=5"
     },
     {
       "time": "2026-11-02T08:15:59+09:00",
@@ -746,27 +711,16 @@
       "title": "메모리반도체 호황 장기화에 외신 전망 낙관적, \"SK하이닉스 독보적 수혜\"",
       "source": "비즈니스포스트",
       "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTFBNeVd5YzNyNHJHOTNOZ205Rjh5Q1oxZTgwVkhRaTlueTZwSW1aQ2Z1cjRUTXAwb1drdEN3bFFCbEZlRzlqenkwSFFfNkZKUG5GUnI3WmxSbzJxMlNwNUEtWm8wejdtQjVFWWJTbWd6NHlFWW8?oc=5"
-    },
-    {
-      "time": "2026-11-02T10:19:11+09:00",
-      "title": "KB증권 \"SK하이닉스 내년 영업이익 470조 전망, 주주환원 정책도 강화\"",
-      "source": "비즈니스포스트",
-      "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTE5nY3M2WHVOdlhUYlNwMjhTak4ybmpFOUtTdTJKX1A5QlNjZ1FWX2ZDYTF5bHRydzQzaTE5cWp1TUpSMkVyWVBJS2xvM2JXM3lWbVBNS2h1M1cyUUg5SDhzMGRLRm91Z0F2UXZndVlGd1U1LUU?oc=5"
-    },
-    {
-      "time": "2026-11-02T14:27:05+09:00",
-      "title": "SK스퀘어, SK하이닉스 호실적에 6조 배당 수입...주주환원 확대",
-      "source": "한스경제",
-      "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE1kTTNwS1ppbExheUJGNXNtcjcxajlNclZtT2tzdmpJbDVEUENZQUN1d0tyM0FOU19uWnVFR1ZKSXpBM2RCSWlPLS1QRE9pc1N4Vnp1MkNTVFY2U2JkWlpyWjZLSHhDS3N5dC1TZdIBb0FVX3lxTE9Zeml6WUJCOFJrbm1mOUJNY1EyczR5bVd5b2R6ck1fbkd0TGJYd01BV085d3lMMlMtQWhjSW9UZ0xhdG5MTmtCNk5YN1ZiME1va2xvWk16eFNKSmplWjlfanhtRnA3OEFZNHNnMVI4Yw?oc=5"
     }
   ],
   "disclosures": [],
   "disclosure_note": null,
-  "flows": null,
+  "flows": "외국인 -160,311 / 기관 +171,970",
   "flow_story": null,
   "flow_status": {
-    "state": "pending",
-    "detail": "최신 2026-10-30"
+    "state": "ok",
+    "detail": "naver+cache",
+    "krx_error": "pykrx 미설치"
   },
   "context": {},
   "market": {
@@ -777,9 +731,9 @@
     "steady": 29,
     "upper": 4,
     "lower": 0,
-    "individual": -13316.0,
-    "foreign": -3878.0,
-    "institution": 12311.0,
+    "individual": -13303.0,
+    "foreign": -3845.0,
+    "institution": 12257.0,
     "prev_close": 5730.74,
     "open": 5637.77,
     "high": 5910.83,
@@ -791,49 +745,49 @@
     {
       "model": "No macro ensemble",
       "hit": false,
-      "verdict": "틀림 — 예측 하락 54%, 실제 상승(+3.81%)",
-      "legs": "갭 -1.13%(보합) · 세션 +4.99%(상승)",
-      "where": "갭은 예측 방향이었으나 장중에 반대로 움직여 결과가 뒤집혔습니다.",
+      "verdict": "틀림 — 예측 하락 54%, 실제 보합(+nan%)",
+      "legs": "갭 +nan%(보합) · 세션 +nan%(보합)",
+      "where": "결과는 주로 장중에서 정해졌습니다.",
       "band": 0.0164431910478062,
       "probs": [
         0.5365813133468874,
         0.2896639730672193,
         0.1737547135858933
       ],
-      "actual": "상승",
+      "actual": "보합",
       "predicted": "하락"
     },
     {
       "model": "Mean ensemble",
       "hit": false,
-      "verdict": "틀림 — 예측 하락 55%, 실제 상승(+3.81%)",
-      "legs": "갭 -1.13%(보합) · 세션 +4.99%(상승)",
-      "where": "갭은 예측 방향이었으나 장중에 반대로 움직여 결과가 뒤집혔습니다.",
+      "verdict": "틀림 — 예측 하락 55%, 실제 보합(+nan%)",
+      "legs": "갭 +nan%(보합) · 세션 +nan%(보합)",
+      "where": "결과는 주로 장중에서 정해졌습니다.",
       "band": 0.0164431910478062,
       "probs": [
         0.5498192068122295,
         0.2690417749302102,
         0.1811390182575602
       ],
-      "actual": "상승",
+      "actual": "보합",
       "predicted": "하락"
     },
     {
       "model": "Candidate expanding",
       "hit": false,
-      "verdict": "틀림 — 예측 하락 44%, 실제 상승(+3.81%)",
-      "legs": "갭 -1.13%(보합) · 세션 +4.99%(상승)",
-      "where": "갭은 예측 방향이었으나 장중에 반대로 움직여 결과가 뒤집혔습니다.",
+      "verdict": "틀림 — 예측 하락 44%, 실제 보합(+nan%)",
+      "legs": "갭 +nan%(보합) · 세션 +nan%(보합)",
+      "where": "결과는 주로 장중에서 정해졌습니다.",
       "band": 0.0164431910478062,
       "probs": [
         0.4364006786135665,
         0.3393556439372007,
         0.2242436774492328
       ],
-      "actual": "상승",
+      "actual": "보합",
       "predicted": "하락"
     }
   ],
-  "price_check": "1거래일 예상 구간 1,291,834~1,484,337원 · 종가 1,472,000원 → 구간 안",
+  "price_check": "1거래일 예상 구간 1,291,834~1,484,337원 · 종가 nan원 → 구간 밖",
   "disclaimer": "시간이 맞는 것이지 원인 확정이 아닙니다. 뉴스 없이 움직이는 날(수급·프로그램·옵션 만기)이 많고, 기사 발행 시각은 실제 정보 유통보다 늦거나 앞섭니다. 이 절은 설명 도구이며 다음날 예측에 자동 반영되지 않습니다."
 }

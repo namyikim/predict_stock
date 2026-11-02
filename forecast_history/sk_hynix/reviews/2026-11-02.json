@@ -3,40 +3,88 @@
   "name": "SK하이닉스",
   "peer_name": "삼성전자",
   "session_date": "2026-11-02",
-  "generated_at": "2026-11-03 02:14 KST",
+  "generated_at": "2026-11-03 07:29 KST",
   "summary": {
     "prev_close": 1418000.0,
-    "open": NaN,
-    "high": NaN,
-    "low": NaN,
-    "close": NaN,
-    "gap": NaN,
-    "session": NaN,
-    "c2c": NaN,
-    "high_vs_open": NaN,
-    "low_vs_open": NaN,
-    "volume": 2794895.0,
-    "volume_ratio": 0.7728832824831231,
+    "open": 1402000.0,
+    "high": 1498000.0,
+    "low": 1389000.0,
+    "close": 1472000.0,
+    "gap": -0.01128349788434413,
+    "session": 0.049928673323823114,
+    "c2c": 0.038081805359661436,
+    "high_vs_open": 0.0684736091298146,
+    "low_vs_open": -0.00927246790299574,
+    "volume": 2594536.0,
+    "volume_ratio": 0.7174772219352183,
     "kospi_c2c": NaN,
-    "peer_c2c": NaN,
-    "usdkrw_chg": 0.004745942150578886,
+    "peer_c2c": 0.01777777777777767,
+    "usdkrw_chg": 0.006046402740254919,
     "us_nights": 1,
     "sox_ret": -0.07200781168593828,
     "nasdaq_ret": -0.028555611175022477,
     "micron_ret": -0.05301468340140636,
     "prior_streak": -1,
-    "ma5": 1443000.0,
-    "ma20": 1440000.0,
+    "ma5": 1448800.0,
+    "ma20": 1441600.0,
     "high20": 1855000.0,
     "high252": 2986352.5777339735,
     "price_context": {
-      "breakouts": {},
-      "relative": {}
+      "breakouts": {
+        "20": {
+          "prior_high": 1855000.0,
+          "distance": -0.2064690026954178,
+          "close_breakout": false,
+          "intraday_breakout": false
+        },
+        "60": {
+          "prior_high": 1935000.0,
+          "distance": -0.23927648578811367,
+          "close_breakout": false,
+          "intraday_breakout": false
+        }
+      },
+      "relative": {
+        "5": {
+          "start": "2026-10-26",
+          "end": "2026-11-02",
+          "own": 0.15450980392156866,
+          "peer": 0.07511737089201875,
+          "excess": 0.0793924330295499
+        },
+        "20": {
+          "start": "2026-10-01",
+          "end": "2026-11-02",
+          "own": -0.19694489907255863,
+          "peer": -0.17028985507246375,
+          "excess": -0.026655044000094885
+        },
+        "60": {
+          "start": "2026-08-03",
+          "end": "2026-11-02",
+          "own": -0.06042168364200218,
+          "peer": -0.04384133611691021,
+          "excess": -0.016580347525091965
+        }
+      }
     },
-    "range": NaN,
-    "peer_range": NaN,
+    "range": 0.0784737221022318,
+    "peer_range": 0.06912442396313367,
     "prior_5d": 0.11041503523884111,
-    "ma_touches": [],
+    "ma_touches": [
+      {
+        "ma": 5,
+        "level": 1409400.0,
+        "kind": "reclaim",
+        "price": 1389000.0
+      },
+      {
+        "ma": 20,
+        "level": 1459650.0,
+        "kind": "reclaim",
+        "price": 1389000.0
+      }
+    ],
     "micron_ah": {
       "regular_close": 884.8900146484375,
       "last": 889.2,
@@ -57,7 +105,7 @@
       "NQ=F": {
         "label": "나스닥100 선물",
         "ret": 0.0025432660064625967,
-        "after_high": -0.0008506722915201381
+        "after_high": -0.0008680178811683037
       },
       "ZN=F": {
         "label": "미 10년물 국채 선물",
@@ -70,6 +118,7 @@
         "after_high": -0.00030500548701051233
       }
     },
+    "from_high": -0.015297356481865254,
     "buyback": [
       {
         "kind": "직접 취득",
@@ -91,7 +140,7 @@
     "foreign_pressure": {
       "state": "turned_buying",
       "previous_ratio": -0.052104101774319796,
-      "recent_ratio": 0.002266554686758914,
+      "recent_ratio": 0.0022912553512030765,
       "previous_daily_net": -178789.4,
       "recent_daily_net": 8425.0
     },
@@ -123,28 +172,22 @@
           "link": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE1ESE44NlNhYTdiY1c4aWtDeUdCTE80aGhabDA4WHNkS3hVWDFaUk5KYVJETU1Oc2ZVVlkzOWRZVGpvdW80cFRHbllWZF9HRFRCOVE?oc=5"
         },
         {
-          "time": "2026-11-02T08:56:52+09:00",
-          "title": "\"1억 상금에 SKCT 면제라더니\"…SK하이닉스 AI해커톤, 시스템 장애 중단",
-          "source": "서울경제TV",
-          "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTFBOVjRycHU0RDNyWlVsUW5NODc1SWNtczcxRzljbDlKWU1DQUJuY0FvREdrUDJ3TmVkd05sdll5Rm9UcHJINW1lRFpBMElGV2hZZHpnVDRKUUNLeEF6c3BRaFB1clQ?oc=5"
-        },
-        {
-          "time": "2026-11-02T09:19:45+09:00",
-          "title": "KB증권 “삼성전자-SK하이닉스 저평가 해소 전환점”",
-          "source": "BBS불교방송",
-          "link": "https://news.google.com/rss/articles/CBMia0FVX3lxTE81SlhtaERwbUlfajZITTFXdFZ0RXVLaUJDQWhPNFJzZ1RicVUyZzl4VHFiaGw5Y1d0a1VGWGpEeDNxbnpPQUdSSUU1NW5uNklNRHVGcGFfYUtKaGNoOXJQbkxoekE5NWtSWk1F?oc=5"
-        },
-        {
-          "time": "2026-11-02T09:32:59+09:00",
-          "title": "SK하이닉스 'AI 해커톤 2026' 예선 시스템 장애로 전면 재시험",
-          "source": "전자신문",
-          "link": "https://news.google.com/rss/articles/CBMiTkFVX3lxTE1GdGc2YktXeDhFeF9hWGJpdXh0UXBUTFB2TFJPbDZ0Y2p4ZmxJUnVTWGVLTHRRTHU3X0M2UnpuXzI3aVFVdFYyandYelBDZw?oc=5"
-        },
-        {
           "time": "2026-11-02T08:24:00+09:00",
           "title": "[특징주] ‘인텔 쇼크’에 삼성전자·SK하이닉스 프리마켓서 3%대 급락",
           "source": "Chosunbiz",
           "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxOWF9vZ1dhN2VWV1pVVHlvSHk2QkdDcUUxdlo3SF9mMkxHdjRpOXFaQ1Z1eGk0NFFnNWp2REE2UTFIQ1VBY3hRNldjMUdlRUV0V2Q0eXctOEtRSTNlSWFmZDRIZUlfM1puNzRoSHlnalIwQmIycjZfUkxPRjJvejhqbW14bDJPUGJS0gGcAUFVX3lxTE1OMjlST1lSTk51SUxsenlzUG5PejdTMV9QRzF2RXF4REZGazAteVZMb3hvU3Y1Y1ZlWWRENWQ5ekl0OVU4Q0tVWTBZYUtsUHlKNldER0wtdkR4Tmd1dGVCTEtfaDJodDhZYUFka2xpVTJtQWg5OGU2YVB2U1B0YmIxNmlKa0Vld0JBVlNSN3dJejlzSDhtdnZubFJMMg?oc=5"
+        },
+        {
+          "time": "2026-11-02T09:18:06+09:00",
+          "title": "[특징주] 삼성전자 장초반 3%대 급락…SK하이닉스도 1.5%↓",
+          "source": "연합뉴스",
+          "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE9Rd0tKUnV5dkpZOFdPTUFjU2w2ejlsWHdOamV4TllVZElBN1FUbC1EUXg2VkxJSGZSQUh6XzRpWFlEenllMjEyR0kzT0tweWJoTzVtbVJEdHdzODjSAWBBVV95cUxOVFZQU2dKWGlMSHRtX25LRVZyQVpXSU9qUnF1VE5TakhyVnJtUG5QZWFFVGp5SUJ6bjZvV1FoQUFnNm1WS1hSR2tBcVdUbmNHMnRrZHpTMzkzUUx1ZVhoVkM?oc=5"
+        },
+        {
+          "time": "2026-11-02T09:27:28+09:00",
+          "title": "삼성전자 장 초반 21만원대로 밀려…SK하이닉스도 동반 약세",
+          "source": "진일보 | 전남일보",
+          "link": "https://news.google.com/rss/articles/CBMib0FVX3lxTE42dW83b2pWbVdaWXhFTm9sY2FPWEs5STZvREswUWg3ZVVGRG8za2FjNmNaNUtwdG1lSUlEZkl1SkVSZ21BRVJpa0dWWFhEdVNIR0RMNjdtS2E4b3dBaUJHSzc2N0Nzald3eHFId2dDRQ?oc=5"
         }
       ]
     },
@@ -159,34 +202,34 @@
       "score": 3.492631715990439,
       "news": [
         {
-          "time": "2026-11-02T09:53:10+09:00",
-          "title": "메모리반도체 호황 장기화에 외신 전망 낙관적, \"SK하이닉스 독보적 수혜\"",
-          "source": "비즈니스포스트",
-          "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTFBNeVd5YzNyNHJHOTNOZ205Rjh5Q1oxZTgwVkhRaTlueTZwSW1aQ2Z1cjRUTXAwb1drdEN3bFFCbEZlRzlqenkwSFFfNkZKUG5GUnI3WmxSbzJxMlNwNUEtWm8wejdtQjVFWWJTbWd6NHlFWW8?oc=5"
-        },
-        {
-          "time": "2026-11-02T08:56:52+09:00",
-          "title": "\"1억 상금에 SKCT 면제라더니\"…SK하이닉스 AI해커톤, 시스템 장애 중단",
-          "source": "서울경제TV",
-          "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTFBOVjRycHU0RDNyWlVsUW5NODc1SWNtczcxRzljbDlKWU1DQUJuY0FvREdrUDJ3TmVkd05sdll5Rm9UcHJINW1lRFpBMElGV2hZZHpnVDRKUUNLeEF6c3BRaFB1clQ?oc=5"
-        },
-        {
-          "time": "2026-11-02T09:19:45+09:00",
-          "title": "KB증권 “삼성전자-SK하이닉스 저평가 해소 전환점”",
-          "source": "BBS불교방송",
-          "link": "https://news.google.com/rss/articles/CBMia0FVX3lxTE81SlhtaERwbUlfajZITTFXdFZ0RXVLaUJDQWhPNFJzZ1RicVUyZzl4VHFiaGw5Y1d0a1VGWGpEeDNxbnpPQUdSSUU1NW5uNklNRHVGcGFfYUtKaGNoOXJQbkxoekE5NWtSWk1F?oc=5"
-        },
-        {
-          "time": "2026-11-02T09:32:59+09:00",
-          "title": "SK하이닉스 'AI 해커톤 2026' 예선 시스템 장애로 전면 재시험",
-          "source": "전자신문",
-          "link": "https://news.google.com/rss/articles/CBMiTkFVX3lxTE1GdGc2YktXeDhFeF9hWGJpdXh0UXBUTFB2TFJPbDZ0Y2p4ZmxJUnVTWGVLTHRRTHU3X0M2UnpuXzI3aVFVdFYyandYelBDZw?oc=5"
-        },
-        {
           "time": "2026-11-02T09:58:09+09:00",
           "title": "[특징주] 삼성전자·SK하이닉스, 美 반도체주 급락에도 '선방'",
           "source": "글로벌이코노믹",
           "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxNNnM4a0lZSlJRTzFYcTdNaU5STWw5X1UtZGxpS0tqa3ZKUHBxVFdzd3VCeGM4c2YwcTFremdueW9oUS1LaEdzWGc1SVdEYVU1X0pSVElqY2ROZWo5dEpzVmxIUGRVTjNtSEp6cFJJSU5rRk53ZHhnX2VvRnVUZWg5Nk5CaFY3UGsy?oc=5"
+        },
+        {
+          "time": "2026-11-02T09:18:06+09:00",
+          "title": "[특징주] 삼성전자 장초반 3%대 급락…SK하이닉스도 1.5%↓",
+          "source": "연합뉴스",
+          "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE9Rd0tKUnV5dkpZOFdPTUFjU2w2ejlsWHdOamV4TllVZElBN1FUbC1EUXg2VkxJSGZSQUh6XzRpWFlEenllMjEyR0kzT0tweWJoTzVtbVJEdHdzODjSAWBBVV95cUxOVFZQU2dKWGlMSHRtX25LRVZyQVpXSU9qUnF1VE5TakhyVnJtUG5QZWFFVGp5SUJ6bjZvV1FoQUFnNm1WS1hSR2tBcVdUbmNHMnRrZHpTMzkzUUx1ZVhoVkM?oc=5"
+        },
+        {
+          "time": "2026-11-02T09:27:28+09:00",
+          "title": "삼성전자 장 초반 21만원대로 밀려…SK하이닉스도 동반 약세",
+          "source": "진일보 | 전남일보",
+          "link": "https://news.google.com/rss/articles/CBMib0FVX3lxTE42dW83b2pWbVdaWXhFTm9sY2FPWEs5STZvREswUWg3ZVVGRG8za2FjNmNaNUtwdG1lSUlEZkl1SkVSZ21BRVJpa0dWWFhEdVNIR0RMNjdtS2E4b3dBaUJHSzc2N0Nzald3eHFId2dDRQ?oc=5"
+        },
+        {
+          "time": "2026-11-02T10:04:00+09:00",
+          "title": "SK하이닉스, SMA(50)·이치모쿠 저항 앞 모멘텀 둔화: 실시간 업데이트",
+          "source": "Investing.com 한국어",
+          "link": "https://news.google.com/rss/articles/CBMid0FVX3lxTE5BOXQ5Q2VJQUVxZWNYaVJ5RG51bGY5a1NaRGJpUFVSM0FwV1RJNFktZFJiaTZjWEdRM1FuVUY1RGFIWVB4YzQyMDYyZzV4X1NCbVZvVUxfSnhCeTJJOTllN3VuODhXbGJJWWVQZWFSRTBpWFJnZzRz?oc=5"
+        },
+        {
+          "time": "2026-11-02T10:05:07+09:00",
+          "title": "[청주소식] SK하이닉스 청주노조, 취약계층 위해 6천200만원 기탁",
+          "source": "연합뉴스",
+          "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE03dFk1TXBURjBEN2hnN3lRMkRYX0IyNm1tU0t4MXhlbm9oLXhYb212VlhteVB1OE5QVmxKNnZFZ3dYc2dSREdYUk0zTzcyM205bkVSMU5nUkdRcmfSAWBBVV95cUxPNkpXOWJzSlBvSGFKNkxOYjl1OGNybEdibFRYa0VUelpZeU1vSGFMRlpHdDA0UTZ6VExJRDVEUU92VnhreG53cnN0dWZ5MnRsdGgxQnJpVm9ieURnWXpScUg?oc=5"
         }
       ]
     }
@@ -198,9 +241,9 @@
     "low": -0.008547008547008517,
     "pattern": "저점 후 반등"
   },
-  "closing_share": NaN,
+  "closing_share": -0.21536098310291837,
   "intraday_corr_kospi": 0.9144212706685114,
-  "intraday_note": "장중 봉은 09:05~14:55까지만 있어 마감 구간(14:55~15:30)은 일봉 종가로만 봅니다(그 구간 +nan%).",
+  "intraday_note": "장중 봉은 09:05~14:55까지만 있어 마감 구간(14:55~15:30)은 일봉 종가로만 봅니다(그 구간 -1.08%).",
   "intraday_coverage": "09:05~14:55",
   "intraday_path": [
     {
@@ -501,12 +544,12 @@
     {
       "time": "2026-11-02T14:00:00+09:00",
       "price": 1484000.0,
-      "volume": 30743.0
+      "volume": 30746.0
     },
     {
       "time": "2026-11-02T14:05:00+09:00",
       "price": 1484000.0,
-      "volume": 37089.0
+      "volume": 37086.0
     },
     {
       "time": "2026-11-02T14:10:00+09:00",
@@ -577,28 +620,22 @@
           "link": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE1ESE44NlNhYTdiY1c4aWtDeUdCTE80aGhabDA4WHNkS3hVWDFaUk5KYVJETU1Oc2ZVVlkzOWRZVGpvdW80cFRHbllWZF9HRFRCOVE?oc=5"
         },
         {
-          "time": "2026-11-02T08:56:52+09:00",
-          "title": "\"1억 상금에 SKCT 면제라더니\"…SK하이닉스 AI해커톤, 시스템 장애 중단",
-          "source": "서울경제TV",
-          "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTFBOVjRycHU0RDNyWlVsUW5NODc1SWNtczcxRzljbDlKWU1DQUJuY0FvREdrUDJ3TmVkd05sdll5Rm9UcHJINW1lRFpBMElGV2hZZHpnVDRKUUNLeEF6c3BRaFB1clQ?oc=5"
-        },
-        {
-          "time": "2026-11-02T09:19:45+09:00",
-          "title": "KB증권 “삼성전자-SK하이닉스 저평가 해소 전환점”",
-          "source": "BBS불교방송",
-          "link": "https://news.google.com/rss/articles/CBMia0FVX3lxTE81SlhtaERwbUlfajZITTFXdFZ0RXVLaUJDQWhPNFJzZ1RicVUyZzl4VHFiaGw5Y1d0a1VGWGpEeDNxbnpPQUdSSUU1NW5uNklNRHVGcGFfYUtKaGNoOXJQbkxoekE5NWtSWk1F?oc=5"
-        },
-        {
-          "time": "2026-11-02T09:32:59+09:00",
-          "title": "SK하이닉스 'AI 해커톤 2026' 예선 시스템 장애로 전면 재시험",
-          "source": "전자신문",
-          "link": "https://news.google.com/rss/articles/CBMiTkFVX3lxTE1GdGc2YktXeDhFeF9hWGJpdXh0UXBUTFB2TFJPbDZ0Y2p4ZmxJUnVTWGVLTHRRTHU3X0M2UnpuXzI3aVFVdFYyandYelBDZw?oc=5"
-        },
-        {
           "time": "2026-11-02T08:24:00+09:00",
           "title": "[특징주] ‘인텔 쇼크’에 삼성전자·SK하이닉스 프리마켓서 3%대 급락",
           "source": "Chosunbiz",
           "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxOWF9vZ1dhN2VWV1pVVHlvSHk2QkdDcUUxdlo3SF9mMkxHdjRpOXFaQ1Z1eGk0NFFnNWp2REE2UTFIQ1VBY3hRNldjMUdlRUV0V2Q0eXctOEtRSTNlSWFmZDRIZUlfM1puNzRoSHlnalIwQmIycjZfUkxPRjJvejhqbW14bDJPUGJS0gGcAUFVX3lxTE1OMjlST1lSTk51SUxsenlzUG5PejdTMV9QRzF2RXF4REZGazAteVZMb3hvU3Y1Y1ZlWWRENWQ5ekl0OVU4Q0tVWTBZYUtsUHlKNldER0wtdkR4Tmd1dGVCTEtfaDJodDhZYUFka2xpVTJtQWg5OGU2YVB2U1B0YmIxNmlKa0Vld0JBVlNSN3dJejlzSDhtdnZubFJMMg?oc=5"
+        },
+        {
+          "time": "2026-11-02T09:18:06+09:00",
+          "title": "[특징주] 삼성전자 장초반 3%대 급락…SK하이닉스도 1.5%↓",
+          "source": "연합뉴스",
+          "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE9Rd0tKUnV5dkpZOFdPTUFjU2w2ejlsWHdOamV4TllVZElBN1FUbC1EUXg2VkxJSGZSQUh6XzRpWFlEenllMjEyR0kzT0tweWJoTzVtbVJEdHdzODjSAWBBVV95cUxOVFZQU2dKWGlMSHRtX25LRVZyQVpXSU9qUnF1VE5TakhyVnJtUG5QZWFFVGp5SUJ6bjZvV1FoQUFnNm1WS1hSR2tBcVdUbmNHMnRrZHpTMzkzUUx1ZVhoVkM?oc=5"
+        },
+        {
+          "time": "2026-11-02T09:27:28+09:00",
+          "title": "삼성전자 장 초반 21만원대로 밀려…SK하이닉스도 동반 약세",
+          "source": "진일보 | 전남일보",
+          "link": "https://news.google.com/rss/articles/CBMib0FVX3lxTE42dW83b2pWbVdaWXhFTm9sY2FPWEs5STZvREswUWg3ZVVGRG8za2FjNmNaNUtwdG1lSUlEZkl1SkVSZ21BRVJpa0dWWFhEdVNIR0RMNjdtS2E4b3dBaUJHSzc2N0Nzald3eHFId2dDRQ?oc=5"
         }
       ],
       "price": 1423000.0,
@@ -615,34 +652,34 @@
       "score": 3.492631715990439,
       "news": [
         {
-          "time": "2026-11-02T09:53:10+09:00",
-          "title": "메모리반도체 호황 장기화에 외신 전망 낙관적, \"SK하이닉스 독보적 수혜\"",
-          "source": "비즈니스포스트",
-          "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTFBNeVd5YzNyNHJHOTNOZ205Rjh5Q1oxZTgwVkhRaTlueTZwSW1aQ2Z1cjRUTXAwb1drdEN3bFFCbEZlRzlqenkwSFFfNkZKUG5GUnI3WmxSbzJxMlNwNUEtWm8wejdtQjVFWWJTbWd6NHlFWW8?oc=5"
-        },
-        {
-          "time": "2026-11-02T08:56:52+09:00",
-          "title": "\"1억 상금에 SKCT 면제라더니\"…SK하이닉스 AI해커톤, 시스템 장애 중단",
-          "source": "서울경제TV",
-          "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTFBOVjRycHU0RDNyWlVsUW5NODc1SWNtczcxRzljbDlKWU1DQUJuY0FvREdrUDJ3TmVkd05sdll5Rm9UcHJINW1lRFpBMElGV2hZZHpnVDRKUUNLeEF6c3BRaFB1clQ?oc=5"
-        },
-        {
-          "time": "2026-11-02T09:19:45+09:00",
-          "title": "KB증권 “삼성전자-SK하이닉스 저평가 해소 전환점”",
-          "source": "BBS불교방송",
-          "link": "https://news.google.com/rss/articles/CBMia0FVX3lxTE81SlhtaERwbUlfajZITTFXdFZ0RXVLaUJDQWhPNFJzZ1RicVUyZzl4VHFiaGw5Y1d0a1VGWGpEeDNxbnpPQUdSSUU1NW5uNklNRHVGcGFfYUtKaGNoOXJQbkxoekE5NWtSWk1F?oc=5"
-        },
-        {
-          "time": "2026-11-02T09:32:59+09:00",
-          "title": "SK하이닉스 'AI 해커톤 2026' 예선 시스템 장애로 전면 재시험",
-          "source": "전자신문",
-          "link": "https://news.google.com/rss/articles/CBMiTkFVX3lxTE1GdGc2YktXeDhFeF9hWGJpdXh0UXBUTFB2TFJPbDZ0Y2p4ZmxJUnVTWGVLTHRRTHU3X0M2UnpuXzI3aVFVdFYyandYelBDZw?oc=5"
-        },
-        {
           "time": "2026-11-02T09:58:09+09:00",
           "title": "[특징주] 삼성전자·SK하이닉스, 美 반도체주 급락에도 '선방'",
           "source": "글로벌이코노믹",
           "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxNNnM4a0lZSlJRTzFYcTdNaU5STWw5X1UtZGxpS0tqa3ZKUHBxVFdzd3VCeGM4c2YwcTFremdueW9oUS1LaEdzWGc1SVdEYVU1X0pSVElqY2ROZWo5dEpzVmxIUGRVTjNtSEp6cFJJSU5rRk53ZHhnX2VvRnVUZWg5Nk5CaFY3UGsy?oc=5"
+        },
+        {
+          "time": "2026-11-02T09:18:06+09:00",
+          "title": "[특징주] 삼성전자 장초반 3%대 급락…SK하이닉스도 1.5%↓",
+          "source": "연합뉴스",
+          "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE9Rd0tKUnV5dkpZOFdPTUFjU2w2ejlsWHdOamV4TllVZElBN1FUbC1EUXg2VkxJSGZSQUh6XzRpWFlEenllMjEyR0kzT0tweWJoTzVtbVJEdHdzODjSAWBBVV95cUxOVFZQU2dKWGlMSHRtX25LRVZyQVpXSU9qUnF1VE5TakhyVnJtUG5QZWFFVGp5SUJ6bjZvV1FoQUFnNm1WS1hSR2tBcVdUbmNHMnRrZHpTMzkzUUx1ZVhoVkM?oc=5"
+        },
+        {
+          "time": "2026-11-02T09:27:28+09:00",
+          "title": "삼성전자 장 초반 21만원대로 밀려…SK하이닉스도 동반 약세",
+          "source": "진일보 | 전남일보",
+          "link": "https://news.google.com/rss/articles/CBMib0FVX3lxTE42dW83b2pWbVdaWXhFTm9sY2FPWEs5STZvREswUWg3ZVVGRG8za2FjNmNaNUtwdG1lSUlEZkl1SkVSZ21BRVJpa0dWWFhEdVNIR0RMNjdtS2E4b3dBaUJHSzc2N0Nzald3eHFId2dDRQ?oc=5"
+        },
+        {
+          "time": "2026-11-02T10:04:00+09:00",
+          "title": "SK하이닉스, SMA(50)·이치모쿠 저항 앞 모멘텀 둔화: 실시간 업데이트",
+          "source": "Investing.com 한국어",
+          "link": "https://news.google.com/rss/articles/CBMid0FVX3lxTE5BOXQ5Q2VJQUVxZWNYaVJ5RG51bGY5a1NaRGJpUFVSM0FwV1RJNFktZFJiaTZjWEdRM1FuVUY1RGFIWVB4YzQyMDYyZzV4X1NCbVZvVUxfSnhCeTJJOTllN3VuODhXbGJJWWVQZWFSRTBpWFJnZzRz?oc=5"
+        },
+        {
+          "time": "2026-11-02T10:05:07+09:00",
+          "title": "[청주소식] SK하이닉스 청주노조, 취약계층 위해 6천200만원 기탁",
+          "source": "연합뉴스",
+          "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE03dFk1TXBURjBEN2hnN3lRMkRYX0IyNm1tU0t4MXhlbm9oLXhYb212VlhteVB1OE5QVmxKNnZFZ3dYc2dSREdYUk0zTzcyM205bkVSMU5nUkdRcmfSAWBBVV95cUxPNkpXOWJzSlBvSGFKNkxOYjl1OGNybEdibFRYa0VUelpZeU1vSGFMRlpHdDA0UTZ6VExJRDVEUU92VnhreG53cnN0dWZ5MnRsdGgxQnJpVm9ieURnWXpScUg?oc=5"
         }
       ],
       "price": 1457000.0,
@@ -657,24 +694,6 @@
       "link": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE1ESE44NlNhYTdiY1c4aWtDeUdCTE80aGhabDA4WHNkS3hVWDFaUk5KYVJETU1Oc2ZVVlkzOWRZVGpvdW80cFRHbllWZF9HRFRCOVE?oc=5"
     },
     {
-      "time": "2026-11-02T07:05:00+09:00",
-      "title": "[국장방향예측] 코스피 1.52%↓ SK하이닉스 0.39%↓",
-      "source": "디지털애셋",
-      "link": "https://news.google.com/rss/articles/CBMickFVX3lxTE1GNEFPOS13ZTVpTTFsV2xLenNqeFo2ZUNhTjVGZzRvYlFLdFdCM2M1YUlSNGxQVDk3N2FQblRfVlBSSm84UnZWM0VDRFlYUzI4Vkl0THpnaGprQWkzeUFWS3k5TVdNbXRtOW9ZWk40VXdxdw?oc=5"
-    },
-    {
-      "time": "2026-11-02T08:56:52+09:00",
-      "title": "\"1억 상금에 SKCT 면제라더니\"…SK하이닉스 AI해커톤, 시스템 장애 중단",
-      "source": "서울경제TV",
-      "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTFBOVjRycHU0RDNyWlVsUW5NODc1SWNtczcxRzljbDlKWU1DQUJuY0FvREdrUDJ3TmVkd05sdll5Rm9UcHJINW1lRFpBMElGV2hZZHpnVDRKUUNLeEF6c3BRaFB1clQ?oc=5"
-    },
-    {
-      "time": "2026-11-02T07:54:16+09:00",
-      "title": "\"SK하이닉스, 4분기 영업익 사상 첫 100조 돌파 전망\"-KB",
-      "source": "한국경제",
-      "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE1wcXo2MHVKOHRYWFdqUVFTLUJ0VndzS1dYV3N3VV9EcTg2QnQ1bGE2NXo5X1ZXQklRLWo3YWRhQ3ZjQ09RZk1VVUM3Sjl2eDllaG1Eb01UUGV4Zw?oc=5"
-    },
-    {
       "time": "2026-11-02T08:24:00+09:00",
       "title": "[특징주] ‘인텔 쇼크’에 삼성전자·SK하이닉스 프리마켓서 3%대 급락",
       "source": "Chosunbiz",
@@ -687,6 +706,12 @@
       "title": "글로벌 AI 반도체주 투자자 기준 엄격해져, 삼성전자 SK하이닉스 '실적 증명' 부담 가중",
       "source": "비즈니스포스트",
       "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTE1USkJUdFpFZXNIelVjd2hSYkVJNkxKRmMtdG41ZmdhLXZaV0ZTWnRDUG5EQm1WM0tLWUNJLS1oSUFBaV9EOTdmYWItRUs1Q2Exa0NHbzhKOGZnVmlWMUY5eldzSmQ1WXBOd0UwYWN4LS01NjA?oc=5"
+    },
+    {
+      "time": "2026-11-02T18:06:38+09:00",
+      "title": "'역대급 실적·20조 자사주'··· SK하이닉스, 코스피 6000선 이끌까",
+      "source": "그린포스트코리아",
+      "link": "https://news.google.com/rss/articles/CBMidkFVX3lxTE5XZEo2ZVp5S3pUU3J5S0Uwb0ZZYzhmcDlSVDN5V0dTWFpPdU5TOW9RX2RSZ2dPWU85U2ZtMU0xMnFzbTFrcXF4OHlqV2czZ2FuMl9KdTAwTmRncElZQ0J5X0NTRlNuTjJVSDl4STIzUHQzajZRZEHSAXpBVV95cUxQcVJVM1dRMy16SFFnUThPLWc5Z3J2NlQtRXA5TC1hdmVOSzJDTzk2enUzVlBvZVh4VTFxOWtEbUpfdTZjcS1BZUVsQkNQMENSVEdPbVV1RlJQRjVQZ1JaN2hVRTI5WFd1UHI3Z3piNVpRNmNpTzJfd01GZw?oc=5"
     },
     {
       "time": "2026-11-02T21:26:00+09:00",
@@ -707,22 +732,84 @@
       "link": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE1ESE44NlNhYTdiY1c4aWtDeUdCTE80aGhabDA4WHNkS3hVWDFaUk5KYVJETU1Oc2ZVVlkzOWRZVGpvdW80cFRHbllWZF9HRFRCOVE?oc=5"
     },
     {
-      "time": "2026-11-02T09:53:10+09:00",
-      "title": "메모리반도체 호황 장기화에 외신 전망 낙관적, \"SK하이닉스 독보적 수혜\"",
-      "source": "비즈니스포스트",
-      "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTFBNeVd5YzNyNHJHOTNOZ205Rjh5Q1oxZTgwVkhRaTlueTZwSW1aQ2Z1cjRUTXAwb1drdEN3bFFCbEZlRzlqenkwSFFfNkZKUG5GUnI3WmxSbzJxMlNwNUEtWm8wejdtQjVFWWJTbWd6NHlFWW8?oc=5"
-    },
-    {
-      "time": "2026-11-02T14:27:05+09:00",
-      "title": "SK스퀘어, SK하이닉스 호실적에 6조 배당 수입...주주환원 확대",
-      "source": "한스경제",
-      "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE1kTTNwS1ppbExheUJGNXNtcjcxajlNclZtT2tzdmpJbDVEUENZQUN1d0tyM0FOU19uWnVFR1ZKSXpBM2RCSWlPLS1QRE9pc1N4Vnp1MkNTVFY2U2JkWlpyWjZLSHhDS3N5dC1TZdIBb0FVX3lxTE9Zeml6WUJCOFJrbm1mOUJNY1EyczR5bVd5b2R6ck1fbkd0TGJYd01BV085d3lMMlMtQWhjSW9UZ0xhdG5MTmtCNk5YN1ZiME1va2xvWk16eFNKSmplWjlfanhtRnA3OEFZNHNnMVI4Yw?oc=5"
+      "time": "2026-11-02T11:19:49+09:00",
+      "title": "삼성전자·SK하이닉스, 역대급 실적에도 주가 엇갈린 이유",
+      "source": "서울일보",
+      "link": "https://news.google.com/rss/articles/CBMib0FVX3lxTE1Yc3RMMlFucTQ4MDJvV0hzb0V5MS11X29GZC1ZenZiWnM1OEpraGJIUmI1cnZxNzBBQnpvbGV0a3d4N0lWZWtCdXFXSjBvNERSTXJ6amF0QzVFUHNpUVdNb2s3S2xfVFBaaktoSU9Yd9IBb0FVX3lxTE1Yc3RMMlFucTQ4MDJvV0hzb0V5MS11X29GZC1ZenZiWnM1OEpraGJIUmI1cnZxNzBBQnpvbGV0a3d4N0lWZWtCdXFXSjBvNERSTXJ6amF0QzVFUHNpUVdNb2s3S2xfVFBaaktoSU9Ydw?oc=5"
     }
   ],
   "disclosures": [],
   "disclosure_note": null,
   "flows": "외국인 -160,311 / 기관 +171,970",
-  "flow_story": null,
+  "flow_story": {
+    "direction": "up",
+    "c2c": 0.038081805359661436,
+    "actors": [
+      {
+        "key": "foreign_net",
+        "name": "외국인",
+        "shares": -160311.0,
+        "won": -235977792000.0,
+        "vs_usual": 0.38488705312469385
+      },
+      {
+        "key": "inst_net",
+        "name": "기관",
+        "shares": 171970.0,
+        "won": 253139840000.0,
+        "vs_usual": 1.0673391248650854
+      },
+      {
+        "key": "indiv_net",
+        "name": "개인",
+        "shares": -256933.0,
+        "won": -378205376000.0,
+        "vs_usual": 0.9000269903358484
+      },
+      {
+        "key": "other_net",
+        "name": "기타 법인 등(추정)",
+        "shares": 245274.0,
+        "won": 361043328000.0,
+        "vs_usual": null
+      }
+    ],
+    "lead": {
+      "key": "other_net",
+      "name": "기타 법인 등(추정)",
+      "shares": 245274.0,
+      "won": 361043328000.0,
+      "vs_usual": null
+    },
+    "counter": {
+      "key": "indiv_net",
+      "name": "개인",
+      "shares": -256933.0,
+      "won": -378205376000.0,
+      "vs_usual": 0.9000269903358484
+    },
+    "all_one_side": false,
+    "observations": [
+      "전일까지 20거래일 고점: 종가 돌파 없음 · 종가 위치 -20.65%.",
+      "전일까지 60거래일 고점: 종가 돌파 없음 · 종가 위치 -23.93%.",
+      "같은 5거래일 수익률: 이 종목 +15.45%, 삼성전자 +7.51% · 차이 +7.94%p.",
+      "같은 20거래일 수익률: 이 종목 -19.69%, 삼성전자 -17.03% · 차이 -2.67%p.",
+      "같은 60거래일 수익률: 이 종목 -6.04%, 삼성전자 -4.38% · 차이 -1.66%p.",
+      "외국인 5일 합계 순매수 전환: 직전 5일 → 최근 5일 순매수/거래량 -5.21% → +0.23% (일평균 -178,789주 → +8,425주). 향후 상승을 뜻하는 신호는 아닙니다.",
+      "삼성전자도 +1.78%였지만 이 종목이 더 크게 움직였습니다.",
+      "원/달러 +0.60%(원화 약세) — 외국인 매도와 같은 방향의 환율 움직임입니다.",
+      "전날 밤 SOX는 -7.20%로 반대 방향이어서 미국 반도체 흐름으로는 설명되지 않습니다.",
+      "전날 밤 마이크론은 -5.30%로 반대 방향이었습니다.",
+      "장중 5일선(1,409,400원) 아래로 빠졌다가 그 위로 되돌아와 마감했습니다.",
+      "장중 20일선(1,459,650원) 아래로 빠졌다가 그 위로 되돌아와 마감했습니다.",
+      "우리 장중(09:00~15:30) 나스닥100 선물 +0.25%, 이 종목 고점 이후 -0.09% · 미 10년물 국채 선물 +0.06%, 이 종목 고점 이후 +0.00% · 원/달러 +0.77%(원화 약세), 이 종목 고점 이후 -0.03%.",
+      "자사주 매입 기간 중(직접 취득 2026-08-20~2026-11-19, 40,004,340,000,000, DART 공시) — 회사 자신의 매수는 기타 법인으로 잡힙니다.",
+      "자사주 매입 기간 중(직접 취득 2026-10-29~2027-01-28, 20,007,720,000,000, DART 공시) — 회사 자신의 매수는 기타 법인으로 잡힙니다.",
+      "기타 법인 등(추정) 순매수 +3,610억원 — 회사의 자사주 매입 기간이라 회사 매입과 맞는 모양입니다."
+    ],
+    "estimated_indiv": false,
+    "source_note": "출처 naver+cache · 장 마감 직후 잠정치라 저녁 확정치와 다를 수 있습니다 · KRX는 받지 못함(pykrx 미설치)"
+  },
   "flow_status": {
     "state": "ok",
     "detail": "naver+cache",
@@ -751,49 +838,49 @@
     {
       "model": "No macro ensemble",
       "hit": false,
-      "verdict": "틀림 — 예측 하락 54%, 실제 보합(+nan%)",
-      "legs": "갭 +nan%(보합) · 세션 +nan%(보합)",
-      "where": "결과는 주로 장중에서 정해졌습니다.",
+      "verdict": "틀림 — 예측 하락 54%, 실제 상승(+3.81%)",
+      "legs": "갭 -1.13%(보합) · 세션 +4.99%(상승)",
+      "where": "갭은 예측 방향이었으나 장중에 반대로 움직여 결과가 뒤집혔습니다.",
       "band": 0.0164431910478062,
       "probs": [
         0.5365813133468874,
         0.2896639730672193,
         0.1737547135858933
       ],
-      "actual": "보합",
+      "actual": "상승",
       "predicted": "하락"
     },
     {
       "model": "Mean ensemble",
       "hit": false,
-      "verdict": "틀림 — 예측 하락 55%, 실제 보합(+nan%)",
-      "legs": "갭 +nan%(보합) · 세션 +nan%(보합)",
-      "where": "결과는 주로 장중에서 정해졌습니다.",
+      "verdict": "틀림 — 예측 하락 55%, 실제 상승(+3.81%)",
+      "legs": "갭 -1.13%(보합) · 세션 +4.99%(상승)",
+      "where": "갭은 예측 방향이었으나 장중에 반대로 움직여 결과가 뒤집혔습니다.",
       "band": 0.0164431910478062,
       "probs": [
         0.5498192068122295,
         0.2690417749302102,
         0.1811390182575602
       ],
-      "actual": "보합",
+      "actual": "상승",
       "predicted": "하락"
     },
     {
       "model": "Candidate expanding",
       "hit": false,
-      "verdict": "틀림 — 예측 하락 44%, 실제 보합(+nan%)",
-      "legs": "갭 +nan%(보합) · 세션 +nan%(보합)",
-      "where": "결과는 주로 장중에서 정해졌습니다.",
+      "verdict": "틀림 — 예측 하락 44%, 실제 상승(+3.81%)",
+      "legs": "갭 -1.13%(보합) · 세션 +4.99%(상승)",
+      "where": "갭은 예측 방향이었으나 장중에 반대로 움직여 결과가 뒤집혔습니다.",
       "band": 0.0164431910478062,
       "probs": [
         0.4364006786135665,
         0.3393556439372007,
         0.2242436774492328
       ],
-      "actual": "보합",
+      "actual": "상승",
       "predicted": "하락"
     }
   ],
-  "price_check": "1거래일 예상 구간 1,291,834~1,484,337원 · 종가 nan원 → 구간 밖",
+  "price_check": "1거래일 예상 구간 1,291,834~1,484,337원 · 종가 1,472,000원 → 구간 안",
   "disclaimer": "시간이 맞는 것이지 원인 확정이 아닙니다. 뉴스 없이 움직이는 날(수급·프로그램·옵션 만기)이 많고, 기사 발행 시각은 실제 정보 유통보다 늦거나 앞섭니다. 이 절은 설명 도구이며 다음날 예측에 자동 반영되지 않습니다."
 }

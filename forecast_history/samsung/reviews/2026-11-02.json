@@ -3,7 +3,7 @@
   "name": "삼성전자",
   "peer_name": "SK하이닉스",
   "session_date": "2026-11-02",
-  "generated_at": "2026-11-03 02:00 KST",
+  "generated_at": "2026-11-03 02:14 KST",
   "summary": {
     "prev_close": 225000.0,
     "open": NaN,
@@ -19,7 +19,7 @@
     "volume_ratio": 0.8742718855331245,
     "kospi_c2c": NaN,
     "peer_c2c": NaN,
-    "usdkrw_chg": 0.004880513454758262,
+    "usdkrw_chg": 0.004745942150578886,
     "us_nights": 1,
     "sox_ret": -0.07200781168593828,
     "nasdaq_ret": -0.028555611175022477,
@@ -109,10 +109,22 @@
       "score": 11.432091095169529,
       "news": [
         {
+          "time": "2026-11-02T07:56:00+09:00",
+          "title": "[전날 주요공시] 삼성전자·기아·삼성전기 등",
+          "source": "이투데이",
+          "link": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE1uR3BvU2d4ZGUyYnJYeTQ5cHVmUmJGTXFZNEJMMm9GSXVheHdob3dDY284WVJlV2FwZTM0RnM2TzhUbDVwTEFuelVYMDRTb1J4MTI4ZA?oc=5"
+        },
+        {
           "time": "2026-11-02T08:13:00+09:00",
           "title": "KB證 “삼성전자, 2년 영업익 1022조…2027년 엔비디아 제치고 세계 1위”",
           "source": "이투데이",
           "link": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE5uanVwbGo4UGNNTERmbWJRV0pDbWZNYXd1djFPQk14YWluaG9ISWxmMVdheXVHYzlTeVl6a3BRNXB1cHZrR0VIRHktMW9UOHBpdTFMOQ?oc=5"
+        },
+        {
+          "time": "2026-11-02T08:40:38+09:00",
+          "title": "삼성전자, '2026 다카르 청소년올림픽' 공식 후원",
+          "source": "연합뉴스",
+          "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE9xTGJDdmVIOTVHUGh2OXp4aWpjTkVPajlNYzdhUE50NDZxMmdNQ3YtVDFMRExCeWN4emtjNkUwZHgxOWE4cDJTekRGcnVERS1YWFgzeXlvMXBWYnRvX0NvTdIBYEFVX3lxTE9xTGJDdmVIOTVHUGh2OXp4aWpjTkVPajlNYzdhUE50NDZxMmdNQ3YtVDFMRExCeWN4emtjNkUwZHgxOWE4cDJTekRGcnVERS1YWFgzeXlvMXBWYnRvX0NvTQ?oc=5"
         }
       ]
     },
@@ -539,10 +551,22 @@
       "score": 11.432091095169529,
       "news": [
         {
+          "time": "2026-11-02T07:56:00+09:00",
+          "title": "[전날 주요공시] 삼성전자·기아·삼성전기 등",
+          "source": "이투데이",
+          "link": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE1uR3BvU2d4ZGUyYnJYeTQ5cHVmUmJGTXFZNEJMMm9GSXVheHdob3dDY284WVJlV2FwZTM0RnM2TzhUbDVwTEFuelVYMDRTb1J4MTI4ZA?oc=5"
+        },
+        {
           "time": "2026-11-02T08:13:00+09:00",
           "title": "KB證 “삼성전자, 2년 영업익 1022조…2027년 엔비디아 제치고 세계 1위”",
           "source": "이투데이",
           "link": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE5uanVwbGo4UGNNTERmbWJRV0pDbWZNYXd1djFPQk14YWluaG9ISWxmMVdheXVHYzlTeVl6a3BRNXB1cHZrR0VIRHktMW9UOHBpdTFMOQ?oc=5"
+        },
+        {
+          "time": "2026-11-02T08:40:38+09:00",
+          "title": "삼성전자, '2026 다카르 청소년올림픽' 공식 후원",
+          "source": "연합뉴스",
+          "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE9xTGJDdmVIOTVHUGh2OXp4aWpjTkVPajlNYzdhUE50NDZxMmdNQ3YtVDFMRExCeWN4emtjNkUwZHgxOWE4cDJTekRGcnVERS1YWFgzeXlvMXBWYnRvX0NvTdIBYEFVX3lxTE9xTGJDdmVIOTVHUGh2OXp4aWpjTkVPajlNYzdhUE50NDZxMmdNQ3YtVDFMRExCeWN4emtjNkUwZHgxOWE4cDJTekRGcnVERS1YWFgzeXlvMXBWYnRvX0NvTQ?oc=5"
         }
       ],
       "price": 217000.0,
@@ -595,10 +619,22 @@
   ],
   "overnight_news": [
     {
+      "time": "2026-11-02T07:56:00+09:00",
+      "title": "[전날 주요공시] 삼성전자·기아·삼성전기 등",
+      "source": "이투데이",
+      "link": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE1uR3BvU2d4ZGUyYnJYeTQ5cHVmUmJGTXFZNEJMMm9GSXVheHdob3dDY284WVJlV2FwZTM0RnM2TzhUbDVwTEFuelVYMDRTb1J4MTI4ZA?oc=5"
+    },
+    {
       "time": "2026-11-02T08:13:00+09:00",
       "title": "KB證 “삼성전자, 2년 영업익 1022조…2027년 엔비디아 제치고 세계 1위”",
       "source": "이투데이",
       "link": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE5uanVwbGo4UGNNTERmbWJRV0pDbWZNYXd1djFPQk14YWluaG9ISWxmMVdheXVHYzlTeVl6a3BRNXB1cHZrR0VIRHktMW9UOHBpdTFMOQ?oc=5"
+    },
+    {
+      "time": "2026-11-02T08:40:38+09:00",
+      "title": "삼성전자, '2026 다카르 청소년올림픽' 공식 후원",
+      "source": "연합뉴스",
+      "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE9xTGJDdmVIOTVHUGh2OXp4aWpjTkVPajlNYzdhUE50NDZxMmdNQ3YtVDFMRExCeWN4emtjNkUwZHgxOWE4cDJTekRGcnVERS1YWFgzeXlvMXBWYnRvX0NvTdIBYEFVX3lxTE9xTGJDdmVIOTVHUGh2OXp4aWpjTkVPajlNYzdhUE50NDZxMmdNQ3YtVDFMRExCeWN4emtjNkUwZHgxOWE4cDJTekRGcnVERS1YWFgzeXlvMXBWYnRvX0NvTQ?oc=5"
     }
   ],
   "top_news": [
@@ -621,22 +657,22 @@
       "link": "https://news.google.com/rss/articles/CBMigwFBVV95cUxPb2drcy1iejE0bVBjMXpsQWUwT1JnREJLdEc5TnVRWmM1ZlZyUlk5RGtQR3VRTHVkSmY4bmNUaEI0NzZfUTFVVmFKM0FmVEJyZTBqQjdqQ1BLa2hubWJnRE9GYWtTS21DX01GMWFwcjlIblFkc0lPS1JOdVlBOWNDX0NYNA?oc=5"
     },
     {
-      "time": "2026-11-02T14:41:44+09:00",
-      "title": "[가장 보통의 투자] “12만 원엔 망설이고, 37만 원엔 후회” 삼성전자 주가의 온도차",
-      "source": "비즈한국",
-      "link": "https://news.google.com/rss/articles/CBMihwFBVV95cUxPZXJWYkdMRTllVWdhc2ZKSzMzNmlBSTB5eXBmWm5qdkZpNHJxcTVHeWx6bXV6QTlhQTRONW1qVm1UMWpZS1VKbEdSSEV4RE1YS3BvMkh2WHo4WTV4OV81S0dUeUh5QW5ENThRMjVoeFNOUzdhWG5JRmc4elhIVnd5b0ZrOFRpNFU?oc=5"
-    },
-    {
-      "time": "2026-11-02T16:57:14+09:00",
-      "title": "반도체 영업익 107조 삼성전자…HBM·2나노 통합 경쟁력 강화 패키징 기술 확보 나선다",
-      "source": "필드뉴스",
-      "link": "https://news.google.com/rss/articles/CBMiakFVX3lxTE5ET01RY0J1bnpUZkR0c3pOUUYyX2FMeF95aU5JY3kxa2VWa1JUcG9JLWgxR1htUVFpbW45Y2tBZ3VQMWsyaFcydnZlWE5ZekJobDFHazQ3RVVjM2VIX2E3R1VONXJIbXBXN1HSAWxBVV95cUxNcUVoUTczYklONllNM2p1VjVBSTY0SjhhTllVcUsweElOeVBiS2JpcU8yNHVndS11dnZoVzAyXzAwQXJqTVNMLW5IbE16LWxnR1lkZHFkZ3ZUSDBhM2pkRzVXQmlmOUtoOXRCby0?oc=5"
-    },
-    {
       "time": "2026-11-02T17:07:43+09:00",
       "title": "삼성전자, 연말 인사 `안정 속 변화` 무게…AI 반도체·미래사업에 방점",
       "source": "디지털데일리",
       "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE0wU1FLM0RrTHFSUjB6cm5xcXhNVjZpRmM1bS1YamI5SUxTX09KaE1BenRwNThoLXFXSXR3dGRiYVZHVFg2dW94SHVuVXdON2JSa3MyaGdqMWpleFJ2WXNBbFo5QXo?oc=5"
+    },
+    {
+      "time": "2026-11-02T23:00:00+09:00",
+      "title": "[AI산업 자금경색] \"AI 투자 회수 속도·자본 효율성 우려\"…삼성전자·SK하이닉스, 장기계약 확대 '관리강화'",
+      "source": "CBC뉴스",
+      "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE5EUXdueHM5NHNnNjBtQ0V5LW5UR3FVcnRfOHVGUFVZR0RHQXVNUTBNajV0OFY5Y0dXTGNwMHNPQlh5SE1qdHhpcUZfckc1Y1BYc2NjdzdwSHZ3bDVWdDNNc0pnSzZnb1Bw?oc=5"
+    },
+    {
+      "time": "2026-11-02T18:06:38+09:00",
+      "title": "'역대급 실적·20조 자사주'··· SK하이닉스, 코스피 6000선 이끌까",
+      "source": "그린포스트코리아",
+      "link": "https://news.google.com/rss/articles/CBMiekFVX3lxTFBxUlUzV1EzLXpIUWdROE8tZzlncnY2VC1FcDlMLWF2ZU5LMkNPOTZ6dTNWUG9lWHhVMXE5a0RtSl91NmNxLUFlRWxCQ1AwQ1JUR09tVXVGUlBGNVBnUlo3aFVFMjlYV3VQcjdnemI1WlE2Y2lPMl93TUZn0gF6QVVfeXFMUHFSVTNXUTMtekhRZ1E4Ty1nOWdydjZULUVwOUwtYXZlTksyQ085Nnp1M1ZQb2VYeFUxcTlrRG1KX3U2Y3EtQWVFbEJDUDBDUlRHT21VdUZSUEY1UGdSWjdoVUUyOVhXdVByN2d6YjVaUTZjaU8yX3dNRmc?oc=5"
     }
   ],
   "disclosures": [],

@@ -3,7 +3,7 @@
   "name": "삼성전자",
   "peer_name": "SK하이닉스",
   "session_date": "2026-11-02",
-  "generated_at": "2026-11-02 16:11 KST",
+  "generated_at": "2026-11-02 16:46 KST",
   "summary": {
     "prev_close": 225000.0,
     "open": 219000.0,
@@ -15,11 +15,11 @@
     "c2c": 0.01777777777777767,
     "high_vs_open": 0.05936073059360725,
     "low_vs_open": -0.0091324200913242,
-    "volume": 15273364.0,
-    "volume_ratio": 0.8444351685767956,
+    "volume": 15293246.0,
+    "volume_ratio": 0.8455344064409389,
     "kospi_c2c": 0.02239498537731177,
     "peer_c2c": 0.038081805359661436,
-    "usdkrw_chg": 0.0037369766909727264,
+    "usdkrw_chg": 0.004334929455441561,
     "us_nights": 1,
     "sox_ret": -0.07200781168593828,
     "nasdaq_ret": -0.028555611175022477,
@@ -164,10 +164,10 @@
           "link": "https://news.google.com/rss/articles/CBMidkFVX3lxTE1VSWlnS3BXNV9FcThaVlRaeGJWMjhzZ0FZT2hVYkM0cXhBbjRTOWltU1EzS1FhLVBnSGJVZkJFRW9heDgxbW5uQk5CVnNEejJkV2lTcU55WGR6S1RJanVydHdFRkZSNUNwLUlONmRPZGV2QTRwZmc?oc=5"
         },
         {
-          "time": "2026-11-02T08:40:38+09:00",
+          "time": "2026-11-02T08:41:59+09:00",
           "title": "삼성전자, '2026 다카르 청소년올림픽' 공식 후원",
-          "source": "연합뉴스",
-          "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE1yZUhxelZjREx2N0dCVk9fZmg4V09ic3I3QkhqY1VVSS1uRHMxOEJURVNxR0NVQ0hMNkE4UUlocEZORUxfNE1WX1QzZi1mRXQxeG5tdjFZY0Q2ckHSAWBBVV95cUxPcUxiQ3ZlSDk1R1Bodjl6eGlqY05FT2o5TWM3YVBOdDQ2cTJnTUN2LVQxTERMQnljeHprYzZFMGR4MTlhOHAyU3pERnJ1REUtWFhYM3l5bzFwVmJ0b19Db00?oc=5"
+          "source": "연합뉴스 한민족센터",
+          "link": "https://news.google.com/rss/articles/CBMidEFVX3lxTE91V3JXdkIyZTJub0w0blRNQjNmbHhHMFBQbnM3ZllyOEQzT20tWEZMZ2xKZE9ELVdPY254R2hHcWI5b0lWaVRJQ3pXSVRpYlptQVctSVpHMW1Oc08weXU0ZDgwZzdJLUc5NjJQbHYya1YtSkJu?oc=5"
         },
         {
           "time": "2026-11-02T09:18:06+09:00",
@@ -188,16 +188,10 @@
       "score": 4.047459225773318,
       "news": [
         {
-          "time": "2026-11-02T09:41:00+09:00",
+          "time": "2026-11-02T09:43:59+09:00",
           "title": "靑 신임 국가AI정책비서관에 이지수 전 삼성전자 상무",
-          "source": "연합뉴스TV",
-          "link": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE1XMmhNSTdONzdsekdaUEY4QlpnVlgyVkE1V1FwVDBzSFl0MFNJTUE4M3pDMEtwLXBWRENkdThXeUZIQWtrazlvRVVsU044NXNxbUJQZ3ptcm91QmJLLUhqN096c0p0eEU?oc=5"
-        },
-        {
-          "time": "2026-11-02T09:41:50+09:00",
-          "title": "[개장시황] 삼성전자 2.67% 하락…외국인·기관 매수",
-          "source": "자본시장뉴스",
-          "link": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTFB3UkRydlUtNk5NUW9NRG1Gdmt5a3lEN3VHVUcyaWp3THRWa1lhdEhENVFwNzlpcG1jSHA5cm1YWlBHNTlNYTFmS3RoeTB2RlZPX1NoUFFfYUp6TXlFU2tIWW40eDQ0UDQ?oc=5"
+          "source": "동아일보",
+          "link": "https://news.google.com/rss/articles/CBMid0FVX3lxTE1zQ1NEclVONnAyNmVUaWVsd1c1dkUxNkdaX1lBZG96a0l6R2I2SjVpOThCU28tUk52ZEJ3b3NYYTM4SGNCSDhLMGI2b0hwQnFLY3pIaHFGb1JpQVVlUkhza1JsS29OSGR1Ni02b01aNWNWaUp0ajNV0gFmQVVfeXFMT3hiVmQ4d1IwY1N5MnF5QjZkcy03S1hJUlFIRzJkN2VEU0ZQMm95bGNSMEVpeFVpQzB4RkdLVGM2ZUk5T1JtZU1HdTJwRWszeW9LaDY5VUp1dWlrUW5RNmQyeVNyUXF3?oc=5"
         },
         {
           "time": "2026-11-02T09:56:36+09:00",
@@ -210,6 +204,12 @@
           "title": "[특징주] 삼성전자·SK하이닉스, 美 반도체주 급락에도 '선방'",
           "source": "글로벌이코노믹",
           "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxNNnM4a0lZSlJRTzFYcTdNaU5STWw5X1UtZGxpS0tqa3ZKUHBxVFdzd3VCeGM4c2YwcTFremdueW9oUS1LaEdzWGc1SVdEYVU1X0pSVElqY2ROZWo5dEpzVmxIUGRVTjNtSEp6cFJJSU5rRk53ZHhnX2VvRnVUZWg5Nk5CaFY3UGsy?oc=5"
+        },
+        {
+          "time": "2026-11-02T10:30:22+09:00",
+          "title": "응급의료 AI ‘달구’, 삼성전자 ‘디지털 촬영 장치’ 특허 양수",
+          "source": "와우테일",
+          "link": "https://news.google.com/rss/articles/CBMiT0FVX3lxTFBFdWFWeVFZckJxUHFGa3FJRHpVVy1GQVluMkFXYVVZN0Z2NzFtLTBpNU9LaS0xX2FZblBYbkdMQ1lsaTZHNzgwNVpaTW1pRms?oc=5"
         },
         {
           "time": "2026-11-02T11:11:58+09:00",
@@ -618,10 +618,10 @@
           "link": "https://news.google.com/rss/articles/CBMidkFVX3lxTE1VSWlnS3BXNV9FcThaVlRaeGJWMjhzZ0FZT2hVYkM0cXhBbjRTOWltU1EzS1FhLVBnSGJVZkJFRW9heDgxbW5uQk5CVnNEejJkV2lTcU55WGR6S1RJanVydHdFRkZSNUNwLUlONmRPZGV2QTRwZmc?oc=5"
         },
         {
-          "time": "2026-11-02T08:40:38+09:00",
+          "time": "2026-11-02T08:41:59+09:00",
           "title": "삼성전자, '2026 다카르 청소년올림픽' 공식 후원",
-          "source": "연합뉴스",
-          "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE1yZUhxelZjREx2N0dCVk9fZmg4V09ic3I3QkhqY1VVSS1uRHMxOEJURVNxR0NVQ0hMNkE4UUlocEZORUxfNE1WX1QzZi1mRXQxeG5tdjFZY0Q2ckHSAWBBVV95cUxPcUxiQ3ZlSDk1R1Bodjl6eGlqY05FT2o5TWM3YVBOdDQ2cTJnTUN2LVQxTERMQnljeHprYzZFMGR4MTlhOHAyU3pERnJ1REUtWFhYM3l5bzFwVmJ0b19Db00?oc=5"
+          "source": "연합뉴스 한민족센터",
+          "link": "https://news.google.com/rss/articles/CBMidEFVX3lxTE91V3JXdkIyZTJub0w0blRNQjNmbHhHMFBQbnM3ZllyOEQzT20tWEZMZ2xKZE9ELVdPY254R2hHcWI5b0lWaVRJQ3pXSVRpYlptQVctSVpHMW1Oc08weXU0ZDgwZzdJLUc5NjJQbHYya1YtSkJu?oc=5"
         },
         {
           "time": "2026-11-02T09:18:06+09:00",
@@ -644,16 +644,10 @@
       "score": 4.047459225773318,
       "news": [
         {
-          "time": "2026-11-02T09:41:00+09:00",
+          "time": "2026-11-02T09:43:59+09:00",
           "title": "靑 신임 국가AI정책비서관에 이지수 전 삼성전자 상무",
-          "source": "연합뉴스TV",
-          "link": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE1XMmhNSTdONzdsekdaUEY4QlpnVlgyVkE1V1FwVDBzSFl0MFNJTUE4M3pDMEtwLXBWRENkdThXeUZIQWtrazlvRVVsU044NXNxbUJQZ3ptcm91QmJLLUhqN096c0p0eEU?oc=5"
-        },
-        {
-          "time": "2026-11-02T09:41:50+09:00",
-          "title": "[개장시황] 삼성전자 2.67% 하락…외국인·기관 매수",
-          "source": "자본시장뉴스",
-          "link": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTFB3UkRydlUtNk5NUW9NRG1Gdmt5a3lEN3VHVUcyaWp3THRWa1lhdEhENVFwNzlpcG1jSHA5cm1YWlBHNTlNYTFmS3RoeTB2RlZPX1NoUFFfYUp6TXlFU2tIWW40eDQ0UDQ?oc=5"
+          "source": "동아일보",
+          "link": "https://news.google.com/rss/articles/CBMid0FVX3lxTE1zQ1NEclVONnAyNmVUaWVsd1c1dkUxNkdaX1lBZG96a0l6R2I2SjVpOThCU28tUk52ZEJ3b3NYYTM4SGNCSDhLMGI2b0hwQnFLY3pIaHFGb1JpQVVlUkhza1JsS29OSGR1Ni02b01aNWNWaUp0ajNV0gFmQVVfeXFMT3hiVmQ4d1IwY1N5MnF5QjZkcy03S1hJUlFIRzJkN2VEU0ZQMm95bGNSMEVpeFVpQzB4RkdLVGM2ZUk5T1JtZU1HdTJwRWszeW9LaDY5VUp1dWlrUW5RNmQyeVNyUXF3?oc=5"
         },
         {
           "time": "2026-11-02T09:56:36+09:00",
@@ -666,6 +660,12 @@
           "title": "[특징주] 삼성전자·SK하이닉스, 美 반도체주 급락에도 '선방'",
           "source": "글로벌이코노믹",
           "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxNNnM4a0lZSlJRTzFYcTdNaU5STWw5X1UtZGxpS0tqa3ZKUHBxVFdzd3VCeGM4c2YwcTFremdueW9oUS1LaEdzWGc1SVdEYVU1X0pSVElqY2ROZWo5dEpzVmxIUGRVTjNtSEp6cFJJSU5rRk53ZHhnX2VvRnVUZWg5Nk5CaFY3UGsy?oc=5"
+        },
+        {
+          "time": "2026-11-02T10:30:22+09:00",
+          "title": "응급의료 AI ‘달구’, 삼성전자 ‘디지털 촬영 장치’ 특허 양수",
+          "source": "와우테일",
+          "link": "https://news.google.com/rss/articles/CBMiT0FVX3lxTFBFdWFWeVFZckJxUHFGa3FJRHpVVy1GQVluMkFXYVVZN0Z2NzFtLTBpNU9LaS0xX2FZblBYbkdMQ1lsaTZHNzgwNVpaTW1pRms?oc=5"
         },
         {
           "time": "2026-11-02T11:11:58+09:00",
@@ -698,19 +698,13 @@
       "link": "https://news.google.com/rss/articles/CBMidkFVX3lxTE1VSWlnS3BXNV9FcThaVlRaeGJWMjhzZ0FZT2hVYkM0cXhBbjRTOWltU1EzS1FhLVBnSGJVZkJFRW9heDgxbW5uQk5CVnNEejJkV2lTcU55WGR6S1RJanVydHdFRkZSNUNwLUlONmRPZGV2QTRwZmc?oc=5"
     },
     {
-      "time": "2026-11-02T08:40:38+09:00",
+      "time": "2026-11-02T08:41:59+09:00",
       "title": "삼성전자, '2026 다카르 청소년올림픽' 공식 후원",
-      "source": "연합뉴스",
-      "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE1yZUhxelZjREx2N0dCVk9fZmg4V09ic3I3QkhqY1VVSS1uRHMxOEJURVNxR0NVQ0hMNkE4UUlocEZORUxfNE1WX1QzZi1mRXQxeG5tdjFZY0Q2ckHSAWBBVV95cUxPcUxiQ3ZlSDk1R1Bodjl6eGlqY05FT2o5TWM3YVBOdDQ2cTJnTUN2LVQxTERMQnljeHprYzZFMGR4MTlhOHAyU3pERnJ1REUtWFhYM3l5bzFwVmJ0b19Db00?oc=5"
+      "source": "연합뉴스 한민족센터",
+      "link": "https://news.google.com/rss/articles/CBMidEFVX3lxTE91V3JXdkIyZTJub0w0blRNQjNmbHhHMFBQbnM3ZllyOEQzT20tWEZMZ2xKZE9ELVdPY254R2hHcWI5b0lWaVRJQ3pXSVRpYlptQVctSVpHMW1Oc08weXU0ZDgwZzdJLUc5NjJQbHYya1YtSkJu?oc=5"
     }
   ],
   "top_news": [
-    {
-      "time": "2026-11-02T15:56:40+09:00",
-      "title": "[거래소 외국인] 삼성전자 사고 SK하이닉스 팔았다…반도체 대형주 엇갈린 선택",
-      "source": "핀포인트뉴스",
-      "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTFBTS2pYVVpKU3pDdTBsMW42VlZUbE5VS2RqZTQ1WVlqTjdLdk9Ga1N5T3VicDFLZThpT1BPODUxWlZFUDlrTHJtdzg2M0w2T3AtLXdyQ09ZTFV6R1ZvYTVwNzJDVFB0OTRtdzBjeWxnNWVFRmfSAXdBVV95cUxNWGZuZGpNdFdhTnM5bktHVGlyNF85blNDTlVCN1RWMUVGbjFpSER0aGtxd3dsNnJIQ09uejJaVzdFTktzN2xRMFQxb1Bxa2dsWGVFSktPZHhYVmg1Z01Mb29RRkppTk9Ca3RacHJaUWNDZTlVTERScw?oc=5"
-    },
     {
       "time": "2026-11-02T16:00:04+09:00",
       "title": "삼성전자·삼성SDS ‘다카르 청소년올림픽’ 공식 후원·이재용 회장 ‘日 미래 반도체 패키징 기술’ 현장 점검·구미 AI 데이터센터 착공",
@@ -740,6 +734,12 @@
       "title": "KT·삼성전자, 가을 야구서 AI 네트워크 자율 운용 검증",
       "source": "전자신문",
       "link": "https://news.google.com/rss/articles/CBMiTkFVX3lxTE1oQTdTT2p5dW1DWHRzMlVVRFRTR1dxTThDSTRiQmtIZkYzX25Zb05uaElKazR6U09PZHZLSExwZDBFbjROWGhvZkhXMEFTdw?oc=5"
+    },
+    {
+      "time": "2026-11-02T09:43:59+09:00",
+      "title": "靑 신임 국가AI정책비서관에 이지수 전 삼성전자 상무",
+      "source": "동아일보",
+      "link": "https://news.google.com/rss/articles/CBMid0FVX3lxTE1zQ1NEclVONnAyNmVUaWVsd1c1dkUxNkdaX1lBZG96a0l6R2I2SjVpOThCU28tUk52ZEJ3b3NYYTM4SGNCSDhLMGI2b0hwQnFLY3pIaHFGb1JpQVVlUkhza1JsS29OSGR1Ni02b01aNWNWaUp0ajNV0gFmQVVfeXFMT3hiVmQ4d1IwY1N5MnF5QjZkcy03S1hJUlFIRzJkN2VEU0ZQMm95bGNSMEVpeFVpQzB4RkdLVGM2ZUk5T1JtZU1HdTJwRWszeW9LaDY5VUp1dWlrUW5RNmQyeVNyUXF3?oc=5"
     }
   ],
   "disclosures": [],
@@ -759,9 +759,9 @@
     "steady": 29,
     "upper": 4,
     "lower": 0,
-    "individual": -13446.0,
-    "foreign": -3759.0,
-    "institution": 12327.0,
+    "individual": -13336.0,
+    "foreign": -3861.0,
+    "institution": 12311.0,
     "prev_close": 5730.74,
     "open": 5637.77,
     "high": 5910.83,

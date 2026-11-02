@@ -669,11 +669,11 @@
       "fresh": true,
       "fetch_error": null,
       "first": "2005-01-01",
-      "last": "2026-10-25",
-      "rows": 7968,
+      "last": "2026-11-01",
+      "rows": 7975,
       "release_lag_days": 14,
       "note": "뉴스심리지수는 일별 지수이지만 주 1회, 약 1주 지연 공개되므로 지수 날짜+14일 이후에만 사용. 2026-09 신지수로 과거치가 재계산되어 백테스트는 재계산 이력 기준",
-      "snapshot_hash": "f5c7ff74784da9f14cb8",
+      "snapshot_hash": "21daeb7c182fbd9aabf1",
       "enabled": true
     },
     "term_spread": {
@@ -701,13 +701,13 @@
       "fresh": true,
       "source": "OECD API",
       "errors": [],
-      "checked_at": "2026-11-01 16:39 KST"
+      "checked_at": "2026-11-02 16:48 KST"
     },
     "kospi_info": {
       "last": "2026-10",
       "fresh": true,
       "source": "Yahoo Finance",
-      "checked_at": "2026-11-01 16:39 KST"
+      "checked_at": "2026-11-02 16:48 KST"
     },
     "rows": [
       {
@@ -948,15 +948,12 @@
     "exports_record": true,
     "lead_months": 9,
     "corr": 0.4273277182592787,
-    "exports_fresh": false,
+    "exports_fresh": true,
     "exports_info": {
-      "source": "보관본",
-      "fresh": false,
-      "errors": [
-        "FRED API 조회 실패",
-        "FRED 공개 CSV 조회 실패"
-      ],
-      "checked_at": "2026-11-01 16:39 KST",
+      "source": "FRED API",
+      "fresh": true,
+      "errors": [],
+      "checked_at": "2026-11-02 16:48 KST",
       "definition": "한국 총수출(달러·계절조정, OECD/FRED)",
       "last": "2026-08"
     },
@@ -972,7 +969,7 @@
       "note": "OECD G20 경기선행지수(OECD 데이터 API). 참조월+1개월 20일 이후에만 사용. 매달 소급 수정되므로 백테스트는 최종 수정치 기준이라 낙관적",
       "snapshot_hash": "27d9ee19f3c2392d1a20",
       "enabled": true,
-      "checked_at": "2026-11-01 16:40 KST"
+      "checked_at": "2026-11-02 16:48 KST"
     }
   },
   "stock_value": {
@@ -993,7 +990,7 @@
       "months_added": [],
       "scale": 1.249066228864939,
       "source": "customs_api",
-      "checked_at": "2026-11-01 16:38 KST",
+      "checked_at": "2026-11-02 16:47 KST",
       "kosis_last": "2026-09",
       "last": "2026-09"
     },
@@ -1004,7 +1001,7 @@
     "krw": 1358.2609141956675
   },
   "chart_first": "2000-01-31",
-  "generated_at": "2026-11-01 16:40 KST",
+  "generated_at": "2026-11-02 16:48 KST",
   "macro_snapshot_hash": "df865a0c6edbce83f9e9",
   "macro_sources": {
     "leading_cycle": "KOSIS_API",
@@ -1012,7 +1009,7 @@
   },
   "frame_hash": "d4b568685f2835c6",
   "live_exports": {
-    "as_of": "2026-11-01",
+    "as_of": "2026-11-02",
     "price_last": "2026-10-31",
     "exports_last_month": "2026-10",
     "latest_period": {
@@ -1024,7 +1021,7 @@
       "basis": "full_month_preliminary"
     },
     "snapshot_hash": "5eb138ffaa44fc56cda6",
-    "generated_at": "2026-11-01 16:38 KST",
+    "generated_at": "2026-11-02 16:47 KST",
     "flash_info": {
       "enabled": true,
       "source": "customs_flash_api",
@@ -1074,7 +1071,7 @@
     "ticker": "000660.KS",
     "price": 1418000.0,
     "price_date": "2026-10-30",
-    "observed_on": "2026-11-01",
+    "observed_on": "2026-11-02",
     "financial_period": "2026-06-30",
     "eps_ttm": 232070.09450008773,
     "bps": 375948.7934903294,
@@ -1133,7 +1130,7 @@
     },
     "evaluation_status": "예측 성능 미검증 — 현재 가치 시나리오이며 도달 시점을 예측하지 않음",
     "basis_note": "분기 재무제표 최근 4분기 순이익(Net Income Common Stockholders) ÷ EPS 기준 주식 수 697,915,819주",
-    "retrieved_on": "2026-11-01",
+    "retrieved_on": "2026-11-02",
     "cached": false
   },
   "policy_inflation": {
@@ -1759,7 +1756,7 @@
       "cpi_index"
     ],
     "failed": {},
-    "checked_at": "2026-11-01T16:40:39.409153",
+    "checked_at": "2026-11-02T16:48:17.569304",
     "stale": false
   }
 }

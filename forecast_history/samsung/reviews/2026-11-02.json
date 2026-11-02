@@ -3,7 +3,7 @@
   "name": "삼성전자",
   "peer_name": "SK하이닉스",
   "session_date": "2026-11-02",
-  "generated_at": "2026-11-02 15:46 KST",
+  "generated_at": "2026-11-02 16:11 KST",
   "summary": {
     "prev_close": 225000.0,
     "open": 219000.0,
@@ -15,11 +15,11 @@
     "c2c": 0.01777777777777767,
     "high_vs_open": 0.05936073059360725,
     "low_vs_open": -0.0091324200913242,
-    "volume": 12721896.0,
-    "volume_ratio": 0.7033693686195432,
-    "kospi_c2c": 0.024574415186192633,
-    "peer_c2c": 0.04513399153737652,
-    "usdkrw_chg": 0.004185395646933099,
+    "volume": 15273364.0,
+    "volume_ratio": 0.8444351685767956,
+    "kospi_c2c": 0.02239498537731177,
+    "peer_c2c": 0.038081805359661436,
+    "usdkrw_chg": 0.0037369766909727264,
     "us_nights": 1,
     "sox_ret": -0.07200781168593828,
     "nasdaq_ret": -0.028555611175022477,
@@ -49,22 +49,22 @@
           "start": "2026-10-26",
           "end": "2026-11-02",
           "own": 0.07511737089201875,
-          "peer": 0.1623529411764706,
-          "excess": -0.08723557028445184
+          "peer": 0.15450980392156866,
+          "excess": -0.0793924330295499
         },
         "20": {
           "start": "2026-10-01",
           "end": "2026-11-02",
           "own": -0.17028985507246375,
-          "peer": -0.19148936170212771,
-          "excess": 0.021199506629663967
+          "peer": -0.19694489907255863,
+          "excess": 0.026655044000094885
         },
         "60": {
           "start": "2026-08-03",
           "end": "2026-11-02",
           "own": -0.04384133611691021,
-          "peer": -0.054038678775439664,
-          "excess": 0.010197342658529451
+          "peer": -0.06042168364200218,
+          "excess": 0.016580347525091965
         }
       }
     },
@@ -99,12 +99,12 @@
       "NQ=F": {
         "label": "나스닥100 선물",
         "ret": 0.0025432660064625967,
-        "after_high": -0.00048627573570914073
+        "after_high": -0.0008680178811683037
       },
       "ZN=F": {
         "label": "미 10년물 국채 선물",
         "ret": 0.0005866823115283637,
-        "after_high": -0.0002930832356389246
+        "after_high": 0.0
       },
       "KRW=X": {
         "label": "원/달러",
@@ -131,7 +131,7 @@
     ],
     "reasons": [
       "09:05 봉 -3.56%(σ의 11.0배, 거래량 2.18배)가 세션 +4.57%의 61%",
-      "KOSPI +2.46% vs 종목 +1.78%, 5분 수익률 상관 0.88 — 종목 고유 요인이 약함"
+      "KOSPI +2.24% vs 종목 +1.78%, 5분 수익률 상관 0.88 — 종목 고유 요인이 약함"
     ]
   },
   "events": [
@@ -188,22 +188,16 @@
       "score": 4.047459225773318,
       "news": [
         {
-          "time": "2026-11-02T11:19:49+09:00",
-          "title": "삼성전자·SK하이닉스, 역대급 실적에도 주가 엇갈린 이유",
-          "source": "서울일보",
-          "link": "https://news.google.com/rss/articles/CBMib0FVX3lxTE1Yc3RMMlFucTQ4MDJvV0hzb0V5MS11X29GZC1ZenZiWnM1OEpraGJIUmI1cnZxNzBBQnpvbGV0a3d4N0lWZWtCdXFXSjBvNERSTXJ6amF0QzVFUHNpUVdNb2s3S2xfVFBaaktoSU9Yd9IBb0FVX3lxTE1Yc3RMMlFucTQ4MDJvV0hzb0V5MS11X29GZC1ZenZiWnM1OEpraGJIUmI1cnZxNzBBQnpvbGV0a3d4N0lWZWtCdXFXSjBvNERSTXJ6amF0QzVFUHNpUVdNb2s3S2xfVFBaaktoSU9Ydw?oc=5"
-        },
-        {
-          "time": "2026-11-02T09:40:28+09:00",
-          "title": "KT·삼성전자, 가을야구서 AI 무선망 운용 검증",
-          "source": "아이티데일리",
-          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE9vNzMySG9SakxrMHRuUDdLaDdFZnRRa2RLd3N2Y2d6X2thNGNoemp0Q1R4UGdObEhLSWMwcjlOYTJuNmZTUHRiOHdVT2pWOXVQVzdzTlJsUDl2OUo3TkJvaE5FYXpSQU9s?oc=5"
-        },
-        {
           "time": "2026-11-02T09:41:00+09:00",
           "title": "靑 신임 국가AI정책비서관에 이지수 전 삼성전자 상무",
           "source": "연합뉴스TV",
           "link": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE1XMmhNSTdONzdsekdaUEY4QlpnVlgyVkE1V1FwVDBzSFl0MFNJTUE4M3pDMEtwLXBWRENkdThXeUZIQWtrazlvRVVsU044NXNxbUJQZ3ptcm91QmJLLUhqN096c0p0eEU?oc=5"
+        },
+        {
+          "time": "2026-11-02T09:41:50+09:00",
+          "title": "[개장시황] 삼성전자 2.67% 하락…외국인·기관 매수",
+          "source": "자본시장뉴스",
+          "link": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTFB3UkRydlUtNk5NUW9NRG1Gdmt5a3lEN3VHVUcyaWp3THRWa1lhdEhENVFwNzlpcG1jSHA5cm1YWlBHNTlNYTFmS3RoeTB2RlZPX1NoUFFfYUp6TXlFU2tIWW40eDQ0UDQ?oc=5"
         },
         {
           "time": "2026-11-02T09:56:36+09:00",
@@ -216,6 +210,12 @@
           "title": "[특징주] 삼성전자·SK하이닉스, 美 반도체주 급락에도 '선방'",
           "source": "글로벌이코노믹",
           "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxNNnM4a0lZSlJRTzFYcTdNaU5STWw5X1UtZGxpS0tqa3ZKUHBxVFdzd3VCeGM4c2YwcTFremdueW9oUS1LaEdzWGc1SVdEYVU1X0pSVElqY2ROZWo5dEpzVmxIUGRVTjNtSEp6cFJJSU5rRk53ZHhnX2VvRnVUZWg5Nk5CaFY3UGsy?oc=5"
+        },
+        {
+          "time": "2026-11-02T11:11:58+09:00",
+          "title": "KT-삼성전자, 야구장 트래픽 분산 AI 기술 검증",
+          "source": "아시아경제",
+          "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE5EbndBeS1rWTU1dE9XUnZPc0VFbTJFaXVTZ2Q1SFN0b3N5c3FGVDFpdmhEWi1WOVRjc3hkbkRqNDFzX2wxZW5reUJPZjBhbHo1VTN0d21kUGQwS2RwSDVULQ?oc=5"
         }
       ]
     }
@@ -510,12 +510,12 @@
     {
       "time": "2026-11-02T13:40:00+09:00",
       "price": 231500.0,
-      "volume": 219206.0
+      "volume": 219205.0
     },
     {
       "time": "2026-11-02T13:45:00+09:00",
       "price": 231250.0,
-      "volume": 180643.0
+      "volume": 180644.0
     },
     {
       "time": "2026-11-02T13:50:00+09:00",
@@ -585,7 +585,7 @@
     {
       "time": "2026-11-02T14:55:00+09:00",
       "price": 230750.0,
-      "volume": 184462.0
+      "volume": 184464.0
     }
   ],
   "timeline_items": [
@@ -644,22 +644,16 @@
       "score": 4.047459225773318,
       "news": [
         {
-          "time": "2026-11-02T11:19:49+09:00",
-          "title": "삼성전자·SK하이닉스, 역대급 실적에도 주가 엇갈린 이유",
-          "source": "서울일보",
-          "link": "https://news.google.com/rss/articles/CBMib0FVX3lxTE1Yc3RMMlFucTQ4MDJvV0hzb0V5MS11X29GZC1ZenZiWnM1OEpraGJIUmI1cnZxNzBBQnpvbGV0a3d4N0lWZWtCdXFXSjBvNERSTXJ6amF0QzVFUHNpUVdNb2s3S2xfVFBaaktoSU9Yd9IBb0FVX3lxTE1Yc3RMMlFucTQ4MDJvV0hzb0V5MS11X29GZC1ZenZiWnM1OEpraGJIUmI1cnZxNzBBQnpvbGV0a3d4N0lWZWtCdXFXSjBvNERSTXJ6amF0QzVFUHNpUVdNb2s3S2xfVFBaaktoSU9Ydw?oc=5"
-        },
-        {
-          "time": "2026-11-02T09:40:28+09:00",
-          "title": "KT·삼성전자, 가을야구서 AI 무선망 운용 검증",
-          "source": "아이티데일리",
-          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE9vNzMySG9SakxrMHRuUDdLaDdFZnRRa2RLd3N2Y2d6X2thNGNoemp0Q1R4UGdObEhLSWMwcjlOYTJuNmZTUHRiOHdVT2pWOXVQVzdzTlJsUDl2OUo3TkJvaE5FYXpSQU9s?oc=5"
-        },
-        {
           "time": "2026-11-02T09:41:00+09:00",
           "title": "靑 신임 국가AI정책비서관에 이지수 전 삼성전자 상무",
           "source": "연합뉴스TV",
           "link": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE1XMmhNSTdONzdsekdaUEY4QlpnVlgyVkE1V1FwVDBzSFl0MFNJTUE4M3pDMEtwLXBWRENkdThXeUZIQWtrazlvRVVsU044NXNxbUJQZ3ptcm91QmJLLUhqN096c0p0eEU?oc=5"
+        },
+        {
+          "time": "2026-11-02T09:41:50+09:00",
+          "title": "[개장시황] 삼성전자 2.67% 하락…외국인·기관 매수",
+          "source": "자본시장뉴스",
+          "link": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTFB3UkRydlUtNk5NUW9NRG1Gdmt5a3lEN3VHVUcyaWp3THRWa1lhdEhENVFwNzlpcG1jSHA5cm1YWlBHNTlNYTFmS3RoeTB2RlZPX1NoUFFfYUp6TXlFU2tIWW40eDQ0UDQ?oc=5"
         },
         {
           "time": "2026-11-02T09:56:36+09:00",
@@ -672,6 +666,12 @@
           "title": "[특징주] 삼성전자·SK하이닉스, 美 반도체주 급락에도 '선방'",
           "source": "글로벌이코노믹",
           "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxNNnM4a0lZSlJRTzFYcTdNaU5STWw5X1UtZGxpS0tqa3ZKUHBxVFdzd3VCeGM4c2YwcTFremdueW9oUS1LaEdzWGc1SVdEYVU1X0pSVElqY2ROZWo5dEpzVmxIUGRVTjNtSEp6cFJJSU5rRk53ZHhnX2VvRnVUZWg5Nk5CaFY3UGsy?oc=5"
+        },
+        {
+          "time": "2026-11-02T11:11:58+09:00",
+          "title": "KT-삼성전자, 야구장 트래픽 분산 AI 기술 검증",
+          "source": "아시아경제",
+          "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE5EbndBeS1rWTU1dE9XUnZPc0VFbTJFaXVTZ2Q1SFN0b3N5c3FGVDFpdmhEWi1WOVRjc3hkbkRqNDFzX2wxZW5reUJPZjBhbHo1VTN0d21kUGQwS2RwSDVULQ?oc=5"
         }
       ],
       "price": 226000.0,
@@ -706,10 +706,22 @@
   ],
   "top_news": [
     {
-      "time": "2026-11-02T11:19:49+09:00",
-      "title": "삼성전자·SK하이닉스, 역대급 실적에도 주가 엇갈린 이유",
-      "source": "서울일보",
-      "link": "https://news.google.com/rss/articles/CBMib0FVX3lxTE1Yc3RMMlFucTQ4MDJvV0hzb0V5MS11X29GZC1ZenZiWnM1OEpraGJIUmI1cnZxNzBBQnpvbGV0a3d4N0lWZWtCdXFXSjBvNERSTXJ6amF0QzVFUHNpUVdNb2s3S2xfVFBaaktoSU9Yd9IBb0FVX3lxTE1Yc3RMMlFucTQ4MDJvV0hzb0V5MS11X29GZC1ZenZiWnM1OEpraGJIUmI1cnZxNzBBQnpvbGV0a3d4N0lWZWtCdXFXSjBvNERSTXJ6amF0QzVFUHNpUVdNb2s3S2xfVFBaaktoSU9Ydw?oc=5"
+      "time": "2026-11-02T15:56:40+09:00",
+      "title": "[거래소 외국인] 삼성전자 사고 SK하이닉스 팔았다…반도체 대형주 엇갈린 선택",
+      "source": "핀포인트뉴스",
+      "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTFBTS2pYVVpKU3pDdTBsMW42VlZUbE5VS2RqZTQ1WVlqTjdLdk9Ga1N5T3VicDFLZThpT1BPODUxWlZFUDlrTHJtdzg2M0w2T3AtLXdyQ09ZTFV6R1ZvYTVwNzJDVFB0OTRtdzBjeWxnNWVFRmfSAXdBVV95cUxNWGZuZGpNdFdhTnM5bktHVGlyNF85blNDTlVCN1RWMUVGbjFpSER0aGtxd3dsNnJIQ09uejJaVzdFTktzN2xRMFQxb1Bxa2dsWGVFSktPZHhYVmg1Z01Mb29RRkppTk9Ca3RacHJaUWNDZTlVTERScw?oc=5"
+    },
+    {
+      "time": "2026-11-02T16:00:04+09:00",
+      "title": "삼성전자·삼성SDS ‘다카르 청소년올림픽’ 공식 후원·이재용 회장 ‘日 미래 반도체 패키징 기술’ 현장 점검·구미 AI 데이터센터 착공",
+      "source": "여성소비자신문",
+      "link": "https://news.google.com/rss/articles/CBMiZkFVX3lxTFBhSk1oYm52OHU1d1dTYzI3dlM5eXEzWnNfaTdoWWlaX3VKbWxlV21jMTJqN25Zd0JIbm1LS3NYLWpIMGVSbnczdVhwVGw0RTFBUjdCRHNXV3JBZTRYcFg2Wk96eFFOQQ?oc=5"
+    },
+    {
+      "time": "2026-11-02T16:01:40+09:00",
+      "title": "日소부장 협력 속도내는 삼성전자·SK하이닉스…AI 반도체 공급망 확보전",
+      "source": "뉴시스",
+      "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE9sVXJqRlkxeHpCQ0lpN1BncHBoVmw1b255UWJhd1BiQlVMMU9FVXdUY25xb1ppY0I0RHhvRmhieXpDUUpWakVMdWNxX25rSU1mVEtzRmZ1RmNaN0FLUTJ6Q9IBeEFVX3lxTE00eVZCSmNTaHhtLS15bGtueVBKY2doMmJLRkFoMHdyRlI3dzBUV24weE1DUEpBTXEwV3Q5bTZWWDNqaWtIVzFiNkd1SU1VMUNJYTRUd2NpaF9Hb1ZGcUR3Umd0U195QkZJSndyTUVPYkN1M21BbHNwVQ?oc=5"
     },
     {
       "time": "2026-11-02T07:56:00+09:00",
@@ -728,18 +740,6 @@
       "title": "KT·삼성전자, 가을 야구서 AI 네트워크 자율 운용 검증",
       "source": "전자신문",
       "link": "https://news.google.com/rss/articles/CBMiTkFVX3lxTE1oQTdTT2p5dW1DWHRzMlVVRFRTR1dxTThDSTRiQmtIZkYzX25Zb05uaElKazR6U09PZHZLSExwZDBFbjROWGhvZkhXMEFTdw?oc=5"
-    },
-    {
-      "time": "2026-11-02T09:40:28+09:00",
-      "title": "KT·삼성전자, 가을야구서 AI 무선망 운용 검증",
-      "source": "아이티데일리",
-      "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE9vNzMySG9SakxrMHRuUDdLaDdFZnRRa2RLd3N2Y2d6X2thNGNoemp0Q1R4UGdObEhLSWMwcjlOYTJuNmZTUHRiOHdVT2pWOXVQVzdzTlJsUDl2OUo3TkJvaE5FYXpSQU9s?oc=5"
-    },
-    {
-      "time": "2026-11-02T09:41:00+09:00",
-      "title": "靑 신임 국가AI정책비서관에 이지수 전 삼성전자 상무",
-      "source": "연합뉴스TV",
-      "link": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE1XMmhNSTdONzdsekdaUEY4QlpnVlgyVkE1V1FwVDBzSFl0MFNJTUE4M3pDMEtwLXBWRENkdThXeUZIQWtrazlvRVVsU044NXNxbUJQZ3ptcm91QmJLLUhqN096c0p0eEU?oc=5"
     }
   ],
   "disclosures": [],
@@ -759,9 +759,9 @@
     "steady": 29,
     "upper": 4,
     "lower": 0,
-    "individual": -13465.0,
-    "foreign": -3743.0,
-    "institution": 12331.0,
+    "individual": -13446.0,
+    "foreign": -3759.0,
+    "institution": 12327.0,
     "prev_close": 5730.74,
     "open": 5637.77,
     "high": 5910.83,

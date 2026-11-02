@@ -3,40 +3,82 @@
   "name": "삼성전자",
   "peer_name": "SK하이닉스",
   "session_date": "2026-11-02",
-  "generated_at": "2026-11-03 02:14 KST",
+  "generated_at": "2026-11-03 07:29 KST",
   "summary": {
     "prev_close": 225000.0,
-    "open": NaN,
-    "high": NaN,
-    "low": NaN,
-    "close": NaN,
-    "gap": NaN,
-    "session": NaN,
-    "c2c": NaN,
-    "high_vs_open": NaN,
-    "low_vs_open": NaN,
-    "volume": 15813023.0,
-    "volume_ratio": 0.8742718855331245,
+    "open": 219000.0,
+    "high": 232000.0,
+    "low": 217000.0,
+    "close": 229000.0,
+    "gap": -0.026666666666666616,
+    "session": 0.04566210045662111,
+    "c2c": 0.01777777777777767,
+    "high_vs_open": 0.05936073059360725,
+    "low_vs_open": -0.0091324200913242,
+    "volume": 14537981.0,
+    "volume_ratio": 0.8037772449148237,
     "kospi_c2c": NaN,
-    "peer_c2c": NaN,
-    "usdkrw_chg": 0.004745942150578886,
+    "peer_c2c": 0.038081805359661436,
+    "usdkrw_chg": 0.006046402740254919,
     "us_nights": 1,
     "sox_ret": -0.07200781168593828,
     "nasdaq_ret": -0.028555611175022477,
     "micron_ret": -0.05301468340140636,
     "prior_streak": -2,
-    "ma5": 230250.0,
-    "ma20": 233447.36842105264,
+    "ma5": 230000.0,
+    "ma20": 233225.0,
     "high20": 279500.0,
     "high252": 374087.44831391243,
     "price_context": {
-      "breakouts": {},
-      "relative": {}
+      "breakouts": {
+        "20": {
+          "prior_high": 279500.0,
+          "distance": -0.18067978533094808,
+          "close_breakout": false,
+          "intraday_breakout": false
+        },
+        "60": {
+          "prior_high": 288000.0,
+          "distance": -0.20486111111111116,
+          "close_breakout": false,
+          "intraday_breakout": false
+        }
+      },
+      "relative": {
+        "5": {
+          "start": "2026-10-26",
+          "end": "2026-11-02",
+          "own": 0.07511737089201875,
+          "peer": 0.15450980392156866,
+          "excess": -0.0793924330295499
+        },
+        "20": {
+          "start": "2026-10-01",
+          "end": "2026-11-02",
+          "own": -0.17028985507246375,
+          "peer": -0.19694489907255863,
+          "excess": 0.026655044000094885
+        },
+        "60": {
+          "start": "2026-08-03",
+          "end": "2026-11-02",
+          "own": -0.04384133611691021,
+          "peer": -0.06042168364200218,
+          "excess": 0.016580347525091965
+        }
+      }
     },
-    "range": NaN,
-    "peer_range": NaN,
+    "range": 0.06912442396313367,
+    "peer_range": 0.0784737221022318,
     "prior_5d": 0.044083526682134666,
-    "ma_touches": [],
+    "ma_touches": [
+      {
+        "ma": 5,
+        "level": 226800.0,
+        "kind": "reclaim",
+        "price": 217000.0
+      }
+    ],
     "micron_ah": {
       "regular_close": 884.8900146484375,
       "last": 889.2,
@@ -70,6 +112,7 @@
         "after_high": -0.00030500548701051233
       }
     },
+    "from_high": -0.016378261490643586,
     "buyback": [
       {
         "kind": "직접 취득",
@@ -83,7 +126,7 @@
     "foreign_pressure": {
       "state": "other",
       "previous_ratio": 0.019468442235420012,
-      "recent_ratio": 0.016208403827456398,
+      "recent_ratio": 0.01643496165686837,
       "previous_daily_net": 283543.4,
       "recent_daily_net": 299836.4
     },
@@ -94,7 +137,7 @@
       "장중 급변 09:05 주도"
     ],
     "reasons": [
-      "09:05 봉 -3.56%(σ의 11.0배, 거래량 2.18배)가 세션 +nan%의 61%"
+      "09:05 봉 -3.56%(σ의 11.0배, 거래량 2.18배)가 세션 +4.57%의 61%"
     ]
   },
   "events": [
@@ -107,26 +150,7 @@
       "cum_after": -0.004587155963302725,
       "session_share": -0.6079302832244009,
       "score": 11.432091095169529,
-      "news": [
-        {
-          "time": "2026-11-02T07:56:00+09:00",
-          "title": "[전날 주요공시] 삼성전자·기아·삼성전기 등",
-          "source": "이투데이",
-          "link": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE1uR3BvU2d4ZGUyYnJYeTQ5cHVmUmJGTXFZNEJMMm9GSXVheHdob3dDY284WVJlV2FwZTM0RnM2TzhUbDVwTEFuelVYMDRTb1J4MTI4ZA?oc=5"
-        },
-        {
-          "time": "2026-11-02T08:13:00+09:00",
-          "title": "KB證 “삼성전자, 2년 영업익 1022조…2027년 엔비디아 제치고 세계 1위”",
-          "source": "이투데이",
-          "link": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE5uanVwbGo4UGNNTERmbWJRV0pDbWZNYXd1djFPQk14YWluaG9ISWxmMVdheXVHYzlTeVl6a3BRNXB1cHZrR0VIRHktMW9UOHBpdTFMOQ?oc=5"
-        },
-        {
-          "time": "2026-11-02T08:40:38+09:00",
-          "title": "삼성전자, '2026 다카르 청소년올림픽' 공식 후원",
-          "source": "연합뉴스",
-          "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE9xTGJDdmVIOTVHUGh2OXp4aWpjTkVPajlNYzdhUE50NDZxMmdNQ3YtVDFMRExCeWN4emtjNkUwZHgxOWE4cDJTekRGcnVERS1YWFgzeXlvMXBWYnRvX0NvTdIBYEFVX3lxTE9xTGJDdmVIOTVHUGh2OXp4aWpjTkVPajlNYzdhUE50NDZxMmdNQ3YtVDFMRExCeWN4emtjNkUwZHgxOWE4cDJTekRGcnVERS1YWFgzeXlvMXBWYnRvX0NvTQ?oc=5"
-        }
-      ]
+      "news": []
     },
     {
       "time": "2026-11-02T11:05:00+09:00",
@@ -145,28 +169,22 @@
           "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxNNnM4a0lZSlJRTzFYcTdNaU5STWw5X1UtZGxpS0tqa3ZKUHBxVFdzd3VCeGM4c2YwcTFremdueW9oUS1LaEdzWGc1SVdEYVU1X0pSVElqY2ROZWo5dEpzVmxIUGRVTjNtSEp6cFJJSU5rRk53ZHhnX2VvRnVUZWg5Nk5CaFY3UGsy?oc=5"
         },
         {
-          "time": "2026-11-02T09:50:10+09:00",
-          "title": "스마트폰 시장 20% 급감에도…삼성전자, 3분기 세계 1위",
-          "source": "연합뉴스",
-          "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE40bHEzWEZsdVF1U21aZjhYOWFkNTBmdXF0NU9WUmM5Umh1RF9WY3pLdjVhYUFBNzNlRVhpUURrakFtdFpqcmE4dndUYW5faWd4WWtkYkp2NlUwZDTSAWBBVV95cUxQV3BmY014SFlVY1EzT0tmVGZiUThkZ3kzb0Z4YXRLWlM5SUZHQXIwUlZUTjRKdnItUnY1NUxtTVBvY1JBZVp0RzN1N3FBcFZOcmxLT2pYX0tNOEZfSWQ1cnk?oc=5"
-        },
-        {
           "time": "2026-11-02T10:10:59+09:00",
           "title": "\"성과급만 71억, 마흔 전 은퇴 새 삶 살고 싶다\"…삼성전자 직원 글 '갸웃'",
           "source": "뉴스1",
           "link": "https://news.google.com/rss/articles/CBMiYkFVX3lxTE5DRjhiTTlfX1ZUemdxMUFzTnk4a0ZPb3ZaZmN1MEJkblpJcHowYm04VXNDT2RpbERUdGJybEsycXJkQkJMZ0VvckJlSVVNWkxtTUFCRW1oR3V5ZWNpSDNhZUhR?oc=5"
         },
         {
-          "time": "2026-11-02T10:16:42+09:00",
-          "title": "3분기 전 세계 스마트폰 출하량 20%↓…삼성전자 1위 유지",
-          "source": "글로벌이코노믹",
-          "link": "https://news.google.com/rss/articles/CBMihgFBVV95cUxON3l1OTNCX0RFTC1RTldZLVNOMzRvMTVuczRyMHJmb1BvZXlITmpCRWJXOWhOSEFxWTVsQmlXSVBrOWVrZklIbGFuZnMtTHJjdE9iYTVOaGRGRC1pVlVhVnVZR2tuRkhqRWg1WDVPRWlMVUhCTjJJVFh1YkNaOG1BZUNIUTFlZw?oc=5"
+          "time": "2026-11-02T11:18:59+09:00",
+          "title": "'세계 1위' 삼성전자 또 일냈다…애플마저 제친 '뜻밖의 효자'",
+          "source": "한국경제",
+          "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE9qd1htd1NsS2tqV0FpeTducGFnYzA5eVBfTVhFZVdUYVZnX2tYc0xzTG1JQ1RIR2dFbVFRLWVXeEwxN21nQUpwMW1PVjRBeFczUi1XWV8wUkZwQQ?oc=5"
         },
         {
-          "time": "2026-11-02T10:43:30+09:00",
-          "title": "삼성전자-kt, 디지털 트윈 활용 네트워크 자율 운용 기술 검증",
-          "source": "기호일보",
-          "link": "https://news.google.com/rss/articles/CBMib0FVX3lxTE5FTTRSR3VXclYzWEVDQTNBN1lWdmdCQkEzRV9PRlBQTzAtQUh5b0hadVhmeVdIYlBRZ29LNFY1aVdjWjJqNW1ERGR1bTdiRTRYNjR6dmZXMVZiOEFkcmNwWEp3b0d1U2xQMG8zNGhSOA?oc=5"
+          "time": "2026-11-02T10:55:17+09:00",
+          "title": "삼성전자, 2026 다카르 청소년올림픽 공식 후원…갤럭시로 선수·경기 지원",
+          "source": "스트레이트뉴스",
+          "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTE9XdDUwUkRrLXhsVlVTb3Fqdi12MTBCQThDZGlfRVdZSEFCYk0teGlRczlycFZYWUtuVW8ybXhQcDFVYmlYa1lkM0oyQU4zMjI3MlQ2UHBsUnc4cmlUNmVCS2ZnQmQtYzhablJ3Tkd5dTl3VE3SAXdBVV95cUxQdEMyR0FPTFg4bm5vYkRBbllnR252TzRIWWZEM2lSTFYtazQ5SXZOUFlFMzhFSFV4QmtwczVyOWExOTRvb0tMb19wc2dLVkVyVTd6bXZ5NFpxRWJLR01GUzZKZFBaWWFnWXhuV25xajBMV0U0NlBtMA?oc=5"
         }
       ]
     }
@@ -178,9 +196,9 @@
     "low": -0.004587155963302725,
     "pattern": "저점 후 반등"
   },
-  "closing_share": NaN,
+  "closing_share": -0.16608884073672875,
   "intraday_corr_kospi": 0.8772798713786043,
-  "intraday_note": "장중 봉은 09:05~14:55까지만 있어 마감 구간(14:55~15:30)은 일봉 종가로만 봅니다(그 구간 +nan%).",
+  "intraday_note": "장중 봉은 09:05~14:55까지만 있어 마감 구간(14:55~15:30)은 일봉 종가로만 봅니다(그 구간 -0.76%).",
   "intraday_coverage": "09:05~14:55",
   "intraday_path": [
     {
@@ -549,26 +567,7 @@
       "cum_after": -0.004587155963302725,
       "session_share": -0.6079302832244009,
       "score": 11.432091095169529,
-      "news": [
-        {
-          "time": "2026-11-02T07:56:00+09:00",
-          "title": "[전날 주요공시] 삼성전자·기아·삼성전기 등",
-          "source": "이투데이",
-          "link": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE1uR3BvU2d4ZGUyYnJYeTQ5cHVmUmJGTXFZNEJMMm9GSXVheHdob3dDY284WVJlV2FwZTM0RnM2TzhUbDVwTEFuelVYMDRTb1J4MTI4ZA?oc=5"
-        },
-        {
-          "time": "2026-11-02T08:13:00+09:00",
-          "title": "KB證 “삼성전자, 2년 영업익 1022조…2027년 엔비디아 제치고 세계 1위”",
-          "source": "이투데이",
-          "link": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE5uanVwbGo4UGNNTERmbWJRV0pDbWZNYXd1djFPQk14YWluaG9ISWxmMVdheXVHYzlTeVl6a3BRNXB1cHZrR0VIRHktMW9UOHBpdTFMOQ?oc=5"
-        },
-        {
-          "time": "2026-11-02T08:40:38+09:00",
-          "title": "삼성전자, '2026 다카르 청소년올림픽' 공식 후원",
-          "source": "연합뉴스",
-          "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE9xTGJDdmVIOTVHUGh2OXp4aWpjTkVPajlNYzdhUE50NDZxMmdNQ3YtVDFMRExCeWN4emtjNkUwZHgxOWE4cDJTekRGcnVERS1YWFgzeXlvMXBWYnRvX0NvTdIBYEFVX3lxTE9xTGJDdmVIOTVHUGh2OXp4aWpjTkVPajlNYzdhUE50NDZxMmdNQ3YtVDFMRExCeWN4emtjNkUwZHgxOWE4cDJTekRGcnVERS1YWFgzeXlvMXBWYnRvX0NvTQ?oc=5"
-        }
-      ],
+      "news": [],
       "price": 217000.0,
       "kind": "turn_down"
     },
@@ -589,54 +588,29 @@
           "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxNNnM4a0lZSlJRTzFYcTdNaU5STWw5X1UtZGxpS0tqa3ZKUHBxVFdzd3VCeGM4c2YwcTFremdueW9oUS1LaEdzWGc1SVdEYVU1X0pSVElqY2ROZWo5dEpzVmxIUGRVTjNtSEp6cFJJSU5rRk53ZHhnX2VvRnVUZWg5Nk5CaFY3UGsy?oc=5"
         },
         {
-          "time": "2026-11-02T09:50:10+09:00",
-          "title": "스마트폰 시장 20% 급감에도…삼성전자, 3분기 세계 1위",
-          "source": "연합뉴스",
-          "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE40bHEzWEZsdVF1U21aZjhYOWFkNTBmdXF0NU9WUmM5Umh1RF9WY3pLdjVhYUFBNzNlRVhpUURrakFtdFpqcmE4dndUYW5faWd4WWtkYkp2NlUwZDTSAWBBVV95cUxQV3BmY014SFlVY1EzT0tmVGZiUThkZ3kzb0Z4YXRLWlM5SUZHQXIwUlZUTjRKdnItUnY1NUxtTVBvY1JBZVp0RzN1N3FBcFZOcmxLT2pYX0tNOEZfSWQ1cnk?oc=5"
-        },
-        {
           "time": "2026-11-02T10:10:59+09:00",
           "title": "\"성과급만 71억, 마흔 전 은퇴 새 삶 살고 싶다\"…삼성전자 직원 글 '갸웃'",
           "source": "뉴스1",
           "link": "https://news.google.com/rss/articles/CBMiYkFVX3lxTE5DRjhiTTlfX1ZUemdxMUFzTnk4a0ZPb3ZaZmN1MEJkblpJcHowYm04VXNDT2RpbERUdGJybEsycXJkQkJMZ0VvckJlSVVNWkxtTUFCRW1oR3V5ZWNpSDNhZUhR?oc=5"
         },
         {
-          "time": "2026-11-02T10:16:42+09:00",
-          "title": "3분기 전 세계 스마트폰 출하량 20%↓…삼성전자 1위 유지",
-          "source": "글로벌이코노믹",
-          "link": "https://news.google.com/rss/articles/CBMihgFBVV95cUxON3l1OTNCX0RFTC1RTldZLVNOMzRvMTVuczRyMHJmb1BvZXlITmpCRWJXOWhOSEFxWTVsQmlXSVBrOWVrZklIbGFuZnMtTHJjdE9iYTVOaGRGRC1pVlVhVnVZR2tuRkhqRWg1WDVPRWlMVUhCTjJJVFh1YkNaOG1BZUNIUTFlZw?oc=5"
+          "time": "2026-11-02T11:18:59+09:00",
+          "title": "'세계 1위' 삼성전자 또 일냈다…애플마저 제친 '뜻밖의 효자'",
+          "source": "한국경제",
+          "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE9qd1htd1NsS2tqV0FpeTducGFnYzA5eVBfTVhFZVdUYVZnX2tYc0xzTG1JQ1RIR2dFbVFRLWVXeEwxN21nQUpwMW1PVjRBeFczUi1XWV8wUkZwQQ?oc=5"
         },
         {
-          "time": "2026-11-02T10:43:30+09:00",
-          "title": "삼성전자-kt, 디지털 트윈 활용 네트워크 자율 운용 기술 검증",
-          "source": "기호일보",
-          "link": "https://news.google.com/rss/articles/CBMib0FVX3lxTE5FTTRSR3VXclYzWEVDQTNBN1lWdmdCQkEzRV9PRlBQTzAtQUh5b0hadVhmeVdIYlBRZ29LNFY1aVdjWjJqNW1ERGR1bTdiRTRYNjR6dmZXMVZiOEFkcmNwWEp3b0d1U2xQMG8zNGhSOA?oc=5"
+          "time": "2026-11-02T10:55:17+09:00",
+          "title": "삼성전자, 2026 다카르 청소년올림픽 공식 후원…갤럭시로 선수·경기 지원",
+          "source": "스트레이트뉴스",
+          "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTE9XdDUwUkRrLXhsVlVTb3Fqdi12MTBCQThDZGlfRVdZSEFCYk0teGlRczlycFZYWUtuVW8ybXhQcDFVYmlYa1lkM0oyQU4zMjI3MlQ2UHBsUnc4cmlUNmVCS2ZnQmQtYzhablJ3Tkd5dTl3VE3SAXdBVV95cUxQdEMyR0FPTFg4bm5vYkRBbllnR252TzRIWWZEM2lSTFYtazQ5SXZOUFlFMzhFSFV4QmtwczVyOWExOTRvb0tMb19wc2dLVkVyVTd6bXZ5NFpxRWJLR01GUzZKZFBaWWFnWXhuV25xajBMV0U0NlBtMA?oc=5"
         }
       ],
       "price": 226000.0,
       "kind": "volume"
     }
   ],
-  "overnight_news": [
-    {
-      "time": "2026-11-02T07:56:00+09:00",
-      "title": "[전날 주요공시] 삼성전자·기아·삼성전기 등",
-      "source": "이투데이",
-      "link": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE1uR3BvU2d4ZGUyYnJYeTQ5cHVmUmJGTXFZNEJMMm9GSXVheHdob3dDY284WVJlV2FwZTM0RnM2TzhUbDVwTEFuelVYMDRTb1J4MTI4ZA?oc=5"
-    },
-    {
-      "time": "2026-11-02T08:13:00+09:00",
-      "title": "KB證 “삼성전자, 2년 영업익 1022조…2027년 엔비디아 제치고 세계 1위”",
-      "source": "이투데이",
-      "link": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE5uanVwbGo4UGNNTERmbWJRV0pDbWZNYXd1djFPQk14YWluaG9ISWxmMVdheXVHYzlTeVl6a3BRNXB1cHZrR0VIRHktMW9UOHBpdTFMOQ?oc=5"
-    },
-    {
-      "time": "2026-11-02T08:40:38+09:00",
-      "title": "삼성전자, '2026 다카르 청소년올림픽' 공식 후원",
-      "source": "연합뉴스",
-      "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE9xTGJDdmVIOTVHUGh2OXp4aWpjTkVPajlNYzdhUE50NDZxMmdNQ3YtVDFMRExCeWN4emtjNkUwZHgxOWE4cDJTekRGcnVERS1YWFgzeXlvMXBWYnRvX0NvTdIBYEFVX3lxTE9xTGJDdmVIOTVHUGh2OXp4aWpjTkVPajlNYzdhUE50NDZxMmdNQ3YtVDFMRExCeWN4emtjNkUwZHgxOWE4cDJTekRGcnVERS1YWFgzeXlvMXBWYnRvX0NvTQ?oc=5"
-    }
-  ],
+  "overnight_news": [],
   "top_news": [
     {
       "time": "2026-11-02T17:03:00+09:00",
@@ -657,28 +631,94 @@
       "link": "https://news.google.com/rss/articles/CBMigwFBVV95cUxPb2drcy1iejE0bVBjMXpsQWUwT1JnREJLdEc5TnVRWmM1ZlZyUlk5RGtQR3VRTHVkSmY4bmNUaEI0NzZfUTFVVmFKM0FmVEJyZTBqQjdqQ1BLa2hubWJnRE9GYWtTS21DX01GMWFwcjlIblFkc0lPS1JOdVlBOWNDX0NYNA?oc=5"
     },
     {
+      "time": "2026-11-02T16:57:14+09:00",
+      "title": "반도체 영업익 107조 삼성전자…HBM·2나노 통합 경쟁력 강화 패키징 기술 확보 나선다",
+      "source": "필드뉴스",
+      "link": "https://news.google.com/rss/articles/CBMiakFVX3lxTE5ET01RY0J1bnpUZkR0c3pOUUYyX2FMeF95aU5JY3kxa2VWa1JUcG9JLWgxR1htUVFpbW45Y2tBZ3VQMWsyaFcydnZlWE5ZekJobDFHazQ3RVVjM2VIX2E3R1VONXJIbXBXN1HSAWxBVV95cUxNcUVoUTczYklONllNM2p1VjVBSTY0SjhhTllVcUsweElOeVBiS2JpcU8yNHVndS11dnZoVzAyXzAwQXJqTVNMLW5IbE16LWxnR1lkZHFkZ3ZUSDBhM2pkRzVXQmlmOUtoOXRCby0?oc=5"
+    },
+    {
       "time": "2026-11-02T17:07:43+09:00",
       "title": "삼성전자, 연말 인사 `안정 속 변화` 무게…AI 반도체·미래사업에 방점",
       "source": "디지털데일리",
       "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE0wU1FLM0RrTHFSUjB6cm5xcXhNVjZpRmM1bS1YamI5SUxTX09KaE1BenRwNThoLXFXSXR3dGRiYVZHVFg2dW94SHVuVXdON2JSa3MyaGdqMWpleFJ2WXNBbFo5QXo?oc=5"
     },
     {
-      "time": "2026-11-02T23:00:00+09:00",
-      "title": "[AI산업 자금경색] \"AI 투자 회수 속도·자본 효율성 우려\"…삼성전자·SK하이닉스, 장기계약 확대 '관리강화'",
-      "source": "CBC뉴스",
-      "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE5EUXdueHM5NHNnNjBtQ0V5LW5UR3FVcnRfOHVGUFVZR0RHQXVNUTBNajV0OFY5Y0dXTGNwMHNPQlh5SE1qdHhpcUZfckc1Y1BYc2NjdzdwSHZ3bDVWdDNNc0pnSzZnb1Bw?oc=5"
-    },
-    {
-      "time": "2026-11-02T18:06:38+09:00",
-      "title": "'역대급 실적·20조 자사주'··· SK하이닉스, 코스피 6000선 이끌까",
-      "source": "그린포스트코리아",
-      "link": "https://news.google.com/rss/articles/CBMiekFVX3lxTFBxUlUzV1EzLXpIUWdROE8tZzlncnY2VC1FcDlMLWF2ZU5LMkNPOTZ6dTNWUG9lWHhVMXE5a0RtSl91NmNxLUFlRWxCQ1AwQ1JUR09tVXVGUlBGNVBnUlo3aFVFMjlYV3VQcjdnemI1WlE2Y2lPMl93TUZn0gF6QVVfeXFMUHFSVTNXUTMtekhRZ1E4Ty1nOWdydjZULUVwOUwtYXZlTksyQ085Nnp1M1ZQb2VYeFUxcTlrRG1KX3U2Y3EtQWVFbEJDUDBDUlRHT21VdUZSUEY1UGdSWjdoVUUyOVhXdVByN2d6YjVaUTZjaU8yX3dNRmc?oc=5"
+      "time": "2026-11-02T17:13:49+09:00",
+      "title": "삼성전자 배당의 힘…보험사 투자수익에 ‘훈풍’ 불까",
+      "source": "투데이신문",
+      "link": "https://news.google.com/rss/articles/CBMib0FVX3lxTE5qU3gzb2hQZl9idEh5Zmc1aHl1SkRRNHJ2eWR1RGg4Z29zT1VTbzFfVTl4TDV2d0FCYmlFUG5SRUNJSnVndXNabWJHSTlHaE9vMmtTREUwTlEzRk9Id0lKWTU5bmpwNGotYTdkcmd0ONIBb0FVX3lxTE5qU3gzb2hQZl9idEh5Zmc1aHl1SkRRNHJ2eWR1RGg4Z29zT1VTbzFfVTl4TDV2d0FCYmlFUG5SRUNJSnVndXNabWJHSTlHaE9vMmtTREUwTlEzRk9Id0lKWTU5bmpwNGotYTdkcmd0OA?oc=5"
     }
   ],
   "disclosures": [],
   "disclosure_note": null,
   "flows": "외국인 +515,900 / 기관 +733,138",
-  "flow_story": null,
+  "flow_story": {
+    "direction": "up",
+    "c2c": 0.01777777777777767,
+    "actors": [
+      {
+        "key": "foreign_net",
+        "name": "외국인",
+        "shares": 515900.0,
+        "won": 118141100000.0,
+        "vs_usual": 0.30854726152792433
+      },
+      {
+        "key": "inst_net",
+        "name": "기관",
+        "shares": 733138.0,
+        "won": 167888602000.0,
+        "vs_usual": 0.6839023004176429
+      },
+      {
+        "key": "indiv_net",
+        "name": "개인",
+        "shares": -1810914.0,
+        "won": -414699306000.0,
+        "vs_usual": 1.0028354011727307
+      },
+      {
+        "key": "other_net",
+        "name": "기타 법인 등(추정)",
+        "shares": 561876.0,
+        "won": 128669604000.0,
+        "vs_usual": null
+      }
+    ],
+    "lead": {
+      "key": "inst_net",
+      "name": "기관",
+      "shares": 733138.0,
+      "won": 167888602000.0,
+      "vs_usual": 0.6839023004176429
+    },
+    "counter": {
+      "key": "indiv_net",
+      "name": "개인",
+      "shares": -1810914.0,
+      "won": -414699306000.0,
+      "vs_usual": 1.0028354011727307
+    },
+    "all_one_side": false,
+    "observations": [
+      "전일까지 20거래일 고점: 종가 돌파 없음 · 종가 위치 -18.07%.",
+      "전일까지 60거래일 고점: 종가 돌파 없음 · 종가 위치 -20.49%.",
+      "같은 5거래일 수익률: 이 종목 +7.51%, SK하이닉스 +15.45% · 차이 -7.94%p.",
+      "같은 20거래일 수익률: 이 종목 -17.03%, SK하이닉스 -19.69% · 차이 +2.67%p.",
+      "같은 60거래일 수익률: 이 종목 -4.38%, SK하이닉스 -6.04% · 차이 +1.66%p.",
+      "외국인 5일 수급 비교: 직전 5일 → 최근 5일 순매수/거래량 +1.95% → +1.64% (일평균 +283,543주 → +299,836주). 향후 상승을 뜻하는 신호는 아닙니다.",
+      "SK하이닉스 +3.81% — 반도체 업종이 함께 움직였습니다.",
+      "전날 밤 SOX는 -7.20%로 반대 방향이어서 미국 반도체 흐름으로는 설명되지 않습니다.",
+      "전날 밤 마이크론은 -5.30%로 반대 방향이었습니다.",
+      "종가가 당일 범위(저가 217,000~고가 232,000원)의 위쪽 80% 지점 — 고가 부근에서 마감했습니다.",
+      "장중 5일선(226,800원) 아래로 빠졌다가 그 위로 되돌아와 마감했습니다.",
+      "우리 장중(09:00~15:30) 나스닥100 선물 +0.25%, 이 종목 고점 이후 -0.09% · 미 10년물 국채 선물 +0.06%, 이 종목 고점 이후 +0.00% · 원/달러 +0.77%(원화 약세), 이 종목 고점 이후 -0.03%.",
+      "자사주 매입 기간 중(직접 취득 2026-08-24~2026-11-21, 14,999,999,992,000, DART 공시) — 회사 자신의 매수는 기타 법인으로 잡힙니다.",
+      "기타 법인 등(추정) 순매수 +1,287억원 — 회사의 자사주 매입 기간이라 회사 매입과 맞는 모양입니다."
+    ],
+    "estimated_indiv": false,
+    "source_note": "출처 naver+cache · 장 마감 직후 잠정치라 저녁 확정치와 다를 수 있습니다 · KRX는 받지 못함(pykrx 미설치)"
+  },
   "flow_status": {
     "state": "ok",
     "detail": "naver+cache",
@@ -707,49 +747,49 @@
     {
       "model": "No macro ensemble",
       "hit": false,
-      "verdict": "틀림 — 예측 하락 52%, 실제 보합(+nan%)",
-      "legs": "갭 +nan%(보합) · 세션 +nan%(보합)",
-      "where": "결과는 주로 장중에서 정해졌습니다.",
+      "verdict": "틀림 — 예측 하락 52%, 실제 상승(+1.78%)",
+      "legs": "갭 -2.67%(하락) · 세션 +4.57%(상승)",
+      "where": "갭은 예측 방향이었으나 장중에 반대로 움직여 결과가 뒤집혔습니다.",
       "band": 0.0130758107943901,
       "probs": [
         0.5243192035364783,
         0.2528975884460326,
         0.2227832080174889
       ],
-      "actual": "보합",
+      "actual": "상승",
       "predicted": "하락"
     },
     {
       "model": "Mean ensemble",
       "hit": false,
-      "verdict": "틀림 — 예측 하락 59%, 실제 보합(+nan%)",
-      "legs": "갭 +nan%(보합) · 세션 +nan%(보합)",
-      "where": "결과는 주로 장중에서 정해졌습니다.",
+      "verdict": "틀림 — 예측 하락 59%, 실제 상승(+1.78%)",
+      "legs": "갭 -2.67%(하락) · 세션 +4.57%(상승)",
+      "where": "갭은 예측 방향이었으나 장중에 반대로 움직여 결과가 뒤집혔습니다.",
       "band": 0.0130758107943901,
       "probs": [
         0.5913256901378485,
         0.2053165540882317,
         0.2033577557739197
       ],
-      "actual": "보합",
+      "actual": "상승",
       "predicted": "하락"
     },
     {
       "model": "Candidate expanding",
       "hit": false,
-      "verdict": "틀림 — 예측 하락 55%, 실제 보합(+nan%)",
-      "legs": "갭 +nan%(보합) · 세션 +nan%(보합)",
-      "where": "결과는 주로 장중에서 정해졌습니다.",
+      "verdict": "틀림 — 예측 하락 55%, 실제 상승(+1.78%)",
+      "legs": "갭 -2.67%(하락) · 세션 +4.57%(상승)",
+      "where": "갭은 예측 방향이었으나 장중에 반대로 움직여 결과가 뒤집혔습니다.",
       "band": 0.0130758107943901,
       "probs": [
         0.5541461939924894,
         0.2653896653286949,
         0.1804641406788156
       ],
-      "actual": "보합",
+      "actual": "상승",
       "predicted": "하락"
     }
   ],
-  "price_check": "1거래일 예상 구간 208,347~233,009원 · 종가 nan원 → 구간 밖",
+  "price_check": "1거래일 예상 구간 208,347~233,009원 · 종가 229,000원 → 구간 안",
   "disclaimer": "시간이 맞는 것이지 원인 확정이 아닙니다. 뉴스 없이 움직이는 날(수급·프로그램·옵션 만기)이 많고, 기사 발행 시각은 실제 정보 유통보다 늦거나 앞섭니다. 이 절은 설명 도구이며 다음날 예측에 자동 반영되지 않습니다."
 }

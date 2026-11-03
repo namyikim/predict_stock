@@ -3,7 +3,7 @@
   "name": "삼성전자",
   "peer_name": "SK하이닉스",
   "session_date": "2026-11-03",
-  "generated_at": "2026-11-03 16:46 KST",
+  "generated_at": "2026-11-03 17:31 KST",
   "summary": {
     "prev_close": 229000.0,
     "open": 220500.0,
@@ -15,11 +15,11 @@
     "c2c": -0.04148471615720528,
     "high_vs_open": 0.01133786848072571,
     "low_vs_open": -0.015873015873015928,
-    "volume": 14621019.0,
-    "volume_ratio": 0.8065913560340979,
+    "volume": 14652306.0,
+    "volume_ratio": 0.8083173522698075,
     "kospi_c2c": -0.035891306529095335,
     "peer_c2c": -0.05027173913043481,
-    "usdkrw_chg": 0.01108995032536253,
+    "usdkrw_chg": 0.012478151079414967,
     "us_nights": 1,
     "sox_ret": -0.03372406005811979,
     "nasdaq_ret": -0.010720189217478526,
@@ -28,7 +28,7 @@
     "ma5": 229500.0,
     "ma20": 230400.0,
     "high20": 279500.0,
-    "high252": 367712.7495144774,
+    "high252": 367712.71645480226,
     "price_context": {
       "breakouts": {
         "20": {
@@ -744,10 +744,10 @@
       "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxQSVBHakUzcWhqNkNyMk5Kb1YwZDNYX2hEUGhwM0hCczAtMFU3dXh6a1MtSUZWRHNmb2dzcG1wUWRjYkplWF9JeG9vcTRPTFAyWGNWZmFBZ1NvZTRVbnZ1NVB3Nk5iQzhNVmI5TmZ4eHBMOUhYejVBX0tvTk1LMU5PRTFjREhjTUZf?oc=5"
     },
     {
-      "time": "2026-11-03T11:29:43+09:00",
-      "title": "[특징주]삼성전자·SK하이닉스 동반 '급락'···美 AI 투자 우려 '재점화'",
-      "source": "현대경제신문",
-      "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE93cE5jMHZzUFRQcFdVdUYtbkRvMVB5YzFKRFhTYXF2TGlrb1lKeXl0N3gxMmlsMDNNakpNRDRkd3FQNjRpMWs5eDZZbHN0bUFOdmh3TVFUVFJPV2VNX0NzNnI3cXJlMFpC0gFrQVVfeXFMUDU0NTIyTGMyTWZZTGlFV1BCUWN3aVhzNGptOFNmcWx4dHA3NFAxSHBSSHJhUmtGRVJ3ckR3WHRfY1gyMkcwWExmNDEzWEhSUUJrVWFOQVdseU1jS1U1MFExR0s0RDllTmV5dzg?oc=5"
+      "time": "2026-11-03T13:21:26+09:00",
+      "title": "[증시 시황] 코스피 5,630선까지 추락…외국인 1조2천억 매도, 삼성전자·SK하이닉스 급락",
+      "source": "톱스타뉴스",
+      "link": "https://news.google.com/rss/articles/CBMickFVX3lxTE85Y0lVSDZhX3pNSHZVbXZzckM1MkhZcjAzVHF4TGVIbmUzdjdJV0J3VmFnaXlsVzZVVTBObmxSVFE0c1RhQkVqQTkxeUlPMDBYa1htMGZoVnZPT3pldk1HMHRRRmpUZkVHQksyRTJ6dDhWZw?oc=5"
     }
   ],
   "disclosures": [
@@ -774,9 +774,9 @@
     "steady": 33,
     "upper": 4,
     "lower": 0,
-    "individual": 16593.0,
-    "foreign": -15162.0,
-    "institution": -5090.0,
+    "individual": 16675.0,
+    "foreign": -15256.0,
+    "institution": -5079.0,
     "prev_close": 5859.08,
     "open": 5715.19,
     "high": 5735.92,

@@ -3,81 +3,46 @@
   "name": "SK하이닉스",
   "peer_name": "삼성전자",
   "session_date": "2026-11-03",
-  "generated_at": "2026-11-03 17:31 KST",
+  "generated_at": "2026-11-04 00:03 KST",
   "summary": {
     "prev_close": 1472000.0,
-    "open": 1410000.0,
-    "high": 1433000.0,
-    "low": 1379000.0,
-    "close": 1398000.0,
-    "gap": -0.04211956521739135,
-    "session": -0.008510638297872353,
-    "c2c": -0.05027173913043481,
-    "high_vs_open": 0.01631205673758873,
-    "low_vs_open": -0.021985815602836856,
-    "volume": 2496659.0,
-    "volume_ratio": 0.6867150769276131,
-    "kospi_c2c": -0.035891306529095335,
-    "peer_c2c": -0.04148471615720528,
-    "usdkrw_chg": 0.012478151079414967,
+    "open": NaN,
+    "high": NaN,
+    "low": NaN,
+    "close": NaN,
+    "gap": NaN,
+    "session": NaN,
+    "c2c": NaN,
+    "high_vs_open": NaN,
+    "low_vs_open": NaN,
+    "volume": 2304051.0,
+    "volume_ratio": 0.6337375507468758,
+    "kospi_c2c": NaN,
+    "peer_c2c": NaN,
+    "usdkrw_chg": 0.013421177198659873,
     "us_nights": 1,
     "sox_ret": -0.03372406005811979,
     "nasdaq_ret": -0.010720189217478526,
     "micron_ret": -0.05781355420065981,
     "prior_streak": 1,
-    "ma5": 1460200.0,
-    "ma20": 1419450.0,
+    "ma5": 1475750.0,
+    "ma20": 1420578.9473684211,
     "high20": 1837000.0,
     "high252": 2986352.5777339735,
     "price_context": {
-      "breakouts": {
-        "20": {
-          "prior_high": 1855000.0,
-          "distance": -0.2463611859838275,
-          "close_breakout": false,
-          "intraday_breakout": false
-        },
-        "60": {
-          "prior_high": 1935000.0,
-          "distance": -0.2775193798449612,
-          "close_breakout": false,
-          "intraday_breakout": false
-        }
-      },
-      "relative": {
-        "5": {
-          "start": "2026-10-27",
-          "end": "2026-11-03",
-          "own": 0.04250559284116329,
-          "peer": -0.011261261261261257,
-          "excess": 0.053766854102424544
-        },
-        "20": {
-          "start": "2026-10-02",
-          "end": "2026-11-03",
-          "own": -0.24063009234111898,
-          "peer": -0.20471014492753625,
-          "excess": -0.03591994741358273
-        },
-        "60": {
-          "start": "2026-08-04",
-          "end": "2026-11-03",
-          "own": -0.11331443523940865,
-          "peer": -0.06956128834499675,
-          "excess": -0.0437531468944119
-        }
-      }
+      "breakouts": {},
+      "relative": {}
     },
-    "range": 0.039158810732414784,
-    "peer_range": 0.02764976958525356,
+    "range": NaN,
+    "peer_range": NaN,
     "prior_5d": 0.15450980392156866,
     "ma_touches": [],
     "micron_ah": {
-      "regular_close": 833.3599853515625,
+      "regular_close": 833.0599975585938,
       "last": 842.3099,
-      "ret": 0.010739554101174997,
-      "low_ret": 0.0019679546381694557,
-      "high_ret": 0.015796552366122985,
+      "ret": 0.011103524918390617,
+      "low_ret": 0.002328766772011326,
+      "high_ret": 0.016162344225944203,
       "last_time": "2026-11-03T08:55:00+09:00"
     },
     "nvidia_ah": {
@@ -105,7 +70,6 @@
         "after_high": -0.001117668133878924
       }
     },
-    "from_high": -0.023060796645702264,
     "buyback": [
       {
         "kind": "직접 취득",
@@ -123,30 +87,34 @@
         "purpose": "주주가치 제고 및 임직원 주식 보상",
         "rcept_no": "20261028000014"
       }
-    ]
+    ],
+    "foreign_pressure": {
+      "state": "selling_eased",
+      "previous_ratio": -0.038980632507268395,
+      "recent_ratio": -0.020598115136189504,
+      "previous_daily_net": -131201.2,
+      "recent_daily_net": -72310.4
+    },
+    "buyback_transition": null
   },
   "classification": {
     "labels": [
-      "갭 주도",
-      "장중 급변 09:00 주도",
-      "지수 동조"
+      "장중 급변 09:00 주도"
     ],
     "reasons": [
-      "갭 -4.21%가 종가→종가 -5.03%의 84%",
-      "09:00 봉 -4.42%(σ의 12.86배, 거래량 8.52배)가 세션 -0.85%의 479%",
-      "KOSPI -3.59% vs 종목 -5.03%, 5분 수익률 상관 0.92 — 종목 고유 요인이 약함"
+      "09:00 봉 -4.42%(σ의 13.91배, 거래량 8.52배)가 세션 +nan%의 479%"
     ]
   },
   "events": [
     {
       "time": "2026-11-03T09:00:00+09:00",
       "ret": -0.04415760869565222,
-      "z": 12.86,
+      "z": 13.91,
       "volume_ratio": 8.52,
       "cum_before": 0.0,
       "cum_after": -0.0021276595744680327,
       "session_share": 4.7894021739130705,
-      "score": 14.861807586485567,
+      "score": 15.908506851277243,
       "news": [
         {
           "time": "2026-11-03T08:07:00+09:00",
@@ -173,10 +141,52 @@
           "link": "https://news.google.com/rss/articles/CBMib0FVX3lxTE9UUi1MY25lWHpYZGZXUW01anlFTm90NmNkS2w0S0sya2Fua0hHeGVHYi1EazBCdU1BYWZvNEsyalJtdXdaUUZBVmpoYmozRlVLTlhkdGdiOUpQNDhvd29reGcwSFJpTzNaaGtwUEpPbw?oc=5"
         },
         {
-          "time": "2026-11-03T09:05:49+09:00",
-          "title": "[개장시황] 코스피, 개장 직후 2.9% 급락…삼성전자·SK하이닉스 4%대 약세",
-          "source": "아주경제",
-          "link": "https://news.google.com/rss/articles/CBMiWEFVX3lxTE90bG9zM1NNdkN4MEFvbmthRlJRbWxEU0dMYi00VHFiTzh5Tl9jRDMyQ3V4VG92Z0J3UmpyV2FJQlFMVUMyS2txM2pPWEVOczNjeVJpQXNwZm3SAVhBVV95cUxPdGxvczNTTXZDeDBBb25rYUZSUW1sRFNHTGItNFRxYk84eU5fY0QzMkN1eFRvdmdCd1JqcldhSUJRTFVDMktrcTNqT1hFTnMzY3lSaUFzcGZt?oc=5"
+          "time": "2026-11-03T09:12:37+09:00",
+          "title": "삼성전자·SK하이닉스 5%대 하락…AI 수익성 우려 계속 - 머니투데이",
+          "source": "머니투데이",
+          "link": "https://news.google.com/rss/articles/CBMibkFVX3lxTE1sV01qVWh1ekpUNC1jQWlUb3VHdGRRMFFzRHNyVnJ3ck15LXowWHFZamVKMVJxTkxkVzhKTXNUTnhrcXZMVlFxQXA5Uk92T2xJU1VudEZEUU5lRE1Fa1pCZzEweUF0eGkydHo3clhR0gFuQVVfeXFMTWxXTWpVaHV6SlQ0LWNBaVRvdUd0ZFEwUXNEc3JWcndyTXktejBYcVlqZUoxUnFOTGRXOEpNc1ROeGtxdkxWUXFBcDlST3ZPbElTVW50RkRRTmVETUVrWkJnMTB5QXR4aTJ0ejdyWFE?oc=5"
+        }
+      ]
+    },
+    {
+      "time": "2026-11-03T09:55:00+09:00",
+      "ret": 0.010079193664506825,
+      "z": 3.17,
+      "volume_ratio": 1.07,
+      "cum_before": -0.014893617021276562,
+      "cum_after": -0.00496453900709215,
+      "session_share": -1.0932048513042067,
+      "score": 3.389242394175037,
+      "news": [
+        {
+          "time": "2026-11-03T09:43:00+09:00",
+          "title": "꺼지지 않는 AI 투자불안…美 반도체 이어 '삼전닉스'도 4%대 하락",
+          "source": "KB Think",
+          "link": "https://news.google.com/rss/articles/CBMickFVX3lxTE4yVFlua193TXc0MXRaT3NyUGQ4cE1aX0g0OVdyek45bC1KYkhqaHBONENaUl9pNUUybndHbXAxUk90d2k2V2ZQT1FDZ1habEdzMllua0o0eEZySmRpMTRuaEVLWlNfU0R6ajZucHRyLUFxQQ?oc=5"
+        },
+        {
+          "time": "2026-11-03T09:05:27+09:00",
+          "title": "[속보] 코스피 2.46% 하락 출발…SK하이닉스 4.35%↓",
+          "source": "뉴스퀘스트",
+          "link": "https://news.google.com/rss/articles/CBMib0FVX3lxTE9UUi1MY25lWHpYZGZXUW01anlFTm90NmNkS2w0S0sya2Fua0hHeGVHYi1EazBCdU1BYWZvNEsyalJtdXdaUUZBVmpoYmozRlVLTlhkdGdiOUpQNDhvd29reGcwSFJpTzNaaGtwUEpPbw?oc=5"
+        },
+        {
+          "time": "2026-11-03T09:12:37+09:00",
+          "title": "삼성전자·SK하이닉스 5%대 하락…AI 수익성 우려 계속 - 머니투데이",
+          "source": "머니투데이",
+          "link": "https://news.google.com/rss/articles/CBMibkFVX3lxTE1sV01qVWh1ekpUNC1jQWlUb3VHdGRRMFFzRHNyVnJ3ck15LXowWHFZamVKMVJxTkxkVzhKTXNUTnhrcXZMVlFxQXA5Uk92T2xJU1VudEZEUU5lRE1Fa1pCZzEweUF0eGkydHo3clhR0gFuQVVfeXFMTWxXTWpVaHV6SlQ0LWNBaVRvdUd0ZFEwUXNEc3JWcndyTXktejBYcVlqZUoxUnFOTGRXOEpNc1ROeGtxdkxWUXFBcDlST3ZPbElTVW50RkRRTmVETUVrWkJnMTB5QXR4aTJ0ejdyWFE?oc=5"
+        },
+        {
+          "time": "2026-11-03T09:19:24+09:00",
+          "title": "[특징주] AI 수익성 우려 부각⋯삼성전자 4%·SK하이닉스 5%↓",
+          "source": "아이뉴스24",
+          "link": "https://news.google.com/rss/articles/CBMiS0FVX3lxTE4zTVBuRGs0eWhYNHVHUlM4ZDRnU1Vvc0N4NElBejFTMk5oUlRQLVdTN0VveDNRV3h5NVVZalprc3JYWnFHSm5vQ2doVQ?oc=5"
+        },
+        {
+          "time": "2026-11-03T09:26:00+09:00",
+          "title": "[특징주] 삼성전자·SK하이닉스, 장 초반 4~5%대 약세…美 AI 수익성 우려 재점화",
+          "source": "이투데이",
+          "link": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE15ZVJqOGRETGRZR3dpY29LMndXcEQ1bnJiczhFUEhNdWF2Rnc3X2JqNFNMYzduQTZHd1hrQUc3ZFdZMjhydlRrcm9BdnNNLWdOakx6NA?oc=5"
         }
       ]
     }
@@ -188,9 +198,9 @@
     "low": -0.019858156028368823,
     "pattern": "고점 후 반락"
   },
-  "closing_share": -0.08410880458123814,
-  "intraday_corr_kospi": 0.9208619496604674,
-  "intraday_note": "장중 봉은 09:00~14:55까지만 있어 마감 구간(14:55~15:30)은 일봉 종가로만 봅니다(그 구간 +0.07%).",
+  "closing_share": NaN,
+  "intraday_corr_kospi": 0.9192378246207562,
+  "intraday_note": "장중 봉은 09:00~14:55까지만 있어 마감 구간(14:55~15:30)은 일봉 종가로만 봅니다(그 구간 +nan%).",
   "intraday_coverage": "09:00~14:55",
   "intraday_path": [
     {
@@ -425,13 +435,13 @@
     },
     {
       "time": "2026-11-03T12:50:00+09:00",
-      "price": 1403000.0,
-      "volume": 17011.0
+      "price": 1402000.0,
+      "volume": 17282.0
     },
     {
       "time": "2026-11-03T12:55:00+09:00",
       "price": 1399000.0,
-      "volume": 11881.0
+      "volume": 11610.0
     },
     {
       "time": "2026-11-03T13:00:00+09:00",
@@ -535,13 +545,13 @@
     },
     {
       "time": "2026-11-03T14:40:00+09:00",
-      "price": 1392000.0,
-      "volume": 29381.0
+      "price": 1393000.0,
+      "volume": 29360.0
     },
     {
       "time": "2026-11-03T14:45:00+09:00",
       "price": 1394000.0,
-      "volume": 13344.0
+      "volume": 13365.0
     },
     {
       "time": "2026-11-03T14:50:00+09:00",
@@ -558,12 +568,12 @@
     {
       "time": "2026-11-03T09:00:00+09:00",
       "ret": -0.04415760869565222,
-      "z": 12.86,
+      "z": 13.91,
       "volume_ratio": 8.52,
       "cum_before": 0.0,
       "cum_after": -0.0021276595744680327,
       "session_share": 4.7894021739130705,
-      "score": 14.861807586485567,
+      "score": 15.908506851277243,
       "news": [
         {
           "time": "2026-11-03T08:07:00+09:00",
@@ -590,14 +600,58 @@
           "link": "https://news.google.com/rss/articles/CBMib0FVX3lxTE9UUi1MY25lWHpYZGZXUW01anlFTm90NmNkS2w0S0sya2Fua0hHeGVHYi1EazBCdU1BYWZvNEsyalJtdXdaUUZBVmpoYmozRlVLTlhkdGdiOUpQNDhvd29reGcwSFJpTzNaaGtwUEpPbw?oc=5"
         },
         {
-          "time": "2026-11-03T09:05:49+09:00",
-          "title": "[개장시황] 코스피, 개장 직후 2.9% 급락…삼성전자·SK하이닉스 4%대 약세",
-          "source": "아주경제",
-          "link": "https://news.google.com/rss/articles/CBMiWEFVX3lxTE90bG9zM1NNdkN4MEFvbmthRlJRbWxEU0dMYi00VHFiTzh5Tl9jRDMyQ3V4VG92Z0J3UmpyV2FJQlFMVUMyS2txM2pPWEVOczNjeVJpQXNwZm3SAVhBVV95cUxPdGxvczNTTXZDeDBBb25rYUZSUW1sRFNHTGItNFRxYk84eU5fY0QzMkN1eFRvdmdCd1JqcldhSUJRTFVDMktrcTNqT1hFTnMzY3lSaUFzcGZt?oc=5"
+          "time": "2026-11-03T09:12:37+09:00",
+          "title": "삼성전자·SK하이닉스 5%대 하락…AI 수익성 우려 계속 - 머니투데이",
+          "source": "머니투데이",
+          "link": "https://news.google.com/rss/articles/CBMibkFVX3lxTE1sV01qVWh1ekpUNC1jQWlUb3VHdGRRMFFzRHNyVnJ3ck15LXowWHFZamVKMVJxTkxkVzhKTXNUTnhrcXZMVlFxQXA5Uk92T2xJU1VudEZEUU5lRE1Fa1pCZzEweUF0eGkydHo3clhR0gFuQVVfeXFMTWxXTWpVaHV6SlQ0LWNBaVRvdUd0ZFEwUXNEc3JWcndyTXktejBYcVlqZUoxUnFOTGRXOEpNc1ROeGtxdkxWUXFBcDlST3ZPbElTVW50RkRRTmVETUVrWkJnMTB5QXR4aTJ0ejdyWFE?oc=5"
         }
       ],
       "price": 1407000.0,
       "kind": "turn_down"
+    },
+    {
+      "time": "2026-11-03T09:55:00+09:00",
+      "ret": 0.010079193664506825,
+      "z": 3.17,
+      "volume_ratio": 1.07,
+      "cum_before": -0.014893617021276562,
+      "cum_after": -0.00496453900709215,
+      "session_share": -1.0932048513042067,
+      "score": 3.389242394175037,
+      "news": [
+        {
+          "time": "2026-11-03T09:43:00+09:00",
+          "title": "꺼지지 않는 AI 투자불안…美 반도체 이어 '삼전닉스'도 4%대 하락",
+          "source": "KB Think",
+          "link": "https://news.google.com/rss/articles/CBMickFVX3lxTE4yVFlua193TXc0MXRaT3NyUGQ4cE1aX0g0OVdyek45bC1KYkhqaHBONENaUl9pNUUybndHbXAxUk90d2k2V2ZQT1FDZ1habEdzMllua0o0eEZySmRpMTRuaEVLWlNfU0R6ajZucHRyLUFxQQ?oc=5"
+        },
+        {
+          "time": "2026-11-03T09:05:27+09:00",
+          "title": "[속보] 코스피 2.46% 하락 출발…SK하이닉스 4.35%↓",
+          "source": "뉴스퀘스트",
+          "link": "https://news.google.com/rss/articles/CBMib0FVX3lxTE9UUi1MY25lWHpYZGZXUW01anlFTm90NmNkS2w0S0sya2Fua0hHeGVHYi1EazBCdU1BYWZvNEsyalJtdXdaUUZBVmpoYmozRlVLTlhkdGdiOUpQNDhvd29reGcwSFJpTzNaaGtwUEpPbw?oc=5"
+        },
+        {
+          "time": "2026-11-03T09:12:37+09:00",
+          "title": "삼성전자·SK하이닉스 5%대 하락…AI 수익성 우려 계속 - 머니투데이",
+          "source": "머니투데이",
+          "link": "https://news.google.com/rss/articles/CBMibkFVX3lxTE1sV01qVWh1ekpUNC1jQWlUb3VHdGRRMFFzRHNyVnJ3ck15LXowWHFZamVKMVJxTkxkVzhKTXNUTnhrcXZMVlFxQXA5Uk92T2xJU1VudEZEUU5lRE1Fa1pCZzEweUF0eGkydHo3clhR0gFuQVVfeXFMTWxXTWpVaHV6SlQ0LWNBaVRvdUd0ZFEwUXNEc3JWcndyTXktejBYcVlqZUoxUnFOTGRXOEpNc1ROeGtxdkxWUXFBcDlST3ZPbElTVW50RkRRTmVETUVrWkJnMTB5QXR4aTJ0ejdyWFE?oc=5"
+        },
+        {
+          "time": "2026-11-03T09:19:24+09:00",
+          "title": "[특징주] AI 수익성 우려 부각⋯삼성전자 4%·SK하이닉스 5%↓",
+          "source": "아이뉴스24",
+          "link": "https://news.google.com/rss/articles/CBMiS0FVX3lxTE4zTVBuRGs0eWhYNHVHUlM4ZDRnU1Vvc0N4NElBejFTMk5oUlRQLVdTN0VveDNRV3h5NVVZalprc3JYWnFHSm5vQ2doVQ?oc=5"
+        },
+        {
+          "time": "2026-11-03T09:26:00+09:00",
+          "title": "[특징주] 삼성전자·SK하이닉스, 장 초반 4~5%대 약세…美 AI 수익성 우려 재점화",
+          "source": "이투데이",
+          "link": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE15ZVJqOGRETGRZR3dpY29LMndXcEQ1bnJiczhFUEhNdWF2Rnc3X2JqNFNMYzduQTZHd1hrQUc3ZFdZMjhydlRrcm9BdnNNLWdOakx6NA?oc=5"
+        }
+      ],
+      "price": 1403000.0,
+      "kind": "turn_up"
     }
   ],
   "overnight_news": [
@@ -608,28 +662,28 @@
       "link": "https://news.google.com/rss/articles/CBMie0FVX3lxTE5td0g1Vm5ldDlJSjM0N0VvTlJ3OGR3Wm1BcV9xSndHMDlOQ241RFVDTW5IUmdBZ2poUi1qNjdDaWcwY2V1eEs5cTJMQ1BaVmFDVGhDRGJsUmhLRmpQSDJpcFd3alpBdkttMHNoZExIUkJpSGNzYXFJSEJMb9IBgAFBVV95cUxQZDY2OHFuMG5RY1hXd1NqTmNYai1MWmQtREdPeFRlMmtkeDVmVTB5d1g5U0xvUmJ0UnhsWVdrSHEtTUdDdmZUQWFPc0RxUHRRNDVWYmZSYWlScTJFR204RzlNS1NBWUZtajRfWWk0cm43VnV0VUp2dUtRYVZSQ3hRZQ?oc=5"
     },
     {
-      "time": "2026-11-03T00:03:00+09:00",
-      "title": "SK하이닉스 주가, 오늘 상승하는 이유는?",
-      "source": "Investing.com 한국어",
-      "link": "https://news.google.com/rss/articles/CBMid0FVX3lxTE15WEhCYmdqc2lTWDNFNnp2NGZRSkhyN0JScE13TFZrWmY0V2pyTE05RjN5d0RXRUwtSDVPQnlrbFVEN1M1dmJ5TEFnX0tnSm5MdGdjem5LaHJid0FPYi1wWGJ0WG41Qnl3ckJZN0h1ek1oQ25HYzRj?oc=5"
-    },
-    {
-      "time": "2026-11-03T00:43:14+09:00",
-      "title": "인텔 주가 30% 폭락 후 첫 개장…삼성전자·SK하이닉스도 흔들릴까",
-      "source": "진일보 | 전남일보",
-      "link": "https://news.google.com/rss/articles/CBMib0FVX3lxTFAxY1JUdHI5QzNZSGVfMk95aHh1dkpaSHBUbnFZTG5RejUtVjZnVmNhaWtJZFA1eEFRQ01IMF9WM3BveXU4WTVrTjJHUTQ1aVZGajVhVWNwZHhXTXR5UC1TZ050N2VRY3FJTC04OXY3NA?oc=5"
-    },
-    {
-      "time": "2026-11-03T07:05:00+09:00",
-      "title": "[국장방향예측] 코스피 3.49%↓ SK하이닉스 5.74%↓",
-      "source": "디지털애셋",
-      "link": "https://news.google.com/rss/articles/CBMickFVX3lxTE1yRlIyQURFSGFVN2lQV0RtcXE3T2RiYlBaTTI2RmFuTDNQUXUya2c4SlBJMlVEQ0dEd0xvbFZCQ24wazMyRVc4SHJ1aWNkNF9MUW9MOWJoRmhTTjFwRVlDaE9iWkwybVRrLS05R3YwYkhTQQ?oc=5"
-    },
-    {
       "time": "2026-11-03T07:15:13+09:00",
       "title": "청주시, SK하이닉스 P&T7·M17 공업용수 공급사업 ‘순항’… 반도체 대도약 기틀",
       "source": "중도일보",
       "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE1qSEtyaVJOYW01MVZlNElfdnN2LVNHM0pVSDNkNjRPLWd1d19Ka01ob0JOV2Qwc3hBUzV2TXFNTWk4LUlCSmVxdkpCNlRFd2pmMkRmQll5VlZHOXREVmJBMG5NWDc?oc=5"
+    },
+    {
+      "time": "2026-11-03T08:12:39+09:00",
+      "title": "美 반도체주 급락 여파…삼성전자·SK하이닉스 프리마켓서 동반 약세",
+      "source": "뉴시스",
+      "link": "https://news.google.com/rss/articles/CBMieEFVX3lxTE1jbS1hRmtvN3E2aEJ3SkVrLTd0Y3NOOFJwUGZZaFM3cnM5MkR1WnhVZ2ZoQ2lyRmJBT1FEeEUwbldvc0ZGOC1rZWFNSnBkTW9vZnJ3YkNMLXRoSnA4VHNHWlZsRmR0czV5MW1vNFNZelFody1NVy1wZNIBeEFVX3lxTE1jbS1hRmtvN3E2aEJ3SkVrLTd0Y3NOOFJwUGZZaFM3cnM5MkR1WnhVZ2ZoQ2lyRmJBT1FEeEUwbldvc0ZGOC1rZWFNSnBkTW9vZnJ3YkNMLXRoSnA4VHNHWlZsRmR0czV5MW1vNFNZelFody1NVy1wZA?oc=5"
+    },
+    {
+      "time": "2026-11-03T08:17:56+09:00",
+      "title": "'AI 수익성 우려' 재확산…삼성전자·SK하이닉스 프리마켓서 3%대↓",
+      "source": "뉴스1",
+      "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE5wZDdyenY0aXFPQS16d3VZMFd5bVc5MExMS3RQeUxEZUdEVjVZaDlrYUVxSGtJTl93UzlBcmlfdnY0aEJ4eThXLVZqMGdLLWJQU29qQ3NqTXdod3M?oc=5"
+    },
+    {
+      "time": "2026-11-03T07:00:00+09:00",
+      "title": "SK하이닉스, '솔리다임 IPO' 대안…키옥시아 잔여 지분 '만지작'",
+      "source": "딜사이트",
+      "link": "https://news.google.com/rss/articles/CBMiT0FVX3lxTFBoN2pCTnQ1LVh1Yk9BcWtrckhScE9ESG9wWE9WMlhocWFqTG51OV80T1ZHQzlmZDVyenpRV0FLUUVvalIyS1ZBbS1yNE9MdjQ?oc=5"
     }
   ],
   "top_news": [
@@ -652,12 +706,6 @@
       "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTE5acldkb0NfQmJlc0lLYkc1VDhtT0l4bWZEMG5kcEJRei13T1B2RkxqNGhIMm8xV0E2TlgzOGJNTmpSQm9pZHExenBfeHQ5Q2tlQlFGRnVTZXJiS1NYQzZqbTJWM24zNkZiUVF4V3lPX0NPRUE?oc=5"
     },
     {
-      "time": "2026-11-03T13:21:26+09:00",
-      "title": "[증시 시황] 코스피 5,630선까지 추락…외국인 1조2천억 매도, 삼성전자·SK하이닉스 급락",
-      "source": "톱스타뉴스",
-      "link": "https://news.google.com/rss/articles/CBMickFVX3lxTE85Y0lVSDZhX3pNSHZVbXZzckM1MkhZcjAzVHF4TGVIbmUzdjdJV0J3VmFnaXlsVzZVVTBObmxSVFE0c1RhQkVqQTkxeUlPMDBYa1htMGZoVnZPT3pldk1HMHRRRmpUZkVHQksyRTJ6dDhWZw?oc=5"
-    },
-    {
       "time": "2026-11-03T13:34:13+09:00",
       "title": "삼성전자·SK하이닉스, AI 투자 회의론에 장중 동반 급락세",
       "source": "더팩트",
@@ -668,15 +716,22 @@
       "title": "애플 상대로 삼성전자 SK하이닉스 메모리반도체 협상력 강화, 중국의 진입 기회도 커져",
       "source": "비즈니스포스트",
       "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTFB0TURCUlFRejZEVmRtQm9YY05CRVFNVWt0Y0NqdVdVMnNzZHdrX01hOGlXWVkyQmw1eV84cmF5VVB0Z3pCWVY2Z0R3Q0ZkT3lRbHFJMmlJZ3hTTDFEYXRzbG9JaHlua2dGOUNPak5QeWFfckE?oc=5"
+    },
+    {
+      "time": "2026-11-03T15:42:00+09:00",
+      "title": "[마감시황] 코스피, 외국인·기관 매도 공세에 3.59%↓⋯SK하이닉스 5%대 급락",
+      "source": "브릿지경제",
+      "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTFBzdEhnZnVod3FjMFRMZ2k2ZDdOMGZCR0hmUWdsOFJWNUNQcC1mcjJsWEswOUhySkZNcFNCakxFdFk1bmdCV1ZTQVlvd3Awc1l0cE5OS1d5OEJuZw?oc=5"
     }
   ],
   "disclosures": [],
   "disclosure_note": null,
-  "flows": null,
+  "flows": "외국인 -454,726 / 기관 -192,661",
   "flow_story": null,
   "flow_status": {
-    "state": "pending",
-    "detail": "최신 2026-11-02"
+    "state": "ok",
+    "detail": "naver+cache",
+    "krx_error": "pykrx 미설치"
   },
   "context": {},
   "market": {
@@ -687,9 +742,9 @@
     "steady": 33,
     "upper": 4,
     "lower": 0,
-    "individual": 16675.0,
-    "foreign": -15256.0,
-    "institution": -5079.0,
+    "individual": 16388.0,
+    "foreign": -15086.0,
+    "institution": -4941.0,
     "prev_close": 5859.08,
     "open": 5715.19,
     "high": 5735.92,
@@ -700,50 +755,50 @@
   "forecasts": [
     {
       "model": "No macro ensemble",
-      "hit": true,
-      "verdict": "맞음 — 예측 하락 56%, 실제 하락(-5.03%)",
-      "legs": "갭 -4.21%(하락) · 세션 -0.85%(보합)",
-      "where": "결과는 주로 갭(밤사이)에서 정해졌습니다.",
+      "hit": false,
+      "verdict": "틀림 — 예측 하락 56%, 실제 보합(+nan%)",
+      "legs": "갭 +nan%(보합) · 세션 +nan%(보합)",
+      "where": "결과는 주로 장중에서 정해졌습니다.",
       "band": 0.0165200913813518,
       "probs": [
         0.5586249030613049,
         0.2472107129580099,
         0.1941643839806853
       ],
-      "actual": "하락",
+      "actual": "보합",
       "predicted": "하락"
     },
     {
       "model": "Mean ensemble",
-      "hit": true,
-      "verdict": "맞음 — 예측 하락 52%, 실제 하락(-5.03%)",
-      "legs": "갭 -4.21%(하락) · 세션 -0.85%(보합)",
-      "where": "결과는 주로 갭(밤사이)에서 정해졌습니다.",
+      "hit": false,
+      "verdict": "틀림 — 예측 하락 52%, 실제 보합(+nan%)",
+      "legs": "갭 +nan%(보합) · 세션 +nan%(보합)",
+      "where": "결과는 주로 장중에서 정해졌습니다.",
       "band": 0.0165200913813518,
       "probs": [
         0.5196689189514565,
         0.2553656643061021,
         0.2249654167424414
       ],
-      "actual": "하락",
+      "actual": "보합",
       "predicted": "하락"
     },
     {
       "model": "Candidate expanding",
-      "hit": true,
-      "verdict": "맞음 — 예측 하락 66%, 실제 하락(-5.03%)",
-      "legs": "갭 -4.21%(하락) · 세션 -0.85%(보합)",
-      "where": "결과는 주로 갭(밤사이)에서 정해졌습니다.",
+      "hit": false,
+      "verdict": "틀림 — 예측 하락 66%, 실제 보합(+nan%)",
+      "legs": "갭 +nan%(보합) · 세션 +nan%(보합)",
+      "where": "결과는 주로 장중에서 정해졌습니다.",
       "band": 0.0165200913813518,
       "probs": [
         0.6635107053457352,
         0.2159909963435539,
         0.1204982983107109
       ],
-      "actual": "하락",
+      "actual": "보합",
       "predicted": "하락"
     }
   ],
-  "price_check": "1거래일 예상 구간 1,349,412~1,549,598원 · 종가 1,398,000원 → 구간 안",
+  "price_check": "1거래일 예상 구간 1,349,412~1,549,598원 · 종가 nan원 → 구간 밖",
   "disclaimer": "시간이 맞는 것이지 원인 확정이 아닙니다. 뉴스 없이 움직이는 날(수급·프로그램·옵션 만기)이 많고, 기사 발행 시각은 실제 정보 유통보다 늦거나 앞섭니다. 이 절은 설명 도구이며 다음날 예측에 자동 반영되지 않습니다."
 }

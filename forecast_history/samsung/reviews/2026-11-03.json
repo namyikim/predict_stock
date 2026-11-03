@@ -3,7 +3,7 @@
   "name": "삼성전자",
   "peer_name": "SK하이닉스",
   "session_date": "2026-11-03",
-  "generated_at": "2026-11-03 16:12 KST",
+  "generated_at": "2026-11-03 16:46 KST",
   "summary": {
     "prev_close": 229000.0,
     "open": 220500.0,
@@ -15,11 +15,11 @@
     "c2c": -0.04148471615720528,
     "high_vs_open": 0.01133786848072571,
     "low_vs_open": -0.015873015873015928,
-    "volume": 14605630.0,
-    "volume_ratio": 0.8057423978063568,
+    "volume": 14621019.0,
+    "volume_ratio": 0.8065913560340979,
     "kospi_c2c": -0.035891306529095335,
     "peer_c2c": -0.05027173913043481,
-    "usdkrw_chg": 0.011504918654787977,
+    "usdkrw_chg": 0.01108995032536253,
     "us_nights": 1,
     "sox_ret": -0.03372406005811979,
     "nasdaq_ret": -0.010720189217478526,
@@ -161,16 +161,16 @@
           "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxQSVBHakUzcWhqNkNyMk5Kb1YwZDNYX2hEUGhwM0hCczAtMFU3dXh6a1MtSUZWRHNmb2dzcG1wUWRjYkplWF9JeG9vcTRPTFAyWGNWZmFBZ1NvZTRVbnZ1NVB3Nk5iQzhNVmI5TmZ4eHBMOUhYejVBX0tvTk1LMU5PRTFjREhjTUZf?oc=5"
         },
         {
-          "time": "2026-11-03T07:42:26+09:00",
-          "title": "[종목 포커스] 디아이, 삼성전자 베트남 번인테스터 신규 수요로 주가 반등할까",
-          "source": "데일리인베스트",
-          "link": "https://news.google.com/rss/articles/CBMib0FVX3lxTFBSWkNidEd2bnU0NGtOdklmanJaSWtRRkpQbFp1Qng0WTh3MzR1ZGF0b1BqYm9sQXl6ZGJpWUxmZ2R3ME1wcnpkTnFzLWR6cHJfd255eFlOMGtEcEhQMThlRDhKb1BpXzV4MU8wa1lFa9IBb0FVX3lxTFBSWkNidEd2bnU0NGtOdklmanJaSWtRRkpQbFp1Qng0WTh3MzR1ZGF0b1BqYm9sQXl6ZGJpWUxmZ2R3ME1wcnpkTnFzLWR6cHJfd255eFlOMGtEcEhQMThlRDhKb1BpXzV4MU8wa1lFaw?oc=5"
+          "time": "2026-11-03T08:45:35+09:00",
+          "title": "한투증권, 삼성전자 목표가 57만→44만원…\"추가 상승동력 필요\"",
+          "source": "매일경제 마켓",
+          "link": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE1uc0ZSNmYwUkFpVGdnNTk2aUw4eXJmSUx0S01VVWs0TkVCNHhuUlhzTlBONGpQWE01V3RpeFVwWEFUY19lWjN3NVFSMnhNWTBSaFE?oc=5"
         },
         {
-          "time": "2026-11-03T08:17:56+09:00",
-          "title": "'AI 수익성 우려' 재확산…삼성전자·SK하이닉스 프리마켓서 3%대↓",
-          "source": "뉴스1",
-          "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE5wZDdyenY0aXFPQS16d3VZMFd5bVc5MExMS3RQeUxEZUdEVjVZaDlrYUVxSGtJTl93UzlBcmlfdnY0aEJ4eThXLVZqMGdLLWJQU29qQ3NqTXdod3M?oc=5"
+          "time": "2026-11-03T09:10:00+09:00",
+          "title": "한투증권, 삼성전자 목표가 57만→44만원 하향 조정",
+          "source": "연합뉴스TV",
+          "link": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE1ZMHJYXzI1S3Y5RVlibGoxUGZwMHYyVDdJOFNPdGlHU0F3TG5zUXI5bGVWbHhIYXVPcmVSUFlPSEdVd0pPSGhZbFFaNXpfSnpRYktkMTBQU1hNRkNhQUNjUU5zZzg0VWs?oc=5"
         }
       ]
     },
@@ -203,16 +203,16 @@
           "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxQSVBHakUzcWhqNkNyMk5Kb1YwZDNYX2hEUGhwM0hCczAtMFU3dXh6a1MtSUZWRHNmb2dzcG1wUWRjYkplWF9JeG9vcTRPTFAyWGNWZmFBZ1NvZTRVbnZ1NVB3Nk5iQzhNVmI5TmZ4eHBMOUhYejVBX0tvTk1LMU5PRTFjREhjTUZf?oc=5"
         },
         {
+          "time": "2026-11-03T08:45:35+09:00",
+          "title": "한투증권, 삼성전자 목표가 57만→44만원…\"추가 상승동력 필요\"",
+          "source": "매일경제 마켓",
+          "link": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE1uc0ZSNmYwUkFpVGdnNTk2aUw4eXJmSUx0S01VVWs0TkVCNHhuUlhzTlBONGpQWE01V3RpeFVwWEFUY19lWjN3NVFSMnhNWTBSaFE?oc=5"
+        },
+        {
           "time": "2026-11-03T09:10:00+09:00",
           "title": "한투증권, 삼성전자 목표가 57만→44만원 하향 조정",
           "source": "연합뉴스TV",
           "link": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE1ZMHJYXzI1S3Y5RVlibGoxUGZwMHYyVDdJOFNPdGlHU0F3TG5zUXI5bGVWbHhIYXVPcmVSUFlPSEdVd0pPSGhZbFFaNXpfSnpRYktkMTBQU1hNRkNhQUNjUU5zZzg0VWs?oc=5"
-        },
-        {
-          "time": "2026-11-03T09:26:00+09:00",
-          "title": "[특징주] 삼성전자·SK하이닉스, 장 초반 4~5%대 약세…美 AI 수익성 우려 재점화",
-          "source": "이투데이",
-          "link": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE15ZVJqOGRETGRZR3dpY29LMndXcEQ1bnJiczhFUEhNdWF2Rnc3X2JqNFNMYzduQTZHd1hrQUc3ZFdZMjhydlRrcm9BdnNNLWdOakx6NA?oc=5"
         }
       ]
     }
@@ -620,16 +620,16 @@
           "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxQSVBHakUzcWhqNkNyMk5Kb1YwZDNYX2hEUGhwM0hCczAtMFU3dXh6a1MtSUZWRHNmb2dzcG1wUWRjYkplWF9JeG9vcTRPTFAyWGNWZmFBZ1NvZTRVbnZ1NVB3Nk5iQzhNVmI5TmZ4eHBMOUhYejVBX0tvTk1LMU5PRTFjREhjTUZf?oc=5"
         },
         {
-          "time": "2026-11-03T07:42:26+09:00",
-          "title": "[종목 포커스] 디아이, 삼성전자 베트남 번인테스터 신규 수요로 주가 반등할까",
-          "source": "데일리인베스트",
-          "link": "https://news.google.com/rss/articles/CBMib0FVX3lxTFBSWkNidEd2bnU0NGtOdklmanJaSWtRRkpQbFp1Qng0WTh3MzR1ZGF0b1BqYm9sQXl6ZGJpWUxmZ2R3ME1wcnpkTnFzLWR6cHJfd255eFlOMGtEcEhQMThlRDhKb1BpXzV4MU8wa1lFa9IBb0FVX3lxTFBSWkNidEd2bnU0NGtOdklmanJaSWtRRkpQbFp1Qng0WTh3MzR1ZGF0b1BqYm9sQXl6ZGJpWUxmZ2R3ME1wcnpkTnFzLWR6cHJfd255eFlOMGtEcEhQMThlRDhKb1BpXzV4MU8wa1lFaw?oc=5"
+          "time": "2026-11-03T08:45:35+09:00",
+          "title": "한투증권, 삼성전자 목표가 57만→44만원…\"추가 상승동력 필요\"",
+          "source": "매일경제 마켓",
+          "link": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE1uc0ZSNmYwUkFpVGdnNTk2aUw4eXJmSUx0S01VVWs0TkVCNHhuUlhzTlBONGpQWE01V3RpeFVwWEFUY19lWjN3NVFSMnhNWTBSaFE?oc=5"
         },
         {
-          "time": "2026-11-03T08:17:56+09:00",
-          "title": "'AI 수익성 우려' 재확산…삼성전자·SK하이닉스 프리마켓서 3%대↓",
-          "source": "뉴스1",
-          "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE5wZDdyenY0aXFPQS16d3VZMFd5bVc5MExMS3RQeUxEZUdEVjVZaDlrYUVxSGtJTl93UzlBcmlfdnY0aEJ4eThXLVZqMGdLLWJQU29qQ3NqTXdod3M?oc=5"
+          "time": "2026-11-03T09:10:00+09:00",
+          "title": "한투증권, 삼성전자 목표가 57만→44만원 하향 조정",
+          "source": "연합뉴스TV",
+          "link": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE1ZMHJYXzI1S3Y5RVlibGoxUGZwMHYyVDdJOFNPdGlHU0F3TG5zUXI5bGVWbHhIYXVPcmVSUFlPSEdVd0pPSGhZbFFaNXpfSnpRYktkMTBQU1hNRkNhQUNjUU5zZzg0VWs?oc=5"
         }
       ],
       "price": 219000.0,
@@ -664,16 +664,16 @@
           "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxQSVBHakUzcWhqNkNyMk5Kb1YwZDNYX2hEUGhwM0hCczAtMFU3dXh6a1MtSUZWRHNmb2dzcG1wUWRjYkplWF9JeG9vcTRPTFAyWGNWZmFBZ1NvZTRVbnZ1NVB3Nk5iQzhNVmI5TmZ4eHBMOUhYejVBX0tvTk1LMU5PRTFjREhjTUZf?oc=5"
         },
         {
+          "time": "2026-11-03T08:45:35+09:00",
+          "title": "한투증권, 삼성전자 목표가 57만→44만원…\"추가 상승동력 필요\"",
+          "source": "매일경제 마켓",
+          "link": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE1uc0ZSNmYwUkFpVGdnNTk2aUw4eXJmSUx0S01VVWs0TkVCNHhuUlhzTlBONGpQWE01V3RpeFVwWEFUY19lWjN3NVFSMnhNWTBSaFE?oc=5"
+        },
+        {
           "time": "2026-11-03T09:10:00+09:00",
           "title": "한투증권, 삼성전자 목표가 57만→44만원 하향 조정",
           "source": "연합뉴스TV",
           "link": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE1ZMHJYXzI1S3Y5RVlibGoxUGZwMHYyVDdJOFNPdGlHU0F3TG5zUXI5bGVWbHhIYXVPcmVSUFlPSEdVd0pPSGhZbFFaNXpfSnpRYktkMTBQU1hNRkNhQUNjUU5zZzg0VWs?oc=5"
-        },
-        {
-          "time": "2026-11-03T09:26:00+09:00",
-          "title": "[특징주] 삼성전자·SK하이닉스, 장 초반 4~5%대 약세…美 AI 수익성 우려 재점화",
-          "source": "이투데이",
-          "link": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE15ZVJqOGRETGRZR3dpY29LMndXcEQ1bnJiczhFUEhNdWF2Rnc3X2JqNFNMYzduQTZHd1hrQUc3ZFdZMjhydlRrcm9BdnNNLWdOakx6NA?oc=5"
         }
       ],
       "price": 223000.0,
@@ -774,9 +774,9 @@
     "steady": 33,
     "upper": 4,
     "lower": 0,
-    "individual": 16605.0,
-    "foreign": -15167.0,
-    "institution": -5097.0,
+    "individual": 16593.0,
+    "foreign": -15162.0,
+    "institution": -5090.0,
     "prev_close": 5859.08,
     "open": 5715.19,
     "high": 5735.92,

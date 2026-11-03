@@ -3,7 +3,7 @@
   "name": "SK하이닉스",
   "peer_name": "삼성전자",
   "session_date": "2026-11-03",
-  "generated_at": "2026-11-04 00:21 KST",
+  "generated_at": "2026-11-04 01:39 KST",
   "summary": {
     "prev_close": 1472000.0,
     "open": NaN,
@@ -19,7 +19,7 @@
     "volume_ratio": 0.7064713527468098,
     "kospi_c2c": NaN,
     "peer_c2c": NaN,
-    "usdkrw_chg": 0.01368520609356949,
+    "usdkrw_chg": 0.013934131835788177,
     "us_nights": 1,
     "sox_ret": -0.03372406005811979,
     "nasdaq_ret": -0.010720189217478526,
@@ -38,11 +38,11 @@
     "prior_5d": 0.15450980392156866,
     "ma_touches": [],
     "micron_ah": {
-      "regular_close": 833.0599975585938,
+      "regular_close": 833.3599853515625,
       "last": 842.3099,
-      "ret": 0.011103524918390617,
-      "low_ret": 0.002328766772011326,
-      "high_ret": 0.016162344225944203,
+      "ret": 0.010739554101174997,
+      "low_ret": 0.0019679546381694557,
+      "high_ret": 0.015796552366122985,
       "last_time": "2026-11-03T08:55:00+09:00"
     },
     "nvidia_ah": {
@@ -102,19 +102,19 @@
       "장중 급변 09:00 주도"
     ],
     "reasons": [
-      "09:00 봉 -4.42%(σ의 13.91배, 거래량 8.52배)가 세션 +nan%의 479%"
+      "09:00 봉 -4.42%(σ의 12.86배, 거래량 8.52배)가 세션 +nan%의 479%"
     ]
   },
   "events": [
     {
       "time": "2026-11-03T09:00:00+09:00",
       "ret": -0.04415760869565222,
-      "z": 13.91,
+      "z": 12.86,
       "volume_ratio": 8.52,
       "cum_before": 0.0,
       "cum_after": -0.0021276595744680327,
       "session_share": 4.7894021739130705,
-      "score": 15.908506851277243,
+      "score": 14.861807586485567,
       "news": [
         {
           "time": "2026-11-03T08:07:00+09:00",
@@ -147,48 +147,6 @@
           "link": "https://news.google.com/rss/articles/CBMia0FVX3lxTE81SG01b2RDMWZIVUlKRTdLUnp1T0JWcFN6TG5yc25Rd3dZWERuUW9aUjdLQUQ5cTE0WVlqRG9xcGZlczQ0NlN2bTN1bDFfdnV1SXZRakhLWWlZUnIyb0JXNGxTUmJNdzkyUTEw?oc=5"
         }
       ]
-    },
-    {
-      "time": "2026-11-03T09:55:00+09:00",
-      "ret": 0.010079193664506825,
-      "z": 3.17,
-      "volume_ratio": 1.07,
-      "cum_before": -0.014893617021276562,
-      "cum_after": -0.00496453900709215,
-      "session_share": -1.0932048513042067,
-      "score": 3.389242394175037,
-      "news": [
-        {
-          "time": "2026-11-03T09:49:31+09:00",
-          "title": "꺼지지 않는 AI 투자불안…美 반도체 이어 '삼전닉스'도 4%대 하락 |",
-          "source": "연합인포맥스",
-          "link": "https://news.google.com/rss/articles/CBMidEFVX3lxTE0xQW1sdHNCNldFbFBFTEdjanVybGtvLTZOVXJZamQwR3RteWI1X0pmQm53cGpacnFjc0lNelRxN2szVW8xWHdfcldUYURISTQ1UVVxNUx6ZnUwTlo0V05Qd2ZKTjgzdmp1NThmVUR2YzNuMTh5?oc=5"
-        },
-        {
-          "time": "2026-11-03T09:12:37+09:00",
-          "title": "삼성전자·SK하이닉스 5%대 하락…AI 수익성 우려 계속 - 머니투데이",
-          "source": "머니투데이",
-          "link": "https://news.google.com/rss/articles/CBMibkFVX3lxTE1sV01qVWh1ekpUNC1jQWlUb3VHdGRRMFFzRHNyVnJ3ck15LXowWHFZamVKMVJxTkxkVzhKTXNUTnhrcXZMVlFxQXA5Uk92T2xJU1VudEZEUU5lRE1Fa1pCZzEweUF0eGkydHo3clhR0gFuQVVfeXFMTWxXTWpVaHV6SlQ0LWNBaVRvdUd0ZFEwUXNEc3JWcndyTXktejBYcVlqZUoxUnFOTGRXOEpNc1ROeGtxdkxWUXFBcDlST3ZPbElTVW50RkRRTmVETUVrWkJnMTB5QXR4aTJ0ejdyWFE?oc=5"
-        },
-        {
-          "time": "2026-11-03T09:19:24+09:00",
-          "title": "[특징주] AI 수익성 우려 부각⋯삼성전자 4%·SK하이닉스 5%↓",
-          "source": "아이뉴스24",
-          "link": "https://news.google.com/rss/articles/CBMiS0FVX3lxTE4zTVBuRGs0eWhYNHVHUlM4ZDRnU1Vvc0N4NElBejFTMk5oUlRQLVdTN0VveDNRV3h5NVVZalprc3JYWnFHSm5vQ2doVQ?oc=5"
-        },
-        {
-          "time": "2026-11-03T09:26:00+09:00",
-          "title": "[특징주] 삼성전자·SK하이닉스, 장 초반 4~5%대 약세…美 AI 수익성 우려 재점화",
-          "source": "이투데이",
-          "link": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE15ZVJqOGRETGRZR3dpY29LMndXcEQ1bnJiczhFUEhNdWF2Rnc3X2JqNFNMYzduQTZHd1hrQUc3ZFdZMjhydlRrcm9BdnNNLWdOakx6NA?oc=5"
-        },
-        {
-          "time": "2026-11-03T09:30:00+09:00",
-          "title": "코스피 3% 급락 5650선… 삼성전자·SK하이닉스 동반 약세",
-          "source": "www.twig24.com",
-          "link": "https://news.google.com/rss/articles/CBMiY0FVX3lxTE1kQVhlaXdzcUlaQXhqQmlPcmFjQ0h1THprSHBxT0MzNmFuN0xSd0NtMV9ETzFneU1reURGQmI3Q3dkR2NwWXI0MjdQdF9WbXhiRFFJZ3VhaThyNzFnaWN3cVB1bw?oc=5"
-        }
-      ]
     }
   ],
   "turning_point": {
@@ -199,7 +157,7 @@
     "pattern": "고점 후 반락"
   },
   "closing_share": NaN,
-  "intraday_corr_kospi": 0.9192378246207562,
+  "intraday_corr_kospi": 0.9208619496604674,
   "intraday_note": "장중 봉은 09:00~14:55까지만 있어 마감 구간(14:55~15:30)은 일봉 종가로만 봅니다(그 구간 +nan%).",
   "intraday_coverage": "09:00~14:55",
   "intraday_path": [
@@ -435,13 +393,13 @@
     },
     {
       "time": "2026-11-03T12:50:00+09:00",
-      "price": 1402000.0,
-      "volume": 17282.0
+      "price": 1403000.0,
+      "volume": 17011.0
     },
     {
       "time": "2026-11-03T12:55:00+09:00",
       "price": 1399000.0,
-      "volume": 11610.0
+      "volume": 11881.0
     },
     {
       "time": "2026-11-03T13:00:00+09:00",
@@ -545,13 +503,13 @@
     },
     {
       "time": "2026-11-03T14:40:00+09:00",
-      "price": 1393000.0,
-      "volume": 29360.0
+      "price": 1392000.0,
+      "volume": 29381.0
     },
     {
       "time": "2026-11-03T14:45:00+09:00",
       "price": 1394000.0,
-      "volume": 13365.0
+      "volume": 13344.0
     },
     {
       "time": "2026-11-03T14:50:00+09:00",
@@ -568,12 +526,12 @@
     {
       "time": "2026-11-03T09:00:00+09:00",
       "ret": -0.04415760869565222,
-      "z": 13.91,
+      "z": 12.86,
       "volume_ratio": 8.52,
       "cum_before": 0.0,
       "cum_after": -0.0021276595744680327,
       "session_share": 4.7894021739130705,
-      "score": 15.908506851277243,
+      "score": 14.861807586485567,
       "news": [
         {
           "time": "2026-11-03T08:07:00+09:00",
@@ -608,50 +566,6 @@
       ],
       "price": 1407000.0,
       "kind": "turn_down"
-    },
-    {
-      "time": "2026-11-03T09:55:00+09:00",
-      "ret": 0.010079193664506825,
-      "z": 3.17,
-      "volume_ratio": 1.07,
-      "cum_before": -0.014893617021276562,
-      "cum_after": -0.00496453900709215,
-      "session_share": -1.0932048513042067,
-      "score": 3.389242394175037,
-      "news": [
-        {
-          "time": "2026-11-03T09:49:31+09:00",
-          "title": "꺼지지 않는 AI 투자불안…美 반도체 이어 '삼전닉스'도 4%대 하락 |",
-          "source": "연합인포맥스",
-          "link": "https://news.google.com/rss/articles/CBMidEFVX3lxTE0xQW1sdHNCNldFbFBFTEdjanVybGtvLTZOVXJZamQwR3RteWI1X0pmQm53cGpacnFjc0lNelRxN2szVW8xWHdfcldUYURISTQ1UVVxNUx6ZnUwTlo0V05Qd2ZKTjgzdmp1NThmVUR2YzNuMTh5?oc=5"
-        },
-        {
-          "time": "2026-11-03T09:12:37+09:00",
-          "title": "삼성전자·SK하이닉스 5%대 하락…AI 수익성 우려 계속 - 머니투데이",
-          "source": "머니투데이",
-          "link": "https://news.google.com/rss/articles/CBMibkFVX3lxTE1sV01qVWh1ekpUNC1jQWlUb3VHdGRRMFFzRHNyVnJ3ck15LXowWHFZamVKMVJxTkxkVzhKTXNUTnhrcXZMVlFxQXA5Uk92T2xJU1VudEZEUU5lRE1Fa1pCZzEweUF0eGkydHo3clhR0gFuQVVfeXFMTWxXTWpVaHV6SlQ0LWNBaVRvdUd0ZFEwUXNEc3JWcndyTXktejBYcVlqZUoxUnFOTGRXOEpNc1ROeGtxdkxWUXFBcDlST3ZPbElTVW50RkRRTmVETUVrWkJnMTB5QXR4aTJ0ejdyWFE?oc=5"
-        },
-        {
-          "time": "2026-11-03T09:19:24+09:00",
-          "title": "[특징주] AI 수익성 우려 부각⋯삼성전자 4%·SK하이닉스 5%↓",
-          "source": "아이뉴스24",
-          "link": "https://news.google.com/rss/articles/CBMiS0FVX3lxTE4zTVBuRGs0eWhYNHVHUlM4ZDRnU1Vvc0N4NElBejFTMk5oUlRQLVdTN0VveDNRV3h5NVVZalprc3JYWnFHSm5vQ2doVQ?oc=5"
-        },
-        {
-          "time": "2026-11-03T09:26:00+09:00",
-          "title": "[특징주] 삼성전자·SK하이닉스, 장 초반 4~5%대 약세…美 AI 수익성 우려 재점화",
-          "source": "이투데이",
-          "link": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE15ZVJqOGRETGRZR3dpY29LMndXcEQ1bnJiczhFUEhNdWF2Rnc3X2JqNFNMYzduQTZHd1hrQUc3ZFdZMjhydlRrcm9BdnNNLWdOakx6NA?oc=5"
-        },
-        {
-          "time": "2026-11-03T09:30:00+09:00",
-          "title": "코스피 3% 급락 5650선… 삼성전자·SK하이닉스 동반 약세",
-          "source": "www.twig24.com",
-          "link": "https://news.google.com/rss/articles/CBMiY0FVX3lxTE1kQVhlaXdzcUlaQXhqQmlPcmFjQ0h1THprSHBxT0MzNmFuN0xSd0NtMV9ETzFneU1reURGQmI3Q3dkR2NwWXI0MjdQdF9WbXhiRFFJZ3VhaThyNzFnaWN3cVB1bw?oc=5"
-        }
-      ],
-      "price": 1403000.0,
-      "kind": "turn_up"
     }
   ],
   "overnight_news": [
@@ -715,7 +629,7 @@
       "time": "2026-11-03T11:29:43+09:00",
       "title": "[특징주]삼성전자·SK하이닉스 동반 '급락'···美 AI 투자 우려 '재점화'",
       "source": "현대경제신문",
-      "link": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE9LTHNCTnZHNklkQTIwcU8xLXR2aXA0X1BxOU04TWJPam81QlZ2VDV2aUw4Unk1Z201elh5M1FvNWhIMTk3SVgyd0tPcUZuUGwtb1ctY0EwcDQ4UmFzZHJrQjVSeVJTWTjSAWtBVV95cUxQNTQ1MjJMYzJNZllMaUVXUEJRY3dpWHM0am04U2ZxbHh0cDc0UDFIcFJIcmFSa0ZFUndyRHdYdF9jWDIyRzBYTGY0MTNYSFJRQmtVYU5BV2x5TWNLVTUwUTFHSzREOWVOZXl3OA?oc=5"
+      "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE93cE5jMHZzUFRQcFdVdUYtbkRvMVB5YzFKRFhTYXF2TGlrb1lKeXl0N3gxMmlsMDNNakpNRDRkd3FQNjRpMWs5eDZZbHN0bUFOdmh3TVFUVFJPV2VNX0NzNnI3cXJlMFpC0gFrQVVfeXFMUDU0NTIyTGMyTWZZTGlFV1BCUWN3aVhzNGptOFNmcWx4dHA3NFAxSHBSSHJhUmtGRVJ3ckR3WHRfY1gyMkcwWExmNDEzWEhSUUJrVWFOQVdseU1jS1U1MFExR0s0RDllTmV5dzg?oc=5"
     },
     {
       "time": "2026-11-03T13:34:00+09:00",

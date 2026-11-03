@@ -3,7 +3,7 @@
   "name": "SK하이닉스",
   "peer_name": "삼성전자",
   "session_date": "2026-11-03",
-  "generated_at": "2026-11-03 16:46 KST",
+  "generated_at": "2026-11-03 17:31 KST",
   "summary": {
     "prev_close": 1472000.0,
     "open": 1410000.0,
@@ -15,11 +15,11 @@
     "c2c": -0.05027173913043481,
     "high_vs_open": 0.01631205673758873,
     "low_vs_open": -0.021985815602836856,
-    "volume": 2488289.0,
-    "volume_ratio": 0.6844128781916688,
+    "volume": 2496659.0,
+    "volume_ratio": 0.6867150769276131,
     "kospi_c2c": -0.035891306529095335,
     "peer_c2c": -0.04148471615720528,
-    "usdkrw_chg": 0.011210683454496273,
+    "usdkrw_chg": 0.012478151079414967,
     "us_nights": 1,
     "sox_ret": -0.03372406005811979,
     "nasdaq_ret": -0.010720189217478526,
@@ -614,12 +614,6 @@
       "link": "https://news.google.com/rss/articles/CBMid0FVX3lxTE15WEhCYmdqc2lTWDNFNnp2NGZRSkhyN0JScE13TFZrWmY0V2pyTE05RjN5d0RXRUwtSDVPQnlrbFVEN1M1dmJ5TEFnX0tnSm5MdGdjem5LaHJid0FPYi1wWGJ0WG41Qnl3ckJZN0h1ek1oQ25HYzRj?oc=5"
     },
     {
-      "time": "2026-11-03T00:38:46+09:00",
-      "title": "SK하이닉스, 올트먼 방한 이후 2.4% 상승…HBM 공급 논의",
-      "source": "블루밍비트",
-      "link": "https://news.google.com/rss/articles/CBMiUEFVX3lxTFA5elRfN09fSzRRWDdONm9kM2g1RnJhWmI3T08zWUNWcFdVUlBuMHcyZ0hrdWdRNUZ1N3FtVkN2VXU1b2RRbk9HVkpfNEZvVGVI?oc=5"
-    },
-    {
       "time": "2026-11-03T00:43:14+09:00",
       "title": "인텔 주가 30% 폭락 후 첫 개장…삼성전자·SK하이닉스도 흔들릴까",
       "source": "진일보 | 전남일보",
@@ -630,6 +624,12 @@
       "title": "[국장방향예측] 코스피 3.49%↓ SK하이닉스 5.74%↓",
       "source": "디지털애셋",
       "link": "https://news.google.com/rss/articles/CBMickFVX3lxTE1yRlIyQURFSGFVN2lQV0RtcXE3T2RiYlBaTTI2RmFuTDNQUXUya2c4SlBJMlVEQ0dEd0xvbFZCQ24wazMyRVc4SHJ1aWNkNF9MUW9MOWJoRmhTTjFwRVlDaE9iWkwybVRrLS05R3YwYkhTQQ?oc=5"
+    },
+    {
+      "time": "2026-11-03T07:15:13+09:00",
+      "title": "청주시, SK하이닉스 P&T7·M17 공업용수 공급사업 ‘순항’… 반도체 대도약 기틀",
+      "source": "중도일보",
+      "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE1qSEtyaVJOYW01MVZlNElfdnN2LVNHM0pVSDNkNjRPLWd1d19Ka01ob0JOV2Qwc3hBUzV2TXFNTWk4LUlCSmVxdkpCNlRFd2pmMkRmQll5VlZHOXREVmJBMG5NWDc?oc=5"
     }
   ],
   "top_news": [
@@ -640,22 +640,10 @@
       "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE4xSV9fLXN0dUZXTHdESElySkZicEpfeFBwUFdiV3hmbWcyLXR3UHZpdk5ZUF9rNWYxSUxTakFSOW9fT3ZUQ0RYdENDVk5ZbUJPX0JZNlQ3YzZueWgtZktmdXBBNG9vMFktZ2lCeg?oc=5"
     },
     {
-      "time": "2026-11-03T16:10:03+09:00",
-      "title": "[마감] 코스피 3% 하락… 美 선거·AI 투자 부담에 외국인 ‘팔자’",
-      "source": "IT조선",
-      "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTFA5Rk5DZ01GQXRkMElnX3hjVmpUcW9ORVdOT21udWpJMk0wTFp4dWRNNi00eG56ZEVSMmJYRC1MVlM1ODY4eGZaU3F3ZE9FRWxickt1ZE1mVVJUYUlWeWdpVjNGaVNoUFlWcjNlRDdFZmLSAXRBVV95cUxQMXhDYlRPSnFucW9jMExqdl85T0E3V2lXbjdBcjZ0X3FoVlZ2dlA1R2RkS2RtM2JDNDRiOVRyekVhT3RrSEM2ODRvN24xRDlOSEhhQ21OVkVMMDA2NXFqSTI2ZmJoMU40LWpkRjZQcjZXMVZnZg?oc=5"
-    },
-    {
       "time": "2026-11-03T08:07:00+09:00",
       "title": "'AI 수익성 우려'에 美 반도체주 또 급락 … 삼성전자·SK하이닉스 프리마켓서 3~4% 동반 약세",
       "source": "뉴데일리",
       "link": "https://news.google.com/rss/articles/CBMie0FVX3lxTE5td0g1Vm5ldDlJSjM0N0VvTlJ3OGR3Wm1BcV9xSndHMDlOQ241RFVDTW5IUmdBZ2poUi1qNjdDaWcwY2V1eEs5cTJMQ1BaVmFDVGhDRGJsUmhLRmpQSDJpcFd3alpBdkttMHNoZExIUkJpSGNzYXFJSEJMb9IBgAFBVV95cUxQZDY2OHFuMG5RY1hXd1NqTmNYai1MWmQtREdPeFRlMmtkeDVmVTB5d1g5U0xvUmJ0UnhsWVdrSHEtTUdDdmZUQWFPc0RxUHRRNDVWYmZSYWlScTJFR204RzlNS1NBWUZtajRfWWk0cm43VnV0VUp2dUtRYVZSQ3hRZQ?oc=5"
-    },
-    {
-      "time": "2026-11-03T10:29:27+09:00",
-      "title": "코스피 3.55% 급락 출발…美 AI주 조정에 삼성전자·SK하이닉스 동반 추락",
-      "source": "https://www.ppss.kr/",
-      "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTFB6MmlWNTk3dVFPV3kyUzZNMWRPNnFiMEs1VjJlT3AtSXRjRG9jUmtGekYycDBXS0dfVEZBbW16ZXJHbF9uTllnaVR2aVFGLVlFTWJmb2IwV1RnUXhmdWpuYUtjNUw?oc=5"
     },
     {
       "time": "2026-11-03T10:40:52+09:00",
@@ -668,6 +656,18 @@
       "title": "[증시 시황] 코스피 5,630선까지 추락…외국인 1조2천억 매도, 삼성전자·SK하이닉스 급락",
       "source": "톱스타뉴스",
       "link": "https://news.google.com/rss/articles/CBMickFVX3lxTE85Y0lVSDZhX3pNSHZVbXZzckM1MkhZcjAzVHF4TGVIbmUzdjdJV0J3VmFnaXlsVzZVVTBObmxSVFE0c1RhQkVqQTkxeUlPMDBYa1htMGZoVnZPT3pldk1HMHRRRmpUZkVHQksyRTJ6dDhWZw?oc=5"
+    },
+    {
+      "time": "2026-11-03T13:34:13+09:00",
+      "title": "삼성전자·SK하이닉스, AI 투자 회의론에 장중 동반 급락세",
+      "source": "더팩트",
+      "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE1UcDJRMmQ3MDhQZDFBQi1hbmpkcGJPUDdLR2EycUtuNUI5eGdPS3pvV202VGVGVWxmYWw0TGlrdE1CRkNDTzRIZUIzQW8xTUtaOU9SaHNGdkNTUdIBVEFVX3lxTE1RVnU3alZKNWdYWEpMb1B5bGhxcHpPeEVUQXFBZk1OTTFuQjhHY2ZDNUkxWmRrb2ZxajN6YU81dk9YT0w5alpuQWRkRl9uUUNOZGhXTw?oc=5"
+    },
+    {
+      "time": "2026-11-03T14:08:48+09:00",
+      "title": "애플 상대로 삼성전자 SK하이닉스 메모리반도체 협상력 강화, 중국의 진입 기회도 커져",
+      "source": "비즈니스포스트",
+      "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTFB0TURCUlFRejZEVmRtQm9YY05CRVFNVWt0Y0NqdVdVMnNzZHdrX01hOGlXWVkyQmw1eV84cmF5VVB0Z3pCWVY2Z0R3Q0ZkT3lRbHFJMmlJZ3hTTDFEYXRzbG9JaHlua2dGOUNPak5QeWFfckE?oc=5"
     }
   ],
   "disclosures": [],
@@ -687,9 +687,9 @@
     "steady": 33,
     "upper": 4,
     "lower": 0,
-    "individual": 16593.0,
-    "foreign": -15162.0,
-    "institution": -5090.0,
+    "individual": 16675.0,
+    "foreign": -15256.0,
+    "institution": -5079.0,
     "prev_close": 5859.08,
     "open": 5715.19,
     "high": 5735.92,

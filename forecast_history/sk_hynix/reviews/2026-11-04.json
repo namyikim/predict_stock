@@ -3,7 +3,7 @@
   "name": "SK하이닉스",
   "peer_name": "삼성전자",
   "session_date": "2026-11-04",
-  "generated_at": "2026-11-04 15:57 KST",
+  "generated_at": "2026-11-04 16:11 KST",
   "summary": {
     "prev_close": 1398000.0,
     "open": 1458000.0,
@@ -15,11 +15,11 @@
     "c2c": -0.0014306151645206988,
     "high_vs_open": 0.012345679012345734,
     "low_vs_open": -0.1063100137174211,
-    "volume": 4583351.0,
-    "volume_ratio": 1.2559738452995484,
+    "volume": 4583428.0,
+    "volume_ratio": 1.2559949455788175,
     "kospi_c2c": 0.006197745956727063,
     "peer_c2c": -0.006833712984054663,
-    "usdkrw_chg": -0.002305230866202601,
+    "usdkrw_chg": -0.0022085593087720623,
     "us_nights": 1,
     "sox_ret": 0.026342139575519008,
     "nasdaq_ret": 0.008253721808237469,
@@ -200,7 +200,7 @@
     "pattern": "고점 후 반락"
   },
   "closing_share": -0.16966904063678295,
-  "intraday_corr_kospi": 0.9309879354251384,
+  "intraday_corr_kospi": 0.9310547228778685,
   "intraday_note": "장중 봉은 09:00~14:55까지만 있어 마감 구간(14:55~15:30)은 일봉 종가로만 봅니다(그 구간 +0.72%).",
   "intraday_coverage": "09:00~14:55",
   "intraday_path": [
@@ -387,12 +387,12 @@
     {
       "time": "2026-11-04T12:00:00+09:00",
       "price": 1315000.0,
-      "volume": 39264.0
+      "volume": 39354.0
     },
     {
       "time": "2026-11-04T12:05:00+09:00",
       "price": 1313000.0,
-      "volume": 62751.0
+      "volume": 62661.0
     },
     {
       "time": "2026-11-04T12:10:00+09:00",
@@ -447,12 +447,12 @@
     {
       "time": "2026-11-04T13:00:00+09:00",
       "price": 1309000.0,
-      "volume": 35079.0
+      "volume": 35080.0
     },
     {
       "time": "2026-11-04T13:05:00+09:00",
       "price": 1309000.0,
-      "volume": 31605.0
+      "volume": 31604.0
     },
     {
       "time": "2026-11-04T13:10:00+09:00",
@@ -511,13 +511,13 @@
     },
     {
       "time": "2026-11-04T14:05:00+09:00",
-      "price": 1361000.0,
-      "volume": 42925.0
+      "price": 1362000.0,
+      "volume": 42909.0
     },
     {
       "time": "2026-11-04T14:10:00+09:00",
       "price": 1363000.0,
-      "volume": 40300.0
+      "volume": 40316.0
     },
     {
       "time": "2026-11-04T14:15:00+09:00",
@@ -541,13 +541,13 @@
     },
     {
       "time": "2026-11-04T14:35:00+09:00",
-      "price": 1383000.0,
-      "volume": 38381.0
+      "price": 1382500.0,
+      "volume": 38382.0
     },
     {
       "time": "2026-11-04T14:40:00+09:00",
       "price": 1387000.0,
-      "volume": 49038.0
+      "volume": 49037.0
     },
     {
       "time": "2026-11-04T14:45:00+09:00",
@@ -562,7 +562,7 @@
     {
       "time": "2026-11-04T14:55:00+09:00",
       "price": 1386000.0,
-      "volume": 28035.0
+      "volume": 28034.0
     }
   ],
   "timeline_items": [
@@ -619,6 +619,12 @@
       "link": "https://news.google.com/rss/articles/CBMib0FVX3lxTE5iNXRUQkY4T09GNWFkaFZxVk5JanFEVzlPTlUtbXhCd1g2OEVtdU1IOXZITzVpTW9iMDdybHZFQlZyVzRRMGY3dE5JRGl2QnpNUHcwZTRRZkROMjJ1dkZNMUFPTzlXREwwMmwzejhJQQ?oc=5"
     },
     {
+      "time": "2026-11-04T07:05:53+09:00",
+      "title": "애플의 ’전례 없는’ 메모리 경고, 마이크론 테크놀로지·SK하이닉스 투자심리 흔들어",
+      "source": "Investing.com 한국어",
+      "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTFBTTHl4TFMzZlgwNTF0R2x4RzRCVlVHck9FT3ZPOHZLY0JaT0doNzJQOUpBYVY1RDMzblJsb3N3UnRGSVAyTnBjQmEtVVFRR3NMN0hLR3dxVnE0eWZ0RV9STWdyVmd5cDlBZEppUWZybHY?oc=5"
+    },
+    {
       "time": "2026-11-04T07:56:16+09:00",
       "title": "美, SK하이닉스 다롄 공장 장비 수출 허가 보류…뉴욕 투자 변수로",
       "source": "한국NGO신문",
@@ -635,12 +641,6 @@
       "title": "삼성전자·SK하이닉스, 내년 영업익 1111조 전망…반도체 호황 지속-KB증권",
       "source": "PRESS9",
       "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE9pQS1rMWxqX3F4V3JnVXRhNVZHdlc0YktQWE1HbUVaSzRkakZvaThNV29vSjVsNDJjZEstcWd4cmR3LW9QeDYyMWh1Y0JkWE9MUkVOQU9Mc3dqdF9vUHMyQms0U1Y?oc=5"
-    },
-    {
-      "time": "2026-11-04T05:33:00+09:00",
-      "title": "로이터 \"SK하이닉스 450억 달러 뉴욕 투자, 美 대중규제 복병\"",
-      "source": "뉴스핌",
-      "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE9pU3ZpaWpZUDZGaDlIS3B5YkU3NFVvX0tDMjFxM01GUDVtOEo5dDF4cTU4YzVGSVNaX25MZzR5QXA3SHJMemNreWZqWGc3TzN0SklLVkJ2ZUtBOWM1?oc=5"
     }
   ],
   "top_news": [
@@ -651,7 +651,7 @@
       "link": "https://news.google.com/rss/articles/CBMib0FVX3lxTE5iNXRUQkY4T09GNWFkaFZxVk5JanFEVzlPTlUtbXhCd1g2OEVtdU1IOXZITzVpTW9iMDdybHZFQlZyVzRRMGY3dE5JRGl2QnpNUHcwZTRRZkROMjJ1dkZNMUFPTzlXREwwMmwzejhJQQ?oc=5"
     },
     {
-      "time": "2026-11-04T10:40:17+09:00",
+      "time": "2026-11-04T07:05:53+09:00",
       "title": "애플의 ’전례 없는’ 메모리 경고, 마이크론 테크놀로지·SK하이닉스 투자심리 흔들어",
       "source": "Investing.com 한국어",
       "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTFBTTHl4TFMzZlgwNTF0R2x4RzRCVlVHck9FT3ZPOHZLY0JaT0doNzJQOUpBYVY1RDMzblJsb3N3UnRGSVAyTnBjQmEtVVFRR3NMN0hLR3dxVnE0eWZ0RV9STWdyVmd5cDlBZEppUWZybHY?oc=5"
@@ -698,9 +698,9 @@
     "steady": 41,
     "upper": 1,
     "lower": 0,
-    "individual": 11466.0,
-    "foreign": -25095.0,
-    "institution": 10136.0,
+    "individual": 11402.0,
+    "foreign": -25037.0,
+    "institution": 10143.0,
     "prev_close": 5648.79,
     "open": 5786.13,
     "high": 5828.13,

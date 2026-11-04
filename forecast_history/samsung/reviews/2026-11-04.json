@@ -3,7 +3,7 @@
   "name": "삼성전자",
   "peer_name": "SK하이닉스",
   "session_date": "2026-11-04",
-  "generated_at": "2026-11-05 00:34 KST",
+  "generated_at": "2026-11-05 01:38 KST",
   "summary": {
     "prev_close": 219500.0,
     "open": NaN,
@@ -15,11 +15,11 @@
     "c2c": NaN,
     "high_vs_open": NaN,
     "low_vs_open": NaN,
-    "volume": 22248738.0,
-    "volume_ratio": 1.2210195092392104,
+    "volume": 23679993.0,
+    "volume_ratio": 1.2995673476692449,
     "kospi_c2c": NaN,
     "peer_c2c": NaN,
-    "usdkrw_chg": -0.0031455018588170125,
+    "usdkrw_chg": -0.0015244151506932369,
     "us_nights": 1,
     "sox_ret": 0.026342139575519008,
     "nasdaq_ret": 0.008253721808237469,
@@ -652,6 +652,12 @@
       "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE1sNHdnSWpSbEE0T2ppUmJkOHViam9MZTQ1blRfd0lBSDVmYmEzc2oyRE04NERObzUwUHpZNHBZTFZDNVhWTTJGMUQ3eUJCZGJ3eHNyVXZnMERqbnFz?oc=5"
     },
     {
+      "time": "2026-11-03T20:39:00+09:00",
+      "title": "‘슈퍼모델’ 김자연, 25살 연상 손영권 전 삼성전자 사장과 결혼",
+      "source": "Chosunbiz",
+      "link": "https://news.google.com/rss/articles/CBMiigFBVV95cUxNSHE1ZWxzc2ZvbmVwdzJOZ0MtM1lzaTJYUFVKT2FPMW1vUHd2dkhVRkF2amZOZlc2VjZUbDRIUGY3alRmdkpOblFKdWI2OFVPWUNZa3RvU0V0M0lia0hCLVU4c2gtc1BFZlFvLTJlV2NoZFRFRWxHYXdoMnNrM2Fwb3pITm83Y3BWT0HSAZ4BQVVfeXFMUFJQbXN0aXpVYTR5WEpkU092Mkwzb2FRdWotOVFOQ0ExWWRKOF9xV2ZRQUdfZjR5bTh2bzdzOHQ2TnVycTJieHdBaUtjd1VFbDJrUTV3dkJTZHVmRGZwU19ydnp6dlZYdml2Vm1nNFNEQXAwd25SR0RBaV9UVUV6UllyLVlrQWFwSEU2NU1XWGFoMTJlT2JUcHZjekFvMEE?oc=5"
+    },
+    {
       "time": "2026-11-04T08:33:00+09:00",
       "title": "캠시스, 삼성전자 AI 냉장고용 카메라 모듈 양산…비모바일 분야로 사업 확대",
       "source": "파이낸스스코프",
@@ -662,12 +668,6 @@
       "title": "25세 연하 모델과 결혼한 70세 삼성전자 전 사장…러브스토리 깜짝",
       "source": "중앙일보",
       "link": "https://news.google.com/rss/articles/CBMiVkFVX3lxTE9WemR2MkZ4dFVKaWRQeTdFa3hIcUFwdW1MN2NEZ193UlZndXhsd2V0ZDVGZXVCWUZrWHNOZ0ZZQWZEMmlHUEp6aEhUbWpKejJjQ2loUWx3?oc=5"
-    },
-    {
-      "time": "2026-11-04T08:00:00+09:00",
-      "title": "삼성전자서비스, 에어컨 AS 품질 2년 연속 1위",
-      "source": "아시아경제",
-      "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE1xT3JmS2tSWFEtVFI4VnRSNGpfWVZZLUZiNF9sc3BjcjBaWTllT1VtQjBxck9CYkwyOERKT0o5V0R0Vzl4ZGRpSnpCbTJ3X3N6YjdqaUZ3SHY3a0V0S05Xdw?oc=5"
     }
   ],
   "top_news": [

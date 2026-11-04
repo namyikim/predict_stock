@@ -3,7 +3,7 @@
   "name": "SK하이닉스",
   "peer_name": "삼성전자",
   "session_date": "2026-11-04",
-  "generated_at": "2026-11-04 16:46 KST",
+  "generated_at": "2026-11-04 17:31 KST",
   "summary": {
     "prev_close": 1398000.0,
     "open": 1458000.0,
@@ -15,11 +15,11 @@
     "c2c": -0.0014306151645206988,
     "high_vs_open": 0.012345679012345734,
     "low_vs_open": -0.1063100137174211,
-    "volume": 4598547.0,
-    "volume_ratio": 1.2601379991147748,
+    "volume": 4622372.0,
+    "volume_ratio": 1.266666754356139,
     "kospi_c2c": 0.006197745956727063,
     "peer_c2c": -0.006833712984054663,
-    "usdkrw_chg": -0.0042609010115929324,
+    "usdkrw_chg": -0.004119569917771959,
     "us_nights": 1,
     "sox_ret": 0.026342139575519008,
     "nasdaq_ret": 0.008253721808237469,
@@ -172,10 +172,10 @@
           "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE1oY2hvU0p1WS1KYldvNW9VeURUckZDeHVoZk02WGNGd1ZyMHpPYzdUS055eVZtX2pvbXBpZ0tUYUJucVdQVmNMRVNDWGp5MW9BcEVlVUZHZjRHalJfZHdJLXdrRkNaMW9mcnpCd0x2QTc?oc=5"
         },
         {
-          "time": "2026-11-04T08:12:54+09:00",
-          "title": "삼성전자·SK하이닉스, 내년 영업익 1111조 전망…반도체 호황 지속-KB증권",
-          "source": "PRESS9",
-          "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE9pQS1rMWxqX3F4V3JnVXRhNVZHdlc0YktQWE1HbUVaSzRkakZvaThNV29vSjVsNDJjZEstcWd4cmR3LW9QeDYyMWh1Y0JkWE9MUkVOQU9Mc3dqdF9vUHMyQms0U1Y?oc=5"
+          "time": "2026-11-04T09:12:08+09:00",
+          "title": "\"미국, SK하이닉스 반도체 장비 수출 제동... 뉴욕주 공장 건설도 차질\"",
+          "source": "여성신문",
+          "link": "https://news.google.com/rss/articles/CBMib0FVX3lxTE1oY1Jzb1dFSWtyakN4eVBqNU5rMm1WWDBKbXBFdTVTVUNYSGZqcXF3V2RUdllRZWtDVkJBUmpyNjFOcmJ3MWhQd1Y2OUhYRkI2TEpSQ2JJTkt6VG5RRG9yS3puM3RpTHFSMm9uTTVhWQ?oc=5"
         },
         {
           "time": "2026-11-04T07:33:00+09:00",
@@ -184,10 +184,10 @@
           "link": "https://news.google.com/rss/articles/CBMiXkFVX3lxTFBza3ZYWGFsRUZ5ckhORU1RWVJ1a3UydU1QRGt5aV9ET2FXdXRvUnVLTWJvMHZRdGdvR19mbUxpQ3NvOXI2ckNzdHcyLTVGaEZwZVdZSGlnWG1oR1NhWVE?oc=5"
         },
         {
-          "time": "2026-11-04T07:58:13+09:00",
-          "title": "삼성전자·SK하이닉스, 어디까지 떨어지나···증권가 경고 속 '바닥 가격' 등장",
-          "source": "스마트비즈",
-          "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTFBsY1BxdzdKclA2MEZoc0xkSXctbVM4TlRPUVQzRXJZQU1FQlpYUmtkN2c2T2FIc0hfcmI5LVBSWmhBYnFNeVAxcDR2d3JLQVZ3bkMyd3BoSG4wNmVSYXFrT09IUmF2X0tnYnRiYw?oc=5"
+          "time": "2026-11-04T08:04:08+09:00",
+          "title": "[이슈 체크] 삼성전자·SK하이닉스, 4분기 영업익 232조원 전망…”우려를 압도하는 실적 기대\"",
+          "source": "버핏연구소",
+          "link": "https://news.google.com/rss/articles/CBMiYkFVX3lxTFBHTVltSEZmbXFZTFNsZDB5U2t1OElpQUpxT29PRmZuVm1JR3BVR2UycXAtSmZDVXlZNzlBajNGWGVsNDNsQ3BUNHRtdTZUVHJpb0xXTWVndkdIZ2d6Rlhoc1hB?oc=5"
         }
       ]
     }
@@ -200,7 +200,7 @@
     "pattern": "고점 후 반락"
   },
   "closing_share": -0.16966904063678295,
-  "intraday_corr_kospi": 0.9310547228778685,
+  "intraday_corr_kospi": 0.9309879354251384,
   "intraday_note": "장중 봉은 09:00~14:55까지만 있어 마감 구간(14:55~15:30)은 일봉 종가로만 봅니다(그 구간 +0.72%).",
   "intraday_coverage": "09:00~14:55",
   "intraday_path": [
@@ -387,12 +387,12 @@
     {
       "time": "2026-11-04T12:00:00+09:00",
       "price": 1315000.0,
-      "volume": 39354.0
+      "volume": 39264.0
     },
     {
       "time": "2026-11-04T12:05:00+09:00",
       "price": 1313000.0,
-      "volume": 62661.0
+      "volume": 62751.0
     },
     {
       "time": "2026-11-04T12:10:00+09:00",
@@ -447,12 +447,12 @@
     {
       "time": "2026-11-04T13:00:00+09:00",
       "price": 1309000.0,
-      "volume": 35080.0
+      "volume": 35079.0
     },
     {
       "time": "2026-11-04T13:05:00+09:00",
       "price": 1309000.0,
-      "volume": 31604.0
+      "volume": 31605.0
     },
     {
       "time": "2026-11-04T13:10:00+09:00",
@@ -511,13 +511,13 @@
     },
     {
       "time": "2026-11-04T14:05:00+09:00",
-      "price": 1362000.0,
-      "volume": 42909.0
+      "price": 1361000.0,
+      "volume": 42925.0
     },
     {
       "time": "2026-11-04T14:10:00+09:00",
       "price": 1363000.0,
-      "volume": 40316.0
+      "volume": 40300.0
     },
     {
       "time": "2026-11-04T14:15:00+09:00",
@@ -541,13 +541,13 @@
     },
     {
       "time": "2026-11-04T14:35:00+09:00",
-      "price": 1382500.0,
-      "volume": 38382.0
+      "price": 1383000.0,
+      "volume": 38381.0
     },
     {
       "time": "2026-11-04T14:40:00+09:00",
       "price": 1387000.0,
-      "volume": 49037.0
+      "volume": 49038.0
     },
     {
       "time": "2026-11-04T14:45:00+09:00",
@@ -562,7 +562,7 @@
     {
       "time": "2026-11-04T14:55:00+09:00",
       "price": 1386000.0,
-      "volume": 28034.0
+      "volume": 28035.0
     }
   ],
   "timeline_items": [
@@ -589,10 +589,10 @@
           "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE1oY2hvU0p1WS1KYldvNW9VeURUckZDeHVoZk02WGNGd1ZyMHpPYzdUS055eVZtX2pvbXBpZ0tUYUJucVdQVmNMRVNDWGp5MW9BcEVlVUZHZjRHalJfZHdJLXdrRkNaMW9mcnpCd0x2QTc?oc=5"
         },
         {
-          "time": "2026-11-04T08:12:54+09:00",
-          "title": "삼성전자·SK하이닉스, 내년 영업익 1111조 전망…반도체 호황 지속-KB증권",
-          "source": "PRESS9",
-          "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE9pQS1rMWxqX3F4V3JnVXRhNVZHdlc0YktQWE1HbUVaSzRkakZvaThNV29vSjVsNDJjZEstcWd4cmR3LW9QeDYyMWh1Y0JkWE9MUkVOQU9Mc3dqdF9vUHMyQms0U1Y?oc=5"
+          "time": "2026-11-04T09:12:08+09:00",
+          "title": "\"미국, SK하이닉스 반도체 장비 수출 제동... 뉴욕주 공장 건설도 차질\"",
+          "source": "여성신문",
+          "link": "https://news.google.com/rss/articles/CBMib0FVX3lxTE1oY1Jzb1dFSWtyakN4eVBqNU5rMm1WWDBKbXBFdTVTVUNYSGZqcXF3V2RUdllRZWtDVkJBUmpyNjFOcmJ3MWhQd1Y2OUhYRkI2TEpSQ2JJTkt6VG5RRG9yS3puM3RpTHFSMm9uTTVhWQ?oc=5"
         },
         {
           "time": "2026-11-04T07:33:00+09:00",
@@ -601,10 +601,10 @@
           "link": "https://news.google.com/rss/articles/CBMiXkFVX3lxTFBza3ZYWGFsRUZ5ckhORU1RWVJ1a3UydU1QRGt5aV9ET2FXdXRvUnVLTWJvMHZRdGdvR19mbUxpQ3NvOXI2ckNzdHcyLTVGaEZwZVdZSGlnWG1oR1NhWVE?oc=5"
         },
         {
-          "time": "2026-11-04T07:58:13+09:00",
-          "title": "삼성전자·SK하이닉스, 어디까지 떨어지나···증권가 경고 속 '바닥 가격' 등장",
-          "source": "스마트비즈",
-          "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTFBsY1BxdzdKclA2MEZoc0xkSXctbVM4TlRPUVQzRXJZQU1FQlpYUmtkN2c2T2FIc0hfcmI5LVBSWmhBYnFNeVAxcDR2d3JLQVZ3bkMyd3BoSG4wNmVSYXFrT09IUmF2X0tnYnRiYw?oc=5"
+          "time": "2026-11-04T08:04:08+09:00",
+          "title": "[이슈 체크] 삼성전자·SK하이닉스, 4분기 영업익 232조원 전망…”우려를 압도하는 실적 기대\"",
+          "source": "버핏연구소",
+          "link": "https://news.google.com/rss/articles/CBMiYkFVX3lxTFBHTVltSEZmbXFZTFNsZDB5U2t1OElpQUpxT29PRmZuVm1JR3BVR2UycXAtSmZDVXlZNzlBajNGWGVsNDNsQ3BUNHRtdTZUVHJpb0xXTWVndkdIZ2d6Rlhoc1hB?oc=5"
         }
       ],
       "price": 1467000.0,
@@ -612,6 +612,12 @@
     }
   ],
   "overnight_news": [
+    {
+      "time": "2026-11-04T06:38:30+09:00",
+      "title": "미국, SK하이닉스 다롄 반도체 공장 증설 불허…뉴욕 투자도 변수",
+      "source": "진일보 | 전남일보",
+      "link": "https://news.google.com/rss/articles/CBMib0FVX3lxTE5iNXRUQkY4T09GNWFkaFZxVk5JanFEVzlPTlUtbXhCd1g2OEVtdU1IOXZITzVpTW9iMDdybHZFQlZyVzRRMGY3dE5JRGl2QnpNUHcwZTRRZkROMjJ1dkZNMUFPTzlXREwwMmwzejhJQQ?oc=5"
+    },
     {
       "time": "2026-11-04T07:05:53+09:00",
       "title": "애플의 ’전례 없는’ 메모리 경고, 마이크론 테크놀로지·SK하이닉스 투자심리 흔들어",
@@ -631,12 +637,6 @@
       "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE1oY2hvU0p1WS1KYldvNW9VeURUckZDeHVoZk02WGNGd1ZyMHpPYzdUS055eVZtX2pvbXBpZ0tUYUJucVdQVmNMRVNDWGp5MW9BcEVlVUZHZjRHalJfZHdJLXdrRkNaMW9mcnpCd0x2QTc?oc=5"
     },
     {
-      "time": "2026-11-04T08:12:54+09:00",
-      "title": "삼성전자·SK하이닉스, 내년 영업익 1111조 전망…반도체 호황 지속-KB증권",
-      "source": "PRESS9",
-      "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE9pQS1rMWxqX3F4V3JnVXRhNVZHdlc0YktQWE1HbUVaSzRkakZvaThNV29vSjVsNDJjZEstcWd4cmR3LW9QeDYyMWh1Y0JkWE9MUkVOQU9Mc3dqdF9vUHMyQms0U1Y?oc=5"
-    },
-    {
       "time": "2026-11-04T05:33:00+09:00",
       "title": "로이터 \"SK하이닉스 450억 달러 뉴욕 투자, 美 대중규제 복병\"",
       "source": "뉴스핌",
@@ -644,6 +644,12 @@
     }
   ],
   "top_news": [
+    {
+      "time": "2026-11-04T06:38:30+09:00",
+      "title": "미국, SK하이닉스 다롄 반도체 공장 증설 불허…뉴욕 투자도 변수",
+      "source": "진일보 | 전남일보",
+      "link": "https://news.google.com/rss/articles/CBMib0FVX3lxTE5iNXRUQkY4T09GNWFkaFZxVk5JanFEVzlPTlUtbXhCd1g2OEVtdU1IOXZITzVpTW9iMDdybHZFQlZyVzRRMGY3dE5JRGl2QnpNUHcwZTRRZkROMjJ1dkZNMUFPTzlXREwwMmwzejhJQQ?oc=5"
+    },
     {
       "time": "2026-11-04T07:05:53+09:00",
       "title": "애플의 ’전례 없는’ 메모리 경고, 마이크론 테크놀로지·SK하이닉스 투자심리 흔들어",
@@ -669,16 +675,10 @@
       "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE1oY2hvU0p1WS1KYldvNW9VeURUckZDeHVoZk02WGNGd1ZyMHpPYzdUS055eVZtX2pvbXBpZ0tUYUJucVdQVmNMRVNDWGp5MW9BcEVlVUZHZjRHalJfZHdJLXdrRkNaMW9mcnpCd0x2QTc?oc=5"
     },
     {
-      "time": "2026-11-04T08:12:54+09:00",
-      "title": "삼성전자·SK하이닉스, 내년 영업익 1111조 전망…반도체 호황 지속-KB증권",
-      "source": "PRESS9",
-      "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE9pQS1rMWxqX3F4V3JnVXRhNVZHdlc0YktQWE1HbUVaSzRkakZvaThNV29vSjVsNDJjZEstcWd4cmR3LW9QeDYyMWh1Y0JkWE9MUkVOQU9Mc3dqdF9vUHMyQms0U1Y?oc=5"
-    },
-    {
-      "time": "2026-11-04T09:20:47+09:00",
-      "title": "美 상무부, SK하이닉스 中 다롄 공장 증설용 장비 허가 보류…뉴욕 투자에도 영향",
-      "source": "전자신문",
-      "link": "https://news.google.com/rss/articles/CBMiTkFVX3lxTE9yNFRqREJWRG5pTnVMVWpldUJsTUdqMkZjT3ZEaWRPVlU4ZWExM1lhRl9YLWplZmR3VXFHOTAtSGh4SVZvbVNHbWxSeTdKQQ?oc=5"
+      "time": "2026-11-04T09:12:08+09:00",
+      "title": "\"미국, SK하이닉스 반도체 장비 수출 제동... 뉴욕주 공장 건설도 차질\"",
+      "source": "여성신문",
+      "link": "https://news.google.com/rss/articles/CBMib0FVX3lxTE1oY1Jzb1dFSWtyakN4eVBqNU5rMm1WWDBKbXBFdTVTVUNYSGZqcXF3V2RUdllRZWtDVkJBUmpyNjFOcmJ3MWhQd1Y2OUhYRkI2TEpSQ2JJTkt6VG5RRG9yS3puM3RpTHFSMm9uTTVhWQ?oc=5"
     }
   ],
   "disclosures": [],
@@ -698,9 +698,9 @@
     "steady": 41,
     "upper": 1,
     "lower": 0,
-    "individual": 11291.0,
-    "foreign": -24998.0,
-    "institution": 10225.0,
+    "individual": 11169.0,
+    "foreign": -24869.0,
+    "institution": 10239.0,
     "prev_close": 5648.79,
     "open": 5786.13,
     "high": 5828.13,

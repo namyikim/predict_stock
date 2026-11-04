@@ -3,7 +3,7 @@
   "name": "삼성전자",
   "peer_name": "SK하이닉스",
   "session_date": "2026-11-04",
-  "generated_at": "2026-11-04 15:57 KST",
+  "generated_at": "2026-11-04 16:11 KST",
   "summary": {
     "prev_close": 219500.0,
     "open": 226500.0,
@@ -15,11 +15,11 @@
     "c2c": -0.006833712984054663,
     "high_vs_open": 0.0066225165562914245,
     "low_vs_open": -0.08167770419426046,
-    "volume": 22493530.0,
-    "volume_ratio": 1.2344537906670237,
+    "volume": 22504788.0,
+    "volume_ratio": 1.2350716341435848,
     "kospi_c2c": 0.006197745956727063,
     "peer_c2c": -0.0014306151645206988,
-    "usdkrw_chg": -0.00240190242363314,
+    "usdkrw_chg": -0.00223079830555184,
     "us_nights": 1,
     "sox_ret": 0.026342139575519008,
     "nasdaq_ret": 0.008253721808237469,
@@ -28,7 +28,7 @@
     "ma5": 224700.0,
     "ma20": 227700.0,
     "high20": 279500.0,
-    "high252": 367712.7495144774,
+    "high252": 367712.71645480226,
     "price_context": {
       "breakouts": {
         "20": {
@@ -149,12 +149,6 @@
           "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE1sNHdnSWpSbEE0T2ppUmJkOHViam9MZTQ1blRfd0lBSDVmYmEzc2oyRE04NERObzUwUHpZNHBZTFZDNVhWTTJGMUQ3eUJCZGJ3eHNyVXZnMERqbnFz?oc=5"
         },
         {
-          "time": "2026-11-04T09:10:55+09:00",
-          "title": "[특징주] 美 반도체 훈풍⋯삼성전자 3%·SK하이닉스 4%↑",
-          "source": "아이뉴스24",
-          "link": "https://news.google.com/rss/articles/CBMiS0FVX3lxTE92RVJhdU81QTJTbDlIUk9kWWwxbWVrNlRsR2wtRXQwMTdyTUpZQWdKV2E0OTRHbjIyM1EtTURycjB1Y3FvM1NxZTFsYw?oc=5"
-        },
-        {
           "time": "2026-11-04T08:04:54+09:00",
           "title": "'소외된' 삼성전자 가전…신뢰도·이익 둘 다 놓쳐",
           "source": "딜사이트",
@@ -165,6 +159,12 @@
           "title": "캠시스, 삼성전자 AI 냉장고용 카메라 모듈 양산…비모바일 분야로 사업 확대",
           "source": "파이낸스스코프",
           "link": "https://news.google.com/rss/articles/CBMiakFVX3lxTE5Qa3RMRWltX1RhcEstMFc0LUJTU2xpMWpTMFNtOFZLUlc4ZGRSUkRXQ2lLN3k1R0l2WU44YjdFRWZGZ1dkZll4SGJKdktfVERGa0xveTVhdy1jRXo0Z0p0VTVHdTlmLV9BU0E?oc=5"
+        },
+        {
+          "time": "2026-11-04T08:00:00+09:00",
+          "title": "삼성전자서비스, 에어컨 AS 품질 2년 연속 1위",
+          "source": "아시아경제",
+          "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE1xT3JmS2tSWFEtVFI4VnRSNGpfWVZZLUZiNF9sc3BjcjBaWTllT1VtQjBxck9CYkwyOERKT0o5V0R0Vzl4ZGRpSnpCbTJ3X3N6YjdqaUZ3SHY3a0V0S05Xdw?oc=5"
         }
       ]
     },
@@ -185,12 +185,6 @@
           "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxPMDV6cW56Uy1fME5Vc0ZtOWo3UnBOQ3R3UzFvdkpDTWd5TUJKUndWdVQybUwtQkhEbHdWUEhfaUI3TTg2LUl6MHNKN1pOTEV2V1ZRVUdWUmhHOF90cXRLb3ZKODhvVTNsa3Z3MFZuMElfREg3bDY3aEtsX2IwdGJUWmZ5aWc3QXhv?oc=5"
         },
         {
-          "time": "2026-11-04T09:25:00+09:00",
-          "title": "급락 하루 만에 뛰는 삼성전자·SK하이닉스…증권가 “내년 영업익 1000조 돌파” [주가동향]",
-          "source": "조세일보",
-          "link": "https://news.google.com/rss/articles/CBMiX0FVX3lxTE16RVVTVWhvRXB1LVF0RUtNcTBIcGlhVFMzd2FGQV9WOGFTVnJnSHRMdDdnNmxNbVFXZVNwbkFXay1wTnZ4b19RRkJoSXMzbzJpUFNqRFcydjBNNkxRV1Jj?oc=5"
-        },
-        {
           "time": "2026-11-04T09:29:06+09:00",
           "title": "“엔비디아·AMD 강세에 코스피 5800선 탈환”…삼성전자·SK하이닉스 동반 상승",
           "source": "디지털데일리",
@@ -207,6 +201,12 @@
           "title": "[특징주] 美 반도체주 강세에 프리마켓서 삼성전자 3%대·SK하이닉스 4%대 ↑",
           "source": "뉴스핌",
           "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE1sNHdnSWpSbEE0T2ppUmJkOHViam9MZTQ1blRfd0lBSDVmYmEzc2oyRE04NERObzUwUHpZNHBZTFZDNVhWTTJGMUQ3eUJCZGJ3eHNyVXZnMERqbnFz?oc=5"
+        },
+        {
+          "time": "2026-11-04T09:44:00+09:00",
+          "title": "KB증권, 삼성전자 상승 시 최대 연 37% ELB 모집",
+          "source": "뉴스핌",
+          "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE5zdnJ6R25Yak5hZGliYUx0b2prb1lhMGh6d1NBU1RzQlg4cW5xRWZoQTh4eGhGYXZjTVpRa2c1R1JIX292bDNGTnhmM3F1NE9qYVV5T1R1b2VMdzN6?oc=5"
         }
       ]
     }
@@ -608,12 +608,6 @@
           "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE1sNHdnSWpSbEE0T2ppUmJkOHViam9MZTQ1blRfd0lBSDVmYmEzc2oyRE04NERObzUwUHpZNHBZTFZDNVhWTTJGMUQ3eUJCZGJ3eHNyVXZnMERqbnFz?oc=5"
         },
         {
-          "time": "2026-11-04T09:10:55+09:00",
-          "title": "[특징주] 美 반도체 훈풍⋯삼성전자 3%·SK하이닉스 4%↑",
-          "source": "아이뉴스24",
-          "link": "https://news.google.com/rss/articles/CBMiS0FVX3lxTE92RVJhdU81QTJTbDlIUk9kWWwxbWVrNlRsR2wtRXQwMTdyTUpZQWdKV2E0OTRHbjIyM1EtTURycjB1Y3FvM1NxZTFsYw?oc=5"
-        },
-        {
           "time": "2026-11-04T08:04:54+09:00",
           "title": "'소외된' 삼성전자 가전…신뢰도·이익 둘 다 놓쳐",
           "source": "딜사이트",
@@ -624,6 +618,12 @@
           "title": "캠시스, 삼성전자 AI 냉장고용 카메라 모듈 양산…비모바일 분야로 사업 확대",
           "source": "파이낸스스코프",
           "link": "https://news.google.com/rss/articles/CBMiakFVX3lxTE5Qa3RMRWltX1RhcEstMFc0LUJTU2xpMWpTMFNtOFZLUlc4ZGRSUkRXQ2lLN3k1R0l2WU44YjdFRWZGZ1dkZll4SGJKdktfVERGa0xveTVhdy1jRXo0Z0p0VTVHdTlmLV9BU0E?oc=5"
+        },
+        {
+          "time": "2026-11-04T08:00:00+09:00",
+          "title": "삼성전자서비스, 에어컨 AS 품질 2년 연속 1위",
+          "source": "아시아경제",
+          "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE1xT3JmS2tSWFEtVFI4VnRSNGpfWVZZLUZiNF9sc3BjcjBaWTllT1VtQjBxck9CYkwyOERKT0o5V0R0Vzl4ZGRpSnpCbTJ3X3N6YjdqaUZ3SHY3a0V0S05Xdw?oc=5"
         }
       ],
       "price": 226500.0,
@@ -646,12 +646,6 @@
           "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxPMDV6cW56Uy1fME5Vc0ZtOWo3UnBOQ3R3UzFvdkpDTWd5TUJKUndWdVQybUwtQkhEbHdWUEhfaUI3TTg2LUl6MHNKN1pOTEV2V1ZRVUdWUmhHOF90cXRLb3ZKODhvVTNsa3Z3MFZuMElfREg3bDY3aEtsX2IwdGJUWmZ5aWc3QXhv?oc=5"
         },
         {
-          "time": "2026-11-04T09:25:00+09:00",
-          "title": "급락 하루 만에 뛰는 삼성전자·SK하이닉스…증권가 “내년 영업익 1000조 돌파” [주가동향]",
-          "source": "조세일보",
-          "link": "https://news.google.com/rss/articles/CBMiX0FVX3lxTE16RVVTVWhvRXB1LVF0RUtNcTBIcGlhVFMzd2FGQV9WOGFTVnJnSHRMdDdnNmxNbVFXZVNwbkFXay1wTnZ4b19RRkJoSXMzbzJpUFNqRFcydjBNNkxRV1Jj?oc=5"
-        },
-        {
           "time": "2026-11-04T09:29:06+09:00",
           "title": "“엔비디아·AMD 강세에 코스피 5800선 탈환”…삼성전자·SK하이닉스 동반 상승",
           "source": "디지털데일리",
@@ -668,6 +662,12 @@
           "title": "[특징주] 美 반도체주 강세에 프리마켓서 삼성전자 3%대·SK하이닉스 4%대 ↑",
           "source": "뉴스핌",
           "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE1sNHdnSWpSbEE0T2ppUmJkOHViam9MZTQ1blRfd0lBSDVmYmEzc2oyRE04NERObzUwUHpZNHBZTFZDNVhWTTJGMUQ3eUJCZGJ3eHNyVXZnMERqbnFz?oc=5"
+        },
+        {
+          "time": "2026-11-04T09:44:00+09:00",
+          "title": "KB증권, 삼성전자 상승 시 최대 연 37% ELB 모집",
+          "source": "뉴스핌",
+          "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE5zdnJ6R25Yak5hZGliYUx0b2prb1lhMGh6d1NBU1RzQlg4cW5xRWZoQTh4eGhGYXZjTVpRa2c1R1JIX292bDNGTnhmM3F1NE9qYVV5T1R1b2VMdzN6?oc=5"
         }
       ],
       "price": 220250.0,
@@ -714,12 +714,6 @@
       "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxPMDV6cW56Uy1fME5Vc0ZtOWo3UnBOQ3R3UzFvdkpDTWd5TUJKUndWdVQybUwtQkhEbHdWUEhfaUI3TTg2LUl6MHNKN1pOTEV2V1ZRVUdWUmhHOF90cXRLb3ZKODhvVTNsa3Z3MFZuMElfREg3bDY3aEtsX2IwdGJUWmZ5aWc3QXhv?oc=5"
     },
     {
-      "time": "2026-11-04T09:25:00+09:00",
-      "title": "급락 하루 만에 뛰는 삼성전자·SK하이닉스…증권가 “내년 영업익 1000조 돌파” [주가동향]",
-      "source": "조세일보",
-      "link": "https://news.google.com/rss/articles/CBMiX0FVX3lxTE16RVVTVWhvRXB1LVF0RUtNcTBIcGlhVFMzd2FGQV9WOGFTVnJnSHRMdDdnNmxNbVFXZVNwbkFXay1wTnZ4b19RRkJoSXMzbzJpUFNqRFcydjBNNkxRV1Jj?oc=5"
-    },
-    {
       "time": "2026-11-04T09:29:06+09:00",
       "title": "“엔비디아·AMD 강세에 코스피 5800선 탈환”…삼성전자·SK하이닉스 동반 상승",
       "source": "디지털데일리",
@@ -732,16 +726,22 @@
       "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE5YZEhxdWdpTko4a2UwOGhPMlFoLTdVYWEzem9zc0Rab1NQTlFjWFlkXzgzVGtiaG5UTGozRThZZGhoNkZTSlBoY1VzNnlGMFVhSGxRMUFLWkxibWJpcFFHdNIBYEFVX3lxTE5YZEhxdWdpTko4a2UwOGhPMlFoLTdVYWEzem9zc0Rab1NQTlFjWFlkXzgzVGtiaG5UTGozRThZZGhoNkZTSlBoY1VzNnlGMFVhSGxRMUFLWkxibWJpcFFHdA?oc=5"
     },
     {
-      "time": "2026-11-04T11:00:44+09:00",
-      "title": "\"삼성전자 2028년 목표주가 56만원 상방 열어야\"",
-      "source": "알파경제",
-      "link": "https://news.google.com/rss/articles/CBMibkFVX3lxTFBhWnZmSFNNZGVEbTdtQWdWdkFOZTZHSGhURWowNFpMRnFJTHhadkNLWE40d19VNkxYRkk2SjdSTUt3b2x3ZlYwR3FOUUVpREVObFgtTmRlcDVUSy1Xa19TT0d4RV82QUx3YVk3MGJ3?oc=5"
-    },
-    {
       "time": "2026-11-04T13:42:00+09:00",
       "title": "KB증권 \"코스피200·삼성전자 연계 '수익 참조 상승형 ELB' 모집\"",
       "source": "아시아경제",
       "link": "https://news.google.com/rss/articles/CBMiYkFVX3lxTE5EblRGTXFnc08xSWV6MHQ0Tkd4RDE0d0x6SzRvcko3VjNYMFpybTZvMm55eWE2MWUxSnZCSWdwUDRhRXFmeFlMQnRPZHRUYXlseFV5OVg4ZmQtNl9DY0gzSmp3?oc=5"
+    },
+    {
+      "time": "2026-11-04T13:54:05+09:00",
+      "title": "[美 중간선거] AI 데이터센터 규제 강화?…삼성전자·하이닉스, 미국 중간선거에 주가 출렁",
+      "source": "디지털데일리",
+      "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE9fUlJ4eXBQQmNPUGVISkpDWjZ4R0FuSVd5MXlSZ0gwOUQ0X1djRlpZNkRGaWtlWlhNVXRtWFQxRVBjYXJfcXZ5QmtFdi0wVk5CbFRiNDV4VUlCVm9PMlo1c0Z0Q2E?oc=5"
+    },
+    {
+      "time": "2026-11-04T14:48:45+09:00",
+      "title": "KB증권, 만기 1년 ELB 3차 모집…코스피200·삼성전자 연계",
+      "source": "주간한국",
+      "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE9odGRIa25jdDIzSW5TS3dQZlB4cHpSTXFnMW1LUVJXTjljaDQyZXlDQ1c4WW13RHhMNnpCTno4SFpkQ18xSWdMQVBWdjZzNEpEU1lEX21hTkhOMWxSTVFlRHAzbFlSSUhjaG5HX2lISEHSAXRBVV95cUxNVlEtSVZaTW8yX284LU5HeF9uakNfX01ualZGbWk3d3RsZEl6X0FvM3ZyUWhJSHpORGNDeWtsUFZBM1J2dmkwTlRVMTlJX0M3TW4yVTRSOHZzNzZ0TGYyTXZRZEQyZmxsa0RJZE9pdnBXUFdKWA?oc=5"
     }
   ],
   "disclosures": [],
@@ -761,9 +761,9 @@
     "steady": 41,
     "upper": 1,
     "lower": 0,
-    "individual": 11466.0,
-    "foreign": -25095.0,
-    "institution": 10136.0,
+    "individual": 11402.0,
+    "foreign": -25037.0,
+    "institution": 10143.0,
     "prev_close": 5648.79,
     "open": 5786.13,
     "high": 5828.13,

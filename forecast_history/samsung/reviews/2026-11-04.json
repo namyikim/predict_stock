@@ -3,7 +3,7 @@
   "name": "삼성전자",
   "peer_name": "SK하이닉스",
   "session_date": "2026-11-04",
-  "generated_at": "2026-11-04 16:11 KST",
+  "generated_at": "2026-11-04 16:48 KST",
   "summary": {
     "prev_close": 219500.0,
     "open": 226500.0,
@@ -15,11 +15,11 @@
     "c2c": -0.006833712984054663,
     "high_vs_open": 0.0066225165562914245,
     "low_vs_open": -0.08167770419426046,
-    "volume": 22504788.0,
-    "volume_ratio": 1.2350716341435848,
+    "volume": 22543127.0,
+    "volume_ratio": 1.2371756935722464,
     "kospi_c2c": 0.006197745956727063,
     "peer_c2c": -0.0014306151645206988,
-    "usdkrw_chg": -0.00223079830555184,
+    "usdkrw_chg": -0.0042609010115929324,
     "us_nights": 1,
     "sox_ret": 0.026342139575519008,
     "nasdaq_ret": 0.008253721808237469,
@@ -28,7 +28,7 @@
     "ma5": 224700.0,
     "ma20": 227700.0,
     "high20": 279500.0,
-    "high252": 367712.71645480226,
+    "high252": 367712.7495144774,
     "price_context": {
       "breakouts": {
         "20": {
@@ -106,16 +106,7 @@
       }
     },
     "from_high": -0.03752759381898452,
-    "buyback": [
-      {
-        "kind": "직접 취득",
-        "start": "2026-08-24",
-        "end": "2026-11-21",
-        "amount": "14,999,999,992,000",
-        "purpose": "임직원 주식보상",
-        "rcept_no": "20260821000616"
-      }
-    ]
+    "buyback": []
   },
   "classification": {
     "labels": [
@@ -203,10 +194,10 @@
           "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE1sNHdnSWpSbEE0T2ppUmJkOHViam9MZTQ1blRfd0lBSDVmYmEzc2oyRE04NERObzUwUHpZNHBZTFZDNVhWTTJGMUQ3eUJCZGJ3eHNyVXZnMERqbnFz?oc=5"
         },
         {
-          "time": "2026-11-04T09:44:00+09:00",
-          "title": "KB증권, 삼성전자 상승 시 최대 연 37% ELB 모집",
-          "source": "뉴스핌",
-          "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE5zdnJ6R25Yak5hZGliYUx0b2prb1lhMGh6d1NBU1RzQlg4cW5xRWZoQTh4eGhGYXZjTVpRa2c1R1JIX292bDNGTnhmM3F1NE9qYVV5T1R1b2VMdzN6?oc=5"
+          "time": "2026-11-04T09:59:41+09:00",
+          "title": "\"삼성전자 40% 빠졌는데 반전 온다?\"…증권가서 나온 '파격 전망'",
+          "source": "아시아경제",
+          "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTFB3aGFLV3liVktac2FZMWRmR3E5SUVRNzI2RmVfQkJ2ZkJkNkhIQzVCTVN3M3V1N2ljdXZMemg3UlQtNlp6TC00SEFvOURJWl82RlhRQWdpRzlfbHhoRmlXOA?oc=5"
         }
       ]
     }
@@ -664,10 +655,10 @@
           "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE1sNHdnSWpSbEE0T2ppUmJkOHViam9MZTQ1blRfd0lBSDVmYmEzc2oyRE04NERObzUwUHpZNHBZTFZDNVhWTTJGMUQ3eUJCZGJ3eHNyVXZnMERqbnFz?oc=5"
         },
         {
-          "time": "2026-11-04T09:44:00+09:00",
-          "title": "KB증권, 삼성전자 상승 시 최대 연 37% ELB 모집",
-          "source": "뉴스핌",
-          "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE5zdnJ6R25Yak5hZGliYUx0b2prb1lhMGh6d1NBU1RzQlg4cW5xRWZoQTh4eGhGYXZjTVpRa2c1R1JIX292bDNGTnhmM3F1NE9qYVV5T1R1b2VMdzN6?oc=5"
+          "time": "2026-11-04T09:59:41+09:00",
+          "title": "\"삼성전자 40% 빠졌는데 반전 온다?\"…증권가서 나온 '파격 전망'",
+          "source": "아시아경제",
+          "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTFB3aGFLV3liVktac2FZMWRmR3E5SUVRNzI2RmVfQkJ2ZkJkNkhIQzVCTVN3M3V1N2ljdXZMemg3UlQtNlp6TC00SEFvOURJWl82RlhRQWdpRzlfbHhoRmlXOA?oc=5"
         }
       ],
       "price": 220250.0,
@@ -680,12 +671,6 @@
       "title": "[특징주] 美 반도체주 강세에 프리마켓서 삼성전자 3%대·SK하이닉스 4%대 ↑",
       "source": "뉴스핌",
       "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE1sNHdnSWpSbEE0T2ppUmJkOHViam9MZTQ1blRfd0lBSDVmYmEzc2oyRE04NERObzUwUHpZNHBZTFZDNVhWTTJGMUQ3eUJCZGJ3eHNyVXZnMERqbnFz?oc=5"
-    },
-    {
-      "time": "2026-11-04T07:25:00+09:00",
-      "title": "[데스크칼럼] 삼성전자 성과급의 역설",
-      "source": "딜사이트",
-      "link": "https://news.google.com/rss/articles/CBMiT0FVX3lxTE1wU2dLYU9YM1ZKVmtjUlkyZ0FiVWI0SGhkLUJEclR6MU9JY2VCVmZiTy15NmtXbjZSa2tqQVRfRDlsRkJDMHY3MUp0UGlkVG8?oc=5"
     },
     {
       "time": "2026-11-04T08:04:54+09:00",
@@ -704,6 +689,12 @@
       "title": "삼성전자서비스, 에어컨 AS 품질 2년 연속 1위",
       "source": "아시아경제",
       "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE1xT3JmS2tSWFEtVFI4VnRSNGpfWVZZLUZiNF9sc3BjcjBaWTllT1VtQjBxck9CYkwyOERKT0o5V0R0Vzl4ZGRpSnpCbTJ3X3N6YjdqaUZ3SHY3a0V0S05Xdw?oc=5"
+    },
+    {
+      "time": "2026-11-04T08:01:00+09:00",
+      "title": "삼성전자 TV, 미국 컨슈머리포트 평가서 크기별 전 부문 1위",
+      "source": "연합뉴스",
+      "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE52eTBpMlBZcmhUNlRiYmdSNGk2Y3lKcXdEVVBhOHZwbUx3c0h6U3ZNZnNIRmhFNHB2NG11OHo1VXpBNkljRk1pRzVnbFBkZzlUWUFKN0VNcHpndHPSAWBBVV95cUxQdmNnNnJiZnk4OEdDMEhYQ0lQQy1heUZqV2FveEE4RWRPTEpLQ1Jqay1sMWVFRjNqWWtudnN6ZWVxNXAyWVVwaTVGUTVud2RtTUtZeXRKZU9MZW5pYklYMEw?oc=5"
     }
   ],
   "top_news": [
@@ -744,8 +735,8 @@
       "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE9odGRIa25jdDIzSW5TS3dQZlB4cHpSTXFnMW1LUVJXTjljaDQyZXlDQ1c4WW13RHhMNnpCTno4SFpkQ18xSWdMQVBWdjZzNEpEU1lEX21hTkhOMWxSTVFlRHAzbFlSSUhjaG5HX2lISEHSAXRBVV95cUxNVlEtSVZaTW8yX284LU5HeF9uakNfX01ualZGbWk3d3RsZEl6X0FvM3ZyUWhJSHpORGNDeWtsUFZBM1J2dmkwTlRVMTlJX0M3TW4yVTRSOHZzNzZ0TGYyTXZRZEQyZmxsa0RJZE9pdnBXUFdKWA?oc=5"
     }
   ],
-  "disclosures": [],
-  "disclosure_note": null,
+  "disclosures": null,
+  "disclosure_note": "DART 조회 실패(URLError)",
   "flows": null,
   "flow_story": null,
   "flow_status": {
@@ -761,9 +752,9 @@
     "steady": 41,
     "upper": 1,
     "lower": 0,
-    "individual": 11402.0,
-    "foreign": -25037.0,
-    "institution": 10143.0,
+    "individual": 11284.0,
+    "foreign": -24992.0,
+    "institution": 10228.0,
     "prev_close": 5648.79,
     "open": 5786.13,
     "high": 5828.13,

@@ -3,7 +3,7 @@
   "name": "SK하이닉스",
   "peer_name": "삼성전자",
   "session_date": "2026-11-04",
-  "generated_at": "2026-11-05 00:23 KST",
+  "generated_at": "2026-11-05 00:34 KST",
   "summary": {
     "prev_close": 1398000.0,
     "open": NaN,
@@ -15,11 +15,11 @@
     "c2c": NaN,
     "high_vs_open": NaN,
     "low_vs_open": NaN,
-    "volume": 4788127.0,
-    "volume_ratio": 1.3120885308527737,
+    "volume": 4591188.0,
+    "volume_ratio": 1.258121415281776,
     "kospi_c2c": NaN,
     "peer_c2c": NaN,
-    "usdkrw_chg": -0.002699269580574315,
+    "usdkrw_chg": -0.0031455018588170125,
     "us_nights": 1,
     "sox_ret": 0.026342139575519008,
     "nasdaq_ret": 0.008253721808237469,
@@ -127,16 +127,16 @@
           "link": "https://news.google.com/rss/articles/CBMiXkFVX3lxTFBza3ZYWGFsRUZ5ckhORU1RWVJ1a3UydU1QRGt5aV9ET2FXdXRvUnVLTWJvMHZRdGdvR19mbUxpQ3NvOXI2ckNzdHcyLTVGaEZwZVdZSGlnWG1oR1NhWVE?oc=5"
         },
         {
-          "time": "2026-11-04T08:04:08+09:00",
-          "title": "[이슈 체크] 삼성전자·SK하이닉스, 4분기 영업익 232조원 전망…”우려를 압도하는 실적 기대\"",
-          "source": "버핏연구소",
-          "link": "https://news.google.com/rss/articles/CBMiYkFVX3lxTFBHTVltSEZmbXFZTFNsZDB5U2t1OElpQUpxT29PRmZuVm1JR3BVR2UycXAtSmZDVXlZNzlBajNGWGVsNDNsQ3BUNHRtdTZUVHJpb0xXTWVndkdIZ2d6Rlhoc1hB?oc=5"
-        },
-        {
           "time": "2026-11-04T08:21:45+09:00",
           "title": "美, SK하이닉스 中공장 장비 반입 제동…450억달러 뉴욕 투자도 차질 빚나",
           "source": "조선일보",
           "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxPNVRrVEcxUVdIVjlCQlRvUFdEdFltLWVJMGlFdng2MFlNZXlFSzlsNnAtdm1TeHJUUDVlX3ppWXJnanE2YXFtcW43a0p0aXU2NkZ6WF9KOGd0MHRadjUyNnNfaWV5SjBURldNRkdYVHhmUElCdXdwWHR0NENvNk4zNG5fNHNRc1E0?oc=5"
+        },
+        {
+          "time": "2026-11-04T08:44:00+09:00",
+          "title": "中공장 막았더니 美투자도 차질…SK하이닉스 ‘450억달러 계획’ 변수",
+          "source": "미주중앙일보",
+          "link": "https://news.google.com/rss/articles/CBMiYkFVX3lxTE01WlNsZDJVRTFwd1VuSWpPWnVMaVZxM3dlLTk2VGJ4UVNXa0NxRDh3dndNaDJJYlZ4TUtEWExyclBUSWRFc2NiR0VHcmhCU1BOMzk3X1FidnBReVlXR0FXcmhB?oc=5"
         }
       ]
     }
@@ -544,16 +544,16 @@
           "link": "https://news.google.com/rss/articles/CBMiXkFVX3lxTFBza3ZYWGFsRUZ5ckhORU1RWVJ1a3UydU1QRGt5aV9ET2FXdXRvUnVLTWJvMHZRdGdvR19mbUxpQ3NvOXI2ckNzdHcyLTVGaEZwZVdZSGlnWG1oR1NhWVE?oc=5"
         },
         {
-          "time": "2026-11-04T08:04:08+09:00",
-          "title": "[이슈 체크] 삼성전자·SK하이닉스, 4분기 영업익 232조원 전망…”우려를 압도하는 실적 기대\"",
-          "source": "버핏연구소",
-          "link": "https://news.google.com/rss/articles/CBMiYkFVX3lxTFBHTVltSEZmbXFZTFNsZDB5U2t1OElpQUpxT29PRmZuVm1JR3BVR2UycXAtSmZDVXlZNzlBajNGWGVsNDNsQ3BUNHRtdTZUVHJpb0xXTWVndkdIZ2d6Rlhoc1hB?oc=5"
-        },
-        {
           "time": "2026-11-04T08:21:45+09:00",
           "title": "美, SK하이닉스 中공장 장비 반입 제동…450억달러 뉴욕 투자도 차질 빚나",
           "source": "조선일보",
           "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxPNVRrVEcxUVdIVjlCQlRvUFdEdFltLWVJMGlFdng2MFlNZXlFSzlsNnAtdm1TeHJUUDVlX3ppWXJnanE2YXFtcW43a0p0aXU2NkZ6WF9KOGd0MHRadjUyNnNfaWV5SjBURldNRkdYVHhmUElCdXdwWHR0NENvNk4zNG5fNHNRc1E0?oc=5"
+        },
+        {
+          "time": "2026-11-04T08:44:00+09:00",
+          "title": "中공장 막았더니 美투자도 차질…SK하이닉스 ‘450억달러 계획’ 변수",
+          "source": "미주중앙일보",
+          "link": "https://news.google.com/rss/articles/CBMiYkFVX3lxTE01WlNsZDJVRTFwd1VuSWpPWnVMaVZxM3dlLTk2VGJ4UVNXa0NxRDh3dndNaDJJYlZ4TUtEWExyclBUSWRFc2NiR0VHcmhCU1BOMzk3X1FidnBReVlXR0FXcmhB?oc=5"
         }
       ],
       "price": 1467000.0,

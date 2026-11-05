@@ -1061,24 +1061,23 @@
   ],
   "flash_info": {
     "enabled": true,
-    "source": "customs_flash_cache",
+    "source": "customs_flash_api",
     "rows": 42,
     "first": "2025-09",
     "last": "2026-10",
     "last_days": 31,
-    "yoy_rows": 6,
-    "fetch_error": "RuntimeError: RuntimeError <메시지 가림: 인증 정보가 포함될 수 있음>"
+    "yoy_rows": 6
   },
   "monthly_info": {
     "customs": {
       "enabled": false,
       "reason": "최근 6개월 배율이 중앙값 1.249 대비 최대 10.8% 흔들립니다(허용 10%) — 관계가 불안정해 환산하지 않습니다.",
-      "source": "customs_cache",
-      "first": "2015-01",
+      "source": "customs_api",
+      "first": "2025-05",
       "last": "2026-09",
-      "same_size": true,
-      "ratio_median": 0.8935338734599179,
-      "overlap": 141,
+      "same_size": false,
+      "ratio_median": 0.8203376758052427,
+      "overlap": 17,
       "window": 6,
       "scale": 1.249066228864939,
       "spread": 0.10773490429286436,
@@ -1092,10 +1091,10 @@
       }
     },
     "kosis_sources": {
-      "leading_cycle": "last_successful_fetch",
-      "semiconductor_exports": "last_successful_fetch"
+      "leading_cycle": "KOSIS_API",
+      "semiconductor_exports": "KOSIS_API"
     }
   },
-  "snapshot_hash": "65594f6b54f7683530a1",
-  "generated_at": "2026-11-04 16:57 KST"
+  "snapshot_hash": "5eb138ffaa44fc56cda6",
+  "generated_at": "2026-11-05 16:59 KST"
 }

@@ -3,7 +3,7 @@
   "name": "삼성전자",
   "peer_name": "SK하이닉스",
   "session_date": "2026-11-05",
-  "generated_at": "2026-11-05 16:11 KST",
+  "generated_at": "2026-11-05 16:20 KST",
   "summary": {
     "prev_close": 218000.0,
     "open": 213000.0,
@@ -15,11 +15,11 @@
     "c2c": -0.07568807339449546,
     "high_vs_open": 0.0023474178403755097,
     "low_vs_open": -0.06197183098591552,
-    "volume": 25635378.0,
-    "volume_ratio": 1.3717421941053793,
+    "volume": 25635460.0,
+    "volume_ratio": 1.3717465819033636,
     "kospi_c2c": -0.05278159159521878,
     "peer_c2c": -0.09455587392550147,
-    "usdkrw_chg": -0.0017276553110402437,
+    "usdkrw_chg": -0.0016531168834356125,
     "us_nights": 1,
     "sox_ret": -0.0312959876773522,
     "nasdaq_ret": 0.014366224960776997,
@@ -28,7 +28,7 @@
     "ma5": 218600.0,
     "ma20": 224350.0,
     "high20": 270000.0,
-    "high252": 367712.71645480226,
+    "high252": 367712.7495144774,
     "price_context": {
       "breakouts": {
         "20": {
@@ -606,10 +606,10 @@
       "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE9VRU5HSE1LbmpBbGptaUlUWUY1eUxnbDZ5ZkhLOWU3NG5hak5YTFdDa0JlanhTd2x6S05HMzNoS1hLWWdHTXhuQ0JRLTlncHBJSi00XzBxRUJsNlR2a3J0YTVrYTY?oc=5"
     },
     {
-      "time": "2026-11-05T10:18:25+09:00",
-      "title": "모바일 이어 가전 구독도 인기… 삼성전자 '삼성 AI 구독 페스티벌' 11월까지 연장",
-      "source": "전자신문",
-      "link": "https://news.google.com/rss/articles/CBMiTkFVX3lxTE5xRkk1TFhxUXotRTFoRnc5Wkx6dWc2cDdEX2NHeFZHLUNFemplRmF3YTNyOVlUeTJpMWg5ZENXbUNXQWh1MUxUZXBDM1U5dw?oc=5"
+      "time": "2026-11-05T10:18:19+09:00",
+      "title": "삼성전자 -6%·하이닉스 -9% 폭락…코스피 매도 사이드카",
+      "source": "서울신문",
+      "link": "https://news.google.com/rss/articles/CBMifkFVX3lxTE4tQ0RlcUxvbXhVTGx1TUtndklvRWZES004d3V1b3RwVE5EVTJOWUFhOHhuZFpxSDdlZzN5UWxQTUo5V0kyT0JmVUhDSExuMnF5SXBOSUM2dDl1a24tYzNaRzJUc0N5MnBhcHY3SmdBXzJtbWNWWGRIWmJhVEMtdw?oc=5"
     }
   ],
   "disclosures": [],
@@ -629,9 +629,9 @@
     "steady": 31,
     "upper": 6,
     "lower": 0,
-    "individual": 22748.0,
-    "foreign": -33960.0,
-    "institution": 8463.0,
+    "individual": 22767.0,
+    "foreign": -34001.0,
+    "institution": 8477.0,
     "prev_close": 5683.8,
     "open": 5580.09,
     "high": 5586.46,

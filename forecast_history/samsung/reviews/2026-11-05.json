@@ -3,7 +3,7 @@
   "name": "삼성전자",
   "peer_name": "SK하이닉스",
   "session_date": "2026-11-05",
-  "generated_at": "2026-11-05 16:20 KST",
+  "generated_at": "2026-11-05 16:46 KST",
   "summary": {
     "prev_close": 218000.0,
     "open": 213000.0,
@@ -15,11 +15,11 @@
     "c2c": -0.07568807339449546,
     "high_vs_open": 0.0023474178403755097,
     "low_vs_open": -0.06197183098591552,
-    "volume": 25635460.0,
-    "volume_ratio": 1.3717465819033636,
+    "volume": 25774856.0,
+    "volume_ratio": 1.3792056244378452,
     "kospi_c2c": -0.05278159159521878,
     "peer_c2c": -0.09455587392550147,
-    "usdkrw_chg": -0.0016531168834356125,
+    "usdkrw_chg": -0.001228702348696764,
     "us_nights": 1,
     "sox_ret": -0.0312959876773522,
     "nasdaq_ret": 0.014366224960776997,
@@ -28,7 +28,7 @@
     "ma5": 218600.0,
     "ma20": 224350.0,
     "high20": 270000.0,
-    "high252": 367712.7495144774,
+    "high252": 367712.71645480226,
     "price_context": {
       "breakouts": {
         "20": {
@@ -576,16 +576,16 @@
   ],
   "top_news": [
     {
-      "time": "2026-11-05T10:54:36+09:00",
-      "title": "삼성전자·SK닉스, 일본서 반도체 핵심인재 확보전…패키징·HBM 기술력 강화",
-      "source": "서울이코노미뉴스",
-      "link": "https://news.google.com/rss/articles/CBMibkFVX3lxTE1lWUFjb050M0FnYWN6MmVTZ203U2NZNjdfV3hNaFZmMlQzUU0yNmN3RTA0bDUwQ0p5WmtsTWo1UFpfNXU0c2tGc3o4RjBXNG0wMnhtNVZuSy1hMmxGUnRLQnB3VjNJYmwyb25tMk13?oc=5"
-    },
-    {
       "time": "2026-11-05T13:15:59+09:00",
       "title": "삼성전자·SK하이닉스 44조원 배당…상장사 밸류업 공시 확대",
       "source": "산경투데이",
       "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE5BckRJZ2twM3JxM2VTbUY4N19RUGZRVWx6cU9PcUl0ajQwY3dfWE1QQnZrV2tFU1BNYWpqcFBhejZoTjhBMkdGYldPZDZXRVE4MmE4QlpMazA3Ymp3YWtwVFFaazZPRHFra3NmRmVCWmXSAXRBVV95cUxPVUZrdTlSbVctek9WMUVXTXdFZS1raVFPejY5YmRUUkVEeXJaUnhMUldzaHJ2NzdVRDF2bkJhLVZmWEdfaVdpSXAtckY3T3BlZlVtRjVQNU5SalJHR1Y2akdqMnM2c2lqWmF4ZExDNW5TeW1HNg?oc=5"
+    },
+    {
+      "time": "2026-11-05T16:29:36+09:00",
+      "title": "삼성전자 D램 1위 수성…SK 반격 속 HBM4 주도권 경쟁",
+      "source": "www.ebn.co.kr",
+      "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE5yZVZteE5rZ2Nkd3Z5SjloVmhfZS1wb2JzS0FrTEVBMEFUZHJlemh4QTZtdy1peVM2SEZxRjVkcFFaeXlsV3c4MDB3bVVJQmFVVUxwOHpXc2N3QlJvV2E5TGxkODFVd1g1?oc=5"
     },
     {
       "time": "2026-11-05T14:57:00+09:00",
@@ -600,16 +600,16 @@
       "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTFAtYy0wZURJSVN1ckdnQ1lEcENCYnpReDJxR2tORk4wNzd1aUFyeVdRZnllVVpuU214VWJ4SnN1alV1MGV2QVk4ZUhnTDFfTUpDZDZ0dkZ5cmZzQmdVcE9FUlVVRlh0UDh4RmF0aWFldkc?oc=5"
     },
     {
-      "time": "2026-11-05T10:00:09+09:00",
-      "title": "KT, 삼성전자와 '맞손'…AI로 고속철도 통신 끊김 29% 줄여",
-      "source": "매일일보",
-      "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE9VRU5HSE1LbmpBbGptaUlUWUY1eUxnbDZ5ZkhLOWU3NG5hak5YTFdDa0JlanhTd2x6S05HMzNoS1hLWWdHTXhuQ0JRLTlncHBJSi00XzBxRUJsNlR2a3J0YTVrYTY?oc=5"
-    },
-    {
       "time": "2026-11-05T10:18:19+09:00",
       "title": "삼성전자 -6%·하이닉스 -9% 폭락…코스피 매도 사이드카",
       "source": "서울신문",
       "link": "https://news.google.com/rss/articles/CBMifkFVX3lxTE4tQ0RlcUxvbXhVTGx1TUtndklvRWZES004d3V1b3RwVE5EVTJOWUFhOHhuZFpxSDdlZzN5UWxQTUo5V0kyT0JmVUhDSExuMnF5SXBOSUM2dDl1a24tYzNaRzJUc0N5MnBhcHY3SmdBXzJtbWNWWGRIWmJhVEMtdw?oc=5"
+    },
+    {
+      "time": "2026-11-05T10:18:25+09:00",
+      "title": "모바일 이어 가전 구독도 인기… 삼성전자 '삼성 AI 구독 페스티벌' 11월까지 연장",
+      "source": "전자신문",
+      "link": "https://news.google.com/rss/articles/CBMiTkFVX3lxTE5xRkk1TFhxUXotRTFoRnc5Wkx6dWc2cDdEX2NHeFZHLUNFemplRmF3YTNyOVlUeTJpMWg5ZENXbUNXQWh1MUxUZXBDM1U5dw?oc=5"
     }
   ],
   "disclosures": [],
@@ -629,9 +629,9 @@
     "steady": 31,
     "upper": 6,
     "lower": 0,
-    "individual": 22767.0,
-    "foreign": -34001.0,
-    "institution": 8477.0,
+    "individual": 22761.0,
+    "foreign": -34019.0,
+    "institution": 8490.0,
     "prev_close": 5683.8,
     "open": 5580.09,
     "high": 5586.46,

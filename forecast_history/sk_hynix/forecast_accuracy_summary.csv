@@ -1,6 +1,6 @@
 ﻿model,kind,horizon_days,target_mode,config_hash,n,accuracy,mean_log_loss,mean_brier,point_forecasts,price_mae,price_mape,interval_coverage
 Candidate HAR interval,price,5,close_to_close,53c9db3770b61e827785,8,,,,0,,,1.0
-Candidate HAR interval,price,5,close_to_close,c3efc95d08e699a31d4f,21,,,,14,158633.210095305,0.11742364343858545,0.47619047619047616
+Candidate HAR interval,price,5,close_to_close,c3efc95d08e699a31d4f,21,,,,14,158633.210095305,0.11742364343858547,0.47619047619047616
 Candidate HAR interval,price,5,close_to_close,ebdbaad363d27a26ad73,1,,,,0,,,1.0
 Candidate HAR interval,price,20,close_to_close,53c9db3770b61e827785,8,,,,0,,,0.0
 Candidate HAR interval,price,20,close_to_close,c3efc95d08e699a31d4f,7,,,,0,,,0.2857142857142857
@@ -8,7 +8,7 @@ Candidate HAR interval,price,20,close_to_close,ebdbaad363d27a26ad73,1,,,,0,,,0.0
 Candidate IV interval,price,1,close_to_close,53c9db3770b61e827785,8,,,,8,42112.32449821077,0.02374741424581427,0.875
 Candidate IV interval,price,1,close_to_close,c3efc95d08e699a31d4f,25,,,,25,57999.91187721096,0.04110216834675133,0.64
 Candidate IV interval,price,5,close_to_close,53c9db3770b61e827785,8,,,,0,,,1.0
-Candidate IV interval,price,5,close_to_close,c3efc95d08e699a31d4f,21,,,,14,158633.210095305,0.11742364343858545,0.5238095238095238
+Candidate IV interval,price,5,close_to_close,c3efc95d08e699a31d4f,21,,,,14,158633.210095305,0.11742364343858547,0.5238095238095238
 Candidate IV interval,price,20,close_to_close,53c9db3770b61e827785,8,,,,0,,,0.25
 Candidate IV interval,price,20,close_to_close,c3efc95d08e699a31d4f,7,,,,0,,,0.42857142857142855
 Candidate evening forecast,direction,1,close_to_close,53c9db3770b61e827785,9,0.2222222222222222,1.1833116240191164,0.7178249557674484,0,,,
@@ -83,7 +83,7 @@ Ridge,price,5,close_to_close,15c2fee718d49a56adee,1,,,,0,,,1.0
 Ridge,price,5,close_to_close,4f89248afed926b75d78,1,,,,0,,,1.0
 Ridge,price,5,close_to_close,53c9db3770b61e827785,8,,,,0,,,1.0
 Ridge,price,5,close_to_close,a5cc2a709bb33ff3d7f7,1,,,,0,,,1.0
-Ridge,price,5,close_to_close,c3efc95d08e699a31d4f,21,,,,14,158633.210095305,0.11742364343858545,0.5238095238095238
+Ridge,price,5,close_to_close,c3efc95d08e699a31d4f,21,,,,14,158633.210095305,0.11742364343858547,0.5238095238095238
 Ridge,price,5,close_to_close,ebdbaad363d27a26ad73,1,,,,0,,,1.0
 Ridge,price,20,close_to_close,0464a8f5fe0430d37f44,1,,,,1,3370.5829490011092,0.00195622922170697,1.0
 Ridge,price,20,close_to_close,15c2fee718d49a56adee,1,,,,0,,,1.0

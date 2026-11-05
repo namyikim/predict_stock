@@ -3,7 +3,7 @@
   "name": "SK하이닉스",
   "peer_name": "삼성전자",
   "session_date": "2026-11-05",
-  "generated_at": "2026-11-06 00:38 KST",
+  "generated_at": "2026-11-06 01:53 KST",
   "summary": {
     "prev_close": 1396000.0,
     "open": NaN,
@@ -19,7 +19,7 @@
     "volume_ratio": 1.238871744717824,
     "kospi_c2c": NaN,
     "peer_c2c": NaN,
-    "usdkrw_chg": 0.006240229898326843,
+    "usdkrw_chg": 0.007282767979055027,
     "us_nights": 1,
     "sox_ret": -0.0312959876773522,
     "nasdaq_ret": 0.014366224960776997,
@@ -171,6 +171,12 @@
           "link": "https://news.google.com/rss/articles/CBMiS0FVX3lxTE9yYWFtT1ZMemxxM3JqbDljYTI2UmxwMEdGNmNzOFdES084NG9zWFdQSld1X1FtSDNCckFTdTVHMHZwWjhkOGhQUGJYbw?oc=5"
         },
         {
+          "time": "2026-11-05T09:36:18+09:00",
+          "title": "코스피, 美 반도체주 약세에 장 초반 2%대 하락···SK하이닉스 5%대↓",
+          "source": "서울파이낸스",
+          "link": "https://news.google.com/rss/articles/CBMiakFVX3lxTE0wNFRyMktfeE4tMGQ1eDZsanpudlNBUFhKSndYX21BeURWVkNqNXBHRk9ucEpqV3JuZXMyemlxX25kQ1VMTE5QTS1XWUhZWG04WGNWRnUtRTJuOUNpUGtSSmwyVVBrX1dPalE?oc=5"
+        },
+        {
           "time": "2026-11-05T10:03:00+09:00",
           "title": "[개장시황] 코스피, 반도체株 급락에 5550선 후퇴…SK하이닉스 6%↓",
           "source": "뉴스핌",
@@ -181,12 +187,6 @@
           "title": "코스피, 반도체주 급락에 5,490선 추락…삼전 5.3%·SK하이닉스 7% 하락",
           "source": "뉴스투데이",
           "link": "https://news.google.com/rss/articles/CBMiXkFVX3lxTE5nSFJMaDdkaUtRQkFpT2JfenhFRDVBcmRmSS03UHh1Vlh2ZHhKM3N5cklnam8wN3hmRWtmT2xranZMREtyT09RMDlaZXBYQVJXUnltbE9sMzBZUHZaZXc?oc=5"
-        },
-        {
-          "time": "2026-11-05T09:15:00+09:00",
-          "title": "[개장시황] 코스피 1.9% 내린 5570선⋯SK하이닉스 5%대 급락",
-          "source": "브릿지경제",
-          "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTFBRZVlzWFRwcWx6eW9BaWhzMExtTFlqWWh2QUxmNDN6S3VEY21LZkRqM2dLbkNQaDVlTzJVekZhWU9XbnZVd0YxYm0ydHhqbEZEWFhLVHFqQXB4dw?oc=5"
         }
       ]
     }
@@ -632,6 +632,12 @@
           "link": "https://news.google.com/rss/articles/CBMiS0FVX3lxTE9yYWFtT1ZMemxxM3JqbDljYTI2UmxwMEdGNmNzOFdES084NG9zWFdQSld1X1FtSDNCckFTdTVHMHZwWjhkOGhQUGJYbw?oc=5"
         },
         {
+          "time": "2026-11-05T09:36:18+09:00",
+          "title": "코스피, 美 반도체주 약세에 장 초반 2%대 하락···SK하이닉스 5%대↓",
+          "source": "서울파이낸스",
+          "link": "https://news.google.com/rss/articles/CBMiakFVX3lxTE0wNFRyMktfeE4tMGQ1eDZsanpudlNBUFhKSndYX21BeURWVkNqNXBHRk9ucEpqV3JuZXMyemlxX25kQ1VMTE5QTS1XWUhZWG04WGNWRnUtRTJuOUNpUGtSSmwyVVBrX1dPalE?oc=5"
+        },
+        {
           "time": "2026-11-05T10:03:00+09:00",
           "title": "[개장시황] 코스피, 반도체株 급락에 5550선 후퇴…SK하이닉스 6%↓",
           "source": "뉴스핌",
@@ -642,12 +648,6 @@
           "title": "코스피, 반도체주 급락에 5,490선 추락…삼전 5.3%·SK하이닉스 7% 하락",
           "source": "뉴스투데이",
           "link": "https://news.google.com/rss/articles/CBMiXkFVX3lxTE5nSFJMaDdkaUtRQkFpT2JfenhFRDVBcmRmSS03UHh1Vlh2ZHhKM3N5cklnam8wN3hmRWtmT2xranZMREtyT09RMDlaZXBYQVJXUnltbE9sMzBZUHZaZXc?oc=5"
-        },
-        {
-          "time": "2026-11-05T09:15:00+09:00",
-          "title": "[개장시황] 코스피 1.9% 내린 5570선⋯SK하이닉스 5%대 급락",
-          "source": "브릿지경제",
-          "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTFBRZVlzWFRwcWx6eW9BaWhzMExtTFlqWWh2QUxmNDN6S3VEY21LZkRqM2dLbkNQaDVlTzJVekZhWU9XbnZVd0YxYm0ydHhqbEZEWFhLVHFqQXB4dw?oc=5"
         }
       ],
       "price": 1278000.0,

@@ -3,73 +3,38 @@
   "name": "삼성전자",
   "peer_name": "SK하이닉스",
   "session_date": "2026-11-05",
-  "generated_at": "2026-11-05 17:31 KST",
+  "generated_at": "2026-11-06 00:25 KST",
   "summary": {
     "prev_close": 218000.0,
-    "open": 213000.0,
-    "high": 213500.0,
-    "low": 199800.0,
-    "close": 201500.0,
-    "gap": -0.022935779816513735,
-    "session": -0.0539906103286385,
-    "c2c": -0.07568807339449546,
-    "high_vs_open": 0.0023474178403755097,
-    "low_vs_open": -0.06197183098591552,
-    "volume": 25868887.0,
-    "volume_ratio": 1.3842371980020782,
-    "kospi_c2c": -0.05278159159521878,
-    "peer_c2c": -0.09455587392550147,
-    "usdkrw_chg": -0.00105744576624911,
+    "open": NaN,
+    "high": NaN,
+    "low": NaN,
+    "close": NaN,
+    "gap": NaN,
+    "session": NaN,
+    "c2c": NaN,
+    "high_vs_open": NaN,
+    "low_vs_open": NaN,
+    "volume": 26612422.0,
+    "volume_ratio": 1.4240235562252395,
+    "kospi_c2c": NaN,
+    "peer_c2c": NaN,
+    "usdkrw_chg": 0.006098697786399487,
     "us_nights": 1,
     "sox_ret": -0.0312959876773522,
     "nasdaq_ret": 0.014366224960776997,
     "micron_ret": -0.07001519918903398,
     "prior_streak": -2,
-    "ma5": 218600.0,
-    "ma20": 224350.0,
+    "ma5": 222875.0,
+    "ma20": 225552.63157894736,
     "high20": 270000.0,
     "high252": 367712.71645480226,
     "price_context": {
-      "breakouts": {
-        "20": {
-          "prior_high": 279500.0,
-          "distance": -0.2790697674418605,
-          "close_breakout": false,
-          "intraday_breakout": false
-        },
-        "60": {
-          "prior_high": 283092.2681564246,
-          "distance": -0.288217932223215,
-          "close_breakout": false,
-          "intraday_breakout": false
-        }
-      },
-      "relative": {
-        "5": {
-          "start": "2026-10-29",
-          "end": "2026-11-05",
-          "own": -0.13146551724137934,
-          "peer": -0.17169069462647446,
-          "excess": 0.04022517738509512
-        },
-        "20": {
-          "start": "2026-10-07",
-          "end": "2026-11-05",
-          "own": -0.24953445065176905,
-          "peer": -0.26639582124201977,
-          "excess": 0.016861370590250724
-        },
-        "60": {
-          "start": "2026-08-06",
-          "end": "2026-11-05",
-          "own": -0.11065841000536869,
-          "peer": -0.15433170418971265,
-          "excess": 0.04367329418434396
-        }
-      }
+      "breakouts": {},
+      "relative": {}
     },
-    "range": 0.06856856856856863,
-    "peer_range": 0.05600000000000005,
+    "range": NaN,
+    "peer_range": NaN,
     "prior_5d": -0.09917355371900827,
     "ma_touches": [],
     "micron_ah": {
@@ -105,7 +70,6 @@
         "after_high": 0.00037283384763342475
       }
     },
-    "from_high": -0.04502369668246442,
     "buyback": [
       {
         "kind": "직접 취득",
@@ -115,35 +79,35 @@
         "purpose": "임직원 주식보상",
         "rcept_no": "20260821000616"
       }
-    ]
+    ],
+    "foreign_pressure": {
+      "state": "turned_selling",
+      "previous_ratio": 0.002397894448378581,
+      "recent_ratio": -0.11519292271320654,
+      "previous_daily_net": 40541.2,
+      "recent_daily_net": -2222276.2
+    },
+    "buyback_transition": null
   },
   "classification": {
     "labels": [
-      "장중 급변 09:00 주도",
-      "지수 동조"
+      "장중 급변 09:00 주도"
     ],
     "reasons": [
-      "09:00 봉 -3.44%(σ의 9.32배, 거래량 3.18배)가 세션 -5.40%의 56%",
-      "KOSPI -5.28% vs 종목 -7.57%, 5분 수익률 상관 0.92 — 종목 고유 요인이 약함"
+      "09:00 봉 -3.44%(σ의 9.3배, 거래량 3.18배)가 세션 +nan%의 56%"
     ]
   },
   "events": [
     {
       "time": "2026-11-05T09:00:00+09:00",
       "ret": -0.0344036697247706,
-      "z": 9.32,
+      "z": 9.3,
       "volume_ratio": 3.18,
       "cum_before": 0.0,
       "cum_after": -0.011737089201877882,
       "session_share": 0.5593879123187896,
-      "score": 10.950692573760088,
+      "score": 10.939695690160807,
       "news": [
-        {
-          "time": "2026-11-05T08:21:00+09:00",
-          "title": "삼성전자, 75조 주주환원 셈법…보통주 대신 우선주 소각 늘리나",
-          "source": "뉴스핌",
-          "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTFBEV3NITkFDRVhqMTlYOHpxcGl5NEF3VXhCVWpDOHNkU05jU2UxSVZyekUtLUZweGZ4b0hLemF0ZmxBbGY1eFRvdFNsM2l5OWlpbERvVWhRaGZUTUh1?oc=5"
-        },
         {
           "time": "2026-11-05T08:43:28+09:00",
           "title": "라이프운용, 삼성전자에 주주서한…\"주주환원 유보, 독립 검토 필요\"",
@@ -160,9 +124,9 @@
     "low": -0.06150234741784033,
     "pattern": "고점 후 반락"
   },
-  "closing_share": -0.1482480370620111,
-  "intraday_corr_kospi": 0.9175044996273908,
-  "intraday_note": "장중 봉은 09:00~14:55까지만 있어 마감 구간(14:55~15:30)은 일봉 종가로만 봅니다(그 구간 +0.80%).",
+  "closing_share": NaN,
+  "intraday_corr_kospi": 0.9091584938886378,
+  "intraday_note": "장중 봉은 09:00~14:55까지만 있어 마감 구간(14:55~15:30)은 일봉 종가로만 봅니다(그 구간 +nan%).",
   "intraday_coverage": "09:00~14:55",
   "intraday_path": [
     {
@@ -227,13 +191,13 @@
     },
     {
       "time": "2026-11-05T10:00:00+09:00",
-      "price": 206750.0,
-      "volume": 366372.0
+      "price": 207000.0,
+      "volume": 366349.0
     },
     {
       "time": "2026-11-05T10:05:00+09:00",
       "price": 206250.0,
-      "volume": 298968.0
+      "volume": 298991.0
     },
     {
       "time": "2026-11-05T10:10:00+09:00",
@@ -312,23 +276,23 @@
     },
     {
       "time": "2026-11-05T11:25:00+09:00",
-      "price": 207000.0,
-      "volume": 194331.0
+      "price": 206500.0,
+      "volume": 194450.0
     },
     {
       "time": "2026-11-05T11:30:00+09:00",
       "price": 206500.0,
-      "volume": 134309.0
+      "volume": 134190.0
     },
     {
       "time": "2026-11-05T11:35:00+09:00",
       "price": 207250.0,
-      "volume": 205803.0
+      "volume": 205812.0
     },
     {
       "time": "2026-11-05T11:40:00+09:00",
       "price": 208000.0,
-      "volume": 123880.0
+      "volume": 123871.0
     },
     {
       "time": "2026-11-05T11:45:00+09:00",
@@ -448,12 +412,12 @@
     {
       "time": "2026-11-05T13:40:00+09:00",
       "price": 203500.0,
-      "volume": 215808.0
+      "volume": 215734.0
     },
     {
       "time": "2026-11-05T13:45:00+09:00",
       "price": 203250.0,
-      "volume": 346001.0
+      "volume": 346075.0
     },
     {
       "time": "2026-11-05T13:50:00+09:00",
@@ -493,12 +457,12 @@
     {
       "time": "2026-11-05T14:25:00+09:00",
       "price": 201000.0,
-      "volume": 313532.0
+      "volume": 313337.0
     },
     {
       "time": "2026-11-05T14:30:00+09:00",
       "price": 201000.0,
-      "volume": 547829.0
+      "volume": 548024.0
     },
     {
       "time": "2026-11-05T14:35:00+09:00",
@@ -508,12 +472,12 @@
     {
       "time": "2026-11-05T14:40:00+09:00",
       "price": 200750.0,
-      "volume": 267946.0
+      "volume": 267941.0
     },
     {
       "time": "2026-11-05T14:45:00+09:00",
       "price": 200500.0,
-      "volume": 316147.0
+      "volume": 316146.0
     },
     {
       "time": "2026-11-05T14:50:00+09:00",
@@ -530,19 +494,13 @@
     {
       "time": "2026-11-05T09:00:00+09:00",
       "ret": -0.0344036697247706,
-      "z": 9.32,
+      "z": 9.3,
       "volume_ratio": 3.18,
       "cum_before": 0.0,
       "cum_after": -0.011737089201877882,
       "session_share": 0.5593879123187896,
-      "score": 10.950692573760088,
+      "score": 10.939695690160807,
       "news": [
-        {
-          "time": "2026-11-05T08:21:00+09:00",
-          "title": "삼성전자, 75조 주주환원 셈법…보통주 대신 우선주 소각 늘리나",
-          "source": "뉴스핌",
-          "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTFBEV3NITkFDRVhqMTlYOHpxcGl5NEF3VXhCVWpDOHNkU05jU2UxSVZyekUtLUZweGZ4b0hLemF0ZmxBbGY1eFRvdFNsM2l5OWlpbERvVWhRaGZUTUh1?oc=5"
-        },
         {
           "time": "2026-11-05T08:43:28+09:00",
           "title": "라이프운용, 삼성전자에 주주서한…\"주주환원 유보, 독립 검토 필요\"",
@@ -555,12 +513,6 @@
     }
   ],
   "overnight_news": [
-    {
-      "time": "2026-11-05T08:21:00+09:00",
-      "title": "삼성전자, 75조 주주환원 셈법…보통주 대신 우선주 소각 늘리나",
-      "source": "뉴스핌",
-      "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTFBEV3NITkFDRVhqMTlYOHpxcGl5NEF3VXhCVWpDOHNkU05jU2UxSVZyekUtLUZweGZ4b0hLemF0ZmxBbGY1eFRvdFNsM2l5OWlpbERvVWhRaGZUTUh1?oc=5"
-    },
     {
       "time": "2026-11-05T08:43:28+09:00",
       "title": "라이프운용, 삼성전자에 주주서한…\"주주환원 유보, 독립 검토 필요\"",
@@ -577,15 +529,21 @@
   "top_news": [
     {
       "time": "2026-11-05T16:48:16+09:00",
-      "title": "삼성전자 AI 메모리 호황에 3분기 D램 점유율 38%, SK하이닉스 점유율 29%",
+      "title": "삼성전자 AI 메모리 호황에 3분기 글로벌 D램 점유율 38%, SK하이닉스 29%",
       "source": "비즈니스포스트",
       "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTFAwQ1k3TFpIR290dTZUQkZsakowZVNEMko3d3dFa19FemduRExEODIzLVVURmdOSDRvVDNObzBIS0d2NzV5SklBRXJVZnczcWZBbnlWakl1S2hNS2FNdjZOV3VmQ0hjSjluaWlvNEJjeDd4eVk?oc=5"
     },
     {
-      "time": "2026-11-05T13:15:59+09:00",
-      "title": "삼성전자·SK하이닉스 44조원 배당…상장사 밸류업 공시 확대",
-      "source": "산경투데이",
-      "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE5BckRJZ2twM3JxM2VTbUY4N19RUGZRVWx6cU9PcUl0ajQwY3dfWE1QQnZrV2tFU1BNYWpqcFBhejZoTjhBMkdGYldPZDZXRVE4MmE4QlpMazA3Ymp3YWtwVFFaazZPRHFra3NmRmVCWmXSAXRBVV95cUxPVUZrdTlSbVctek9WMUVXTXdFZS1raVFPejY5YmRUUkVEeXJaUnhMUldzaHJ2NzdVRDF2bkJhLVZmWEdfaVdpSXAtckY3T3BlZlVtRjVQNU5SalJHR1Y2akdqMnM2c2lqWmF4ZExDNW5TeW1HNg?oc=5"
+      "time": "2026-11-05T17:52:49+09:00",
+      "title": "[오늘의 주목주] '반도체 투심 위축' 삼성전기 주가 15%대 급락, 코스피 외국인 '3조 순매도'에 5380선까지 밀려",
+      "source": "비즈니스포스트",
+      "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTE5YTUZVQlZQUjZUOGFKVVhuZWZoX0pqTHJyNFh6ZnVrWTBIX0NleVQxLXFNczM1MU9zbF92NWVjTVpldnREUjJUa25iOVFnNEc4bDF2bm5qYlN0WmN2ZWVHTjk0eHptR1JtMTBfZlRoVGdHTWc?oc=5"
+    },
+    {
+      "time": "2026-11-05T19:21:54+09:00",
+      "title": "외국인 코스피 210조원 순매도…반도체 주가 하락 : 한국증시",
+      "source": "재경일보",
+      "link": "https://news.google.com/rss/articles/CBMiS0FVX3lxTE5QelJMRDBlLVBOcXQ5a0dYRjg3YTdXalFNWHlRU1h6MkRGYkk5RGRKYlV0d19mUUFiXzM5SUNhYkZFdVBSenB6ZWJhZw?oc=5"
     },
     {
       "time": "2026-11-05T16:29:36+09:00",
@@ -594,31 +552,33 @@
       "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE5yZVZteE5rZ2Nkd3Z5SjloVmhfZS1wb2JzS0FrTEVBMEFUZHJlemh4QTZtdy1peVM2SEZxRjVkcFFaeXlsV3c4MDB3bVVJQmFVVUxwOHpXc2N3QlJvV2E5TGxkODFVd1g1?oc=5"
     },
     {
-      "time": "2026-11-05T14:57:00+09:00",
-      "title": "민주당 승리에 AI 투자 위축 우려…삼성·SK HBM 수요는 괜찮나",
-      "source": "뉴스핌",
-      "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE9adkFjc2M0RUdZMFlMQWd1dGNmYXhqUFkwbUNYbWdDc1FFeFB2bzIyVF83YXIxM2xTZWNaODNJUE1qRzBsWjZ0ZDR2VGxobW8xckJJR0xxMTZFR2NH?oc=5"
+      "time": "2026-11-05T16:30:18+09:00",
+      "title": "외국인 3.4조원 투매에 코스피 5%대 급락…삼성전자·하이닉스 '와르르'",
+      "source": "진일보 | 전남일보",
+      "link": "https://news.google.com/rss/articles/CBMib0FVX3lxTE12c2lqZC01a2pGc1JJampDR2lTekpuTkpsdXNxR1gxNFFKd3dMM3hjcGJHenU3d1VPLWpNeWNvM0M5ZE5kdU1PNEFBd1dFTHNzbDQwNkRoVGtSTHFvMUY1WU91RXNhbnBZNktSTWphdw?oc=5"
     },
     {
-      "time": "2026-11-05T09:50:00+09:00",
-      "title": "KT·삼성전자, AI로 고속철도 통신 끊김 줄인다…\"품질 저하 29% 개선\" By EBN",
-      "source": "Investing.com 한국어",
-      "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTFAtYy0wZURJSVN1ckdnQ1lEcENCYnpReDJxR2tORk4wNzd1aUFyeVdRZnllVVpuU214VWJ4SnN1alV1MGV2QVk4ZUhnTDFfTUpDZDZ0dkZ5cmZzQmdVcE9FUlVVRlh0UDh4RmF0aWFldkc?oc=5"
-    },
-    {
-      "time": "2026-11-05T10:18:19+09:00",
-      "title": "삼성전자 -6%·하이닉스 -9% 폭락…코스피 매도 사이드카",
-      "source": "서울신문",
-      "link": "https://news.google.com/rss/articles/CBMifkFVX3lxTE4tQ0RlcUxvbXhVTGx1TUtndklvRWZES004d3V1b3RwVE5EVTJOWUFhOHhuZFpxSDdlZzN5UWxQTUo5V0kyT0JmVUhDSExuMnF5SXBOSUM2dDl1a24tYzNaRzJUc0N5MnBhcHY3SmdBXzJtbWNWWGRIWmJhVEMtdw?oc=5"
+      "time": "2026-11-05T17:33:07+09:00",
+      "title": "삼성전자, 글로벌 D램 1위 수성…SK하이닉스, 마이크론과 격차 확대",
+      "source": "산경투데이",
+      "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE1oNTFJX0pUVlNFX2wxeFZjSGk5eGZtbERQQU9rYWlLWkxBMFBaOEQ0MTNCQlJOMWx3UDYtLVFBLXVVOGFsSmthNFJZNlhDSWo4RVZoQlNEWUhvUXlwaWt3MDNZLXVDZ3VId0hOM0ZtMWjSAXRBVV95cUxOSFhzQzJZUFZFbmlJT0prWFNPVXdvdWNyVUpfR2NwMjlwdElveVJudTBlMFRGS3c0YUYtMXBXclhTODRxY1k0d3ZiR2FXbVlEU3BuYXdSYmZYeVB0UGhpaVNTSkJfYTFIS3ZPUGNaUVFzeEpPUg?oc=5"
     }
   ],
-  "disclosures": [],
+  "disclosures": [
+    {
+      "report_nm": "임원ㆍ주요주주특정증권등소유상황보고서",
+      "rcept_dt": "20261105",
+      "rcept_no": "20261105000566",
+      "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261105000566"
+    }
+  ],
   "disclosure_note": null,
-  "flows": null,
+  "flows": "외국인 -5,772,197 / 기관 +75,714",
   "flow_story": null,
   "flow_status": {
-    "state": "pending",
-    "detail": "최신 2026-11-04"
+    "state": "ok",
+    "detail": "naver+cache",
+    "krx_error": "pykrx 미설치"
   },
   "context": {},
   "market": {
@@ -629,9 +589,9 @@
     "steady": 31,
     "upper": 6,
     "lower": 0,
-    "individual": 22832.0,
-    "foreign": -34089.0,
-    "institution": 8484.0,
+    "individual": 22087.0,
+    "foreign": -33733.0,
+    "institution": 8819.0,
     "prev_close": 5683.8,
     "open": 5580.09,
     "high": 5586.46,
@@ -642,9 +602,9 @@
   "forecasts": [
     {
       "model": "No macro ensemble",
-      "hit": true,
-      "verdict": "맞음 — 예측 하락 40%, 실제 하락(-7.57%)",
-      "legs": "갭 -2.29%(하락) · 세션 -5.40%(하락)",
+      "hit": false,
+      "verdict": "틀림 — 예측 하락 40%, 실제 보합(+nan%)",
+      "legs": "갭 +nan%(보합) · 세션 +nan%(보합)",
       "where": "결과는 주로 장중에서 정해졌습니다.",
       "band": 0.0131304819177645,
       "probs": [
@@ -652,14 +612,14 @@
         0.279915850209092,
         0.3158265371701505
       ],
-      "actual": "하락",
+      "actual": "보합",
       "predicted": "하락"
     },
     {
       "model": "Mean ensemble",
-      "hit": true,
-      "verdict": "맞음 — 예측 하락 41%, 실제 하락(-7.57%)",
-      "legs": "갭 -2.29%(하락) · 세션 -5.40%(하락)",
+      "hit": false,
+      "verdict": "틀림 — 예측 하락 41%, 실제 보합(+nan%)",
+      "legs": "갭 +nan%(보합) · 세션 +nan%(보합)",
       "where": "결과는 주로 장중에서 정해졌습니다.",
       "band": 0.0131304819177645,
       "probs": [
@@ -667,14 +627,14 @@
         0.2458738493695919,
         0.3452007265249568
       ],
-      "actual": "하락",
+      "actual": "보합",
       "predicted": "하락"
     },
     {
       "model": "Candidate expanding",
-      "hit": true,
-      "verdict": "맞음 — 예측 하락 40%, 실제 하락(-7.57%)",
-      "legs": "갭 -2.29%(하락) · 세션 -5.40%(하락)",
+      "hit": false,
+      "verdict": "틀림 — 예측 하락 40%, 실제 보합(+nan%)",
+      "legs": "갭 +nan%(보합) · 세션 +nan%(보합)",
       "where": "결과는 주로 장중에서 정해졌습니다.",
       "band": 0.0131304819177645,
       "probs": [
@@ -682,10 +642,10 @@
         0.2938654021913273,
         0.3107595333616729
       ],
-      "actual": "하락",
+      "actual": "보합",
       "predicted": "하락"
     }
   ],
-  "price_check": "1거래일 예상 구간 205,607~229,583원 · 종가 201,500원 → 구간 밖",
+  "price_check": "1거래일 예상 구간 205,607~229,583원 · 종가 nan원 → 구간 밖",
   "disclaimer": "시간이 맞는 것이지 원인 확정이 아닙니다. 뉴스 없이 움직이는 날(수급·프로그램·옵션 만기)이 많고, 기사 발행 시각은 실제 정보 유통보다 늦거나 앞섭니다. 이 절은 설명 도구이며 다음날 예측에 자동 반영되지 않습니다."
 }

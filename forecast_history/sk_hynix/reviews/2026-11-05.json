@@ -1,0 +1,833 @@
+{
+  "target": "sk_hynix",
+  "name": "SK하이닉스",
+  "peer_name": "삼성전자",
+  "session_date": "2026-11-05",
+  "generated_at": "2026-11-05 16:11 KST",
+  "summary": {
+    "prev_close": 1396000.0,
+    "open": 1320000.0,
+    "high": 1320000.0,
+    "low": 1250000.0,
+    "close": 1264000.0,
+    "gap": -0.054441260744985676,
+    "session": -0.042424242424242475,
+    "c2c": -0.09455587392550147,
+    "high_vs_open": 0.0,
+    "low_vs_open": -0.05303030303030298,
+    "volume": 4465408.0,
+    "volume_ratio": 1.1945240423815322,
+    "kospi_c2c": -0.05278159159521878,
+    "peer_c2c": -0.07568807339449546,
+    "usdkrw_chg": -0.001682932254477465,
+    "us_nights": 1,
+    "sox_ret": -0.0312959876773522,
+    "nasdaq_ret": 0.014366224960776997,
+    "micron_ret": -0.07001519918903398,
+    "prior_streak": -2,
+    "ma5": 1389600.0,
+    "ma20": 1377650.0,
+    "high20": 1759000.0,
+    "high252": 2986352.5777339735,
+    "price_context": {
+      "breakouts": {
+        "20": {
+          "prior_high": 1779000.0,
+          "distance": -0.28948847667228783,
+          "close_breakout": false,
+          "intraday_breakout": false
+        },
+        "60": {
+          "prior_high": 1935000.0,
+          "distance": -0.3467700258397933,
+          "close_breakout": false,
+          "intraday_breakout": false
+        }
+      },
+      "relative": {
+        "5": {
+          "start": "2026-10-29",
+          "end": "2026-11-05",
+          "own": -0.17169069462647446,
+          "peer": -0.13146551724137934,
+          "excess": -0.04022517738509512
+        },
+        "20": {
+          "start": "2026-10-07",
+          "end": "2026-11-05",
+          "own": -0.26639582124201977,
+          "peer": -0.24953445065176905,
+          "excess": -0.016861370590250724
+        },
+        "60": {
+          "start": "2026-08-06",
+          "end": "2026-11-05",
+          "own": -0.15433170418971265,
+          "peer": -0.11065841000536869,
+          "excess": -0.04367329418434396
+        }
+      }
+    },
+    "range": 0.05600000000000005,
+    "peer_range": 0.06856856856856863,
+    "prior_5d": -0.06119704102219237,
+    "ma_touches": [],
+    "micron_ah": {
+      "regular_close": 795.4467163085938,
+      "last": 790.66,
+      "ret": -0.006017645444320041,
+      "low_ret": -0.006017645444320041,
+      "high_ret": 0.006428191337736866,
+      "last_time": "2026-11-05T08:55:00+09:00"
+    },
+    "nvidia_ah": {
+      "regular_close": 200.28500366210938,
+      "last": 201.15,
+      "ret": 0.004318827281496906,
+      "low_ret": 0.0009955629939573107,
+      "high_ret": 0.008163348767983303,
+      "last_time": "2026-11-05T08:55:00+09:00"
+    },
+    "session_cross": {
+      "NQ=F": {
+        "label": "나스닥100 선물",
+        "ret": -0.010330071205584157,
+        "after_high": -0.012399912491796061
+      },
+      "ZN=F": {
+        "label": "미 10년물 국채 선물",
+        "ret": 0.002484290515855525,
+        "after_high": 0.002484290515855525
+      },
+      "KRW=X": {
+        "label": "원/달러",
+        "ret": 0.0007459458091130244,
+        "after_high": 0.0010222242462882836
+      }
+    },
+    "from_high": -0.03951367781155013,
+    "buyback": [
+      {
+        "kind": "직접 취득",
+        "start": "2026-08-20",
+        "end": "2026-11-19",
+        "amount": "40,004,340,000,000",
+        "purpose": "자기주식 소각을 통한 \n주주가치 제고",
+        "rcept_no": "20260819000254"
+      },
+      {
+        "kind": "직접 취득",
+        "start": "2026-10-29",
+        "end": "2027-01-28",
+        "amount": "20,007,720,000,000",
+        "purpose": "주주가치 제고 및 임직원 주식 보상",
+        "rcept_no": "20261028000014"
+      }
+    ]
+  },
+  "classification": {
+    "labels": [
+      "장중 급변 09:00 주도",
+      "지수 동조"
+    ],
+    "reasons": [
+      "09:00 봉 -6.38%(σ의 16.88배, 거래량 4.93배)가 세션 -4.24%의 129%",
+      "KOSPI -5.28% vs 종목 -9.46%, 5분 수익률 상관 0.87 — 종목 고유 요인이 약함"
+    ]
+  },
+  "events": [
+    {
+      "time": "2026-11-05T09:00:00+09:00",
+      "ret": -0.06375358166189116,
+      "z": 16.88,
+      "volume_ratio": 4.93,
+      "cum_before": 0.0,
+      "cum_after": -0.009848484848484884,
+      "session_share": 1.2946881199030216,
+      "score": 18.862838349811135,
+      "news": [
+        {
+          "time": "2026-11-05T08:15:00+09:00",
+          "title": "SK하이닉스, 美 AI 투자법인 'HYAICO' 출범 채비…최태원 직접 지휘",
+          "source": "뉴스핌",
+          "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE1uaFRld2VUOXdaM3dUMTUzWmlXanNyRHlKX2g4QUZwZ1RrUkpWTHJCUDdSM0xreWNMUW4tSnJKNGNFc1JOVlE0dnp6TVRwbVRsR2tkVUIycXhYYkxx?oc=5"
+        },
+        {
+          "time": "2026-11-05T08:25:21+09:00",
+          "title": "최태원, SK하이닉스 美 AI 투자법인 이사회 의장 맡는다",
+          "source": "연합인포맥스",
+          "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE9YRDdqMjFuMGlnWUVrbGFMRTdVa2w0QTdlOHM3dFFsalB2S0s5d2ZCS2QyN0ZFcmRhZHl4UkhvcDhDLVhVUTJmWGMxOVltRGRheHRqTVdqdl95VlpaWmZBcGtXcWE1ZDVBQlJjVGNkTjI?oc=5"
+        },
+        {
+          "time": "2026-11-05T08:27:58+09:00",
+          "title": "최태원 회장, SK하이닉스 美 AI 투자법인 이사회 의장 맡아",
+          "source": "아시아투데이",
+          "link": "https://news.google.com/rss/articles/CBMibkFVX3lxTE05Q0FwYncwU2J0M09FTUlSWWlUXzA4WVp6MUF5bG0yeDQ5ejVQT3UtQzlVemhXcHBrd0RWcE5vaGFPVGFoTGJnMEVUbklpWVctM3Q2ZTB0TU0yRzd5d3dfdVNXRU9WOG5Ha2g1Sk9R?oc=5"
+        },
+        {
+          "time": "2026-11-05T08:46:14+09:00",
+          "title": "SK하이닉스, 미 AI 투자법인 출범…최태원, 이사회 의장 맡는다",
+          "source": "서울경제TV",
+          "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE5pNHNjaF9CTlRmM25wV01EMEk0TFVCT2QwaURVZnRKWXh5eW5HdklrSE1wS3Mwbm9pdGdjc0g0UGYtMUItQlpvSG5OV2ZmQjYwQWM2TjVkbHptaTZadnRrT3R6YXo?oc=5"
+        },
+        {
+          "time": "2026-11-05T09:13:28+09:00",
+          "title": "최태원, SK하이닉스 美 AI 투자법인이사회 의장 맡는다",
+          "source": "이데일리",
+          "link": "https://news.google.com/rss/articles/CBMigAFBVV95cUxPZDRiNVJqV1pZQTh4X0I1X1Rkd3NNbXVPaHh0TTBlaFowRHQzTVJzUU42Wm0zaGUxWjJNRFJ4cm1pQTZkelVFeTRoOWcwLWxPRVBUUm1pS1BSS3A1V1J5WVV2TjBiSi1GS2h4XzVraUNZNmw5ejR0WlFBODl0NnFwUA?oc=5"
+        }
+      ]
+    },
+    {
+      "time": "2026-11-05T10:10:00+09:00",
+      "ret": -0.012364760432766575,
+      "z": 3.27,
+      "volume_ratio": 1.61,
+      "cum_before": -0.019696969696969657,
+      "cum_after": -0.03181818181818186,
+      "session_share": 0.2510997503269522,
+      "score": 3.5955822719723622,
+      "news": [
+        {
+          "time": "2026-11-05T08:46:14+09:00",
+          "title": "SK하이닉스, 미 AI 투자법인 출범…최태원, 이사회 의장 맡는다",
+          "source": "서울경제TV",
+          "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE5pNHNjaF9CTlRmM25wV01EMEk0TFVCT2QwaURVZnRKWXh5eW5HdklrSE1wS3Mwbm9pdGdjc0g0UGYtMUItQlpvSG5OV2ZmQjYwQWM2TjVkbHptaTZadnRrT3R6YXo?oc=5"
+        },
+        {
+          "time": "2026-11-05T09:13:28+09:00",
+          "title": "최태원, SK하이닉스 美 AI 투자법인이사회 의장 맡는다",
+          "source": "이데일리",
+          "link": "https://news.google.com/rss/articles/CBMigAFBVV95cUxPZDRiNVJqV1pZQTh4X0I1X1Rkd3NNbXVPaHh0TTBlaFowRHQzTVJzUU42Wm0zaGUxWjJNRFJ4cm1pQTZkelVFeTRoOWcwLWxPRVBUUm1pS1BSS3A1V1J5WVV2TjBiSi1GS2h4XzVraUNZNmw5ejR0WlFBODl0NnFwUA?oc=5"
+        },
+        {
+          "time": "2026-11-05T09:13:54+09:00",
+          "title": "최태원, SK하이닉스 美 AI 투자법인 이사회 의장 맡아",
+          "source": "아이뉴스24",
+          "link": "https://news.google.com/rss/articles/CBMiS0FVX3lxTE9yYWFtT1ZMemxxM3JqbDljYTI2UmxwMEdGNmNzOFdES084NG9zWFdQSld1X1FtSDNCckFTdTVHMHZwWjhkOGhQUGJYbw?oc=5"
+        },
+        {
+          "time": "2026-11-05T09:21:53+09:00",
+          "title": "반도체 불안감에 코스피 5600선 이탈···SK하이닉스 6%대↓",
+          "source": "뉴스웨이",
+          "link": "https://news.google.com/rss/articles/CBMiakFVX3lxTE9IeERoaWdqYWZSQnJkM2tMWWlwNElJOGM2SGFBVW91dFRVXzZzOFZ6SFBFWDRRTUlRVkNyUzNESzVYR3ZNU2UtU0l4ZmZNVkVCbHhBcHYwZVlRZHBtcWJGb1h3NGV5X1Y1MkE?oc=5"
+        },
+        {
+          "time": "2026-11-05T09:25:32+09:00",
+          "title": "SK하이닉스 美 AI 투자법인, 최태원 회장이 의장 맡는다",
+          "source": "PRESS9",
+          "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE5DTHJVYWY2WUd3eUpjMU1jdE9vUDRMQXdKNkpIcnoya1UxbnVMVlg5d0dqaGVlenA2RTFrTGc1UnlHQlEyUGN5VkxKYVpSdUpYbTFxZEI3ZDBQM1MzRG84MTlfaGs?oc=5"
+        }
+      ]
+    }
+  ],
+  "turning_point": {
+    "high_time": "2026-11-05T09:10:00+09:00",
+    "high": -0.00303030303030305,
+    "low_time": "2026-11-05T14:55:00+09:00",
+    "low": -0.0492424242424242,
+    "pattern": "고점 후 반락"
+  },
+  "closing_share": -0.16903813318156122,
+  "intraday_corr_kospi": 0.8738986004013429,
+  "intraday_note": "장중 봉은 09:00~14:55까지만 있어 마감 구간(14:55~15:30)은 일봉 종가로만 봅니다(그 구간 +0.72%).",
+  "intraday_coverage": "09:00~14:55",
+  "intraday_path": [
+    {
+      "time": "2026-11-05T09:00:00+09:00",
+      "price": 1307000.0,
+      "volume": 198511.0
+    },
+    {
+      "time": "2026-11-05T09:05:00+09:00",
+      "price": 1315000.0,
+      "volume": 55202.0
+    },
+    {
+      "time": "2026-11-05T09:10:00+09:00",
+      "price": 1316000.0,
+      "volume": 48141.0
+    },
+    {
+      "time": "2026-11-05T09:15:00+09:00",
+      "price": 1306000.0,
+      "volume": 72004.0
+    },
+    {
+      "time": "2026-11-05T09:20:00+09:00",
+      "price": 1309000.0,
+      "volume": 49604.0
+    },
+    {
+      "time": "2026-11-05T09:25:00+09:00",
+      "price": 1302000.0,
+      "volume": 100063.0
+    },
+    {
+      "time": "2026-11-05T09:30:00+09:00",
+      "price": 1297000.0,
+      "volume": 45195.0
+    },
+    {
+      "time": "2026-11-05T09:35:00+09:00",
+      "price": 1292000.0,
+      "volume": 33693.0
+    },
+    {
+      "time": "2026-11-05T09:40:00+09:00",
+      "price": 1298000.0,
+      "volume": 30510.0
+    },
+    {
+      "time": "2026-11-05T09:45:00+09:00",
+      "price": 1300000.0,
+      "volume": 30692.0
+    },
+    {
+      "time": "2026-11-05T09:50:00+09:00",
+      "price": 1292000.0,
+      "volume": 41311.0
+    },
+    {
+      "time": "2026-11-05T09:55:00+09:00",
+      "price": 1288000.0,
+      "volume": 66674.0
+    },
+    {
+      "time": "2026-11-05T10:00:00+09:00",
+      "price": 1295000.0,
+      "volume": 53548.0
+    },
+    {
+      "time": "2026-11-05T10:05:00+09:00",
+      "price": 1294000.0,
+      "volume": 48131.0
+    },
+    {
+      "time": "2026-11-05T10:10:00+09:00",
+      "price": 1278000.0,
+      "volume": 64905.0
+    },
+    {
+      "time": "2026-11-05T10:15:00+09:00",
+      "price": 1270000.0,
+      "volume": 89966.0
+    },
+    {
+      "time": "2026-11-05T10:20:00+09:00",
+      "price": 1272000.0,
+      "volume": 98542.0
+    },
+    {
+      "time": "2026-11-05T10:25:00+09:00",
+      "price": 1279000.0,
+      "volume": 58200.0
+    },
+    {
+      "time": "2026-11-05T10:30:00+09:00",
+      "price": 1286000.0,
+      "volume": 67569.0
+    },
+    {
+      "time": "2026-11-05T10:35:00+09:00",
+      "price": 1284000.0,
+      "volume": 47440.0
+    },
+    {
+      "time": "2026-11-05T10:40:00+09:00",
+      "price": 1287000.0,
+      "volume": 45484.0
+    },
+    {
+      "time": "2026-11-05T10:45:00+09:00",
+      "price": 1292000.0,
+      "volume": 55939.0
+    },
+    {
+      "time": "2026-11-05T10:50:00+09:00",
+      "price": 1299500.0,
+      "volume": 45674.0
+    },
+    {
+      "time": "2026-11-05T10:55:00+09:00",
+      "price": 1292000.0,
+      "volume": 41024.0
+    },
+    {
+      "time": "2026-11-05T11:00:00+09:00",
+      "price": 1299000.0,
+      "volume": 48540.0
+    },
+    {
+      "time": "2026-11-05T11:05:00+09:00",
+      "price": 1300000.0,
+      "volume": 42749.0
+    },
+    {
+      "time": "2026-11-05T11:10:00+09:00",
+      "price": 1300500.0,
+      "volume": 38712.0
+    },
+    {
+      "time": "2026-11-05T11:15:00+09:00",
+      "price": 1305000.0,
+      "volume": 32153.0
+    },
+    {
+      "time": "2026-11-05T11:20:00+09:00",
+      "price": 1308000.0,
+      "volume": 37215.0
+    },
+    {
+      "time": "2026-11-05T11:25:00+09:00",
+      "price": 1300000.0,
+      "volume": 37109.0
+    },
+    {
+      "time": "2026-11-05T11:30:00+09:00",
+      "price": 1296000.0,
+      "volume": 27478.0
+    },
+    {
+      "time": "2026-11-05T11:35:00+09:00",
+      "price": 1298000.0,
+      "volume": 29227.0
+    },
+    {
+      "time": "2026-11-05T11:40:00+09:00",
+      "price": 1299000.0,
+      "volume": 26106.0
+    },
+    {
+      "time": "2026-11-05T11:45:00+09:00",
+      "price": 1292000.0,
+      "volume": 25392.0
+    },
+    {
+      "time": "2026-11-05T11:50:00+09:00",
+      "price": 1293000.0,
+      "volume": 23563.0
+    },
+    {
+      "time": "2026-11-05T11:55:00+09:00",
+      "price": 1292000.0,
+      "volume": 20653.0
+    },
+    {
+      "time": "2026-11-05T12:00:00+09:00",
+      "price": 1287500.0,
+      "volume": 26033.0
+    },
+    {
+      "time": "2026-11-05T12:05:00+09:00",
+      "price": 1283000.0,
+      "volume": 25277.0
+    },
+    {
+      "time": "2026-11-05T12:10:00+09:00",
+      "price": 1289500.0,
+      "volume": 41831.0
+    },
+    {
+      "time": "2026-11-05T12:15:00+09:00",
+      "price": 1291000.0,
+      "volume": 26865.0
+    },
+    {
+      "time": "2026-11-05T12:20:00+09:00",
+      "price": 1287000.0,
+      "volume": 35565.0
+    },
+    {
+      "time": "2026-11-05T12:25:00+09:00",
+      "price": 1286000.0,
+      "volume": 24412.0
+    },
+    {
+      "time": "2026-11-05T12:30:00+09:00",
+      "price": 1289000.0,
+      "volume": 35691.0
+    },
+    {
+      "time": "2026-11-05T12:35:00+09:00",
+      "price": 1287000.0,
+      "volume": 28087.0
+    },
+    {
+      "time": "2026-11-05T12:40:00+09:00",
+      "price": 1285000.0,
+      "volume": 22879.0
+    },
+    {
+      "time": "2026-11-05T12:45:00+09:00",
+      "price": 1278500.0,
+      "volume": 66335.0
+    },
+    {
+      "time": "2026-11-05T12:50:00+09:00",
+      "price": 1277500.0,
+      "volume": 25456.0
+    },
+    {
+      "time": "2026-11-05T12:55:00+09:00",
+      "price": 1275000.0,
+      "volume": 21449.0
+    },
+    {
+      "time": "2026-11-05T13:00:00+09:00",
+      "price": 1275000.0,
+      "volume": 36560.0
+    },
+    {
+      "time": "2026-11-05T13:05:00+09:00",
+      "price": 1274000.0,
+      "volume": 30800.0
+    },
+    {
+      "time": "2026-11-05T13:10:00+09:00",
+      "price": 1270000.0,
+      "volume": 31696.0
+    },
+    {
+      "time": "2026-11-05T13:15:00+09:00",
+      "price": 1269500.0,
+      "volume": 38141.0
+    },
+    {
+      "time": "2026-11-05T13:20:00+09:00",
+      "price": 1271000.0,
+      "volume": 36024.0
+    },
+    {
+      "time": "2026-11-05T13:25:00+09:00",
+      "price": 1270000.0,
+      "volume": 30886.0
+    },
+    {
+      "time": "2026-11-05T13:30:00+09:00",
+      "price": 1273000.0,
+      "volume": 36690.0
+    },
+    {
+      "time": "2026-11-05T13:35:00+09:00",
+      "price": 1269000.0,
+      "volume": 36951.0
+    },
+    {
+      "time": "2026-11-05T13:40:00+09:00",
+      "price": 1273000.0,
+      "volume": 36352.0
+    },
+    {
+      "time": "2026-11-05T13:45:00+09:00",
+      "price": 1276000.0,
+      "volume": 39506.0
+    },
+    {
+      "time": "2026-11-05T13:50:00+09:00",
+      "price": 1268000.0,
+      "volume": 38269.0
+    },
+    {
+      "time": "2026-11-05T13:55:00+09:00",
+      "price": 1271000.0,
+      "volume": 41124.0
+    },
+    {
+      "time": "2026-11-05T14:00:00+09:00",
+      "price": 1269000.0,
+      "volume": 37399.0
+    },
+    {
+      "time": "2026-11-05T14:05:00+09:00",
+      "price": 1263000.0,
+      "volume": 63071.0
+    },
+    {
+      "time": "2026-11-05T14:10:00+09:00",
+      "price": 1262000.0,
+      "volume": 36548.0
+    },
+    {
+      "time": "2026-11-05T14:15:00+09:00",
+      "price": 1262000.0,
+      "volume": 71174.0
+    },
+    {
+      "time": "2026-11-05T14:20:00+09:00",
+      "price": 1261000.0,
+      "volume": 60767.0
+    },
+    {
+      "time": "2026-11-05T14:25:00+09:00",
+      "price": 1264000.0,
+      "volume": 61668.0
+    },
+    {
+      "time": "2026-11-05T14:30:00+09:00",
+      "price": 1261000.0,
+      "volume": 52954.0
+    },
+    {
+      "time": "2026-11-05T14:35:00+09:00",
+      "price": 1264000.0,
+      "volume": 56784.0
+    },
+    {
+      "time": "2026-11-05T14:40:00+09:00",
+      "price": 1261000.0,
+      "volume": 75503.0
+    },
+    {
+      "time": "2026-11-05T14:45:00+09:00",
+      "price": 1257000.0,
+      "volume": 47987.0
+    },
+    {
+      "time": "2026-11-05T14:50:00+09:00",
+      "price": 1256000.0,
+      "volume": 63427.0
+    },
+    {
+      "time": "2026-11-05T14:55:00+09:00",
+      "price": 1255000.0,
+      "volume": 58168.0
+    }
+  ],
+  "timeline_items": [
+    {
+      "time": "2026-11-05T09:00:00+09:00",
+      "ret": -0.06375358166189116,
+      "z": 16.88,
+      "volume_ratio": 4.93,
+      "cum_before": 0.0,
+      "cum_after": -0.009848484848484884,
+      "session_share": 1.2946881199030216,
+      "score": 18.862838349811135,
+      "news": [
+        {
+          "time": "2026-11-05T08:15:00+09:00",
+          "title": "SK하이닉스, 美 AI 투자법인 'HYAICO' 출범 채비…최태원 직접 지휘",
+          "source": "뉴스핌",
+          "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE1uaFRld2VUOXdaM3dUMTUzWmlXanNyRHlKX2g4QUZwZ1RrUkpWTHJCUDdSM0xreWNMUW4tSnJKNGNFc1JOVlE0dnp6TVRwbVRsR2tkVUIycXhYYkxx?oc=5"
+        },
+        {
+          "time": "2026-11-05T08:25:21+09:00",
+          "title": "최태원, SK하이닉스 美 AI 투자법인 이사회 의장 맡는다",
+          "source": "연합인포맥스",
+          "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE9YRDdqMjFuMGlnWUVrbGFMRTdVa2w0QTdlOHM3dFFsalB2S0s5d2ZCS2QyN0ZFcmRhZHl4UkhvcDhDLVhVUTJmWGMxOVltRGRheHRqTVdqdl95VlpaWmZBcGtXcWE1ZDVBQlJjVGNkTjI?oc=5"
+        },
+        {
+          "time": "2026-11-05T08:27:58+09:00",
+          "title": "최태원 회장, SK하이닉스 美 AI 투자법인 이사회 의장 맡아",
+          "source": "아시아투데이",
+          "link": "https://news.google.com/rss/articles/CBMibkFVX3lxTE05Q0FwYncwU2J0M09FTUlSWWlUXzA4WVp6MUF5bG0yeDQ5ejVQT3UtQzlVemhXcHBrd0RWcE5vaGFPVGFoTGJnMEVUbklpWVctM3Q2ZTB0TU0yRzd5d3dfdVNXRU9WOG5Ha2g1Sk9R?oc=5"
+        },
+        {
+          "time": "2026-11-05T08:46:14+09:00",
+          "title": "SK하이닉스, 미 AI 투자법인 출범…최태원, 이사회 의장 맡는다",
+          "source": "서울경제TV",
+          "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE5pNHNjaF9CTlRmM25wV01EMEk0TFVCT2QwaURVZnRKWXh5eW5HdklrSE1wS3Mwbm9pdGdjc0g0UGYtMUItQlpvSG5OV2ZmQjYwQWM2TjVkbHptaTZadnRrT3R6YXo?oc=5"
+        },
+        {
+          "time": "2026-11-05T09:13:28+09:00",
+          "title": "최태원, SK하이닉스 美 AI 투자법인이사회 의장 맡는다",
+          "source": "이데일리",
+          "link": "https://news.google.com/rss/articles/CBMigAFBVV95cUxPZDRiNVJqV1pZQTh4X0I1X1Rkd3NNbXVPaHh0TTBlaFowRHQzTVJzUU42Wm0zaGUxWjJNRFJ4cm1pQTZkelVFeTRoOWcwLWxPRVBUUm1pS1BSS3A1V1J5WVV2TjBiSi1GS2h4XzVraUNZNmw5ejR0WlFBODl0NnFwUA?oc=5"
+        }
+      ],
+      "price": 1307000.0,
+      "kind": "turn_down"
+    },
+    {
+      "time": "2026-11-05T10:10:00+09:00",
+      "ret": -0.012364760432766575,
+      "z": 3.27,
+      "volume_ratio": 1.61,
+      "cum_before": -0.019696969696969657,
+      "cum_after": -0.03181818181818186,
+      "session_share": 0.2510997503269522,
+      "score": 3.5955822719723622,
+      "news": [
+        {
+          "time": "2026-11-05T08:46:14+09:00",
+          "title": "SK하이닉스, 미 AI 투자법인 출범…최태원, 이사회 의장 맡는다",
+          "source": "서울경제TV",
+          "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE5pNHNjaF9CTlRmM25wV01EMEk0TFVCT2QwaURVZnRKWXh5eW5HdklrSE1wS3Mwbm9pdGdjc0g0UGYtMUItQlpvSG5OV2ZmQjYwQWM2TjVkbHptaTZadnRrT3R6YXo?oc=5"
+        },
+        {
+          "time": "2026-11-05T09:13:28+09:00",
+          "title": "최태원, SK하이닉스 美 AI 투자법인이사회 의장 맡는다",
+          "source": "이데일리",
+          "link": "https://news.google.com/rss/articles/CBMigAFBVV95cUxPZDRiNVJqV1pZQTh4X0I1X1Rkd3NNbXVPaHh0TTBlaFowRHQzTVJzUU42Wm0zaGUxWjJNRFJ4cm1pQTZkelVFeTRoOWcwLWxPRVBUUm1pS1BSS3A1V1J5WVV2TjBiSi1GS2h4XzVraUNZNmw5ejR0WlFBODl0NnFwUA?oc=5"
+        },
+        {
+          "time": "2026-11-05T09:13:54+09:00",
+          "title": "최태원, SK하이닉스 美 AI 투자법인 이사회 의장 맡아",
+          "source": "아이뉴스24",
+          "link": "https://news.google.com/rss/articles/CBMiS0FVX3lxTE9yYWFtT1ZMemxxM3JqbDljYTI2UmxwMEdGNmNzOFdES084NG9zWFdQSld1X1FtSDNCckFTdTVHMHZwWjhkOGhQUGJYbw?oc=5"
+        },
+        {
+          "time": "2026-11-05T09:21:53+09:00",
+          "title": "반도체 불안감에 코스피 5600선 이탈···SK하이닉스 6%대↓",
+          "source": "뉴스웨이",
+          "link": "https://news.google.com/rss/articles/CBMiakFVX3lxTE9IeERoaWdqYWZSQnJkM2tMWWlwNElJOGM2SGFBVW91dFRVXzZzOFZ6SFBFWDRRTUlRVkNyUzNESzVYR3ZNU2UtU0l4ZmZNVkVCbHhBcHYwZVlRZHBtcWJGb1h3NGV5X1Y1MkE?oc=5"
+        },
+        {
+          "time": "2026-11-05T09:25:32+09:00",
+          "title": "SK하이닉스 美 AI 투자법인, 최태원 회장이 의장 맡는다",
+          "source": "PRESS9",
+          "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE5DTHJVYWY2WUd3eUpjMU1jdE9vUDRMQXdKNkpIcnoya1UxbnVMVlg5d0dqaGVlenA2RTFrTGc1UnlHQlEyUGN5VkxKYVpSdUpYbTFxZEI3ZDBQM1MzRG84MTlfaGs?oc=5"
+        }
+      ],
+      "price": 1278000.0,
+      "kind": "turn_down"
+    }
+  ],
+  "overnight_news": [
+    {
+      "time": "2026-11-05T06:26:51+09:00",
+      "title": "최태원, SK하이닉스 미국 AI 전문 투자법인 의장 맡아",
+      "source": "진일보 | 전남일보",
+      "link": "https://news.google.com/rss/articles/CBMib0FVX3lxTE1FYVViLXBXMXBiYksyaEV2UzFMS3lGR2x3UnB3bVBDNXk4VTllS0FreE1PYXZfMFlhdUgybDRObXFnNzl2UEdsT2hvT29TRnNSbXAyLWxjNkFqUWY2YjRiS3NnV244dEpDSjY4bjNUUQ?oc=5"
+    },
+    {
+      "time": "2026-11-05T06:44:06+09:00",
+      "title": "최태원 SK그룹 회장, 미국 AI 투자법인 'HYAICO 코퍼레이션' 이사회 의장...송현종 SK하이닉스 사장, CEO 맡아",
+      "source": "녹색경제신문",
+      "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE9ITmtOWkxndVk4bVJqYmxSRTBnaG1nVmpRS3pneWtCZjhhYmdnQVVjMThnVGtTQVVVbFAxbW9TS3FPeTdOcEN3Tng1VEUzMUJ1bWdRUFpLWEF5ZmViR2Fqc1owM2ZObjRI?oc=5"
+    },
+    {
+      "time": "2026-11-05T07:00:00+09:00",
+      "title": "SK하이닉스, HBM4 수율 60% '업계 최고'…서버 D램 증산 여력 넓혀",
+      "source": "딜사이트",
+      "link": "https://news.google.com/rss/articles/CBMiT0FVX3lxTE1Yc3ZYX013a0MzZkdBLUJ4bGNsU0N0RFBILXpzRnh2MVFVcHh5Q3pGRkFMcV9qYTJfWkQ4OXhhOUh1bW9vQnRVdGlINk1TZWM?oc=5"
+    },
+    {
+      "time": "2026-11-05T08:15:00+09:00",
+      "title": "SK하이닉스, 美 AI 투자법인 'HYAICO' 출범 채비…최태원 직접 지휘",
+      "source": "뉴스핌",
+      "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE1uaFRld2VUOXdaM3dUMTUzWmlXanNyRHlKX2g4QUZwZ1RrUkpWTHJCUDdSM0xreWNMUW4tSnJKNGNFc1JOVlE0dnp6TVRwbVRsR2tkVUIycXhYYkxx?oc=5"
+    },
+    {
+      "time": "2026-11-05T08:25:21+09:00",
+      "title": "최태원, SK하이닉스 美 AI 투자법인 이사회 의장 맡는다",
+      "source": "연합인포맥스",
+      "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE9YRDdqMjFuMGlnWUVrbGFMRTdVa2w0QTdlOHM3dFFsalB2S0s5d2ZCS2QyN0ZFcmRhZHl4UkhvcDhDLVhVUTJmWGMxOVltRGRheHRqTVdqdl95VlpaWmZBcGtXcWE1ZDVBQlJjVGNkTjI?oc=5"
+    }
+  ],
+  "top_news": [
+    {
+      "time": "2026-11-05T06:26:51+09:00",
+      "title": "최태원, SK하이닉스 미국 AI 전문 투자법인 의장 맡아",
+      "source": "진일보 | 전남일보",
+      "link": "https://news.google.com/rss/articles/CBMib0FVX3lxTE1FYVViLXBXMXBiYksyaEV2UzFMS3lGR2x3UnB3bVBDNXk4VTllS0FreE1PYXZfMFlhdUgybDRObXFnNzl2UEdsT2hvT29TRnNSbXAyLWxjNkFqUWY2YjRiS3NnV244dEpDSjY4bjNUUQ?oc=5"
+    },
+    {
+      "time": "2026-11-05T06:44:06+09:00",
+      "title": "최태원 SK그룹 회장, 미국 AI 투자법인 'HYAICO 코퍼레이션' 이사회 의장...송현종 SK하이닉스 사장, CEO 맡아",
+      "source": "녹색경제신문",
+      "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE9ITmtOWkxndVk4bVJqYmxSRTBnaG1nVmpRS3pneWtCZjhhYmdnQVVjMThnVGtTQVVVbFAxbW9TS3FPeTdOcEN3Tng1VEUzMUJ1bWdRUFpLWEF5ZmViR2Fqc1owM2ZObjRI?oc=5"
+    },
+    {
+      "time": "2026-11-05T07:00:00+09:00",
+      "title": "SK하이닉스, HBM4 수율 60% '업계 최고'…서버 D램 증산 여력 넓혀",
+      "source": "딜사이트",
+      "link": "https://news.google.com/rss/articles/CBMiT0FVX3lxTE1Yc3ZYX013a0MzZkdBLUJ4bGNsU0N0RFBILXpzRnh2MVFVcHh5Q3pGRkFMcV9qYTJfWkQ4OXhhOUh1bW9vQnRVdGlINk1TZWM?oc=5"
+    },
+    {
+      "time": "2026-11-05T08:15:00+09:00",
+      "title": "SK하이닉스, 美 AI 투자법인 'HYAICO' 출범 채비…최태원 직접 지휘",
+      "source": "뉴스핌",
+      "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE1uaFRld2VUOXdaM3dUMTUzWmlXanNyRHlKX2g4QUZwZ1RrUkpWTHJCUDdSM0xreWNMUW4tSnJKNGNFc1JOVlE0dnp6TVRwbVRsR2tkVUIycXhYYkxx?oc=5"
+    },
+    {
+      "time": "2026-11-05T08:25:21+09:00",
+      "title": "최태원, SK하이닉스 美 AI 투자법인 이사회 의장 맡는다",
+      "source": "연합인포맥스",
+      "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE9YRDdqMjFuMGlnWUVrbGFMRTdVa2w0QTdlOHM3dFFsalB2S0s5d2ZCS2QyN0ZFcmRhZHl4UkhvcDhDLVhVUTJmWGMxOVltRGRheHRqTVdqdl95VlpaWmZBcGtXcWE1ZDVBQlJjVGNkTjI?oc=5"
+    },
+    {
+      "time": "2026-11-05T08:27:58+09:00",
+      "title": "최태원 회장, SK하이닉스 美 AI 투자법인 이사회 의장 맡아",
+      "source": "아시아투데이",
+      "link": "https://news.google.com/rss/articles/CBMibkFVX3lxTE05Q0FwYncwU2J0M09FTUlSWWlUXzA4WVp6MUF5bG0yeDQ5ejVQT3UtQzlVemhXcHBrd0RWcE5vaGFPVGFoTGJnMEVUbklpWVctM3Q2ZTB0TU0yRzd5d3dfdVNXRU9WOG5Ha2g1Sk9R?oc=5"
+    }
+  ],
+  "disclosures": [],
+  "disclosure_note": null,
+  "flows": null,
+  "flow_story": null,
+  "flow_status": {
+    "state": "pending",
+    "detail": "최신 2026-11-04"
+  },
+  "context": {},
+  "market": {
+    "index": "KOSPI",
+    "date": "2026-11-05",
+    "rise": 344,
+    "fall": 537,
+    "steady": 31,
+    "upper": 6,
+    "lower": 0,
+    "individual": 22748.0,
+    "foreign": -33960.0,
+    "institution": 8463.0,
+    "prev_close": 5683.8,
+    "open": 5580.09,
+    "high": 5586.46,
+    "low": 5336.88,
+    "close": 5383.8
+  },
+  "earnings_reactions": null,
+  "forecasts": [
+    {
+      "model": "No macro ensemble",
+      "hit": true,
+      "verdict": "맞음 — 예측 하락 54%, 실제 하락(-9.46%)",
+      "legs": "갭 -5.44%(하락) · 세션 -4.24%(하락)",
+      "where": "결과는 주로 갭(밤사이)에서 정해졌습니다.",
+      "band": 0.0166295447685404,
+      "probs": [
+        0.5400097993063973,
+        0.2266336479927355,
+        0.2333565527008671
+      ],
+      "actual": "하락",
+      "predicted": "하락"
+    },
+    {
+      "model": "Mean ensemble",
+      "hit": true,
+      "verdict": "맞음 — 예측 하락 56%, 실제 하락(-9.46%)",
+      "legs": "갭 -5.44%(하락) · 세션 -4.24%(하락)",
+      "where": "결과는 주로 갭(밤사이)에서 정해졌습니다.",
+      "band": 0.0166295447685404,
+      "probs": [
+        0.5566713918225044,
+        0.2038296265780376,
+        0.239498981599458
+      ],
+      "actual": "하락",
+      "predicted": "하락"
+    },
+    {
+      "model": "Candidate expanding",
+      "hit": true,
+      "verdict": "맞음 — 예측 하락 54%, 실제 하락(-9.46%)",
+      "legs": "갭 -5.44%(하락) · 세션 -4.24%(하락)",
+      "where": "결과는 주로 갭(밤사이)에서 정해졌습니다.",
+      "band": 0.0166295447685404,
+      "probs": [
+        0.5406587430283696,
+        0.2300172463460673,
+        0.2293240106255631
+      ],
+      "actual": "하락",
+      "predicted": "하락"
+    }
+  ],
+  "price_check": "1거래일 예상 구간 1,297,464~1,488,545원 · 종가 1,264,000원 → 구간 밖",
+  "disclaimer": "시간이 맞는 것이지 원인 확정이 아닙니다. 뉴스 없이 움직이는 날(수급·프로그램·옵션 만기)이 많고, 기사 발행 시각은 실제 정보 유통보다 늦거나 앞섭니다. 이 절은 설명 도구이며 다음날 예측에 자동 반영되지 않습니다."
+}

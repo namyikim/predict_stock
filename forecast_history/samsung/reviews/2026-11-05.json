@@ -3,7 +3,7 @@
   "name": "삼성전자",
   "peer_name": "SK하이닉스",
   "session_date": "2026-11-05",
-  "generated_at": "2026-11-05 16:46 KST",
+  "generated_at": "2026-11-05 17:31 KST",
   "summary": {
     "prev_close": 218000.0,
     "open": 213000.0,
@@ -15,11 +15,11 @@
     "c2c": -0.07568807339449546,
     "high_vs_open": 0.0023474178403755097,
     "low_vs_open": -0.06197183098591552,
-    "volume": 25774856.0,
-    "volume_ratio": 1.3792056244378452,
+    "volume": 25868887.0,
+    "volume_ratio": 1.3842371980020782,
     "kospi_c2c": -0.05278159159521878,
     "peer_c2c": -0.09455587392550147,
-    "usdkrw_chg": -0.001228702348696764,
+    "usdkrw_chg": -0.00105744576624911,
     "us_nights": 1,
     "sox_ret": -0.0312959876773522,
     "nasdaq_ret": 0.014366224960776997,
@@ -576,6 +576,12 @@
   ],
   "top_news": [
     {
+      "time": "2026-11-05T16:48:16+09:00",
+      "title": "삼성전자 AI 메모리 호황에 3분기 D램 점유율 38%, SK하이닉스 점유율 29%",
+      "source": "비즈니스포스트",
+      "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTFAwQ1k3TFpIR290dTZUQkZsakowZVNEMko3d3dFa19FemduRExEODIzLVVURmdOSDRvVDNObzBIS0d2NzV5SklBRXJVZnczcWZBbnlWakl1S2hNS2FNdjZOV3VmQ0hjSjluaWlvNEJjeDd4eVk?oc=5"
+    },
+    {
       "time": "2026-11-05T13:15:59+09:00",
       "title": "삼성전자·SK하이닉스 44조원 배당…상장사 밸류업 공시 확대",
       "source": "산경투데이",
@@ -604,12 +610,6 @@
       "title": "삼성전자 -6%·하이닉스 -9% 폭락…코스피 매도 사이드카",
       "source": "서울신문",
       "link": "https://news.google.com/rss/articles/CBMifkFVX3lxTE4tQ0RlcUxvbXhVTGx1TUtndklvRWZES004d3V1b3RwVE5EVTJOWUFhOHhuZFpxSDdlZzN5UWxQTUo5V0kyT0JmVUhDSExuMnF5SXBOSUM2dDl1a24tYzNaRzJUc0N5MnBhcHY3SmdBXzJtbWNWWGRIWmJhVEMtdw?oc=5"
-    },
-    {
-      "time": "2026-11-05T10:18:25+09:00",
-      "title": "모바일 이어 가전 구독도 인기… 삼성전자 '삼성 AI 구독 페스티벌' 11월까지 연장",
-      "source": "전자신문",
-      "link": "https://news.google.com/rss/articles/CBMiTkFVX3lxTE5xRkk1TFhxUXotRTFoRnc5Wkx6dWc2cDdEX2NHeFZHLUNFemplRmF3YTNyOVlUeTJpMWg5ZENXbUNXQWh1MUxUZXBDM1U5dw?oc=5"
     }
   ],
   "disclosures": [],
@@ -629,9 +629,9 @@
     "steady": 31,
     "upper": 6,
     "lower": 0,
-    "individual": 22761.0,
-    "foreign": -34019.0,
-    "institution": 8490.0,
+    "individual": 22832.0,
+    "foreign": -34089.0,
+    "institution": 8484.0,
     "prev_close": 5683.8,
     "open": 5580.09,
     "high": 5586.46,

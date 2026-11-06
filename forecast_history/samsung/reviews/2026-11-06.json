@@ -1,0 +1,919 @@
+{
+  "target": "samsung",
+  "name": "삼성전자",
+  "peer_name": "SK하이닉스",
+  "session_date": "2026-11-06",
+  "generated_at": "2026-11-06 16:11 KST",
+  "summary": {
+    "prev_close": 201500.0,
+    "open": 180000.0,
+    "high": 196500.0,
+    "low": 179200.0,
+    "close": 188700.0,
+    "gap": -0.10669975186104219,
+    "session": 0.04833333333333334,
+    "c2c": -0.06352357320099256,
+    "high_vs_open": 0.09166666666666656,
+    "low_vs_open": -0.004444444444444473,
+    "volume": 35174981.0,
+    "volume_ratio": 1.841496569443169,
+    "kospi_c2c": -0.06020095007972959,
+    "peer_c2c": -0.10443037974683544,
+    "usdkrw_chg": 0.0109024961438271,
+    "us_nights": 1,
+    "sox_ret": -0.12246115062360807,
+    "nasdaq_ret": -0.05523319900679158,
+    "micron_ret": -0.17459096013768616,
+    "prior_streak": -3,
+    "ma5": 211340.0,
+    "ma20": 220685.0,
+    "high20": 262500.0,
+    "high252": 367712.7495144774,
+    "price_context": {
+      "breakouts": {
+        "20": {
+          "prior_high": 270000.0,
+          "distance": -0.3011111111111111,
+          "close_breakout": false,
+          "intraday_breakout": false
+        },
+        "60": {
+          "prior_high": 283092.2681564246,
+          "distance": -0.3334328725087874,
+          "close_breakout": false,
+          "intraday_breakout": false
+        }
+      },
+      "relative": {
+        "5": {
+          "start": "2026-10-30",
+          "end": "2026-11-06",
+          "own": -0.16133333333333333,
+          "peer": -0.20169252468265164,
+          "excess": 0.04035919134931831
+        },
+        "20": {
+          "start": "2026-10-08",
+          "end": "2026-11-06",
+          "own": -0.27977099236641223,
+          "peer": -0.3265913146936348,
+          "excess": 0.04682032232722255
+        },
+        "60": {
+          "start": "2026-08-07",
+          "end": "2026-11-06",
+          "own": -0.1689552830395119,
+          "peer": -0.2037655138675455,
+          "excess": 0.034810230828033584
+        }
+      }
+    },
+    "range": 0.0965401785714286,
+    "peer_range": 0.11753902662993565,
+    "prior_5d": -0.13146551724137934,
+    "ma_touches": [],
+    "micron_ah": {
+      "regular_close": 658.7000122070312,
+      "last": 659.2285,
+      "ret": 0.000802319391490558,
+      "low_ret": -0.015760151836414993,
+      "high_ret": 0.016684359479736344,
+      "last_time": "2026-11-06T08:55:00+09:00"
+    },
+    "nvidia_ah": {
+      "regular_close": 181.59500122070312,
+      "last": 180.65,
+      "ret": -0.005203894459377745,
+      "low_ret": -0.01395964208079814,
+      "high_ret": 0.007021111653548795,
+      "last_time": "2026-11-06T08:55:00+09:00"
+    },
+    "session_cross": {
+      "NQ=F": {
+        "label": "나스닥100 선물",
+        "ret": 0.00763158879203929,
+        "after_high": -0.00807424252188882
+      },
+      "ZN=F": {
+        "label": "미 10년물 국채 선물",
+        "ret": 0.00014556040756907862,
+        "after_high": 0.0011656709893632655
+      },
+      "KRW=X": {
+        "label": "원/달러",
+        "ret": 0.002067465145495939,
+        "after_high": 0.00011047168079159064
+      }
+    },
+    "from_high": -0.038716250636780414,
+    "buyback": [
+      {
+        "kind": "직접 취득",
+        "start": "2026-08-24",
+        "end": "2026-11-21",
+        "amount": "14,999,999,992,000",
+        "purpose": "임직원 주식보상",
+        "rcept_no": "20260821000616"
+      }
+    ]
+  },
+  "classification": {
+    "labels": [
+      "갭 주도",
+      "장중 급변 09:00 주도",
+      "지수 동조"
+    ],
+    "reasons": [
+      "갭 -10.67%가 종가→종가 -6.35%의 168%",
+      "09:00 봉 -9.98%(σ의 17.07배, 거래량 5.03배)가 세션 +4.83%의 173%",
+      "KOSPI -6.02% vs 종목 -6.35%, 5분 수익률 상관 0.92 — 종목 고유 요인이 약함"
+    ]
+  },
+  "events": [
+    {
+      "time": "2026-11-06T09:00:00+09:00",
+      "ret": -0.09975186104218359,
+      "z": 17.07,
+      "volume_ratio": 5.03,
+      "cum_before": 0.0,
+      "cum_after": 0.007777777777777883,
+      "session_share": -1.726474518037795,
+      "score": 19.07119956971579,
+      "news": [
+        {
+          "time": "2026-11-06T09:08:36+09:00",
+          "title": "한화투자증권 \"외국인 매도 압력 완화…삼성전자·SK하이닉스 주목\"",
+          "source": "SR타임스",
+          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE5kZ1NjcDhkR0VlTzNSQnVtbG1vcU9rdWh0QWd0RTVHQWcyTmxfakFhZ3NvX1JJQ3FuNF82SVBtazlvcVR6cno2YkVKS3ZfWnNGNGJPMW9xWmduYXVGWmJKNXM5UzZFclp5?oc=5"
+        },
+        {
+          "time": "2026-11-06T08:26:08+09:00",
+          "title": "[특징주] 삼성전자·SK하이닉스, AI 투자 축소 우려에 프리마켓서 10% 넘게 급락",
+          "source": "아주경제",
+          "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE90WEZBX3hmMWdtT09VUHZUNGxWZWp4Y0U5NEczWHVjQ2pfM1o3aE1lSHN6aG9LMDc5akh3ZWNST193OURuVGtHTmoxQjJBN3c4b2c2MHhuRlZBd9IBWEFVX3lxTE9JT3JHM3hKS1ZZNmZyM2FwaTVvTkRsZVExZFk0ejBabGxpR3gxMDd4TTJkU0ZuVXdLVTJ5X2ZCTThJUWcxM3NTTzJHQjVfbEpOWFVqTUt1VWk?oc=5"
+        },
+        {
+          "time": "2026-11-06T08:32:37+09:00",
+          "title": "AI 규제 우려에 반도체주 급락···삼성전자·SK하이닉스 프리마켓서 동반 하락",
+          "source": "직썰",
+          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE9VMHJ3UW5FNjMtSWIzeWZERUFTSEktYVFKUUpDdUxQelhWNXpwYjEyR0x2TWRUSE5TVW5RSjFwbjVrMjBSOGwtNjI5NlhDRDBNR1hfbUp0SWZQWFEzUWFhR1Bxbi0wOTgx0gFsQVVfeXFMUGRzUE5OVWxkYWQwYXlLdmpjMVA2cTU5d3lFcGtXMXZnUDllcGQ1TE9tRHRRaDJ6QWM0eWpkX3k4Q1pVRnRBdzJJMVpIU0RHQkF2Y3hLQUVEbWRNUXN6a1FXWmM4XzBCY2hwRUJm?oc=5"
+        },
+        {
+          "time": "2026-11-06T08:32:00+09:00",
+          "title": "마이크론 17%, 삼성 10%, 하닉 13% 줄폭락 … 美 민주당 AI 규제에 반도체주 '추풍낙엽'",
+          "source": "뉴데일리",
+          "link": "https://news.google.com/rss/articles/CBMie0FVX3lxTFBuZXhRRS1jeGJ2MnQzSkxWR1F3OUlMc3RkVVpvc3JvRlU3NldodVBlWGpSX0l3ZW80cjNuTXlHS3EzYmNYWFVyblgzQ3R4YnN5SmxjY3d6VVNaQ3p1dy1KZFYwVVh0cDFMbkxhdEVFREt4aG5jeExWOHY4UdIBgAFBVV95cUxQS1pRMUhwQTlXRm03RFE0dVFBZFdadHl5QWhGRG9XRFk2U1REZzN4NEZ1Y1Z2dVQyLWQ1VTg4dXpteWhVUFdWNUVUa3ZfVEhqODBtcllKNUdhTUEwQUlRQ0wxSlo5N2NoQjhjVjBDeEwwWXM3OVk5TzQ3TFZMSlJtbA?oc=5"
+        },
+        {
+          "time": "2026-11-06T07:32:24+09:00",
+          "title": "[단독]삼성전자·마스터카드, 美 에이전틱 커머스 플랫폼 'firmly' 투자",
+          "source": "더트래커",
+          "link": "https://news.google.com/rss/articles/CBMiWEFVX3lxTE1HWEsyWUJubzB2b0lSZTd1QlJ2TlJrUGptU2VFbk1jWmw4T1Y1b2xKU01oZ0lSUlVVcFJXcGJkbUZyUUk4Rlk2X2NmdWFpZFpmVlBLUWt2Nkc?oc=5"
+        }
+      ]
+    },
+    {
+      "time": "2026-11-06T09:30:00+09:00",
+      "ret": 0.030319735391400204,
+      "z": 5.19,
+      "volume_ratio": 4.83,
+      "cum_before": 0.007777777777777883,
+      "cum_after": 0.03833333333333333,
+      "session_share": 0.5247646510050042,
+      "score": 7.1547053289784275,
+      "news": [
+        {
+          "time": "2026-11-06T09:08:36+09:00",
+          "title": "한화투자증권 \"외국인 매도 압력 완화…삼성전자·SK하이닉스 주목\"",
+          "source": "SR타임스",
+          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE5kZ1NjcDhkR0VlTzNSQnVtbG1vcU9rdWh0QWd0RTVHQWcyTmxfakFhZ3NvX1JJQ3FuNF82SVBtazlvcVR6cno2YkVKS3ZfWnNGNGJPMW9xWmduYXVGWmJKNXM5UzZFclp5?oc=5"
+        },
+        {
+          "time": "2026-11-06T08:26:08+09:00",
+          "title": "[특징주] 삼성전자·SK하이닉스, AI 투자 축소 우려에 프리마켓서 10% 넘게 급락",
+          "source": "아주경제",
+          "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE90WEZBX3hmMWdtT09VUHZUNGxWZWp4Y0U5NEczWHVjQ2pfM1o3aE1lSHN6aG9LMDc5akh3ZWNST193OURuVGtHTmoxQjJBN3c4b2c2MHhuRlZBd9IBWEFVX3lxTE9JT3JHM3hKS1ZZNmZyM2FwaTVvTkRsZVExZFk0ejBabGxpR3gxMDd4TTJkU0ZuVXdLVTJ5X2ZCTThJUWcxM3NTTzJHQjVfbEpOWFVqTUt1VWk?oc=5"
+        },
+        {
+          "time": "2026-11-06T08:32:37+09:00",
+          "title": "AI 규제 우려에 반도체주 급락···삼성전자·SK하이닉스 프리마켓서 동반 하락",
+          "source": "직썰",
+          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE9VMHJ3UW5FNjMtSWIzeWZERUFTSEktYVFKUUpDdUxQelhWNXpwYjEyR0x2TWRUSE5TVW5RSjFwbjVrMjBSOGwtNjI5NlhDRDBNR1hfbUp0SWZQWFEzUWFhR1Bxbi0wOTgx0gFsQVVfeXFMUGRzUE5OVWxkYWQwYXlLdmpjMVA2cTU5d3lFcGtXMXZnUDllcGQ1TE9tRHRRaDJ6QWM0eWpkX3k4Q1pVRnRBdzJJMVpIU0RHQkF2Y3hLQUVEbWRNUXN6a1FXWmM4XzBCY2hwRUJm?oc=5"
+        },
+        {
+          "time": "2026-11-06T08:32:00+09:00",
+          "title": "마이크론 17%, 삼성 10%, 하닉 13% 줄폭락 … 美 민주당 AI 규제에 반도체주 '추풍낙엽'",
+          "source": "뉴데일리",
+          "link": "https://news.google.com/rss/articles/CBMie0FVX3lxTFBuZXhRRS1jeGJ2MnQzSkxWR1F3OUlMc3RkVVpvc3JvRlU3NldodVBlWGpSX0l3ZW80cjNuTXlHS3EzYmNYWFVyblgzQ3R4YnN5SmxjY3d6VVNaQ3p1dy1KZFYwVVh0cDFMbkxhdEVFREt4aG5jeExWOHY4UdIBgAFBVV95cUxQS1pRMUhwQTlXRm03RFE0dVFBZFdadHl5QWhGRG9XRFk2U1REZzN4NEZ1Y1Z2dVQyLWQ1VTg4dXpteWhVUFdWNUVUa3ZfVEhqODBtcllKNUdhTUEwQUlRQ0wxSlo5N2NoQjhjVjBDeEwwWXM3OVk5TzQ3TFZMSlJtbA?oc=5"
+        },
+        {
+          "time": "2026-11-06T08:00:00+09:00",
+          "title": "[주간 기업동향] 이재용 삼성전자 회장, 일본 반도체 연구거점 점검 外",
+          "source": "반론보도닷컴",
+          "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE9sNjVDR1J1aUR3YlBhY3ZhUlYzV0JpTHF5YzZDR1VfYjhrZXRyZXJVemxqZ2g3T0dnN0pEWHBVVlVfeUVXMzdyQkZkTTZ1b1duWTVFOWd6aWhXSnNKbnFRbGpmcG9BdUtqbFlwRFdjeWzSAXBBVV95cUxPbDY1Q0dSdWlEd2JQYWN2YVJWM1dCaUxxeWM2Q0dVX2I4a2V0cmVyVXpsamdoN09HZzdKRFhwVVZVX3lFVzM3ckJGZE02dW9Xblk1RTlnemloV0pzSm5xUWxqZnBvQXVLamxZcERXY3ls?oc=5"
+        }
+      ]
+    },
+    {
+      "time": "2026-11-06T10:50:00+09:00",
+      "ret": 0.017694369973190405,
+      "z": 3.03,
+      "volume_ratio": 1.46,
+      "cum_before": 0.036111111111111205,
+      "cum_after": 0.05444444444444452,
+      "session_share": 0.3062487110744497,
+      "score": 3.3202011715820263,
+      "news": [
+        {
+          "time": "2026-11-06T10:40:39+09:00",
+          "title": "AI가 키운 메모리 황금기…삼성·SK, HBM·D램 주도권 경쟁 격화",
+          "source": "www.ebn.co.kr",
+          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTFBHUFRqeTdHT0tlRXRUTnk0ZFFkZXdfSm5lTThIdUU2SzgtRVplcGRIeWhJTTlHeVFyTEpJS0x1bVZqNXlEOHdpYVAwNlc3cDFfZmt0cHRBNE53S1hrckNRSzM3aGdqa01f?oc=5"
+        },
+        {
+          "time": "2026-11-06T10:42:39+09:00",
+          "title": "SK하이닉스 주가 장중 9%대 내려, 미국 반도체주 급락에 삼성전자도 하락",
+          "source": "비즈니스포스트",
+          "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTE9kNmNUeF8wZzVBMWtlMnZrSHA3T01rQWZRRl9PeTlKeV9walAtbGRkRDBWa0QyRnRZTDZ4dmVMVVdLN0dGZWNUTGY5aV9ScW9rWTZnR0V1V1djaUtTQ3dXcVUtUVRLWW5IWDFFV2NlR2NqYlk?oc=5"
+        },
+        {
+          "time": "2026-11-06T09:27:15+09:00",
+          "title": "폭락한 삼성전자·SK하이닉스 주가",
+          "source": "뉴스1",
+          "link": "https://news.google.com/rss/articles/CBMiS0FVX3lxTFBFeUZFOTRDdFdGSjVKQTZFR2FqUVNudWlCeGFFQXJvWGlydmVXR1BTaTlRQnRHOGxKaC1iemR2VDIwcjZUZkpweC1aRQ?oc=5"
+        },
+        {
+          "time": "2026-11-06T09:27:27+09:00",
+          "title": "폭락한 삼성전자 주가",
+          "source": "뉴스1",
+          "link": "https://news.google.com/rss/articles/CBMiS0FVX3lxTE5NbVZLdDNQNVBMRXphbWtxZWFPY2RKcG9mSnMzMFNCYkw0VV9nbXZHdmJ6cDl6ZlE4STV3eklWOXdnbkI4SG1kQlBJZw?oc=5"
+        },
+        {
+          "time": "2026-11-06T09:53:00+09:00",
+          "title": "삼성전자 CVC, 美 '에이전틱 커머스' 기업 펌리 투자",
+          "source": "한국경제",
+          "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE90SEcteTllTVNqVWNULTBacFg4a2U0QnQ1REUzTjVOck5oLVVtZi1NbTVSVlVuZllaRXBZLUhMb0ZaWUFxeTVWUDZSRXVfUmRmZDdVNHdaU0ZEZw?oc=5"
+        }
+      ]
+    }
+  ],
+  "turning_point": {
+    "high_time": "2026-11-06T11:45:00+09:00",
+    "high": 0.0905555555555555,
+    "low_time": "2026-11-06T09:00:00+09:00",
+    "low": 0.007777777777777883,
+    "pattern": "저점 후 반등"
+  },
+  "closing_share": -0.1847290640394082,
+  "intraday_corr_kospi": 0.9216329566872473,
+  "intraday_note": "장중 봉은 09:00~14:55까지만 있어 마감 구간(14:55~15:30)은 일봉 종가로만 봅니다(그 구간 -0.89%).",
+  "intraday_coverage": "09:00~14:55",
+  "intraday_path": [
+    {
+      "time": "2026-11-06T09:00:00+09:00",
+      "price": 181400.0,
+      "volume": 1943954.0
+    },
+    {
+      "time": "2026-11-06T09:30:00+09:00",
+      "price": 186900.0,
+      "volume": 1866244.0
+    },
+    {
+      "time": "2026-11-06T09:35:00+09:00",
+      "price": 187500.0,
+      "volume": 1440768.0
+    },
+    {
+      "time": "2026-11-06T09:40:00+09:00",
+      "price": 187200.0,
+      "volume": 1224825.0
+    },
+    {
+      "time": "2026-11-06T09:45:00+09:00",
+      "price": 184700.0,
+      "volume": 847001.0
+    },
+    {
+      "time": "2026-11-06T09:50:00+09:00",
+      "price": 183200.0,
+      "volume": 556047.0
+    },
+    {
+      "time": "2026-11-06T09:55:00+09:00",
+      "price": 183400.0,
+      "volume": 526475.0
+    },
+    {
+      "time": "2026-11-06T10:00:00+09:00",
+      "price": 183900.0,
+      "volume": 436495.0
+    },
+    {
+      "time": "2026-11-06T10:05:00+09:00",
+      "price": 186200.0,
+      "volume": 656818.0
+    },
+    {
+      "time": "2026-11-06T10:10:00+09:00",
+      "price": 187400.0,
+      "volume": 547071.0
+    },
+    {
+      "time": "2026-11-06T10:15:00+09:00",
+      "price": 186400.0,
+      "volume": 683048.0
+    },
+    {
+      "time": "2026-11-06T10:20:00+09:00",
+      "price": 184700.0,
+      "volume": 487421.0
+    },
+    {
+      "time": "2026-11-06T10:25:00+09:00",
+      "price": 186100.0,
+      "volume": 386431.0
+    },
+    {
+      "time": "2026-11-06T10:30:00+09:00",
+      "price": 187400.0,
+      "volume": 486019.0
+    },
+    {
+      "time": "2026-11-06T10:35:00+09:00",
+      "price": 186500.0,
+      "volume": 421101.0
+    },
+    {
+      "time": "2026-11-06T10:40:00+09:00",
+      "price": 185700.0,
+      "volume": 371812.0
+    },
+    {
+      "time": "2026-11-06T10:45:00+09:00",
+      "price": 186500.0,
+      "volume": 429587.0
+    },
+    {
+      "time": "2026-11-06T10:50:00+09:00",
+      "price": 189800.0,
+      "volume": 564278.0
+    },
+    {
+      "time": "2026-11-06T10:55:00+09:00",
+      "price": 191000.0,
+      "volume": 744911.0
+    },
+    {
+      "time": "2026-11-06T11:00:00+09:00",
+      "price": 191300.0,
+      "volume": 546327.0
+    },
+    {
+      "time": "2026-11-06T11:05:00+09:00",
+      "price": 190900.0,
+      "volume": 413028.0
+    },
+    {
+      "time": "2026-11-06T11:10:00+09:00",
+      "price": 192800.0,
+      "volume": 551763.0
+    },
+    {
+      "time": "2026-11-06T11:15:00+09:00",
+      "price": 193300.0,
+      "volume": 463204.0
+    },
+    {
+      "time": "2026-11-06T11:20:00+09:00",
+      "price": 194000.0,
+      "volume": 372856.0
+    },
+    {
+      "time": "2026-11-06T11:25:00+09:00",
+      "price": 195500.0,
+      "volume": 357398.0
+    },
+    {
+      "time": "2026-11-06T11:30:00+09:00",
+      "price": 194800.0,
+      "volume": 552841.0
+    },
+    {
+      "time": "2026-11-06T11:35:00+09:00",
+      "price": 195400.0,
+      "volume": 447724.0
+    },
+    {
+      "time": "2026-11-06T11:40:00+09:00",
+      "price": 193900.0,
+      "volume": 414820.0
+    },
+    {
+      "time": "2026-11-06T11:45:00+09:00",
+      "price": 196300.0,
+      "volume": 415486.0
+    },
+    {
+      "time": "2026-11-06T11:50:00+09:00",
+      "price": 195600.0,
+      "volume": 498816.0
+    },
+    {
+      "time": "2026-11-06T11:55:00+09:00",
+      "price": 195000.0,
+      "volume": 323894.0
+    },
+    {
+      "time": "2026-11-06T12:00:00+09:00",
+      "price": 194600.0,
+      "volume": 299550.0
+    },
+    {
+      "time": "2026-11-06T12:05:00+09:00",
+      "price": 194500.0,
+      "volume": 346872.0
+    },
+    {
+      "time": "2026-11-06T12:10:00+09:00",
+      "price": 193600.0,
+      "volume": 430120.0
+    },
+    {
+      "time": "2026-11-06T12:15:00+09:00",
+      "price": 192400.0,
+      "volume": 308575.0
+    },
+    {
+      "time": "2026-11-06T12:20:00+09:00",
+      "price": 191200.0,
+      "volume": 386936.0
+    },
+    {
+      "time": "2026-11-06T12:25:00+09:00",
+      "price": 191400.0,
+      "volume": 397618.0
+    },
+    {
+      "time": "2026-11-06T12:30:00+09:00",
+      "price": 191300.0,
+      "volume": 360716.0
+    },
+    {
+      "time": "2026-11-06T12:35:00+09:00",
+      "price": 191100.0,
+      "volume": 355884.0
+    },
+    {
+      "time": "2026-11-06T12:40:00+09:00",
+      "price": 189900.0,
+      "volume": 412460.0
+    },
+    {
+      "time": "2026-11-06T12:45:00+09:00",
+      "price": 190000.0,
+      "volume": 271178.0
+    },
+    {
+      "time": "2026-11-06T12:50:00+09:00",
+      "price": 189850.0,
+      "volume": 318741.0
+    },
+    {
+      "time": "2026-11-06T12:55:00+09:00",
+      "price": 191100.0,
+      "volume": 212885.0
+    },
+    {
+      "time": "2026-11-06T13:00:00+09:00",
+      "price": 189000.0,
+      "volume": 223832.0
+    },
+    {
+      "time": "2026-11-06T13:05:00+09:00",
+      "price": 189100.0,
+      "volume": 267716.0
+    },
+    {
+      "time": "2026-11-06T13:10:00+09:00",
+      "price": 190400.0,
+      "volume": 235810.0
+    },
+    {
+      "time": "2026-11-06T13:15:00+09:00",
+      "price": 190200.0,
+      "volume": 191770.0
+    },
+    {
+      "time": "2026-11-06T13:20:00+09:00",
+      "price": 189300.0,
+      "volume": 306754.0
+    },
+    {
+      "time": "2026-11-06T13:25:00+09:00",
+      "price": 188800.0,
+      "volume": 442087.0
+    },
+    {
+      "time": "2026-11-06T13:30:00+09:00",
+      "price": 189800.0,
+      "volume": 308869.0
+    },
+    {
+      "time": "2026-11-06T13:35:00+09:00",
+      "price": 188700.0,
+      "volume": 272801.0
+    },
+    {
+      "time": "2026-11-06T13:40:00+09:00",
+      "price": 188800.0,
+      "volume": 234381.0
+    },
+    {
+      "time": "2026-11-06T13:45:00+09:00",
+      "price": 189500.0,
+      "volume": 271957.0
+    },
+    {
+      "time": "2026-11-06T13:50:00+09:00",
+      "price": 189800.0,
+      "volume": 254966.0
+    },
+    {
+      "time": "2026-11-06T13:55:00+09:00",
+      "price": 189900.0,
+      "volume": 223272.0
+    },
+    {
+      "time": "2026-11-06T14:00:00+09:00",
+      "price": 190900.0,
+      "volume": 296314.0
+    },
+    {
+      "time": "2026-11-06T14:05:00+09:00",
+      "price": 189900.0,
+      "volume": 235733.0
+    },
+    {
+      "time": "2026-11-06T14:10:00+09:00",
+      "price": 189650.0,
+      "volume": 270929.0
+    },
+    {
+      "time": "2026-11-06T14:15:00+09:00",
+      "price": 190300.0,
+      "volume": 412221.0
+    },
+    {
+      "time": "2026-11-06T14:20:00+09:00",
+      "price": 190200.0,
+      "volume": 164568.0
+    },
+    {
+      "time": "2026-11-06T14:25:00+09:00",
+      "price": 190700.0,
+      "volume": 227851.0
+    },
+    {
+      "time": "2026-11-06T14:30:00+09:00",
+      "price": 190900.0,
+      "volume": 275542.0
+    },
+    {
+      "time": "2026-11-06T14:35:00+09:00",
+      "price": 192400.0,
+      "volume": 392878.0
+    },
+    {
+      "time": "2026-11-06T14:40:00+09:00",
+      "price": 191700.0,
+      "volume": 260208.0
+    },
+    {
+      "time": "2026-11-06T14:45:00+09:00",
+      "price": 191200.0,
+      "volume": 252351.0
+    },
+    {
+      "time": "2026-11-06T14:50:00+09:00",
+      "price": 190900.0,
+      "volume": 211551.0
+    },
+    {
+      "time": "2026-11-06T14:55:00+09:00",
+      "price": 190400.0,
+      "volume": 242780.0
+    }
+  ],
+  "timeline_items": [
+    {
+      "time": "2026-11-06T09:00:00+09:00",
+      "ret": -0.09975186104218359,
+      "z": 17.07,
+      "volume_ratio": 5.03,
+      "cum_before": 0.0,
+      "cum_after": 0.007777777777777883,
+      "session_share": -1.726474518037795,
+      "score": 19.07119956971579,
+      "news": [
+        {
+          "time": "2026-11-06T09:08:36+09:00",
+          "title": "한화투자증권 \"외국인 매도 압력 완화…삼성전자·SK하이닉스 주목\"",
+          "source": "SR타임스",
+          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE5kZ1NjcDhkR0VlTzNSQnVtbG1vcU9rdWh0QWd0RTVHQWcyTmxfakFhZ3NvX1JJQ3FuNF82SVBtazlvcVR6cno2YkVKS3ZfWnNGNGJPMW9xWmduYXVGWmJKNXM5UzZFclp5?oc=5"
+        },
+        {
+          "time": "2026-11-06T08:26:08+09:00",
+          "title": "[특징주] 삼성전자·SK하이닉스, AI 투자 축소 우려에 프리마켓서 10% 넘게 급락",
+          "source": "아주경제",
+          "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE90WEZBX3hmMWdtT09VUHZUNGxWZWp4Y0U5NEczWHVjQ2pfM1o3aE1lSHN6aG9LMDc5akh3ZWNST193OURuVGtHTmoxQjJBN3c4b2c2MHhuRlZBd9IBWEFVX3lxTE9JT3JHM3hKS1ZZNmZyM2FwaTVvTkRsZVExZFk0ejBabGxpR3gxMDd4TTJkU0ZuVXdLVTJ5X2ZCTThJUWcxM3NTTzJHQjVfbEpOWFVqTUt1VWk?oc=5"
+        },
+        {
+          "time": "2026-11-06T08:32:37+09:00",
+          "title": "AI 규제 우려에 반도체주 급락···삼성전자·SK하이닉스 프리마켓서 동반 하락",
+          "source": "직썰",
+          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE9VMHJ3UW5FNjMtSWIzeWZERUFTSEktYVFKUUpDdUxQelhWNXpwYjEyR0x2TWRUSE5TVW5RSjFwbjVrMjBSOGwtNjI5NlhDRDBNR1hfbUp0SWZQWFEzUWFhR1Bxbi0wOTgx0gFsQVVfeXFMUGRzUE5OVWxkYWQwYXlLdmpjMVA2cTU5d3lFcGtXMXZnUDllcGQ1TE9tRHRRaDJ6QWM0eWpkX3k4Q1pVRnRBdzJJMVpIU0RHQkF2Y3hLQUVEbWRNUXN6a1FXWmM4XzBCY2hwRUJm?oc=5"
+        },
+        {
+          "time": "2026-11-06T08:32:00+09:00",
+          "title": "마이크론 17%, 삼성 10%, 하닉 13% 줄폭락 … 美 민주당 AI 규제에 반도체주 '추풍낙엽'",
+          "source": "뉴데일리",
+          "link": "https://news.google.com/rss/articles/CBMie0FVX3lxTFBuZXhRRS1jeGJ2MnQzSkxWR1F3OUlMc3RkVVpvc3JvRlU3NldodVBlWGpSX0l3ZW80cjNuTXlHS3EzYmNYWFVyblgzQ3R4YnN5SmxjY3d6VVNaQ3p1dy1KZFYwVVh0cDFMbkxhdEVFREt4aG5jeExWOHY4UdIBgAFBVV95cUxQS1pRMUhwQTlXRm03RFE0dVFBZFdadHl5QWhGRG9XRFk2U1REZzN4NEZ1Y1Z2dVQyLWQ1VTg4dXpteWhVUFdWNUVUa3ZfVEhqODBtcllKNUdhTUEwQUlRQ0wxSlo5N2NoQjhjVjBDeEwwWXM3OVk5TzQ3TFZMSlJtbA?oc=5"
+        },
+        {
+          "time": "2026-11-06T07:32:24+09:00",
+          "title": "[단독]삼성전자·마스터카드, 美 에이전틱 커머스 플랫폼 'firmly' 투자",
+          "source": "더트래커",
+          "link": "https://news.google.com/rss/articles/CBMiWEFVX3lxTE1HWEsyWUJubzB2b0lSZTd1QlJ2TlJrUGptU2VFbk1jWmw4T1Y1b2xKU01oZ0lSUlVVcFJXcGJkbUZyUUk4Rlk2X2NmdWFpZFpmVlBLUWt2Nkc?oc=5"
+        }
+      ],
+      "price": 181400.0,
+      "kind": "turn_down"
+    },
+    {
+      "time": "2026-11-06T09:30:00+09:00",
+      "ret": 0.030319735391400204,
+      "z": 5.19,
+      "volume_ratio": 4.83,
+      "cum_before": 0.007777777777777883,
+      "cum_after": 0.03833333333333333,
+      "session_share": 0.5247646510050042,
+      "score": 7.1547053289784275,
+      "news": [
+        {
+          "time": "2026-11-06T09:08:36+09:00",
+          "title": "한화투자증권 \"외국인 매도 압력 완화…삼성전자·SK하이닉스 주목\"",
+          "source": "SR타임스",
+          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE5kZ1NjcDhkR0VlTzNSQnVtbG1vcU9rdWh0QWd0RTVHQWcyTmxfakFhZ3NvX1JJQ3FuNF82SVBtazlvcVR6cno2YkVKS3ZfWnNGNGJPMW9xWmduYXVGWmJKNXM5UzZFclp5?oc=5"
+        },
+        {
+          "time": "2026-11-06T08:26:08+09:00",
+          "title": "[특징주] 삼성전자·SK하이닉스, AI 투자 축소 우려에 프리마켓서 10% 넘게 급락",
+          "source": "아주경제",
+          "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE90WEZBX3hmMWdtT09VUHZUNGxWZWp4Y0U5NEczWHVjQ2pfM1o3aE1lSHN6aG9LMDc5akh3ZWNST193OURuVGtHTmoxQjJBN3c4b2c2MHhuRlZBd9IBWEFVX3lxTE9JT3JHM3hKS1ZZNmZyM2FwaTVvTkRsZVExZFk0ejBabGxpR3gxMDd4TTJkU0ZuVXdLVTJ5X2ZCTThJUWcxM3NTTzJHQjVfbEpOWFVqTUt1VWk?oc=5"
+        },
+        {
+          "time": "2026-11-06T08:32:37+09:00",
+          "title": "AI 규제 우려에 반도체주 급락···삼성전자·SK하이닉스 프리마켓서 동반 하락",
+          "source": "직썰",
+          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE9VMHJ3UW5FNjMtSWIzeWZERUFTSEktYVFKUUpDdUxQelhWNXpwYjEyR0x2TWRUSE5TVW5RSjFwbjVrMjBSOGwtNjI5NlhDRDBNR1hfbUp0SWZQWFEzUWFhR1Bxbi0wOTgx0gFsQVVfeXFMUGRzUE5OVWxkYWQwYXlLdmpjMVA2cTU5d3lFcGtXMXZnUDllcGQ1TE9tRHRRaDJ6QWM0eWpkX3k4Q1pVRnRBdzJJMVpIU0RHQkF2Y3hLQUVEbWRNUXN6a1FXWmM4XzBCY2hwRUJm?oc=5"
+        },
+        {
+          "time": "2026-11-06T08:32:00+09:00",
+          "title": "마이크론 17%, 삼성 10%, 하닉 13% 줄폭락 … 美 민주당 AI 규제에 반도체주 '추풍낙엽'",
+          "source": "뉴데일리",
+          "link": "https://news.google.com/rss/articles/CBMie0FVX3lxTFBuZXhRRS1jeGJ2MnQzSkxWR1F3OUlMc3RkVVpvc3JvRlU3NldodVBlWGpSX0l3ZW80cjNuTXlHS3EzYmNYWFVyblgzQ3R4YnN5SmxjY3d6VVNaQ3p1dy1KZFYwVVh0cDFMbkxhdEVFREt4aG5jeExWOHY4UdIBgAFBVV95cUxQS1pRMUhwQTlXRm03RFE0dVFBZFdadHl5QWhGRG9XRFk2U1REZzN4NEZ1Y1Z2dVQyLWQ1VTg4dXpteWhVUFdWNUVUa3ZfVEhqODBtcllKNUdhTUEwQUlRQ0wxSlo5N2NoQjhjVjBDeEwwWXM3OVk5TzQ3TFZMSlJtbA?oc=5"
+        },
+        {
+          "time": "2026-11-06T08:00:00+09:00",
+          "title": "[주간 기업동향] 이재용 삼성전자 회장, 일본 반도체 연구거점 점검 外",
+          "source": "반론보도닷컴",
+          "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE9sNjVDR1J1aUR3YlBhY3ZhUlYzV0JpTHF5YzZDR1VfYjhrZXRyZXJVemxqZ2g3T0dnN0pEWHBVVlVfeUVXMzdyQkZkTTZ1b1duWTVFOWd6aWhXSnNKbnFRbGpmcG9BdUtqbFlwRFdjeWzSAXBBVV95cUxPbDY1Q0dSdWlEd2JQYWN2YVJWM1dCaUxxeWM2Q0dVX2I4a2V0cmVyVXpsamdoN09HZzdKRFhwVVZVX3lFVzM3ckJGZE02dW9Xblk1RTlnemloV0pzSm5xUWxqZnBvQXVLamxZcERXY3ls?oc=5"
+        }
+      ],
+      "price": 186900.0,
+      "kind": "turn_up"
+    },
+    {
+      "time": "2026-11-06T10:50:00+09:00",
+      "ret": 0.017694369973190405,
+      "z": 3.03,
+      "volume_ratio": 1.46,
+      "cum_before": 0.036111111111111205,
+      "cum_after": 0.05444444444444452,
+      "session_share": 0.3062487110744497,
+      "score": 3.3202011715820263,
+      "news": [
+        {
+          "time": "2026-11-06T10:40:39+09:00",
+          "title": "AI가 키운 메모리 황금기…삼성·SK, HBM·D램 주도권 경쟁 격화",
+          "source": "www.ebn.co.kr",
+          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTFBHUFRqeTdHT0tlRXRUTnk0ZFFkZXdfSm5lTThIdUU2SzgtRVplcGRIeWhJTTlHeVFyTEpJS0x1bVZqNXlEOHdpYVAwNlc3cDFfZmt0cHRBNE53S1hrckNRSzM3aGdqa01f?oc=5"
+        },
+        {
+          "time": "2026-11-06T10:42:39+09:00",
+          "title": "SK하이닉스 주가 장중 9%대 내려, 미국 반도체주 급락에 삼성전자도 하락",
+          "source": "비즈니스포스트",
+          "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTE9kNmNUeF8wZzVBMWtlMnZrSHA3T01rQWZRRl9PeTlKeV9walAtbGRkRDBWa0QyRnRZTDZ4dmVMVVdLN0dGZWNUTGY5aV9ScW9rWTZnR0V1V1djaUtTQ3dXcVUtUVRLWW5IWDFFV2NlR2NqYlk?oc=5"
+        },
+        {
+          "time": "2026-11-06T09:27:15+09:00",
+          "title": "폭락한 삼성전자·SK하이닉스 주가",
+          "source": "뉴스1",
+          "link": "https://news.google.com/rss/articles/CBMiS0FVX3lxTFBFeUZFOTRDdFdGSjVKQTZFR2FqUVNudWlCeGFFQXJvWGlydmVXR1BTaTlRQnRHOGxKaC1iemR2VDIwcjZUZkpweC1aRQ?oc=5"
+        },
+        {
+          "time": "2026-11-06T09:27:27+09:00",
+          "title": "폭락한 삼성전자 주가",
+          "source": "뉴스1",
+          "link": "https://news.google.com/rss/articles/CBMiS0FVX3lxTE5NbVZLdDNQNVBMRXphbWtxZWFPY2RKcG9mSnMzMFNCYkw0VV9nbXZHdmJ6cDl6ZlE4STV3eklWOXdnbkI4SG1kQlBJZw?oc=5"
+        },
+        {
+          "time": "2026-11-06T09:53:00+09:00",
+          "title": "삼성전자 CVC, 美 '에이전틱 커머스' 기업 펌리 투자",
+          "source": "한국경제",
+          "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE90SEcteTllTVNqVWNULTBacFg4a2U0QnQ1REUzTjVOck5oLVVtZi1NbTVSVlVuZllaRXBZLUhMb0ZaWUFxeTVWUDZSRXVfUmRmZDdVNHdaU0ZEZw?oc=5"
+        }
+      ],
+      "price": 189800.0,
+      "kind": "turn_up"
+    }
+  ],
+  "overnight_news": [
+    {
+      "time": "2026-11-06T08:26:08+09:00",
+      "title": "[특징주] 삼성전자·SK하이닉스, AI 투자 축소 우려에 프리마켓서 10% 넘게 급락",
+      "source": "아주경제",
+      "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE90WEZBX3hmMWdtT09VUHZUNGxWZWp4Y0U5NEczWHVjQ2pfM1o3aE1lSHN6aG9LMDc5akh3ZWNST193OURuVGtHTmoxQjJBN3c4b2c2MHhuRlZBd9IBWEFVX3lxTE9JT3JHM3hKS1ZZNmZyM2FwaTVvTkRsZVExZFk0ejBabGxpR3gxMDd4TTJkU0ZuVXdLVTJ5X2ZCTThJUWcxM3NTTzJHQjVfbEpOWFVqTUt1VWk?oc=5"
+    },
+    {
+      "time": "2026-11-06T08:32:37+09:00",
+      "title": "AI 규제 우려에 반도체주 급락···삼성전자·SK하이닉스 프리마켓서 동반 하락",
+      "source": "직썰",
+      "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE9VMHJ3UW5FNjMtSWIzeWZERUFTSEktYVFKUUpDdUxQelhWNXpwYjEyR0x2TWRUSE5TVW5RSjFwbjVrMjBSOGwtNjI5NlhDRDBNR1hfbUp0SWZQWFEzUWFhR1Bxbi0wOTgx0gFsQVVfeXFMUGRzUE5OVWxkYWQwYXlLdmpjMVA2cTU5d3lFcGtXMXZnUDllcGQ1TE9tRHRRaDJ6QWM0eWpkX3k4Q1pVRnRBdzJJMVpIU0RHQkF2Y3hLQUVEbWRNUXN6a1FXWmM4XzBCY2hwRUJm?oc=5"
+    },
+    {
+      "time": "2026-11-06T08:32:00+09:00",
+      "title": "마이크론 17%, 삼성 10%, 하닉 13% 줄폭락 … 美 민주당 AI 규제에 반도체주 '추풍낙엽'",
+      "source": "뉴데일리",
+      "link": "https://news.google.com/rss/articles/CBMie0FVX3lxTFBuZXhRRS1jeGJ2MnQzSkxWR1F3OUlMc3RkVVpvc3JvRlU3NldodVBlWGpSX0l3ZW80cjNuTXlHS3EzYmNYWFVyblgzQ3R4YnN5SmxjY3d6VVNaQ3p1dy1KZFYwVVh0cDFMbkxhdEVFREt4aG5jeExWOHY4UdIBgAFBVV95cUxQS1pRMUhwQTlXRm03RFE0dVFBZFdadHl5QWhGRG9XRFk2U1REZzN4NEZ1Y1Z2dVQyLWQ1VTg4dXpteWhVUFdWNUVUa3ZfVEhqODBtcllKNUdhTUEwQUlRQ0wxSlo5N2NoQjhjVjBDeEwwWXM3OVk5TzQ3TFZMSlJtbA?oc=5"
+    },
+    {
+      "time": "2026-11-05T17:47:10+09:00",
+      "title": "삼성전자·하이닉스 주가 흔들…지금 ’줍줍’할까, 좀 더 후에 들어가야? 셈법 복잡 By FinancialPost",
+      "source": "Investing.com 한국어",
+      "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE9GSW1HVG5UYzZndDFsSlNEUWtXUUlCM25pNTBEcGlLSDA4RGJsM2RKVFl0OWlCaGI4VnpWQUhodzdzMkFiVE9heHdzbW1PdGZGaUp4Y3R1bDlia2xwZW5kUy00d1E2ellQYTZVLS1BU1g?oc=5"
+    },
+    {
+      "time": "2026-11-05T18:36:29+09:00",
+      "title": "삼성전자 동행노조 \"메모리價 급등 완제품이 감당…가격정책 적정했나\"",
+      "source": "연합인포맥스",
+      "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE0tbEs3ckVMaTJyQ1lKX2RFZlJaaVo0WmczcGRlbkItVkhNTHdlRnlaV2FIVjROcjhBMWItUTBFaXE0bnpjUDQxZk9xV2NjRmtzak9JLWUwZmJHbWJieVpKNWtGX3BBZzJQcF9QMDBvTkU?oc=5"
+    }
+  ],
+  "top_news": [
+    {
+      "time": "2026-11-06T09:08:36+09:00",
+      "title": "한화투자증권 \"외국인 매도 압력 완화…삼성전자·SK하이닉스 주목\"",
+      "source": "SR타임스",
+      "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE5kZ1NjcDhkR0VlTzNSQnVtbG1vcU9rdWh0QWd0RTVHQWcyTmxfakFhZ3NvX1JJQ3FuNF82SVBtazlvcVR6cno2YkVKS3ZfWnNGNGJPMW9xWmduYXVGWmJKNXM5UzZFclp5?oc=5"
+    },
+    {
+      "time": "2026-11-06T13:56:24+09:00",
+      "title": "HBM 호황이 파운드리도 살릴까…삼성전자, ‘반도체 시너지’ 시험대",
+      "source": "이지경제",
+      "link": "https://news.google.com/rss/articles/CBMibkFVX3lxTE43d3E5Tk41V1R4NjREam5VLWhTbkV0SElpRmhiVjRaZlRybmVxcFRTUk44Uy1zR1JVX3c4NTdBbWpHSDJ0ZzZ2bEFScFRzaXNKRWhwaWtXQ0RleDNOT3p4UWlWUm5ZUjI5QXZ2M213?oc=5"
+    },
+    {
+      "time": "2026-11-06T10:40:39+09:00",
+      "title": "AI가 키운 메모리 황금기…삼성·SK, HBM·D램 주도권 경쟁 격화",
+      "source": "www.ebn.co.kr",
+      "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTFBHUFRqeTdHT0tlRXRUTnk0ZFFkZXdfSm5lTThIdUU2SzgtRVplcGRIeWhJTTlHeVFyTEpJS0x1bVZqNXlEOHdpYVAwNlc3cDFfZmt0cHRBNE53S1hrckNRSzM3aGdqa01f?oc=5"
+    },
+    {
+      "time": "2026-11-06T08:26:08+09:00",
+      "title": "[특징주] 삼성전자·SK하이닉스, AI 투자 축소 우려에 프리마켓서 10% 넘게 급락",
+      "source": "아주경제",
+      "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE90WEZBX3hmMWdtT09VUHZUNGxWZWp4Y0U5NEczWHVjQ2pfM1o3aE1lSHN6aG9LMDc5akh3ZWNST193OURuVGtHTmoxQjJBN3c4b2c2MHhuRlZBd9IBWEFVX3lxTE9JT3JHM3hKS1ZZNmZyM2FwaTVvTkRsZVExZFk0ejBabGxpR3gxMDd4TTJkU0ZuVXdLVTJ5X2ZCTThJUWcxM3NTTzJHQjVfbEpOWFVqTUt1VWk?oc=5"
+    },
+    {
+      "time": "2026-11-06T08:32:37+09:00",
+      "title": "AI 규제 우려에 반도체주 급락···삼성전자·SK하이닉스 프리마켓서 동반 하락",
+      "source": "직썰",
+      "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE9VMHJ3UW5FNjMtSWIzeWZERUFTSEktYVFKUUpDdUxQelhWNXpwYjEyR0x2TWRUSE5TVW5RSjFwbjVrMjBSOGwtNjI5NlhDRDBNR1hfbUp0SWZQWFEzUWFhR1Bxbi0wOTgx0gFsQVVfeXFMUGRzUE5OVWxkYWQwYXlLdmpjMVA2cTU5d3lFcGtXMXZnUDllcGQ1TE9tRHRRaDJ6QWM0eWpkX3k4Q1pVRnRBdzJJMVpIU0RHQkF2Y3hLQUVEbWRNUXN6a1FXWmM4XzBCY2hwRUJm?oc=5"
+    },
+    {
+      "time": "2026-11-06T10:42:39+09:00",
+      "title": "SK하이닉스 주가 장중 9%대 내려, 미국 반도체주 급락에 삼성전자도 하락",
+      "source": "비즈니스포스트",
+      "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTE9kNmNUeF8wZzVBMWtlMnZrSHA3T01rQWZRRl9PeTlKeV9walAtbGRkRDBWa0QyRnRZTDZ4dmVMVVdLN0dGZWNUTGY5aV9ScW9rWTZnR0V1V1djaUtTQ3dXcVUtUVRLWW5IWDFFV2NlR2NqYlk?oc=5"
+    }
+  ],
+  "disclosures": [
+    {
+      "report_nm": "임원ㆍ주요주주특정증권등소유상황보고서",
+      "rcept_dt": "20261106",
+      "rcept_no": "20261106000193",
+      "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261106000193"
+    },
+    {
+      "report_nm": "임원ㆍ주요주주특정증권등소유상황보고서",
+      "rcept_dt": "20261106",
+      "rcept_no": "20261106000100",
+      "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261106000100"
+    },
+    {
+      "report_nm": "임원ㆍ주요주주특정증권등소유상황보고서",
+      "rcept_dt": "20261106",
+      "rcept_no": "20261106000098",
+      "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261106000098"
+    },
+    {
+      "report_nm": "임원ㆍ주요주주특정증권등소유상황보고서",
+      "rcept_dt": "20261106",
+      "rcept_no": "20261106000093",
+      "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261106000093"
+    },
+    {
+      "report_nm": "임원ㆍ주요주주특정증권등소유상황보고서",
+      "rcept_dt": "20261106",
+      "rcept_no": "20261106000022",
+      "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261106000022"
+    }
+  ],
+  "disclosure_note": null,
+  "flows": null,
+  "flow_story": null,
+  "flow_status": {
+    "state": "pending",
+    "detail": "최신 2026-11-05"
+  },
+  "context": {},
+  "market": {
+    "index": "KOSPI",
+    "date": "2026-11-06",
+    "rise": 131,
+    "fall": 760,
+    "steady": 20,
+    "upper": 4,
+    "lower": 0,
+    "individual": 6049.0,
+    "foreign": -27686.0,
+    "institution": 16985.0,
+    "prev_close": 5383.8,
+    "open": 5263.26,
+    "high": 5269.1,
+    "low": 4911.28,
+    "close": 5059.69
+  },
+  "earnings_reactions": null,
+  "forecasts": [
+    {
+      "model": "No macro ensemble",
+      "hit": true,
+      "verdict": "맞음 — 예측 하락 69%, 실제 하락(-6.35%)",
+      "legs": "갭 -10.67%(하락) · 세션 +4.83%(상승)",
+      "where": "결과는 주로 갭(밤사이)에서 정해졌습니다.",
+      "band": 0.0138499243852924,
+      "probs": [
+        0.692664928604505,
+        0.1737020012703093,
+        0.1336330701251856
+      ],
+      "actual": "하락",
+      "predicted": "하락"
+    },
+    {
+      "model": "Mean ensemble",
+      "hit": true,
+      "verdict": "맞음 — 예측 하락 75%, 실제 하락(-6.35%)",
+      "legs": "갭 -10.67%(하락) · 세션 +4.83%(상승)",
+      "where": "결과는 주로 갭(밤사이)에서 정해졌습니다.",
+      "band": 0.0138499243852924,
+      "probs": [
+        0.7453905991449458,
+        0.1384031040249009,
+        0.1162062968301532
+      ],
+      "actual": "하락",
+      "predicted": "하락"
+    },
+    {
+      "model": "Candidate expanding",
+      "hit": true,
+      "verdict": "맞음 — 예측 하락 77%, 실제 하락(-6.35%)",
+      "legs": "갭 -10.67%(하락) · 세션 +4.83%(상승)",
+      "where": "결과는 주로 갭(밤사이)에서 정해졌습니다.",
+      "band": 0.0138499243852924,
+      "probs": [
+        0.7730958333599631,
+        0.1470147628419237,
+        0.0798894037981131
+      ],
+      "actual": "하락",
+      "predicted": "하락"
+    }
+  ],
+  "price_check": "1거래일 예상 구간 175,182~198,547원 · 종가 188,700원 → 구간 안",
+  "disclaimer": "시간이 맞는 것이지 원인 확정이 아닙니다. 뉴스 없이 움직이는 날(수급·프로그램·옵션 만기)이 많고, 기사 발행 시각은 실제 정보 유통보다 늦거나 앞섭니다. 이 절은 설명 도구이며 다음날 예측에 자동 반영되지 않습니다."
+}

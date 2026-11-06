@@ -3,7 +3,7 @@
   "name": "SK하이닉스",
   "peer_name": "삼성전자",
   "session_date": "2026-11-06",
-  "generated_at": "2026-11-06 16:20 KST",
+  "generated_at": "2026-11-06 16:46 KST",
   "summary": {
     "prev_close": 1264000.0,
     "open": 1089000.0,
@@ -15,11 +15,11 @@
     "c2c": -0.10443037974683544,
     "high_vs_open": 0.11753902662993565,
     "low_vs_open": 0.0,
-    "volume": 8060824.0,
-    "volume_ratio": 2.1094070289693123,
+    "volume": 8076545.0,
+    "volume_ratio": 2.1135209989434025,
     "kospi_c2c": -0.06020095007972959,
     "peer_c2c": -0.06352357320099256,
-    "usdkrw_chg": 0.010827800299384682,
+    "usdkrw_chg": 0.011350215748015646,
     "us_nights": 1,
     "sox_ret": -0.12246115062360807,
     "nasdaq_ret": -0.05523319900679158,
@@ -133,7 +133,7 @@
     ],
     "reasons": [
       "갭 -13.84%가 종가→종가 -10.44%의 133%",
-      "09:00 봉 -11.71%(σ의 15.25배, 거래량 4.61배)가 세션 +3.95%의 232%",
+      "09:00 봉 -11.71%(σ의 16.46배, 거래량 4.61배)가 세션 +3.95%의 232%",
       "KOSPI -6.02% vs 종목 -10.44%, 5분 수익률 상관 0.93 — 종목 고유 요인이 약함"
     ]
   },
@@ -141,12 +141,12 @@
     {
       "time": "2026-11-06T09:00:00+09:00",
       "ret": -0.11708860759493667,
-      "z": 15.25,
+      "z": 16.46,
       "volume_ratio": 4.61,
       "cum_before": 0.0,
       "cum_after": 0.024793388429751984,
       "session_share": -2.3183544303797414,
-      "score": 17.1759656987676,
+      "score": 18.385979672224366,
       "news": [
         {
           "time": "2026-11-06T09:08:36+09:00",
@@ -183,12 +183,12 @@
     {
       "time": "2026-11-06T09:30:00+09:00",
       "ret": 0.04480286738351258,
-      "z": 5.84,
+      "z": 6.3,
       "volume_ratio": 2.91,
       "cum_before": 0.024793388429751984,
       "cum_after": 0.07070707070707072,
       "session_share": 0.8870967741935473,
-      "score": 6.419028241032806,
+      "score": 6.88202884116399,
       "news": [
         {
           "time": "2026-11-06T09:08:36+09:00",
@@ -225,12 +225,12 @@
     {
       "time": "2026-11-06T11:45:00+09:00",
       "ret": 0.027049873203719432,
-      "z": 3.52,
+      "z": 3.8,
       "volume_ratio": 1.81,
       "cum_before": 0.08631772268135895,
       "cum_after": 0.11570247933884303,
       "session_share": 0.5355874894336436,
-      "score": 3.8856002734488673,
+      "score": 4.165138353446921,
       "news": [
         {
           "time": "2026-11-06T10:40:39+09:00",
@@ -257,10 +257,10 @@
           "link": "https://news.google.com/rss/articles/CBMickFVX3lxTE5oWHB3SUtseWhhcldNZGZoamI2SVJIRjFxSnFBRHh6WjhxOTRjb1F0NlJzVFhSN0tiOGZyNGV3XzQwc3V0RHJLZl9iRXJ3WmdKcm96aEd6enM1bTg4UkRWUlE0eDV3NWdWVTJzeE96eU9YZw?oc=5"
         },
         {
-          "time": "2026-11-06T10:54:32+09:00",
-          "title": "美 ‘블루 쓰나미’ AI 투자 제동 우려에도…삼성·SK는 “반도체 없어서 못 판다”",
-          "source": "서울경제",
-          "link": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE1NU1lZMUtaVEVjYVIwZG1SX0h2UEQ0OENieUNyWGlrWkExRFJWX2M3UUtVcEVwYkk2ZDlBQWJ0NkFCeHF4TnhrOThjOHJfdUpjQ2fSAVNBVV95cUxQek5odVlrWlZlOFVmNS1pT1JLT1k5WTJrU01JS2RsdTYwOTBYb3F5bTJzalIyaWh3TmR1QTE3NUR4ck93cFlMNE5EN09ONFFadFpDNA?oc=5"
+          "time": "2026-11-06T10:18:13+09:00",
+          "title": "[국내증시] 코스피 8% 폭락에 서킷브레이커 발동…삼성전자·SK하이닉스 급락, 증시 '패닉셀'",
+          "source": "톱스타뉴스",
+          "link": "https://news.google.com/rss/articles/CBMickFVX3lxTE1KX0NLRWhGQXRPc0ZyVzJnUWVnQk9uZlBzazZMM1FzQ0lEYkNjbmZGQzd6ZzlMdktuNGpsVW51Z3J2Z2stZGVzaDhvNVRxWWZYb0hJVG4waElHQTVuOFpyNDFPOWV6enByX0tDYlczdThWdw?oc=5"
         }
       ]
     }
@@ -273,7 +273,7 @@
     "pattern": "저점 후 반등"
   },
   "closing_share": -0.26565295169946423,
-  "intraday_corr_kospi": 0.9252810542037273,
+  "intraday_corr_kospi": 0.9255948603073542,
   "intraday_note": "장중 봉은 09:00~14:55까지만 있어 마감 구간(14:55~15:30)은 일봉 종가로만 봅니다(그 구간 -1.05%).",
   "intraday_coverage": "09:00~14:55",
   "intraday_path": [
@@ -300,12 +300,12 @@
     {
       "time": "2026-11-06T09:45:00+09:00",
       "price": 1136000.0,
-      "volume": 144503.0
+      "volume": 144504.0
     },
     {
       "time": "2026-11-06T09:50:00+09:00",
       "price": 1121000.0,
-      "volume": 137576.0
+      "volume": 137575.0
     },
     {
       "time": "2026-11-06T09:55:00+09:00",
@@ -404,13 +404,13 @@
     },
     {
       "time": "2026-11-06T11:30:00+09:00",
-      "price": 1196000.0,
-      "volume": 93064.0
+      "price": 1197000.0,
+      "volume": 93063.0
     },
     {
       "time": "2026-11-06T11:35:00+09:00",
       "price": 1195500.0,
-      "volume": 154287.0
+      "volume": 154288.0
     },
     {
       "time": "2026-11-06T11:40:00+09:00",
@@ -474,23 +474,23 @@
     },
     {
       "time": "2026-11-06T12:40:00+09:00",
-      "price": 1159000.0,
-      "volume": 65617.0
+      "price": 1160000.0,
+      "volume": 65644.0
     },
     {
       "time": "2026-11-06T12:45:00+09:00",
       "price": 1160000.0,
-      "volume": 58054.0
+      "volume": 58027.0
     },
     {
       "time": "2026-11-06T12:50:00+09:00",
       "price": 1155000.0,
-      "volume": 66425.0
+      "volume": 66424.0
     },
     {
       "time": "2026-11-06T12:55:00+09:00",
       "price": 1160000.0,
-      "volume": 72968.0
+      "volume": 72969.0
     },
     {
       "time": "2026-11-06T13:00:00+09:00",
@@ -535,12 +535,12 @@
     {
       "time": "2026-11-06T13:40:00+09:00",
       "price": 1145000.0,
-      "volume": 62473.0
+      "volume": 62236.0
     },
     {
       "time": "2026-11-06T13:45:00+09:00",
       "price": 1149000.0,
-      "volume": 66824.0
+      "volume": 67061.0
     },
     {
       "time": "2026-11-06T13:50:00+09:00",
@@ -617,12 +617,12 @@
     {
       "time": "2026-11-06T09:00:00+09:00",
       "ret": -0.11708860759493667,
-      "z": 15.25,
+      "z": 16.46,
       "volume_ratio": 4.61,
       "cum_before": 0.0,
       "cum_after": 0.024793388429751984,
       "session_share": -2.3183544303797414,
-      "score": 17.1759656987676,
+      "score": 18.385979672224366,
       "news": [
         {
           "time": "2026-11-06T09:08:36+09:00",
@@ -661,12 +661,12 @@
     {
       "time": "2026-11-06T09:30:00+09:00",
       "ret": 0.04480286738351258,
-      "z": 5.84,
+      "z": 6.3,
       "volume_ratio": 2.91,
       "cum_before": 0.024793388429751984,
       "cum_after": 0.07070707070707072,
       "session_share": 0.8870967741935473,
-      "score": 6.419028241032806,
+      "score": 6.88202884116399,
       "news": [
         {
           "time": "2026-11-06T09:08:36+09:00",
@@ -705,12 +705,12 @@
     {
       "time": "2026-11-06T11:45:00+09:00",
       "ret": 0.027049873203719432,
-      "z": 3.52,
+      "z": 3.8,
       "volume_ratio": 1.81,
       "cum_before": 0.08631772268135895,
       "cum_after": 0.11570247933884303,
       "session_share": 0.5355874894336436,
-      "score": 3.8856002734488673,
+      "score": 4.165138353446921,
       "news": [
         {
           "time": "2026-11-06T10:40:39+09:00",
@@ -737,10 +737,10 @@
           "link": "https://news.google.com/rss/articles/CBMickFVX3lxTE5oWHB3SUtseWhhcldNZGZoamI2SVJIRjFxSnFBRHh6WjhxOTRjb1F0NlJzVFhSN0tiOGZyNGV3XzQwc3V0RHJLZl9iRXJ3WmdKcm96aEd6enM1bTg4UkRWUlE0eDV3NWdWVTJzeE96eU9YZw?oc=5"
         },
         {
-          "time": "2026-11-06T10:54:32+09:00",
-          "title": "美 ‘블루 쓰나미’ AI 투자 제동 우려에도…삼성·SK는 “반도체 없어서 못 판다”",
-          "source": "서울경제",
-          "link": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE1NU1lZMUtaVEVjYVIwZG1SX0h2UEQ0OENieUNyWGlrWkExRFJWX2M3UUtVcEVwYkk2ZDlBQWJ0NkFCeHF4TnhrOThjOHJfdUpjQ2fSAVNBVV95cUxQek5odVlrWlZlOFVmNS1pT1JLT1k5WTJrU01JS2RsdTYwOTBYb3F5bTJzalIyaWh3TmR1QTE3NUR4ck93cFlMNE5EN09ONFFadFpDNA?oc=5"
+          "time": "2026-11-06T10:18:13+09:00",
+          "title": "[국내증시] 코스피 8% 폭락에 서킷브레이커 발동…삼성전자·SK하이닉스 급락, 증시 '패닉셀'",
+          "source": "톱스타뉴스",
+          "link": "https://news.google.com/rss/articles/CBMickFVX3lxTE1KX0NLRWhGQXRPc0ZyVzJnUWVnQk9uZlBzazZMM1FzQ0lEYkNjbmZGQzd6ZzlMdktuNGpsVW51Z3J2Z2stZGVzaDhvNVRxWWZYb0hJVG4waElHQTVuOFpyNDFPOWV6enByX0tDYlczdThWdw?oc=5"
         }
       ],
       "price": 1215000.0,
@@ -834,9 +834,9 @@
     "steady": 20,
     "upper": 4,
     "lower": 0,
-    "individual": 6079.0,
-    "foreign": -27713.0,
-    "institution": 16984.0,
+    "individual": 5929.0,
+    "foreign": -27574.0,
+    "institution": 16995.0,
     "prev_close": 5383.8,
     "open": 5263.26,
     "high": 5269.1,

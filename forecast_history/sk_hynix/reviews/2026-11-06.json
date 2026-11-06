@@ -3,7 +3,7 @@
   "name": "SK하이닉스",
   "peer_name": "삼성전자",
   "session_date": "2026-11-06",
-  "generated_at": "2026-11-06 17:31 KST",
+  "generated_at": "2026-11-06 23:58 KST",
   "summary": {
     "prev_close": 1264000.0,
     "open": 1089000.0,
@@ -15,11 +15,11 @@
     "c2c": -0.10443037974683544,
     "high_vs_open": 0.11753902662993565,
     "low_vs_open": 0.0,
-    "volume": 8123970.0,
-    "volume_ratio": 2.12593147067047,
+    "volume": 8505034.0,
+    "volume_ratio": 2.225650690453356,
     "kospi_c2c": -0.06020095007972959,
     "peer_c2c": -0.06352357320099256,
-    "usdkrw_chg": 0.0111263103996746,
+    "usdkrw_chg": 0.016043938646290945,
     "us_nights": 1,
     "sox_ret": -0.12246115062360807,
     "nasdaq_ret": -0.05523319900679158,
@@ -123,7 +123,15 @@
         "purpose": "주주가치 제고 및 임직원 주식 보상",
         "rcept_no": "20261028000014"
       }
-    ]
+    ],
+    "foreign_pressure": {
+      "state": "selling_intensified",
+      "previous_ratio": -0.005841619797841972,
+      "recent_ratio": -0.19208235478701902,
+      "previous_daily_net": -21580.8,
+      "recent_daily_net": -855758.2
+    },
+    "buyback_transition": null
   },
   "classification": {
     "labels": [
@@ -149,22 +157,10 @@
       "score": 18.385979672224366,
       "news": [
         {
-          "time": "2026-11-06T09:08:36+09:00",
-          "title": "한화투자증권 \"외국인 매도 압력 완화…삼성전자·SK하이닉스 주목\"",
-          "source": "SR타임스",
-          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE5kZ1NjcDhkR0VlTzNSQnVtbG1vcU9rdWh0QWd0RTVHQWcyTmxfakFhZ3NvX1JJQ3FuNF82SVBtazlvcVR6cno2YkVKS3ZfWnNGNGJPMW9xWmduYXVGWmJKNXM5UzZFclp5?oc=5"
-        },
-        {
           "time": "2026-11-06T08:26:08+09:00",
           "title": "[특징주] 삼성전자·SK하이닉스, AI 투자 축소 우려에 프리마켓서 10% 넘게 급락",
           "source": "아주경제",
           "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE90WEZBX3hmMWdtT09VUHZUNGxWZWp4Y0U5NEczWHVjQ2pfM1o3aE1lSHN6aG9LMDc5akh3ZWNST193OURuVGtHTmoxQjJBN3c4b2c2MHhuRlZBd9IBWEFVX3lxTE9JT3JHM3hKS1ZZNmZyM2FwaTVvTkRsZVExZFk0ejBabGxpR3gxMDd4TTJkU0ZuVXdLVTJ5X2ZCTThJUWcxM3NTTzJHQjVfbEpOWFVqTUt1VWk?oc=5"
-        },
-        {
-          "time": "2026-11-06T08:32:37+09:00",
-          "title": "AI 규제 우려에 반도체주 급락···삼성전자·SK하이닉스 프리마켓서 동반 하락",
-          "source": "직썰",
-          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE9VMHJ3UW5FNjMtSWIzeWZERUFTSEktYVFKUUpDdUxQelhWNXpwYjEyR0x2TWRUSE5TVW5RSjFwbjVrMjBSOGwtNjI5NlhDRDBNR1hfbUp0SWZQWFEzUWFhR1Bxbi0wOTgx0gFsQVVfeXFMUGRzUE5OVWxkYWQwYXlLdmpjMVA2cTU5d3lFcGtXMXZnUDllcGQ1TE9tRHRRaDJ6QWM0eWpkX3k4Q1pVRnRBdzJJMVpIU0RHQkF2Y3hLQUVEbWRNUXN6a1FXWmM4XzBCY2hwRUJm?oc=5"
         },
         {
           "time": "2026-11-06T07:37:45+09:00",
@@ -177,6 +173,18 @@
           "title": "[속보] 마이크론 16% 이어 삼성전자 11%, SK하이닉스 14% 폭락",
           "source": "뉴데일리",
           "link": "https://news.google.com/rss/articles/CBMie0FVX3lxTE5sR0dyeDVqeWdjc1pTUjlVSWVvbE5EMHpQQjlvQjFmSU55bVdwSkpTZVJtcDVsWm9WS0pLM1RJNHRWbG04SnAtRmYzTjk2R3NFR19VRFBZUWkta193Q1lDMTNWMlZtbHBpLXUySEZzUXRRVkJ6QzNFU0E5WdIBgAFBVV95cUxPYTdXRGNWNHNvNXBuLXEyQkVvcDRSejdZOVZ2S2VHRnEzMzNDZF9FV2VseDVPd3RkaVpIM1ZEeVBETTJXQTVaSTJGcGxSYWx1MWdMZE9VWTRMTVJocVhyLTlmaE5MTGVUcTlZTXlvUXBlZEQ5T2VKWUNfeGliWDZ5VQ?oc=5"
+        },
+        {
+          "time": "2026-11-06T08:26:00+09:00",
+          "title": "[특징주] 美 반도체주 폭락에 프리마켓서 삼성전자 11%·SK하이닉스 13%↓",
+          "source": "뉴스핌",
+          "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE9lekV2dzBxblFYb2I2ZzllXzBLR3ZyWlBKdERvcW91d0RzWURNUlNZNzNxZFlhUkZfSWVvY2VURDJiTnJ4ZXBEeDFWZUJIUEV2R2RZSmRCMTRkdTA5?oc=5"
+        },
+        {
+          "time": "2026-11-06T08:30:00+09:00",
+          "title": "“삼성전자·SK하이닉스 더 떨어지나” 공포 커졌는데…증권가서 나온 뜻밖의 전망",
+          "source": "데일리25",
+          "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE5Rd3pucG5jQ19TMWp4MktZWmh4cXJodEpVejZQLTVKRUdaX1E5MlRlUXhITm1RLXUxMWFLNVVZcXdqTXZFUjhXOW9mcTNWWHhpLTJzeUpXSmwtMnVVaG5xQ1hJNjhsbVpPQTk5WA?oc=5"
         }
       ]
     },
@@ -191,22 +199,10 @@
       "score": 6.88202884116399,
       "news": [
         {
-          "time": "2026-11-06T09:08:36+09:00",
-          "title": "한화투자증권 \"외국인 매도 압력 완화…삼성전자·SK하이닉스 주목\"",
-          "source": "SR타임스",
-          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE5kZ1NjcDhkR0VlTzNSQnVtbG1vcU9rdWh0QWd0RTVHQWcyTmxfakFhZ3NvX1JJQ3FuNF82SVBtazlvcVR6cno2YkVKS3ZfWnNGNGJPMW9xWmduYXVGWmJKNXM5UzZFclp5?oc=5"
-        },
-        {
           "time": "2026-11-06T08:26:08+09:00",
           "title": "[특징주] 삼성전자·SK하이닉스, AI 투자 축소 우려에 프리마켓서 10% 넘게 급락",
           "source": "아주경제",
           "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE90WEZBX3hmMWdtT09VUHZUNGxWZWp4Y0U5NEczWHVjQ2pfM1o3aE1lSHN6aG9LMDc5akh3ZWNST193OURuVGtHTmoxQjJBN3c4b2c2MHhuRlZBd9IBWEFVX3lxTE9JT3JHM3hKS1ZZNmZyM2FwaTVvTkRsZVExZFk0ejBabGxpR3gxMDd4TTJkU0ZuVXdLVTJ5X2ZCTThJUWcxM3NTTzJHQjVfbEpOWFVqTUt1VWk?oc=5"
-        },
-        {
-          "time": "2026-11-06T08:32:37+09:00",
-          "title": "AI 규제 우려에 반도체주 급락···삼성전자·SK하이닉스 프리마켓서 동반 하락",
-          "source": "직썰",
-          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE9VMHJ3UW5FNjMtSWIzeWZERUFTSEktYVFKUUpDdUxQelhWNXpwYjEyR0x2TWRUSE5TVW5RSjFwbjVrMjBSOGwtNjI5NlhDRDBNR1hfbUp0SWZQWFEzUWFhR1Bxbi0wOTgx0gFsQVVfeXFMUGRzUE5OVWxkYWQwYXlLdmpjMVA2cTU5d3lFcGtXMXZnUDllcGQ1TE9tRHRRaDJ6QWM0eWpkX3k4Q1pVRnRBdzJJMVpIU0RHQkF2Y3hLQUVEbWRNUXN6a1FXWmM4XzBCY2hwRUJm?oc=5"
         },
         {
           "time": "2026-11-06T09:34:18+09:00",
@@ -219,6 +215,18 @@
           "title": "[속보] 마이크론 16% 이어 삼성전자 11%, SK하이닉스 14% 폭락",
           "source": "뉴데일리",
           "link": "https://news.google.com/rss/articles/CBMie0FVX3lxTE5sR0dyeDVqeWdjc1pTUjlVSWVvbE5EMHpQQjlvQjFmSU55bVdwSkpTZVJtcDVsWm9WS0pLM1RJNHRWbG04SnAtRmYzTjk2R3NFR19VRFBZUWkta193Q1lDMTNWMlZtbHBpLXUySEZzUXRRVkJ6QzNFU0E5WdIBgAFBVV95cUxPYTdXRGNWNHNvNXBuLXEyQkVvcDRSejdZOVZ2S2VHRnEzMzNDZF9FV2VseDVPd3RkaVpIM1ZEeVBETTJXQTVaSTJGcGxSYWx1MWdMZE9VWTRMTVJocVhyLTlmaE5MTGVUcTlZTXlvUXBlZEQ5T2VKWUNfeGliWDZ5VQ?oc=5"
+        },
+        {
+          "time": "2026-11-06T08:26:00+09:00",
+          "title": "[특징주] 美 반도체주 폭락에 프리마켓서 삼성전자 11%·SK하이닉스 13%↓",
+          "source": "뉴스핌",
+          "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE9lekV2dzBxblFYb2I2ZzllXzBLR3ZyWlBKdERvcW91d0RzWURNUlNZNzNxZFlhUkZfSWVvY2VURDJiTnJ4ZXBEeDFWZUJIUEV2R2RZSmRCMTRkdTA5?oc=5"
+        },
+        {
+          "time": "2026-11-06T08:30:00+09:00",
+          "title": "“삼성전자·SK하이닉스 더 떨어지나” 공포 커졌는데…증권가서 나온 뜻밖의 전망",
+          "source": "데일리25",
+          "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE5Rd3pucG5jQ19TMWp4MktZWmh4cXJodEpVejZQLTVKRUdaX1E5MlRlUXhITm1RLXUxMWFLNVVZcXdqTXZFUjhXOW9mcTNWWHhpLTJzeUpXSmwtMnVVaG5xQ1hJNjhsbVpPQTk5WA?oc=5"
         }
       ]
     },
@@ -233,34 +241,34 @@
       "score": 4.165138353446921,
       "news": [
         {
-          "time": "2026-11-06T10:40:39+09:00",
-          "title": "AI가 키운 메모리 황금기…삼성·SK, HBM·D램 주도권 경쟁 격화",
-          "source": "www.ebn.co.kr",
-          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTFBHUFRqeTdHT0tlRXRUTnk0ZFFkZXdfSm5lTThIdUU2SzgtRVplcGRIeWhJTTlHeVFyTEpJS0x1bVZqNXlEOHdpYVAwNlc3cDFfZmt0cHRBNE53S1hrckNRSzM3aGdqa01f?oc=5"
-        },
-        {
-          "time": "2026-11-06T10:42:09+09:00",
-          "title": "삼성전자·SK하이닉스 주가 급락, 투자자 혼란 가중... 이제 어디로?",
-          "source": "공감신문",
-          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTFBIalNVMGp6VjVGVFczTU9kaWg4Tl9XdmdRLVNzclRGSFpzUHg0TWxKRHdCZExuRFlvZjNFbG90bHFKeXBZU2piYURPRzQ4R3JjUU5VLU8xNXNSb25TbHdZczVvNGwyelFT?oc=5"
-        },
-        {
           "time": "2026-11-06T10:42:39+09:00",
           "title": "SK하이닉스 주가 장중 9%대 내려, 미국 반도체주 급락에 삼성전자도 하락",
           "source": "비즈니스포스트",
           "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTE9kNmNUeF8wZzVBMWtlMnZrSHA3T01rQWZRRl9PeTlKeV9walAtbGRkRDBWa0QyRnRZTDZ4dmVMVVdLN0dGZWNUTGY5aV9ScW9rWTZnR0V1V1djaUtTQ3dXcVUtUVRLWW5IWDFFV2NlR2NqYlk?oc=5"
         },
         {
-          "time": "2026-11-06T11:26:43+09:00",
-          "title": "미국 중간선거가 AI 투자 지형 흔드나…삼성전자·SK하이닉스 폭락, 데이터센터 규제와 2천조원 IPO의 향방",
-          "source": "톱스타뉴스",
-          "link": "https://news.google.com/rss/articles/CBMickFVX3lxTE5oWHB3SUtseWhhcldNZGZoamI2SVJIRjFxSnFBRHh6WjhxOTRjb1F0NlJzVFhSN0tiOGZyNGV3XzQwc3V0RHJLZl9iRXJ3WmdKcm96aEd6enM1bTg4UkRWUlE0eDV3NWdWVTJzeE96eU9YZw?oc=5"
+          "time": "2026-11-06T10:19:00+09:00",
+          "title": "미 '블루 웨이브' 규제 공포와 반도체 폭락: 삼성전자·SK하이닉스 밸류에이션 및 펀더멘털 분석",
+          "source": "네이버 프리미엄콘텐츠",
+          "link": "https://news.google.com/rss/articles/CBMigwFBVV95cUxQcThydE5EaVhPTERWd0QzN0g4WnNnamtoeUZ4cUJhRkd5U05GS21VZEh6V1U1LXJrbWFzN243RklscFB2czdyX3RJdS0xRXhRNWJnNzczOGpOVUNfZ3VEaDVzSF9NMnFIWEViTVlyd3l1RVk4S3NaazBKLWFQd05yUE9GUQ?oc=5"
         },
         {
-          "time": "2026-11-06T10:18:13+09:00",
-          "title": "[국내증시] 코스피 8% 폭락에 서킷브레이커 발동…삼성전자·SK하이닉스 급락, 증시 '패닉셀'",
-          "source": "톱스타뉴스",
-          "link": "https://news.google.com/rss/articles/CBMickFVX3lxTE1KX0NLRWhGQXRPc0ZyVzJnUWVnQk9uZlBzazZMM1FzQ0lEYkNjbmZGQzd6ZzlMdktuNGpsVW51Z3J2Z2stZGVzaDhvNVRxWWZYb0hJVG4waElHQTVuOFpyNDFPOWV6enByX0tDYlczdThWdw?oc=5"
+          "time": "2026-11-06T10:45:00+09:00",
+          "title": "‘9000피’ 고점서 삼성전자·SK하이닉스 2261조원 증발…코스피 시총 지도 재편 [美 선거발 증시 쇼크]",
+          "source": "이투데이",
+          "link": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE1rOUVRa0pYaS11TkNNdzFkblNBUll0ZHZGRGlqWU9POGF2OG9ENG1IZDh3bnFjcExfc1hFa2FBblNoLTdLUFNmeTlHcjBNaEdJblJDcA?oc=5"
+        },
+        {
+          "time": "2026-11-06T10:45:11+09:00",
+          "title": "코스피 5천선 붕괴에 개미들 '패닉'…삼성전자·SK하이닉스 폭락",
+          "source": "산경투데이",
+          "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE1sal9KWnphWWZzUWFzYnZTLTV2b0p4YVoxWHJ4Wlk3dndZMUxrckZ3dzNIeFMxOTNwUG9pNTFCZ3lWZWx0UUpuM0pBSFRXa1pJUzF4RWltNEpIT3NQSHkzX2k1U0Z2clBzaUZneW9ET2HSAXRBVV95cUxQLW9WMU1KMWxfQ2xDemxyaFl4azdNTldQRnRCZjRyQ2M0SzhCZ0QzeWNZdHZaZi1XY3ktd1VfMU5fa09xZ3lDZWVsYlAtbmJRZmdmbU5yajhKNTlCOFhSbE9LdHAxMVVSdVlNLXkzNzdwMDEtcA?oc=5"
+        },
+        {
+          "time": "2026-11-06T10:52:27+09:00",
+          "title": "대범한 고수들…코스피 급락장에서 SK하이닉스 '순매수 1위'",
+          "source": "한국경제",
+          "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE5rY2pDTWJoek9JYzEwSl9qTG5oNXVhSVNiWkY2TkFNMFloQno5c1VLck5WQkpqNWdRZXhqQlpVZlpBMEJkMHFlODJ0SWtiUXdBY0hSSmtKOFprQQ?oc=5"
         }
       ]
     }
@@ -625,22 +633,10 @@
       "score": 18.385979672224366,
       "news": [
         {
-          "time": "2026-11-06T09:08:36+09:00",
-          "title": "한화투자증권 \"외국인 매도 압력 완화…삼성전자·SK하이닉스 주목\"",
-          "source": "SR타임스",
-          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE5kZ1NjcDhkR0VlTzNSQnVtbG1vcU9rdWh0QWd0RTVHQWcyTmxfakFhZ3NvX1JJQ3FuNF82SVBtazlvcVR6cno2YkVKS3ZfWnNGNGJPMW9xWmduYXVGWmJKNXM5UzZFclp5?oc=5"
-        },
-        {
           "time": "2026-11-06T08:26:08+09:00",
           "title": "[특징주] 삼성전자·SK하이닉스, AI 투자 축소 우려에 프리마켓서 10% 넘게 급락",
           "source": "아주경제",
           "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE90WEZBX3hmMWdtT09VUHZUNGxWZWp4Y0U5NEczWHVjQ2pfM1o3aE1lSHN6aG9LMDc5akh3ZWNST193OURuVGtHTmoxQjJBN3c4b2c2MHhuRlZBd9IBWEFVX3lxTE9JT3JHM3hKS1ZZNmZyM2FwaTVvTkRsZVExZFk0ejBabGxpR3gxMDd4TTJkU0ZuVXdLVTJ5X2ZCTThJUWcxM3NTTzJHQjVfbEpOWFVqTUt1VWk?oc=5"
-        },
-        {
-          "time": "2026-11-06T08:32:37+09:00",
-          "title": "AI 규제 우려에 반도체주 급락···삼성전자·SK하이닉스 프리마켓서 동반 하락",
-          "source": "직썰",
-          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE9VMHJ3UW5FNjMtSWIzeWZERUFTSEktYVFKUUpDdUxQelhWNXpwYjEyR0x2TWRUSE5TVW5RSjFwbjVrMjBSOGwtNjI5NlhDRDBNR1hfbUp0SWZQWFEzUWFhR1Bxbi0wOTgx0gFsQVVfeXFMUGRzUE5OVWxkYWQwYXlLdmpjMVA2cTU5d3lFcGtXMXZnUDllcGQ1TE9tRHRRaDJ6QWM0eWpkX3k4Q1pVRnRBdzJJMVpIU0RHQkF2Y3hLQUVEbWRNUXN6a1FXWmM4XzBCY2hwRUJm?oc=5"
         },
         {
           "time": "2026-11-06T07:37:45+09:00",
@@ -653,6 +649,18 @@
           "title": "[속보] 마이크론 16% 이어 삼성전자 11%, SK하이닉스 14% 폭락",
           "source": "뉴데일리",
           "link": "https://news.google.com/rss/articles/CBMie0FVX3lxTE5sR0dyeDVqeWdjc1pTUjlVSWVvbE5EMHpQQjlvQjFmSU55bVdwSkpTZVJtcDVsWm9WS0pLM1RJNHRWbG04SnAtRmYzTjk2R3NFR19VRFBZUWkta193Q1lDMTNWMlZtbHBpLXUySEZzUXRRVkJ6QzNFU0E5WdIBgAFBVV95cUxPYTdXRGNWNHNvNXBuLXEyQkVvcDRSejdZOVZ2S2VHRnEzMzNDZF9FV2VseDVPd3RkaVpIM1ZEeVBETTJXQTVaSTJGcGxSYWx1MWdMZE9VWTRMTVJocVhyLTlmaE5MTGVUcTlZTXlvUXBlZEQ5T2VKWUNfeGliWDZ5VQ?oc=5"
+        },
+        {
+          "time": "2026-11-06T08:26:00+09:00",
+          "title": "[특징주] 美 반도체주 폭락에 프리마켓서 삼성전자 11%·SK하이닉스 13%↓",
+          "source": "뉴스핌",
+          "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE9lekV2dzBxblFYb2I2ZzllXzBLR3ZyWlBKdERvcW91d0RzWURNUlNZNzNxZFlhUkZfSWVvY2VURDJiTnJ4ZXBEeDFWZUJIUEV2R2RZSmRCMTRkdTA5?oc=5"
+        },
+        {
+          "time": "2026-11-06T08:30:00+09:00",
+          "title": "“삼성전자·SK하이닉스 더 떨어지나” 공포 커졌는데…증권가서 나온 뜻밖의 전망",
+          "source": "데일리25",
+          "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE5Rd3pucG5jQ19TMWp4MktZWmh4cXJodEpVejZQLTVKRUdaX1E5MlRlUXhITm1RLXUxMWFLNVVZcXdqTXZFUjhXOW9mcTNWWHhpLTJzeUpXSmwtMnVVaG5xQ1hJNjhsbVpPQTk5WA?oc=5"
         }
       ],
       "price": 1116000.0,
@@ -669,22 +677,10 @@
       "score": 6.88202884116399,
       "news": [
         {
-          "time": "2026-11-06T09:08:36+09:00",
-          "title": "한화투자증권 \"외국인 매도 압력 완화…삼성전자·SK하이닉스 주목\"",
-          "source": "SR타임스",
-          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE5kZ1NjcDhkR0VlTzNSQnVtbG1vcU9rdWh0QWd0RTVHQWcyTmxfakFhZ3NvX1JJQ3FuNF82SVBtazlvcVR6cno2YkVKS3ZfWnNGNGJPMW9xWmduYXVGWmJKNXM5UzZFclp5?oc=5"
-        },
-        {
           "time": "2026-11-06T08:26:08+09:00",
           "title": "[특징주] 삼성전자·SK하이닉스, AI 투자 축소 우려에 프리마켓서 10% 넘게 급락",
           "source": "아주경제",
           "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE90WEZBX3hmMWdtT09VUHZUNGxWZWp4Y0U5NEczWHVjQ2pfM1o3aE1lSHN6aG9LMDc5akh3ZWNST193OURuVGtHTmoxQjJBN3c4b2c2MHhuRlZBd9IBWEFVX3lxTE9JT3JHM3hKS1ZZNmZyM2FwaTVvTkRsZVExZFk0ejBabGxpR3gxMDd4TTJkU0ZuVXdLVTJ5X2ZCTThJUWcxM3NTTzJHQjVfbEpOWFVqTUt1VWk?oc=5"
-        },
-        {
-          "time": "2026-11-06T08:32:37+09:00",
-          "title": "AI 규제 우려에 반도체주 급락···삼성전자·SK하이닉스 프리마켓서 동반 하락",
-          "source": "직썰",
-          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE9VMHJ3UW5FNjMtSWIzeWZERUFTSEktYVFKUUpDdUxQelhWNXpwYjEyR0x2TWRUSE5TVW5RSjFwbjVrMjBSOGwtNjI5NlhDRDBNR1hfbUp0SWZQWFEzUWFhR1Bxbi0wOTgx0gFsQVVfeXFMUGRzUE5OVWxkYWQwYXlLdmpjMVA2cTU5d3lFcGtXMXZnUDllcGQ1TE9tRHRRaDJ6QWM0eWpkX3k4Q1pVRnRBdzJJMVpIU0RHQkF2Y3hLQUVEbWRNUXN6a1FXWmM4XzBCY2hwRUJm?oc=5"
         },
         {
           "time": "2026-11-06T09:34:18+09:00",
@@ -697,6 +693,18 @@
           "title": "[속보] 마이크론 16% 이어 삼성전자 11%, SK하이닉스 14% 폭락",
           "source": "뉴데일리",
           "link": "https://news.google.com/rss/articles/CBMie0FVX3lxTE5sR0dyeDVqeWdjc1pTUjlVSWVvbE5EMHpQQjlvQjFmSU55bVdwSkpTZVJtcDVsWm9WS0pLM1RJNHRWbG04SnAtRmYzTjk2R3NFR19VRFBZUWkta193Q1lDMTNWMlZtbHBpLXUySEZzUXRRVkJ6QzNFU0E5WdIBgAFBVV95cUxPYTdXRGNWNHNvNXBuLXEyQkVvcDRSejdZOVZ2S2VHRnEzMzNDZF9FV2VseDVPd3RkaVpIM1ZEeVBETTJXQTVaSTJGcGxSYWx1MWdMZE9VWTRMTVJocVhyLTlmaE5MTGVUcTlZTXlvUXBlZEQ5T2VKWUNfeGliWDZ5VQ?oc=5"
+        },
+        {
+          "time": "2026-11-06T08:26:00+09:00",
+          "title": "[특징주] 美 반도체주 폭락에 프리마켓서 삼성전자 11%·SK하이닉스 13%↓",
+          "source": "뉴스핌",
+          "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE9lekV2dzBxblFYb2I2ZzllXzBLR3ZyWlBKdERvcW91d0RzWURNUlNZNzNxZFlhUkZfSWVvY2VURDJiTnJ4ZXBEeDFWZUJIUEV2R2RZSmRCMTRkdTA5?oc=5"
+        },
+        {
+          "time": "2026-11-06T08:30:00+09:00",
+          "title": "“삼성전자·SK하이닉스 더 떨어지나” 공포 커졌는데…증권가서 나온 뜻밖의 전망",
+          "source": "데일리25",
+          "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE5Rd3pucG5jQ19TMWp4MktZWmh4cXJodEpVejZQLTVKRUdaX1E5MlRlUXhITm1RLXUxMWFLNVVZcXdqTXZFUjhXOW9mcTNWWHhpLTJzeUpXSmwtMnVVaG5xQ1hJNjhsbVpPQTk5WA?oc=5"
         }
       ],
       "price": 1166000.0,
@@ -713,34 +721,34 @@
       "score": 4.165138353446921,
       "news": [
         {
-          "time": "2026-11-06T10:40:39+09:00",
-          "title": "AI가 키운 메모리 황금기…삼성·SK, HBM·D램 주도권 경쟁 격화",
-          "source": "www.ebn.co.kr",
-          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTFBHUFRqeTdHT0tlRXRUTnk0ZFFkZXdfSm5lTThIdUU2SzgtRVplcGRIeWhJTTlHeVFyTEpJS0x1bVZqNXlEOHdpYVAwNlc3cDFfZmt0cHRBNE53S1hrckNRSzM3aGdqa01f?oc=5"
-        },
-        {
-          "time": "2026-11-06T10:42:09+09:00",
-          "title": "삼성전자·SK하이닉스 주가 급락, 투자자 혼란 가중... 이제 어디로?",
-          "source": "공감신문",
-          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTFBIalNVMGp6VjVGVFczTU9kaWg4Tl9XdmdRLVNzclRGSFpzUHg0TWxKRHdCZExuRFlvZjNFbG90bHFKeXBZU2piYURPRzQ4R3JjUU5VLU8xNXNSb25TbHdZczVvNGwyelFT?oc=5"
-        },
-        {
           "time": "2026-11-06T10:42:39+09:00",
           "title": "SK하이닉스 주가 장중 9%대 내려, 미국 반도체주 급락에 삼성전자도 하락",
           "source": "비즈니스포스트",
           "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTE9kNmNUeF8wZzVBMWtlMnZrSHA3T01rQWZRRl9PeTlKeV9walAtbGRkRDBWa0QyRnRZTDZ4dmVMVVdLN0dGZWNUTGY5aV9ScW9rWTZnR0V1V1djaUtTQ3dXcVUtUVRLWW5IWDFFV2NlR2NqYlk?oc=5"
         },
         {
-          "time": "2026-11-06T11:26:43+09:00",
-          "title": "미국 중간선거가 AI 투자 지형 흔드나…삼성전자·SK하이닉스 폭락, 데이터센터 규제와 2천조원 IPO의 향방",
-          "source": "톱스타뉴스",
-          "link": "https://news.google.com/rss/articles/CBMickFVX3lxTE5oWHB3SUtseWhhcldNZGZoamI2SVJIRjFxSnFBRHh6WjhxOTRjb1F0NlJzVFhSN0tiOGZyNGV3XzQwc3V0RHJLZl9iRXJ3WmdKcm96aEd6enM1bTg4UkRWUlE0eDV3NWdWVTJzeE96eU9YZw?oc=5"
+          "time": "2026-11-06T10:19:00+09:00",
+          "title": "미 '블루 웨이브' 규제 공포와 반도체 폭락: 삼성전자·SK하이닉스 밸류에이션 및 펀더멘털 분석",
+          "source": "네이버 프리미엄콘텐츠",
+          "link": "https://news.google.com/rss/articles/CBMigwFBVV95cUxQcThydE5EaVhPTERWd0QzN0g4WnNnamtoeUZ4cUJhRkd5U05GS21VZEh6V1U1LXJrbWFzN243RklscFB2czdyX3RJdS0xRXhRNWJnNzczOGpOVUNfZ3VEaDVzSF9NMnFIWEViTVlyd3l1RVk4S3NaazBKLWFQd05yUE9GUQ?oc=5"
         },
         {
-          "time": "2026-11-06T10:18:13+09:00",
-          "title": "[국내증시] 코스피 8% 폭락에 서킷브레이커 발동…삼성전자·SK하이닉스 급락, 증시 '패닉셀'",
-          "source": "톱스타뉴스",
-          "link": "https://news.google.com/rss/articles/CBMickFVX3lxTE1KX0NLRWhGQXRPc0ZyVzJnUWVnQk9uZlBzazZMM1FzQ0lEYkNjbmZGQzd6ZzlMdktuNGpsVW51Z3J2Z2stZGVzaDhvNVRxWWZYb0hJVG4waElHQTVuOFpyNDFPOWV6enByX0tDYlczdThWdw?oc=5"
+          "time": "2026-11-06T10:45:00+09:00",
+          "title": "‘9000피’ 고점서 삼성전자·SK하이닉스 2261조원 증발…코스피 시총 지도 재편 [美 선거발 증시 쇼크]",
+          "source": "이투데이",
+          "link": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE1rOUVRa0pYaS11TkNNdzFkblNBUll0ZHZGRGlqWU9POGF2OG9ENG1IZDh3bnFjcExfc1hFa2FBblNoLTdLUFNmeTlHcjBNaEdJblJDcA?oc=5"
+        },
+        {
+          "time": "2026-11-06T10:45:11+09:00",
+          "title": "코스피 5천선 붕괴에 개미들 '패닉'…삼성전자·SK하이닉스 폭락",
+          "source": "산경투데이",
+          "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE1sal9KWnphWWZzUWFzYnZTLTV2b0p4YVoxWHJ4Wlk3dndZMUxrckZ3dzNIeFMxOTNwUG9pNTFCZ3lWZWx0UUpuM0pBSFRXa1pJUzF4RWltNEpIT3NQSHkzX2k1U0Z2clBzaUZneW9ET2HSAXRBVV95cUxQLW9WMU1KMWxfQ2xDemxyaFl4azdNTldQRnRCZjRyQ2M0SzhCZ0QzeWNZdHZaZi1XY3ktd1VfMU5fa09xZ3lDZWVsYlAtbmJRZmdmbU5yajhKNTlCOFhSbE9LdHAxMVVSdVlNLXkzNzdwMDEtcA?oc=5"
+        },
+        {
+          "time": "2026-11-06T10:52:27+09:00",
+          "title": "대범한 고수들…코스피 급락장에서 SK하이닉스 '순매수 1위'",
+          "source": "한국경제",
+          "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE5rY2pDTWJoek9JYzEwSl9qTG5oNXVhSVNiWkY2TkFNMFloQno5c1VLck5WQkpqNWdRZXhqQlpVZlpBMEJkMHFlODJ0SWtiUXdBY0hSSmtKOFprQQ?oc=5"
         }
       ],
       "price": 1215000.0,
@@ -753,12 +761,6 @@
       "title": "[특징주] 삼성전자·SK하이닉스, AI 투자 축소 우려에 프리마켓서 10% 넘게 급락",
       "source": "아주경제",
       "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE90WEZBX3hmMWdtT09VUHZUNGxWZWp4Y0U5NEczWHVjQ2pfM1o3aE1lSHN6aG9LMDc5akh3ZWNST193OURuVGtHTmoxQjJBN3c4b2c2MHhuRlZBd9IBWEFVX3lxTE9JT3JHM3hKS1ZZNmZyM2FwaTVvTkRsZVExZFk0ejBabGxpR3gxMDd4TTJkU0ZuVXdLVTJ5X2ZCTThJUWcxM3NTTzJHQjVfbEpOWFVqTUt1VWk?oc=5"
-    },
-    {
-      "time": "2026-11-06T08:32:37+09:00",
-      "title": "AI 규제 우려에 반도체주 급락···삼성전자·SK하이닉스 프리마켓서 동반 하락",
-      "source": "직썰",
-      "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE9VMHJ3UW5FNjMtSWIzeWZERUFTSEktYVFKUUpDdUxQelhWNXpwYjEyR0x2TWRUSE5TVW5RSjFwbjVrMjBSOGwtNjI5NlhDRDBNR1hfbUp0SWZQWFEzUWFhR1Bxbi0wOTgx0gFsQVVfeXFMUGRzUE5OVWxkYWQwYXlLdmpjMVA2cTU5d3lFcGtXMXZnUDllcGQ1TE9tRHRRaDJ6QWM0eWpkX3k4Q1pVRnRBdzJJMVpIU0RHQkF2Y3hLQUVEbWRNUXN6a1FXWmM4XzBCY2hwRUJm?oc=5"
     },
     {
       "time": "2026-11-05T17:23:00+09:00",
@@ -777,20 +779,20 @@
       "title": "SK하이닉스 ADR 13% 폭락…반도체 수요 '절벽' 공포",
       "source": "글로벌이코노믹",
       "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxOYlo2ZjRfWXNXQUFHX1hYLXJMYm5DTFBTWEZzWGxPbUpuU2QyeGVFZ0kzdE42ZDJoN2dKMklqOXV4UlBtSkJ1WU11MThRTVd4VkNzeFRwRTZ6ak0tU1lfVEZMeU9xRXNPSF9HMlV5NVNJOUU2aGptV0swVmNhdW1DS2ZjVGxuNmJQ?oc=5"
+    },
+    {
+      "time": "2026-11-06T08:06:00+09:00",
+      "title": "[속보] 마이크론 16% 이어 삼성전자 11%, SK하이닉스 14% 폭락",
+      "source": "뉴데일리",
+      "link": "https://news.google.com/rss/articles/CBMie0FVX3lxTE5sR0dyeDVqeWdjc1pTUjlVSWVvbE5EMHpQQjlvQjFmSU55bVdwSkpTZVJtcDVsWm9WS0pLM1RJNHRWbG04SnAtRmYzTjk2R3NFR19VRFBZUWkta193Q1lDMTNWMlZtbHBpLXUySEZzUXRRVkJ6QzNFU0E5WdIBgAFBVV95cUxPYTdXRGNWNHNvNXBuLXEyQkVvcDRSejdZOVZ2S2VHRnEzMzNDZF9FV2VseDVPd3RkaVpIM1ZEeVBETTJXQTVaSTJGcGxSYWx1MWdMZE9VWTRMTVJocVhyLTlmaE5MTGVUcTlZTXlvUXBlZEQ5T2VKWUNfeGliWDZ5VQ?oc=5"
     }
   ],
   "top_news": [
     {
-      "time": "2026-11-06T09:08:36+09:00",
-      "title": "한화투자증권 \"외국인 매도 압력 완화…삼성전자·SK하이닉스 주목\"",
-      "source": "SR타임스",
-      "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE5kZ1NjcDhkR0VlTzNSQnVtbG1vcU9rdWh0QWd0RTVHQWcyTmxfakFhZ3NvX1JJQ3FuNF82SVBtazlvcVR6cno2YkVKS3ZfWnNGNGJPMW9xWmduYXVGWmJKNXM5UzZFclp5?oc=5"
-    },
-    {
-      "time": "2026-11-06T10:40:39+09:00",
-      "title": "AI가 키운 메모리 황금기…삼성·SK, HBM·D램 주도권 경쟁 격화",
-      "source": "www.ebn.co.kr",
-      "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTFBHUFRqeTdHT0tlRXRUTnk0ZFFkZXdfSm5lTThIdUU2SzgtRVplcGRIeWhJTTlHeVFyTEpJS0x1bVZqNXlEOHdpYVAwNlc3cDFfZmt0cHRBNE53S1hrckNRSzM3aGdqa01f?oc=5"
+      "time": "2026-11-06T18:17:45+09:00",
+      "title": "증권가, 코스피 급락에 “AI 성장 훼손보다 수급 충격”…반도체 전망은 유지",
+      "source": "한국면세뉴스",
+      "link": "https://news.google.com/rss/articles/CBMiakFVX3lxTE9hWk1zakRHak1RQ2xCa090ZkhJdVphNjdxQ3JEazNaQzlRQy1LZUxNclRlaWl0MVFESVpjWnltZVJDdV9paUt4cWppVGM3cG8yUjZmWHg3THZ1V19pOU9OT05TbGJ3cXBuMEE?oc=5"
     },
     {
       "time": "2026-11-06T08:26:08+09:00",
@@ -799,31 +801,102 @@
       "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE90WEZBX3hmMWdtT09VUHZUNGxWZWp4Y0U5NEczWHVjQ2pfM1o3aE1lSHN6aG9LMDc5akh3ZWNST193OURuVGtHTmoxQjJBN3c4b2c2MHhuRlZBd9IBWEFVX3lxTE9JT3JHM3hKS1ZZNmZyM2FwaTVvTkRsZVExZFk0ejBabGxpR3gxMDd4TTJkU0ZuVXdLVTJ5X2ZCTThJUWcxM3NTTzJHQjVfbEpOWFVqTUt1VWk?oc=5"
     },
     {
-      "time": "2026-11-06T08:32:37+09:00",
-      "title": "AI 규제 우려에 반도체주 급락···삼성전자·SK하이닉스 프리마켓서 동반 하락",
-      "source": "직썰",
-      "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE9VMHJ3UW5FNjMtSWIzeWZERUFTSEktYVFKUUpDdUxQelhWNXpwYjEyR0x2TWRUSE5TVW5RSjFwbjVrMjBSOGwtNjI5NlhDRDBNR1hfbUp0SWZQWFEzUWFhR1Bxbi0wOTgx0gFsQVVfeXFMUGRzUE5OVWxkYWQwYXlLdmpjMVA2cTU5d3lFcGtXMXZnUDllcGQ1TE9tRHRRaDJ6QWM0eWpkX3k4Q1pVRnRBdzJJMVpIU0RHQkF2Y3hLQUVEbWRNUXN6a1FXWmM4XzBCY2hwRUJm?oc=5"
-    },
-    {
       "time": "2026-11-06T09:34:18+09:00",
       "title": "美 AI 쇼크에 반도체 '패닉'…삼성전자 18만원·SK하이닉스 111만원대로 추락[핫스탁]",
       "source": "뉴시스",
       "link": "https://news.google.com/rss/articles/CBMieEFVX3lxTE1qSndLaGlUa3U5alVJWUJqcDk4Z2xNeVBzamtfNjg2b1AxQkFpUWdqUUNaNTMxRWtjWWJJWWp4ZXZhTFJrVnBqS2hnUThGUkd0ZlhyU3dueVdRbXJJbHJ3U0FLX3YyNllvRDN1WXRoNFRDNVVnVnNybdIBeEFVX3lxTE1qSndLaGlUa3U5alVJWUJqcDk4Z2xNeVBzamtfNjg2b1AxQkFpUWdqUUNaNTMxRWtjWWJJWWp4ZXZhTFJrVnBqS2hnUThGUkd0ZlhyU3dueVdRbXJJbHJ3U0FLX3YyNllvRDN1WXRoNFRDNVVnVnNybQ?oc=5"
     },
     {
-      "time": "2026-11-06T10:42:09+09:00",
-      "title": "삼성전자·SK하이닉스 주가 급락, 투자자 혼란 가중... 이제 어디로?",
-      "source": "공감신문",
-      "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTFBIalNVMGp6VjVGVFczTU9kaWg4Tl9XdmdRLVNzclRGSFpzUHg0TWxKRHdCZExuRFlvZjNFbG90bHFKeXBZU2piYURPRzQ4R3JjUU5VLU8xNXNSb25TbHdZczVvNGwyelFT?oc=5"
+      "time": "2026-11-06T10:42:39+09:00",
+      "title": "SK하이닉스 주가 장중 9%대 내려, 미국 반도체주 급락에 삼성전자도 하락",
+      "source": "비즈니스포스트",
+      "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTE9kNmNUeF8wZzVBMWtlMnZrSHA3T01rQWZRRl9PeTlKeV9walAtbGRkRDBWa0QyRnRZTDZ4dmVMVVdLN0dGZWNUTGY5aV9ScW9rWTZnR0V1V1djaUtTQ3dXcVUtUVRLWW5IWDFFV2NlR2NqYlk?oc=5"
+    },
+    {
+      "time": "2026-11-06T12:32:50+09:00",
+      "title": "美증권사 \"SK하이닉스·美상무부 갈등, 美공장 건설에 중대 변수\" 61조 투자 발목 잡나",
+      "source": "더구루",
+      "link": "https://news.google.com/rss/articles/CBMiXkFVX3lxTFBUQ2o1aEtVT2RfcURLTlZMaHJ5ME1FOHliX3IzbnpyVXk4dnNidFN2ZnVXUFJocWk3OUJVYy13VzJ4SGQtbzJJaFlqOHUzQ0xadU5GUm00ZXdlYjFvQkE?oc=5"
+    },
+    {
+      "time": "2026-11-06T12:37:17+09:00",
+      "title": "SK하이닉스, HBM 이어 낸드 수익구조 바꾼다… 곽노정의 HBF 승부수",
+      "source": "S저널",
+      "link": "https://news.google.com/rss/articles/CBMibkFVX3lxTE9tSnFIOTJuUnExQ3FVVkl5c0Ytd2hlMDVBRGZLYjFHbktpRk5TTEtEOXNQamtYei1UM3dPX1FId0hFQXZNUnJQR0k0dG1vcFphNWQtc3QtN1dtTDFzVEVmbU5ibFZIYWs5UGxJcDhB?oc=5"
     }
   ],
   "disclosures": [],
   "disclosure_note": null,
-  "flows": null,
-  "flow_story": null,
+  "flows": "외국인 -1,648,774 / 기관 +750,574",
+  "flow_story": {
+    "direction": "down",
+    "c2c": -0.10443037974683544,
+    "actors": [
+      {
+        "key": "foreign_net",
+        "name": "외국인",
+        "shares": -1648774.0,
+        "won": -1866412168000.0,
+        "vs_usual": 3.60466747085017
+      },
+      {
+        "key": "inst_net",
+        "name": "기관",
+        "shares": 750574.0,
+        "won": 849649768000.0,
+        "vs_usual": 4.095813487239974
+      },
+      {
+        "key": "indiv_net",
+        "name": "개인",
+        "shares": 580025.0,
+        "won": 656588300000.0,
+        "vs_usual": 2.1343068787585637
+      }
+    ],
+    "lead": {
+      "key": "foreign_net",
+      "name": "외국인",
+      "shares": -1648774.0,
+      "won": -1866412168000.0,
+      "vs_usual": 3.60466747085017
+    },
+    "counter": {
+      "key": "inst_net",
+      "name": "기관",
+      "shares": 750574.0,
+      "won": 849649768000.0,
+      "vs_usual": 4.095813487239974
+    },
+    "all_one_side": false,
+    "observations": [
+      "전일까지 20거래일 고점: 종가 돌파 없음 · 종가 위치 -35.65%.",
+      "전일까지 60거래일 고점: 종가 돌파 없음 · 종가 위치 -41.50%.",
+      "같은 5거래일 수익률: 이 종목 -20.17%, 삼성전자 -16.13% · 차이 -4.04%p.",
+      "같은 20거래일 수익률: 이 종목 -32.66%, 삼성전자 -27.98% · 차이 -4.68%p.",
+      "같은 60거래일 수익률: 이 종목 -20.38%, 삼성전자 -16.90% · 차이 -3.48%p.",
+      "외국인 순매도 지속·거래량 대비 강도 강화: 직전 5일 → 최근 5일 순매수/거래량 -0.58% → -19.21% (일평균 -21,581주 → -855,758주). 향후 상승을 뜻하는 신호는 아닙니다.",
+      "코스피도 -6.02% — 시장 전체가 같은 방향이었습니다.",
+      "삼성전자 -6.35% — 반도체 업종이 함께 움직였습니다.",
+      "원/달러 +1.60%(원화 약세) — 외국인 매도와 같은 방향의 환율 움직임입니다.",
+      "전날 밤 미국 반도체지수(SOX) -12.25% — 미국 반도체 흐름과 같은 방향입니다.",
+      "전날 밤 마이크론 -17.46% — 미국 메모리 회사와 같은 방향입니다.",
+      "4거래일 연속 하락이 이어졌습니다.",
+      "거래량이 20일 평균의 2.2배였습니다.",
+      "마이크론은 미국 정규장 마감 뒤 시간외에서 +0.08%(장중 -1.58%~+1.67%) — 정규장 등락에 안 보이는 반응입니다.",
+      "우리 장중(09:00~15:30) 나스닥100 선물 +0.76%, 이 종목 고점 이후 -0.81% · 미 10년물 국채 선물 +0.01%, 이 종목 고점 이후 +0.12% · 원/달러 +0.21%(원화 약세), 이 종목 고점 이후 +0.01%.",
+      "자사주 매입 기간 중(직접 취득 2026-08-20~2026-11-19, 40,004,340,000,000, DART 공시) — 회사 자신의 매수는 기타 법인으로 잡힙니다.",
+      "자사주 매입 기간 중(직접 취득 2026-10-29~2027-01-28, 20,007,720,000,000, DART 공시) — 회사 자신의 매수는 기타 법인으로 잡힙니다.",
+      "마감가가 장중 고가보다 -6.83% 아래 — 오른 폭을 장중에 꽤 반납했습니다.",
+      "외국인의 순매도 규모가 최근 20거래일 평균의 3.6배로 컸습니다."
+    ],
+    "estimated_indiv": false,
+    "source_note": "출처 naver+cache · 장 마감 직후 잠정치라 저녁 확정치와 다를 수 있습니다 · KRX는 받지 못함(pykrx 미설치)"
+  },
   "flow_status": {
-    "state": "pending",
-    "detail": "최신 2026-11-05"
+    "state": "ok",
+    "detail": "naver+cache",
+    "krx_error": "pykrx 미설치"
   },
   "context": {},
   "market": {
@@ -834,9 +907,9 @@
     "steady": 20,
     "upper": 4,
     "lower": 0,
-    "individual": 5721.0,
-    "foreign": -27353.0,
-    "institution": 16993.0,
+    "individual": 5207.0,
+    "foreign": -26892.0,
+    "institution": 17092.0,
     "prev_close": 5383.8,
     "open": 5263.26,
     "high": 5269.1,

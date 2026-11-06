@@ -3,7 +3,7 @@
   "name": "삼성전자",
   "peer_name": "SK하이닉스",
   "session_date": "2026-11-06",
-  "generated_at": "2026-11-06 16:20 KST",
+  "generated_at": "2026-11-06 16:46 KST",
   "summary": {
     "prev_close": 201500.0,
     "open": 180000.0,
@@ -15,11 +15,11 @@
     "c2c": -0.06352357320099256,
     "high_vs_open": 0.09166666666666656,
     "low_vs_open": -0.004444444444444473,
-    "volume": 35176264.0,
-    "volume_ratio": 1.8415637376414573,
+    "volume": 35246381.0,
+    "volume_ratio": 1.8452345346479901,
     "kospi_c2c": -0.06020095007972959,
     "peer_c2c": -0.10443037974683544,
-    "usdkrw_chg": 0.011051705647725507,
+    "usdkrw_chg": 0.011424820499964738,
     "us_nights": 1,
     "sox_ret": -0.12246115062360807,
     "nasdaq_ret": -0.05523319900679158,
@@ -105,7 +105,7 @@
         "after_high": 0.00011047168079159064
       }
     },
-    "from_high": -0.03822629969418956,
+    "from_high": -0.038716250636780414,
     "buyback": [
       {
         "kind": "직접 취득",
@@ -141,12 +141,6 @@
       "score": 19.07119956971579,
       "news": [
         {
-          "time": "2026-11-06T09:08:36+09:00",
-          "title": "한화투자증권 \"외국인 매도 압력 완화…삼성전자·SK하이닉스 주목\"",
-          "source": "SR타임스",
-          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE5kZ1NjcDhkR0VlTzNSQnVtbG1vcU9rdWh0QWd0RTVHQWcyTmxfakFhZ3NvX1JJQ3FuNF82SVBtazlvcVR6cno2YkVKS3ZfWnNGNGJPMW9xWmduYXVGWmJKNXM5UzZFclp5?oc=5"
-        },
-        {
           "time": "2026-11-06T08:26:08+09:00",
           "title": "[특징주] 삼성전자·SK하이닉스, AI 투자 축소 우려에 프리마켓서 10% 넘게 급락",
           "source": "아주경제",
@@ -169,6 +163,12 @@
           "title": "[단독]삼성전자·마스터카드, 美 에이전틱 커머스 플랫폼 'firmly' 투자",
           "source": "더트래커",
           "link": "https://news.google.com/rss/articles/CBMiWEFVX3lxTE1HWEsyWUJubzB2b0lSZTd1QlJ2TlJrUGptU2VFbk1jWmw4T1Y1b2xKU01oZ0lSUlVVcFJXcGJkbUZyUUk4Rlk2X2NmdWFpZFpmVlBLUWt2Nkc?oc=5"
+        },
+        {
+          "time": "2026-11-06T08:00:00+09:00",
+          "title": "[주간 기업동향] 이재용 삼성전자 회장, 일본 반도체 연구거점 점검 外",
+          "source": "반론보도닷컴",
+          "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE9sNjVDR1J1aUR3YlBhY3ZhUlYzV0JpTHF5YzZDR1VfYjhrZXRyZXJVemxqZ2g3T0dnN0pEWHBVVlVfeUVXMzdyQkZkTTZ1b1duWTVFOWd6aWhXSnNKbnFRbGpmcG9BdUtqbFlwRFdjeWzSAXBBVV95cUxPbDY1Q0dSdWlEd2JQYWN2YVJWM1dCaUxxeWM2Q0dVX2I4a2V0cmVyVXpsamdoN09HZzdKRFhwVVZVX3lFVzM3ckJGZE02dW9Xblk1RTlnemloV0pzSm5xUWxqZnBvQXVLamxZcERXY3ls?oc=5"
         }
       ]
     },
@@ -180,14 +180,8 @@
       "cum_before": 0.007777777777777883,
       "cum_after": 0.03833333333333333,
       "session_share": 0.5247646510050042,
-      "score": 7.154238147089819,
+      "score": 7.1547053289784275,
       "news": [
-        {
-          "time": "2026-11-06T09:08:36+09:00",
-          "title": "한화투자증권 \"외국인 매도 압력 완화…삼성전자·SK하이닉스 주목\"",
-          "source": "SR타임스",
-          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE5kZ1NjcDhkR0VlTzNSQnVtbG1vcU9rdWh0QWd0RTVHQWcyTmxfakFhZ3NvX1JJQ3FuNF82SVBtazlvcVR6cno2YkVKS3ZfWnNGNGJPMW9xWmduYXVGWmJKNXM5UzZFclp5?oc=5"
-        },
         {
           "time": "2026-11-06T08:26:08+09:00",
           "title": "[특징주] 삼성전자·SK하이닉스, AI 투자 축소 우려에 프리마켓서 10% 넘게 급락",
@@ -211,6 +205,12 @@
           "title": "[주간 기업동향] 이재용 삼성전자 회장, 일본 반도체 연구거점 점검 外",
           "source": "반론보도닷컴",
           "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE9sNjVDR1J1aUR3YlBhY3ZhUlYzV0JpTHF5YzZDR1VfYjhrZXRyZXJVemxqZ2g3T0dnN0pEWHBVVlVfeUVXMzdyQkZkTTZ1b1duWTVFOWd6aWhXSnNKbnFRbGpmcG9BdUtqbFlwRFdjeWzSAXBBVV95cUxPbDY1Q0dSdWlEd2JQYWN2YVJWM1dCaUxxeWM2Q0dVX2I4a2V0cmVyVXpsamdoN09HZzdKRFhwVVZVX3lFVzM3ckJGZE02dW9Xblk1RTlnemloV0pzSm5xUWxqZnBvQXVLamxZcERXY3ls?oc=5"
+        },
+        {
+          "time": "2026-11-06T08:06:00+09:00",
+          "title": "[속보] 마이크론 16% 이어 삼성전자 11%, SK하이닉스 14% 폭락",
+          "source": "뉴데일리",
+          "link": "https://news.google.com/rss/articles/CBMie0FVX3lxTE5sR0dyeDVqeWdjc1pTUjlVSWVvbE5EMHpQQjlvQjFmSU55bVdwSkpTZVJtcDVsWm9WS0pLM1RJNHRWbG04SnAtRmYzTjk2R3NFR19VRFBZUWkta193Q1lDMTNWMlZtbHBpLXUySEZzUXRRVkJ6QzNFU0E5WdIBgAFBVV95cUxPYTdXRGNWNHNvNXBuLXEyQkVvcDRSejdZOVZ2S2VHRnEzMzNDZF9FV2VseDVPd3RkaVpIM1ZEeVBETTJXQTVaSTJGcGxSYWx1MWdMZE9VWTRMTVJocVhyLTlmaE5MTGVUcTlZTXlvUXBlZEQ5T2VKWUNfeGliWDZ5VQ?oc=5"
         }
       ]
     },
@@ -222,7 +222,7 @@
       "cum_before": 0.036111111111111205,
       "cum_after": 0.05444444444444452,
       "session_share": 0.3062487110744497,
-      "score": 3.320006631781669,
+      "score": 3.3202011715820263,
       "news": [
         {
           "time": "2026-11-06T10:40:39+09:00",
@@ -259,13 +259,13 @@
   ],
   "turning_point": {
     "high_time": "2026-11-06T11:45:00+09:00",
-    "high": 0.09000000000000008,
+    "high": 0.0905555555555555,
     "low_time": "2026-11-06T09:00:00+09:00",
     "low": 0.007777777777777883,
     "pattern": "저점 후 반등"
   },
   "closing_share": -0.1847290640394082,
-  "intraday_corr_kospi": 0.9200185229380866,
+  "intraday_corr_kospi": 0.9216329566872473,
   "intraday_note": "장중 봉은 09:00~14:55까지만 있어 마감 구간(14:55~15:30)은 일봉 종가로만 봅니다(그 구간 -0.89%).",
   "intraday_coverage": "09:00~14:55",
   "intraday_path": [
@@ -327,12 +327,12 @@
     {
       "time": "2026-11-06T10:20:00+09:00",
       "price": 184700.0,
-      "volume": 487234.0
+      "volume": 487421.0
     },
     {
       "time": "2026-11-06T10:25:00+09:00",
       "price": 186100.0,
-      "volume": 386618.0
+      "volume": 386431.0
     },
     {
       "time": "2026-11-06T10:30:00+09:00",
@@ -341,23 +341,23 @@
     },
     {
       "time": "2026-11-06T10:35:00+09:00",
-      "price": 186600.0,
-      "volume": 421043.0
+      "price": 186500.0,
+      "volume": 421101.0
     },
     {
       "time": "2026-11-06T10:40:00+09:00",
       "price": 185700.0,
-      "volume": 371870.0
+      "volume": 371812.0
     },
     {
       "time": "2026-11-06T10:45:00+09:00",
       "price": 186500.0,
-      "volume": 429690.0
+      "volume": 429587.0
     },
     {
       "time": "2026-11-06T10:50:00+09:00",
       "price": 189800.0,
-      "volume": 564175.0
+      "volume": 564278.0
     },
     {
       "time": "2026-11-06T10:55:00+09:00",
@@ -411,23 +411,23 @@
     },
     {
       "time": "2026-11-06T11:45:00+09:00",
-      "price": 196200.0,
-      "volume": 415483.0
+      "price": 196300.0,
+      "volume": 415486.0
     },
     {
       "time": "2026-11-06T11:50:00+09:00",
       "price": 195600.0,
-      "volume": 498819.0
+      "volume": 498816.0
     },
     {
       "time": "2026-11-06T11:55:00+09:00",
       "price": 195000.0,
-      "volume": 323898.0
+      "volume": 323894.0
     },
     {
       "time": "2026-11-06T12:00:00+09:00",
       "price": 194600.0,
-      "volume": 299546.0
+      "volume": 299550.0
     },
     {
       "time": "2026-11-06T12:05:00+09:00",
@@ -497,12 +497,12 @@
     {
       "time": "2026-11-06T13:10:00+09:00",
       "price": 190400.0,
-      "volume": 235848.0
+      "volume": 235810.0
     },
     {
       "time": "2026-11-06T13:15:00+09:00",
       "price": 190200.0,
-      "volume": 191732.0
+      "volume": 191770.0
     },
     {
       "time": "2026-11-06T13:20:00+09:00",
@@ -522,17 +522,17 @@
     {
       "time": "2026-11-06T13:35:00+09:00",
       "price": 188700.0,
-      "volume": 272802.0
+      "volume": 272801.0
     },
     {
       "time": "2026-11-06T13:40:00+09:00",
       "price": 188800.0,
-      "volume": 234780.0
+      "volume": 234381.0
     },
     {
       "time": "2026-11-06T13:45:00+09:00",
       "price": 189500.0,
-      "volume": 271557.0
+      "volume": 271957.0
     },
     {
       "time": "2026-11-06T13:50:00+09:00",
@@ -592,12 +592,12 @@
     {
       "time": "2026-11-06T14:45:00+09:00",
       "price": 191200.0,
-      "volume": 252350.0
+      "volume": 252351.0
     },
     {
       "time": "2026-11-06T14:50:00+09:00",
       "price": 190900.0,
-      "volume": 211552.0
+      "volume": 211551.0
     },
     {
       "time": "2026-11-06T14:55:00+09:00",
@@ -616,12 +616,6 @@
       "session_share": -1.726474518037795,
       "score": 19.07119956971579,
       "news": [
-        {
-          "time": "2026-11-06T09:08:36+09:00",
-          "title": "한화투자증권 \"외국인 매도 압력 완화…삼성전자·SK하이닉스 주목\"",
-          "source": "SR타임스",
-          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE5kZ1NjcDhkR0VlTzNSQnVtbG1vcU9rdWh0QWd0RTVHQWcyTmxfakFhZ3NvX1JJQ3FuNF82SVBtazlvcVR6cno2YkVKS3ZfWnNGNGJPMW9xWmduYXVGWmJKNXM5UzZFclp5?oc=5"
-        },
         {
           "time": "2026-11-06T08:26:08+09:00",
           "title": "[특징주] 삼성전자·SK하이닉스, AI 투자 축소 우려에 프리마켓서 10% 넘게 급락",
@@ -645,6 +639,12 @@
           "title": "[단독]삼성전자·마스터카드, 美 에이전틱 커머스 플랫폼 'firmly' 투자",
           "source": "더트래커",
           "link": "https://news.google.com/rss/articles/CBMiWEFVX3lxTE1HWEsyWUJubzB2b0lSZTd1QlJ2TlJrUGptU2VFbk1jWmw4T1Y1b2xKU01oZ0lSUlVVcFJXcGJkbUZyUUk4Rlk2X2NmdWFpZFpmVlBLUWt2Nkc?oc=5"
+        },
+        {
+          "time": "2026-11-06T08:00:00+09:00",
+          "title": "[주간 기업동향] 이재용 삼성전자 회장, 일본 반도체 연구거점 점검 外",
+          "source": "반론보도닷컴",
+          "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE9sNjVDR1J1aUR3YlBhY3ZhUlYzV0JpTHF5YzZDR1VfYjhrZXRyZXJVemxqZ2g3T0dnN0pEWHBVVlVfeUVXMzdyQkZkTTZ1b1duWTVFOWd6aWhXSnNKbnFRbGpmcG9BdUtqbFlwRFdjeWzSAXBBVV95cUxPbDY1Q0dSdWlEd2JQYWN2YVJWM1dCaUxxeWM2Q0dVX2I4a2V0cmVyVXpsamdoN09HZzdKRFhwVVZVX3lFVzM3ckJGZE02dW9Xblk1RTlnemloV0pzSm5xUWxqZnBvQXVLamxZcERXY3ls?oc=5"
         }
       ],
       "price": 181400.0,
@@ -658,14 +658,8 @@
       "cum_before": 0.007777777777777883,
       "cum_after": 0.03833333333333333,
       "session_share": 0.5247646510050042,
-      "score": 7.154238147089819,
+      "score": 7.1547053289784275,
       "news": [
-        {
-          "time": "2026-11-06T09:08:36+09:00",
-          "title": "한화투자증권 \"외국인 매도 압력 완화…삼성전자·SK하이닉스 주목\"",
-          "source": "SR타임스",
-          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE5kZ1NjcDhkR0VlTzNSQnVtbG1vcU9rdWh0QWd0RTVHQWcyTmxfakFhZ3NvX1JJQ3FuNF82SVBtazlvcVR6cno2YkVKS3ZfWnNGNGJPMW9xWmduYXVGWmJKNXM5UzZFclp5?oc=5"
-        },
         {
           "time": "2026-11-06T08:26:08+09:00",
           "title": "[특징주] 삼성전자·SK하이닉스, AI 투자 축소 우려에 프리마켓서 10% 넘게 급락",
@@ -689,6 +683,12 @@
           "title": "[주간 기업동향] 이재용 삼성전자 회장, 일본 반도체 연구거점 점검 外",
           "source": "반론보도닷컴",
           "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE9sNjVDR1J1aUR3YlBhY3ZhUlYzV0JpTHF5YzZDR1VfYjhrZXRyZXJVemxqZ2g3T0dnN0pEWHBVVlVfeUVXMzdyQkZkTTZ1b1duWTVFOWd6aWhXSnNKbnFRbGpmcG9BdUtqbFlwRFdjeWzSAXBBVV95cUxPbDY1Q0dSdWlEd2JQYWN2YVJWM1dCaUxxeWM2Q0dVX2I4a2V0cmVyVXpsamdoN09HZzdKRFhwVVZVX3lFVzM3ckJGZE02dW9Xblk1RTlnemloV0pzSm5xUWxqZnBvQXVLamxZcERXY3ls?oc=5"
+        },
+        {
+          "time": "2026-11-06T08:06:00+09:00",
+          "title": "[속보] 마이크론 16% 이어 삼성전자 11%, SK하이닉스 14% 폭락",
+          "source": "뉴데일리",
+          "link": "https://news.google.com/rss/articles/CBMie0FVX3lxTE5sR0dyeDVqeWdjc1pTUjlVSWVvbE5EMHpQQjlvQjFmSU55bVdwSkpTZVJtcDVsWm9WS0pLM1RJNHRWbG04SnAtRmYzTjk2R3NFR19VRFBZUWkta193Q1lDMTNWMlZtbHBpLXUySEZzUXRRVkJ6QzNFU0E5WdIBgAFBVV95cUxPYTdXRGNWNHNvNXBuLXEyQkVvcDRSejdZOVZ2S2VHRnEzMzNDZF9FV2VseDVPd3RkaVpIM1ZEeVBETTJXQTVaSTJGcGxSYWx1MWdMZE9VWTRMTVJocVhyLTlmaE5MTGVUcTlZTXlvUXBlZEQ5T2VKWUNfeGliWDZ5VQ?oc=5"
         }
       ],
       "price": 186900.0,
@@ -702,7 +702,7 @@
       "cum_before": 0.036111111111111205,
       "cum_after": 0.05444444444444452,
       "session_share": 0.3062487110744497,
-      "score": 3.320006631781669,
+      "score": 3.3202011715820263,
       "news": [
         {
           "time": "2026-11-06T10:40:39+09:00",
@@ -773,16 +773,16 @@
   ],
   "top_news": [
     {
-      "time": "2026-11-06T09:08:36+09:00",
-      "title": "한화투자증권 \"외국인 매도 압력 완화…삼성전자·SK하이닉스 주목\"",
-      "source": "SR타임스",
-      "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE5kZ1NjcDhkR0VlTzNSQnVtbG1vcU9rdWh0QWd0RTVHQWcyTmxfakFhZ3NvX1JJQ3FuNF82SVBtazlvcVR6cno2YkVKS3ZfWnNGNGJPMW9xWmduYXVGWmJKNXM5UzZFclp5?oc=5"
-    },
-    {
       "time": "2026-11-06T13:56:24+09:00",
       "title": "HBM 호황이 파운드리도 살릴까…삼성전자, ‘반도체 시너지’ 시험대",
       "source": "이지경제",
       "link": "https://news.google.com/rss/articles/CBMibkFVX3lxTE43d3E5Tk41V1R4NjREam5VLWhTbkV0SElpRmhiVjRaZlRybmVxcFRTUk44Uy1zR1JVX3c4NTdBbWpHSDJ0ZzZ2bEFScFRzaXNKRWhwaWtXQ0RleDNOT3p4UWlWUm5ZUjI5QXZ2M213?oc=5"
+    },
+    {
+      "time": "2026-11-06T15:41:06+09:00",
+      "title": "마이크론 성과급 갈등에 45억달러 대만공장 증설 중단, 삼성전자 전영현 HBM 점유율 확대 기회 잡나",
+      "source": "비즈니스포스트",
+      "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTFBHeThVVDk2ZmlKR2QxTHdIUWJ4TjJfbkdaY3BDOWdaUjZLMnk0OU13Sm00bnE3R0I4cEsxMkIzSDRhY3FJZjRRTkZlREJsdi1TZnNMSEFwTVBWc0lyOHB3SFFlYm5QWG1TZ2lFbFpMTUh4d2M?oc=5"
     },
     {
       "time": "2026-11-06T10:40:39+09:00",
@@ -857,9 +857,9 @@
     "steady": 20,
     "upper": 4,
     "lower": 0,
-    "individual": 6079.0,
-    "foreign": -27713.0,
-    "institution": 16984.0,
+    "individual": 5929.0,
+    "foreign": -27574.0,
+    "institution": 16995.0,
     "prev_close": 5383.8,
     "open": 5263.26,
     "high": 5269.1,

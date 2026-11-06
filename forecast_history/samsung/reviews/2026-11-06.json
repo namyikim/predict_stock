@@ -3,7 +3,7 @@
   "name": "삼성전자",
   "peer_name": "SK하이닉스",
   "session_date": "2026-11-06",
-  "generated_at": "2026-11-06 16:46 KST",
+  "generated_at": "2026-11-06 17:31 KST",
   "summary": {
     "prev_close": 201500.0,
     "open": 180000.0,
@@ -15,11 +15,11 @@
     "c2c": -0.06352357320099256,
     "high_vs_open": 0.09166666666666656,
     "low_vs_open": -0.004444444444444473,
-    "volume": 35246381.0,
-    "volume_ratio": 1.8452345346479901,
+    "volume": 35450388.0,
+    "volume_ratio": 1.8559148017003702,
     "kospi_c2c": -0.06020095007972959,
     "peer_c2c": -0.10443037974683544,
-    "usdkrw_chg": 0.011424820499964738,
+    "usdkrw_chg": 0.01107411440105821,
     "us_nights": 1,
     "sox_ret": -0.12246115062360807,
     "nasdaq_ret": -0.05523319900679158,
@@ -105,7 +105,7 @@
         "after_high": 0.00011047168079159064
       }
     },
-    "from_high": -0.038716250636780414,
+    "from_high": -0.03822629969418956,
     "buyback": [
       {
         "kind": "직접 취득",
@@ -153,22 +153,22 @@
           "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE9VMHJ3UW5FNjMtSWIzeWZERUFTSEktYVFKUUpDdUxQelhWNXpwYjEyR0x2TWRUSE5TVW5RSjFwbjVrMjBSOGwtNjI5NlhDRDBNR1hfbUp0SWZQWFEzUWFhR1Bxbi0wOTgx0gFsQVVfeXFMUGRzUE5OVWxkYWQwYXlLdmpjMVA2cTU5d3lFcGtXMXZnUDllcGQ1TE9tRHRRaDJ6QWM0eWpkX3k4Q1pVRnRBdzJJMVpIU0RHQkF2Y3hLQUVEbWRNUXN6a1FXWmM4XzBCY2hwRUJm?oc=5"
         },
         {
-          "time": "2026-11-06T08:32:00+09:00",
-          "title": "마이크론 17%, 삼성 10%, 하닉 13% 줄폭락 … 美 민주당 AI 규제에 반도체주 '추풍낙엽'",
-          "source": "뉴데일리",
-          "link": "https://news.google.com/rss/articles/CBMie0FVX3lxTFBuZXhRRS1jeGJ2MnQzSkxWR1F3OUlMc3RkVVpvc3JvRlU3NldodVBlWGpSX0l3ZW80cjNuTXlHS3EzYmNYWFVyblgzQ3R4YnN5SmxjY3d6VVNaQ3p1dy1KZFYwVVh0cDFMbkxhdEVFREt4aG5jeExWOHY4UdIBgAFBVV95cUxQS1pRMUhwQTlXRm03RFE0dVFBZFdadHl5QWhGRG9XRFk2U1REZzN4NEZ1Y1Z2dVQyLWQ1VTg4dXpteWhVUFdWNUVUa3ZfVEhqODBtcllKNUdhTUEwQUlRQ0wxSlo5N2NoQjhjVjBDeEwwWXM3OVk5TzQ3TFZMSlJtbA?oc=5"
-        },
-        {
           "time": "2026-11-06T07:32:24+09:00",
           "title": "[단독]삼성전자·마스터카드, 美 에이전틱 커머스 플랫폼 'firmly' 투자",
           "source": "더트래커",
           "link": "https://news.google.com/rss/articles/CBMiWEFVX3lxTE1HWEsyWUJubzB2b0lSZTd1QlJ2TlJrUGptU2VFbk1jWmw4T1Y1b2xKU01oZ0lSUlVVcFJXcGJkbUZyUUk4Rlk2X2NmdWFpZFpmVlBLUWt2Nkc?oc=5"
         },
         {
-          "time": "2026-11-06T08:00:00+09:00",
-          "title": "[주간 기업동향] 이재용 삼성전자 회장, 일본 반도체 연구거점 점검 外",
-          "source": "반론보도닷컴",
-          "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE9sNjVDR1J1aUR3YlBhY3ZhUlYzV0JpTHF5YzZDR1VfYjhrZXRyZXJVemxqZ2g3T0dnN0pEWHBVVlVfeUVXMzdyQkZkTTZ1b1duWTVFOWd6aWhXSnNKbnFRbGpmcG9BdUtqbFlwRFdjeWzSAXBBVV95cUxPbDY1Q0dSdWlEd2JQYWN2YVJWM1dCaUxxeWM2Q0dVX2I4a2V0cmVyVXpsamdoN09HZzdKRFhwVVZVX3lFVzM3ckJGZE02dW9Xblk1RTlnemloV0pzSm5xUWxqZnBvQXVLamxZcERXY3ls?oc=5"
+          "time": "2026-11-06T08:06:00+09:00",
+          "title": "[속보] 마이크론 16% 이어 삼성전자 11%, SK하이닉스 14% 폭락",
+          "source": "뉴데일리",
+          "link": "https://news.google.com/rss/articles/CBMie0FVX3lxTE5sR0dyeDVqeWdjc1pTUjlVSWVvbE5EMHpQQjlvQjFmSU55bVdwSkpTZVJtcDVsWm9WS0pLM1RJNHRWbG04SnAtRmYzTjk2R3NFR19VRFBZUWkta193Q1lDMTNWMlZtbHBpLXUySEZzUXRRVkJ6QzNFU0E5WdIBgAFBVV95cUxPYTdXRGNWNHNvNXBuLXEyQkVvcDRSejdZOVZ2S2VHRnEzMzNDZF9FV2VseDVPd3RkaVpIM1ZEeVBETTJXQTVaSTJGcGxSYWx1MWdMZE9VWTRMTVJocVhyLTlmaE5MTGVUcTlZTXlvUXBlZEQ5T2VKWUNfeGliWDZ5VQ?oc=5"
+        },
+        {
+          "time": "2026-11-06T08:26:00+09:00",
+          "title": "[특징주] 美 반도체주 폭락에 프리마켓서 삼성전자 11%·SK하이닉스 13%↓",
+          "source": "뉴스핌",
+          "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE9lekV2dzBxblFYb2I2ZzllXzBLR3ZyWlBKdERvcW91d0RzWURNUlNZNzNxZFlhUkZfSWVvY2VURDJiTnJ4ZXBEeDFWZUJIUEV2R2RZSmRCMTRkdTA5?oc=5"
         }
       ]
     },
@@ -180,7 +180,7 @@
       "cum_before": 0.007777777777777883,
       "cum_after": 0.03833333333333333,
       "session_share": 0.5247646510050042,
-      "score": 7.1547053289784275,
+      "score": 7.154238147089819,
       "news": [
         {
           "time": "2026-11-06T08:26:08+09:00",
@@ -195,22 +195,22 @@
           "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE9VMHJ3UW5FNjMtSWIzeWZERUFTSEktYVFKUUpDdUxQelhWNXpwYjEyR0x2TWRUSE5TVW5RSjFwbjVrMjBSOGwtNjI5NlhDRDBNR1hfbUp0SWZQWFEzUWFhR1Bxbi0wOTgx0gFsQVVfeXFMUGRzUE5OVWxkYWQwYXlLdmpjMVA2cTU5d3lFcGtXMXZnUDllcGQ1TE9tRHRRaDJ6QWM0eWpkX3k4Q1pVRnRBdzJJMVpIU0RHQkF2Y3hLQUVEbWRNUXN6a1FXWmM4XzBCY2hwRUJm?oc=5"
         },
         {
-          "time": "2026-11-06T08:32:00+09:00",
-          "title": "마이크론 17%, 삼성 10%, 하닉 13% 줄폭락 … 美 민주당 AI 규제에 반도체주 '추풍낙엽'",
-          "source": "뉴데일리",
-          "link": "https://news.google.com/rss/articles/CBMie0FVX3lxTFBuZXhRRS1jeGJ2MnQzSkxWR1F3OUlMc3RkVVpvc3JvRlU3NldodVBlWGpSX0l3ZW80cjNuTXlHS3EzYmNYWFVyblgzQ3R4YnN5SmxjY3d6VVNaQ3p1dy1KZFYwVVh0cDFMbkxhdEVFREt4aG5jeExWOHY4UdIBgAFBVV95cUxQS1pRMUhwQTlXRm03RFE0dVFBZFdadHl5QWhGRG9XRFk2U1REZzN4NEZ1Y1Z2dVQyLWQ1VTg4dXpteWhVUFdWNUVUa3ZfVEhqODBtcllKNUdhTUEwQUlRQ0wxSlo5N2NoQjhjVjBDeEwwWXM3OVk5TzQ3TFZMSlJtbA?oc=5"
-        },
-        {
-          "time": "2026-11-06T08:00:00+09:00",
-          "title": "[주간 기업동향] 이재용 삼성전자 회장, 일본 반도체 연구거점 점검 外",
-          "source": "반론보도닷컴",
-          "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE9sNjVDR1J1aUR3YlBhY3ZhUlYzV0JpTHF5YzZDR1VfYjhrZXRyZXJVemxqZ2g3T0dnN0pEWHBVVlVfeUVXMzdyQkZkTTZ1b1duWTVFOWd6aWhXSnNKbnFRbGpmcG9BdUtqbFlwRFdjeWzSAXBBVV95cUxPbDY1Q0dSdWlEd2JQYWN2YVJWM1dCaUxxeWM2Q0dVX2I4a2V0cmVyVXpsamdoN09HZzdKRFhwVVZVX3lFVzM3ckJGZE02dW9Xblk1RTlnemloV0pzSm5xUWxqZnBvQXVLamxZcERXY3ls?oc=5"
-        },
-        {
           "time": "2026-11-06T08:06:00+09:00",
           "title": "[속보] 마이크론 16% 이어 삼성전자 11%, SK하이닉스 14% 폭락",
           "source": "뉴데일리",
           "link": "https://news.google.com/rss/articles/CBMie0FVX3lxTE5sR0dyeDVqeWdjc1pTUjlVSWVvbE5EMHpQQjlvQjFmSU55bVdwSkpTZVJtcDVsWm9WS0pLM1RJNHRWbG04SnAtRmYzTjk2R3NFR19VRFBZUWkta193Q1lDMTNWMlZtbHBpLXUySEZzUXRRVkJ6QzNFU0E5WdIBgAFBVV95cUxPYTdXRGNWNHNvNXBuLXEyQkVvcDRSejdZOVZ2S2VHRnEzMzNDZF9FV2VseDVPd3RkaVpIM1ZEeVBETTJXQTVaSTJGcGxSYWx1MWdMZE9VWTRMTVJocVhyLTlmaE5MTGVUcTlZTXlvUXBlZEQ5T2VKWUNfeGliWDZ5VQ?oc=5"
+        },
+        {
+          "time": "2026-11-06T08:26:00+09:00",
+          "title": "[특징주] 美 반도체주 폭락에 프리마켓서 삼성전자 11%·SK하이닉스 13%↓",
+          "source": "뉴스핌",
+          "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE9lekV2dzBxblFYb2I2ZzllXzBLR3ZyWlBKdERvcW91d0RzWURNUlNZNzNxZFlhUkZfSWVvY2VURDJiTnJ4ZXBEeDFWZUJIUEV2R2RZSmRCMTRkdTA5?oc=5"
+        },
+        {
+          "time": "2026-11-06T08:30:00+09:00",
+          "title": "“삼성전자·SK하이닉스 더 떨어지나” 공포 커졌는데…증권가서 나온 뜻밖의 전망",
+          "source": "데일리25",
+          "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE5Rd3pucG5jQ19TMWp4MktZWmh4cXJodEpVejZQLTVKRUdaX1E5MlRlUXhITm1RLXUxMWFLNVVZcXdqTXZFUjhXOW9mcTNWWHhpLTJzeUpXSmwtMnVVaG5xQ1hJNjhsbVpPQTk5WA?oc=5"
         }
       ]
     },
@@ -222,7 +222,7 @@
       "cum_before": 0.036111111111111205,
       "cum_after": 0.05444444444444452,
       "session_share": 0.3062487110744497,
-      "score": 3.3202011715820263,
+      "score": 3.320006631781669,
       "news": [
         {
           "time": "2026-11-06T10:40:39+09:00",
@@ -249,23 +249,23 @@
           "link": "https://news.google.com/rss/articles/CBMiS0FVX3lxTE5NbVZLdDNQNVBMRXphbWtxZWFPY2RKcG9mSnMzMFNCYkw0VV9nbXZHdmJ6cDl6ZlE4STV3eklWOXdnbkI4SG1kQlBJZw?oc=5"
         },
         {
-          "time": "2026-11-06T09:53:00+09:00",
-          "title": "삼성전자 CVC, 美 '에이전틱 커머스' 기업 펌리 투자",
-          "source": "한국경제",
-          "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE90SEcteTllTVNqVWNULTBacFg4a2U0QnQ1REUzTjVOck5oLVVtZi1NbTVSVlVuZllaRXBZLUhMb0ZaWUFxeTVWUDZSRXVfUmRmZDdVNHdaU0ZEZw?oc=5"
+          "time": "2026-11-06T09:40:00+09:00",
+          "title": "코스피, 삼성전자·SK하이닉스 급락에 5000선 밑으로",
+          "source": "비즈트리뷴",
+          "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE13LW5xbUh5YWxVNlNNS1V6NjcxaEhwX2ZaOHJNZDc4OF9nel9BVGFwdGR4WU9rUzNWSHVPMGp6ejYxbjZnLUtubml3QlRjSjd4S3M3SkhMbWtZQk1MTGE4cmp3d0JwdVlrQ0gtTFRtZkw?oc=5"
         }
       ]
     }
   ],
   "turning_point": {
     "high_time": "2026-11-06T11:45:00+09:00",
-    "high": 0.0905555555555555,
+    "high": 0.09000000000000008,
     "low_time": "2026-11-06T09:00:00+09:00",
     "low": 0.007777777777777883,
     "pattern": "저점 후 반등"
   },
   "closing_share": -0.1847290640394082,
-  "intraday_corr_kospi": 0.9216329566872473,
+  "intraday_corr_kospi": 0.9200185229380866,
   "intraday_note": "장중 봉은 09:00~14:55까지만 있어 마감 구간(14:55~15:30)은 일봉 종가로만 봅니다(그 구간 -0.89%).",
   "intraday_coverage": "09:00~14:55",
   "intraday_path": [
@@ -327,12 +327,12 @@
     {
       "time": "2026-11-06T10:20:00+09:00",
       "price": 184700.0,
-      "volume": 487421.0
+      "volume": 487234.0
     },
     {
       "time": "2026-11-06T10:25:00+09:00",
       "price": 186100.0,
-      "volume": 386431.0
+      "volume": 386618.0
     },
     {
       "time": "2026-11-06T10:30:00+09:00",
@@ -341,23 +341,23 @@
     },
     {
       "time": "2026-11-06T10:35:00+09:00",
-      "price": 186500.0,
-      "volume": 421101.0
+      "price": 186600.0,
+      "volume": 421043.0
     },
     {
       "time": "2026-11-06T10:40:00+09:00",
       "price": 185700.0,
-      "volume": 371812.0
+      "volume": 371870.0
     },
     {
       "time": "2026-11-06T10:45:00+09:00",
       "price": 186500.0,
-      "volume": 429587.0
+      "volume": 429690.0
     },
     {
       "time": "2026-11-06T10:50:00+09:00",
       "price": 189800.0,
-      "volume": 564278.0
+      "volume": 564175.0
     },
     {
       "time": "2026-11-06T10:55:00+09:00",
@@ -411,23 +411,23 @@
     },
     {
       "time": "2026-11-06T11:45:00+09:00",
-      "price": 196300.0,
-      "volume": 415486.0
+      "price": 196200.0,
+      "volume": 415483.0
     },
     {
       "time": "2026-11-06T11:50:00+09:00",
       "price": 195600.0,
-      "volume": 498816.0
+      "volume": 498819.0
     },
     {
       "time": "2026-11-06T11:55:00+09:00",
       "price": 195000.0,
-      "volume": 323894.0
+      "volume": 323898.0
     },
     {
       "time": "2026-11-06T12:00:00+09:00",
       "price": 194600.0,
-      "volume": 299550.0
+      "volume": 299546.0
     },
     {
       "time": "2026-11-06T12:05:00+09:00",
@@ -497,12 +497,12 @@
     {
       "time": "2026-11-06T13:10:00+09:00",
       "price": 190400.0,
-      "volume": 235810.0
+      "volume": 235848.0
     },
     {
       "time": "2026-11-06T13:15:00+09:00",
       "price": 190200.0,
-      "volume": 191770.0
+      "volume": 191732.0
     },
     {
       "time": "2026-11-06T13:20:00+09:00",
@@ -522,17 +522,17 @@
     {
       "time": "2026-11-06T13:35:00+09:00",
       "price": 188700.0,
-      "volume": 272801.0
+      "volume": 272802.0
     },
     {
       "time": "2026-11-06T13:40:00+09:00",
       "price": 188800.0,
-      "volume": 234381.0
+      "volume": 234780.0
     },
     {
       "time": "2026-11-06T13:45:00+09:00",
       "price": 189500.0,
-      "volume": 271957.0
+      "volume": 271557.0
     },
     {
       "time": "2026-11-06T13:50:00+09:00",
@@ -592,12 +592,12 @@
     {
       "time": "2026-11-06T14:45:00+09:00",
       "price": 191200.0,
-      "volume": 252351.0
+      "volume": 252350.0
     },
     {
       "time": "2026-11-06T14:50:00+09:00",
       "price": 190900.0,
-      "volume": 211551.0
+      "volume": 211552.0
     },
     {
       "time": "2026-11-06T14:55:00+09:00",
@@ -629,22 +629,22 @@
           "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE9VMHJ3UW5FNjMtSWIzeWZERUFTSEktYVFKUUpDdUxQelhWNXpwYjEyR0x2TWRUSE5TVW5RSjFwbjVrMjBSOGwtNjI5NlhDRDBNR1hfbUp0SWZQWFEzUWFhR1Bxbi0wOTgx0gFsQVVfeXFMUGRzUE5OVWxkYWQwYXlLdmpjMVA2cTU5d3lFcGtXMXZnUDllcGQ1TE9tRHRRaDJ6QWM0eWpkX3k4Q1pVRnRBdzJJMVpIU0RHQkF2Y3hLQUVEbWRNUXN6a1FXWmM4XzBCY2hwRUJm?oc=5"
         },
         {
-          "time": "2026-11-06T08:32:00+09:00",
-          "title": "마이크론 17%, 삼성 10%, 하닉 13% 줄폭락 … 美 민주당 AI 규제에 반도체주 '추풍낙엽'",
-          "source": "뉴데일리",
-          "link": "https://news.google.com/rss/articles/CBMie0FVX3lxTFBuZXhRRS1jeGJ2MnQzSkxWR1F3OUlMc3RkVVpvc3JvRlU3NldodVBlWGpSX0l3ZW80cjNuTXlHS3EzYmNYWFVyblgzQ3R4YnN5SmxjY3d6VVNaQ3p1dy1KZFYwVVh0cDFMbkxhdEVFREt4aG5jeExWOHY4UdIBgAFBVV95cUxQS1pRMUhwQTlXRm03RFE0dVFBZFdadHl5QWhGRG9XRFk2U1REZzN4NEZ1Y1Z2dVQyLWQ1VTg4dXpteWhVUFdWNUVUa3ZfVEhqODBtcllKNUdhTUEwQUlRQ0wxSlo5N2NoQjhjVjBDeEwwWXM3OVk5TzQ3TFZMSlJtbA?oc=5"
-        },
-        {
           "time": "2026-11-06T07:32:24+09:00",
           "title": "[단독]삼성전자·마스터카드, 美 에이전틱 커머스 플랫폼 'firmly' 투자",
           "source": "더트래커",
           "link": "https://news.google.com/rss/articles/CBMiWEFVX3lxTE1HWEsyWUJubzB2b0lSZTd1QlJ2TlJrUGptU2VFbk1jWmw4T1Y1b2xKU01oZ0lSUlVVcFJXcGJkbUZyUUk4Rlk2X2NmdWFpZFpmVlBLUWt2Nkc?oc=5"
         },
         {
-          "time": "2026-11-06T08:00:00+09:00",
-          "title": "[주간 기업동향] 이재용 삼성전자 회장, 일본 반도체 연구거점 점검 外",
-          "source": "반론보도닷컴",
-          "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE9sNjVDR1J1aUR3YlBhY3ZhUlYzV0JpTHF5YzZDR1VfYjhrZXRyZXJVemxqZ2g3T0dnN0pEWHBVVlVfeUVXMzdyQkZkTTZ1b1duWTVFOWd6aWhXSnNKbnFRbGpmcG9BdUtqbFlwRFdjeWzSAXBBVV95cUxPbDY1Q0dSdWlEd2JQYWN2YVJWM1dCaUxxeWM2Q0dVX2I4a2V0cmVyVXpsamdoN09HZzdKRFhwVVZVX3lFVzM3ckJGZE02dW9Xblk1RTlnemloV0pzSm5xUWxqZnBvQXVLamxZcERXY3ls?oc=5"
+          "time": "2026-11-06T08:06:00+09:00",
+          "title": "[속보] 마이크론 16% 이어 삼성전자 11%, SK하이닉스 14% 폭락",
+          "source": "뉴데일리",
+          "link": "https://news.google.com/rss/articles/CBMie0FVX3lxTE5sR0dyeDVqeWdjc1pTUjlVSWVvbE5EMHpQQjlvQjFmSU55bVdwSkpTZVJtcDVsWm9WS0pLM1RJNHRWbG04SnAtRmYzTjk2R3NFR19VRFBZUWkta193Q1lDMTNWMlZtbHBpLXUySEZzUXRRVkJ6QzNFU0E5WdIBgAFBVV95cUxPYTdXRGNWNHNvNXBuLXEyQkVvcDRSejdZOVZ2S2VHRnEzMzNDZF9FV2VseDVPd3RkaVpIM1ZEeVBETTJXQTVaSTJGcGxSYWx1MWdMZE9VWTRMTVJocVhyLTlmaE5MTGVUcTlZTXlvUXBlZEQ5T2VKWUNfeGliWDZ5VQ?oc=5"
+        },
+        {
+          "time": "2026-11-06T08:26:00+09:00",
+          "title": "[특징주] 美 반도체주 폭락에 프리마켓서 삼성전자 11%·SK하이닉스 13%↓",
+          "source": "뉴스핌",
+          "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE9lekV2dzBxblFYb2I2ZzllXzBLR3ZyWlBKdERvcW91d0RzWURNUlNZNzNxZFlhUkZfSWVvY2VURDJiTnJ4ZXBEeDFWZUJIUEV2R2RZSmRCMTRkdTA5?oc=5"
         }
       ],
       "price": 181400.0,
@@ -658,7 +658,7 @@
       "cum_before": 0.007777777777777883,
       "cum_after": 0.03833333333333333,
       "session_share": 0.5247646510050042,
-      "score": 7.1547053289784275,
+      "score": 7.154238147089819,
       "news": [
         {
           "time": "2026-11-06T08:26:08+09:00",
@@ -673,22 +673,22 @@
           "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE9VMHJ3UW5FNjMtSWIzeWZERUFTSEktYVFKUUpDdUxQelhWNXpwYjEyR0x2TWRUSE5TVW5RSjFwbjVrMjBSOGwtNjI5NlhDRDBNR1hfbUp0SWZQWFEzUWFhR1Bxbi0wOTgx0gFsQVVfeXFMUGRzUE5OVWxkYWQwYXlLdmpjMVA2cTU5d3lFcGtXMXZnUDllcGQ1TE9tRHRRaDJ6QWM0eWpkX3k4Q1pVRnRBdzJJMVpIU0RHQkF2Y3hLQUVEbWRNUXN6a1FXWmM4XzBCY2hwRUJm?oc=5"
         },
         {
-          "time": "2026-11-06T08:32:00+09:00",
-          "title": "마이크론 17%, 삼성 10%, 하닉 13% 줄폭락 … 美 민주당 AI 규제에 반도체주 '추풍낙엽'",
-          "source": "뉴데일리",
-          "link": "https://news.google.com/rss/articles/CBMie0FVX3lxTFBuZXhRRS1jeGJ2MnQzSkxWR1F3OUlMc3RkVVpvc3JvRlU3NldodVBlWGpSX0l3ZW80cjNuTXlHS3EzYmNYWFVyblgzQ3R4YnN5SmxjY3d6VVNaQ3p1dy1KZFYwVVh0cDFMbkxhdEVFREt4aG5jeExWOHY4UdIBgAFBVV95cUxQS1pRMUhwQTlXRm03RFE0dVFBZFdadHl5QWhGRG9XRFk2U1REZzN4NEZ1Y1Z2dVQyLWQ1VTg4dXpteWhVUFdWNUVUa3ZfVEhqODBtcllKNUdhTUEwQUlRQ0wxSlo5N2NoQjhjVjBDeEwwWXM3OVk5TzQ3TFZMSlJtbA?oc=5"
-        },
-        {
-          "time": "2026-11-06T08:00:00+09:00",
-          "title": "[주간 기업동향] 이재용 삼성전자 회장, 일본 반도체 연구거점 점검 外",
-          "source": "반론보도닷컴",
-          "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE9sNjVDR1J1aUR3YlBhY3ZhUlYzV0JpTHF5YzZDR1VfYjhrZXRyZXJVemxqZ2g3T0dnN0pEWHBVVlVfeUVXMzdyQkZkTTZ1b1duWTVFOWd6aWhXSnNKbnFRbGpmcG9BdUtqbFlwRFdjeWzSAXBBVV95cUxPbDY1Q0dSdWlEd2JQYWN2YVJWM1dCaUxxeWM2Q0dVX2I4a2V0cmVyVXpsamdoN09HZzdKRFhwVVZVX3lFVzM3ckJGZE02dW9Xblk1RTlnemloV0pzSm5xUWxqZnBvQXVLamxZcERXY3ls?oc=5"
-        },
-        {
           "time": "2026-11-06T08:06:00+09:00",
           "title": "[속보] 마이크론 16% 이어 삼성전자 11%, SK하이닉스 14% 폭락",
           "source": "뉴데일리",
           "link": "https://news.google.com/rss/articles/CBMie0FVX3lxTE5sR0dyeDVqeWdjc1pTUjlVSWVvbE5EMHpQQjlvQjFmSU55bVdwSkpTZVJtcDVsWm9WS0pLM1RJNHRWbG04SnAtRmYzTjk2R3NFR19VRFBZUWkta193Q1lDMTNWMlZtbHBpLXUySEZzUXRRVkJ6QzNFU0E5WdIBgAFBVV95cUxPYTdXRGNWNHNvNXBuLXEyQkVvcDRSejdZOVZ2S2VHRnEzMzNDZF9FV2VseDVPd3RkaVpIM1ZEeVBETTJXQTVaSTJGcGxSYWx1MWdMZE9VWTRMTVJocVhyLTlmaE5MTGVUcTlZTXlvUXBlZEQ5T2VKWUNfeGliWDZ5VQ?oc=5"
+        },
+        {
+          "time": "2026-11-06T08:26:00+09:00",
+          "title": "[특징주] 美 반도체주 폭락에 프리마켓서 삼성전자 11%·SK하이닉스 13%↓",
+          "source": "뉴스핌",
+          "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE9lekV2dzBxblFYb2I2ZzllXzBLR3ZyWlBKdERvcW91d0RzWURNUlNZNzNxZFlhUkZfSWVvY2VURDJiTnJ4ZXBEeDFWZUJIUEV2R2RZSmRCMTRkdTA5?oc=5"
+        },
+        {
+          "time": "2026-11-06T08:30:00+09:00",
+          "title": "“삼성전자·SK하이닉스 더 떨어지나” 공포 커졌는데…증권가서 나온 뜻밖의 전망",
+          "source": "데일리25",
+          "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE5Rd3pucG5jQ19TMWp4MktZWmh4cXJodEpVejZQLTVKRUdaX1E5MlRlUXhITm1RLXUxMWFLNVVZcXdqTXZFUjhXOW9mcTNWWHhpLTJzeUpXSmwtMnVVaG5xQ1hJNjhsbVpPQTk5WA?oc=5"
         }
       ],
       "price": 186900.0,
@@ -702,7 +702,7 @@
       "cum_before": 0.036111111111111205,
       "cum_after": 0.05444444444444452,
       "session_share": 0.3062487110744497,
-      "score": 3.3202011715820263,
+      "score": 3.320006631781669,
       "news": [
         {
           "time": "2026-11-06T10:40:39+09:00",
@@ -729,10 +729,10 @@
           "link": "https://news.google.com/rss/articles/CBMiS0FVX3lxTE5NbVZLdDNQNVBMRXphbWtxZWFPY2RKcG9mSnMzMFNCYkw0VV9nbXZHdmJ6cDl6ZlE4STV3eklWOXdnbkI4SG1kQlBJZw?oc=5"
         },
         {
-          "time": "2026-11-06T09:53:00+09:00",
-          "title": "삼성전자 CVC, 美 '에이전틱 커머스' 기업 펌리 투자",
-          "source": "한국경제",
-          "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE90SEcteTllTVNqVWNULTBacFg4a2U0QnQ1REUzTjVOck5oLVVtZi1NbTVSVlVuZllaRXBZLUhMb0ZaWUFxeTVWUDZSRXVfUmRmZDdVNHdaU0ZEZw?oc=5"
+          "time": "2026-11-06T09:40:00+09:00",
+          "title": "코스피, 삼성전자·SK하이닉스 급락에 5000선 밑으로",
+          "source": "비즈트리뷴",
+          "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE13LW5xbUh5YWxVNlNNS1V6NjcxaEhwX2ZaOHJNZDc4OF9nel9BVGFwdGR4WU9rUzNWSHVPMGp6ejYxbjZnLUtubml3QlRjSjd4S3M3SkhMbWtZQk1MTGE4cmp3d0JwdVlrQ0gtTFRtZkw?oc=5"
         }
       ],
       "price": 189800.0,
@@ -753,22 +753,22 @@
       "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE9VMHJ3UW5FNjMtSWIzeWZERUFTSEktYVFKUUpDdUxQelhWNXpwYjEyR0x2TWRUSE5TVW5RSjFwbjVrMjBSOGwtNjI5NlhDRDBNR1hfbUp0SWZQWFEzUWFhR1Bxbi0wOTgx0gFsQVVfeXFMUGRzUE5OVWxkYWQwYXlLdmpjMVA2cTU5d3lFcGtXMXZnUDllcGQ1TE9tRHRRaDJ6QWM0eWpkX3k4Q1pVRnRBdzJJMVpIU0RHQkF2Y3hLQUVEbWRNUXN6a1FXWmM4XzBCY2hwRUJm?oc=5"
     },
     {
-      "time": "2026-11-06T08:32:00+09:00",
-      "title": "마이크론 17%, 삼성 10%, 하닉 13% 줄폭락 … 美 민주당 AI 규제에 반도체주 '추풍낙엽'",
-      "source": "뉴데일리",
-      "link": "https://news.google.com/rss/articles/CBMie0FVX3lxTFBuZXhRRS1jeGJ2MnQzSkxWR1F3OUlMc3RkVVpvc3JvRlU3NldodVBlWGpSX0l3ZW80cjNuTXlHS3EzYmNYWFVyblgzQ3R4YnN5SmxjY3d6VVNaQ3p1dy1KZFYwVVh0cDFMbkxhdEVFREt4aG5jeExWOHY4UdIBgAFBVV95cUxQS1pRMUhwQTlXRm03RFE0dVFBZFdadHl5QWhGRG9XRFk2U1REZzN4NEZ1Y1Z2dVQyLWQ1VTg4dXpteWhVUFdWNUVUa3ZfVEhqODBtcllKNUdhTUEwQUlRQ0wxSlo5N2NoQjhjVjBDeEwwWXM3OVk5TzQ3TFZMSlJtbA?oc=5"
-    },
-    {
-      "time": "2026-11-05T17:47:10+09:00",
+      "time": "2026-11-05T20:56:00+09:00",
       "title": "삼성전자·하이닉스 주가 흔들…지금 ’줍줍’할까, 좀 더 후에 들어가야? 셈법 복잡 By FinancialPost",
       "source": "Investing.com 한국어",
       "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE9GSW1HVG5UYzZndDFsSlNEUWtXUUlCM25pNTBEcGlLSDA4RGJsM2RKVFl0OWlCaGI4VnpWQUhodzdzMkFiVE9heHdzbW1PdGZGaUp4Y3R1bDlia2xwZW5kUy00d1E2ellQYTZVLS1BU1g?oc=5"
     },
     {
-      "time": "2026-11-05T18:36:29+09:00",
-      "title": "삼성전자 동행노조 \"메모리價 급등 완제품이 감당…가격정책 적정했나\"",
-      "source": "연합인포맥스",
-      "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE0tbEs3ckVMaTJyQ1lKX2RFZlJaaVo0WmczcGRlbkItVkhNTHdlRnlaV2FIVjROcjhBMWItUTBFaXE0bnpjUDQxZk9xV2NjRmtzak9JLWUwZmJHbWJieVpKNWtGX3BBZzJQcF9QMDBvTkU?oc=5"
+      "time": "2026-11-06T00:37:59+09:00",
+      "title": "[반도체 제국의 지배구조 ①] 삼성전자 지분 1.58%의 이재용 회장, 어떻게 삼성을 지배하는가",
+      "source": "https://www.climatepol.com/",
+      "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTFBKVHRvaVdJT3h5RU45Z2k3YkNIVHN5d1pXTVQ5d3VwcUFjbXZ5ZzIycVE0QkpmazUxdXdsT2JLZVhPdDlWb1dYOFZwcnRHcE0xcGVrYllVU0JQMW14VUZKdFVxbVNCUVZDalp3UQ?oc=5"
+    },
+    {
+      "time": "2026-11-06T07:32:24+09:00",
+      "title": "[단독]삼성전자·마스터카드, 美 에이전틱 커머스 플랫폼 'firmly' 투자",
+      "source": "더트래커",
+      "link": "https://news.google.com/rss/articles/CBMiWEFVX3lxTE1HWEsyWUJubzB2b0lSZTd1QlJ2TlJrUGptU2VFbk1jWmw4T1Y1b2xKU01oZ0lSUlVVcFJXcGJkbUZyUUk4Rlk2X2NmdWFpZFpmVlBLUWt2Nkc?oc=5"
     }
   ],
   "top_news": [
@@ -810,6 +810,18 @@
     }
   ],
   "disclosures": [
+    {
+      "report_nm": "임원ㆍ주요주주특정증권등소유상황보고서",
+      "rcept_dt": "20261106",
+      "rcept_no": "20261106000440",
+      "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261106000440"
+    },
+    {
+      "report_nm": "임원ㆍ주요주주특정증권등소유상황보고서",
+      "rcept_dt": "20261106",
+      "rcept_no": "20261106000410",
+      "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261106000410"
+    },
     {
       "report_nm": "임원ㆍ주요주주특정증권등소유상황보고서",
       "rcept_dt": "20261106",
@@ -857,9 +869,9 @@
     "steady": 20,
     "upper": 4,
     "lower": 0,
-    "individual": 5929.0,
-    "foreign": -27574.0,
-    "institution": 16995.0,
+    "individual": 5721.0,
+    "foreign": -27353.0,
+    "institution": 16993.0,
     "prev_close": 5383.8,
     "open": 5263.26,
     "high": 5269.1,

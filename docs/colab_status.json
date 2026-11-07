@@ -41,7 +41,7 @@
   {
    "file": "investor_flows_005930.csv",
    "label": "삼성전자 외국인·기관 수급",
-   "have": "2026-11-05",
+   "have": "2026-11-06",
    "expected": "2026-11-03 이후",
    "late": false
   },

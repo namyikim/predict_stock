@@ -3,7 +3,7 @@
   "name": "SK하이닉스",
   "peer_name": "삼성전자",
   "session_date": "2026-11-09",
-  "generated_at": "2026-11-09 16:46 KST",
+  "generated_at": "2026-11-09 17:31 KST",
   "summary": {
     "prev_close": 1132000.0,
     "open": 1130000.0,
@@ -15,11 +15,11 @@
     "c2c": 0.0035335689045936647,
     "high_vs_open": 0.05575221238938055,
     "low_vs_open": -0.012389380530973493,
-    "volume": 4356817.0,
-    "volume_ratio": 1.0740177597047724,
+    "volume": 4430673.0,
+    "volume_ratio": 1.0922243209766267,
     "kospi_c2c": -0.00807160996482903,
     "peer_c2c": 0.006359300476947549,
-    "usdkrw_chg": -0.006016125982426512,
+    "usdkrw_chg": -0.004578469332166435,
     "us_nights": 1,
     "sox_ret": 0.04207129912011043,
     "nasdaq_ret": 0.010875167077935455,
@@ -511,12 +511,6 @@
       "link": "https://news.google.com/rss/articles/CBMigwFBVV95cUxOdkJzUnU2VHZJTW1PdVJfdUpKdlFsTHJ2X2lNdWxNLXVPbHJvNUdoV25OZkMzS0F3enlZQUROU3hqSWZlQXczSmwwUnJjQTJiUWFZUURTeFByNGFpY1N5cHNnU0tkT3RneTlhV2FUTzcwcmtpcnJ2bGx0QWhxY0J6ZXppWQ?oc=5"
     },
     {
-      "time": "2026-11-08T21:27:36+09:00",
-      "title": "삼성전자·SK하이닉스, 엔비디아 행사서 반도체 AI 기술 발표",
-      "source": "비건뉴스",
-      "link": "https://news.google.com/rss/articles/CBMiZkFVX3lxTE9ZZUpzdmpXSjhuSVdmWmdwSEQ2TG9sOVRublZnV1hZVjEtM1dpcDQyTjdibTgtOUdXYjhWbmlkQld1dDBEQ0M1RUFiU3FIX3o0QVRXMVRVaWhOWHpaSDdHRGRkdTctdw?oc=5"
-    },
-    {
       "time": "2026-11-08T22:23:54+09:00",
       "title": "삼성·SK하이닉스 순현금 늘어…AI 투자·환원 병행",
       "source": "비건뉴스",
@@ -533,6 +527,12 @@
       "title": "“삼성전자·SK하이닉스 개미들 월요일만 기다렸다”…美 반도체주 급반등, 코스피 살아날까",
       "source": "데일리25",
       "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE5makhQajRURlE4WnV4LVdicGxtUFVCMkdhNXhOaFZVY0x3eWU2VkFPSzV5NXdrU3B3dHpLMHJQQmdtcnZIZ1hJU3IwdU5FZGJWb2hISXpub0YxSWRHUmlrTExDQ183anB4NEFkRQ?oc=5"
+    },
+    {
+      "time": "2026-11-09T08:00:00+09:00",
+      "title": "워트, SK하이닉스 설비투자 확대로 실적 개선 \"올 영업익 70억 기대\" - 머니투데이",
+      "source": "머니투데이",
+      "link": "https://news.google.com/rss/articles/CBMibkFVX3lxTE1RWjhoMjduUDNNeUczSEhEQUNLOWZGaGNqSDhERU9UdnR5VGEwcXBkU05hMVdCZVU5d19xLWF1VnZFVUxiMEVPanE1N01pYkY0TWZwdkFsS0o1ZHhON1ZzWWtWTGxMRUVPR2g3S1pB0gFuQVVfeXFMTVFaOGgyN25QM015RzNISERBQ0s5ZkZoY2pIOERFT1R2dHlUYTBxcGRTTmExV0JlVTl3X3EtYXVWdkVVTGIwRU9qcTU3TWliRjRNZnB2QWxLSjVkeE43VnNZa1ZMbExFRU9HaDdLWkE?oc=5"
     }
   ],
   "top_news": [
@@ -590,9 +590,9 @@
     "steady": 42,
     "upper": 7,
     "lower": 0,
-    "individual": -5074.0,
-    "foreign": -6565.0,
-    "institution": 7032.0,
+    "individual": -5326.0,
+    "foreign": -6274.0,
+    "institution": 6996.0,
     "prev_close": 5059.69,
     "open": 5034.2,
     "high": 5172.94,

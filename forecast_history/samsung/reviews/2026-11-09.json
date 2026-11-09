@@ -3,7 +3,7 @@
   "name": "삼성전자",
   "peer_name": "SK하이닉스",
   "session_date": "2026-11-09",
-  "generated_at": "2026-11-09 16:46 KST",
+  "generated_at": "2026-11-09 17:32 KST",
   "summary": {
     "prev_close": 188700.0,
     "open": 187200.0,
@@ -15,11 +15,11 @@
     "c2c": 0.006359300476947549,
     "high_vs_open": 0.04380341880341887,
     "low_vs_open": -0.0010683760683760646,
-    "volume": 19792436.0,
-    "volume_ratio": 0.9989035064975066,
+    "volume": 20314148.0,
+    "volume_ratio": 1.0252337644900966,
     "kospi_c2c": -0.00807160996482903,
     "peer_c2c": 0.0035335689045936647,
-    "usdkrw_chg": -0.005986696050998219,
+    "usdkrw_chg": -0.00461536924618966,
     "us_nights": 1,
     "sox_ret": 0.04207129912011043,
     "nasdaq_ret": 0.010875167077935455,
@@ -137,12 +137,6 @@
       "score": 4.050796141514116,
       "news": [
         {
-          "time": "2026-11-09T09:24:53+09:00",
-          "title": "삼성전자 현금 215조원 시대…주주환원 110조·미래투자 130조 ‘역대급 자금전략’",
-          "source": "https://www.thedailyeconomy.kr/",
-          "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTFBySVFsVk0xX25tUXU0bmtjMDRTYVNRTWZQaUJ2cTUyaFJXWlJUYndGYVhUZ1RXWVhHcE1BbjZPVDVYTGtFZHo3cEU5U2xpb0Q0OVlpMUYxWnoxLVRsRXpCT2MweWVJZG50ZXd0YllBZGQ?oc=5"
-        },
-        {
           "time": "2026-11-09T08:12:31+09:00",
           "title": "“삼성전자, 지금은 반등 가능성 주목할 때”…비관론 정점 속 돋보인 리포트",
           "source": "매일경제",
@@ -153,18 +147,6 @@
           "title": "\"50% 폭락한 삼성전자, 반등 확률 97%\"…지금이 기회?",
           "source": "이데일리",
           "link": "https://news.google.com/rss/articles/CBMigAFBVV95cUxOXzJfSWg2QU5hY0gtNFdmaXJleUF3QTIxeThKTnR6UmktQnY4ZEhhSVhwcUJmd3VFOVpmYzAyWHN6S0x3bjR0SFYyR0FYXzd3LUJra2VMT05uMklhUzNrOG1Jb1o2ZTdUODlVaWVGZnRpRnloR2Z1eXFvTl91blhwcQ?oc=5"
-        },
-        {
-          "time": "2026-11-09T08:48:04+09:00",
-          "title": "삼성전자, 천장형 디지털 엑스레이 출시…AI로 촬영 효율 높인다",
-          "source": "www.ebn.co.kr",
-          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE93WjhxeDE1ZERCMGlBUTZIWHRIak5waHhkM2cxUFdNQUxjYm9MYzFCUnZRaEY4MnFZUUM5blVZN1N3ZTN3VlY2bnJNU0RzeTZvZTROSG9sb2V5QWtfQ01xaUJOTElVNERo?oc=5"
-        },
-        {
-          "time": "2026-11-09T08:49:00+09:00",
-          "title": "삼성전자-현대자동차 경영진이 오늘... 이런 일은 정말 처음",
-          "source": "위키트리",
-          "link": "https://news.google.com/rss/articles/CBMiVkFVX3lxTFB6YnNkNV9SS2hkNmc3Wk9YSHdBY05GYk5NRTZOQ0RRZUNUTzJnMGlyaDdOWUVwT2swRC1Vc2JwQWtFeV9nVjl4X2E5ZFpHcmlFZU4xT2pn?oc=5"
         }
       ]
     }
@@ -549,12 +531,6 @@
       "score": 4.050796141514116,
       "news": [
         {
-          "time": "2026-11-09T09:24:53+09:00",
-          "title": "삼성전자 현금 215조원 시대…주주환원 110조·미래투자 130조 ‘역대급 자금전략’",
-          "source": "https://www.thedailyeconomy.kr/",
-          "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTFBySVFsVk0xX25tUXU0bmtjMDRTYVNRTWZQaUJ2cTUyaFJXWlJUYndGYVhUZ1RXWVhHcE1BbjZPVDVYTGtFZHo3cEU5U2xpb0Q0OVlpMUYxWnoxLVRsRXpCT2MweWVJZG50ZXd0YllBZGQ?oc=5"
-        },
-        {
           "time": "2026-11-09T08:12:31+09:00",
           "title": "“삼성전자, 지금은 반등 가능성 주목할 때”…비관론 정점 속 돋보인 리포트",
           "source": "매일경제",
@@ -565,18 +541,6 @@
           "title": "\"50% 폭락한 삼성전자, 반등 확률 97%\"…지금이 기회?",
           "source": "이데일리",
           "link": "https://news.google.com/rss/articles/CBMigAFBVV95cUxOXzJfSWg2QU5hY0gtNFdmaXJleUF3QTIxeThKTnR6UmktQnY4ZEhhSVhwcUJmd3VFOVpmYzAyWHN6S0x3bjR0SFYyR0FYXzd3LUJra2VMT05uMklhUzNrOG1Jb1o2ZTdUODlVaWVGZnRpRnloR2Z1eXFvTl91blhwcQ?oc=5"
-        },
-        {
-          "time": "2026-11-09T08:48:04+09:00",
-          "title": "삼성전자, 천장형 디지털 엑스레이 출시…AI로 촬영 효율 높인다",
-          "source": "www.ebn.co.kr",
-          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE93WjhxeDE1ZERCMGlBUTZIWHRIak5waHhkM2cxUFdNQUxjYm9MYzFCUnZRaEY4MnFZUUM5blVZN1N3ZTN3VlY2bnJNU0RzeTZvZTROSG9sb2V5QWtfQ01xaUJOTElVNERo?oc=5"
-        },
-        {
-          "time": "2026-11-09T08:49:00+09:00",
-          "title": "삼성전자-현대자동차 경영진이 오늘... 이런 일은 정말 처음",
-          "source": "위키트리",
-          "link": "https://news.google.com/rss/articles/CBMiVkFVX3lxTFB6YnNkNV9SS2hkNmc3Wk9YSHdBY05GYk5NRTZOQ0RRZUNUTzJnMGlyaDdOWUVwT2swRC1Vc2JwQWtFeV9nVjl4X2E5ZFpHcmlFZU4xT2pn?oc=5"
         }
       ],
       "price": 189800.0,
@@ -603,16 +567,10 @@
       "link": "https://news.google.com/rss/articles/CBMigAFBVV95cUxOXzJfSWg2QU5hY0gtNFdmaXJleUF3QTIxeThKTnR6UmktQnY4ZEhhSVhwcUJmd3VFOVpmYzAyWHN6S0x3bjR0SFYyR0FYXzd3LUJra2VMT05uMklhUzNrOG1Jb1o2ZTdUODlVaWVGZnRpRnloR2Z1eXFvTl91blhwcQ?oc=5"
     },
     {
-      "time": "2026-11-09T08:48:04+09:00",
-      "title": "삼성전자, 천장형 디지털 엑스레이 출시…AI로 촬영 효율 높인다",
-      "source": "www.ebn.co.kr",
-      "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE93WjhxeDE1ZERCMGlBUTZIWHRIak5waHhkM2cxUFdNQUxjYm9MYzFCUnZRaEY4MnFZUUM5blVZN1N3ZTN3VlY2bnJNU0RzeTZvZTROSG9sb2V5QWtfQ01xaUJOTElVNERo?oc=5"
-    },
-    {
-      "time": "2026-11-09T08:49:00+09:00",
-      "title": "삼성전자-현대자동차 경영진이 오늘... 이런 일은 정말 처음",
-      "source": "위키트리",
-      "link": "https://news.google.com/rss/articles/CBMiVkFVX3lxTFB6YnNkNV9SS2hkNmc3Wk9YSHdBY05GYk5NRTZOQ0RRZUNUTzJnMGlyaDdOWUVwT2swRC1Vc2JwQWtFeV9nVjl4X2E5ZFpHcmlFZU4xT2pn?oc=5"
+      "time": "2026-11-09T06:29:25+09:00",
+      "title": "6월 이어 또 통큰 세일 나설까…`12년만 우승` 삼성, 계열사 우승턱 기다리는 팬들",
+      "source": "매일신문",
+      "link": "https://news.google.com/rss/articles/CBMiYkFVX3lxTFBuVWJhNmpMNzR5cGxDMTJTQUhTa19UeGVCamZTb2lyS0Y1b1VXYUw0d1VhTk5iRTFBQUc4V3psQU1RSFZUblBXcEl0bnVYdXFGTmR4VXFraEVNUmhKeUVTV3R3?oc=5"
     }
   ],
   "top_news": [
@@ -627,12 +585,6 @@
       "title": "[삼전닉스는 지금] AI 투자 우려에 외국인 이탈…반도체주 조정 어디까지",
       "source": "녹색경제신문",
       "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE1NdEZ6ZDBVNHAtSF9uemZWTk1TVlVyTC1RX1lKNW9WN0h4ZE9VWTFoVEx1REJyQ1dIb3FNZ3l2cEp4Z096bDg3eExkZE03VFVjemlsUlEtWk8zeXFVTzJObGVRb2N6QXJV?oc=5"
-    },
-    {
-      "time": "2026-11-09T11:20:59+09:00",
-      "title": "삼성전자 주가 얼마나 떨어졌으면 삼성 라이온즈 우승 기념 할인이란 얘기가? 증권사들은 그래도 '실적'에 기대 건다",
-      "source": "허프포스트코리아",
-      "link": "https://news.google.com/rss/articles/CBMiV0FVX3lxTFBtZ0NjdldkZXFYYVpna25IVlV2ZmlZX3pwY3MtLXlZeGRNeHJrTjdYc2JWdWt0d3JGTXdmNmxiOHVKYTN3Q2RMNkdHMklqMTVsRGFYUHZZYw?oc=5"
     },
     {
       "time": "2026-11-09T14:16:58+09:00",
@@ -651,6 +603,12 @@
       "title": "“삼성전자 반토막 났지만 반등 가능성 높다”…KB증권, 과거 20년 주가 분석",
       "source": "디지털데일리",
       "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTFBIWi1UNVI3M0ZPX01zOHhkU3pzeVlVVWpiUGFJUnhFbWE2aTBGblAyVEM5YVJUR0F5el9uYTdld1d1UGpyNWZJM0IwMjNnQnI3dDdYdWN6RUNseFZ5eUVYVDNHa1U?oc=5"
+    },
+    {
+      "time": "2026-11-09T16:18:33+09:00",
+      "title": "반도체 시뮬레이션 18시간→41초… 엔비디아, 삼성·LG·카카오와 피지컬 AI 협력 확대",
+      "source": "뉴스탭",
+      "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE05OGs0WlloemNVTUJTck0tc01xV1M2M1RoMlVMVzNqdEdwRVdJME1QUVE0a0ZwY1Q0NWdyNXlUMVRHMngxZFhsclBTT0plcFBqNzJwSkJnOC1YRE9fclQyazJCTmo4WFYwMWNGRg?oc=5"
     }
   ],
   "disclosures": [
@@ -677,9 +635,9 @@
     "steady": 42,
     "upper": 7,
     "lower": 0,
-    "individual": -5074.0,
-    "foreign": -6565.0,
-    "institution": 7032.0,
+    "individual": -5309.0,
+    "foreign": -6291.0,
+    "institution": 6996.0,
     "prev_close": 5059.69,
     "open": 5034.2,
     "high": 5172.94,

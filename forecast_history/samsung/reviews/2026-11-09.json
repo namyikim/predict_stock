@@ -1,0 +1,739 @@
+{
+  "target": "samsung",
+  "name": "삼성전자",
+  "peer_name": "SK하이닉스",
+  "session_date": "2026-11-09",
+  "generated_at": "2026-11-09 16:08 KST",
+  "summary": {
+    "prev_close": 188700.0,
+    "open": 187200.0,
+    "high": 195400.0,
+    "low": 187000.0,
+    "close": 189900.0,
+    "gap": -0.007949125596184436,
+    "session": 0.014423076923076872,
+    "c2c": 0.006359300476947549,
+    "high_vs_open": 0.04380341880341887,
+    "low_vs_open": -0.0010683760683760646,
+    "volume": 19654916.0,
+    "volume_ratio": 0.9919630161903237,
+    "kospi_c2c": -0.00807160996482903,
+    "peer_c2c": 0.0035335689045936647,
+    "usdkrw_chg": -0.007195843233685273,
+    "us_nights": 1,
+    "sox_ret": 0.04207129912011043,
+    "nasdaq_ret": 0.010875167077935455,
+    "micron_ret": 0.051204291048766226,
+    "prior_streak": -4,
+    "ma5": 203520.0,
+    "ma20": 217655.0,
+    "high20": 249000.0,
+    "high252": 367712.7495144774,
+    "price_context": {
+      "breakouts": {
+        "20": {
+          "prior_high": 262500.0,
+          "distance": -0.2765714285714286,
+          "close_breakout": false,
+          "intraday_breakout": false
+        },
+        "60": {
+          "prior_high": 283092.2681564246,
+          "distance": -0.32919397185701504,
+          "close_breakout": false,
+          "intraday_breakout": false
+        }
+      },
+      "relative": {
+        "5": {
+          "start": "2026-11-02",
+          "end": "2026-11-09",
+          "own": -0.1707423580786026,
+          "peer": -0.2282608695652174,
+          "excess": 0.0575185114866148
+        },
+        "20": {
+          "start": "2026-10-12",
+          "end": "2026-11-09",
+          "own": -0.2419161676646706,
+          "peer": -0.2922118380062305,
+          "excess": 0.050295670341559906
+        },
+        "60": {
+          "start": "2026-08-10",
+          "end": "2026-11-09",
+          "own": -0.16003416922613334,
+          "peer": -0.19982651168118581,
+          "excess": 0.039792342455052476
+        }
+      }
+    },
+    "range": 0.044919786096256686,
+    "peer_range": 0.06899641577060933,
+    "prior_5d": -0.16133333333333333,
+    "ma_touches": [],
+    "micron_ah": {
+      "regular_close": 689.4249877929688,
+      "last": 694.79,
+      "ret": 0.0077818650353913554,
+      "low_ret": 0.00015231853920383287,
+      "high_ret": 0.008086466701588968,
+      "last_time": "2026-11-07T09:55:00+09:00"
+    },
+    "nvidia_ah": {
+      "regular_close": 186.67999267578125,
+      "last": 188.7001,
+      "ret": 0.01082123100212029,
+      "low_ret": 0.0019820405974697586,
+      "high_ret": 0.01082123100212029,
+      "last_time": "2026-11-07T09:55:00+09:00"
+    },
+    "session_cross": {
+      "NQ=F": {
+        "label": "나스닥100 선물",
+        "ret": 0.0031974346379484153,
+        "after_high": -0.004286634164290315
+      },
+      "ZN=F": {
+        "label": "미 10년물 국채 선물",
+        "ret": 0.00029175784099200186,
+        "after_high": 0.0013142523364486625
+      },
+      "KRW=X": {
+        "label": "원/달러",
+        "ret": -0.009789741650841233,
+        "after_high": -0.007585391444568268
+      }
+    },
+    "from_high": -0.016757960277427375,
+    "buyback": [
+      {
+        "kind": "직접 취득",
+        "start": "2026-08-24",
+        "end": "2026-11-21",
+        "amount": "14,999,999,992,000",
+        "purpose": "임직원 주식보상",
+        "rcept_no": "20260821000616"
+      }
+    ]
+  },
+  "classification": {
+    "labels": [
+      "장중 급변 09:10 주도"
+    ],
+    "reasons": [
+      "09:10 봉 +1.33%(σ의 3.86배, 거래량 2.79배)가 세션 +1.44%의 281%"
+    ]
+  },
+  "events": [
+    {
+      "time": "2026-11-09T09:10:00+09:00",
+      "ret": 0.013347570742124892,
+      "z": 3.86,
+      "volume_ratio": 2.79,
+      "cum_before": -0.010042283298097199,
+      "cum_after": 0.003171247357293794,
+      "session_share": 2.8059559826777463,
+      "score": 4.418604974420352,
+      "news": [
+        {
+          "time": "2026-11-09T09:24:53+09:00",
+          "title": "삼성전자 현금 215조원 시대…주주환원 110조·미래투자 130조 ‘역대급 자금전략’",
+          "source": "https://www.thedailyeconomy.kr/",
+          "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTFBySVFsVk0xX25tUXU0bmtjMDRTYVNRTWZQaUJ2cTUyaFJXWlJUYndGYVhUZ1RXWVhHcE1BbjZPVDVYTGtFZHo3cEU5U2xpb0Q0OVlpMUYxWnoxLVRsRXpCT2MweWVJZG50ZXd0YllBZGQ?oc=5"
+        },
+        {
+          "time": "2026-11-09T08:12:31+09:00",
+          "title": "“삼성전자, 지금은 반등 가능성 주목할 때”…비관론 정점 속 돋보인 리포트",
+          "source": "매일경제",
+          "link": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE04U1NpOS1kelgycWN3NzZidzNIWHRKTlN5akxWOXJfcFZmODdSZFlNVXNtbGQxY2NqS1Z3MDRpRXo2OFJ1OVhtbWlHYmk3WXpSMWc?oc=5"
+        },
+        {
+          "time": "2026-11-09T08:12:56+09:00",
+          "title": "“삼성전자, 반등에 주목할 때…급락 후 상승 확률 97%”",
+          "source": "이데일리",
+          "link": "https://news.google.com/rss/articles/CBMigAFBVV95cUxOXzJfSWg2QU5hY0gtNFdmaXJleUF3QTIxeThKTnR6UmktQnY4ZEhhSVhwcUJmd3VFOVpmYzAyWHN6S0x3bjR0SFYyR0FYXzd3LUJra2VMT05uMklhUzNrOG1Jb1o2ZTdUODlVaWVGZnRpRnloR2Z1eXFvTl91blhwcQ?oc=5"
+        },
+        {
+          "time": "2026-11-09T08:48:04+09:00",
+          "title": "삼성전자, 천장형 디지털 엑스레이 출시…AI로 촬영 효율 높인다",
+          "source": "www.ebn.co.kr",
+          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE93WjhxeDE1ZERCMGlBUTZIWHRIak5waHhkM2cxUFdNQUxjYm9MYzFCUnZRaEY4MnFZUUM5blVZN1N3ZTN3VlY2bnJNU0RzeTZvZTROSG9sb2V5QWtfQ01xaUJOTElVNERo?oc=5"
+        },
+        {
+          "time": "2026-11-09T08:49:00+09:00",
+          "title": "삼성전자-현대자동차 경영진이 오늘... 이런 일은 정말 처음",
+          "source": "위키트리",
+          "link": "https://news.google.com/rss/articles/CBMiVkFVX3lxTFB6YnNkNV9SS2hkNmc3Wk9YSHdBY05GYk5NRTZOQ0RRZUNUTzJnMGlyaDdOWUVwT2swRC1Vc2JwQWtFeV9nVjl4X2E5ZFpHcmlFZU4xT2pn?oc=5"
+        }
+      ]
+    }
+  ],
+  "turning_point": {
+    "high_time": "2026-11-09T11:25:00+09:00",
+    "high": 0.031712473572938604,
+    "low_time": "2026-11-09T09:05:00+09:00",
+    "low": -0.010042283298097199,
+    "pattern": "저점 후 반등"
+  },
+  "closing_share": -0.07294406452744051,
+  "intraday_corr_kospi": 0.9078570871607997,
+  "intraday_note": "장중 봉은 09:05~14:55까지만 있어 마감 구간(14:55~15:30)은 일봉 종가로만 봅니다(그 구간 -0.11%).",
+  "intraday_coverage": "09:05~14:55",
+  "intraday_path": [
+    {
+      "time": "2026-11-09T09:05:00+09:00",
+      "price": 187300.0,
+      "volume": 544513.0
+    },
+    {
+      "time": "2026-11-09T09:10:00+09:00",
+      "price": 189800.0,
+      "volume": 466994.0
+    },
+    {
+      "time": "2026-11-09T09:15:00+09:00",
+      "price": 190200.0,
+      "volume": 402634.0
+    },
+    {
+      "time": "2026-11-09T09:20:00+09:00",
+      "price": 191100.0,
+      "volume": 437382.0
+    },
+    {
+      "time": "2026-11-09T09:25:00+09:00",
+      "price": 190200.0,
+      "volume": 384207.0
+    },
+    {
+      "time": "2026-11-09T09:30:00+09:00",
+      "price": 192000.0,
+      "volume": 401128.0
+    },
+    {
+      "time": "2026-11-09T09:35:00+09:00",
+      "price": 190700.0,
+      "volume": 281562.0
+    },
+    {
+      "time": "2026-11-09T09:40:00+09:00",
+      "price": 190500.0,
+      "volume": 249791.0
+    },
+    {
+      "time": "2026-11-09T09:45:00+09:00",
+      "price": 191600.0,
+      "volume": 231667.0
+    },
+    {
+      "time": "2026-11-09T09:50:00+09:00",
+      "price": 191700.0,
+      "volume": 237105.0
+    },
+    {
+      "time": "2026-11-09T09:55:00+09:00",
+      "price": 192850.0,
+      "volume": 284650.0
+    },
+    {
+      "time": "2026-11-09T10:00:00+09:00",
+      "price": 193100.0,
+      "volume": 341813.0
+    },
+    {
+      "time": "2026-11-09T10:05:00+09:00",
+      "price": 192500.0,
+      "volume": 223708.0
+    },
+    {
+      "time": "2026-11-09T10:10:00+09:00",
+      "price": 191200.0,
+      "volume": 260027.0
+    },
+    {
+      "time": "2026-11-09T10:15:00+09:00",
+      "price": 190900.0,
+      "volume": 280780.0
+    },
+    {
+      "time": "2026-11-09T10:20:00+09:00",
+      "price": 191000.0,
+      "volume": 177573.0
+    },
+    {
+      "time": "2026-11-09T10:25:00+09:00",
+      "price": 190300.0,
+      "volume": 215693.0
+    },
+    {
+      "time": "2026-11-09T10:30:00+09:00",
+      "price": 191500.0,
+      "volume": 230315.0
+    },
+    {
+      "time": "2026-11-09T10:35:00+09:00",
+      "price": 192900.0,
+      "volume": 269640.0
+    },
+    {
+      "time": "2026-11-09T10:40:00+09:00",
+      "price": 193400.0,
+      "volume": 314614.0
+    },
+    {
+      "time": "2026-11-09T10:45:00+09:00",
+      "price": 194900.0,
+      "volume": 285469.0
+    },
+    {
+      "time": "2026-11-09T10:50:00+09:00",
+      "price": 193350.0,
+      "volume": 249665.0
+    },
+    {
+      "time": "2026-11-09T10:55:00+09:00",
+      "price": 193400.0,
+      "volume": 167562.0
+    },
+    {
+      "time": "2026-11-09T11:00:00+09:00",
+      "price": 194000.0,
+      "volume": 220711.0
+    },
+    {
+      "time": "2026-11-09T11:05:00+09:00",
+      "price": 194600.0,
+      "volume": 163814.0
+    },
+    {
+      "time": "2026-11-09T11:10:00+09:00",
+      "price": 194800.0,
+      "volume": 158209.0
+    },
+    {
+      "time": "2026-11-09T11:15:00+09:00",
+      "price": 194400.0,
+      "volume": 173325.0
+    },
+    {
+      "time": "2026-11-09T11:20:00+09:00",
+      "price": 194800.0,
+      "volume": 96306.0
+    },
+    {
+      "time": "2026-11-09T11:25:00+09:00",
+      "price": 195200.0,
+      "volume": 147721.0
+    },
+    {
+      "time": "2026-11-09T11:30:00+09:00",
+      "price": 194950.0,
+      "volume": 220761.0
+    },
+    {
+      "time": "2026-11-09T11:35:00+09:00",
+      "price": 194800.0,
+      "volume": 122972.0
+    },
+    {
+      "time": "2026-11-09T11:40:00+09:00",
+      "price": 195200.0,
+      "volume": 140636.0
+    },
+    {
+      "time": "2026-11-09T11:45:00+09:00",
+      "price": 194200.0,
+      "volume": 89683.0
+    },
+    {
+      "time": "2026-11-09T11:50:00+09:00",
+      "price": 194400.0,
+      "volume": 112876.0
+    },
+    {
+      "time": "2026-11-09T11:55:00+09:00",
+      "price": 194150.0,
+      "volume": 77156.0
+    },
+    {
+      "time": "2026-11-09T12:00:00+09:00",
+      "price": 193700.0,
+      "volume": 185397.0
+    },
+    {
+      "time": "2026-11-09T12:05:00+09:00",
+      "price": 193300.0,
+      "volume": 121077.0
+    },
+    {
+      "time": "2026-11-09T12:10:00+09:00",
+      "price": 193500.0,
+      "volume": 104117.0
+    },
+    {
+      "time": "2026-11-09T12:15:00+09:00",
+      "price": 193000.0,
+      "volume": 180385.0
+    },
+    {
+      "time": "2026-11-09T12:20:00+09:00",
+      "price": 192550.0,
+      "volume": 110296.0
+    },
+    {
+      "time": "2026-11-09T12:25:00+09:00",
+      "price": 192700.0,
+      "volume": 105528.0
+    },
+    {
+      "time": "2026-11-09T12:30:00+09:00",
+      "price": 193600.0,
+      "volume": 114552.0
+    },
+    {
+      "time": "2026-11-09T12:35:00+09:00",
+      "price": 193600.0,
+      "volume": 89721.0
+    },
+    {
+      "time": "2026-11-09T12:40:00+09:00",
+      "price": 193800.0,
+      "volume": 136120.0
+    },
+    {
+      "time": "2026-11-09T12:45:00+09:00",
+      "price": 193100.0,
+      "volume": 122347.0
+    },
+    {
+      "time": "2026-11-09T12:50:00+09:00",
+      "price": 192900.0,
+      "volume": 97193.0
+    },
+    {
+      "time": "2026-11-09T12:55:00+09:00",
+      "price": 192200.0,
+      "volume": 184674.0
+    },
+    {
+      "time": "2026-11-09T13:00:00+09:00",
+      "price": 192600.0,
+      "volume": 133956.0
+    },
+    {
+      "time": "2026-11-09T13:05:00+09:00",
+      "price": 192200.0,
+      "volume": 94226.0
+    },
+    {
+      "time": "2026-11-09T13:10:00+09:00",
+      "price": 192000.0,
+      "volume": 150684.0
+    },
+    {
+      "time": "2026-11-09T13:15:00+09:00",
+      "price": 192300.0,
+      "volume": 136645.0
+    },
+    {
+      "time": "2026-11-09T13:20:00+09:00",
+      "price": 191700.0,
+      "volume": 177724.0
+    },
+    {
+      "time": "2026-11-09T13:25:00+09:00",
+      "price": 192300.0,
+      "volume": 124949.0
+    },
+    {
+      "time": "2026-11-09T13:30:00+09:00",
+      "price": 192650.0,
+      "volume": 106629.0
+    },
+    {
+      "time": "2026-11-09T13:35:00+09:00",
+      "price": 192500.0,
+      "volume": 97715.0
+    },
+    {
+      "time": "2026-11-09T13:40:00+09:00",
+      "price": 192500.0,
+      "volume": 103587.0
+    },
+    {
+      "time": "2026-11-09T13:45:00+09:00",
+      "price": 193100.0,
+      "volume": 115476.0
+    },
+    {
+      "time": "2026-11-09T13:50:00+09:00",
+      "price": 192100.0,
+      "volume": 97153.0
+    },
+    {
+      "time": "2026-11-09T13:55:00+09:00",
+      "price": 192800.0,
+      "volume": 76747.0
+    },
+    {
+      "time": "2026-11-09T14:00:00+09:00",
+      "price": 192100.0,
+      "volume": 112161.0
+    },
+    {
+      "time": "2026-11-09T14:05:00+09:00",
+      "price": 191500.0,
+      "volume": 123931.0
+    },
+    {
+      "time": "2026-11-09T14:10:00+09:00",
+      "price": 190700.0,
+      "volume": 245153.0
+    },
+    {
+      "time": "2026-11-09T14:15:00+09:00",
+      "price": 191700.0,
+      "volume": 184794.0
+    },
+    {
+      "time": "2026-11-09T14:20:00+09:00",
+      "price": 192300.0,
+      "volume": 174266.0
+    },
+    {
+      "time": "2026-11-09T14:25:00+09:00",
+      "price": 192050.0,
+      "volume": 121794.0
+    },
+    {
+      "time": "2026-11-09T14:30:00+09:00",
+      "price": 191600.0,
+      "volume": 136634.0
+    },
+    {
+      "time": "2026-11-09T14:35:00+09:00",
+      "price": 191400.0,
+      "volume": 112581.0
+    },
+    {
+      "time": "2026-11-09T14:40:00+09:00",
+      "price": 191000.0,
+      "volume": 228389.0
+    },
+    {
+      "time": "2026-11-09T14:45:00+09:00",
+      "price": 190800.0,
+      "volume": 164210.0
+    },
+    {
+      "time": "2026-11-09T14:50:00+09:00",
+      "price": 190000.0,
+      "volume": 277048.0
+    },
+    {
+      "time": "2026-11-09T14:55:00+09:00",
+      "price": 190100.0,
+      "volume": 16125056.0
+    }
+  ],
+  "timeline_items": [
+    {
+      "time": "2026-11-09T09:10:00+09:00",
+      "ret": 0.013347570742124892,
+      "z": 3.86,
+      "volume_ratio": 2.79,
+      "cum_before": -0.010042283298097199,
+      "cum_after": 0.003171247357293794,
+      "session_share": 2.8059559826777463,
+      "score": 4.418604974420352,
+      "news": [
+        {
+          "time": "2026-11-09T09:24:53+09:00",
+          "title": "삼성전자 현금 215조원 시대…주주환원 110조·미래투자 130조 ‘역대급 자금전략’",
+          "source": "https://www.thedailyeconomy.kr/",
+          "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTFBySVFsVk0xX25tUXU0bmtjMDRTYVNRTWZQaUJ2cTUyaFJXWlJUYndGYVhUZ1RXWVhHcE1BbjZPVDVYTGtFZHo3cEU5U2xpb0Q0OVlpMUYxWnoxLVRsRXpCT2MweWVJZG50ZXd0YllBZGQ?oc=5"
+        },
+        {
+          "time": "2026-11-09T08:12:31+09:00",
+          "title": "“삼성전자, 지금은 반등 가능성 주목할 때”…비관론 정점 속 돋보인 리포트",
+          "source": "매일경제",
+          "link": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE04U1NpOS1kelgycWN3NzZidzNIWHRKTlN5akxWOXJfcFZmODdSZFlNVXNtbGQxY2NqS1Z3MDRpRXo2OFJ1OVhtbWlHYmk3WXpSMWc?oc=5"
+        },
+        {
+          "time": "2026-11-09T08:12:56+09:00",
+          "title": "“삼성전자, 반등에 주목할 때…급락 후 상승 확률 97%”",
+          "source": "이데일리",
+          "link": "https://news.google.com/rss/articles/CBMigAFBVV95cUxOXzJfSWg2QU5hY0gtNFdmaXJleUF3QTIxeThKTnR6UmktQnY4ZEhhSVhwcUJmd3VFOVpmYzAyWHN6S0x3bjR0SFYyR0FYXzd3LUJra2VMT05uMklhUzNrOG1Jb1o2ZTdUODlVaWVGZnRpRnloR2Z1eXFvTl91blhwcQ?oc=5"
+        },
+        {
+          "time": "2026-11-09T08:48:04+09:00",
+          "title": "삼성전자, 천장형 디지털 엑스레이 출시…AI로 촬영 효율 높인다",
+          "source": "www.ebn.co.kr",
+          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE93WjhxeDE1ZERCMGlBUTZIWHRIak5waHhkM2cxUFdNQUxjYm9MYzFCUnZRaEY4MnFZUUM5blVZN1N3ZTN3VlY2bnJNU0RzeTZvZTROSG9sb2V5QWtfQ01xaUJOTElVNERo?oc=5"
+        },
+        {
+          "time": "2026-11-09T08:49:00+09:00",
+          "title": "삼성전자-현대자동차 경영진이 오늘... 이런 일은 정말 처음",
+          "source": "위키트리",
+          "link": "https://news.google.com/rss/articles/CBMiVkFVX3lxTFB6YnNkNV9SS2hkNmc3Wk9YSHdBY05GYk5NRTZOQ0RRZUNUTzJnMGlyaDdOWUVwT2swRC1Vc2JwQWtFeV9nVjl4X2E5ZFpHcmlFZU4xT2pn?oc=5"
+        }
+      ],
+      "price": 189800.0,
+      "kind": "turn_up"
+    }
+  ],
+  "overnight_news": [
+    {
+      "time": "2026-11-09T05:25:03+09:00",
+      "title": "“삼성전자·SK하이닉스 개미들 월요일만 기다렸다”…美 반도체주 급반등, 코스피 살아날까",
+      "source": "데일리25",
+      "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE5makhQajRURlE4WnV4LVdicGxtUFVCMkdhNXhOaFZVY0x3eWU2VkFPSzV5NXdrU3B3dHpLMHJQQmdtcnZIZ1hJU3IwdU5FZGJWb2hISXpub0YxSWRHUmlrTExDQ183anB4NEFkRQ?oc=5"
+    },
+    {
+      "time": "2026-11-09T07:34:28+09:00",
+      "title": "\"삼성전자 팔면 후회할까\"…20년 통계 봤더니 '놀라운 결과' [분석+]",
+      "source": "한국경제",
+      "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE9MNm83X1V3bS1kNFI5aVByQTJCOGRrNU9ka3ViODZ2YTlrUFdxMFQySzBhazdrSkhjd2tDNDFMUzhFUm1SWHNaOTlrajNPWFhaY1RfT1lpbTd2Zw?oc=5"
+    },
+    {
+      "time": "2026-11-09T08:12:31+09:00",
+      "title": "“삼성전자, 지금은 반등 가능성 주목할 때”…비관론 정점 속 돋보인 리포트",
+      "source": "매일경제",
+      "link": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE04U1NpOS1kelgycWN3NzZidzNIWHRKTlN5akxWOXJfcFZmODdSZFlNVXNtbGQxY2NqS1Z3MDRpRXo2OFJ1OVhtbWlHYmk3WXpSMWc?oc=5"
+    },
+    {
+      "time": "2026-11-09T08:12:56+09:00",
+      "title": "“삼성전자, 반등에 주목할 때…급락 후 상승 확률 97%”",
+      "source": "이데일리",
+      "link": "https://news.google.com/rss/articles/CBMigAFBVV95cUxOXzJfSWg2QU5hY0gtNFdmaXJleUF3QTIxeThKTnR6UmktQnY4ZEhhSVhwcUJmd3VFOVpmYzAyWHN6S0x3bjR0SFYyR0FYXzd3LUJra2VMT05uMklhUzNrOG1Jb1o2ZTdUODlVaWVGZnRpRnloR2Z1eXFvTl91blhwcQ?oc=5"
+    },
+    {
+      "time": "2026-11-09T08:48:04+09:00",
+      "title": "삼성전자, 천장형 디지털 엑스레이 출시…AI로 촬영 효율 높인다",
+      "source": "www.ebn.co.kr",
+      "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE93WjhxeDE1ZERCMGlBUTZIWHRIak5waHhkM2cxUFdNQUxjYm9MYzFCUnZRaEY4MnFZUUM5blVZN1N3ZTN3VlY2bnJNU0RzeTZvZTROSG9sb2V5QWtfQ01xaUJOTElVNERo?oc=5"
+    }
+  ],
+  "top_news": [
+    {
+      "time": "2026-11-09T14:30:00+09:00",
+      "title": "엔비디아가 부른 TSMC 'D램 개발'…삼성·SK '메모리 3강' 흔드나",
+      "source": "뉴스핌",
+      "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE8wbnByU2hHcnIzX091SUN1eXY1UUFsVW8xcldzakJxN3cxcFdRbEtrYU5seDhHa2l1VWhhVnQ1VmRQN01BdzhyTGptV3lkQTdaVEJyWF9fU0JsMmhU?oc=5"
+    },
+    {
+      "time": "2026-11-09T16:01:57+09:00",
+      "title": "[삼전닉스는 지금] AI 투자 우려에 외국인 이탈…반도체주 조정 어디까지",
+      "source": "녹색경제신문",
+      "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE1NdEZ6ZDBVNHAtSF9uemZWTk1TVlVyTC1RX1lKNW9WN0h4ZE9VWTFoVEx1REJyQ1dIb3FNZ3l2cEp4Z096bDg3eExkZE03VFVjemlsUlEtWk8zeXFVTzJObGVRb2N6QXJV?oc=5"
+    },
+    {
+      "time": "2026-11-09T05:25:03+09:00",
+      "title": "“삼성전자·SK하이닉스 개미들 월요일만 기다렸다”…美 반도체주 급반등, 코스피 살아날까",
+      "source": "데일리25",
+      "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE5makhQajRURlE4WnV4LVdicGxtUFVCMkdhNXhOaFZVY0x3eWU2VkFPSzV5NXdrU3B3dHpLMHJQQmdtcnZIZ1hJU3IwdU5FZGJWb2hISXpub0YxSWRHUmlrTExDQ183anB4NEFkRQ?oc=5"
+    },
+    {
+      "time": "2026-11-09T11:20:59+09:00",
+      "title": "삼성전자 주가 얼마나 떨어졌으면 삼성 라이온즈 우승 기념 할인이란 얘기가? 증권사들은 그래도 '실적'에 기대 건다",
+      "source": "허프포스트코리아",
+      "link": "https://news.google.com/rss/articles/CBMiV0FVX3lxTFBtZ0NjdldkZXFYYVpna25IVlV2ZmlZX3pwY3MtLXlZeGRNeHJrTjdYc2JWdWt0d3JGTXdmNmxiOHVKYTN3Q2RMNkdHMklqMTVsRGFYUHZZYw?oc=5"
+    },
+    {
+      "time": "2026-11-09T14:16:58+09:00",
+      "title": "美 AI 규제망 우려에 코스피 5000선 장중 붕괴…삼성전자·SK하이닉스 공급망 촉각",
+      "source": "글로벌이코노믹",
+      "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxPVklLRFhLVmpJUC1lUnc2WE0tQjhmRFV6UnhaeDhDaG02SzRlaklpRjVSM1Z1NWRiRUppNnZjUFFMdm1iT3Z2SVcxNHpoOUFOZWc4Y213d1U3Y3BidVhycWJSTy16WmFydG1vX1JYRDllNGNCQXBVT1oxZmNqd1NUOGlsQzhVZjhl?oc=5"
+    },
+    {
+      "time": "2026-11-09T16:04:45+09:00",
+      "title": "“삼성전자 반토막 났지만 반등 가능성 높다”…KB증권, 과거 20년 주가 분석",
+      "source": "디지털데일리",
+      "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTFBIWi1UNVI3M0ZPX01zOHhkU3pzeVlVVWpiUGFJUnhFbWE2aTBGblAyVEM5YVJUR0F5el9uYTdld1d1UGpyNWZJM0IwMjNnQnI3dDdYdWN6RUNseFZ5eUVYVDNHa1U?oc=5"
+    }
+  ],
+  "disclosures": [
+    {
+      "report_nm": "임원ㆍ주요주주특정증권등소유상황보고서",
+      "rcept_dt": "20261109",
+      "rcept_no": "20261109000007",
+      "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261109000007"
+    }
+  ],
+  "disclosure_note": null,
+  "flows": null,
+  "flow_story": null,
+  "flow_status": {
+    "state": "pending",
+    "detail": "최신 2026-11-06"
+  },
+  "context": {},
+  "market": {
+    "index": "KOSPI",
+    "date": "2026-11-09",
+    "rise": 340,
+    "fall": 530,
+    "steady": 42,
+    "upper": 7,
+    "lower": 0,
+    "individual": -4945.0,
+    "foreign": -6822.0,
+    "institution": 7155.0,
+    "prev_close": 5059.69,
+    "open": 5034.2,
+    "high": 5172.94,
+    "low": 4990.66,
+    "close": 5018.85
+  },
+  "earnings_reactions": null,
+  "forecasts": [
+    {
+      "model": "No macro ensemble",
+      "hit": false,
+      "verdict": "틀림 — 예측 상승 65%, 실제 보합(+0.64%)",
+      "legs": "갭 -0.79%(보합) · 세션 +1.44%(상승)",
+      "where": "결과는 주로 장중에서 정해졌습니다.",
+      "band": 0.0142430307528133,
+      "probs": [
+        0.1630183648773765,
+        0.1834421499301823,
+        0.6535394851924412
+      ],
+      "actual": "보합",
+      "predicted": "상승"
+    },
+    {
+      "model": "Mean ensemble",
+      "hit": false,
+      "verdict": "틀림 — 예측 상승 73%, 실제 보합(+0.64%)",
+      "legs": "갭 -0.79%(보합) · 세션 +1.44%(상승)",
+      "where": "결과는 주로 장중에서 정해졌습니다.",
+      "band": 0.0142430307528133,
+      "probs": [
+        0.1346562607803971,
+        0.1368801891375422,
+        0.7284635500820605
+      ],
+      "actual": "보합",
+      "predicted": "상승"
+    },
+    {
+      "model": "Candidate expanding",
+      "hit": false,
+      "verdict": "틀림 — 예측 상승 61%, 실제 보합(+0.64%)",
+      "legs": "갭 -0.79%(보합) · 세션 +1.44%(상승)",
+      "where": "결과는 주로 장중에서 정해졌습니다.",
+      "band": 0.0142430307528133,
+      "probs": [
+        0.1943388720810136,
+        0.1996354023285815,
+        0.6060257255904049
+      ],
+      "actual": "보합",
+      "predicted": "상승"
+    }
+  ],
+  "price_check": "1거래일 예상 구간 181,614~204,128원 · 종가 189,900원 → 구간 안",
+  "disclaimer": "시간이 맞는 것이지 원인 확정이 아닙니다. 뉴스 없이 움직이는 날(수급·프로그램·옵션 만기)이 많고, 기사 발행 시각은 실제 정보 유통보다 늦거나 앞섭니다. 이 절은 설명 도구이며 다음날 예측에 자동 반영되지 않습니다."
+}

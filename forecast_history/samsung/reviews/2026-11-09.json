@@ -3,7 +3,7 @@
   "name": "삼성전자",
   "peer_name": "SK하이닉스",
   "session_date": "2026-11-09",
-  "generated_at": "2026-11-09 16:11 KST",
+  "generated_at": "2026-11-09 16:46 KST",
   "summary": {
     "prev_close": 188700.0,
     "open": 187200.0,
@@ -15,11 +15,11 @@
     "c2c": 0.006359300476947549,
     "high_vs_open": 0.04380341880341887,
     "low_vs_open": -0.0010683760683760646,
-    "volume": 19654916.0,
-    "volume_ratio": 0.9919630161903237,
+    "volume": 19792436.0,
+    "volume_ratio": 0.9989035064975066,
     "kospi_c2c": -0.00807160996482903,
     "peer_c2c": 0.0035335689045936647,
-    "usdkrw_chg": -0.006915673886479845,
+    "usdkrw_chg": -0.005986696050998219,
     "us_nights": 1,
     "sox_ret": 0.04207129912011043,
     "nasdaq_ret": 0.010875167077935455,
@@ -91,13 +91,13 @@
     "session_cross": {
       "NQ=F": {
         "label": "나스닥100 선물",
-        "ret": 0.0031974346379484153,
-        "after_high": -0.004286634164290315
+        "ret": 0.0032067322841944357,
+        "after_high": -0.008727345989358648
       },
       "ZN=F": {
         "label": "미 10년물 국채 선물",
         "ret": 0.00029175784099200186,
-        "after_high": 0.0013142523364486625
+        "after_high": 0.0016067776803974088
       },
       "KRW=X": {
         "label": "원/달러",
@@ -122,19 +122,19 @@
       "장중 급변 09:10 주도"
     ],
     "reasons": [
-      "09:10 봉 +1.33%(σ의 3.86배, 거래량 2.79배)가 세션 +1.44%의 281%"
+      "09:10 봉 +1.33%(σ의 3.49배, 거래량 2.79배)가 세션 +1.44%의 281%"
     ]
   },
   "events": [
     {
       "time": "2026-11-09T09:10:00+09:00",
       "ret": 0.013347570742124892,
-      "z": 3.86,
+      "z": 3.49,
       "volume_ratio": 2.79,
       "cum_before": -0.010042283298097199,
       "cum_after": 0.003171247357293794,
       "session_share": 2.8059559826777463,
-      "score": 4.418604974420352,
+      "score": 4.050796141514116,
       "news": [
         {
           "time": "2026-11-09T09:24:53+09:00",
@@ -150,7 +150,7 @@
         },
         {
           "time": "2026-11-09T08:12:56+09:00",
-          "title": "“삼성전자, 반등에 주목할 때…급락 후 상승 확률 97%”",
+          "title": "\"50% 폭락한 삼성전자, 반등 확률 97%\"…지금이 기회?",
           "source": "이데일리",
           "link": "https://news.google.com/rss/articles/CBMigAFBVV95cUxOXzJfSWg2QU5hY0gtNFdmaXJleUF3QTIxeThKTnR6UmktQnY4ZEhhSVhwcUJmd3VFOVpmYzAyWHN6S0x3bjR0SFYyR0FYXzd3LUJra2VMT05uMklhUzNrOG1Jb1o2ZTdUODlVaWVGZnRpRnloR2Z1eXFvTl91blhwcQ?oc=5"
         },
@@ -177,7 +177,7 @@
     "pattern": "저점 후 반등"
   },
   "closing_share": -0.07294406452744051,
-  "intraday_corr_kospi": 0.9078570871607997,
+  "intraday_corr_kospi": 0.9074313983059953,
   "intraday_note": "장중 봉은 09:05~14:55까지만 있어 마감 구간(14:55~15:30)은 일봉 종가로만 봅니다(그 구간 -0.11%).",
   "intraday_coverage": "09:05~14:55",
   "intraday_path": [
@@ -194,12 +194,12 @@
     {
       "time": "2026-11-09T09:15:00+09:00",
       "price": 190200.0,
-      "volume": 402634.0
+      "volume": 402638.0
     },
     {
       "time": "2026-11-09T09:20:00+09:00",
       "price": 191100.0,
-      "volume": 437382.0
+      "volume": 437378.0
     },
     {
       "time": "2026-11-09T09:25:00+09:00",
@@ -314,12 +314,12 @@
     {
       "time": "2026-11-09T11:15:00+09:00",
       "price": 194400.0,
-      "volume": 173325.0
+      "volume": 173323.0
     },
     {
       "time": "2026-11-09T11:20:00+09:00",
       "price": 194800.0,
-      "volume": 96306.0
+      "volume": 96308.0
     },
     {
       "time": "2026-11-09T11:25:00+09:00",
@@ -458,13 +458,13 @@
     },
     {
       "time": "2026-11-09T13:40:00+09:00",
-      "price": 192500.0,
-      "volume": 103587.0
+      "price": 192400.0,
+      "volume": 103696.0
     },
     {
       "time": "2026-11-09T13:45:00+09:00",
       "price": 193100.0,
-      "volume": 115476.0
+      "volume": 115367.0
     },
     {
       "time": "2026-11-09T13:50:00+09:00",
@@ -529,24 +529,24 @@
     {
       "time": "2026-11-09T14:50:00+09:00",
       "price": 190000.0,
-      "volume": 277048.0
+      "volume": 276947.0
     },
     {
       "time": "2026-11-09T14:55:00+09:00",
       "price": 190100.0,
-      "volume": 16125056.0
+      "volume": 248035.0
     }
   ],
   "timeline_items": [
     {
       "time": "2026-11-09T09:10:00+09:00",
       "ret": 0.013347570742124892,
-      "z": 3.86,
+      "z": 3.49,
       "volume_ratio": 2.79,
       "cum_before": -0.010042283298097199,
       "cum_after": 0.003171247357293794,
       "session_share": 2.8059559826777463,
-      "score": 4.418604974420352,
+      "score": 4.050796141514116,
       "news": [
         {
           "time": "2026-11-09T09:24:53+09:00",
@@ -562,7 +562,7 @@
         },
         {
           "time": "2026-11-09T08:12:56+09:00",
-          "title": "“삼성전자, 반등에 주목할 때…급락 후 상승 확률 97%”",
+          "title": "\"50% 폭락한 삼성전자, 반등 확률 97%\"…지금이 기회?",
           "source": "이데일리",
           "link": "https://news.google.com/rss/articles/CBMigAFBVV95cUxOXzJfSWg2QU5hY0gtNFdmaXJleUF3QTIxeThKTnR6UmktQnY4ZEhhSVhwcUJmd3VFOVpmYzAyWHN6S0x3bjR0SFYyR0FYXzd3LUJra2VMT05uMklhUzNrOG1Jb1o2ZTdUODlVaWVGZnRpRnloR2Z1eXFvTl91blhwcQ?oc=5"
         },
@@ -585,12 +585,6 @@
   ],
   "overnight_news": [
     {
-      "time": "2026-11-09T05:25:03+09:00",
-      "title": "“삼성전자·SK하이닉스 개미들 월요일만 기다렸다”…美 반도체주 급반등, 코스피 살아날까",
-      "source": "데일리25",
-      "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE5makhQajRURlE4WnV4LVdicGxtUFVCMkdhNXhOaFZVY0x3eWU2VkFPSzV5NXdrU3B3dHpLMHJQQmdtcnZIZ1hJU3IwdU5FZGJWb2hISXpub0YxSWRHUmlrTExDQ183anB4NEFkRQ?oc=5"
-    },
-    {
       "time": "2026-11-09T07:34:28+09:00",
       "title": "\"삼성전자 팔면 후회할까\"…20년 통계 봤더니 '놀라운 결과' [분석+]",
       "source": "한국경제",
@@ -604,7 +598,7 @@
     },
     {
       "time": "2026-11-09T08:12:56+09:00",
-      "title": "“삼성전자, 반등에 주목할 때…급락 후 상승 확률 97%”",
+      "title": "\"50% 폭락한 삼성전자, 반등 확률 97%\"…지금이 기회?",
       "source": "이데일리",
       "link": "https://news.google.com/rss/articles/CBMigAFBVV95cUxOXzJfSWg2QU5hY0gtNFdmaXJleUF3QTIxeThKTnR6UmktQnY4ZEhhSVhwcUJmd3VFOVpmYzAyWHN6S0x3bjR0SFYyR0FYXzd3LUJra2VMT05uMklhUzNrOG1Jb1o2ZTdUODlVaWVGZnRpRnloR2Z1eXFvTl91blhwcQ?oc=5"
     },
@@ -613,6 +607,12 @@
       "title": "삼성전자, 천장형 디지털 엑스레이 출시…AI로 촬영 효율 높인다",
       "source": "www.ebn.co.kr",
       "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE93WjhxeDE1ZERCMGlBUTZIWHRIak5waHhkM2cxUFdNQUxjYm9MYzFCUnZRaEY4MnFZUUM5blVZN1N3ZTN3VlY2bnJNU0RzeTZvZTROSG9sb2V5QWtfQ01xaUJOTElVNERo?oc=5"
+    },
+    {
+      "time": "2026-11-09T08:49:00+09:00",
+      "title": "삼성전자-현대자동차 경영진이 오늘... 이런 일은 정말 처음",
+      "source": "위키트리",
+      "link": "https://news.google.com/rss/articles/CBMiVkFVX3lxTFB6YnNkNV9SS2hkNmc3Wk9YSHdBY05GYk5NRTZOQ0RRZUNUTzJnMGlyaDdOWUVwT2swRC1Vc2JwQWtFeV9nVjl4X2E5ZFpHcmlFZU4xT2pn?oc=5"
     }
   ],
   "top_news": [
@@ -629,12 +629,6 @@
       "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE1NdEZ6ZDBVNHAtSF9uemZWTk1TVlVyTC1RX1lKNW9WN0h4ZE9VWTFoVEx1REJyQ1dIb3FNZ3l2cEp4Z096bDg3eExkZE03VFVjemlsUlEtWk8zeXFVTzJObGVRb2N6QXJV?oc=5"
     },
     {
-      "time": "2026-11-09T05:25:03+09:00",
-      "title": "“삼성전자·SK하이닉스 개미들 월요일만 기다렸다”…美 반도체주 급반등, 코스피 살아날까",
-      "source": "데일리25",
-      "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE5makhQajRURlE4WnV4LVdicGxtUFVCMkdhNXhOaFZVY0x3eWU2VkFPSzV5NXdrU3B3dHpLMHJQQmdtcnZIZ1hJU3IwdU5FZGJWb2hISXpub0YxSWRHUmlrTExDQ183anB4NEFkRQ?oc=5"
-    },
-    {
       "time": "2026-11-09T11:20:59+09:00",
       "title": "삼성전자 주가 얼마나 떨어졌으면 삼성 라이온즈 우승 기념 할인이란 얘기가? 증권사들은 그래도 '실적'에 기대 건다",
       "source": "허프포스트코리아",
@@ -645,6 +639,12 @@
       "title": "美 AI 규제망 우려에 코스피 5000선 장중 붕괴…삼성전자·SK하이닉스 공급망 촉각",
       "source": "글로벌이코노믹",
       "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxPVklLRFhLVmpJUC1lUnc2WE0tQjhmRFV6UnhaeDhDaG02SzRlaklpRjVSM1Z1NWRiRUppNnZjUFFMdm1iT3Z2SVcxNHpoOUFOZWc4Y213d1U3Y3BidVhycWJSTy16WmFydG1vX1JYRDllNGNCQXBVT1oxZmNqd1NUOGlsQzhVZjhl?oc=5"
+    },
+    {
+      "time": "2026-11-09T14:53:29+09:00",
+      "title": "'젠슨 황 스캔들 파장'에 미국의 중국 반도체 규제 강화되나, 삼성전자·SK하이닉스 메모리 영향 '촉각'",
+      "source": "비즈니스포스트",
+      "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTE93X1FTWnZKTTZzY0N3dU5VUk5BQUJIdFFpWTliYndqUHdnRklpZDliXzd6aV96dmF5ejlEQ2g5OGdhY2xCUGpMVzkxY2JHWlVxNjlxZ1BZOXlVWTZ3ak5uaWUzZU92dEplRHctTW1IdjV1NGs?oc=5"
     },
     {
       "time": "2026-11-09T16:04:45+09:00",
@@ -677,9 +677,9 @@
     "steady": 42,
     "upper": 7,
     "lower": 0,
-    "individual": -4950.0,
-    "foreign": -6808.0,
-    "institution": 7146.0,
+    "individual": -5074.0,
+    "foreign": -6565.0,
+    "institution": 7032.0,
     "prev_close": 5059.69,
     "open": 5034.2,
     "high": 5172.94,

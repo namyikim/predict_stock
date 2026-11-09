@@ -3,7 +3,7 @@
   "name": "삼성전자",
   "peer_name": "SK하이닉스",
   "session_date": "2026-11-09",
-  "generated_at": "2026-11-09 16:08 KST",
+  "generated_at": "2026-11-09 16:11 KST",
   "summary": {
     "prev_close": 188700.0,
     "open": 187200.0,
@@ -19,7 +19,7 @@
     "volume_ratio": 0.9919630161903237,
     "kospi_c2c": -0.00807160996482903,
     "peer_c2c": 0.0035335689045936647,
-    "usdkrw_chg": -0.007195843233685273,
+    "usdkrw_chg": -0.006915673886479845,
     "us_nights": 1,
     "sox_ret": 0.04207129912011043,
     "nasdaq_ret": 0.010875167077935455,
@@ -28,7 +28,7 @@
     "ma5": 203520.0,
     "ma20": 217655.0,
     "high20": 249000.0,
-    "high252": 367712.7495144774,
+    "high252": 367712.71645480226,
     "price_context": {
       "breakouts": {
         "20": {
@@ -677,9 +677,9 @@
     "steady": 42,
     "upper": 7,
     "lower": 0,
-    "individual": -4945.0,
-    "foreign": -6822.0,
-    "institution": 7155.0,
+    "individual": -4950.0,
+    "foreign": -6808.0,
+    "institution": 7146.0,
     "prev_close": 5059.69,
     "open": 5034.2,
     "high": 5172.94,

@@ -3,7 +3,7 @@
   "name": "삼성전자",
   "peer_name": "SK하이닉스",
   "session_date": "2026-11-09",
-  "generated_at": "2026-11-09 17:32 KST",
+  "generated_at": "2026-11-10 08:10 KST",
   "summary": {
     "prev_close": 188700.0,
     "open": 187200.0,
@@ -15,11 +15,11 @@
     "c2c": 0.006359300476947549,
     "high_vs_open": 0.04380341880341887,
     "low_vs_open": -0.0010683760683760646,
-    "volume": 20314148.0,
-    "volume_ratio": 1.0252337644900966,
-    "kospi_c2c": -0.00807160996482903,
+    "volume": 19855892.0,
+    "volume_ratio": 1.0021060643286046,
+    "kospi_c2c": NaN,
     "peer_c2c": 0.0035335689045936647,
-    "usdkrw_chg": -0.00461536924618966,
+    "usdkrw_chg": -0.010719965022481515,
     "us_nights": 1,
     "sox_ret": 0.04207129912011043,
     "nasdaq_ret": 0.010875167077935455,
@@ -28,7 +28,7 @@
     "ma5": 203520.0,
     "ma20": 217655.0,
     "high20": 249000.0,
-    "high252": 367712.71645480226,
+    "high252": 367712.7495144774,
     "price_context": {
       "breakouts": {
         "20": {
@@ -74,19 +74,19 @@
     "ma_touches": [],
     "micron_ah": {
       "regular_close": 689.4249877929688,
-      "last": 694.79,
-      "ret": 0.0077818650353913554,
+      "last": 691.1706,
+      "ret": 0.0025319827942695827,
       "low_ret": 0.00015231853920383287,
       "high_ret": 0.008086466701588968,
-      "last_time": "2026-11-07T09:55:00+09:00"
+      "last_time": "2026-11-07T08:55:00+09:00"
     },
     "nvidia_ah": {
       "regular_close": 186.67999267578125,
-      "last": 188.7001,
-      "ret": 0.01082123100212029,
+      "last": 188.0838,
+      "ret": 0.0075198595419747605,
       "low_ret": 0.0019820405974697586,
-      "high_ret": 0.01082123100212029,
-      "last_time": "2026-11-07T09:55:00+09:00"
+      "high_ret": 0.008892261567107429,
+      "last_time": "2026-11-07T08:55:00+09:00"
     },
     "session_cross": {
       "NQ=F": {
@@ -115,7 +115,15 @@
         "purpose": "임직원 주식보상",
         "rcept_no": "20260821000616"
       }
-    ]
+    ],
+    "foreign_pressure": {
+      "state": "turned_selling",
+      "previous_ratio": 0.01643496165686837,
+      "recent_ratio": -0.10088286870979592,
+      "previous_daily_net": 299836.4,
+      "recent_daily_net": -2333830.6
+    },
+    "buyback_transition": null
   },
   "classification": {
     "labels": [
@@ -144,7 +152,7 @@
         },
         {
           "time": "2026-11-09T08:12:56+09:00",
-          "title": "\"50% 폭락한 삼성전자, 반등 확률 97%\"…지금이 기회?",
+          "title": "“삼성전자, 반등에 주목할 때…급락 후 상승 확률 97%”",
           "source": "이데일리",
           "link": "https://news.google.com/rss/articles/CBMigAFBVV95cUxOXzJfSWg2QU5hY0gtNFdmaXJleUF3QTIxeThKTnR6UmktQnY4ZEhhSVhwcUJmd3VFOVpmYzAyWHN6S0x3bjR0SFYyR0FYXzd3LUJra2VMT05uMklhUzNrOG1Jb1o2ZTdUODlVaWVGZnRpRnloR2Z1eXFvTl91blhwcQ?oc=5"
         }
@@ -538,7 +546,7 @@
         },
         {
           "time": "2026-11-09T08:12:56+09:00",
-          "title": "\"50% 폭락한 삼성전자, 반등 확률 97%\"…지금이 기회?",
+          "title": "“삼성전자, 반등에 주목할 때…급락 후 상승 확률 97%”",
           "source": "이데일리",
           "link": "https://news.google.com/rss/articles/CBMigAFBVV95cUxOXzJfSWg2QU5hY0gtNFdmaXJleUF3QTIxeThKTnR6UmktQnY4ZEhhSVhwcUJmd3VFOVpmYzAyWHN6S0x3bjR0SFYyR0FYXzd3LUJra2VMT05uMklhUzNrOG1Jb1o2ZTdUODlVaWVGZnRpRnloR2Z1eXFvTl91blhwcQ?oc=5"
         }
@@ -562,7 +570,7 @@
     },
     {
       "time": "2026-11-09T08:12:56+09:00",
-      "title": "\"50% 폭락한 삼성전자, 반등 확률 97%\"…지금이 기회?",
+      "title": "“삼성전자, 반등에 주목할 때…급락 후 상승 확률 97%”",
       "source": "이데일리",
       "link": "https://news.google.com/rss/articles/CBMigAFBVV95cUxOXzJfSWg2QU5hY0gtNFdmaXJleUF3QTIxeThKTnR6UmktQnY4ZEhhSVhwcUJmd3VFOVpmYzAyWHN6S0x3bjR0SFYyR0FYXzd3LUJra2VMT05uMklhUzNrOG1Jb1o2ZTdUODlVaWVGZnRpRnloR2Z1eXFvTl91blhwcQ?oc=5"
     },
@@ -575,28 +583,10 @@
   ],
   "top_news": [
     {
-      "time": "2026-11-09T14:30:00+09:00",
-      "title": "엔비디아가 부른 TSMC 'D램 개발'…삼성·SK '메모리 3강' 흔드나",
-      "source": "뉴스핌",
-      "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE8wbnByU2hHcnIzX091SUN1eXY1UUFsVW8xcldzakJxN3cxcFdRbEtrYU5seDhHa2l1VWhhVnQ1VmRQN01BdzhyTGptV3lkQTdaVEJyWF9fU0JsMmhU?oc=5"
-    },
-    {
-      "time": "2026-11-09T16:01:57+09:00",
-      "title": "[삼전닉스는 지금] AI 투자 우려에 외국인 이탈…반도체주 조정 어디까지",
-      "source": "녹색경제신문",
-      "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE1NdEZ6ZDBVNHAtSF9uemZWTk1TVlVyTC1RX1lKNW9WN0h4ZE9VWTFoVEx1REJyQ1dIb3FNZ3l2cEp4Z096bDg3eExkZE03VFVjemlsUlEtWk8zeXFVTzJObGVRb2N6QXJV?oc=5"
-    },
-    {
-      "time": "2026-11-09T14:16:58+09:00",
-      "title": "美 AI 규제망 우려에 코스피 5000선 장중 붕괴…삼성전자·SK하이닉스 공급망 촉각",
-      "source": "글로벌이코노믹",
-      "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxPVklLRFhLVmpJUC1lUnc2WE0tQjhmRFV6UnhaeDhDaG02SzRlaklpRjVSM1Z1NWRiRUppNnZjUFFMdm1iT3Z2SVcxNHpoOUFOZWc4Y213d1U3Y3BidVhycWJSTy16WmFydG1vX1JYRDllNGNCQXBVT1oxZmNqd1NUOGlsQzhVZjhl?oc=5"
-    },
-    {
-      "time": "2026-11-09T14:53:29+09:00",
-      "title": "'젠슨 황 스캔들 파장'에 미국의 중국 반도체 규제 강화되나, 삼성전자·SK하이닉스 메모리 영향 '촉각'",
-      "source": "비즈니스포스트",
-      "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTE93X1FTWnZKTTZzY0N3dU5VUk5BQUJIdFFpWTliYndqUHdnRklpZDliXzd6aV96dmF5ejlEQ2g5OGdhY2xCUGpMVzkxY2JHWlVxNjlxZ1BZOXlVWTZ3ak5uaWUzZU92dEplRHctTW1IdjV1NGs?oc=5"
+      "time": "2026-11-09T17:52:38+09:00",
+      "title": "삼성전자 \"엔비디아 AI로 반도체 시뮬레이션 4000배 가속\"",
+      "source": "아이뉴스24",
+      "link": "https://news.google.com/rss/articles/CBMiS0FVX3lxTFBtVDBpdjItUXlBTFFjdlFpT19uOTBzQVhMRFl2UmpwdVc0bVVUemgxWTYzaDI0and6VGE5WVZ5Nnp6Y3hjVTNHYTc3aw?oc=5"
     },
     {
       "time": "2026-11-09T16:04:45+09:00",
@@ -605,10 +595,28 @@
       "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTFBIWi1UNVI3M0ZPX01zOHhkU3pzeVlVVWpiUGFJUnhFbWE2aTBGblAyVEM5YVJUR0F5el9uYTdld1d1UGpyNWZJM0IwMjNnQnI3dDdYdWN6RUNseFZ5eUVYVDNHa1U?oc=5"
     },
     {
-      "time": "2026-11-09T16:18:33+09:00",
-      "title": "반도체 시뮬레이션 18시간→41초… 엔비디아, 삼성·LG·카카오와 피지컬 AI 협력 확대",
-      "source": "뉴스탭",
-      "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE05OGs0WlloemNVTUJTck0tc01xV1M2M1RoMlVMVzNqdEdwRVdJME1QUVE0a0ZwY1Q0NWdyNXlUMVRHMngxZFhsclBTT0plcFBqNzJwSkJnOC1YRE9fclQyazJCTmo4WFYwMWNGRg?oc=5"
+      "time": "2026-11-09T22:20:52+09:00",
+      "title": "삼성전자·LG전자, 엔비디아 기술로 반도체 엔지니어링·로봇 학습 고도화",
+      "source": "와우테일",
+      "link": "https://news.google.com/rss/articles/CBMiT0FVX3lxTE9Mc0tZTHBnV0ZfRFh1Zm1ONnB2QkdFVktHZlV1dElfd3JvbHR3Q2FFcnRaaDlNamd1T1k4andwaHlHQUhYTUt1VWd5Q0VxVW8?oc=5"
+    },
+    {
+      "time": "2026-11-09T09:46:40+09:00",
+      "title": "[특징주] 삼성전자·SK하이닉스, 美 반도체주 회복.. 동반 '상승'",
+      "source": "글로벌이코노믹",
+      "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxOUk81eTZhVkdIbzhPWnVrVzdBaDNMYlJhQjcxNk5heDVuNXh5Z0c4Ni1UMGdab0VaQW5ZdVBTM2gtWmw2RUhPZmg3VnB5WlpzdW5vYmo4b1NGRXJRWmJWcFpCLXNTaWVVemFYZ2tCdG9HeW13S3VqV1dVd3U5b3AtNWc3NnRHNDFj?oc=5"
+    },
+    {
+      "time": "2026-11-09T10:50:24+09:00",
+      "title": "삼성전자, 엑스레이 촬영 부담 낮춘다…AI·저선량 기술 적용",
+      "source": "매일일보",
+      "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE02UlpBWkxpWWtYX1NFUld5WFNmZkljWjdyM012ZE42a2M0ckFJRFF0c0RFUERrWlptMW9GYmFTaHNzZUFyeTVqQWVSU2J0V3dvNWctWC1ZY0NqOFIycUQtdU5YWmU?oc=5"
+    },
+    {
+      "time": "2026-11-09T11:00:00+09:00",
+      "title": "삼성전자 사장단 인사 임박…반도체는 승진 기대, DX는 안갯속",
+      "source": "아이뉴스24",
+      "link": "https://news.google.com/rss/articles/CBMiS0FVX3lxTE51cTUwUU5uMjJ5a3JXeEVyYTBJQXlvMDVIcFlnUHF1ZGNVZ3NXNjdsRUg2TF9xdmdqRDJvU3o2RUVHZFBwZUhlWFg3VQ?oc=5"
     }
   ],
   "disclosures": [
@@ -620,30 +628,74 @@
     }
   ],
   "disclosure_note": null,
-  "flows": null,
-  "flow_story": null,
+  "flows": "외국인 -458,714 / 기관 +1,509,865",
+  "flow_story": {
+    "direction": "up",
+    "c2c": 0.006359300476947549,
+    "actors": [
+      {
+        "key": "foreign_net",
+        "name": "외국인",
+        "shares": -458714.0,
+        "won": -87109788600.0,
+        "vs_usual": 0.2261443648844065
+      },
+      {
+        "key": "inst_net",
+        "name": "기관",
+        "shares": 1509865.0,
+        "won": 286723363500.0,
+        "vs_usual": 1.709985549330161
+      },
+      {
+        "key": "indiv_net",
+        "name": "개인",
+        "shares": -817749.0,
+        "won": -155290535100.0,
+        "vs_usual": 0.42651590143457124
+      }
+    ],
+    "lead": {
+      "key": "inst_net",
+      "name": "기관",
+      "shares": 1509865.0,
+      "won": 286723363500.0,
+      "vs_usual": 1.709985549330161
+    },
+    "counter": {
+      "key": "indiv_net",
+      "name": "개인",
+      "shares": -817749.0,
+      "won": -155290535100.0,
+      "vs_usual": 0.42651590143457124
+    },
+    "all_one_side": false,
+    "observations": [
+      "전일까지 20거래일 고점: 종가 돌파 없음 · 종가 위치 -27.66%.",
+      "전일까지 60거래일 고점: 종가 돌파 없음 · 종가 위치 -32.92%.",
+      "같은 5거래일 수익률: 이 종목 -17.07%, SK하이닉스 -22.83% · 차이 +5.75%p.",
+      "같은 20거래일 수익률: 이 종목 -24.19%, SK하이닉스 -29.22% · 차이 +5.03%p.",
+      "같은 60거래일 수익률: 이 종목 -16.00%, SK하이닉스 -19.98% · 차이 +3.98%p.",
+      "외국인 5일 합계 순매도 전환: 직전 5일 → 최근 5일 순매수/거래량 +1.64% → -10.09% (일평균 +299,836주 → -2,333,831주). 향후 상승을 뜻하는 신호는 아닙니다.",
+      "SK하이닉스 +0.35% — 반도체 업종이 함께 움직였습니다.",
+      "원화는 오히려 강세(-1.07%)여서 외국인 매도가 환율로는 설명되지 않습니다.",
+      "전날 밤 미국 반도체지수(SOX) +4.21% — 미국 반도체 흐름과 같은 방향입니다.",
+      "전날 밤 마이크론 +5.12% — 미국 메모리 회사와 같은 방향입니다.",
+      "직전 4거래일 연속 하락 뒤의 반등입니다.",
+      "직전 5거래일 -16.13% 내린 뒤의 매수 — 저가 매수와 맞는 모양입니다.",
+      "우리 장중(09:00~15:30) 나스닥100 선물 +0.32%, 이 종목 고점 이후 -0.87% · 미 10년물 국채 선물 +0.03%, 이 종목 고점 이후 +0.16% · 원/달러 -0.98%(원화 강세), 이 종목 고점 이후 -0.76%.",
+      "자사주 매입 기간 중(직접 취득 2026-08-24~2026-11-21, 14,999,999,992,000, DART 공시) — 회사 자신의 매수는 기타 법인으로 잡힙니다."
+    ],
+    "estimated_indiv": false,
+    "source_note": "출처 naver+cache · 장 마감 직후 잠정치라 저녁 확정치와 다를 수 있습니다 · KRX는 받지 못함(pykrx 미설치)"
+  },
   "flow_status": {
-    "state": "pending",
-    "detail": "최신 2026-11-06"
+    "state": "ok",
+    "detail": "naver+cache",
+    "krx_error": "pykrx 미설치"
   },
   "context": {},
-  "market": {
-    "index": "KOSPI",
-    "date": "2026-11-09",
-    "rise": 340,
-    "fall": 530,
-    "steady": 42,
-    "upper": 7,
-    "lower": 0,
-    "individual": -5309.0,
-    "foreign": -6291.0,
-    "institution": 6996.0,
-    "prev_close": 5059.69,
-    "open": 5034.2,
-    "high": 5172.94,
-    "low": 4990.66,
-    "close": 5018.85
-  },
+  "market": null,
   "earnings_reactions": null,
   "forecasts": [
     {

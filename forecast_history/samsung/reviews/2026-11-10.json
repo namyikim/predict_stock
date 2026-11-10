@@ -3,7 +3,7 @@
   "name": "삼성전자",
   "peer_name": "SK하이닉스",
   "session_date": "2026-11-10",
-  "generated_at": "2026-11-10 16:46 KST",
+  "generated_at": "2026-11-10 17:31 KST",
   "summary": {
     "prev_close": 189900.0,
     "open": 199400.0,
@@ -15,11 +15,11 @@
     "c2c": 0.04739336492891,
     "high_vs_open": 0.010531594784352949,
     "low_vs_open": -0.015045135406218657,
-    "volume": 16043998.0,
-    "volume_ratio": 0.8095522964579265,
+    "volume": 16177794.0,
+    "volume_ratio": 0.8163034104294493,
     "kospi_c2c": 0.043890489030369295,
     "peer_c2c": 0.06690140845070425,
-    "usdkrw_chg": -0.01990166294044793,
+    "usdkrw_chg": -0.019065077713115164,
     "us_nights": 1,
     "sox_ret": 0.06854766246905042,
     "nasdaq_ret": 0.027409543104355283,
@@ -28,7 +28,7 @@
     "ma5": 199400.0,
     "ma20": 216000.0,
     "high20": 249000.0,
-    "high252": 367712.71645480226,
+    "high252": 367712.7495144774,
     "price_context": {
       "breakouts": {
         "20": {
@@ -152,16 +152,10 @@
       "score": 3.994948265054054,
       "news": [
         {
-          "time": "2026-11-10T09:24:00+09:00",
-          "title": "[특징주] 삼성전자·SK하이닉스, 美 반도체 훈풍에 동반 강세",
-          "source": "뉴스핌",
-          "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE52NlNNQ2ZIYmdhVGtvOE10UGx1WmRGYXdhRTdCcS1URVBtUVVvbHFYZmVjV0NTYXhEMFlhRWo1VEhKMW9hbjBEbS1rSGxNZDc1NHl6OU42MVNpeWJ6?oc=5"
-        },
-        {
-          "time": "2026-11-10T09:24:43+09:00",
-          "title": "19만 원 무너진 삼성전자…증권가 저가 매수론 `솔솔`",
-          "source": "매일신문",
-          "link": "https://news.google.com/rss/articles/CBMiYkFVX3lxTFBzTTkzZFpuTDlrNmUyaG11Yl9wekJkVERoazZjaWJqS3NTNFFfcWtEVThNQXNJNWE0U0ZwaUVmckR4QjJteWNkaGRCZXIyZ1Z1MHp3dUVhRUlZQmI3QWJtVEl3?oc=5"
+          "time": "2026-11-10T09:17:31+09:00",
+          "title": "코스피 5% 급등에 매수 사이드카…삼성전자 5%·SK하이닉스 7%↑",
+          "source": "한국경제",
+          "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE8wNjFIYjQyUWtoYzJKVW90TmVtbUNEWlVmNE5jWFVlM1pIQTRaTWFJclN6ZTE5bkROTDdfcTJZUkp4ZVQ1SEg0SGFlakNienZMaHJOV1Z6cjU4UQ?oc=5"
         },
         {
           "time": "2026-11-10T10:00:02+09:00",
@@ -180,6 +174,12 @@
           "title": "검색 상위 20개 종목 일제히 상승… 삼성전자·SK하이닉스에 거래 집중",
           "source": "서울신문",
           "link": "https://news.google.com/rss/articles/CBMifkFVX3lxTFA4SHdRb2x2dlVtYm1OeXg3OVRVcFdBVUl3ck03R0JEZURaVTNpbHVMdktpc3gtYTJZdzBJN3dfYmR5RVUtQnhucW1yVk81cWpZcENGTEw1T01XTjFsUnBFMkFuejBVN0lMUWIzNmxHSy1NZDVVMlRqaVpLUTNZUQ?oc=5"
+        },
+        {
+          "time": "2026-11-10T09:45:24+09:00",
+          "title": "[특징주] 삼성전자·SK하이닉스, 美 기술주 급반등.. 동반 '강세'",
+          "source": "글로벌이코노믹",
+          "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxNZTZSS20xSGVCVlRsbEtkbDFMeV84ZnZvekUyREhJWkl0YWkxVjFJR1pIcG5YUEE4LXlOVU9DZE1wSFhhSloxTnQya0x6SFVrWjdFeVl6czhzTzVZUWtKS29UV1NiajlDV2d0WmVQYjBPbWpuN1FyTno3MVZIQjc5Y0l2Tk90dk1R?oc=5"
         }
       ]
     }
@@ -582,16 +582,10 @@
       "score": 3.994948265054054,
       "news": [
         {
-          "time": "2026-11-10T09:24:00+09:00",
-          "title": "[특징주] 삼성전자·SK하이닉스, 美 반도체 훈풍에 동반 강세",
-          "source": "뉴스핌",
-          "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE52NlNNQ2ZIYmdhVGtvOE10UGx1WmRGYXdhRTdCcS1URVBtUVVvbHFYZmVjV0NTYXhEMFlhRWo1VEhKMW9hbjBEbS1rSGxNZDc1NHl6OU42MVNpeWJ6?oc=5"
-        },
-        {
-          "time": "2026-11-10T09:24:43+09:00",
-          "title": "19만 원 무너진 삼성전자…증권가 저가 매수론 `솔솔`",
-          "source": "매일신문",
-          "link": "https://news.google.com/rss/articles/CBMiYkFVX3lxTFBzTTkzZFpuTDlrNmUyaG11Yl9wekJkVERoazZjaWJqS3NTNFFfcWtEVThNQXNJNWE0U0ZwaUVmckR4QjJteWNkaGRCZXIyZ1Z1MHp3dUVhRUlZQmI3QWJtVEl3?oc=5"
+          "time": "2026-11-10T09:17:31+09:00",
+          "title": "코스피 5% 급등에 매수 사이드카…삼성전자 5%·SK하이닉스 7%↑",
+          "source": "한국경제",
+          "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE8wNjFIYjQyUWtoYzJKVW90TmVtbUNEWlVmNE5jWFVlM1pIQTRaTWFJclN6ZTE5bkROTDdfcTJZUkp4ZVQ1SEg0SGFlakNienZMaHJOV1Z6cjU4UQ?oc=5"
         },
         {
           "time": "2026-11-10T10:00:02+09:00",
@@ -610,6 +604,12 @@
           "title": "검색 상위 20개 종목 일제히 상승… 삼성전자·SK하이닉스에 거래 집중",
           "source": "서울신문",
           "link": "https://news.google.com/rss/articles/CBMifkFVX3lxTFA4SHdRb2x2dlVtYm1OeXg3OVRVcFdBVUl3ck03R0JEZURaVTNpbHVMdktpc3gtYTJZdzBJN3dfYmR5RVUtQnhucW1yVk81cWpZcENGTEw1T01XTjFsUnBFMkFuejBVN0lMUWIzNmxHSy1NZDVVMlRqaVpLUTNZUQ?oc=5"
+        },
+        {
+          "time": "2026-11-10T09:45:24+09:00",
+          "title": "[특징주] 삼성전자·SK하이닉스, 美 기술주 급반등.. 동반 '강세'",
+          "source": "글로벌이코노믹",
+          "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxNZTZSS20xSGVCVlRsbEtkbDFMeV84ZnZvekUyREhJWkl0YWkxVjFJR1pIcG5YUEE4LXlOVU9DZE1wSFhhSloxTnQya0x6SFVrWjdFeVl6czhzTzVZUWtKS29UV1NiajlDV2d0WmVQYjBPbWpuN1FyTno3MVZIQjc5Y0l2Tk90dk1R?oc=5"
         }
       ],
       "price": 197300.0,
@@ -644,16 +644,16 @@
       "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTE1HMERBS05tYlBaZ094MDVhb2dhNXVTaExMNXFnOUUtSEFGakZLUnNtSC1Gbjl0aGVjeWtsczJVUmxFT2FvaG5zMHJLNVZEbUtIa2s2aUJHb3A4cUgzNmVpM011Mzh0ZEhNLWV4UERBR0FhRXc?oc=5"
     },
     {
+      "time": "2026-11-10T17:11:23+09:00",
+      "title": "[엔비디아 AI데이] 삼성전자, 반도체 시뮬레이션 속도 4000배 단축·99% 정확도 달성",
+      "source": "위키리크스한국",
+      "link": "https://news.google.com/rss/articles/CBMib0FVX3lxTE5NSzBIUEZYaDdGNk9KdTh6c2poOTg5c0ZWQnVHOW9oMUJ1Mlgxc3FQTEtKdzRJZnlsUEduTkk4M3hoalNvRmwzTTFZT1c3RnhEOWxLUVpqNWVVQXdqWHBqRms5YTU3NXhNMDcwZGM1dw?oc=5"
+    },
+    {
       "time": "2026-11-10T14:01:00+09:00",
       "title": "[리포트 브리핑]삼성전자, '고점 이후에도 2029년 460조원 전망' 목표가 530,000원 - DS투자증권",
       "source": "뉴스핌",
       "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE9zX0pNX0xibVF1VElLdUljUmVfT3AwQ3VfVnR1V0dHdWR2TUdxLVdtMVVuZml1NERJeEduQjJKelh6U1M5bUNZa19WMHU1ZUMtc2pBX0pWZ1BPOGhh?oc=5"
-    },
-    {
-      "time": "2026-11-10T15:55:09+09:00",
-      "title": "AI악재 멈춘 코스피 5230대로 美증시 훈풍…삼성전자 5%↑",
-      "source": "중소기업신문",
-      "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE5RMkhKdW9QY3RicTBQQlphTHpFNUUtWXJvNGFBUFVJRTZ3Qi03MkJqWGlxLU9RUExNZzJZaVJBTFZKcDZHcU8yWjZpT2ViZ3otRGpFeFN0eHBEa3ozTHdKcWswdW8zYVRqMWM4UA?oc=5"
     },
     {
       "time": "2026-11-10T15:58:49+09:00",
@@ -698,9 +698,9 @@
     "steady": 20,
     "upper": 7,
     "lower": 0,
-    "individual": -13710.0,
-    "foreign": 4053.0,
-    "institution": 4773.0,
+    "individual": -13847.0,
+    "foreign": 4190.0,
+    "institution": 4780.0,
     "prev_close": 5018.85,
     "open": 5247.22,
     "high": 5300.92,

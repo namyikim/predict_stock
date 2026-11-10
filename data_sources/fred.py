@@ -1,9 +1,12 @@
-"""FRED(세인트루이스 연준) 시계열. 키 없이 CSV 로 받을 수 있다.
+"""FRED(세인트루이스 연준) 시계열. FRED_API_KEY 가 있으면 공식 API, 없거나 실패하면 키 없는 CSV 로 받는다.
 
 야후로는 닿지 않는 긴 이력에 쓴다 — 일본 10년물은 야후에 없고, 엔/달러도 야후는 1996년부터인데
 FRED 는 1971년부터다. 받은 것은 보관본에 누적해 조회가 막혀도 그림이 비지 않게 한다.
 """
 import io
+import json
+import os
+from urllib.parse import urlencode
 
 import pandas as pd
 
@@ -18,8 +21,38 @@ HIGH_YIELD_SPREAD = 'BAMLH0A0HYM2'  # ICE BofA 미국 하이일드 OAS(%p)
 NASDAQ = 'NASDAQCOM'                 # 나스닥 종합지수
 
 
+def _fetch_fred_api(series_id, key, retries=2):
+    """공식 API(api.stlouisfed.org)로 받은 원래 주기 Series. 키가 URL 에 들어가므로 예외에 URL 을 싣지 않는다."""
+    query = urlencode({'series_id': series_id, 'api_key': key, 'file_type': 'json'})
+    url = f'https://api.stlouisfed.org/fred/series/observations?{query}'
+    for attempt in range(retries):
+        try:
+            with open_url(url, timeout=60, accept='application/json') as response:
+                rows = json.loads(response.read().decode('utf-8')).get('observations') or []
+            series = pd.Series(pd.to_numeric([row.get('value') for row in rows], errors='coerce'),
+                               index=pd.to_datetime([row.get('date') for row in rows], errors='coerce'), dtype=float)
+            series = series[series.index.notna()].dropna()     # FRED 는 결측을 '.' 로 보낸다
+            if series.empty:
+                raise ValueError('관측치가 없습니다')
+            return series[~series.index.duplicated(keep='last')].sort_index().rename(series_id)
+        except Exception as exc:
+            if attempt == retries - 1:
+                raise RuntimeError(f'FRED API {series_id} 조회 실패({error_detail(exc)[:80]}).') from None
+            time.sleep(3 * (2 ** attempt) + random.uniform(0, 2))
+
+
 def fetch_fred_daily(series_id, retries=3):
-    """FRED 원래 관측 주기를 보존한다. '.' 결측은 날짜를 남기지 않고 버린다."""
+    """FRED 원래 관측 주기를 보존한다. '.' 결측은 날짜를 남기지 않고 버린다.
+
+    키가 있으면 공식 API 를 먼저 쓴다(2026-11-10 점검). 키 없는 CSV 주소(fredgraph.csv)는 Actions 에서
+    2026-09-14 부터 막혀, 하이일드 스프레드가 8주 동안 9/14 값에 멈춰 있었다. API 가 실패하면 CSV 로 내려간다.
+    """
+    key = os.environ.get('FRED_API_KEY')
+    if key:
+        try:
+            return _fetch_fred_api(series_id, key)
+        except Exception as exc:
+            print(f'  FRED API 실패 → CSV 경로로 재시도: {str(exc)[:120]}', flush=True)
     for attempt in range(retries):
         try:
             with open_url(FRED_CSV.format(sid=series_id), timeout=60, accept='text/csv, */*') as response:

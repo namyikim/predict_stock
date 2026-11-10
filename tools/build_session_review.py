@@ -1028,7 +1028,18 @@ def main():
         raise SystemExit(f"{session_date.date()} 장이 아직 끝나지 않았습니다(지금 {now_kst:%H:%M} KST). "
                          "마감(15:30) 뒤에 실행하거나 --allow-partial 을 붙이세요(장중 점검용).")
 
-    review = build_review(args.target, session_date, storage, token=token, use_news=not args.no_news)
+    try:
+        review = build_review(args.target, session_date, storage, token=token, use_news=not args.no_news)
+    except (Exception, SystemExit) as exc:
+        # 수급이 늦어 회고가 미완성이면 밤 백업 회차가 회고를 다시 만든다. 그 재시도가 가격 조회 실패 등으로 죽으면
+        # 이미 발행된 회고가 있는데도 작업이 실패로 끝나 알림만 쌓였다(2026-11-04·05·09 심야 5회, 2026-11-10 점검).
+        # 발행된 회고가 있으면 경고만 남기고 넘어간다 — 다음 회차가 다시 시도한다. 없으면 그대로 실패시킨다.
+        existing = Path("forecast_history") / args.target / "reviews" / f"{session_date.date()}.json"
+        if args.publish and existing.exists():
+            print(f"::warning::회고 재시도 실패 — 이미 발행된 {existing.as_posix()} 을 유지합니다"
+                  f"({type(exc).__name__}: {str(exc)[:160]})")
+            return
+        raise
     section = render_section(review, args.target)
     (storage / f"review_{review['session_date']}.html").write_text(section, encoding="utf-8")
     (storage / f"review_{review['session_date']}.json").write_text(to_json(review), encoding="utf-8")

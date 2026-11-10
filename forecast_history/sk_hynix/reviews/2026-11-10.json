@@ -3,7 +3,7 @@
   "name": "SK하이닉스",
   "peer_name": "삼성전자",
   "session_date": "2026-11-10",
-  "generated_at": "2026-11-10 16:46 KST",
+  "generated_at": "2026-11-10 17:31 KST",
   "summary": {
     "prev_close": 1136000.0,
     "open": 1214000.0,
@@ -15,11 +15,11 @@
     "c2c": 0.06690140845070425,
     "high_vs_open": 0.023064250411861664,
     "low_vs_open": -0.01976935749588138,
-    "volume": 3589001.0,
-    "volume_ratio": 0.8711390969423658,
+    "volume": 3603700.0,
+    "volume_ratio": 0.8747069069223451,
     "kospi_c2c": 0.043890489030369295,
     "peer_c2c": 0.04739336492891,
-    "usdkrw_chg": -0.020048394560789662,
+    "usdkrw_chg": -0.019065077713115164,
     "us_nights": 1,
     "sox_ret": 0.06854766246905042,
     "nasdaq_ret": 0.027409543104355283,
@@ -203,22 +203,22 @@
           "link": "https://news.google.com/rss/articles/CBMiUEFVX3lxTE44b0FTTWh0RXlBS3plcVM1ekZTRk1zZEVuZnF4cVp0MjM5d2VLMFd4SzhzalJ5RHFZdXJqQ0dpazBRR2hHVV9EemJ4R0g0Qmhr?oc=5"
         },
         {
-          "time": "2026-11-10T09:37:27+09:00",
-          "title": "\"TSMC D램 진출은 2035년\" 예측 나와, 삼성전자와 SK하이닉스에 단기 위협 제한적",
-          "source": "비즈니스포스트",
-          "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTE5qU3hQaG9WcGQ1blFQbzFqYWJINXkwcW5UQTdUekJ2UDMzbWlkTEhkOS1tMXNMbl94aEM4ZU40d1VDU0lmWTJJa0xteUtsZmlEWGtlUFg0T2k4UmZRUEV4ZHVtN241VldXRDk3eG1SOGZIcVk?oc=5"
-        },
-        {
           "time": "2026-11-10T09:05:00+09:00",
           "title": "삼성전자·SK하이닉스 5~8% ‘껑충’…코스피·코스닥 잇따라 매수 사이드카",
           "source": "JTBC",
           "link": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE5tanliMDVqSjg4blhveGpsc1VVMWNPRzZtMGhidlBGWWN4U21KRHRFNzV5WkhZUVVhSHNuTkZqTEgzaUlCYzVPRUc4TVpSRGw4X1AxTA?oc=5"
         },
         {
-          "time": "2026-11-10T09:17:31+09:00",
-          "title": "코스피 5% 급등에 매수 사이드카…삼성전자 5%·SK하이닉스 7%↑",
-          "source": "한국경제",
-          "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE8wNjFIYjQyUWtoYzJKVW90TmVtbUNEWlVmNE5jWFVlM1pIQTRaTWFJclN6ZTE5bkROTDdfcTJZUkp4ZVQ1SEg0SGFlakNienZMaHJOV1Z6cjU4UQ?oc=5"
+          "time": "2026-11-10T09:24:00+09:00",
+          "title": "[특징주] 삼성전자·SK하이닉스, 美 반도체 훈풍에 동반 강세",
+          "source": "뉴스핌",
+          "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE52NlNNQ2ZIYmdhVGtvOE10UGx1WmRGYXdhRTdCcS1URVBtUVVvbHFYZmVjV0NTYXhEMFlhRWo1VEhKMW9hbjBEbS1rSGxNZDc1NHl6OU42MVNpeWJ6?oc=5"
+        },
+        {
+          "time": "2026-11-10T09:26:53+09:00",
+          "title": "삼성전자 5%·SK하이닉스 7% 강세… 코스피 5272선 반등",
+          "source": "서울신문",
+          "link": "https://news.google.com/rss/articles/CBMifkFVX3lxTFBQUXBybzRtWHgwUWFHM1MzWGpQSmhMYUlZUTNhamV0dFhtY2NlLWxJbktfcWZOZkZCY3drak5nbWhJQzIyUGNZRk5WQU02aHMyVmFfMFFRMlcyVUJlRko2SHlKVTAzaG5DYVNuVlFSeXhiN0ktX1FyYUtYOFAtQQ?oc=5"
         }
       ]
     },
@@ -239,12 +239,6 @@
           "link": "https://news.google.com/rss/articles/CBMiUEFVX3lxTE44b0FTTWh0RXlBS3plcVM1ekZTRk1zZEVuZnF4cVp0MjM5d2VLMFd4SzhzalJ5RHFZdXJqQ0dpazBRR2hHVV9EemJ4R0g0Qmhr?oc=5"
         },
         {
-          "time": "2026-11-10T09:37:27+09:00",
-          "title": "\"TSMC D램 진출은 2035년\" 예측 나와, 삼성전자와 SK하이닉스에 단기 위협 제한적",
-          "source": "비즈니스포스트",
-          "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTE5qU3hQaG9WcGQ1blFQbzFqYWJINXkwcW5UQTdUekJ2UDMzbWlkTEhkOS1tMXNMbl94aEM4ZU40d1VDU0lmWTJJa0xteUtsZmlEWGtlUFg0T2k4UmZRUEV4ZHVtN241VldXRDk3eG1SOGZIcVk?oc=5"
-        },
-        {
           "time": "2026-11-10T10:33:00+09:00",
           "title": "[장중수급포착] SK하이닉스, 외국인/기관 동시 순매수… 주가 +5.72%",
           "source": "뉴스핌",
@@ -261,6 +255,12 @@
           "title": "삼성전자·SK하이닉스 5~8% ‘껑충’…코스피·코스닥 잇따라 매수 사이드카",
           "source": "JTBC",
           "link": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE5tanliMDVqSjg4blhveGpsc1VVMWNPRzZtMGhidlBGWWN4U21KRHRFNzV5WkhZUVVhSHNuTkZqTEgzaUlCYzVPRUc4TVpSRGw4X1AxTA?oc=5"
+        },
+        {
+          "time": "2026-11-10T09:24:00+09:00",
+          "title": "[특징주] 삼성전자·SK하이닉스, 美 반도체 훈풍에 동반 강세",
+          "source": "뉴스핌",
+          "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE52NlNNQ2ZIYmdhVGtvOE10UGx1WmRGYXdhRTdCcS1URVBtUVVvbHFYZmVjV0NTYXhEMFlhRWo1VEhKMW9hbjBEbS1rSGxNZDc1NHl6OU42MVNpeWJ6?oc=5"
         }
       ]
     }
@@ -706,22 +706,22 @@
           "link": "https://news.google.com/rss/articles/CBMiUEFVX3lxTE44b0FTTWh0RXlBS3plcVM1ekZTRk1zZEVuZnF4cVp0MjM5d2VLMFd4SzhzalJ5RHFZdXJqQ0dpazBRR2hHVV9EemJ4R0g0Qmhr?oc=5"
         },
         {
-          "time": "2026-11-10T09:37:27+09:00",
-          "title": "\"TSMC D램 진출은 2035년\" 예측 나와, 삼성전자와 SK하이닉스에 단기 위협 제한적",
-          "source": "비즈니스포스트",
-          "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTE5qU3hQaG9WcGQ1blFQbzFqYWJINXkwcW5UQTdUekJ2UDMzbWlkTEhkOS1tMXNMbl94aEM4ZU40d1VDU0lmWTJJa0xteUtsZmlEWGtlUFg0T2k4UmZRUEV4ZHVtN241VldXRDk3eG1SOGZIcVk?oc=5"
-        },
-        {
           "time": "2026-11-10T09:05:00+09:00",
           "title": "삼성전자·SK하이닉스 5~8% ‘껑충’…코스피·코스닥 잇따라 매수 사이드카",
           "source": "JTBC",
           "link": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE5tanliMDVqSjg4blhveGpsc1VVMWNPRzZtMGhidlBGWWN4U21KRHRFNzV5WkhZUVVhSHNuTkZqTEgzaUlCYzVPRUc4TVpSRGw4X1AxTA?oc=5"
         },
         {
-          "time": "2026-11-10T09:17:31+09:00",
-          "title": "코스피 5% 급등에 매수 사이드카…삼성전자 5%·SK하이닉스 7%↑",
-          "source": "한국경제",
-          "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE8wNjFIYjQyUWtoYzJKVW90TmVtbUNEWlVmNE5jWFVlM1pIQTRaTWFJclN6ZTE5bkROTDdfcTJZUkp4ZVQ1SEg0SGFlakNienZMaHJOV1Z6cjU4UQ?oc=5"
+          "time": "2026-11-10T09:24:00+09:00",
+          "title": "[특징주] 삼성전자·SK하이닉스, 美 반도체 훈풍에 동반 강세",
+          "source": "뉴스핌",
+          "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE52NlNNQ2ZIYmdhVGtvOE10UGx1WmRGYXdhRTdCcS1URVBtUVVvbHFYZmVjV0NTYXhEMFlhRWo1VEhKMW9hbjBEbS1rSGxNZDc1NHl6OU42MVNpeWJ6?oc=5"
+        },
+        {
+          "time": "2026-11-10T09:26:53+09:00",
+          "title": "삼성전자 5%·SK하이닉스 7% 강세… 코스피 5272선 반등",
+          "source": "서울신문",
+          "link": "https://news.google.com/rss/articles/CBMifkFVX3lxTFBQUXBybzRtWHgwUWFHM1MzWGpQSmhMYUlZUTNhamV0dFhtY2NlLWxJbktfcWZOZkZCY3drak5nbWhJQzIyUGNZRk5WQU02aHMyVmFfMFFRMlcyVUJlRko2SHlKVTAzaG5DYVNuVlFSeXhiN0ktX1FyYUtYOFAtQQ?oc=5"
         }
       ],
       "price": 1197000.0,
@@ -744,12 +744,6 @@
           "link": "https://news.google.com/rss/articles/CBMiUEFVX3lxTE44b0FTTWh0RXlBS3plcVM1ekZTRk1zZEVuZnF4cVp0MjM5d2VLMFd4SzhzalJ5RHFZdXJqQ0dpazBRR2hHVV9EemJ4R0g0Qmhr?oc=5"
         },
         {
-          "time": "2026-11-10T09:37:27+09:00",
-          "title": "\"TSMC D램 진출은 2035년\" 예측 나와, 삼성전자와 SK하이닉스에 단기 위협 제한적",
-          "source": "비즈니스포스트",
-          "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTE5qU3hQaG9WcGQ1blFQbzFqYWJINXkwcW5UQTdUekJ2UDMzbWlkTEhkOS1tMXNMbl94aEM4ZU40d1VDU0lmWTJJa0xteUtsZmlEWGtlUFg0T2k4UmZRUEV4ZHVtN241VldXRDk3eG1SOGZIcVk?oc=5"
-        },
-        {
           "time": "2026-11-10T10:33:00+09:00",
           "title": "[장중수급포착] SK하이닉스, 외국인/기관 동시 순매수… 주가 +5.72%",
           "source": "뉴스핌",
@@ -766,6 +760,12 @@
           "title": "삼성전자·SK하이닉스 5~8% ‘껑충’…코스피·코스닥 잇따라 매수 사이드카",
           "source": "JTBC",
           "link": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE5tanliMDVqSjg4blhveGpsc1VVMWNPRzZtMGhidlBGWWN4U21KRHRFNzV5WkhZUVVhSHNuTkZqTEgzaUlCYzVPRUc4TVpSRGw4X1AxTA?oc=5"
+        },
+        {
+          "time": "2026-11-10T09:24:00+09:00",
+          "title": "[특징주] 삼성전자·SK하이닉스, 美 반도체 훈풍에 동반 강세",
+          "source": "뉴스핌",
+          "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE52NlNNQ2ZIYmdhVGtvOE10UGx1WmRGYXdhRTdCcS1URVBtUVVvbHFYZmVjV0NTYXhEMFlhRWo1VEhKMW9hbjBEbS1rSGxNZDc1NHl6OU42MVNpeWJ6?oc=5"
         }
       ],
       "price": 1197000.0,
@@ -786,12 +786,6 @@
       "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE1LeHdyZlhJWG9ob0dfSy1xb2tkaEtBUFU5M0lnRndjN3NTUmRFUjdnMUxfTTR2WE9DMHBIY25LTWZfeVVlLTlJdnc1b0pGUEMyb0RVZWI5aF82QjQ2elV0QtIBeEFVX3lxTE94em1MZndsdkhXMHR3QmN1Y21WZm5MV2Q2dXV0cWIwcGVBY0d4UFhFSVVQNnJCUEpxVGV3YmxYeFFSMk5pVXRqRlR6SjB6Yk9BSTNMY0VGaHZwS2UwYlpqMlBJVG8wU09qNXlIcTNIQ2hQME5hVDZFbQ?oc=5"
     },
     {
-      "time": "2026-11-10T07:10:34+09:00",
-      "title": "\"겨우 반등했는데\" 삼성전자·SK하이닉스, 젠슨 황 사태에 또 '날벼락'",
-      "source": "스마트비즈",
-      "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE5iMHlTRWNLS1FTSE1GLUtiT1NOQnQydHVhMS11ZjN4d0U4VW9BSTBmbXM2bDJWZ3JuZ2ZrdE1zUFBydU4tSVprTVpLWFhsU3dEaGNpQ2VzTDUxTjlqTWdkNTVxZU01SFdXSzFVNA?oc=5"
-    },
-    {
       "time": "2026-11-10T07:13:04+09:00",
       "title": "[이슈분석] 삼성전자·SK하이닉스 성과급, 호황의 이익을 어떻게 나눌까",
       "source": "아웃소싱타임스",
@@ -802,15 +796,15 @@
       "title": "국내 상장사 소액주주 24.2% 증가…삼성전자 797만명·SK하이닉스 346만명",
       "source": "한국NGO신문",
       "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTFA1ZFA4YWR6VXJxMXVEYmFWMzBNNjFoOWJSTGhabHJpYXJYTnBqT2xjY09fZFhiZ2c4LWFlbTlsUndxdGVXcVZQLWVCRFptSVBlS0phb3JXUUhKUzFMWHpXNEZROHJKMHpz?oc=5"
+    },
+    {
+      "time": "2026-11-10T08:20:00+09:00",
+      "title": "삼성전자 주주 797만명·SK하이닉스 346만명⋯대형주에 개미 몰렸다",
+      "source": "브릿지경제",
+      "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE1Qanc4aEREQ1RKbndxNmtORENidHpEbjBBZWRiR0pzMWJZNnViTzh3RWlfM1RKTXFVRDhDWGZoWl9KSVlVMUhuemVYeG85d0FyNGpscGY1d29wZw?oc=5"
     }
   ],
   "top_news": [
-    {
-      "time": "2026-11-10T12:40:17+09:00",
-      "title": "모건스탠리, 삼성전자·SK하이닉스 목표주가 대폭 하향 조정... AI 투자 호황 속 반도체 시장의 미래는",
-      "source": "공감신문",
-      "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTFBMaTZQZ3EwU215WFB0bk4zN1J5OWtQcXFXTUJuc0R2RnMzYlZQWURqSWtXeldmQnZ6d2ZicXd6OEJIV2ZySDNHcmdFSEZHSWdCMWVzN3Q5b3kwNURvYTZ3RG5SSzJnUzV2?oc=5"
-    },
     {
       "time": "2026-11-10T14:19:00+09:00",
       "title": "\"반도체 가상 실험 하루→1분\" 삼성·SK하이닉스, 엔비디아와 AI 공동개발 성과",
@@ -840,6 +834,12 @@
       "title": "하나증권 \"미국 반도체주 저가 매수세 유입, 삼성전자 SK하이닉스 반등 전망\"",
       "source": "비즈니스포스트",
       "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTFA1LWpERURrUmtJODBISHZ0SWVPMy03bFdPRTJtWUZacktCU2x0UTFtQWoyUlIwNEJEeUZxTTdZbmlBaXlNLWVmbERWUGIwalpIbWcyM1JEOUVBUzZkeE1YYnlOcVROZldZa0ZyQVE5dzA3VlU?oc=5"
+    },
+    {
+      "time": "2026-11-10T09:03:56+09:00",
+      "title": "DS투자증권 \"SK하이닉스, 고수익 지속\"…목표가 264만원",
+      "source": "블루밍비트",
+      "link": "https://news.google.com/rss/articles/CBMiUEFVX3lxTE44b0FTTWh0RXlBS3plcVM1ekZTRk1zZEVuZnF4cVp0MjM5d2VLMFd4SzhzalJ5RHFZdXJqQ0dpazBRR2hHVV9EemJ4R0g0Qmhr?oc=5"
     }
   ],
   "disclosures": [],
@@ -859,9 +859,9 @@
     "steady": 20,
     "upper": 7,
     "lower": 0,
-    "individual": -13710.0,
-    "foreign": 4053.0,
-    "institution": 4773.0,
+    "individual": -13847.0,
+    "foreign": 4190.0,
+    "institution": 4780.0,
     "prev_close": 5018.85,
     "open": 5247.22,
     "high": 5300.92,

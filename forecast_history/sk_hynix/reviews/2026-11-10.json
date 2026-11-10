@@ -3,7 +3,7 @@
   "name": "SK하이닉스",
   "peer_name": "삼성전자",
   "session_date": "2026-11-10",
-  "generated_at": "2026-11-11 00:41 KST",
+  "generated_at": "2026-11-11 01:38 KST",
   "summary": {
     "prev_close": 1136000.0,
     "open": NaN,
@@ -19,7 +19,7 @@
     "volume_ratio": 0.8300509068885579,
     "kospi_c2c": NaN,
     "peer_c2c": NaN,
-    "usdkrw_chg": -0.014610635372998448,
+    "usdkrw_chg": -0.013979546077939053,
     "us_nights": 1,
     "sox_ret": 0.06854766246905042,
     "nasdaq_ret": 0.027409543104355283,
@@ -56,7 +56,7 @@
     "session_cross": {
       "NQ=F": {
         "label": "나스닥100 선물",
-        "ret": -0.0033986974625431765,
+        "ret": -0.0033632286995515237,
         "after_high": -0.001995759012099252
       },
       "ZN=F": {
@@ -102,19 +102,19 @@
       "장중 급변 09:00 주도"
     ],
     "reasons": [
-      "09:00 봉 +7.39%(σ의 20.18배, 거래량 7.32배)가 세션 +nan%의 1496%"
+      "09:00 봉 +7.39%(σ의 20.12배, 거래량 7.32배)가 세션 +nan%의 1496%"
     ]
   },
   "events": [
     {
       "time": "2026-11-10T09:00:00+09:00",
       "ret": 0.073943661971831,
-      "z": 20.18,
+      "z": 20.12,
       "volume_ratio": 7.32,
       "cum_before": 0.0,
       "cum_after": 0.0049423393739702615,
       "session_share": 14.961267605634061,
-      "score": 22.182446089111856,
+      "score": 22.11594695487934,
       "news": [
         {
           "time": "2026-11-10T09:03:56+09:00",
@@ -151,12 +151,12 @@
     {
       "time": "2026-11-10T10:05:00+09:00",
       "ret": -0.013190436933223415,
-      "z": 3.6,
+      "z": 3.59,
       "volume_ratio": 1.78,
       "cum_before": -0.0008237232289950436,
       "cum_after": -0.014003294892915963,
       "session_share": -2.66886507282225,
-      "score": 3.9567667920960155,
+      "score": 3.9452351746552337,
       "news": [
         {
           "time": "2026-11-10T09:03:56+09:00",
@@ -177,28 +177,28 @@
           "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE52NlNNQ2ZIYmdhVGtvOE10UGx1WmRGYXdhRTdCcS1URVBtUVVvbHFYZmVjV0NTYXhEMFlhRWo1VEhKMW9hbjBEbS1rSGxNZDc1NHl6OU42MVNpeWJ6?oc=5"
         },
         {
-          "time": "2026-11-10T09:26:53+09:00",
-          "title": "삼성전자 5%·SK하이닉스 7% 강세… 코스피 5272선 반등",
-          "source": "서울신문",
-          "link": "https://news.google.com/rss/articles/CBMifkFVX3lxTFBQUXBybzRtWHgwUWFHM1MzWGpQSmhMYUlZUTNhamV0dFhtY2NlLWxJbktfcWZOZkZCY3drak5nbWhJQzIyUGNZRk5WQU02aHMyVmFfMFFRMlcyVUJlRko2SHlKVTAzaG5DYVNuVlFSeXhiN0ktX1FyYUtYOFAtQQ?oc=5"
-        },
-        {
           "time": "2026-11-10T09:27:03+09:00",
           "title": "삼성전자 20만원·SK하이닉스 123만원 회복…반도체주 급등",
           "source": "한국경제",
           "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE9iQlltLXh1UF83aWxySHZmRGpibk1JejFfa0RzcDZIdEdibWRMRlhLREJoa1NOMkNZTGJxZ1NrUlc3cG1fT0ZIdWxrRmM1U1prTnI1TGhFTDU1Zw?oc=5"
+        },
+        {
+          "time": "2026-11-10T09:30:10+09:00",
+          "title": "[특징주] 반도체주 강세…삼성전자 5%·SK하이닉스 8% 상승",
+          "source": "연합뉴스",
+          "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE5wbktaSGRqSnc3akM3TWlFUnNhcm9BOUpseVE5SWRvd3M0bDJ4ZDFNTE9tZFRObFdyRVFjaGRmUjRLdkF4V0ZaM3dhNS1DMThQYXVIRDhCU2NKTjBiQ05QbdIBYEFVX3lxTE5wbktaSGRqSnc3akM3TWlFUnNhcm9BOUpseVE5SWRvd3M0bDJ4ZDFNTE9tZFRObFdyRVFjaGRmUjRLdkF4V0ZaM3dhNS1DMThQYXVIRDhCU2NKTjBiQ05QbQ?oc=5"
         }
       ]
     },
     {
       "time": "2026-11-10T10:30:00+09:00",
       "ret": -0.011560693641618491,
-      "z": 3.16,
+      "z": 3.15,
       "volume_ratio": 1.63,
       "cum_before": -0.0024711696869851307,
       "cum_after": -0.014003294892915963,
       "session_share": -2.339113680154181,
-      "score": 3.48182370977601,
+      "score": 3.4717298109459076,
       "news": [
         {
           "time": "2026-11-10T09:03:56+09:00",
@@ -241,7 +241,7 @@
     "pattern": "고점 후 반락"
   },
   "closing_share": NaN,
-  "intraday_corr_kospi": 0.9114516509450077,
+  "intraday_corr_kospi": 0.9126800714750254,
   "intraday_note": "장중 봉은 09:00~14:55까지만 있어 마감 구간(14:55~15:30)은 일봉 종가로만 봅니다(그 구간 +nan%).",
   "intraday_coverage": "09:00~14:55",
   "intraday_path": [
@@ -253,12 +253,12 @@
     {
       "time": "2026-11-10T09:05:00+09:00",
       "price": 1220000.0,
-      "volume": 82353.0
+      "volume": 82382.0
     },
     {
       "time": "2026-11-10T09:10:00+09:00",
       "price": 1233000.0,
-      "volume": 156193.0
+      "volume": 156164.0
     },
     {
       "time": "2026-11-10T09:15:00+09:00",
@@ -298,12 +298,12 @@
     {
       "time": "2026-11-10T09:50:00+09:00",
       "price": 1209000.0,
-      "volume": 47128.0
+      "volume": 47130.0
     },
     {
       "time": "2026-11-10T09:55:00+09:00",
       "price": 1211000.0,
-      "volume": 50054.0
+      "volume": 50052.0
     },
     {
       "time": "2026-11-10T10:00:00+09:00",
@@ -343,12 +343,12 @@
     {
       "time": "2026-11-10T10:35:00+09:00",
       "price": 1201000.0,
-      "volume": 28834.0
+      "volume": 28891.0
     },
     {
       "time": "2026-11-10T10:40:00+09:00",
       "price": 1204000.0,
-      "volume": 30906.0
+      "volume": 30849.0
     },
     {
       "time": "2026-11-10T10:45:00+09:00",
@@ -597,25 +597,25 @@
     },
     {
       "time": "2026-11-10T14:50:00+09:00",
-      "price": 1222000.0,
-      "volume": 26296.0
+      "price": 1223000.0,
+      "volume": 26295.0
     },
     {
       "time": "2026-11-10T14:55:00+09:00",
       "price": 1220000.0,
-      "volume": 27408.0
+      "volume": 27409.0
     }
   ],
   "timeline_items": [
     {
       "time": "2026-11-10T09:00:00+09:00",
       "ret": 0.073943661971831,
-      "z": 20.18,
+      "z": 20.12,
       "volume_ratio": 7.32,
       "cum_before": 0.0,
       "cum_after": 0.0049423393739702615,
       "session_share": 14.961267605634061,
-      "score": 22.182446089111856,
+      "score": 22.11594695487934,
       "news": [
         {
           "time": "2026-11-10T09:03:56+09:00",
@@ -654,12 +654,12 @@
     {
       "time": "2026-11-10T10:05:00+09:00",
       "ret": -0.013190436933223415,
-      "z": 3.6,
+      "z": 3.59,
       "volume_ratio": 1.78,
       "cum_before": -0.0008237232289950436,
       "cum_after": -0.014003294892915963,
       "session_share": -2.66886507282225,
-      "score": 3.9567667920960155,
+      "score": 3.9452351746552337,
       "news": [
         {
           "time": "2026-11-10T09:03:56+09:00",
@@ -680,16 +680,16 @@
           "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE52NlNNQ2ZIYmdhVGtvOE10UGx1WmRGYXdhRTdCcS1URVBtUVVvbHFYZmVjV0NTYXhEMFlhRWo1VEhKMW9hbjBEbS1rSGxNZDc1NHl6OU42MVNpeWJ6?oc=5"
         },
         {
-          "time": "2026-11-10T09:26:53+09:00",
-          "title": "삼성전자 5%·SK하이닉스 7% 강세… 코스피 5272선 반등",
-          "source": "서울신문",
-          "link": "https://news.google.com/rss/articles/CBMifkFVX3lxTFBQUXBybzRtWHgwUWFHM1MzWGpQSmhMYUlZUTNhamV0dFhtY2NlLWxJbktfcWZOZkZCY3drak5nbWhJQzIyUGNZRk5WQU02aHMyVmFfMFFRMlcyVUJlRko2SHlKVTAzaG5DYVNuVlFSeXhiN0ktX1FyYUtYOFAtQQ?oc=5"
-        },
-        {
           "time": "2026-11-10T09:27:03+09:00",
           "title": "삼성전자 20만원·SK하이닉스 123만원 회복…반도체주 급등",
           "source": "한국경제",
           "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE9iQlltLXh1UF83aWxySHZmRGpibk1JejFfa0RzcDZIdEdibWRMRlhLREJoa1NOMkNZTGJxZ1NrUlc3cG1fT0ZIdWxrRmM1U1prTnI1TGhFTDU1Zw?oc=5"
+        },
+        {
+          "time": "2026-11-10T09:30:10+09:00",
+          "title": "[특징주] 반도체주 강세…삼성전자 5%·SK하이닉스 8% 상승",
+          "source": "연합뉴스",
+          "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE5wbktaSGRqSnc3akM3TWlFUnNhcm9BOUpseVE5SWRvd3M0bDJ4ZDFNTE9tZFRObFdyRVFjaGRmUjRLdkF4V0ZaM3dhNS1DMThQYXVIRDhCU2NKTjBiQ05QbdIBYEFVX3lxTE5wbktaSGRqSnc3akM3TWlFUnNhcm9BOUpseVE5SWRvd3M0bDJ4ZDFNTE9tZFRObFdyRVFjaGRmUjRLdkF4V0ZaM3dhNS1DMThQYXVIRDhCU2NKTjBiQ05QbQ?oc=5"
         }
       ],
       "price": 1197000.0,
@@ -698,12 +698,12 @@
     {
       "time": "2026-11-10T10:30:00+09:00",
       "ret": -0.011560693641618491,
-      "z": 3.16,
+      "z": 3.15,
       "volume_ratio": 1.63,
       "cum_before": -0.0024711696869851307,
       "cum_after": -0.014003294892915963,
       "session_share": -2.339113680154181,
-      "score": 3.48182370977601,
+      "score": 3.4717298109459076,
       "news": [
         {
           "time": "2026-11-10T09:03:56+09:00",

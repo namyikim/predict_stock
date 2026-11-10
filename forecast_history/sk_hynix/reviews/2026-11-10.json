@@ -3,73 +3,38 @@
   "name": "SK하이닉스",
   "peer_name": "삼성전자",
   "session_date": "2026-11-10",
-  "generated_at": "2026-11-10 17:31 KST",
+  "generated_at": "2026-11-11 00:33 KST",
   "summary": {
     "prev_close": 1136000.0,
-    "open": 1214000.0,
-    "high": 1242000.0,
-    "low": 1190000.0,
-    "close": 1212000.0,
-    "gap": 0.06866197183098599,
-    "session": -0.0016474464579900872,
-    "c2c": 0.06690140845070425,
-    "high_vs_open": 0.023064250411861664,
-    "low_vs_open": -0.01976935749588138,
-    "volume": 3603700.0,
-    "volume_ratio": 0.8747069069223451,
-    "kospi_c2c": 0.043890489030369295,
-    "peer_c2c": 0.04739336492891,
-    "usdkrw_chg": -0.019065077713115164,
+    "open": NaN,
+    "high": NaN,
+    "low": NaN,
+    "close": NaN,
+    "gap": NaN,
+    "session": NaN,
+    "c2c": NaN,
+    "high_vs_open": NaN,
+    "low_vs_open": NaN,
+    "volume": 3419722.0,
+    "volume_ratio": 0.8300509068885579,
+    "kospi_c2c": NaN,
+    "peer_c2c": NaN,
+    "usdkrw_chg": -0.01497020846460495,
     "us_nights": 1,
     "sox_ret": 0.06854766246905042,
     "nasdaq_ret": 0.027409543104355283,
     "micron_ret": 0.06253626726675732,
     "prior_streak": 1,
-    "ma5": 1228000.0,
-    "ma20": 1315200.0,
+    "ma5": 1232000.0,
+    "ma20": 1320631.5789473683,
     "high20": 1587000.0,
     "high252": 2986352.5777339735,
     "price_context": {
-      "breakouts": {
-        "20": {
-          "prior_high": 1587000.0,
-          "distance": -0.23629489603024578,
-          "close_breakout": false,
-          "intraday_breakout": false
-        },
-        "60": {
-          "prior_high": 1935000.0,
-          "distance": -0.37364341085271313,
-          "close_breakout": false,
-          "intraday_breakout": false
-        }
-      },
-      "relative": {
-        "5": {
-          "start": "2026-11-03",
-          "end": "2026-11-10",
-          "own": -0.1330472103004292,
-          "peer": -0.09384965831435077,
-          "excess": -0.03919755198607844
-        },
-        "20": {
-          "start": "2026-10-13",
-          "end": "2026-11-10",
-          "own": -0.16008316008316004,
-          "peer": -0.14267241379310347,
-          "excess": -0.017410746290056567
-        },
-        "60": {
-          "start": "2026-08-11",
-          "end": "2026-11-10",
-          "own": -0.1492892889327152,
-          "peer": -0.15512252103963686,
-          "excess": 0.00583323210692166
-        }
-      }
+      "breakouts": {},
+      "relative": {}
     },
-    "range": 0.043697478991596705,
-    "peer_range": 0.02596741344195519,
+    "range": NaN,
+    "peer_range": NaN,
     "prior_5d": -0.2282608695652174,
     "ma_touches": [],
     "micron_ah": {
@@ -105,7 +70,6 @@
         "after_high": -0.0060944430916156644
       }
     },
-    "from_high": -0.018623481781376516,
     "buyback": [
       {
         "kind": "직접 취득",
@@ -123,18 +87,22 @@
         "purpose": "주주가치 제고 및 임직원 주식 보상",
         "rcept_no": "20261028000014"
       }
-    ]
+    ],
+    "foreign_pressure": {
+      "state": "selling_intensified",
+      "previous_ratio": -0.020598115136189504,
+      "recent_ratio": -0.1447830213443158,
+      "previous_daily_net": -72310.4,
+      "recent_daily_net": -711732.6
+    },
+    "buyback_transition": null
   },
   "classification": {
     "labels": [
-      "갭 주도",
-      "장중 급변 09:00 주도",
-      "지수 동조"
+      "장중 급변 09:00 주도"
     ],
     "reasons": [
-      "갭 +6.87%가 종가→종가 +6.69%의 103%",
-      "09:00 봉 +7.39%(σ의 20.18배, 거래량 7.32배)가 세션 -0.16%의 1496%",
-      "KOSPI +4.39% vs 종목 +6.69%, 5분 수익률 상관 0.91 — 종목 고유 요인이 약함"
+      "09:00 봉 +7.39%(σ의 20.18배, 거래량 7.32배)가 세션 +nan%의 1496%"
     ]
   },
   "events": [
@@ -149,12 +117,6 @@
       "score": 22.182446089111856,
       "news": [
         {
-          "time": "2026-11-10T08:48:44+09:00",
-          "title": "하나증권 \"미국 반도체주 저가 매수세 유입, 삼성전자 SK하이닉스 반등 전망\"",
-          "source": "비즈니스포스트",
-          "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTFA1LWpERURrUmtJODBISHZ0SWVPMy03bFdPRTJtWUZacktCU2x0UTFtQWoyUlIwNEJEeUZxTTdZbmlBaXlNLWVmbERWUGIwalpIbWcyM1JEOUVBUzZkeE1YYnlOcVROZldZa0ZyQVE5dzA3VlU?oc=5"
-        },
-        {
           "time": "2026-11-10T09:03:56+09:00",
           "title": "DS투자증권 \"SK하이닉스, 고수익 지속\"…목표가 264만원",
           "source": "블루밍비트",
@@ -167,16 +129,22 @@
           "link": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE5tanliMDVqSjg4blhveGpsc1VVMWNPRzZtMGhidlBGWWN4U21KRHRFNzV5WkhZUVVhSHNuTkZqTEgzaUlCYzVPRUc4TVpSRGw4X1AxTA?oc=5"
         },
         {
-          "time": "2026-11-10T07:50:27+09:00",
-          "title": "국내 상장사 소액주주 24.2% 증가…삼성전자 797만명·SK하이닉스 346만명",
-          "source": "한국NGO신문",
-          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTFA1ZFA4YWR6VXJxMXVEYmFWMzBNNjFoOWJSTGhabHJpYXJYTnBqT2xjY09fZFhiZ2c4LWFlbTlsUndxdGVXcVZQLWVCRFptSVBlS0phb3JXUUhKUzFMWHpXNEZROHJKMHpz?oc=5"
-        },
-        {
           "time": "2026-11-10T08:20:00+09:00",
           "title": "삼성전자 주주 797만명·SK하이닉스 346만명⋯대형주에 개미 몰렸다",
           "source": "브릿지경제",
           "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE1Qanc4aEREQ1RKbndxNmtORENidHpEbjBBZWRiR0pzMWJZNnViTzh3RWlfM1RKTXFVRDhDWGZoWl9KSVlVMUhuemVYeG85d0FyNGpscGY1d29wZw?oc=5"
+        },
+        {
+          "time": "2026-11-10T08:59:00+09:00",
+          "title": "“개미들 여기로 몰렸다”…삼성전자·SK하이닉스 무슨 일",
+          "source": "한경매거진",
+          "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTFBkYno4RlJaV19BOHBGS080Tmg5d1N5b1JscUxpWTJWVGRtRDloMXYzc0ZnRXBRRGsxTzE2bjVFOWlYS0hpTVZfWmxDclFwaDZjc3FzclRmczMxRVdXeGxoU0FIR01CVHdiUWtxbw?oc=5"
+        },
+        {
+          "time": "2026-11-10T09:15:00+09:00",
+          "title": "삼성전자·SK하이닉스 장 초반 5~7% 강세",
+          "source": "https://www.2news.co.kr/",
+          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE0xbThvNFZXZFJmcjY4N2pERFJnTmZvZ0tVTkVvMlI1Nmt5eTlvV01HczNvdkg3VE42OVdZM0hqRC15cEZDaUo3dnpsZU9weExPb0VudjBlWnBBUGR6QWtqWlFTUGZ3Wmw5?oc=5"
         }
       ]
     },
@@ -190,12 +158,6 @@
       "session_share": -2.66886507282225,
       "score": 3.9567667920960155,
       "news": [
-        {
-          "time": "2026-11-10T08:48:44+09:00",
-          "title": "하나증권 \"미국 반도체주 저가 매수세 유입, 삼성전자 SK하이닉스 반등 전망\"",
-          "source": "비즈니스포스트",
-          "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTFA1LWpERURrUmtJODBISHZ0SWVPMy03bFdPRTJtWUZacktCU2x0UTFtQWoyUlIwNEJEeUZxTTdZbmlBaXlNLWVmbERWUGIwalpIbWcyM1JEOUVBUzZkeE1YYnlOcVROZldZa0ZyQVE5dzA3VlU?oc=5"
-        },
         {
           "time": "2026-11-10T09:03:56+09:00",
           "title": "DS투자증권 \"SK하이닉스, 고수익 지속\"…목표가 264만원",
@@ -218,7 +180,13 @@
           "time": "2026-11-10T09:26:53+09:00",
           "title": "삼성전자 5%·SK하이닉스 7% 강세… 코스피 5272선 반등",
           "source": "서울신문",
-          "link": "https://news.google.com/rss/articles/CBMifkFVX3lxTFBQUXBybzRtWHgwUWFHM1MzWGpQSmhMYUlZUTNhamV0dFhtY2NlLWxJbktfcWZOZkZCY3drak5nbWhJQzIyUGNZRk5WQU02aHMyVmFfMFFRMlcyVUJlRko2SHlKVTAzaG5DYVNuVlFSeXhiN0ktX1FyYUtYOFAtQQ?oc=5"
+          "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE9fRUF3Sm9zUUVXMXVVcFNmWklia1c1cUZVSUlWXzFwYVFJTEVKOUp2TWtTQ2RzdzlJaDMzMUlqLWdzMVhOOURKakRwdTN3ZFhEYS1yeE5MZkdKdjMtRFVENFZmR04?oc=5"
+        },
+        {
+          "time": "2026-11-10T09:27:03+09:00",
+          "title": "삼성전자 20만원·SK하이닉스 123만원 회복…반도체주 급등",
+          "source": "한국경제",
+          "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE9iQlltLXh1UF83aWxySHZmRGpibk1JejFfa0RzcDZIdEdibWRMRlhLREJoa1NOMkNZTGJxZ1NrUlc3cG1fT0ZIdWxrRmM1U1prTnI1TGhFTDU1Zw?oc=5"
         }
       ]
     },
@@ -248,7 +216,7 @@
           "time": "2026-11-10T10:37:12+09:00",
           "title": "“SK하이닉스, 메모리 가격 하락해도 2029년 영업이익 290조 원”",
           "source": "주간동아",
-          "link": "https://news.google.com/rss/articles/CBMibkFVX3lxTE9TbW5JUlFYM2VqOTJxbzF2MkRpa3UyUUpZN0tzRmhhRFhMSHc3NGJlM0loRl9NY0NXaDdNZ2tLbzZLZDM0ZW13TkgwekZwQTdzc011QWlkQTR4OFVZRmJFbFluY3dXT0N0aWJPZmF3?oc=5"
+          "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE5CaGVLUnRQSFJHdmJzcVVfZEhQb2FrTjhMSnNnMXZIbWg3b3FmVmIweTFDeFk5OWstMG8wNXRfT2thWFZzUWo3cUFGa3NxTXFsb1Z2aTZZWHZHNE9IWDhOWXQzS3U?oc=5"
         },
         {
           "time": "2026-11-10T09:05:00+09:00",
@@ -272,9 +240,9 @@
     "low": -0.018121911037891292,
     "pattern": "고점 후 반락"
   },
-  "closing_share": 3.980327868852545,
+  "closing_share": NaN,
   "intraday_corr_kospi": 0.9114516509450077,
-  "intraday_note": "장중 봉은 09:00~14:55까지만 있어 마감 구간(14:55~15:30)은 일봉 종가로만 봅니다(그 구간 -0.66%).",
+  "intraday_note": "장중 봉은 09:00~14:55까지만 있어 마감 구간(14:55~15:30)은 일봉 종가로만 봅니다(그 구간 +nan%).",
   "intraday_coverage": "09:00~14:55",
   "intraday_path": [
     {
@@ -650,12 +618,6 @@
       "score": 22.182446089111856,
       "news": [
         {
-          "time": "2026-11-10T08:48:44+09:00",
-          "title": "하나증권 \"미국 반도체주 저가 매수세 유입, 삼성전자 SK하이닉스 반등 전망\"",
-          "source": "비즈니스포스트",
-          "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTFA1LWpERURrUmtJODBISHZ0SWVPMy03bFdPRTJtWUZacktCU2x0UTFtQWoyUlIwNEJEeUZxTTdZbmlBaXlNLWVmbERWUGIwalpIbWcyM1JEOUVBUzZkeE1YYnlOcVROZldZa0ZyQVE5dzA3VlU?oc=5"
-        },
-        {
           "time": "2026-11-10T09:03:56+09:00",
           "title": "DS투자증권 \"SK하이닉스, 고수익 지속\"…목표가 264만원",
           "source": "블루밍비트",
@@ -668,16 +630,22 @@
           "link": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE5tanliMDVqSjg4blhveGpsc1VVMWNPRzZtMGhidlBGWWN4U21KRHRFNzV5WkhZUVVhSHNuTkZqTEgzaUlCYzVPRUc4TVpSRGw4X1AxTA?oc=5"
         },
         {
-          "time": "2026-11-10T07:50:27+09:00",
-          "title": "국내 상장사 소액주주 24.2% 증가…삼성전자 797만명·SK하이닉스 346만명",
-          "source": "한국NGO신문",
-          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTFA1ZFA4YWR6VXJxMXVEYmFWMzBNNjFoOWJSTGhabHJpYXJYTnBqT2xjY09fZFhiZ2c4LWFlbTlsUndxdGVXcVZQLWVCRFptSVBlS0phb3JXUUhKUzFMWHpXNEZROHJKMHpz?oc=5"
-        },
-        {
           "time": "2026-11-10T08:20:00+09:00",
           "title": "삼성전자 주주 797만명·SK하이닉스 346만명⋯대형주에 개미 몰렸다",
           "source": "브릿지경제",
           "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE1Qanc4aEREQ1RKbndxNmtORENidHpEbjBBZWRiR0pzMWJZNnViTzh3RWlfM1RKTXFVRDhDWGZoWl9KSVlVMUhuemVYeG85d0FyNGpscGY1d29wZw?oc=5"
+        },
+        {
+          "time": "2026-11-10T08:59:00+09:00",
+          "title": "“개미들 여기로 몰렸다”…삼성전자·SK하이닉스 무슨 일",
+          "source": "한경매거진",
+          "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTFBkYno4RlJaV19BOHBGS080Tmg5d1N5b1JscUxpWTJWVGRtRDloMXYzc0ZnRXBRRGsxTzE2bjVFOWlYS0hpTVZfWmxDclFwaDZjc3FzclRmczMxRVdXeGxoU0FIR01CVHdiUWtxbw?oc=5"
+        },
+        {
+          "time": "2026-11-10T09:15:00+09:00",
+          "title": "삼성전자·SK하이닉스 장 초반 5~7% 강세",
+          "source": "https://www.2news.co.kr/",
+          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE0xbThvNFZXZFJmcjY4N2pERFJnTmZvZ0tVTkVvMlI1Nmt5eTlvV01HczNvdkg3VE42OVdZM0hqRC15cEZDaUo3dnpsZU9weExPb0VudjBlWnBBUGR6QWtqWlFTUGZ3Wmw5?oc=5"
         }
       ],
       "price": 1220000.0,
@@ -693,12 +661,6 @@
       "session_share": -2.66886507282225,
       "score": 3.9567667920960155,
       "news": [
-        {
-          "time": "2026-11-10T08:48:44+09:00",
-          "title": "하나증권 \"미국 반도체주 저가 매수세 유입, 삼성전자 SK하이닉스 반등 전망\"",
-          "source": "비즈니스포스트",
-          "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTFA1LWpERURrUmtJODBISHZ0SWVPMy03bFdPRTJtWUZacktCU2x0UTFtQWoyUlIwNEJEeUZxTTdZbmlBaXlNLWVmbERWUGIwalpIbWcyM1JEOUVBUzZkeE1YYnlOcVROZldZa0ZyQVE5dzA3VlU?oc=5"
-        },
         {
           "time": "2026-11-10T09:03:56+09:00",
           "title": "DS투자증권 \"SK하이닉스, 고수익 지속\"…목표가 264만원",
@@ -721,7 +683,13 @@
           "time": "2026-11-10T09:26:53+09:00",
           "title": "삼성전자 5%·SK하이닉스 7% 강세… 코스피 5272선 반등",
           "source": "서울신문",
-          "link": "https://news.google.com/rss/articles/CBMifkFVX3lxTFBQUXBybzRtWHgwUWFHM1MzWGpQSmhMYUlZUTNhamV0dFhtY2NlLWxJbktfcWZOZkZCY3drak5nbWhJQzIyUGNZRk5WQU02aHMyVmFfMFFRMlcyVUJlRko2SHlKVTAzaG5DYVNuVlFSeXhiN0ktX1FyYUtYOFAtQQ?oc=5"
+          "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE9fRUF3Sm9zUUVXMXVVcFNmWklia1c1cUZVSUlWXzFwYVFJTEVKOUp2TWtTQ2RzdzlJaDMzMUlqLWdzMVhOOURKakRwdTN3ZFhEYS1yeE5MZkdKdjMtRFVENFZmR04?oc=5"
+        },
+        {
+          "time": "2026-11-10T09:27:03+09:00",
+          "title": "삼성전자 20만원·SK하이닉스 123만원 회복…반도체주 급등",
+          "source": "한국경제",
+          "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE9iQlltLXh1UF83aWxySHZmRGpibk1JejFfa0RzcDZIdEdibWRMRlhLREJoa1NOMkNZTGJxZ1NrUlc3cG1fT0ZIdWxrRmM1U1prTnI1TGhFTDU1Zw?oc=5"
         }
       ],
       "price": 1197000.0,
@@ -753,7 +721,7 @@
           "time": "2026-11-10T10:37:12+09:00",
           "title": "“SK하이닉스, 메모리 가격 하락해도 2029년 영업이익 290조 원”",
           "source": "주간동아",
-          "link": "https://news.google.com/rss/articles/CBMibkFVX3lxTE9TbW5JUlFYM2VqOTJxbzF2MkRpa3UyUUpZN0tzRmhhRFhMSHc3NGJlM0loRl9NY0NXaDdNZ2tLbzZLZDM0ZW13TkgwekZwQTdzc011QWlkQTR4OFVZRmJFbFluY3dXT0N0aWJPZmF3?oc=5"
+          "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE5CaGVLUnRQSFJHdmJzcVVfZEhQb2FrTjhMSnNnMXZIbWg3b3FmVmIweTFDeFk5OWstMG8wNXRfT2thWFZzUWo3cUFGa3NxTXFsb1Z2aTZZWHZHNE9IWDhOWXQzS3U?oc=5"
         },
         {
           "time": "2026-11-10T09:05:00+09:00",
@@ -774,12 +742,6 @@
   ],
   "overnight_news": [
     {
-      "time": "2026-11-10T08:48:44+09:00",
-      "title": "하나증권 \"미국 반도체주 저가 매수세 유입, 삼성전자 SK하이닉스 반등 전망\"",
-      "source": "비즈니스포스트",
-      "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTFA1LWpERURrUmtJODBISHZ0SWVPMy03bFdPRTJtWUZacktCU2x0UTFtQWoyUlIwNEJEeUZxTTdZbmlBaXlNLWVmbERWUGIwalpIbWcyM1JEOUVBUzZkeE1YYnlOcVROZldZa0ZyQVE5dzA3VlU?oc=5"
-    },
-    {
       "time": "2026-11-10T00:00:00+09:00",
       "title": "\"주식 열공하는데 왜 나만 잃을까\"…SK하이닉스 250층 물린 8년 차 개미의 '눈물'",
       "source": "뉴시스",
@@ -792,22 +754,28 @@
       "link": "https://news.google.com/rss/articles/CBMickFVX3lxTE1PTnJUU0kwZTRjNVlqOGpKZXAyYTFHb0xTYTQzYkRLYUNoSzZJMkJlTF9YNmVSZi1hZlFTazc5NGttY0FLNGo5MEJWcWRJdVA5OUxTZEU5TUNaUTU0Um1KeTgyRk1JdVRWS2NIaUZ6cm5EQQ?oc=5"
     },
     {
-      "time": "2026-11-10T07:50:27+09:00",
-      "title": "국내 상장사 소액주주 24.2% 증가…삼성전자 797만명·SK하이닉스 346만명",
-      "source": "한국NGO신문",
-      "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTFA1ZFA4YWR6VXJxMXVEYmFWMzBNNjFoOWJSTGhabHJpYXJYTnBqT2xjY09fZFhiZ2c4LWFlbTlsUndxdGVXcVZQLWVCRFptSVBlS0phb3JXUUhKUzFMWHpXNEZROHJKMHpz?oc=5"
-    },
-    {
       "time": "2026-11-10T08:20:00+09:00",
       "title": "삼성전자 주주 797만명·SK하이닉스 346만명⋯대형주에 개미 몰렸다",
       "source": "브릿지경제",
       "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE1Qanc4aEREQ1RKbndxNmtORENidHpEbjBBZWRiR0pzMWJZNnViTzh3RWlfM1RKTXFVRDhDWGZoWl9KSVlVMUhuemVYeG85d0FyNGpscGY1d29wZw?oc=5"
+    },
+    {
+      "time": "2026-11-10T08:59:00+09:00",
+      "title": "“개미들 여기로 몰렸다”…삼성전자·SK하이닉스 무슨 일",
+      "source": "한경매거진",
+      "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTFBkYno4RlJaV19BOHBGS080Tmg5d1N5b1JscUxpWTJWVGRtRDloMXYzc0ZnRXBRRGsxTzE2bjVFOWlYS0hpTVZfWmxDclFwaDZjc3FzclRmczMxRVdXeGxoU0FIR01CVHdiUWtxbw?oc=5"
+    },
+    {
+      "time": "2026-11-10T08:23:42+09:00",
+      "title": "주가 폭락에도 \"264만원 간다\"…SK하닉 주가 전망의 이유",
+      "source": "한국경제",
+      "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE1KQW9CeHJVU0M0UG5CbW9Wa3lRRVFydmFqd1VHSVVCLUIxTTNXM2QyUDJvWXl2UEpmN3JqUXpRMHJrZHc4cWpZTzZHSHlESnVQa240M2Z1aGtzdw?oc=5"
     }
   ],
   "top_news": [
     {
       "time": "2026-11-10T14:19:00+09:00",
-      "title": "\"반도체 가상 실험 하루→1분\" 삼성·SK하이닉스, 엔비디아와 AI 공동개발 성과",
+      "title": "\"반도체 가상 실험 하루→1분\"…삼성·SK하이닉스, 엔비디아와 AI 공동개발 성과",
       "source": "뉴스핌",
       "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE1NXzJiT1RPS2c0TjFxNWhJUWZDWmVrZXNsUGlZQ2gzV1dhNXU3RVJJcVNyN0JuR2pGTl9WOHZJY3lKajVEeDhMemN2NmlrUmFwSzV5dFFmd3dCR3Va?oc=5"
     },
@@ -830,10 +798,10 @@
       "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTE1HMERBS05tYlBaZ094MDVhb2dhNXVTaExMNXFnOUUtSEFGakZLUnNtSC1Gbjl0aGVjeWtsczJVUmxFT2FvaG5zMHJLNVZEbUtIa2s2aUJHb3A4cUgzNmVpM011Mzh0ZEhNLWV4UERBR0FhRXc?oc=5"
     },
     {
-      "time": "2026-11-10T08:48:44+09:00",
-      "title": "하나증권 \"미국 반도체주 저가 매수세 유입, 삼성전자 SK하이닉스 반등 전망\"",
+      "time": "2026-11-10T18:05:28+09:00",
+      "title": "[오늘의 주목주] 삼성SDI 주가 9%대 반등, '반도체 투심 회복' 코스피 외국인·기관 순매수에 5230선 상승 마감",
       "source": "비즈니스포스트",
-      "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTFA1LWpERURrUmtJODBISHZ0SWVPMy03bFdPRTJtWUZacktCU2x0UTFtQWoyUlIwNEJEeUZxTTdZbmlBaXlNLWVmbERWUGIwalpIbWcyM1JEOUVBUzZkeE1YYnlOcVROZldZa0ZyQVE5dzA3VlU?oc=5"
+      "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTE1zbklnQklkZXJNell1N0NvTDZQR3dDUmtSZTFwUl82bFcyNU8zMGY5LVgwMTBDUVhDUzE5aWtnbUJKZzdtM0RBcTZ1TU42WEd0Zlk0aFZfMGh1U0hhbkpyQVZKQ0tid2ZObGIzNVpxWERfdUk?oc=5"
     },
     {
       "time": "2026-11-10T09:03:56+09:00",
@@ -844,11 +812,12 @@
   ],
   "disclosures": [],
   "disclosure_note": null,
-  "flows": null,
+  "flows": "외국인 +104,098 / 기관 -10,640",
   "flow_story": null,
   "flow_status": {
-    "state": "pending",
-    "detail": "최신 2026-11-09"
+    "state": "ok",
+    "detail": "naver+cache",
+    "krx_error": "pykrx 미설치"
   },
   "context": {},
   "market": {
@@ -859,9 +828,9 @@
     "steady": 20,
     "upper": 7,
     "lower": 0,
-    "individual": -13847.0,
-    "foreign": 4190.0,
-    "institution": 4780.0,
+    "individual": -13947.0,
+    "foreign": 4439.0,
+    "institution": 4642.0,
     "prev_close": 5018.85,
     "open": 5247.22,
     "high": 5300.92,
@@ -872,50 +841,50 @@
   "forecasts": [
     {
       "model": "No macro ensemble",
-      "hit": true,
-      "verdict": "맞음 — 예측 상승 69%, 실제 상승(+6.69%)",
-      "legs": "갭 +6.87%(상승) · 세션 -0.16%(보합)",
-      "where": "결과는 주로 갭(밤사이)에서 정해졌습니다.",
+      "hit": false,
+      "verdict": "틀림 — 예측 상승 69%, 실제 보합(+nan%)",
+      "legs": "갭 +nan%(보합) · 세션 +nan%(보합)",
+      "where": "결과는 주로 장중에서 정해졌습니다.",
       "band": 0.0185055817944958,
       "probs": [
         0.1094728845292252,
         0.1999642762144468,
         0.690562839256328
       ],
-      "actual": "상승",
+      "actual": "보합",
       "predicted": "상승"
     },
     {
       "model": "Mean ensemble",
-      "hit": true,
-      "verdict": "맞음 — 예측 상승 70%, 실제 상승(+6.69%)",
-      "legs": "갭 +6.87%(상승) · 세션 -0.16%(보합)",
-      "where": "결과는 주로 갭(밤사이)에서 정해졌습니다.",
+      "hit": false,
+      "verdict": "틀림 — 예측 상승 70%, 실제 보합(+nan%)",
+      "legs": "갭 +nan%(보합) · 세션 +nan%(보합)",
+      "where": "결과는 주로 장중에서 정해졌습니다.",
       "band": 0.0185055817944958,
       "probs": [
         0.1047694966631429,
         0.1968941573409364,
         0.6983363459959206
       ],
-      "actual": "상승",
+      "actual": "보합",
       "predicted": "상승"
     },
     {
       "model": "Candidate expanding",
-      "hit": true,
-      "verdict": "맞음 — 예측 상승 72%, 실제 상승(+6.69%)",
-      "legs": "갭 +6.87%(상승) · 세션 -0.16%(보합)",
-      "where": "결과는 주로 갭(밤사이)에서 정해졌습니다.",
+      "hit": false,
+      "verdict": "틀림 — 예측 상승 72%, 실제 보합(+nan%)",
+      "legs": "갭 +nan%(보합) · 세션 +nan%(보합)",
+      "where": "결과는 주로 장중에서 정해졌습니다.",
       "band": 0.0185055817944958,
       "probs": [
         0.0979254779106327,
         0.184271330547196,
         0.7178031915421712
       ],
-      "actual": "상승",
+      "actual": "보합",
       "predicted": "상승"
     }
   ],
-  "price_check": "1거래일 예상 구간 1,090,730~1,263,885원 · 종가 1,212,000원 → 구간 안",
+  "price_check": "1거래일 예상 구간 1,090,730~1,263,885원 · 종가 nan원 → 구간 밖",
   "disclaimer": "시간이 맞는 것이지 원인 확정이 아닙니다. 뉴스 없이 움직이는 날(수급·프로그램·옵션 만기)이 많고, 기사 발행 시각은 실제 정보 유통보다 늦거나 앞섭니다. 이 절은 설명 도구이며 다음날 예측에 자동 반영되지 않습니다."
 }

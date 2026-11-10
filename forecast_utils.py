@@ -753,17 +753,45 @@ def leading_cycle_phase_line(path="macro_history/leading_cycle.csv", window=24):
         return ""
     if len(cycle) < 6:
         return ""
+    # 판정을 tools/cycle_phase.phase_of 와 줄 단위로 맞춘다(2026-11-10 점검). 예전 간이판은 고점이 두 달
+    # 같을 때(2026년 7·8월 104.2) 앞 달을 고점으로 잡고 '고점 뒤 경과 개월'을 연속 하락으로 세어, 거시 보고서는
+    # '정점 가능성(1개월)'인데 종목 보고서는 '하락 국면 전환(2개월)'로 서로 다르게 말했다.
+    # 노트북 셀에 복사되는 파일이라 tools/ 를 import 하지 못해 같은 규칙을 여기에 둔다(테스트가 둘을 비교한다).
+    cycle = cycle.replace([np.inf, -np.inf], np.nan).resample("MS").last()
+    if cycle.count() < 6 or pd.isna(cycle.iloc[-1]):
+        return ""
     recent = cycle.tail(window)
     last_month, last = cycle.index[-1], float(cycle.iloc[-1])
-    peak_month, trough_month = recent.idxmax(), recent.idxmin()
-    down = int((cycle.index > peak_month).sum())
-    up = int((cycle.index > trough_month).sum())
-    if peak_month > trough_month:
-        state = ("상승 중(최근 고점 경신)" if down == 0 else "정점 가능성(고점 뒤 1개월 하락)" if down == 1
-                 else f"하락 국면 전환(고점 뒤 {down}개월 연속)")
+    peak_month = recent[recent == recent.max()].index[-1]
+    trough_month = recent[recent == recent.min()].index[-1]
+    direction = np.sign(cycle.diff().iloc[-1])
+    months = 0
+    if pd.notna(direction) and direction != 0:
+        for change in cycle.diff().iloc[::-1]:
+            if pd.isna(change) or np.sign(change) != direction:
+                break
+            months += 1
+    since = cycle.index[-1 - months]
+    if pd.isna(direction):
+        state = "판정 보류(전월 자료 없음)"
+    elif direction == 0:
+        state = "횡보(전월과 같음)"
+    elif direction > 0:
+        if last_month == peak_month:
+            state = "상승 중(최근 고점 도달)"
+        elif since == trough_month:
+            state = ("저점 가능성(저점 뒤 1개월 상승)" if months == 1 else
+                     f"상승 국면 전환(저점 뒤 {months}개월 연속 상승)")
+        else:
+            state = f"반등(최근 {months}개월 연속 상승)"
     else:
-        state = ("하락 중(최근 저점 경신)" if up == 0 else "저점 가능성(저점 뒤 1개월 상승)" if up == 1
-                 else f"상승 국면 전환(저점 뒤 {up}개월 연속)")
+        if last_month == trough_month:
+            state = "하락 중(최근 저점 도달)"
+        elif since == peak_month:
+            state = ("정점 가능성(고점 뒤 1개월 하락)" if months == 1 else
+                     f"하락 국면 전환(고점 뒤 {months}개월 연속 하락)")
+        else:
+            state = f"재하락(최근 {months}개월 연속 하락)"
     return (f"경기 국면(통계청 선행지수 순환변동치) — {last_month.year}년 {last_month.month}월 {last:.1f}, {state}. "
             f"최근 고점 {float(recent.max()):.1f}({peak_month.year}년 {peak_month.month}월). "
             "자세한 판정과 국면별 코스피 성과는 거시 경제 보고서의 '경기 국면' 절에 있습니다.")

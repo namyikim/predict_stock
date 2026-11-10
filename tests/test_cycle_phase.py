@@ -120,6 +120,28 @@ class SectionTests(unittest.TestCase):
             os.chdir(cwd)
         self.assertIn(data["phase"]["state"], line)
 
+    def test_stock_report_line_matches_phase_of_on_edge_shapes(self):
+        # 저장소 자료 한 벌만 비교하면 그달 모양에서만 같은지 본다. 2026-11-10: 고점이 두 달 같은 모양에서
+        # 종목 보고서와 거시 보고서의 판정이 갈린 것을 3주 뒤에야 알았다. 갈리기 쉬운 모양을 직접 넣어 본다.
+        import tempfile
+        up, down = list(np.linspace(99, 104, 20)), list(np.linspace(104, 99, 20))
+        shapes = {
+            "고점 동률 뒤 1개월 하락": up + [104.0, 103.9],
+            "고점 뒤 2개월 하락": up + [103.8, 103.5],
+            "고점 뒤 내렸다가 반등": up + [103.5, 103.7],
+            "횡보": up + [103.8, 103.8],
+            "고점 경신": up,
+            "저점 동률 뒤 1개월 상승": down + [99.0, 99.2],
+            "저점 뒤 올랐다가 재하락": down + [99.4, 99.2],
+        }
+        with tempfile.TemporaryDirectory() as tmp:
+            for label, values in shapes.items():
+                series = monthly(values)
+                path = Path(tmp) / "leading_cycle.csv"
+                series.rename("value").rename_axis("month").to_csv(path)
+                with self.subTest(label):
+                    self.assertIn(C.phase_of(series)["state"], fu.leading_cycle_phase_line(path=str(path)))
+
 
 class CreditRiskTests(unittest.TestCase):
     def frame(self, hy):

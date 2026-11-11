@@ -1,5 +1,5 @@
 {
- "as_of": "2026-11-11",
+ "as_of": "2026-11-12",
  "needed": false,
  "late": [],
  "checked": [
@@ -13,14 +13,14 @@
   {
    "file": "customs_exports.csv",
    "label": "반도체 수출액(관세청 품목별)",
-   "have": "2026-09",
+   "have": "2026-10",
    "expected": "2026-09",
    "late": false
   },
   {
    "file": "customs_quantity.csv",
    "label": "반도체 수출 단가·물량(관세청)",
-   "have": "2026-09",
+   "have": "2026-10",
    "expected": "2026-09",
    "late": false
   },
@@ -34,7 +34,7 @@
   {
    "file": "customs_flash.csv",
    "label": "수출 속보 1~10일·1~20일(관세청)",
-   "have": "2026-10 1~31일",
+   "have": "2026-11 1~10일",
    "expected": "2026-10 1~20일",
    "late": false
   },
@@ -42,14 +42,14 @@
    "file": "investor_flows_005930.csv",
    "label": "삼성전자 외국인·기관 수급",
    "have": "2026-11-10",
-   "expected": "2026-11-05 이후",
+   "expected": "2026-11-06 이후",
    "late": false
   },
   {
    "file": "investor_flows_000660.csv",
    "label": "SK하이닉스 외국인·기관 수급",
    "have": "2026-11-10",
-   "expected": "2026-11-05 이후",
+   "expected": "2026-11-06 이후",
    "late": false
   }
  ],

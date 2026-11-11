@@ -1046,27 +1046,39 @@
     },
     {
       "month": "2026-10",
-      "value": 56702143000.0
+      "value": 56701630000.0
+    },
+    {
+      "month": "2026-11",
+      "value": 74451756495.42456
     }
   ],
   "applied": [
     {
       "month": "2026-10",
       "days": 31,
-      "yoy": 2.5747226227259286,
-      "observed_usd": 56702143000.0,
-      "monthly_usd": 56702143000.0,
+      "yoy": 2.574690281219798,
+      "observed_usd": 56701630000.0,
+      "monthly_usd": 56701630000.0,
       "basis": "full_month_preliminary"
+    },
+    {
+      "month": "2026-11",
+      "days": 10,
+      "yoy": 3.3119055680543728,
+      "observed_usd": 16632115000.0,
+      "monthly_usd": 74451756495.42456,
+      "basis": "partial_month_scenario"
     }
   ],
   "flash_info": {
     "enabled": true,
     "source": "customs_flash_api",
-    "rows": 42,
+    "rows": 43,
     "first": "2025-09",
-    "last": "2026-10",
-    "last_days": 31,
-    "yoy_rows": 6
+    "last": "2026-11",
+    "last_days": 10,
+    "yoy_rows": 7
   },
   "monthly_info": {
     "customs": {
@@ -1074,13 +1086,13 @@
       "reason": "최근 6개월 배율이 중앙값 1.249 대비 최대 10.8% 흔들립니다(허용 10%) — 관계가 불안정해 환산하지 않습니다.",
       "source": "customs_api",
       "first": "2025-05",
-      "last": "2026-09",
+      "last": "2026-10",
       "same_size": false,
       "ratio_median": 0.8203376758052427,
       "overlap": 17,
       "window": 6,
       "scale": 1.249066228864939,
-      "spread": 0.10773490429286436,
+      "spread": 0.10771943754912572,
       "ratios": {
         "2026-04": 1.2491,
         "2026-05": 1.2491,
@@ -1095,6 +1107,6 @@
       "semiconductor_exports": "KOSIS_API"
     }
   },
-  "snapshot_hash": "5eb138ffaa44fc56cda6",
-  "generated_at": "2026-11-10 17:28 KST"
+  "snapshot_hash": "bab788731c3207c5c3ee",
+  "generated_at": "2026-11-11 16:47 KST"
 }

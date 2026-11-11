@@ -3,82 +3,40 @@
   "name": "삼성전자",
   "peer_name": "SK하이닉스",
   "session_date": "2026-11-11",
-  "generated_at": "2026-11-11 16:03 KST",
+  "generated_at": "2026-11-12 00:08 KST",
   "summary": {
     "prev_close": 198900.0,
-    "open": 197100.0,
-    "high": 206500.0,
-    "low": 196300.0,
-    "close": 206000.0,
-    "gap": -0.009049773755656076,
-    "session": 0.04515474378488071,
-    "c2c": 0.03569632981397697,
-    "high_vs_open": 0.047691527143582046,
-    "low_vs_open": -0.004058853373921867,
-    "volume": 17068959.0,
-    "volume_ratio": 0.8870091612536277,
-    "kospi_c2c": 0.026002405650538796,
-    "peer_c2c": 0.05363036303630353,
-    "usdkrw_chg": -0.007188290536870867,
+    "open": NaN,
+    "high": NaN,
+    "low": NaN,
+    "close": NaN,
+    "gap": NaN,
+    "session": NaN,
+    "c2c": NaN,
+    "high_vs_open": NaN,
+    "low_vs_open": NaN,
+    "volume": 18057188.0,
+    "volume_ratio": 0.9383636800861184,
+    "kospi_c2c": NaN,
+    "peer_c2c": NaN,
+    "usdkrw_chg": -0.004382973269322354,
     "us_nights": 1,
     "sox_ret": -0.0035479229458174055,
     "nasdaq_ret": -0.0074157700682031535,
     "micron_ret": -0.010966430873306843,
     "prior_streak": 2,
-    "ma5": 197000.0,
-    "ma20": 214700.0,
+    "ma5": 194750.0,
+    "ma20": 215157.8947368421,
     "high20": 249000.0,
     "high252": 367712.71645480226,
     "price_context": {
-      "breakouts": {
-        "20": {
-          "prior_high": 249000.0,
-          "distance": -0.17269076305220887,
-          "close_breakout": false,
-          "intraday_breakout": false
-        },
-        "60": {
-          "prior_high": 283092.2681564246,
-          "distance": -0.27232205477906835,
-          "close_breakout": false,
-          "intraday_breakout": false
-        }
-      },
-      "relative": {
-        "5": {
-          "start": "2026-11-04",
-          "end": "2026-11-11",
-          "own": -0.05504587155963303,
-          "peer": -0.08524355300859598,
-          "excess": 0.030197681448962954
-        },
-        "20": {
-          "start": "2026-10-14",
-          "end": "2026-11-11",
-          "own": -0.11206896551724133,
-          "peer": -0.1000704721634954,
-          "excess": -0.01199849335374592
-        },
-        "60": {
-          "start": "2026-08-12",
-          "end": "2026-11-11",
-          "own": -0.17976028643686603,
-          "peer": -0.15074677090911992,
-          "excess": -0.029013515527746114
-        }
-      }
+      "breakouts": {},
+      "relative": {}
     },
-    "range": 0.05196128374936326,
-    "peer_range": 0.08130762782900258,
+    "range": NaN,
+    "peer_range": NaN,
     "prior_5d": -0.09384965831435077,
-    "ma_touches": [
-      {
-        "ma": 5,
-        "level": 199400.0,
-        "kind": "reclaim",
-        "price": 196300.0
-      }
-    ],
+    "ma_touches": [],
     "micron_ah": {
       "regular_close": 724.85498046875,
       "last": 731.88,
@@ -99,7 +57,7 @@
       "NQ=F": {
         "label": "나스닥100 선물",
         "ret": 0.010406701772894378,
-        "after_high": 0.0013112778757298216
+        "after_high": 0.0014532436575662722
       },
       "ZN=F": {
         "label": "미 10년물 국채 선물",
@@ -112,7 +70,6 @@
         "after_high": -0.002244534632148354
       }
     },
-    "from_high": 0.0012150668286756705,
     "buyback": [
       {
         "kind": "직접 취득",
@@ -122,14 +79,22 @@
         "purpose": "임직원 주식보상",
         "rcept_no": "20260821000616"
       }
-    ]
+    ],
+    "foreign_pressure": {
+      "state": "selling_eased",
+      "previous_ratio": -0.061778303487606157,
+      "recent_ratio": -0.03697435751925423,
+      "previous_daily_net": -1171589.2,
+      "recent_daily_net": -838403.0
+    },
+    "buyback_transition": null
   },
   "classification": {
     "labels": [
-      "지수 동조"
+      "완만한 추세"
     ],
     "reasons": [
-      "KOSPI +2.60% vs 종목 +3.57%, 5분 수익률 상관 0.89 — 종목 고유 요인이 약함"
+      "특정 시각·갭·지수로 설명되는 큰 구간 없음"
     ]
   },
   "events": [
@@ -186,12 +151,6 @@
       "score": 3.963214561863351,
       "news": [
         {
-          "time": "2026-11-11T09:10:00+09:00",
-          "title": "[분석] 삼성전자·SK하이닉스, TSMC 호실적에 반등 신호탄 쏘나 By FinancialPost",
-          "source": "Investing.com 한국어",
-          "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE5ySS1uWWNJYlA4WEt5RDNoRHJJT2ZpWllpQjMwSkpWazlDU2twaDhGazNFUUVCc3BBVUdZYWkxb2NKcFhDUTZGM19mQWd1V2VSMjlxRks4SFVESUtJb3ZpT1hRVkgyTWlTMmJ3OFRnODE?oc=5"
-        },
-        {
           "time": "2026-11-11T09:37:10+09:00",
           "title": "삼성전자·SK하이닉스 동반 약세…美 물가 충격에 반도체주 흔들",
           "source": "진일보 | 전남일보",
@@ -210,10 +169,16 @@
           "link": "https://news.google.com/rss/articles/CBMihwFBVV95cUxOUjZySGpHU2tjTnBoVE9uTzdEZmFDbjh5UGVQUXJLbTFoZUpjUWE1TExrZVc2QndzN0xETjIzblRDS2RodXIta1BPT3pFTU5fblViMjVJUmtOTmZOTlBRcEdKZS1NRnZRX0VDQ2wzSTNuc2xsM0E3Q2ZMY0ZUbEVndG5OcVV6ZTg?oc=5"
         },
         {
-          "time": "2026-11-11T08:46:58+09:00",
-          "title": "ABB·삼성전자, 상업용 건물 통합 IoT 솔루션 협력",
+          "time": "2026-11-11T09:57:35+09:00",
+          "title": "삼성전자·SK하이닉스 '특별배당 효과'…KODEX 월배당 ETF 분배금 확대",
           "source": "글로벌이코노믹",
-          "link": "https://news.google.com/rss/articles/CBMihgFBVV95cUxPdzJwZ09SXzZrSWJIQkFoemhOTk04ZU44aUFJamZPdW8xWFlYUUNKTzF6VWFxZDlqM3VKWTctUlFKV05nMUNaaUs0RG9zUVlHZ3BaNHFuNk1ZTFF1R2kyNVZKMmJjbTl1SVpva1NaeTk0Z3ZxSVh4b2ItUGcydm8waXRsaEEzdw?oc=5"
+          "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxPZnRHSTRlV2p5UEVyckN5VXdKNDFFNmpKYkhwOHRUMHE2NklTY1JYanhnaWdvVjhtdG5Xd182czY3eDNQNFREUDVYbWhvMDFZVWZqZFo1WkdKOUpIWWJ1ZzdtdnNlUl9DYXlPTjEzemFvTk1vS0RhbGM5RVZqU1l1WGVTUUM5bFZn?oc=5"
+        },
+        {
+          "time": "2026-11-11T09:52:59+09:00",
+          "title": "ABB·삼성전자, 냉난방부터 조명까지 묶어 상업용 건물 구축 간소화",
+          "source": "아이티데일리",
+          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE5vUmdLWnMycV9na0YxcjU0YkpCemJ1UDlmQ1lKNi1Ka1F3UmdaRGlIV1A0LUVSUDR1Q0N6RUtnSTNMMFNWZnR4YkdlNUVjT01ORWtXR2ZoMlJSZjBPUG12d0tia3Y0VXZh?oc=5"
         }
       ]
     }
@@ -225,9 +190,9 @@
     "low": -0.003551496702181689,
     "pattern": "저점 후 반등"
   },
-  "closing_share": 0.053883375707375544,
+  "closing_share": NaN,
   "intraday_corr_kospi": 0.89181271233009,
-  "intraday_note": "장중 봉은 09:00~14:55까지만 있어 마감 구간(14:55~15:30)은 일봉 종가로만 봅니다(그 구간 +0.24%).",
+  "intraday_note": "장중 봉은 09:00~14:55까지만 있어 마감 구간(14:55~15:30)은 일봉 종가로만 봅니다(그 구간 +nan%).",
   "intraday_coverage": "09:00~14:55",
   "intraday_path": [
     {
@@ -603,12 +568,6 @@
       "score": 3.963214561863351,
       "news": [
         {
-          "time": "2026-11-11T09:10:00+09:00",
-          "title": "[분석] 삼성전자·SK하이닉스, TSMC 호실적에 반등 신호탄 쏘나 By FinancialPost",
-          "source": "Investing.com 한국어",
-          "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE5ySS1uWWNJYlA4WEt5RDNoRHJJT2ZpWllpQjMwSkpWazlDU2twaDhGazNFUUVCc3BBVUdZYWkxb2NKcFhDUTZGM19mQWd1V2VSMjlxRks4SFVESUtJb3ZpT1hRVkgyTWlTMmJ3OFRnODE?oc=5"
-        },
-        {
           "time": "2026-11-11T09:37:10+09:00",
           "title": "삼성전자·SK하이닉스 동반 약세…美 물가 충격에 반도체주 흔들",
           "source": "진일보 | 전남일보",
@@ -627,10 +586,16 @@
           "link": "https://news.google.com/rss/articles/CBMihwFBVV95cUxOUjZySGpHU2tjTnBoVE9uTzdEZmFDbjh5UGVQUXJLbTFoZUpjUWE1TExrZVc2QndzN0xETjIzblRDS2RodXIta1BPT3pFTU5fblViMjVJUmtOTmZOTlBRcEdKZS1NRnZRX0VDQ2wzSTNuc2xsM0E3Q2ZMY0ZUbEVndG5OcVV6ZTg?oc=5"
         },
         {
-          "time": "2026-11-11T08:46:58+09:00",
-          "title": "ABB·삼성전자, 상업용 건물 통합 IoT 솔루션 협력",
+          "time": "2026-11-11T09:57:35+09:00",
+          "title": "삼성전자·SK하이닉스 '특별배당 효과'…KODEX 월배당 ETF 분배금 확대",
           "source": "글로벌이코노믹",
-          "link": "https://news.google.com/rss/articles/CBMihgFBVV95cUxPdzJwZ09SXzZrSWJIQkFoemhOTk04ZU44aUFJamZPdW8xWFlYUUNKTzF6VWFxZDlqM3VKWTctUlFKV05nMUNaaUs0RG9zUVlHZ3BaNHFuNk1ZTFF1R2kyNVZKMmJjbTl1SVpva1NaeTk0Z3ZxSVh4b2ItUGcydm8waXRsaEEzdw?oc=5"
+          "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxPZnRHSTRlV2p5UEVyckN5VXdKNDFFNmpKYkhwOHRUMHE2NklTY1JYanhnaWdvVjhtdG5Xd182czY3eDNQNFREUDVYbWhvMDFZVWZqZFo1WkdKOUpIWWJ1ZzdtdnNlUl9DYXlPTjEzemFvTk1vS0RhbGM5RVZqU1l1WGVTUUM5bFZn?oc=5"
+        },
+        {
+          "time": "2026-11-11T09:52:59+09:00",
+          "title": "ABB·삼성전자, 냉난방부터 조명까지 묶어 상업용 건물 구축 간소화",
+          "source": "아이티데일리",
+          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE5vUmdLWnMycV9na0YxcjU0YkpCemJ1UDlmQ1lKNi1Ka1F3UmdaRGlIV1A0LUVSUDR1Q0N6RUtnSTNMMFNWZnR4YkdlNUVjT01ORWtXR2ZoMlJSZjBPUG12d0tia3Y0VXZh?oc=5"
         }
       ],
       "price": 198300.0,
@@ -681,32 +646,13 @@
       "kind": "turn_up"
     }
   ],
-  "overnight_news": [
-    {
-      "time": "2026-11-11T08:46:58+09:00",
-      "title": "ABB·삼성전자, 상업용 건물 통합 IoT 솔루션 협력",
-      "source": "글로벌이코노믹",
-      "link": "https://news.google.com/rss/articles/CBMihgFBVV95cUxPdzJwZ09SXzZrSWJIQkFoemhOTk04ZU44aUFJamZPdW8xWFlYUUNKTzF6VWFxZDlqM3VKWTctUlFKV05nMUNaaUs0RG9zUVlHZ3BaNHFuNk1ZTFF1R2kyNVZKMmJjbTl1SVpva1NaeTk0Z3ZxSVh4b2ItUGcydm8waXRsaEEzdw?oc=5"
-    },
-    {
-      "time": "2026-11-11T09:00:00+09:00",
-      "title": "삼성전자, C랩 스타트업 육성 1000개 달성",
-      "source": "벤처타임즈",
-      "link": "https://news.google.com/rss/articles/CBMiZkFVX3lxTE85MFhPaWhHeFJtVGRKUVVObDBKemtIX041LTNvSDVZeGdhVWt1V3g5a3RndUpERHlvTmI1R0trTUhQREFSNE96YTlQNVJWRGp3SmIyaktyVExLRXpOUEY5dWNibGhCQQ?oc=5"
-    }
-  ],
+  "overnight_news": [],
   "top_news": [
     {
       "time": "2026-11-11T13:15:59+09:00",
       "title": "[이코노미플러스]KB증권 “AI 투자 위축 가능성 낮아···삼성전자·SK하이닉스 최선호주”",
       "source": "강원일보",
       "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE1GdV8tOXU5NVpySXI0dktCT1R0NHNGWWtVYlhpTlJYTHcycFJXRlViaTdRUzBjV3hKQWlLdGowZ2xpOFVTQWR3UXhWWExvaTBUZGpmLTJWcTFrdk0?oc=5"
-    },
-    {
-      "time": "2026-11-11T09:10:00+09:00",
-      "title": "[분석] 삼성전자·SK하이닉스, TSMC 호실적에 반등 신호탄 쏘나 By FinancialPost",
-      "source": "Investing.com 한국어",
-      "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE5ySS1uWWNJYlA4WEt5RDNoRHJJT2ZpWllpQjMwSkpWazlDU2twaDhGazNFUUVCc3BBVUdZYWkxb2NKcFhDUTZGM19mQWd1V2VSMjlxRks4SFVESUtJb3ZpT1hRVkgyTWlTMmJ3OFRnODE?oc=5"
     },
     {
       "time": "2026-11-11T10:40:48+09:00",
@@ -731,6 +677,12 @@
       "title": "AMD, 반도체 테스트 장비용 신형 CPU 공개…삼성전자 메모리·SSD와 결합",
       "source": "글로벌이코노믹",
       "link": "https://news.google.com/rss/articles/CBMihgFBVV95cUxPcGpZSjR3NVNvUEN5X3FQUGJISDJNWE5TalE3eXZhbXR6YUtBSVVja1hvdEpUbnA1bDRXQWFTaEJOaThFMHk2UnZrcEFjT2g5OTJWbFNJSzBPOWN6bXB0a2RTU2JScklJTmRHcGsxX2tGbjZ2bWVyVmFGMkRYd1JJQThOOEhSZw?oc=5"
+    },
+    {
+      "time": "2026-11-11T15:27:00+09:00",
+      "title": "삼성전자, AMD와 반도체 테스트 인프라 고도화⋯ 차세대 메모리 결합",
+      "source": "브릿지경제",
+      "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE1FNlRLd053Qi1YT0ZBWEFwRVZoX1pwVlVkWXFMYnhpbzZONzFTOUlSbTZWWDYzLVV5QndFUzNHUGdBUEc5RXlGRXVIRFM4NWFVZG1TbEFvQ1d6UQ?oc=5"
     }
   ],
   "disclosures": [
@@ -742,11 +694,12 @@
     }
   ],
   "disclosure_note": null,
-  "flows": null,
+  "flows": "외국인 +2,648,292 / 기관 -629,449",
   "flow_story": null,
   "flow_status": {
-    "state": "pending",
-    "detail": "최신 2026-11-10"
+    "state": "ok",
+    "detail": "naver+cache",
+    "krx_error": "pykrx 미설치"
   },
   "context": {},
   "market": {
@@ -757,9 +710,9 @@
     "steady": 41,
     "upper": 6,
     "lower": 1,
-    "individual": -7138.0,
-    "foreign": 6531.0,
-    "institution": -4819.0,
+    "individual": -7145.0,
+    "foreign": 6729.0,
+    "institution": -5034.0,
     "prev_close": 5239.13,
     "open": 5209.71,
     "high": 5377.99,
@@ -771,49 +724,49 @@
     {
       "model": "No macro ensemble",
       "hit": false,
-      "verdict": "틀림 — 예측 하락 54%, 실제 상승(+3.57%)",
-      "legs": "갭 -0.90%(보합) · 세션 +4.52%(상승)",
-      "where": "갭은 예측 방향이었으나 장중에 반대로 움직여 결과가 뒤집혔습니다.",
+      "verdict": "틀림 — 예측 하락 54%, 실제 보합(+nan%)",
+      "legs": "갭 +nan%(보합) · 세션 +nan%(보합)",
+      "where": "결과는 주로 장중에서 정해졌습니다.",
       "band": 0.0140164550276842,
       "probs": [
         0.5378843216821817,
         0.2314788958522261,
         0.2306367824655921
       ],
-      "actual": "상승",
+      "actual": "보합",
       "predicted": "하락"
     },
     {
       "model": "Mean ensemble",
       "hit": false,
-      "verdict": "틀림 — 예측 하락 59%, 실제 상승(+3.57%)",
-      "legs": "갭 -0.90%(보합) · 세션 +4.52%(상승)",
-      "where": "갭은 예측 방향이었으나 장중에 반대로 움직여 결과가 뒤집혔습니다.",
+      "verdict": "틀림 — 예측 하락 59%, 실제 보합(+nan%)",
+      "legs": "갭 +nan%(보합) · 세션 +nan%(보합)",
+      "where": "결과는 주로 장중에서 정해졌습니다.",
       "band": 0.0140164550276842,
       "probs": [
         0.5864912512273038,
         0.1947805731286655,
         0.2187281756440307
       ],
-      "actual": "상승",
+      "actual": "보합",
       "predicted": "하락"
     },
     {
       "model": "Candidate expanding",
       "hit": false,
-      "verdict": "틀림 — 예측 하락 49%, 실제 상승(+3.57%)",
-      "legs": "갭 -0.90%(보합) · 세션 +4.52%(상승)",
-      "where": "갭은 예측 방향이었으나 장중에 반대로 움직여 결과가 뒤집혔습니다.",
+      "verdict": "틀림 — 예측 하락 49%, 실제 보합(+nan%)",
+      "legs": "갭 +nan%(보합) · 세션 +nan%(보합)",
+      "where": "결과는 주로 장중에서 정해졌습니다.",
       "band": 0.0140164550276842,
       "probs": [
         0.4894202376980644,
         0.2516262449799467,
         0.2589535173219889
       ],
-      "actual": "상승",
+      "actual": "보합",
       "predicted": "하락"
     }
   ],
-  "price_check": "1거래일 예상 구간 184,557~207,954원 · 종가 206,000원 → 구간 안",
+  "price_check": "1거래일 예상 구간 184,557~207,954원 · 종가 nan원 → 구간 밖",
   "disclaimer": "시간이 맞는 것이지 원인 확정이 아닙니다. 뉴스 없이 움직이는 날(수급·프로그램·옵션 만기)이 많고, 기사 발행 시각은 실제 정보 유통보다 늦거나 앞섭니다. 이 절은 설명 도구이며 다음날 예측에 자동 반영되지 않습니다."
 }

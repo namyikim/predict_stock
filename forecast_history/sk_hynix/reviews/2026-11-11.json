@@ -3,7 +3,7 @@
   "name": "SK하이닉스",
   "peer_name": "삼성전자",
   "session_date": "2026-11-11",
-  "generated_at": "2026-11-12 00:27 KST",
+  "generated_at": "2026-11-12 01:42 KST",
   "summary": {
     "prev_close": 1212000.0,
     "open": NaN,
@@ -19,7 +19,7 @@
     "volume_ratio": 0.924771524267551,
     "kospi_c2c": NaN,
     "peer_c2c": NaN,
-    "usdkrw_chg": -0.004955881860017164,
+    "usdkrw_chg": -0.0042117456343993,
     "us_nights": 1,
     "sox_ret": -0.0035479229458174055,
     "nasdaq_ret": -0.0074157700682031535,
@@ -70,24 +70,7 @@
         "after_high": -0.003534384658240408
       }
     },
-    "buyback": [
-      {
-        "kind": "직접 취득",
-        "start": "2026-08-20",
-        "end": "2026-11-19",
-        "amount": "40,004,340,000,000",
-        "purpose": "자기주식 소각을 통한 \n주주가치 제고",
-        "rcept_no": "20260819000254"
-      },
-      {
-        "kind": "직접 취득",
-        "start": "2026-10-29",
-        "end": "2027-01-28",
-        "amount": "20,007,720,000,000",
-        "purpose": "주주가치 제고 및 임직원 주식 보상",
-        "rcept_no": "20261028000014"
-      }
-    ],
+    "buyback": [],
     "foreign_pressure": {
       "state": "selling_intensified",
       "previous_ratio": -0.08130967980333272,
@@ -526,8 +509,8 @@
       "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE1ENU12bHpEZWc0UDRFU25TVGJMNXhwU0N5dFM5eWJ5NlpsS2NSRURyMjZld1FFWER6TDJ3S0RXcTBiMkpyRnlsTlZrNFFMYkxzQTZpRnhpc0FyRGN2UkhOdTB5VmxYZVIz?oc=5"
     }
   ],
-  "disclosures": [],
-  "disclosure_note": null,
+  "disclosures": null,
+  "disclosure_note": "DART 조회 실패(URLError)",
   "flows": "외국인 +98,654 / 기관 -152,520",
   "flow_story": null,
   "flow_status": {

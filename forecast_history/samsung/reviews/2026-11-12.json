@@ -3,82 +3,40 @@
   "name": "삼성전자",
   "peer_name": "SK하이닉스",
   "session_date": "2026-11-12",
-  "generated_at": "2026-11-12 16:41 KST",
+  "generated_at": "2026-11-13 00:57 KST",
   "summary": {
     "prev_close": 206000.0,
-    "open": 208500.0,
-    "high": 214000.0,
-    "low": 206000.0,
-    "close": 208000.0,
-    "gap": 0.012135922330097193,
-    "session": -0.0023980815347721673,
-    "c2c": 0.009708737864077666,
-    "high_vs_open": 0.026378896882494063,
-    "low_vs_open": -0.011990407673860948,
-    "volume": 23891384.0,
-    "volume_ratio": 1.2505479990593116,
-    "kospi_c2c": -0.006070269459611977,
-    "peer_c2c": -0.018010963194988294,
-    "usdkrw_chg": -0.006356632769416226,
+    "open": NaN,
+    "high": NaN,
+    "low": NaN,
+    "close": NaN,
+    "gap": NaN,
+    "session": NaN,
+    "c2c": NaN,
+    "high_vs_open": NaN,
+    "low_vs_open": NaN,
+    "volume": 24725706.0,
+    "volume_ratio": 1.2942189604264371,
+    "kospi_c2c": NaN,
+    "peer_c2c": NaN,
+    "usdkrw_chg": -0.005387828009773887,
     "us_nights": 1,
     "sox_ret": 0.05658747701032096,
     "nasdaq_ret": 0.015970733360735068,
     "micron_ret": 0.11886472974112738,
     "prior_streak": 3,
-    "ma5": 198300.0,
-    "ma20": 214600.0,
+    "ma5": 195875.0,
+    "ma20": 214947.36842105264,
     "high20": 249000.0,
-    "high252": 367712.7495144774,
+    "high252": 367712.71645480226,
     "price_context": {
-      "breakouts": {
-        "20": {
-          "prior_high": 249000.0,
-          "distance": -0.16465863453815266,
-          "close_breakout": false,
-          "intraday_breakout": false
-        },
-        "60": {
-          "prior_high": 283092.2681564246,
-          "distance": -0.26525722035944765,
-          "close_breakout": false,
-          "intraday_breakout": false
-        }
-      },
-      "relative": {
-        "5": {
-          "start": "2026-11-05",
-          "end": "2026-11-12",
-          "own": 0.032258064516129004,
-          "peer": -0.007911392405063333,
-          "excess": 0.04016945692119234
-        },
-        "20": {
-          "start": "2026-10-15",
-          "end": "2026-11-12",
-          "own": -0.00952380952380949,
-          "peer": -0.006339144215530945,
-          "excess": -0.0031846653082785448
-        },
-        "60": {
-          "start": "2026-08-13",
-          "end": "2026-11-12",
-          "own": -0.21042570225670443,
-          "peer": -0.21263531947486736,
-          "excess": 0.0022096172181629292
-        }
-      }
+      "breakouts": {},
+      "relative": {}
     },
-    "range": 0.03883495145631066,
-    "peer_range": 0.052208835341365445,
+    "range": NaN,
+    "peer_range": NaN,
     "prior_5d": -0.05504587155963303,
-    "ma_touches": [
-      {
-        "ma": 20,
-        "level": 214700.0,
-        "kind": "resistance",
-        "price": 214000.0
-      }
-    ],
+    "ma_touches": [],
     "micron_ah": {
       "regular_close": 811.9500122070312,
       "last": 791.379,
@@ -112,7 +70,6 @@
         "after_high": -0.0029903918816798214
       }
     },
-    "from_high": -0.02576112412178,
     "buyback": [
       {
         "kind": "직접 취득",
@@ -122,16 +79,22 @@
         "purpose": "임직원 주식보상",
         "rcept_no": "20260821000616"
       }
-    ]
+    ],
+    "foreign_pressure": {
+      "state": "turned_buying",
+      "previous_ratio": -0.11757551703491888,
+      "recent_ratio": 0.04651019579004356,
+      "previous_daily_net": -2222276.2,
+      "recent_daily_net": 1038342.8
+    },
+    "buyback_transition": null
   },
   "classification": {
     "labels": [
-      "갭 주도",
       "장중 급변 09:00 주도"
     ],
     "reasons": [
-      "갭 +1.21%가 종가→종가 +0.97%의 125%",
-      "09:00 봉 +1.94%(σ의 5.51배, 거래량 7.0배)가 세션 -0.24%의 810%"
+      "09:00 봉 +1.94%(σ의 5.51배, 거래량 7.0배)가 세션 +nan%의 810%"
     ]
   },
   "events": [
@@ -144,14 +107,7 @@
       "cum_after": 0.007194244604316502,
       "session_share": -8.097087378640824,
       "score": 7.507242006887387,
-      "news": [
-        {
-          "time": "2026-11-12T08:46:26+09:00",
-          "title": "삼성전자, IOC와 아프리카 첫 청소년올림픽서 혁신가 도전 지원",
-          "source": "연합뉴스",
-          "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE0yS1VmaVBqazNfa1hFMFFiWXNwMmdjQmdobGVIQW5udTRFSWV0V1ZmYnNZRzJTUTQ3bGJFMmlmYUI1TENjalRrdm1hMGZCM2c1dEhRUmo2Z2p1UTjSAWBBVV95cUxOaVVCUVJqRklCZFVFZ1JtdzhuMkJzTDV1MEpPZU1YUXctQ3BNNElmbDl6V2d1UFZKc2c4WHp1VnhZcDhNd1dyOGJmYjRnSUduS2g0TzEyWXhERDN4RlI5cWs?oc=5"
-        }
-      ]
+      "news": []
     }
   ],
   "turning_point": {
@@ -161,9 +117,9 @@
     "low": -0.007194244604316502,
     "pattern": "고점 후 반락"
   },
-  "closing_share": -0.0,
+  "closing_share": NaN,
   "intraday_corr_kospi": 0.8776055953280918,
-  "intraday_note": "장중 봉은 09:00~14:55까지만 있어 마감 구간(14:55~15:30)은 일봉 종가로만 봅니다(그 구간 +0.00%).",
+  "intraday_note": "장중 봉은 09:00~14:55까지만 있어 마감 구간(14:55~15:30)은 일봉 종가로만 봅니다(그 구간 +nan%).",
   "intraday_coverage": "09:00~14:55",
   "intraday_path": [
     {
@@ -537,38 +493,18 @@
       "cum_after": 0.007194244604316502,
       "session_share": -8.097087378640824,
       "score": 7.507242006887387,
-      "news": [
-        {
-          "time": "2026-11-12T08:46:26+09:00",
-          "title": "삼성전자, IOC와 아프리카 첫 청소년올림픽서 혁신가 도전 지원",
-          "source": "연합뉴스",
-          "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE0yS1VmaVBqazNfa1hFMFFiWXNwMmdjQmdobGVIQW5udTRFSWV0V1ZmYnNZRzJTUTQ3bGJFMmlmYUI1TENjalRrdm1hMGZCM2c1dEhRUmo2Z2p1UTjSAWBBVV95cUxOaVVCUVJqRklCZFVFZ1JtdzhuMkJzTDV1MEpPZU1YUXctQ3BNNElmbDl6V2d1UFZKc2c4WHp1VnhZcDhNd1dyOGJmYjRnSUduS2g0TzEyWXhERDN4RlI5cWs?oc=5"
-        }
-      ],
+      "news": [],
       "price": 210000.0,
       "kind": "turn_up"
     }
   ],
-  "overnight_news": [
-    {
-      "time": "2026-11-12T08:46:26+09:00",
-      "title": "삼성전자, IOC와 아프리카 첫 청소년올림픽서 혁신가 도전 지원",
-      "source": "연합뉴스",
-      "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE0yS1VmaVBqazNfa1hFMFFiWXNwMmdjQmdobGVIQW5udTRFSWV0V1ZmYnNZRzJTUTQ3bGJFMmlmYUI1TENjalRrdm1hMGZCM2c1dEhRUmo2Z2p1UTjSAWBBVV95cUxOaVVCUVJqRklCZFVFZ1JtdzhuMkJzTDV1MEpPZU1YUXctQ3BNNElmbDl6V2d1UFZKc2c4WHp1VnhZcDhNd1dyOGJmYjRnSUduS2g0TzEyWXhERDN4RlI5cWs?oc=5"
-    }
-  ],
+  "overnight_news": [],
   "top_news": [
     {
-      "time": "2026-11-12T13:29:49+09:00",
-      "title": "이재용 \"AI 반도체 심장 만들겠다\"…삼성전자, 온양에 HBM 5개 라인 구축",
-      "source": "www.ebn.co.kr",
-      "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE9MT0NFdkN2VnpSX29QSHNobUFwSjZIdERyZ3drOVBaTEt1Mk02dGRiNFp3S0x6TU1COTRLZE1aQTdrZGhnRWpiWkxCOFo4OU15XzFEeTdza21nbndrSFVfb0RFTzlHY1N3?oc=5"
-    },
-    {
-      "time": "2026-11-12T14:20:32+09:00",
-      "title": "삼성전자, 온양캠퍼스 HBM 5라인 착공... 46조원 들여 AI 반도체 패키징 거점 육성",
-      "source": "시장경제신문",
-      "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE5aTUI0UHhwX1ZoNVdCN1VvZGszRmdBQTd5SUt1VGJ4UzdfVzIxdVI4QTNXc1l2LWtiN0dyMGZKdVViSjNwZkhDRTVuRm9VQndGNzZ0Qy1ES3ZhdXh0djhCSUNPQ3dYekt1V3ZOd0JXQWk?oc=5"
+      "time": "2026-11-12T14:13:00+09:00",
+      "title": "이재용 \"AI 반도체 심장 만들겠다\"…삼성전자, 온양에 HBM 5개 라인 구축 By EBN",
+      "source": "Investing.com 한국어",
+      "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE5yVmtSU1d2M1RZUXllQkQwYUZfUmpvYTZhMHk5dWpfMzZ2NlhOZTl0NXVxSzRmT3ZTTHZhNFJSSXVLaEhocGtSbGxNOFAxZTBUeVQ2MlM2U3BOMjl6cEJfM25aWm5KUTczZmd2VUphUkQ?oc=5"
     },
     {
       "time": "2026-11-12T15:37:59+09:00",
@@ -583,16 +519,22 @@
       "link": "https://news.google.com/rss/articles/CBMiZkFVX3lxTE1lZ0hkTlhnVUZBSHU2ekZjZFJqQldDVEJqbWxVUVRDMEtrQTFCTk5BUG5ERkZuNWwwVVV1RlF1UFdERUZQbE9xY2tNOTVpaWxROUdESXc3cTlnZ1ZZYzNQbnItWDhZZw?oc=5"
     },
     {
-      "time": "2026-11-12T11:05:03+09:00",
-      "title": "삼성전자, 온양서 '패키징 승부수'…HBM·파운드리 동시 강화",
-      "source": "아이뉴스24",
-      "link": "https://news.google.com/rss/articles/CBMiS0FVX3lxTE93ODBFUDEzQjNhbXV1WnFFYTVseVdqZndhU29BNGp6UXlBanFMSVpTbjViNjFzZ1Vtb1gzcktOQjI2elV4QmM1cTNFUQ?oc=5"
+      "time": "2026-11-12T14:19:58+09:00",
+      "title": "정부, 'K-온디바이스 AI' 개발에 8002억…삼성전자도 파운드리 지원",
+      "source": "더트래커",
+      "link": "https://news.google.com/rss/articles/CBMiWEFVX3lxTFBjbnVmZEh3VW9TUFVHcloxbVR2STdIUjNTVm51eDdfaUlWSUR4eUtTa2paNXZmVXdPNEdzTnR3a2JxWmJ6TGdBOUVUUXQwWTlaRlpORUJoR1o?oc=5"
     },
     {
-      "time": "2026-11-12T12:59:44+09:00",
-      "title": "삼성전자, 온양캠퍼스 HBM 패키징 거점으로 육성…후공정 투자 확대",
-      "source": "더트래커",
-      "link": "https://news.google.com/rss/articles/CBMiWEFVX3lxTE1ZeHo5YWdTci1jTjJLeXdsWUpYcWhTUk5vX0pnb0ZyWG1lVjZaNFF3Uy1QaFlXWm5sc0RmLThSQTBWR2VxSGRZTjI4NWhNN1ZmRkxnLUxrVGI?oc=5"
+      "time": "2026-11-12T14:24:25+09:00",
+      "title": "삼성전자, 아산 온양캠퍼스에 46조 원 투자…HBM 생산거점 육성",
+      "source": "BBS불교방송",
+      "link": "https://news.google.com/rss/articles/CBMia0FVX3lxTE52TDZqaUJFN1RaS2hIQzRMNHBlX2JITVlGeVE4T3pEamlHVURhTVMyZkI1amg1OFdSMW5DQVBiZjBod3k4ZWFFalJOYWltOTRyV2JBQzZDZFN1OVdvY29YQlFjOGs0ZFNJLUYw?oc=5"
+    },
+    {
+      "time": "2026-11-12T15:21:21+09:00",
+      "title": "삼성전자, 온양에 46조원 투입…반도체 후공정 거점 HBM 기지로 탈바꿈",
+      "source": "서울이코노미뉴스",
+      "link": "https://news.google.com/rss/articles/CBMibkFVX3lxTE1MWG4wanJLS3laZDB2a20yejdrcVZfajc5UDVYcTdGekl2OS12cV8yMDdhcXhPenlIa21FMUNPTFc0SVJna2ZOQkwxak1ZMWs0eGFkV0lRNW1LZUFjU0FOUjM0cWlPamhQOHJXWl9B?oc=5"
     }
   ],
   "disclosures": [
@@ -604,11 +546,12 @@
     }
   ],
   "disclosure_note": null,
-  "flows": null,
+  "flows": "외국인 +3,611,532 / 기관 -1,283,117",
   "flow_story": null,
   "flow_status": {
-    "state": "pending",
-    "detail": "최신 2026-11-11"
+    "state": "ok",
+    "detail": "naver+cache",
+    "krx_error": "pykrx 미설치"
   },
   "context": {},
   "market": {
@@ -619,9 +562,9 @@
     "steady": 45,
     "upper": 3,
     "lower": 0,
-    "individual": -2052.0,
-    "foreign": 3645.0,
-    "institution": -6836.0,
+    "individual": -2689.0,
+    "foreign": 4123.0,
+    "institution": -6624.0,
     "prev_close": 5375.36,
     "open": 5385.94,
     "high": 5458.84,

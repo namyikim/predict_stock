@@ -3,7 +3,7 @@
   "name": "SK하이닉스",
   "peer_name": "삼성전자",
   "session_date": "2026-11-12",
-  "generated_at": "2026-11-13 00:57 KST",
+  "generated_at": "2026-11-13 01:04 KST",
   "summary": {
     "prev_close": 1277000.0,
     "open": NaN,
@@ -15,11 +15,11 @@
     "c2c": NaN,
     "high_vs_open": NaN,
     "low_vs_open": NaN,
-    "volume": 5350819.0,
-    "volume_ratio": 1.336653421959126,
+    "volume": 4238276.0,
+    "volume_ratio": 1.0587362642255767,
     "kospi_c2c": NaN,
     "peer_c2c": NaN,
-    "usdkrw_chg": -0.005387828009773887,
+    "usdkrw_chg": -0.006051072657900836,
     "us_nights": 1,
     "sox_ret": 0.05658747701032096,
     "nasdaq_ret": 0.015970733360735068,
@@ -91,7 +91,7 @@
     "foreign_pressure": {
       "state": "selling_eased",
       "previous_ratio": -0.1662082991221441,
-      "recent_ratio": -0.08697685456626741,
+      "recent_ratio": -0.0911145571004544,
       "previous_daily_net": -586073.2,
       "recent_daily_net": -426166.2
     },
@@ -138,13 +138,13 @@
           "time": "2026-11-12T08:01:00+09:00",
           "title": "SK하이닉스 1조 세수, 활용은 어떻게?…청주시 방안 고심",
           "source": "뉴시스",
-          "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE92UmMzdldYakZmV1dkVjl4aFljSjJzVE9SUnNqNWFCVGc0UTRGVjJIU1lHNE1CeklRZTNKSS0waDk3cC1EVUIxOXJObmVWYnA4dGE5aHZDTFc5aWMtMXNHQ9IBeEFVX3lxTFAtNGNLalZtUzItbjgxZzc5MHlBVHhjVW4wcGZqWWc4alU3c0RQUUppYnowM2dsYU5zbURuZFRNZC12ek5RTTRYZWZkaVBBU0JwZlNzMlk3elMxYVZyR1ROc0R3QWZVNGwtZWVTbDUwTXlFT0l4SzYycw?oc=5"
+          "link": "https://news.google.com/rss/articles/CBMieEFVX3lxTFAtNGNLalZtUzItbjgxZzc5MHlBVHhjVW4wcGZqWWc4alU3c0RQUUppYnowM2dsYU5zbURuZFRNZC12ek5RTTRYZWZkaVBBU0JwZlNzMlk3elMxYVZyR1ROc0R3QWZVNGwtZWVTbDUwTXlFT0l4SzYyc9IBeEFVX3lxTFAtNGNLalZtUzItbjgxZzc5MHlBVHhjVW4wcGZqWWc4alU3c0RQUUppYnowM2dsYU5zbURuZFRNZC12ek5RTTRYZWZkaVBBU0JwZlNzMlk3elMxYVZyR1ROc0R3QWZVNGwtZWVTbDUwTXlFT0l4SzYycw?oc=5"
         },
         {
-          "time": "2026-11-12T08:14:14+09:00",
-          "title": "SK하이닉스, 생산직 채용 시작…학력 제한 없앴다 By EBN",
-          "source": "Investing.com 한국어",
-          "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE5wbzJoazlDeHJOMVBVeG4xUWViNE5Gbkpob21QSjR1anZxOHJSeEQzc25Lc3ZkbWgtR1Q4SEtJamRkdTBmSUJpSVh1ZmVFWk1tdk1LZUdIOGZldjBfaVdraUE2QUFzcWlkQ2hZbTd4VWU?oc=5"
+          "time": "2026-11-12T08:59:41+09:00",
+          "title": "[미래인재 CLASS] AI 전환(AX)의 시대, 개인 · 기업 · 국가의 미래 생존 전략",
+          "source": "SK hynix",
+          "link": "https://news.google.com/rss/articles/CBMiYkFVX3lxTE85QTRnQ0t3NTB6cEVLWm9hRVZObkNLLTRrMmJ6NnBpMC14UnVTRHdpei1uWUUwZ1VFUEpjMGQ0REhXcVJVcHV2cVFxb3BVRTFQeEdTSDdyNHZCVm4yVGxTeGtn?oc=5"
         }
       ]
     }
@@ -555,13 +555,13 @@
           "time": "2026-11-12T08:01:00+09:00",
           "title": "SK하이닉스 1조 세수, 활용은 어떻게?…청주시 방안 고심",
           "source": "뉴시스",
-          "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE92UmMzdldYakZmV1dkVjl4aFljSjJzVE9SUnNqNWFCVGc0UTRGVjJIU1lHNE1CeklRZTNKSS0waDk3cC1EVUIxOXJObmVWYnA4dGE5aHZDTFc5aWMtMXNHQ9IBeEFVX3lxTFAtNGNLalZtUzItbjgxZzc5MHlBVHhjVW4wcGZqWWc4alU3c0RQUUppYnowM2dsYU5zbURuZFRNZC12ek5RTTRYZWZkaVBBU0JwZlNzMlk3elMxYVZyR1ROc0R3QWZVNGwtZWVTbDUwTXlFT0l4SzYycw?oc=5"
+          "link": "https://news.google.com/rss/articles/CBMieEFVX3lxTFAtNGNLalZtUzItbjgxZzc5MHlBVHhjVW4wcGZqWWc4alU3c0RQUUppYnowM2dsYU5zbURuZFRNZC12ek5RTTRYZWZkaVBBU0JwZlNzMlk3elMxYVZyR1ROc0R3QWZVNGwtZWVTbDUwTXlFT0l4SzYyc9IBeEFVX3lxTFAtNGNLalZtUzItbjgxZzc5MHlBVHhjVW4wcGZqWWc4alU3c0RQUUppYnowM2dsYU5zbURuZFRNZC12ek5RTTRYZWZkaVBBU0JwZlNzMlk3elMxYVZyR1ROc0R3QWZVNGwtZWVTbDUwTXlFT0l4SzYycw?oc=5"
         },
         {
-          "time": "2026-11-12T08:14:14+09:00",
-          "title": "SK하이닉스, 생산직 채용 시작…학력 제한 없앴다 By EBN",
-          "source": "Investing.com 한국어",
-          "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE5wbzJoazlDeHJOMVBVeG4xUWViNE5Gbkpob21QSjR1anZxOHJSeEQzc25Lc3ZkbWgtR1Q4SEtJamRkdTBmSUJpSVh1ZmVFWk1tdk1LZUdIOGZldjBfaVdraUE2QUFzcWlkQ2hZbTd4VWU?oc=5"
+          "time": "2026-11-12T08:59:41+09:00",
+          "title": "[미래인재 CLASS] AI 전환(AX)의 시대, 개인 · 기업 · 국가의 미래 생존 전략",
+          "source": "SK hynix",
+          "link": "https://news.google.com/rss/articles/CBMiYkFVX3lxTE85QTRnQ0t3NTB6cEVLWm9hRVZObkNLLTRrMmJ6NnBpMC14UnVTRHdpei1uWUUwZ1VFUEpjMGQ0REhXcVJVcHV2cVFxb3BVRTFQeEdTSDdyNHZCVm4yVGxTeGtn?oc=5"
         }
       ],
       "price": 1267000.0,

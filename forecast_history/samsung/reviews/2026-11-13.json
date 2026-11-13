@@ -3,7 +3,7 @@
   "name": "삼성전자",
   "peer_name": "SK하이닉스",
   "session_date": "2026-11-13",
-  "generated_at": "2026-11-14 00:20 KST",
+  "generated_at": "2026-11-14 00:31 KST",
   "summary": {
     "prev_close": 208000.0,
     "open": NaN,
@@ -19,7 +19,7 @@
     "volume_ratio": 0.7960308085628361,
     "kospi_c2c": NaN,
     "peer_c2c": NaN,
-    "usdkrw_chg": 0.000636085477171866,
+    "usdkrw_chg": 0.0007333755867782177,
     "us_nights": 1,
     "sox_ret": -0.005437318219513321,
     "nasdaq_ret": -0.003930686589733057,
@@ -778,12 +778,6 @@
       "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE4wLThhQm1fVzFpWlRsMUZlbFVkaklBM3M5amwwM3pkYXpEVmZWNHRjeUNSQ1J6Z3NRQ2M5NlVsWW9xR1lwYkZXLWVndU5vT2tUUC0wOUZfakFQMk5jNS1WMzhzNDZOSkdNMDRoTFlNYTk?oc=5"
     },
     {
-      "time": "2026-11-13T15:15:01+09:00",
-      "title": "'젠슨 황 공백'은 삼성전자 SK하이닉스에도 대형 악재일까 : '엔비디아 독주' 차질 생겨도 AI 반도체 업황은 견고하다",
-      "source": "허프포스트코리아",
-      "link": "https://news.google.com/rss/articles/CBMiV0FVX3lxTFBCOG5EclJRWE1KcmhHa3hMd043eGRMY0tYNzRJM1lnZ3o2MFhsVFY3d0xZVVgtMzBINElJUl92dk5FRFlQRDlfdjVFa2pfUFZGQlFpMWNDVQ?oc=5"
-    },
-    {
       "time": "2026-11-13T10:44:00+09:00",
       "title": "삼성전자, 협력사 1000명과 AI 반도체 기술 공유",
       "source": "뉴스핌",
@@ -794,6 +788,12 @@
       "title": "'엔비디아 리스크'에 미소짓는 삼성전자? AMD·브로드컴 'AI 동맹 확장' 빛 보나",
       "source": "오피니언뉴스",
       "link": "https://news.google.com/rss/articles/CBMickFVX3lxTE1SSi1pTnk2c0pIZFE2dGE0cTNqZnBFUGxBQi1YREV2UGNBOTVCV2gyZHA2by1YX2p1MjdQQUVPbFZKWTZtMk1rUjJoSkFGdDh1VHlOR2VLa2dxTlRwUnMtLWRtR0s2cFNTbS1raloxV1cwQQ?oc=5"
+    },
+    {
+      "time": "2026-11-13T17:43:05+09:00",
+      "title": "삼성전자 DS, 협력사 1000명과 AI 반도체 기술 공유",
+      "source": "아이뉴스24",
+      "link": "https://news.google.com/rss/articles/CBMiS0FVX3lxTE54N1ZlczlXbTFfQlpSQnVLbWtlMTZwVzhlekJqeDZKZHZDdGZkYkdGTWx1VmVETGs0Q2I5UFd4MktfRVJKN3cwa3RwZw?oc=5"
     }
   ],
   "disclosures": [

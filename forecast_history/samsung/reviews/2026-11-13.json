@@ -1,0 +1,879 @@
+{
+  "target": "samsung",
+  "name": "삼성전자",
+  "peer_name": "SK하이닉스",
+  "session_date": "2026-11-13",
+  "generated_at": "2026-11-13 16:14 KST",
+  "summary": {
+    "prev_close": 208000.0,
+    "open": 214000.0,
+    "high": 216000.0,
+    "low": 205000.0,
+    "close": 206000.0,
+    "gap": 0.028846153846153744,
+    "session": -0.03738317757009346,
+    "c2c": -0.009615384615384581,
+    "high_vs_open": 0.009345794392523255,
+    "low_vs_open": -0.04205607476635509,
+    "volume": 14106982.0,
+    "volume_ratio": 0.7677569407843995,
+    "kospi_c2c": -0.009770322569796042,
+    "peer_c2c": -0.030303030303030276,
+    "usdkrw_chg": -0.0006435763588504839,
+    "us_nights": 1,
+    "sox_ret": -0.005437318219513321,
+    "nasdaq_ret": -0.003930686589733057,
+    "micron_ret": -0.01585108535074231,
+    "prior_streak": 4,
+    "ma5": 201760.0,
+    "ma20": 214125.0,
+    "high20": 249000.0,
+    "high252": 367712.7495144774,
+    "price_context": {
+      "breakouts": {
+        "20": {
+          "prior_high": 249000.0,
+          "distance": -0.17269076305220887,
+          "close_breakout": false,
+          "intraday_breakout": false
+        },
+        "60": {
+          "prior_high": 283092.2681564246,
+          "distance": -0.27232205477906835,
+          "close_breakout": false,
+          "intraday_breakout": false
+        }
+      },
+      "relative": {
+        "5": {
+          "start": "2026-11-06",
+          "end": "2026-11-13",
+          "own": 0.09167991520932706,
+          "peer": 0.07420494699646651,
+          "excess": 0.017474968212860542
+        },
+        "20": {
+          "start": "2026-10-16",
+          "end": "2026-11-13",
+          "own": -0.044083526682134555,
+          "peer": -0.04402515723270439,
+          "excess": -5.836944943016231e-05
+        },
+        "60": {
+          "start": "2026-08-14",
+          "end": "2026-11-13",
+          "own": -0.23653459904284235,
+          "peer": -0.26062998308067853,
+          "excess": 0.024095384037836176
+        }
+      }
+    },
+    "range": 0.0536585365853659,
+    "peer_range": 0.09658617818484605,
+    "prior_5d": 0.032258064516129004,
+    "ma_touches": [
+      {
+        "ma": 20,
+        "level": 214600.0,
+        "kind": "resistance",
+        "price": 216000.0
+      }
+    ],
+    "micron_ah": {
+      "regular_close": 798.9000244140625,
+      "last": 814.3,
+      "ret": 0.019276474045963665,
+      "low_ret": -0.00011268545664222529,
+      "high_ret": 0.019456346364913113,
+      "last_time": "2026-11-13T08:55:00+09:00"
+    },
+    "nvidia_ah": {
+      "regular_close": 166.0399932861328,
+      "last": 168.03,
+      "ret": 0.011985104759898668,
+      "low_ret": -0.000962378297964861,
+      "high_ret": 0.012764435073270963,
+      "last_time": "2026-11-13T08:55:00+09:00"
+    },
+    "session_cross": {
+      "NQ=F": {
+        "label": "나스닥100 선물",
+        "ret": -0.0094569059033488,
+        "after_high": -0.0094569059033488
+      },
+      "ZN=F": {
+        "label": "미 10년물 국채 선물",
+        "ret": 0.0005937360843104589,
+        "after_high": 0.0005937360843104589
+      },
+      "KRW=X": {
+        "label": "원/달러",
+        "ret": 0.0006365046524805518,
+        "after_high": 0.0006365046524805518
+      }
+    },
+    "from_high": -0.044083526682134555,
+    "buyback": [
+      {
+        "kind": "직접 취득",
+        "start": "2026-08-24",
+        "end": "2026-11-21",
+        "amount": "14,999,999,992,000",
+        "purpose": "임직원 주식보상",
+        "rcept_no": "20260821000616"
+      }
+    ]
+  },
+  "classification": {
+    "labels": [
+      "장중 급변 09:00 주도",
+      "지수 동조"
+    ],
+    "reasons": [
+      "09:00 봉 +3.61%(σ의 20.1배, 거래량 6.18배)가 세션 -3.74%의 110%",
+      "KOSPI -0.98% vs 종목 -0.96%, 5분 수익률 상관 0.83 — 종목 고유 요인이 약함"
+    ]
+  },
+  "events": [
+    {
+      "time": "2026-11-13T09:00:00+09:00",
+      "ret": 0.03605769230769229,
+      "z": 20.1,
+      "volume_ratio": 6.18,
+      "cum_before": 0.0,
+      "cum_after": 0.007009345794392496,
+      "session_share": -1.102335164835166,
+      "score": 22.10095223631899,
+      "news": [
+        {
+          "time": "2026-11-13T07:30:02+09:00",
+          "title": "\"삼성전자 69만원\"…목표주가 더 높인 반도체 애널리스트의 근거는?",
+          "source": "한국경제",
+          "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE1udENLUDAyVDJBQ25UcDVIMmFEMC0wejRlV0EwZy1ET1dERHhHMVZXRmplZlJoQmJEMmlIQjVfNWlSeFpycWJGa0hxdzhNV3FhUktTcmplVDZQQQ?oc=5"
+        },
+        {
+          "time": "2026-11-13T08:55:47+09:00",
+          "title": "\"반도체 진보 없인 AI 발전도 불가능\"…삼성전자, 협력사와 기술 공유",
+          "source": "아시아경제",
+          "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE05N1lGSUZQdHRRN2VBQm1RQUpGUTRsbjV0VFhKX0syQTUybkZJNk1DcXZzWjFuak41LUloQVJvTWFpcDQtamM4dkU5Q0g3Sl8yZ0tXdFJKamNoZUpzRGtzSQ?oc=5"
+        },
+        {
+          "time": "2026-11-13T08:04:03+09:00",
+          "title": "\"눈앞에 보이는 건 다 물어봐\"…삼성전자 'AI 스마트 안경' 출격",
+          "source": "비즈워치",
+          "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE1FMEU3VS10Nk5fRkR1V0twR213NnZyTXBRTndrZlVpdlc5Nlo1dWNYUS1pVEFuNHJHdy16N1B5bHU2dHFqUWxWNW9MNEVxejRSNl9CNllycmdkX3BDS3piNnB1OGhNTEhhX0NYZA?oc=5"
+        },
+        {
+          "time": "2026-11-13T08:16:00+09:00",
+          "title": "[특징주] 美 반도체주 약세에도 '삼전닉스' 동반 상승…삼성전자 1.68%↑",
+          "source": "뉴스핌",
+          "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE9LZDFYNEJab29kOTVTYVNPTC00X19HeVhpZnZkS01QeHEyMlB1X000eUdYMHNvVmZmNFVmRTVhVHhuUUc0NXNhQzlseTM3SGFIRnNfdjhnUFVBczNL?oc=5"
+        },
+        {
+          "time": "2026-11-13T08:25:38+09:00",
+          "title": "삼성전자, 협력사 초청 '반도체 테크 세미나' 개최",
+          "source": "연합뉴스",
+          "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE1UaklXOWVJMUZaUmxOM1ZZN0Znelg3MHZMYXoyMk9FTmEyaHRiVk1TQnlHVDV6T19CRzRLWW1VUkM5eV9tMDlUZnh4VUI5dlU5WWplYV9DOEIxazBtXzlRY9IBYEFVX3lxTE1UaklXOWVJMUZaUmxOM1ZZN0Znelg3MHZMYXoyMk9FTmEyaHRiVk1TQnlHVDV6T19CRzRLWW1VUkM5eV9tMDlUZnh4VUI5dlU5WWplYV9DOEIxazBtXzlRYw?oc=5"
+        }
+      ]
+    },
+    {
+      "time": "2026-11-13T09:55:00+09:00",
+      "ret": -0.008187134502923965,
+      "z": 4.56,
+      "volume_ratio": 0.99,
+      "cum_before": -0.001168224299065379,
+      "cum_after": -0.009345794392523366,
+      "session_share": 0.25029239766081873,
+      "score": 4.761522489319208,
+      "news": [
+        {
+          "time": "2026-11-13T08:55:47+09:00",
+          "title": "\"반도체 진보 없인 AI 발전도 불가능\"…삼성전자, 협력사와 기술 공유",
+          "source": "아시아경제",
+          "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE05N1lGSUZQdHRRN2VBQm1RQUpGUTRsbjV0VFhKX0syQTUybkZJNk1DcXZzWjFuak41LUloQVJvTWFpcDQtamM4dkU5Q0g3Sl8yZ0tXdFJKamNoZUpzRGtzSQ?oc=5"
+        },
+        {
+          "time": "2026-11-13T09:23:49+09:00",
+          "title": "코스피, 반도체 강세에 5480선 상승 출발…삼성전자·SK하이닉스 3~4%대↑",
+          "source": "오피니언뉴스",
+          "link": "https://news.google.com/rss/articles/CBMickFVX3lxTE1GVEswenZBQ3V2Z2RlVzBrLVc0bVJzWlZ4Mi1pRE55QW1PMm5ULXFOUjdSMy1Xd3VHQ2ZmYXEyRXlXb0dwMWU4SVR1OTEyNEg2WDRCS3dVdVRORmdnV2p1QTNlSXJTU3plRnJvVjdRbGo3QQ?oc=5"
+        },
+        {
+          "time": "2026-11-13T08:25:38+09:00",
+          "title": "삼성전자, 협력사 초청 '반도체 테크 세미나' 개최",
+          "source": "연합뉴스",
+          "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE1UaklXOWVJMUZaUmxOM1ZZN0Znelg3MHZMYXoyMk9FTmEyaHRiVk1TQnlHVDV6T19CRzRLWW1VUkM5eV9tMDlUZnh4VUI5dlU5WWplYV9DOEIxazBtXzlRY9IBYEFVX3lxTE1UaklXOWVJMUZaUmxOM1ZZN0Znelg3MHZMYXoyMk9FTmEyaHRiVk1TQnlHVDV6T19CRzRLWW1VUkM5eV9tMDlUZnh4VUI5dlU5WWplYV9DOEIxazBtXzlRYw?oc=5"
+        },
+        {
+          "time": "2026-11-13T08:50:53+09:00",
+          "title": "\"눈으로 보고 말로 묻는 AI 시대 연다\"...삼성전자, 구글과 AI 안경 30종 공개",
+          "source": "인공지능신문",
+          "link": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTFBXMTNmV3ZWcEllNnlLRnBiWmJKLUl1TTdJR1FQTWlCTFRMd1NGTjdLalpaQmc4MTlYUTNuV2taWEhFTjlqejN4bE11NklnQjl5TTVwUlVYVUFUNE1WalpJWDdSZFlDZG8?oc=5"
+        },
+        {
+          "time": "2026-11-13T09:09:08+09:00",
+          "title": "삼성전자, 구글·젠틀몬스터와 AI 안경 공개…30종 라인업 선봬",
+          "source": "더트래커",
+          "link": "https://news.google.com/rss/articles/CBMiWEFVX3lxTE9vZW9QSWhkYWNnZ2JCUDNWT256SnpQbXJsTkZKWUFqZ3dsMllsRlE1ejc5ZnBBblpYektsUUFVRzhzWF9GdVNZQ0pyOHBrRl9KQWxBdUlhN2I?oc=5"
+        }
+      ]
+    },
+    {
+      "time": "2026-11-13T12:20:00+09:00",
+      "ret": -0.004778972520907976,
+      "z": 2.66,
+      "volume_ratio": 3.55,
+      "cum_before": -0.02219626168224298,
+      "cum_after": -0.026869158878504718,
+      "session_share": 0.14610001706775835,
+      "score": 4.37486177196642,
+      "news": [
+        {
+          "time": "2026-11-13T11:03:29+09:00",
+          "title": "삼성전자, AI 안경 30종 공개...구글 '제미나이' 탑재",
+          "source": "YTN 사이언스",
+          "link": "https://news.google.com/rss/articles/CBMijAFBVV95cUxNN1YwTURvUTJxMVlwcy1KLXVJNHZOOHQtcDdzWE1jRjZXaE4wdDBrSXZ0dXQ4T001aHdXbzlJcmgyREY4Y2lvRXB4YnpERm85cVM0VnpUVjVrZEh6MWpmeGV3Tlgzb0Z1dHpqMTVjWTRpMnZGRFRNZnp4S2lhRXAxTHlGNVRGNm5MMmFBdQ?oc=5"
+        },
+        {
+          "time": "2026-11-13T11:03:30+09:00",
+          "title": "삼성전자, AI를 안경에 실었다…제미나이 탑재 30종 공개",
+          "source": "서울이코노미뉴스",
+          "link": "https://news.google.com/rss/articles/CBMibkFVX3lxTE12RGc4a25jMDNwLVpFY2owenZjMnpWbGpiUVY5Y19iUjJGbXZHVzNndXFuNGRRREhXbVhKVnRjakI2Q3VaVGdNVUxmdDJyVWlhMzItaDhIUFpoOHd4SGRuN1ktekhXWlBEX2k0cGRn?oc=5"
+        },
+        {
+          "time": "2026-11-13T11:28:29+09:00",
+          "title": "“삼성전자 41% 빠졌는데 41% 오르면 본전?”…투자자들이 놓친 계산법",
+          "source": "데일리25",
+          "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE5zc3cwYVdiOHJzbDlJM3NxWWRWOVBHWVJHM3JyellUTnpZQzAzQjlGdkRqdmt3NzJPM25ScnZDTThVS1RWaXBIRnVZcHgwUkRISC1XZW84UnZXMVRIM2swQUFyTkNHdVpLVzh4Vw?oc=5"
+        },
+        {
+          "time": "2026-11-13T11:30:00+09:00",
+          "title": "[오늘의 삼전닉스] 엔비디아 10% 급락 때 삼성전자 10% 상승 '반사이익?'",
+          "source": "이코노미스트",
+          "link": "https://news.google.com/rss/articles/CBMiYkFVX3lxTE5acVk3RFZDNmZlVm9hZ05SNlZLQ0U3dFlBcUlzcjk5MmphSzMzT2lLM3dUZlVUVVpZZXpQeUVjTWpQa3RQT0thbmh2NUJqNjdqd3RFYTlmTGcxb2w0NzRYUzRB?oc=5"
+        },
+        {
+          "time": "2026-11-13T11:37:46+09:00",
+          "title": "삼성전자, 구글-젠틀몬스터-워비파커와 협업한 AI 안경 30종 공개",
+          "source": "파이낸셜신문",
+          "link": "https://news.google.com/rss/articles/CBMia0FVX3lxTE12enBPUWJSWFpzcFRobVVlUDh5Q3A5NXl3elNVX1FNMld2Y2RmQVkzUUJvc3Ffb0k4U2NCcERGOUl4LUZXYlBNdzFLNGoyLVlnZU41aHdHY1FmcWFfS3BCQkpLZENmSEVtY1Yw?oc=5"
+        }
+      ]
+    }
+  ],
+  "turning_point": {
+    "high_time": "2026-11-13T09:00:00+09:00",
+    "high": 0.007009345794392496,
+    "low_time": "2026-11-13T14:30:00+09:00",
+    "low": -0.03971962616822433,
+    "pattern": "고점 후 반락"
+  },
+  "closing_share": 0.12922705314009716,
+  "intraday_corr_kospi": 0.8307970117489657,
+  "intraday_note": "장중 봉은 09:00~14:55까지만 있어 마감 구간(14:55~15:30)은 일봉 종가로만 봅니다(그 구간 -0.48%).",
+  "intraday_coverage": "09:00~14:55",
+  "intraday_path": [
+    {
+      "time": "2026-11-13T09:00:00+09:00",
+      "price": 215500.0,
+      "volume": 741455.0
+    },
+    {
+      "time": "2026-11-13T09:05:00+09:00",
+      "price": 215500.0,
+      "volume": 370816.0
+    },
+    {
+      "time": "2026-11-13T09:10:00+09:00",
+      "price": 215000.0,
+      "volume": 264462.0
+    },
+    {
+      "time": "2026-11-13T09:15:00+09:00",
+      "price": 214000.0,
+      "volume": 207794.0
+    },
+    {
+      "time": "2026-11-13T09:20:00+09:00",
+      "price": 213750.0,
+      "volume": 77757.0
+    },
+    {
+      "time": "2026-11-13T09:25:00+09:00",
+      "price": 213000.0,
+      "volume": 204634.0
+    },
+    {
+      "time": "2026-11-13T09:30:00+09:00",
+      "price": 213000.0,
+      "volume": 115948.0
+    },
+    {
+      "time": "2026-11-13T09:35:00+09:00",
+      "price": 213000.0,
+      "volume": 208400.0
+    },
+    {
+      "time": "2026-11-13T09:40:00+09:00",
+      "price": 213000.0,
+      "volume": 127707.0
+    },
+    {
+      "time": "2026-11-13T09:45:00+09:00",
+      "price": 213750.0,
+      "volume": 199806.0
+    },
+    {
+      "time": "2026-11-13T09:50:00+09:00",
+      "price": 213750.0,
+      "volume": 133621.0
+    },
+    {
+      "time": "2026-11-13T09:55:00+09:00",
+      "price": 212000.0,
+      "volume": 118522.0
+    },
+    {
+      "time": "2026-11-13T10:00:00+09:00",
+      "price": 212500.0,
+      "volume": 155294.0
+    },
+    {
+      "time": "2026-11-13T10:05:00+09:00",
+      "price": 213500.0,
+      "volume": 111594.0
+    },
+    {
+      "time": "2026-11-13T10:10:00+09:00",
+      "price": 213500.0,
+      "volume": 89813.0
+    },
+    {
+      "time": "2026-11-13T10:15:00+09:00",
+      "price": 213500.0,
+      "volume": 76350.0
+    },
+    {
+      "time": "2026-11-13T10:20:00+09:00",
+      "price": 214000.0,
+      "volume": 149078.0
+    },
+    {
+      "time": "2026-11-13T10:25:00+09:00",
+      "price": 213250.0,
+      "volume": 161577.0
+    },
+    {
+      "time": "2026-11-13T10:30:00+09:00",
+      "price": 213000.0,
+      "volume": 138046.0
+    },
+    {
+      "time": "2026-11-13T10:35:00+09:00",
+      "price": 213000.0,
+      "volume": 68102.0
+    },
+    {
+      "time": "2026-11-13T10:40:00+09:00",
+      "price": 212500.0,
+      "volume": 207283.0
+    },
+    {
+      "time": "2026-11-13T10:45:00+09:00",
+      "price": 212000.0,
+      "volume": 75928.0
+    },
+    {
+      "time": "2026-11-13T10:50:00+09:00",
+      "price": 213000.0,
+      "volume": 32201.0
+    },
+    {
+      "time": "2026-11-13T10:55:00+09:00",
+      "price": 212750.0,
+      "volume": 32833.0
+    },
+    {
+      "time": "2026-11-13T11:00:00+09:00",
+      "price": 212500.0,
+      "volume": 96796.0
+    },
+    {
+      "time": "2026-11-13T11:05:00+09:00",
+      "price": 212500.0,
+      "volume": 61164.0
+    },
+    {
+      "time": "2026-11-13T11:10:00+09:00",
+      "price": 211500.0,
+      "volume": 185959.0
+    },
+    {
+      "time": "2026-11-13T11:15:00+09:00",
+      "price": 211750.0,
+      "volume": 109710.0
+    },
+    {
+      "time": "2026-11-13T11:20:00+09:00",
+      "price": 211500.0,
+      "volume": 37528.0
+    },
+    {
+      "time": "2026-11-13T11:25:00+09:00",
+      "price": 212000.0,
+      "volume": 84609.0
+    },
+    {
+      "time": "2026-11-13T11:30:00+09:00",
+      "price": 212000.0,
+      "volume": 103502.0
+    },
+    {
+      "time": "2026-11-13T11:35:00+09:00",
+      "price": 212250.0,
+      "volume": 54561.0
+    },
+    {
+      "time": "2026-11-13T11:40:00+09:00",
+      "price": 211250.0,
+      "volume": 47361.0
+    },
+    {
+      "time": "2026-11-13T11:45:00+09:00",
+      "price": 210500.0,
+      "volume": 55796.0
+    },
+    {
+      "time": "2026-11-13T11:50:00+09:00",
+      "price": 210000.0,
+      "volume": 126555.0
+    },
+    {
+      "time": "2026-11-13T11:55:00+09:00",
+      "price": 210250.0,
+      "volume": 120150.0
+    },
+    {
+      "time": "2026-11-13T12:00:00+09:00",
+      "price": 210750.0,
+      "volume": 87502.0
+    },
+    {
+      "time": "2026-11-13T12:05:00+09:00",
+      "price": 209500.0,
+      "volume": 99367.0
+    },
+    {
+      "time": "2026-11-13T12:10:00+09:00",
+      "price": 209250.0,
+      "volume": 131456.0
+    },
+    {
+      "time": "2026-11-13T12:15:00+09:00",
+      "price": 209250.0,
+      "volume": 41020.0
+    },
+    {
+      "time": "2026-11-13T12:20:00+09:00",
+      "price": 208250.0,
+      "volume": 426591.0
+    },
+    {
+      "time": "2026-11-13T12:25:00+09:00",
+      "price": 207750.0,
+      "volume": 133206.0
+    },
+    {
+      "time": "2026-11-13T12:30:00+09:00",
+      "price": 207250.0,
+      "volume": 96894.0
+    },
+    {
+      "time": "2026-11-13T12:35:00+09:00",
+      "price": 207250.0,
+      "volume": 119931.0
+    },
+    {
+      "time": "2026-11-13T12:40:00+09:00",
+      "price": 207250.0,
+      "volume": 107084.0
+    },
+    {
+      "time": "2026-11-13T12:45:00+09:00",
+      "price": 207250.0,
+      "volume": 130402.0
+    },
+    {
+      "time": "2026-11-13T12:50:00+09:00",
+      "price": 206500.0,
+      "volume": 158295.0
+    },
+    {
+      "time": "2026-11-13T12:55:00+09:00",
+      "price": 206750.0,
+      "volume": 115965.0
+    },
+    {
+      "time": "2026-11-13T13:00:00+09:00",
+      "price": 206750.0,
+      "volume": 212126.0
+    },
+    {
+      "time": "2026-11-13T13:05:00+09:00",
+      "price": 206250.0,
+      "volume": 125510.0
+    },
+    {
+      "time": "2026-11-13T13:10:00+09:00",
+      "price": 206500.0,
+      "volume": 79179.0
+    },
+    {
+      "time": "2026-11-13T13:15:00+09:00",
+      "price": 207000.0,
+      "volume": 129906.0
+    },
+    {
+      "time": "2026-11-13T13:20:00+09:00",
+      "price": 207000.0,
+      "volume": 164820.0
+    },
+    {
+      "time": "2026-11-13T13:25:00+09:00",
+      "price": 207750.0,
+      "volume": 188699.0
+    },
+    {
+      "time": "2026-11-13T13:30:00+09:00",
+      "price": 208000.0,
+      "volume": 316770.0
+    },
+    {
+      "time": "2026-11-13T13:35:00+09:00",
+      "price": 208000.0,
+      "volume": 196866.0
+    },
+    {
+      "time": "2026-11-13T13:40:00+09:00",
+      "price": 207750.0,
+      "volume": 107376.0
+    },
+    {
+      "time": "2026-11-13T13:45:00+09:00",
+      "price": 208250.0,
+      "volume": 108582.0
+    },
+    {
+      "time": "2026-11-13T13:50:00+09:00",
+      "price": 208500.0,
+      "volume": 136711.0
+    },
+    {
+      "time": "2026-11-13T13:55:00+09:00",
+      "price": 207500.0,
+      "volume": 92019.0
+    },
+    {
+      "time": "2026-11-13T14:00:00+09:00",
+      "price": 208000.0,
+      "volume": 68753.0
+    },
+    {
+      "time": "2026-11-13T14:05:00+09:00",
+      "price": 207750.0,
+      "volume": 81886.0
+    },
+    {
+      "time": "2026-11-13T14:10:00+09:00",
+      "price": 207500.0,
+      "volume": 183957.0
+    },
+    {
+      "time": "2026-11-13T14:15:00+09:00",
+      "price": 206250.0,
+      "volume": 105243.0
+    },
+    {
+      "time": "2026-11-13T14:20:00+09:00",
+      "price": 206250.0,
+      "volume": 55929.0
+    },
+    {
+      "time": "2026-11-13T14:25:00+09:00",
+      "price": 206000.0,
+      "volume": 146338.0
+    },
+    {
+      "time": "2026-11-13T14:30:00+09:00",
+      "price": 205500.0,
+      "volume": 144589.0
+    },
+    {
+      "time": "2026-11-13T14:35:00+09:00",
+      "price": 207000.0,
+      "volume": 126928.0
+    },
+    {
+      "time": "2026-11-13T14:40:00+09:00",
+      "price": 206750.0,
+      "volume": 126659.0
+    },
+    {
+      "time": "2026-11-13T14:45:00+09:00",
+      "price": 206750.0,
+      "volume": 109150.0
+    },
+    {
+      "time": "2026-11-13T14:50:00+09:00",
+      "price": 207000.0,
+      "volume": 70274.0
+    },
+    {
+      "time": "2026-11-13T14:55:00+09:00",
+      "price": 207000.0,
+      "volume": 143757.0
+    }
+  ],
+  "timeline_items": [
+    {
+      "time": "2026-11-13T09:00:00+09:00",
+      "ret": 0.03605769230769229,
+      "z": 20.1,
+      "volume_ratio": 6.18,
+      "cum_before": 0.0,
+      "cum_after": 0.007009345794392496,
+      "session_share": -1.102335164835166,
+      "score": 22.10095223631899,
+      "news": [
+        {
+          "time": "2026-11-13T07:30:02+09:00",
+          "title": "\"삼성전자 69만원\"…목표주가 더 높인 반도체 애널리스트의 근거는?",
+          "source": "한국경제",
+          "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE1udENLUDAyVDJBQ25UcDVIMmFEMC0wejRlV0EwZy1ET1dERHhHMVZXRmplZlJoQmJEMmlIQjVfNWlSeFpycWJGa0hxdzhNV3FhUktTcmplVDZQQQ?oc=5"
+        },
+        {
+          "time": "2026-11-13T08:55:47+09:00",
+          "title": "\"반도체 진보 없인 AI 발전도 불가능\"…삼성전자, 협력사와 기술 공유",
+          "source": "아시아경제",
+          "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE05N1lGSUZQdHRRN2VBQm1RQUpGUTRsbjV0VFhKX0syQTUybkZJNk1DcXZzWjFuak41LUloQVJvTWFpcDQtamM4dkU5Q0g3Sl8yZ0tXdFJKamNoZUpzRGtzSQ?oc=5"
+        },
+        {
+          "time": "2026-11-13T08:04:03+09:00",
+          "title": "\"눈앞에 보이는 건 다 물어봐\"…삼성전자 'AI 스마트 안경' 출격",
+          "source": "비즈워치",
+          "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE1FMEU3VS10Nk5fRkR1V0twR213NnZyTXBRTndrZlVpdlc5Nlo1dWNYUS1pVEFuNHJHdy16N1B5bHU2dHFqUWxWNW9MNEVxejRSNl9CNllycmdkX3BDS3piNnB1OGhNTEhhX0NYZA?oc=5"
+        },
+        {
+          "time": "2026-11-13T08:16:00+09:00",
+          "title": "[특징주] 美 반도체주 약세에도 '삼전닉스' 동반 상승…삼성전자 1.68%↑",
+          "source": "뉴스핌",
+          "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE9LZDFYNEJab29kOTVTYVNPTC00X19HeVhpZnZkS01QeHEyMlB1X000eUdYMHNvVmZmNFVmRTVhVHhuUUc0NXNhQzlseTM3SGFIRnNfdjhnUFVBczNL?oc=5"
+        },
+        {
+          "time": "2026-11-13T08:25:38+09:00",
+          "title": "삼성전자, 협력사 초청 '반도체 테크 세미나' 개최",
+          "source": "연합뉴스",
+          "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE1UaklXOWVJMUZaUmxOM1ZZN0Znelg3MHZMYXoyMk9FTmEyaHRiVk1TQnlHVDV6T19CRzRLWW1VUkM5eV9tMDlUZnh4VUI5dlU5WWplYV9DOEIxazBtXzlRY9IBYEFVX3lxTE1UaklXOWVJMUZaUmxOM1ZZN0Znelg3MHZMYXoyMk9FTmEyaHRiVk1TQnlHVDV6T19CRzRLWW1VUkM5eV9tMDlUZnh4VUI5dlU5WWplYV9DOEIxazBtXzlRYw?oc=5"
+        }
+      ],
+      "price": 215500.0,
+      "kind": "turn_up"
+    },
+    {
+      "time": "2026-11-13T09:55:00+09:00",
+      "ret": -0.008187134502923965,
+      "z": 4.56,
+      "volume_ratio": 0.99,
+      "cum_before": -0.001168224299065379,
+      "cum_after": -0.009345794392523366,
+      "session_share": 0.25029239766081873,
+      "score": 4.761522489319208,
+      "news": [
+        {
+          "time": "2026-11-13T08:55:47+09:00",
+          "title": "\"반도체 진보 없인 AI 발전도 불가능\"…삼성전자, 협력사와 기술 공유",
+          "source": "아시아경제",
+          "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE05N1lGSUZQdHRRN2VBQm1RQUpGUTRsbjV0VFhKX0syQTUybkZJNk1DcXZzWjFuak41LUloQVJvTWFpcDQtamM4dkU5Q0g3Sl8yZ0tXdFJKamNoZUpzRGtzSQ?oc=5"
+        },
+        {
+          "time": "2026-11-13T09:23:49+09:00",
+          "title": "코스피, 반도체 강세에 5480선 상승 출발…삼성전자·SK하이닉스 3~4%대↑",
+          "source": "오피니언뉴스",
+          "link": "https://news.google.com/rss/articles/CBMickFVX3lxTE1GVEswenZBQ3V2Z2RlVzBrLVc0bVJzWlZ4Mi1pRE55QW1PMm5ULXFOUjdSMy1Xd3VHQ2ZmYXEyRXlXb0dwMWU4SVR1OTEyNEg2WDRCS3dVdVRORmdnV2p1QTNlSXJTU3plRnJvVjdRbGo3QQ?oc=5"
+        },
+        {
+          "time": "2026-11-13T08:25:38+09:00",
+          "title": "삼성전자, 협력사 초청 '반도체 테크 세미나' 개최",
+          "source": "연합뉴스",
+          "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE1UaklXOWVJMUZaUmxOM1ZZN0Znelg3MHZMYXoyMk9FTmEyaHRiVk1TQnlHVDV6T19CRzRLWW1VUkM5eV9tMDlUZnh4VUI5dlU5WWplYV9DOEIxazBtXzlRY9IBYEFVX3lxTE1UaklXOWVJMUZaUmxOM1ZZN0Znelg3MHZMYXoyMk9FTmEyaHRiVk1TQnlHVDV6T19CRzRLWW1VUkM5eV9tMDlUZnh4VUI5dlU5WWplYV9DOEIxazBtXzlRYw?oc=5"
+        },
+        {
+          "time": "2026-11-13T08:50:53+09:00",
+          "title": "\"눈으로 보고 말로 묻는 AI 시대 연다\"...삼성전자, 구글과 AI 안경 30종 공개",
+          "source": "인공지능신문",
+          "link": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTFBXMTNmV3ZWcEllNnlLRnBiWmJKLUl1TTdJR1FQTWlCTFRMd1NGTjdLalpaQmc4MTlYUTNuV2taWEhFTjlqejN4bE11NklnQjl5TTVwUlVYVUFUNE1WalpJWDdSZFlDZG8?oc=5"
+        },
+        {
+          "time": "2026-11-13T09:09:08+09:00",
+          "title": "삼성전자, 구글·젠틀몬스터와 AI 안경 공개…30종 라인업 선봬",
+          "source": "더트래커",
+          "link": "https://news.google.com/rss/articles/CBMiWEFVX3lxTE9vZW9QSWhkYWNnZ2JCUDNWT256SnpQbXJsTkZKWUFqZ3dsMllsRlE1ejc5ZnBBblpYektsUUFVRzhzWF9GdVNZQ0pyOHBrRl9KQWxBdUlhN2I?oc=5"
+        }
+      ],
+      "price": 212000.0,
+      "kind": "turn_down"
+    },
+    {
+      "time": "2026-11-13T12:20:00+09:00",
+      "ret": -0.004778972520907976,
+      "z": 2.66,
+      "volume_ratio": 3.55,
+      "cum_before": -0.02219626168224298,
+      "cum_after": -0.026869158878504718,
+      "session_share": 0.14610001706775835,
+      "score": 4.37486177196642,
+      "news": [
+        {
+          "time": "2026-11-13T11:03:29+09:00",
+          "title": "삼성전자, AI 안경 30종 공개...구글 '제미나이' 탑재",
+          "source": "YTN 사이언스",
+          "link": "https://news.google.com/rss/articles/CBMijAFBVV95cUxNN1YwTURvUTJxMVlwcy1KLXVJNHZOOHQtcDdzWE1jRjZXaE4wdDBrSXZ0dXQ4T001aHdXbzlJcmgyREY4Y2lvRXB4YnpERm85cVM0VnpUVjVrZEh6MWpmeGV3Tlgzb0Z1dHpqMTVjWTRpMnZGRFRNZnp4S2lhRXAxTHlGNVRGNm5MMmFBdQ?oc=5"
+        },
+        {
+          "time": "2026-11-13T11:03:30+09:00",
+          "title": "삼성전자, AI를 안경에 실었다…제미나이 탑재 30종 공개",
+          "source": "서울이코노미뉴스",
+          "link": "https://news.google.com/rss/articles/CBMibkFVX3lxTE12RGc4a25jMDNwLVpFY2owenZjMnpWbGpiUVY5Y19iUjJGbXZHVzNndXFuNGRRREhXbVhKVnRjakI2Q3VaVGdNVUxmdDJyVWlhMzItaDhIUFpoOHd4SGRuN1ktekhXWlBEX2k0cGRn?oc=5"
+        },
+        {
+          "time": "2026-11-13T11:28:29+09:00",
+          "title": "“삼성전자 41% 빠졌는데 41% 오르면 본전?”…투자자들이 놓친 계산법",
+          "source": "데일리25",
+          "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE5zc3cwYVdiOHJzbDlJM3NxWWRWOVBHWVJHM3JyellUTnpZQzAzQjlGdkRqdmt3NzJPM25ScnZDTThVS1RWaXBIRnVZcHgwUkRISC1XZW84UnZXMVRIM2swQUFyTkNHdVpLVzh4Vw?oc=5"
+        },
+        {
+          "time": "2026-11-13T11:30:00+09:00",
+          "title": "[오늘의 삼전닉스] 엔비디아 10% 급락 때 삼성전자 10% 상승 '반사이익?'",
+          "source": "이코노미스트",
+          "link": "https://news.google.com/rss/articles/CBMiYkFVX3lxTE5acVk3RFZDNmZlVm9hZ05SNlZLQ0U3dFlBcUlzcjk5MmphSzMzT2lLM3dUZlVUVVpZZXpQeUVjTWpQa3RQT0thbmh2NUJqNjdqd3RFYTlmTGcxb2w0NzRYUzRB?oc=5"
+        },
+        {
+          "time": "2026-11-13T11:37:46+09:00",
+          "title": "삼성전자, 구글-젠틀몬스터-워비파커와 협업한 AI 안경 30종 공개",
+          "source": "파이낸셜신문",
+          "link": "https://news.google.com/rss/articles/CBMia0FVX3lxTE12enBPUWJSWFpzcFRobVVlUDh5Q3A5NXl3elNVX1FNMld2Y2RmQVkzUUJvc3Ffb0k4U2NCcERGOUl4LUZXYlBNdzFLNGoyLVlnZU41aHdHY1FmcWFfS3BCQkpLZENmSEVtY1Yw?oc=5"
+        }
+      ],
+      "price": 208250.0,
+      "kind": "volume"
+    }
+  ],
+  "overnight_news": [
+    {
+      "time": "2026-11-13T07:30:02+09:00",
+      "title": "\"삼성전자 69만원\"…목표주가 더 높인 반도체 애널리스트의 근거는?",
+      "source": "한국경제",
+      "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE1udENLUDAyVDJBQ25UcDVIMmFEMC0wejRlV0EwZy1ET1dERHhHMVZXRmplZlJoQmJEMmlIQjVfNWlSeFpycWJGa0hxdzhNV3FhUktTcmplVDZQQQ?oc=5"
+    },
+    {
+      "time": "2026-11-13T08:55:47+09:00",
+      "title": "\"반도체 진보 없인 AI 발전도 불가능\"…삼성전자, 협력사와 기술 공유",
+      "source": "아시아경제",
+      "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE05N1lGSUZQdHRRN2VBQm1RQUpGUTRsbjV0VFhKX0syQTUybkZJNk1DcXZzWjFuak41LUloQVJvTWFpcDQtamM4dkU5Q0g3Sl8yZ0tXdFJKamNoZUpzRGtzSQ?oc=5"
+    },
+    {
+      "time": "2026-11-13T08:04:03+09:00",
+      "title": "\"눈앞에 보이는 건 다 물어봐\"…삼성전자 'AI 스마트 안경' 출격",
+      "source": "비즈워치",
+      "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE1FMEU3VS10Nk5fRkR1V0twR213NnZyTXBRTndrZlVpdlc5Nlo1dWNYUS1pVEFuNHJHdy16N1B5bHU2dHFqUWxWNW9MNEVxejRSNl9CNllycmdkX3BDS3piNnB1OGhNTEhhX0NYZA?oc=5"
+    },
+    {
+      "time": "2026-11-13T08:16:00+09:00",
+      "title": "[특징주] 美 반도체주 약세에도 '삼전닉스' 동반 상승…삼성전자 1.68%↑",
+      "source": "뉴스핌",
+      "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE9LZDFYNEJab29kOTVTYVNPTC00X19HeVhpZnZkS01QeHEyMlB1X000eUdYMHNvVmZmNFVmRTVhVHhuUUc0NXNhQzlseTM3SGFIRnNfdjhnUFVBczNL?oc=5"
+    },
+    {
+      "time": "2026-11-13T08:25:38+09:00",
+      "title": "삼성전자, 협력사 초청 '반도체 테크 세미나' 개최",
+      "source": "연합뉴스",
+      "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE1UaklXOWVJMUZaUmxOM1ZZN0Znelg3MHZMYXoyMk9FTmEyaHRiVk1TQnlHVDV6T19CRzRLWW1VUkM5eV9tMDlUZnh4VUI5dlU5WWplYV9DOEIxazBtXzlRY9IBYEFVX3lxTE1UaklXOWVJMUZaUmxOM1ZZN0Znelg3MHZMYXoyMk9FTmEyaHRiVk1TQnlHVDV6T19CRzRLWW1VUkM5eV9tMDlUZnh4VUI5dlU5WWplYV9DOEIxazBtXzlRYw?oc=5"
+    }
+  ],
+  "top_news": [
+    {
+      "time": "2026-11-13T07:30:02+09:00",
+      "title": "\"삼성전자 69만원\"…목표주가 더 높인 반도체 애널리스트의 근거는?",
+      "source": "한국경제",
+      "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE1udENLUDAyVDJBQ25UcDVIMmFEMC0wejRlV0EwZy1ET1dERHhHMVZXRmplZlJoQmJEMmlIQjVfNWlSeFpycWJGa0hxdzhNV3FhUktTcmplVDZQQQ?oc=5"
+    },
+    {
+      "time": "2026-11-13T10:14:15+09:00",
+      "title": "iM증권 \"삼성생명, 삼성전자 특별배당이 주가 방향 핵심…주주환원 계획 주목\"",
+      "source": "뉴스웍스",
+      "link": "https://news.google.com/rss/articles/CBMib0FVX3lxTE43TGNyY29tMVJfYXRWa0hXMzVVSEFGRENLcUpRSjE1b1dVbHphSFZVMWpLSFB2OG1vVXRRc3ZXS0d5S2d2bUYxZjNicFFNbjNaTkR3MDFOdkxFOHFWMXNYbTN0SUFUVmxTcEtNTzNZd9IBc0FVX3lxTE1qNnBOY1piSk1OTFJRSm53QUg4alEzT1l6SDVzZ2tZcThkWkE2Vy1DRHlyZ1l1djl2VFJBUjNOd2R2OGpCVjA5V3dlc0ZkS0VaY1dOUFVGa2JnbVJ3em5Ud3JxaFRRQ2dQbkRYWGFWSzdxcHM?oc=5"
+    },
+    {
+      "time": "2026-11-13T14:51:00+09:00",
+      "title": "\"충남 아산을 AI 반도체 심장으로\"…삼성전자, 내후년 6월 조기 가동으로 HBM 수요 정조준",
+      "source": "위키리크스한국",
+      "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE4wLThhQm1fVzFpWlRsMUZlbFVkaklBM3M5amwwM3pkYXpEVmZWNHRjeUNSQ1J6Z3NRQ2M5NlVsWW9xR1lwYkZXLWVndU5vT2tUUC0wOUZfakFQMk5jNS1WMzhzNDZOSkdNMDRoTFlNYTk?oc=5"
+    },
+    {
+      "time": "2026-11-13T15:15:01+09:00",
+      "title": "'젠슨 황 공백'은 삼성전자 SK하이닉스에도 대형 악재일까 : '엔비디아 독주' 차질 생겨도 AI 반도체 업황은 견고하다",
+      "source": "허프포스트코리아",
+      "link": "https://news.google.com/rss/articles/CBMiV0FVX3lxTFBCOG5EclJRWE1KcmhHa3hMd043eGRMY0tYNzRJM1lnZ3o2MFhsVFY3d0xZVVgtMzBINElJUl92dk5FRFlQRDlfdjVFa2pfUFZGQlFpMWNDVQ?oc=5"
+    },
+    {
+      "time": "2026-11-13T08:55:47+09:00",
+      "title": "\"반도체 진보 없인 AI 발전도 불가능\"…삼성전자, 협력사와 기술 공유",
+      "source": "아시아경제",
+      "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE05N1lGSUZQdHRRN2VBQm1RQUpGUTRsbjV0VFhKX0syQTUybkZJNk1DcXZzWjFuak41LUloQVJvTWFpcDQtamM4dkU5Q0g3Sl8yZ0tXdFJKamNoZUpzRGtzSQ?oc=5"
+    },
+    {
+      "time": "2026-11-13T09:23:49+09:00",
+      "title": "코스피, 반도체 강세에 5480선 상승 출발…삼성전자·SK하이닉스 3~4%대↑",
+      "source": "오피니언뉴스",
+      "link": "https://news.google.com/rss/articles/CBMickFVX3lxTE1GVEswenZBQ3V2Z2RlVzBrLVc0bVJzWlZ4Mi1pRE55QW1PMm5ULXFOUjdSMy1Xd3VHQ2ZmYXEyRXlXb0dwMWU4SVR1OTEyNEg2WDRCS3dVdVRORmdnV2p1QTNlSXJTU3plRnJvVjdRbGo3QQ?oc=5"
+    }
+  ],
+  "disclosures": [
+    {
+      "report_nm": "기업설명회(IR)개최(안내공시)",
+      "rcept_dt": "20261113",
+      "rcept_no": "20261113801115",
+      "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261113801115"
+    }
+  ],
+  "disclosure_note": null,
+  "flows": null,
+  "flow_story": null,
+  "flow_status": {
+    "state": "pending",
+    "detail": "최신 2026-11-12"
+  },
+  "context": {},
+  "market": {
+    "index": "KOSPI",
+    "date": "2026-11-13",
+    "rise": 451,
+    "fall": 420,
+    "steady": 41,
+    "upper": 3,
+    "lower": 0,
+    "individual": 197.0,
+    "foreign": -5539.0,
+    "institution": 20.0,
+    "prev_close": 5342.73,
+    "open": 5452.41,
+    "high": 5504.44,
+    "low": 5259.09,
+    "close": 5290.53
+  },
+  "earnings_reactions": null,
+  "forecasts": [],
+  "price_check": null,
+  "disclaimer": "시간이 맞는 것이지 원인 확정이 아닙니다. 뉴스 없이 움직이는 날(수급·프로그램·옵션 만기)이 많고, 기사 발행 시각은 실제 정보 유통보다 늦거나 앞섭니다. 이 절은 설명 도구이며 다음날 예측에 자동 반영되지 않습니다."
+}

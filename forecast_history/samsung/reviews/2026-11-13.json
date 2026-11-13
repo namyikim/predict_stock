@@ -3,7 +3,7 @@
   "name": "삼성전자",
   "peer_name": "SK하이닉스",
   "session_date": "2026-11-13",
-  "generated_at": "2026-11-14 01:47 KST",
+  "generated_at": "2026-11-14 05:40 KST",
   "summary": {
     "prev_close": 208000.0,
     "open": NaN,
@@ -19,7 +19,7 @@
     "volume_ratio": 0.7960308085628361,
     "kospi_c2c": NaN,
     "peer_c2c": NaN,
-    "usdkrw_chg": 0.0005387953675657364,
+    "usdkrw_chg": -0.00030685209217584664,
     "us_nights": 1,
     "sox_ret": -0.005437318219513321,
     "nasdaq_ret": -0.003930686589733057,
@@ -28,7 +28,7 @@
     "ma5": 200700.0,
     "ma20": 214552.63157894736,
     "high20": 249000.0,
-    "high252": 367712.7495144774,
+    "high252": 367712.71645480226,
     "price_context": {
       "breakouts": {},
       "relative": {}
@@ -49,7 +49,7 @@
       "regular_close": 166.0399932861328,
       "last": 168.03,
       "ret": 0.011985104759898668,
-      "low_ret": -0.000962378297964861,
+      "low_ret": -0.0008431299192571684,
       "high_ret": 0.012764435073270963,
       "last_time": "2026-11-13T08:55:00+09:00"
     },
@@ -94,19 +94,19 @@
       "장중 급변 09:00 주도"
     ],
     "reasons": [
-      "09:00 봉 +3.61%(σ의 20.1배, 거래량 6.18배)가 세션 +nan%의 110%"
+      "09:00 봉 +3.61%(σ의 20.08배, 거래량 6.18배)가 세션 +nan%의 110%"
     ]
   },
   "events": [
     {
       "time": "2026-11-13T09:00:00+09:00",
       "ret": 0.03605769230769229,
-      "z": 20.1,
+      "z": 20.08,
       "volume_ratio": 6.18,
       "cum_before": 0.0,
       "cum_after": 0.007009345794392496,
       "session_share": -1.102335164835166,
-      "score": 22.10095223631899,
+      "score": 22.076631647137344,
       "news": [
         {
           "time": "2026-11-13T07:30:02+09:00",
@@ -121,22 +121,10 @@
           "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE1FMEU3VS10Nk5fRkR1V0twR213NnZyTXBRTndrZlVpdlc5Nlo1dWNYUS1pVEFuNHJHdy16N1B5bHU2dHFqUWxWNW9MNEVxejRSNl9CNllycmdkX3BDS3piNnB1OGhNTEhhX0NYZA?oc=5"
         },
         {
-          "time": "2026-11-13T08:25:38+09:00",
-          "title": "삼성전자, 협력사 초청 '반도체 테크 세미나' 개최",
-          "source": "연합뉴스",
-          "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE9aTnY3OUJmejJTMk5UclNROUVrUF9UUnRDaTVnM0dKX3d4cXA4dzFPaHl4N1NnN3lhM0dGVFhZOXE5Q0ZnbFRvRjhGcjFHQzZCVm1ER21lZWgtblXSAWBBVV95cUxNVGpJVzllSTFGWlJsTjNWWTdGZ3pYNzB2TGF6MjJPRU5hMmh0YlZNU0J5R1Q1ek9fQkc0S1ltVVJDOXlfbTA5VGZ4eFVCOXZVOVlqZWFfQzhCMWswbV85UWM?oc=5"
-        },
-        {
-          "time": "2026-11-13T08:50:53+09:00",
-          "title": "\"눈으로 보고 말로 묻는 AI 시대 연다\"...삼성전자, 구글과 AI 안경 30종 공개",
-          "source": "인공지능신문",
-          "link": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTFBXMTNmV3ZWcEllNnlLRnBiWmJKLUl1TTdJR1FQTWlCTFRMd1NGTjdLalpaQmc4MTlYUTNuV2taWEhFTjlqejN4bE11NklnQjl5TTVwUlVYVUFUNE1WalpJWDdSZFlDZG8?oc=5"
-        },
-        {
-          "time": "2026-11-13T08:20:37+09:00",
-          "title": "삼성전자, 구글 협업 'AI안경' 공개…12월 10일 출시",
-          "source": "진일보 | 전남일보",
-          "link": "https://news.google.com/rss/articles/CBMib0FVX3lxTE9MRWJUZC03d3lpaGZBWFJjWXN4djVNN3c0X1VPUG4tQzFzV0E3US1LVEJ0Y2tYaFdGamhNWENfSVpIcXlnck1lOUxIOFl5Yzhza3hoQXZlb1BVQ2J1eG9vR2VON1pPZnFCd1VuQmdzRQ?oc=5"
+          "time": "2026-11-13T09:08:00+09:00",
+          "title": "’삼성라이온즈 V9’에 가전도 대폭 할인…12개월 구독 혜택",
+          "source": "연합뉴스TV",
+          "link": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE4xMGFQODJSN3dDY1dRUWVmRjczcl8yVnEtTnotVlpqZ1l5RG1QWGhVaFBXZXFFWEdTREExaXpaNU5LUDFKS3B4Zk1nWEZrU0I4WVIzVndaZUNpbUNSa3FKSnJVY2wyX2s?oc=5"
         }
       ]
     },
@@ -148,26 +136,8 @@
       "cum_before": -0.001168224299065379,
       "cum_after": -0.009345794392523366,
       "session_share": 0.25029239766081873,
-      "score": 4.761522489319208,
+      "score": 4.756000340726853,
       "news": [
-        {
-          "time": "2026-11-13T08:25:38+09:00",
-          "title": "삼성전자, 협력사 초청 '반도체 테크 세미나' 개최",
-          "source": "연합뉴스",
-          "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE9aTnY3OUJmejJTMk5UclNROUVrUF9UUnRDaTVnM0dKX3d4cXA4dzFPaHl4N1NnN3lhM0dGVFhZOXE5Q0ZnbFRvRjhGcjFHQzZCVm1ER21lZWgtblXSAWBBVV95cUxNVGpJVzllSTFGWlJsTjNWWTdGZ3pYNzB2TGF6MjJPRU5hMmh0YlZNU0J5R1Q1ek9fQkc0S1ltVVJDOXlfbTA5VGZ4eFVCOXZVOVlqZWFfQzhCMWswbV85UWM?oc=5"
-        },
-        {
-          "time": "2026-11-13T08:50:53+09:00",
-          "title": "\"눈으로 보고 말로 묻는 AI 시대 연다\"...삼성전자, 구글과 AI 안경 30종 공개",
-          "source": "인공지능신문",
-          "link": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTFBXMTNmV3ZWcEllNnlLRnBiWmJKLUl1TTdJR1FQTWlCTFRMd1NGTjdLalpaQmc4MTlYUTNuV2taWEhFTjlqejN4bE11NklnQjl5TTVwUlVYVUFUNE1WalpJWDdSZFlDZG8?oc=5"
-        },
-        {
-          "time": "2026-11-13T09:29:33+09:00",
-          "title": "삼성전자, 구글과 손잡고 AI 안경 30종 공개…12월 10일 국내 상륙",
-          "source": "https://www.moneystorm.kr/",
-          "link": "https://news.google.com/rss/articles/CBMiakFVX3lxTE9WQWltTHVjRUFnalVZRHJOUlJOT1VQb2EtZU1HQzJ1SUd6ZnZfLUVPWjd6TVFXTk1ESXJQQ1Jyb0NDVlZReU82MW1SQ1ZfMjh0TTVqRy1RMFJudlBVTGZCOXZfWGZtV1REa0E?oc=5"
-        },
         {
           "time": "2026-11-13T09:40:00+09:00",
           "title": "삼성전자 주가, 오늘 급등한 이유는?",
@@ -179,6 +149,24 @@
           "title": "“삼성전자가 인수한다” 소식에…美 냉각업체 주가 28% ‘불기둥’ [머니+]",
           "source": "에너지경제신문",
           "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE55cUE0WC1VZlVGY01xZjJzZUlkcVY0Q0otMmpUeDNuVE5DMDZWeEFVSklDSGVtNDJSRGFDeWkwajhMY3k5bE9KLXpMMXh1SUs2dHRJR2MwcWdhaFk?oc=5"
+        },
+        {
+          "time": "2026-11-13T09:17:00+09:00",
+          "title": "블룸버그 \"삼성전자, 美데이터센터 냉각업체 '모딘 ' 인수 협상\"",
+          "source": "뉴스핌",
+          "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE5tRHA0QTBtNUR0NkotTXg2dzJEMHhlZVBNNDI4Q0dTczZJckxoTUNyYkhsSkduZ3pEOVg5R19FZldnUHFnT1JvV0RndzBhN21sdnhxS0RFSl90Z2p4?oc=5"
+        },
+        {
+          "time": "2026-11-13T09:42:00+09:00",
+          "title": "삼성전자, '삼성라이온즈 통산 9번째 우승' 기념 경품 행사",
+          "source": "연합뉴스",
+          "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE9WUjZsUXNFdDBVRkREX3pHTnF6YXhPcmpZRzhpZWNTM1FUbmhuRFpYYkpIVjROWEZBUTRCM1BYZzlrcDBhcGs2aTRkYklMWjg3S2ZvUC0wc1ZaVFHSAWBBVV95cUxNY2dJV0hrUzMwZk1FSXFRTGlxN0VmVTNRM0VUdXZsYXZPOURBVjB2ellQVURsRUpZUU9XOGNrWHBFNEs5MzdYRjVGSExtV05kZks3SHJRSzZJX0N3U0Fha08?oc=5"
+        },
+        {
+          "time": "2026-11-13T09:51:00+09:00",
+          "title": "삼성전자 AI 안경, 12월10일 국내 출시…가격·기능 살펴보니",
+          "source": "농민신문",
+          "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE9vZU14NWJ5SUxkdk1oTXlCQ25DcnUtRV9ienJibGwxS1FwcjRhbm5rby03SXN3X3NoZENwM2ZCV2tYRkIwcTdXM3lGLTdjRW1qY0JES0xXdHJQQQ?oc=5"
         }
       ]
     },
@@ -190,7 +178,7 @@
       "cum_before": -0.02219626168224298,
       "cum_after": -0.026869158878504718,
       "session_share": 0.14610001706775835,
-      "score": 4.37486177196642,
+      "score": 4.3716383979800995,
       "news": [
         {
           "time": "2026-11-13T12:34:58+09:00",
@@ -217,10 +205,10 @@
           "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTFAyUjRsWWlSU1Znc0IyN3poUFNFaXJoNVJLWW1WUC1UVEZBby1VS2g5ZWZ1c0QydFFJMHRWUGhDLTVsdUt3UVczSG95SXBpOVVqX3RnU1ZFLWZFMDZnZVh3TFF0UHF3cGJv0gFsQVVfeXFMTUhLY0luTm5vSTFLd2FBdS1PSXhNXy1RVlNsUTZ5aVB5QXZ1SmdFVDkyRExoMER5YTY2czlNLXFreU1vTXJFVkZMZlJOU2x0UUt5WjQ3X3RZNDd2bWR4UngyUmNVazV1Q21JQWot?oc=5"
         },
         {
-          "time": "2026-11-13T11:13:18+09:00",
-          "title": "삼성전자, 라이온즈 12년 만의 우승 기념…갤럭시·가전 쏜다",
-          "source": "글로벌이코노믹",
-          "link": "https://news.google.com/rss/articles/CBMihgFBVV95cUxOcEp6Q2lFOFlodXNLVFZVbFpDVkdjS0wxdU44NVlCR3ZEWEtLUUx2dkozRFBFT3hoa3ExeUVGQWxKSnFHSUlqbDBXX1FfZE5pXzhtOHMydU5mSUZEb1R5TDRDeGVHTlFudE5RaEV4SGRLaEtaY3AxZGl2Y0RLUWJJbXA3X0hlZw?oc=5"
+          "time": "2026-11-13T11:45:00+09:00",
+          "title": "블룸버그 \"삼성전자, 美 데이터센터 냉각업체 '모딘' 인수 추진\"",
+          "source": "지디넷코리아",
+          "link": "https://news.google.com/rss/articles/CBMiVkFVX3lxTE04RGZqeGZMd1dPX3Zra28tWm1aWHFUakl5M3lqcndjeWRydE82akJxSTFwWXRTa09FNjc4UTR2WTNJdndsM0pQY1ZIUEVSQTZ4RWJzTGdR?oc=5"
         }
       ]
     }
@@ -233,7 +221,7 @@
     "pattern": "고점 후 반락"
   },
   "closing_share": NaN,
-  "intraday_corr_kospi": 0.8307970117489657,
+  "intraday_corr_kospi": 0.8316906362474924,
   "intraday_note": "장중 봉은 09:00~14:55까지만 있어 마감 구간(14:55~15:30)은 일봉 종가로만 봅니다(그 구간 +nan%).",
   "intraday_coverage": "09:00~14:55",
   "intraday_path": [
@@ -370,12 +358,12 @@
     {
       "time": "2026-11-13T11:10:00+09:00",
       "price": 211500.0,
-      "volume": 185959.0
+      "volume": 185942.0
     },
     {
       "time": "2026-11-13T11:15:00+09:00",
       "price": 211750.0,
-      "volume": 109710.0
+      "volume": 109727.0
     },
     {
       "time": "2026-11-13T11:20:00+09:00",
@@ -424,13 +412,13 @@
     },
     {
       "time": "2026-11-13T12:05:00+09:00",
-      "price": 209500.0,
-      "volume": 99367.0
+      "price": 209750.0,
+      "volume": 99368.0
     },
     {
       "time": "2026-11-13T12:10:00+09:00",
       "price": 209250.0,
-      "volume": 131456.0
+      "volume": 131455.0
     },
     {
       "time": "2026-11-13T12:15:00+09:00",
@@ -602,12 +590,12 @@
     {
       "time": "2026-11-13T09:00:00+09:00",
       "ret": 0.03605769230769229,
-      "z": 20.1,
+      "z": 20.08,
       "volume_ratio": 6.18,
       "cum_before": 0.0,
       "cum_after": 0.007009345794392496,
       "session_share": -1.102335164835166,
-      "score": 22.10095223631899,
+      "score": 22.076631647137344,
       "news": [
         {
           "time": "2026-11-13T07:30:02+09:00",
@@ -622,22 +610,10 @@
           "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE1FMEU3VS10Nk5fRkR1V0twR213NnZyTXBRTndrZlVpdlc5Nlo1dWNYUS1pVEFuNHJHdy16N1B5bHU2dHFqUWxWNW9MNEVxejRSNl9CNllycmdkX3BDS3piNnB1OGhNTEhhX0NYZA?oc=5"
         },
         {
-          "time": "2026-11-13T08:25:38+09:00",
-          "title": "삼성전자, 협력사 초청 '반도체 테크 세미나' 개최",
-          "source": "연합뉴스",
-          "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE9aTnY3OUJmejJTMk5UclNROUVrUF9UUnRDaTVnM0dKX3d4cXA4dzFPaHl4N1NnN3lhM0dGVFhZOXE5Q0ZnbFRvRjhGcjFHQzZCVm1ER21lZWgtblXSAWBBVV95cUxNVGpJVzllSTFGWlJsTjNWWTdGZ3pYNzB2TGF6MjJPRU5hMmh0YlZNU0J5R1Q1ek9fQkc0S1ltVVJDOXlfbTA5VGZ4eFVCOXZVOVlqZWFfQzhCMWswbV85UWM?oc=5"
-        },
-        {
-          "time": "2026-11-13T08:50:53+09:00",
-          "title": "\"눈으로 보고 말로 묻는 AI 시대 연다\"...삼성전자, 구글과 AI 안경 30종 공개",
-          "source": "인공지능신문",
-          "link": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTFBXMTNmV3ZWcEllNnlLRnBiWmJKLUl1TTdJR1FQTWlCTFRMd1NGTjdLalpaQmc4MTlYUTNuV2taWEhFTjlqejN4bE11NklnQjl5TTVwUlVYVUFUNE1WalpJWDdSZFlDZG8?oc=5"
-        },
-        {
-          "time": "2026-11-13T08:20:37+09:00",
-          "title": "삼성전자, 구글 협업 'AI안경' 공개…12월 10일 출시",
-          "source": "진일보 | 전남일보",
-          "link": "https://news.google.com/rss/articles/CBMib0FVX3lxTE9MRWJUZC03d3lpaGZBWFJjWXN4djVNN3c0X1VPUG4tQzFzV0E3US1LVEJ0Y2tYaFdGamhNWENfSVpIcXlnck1lOUxIOFl5Yzhza3hoQXZlb1BVQ2J1eG9vR2VON1pPZnFCd1VuQmdzRQ?oc=5"
+          "time": "2026-11-13T09:08:00+09:00",
+          "title": "’삼성라이온즈 V9’에 가전도 대폭 할인…12개월 구독 혜택",
+          "source": "연합뉴스TV",
+          "link": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE4xMGFQODJSN3dDY1dRUWVmRjczcl8yVnEtTnotVlpqZ1l5RG1QWGhVaFBXZXFFWEdTREExaXpaNU5LUDFKS3B4Zk1nWEZrU0I4WVIzVndaZUNpbUNSa3FKSnJVY2wyX2s?oc=5"
         }
       ],
       "price": 215500.0,
@@ -651,26 +627,8 @@
       "cum_before": -0.001168224299065379,
       "cum_after": -0.009345794392523366,
       "session_share": 0.25029239766081873,
-      "score": 4.761522489319208,
+      "score": 4.756000340726853,
       "news": [
-        {
-          "time": "2026-11-13T08:25:38+09:00",
-          "title": "삼성전자, 협력사 초청 '반도체 테크 세미나' 개최",
-          "source": "연합뉴스",
-          "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE9aTnY3OUJmejJTMk5UclNROUVrUF9UUnRDaTVnM0dKX3d4cXA4dzFPaHl4N1NnN3lhM0dGVFhZOXE5Q0ZnbFRvRjhGcjFHQzZCVm1ER21lZWgtblXSAWBBVV95cUxNVGpJVzllSTFGWlJsTjNWWTdGZ3pYNzB2TGF6MjJPRU5hMmh0YlZNU0J5R1Q1ek9fQkc0S1ltVVJDOXlfbTA5VGZ4eFVCOXZVOVlqZWFfQzhCMWswbV85UWM?oc=5"
-        },
-        {
-          "time": "2026-11-13T08:50:53+09:00",
-          "title": "\"눈으로 보고 말로 묻는 AI 시대 연다\"...삼성전자, 구글과 AI 안경 30종 공개",
-          "source": "인공지능신문",
-          "link": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTFBXMTNmV3ZWcEllNnlLRnBiWmJKLUl1TTdJR1FQTWlCTFRMd1NGTjdLalpaQmc4MTlYUTNuV2taWEhFTjlqejN4bE11NklnQjl5TTVwUlVYVUFUNE1WalpJWDdSZFlDZG8?oc=5"
-        },
-        {
-          "time": "2026-11-13T09:29:33+09:00",
-          "title": "삼성전자, 구글과 손잡고 AI 안경 30종 공개…12월 10일 국내 상륙",
-          "source": "https://www.moneystorm.kr/",
-          "link": "https://news.google.com/rss/articles/CBMiakFVX3lxTE9WQWltTHVjRUFnalVZRHJOUlJOT1VQb2EtZU1HQzJ1SUd6ZnZfLUVPWjd6TVFXTk1ESXJQQ1Jyb0NDVlZReU82MW1SQ1ZfMjh0TTVqRy1RMFJudlBVTGZCOXZfWGZtV1REa0E?oc=5"
-        },
         {
           "time": "2026-11-13T09:40:00+09:00",
           "title": "삼성전자 주가, 오늘 급등한 이유는?",
@@ -682,6 +640,24 @@
           "title": "“삼성전자가 인수한다” 소식에…美 냉각업체 주가 28% ‘불기둥’ [머니+]",
           "source": "에너지경제신문",
           "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE55cUE0WC1VZlVGY01xZjJzZUlkcVY0Q0otMmpUeDNuVE5DMDZWeEFVSklDSGVtNDJSRGFDeWkwajhMY3k5bE9KLXpMMXh1SUs2dHRJR2MwcWdhaFk?oc=5"
+        },
+        {
+          "time": "2026-11-13T09:17:00+09:00",
+          "title": "블룸버그 \"삼성전자, 美데이터센터 냉각업체 '모딘 ' 인수 협상\"",
+          "source": "뉴스핌",
+          "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE5tRHA0QTBtNUR0NkotTXg2dzJEMHhlZVBNNDI4Q0dTczZJckxoTUNyYkhsSkduZ3pEOVg5R19FZldnUHFnT1JvV0RndzBhN21sdnhxS0RFSl90Z2p4?oc=5"
+        },
+        {
+          "time": "2026-11-13T09:42:00+09:00",
+          "title": "삼성전자, '삼성라이온즈 통산 9번째 우승' 기념 경품 행사",
+          "source": "연합뉴스",
+          "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE9WUjZsUXNFdDBVRkREX3pHTnF6YXhPcmpZRzhpZWNTM1FUbmhuRFpYYkpIVjROWEZBUTRCM1BYZzlrcDBhcGs2aTRkYklMWjg3S2ZvUC0wc1ZaVFHSAWBBVV95cUxNY2dJV0hrUzMwZk1FSXFRTGlxN0VmVTNRM0VUdXZsYXZPOURBVjB2ellQVURsRUpZUU9XOGNrWHBFNEs5MzdYRjVGSExtV05kZks3SHJRSzZJX0N3U0Fha08?oc=5"
+        },
+        {
+          "time": "2026-11-13T09:51:00+09:00",
+          "title": "삼성전자 AI 안경, 12월10일 국내 출시…가격·기능 살펴보니",
+          "source": "농민신문",
+          "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE9vZU14NWJ5SUxkdk1oTXlCQ25DcnUtRV9ienJibGwxS1FwcjRhbm5rby03SXN3X3NoZENwM2ZCV2tYRkIwcTdXM3lGLTdjRW1qY0JES0xXdHJQQQ?oc=5"
         }
       ],
       "price": 212000.0,
@@ -695,7 +671,7 @@
       "cum_before": -0.02219626168224298,
       "cum_after": -0.026869158878504718,
       "session_share": 0.14610001706775835,
-      "score": 4.37486177196642,
+      "score": 4.3716383979800995,
       "news": [
         {
           "time": "2026-11-13T12:34:58+09:00",
@@ -722,10 +698,10 @@
           "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTFAyUjRsWWlSU1Znc0IyN3poUFNFaXJoNVJLWW1WUC1UVEZBby1VS2g5ZWZ1c0QydFFJMHRWUGhDLTVsdUt3UVczSG95SXBpOVVqX3RnU1ZFLWZFMDZnZVh3TFF0UHF3cGJv0gFsQVVfeXFMTUhLY0luTm5vSTFLd2FBdS1PSXhNXy1RVlNsUTZ5aVB5QXZ1SmdFVDkyRExoMER5YTY2czlNLXFreU1vTXJFVkZMZlJOU2x0UUt5WjQ3X3RZNDd2bWR4UngyUmNVazV1Q21JQWot?oc=5"
         },
         {
-          "time": "2026-11-13T11:13:18+09:00",
-          "title": "삼성전자, 라이온즈 12년 만의 우승 기념…갤럭시·가전 쏜다",
-          "source": "글로벌이코노믹",
-          "link": "https://news.google.com/rss/articles/CBMihgFBVV95cUxOcEp6Q2lFOFlodXNLVFZVbFpDVkdjS0wxdU44NVlCR3ZEWEtLUUx2dkozRFBFT3hoa3ExeUVGQWxKSnFHSUlqbDBXX1FfZE5pXzhtOHMydU5mSUZEb1R5TDRDeGVHTlFudE5RaEV4SGRLaEtaY3AxZGl2Y0RLUWJJbXA3X0hlZw?oc=5"
+          "time": "2026-11-13T11:45:00+09:00",
+          "title": "블룸버그 \"삼성전자, 美 데이터센터 냉각업체 '모딘' 인수 추진\"",
+          "source": "지디넷코리아",
+          "link": "https://news.google.com/rss/articles/CBMiVkFVX3lxTE04RGZqeGZMd1dPX3Zra28tWm1aWHFUakl5M3lqcndjeWRydE82akJxSTFwWXRTa09FNjc4UTR2WTNJdndsM0pQY1ZIUEVSQTZ4RWJzTGdR?oc=5"
         }
       ],
       "price": 208250.0,
@@ -744,24 +720,6 @@
       "title": "\"눈앞에 보이는 건 다 물어봐\"…삼성전자 'AI 스마트 안경' 출격",
       "source": "비즈워치",
       "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE1FMEU3VS10Nk5fRkR1V0twR213NnZyTXBRTndrZlVpdlc5Nlo1dWNYUS1pVEFuNHJHdy16N1B5bHU2dHFqUWxWNW9MNEVxejRSNl9CNllycmdkX3BDS3piNnB1OGhNTEhhX0NYZA?oc=5"
-    },
-    {
-      "time": "2026-11-13T08:25:38+09:00",
-      "title": "삼성전자, 협력사 초청 '반도체 테크 세미나' 개최",
-      "source": "연합뉴스",
-      "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE9aTnY3OUJmejJTMk5UclNROUVrUF9UUnRDaTVnM0dKX3d4cXA4dzFPaHl4N1NnN3lhM0dGVFhZOXE5Q0ZnbFRvRjhGcjFHQzZCVm1ER21lZWgtblXSAWBBVV95cUxNVGpJVzllSTFGWlJsTjNWWTdGZ3pYNzB2TGF6MjJPRU5hMmh0YlZNU0J5R1Q1ek9fQkc0S1ltVVJDOXlfbTA5VGZ4eFVCOXZVOVlqZWFfQzhCMWswbV85UWM?oc=5"
-    },
-    {
-      "time": "2026-11-13T08:50:53+09:00",
-      "title": "\"눈으로 보고 말로 묻는 AI 시대 연다\"...삼성전자, 구글과 AI 안경 30종 공개",
-      "source": "인공지능신문",
-      "link": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTFBXMTNmV3ZWcEllNnlLRnBiWmJKLUl1TTdJR1FQTWlCTFRMd1NGTjdLalpaQmc4MTlYUTNuV2taWEhFTjlqejN4bE11NklnQjl5TTVwUlVYVUFUNE1WalpJWDdSZFlDZG8?oc=5"
-    },
-    {
-      "time": "2026-11-13T06:56:16+09:00",
-      "title": "삼성전자, 12월 출시 AI 글래스 30종 공개-메타주도 AI안경시장 본격 진출 나서",
-      "source": "포커스온경제",
-      "link": "https://news.google.com/rss/articles/CBMiR0FVX3lxTFBPcVRUMFBWMWE1dTJUNmt0TnBuVXRrVmNub1o3aEt6TXowWllkckU0SnhfZFd2Q3JtbVY2SHlfT2k0TjNkZmlZ?oc=5"
     }
   ],
   "top_news": [
@@ -784,6 +742,12 @@
       "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE4wLThhQm1fVzFpWlRsMUZlbFVkaklBM3M5amwwM3pkYXpEVmZWNHRjeUNSQ1J6Z3NRQ2M5NlVsWW9xR1lwYkZXLWVndU5vT2tUUC0wOUZfakFQMk5jNS1WMzhzNDZOSkdNMDRoTFlNYTk?oc=5"
     },
     {
+      "time": "2026-11-13T15:15:01+09:00",
+      "title": "'젠슨 황 공백'은 삼성전자 SK하이닉스에도 대형 악재일까 : '엔비디아 독주' 차질 생겨도 AI 반도체 업황은 견고하다",
+      "source": "허프포스트코리아",
+      "link": "https://news.google.com/rss/articles/CBMiV0FVX3lxTFBCOG5EclJRWE1KcmhHa3hMd043eGRMY0tYNzRJM1lnZ3o2MFhsVFY3d0xZVVgtMzBINElJUl92dk5FRFlQRDlfdjVFa2pfUFZGQlFpMWNDVQ?oc=5"
+    },
+    {
       "time": "2026-11-13T10:44:00+09:00",
       "title": "삼성전자, 협력사 1000명과 AI 반도체 기술 공유",
       "source": "뉴스핌",
@@ -794,12 +758,6 @@
       "title": "'엔비디아 리스크'에 미소짓는 삼성전자? AMD·브로드컴 'AI 동맹 확장' 빛 보나",
       "source": "오피니언뉴스",
       "link": "https://news.google.com/rss/articles/CBMickFVX3lxTE1SSi1pTnk2c0pIZFE2dGE0cTNqZnBFUGxBQi1YREV2UGNBOTVCV2gyZHA2by1YX2p1MjdQQUVPbFZKWTZtMk1rUjJoSkFGdDh1VHlOR2VLa2dxTlRwUnMtLWRtR0s2cFNTbS1raloxV1cwQQ?oc=5"
-    },
-    {
-      "time": "2026-11-13T17:43:05+09:00",
-      "title": "삼성전자 DS, 협력사 1000명과 AI 반도체 기술 공유",
-      "source": "아이뉴스24",
-      "link": "https://news.google.com/rss/articles/CBMiS0FVX3lxTE54N1ZlczlXbTFfQlpSQnVLbWtlMTZwVzhlekJqeDZKZHZDdGZkYkdGTWx1VmVETGs0Q2I5UFd4MktfRVJKN3cwa3RwZw?oc=5"
     }
   ],
   "disclosures": [

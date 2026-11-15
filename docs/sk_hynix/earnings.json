@@ -160,8 +160,8 @@
     "fresh": true,
     "fetch_error": null,
     "first": "2026-09-11",
-    "last": "2026-11-14",
-    "rows": 64,
+    "last": "2026-11-15",
+    "rows": 65,
     "items": [
       "ddr5_16gb",
       "ddr4_16gb",
@@ -172,11 +172,11 @@
   },
   "dram_summary": {
     "item": "ddr5_16gb",
-    "date": "2026-11-14",
+    "date": "2026-11-15",
     "value": 60.267,
     "change_7d": 0.001662040653514385,
-    "change_30d": -0.0027468436119337802,
-    "days": 64
+    "change_30d": -0.0054950495049505,
+    "days": 65
   },
   "provisional": {
     "2026Q3": 83333818000000.0
@@ -312,7 +312,7 @@
     "estimate_basis": "partial_month_scenario",
     "interval_note": "속보와 확정치의 차이를 과거 시점별로 검증하지 않아 예측 구간을 제공하지 않습니다. 아래 월 전체 자료 기준의 검증 성적은 이 속보 기반 시나리오의 성적이 아닙니다."
   },
-  "generated_at": "2026-11-14 16:48 KST",
+  "generated_at": "2026-11-15 16:58 KST",
   "estimate_basis": "partial_month_scenario",
   "interval_note": "속보와 확정치의 차이를 과거 시점별로 검증하지 않아 예측 구간을 제공하지 않습니다. 아래 월 전체 자료 기준의 검증 성적은 이 속보 기반 시나리오의 성적이 아닙니다.",
   "announced_actual": null,

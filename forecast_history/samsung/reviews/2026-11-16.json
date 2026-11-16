@@ -1,0 +1,911 @@
+{
+  "target": "samsung",
+  "name": "삼성전자",
+  "peer_name": "SK하이닉스",
+  "session_date": "2026-11-16",
+  "generated_at": "2026-11-16 16:14 KST",
+  "summary": {
+    "prev_close": 206000.0,
+    "open": 206500.0,
+    "high": 208000.0,
+    "low": 195000.0,
+    "close": 196800.0,
+    "gap": 0.0024271844660195274,
+    "session": -0.04697336561743337,
+    "c2c": -0.044660194174757306,
+    "high_vs_open": 0.007263922518159882,
+    "low_vs_open": -0.05569007263922521,
+    "volume": 17265227.0,
+    "volume_ratio": 0.955446187627668,
+    "kospi_c2c": -0.035918857443997476,
+    "peer_c2c": -0.07894736842105265,
+    "usdkrw_chg": 0.0007572536276145847,
+    "us_nights": 1,
+    "sox_ret": -0.03429722376875555,
+    "nasdaq_ret": -0.009060139497874764,
+    "micron_ret": -0.025211668780698027,
+    "prior_streak": -1,
+    "ma5": 203140.0,
+    "ma20": 213065.0,
+    "high20": 249000.0,
+    "high252": 367712.71645480226,
+    "price_context": {
+      "breakouts": {
+        "20": {
+          "prior_high": 249000.0,
+          "distance": -0.2096385542168675,
+          "close_breakout": false,
+          "intraday_breakout": false
+        },
+        "60": {
+          "prior_high": 283092.2681564246,
+          "distance": -0.30482029310932357,
+          "close_breakout": false,
+          "intraday_breakout": false
+        }
+      },
+      "relative": {
+        "5": {
+          "start": "2026-11-09",
+          "end": "2026-11-16",
+          "own": 0.03633491311216419,
+          "peer": -0.014084507042253502,
+          "excess": 0.05041942015441769
+        },
+        "20": {
+          "start": "2026-10-19",
+          "end": "2026-11-16",
+          "own": -0.0972477064220183,
+          "peer": -0.12294440093970238,
+          "excess": 0.025696694517684082
+        },
+        "60": {
+          "start": "2026-08-18",
+          "end": "2026-11-16",
+          "own": -0.25433238143569903,
+          "peer": -0.32596701541353956,
+          "excess": 0.07163463397784053
+        }
+      }
+    },
+    "range": 0.06666666666666665,
+    "peer_range": 0.09793351302785269,
+    "prior_5d": 0.09167991520932706,
+    "ma_touches": [
+      {
+        "ma": 5,
+        "level": 201760.0,
+        "kind": "fail",
+        "price": 208000.0
+      }
+    ],
+    "micron_ah": {
+      "regular_close": 778.4000244140625,
+      "last": 761.2,
+      "ret": -0.022096639098912796,
+      "low_ret": -0.022096639098912796,
+      "high_ret": -0.009763648735473085,
+      "last_time": "2026-11-14T09:55:00+09:00"
+    },
+    "nvidia_ah": {
+      "regular_close": 162.82009887695312,
+      "last": 161.01,
+      "ret": -0.011117170972369084,
+      "low_ret": -0.014310879879234184,
+      "high_ret": -0.00454550072170401,
+      "last_time": "2026-11-14T09:55:00+09:00"
+    },
+    "session_cross": {
+      "NQ=F": {
+        "label": "나스닥100 선물",
+        "ret": -0.01899064626602831,
+        "after_high": -0.017991283395932256
+      },
+      "ZN=F": {
+        "label": "미 10년물 국채 선물",
+        "ret": 0.00029695619896075165,
+        "after_high": 0.0004455004455004019
+      },
+      "KRW=X": {
+        "label": "원/달러",
+        "ret": 0.0006741857010819086,
+        "after_high": -0.0008974415975957495
+      }
+    },
+    "from_high": -0.050422195416163884,
+    "buyback": [
+      {
+        "kind": "직접 취득",
+        "start": "2026-08-24",
+        "end": "2026-11-21",
+        "amount": "14,999,999,992,000",
+        "purpose": "임직원 주식보상",
+        "rcept_no": "20260821000616"
+      }
+    ]
+  },
+  "classification": {
+    "labels": [
+      "지수 동조"
+    ],
+    "reasons": [
+      "KOSPI -3.59% vs 종목 -4.47%, 5분 수익률 상관 0.92 — 종목 고유 요인이 약함"
+    ]
+  },
+  "events": [
+    {
+      "time": "2026-11-16T10:00:00+09:00",
+      "ret": -0.015757575757575748,
+      "z": 6.93,
+      "volume_ratio": 3.43,
+      "cum_before": -0.001210653753026647,
+      "cum_after": -0.016949152542372836,
+      "session_share": 0.301290684624018,
+      "score": 8.614503256496853,
+      "news": [
+        {
+          "time": "2026-11-16T09:54:40+09:00",
+          "title": "LS증권 \"삼성전자 높은 실적 가시성, '연산하는 메모리'로 재평가 가능성도\"",
+          "source": "비즈니스포스트",
+          "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTE5CTXlfaFhQN1BZOE5FVDhQQmRCOEdXQ244ZTBrNHBVZHVjNUtlZDluczVPUnBIc2VIaVZ4Z3pBbTNzaGxrUFNrZERKTFRuaTV0cnZOYTh6WnV4RzU2YUc1bzV5bmJvcENPRDJUckZocEN1d28?oc=5"
+        },
+        {
+          "time": "2026-11-16T08:34:00+09:00",
+          "title": "[리포트 브리핑]삼성전자, 'AI 생태계 확장의 최대 수혜' Not Rated - KB증권",
+          "source": "뉴스핌",
+          "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE5GdEk4eTA5WkFHWUVUNGhJNGZpUUdORjNSTkxMdFJVblNZRk5CeldLVEJVejhDTEhRUll2UEpmS19kQUpUQjZKVVp3LVRNV04zUUt4ZW5tNzRqX0Np?oc=5"
+        },
+        {
+          "time": "2026-11-16T08:45:34+09:00",
+          "title": "KB증권 “삼성전자, 탈엔비디아 시대 최대 수혜주”",
+          "source": "매일경제",
+          "link": "https://news.google.com/rss/articles/CBMiUkFVX3lxTFBaeUowLWNVS1A1Xy1kTy15alMtc2ZoMjhBa0xlTnF1eHhFaTR2dEtaWWhjbUdQV3pTUkRhVW9wZ3VSU3FkZndUWWhWV0ZUV2RzbGc?oc=5"
+        },
+        {
+          "time": "2026-11-16T09:07:00+09:00",
+          "title": "KB증권 \"삼성전자, 脫엔비디아 시대 최대 수혜주\"",
+          "source": "조선일보",
+          "link": "https://news.google.com/rss/articles/CBMigAFBVV95cUxQLS1CX1ZzVnBpWTNGMVlleHJBNUc2Q0ZGSF9xVlFoWkNYa0E3VWR6MlhxVlY2S01Yc2s4ajdrd1pFOUFpWndRVFRfSXBTd3ZvaWpUelBNeE1fRG1CM0xzQURlaVVhMk5ZQjN5NmdIWVNpWEZXdWNRX0hyeF9mN09oSQ?oc=5"
+        },
+        {
+          "time": "2026-11-16T09:50:23+09:00",
+          "title": "[The Numbers] KB證 “삼성전자, 脫엔비디아 시대 최대 수혜주\", 왜?…삼성 HBM 고객 65%의 의미",
+          "source": "뉴스스페이스",
+          "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE82REpFN3FNRFllUmNMVUVFdHp2b3dic3lsRG1oVHJaYlhQU1lQRVU0MC1nbG1xamdRam9nblJtQzctcXJJMWU2VmxmdHZmQ2UyQXlzNFJjRElrWlNnalJ4RQ?oc=5"
+        }
+      ]
+    },
+    {
+      "time": "2026-11-16T10:20:00+09:00",
+      "ret": -0.012143742255266377,
+      "z": 5.34,
+      "volume_ratio": 3.87,
+      "cum_before": -0.02300242130750607,
+      "cum_after": -0.03486682808716712,
+      "session_share": 0.23219284960301004,
+      "score": 7.114086061401734,
+      "news": [
+        {
+          "time": "2026-11-16T09:54:40+09:00",
+          "title": "LS증권 \"삼성전자 높은 실적 가시성, '연산하는 메모리'로 재평가 가능성도\"",
+          "source": "비즈니스포스트",
+          "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTE5CTXlfaFhQN1BZOE5FVDhQQmRCOEdXQ244ZTBrNHBVZHVjNUtlZDluczVPUnBIc2VIaVZ4Z3pBbTNzaGxrUFNrZERKTFRuaTV0cnZOYTh6WnV4RzU2YUc1bzV5bmJvcENPRDJUckZocEN1d28?oc=5"
+        },
+        {
+          "time": "2026-11-16T09:07:00+09:00",
+          "title": "KB증권 \"삼성전자, 脫엔비디아 시대 최대 수혜주\"",
+          "source": "조선일보",
+          "link": "https://news.google.com/rss/articles/CBMigAFBVV95cUxQLS1CX1ZzVnBpWTNGMVlleHJBNUc2Q0ZGSF9xVlFoWkNYa0E3VWR6MlhxVlY2S01Yc2s4ajdrd1pFOUFpWndRVFRfSXBTd3ZvaWpUelBNeE1fRG1CM0xzQURlaVVhMk5ZQjN5NmdIWVNpWEZXdWNRX0hyeF9mN09oSQ?oc=5"
+        },
+        {
+          "time": "2026-11-16T09:50:23+09:00",
+          "title": "[The Numbers] KB證 “삼성전자, 脫엔비디아 시대 최대 수혜주\", 왜?…삼성 HBM 고객 65%의 의미",
+          "source": "뉴스스페이스",
+          "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE82REpFN3FNRFllUmNMVUVFdHp2b3dic3lsRG1oVHJaYlhQU1lQRVU0MC1nbG1xamdRam9nblJtQzctcXJJMWU2VmxmdHZmQ2UyQXlzNFJjRElrWlNnalJ4RQ?oc=5"
+        },
+        {
+          "time": "2026-11-16T10:18:26+09:00",
+          "title": "[심층분석] 삼성전자, CES 2027 혁신상 19개 수상…AI 반도체·폴더블·디스플레이로 차세대 전자산업 주도권 경쟁",
+          "source": "뉴스밸류",
+          "link": "https://news.google.com/rss/articles/CBMiakFVX3lxTE5IalNEWlotemg1R0c2TlViNDFfQ0JJUWtrZTFiQ2xCQ3VHWTBBYTN6Rk5vd0Q1MHdKRi1YNWR5dEt5MTVGdVNoNDgxa0h3V1l0RFJEM3VpY3JFODFHV3J4cEFmWTgya1U1VUE?oc=5"
+        },
+        {
+          "time": "2026-11-16T10:25:58+09:00",
+          "title": "[버핏 리포트] 삼성전자, 젠슨 황 퇴진은 ‘AI 생태계 확장' 전환점...’탈 엔비디아' 최대 수혜주 - KB",
+          "source": "버핏연구소",
+          "link": "https://news.google.com/rss/articles/CBMiYkFVX3lxTE4wa2ZQcVVROUJQdG84c1l0azkxY05IMUdCU0ZtZ2hxbTlMR1VNT19KMm1Pb2RUWVJMNEFxRkV1aHB5VExISjhtZmxtUkw0NEJMVFVuMm9vVV96NTBCZDVBY25B?oc=5"
+        }
+      ]
+    },
+    {
+      "time": "2026-11-16T11:45:00+09:00",
+      "ret": -0.008521303258145374,
+      "z": 3.75,
+      "volume_ratio": 2.7,
+      "cum_before": -0.03389830508474578,
+      "cum_after": -0.042130750605326894,
+      "session_share": 0.16293047433398342,
+      "score": 4.286500237844241,
+      "news": [
+        {
+          "time": "2026-11-16T10:18:26+09:00",
+          "title": "[심층분석] 삼성전자, CES 2027 혁신상 19개 수상…AI 반도체·폴더블·디스플레이로 차세대 전자산업 주도권 경쟁",
+          "source": "뉴스밸류",
+          "link": "https://news.google.com/rss/articles/CBMiakFVX3lxTE5IalNEWlotemg1R0c2TlViNDFfQ0JJUWtrZTFiQ2xCQ3VHWTBBYTN6Rk5vd0Q1MHdKRi1YNWR5dEt5MTVGdVNoNDgxa0h3V1l0RFJEM3VpY3JFODFHV3J4cEFmWTgya1U1VUE?oc=5"
+        },
+        {
+          "time": "2026-11-16T10:25:58+09:00",
+          "title": "[버핏 리포트] 삼성전자, 젠슨 황 퇴진은 ‘AI 생태계 확장' 전환점...’탈 엔비디아' 최대 수혜주 - KB",
+          "source": "버핏연구소",
+          "link": "https://news.google.com/rss/articles/CBMiYkFVX3lxTE4wa2ZQcVVROUJQdG84c1l0azkxY05IMUdCU0ZtZ2hxbTlMR1VNT19KMm1Pb2RUWVJMNEFxRkV1aHB5VExISjhtZmxtUkw0NEJMVFVuMm9vVV96NTBCZDVBY25B?oc=5"
+        },
+        {
+          "time": "2026-11-16T10:26:30+09:00",
+          "title": "“AI·폴더블·차세대 메모리 기술력 입증”..삼성전자, ‘CES 2027’서 19개 혁신상 수상",
+          "source": "데일리카",
+          "link": "https://news.google.com/rss/articles/CBMidkFVX3lxTE1Zc3dsbWZhU0pERWc4YU1UY2Q3SzJ5SG5zVnEzbW11SVB1MXRCZC1FNk5kNkRoTFVDWnJTb1R4UWpFR0xtb1JKX0xJODZTSmpjMVdZMlBMQVV4Uld2WER0S05Tb3U2X0NyM0hpcVI1Wm5fQTlWN0E?oc=5"
+        },
+        {
+          "time": "2026-11-16T10:37:21+09:00",
+          "title": "코스피, 외국인 매도세 하락 출발...삼성전자 20만원도 깨져",
+          "source": "오피니언뉴스",
+          "link": "https://news.google.com/rss/articles/CBMickFVX3lxTE82Q0dGLXY5Rk9YWXVENDhQYjZKRGpfMmNWQTZ2ZnZ5SEtXOGk4MzBJOUZNdDV1NmlMd0JRR3YxQUZjcjFFWDgxVkpfYXpIekdhN1BKRUpoVnM2WktLSkV4REZFSHlTY3FyYlI1VTBwaXhlUQ?oc=5"
+        },
+        {
+          "time": "2026-11-16T11:00:00+09:00",
+          "title": "삼성전자, D램 점유율 38%…SK하이닉스 추격 속 메모리 경쟁 격화",
+          "source": "테크월드",
+          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE9qQ0xDSGZVa2xSclFuUFpESWxWX3JCUGpTb2ZBS0FaZl9PeU92UFZ2ZEpETkhuWm1abEF2VjJVM1pacDNKeVhNNUJKZUI3MUg4Q3RFY0diOE1fRDZlSTZRZ3ZMV2dLWjJW?oc=5"
+        }
+      ]
+    }
+  ],
+  "turning_point": {
+    "high_time": "2026-11-16T09:05:00+09:00",
+    "high": 0.00363196125907983,
+    "low_time": "2026-11-16T14:40:00+09:00",
+    "low": -0.0554479418886199,
+    "pattern": "고점 후 반락"
+  },
+  "closing_share": -0.11966032587223319,
+  "intraday_corr_kospi": 0.9247913930107801,
+  "intraday_note": "장중 봉은 09:05~14:55까지만 있어 마감 구간(14:55~15:30)은 일봉 종가로만 봅니다(그 구간 +0.56%).",
+  "intraday_coverage": "09:05~14:55",
+  "intraday_path": [
+    {
+      "time": "2026-11-16T09:05:00+09:00",
+      "price": 207250.0,
+      "volume": 248046.0
+    },
+    {
+      "time": "2026-11-16T09:10:00+09:00",
+      "price": 205500.0,
+      "volume": 208436.0
+    },
+    {
+      "time": "2026-11-16T09:15:00+09:00",
+      "price": 206250.0,
+      "volume": 255965.0
+    },
+    {
+      "time": "2026-11-16T09:20:00+09:00",
+      "price": 207000.0,
+      "volume": 207779.0
+    },
+    {
+      "time": "2026-11-16T09:25:00+09:00",
+      "price": 206500.0,
+      "volume": 375321.0
+    },
+    {
+      "time": "2026-11-16T09:30:00+09:00",
+      "price": 205500.0,
+      "volume": 175050.0
+    },
+    {
+      "time": "2026-11-16T09:35:00+09:00",
+      "price": 206250.0,
+      "volume": 143083.0
+    },
+    {
+      "time": "2026-11-16T09:40:00+09:00",
+      "price": 205500.0,
+      "volume": 124524.0
+    },
+    {
+      "time": "2026-11-16T09:45:00+09:00",
+      "price": 207000.0,
+      "volume": 181324.0
+    },
+    {
+      "time": "2026-11-16T09:50:00+09:00",
+      "price": 206750.0,
+      "volume": 146179.0
+    },
+    {
+      "time": "2026-11-16T09:55:00+09:00",
+      "price": 206250.0,
+      "volume": 109119.0
+    },
+    {
+      "time": "2026-11-16T10:00:00+09:00",
+      "price": 203000.0,
+      "volume": 524486.0
+    },
+    {
+      "time": "2026-11-16T10:05:00+09:00",
+      "price": 201750.0,
+      "volume": 235912.0
+    },
+    {
+      "time": "2026-11-16T10:10:00+09:00",
+      "price": 201250.0,
+      "volume": 257909.0
+    },
+    {
+      "time": "2026-11-16T10:15:00+09:00",
+      "price": 201750.0,
+      "volume": 108736.0
+    },
+    {
+      "time": "2026-11-16T10:20:00+09:00",
+      "price": 199300.0,
+      "volume": 592351.0
+    },
+    {
+      "time": "2026-11-16T10:25:00+09:00",
+      "price": 199000.0,
+      "volume": 371199.0
+    },
+    {
+      "time": "2026-11-16T10:30:00+09:00",
+      "price": 198800.0,
+      "volume": 269534.0
+    },
+    {
+      "time": "2026-11-16T10:35:00+09:00",
+      "price": 199200.0,
+      "volume": 180540.0
+    },
+    {
+      "time": "2026-11-16T10:40:00+09:00",
+      "price": 198600.0,
+      "volume": 289459.0
+    },
+    {
+      "time": "2026-11-16T10:45:00+09:00",
+      "price": 198200.0,
+      "volume": 261074.0
+    },
+    {
+      "time": "2026-11-16T10:50:00+09:00",
+      "price": 198300.0,
+      "volume": 175260.0
+    },
+    {
+      "time": "2026-11-16T10:55:00+09:00",
+      "price": 198500.0,
+      "volume": 155952.0
+    },
+    {
+      "time": "2026-11-16T11:00:00+09:00",
+      "price": 199900.0,
+      "volume": 173445.0
+    },
+    {
+      "time": "2026-11-16T11:05:00+09:00",
+      "price": 199900.0,
+      "volume": 87273.0
+    },
+    {
+      "time": "2026-11-16T11:10:00+09:00",
+      "price": 200000.0,
+      "volume": 101109.0
+    },
+    {
+      "time": "2026-11-16T11:15:00+09:00",
+      "price": 201000.0,
+      "volume": 213920.0
+    },
+    {
+      "time": "2026-11-16T11:20:00+09:00",
+      "price": 201000.0,
+      "volume": 62939.0
+    },
+    {
+      "time": "2026-11-16T11:25:00+09:00",
+      "price": 200250.0,
+      "volume": 102325.0
+    },
+    {
+      "time": "2026-11-16T11:30:00+09:00",
+      "price": 200250.0,
+      "volume": 35392.0
+    },
+    {
+      "time": "2026-11-16T11:35:00+09:00",
+      "price": 200000.0,
+      "volume": 113968.0
+    },
+    {
+      "time": "2026-11-16T11:40:00+09:00",
+      "price": 199500.0,
+      "volume": 144794.0
+    },
+    {
+      "time": "2026-11-16T11:45:00+09:00",
+      "price": 197800.0,
+      "volume": 412767.0
+    },
+    {
+      "time": "2026-11-16T11:50:00+09:00",
+      "price": 198400.0,
+      "volume": 171803.0
+    },
+    {
+      "time": "2026-11-16T11:55:00+09:00",
+      "price": 198800.0,
+      "volume": 114532.0
+    },
+    {
+      "time": "2026-11-16T12:00:00+09:00",
+      "price": 199200.0,
+      "volume": 69561.0
+    },
+    {
+      "time": "2026-11-16T12:05:00+09:00",
+      "price": 199300.0,
+      "volume": 80356.0
+    },
+    {
+      "time": "2026-11-16T12:10:00+09:00",
+      "price": 199300.0,
+      "volume": 102617.0
+    },
+    {
+      "time": "2026-11-16T12:15:00+09:00",
+      "price": 199100.0,
+      "volume": 86625.0
+    },
+    {
+      "time": "2026-11-16T12:20:00+09:00",
+      "price": 200250.0,
+      "volume": 119186.0
+    },
+    {
+      "time": "2026-11-16T12:25:00+09:00",
+      "price": 199700.0,
+      "volume": 130731.0
+    },
+    {
+      "time": "2026-11-16T12:30:00+09:00",
+      "price": 199400.0,
+      "volume": 122147.0
+    },
+    {
+      "time": "2026-11-16T12:35:00+09:00",
+      "price": 199000.0,
+      "volume": 104026.0
+    },
+    {
+      "time": "2026-11-16T12:40:00+09:00",
+      "price": 198700.0,
+      "volume": 107077.0
+    },
+    {
+      "time": "2026-11-16T12:45:00+09:00",
+      "price": 198400.0,
+      "volume": 115444.0
+    },
+    {
+      "time": "2026-11-16T12:50:00+09:00",
+      "price": 198200.0,
+      "volume": 124746.0
+    },
+    {
+      "time": "2026-11-16T12:55:00+09:00",
+      "price": 198400.0,
+      "volume": 164630.0
+    },
+    {
+      "time": "2026-11-16T13:00:00+09:00",
+      "price": 197900.0,
+      "volume": 141536.0
+    },
+    {
+      "time": "2026-11-16T13:05:00+09:00",
+      "price": 197500.0,
+      "volume": 180646.0
+    },
+    {
+      "time": "2026-11-16T13:10:00+09:00",
+      "price": 198500.0,
+      "volume": 153037.0
+    },
+    {
+      "time": "2026-11-16T13:15:00+09:00",
+      "price": 197800.0,
+      "volume": 101989.0
+    },
+    {
+      "time": "2026-11-16T13:20:00+09:00",
+      "price": 198750.0,
+      "volume": 186241.0
+    },
+    {
+      "time": "2026-11-16T13:25:00+09:00",
+      "price": 198500.0,
+      "volume": 132122.0
+    },
+    {
+      "time": "2026-11-16T13:30:00+09:00",
+      "price": 197700.0,
+      "volume": 135643.0
+    },
+    {
+      "time": "2026-11-16T13:35:00+09:00",
+      "price": 197600.0,
+      "volume": 137175.0
+    },
+    {
+      "time": "2026-11-16T13:40:00+09:00",
+      "price": 197300.0,
+      "volume": 158809.0
+    },
+    {
+      "time": "2026-11-16T13:45:00+09:00",
+      "price": 196800.0,
+      "volume": 206833.0
+    },
+    {
+      "time": "2026-11-16T13:50:00+09:00",
+      "price": 196300.0,
+      "volume": 179493.0
+    },
+    {
+      "time": "2026-11-16T13:55:00+09:00",
+      "price": 196800.0,
+      "volume": 169861.0
+    },
+    {
+      "time": "2026-11-16T14:00:00+09:00",
+      "price": 196600.0,
+      "volume": 102300.0
+    },
+    {
+      "time": "2026-11-16T14:05:00+09:00",
+      "price": 196100.0,
+      "volume": 167794.0
+    },
+    {
+      "time": "2026-11-16T14:10:00+09:00",
+      "price": 196000.0,
+      "volume": 146682.0
+    },
+    {
+      "time": "2026-11-16T14:15:00+09:00",
+      "price": 196700.0,
+      "volume": 148139.0
+    },
+    {
+      "time": "2026-11-16T14:20:00+09:00",
+      "price": 196200.0,
+      "volume": 182979.0
+    },
+    {
+      "time": "2026-11-16T14:25:00+09:00",
+      "price": 195800.0,
+      "volume": 165604.0
+    },
+    {
+      "time": "2026-11-16T14:30:00+09:00",
+      "price": 195700.0,
+      "volume": 129303.0
+    },
+    {
+      "time": "2026-11-16T14:35:00+09:00",
+      "price": 195200.0,
+      "volume": 166940.0
+    },
+    {
+      "time": "2026-11-16T14:40:00+09:00",
+      "price": 195050.0,
+      "volume": 134276.0
+    },
+    {
+      "time": "2026-11-16T14:45:00+09:00",
+      "price": 195200.0,
+      "volume": 162914.0
+    },
+    {
+      "time": "2026-11-16T14:50:00+09:00",
+      "price": 195300.0,
+      "volume": 135610.0
+    },
+    {
+      "time": "2026-11-16T14:55:00+09:00",
+      "price": 195700.0,
+      "volume": 13079513.0
+    }
+  ],
+  "timeline_items": [
+    {
+      "time": "2026-11-16T10:00:00+09:00",
+      "ret": -0.015757575757575748,
+      "z": 6.93,
+      "volume_ratio": 3.43,
+      "cum_before": -0.001210653753026647,
+      "cum_after": -0.016949152542372836,
+      "session_share": 0.301290684624018,
+      "score": 8.614503256496853,
+      "news": [
+        {
+          "time": "2026-11-16T09:54:40+09:00",
+          "title": "LS증권 \"삼성전자 높은 실적 가시성, '연산하는 메모리'로 재평가 가능성도\"",
+          "source": "비즈니스포스트",
+          "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTE5CTXlfaFhQN1BZOE5FVDhQQmRCOEdXQ244ZTBrNHBVZHVjNUtlZDluczVPUnBIc2VIaVZ4Z3pBbTNzaGxrUFNrZERKTFRuaTV0cnZOYTh6WnV4RzU2YUc1bzV5bmJvcENPRDJUckZocEN1d28?oc=5"
+        },
+        {
+          "time": "2026-11-16T08:34:00+09:00",
+          "title": "[리포트 브리핑]삼성전자, 'AI 생태계 확장의 최대 수혜' Not Rated - KB증권",
+          "source": "뉴스핌",
+          "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE5GdEk4eTA5WkFHWUVUNGhJNGZpUUdORjNSTkxMdFJVblNZRk5CeldLVEJVejhDTEhRUll2UEpmS19kQUpUQjZKVVp3LVRNV04zUUt4ZW5tNzRqX0Np?oc=5"
+        },
+        {
+          "time": "2026-11-16T08:45:34+09:00",
+          "title": "KB증권 “삼성전자, 탈엔비디아 시대 최대 수혜주”",
+          "source": "매일경제",
+          "link": "https://news.google.com/rss/articles/CBMiUkFVX3lxTFBaeUowLWNVS1A1Xy1kTy15alMtc2ZoMjhBa0xlTnF1eHhFaTR2dEtaWWhjbUdQV3pTUkRhVW9wZ3VSU3FkZndUWWhWV0ZUV2RzbGc?oc=5"
+        },
+        {
+          "time": "2026-11-16T09:07:00+09:00",
+          "title": "KB증권 \"삼성전자, 脫엔비디아 시대 최대 수혜주\"",
+          "source": "조선일보",
+          "link": "https://news.google.com/rss/articles/CBMigAFBVV95cUxQLS1CX1ZzVnBpWTNGMVlleHJBNUc2Q0ZGSF9xVlFoWkNYa0E3VWR6MlhxVlY2S01Yc2s4ajdrd1pFOUFpWndRVFRfSXBTd3ZvaWpUelBNeE1fRG1CM0xzQURlaVVhMk5ZQjN5NmdIWVNpWEZXdWNRX0hyeF9mN09oSQ?oc=5"
+        },
+        {
+          "time": "2026-11-16T09:50:23+09:00",
+          "title": "[The Numbers] KB證 “삼성전자, 脫엔비디아 시대 최대 수혜주\", 왜?…삼성 HBM 고객 65%의 의미",
+          "source": "뉴스스페이스",
+          "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE82REpFN3FNRFllUmNMVUVFdHp2b3dic3lsRG1oVHJaYlhQU1lQRVU0MC1nbG1xamdRam9nblJtQzctcXJJMWU2VmxmdHZmQ2UyQXlzNFJjRElrWlNnalJ4RQ?oc=5"
+        }
+      ],
+      "price": 203000.0,
+      "kind": "turn_down"
+    },
+    {
+      "time": "2026-11-16T10:20:00+09:00",
+      "ret": -0.012143742255266377,
+      "z": 5.34,
+      "volume_ratio": 3.87,
+      "cum_before": -0.02300242130750607,
+      "cum_after": -0.03486682808716712,
+      "session_share": 0.23219284960301004,
+      "score": 7.114086061401734,
+      "news": [
+        {
+          "time": "2026-11-16T09:54:40+09:00",
+          "title": "LS증권 \"삼성전자 높은 실적 가시성, '연산하는 메모리'로 재평가 가능성도\"",
+          "source": "비즈니스포스트",
+          "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTE5CTXlfaFhQN1BZOE5FVDhQQmRCOEdXQ244ZTBrNHBVZHVjNUtlZDluczVPUnBIc2VIaVZ4Z3pBbTNzaGxrUFNrZERKTFRuaTV0cnZOYTh6WnV4RzU2YUc1bzV5bmJvcENPRDJUckZocEN1d28?oc=5"
+        },
+        {
+          "time": "2026-11-16T09:07:00+09:00",
+          "title": "KB증권 \"삼성전자, 脫엔비디아 시대 최대 수혜주\"",
+          "source": "조선일보",
+          "link": "https://news.google.com/rss/articles/CBMigAFBVV95cUxQLS1CX1ZzVnBpWTNGMVlleHJBNUc2Q0ZGSF9xVlFoWkNYa0E3VWR6MlhxVlY2S01Yc2s4ajdrd1pFOUFpWndRVFRfSXBTd3ZvaWpUelBNeE1fRG1CM0xzQURlaVVhMk5ZQjN5NmdIWVNpWEZXdWNRX0hyeF9mN09oSQ?oc=5"
+        },
+        {
+          "time": "2026-11-16T09:50:23+09:00",
+          "title": "[The Numbers] KB證 “삼성전자, 脫엔비디아 시대 최대 수혜주\", 왜?…삼성 HBM 고객 65%의 의미",
+          "source": "뉴스스페이스",
+          "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE82REpFN3FNRFllUmNMVUVFdHp2b3dic3lsRG1oVHJaYlhQU1lQRVU0MC1nbG1xamdRam9nblJtQzctcXJJMWU2VmxmdHZmQ2UyQXlzNFJjRElrWlNnalJ4RQ?oc=5"
+        },
+        {
+          "time": "2026-11-16T10:18:26+09:00",
+          "title": "[심층분석] 삼성전자, CES 2027 혁신상 19개 수상…AI 반도체·폴더블·디스플레이로 차세대 전자산업 주도권 경쟁",
+          "source": "뉴스밸류",
+          "link": "https://news.google.com/rss/articles/CBMiakFVX3lxTE5IalNEWlotemg1R0c2TlViNDFfQ0JJUWtrZTFiQ2xCQ3VHWTBBYTN6Rk5vd0Q1MHdKRi1YNWR5dEt5MTVGdVNoNDgxa0h3V1l0RFJEM3VpY3JFODFHV3J4cEFmWTgya1U1VUE?oc=5"
+        },
+        {
+          "time": "2026-11-16T10:25:58+09:00",
+          "title": "[버핏 리포트] 삼성전자, 젠슨 황 퇴진은 ‘AI 생태계 확장' 전환점...’탈 엔비디아' 최대 수혜주 - KB",
+          "source": "버핏연구소",
+          "link": "https://news.google.com/rss/articles/CBMiYkFVX3lxTE4wa2ZQcVVROUJQdG84c1l0azkxY05IMUdCU0ZtZ2hxbTlMR1VNT19KMm1Pb2RUWVJMNEFxRkV1aHB5VExISjhtZmxtUkw0NEJMVFVuMm9vVV96NTBCZDVBY25B?oc=5"
+        }
+      ],
+      "price": 199300.0,
+      "kind": "turn_down"
+    },
+    {
+      "time": "2026-11-16T11:45:00+09:00",
+      "ret": -0.008521303258145374,
+      "z": 3.75,
+      "volume_ratio": 2.7,
+      "cum_before": -0.03389830508474578,
+      "cum_after": -0.042130750605326894,
+      "session_share": 0.16293047433398342,
+      "score": 4.286500237844241,
+      "news": [
+        {
+          "time": "2026-11-16T10:18:26+09:00",
+          "title": "[심층분석] 삼성전자, CES 2027 혁신상 19개 수상…AI 반도체·폴더블·디스플레이로 차세대 전자산업 주도권 경쟁",
+          "source": "뉴스밸류",
+          "link": "https://news.google.com/rss/articles/CBMiakFVX3lxTE5IalNEWlotemg1R0c2TlViNDFfQ0JJUWtrZTFiQ2xCQ3VHWTBBYTN6Rk5vd0Q1MHdKRi1YNWR5dEt5MTVGdVNoNDgxa0h3V1l0RFJEM3VpY3JFODFHV3J4cEFmWTgya1U1VUE?oc=5"
+        },
+        {
+          "time": "2026-11-16T10:25:58+09:00",
+          "title": "[버핏 리포트] 삼성전자, 젠슨 황 퇴진은 ‘AI 생태계 확장' 전환점...’탈 엔비디아' 최대 수혜주 - KB",
+          "source": "버핏연구소",
+          "link": "https://news.google.com/rss/articles/CBMiYkFVX3lxTE4wa2ZQcVVROUJQdG84c1l0azkxY05IMUdCU0ZtZ2hxbTlMR1VNT19KMm1Pb2RUWVJMNEFxRkV1aHB5VExISjhtZmxtUkw0NEJMVFVuMm9vVV96NTBCZDVBY25B?oc=5"
+        },
+        {
+          "time": "2026-11-16T10:26:30+09:00",
+          "title": "“AI·폴더블·차세대 메모리 기술력 입증”..삼성전자, ‘CES 2027’서 19개 혁신상 수상",
+          "source": "데일리카",
+          "link": "https://news.google.com/rss/articles/CBMidkFVX3lxTE1Zc3dsbWZhU0pERWc4YU1UY2Q3SzJ5SG5zVnEzbW11SVB1MXRCZC1FNk5kNkRoTFVDWnJTb1R4UWpFR0xtb1JKX0xJODZTSmpjMVdZMlBMQVV4Uld2WER0S05Tb3U2X0NyM0hpcVI1Wm5fQTlWN0E?oc=5"
+        },
+        {
+          "time": "2026-11-16T10:37:21+09:00",
+          "title": "코스피, 외국인 매도세 하락 출발...삼성전자 20만원도 깨져",
+          "source": "오피니언뉴스",
+          "link": "https://news.google.com/rss/articles/CBMickFVX3lxTE82Q0dGLXY5Rk9YWXVENDhQYjZKRGpfMmNWQTZ2ZnZ5SEtXOGk4MzBJOUZNdDV1NmlMd0JRR3YxQUZjcjFFWDgxVkpfYXpIekdhN1BKRUpoVnM2WktLSkV4REZFSHlTY3FyYlI1VTBwaXhlUQ?oc=5"
+        },
+        {
+          "time": "2026-11-16T11:00:00+09:00",
+          "title": "삼성전자, D램 점유율 38%…SK하이닉스 추격 속 메모리 경쟁 격화",
+          "source": "테크월드",
+          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE9qQ0xDSGZVa2xSclFuUFpESWxWX3JCUGpTb2ZBS0FaZl9PeU92UFZ2ZEpETkhuWm1abEF2VjJVM1pacDNKeVhNNUJKZUI3MUg4Q3RFY0diOE1fRDZlSTZRZ3ZMV2dLWjJW?oc=5"
+        }
+      ],
+      "price": 197800.0,
+      "kind": "turn_down"
+    }
+  ],
+  "overnight_news": [
+    {
+      "time": "2026-11-16T06:19:13+09:00",
+      "title": "삼성전자 46조원 HBM 증설, 美 투자 매체가 2028년 가동률부터 따진 이유",
+      "source": "글로벌이코노믹",
+      "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxQODRMV3UwTEhQMFBhYnVJbU9fZmF1RDZwemVmaEczOGhadklYTVYzS09DSFpmWE9WdXMwT0RDYkFyMkZiLTNtRDlOMV9nYjhocE14b1l4d18teDk4VV9XNlMzVnlxb084LUtFMXgzWVZrOFFDbFk2MlRDOGFFRlQ5dFdoTC1HTjlG?oc=5"
+    },
+    {
+      "time": "2026-11-16T07:36:08+09:00",
+      "title": "\"삼성전자, '연산하는 메모리'가 주가 재평가 열쇠\"-LS",
+      "source": "한국경제",
+      "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTFBWQlJEdkNMdGlVVUNMYXJLck54V0FBYnVRMEVIRmJzU0hNcDFUQVdjZHhGZndicVpHcmFGUEp6S2VLQmdJYS1ZUGo5UEdFOHI3aGxHWU1rbDFzUQ?oc=5"
+    },
+    {
+      "time": "2026-11-16T07:49:00+09:00",
+      "title": "KB證 “삼성전자, 脫엔비디아 시대 최대 수혜주… AI 생태계 확장 본격화”",
+      "source": "Chosunbiz",
+      "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxNWDV5TFF0MWNnRzFIVU5VNkVGYkp6SEVERXJtelc3eUlIYWdkMVY2OWx0LXFWQWtIX3BVUENROHp4SnJ4VFMxQzh5RG9sSDQycnB3d0E5TXpYemQwOWVrQ25vSUl0VG96dng4cDR0Y2xCbWxCQnVDWHFmTkkyS3h0LWtjbmVPdS1Y0gGcAUFVX3lxTFB5dGlzOUhMb2VlVWp0NGJVNHgwM1BaMzB0SXNtWEFEVVJmNVJrSE1yb0lFOFJYYXpCSkNIendpYXhkX2VHemRoeFhnVjZlMnRSU2Y5b1g3RndJaG9jOGZUZVhiT25LQjFidXozYnhLS3NmTWZWWGdoX2xtNk9qeVJNbWZWM3VqaDBtZURUUWRoZy1PMG1Md0doSlhxMQ?oc=5"
+    },
+    {
+      "time": "2026-11-16T08:34:00+09:00",
+      "title": "[리포트 브리핑]삼성전자, 'AI 생태계 확장의 최대 수혜' Not Rated - KB증권",
+      "source": "뉴스핌",
+      "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE5GdEk4eTA5WkFHWUVUNGhJNGZpUUdORjNSTkxMdFJVblNZRk5CeldLVEJVejhDTEhRUll2UEpmS19kQUpUQjZKVVp3LVRNV04zUUt4ZW5tNzRqX0Np?oc=5"
+    },
+    {
+      "time": "2026-11-16T08:45:34+09:00",
+      "title": "KB증권 “삼성전자, 탈엔비디아 시대 최대 수혜주”",
+      "source": "매일경제",
+      "link": "https://news.google.com/rss/articles/CBMiUkFVX3lxTFBaeUowLWNVS1A1Xy1kTy15alMtc2ZoMjhBa0xlTnF1eHhFaTR2dEtaWWhjbUdQV3pTUkRhVW9wZ3VSU3FkZndUWWhWV0ZUV2RzbGc?oc=5"
+    }
+  ],
+  "top_news": [
+    {
+      "time": "2026-11-16T06:19:13+09:00",
+      "title": "삼성전자 46조원 HBM 증설, 美 투자 매체가 2028년 가동률부터 따진 이유",
+      "source": "글로벌이코노믹",
+      "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxQODRMV3UwTEhQMFBhYnVJbU9fZmF1RDZwemVmaEczOGhadklYTVYzS09DSFpmWE9WdXMwT0RDYkFyMkZiLTNtRDlOMV9nYjhocE14b1l4d18teDk4VV9XNlMzVnlxb084LUtFMXgzWVZrOFFDbFk2MlRDOGFFRlQ5dFdoTC1HTjlG?oc=5"
+    },
+    {
+      "time": "2026-11-16T09:54:40+09:00",
+      "title": "LS증권 \"삼성전자 높은 실적 가시성, '연산하는 메모리'로 재평가 가능성도\"",
+      "source": "비즈니스포스트",
+      "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTE5CTXlfaFhQN1BZOE5FVDhQQmRCOEdXQ244ZTBrNHBVZHVjNUtlZDluczVPUnBIc2VIaVZ4Z3pBbTNzaGxrUFNrZERKTFRuaTV0cnZOYTh6WnV4RzU2YUc1bzV5bmJvcENPRDJUckZocEN1d28?oc=5"
+    },
+    {
+      "time": "2026-11-16T07:36:08+09:00",
+      "title": "\"삼성전자, '연산하는 메모리'가 주가 재평가 열쇠\"-LS",
+      "source": "한국경제",
+      "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTFBWQlJEdkNMdGlVVUNMYXJLck54V0FBYnVRMEVIRmJzU0hNcDFUQVdjZHhGZndicVpHcmFGUEp6S2VLQmdJYS1ZUGo5UEdFOHI3aGxHWU1rbDFzUQ?oc=5"
+    },
+    {
+      "time": "2026-11-16T07:49:00+09:00",
+      "title": "KB證 “삼성전자, 脫엔비디아 시대 최대 수혜주… AI 생태계 확장 본격화”",
+      "source": "Chosunbiz",
+      "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxNWDV5TFF0MWNnRzFIVU5VNkVGYkp6SEVERXJtelc3eUlIYWdkMVY2OWx0LXFWQWtIX3BVUENROHp4SnJ4VFMxQzh5RG9sSDQycnB3d0E5TXpYemQwOWVrQ25vSUl0VG96dng4cDR0Y2xCbWxCQnVDWHFmTkkyS3h0LWtjbmVPdS1Y0gGcAUFVX3lxTFB5dGlzOUhMb2VlVWp0NGJVNHgwM1BaMzB0SXNtWEFEVVJmNVJrSE1yb0lFOFJYYXpCSkNIendpYXhkX2VHemRoeFhnVjZlMnRSU2Y5b1g3RndJaG9jOGZUZVhiT25LQjFidXozYnhLS3NmTWZWWGdoX2xtNk9qeVJNbWZWM3VqaDBtZURUUWRoZy1PMG1Md0doSlhxMQ?oc=5"
+    },
+    {
+      "time": "2026-11-16T08:34:00+09:00",
+      "title": "[리포트 브리핑]삼성전자, 'AI 생태계 확장의 최대 수혜' Not Rated - KB증권",
+      "source": "뉴스핌",
+      "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE5GdEk4eTA5WkFHWUVUNGhJNGZpUUdORjNSTkxMdFJVblNZRk5CeldLVEJVejhDTEhRUll2UEpmS19kQUpUQjZKVVp3LVRNV04zUUt4ZW5tNzRqX0Np?oc=5"
+    },
+    {
+      "time": "2026-11-16T08:45:34+09:00",
+      "title": "KB증권 “삼성전자, 탈엔비디아 시대 최대 수혜주”",
+      "source": "매일경제",
+      "link": "https://news.google.com/rss/articles/CBMiUkFVX3lxTFBaeUowLWNVS1A1Xy1kTy15alMtc2ZoMjhBa0xlTnF1eHhFaTR2dEtaWWhjbUdQV3pTUkRhVW9wZ3VSU3FkZndUWWhWV0ZUV2RzbGc?oc=5"
+    }
+  ],
+  "disclosures": [],
+  "disclosure_note": null,
+  "flows": null,
+  "flow_story": null,
+  "flow_status": {
+    "state": "pending",
+    "detail": "최신 2026-11-13"
+  },
+  "context": {},
+  "market": {
+    "index": "KOSPI",
+    "date": "2026-11-16",
+    "rise": 263,
+    "fall": 615,
+    "steady": 34,
+    "upper": 0,
+    "lower": 0,
+    "individual": 13507.0,
+    "foreign": -13762.0,
+    "institution": -4628.0,
+    "prev_close": 5290.53,
+    "open": 5305.4,
+    "high": 5327.99,
+    "low": 5069.83,
+    "close": 5100.5
+  },
+  "earnings_reactions": null,
+  "forecasts": [
+    {
+      "model": "No macro ensemble",
+      "hit": true,
+      "verdict": "맞음 — 예측 하락 45%, 실제 하락(-4.47%)",
+      "legs": "갭 +0.24%(보합) · 세션 -4.70%(하락)",
+      "where": "결과는 주로 장중에서 정해졌습니다.",
+      "band": 0.0127085477046405,
+      "probs": [
+        0.4522109627960479,
+        0.312723598984113,
+        0.2350654382198391
+      ],
+      "actual": "하락",
+      "predicted": "하락"
+    },
+    {
+      "model": "Mean ensemble",
+      "hit": true,
+      "verdict": "맞음 — 예측 하락 46%, 실제 하락(-4.47%)",
+      "legs": "갭 +0.24%(보합) · 세션 -4.70%(하락)",
+      "where": "결과는 주로 장중에서 정해졌습니다.",
+      "band": 0.0127085477046405,
+      "probs": [
+        0.4633961536393925,
+        0.3014238081097007,
+        0.2351800382509067
+      ],
+      "actual": "하락",
+      "predicted": "하락"
+    },
+    {
+      "model": "Candidate expanding",
+      "hit": true,
+      "verdict": "맞음 — 예측 하락 50%, 실제 하락(-4.47%)",
+      "legs": "갭 +0.24%(보합) · 세션 -4.70%(하락)",
+      "where": "결과는 주로 장중에서 정해졌습니다.",
+      "band": 0.0127085477046405,
+      "probs": [
+        0.5037158550430482,
+        0.2845734575007562,
+        0.2117106874561956
+      ],
+      "actual": "하락",
+      "predicted": "하락"
+    }
+  ],
+  "price_check": "1거래일 예상 구간 192,845~214,800원 · 종가 196,800원 → 구간 안",
+  "disclaimer": "시간이 맞는 것이지 원인 확정이 아닙니다. 뉴스 없이 움직이는 날(수급·프로그램·옵션 만기)이 많고, 기사 발행 시각은 실제 정보 유통보다 늦거나 앞섭니다. 이 절은 설명 도구이며 다음날 예측에 자동 반영되지 않습니다."
+}

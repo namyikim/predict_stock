@@ -3,40 +3,82 @@
   "name": "SK하이닉스",
   "peer_name": "삼성전자",
   "session_date": "2026-11-16",
-  "generated_at": "2026-11-17 02:11 KST",
+  "generated_at": "2026-11-17 08:03 KST",
   "summary": {
     "prev_close": 1216000.0,
-    "open": NaN,
-    "high": NaN,
-    "low": NaN,
-    "close": NaN,
-    "gap": NaN,
-    "session": NaN,
-    "c2c": NaN,
-    "high_vs_open": NaN,
-    "low_vs_open": NaN,
-    "volume": 4809580.0,
-    "volume_ratio": 1.2483130729050465,
+    "open": 1216000.0,
+    "high": 1222000.0,
+    "low": 1113000.0,
+    "close": 1120000.0,
+    "gap": 0.0,
+    "session": -0.07894736842105265,
+    "c2c": -0.07894736842105265,
+    "high_vs_open": 0.004934210526315708,
+    "low_vs_open": -0.08470394736842102,
+    "volume": 4189272.0,
+    "volume_ratio": 1.0873138618247478,
     "kospi_c2c": NaN,
-    "peer_c2c": NaN,
-    "usdkrw_chg": 0.0010196474093853158,
+    "peer_c2c": -0.044660194174757306,
+    "usdkrw_chg": 0.0009671137397877505,
     "us_nights": 1,
     "sox_ret": -0.03429722376875555,
     "nasdaq_ret": -0.009060139497874764,
     "micron_ret": -0.025211668780698027,
     "prior_streak": -2,
-    "ma5": 1239750.0,
-    "ma20": 1306368.4210526317,
+    "ma5": 1215800.0,
+    "ma20": 1297050.0,
     "high20": 1587000.0,
     "high252": 2986352.5777339735,
     "price_context": {
-      "breakouts": {},
-      "relative": {}
+      "breakouts": {
+        "20": {
+          "prior_high": 1587000.0,
+          "distance": -0.29426591052299933,
+          "close_breakout": false,
+          "intraday_breakout": false
+        },
+        "60": {
+          "prior_high": 1935000.0,
+          "distance": -0.4211886304909561,
+          "close_breakout": false,
+          "intraday_breakout": false
+        }
+      },
+      "relative": {
+        "5": {
+          "start": "2026-11-09",
+          "end": "2026-11-16",
+          "own": -0.014084507042253502,
+          "peer": 0.03633491311216419,
+          "excess": -0.05041942015441769
+        },
+        "20": {
+          "start": "2026-10-19",
+          "end": "2026-11-16",
+          "own": -0.12294440093970238,
+          "peer": -0.0972477064220183,
+          "excess": -0.025696694517684082
+        },
+        "60": {
+          "start": "2026-08-18",
+          "end": "2026-11-16",
+          "own": -0.32596701541353956,
+          "peer": -0.25433238143569903,
+          "excess": -0.07163463397784053
+        }
+      }
     },
-    "range": NaN,
-    "peer_range": NaN,
+    "range": 0.09793351302785269,
+    "peer_range": 0.06666666666666665,
     "prior_5d": 0.07420494699646651,
-    "ma_touches": [],
+    "ma_touches": [
+      {
+        "ma": 5,
+        "level": 1219000.0,
+        "kind": "resistance",
+        "price": 1222000.0
+      }
+    ],
     "micron_ah": {
       "regular_close": 778.4000244140625,
       "last": 763.773,
@@ -70,6 +112,7 @@
         "after_high": -0.0008974415975957495
       }
     },
+    "from_high": -0.0800877555010101,
     "buyback": [
       {
         "kind": "직접 취득",
@@ -91,7 +134,7 @@
     "foreign_pressure": {
       "state": "selling_eased",
       "previous_ratio": -0.17548392909480734,
-      "recent_ratio": -0.052974878487814896,
+      "recent_ratio": -0.05475077957381497,
       "previous_daily_net": -823497.4,
       "recent_daily_net": -202618.4
     },
@@ -121,30 +164,6 @@
           "title": "美법원, D램 담합 소송 허용…삼성·SK하이닉스 'HBM 생산' 영향주나",
           "source": "뉴스핌",
           "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE5KMnM0T212RDEzTWs4dzhCUHNEWkVXc0xUVHYyT1hTOVEwYkFxVHEyQ3JlelpTbmJZYnRZSDNldWZOOXFlRXlSNFlSNzBOc1gxWUgtaHJyWFFpUkpS?oc=5"
-        },
-        {
-          "time": "2026-11-16T09:14:54+09:00",
-          "title": "메모리 공장 속 소부장 실험장…SK하이닉스 ‘트리니티팹’ 가보니",
-          "source": "조선일보",
-          "link": "https://news.google.com/rss/articles/CBMigwFBVV95cUxPQmVtMHFDdm85UGswclJXc0FWZjJyR282c1FmRVFXazZhMWNDUl80MFNGdmsyQzl1SjhEdnFnMl92ck93TjBWRHNMZE10REVpeXhlWmtkVEFjcFUyazlWWVBrNko2ODlIaXY4R3hTVWpaMWF3Tng4NUVXRzFnSFNOT2ZkNA?oc=5"
-        },
-        {
-          "time": "2026-11-16T09:26:11+09:00",
-          "title": "한쪽은 메모리 공장, 한쪽은 소부장 실험실... SK하이닉스 용인 팹 3층 가보니",
-          "source": "디일렉",
-          "link": "https://news.google.com/rss/articles/CBMiZkFVX3lxTE55YkpGY1YzZmRBV1ZocnBUQjRfbDY2cGN4M0xiNm5EdklBSUZLSEsteFZ4ZFo0bHVwWU5iVWIxY3B1cVBvYy13ZnQyS0RSbW1oVUY3aWV0ckFzS0RBNzRNSUVQemNBQQ?oc=5"
-        },
-        {
-          "time": "2026-11-16T10:09:40+09:00",
-          "title": "[특징주] 삼성전자 '상승세' SK하이닉스 '약세'.. 엔비디아발 우려",
-          "source": "글로벌이코노믹",
-          "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxNSzdMTC1lUEFuQVhwSWlxN2ZDRUF0RmVSc0JsZi1iVXJfSmk2eExOaTB6VWM2cXR3MV84MkV1SjhuZTh6T0F4cHpvMkpDTmEtaUQ4aWRfTm0xLVQtelVBRVBBSjNfSlluOTc0TzZicGVoOHk2WlBGdk05X1JoOE9KckJmVE1ZOFFf?oc=5"
-        },
-        {
-          "time": "2026-11-16T09:00:00+09:00",
-          "title": "SK하이닉스 \"소부장 기술개발 실패도 함께 감수\"…기술개발·금융 전주기 지원",
-          "source": "디지털데일리",
-          "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE0tY1ctemd2TTVnM1pkV2xUM1NiSm5pUGhPRFl3bTNrY3A2OHNPVnhoWGctcnVzYnBJcW9vbnNPYWNGYmhmdXp4ZkQ5TklrM1ZMVUpoR0FmYkNmNV9QRGlIZk1BZXU?oc=5"
         }
       ]
     },
@@ -163,30 +182,6 @@
           "title": "美법원, D램 담합 소송 허용…삼성·SK하이닉스 'HBM 생산' 영향주나",
           "source": "뉴스핌",
           "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE5KMnM0T212RDEzTWs4dzhCUHNEWkVXc0xUVHYyT1hTOVEwYkFxVHEyQ3JlelpTbmJZYnRZSDNldWZOOXFlRXlSNFlSNzBOc1gxWUgtaHJyWFFpUkpS?oc=5"
-        },
-        {
-          "time": "2026-11-16T09:14:54+09:00",
-          "title": "메모리 공장 속 소부장 실험장…SK하이닉스 ‘트리니티팹’ 가보니",
-          "source": "조선일보",
-          "link": "https://news.google.com/rss/articles/CBMigwFBVV95cUxPQmVtMHFDdm85UGswclJXc0FWZjJyR282c1FmRVFXazZhMWNDUl80MFNGdmsyQzl1SjhEdnFnMl92ck93TjBWRHNMZE10REVpeXhlWmtkVEFjcFUyazlWWVBrNko2ODlIaXY4R3hTVWpaMWF3Tng4NUVXRzFnSFNOT2ZkNA?oc=5"
-        },
-        {
-          "time": "2026-11-16T09:26:11+09:00",
-          "title": "한쪽은 메모리 공장, 한쪽은 소부장 실험실... SK하이닉스 용인 팹 3층 가보니",
-          "source": "디일렉",
-          "link": "https://news.google.com/rss/articles/CBMiZkFVX3lxTE55YkpGY1YzZmRBV1ZocnBUQjRfbDY2cGN4M0xiNm5EdklBSUZLSEsteFZ4ZFo0bHVwWU5iVWIxY3B1cVBvYy13ZnQyS0RSbW1oVUY3aWV0ckFzS0RBNzRNSUVQemNBQQ?oc=5"
-        },
-        {
-          "time": "2026-11-16T10:09:40+09:00",
-          "title": "[특징주] 삼성전자 '상승세' SK하이닉스 '약세'.. 엔비디아발 우려",
-          "source": "글로벌이코노믹",
-          "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxNSzdMTC1lUEFuQVhwSWlxN2ZDRUF0RmVSc0JsZi1iVXJfSmk2eExOaTB6VWM2cXR3MV84MkV1SjhuZTh6T0F4cHpvMkpDTmEtaUQ4aWRfTm0xLVQtelVBRVBBSjNfSlluOTc0TzZicGVoOHk2WlBGdk05X1JoOE9KckJmVE1ZOFFf?oc=5"
-        },
-        {
-          "time": "2026-11-16T09:00:00+09:00",
-          "title": "SK하이닉스 \"소부장 기술개발 실패도 함께 감수\"…기술개발·금융 전주기 지원",
-          "source": "디지털데일리",
-          "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE0tY1ctemd2TTVnM1pkV2xUM1NiSm5pUGhPRFl3bTNrY3A2OHNPVnhoWGctcnVzYnBJcW9vbnNPYWNGYmhmdXp4ZkQ5TklrM1ZMVUpoR0FmYkNmNV9QRGlIZk1BZXU?oc=5"
         }
       ]
     }
@@ -198,9 +193,9 @@
     "low": -0.07685950413223142,
     "pattern": "고점 후 반락"
   },
-  "closing_share": NaN,
+  "closing_share": -0.034019695613250495,
   "intraday_corr_kospi": 0.9426847167266075,
-  "intraday_note": "장중 봉은 09:05~14:55까지만 있어 마감 구간(14:55~15:30)은 일봉 종가로만 봅니다(그 구간 +nan%).",
+  "intraday_note": "장중 봉은 09:05~14:55까지만 있어 마감 구간(14:55~15:30)은 일봉 종가로만 봅니다(그 구간 +0.27%).",
   "intraday_coverage": "09:05~14:55",
   "intraday_path": [
     {
@@ -575,30 +570,6 @@
           "title": "美법원, D램 담합 소송 허용…삼성·SK하이닉스 'HBM 생산' 영향주나",
           "source": "뉴스핌",
           "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE5KMnM0T212RDEzTWs4dzhCUHNEWkVXc0xUVHYyT1hTOVEwYkFxVHEyQ3JlelpTbmJZYnRZSDNldWZOOXFlRXlSNFlSNzBOc1gxWUgtaHJyWFFpUkpS?oc=5"
-        },
-        {
-          "time": "2026-11-16T09:14:54+09:00",
-          "title": "메모리 공장 속 소부장 실험장…SK하이닉스 ‘트리니티팹’ 가보니",
-          "source": "조선일보",
-          "link": "https://news.google.com/rss/articles/CBMigwFBVV95cUxPQmVtMHFDdm85UGswclJXc0FWZjJyR282c1FmRVFXazZhMWNDUl80MFNGdmsyQzl1SjhEdnFnMl92ck93TjBWRHNMZE10REVpeXhlWmtkVEFjcFUyazlWWVBrNko2ODlIaXY4R3hTVWpaMWF3Tng4NUVXRzFnSFNOT2ZkNA?oc=5"
-        },
-        {
-          "time": "2026-11-16T09:26:11+09:00",
-          "title": "한쪽은 메모리 공장, 한쪽은 소부장 실험실... SK하이닉스 용인 팹 3층 가보니",
-          "source": "디일렉",
-          "link": "https://news.google.com/rss/articles/CBMiZkFVX3lxTE55YkpGY1YzZmRBV1ZocnBUQjRfbDY2cGN4M0xiNm5EdklBSUZLSEsteFZ4ZFo0bHVwWU5iVWIxY3B1cVBvYy13ZnQyS0RSbW1oVUY3aWV0ckFzS0RBNzRNSUVQemNBQQ?oc=5"
-        },
-        {
-          "time": "2026-11-16T10:09:40+09:00",
-          "title": "[특징주] 삼성전자 '상승세' SK하이닉스 '약세'.. 엔비디아발 우려",
-          "source": "글로벌이코노믹",
-          "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxNSzdMTC1lUEFuQVhwSWlxN2ZDRUF0RmVSc0JsZi1iVXJfSmk2eExOaTB6VWM2cXR3MV84MkV1SjhuZTh6T0F4cHpvMkpDTmEtaUQ4aWRfTm0xLVQtelVBRVBBSjNfSlluOTc0TzZicGVoOHk2WlBGdk05X1JoOE9KckJmVE1ZOFFf?oc=5"
-        },
-        {
-          "time": "2026-11-16T09:00:00+09:00",
-          "title": "SK하이닉스 \"소부장 기술개발 실패도 함께 감수\"…기술개발·금융 전주기 지원",
-          "source": "디지털데일리",
-          "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE0tY1ctemd2TTVnM1pkV2xUM1NiSm5pUGhPRFl3bTNrY3A2OHNPVnhoWGctcnVzYnBJcW9vbnNPYWNGYmhmdXp4ZkQ5TklrM1ZMVUpoR0FmYkNmNV9QRGlIZk1BZXU?oc=5"
         }
       ],
       "price": 1174000.0,
@@ -619,30 +590,6 @@
           "title": "美법원, D램 담합 소송 허용…삼성·SK하이닉스 'HBM 생산' 영향주나",
           "source": "뉴스핌",
           "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE5KMnM0T212RDEzTWs4dzhCUHNEWkVXc0xUVHYyT1hTOVEwYkFxVHEyQ3JlelpTbmJZYnRZSDNldWZOOXFlRXlSNFlSNzBOc1gxWUgtaHJyWFFpUkpS?oc=5"
-        },
-        {
-          "time": "2026-11-16T09:14:54+09:00",
-          "title": "메모리 공장 속 소부장 실험장…SK하이닉스 ‘트리니티팹’ 가보니",
-          "source": "조선일보",
-          "link": "https://news.google.com/rss/articles/CBMigwFBVV95cUxPQmVtMHFDdm85UGswclJXc0FWZjJyR282c1FmRVFXazZhMWNDUl80MFNGdmsyQzl1SjhEdnFnMl92ck93TjBWRHNMZE10REVpeXhlWmtkVEFjcFUyazlWWVBrNko2ODlIaXY4R3hTVWpaMWF3Tng4NUVXRzFnSFNOT2ZkNA?oc=5"
-        },
-        {
-          "time": "2026-11-16T09:26:11+09:00",
-          "title": "한쪽은 메모리 공장, 한쪽은 소부장 실험실... SK하이닉스 용인 팹 3층 가보니",
-          "source": "디일렉",
-          "link": "https://news.google.com/rss/articles/CBMiZkFVX3lxTE55YkpGY1YzZmRBV1ZocnBUQjRfbDY2cGN4M0xiNm5EdklBSUZLSEsteFZ4ZFo0bHVwWU5iVWIxY3B1cVBvYy13ZnQyS0RSbW1oVUY3aWV0ckFzS0RBNzRNSUVQemNBQQ?oc=5"
-        },
-        {
-          "time": "2026-11-16T10:09:40+09:00",
-          "title": "[특징주] 삼성전자 '상승세' SK하이닉스 '약세'.. 엔비디아발 우려",
-          "source": "글로벌이코노믹",
-          "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxNSzdMTC1lUEFuQVhwSWlxN2ZDRUF0RmVSc0JsZi1iVXJfSmk2eExOaTB6VWM2cXR3MV84MkV1SjhuZTh6T0F4cHpvMkpDTmEtaUQ4aWRfTm0xLVQtelVBRVBBSjNfSlluOTc0TzZicGVoOHk2WlBGdk05X1JoOE9KckJmVE1ZOFFf?oc=5"
-        },
-        {
-          "time": "2026-11-16T09:00:00+09:00",
-          "title": "SK하이닉스 \"소부장 기술개발 실패도 함께 감수\"…기술개발·금융 전주기 지원",
-          "source": "디지털데일리",
-          "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE0tY1ctemd2TTVnM1pkV2xUM1NiSm5pUGhPRFl3bTNrY3A2OHNPVnhoWGctcnVzYnBJcW9vbnNPYWNGYmhmdXp4ZkQ5TklrM1ZMVUpoR0FmYkNmNV9QRGlIZk1BZXU?oc=5"
         }
       ],
       "price": 1152000.0,
@@ -651,31 +598,19 @@
   ],
   "overnight_news": [
     {
-      "time": "2026-11-16T08:08:10+09:00",
-      "title": "“SK하이닉스, 주주환원 확대·낮아진 밸류에이션…시간 여전히 매수자 편”",
-      "source": "매일경제 마켓",
-      "link": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE9yVUlfaHN4YTV3Z3g2OEpJc2JaT252QndnMGhkRXNzVlhzRGE4MGF4SXUyNHlpcmtjZWNpLU5xMjAyUVBfeFM2NDRGSlVnVi01RWc?oc=5"
+      "time": "2026-11-15T17:23:00+09:00",
+      "title": "[특징주] SK하이닉스(000660), 주가 급락에도 실적·재무 체력 '굳건'",
+      "source": "인천일보",
+      "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTFBkdWdkdHBlMm9DT3hkRklzZXMtQjdoNHhhVVpYMDVXWHpvbHNHZEpxYzFCVV9BX2RBd0laYVZrZ1NSNHd5SThtSXlRLS1GSFJMNzlEMks2Z0tmdjFWVVV6clR4dl9UckJWVmZJVHlaQl8?oc=5"
     },
     {
-      "time": "2026-11-16T09:00:00+09:00",
-      "title": "SK하이닉스 \"소부장 기술개발 실패도 함께 감수\"…기술개발·금융 전주기 지원",
-      "source": "디지털데일리",
-      "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE0tY1ctemd2TTVnM1pkV2xUM1NiSm5pUGhPRFl3bTNrY3A2OHNPVnhoWGctcnVzYnBJcW9vbnNPYWNGYmhmdXp4ZkQ5TklrM1ZMVUpoR0FmYkNmNV9QRGlIZk1BZXU?oc=5"
+      "time": "2026-11-15T18:42:33+09:00",
+      "title": "삼성·SK하이닉스 美 D램 반독점 소송, 기각 불허로 본안행…법원 \"고객 심사 일치 정황 따져봐야\"",
+      "source": "글로벌이코노믹",
+      "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxPUUJnN1FyeXdIVW1rOHRQU2M0X1d4MDU2ZTRqLV9nNWVuQk05ZXc0RzN4RklBRFlUdFhzZEl0ZXFKZ1gzZDF4NGs0NFR1LXpBQk5EemVURW5FZGpvcG9Pdk5YQ0tGb1VMR0hKdHdyNDhueUpDUDJNYUdqRHl5Smpra3VNbjM3TWJQ?oc=5"
     }
   ],
   "top_news": [
-    {
-      "time": "2026-11-16T17:35:06+09:00",
-      "title": "실적도 투자도 '사상 최대'…삼성·SK하이닉스, AI 메모리 승부수",
-      "source": "뉴시스",
-      "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE1EZ1VpUGZCcGNEdlZlejJybVY5WUVXcmtIYm9IeEl4Mm9xUmFiVmhDc3BENVkxSlIxRS1UbUppZnoxOWxzeG5SZ2dMQ2FZQV8tNGUzWUR1dXJHNmFXdEh0NdIBeEFVX3lxTE83V2xfQTZxU0JiZ2pVWENrWWlUdko3b2tNQ0EwNzNRanIwc2YtcFZaTEN0MzlVT0R1dk9xVUNPbVMwZTlQZ1B3d2dYeFFhZFJsU0syS2x6N3hvQ3d5aFROOEFZa2tQZElXTTdrSFhFS0Y2alM0VW1UTw?oc=5"
-    },
-    {
-      "time": "2026-11-16T23:27:00+09:00",
-      "title": "[AI MY 뉴스] 뉴욕 반도체주 프리뷰...엔비디아 실적 앞두고 반도체주 급락",
-      "source": "뉴스핌",
-      "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE94cndSM2xYOEdZejNoTzJDSnpCVE5BOURqbUN6bFFQT281SUs3TzdxUTR1V0ttMUtTOENqa0tMNVVMZmpZemdydUVIWUhXc05vSUpNR2xTRmFWa0k0?oc=5"
-    },
     {
       "time": "2026-11-16T09:42:00+09:00",
       "title": "美법원, D램 담합 소송 허용…삼성·SK하이닉스 'HBM 생산' 영향주나",
@@ -683,22 +618,34 @@
       "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE5KMnM0T212RDEzTWs4dzhCUHNEWkVXc0xUVHYyT1hTOVEwYkFxVHEyQ3JlelpTbmJZYnRZSDNldWZOOXFlRXlSNFlSNzBOc1gxWUgtaHJyWFFpUkpS?oc=5"
     },
     {
-      "time": "2026-11-16T11:00:00+09:00",
-      "title": "삼성전자, D램 점유율 38%…SK하이닉스 추격 속 메모리 경쟁 격화",
-      "source": "테크월드",
-      "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE9qQ0xDSGZVa2xSclFuUFpESWxWX3JCUGpTb2ZBS0FaZl9PeU92UFZ2ZEpETkhuWm1abEF2VjJVM1pacDNKeVhNNUJKZUI3MUg4Q3RFY0diOE1fRDZlSTZRZ3ZMV2dLWjJW?oc=5"
-    },
-    {
-      "time": "2026-11-16T13:37:00+09:00",
-      "title": "[리포트 브리핑]SK하이닉스, '실적이 쌓이고, 주당 가치가 높아진다' 목표가 2,400,000원 - LS증권",
-      "source": "뉴스핌",
-      "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE13aV92ZzBRWFhORFZ3RC0xNFVZQUI2bTEwb1doLU1fa2ctQ3BUV0pMTHJmOXJDNW84bEFRX19MOGxHU2k1S2NkeXRiREVNNjBxX09OeS1ia3VDdUV4?oc=5"
-    },
-    {
       "time": "2026-11-16T14:13:00+09:00",
       "title": "[단독] 美법원, 삼성·SK하이닉스 '되돌리기 어려운 D램 감산' 주목…판결문 입수",
       "source": "뉴스핌",
       "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE9EeHpuNXlqWW1nU1RJMVhtc2tsVXJLeWRpNlVPQkNPWGpXWmdmR0NsckVkWEtkRGg3dy1IdGRhR2dndDB2dFBtbE9aWlA5OG8zdl8yUmRlYWR1Q3I0?oc=5"
+    },
+    {
+      "time": "2026-11-16T16:36:54+09:00",
+      "title": "SK스퀘어 3분기 영업이익 7.9조 200% 증가, SK하이닉스 실적 호조 덕분",
+      "source": "비즈니스포스트",
+      "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTFBBdnh1Y2Z5eFhPQ1ZtWTZEazBfeE5SVHJRNkZaOURNcGVUUnhXQVFFeU1QYXQxUEhsM2h5MjJ6dkJiWjNyWFpQdTJkM2N0a0RDSEpMMTloVy1KSy1ybEw2TUNLLWV4dWZlWVB5WVA2d1RRWnM?oc=5"
+    },
+    {
+      "time": "2026-11-16T17:32:03+09:00",
+      "title": "SK하이닉스 목표 주가 38% 낮춘 모건스탠리, 이틀 뒤 보고서엔 \"코스피 이르면 3년 내 1만선\"",
+      "source": "조선일보",
+      "link": "https://news.google.com/rss/articles/CBMigAFBVV95cUxNYXM0N1U3LWV3RXY1MDJGU2FRYldYS0VLUUtkbnNqYW9DcmwwMVV6LTFqNG9IQ3BKa2FSaW5hLWZ3RDBsaV9Ob1BDMTU1ZTNYWjE3bWc5b1Nkc1ZsbkdlX1dRUVBjbDJRdHB5aVE3ZEZ4Y3NLYm80eG1FNXRHQk5pbg?oc=5"
+    },
+    {
+      "time": "2026-11-16T17:34:39+09:00",
+      "title": "美 법원, 삼성·SK하이닉스·마이크론 DRAM 담합소송 각하 기각",
+      "source": "연합인포맥스",
+      "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTFAwcFVuRDFpbFRtd3lTMnpZOUJsSEhzTTNrQTJENC1OQkFxUFBOM0tvbkNjd1JFSy00ekRvUEgzWDI3UVlCb3Z2Q3dqR0ZDdXdhQVJQNTh0eU1BbnRoakRHLVFCMHd2MVI3aDkzcEtfMmU?oc=5"
+    },
+    {
+      "time": "2026-11-16T17:58:03+09:00",
+      "title": "美 법원, 삼성·SK하이닉스·마이크론 D램 담합소송 기각 요청 거부",
+      "source": "아이티데일리",
+      "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE40NVJPeVBURERSSEVnN2duMDFnNEZiS3dQN1BmYzNyZklVRVF2TW9rQlVGZlp4X0UzMmg2LUVjbDNybEk3N0JQZWNLLUFOYTFISEJ1YjZFTWpiZGJVY2RSMkNaUzJCa1Rl?oc=5"
     }
   ],
   "disclosures": [
@@ -711,37 +658,92 @@
   ],
   "disclosure_note": null,
   "flows": "외국인 -159,701 / 기관 -694,134",
-  "flow_story": null,
+  "flow_story": {
+    "direction": "down",
+    "c2c": -0.07894736842105265,
+    "actors": [
+      {
+        "key": "foreign_net",
+        "name": "외국인",
+        "shares": -159701.0,
+        "won": -178865120000.0,
+        "vs_usual": 0.4079471802392338
+      },
+      {
+        "key": "inst_net",
+        "name": "기관",
+        "shares": -694134.0,
+        "won": -777430080000.0,
+        "vs_usual": 3.4872282314499823
+      },
+      {
+        "key": "indiv_net",
+        "name": "개인",
+        "shares": 503628.0,
+        "won": 564063360000.0,
+        "vs_usual": 1.8368654372096662
+      },
+      {
+        "key": "other_net",
+        "name": "기타 법인 등(추정)",
+        "shares": 350207.0,
+        "won": 392231840000.0,
+        "vs_usual": null
+      }
+    ],
+    "lead": {
+      "key": "inst_net",
+      "name": "기관",
+      "shares": -694134.0,
+      "won": -777430080000.0,
+      "vs_usual": 3.4872282314499823
+    },
+    "counter": {
+      "key": "indiv_net",
+      "name": "개인",
+      "shares": 503628.0,
+      "won": 564063360000.0,
+      "vs_usual": 1.8368654372096662
+    },
+    "all_one_side": false,
+    "observations": [
+      "전일까지 20거래일 고점: 종가 돌파 없음 · 종가 위치 -29.43%.",
+      "전일까지 60거래일 고점: 종가 돌파 없음 · 종가 위치 -42.12%.",
+      "같은 5거래일 수익률: 이 종목 -1.41%, 삼성전자 +3.63% · 차이 -5.04%p.",
+      "같은 20거래일 수익률: 이 종목 -12.29%, 삼성전자 -9.72% · 차이 -2.57%p.",
+      "같은 60거래일 수익률: 이 종목 -32.60%, 삼성전자 -25.43% · 차이 -7.16%p.",
+      "외국인 순매도 지속·거래량 대비 강도 약화: 직전 5일 → 최근 5일 순매수/거래량 -17.55% → -5.48% (일평균 -823,497주 → -202,618주). 향후 상승을 뜻하는 신호는 아닙니다.",
+      "삼성전자 -4.47% — 반도체 업종이 함께 움직였습니다.",
+      "전날 밤 미국 반도체지수(SOX) -3.43% — 미국 반도체 흐름과 같은 방향입니다.",
+      "전날 밤 마이크론 -2.52% — 미국 메모리 회사와 같은 방향입니다.",
+      "종가가 당일 범위(저가 1,113,000~고가 1,222,000원)의 아래쪽 6% 지점 — 저가 부근에서 마감했습니다.",
+      "5일선(1,219,000원) 부근까지 올랐다가 그 아래에서 마감 — 5일선을 넘지 못하고 밀린 모양입니다.",
+      "마이크론은 미국 정규장 마감 뒤 시간외에서 -1.88%(장중 -2.04%~-0.98%) — 정규장 등락에 안 보이는 반응입니다.",
+      "엔비디아는 미국 정규장 마감 뒤 시간외에서 -1.19%(장중 -1.43%~-0.45%) — 정규장 등락에 안 보이는 반응입니다.",
+      "우리 장중(09:00~15:30) 나스닥100 선물 -1.90%, 이 종목 고점 이후 -1.80% · 미 10년물 국채 선물 +0.03%, 이 종목 고점 이후 +0.04% · 원/달러 +0.07%, 이 종목 고점 이후 -0.09%.",
+      "자사주 매입 기간 중(직접 취득 2026-08-20~2026-11-19, 40,004,340,000,000, DART 공시) — 회사 자신의 매수는 기타 법인으로 잡힙니다.",
+      "자사주 매입 기간 중(직접 취득 2026-10-29~2027-01-28, 20,007,720,000,000, DART 공시) — 회사 자신의 매수는 기타 법인으로 잡힙니다.",
+      "마감가가 장중 고가보다 -8.01% 아래 — 오른 폭을 장중에 꽤 반납했습니다.",
+      "기타 법인 등(추정) 순매수 +3,922억원 — 회사의 자사주 매입 기간이라 회사 매입과 맞는 모양입니다.",
+      "기관의 순매도 규모가 최근 20거래일 평균의 3.5배로 컸습니다."
+    ],
+    "estimated_indiv": false,
+    "source_note": "출처 naver+cache · 장 마감 직후 잠정치라 저녁 확정치와 다를 수 있습니다 · KRX는 받지 못함(pykrx 미설치)"
+  },
   "flow_status": {
     "state": "ok",
     "detail": "naver+cache",
     "krx_error": "pykrx 미설치"
   },
   "context": {},
-  "market": {
-    "index": "KOSPI",
-    "date": "2026-11-16",
-    "rise": 263,
-    "fall": 615,
-    "steady": 34,
-    "upper": 0,
-    "lower": 0,
-    "individual": 12904.0,
-    "foreign": -13287.0,
-    "institution": -4562.0,
-    "prev_close": 5290.53,
-    "open": 5305.4,
-    "high": 5327.99,
-    "low": 5069.83,
-    "close": 5100.5
-  },
+  "market": null,
   "earnings_reactions": null,
   "forecasts": [
     {
       "model": "No macro ensemble",
-      "hit": false,
-      "verdict": "틀림 — 예측 하락 40%, 실제 보합(+nan%)",
-      "legs": "갭 +nan%(보합) · 세션 +nan%(보합)",
+      "hit": true,
+      "verdict": "맞음 — 예측 하락 40%, 실제 하락(-7.89%)",
+      "legs": "갭 +0.00%(보합) · 세션 -7.89%(하락)",
       "where": "결과는 주로 장중에서 정해졌습니다.",
       "band": 0.01724613377972,
       "probs": [
@@ -749,14 +751,14 @@
         0.2501461111162997,
         0.3462581822709094
       ],
-      "actual": "보합",
+      "actual": "하락",
       "predicted": "하락"
     },
     {
       "model": "Mean ensemble",
-      "hit": false,
-      "verdict": "틀림 — 예측 하락 38%, 실제 보합(+nan%)",
-      "legs": "갭 +nan%(보합) · 세션 +nan%(보합)",
+      "hit": true,
+      "verdict": "맞음 — 예측 하락 38%, 실제 하락(-7.89%)",
+      "legs": "갭 +0.00%(보합) · 세션 -7.89%(하락)",
       "where": "결과는 주로 장중에서 정해졌습니다.",
       "band": 0.01724613377972,
       "probs": [
@@ -764,14 +766,14 @@
         0.2708044528601944,
         0.3442630720712041
       ],
-      "actual": "보합",
+      "actual": "하락",
       "predicted": "하락"
     },
     {
       "model": "Candidate expanding",
-      "hit": false,
-      "verdict": "틀림 — 예측 하락 40%, 실제 보합(+nan%)",
-      "legs": "갭 +nan%(보합) · 세션 +nan%(보합)",
+      "hit": true,
+      "verdict": "맞음 — 예측 하락 40%, 실제 하락(-7.89%)",
+      "legs": "갭 +0.00%(보합) · 세션 -7.89%(하락)",
       "where": "결과는 주로 장중에서 정해졌습니다.",
       "band": 0.01724613377972,
       "probs": [
@@ -779,10 +781,10 @@
         0.2126919779384812,
         0.3886027295719539
       ],
-      "actual": "보합",
+      "actual": "하락",
       "predicted": "하락"
     }
   ],
-  "price_check": "1거래일 예상 구간 1,124,313~1,297,252원 · 종가 nan원 → 구간 밖",
+  "price_check": "1거래일 예상 구간 1,124,313~1,297,252원 · 종가 1,120,000원 → 구간 밖",
   "disclaimer": "시간이 맞는 것이지 원인 확정이 아닙니다. 뉴스 없이 움직이는 날(수급·프로그램·옵션 만기)이 많고, 기사 발행 시각은 실제 정보 유통보다 늦거나 앞섭니다. 이 절은 설명 도구이며 다음날 예측에 자동 반영되지 않습니다."
 }

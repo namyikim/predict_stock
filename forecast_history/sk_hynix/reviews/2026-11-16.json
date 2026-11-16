@@ -3,7 +3,7 @@
   "name": "SK하이닉스",
   "peer_name": "삼성전자",
   "session_date": "2026-11-16",
-  "generated_at": "2026-11-17 01:58 KST",
+  "generated_at": "2026-11-17 02:11 KST",
   "summary": {
     "prev_close": 1216000.0,
     "open": NaN,
@@ -19,7 +19,7 @@
     "volume_ratio": 1.2483130729050465,
     "kospi_c2c": NaN,
     "peer_c2c": NaN,
-    "usdkrw_chg": 0.001169560564090899,
+    "usdkrw_chg": 0.0010196474093853158,
     "us_nights": 1,
     "sox_ret": -0.03429722376875555,
     "nasdaq_ret": -0.009060139497874764,
@@ -141,10 +141,10 @@
           "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxNSzdMTC1lUEFuQVhwSWlxN2ZDRUF0RmVSc0JsZi1iVXJfSmk2eExOaTB6VWM2cXR3MV84MkV1SjhuZTh6T0F4cHpvMkpDTmEtaUQ4aWRfTm0xLVQtelVBRVBBSjNfSlluOTc0TzZicGVoOHk2WlBGdk05X1JoOE9KckJmVE1ZOFFf?oc=5"
         },
         {
-          "time": "2026-11-16T09:00:10+09:00",
-          "title": "개발비 먼저, 실패도 나눈다…SK하이닉스의 소부장 동행",
-          "source": "뉴스토마토",
-          "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE1zbjhjZERwZmlzbExveVViS0ExNWtHRlNpeW4tUnp5X2dhenVyN3Vsdnd6UDhRanZWRng0ejZhd0lMUy1jYVJVMjZyZE9nYzdkcURiLXRuSkxvdnBLT1RiUw?oc=5"
+          "time": "2026-11-16T09:00:00+09:00",
+          "title": "SK하이닉스 \"소부장 기술개발 실패도 함께 감수\"…기술개발·금융 전주기 지원",
+          "source": "디지털데일리",
+          "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE0tY1ctemd2TTVnM1pkV2xUM1NiSm5pUGhPRFl3bTNrY3A2OHNPVnhoWGctcnVzYnBJcW9vbnNPYWNGYmhmdXp4ZkQ5TklrM1ZMVUpoR0FmYkNmNV9QRGlIZk1BZXU?oc=5"
         }
       ]
     },
@@ -183,10 +183,10 @@
           "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxNSzdMTC1lUEFuQVhwSWlxN2ZDRUF0RmVSc0JsZi1iVXJfSmk2eExOaTB6VWM2cXR3MV84MkV1SjhuZTh6T0F4cHpvMkpDTmEtaUQ4aWRfTm0xLVQtelVBRVBBSjNfSlluOTc0TzZicGVoOHk2WlBGdk05X1JoOE9KckJmVE1ZOFFf?oc=5"
         },
         {
-          "time": "2026-11-16T09:00:10+09:00",
-          "title": "개발비 먼저, 실패도 나눈다…SK하이닉스의 소부장 동행",
-          "source": "뉴스토마토",
-          "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE1zbjhjZERwZmlzbExveVViS0ExNWtHRlNpeW4tUnp5X2dhenVyN3Vsdnd6UDhRanZWRng0ejZhd0lMUy1jYVJVMjZyZE9nYzdkcURiLXRuSkxvdnBLT1RiUw?oc=5"
+          "time": "2026-11-16T09:00:00+09:00",
+          "title": "SK하이닉스 \"소부장 기술개발 실패도 함께 감수\"…기술개발·금융 전주기 지원",
+          "source": "디지털데일리",
+          "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE0tY1ctemd2TTVnM1pkV2xUM1NiSm5pUGhPRFl3bTNrY3A2OHNPVnhoWGctcnVzYnBJcW9vbnNPYWNGYmhmdXp4ZkQ5TklrM1ZMVUpoR0FmYkNmNV9QRGlIZk1BZXU?oc=5"
         }
       ]
     }
@@ -199,7 +199,7 @@
     "pattern": "고점 후 반락"
   },
   "closing_share": NaN,
-  "intraday_corr_kospi": 0.9438989980824314,
+  "intraday_corr_kospi": 0.9426847167266075,
   "intraday_note": "장중 봉은 09:05~14:55까지만 있어 마감 구간(14:55~15:30)은 일봉 종가로만 봅니다(그 구간 +nan%).",
   "intraday_coverage": "09:05~14:55",
   "intraday_path": [
@@ -270,13 +270,13 @@
     },
     {
       "time": "2026-11-16T10:10:00+09:00",
-      "price": 1162000.0,
-      "volume": 56865.0
+      "price": 1163000.0,
+      "volume": 56862.0
     },
     {
       "time": "2026-11-16T10:15:00+09:00",
       "price": 1166000.0,
-      "volume": 39932.0
+      "volume": 39935.0
     },
     {
       "time": "2026-11-16T10:20:00+09:00",
@@ -286,22 +286,22 @@
     {
       "time": "2026-11-16T10:25:00+09:00",
       "price": 1153000.0,
-      "volume": 82134.0
+      "volume": 82130.0
     },
     {
       "time": "2026-11-16T10:30:00+09:00",
       "price": 1154000.0,
-      "volume": 41931.0
+      "volume": 41935.0
     },
     {
       "time": "2026-11-16T10:35:00+09:00",
       "price": 1156000.0,
-      "volume": 27071.0
+      "volume": 27070.0
     },
     {
       "time": "2026-11-16T10:40:00+09:00",
       "price": 1153000.0,
-      "volume": 40801.0
+      "volume": 40802.0
     },
     {
       "time": "2026-11-16T10:45:00+09:00",
@@ -336,12 +336,12 @@
     {
       "time": "2026-11-16T11:15:00+09:00",
       "price": 1165000.0,
-      "volume": 32353.0
+      "volume": 32336.0
     },
     {
       "time": "2026-11-16T11:20:00+09:00",
       "price": 1169000.0,
-      "volume": 31216.0
+      "volume": 31233.0
     },
     {
       "time": "2026-11-16T11:25:00+09:00",
@@ -411,12 +411,12 @@
     {
       "time": "2026-11-16T12:30:00+09:00",
       "price": 1146000.0,
-      "volume": 30927.0
+      "volume": 30929.0
     },
     {
       "time": "2026-11-16T12:35:00+09:00",
       "price": 1145000.0,
-      "volume": 40015.0
+      "volume": 40013.0
     },
     {
       "time": "2026-11-16T12:40:00+09:00",
@@ -441,12 +441,12 @@
     {
       "time": "2026-11-16T13:00:00+09:00",
       "price": 1139000.0,
-      "volume": 37122.0
+      "volume": 37128.0
     },
     {
       "time": "2026-11-16T13:05:00+09:00",
       "price": 1133000.0,
-      "volume": 53448.0
+      "volume": 53442.0
     },
     {
       "time": "2026-11-16T13:10:00+09:00",
@@ -595,10 +595,10 @@
           "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxNSzdMTC1lUEFuQVhwSWlxN2ZDRUF0RmVSc0JsZi1iVXJfSmk2eExOaTB6VWM2cXR3MV84MkV1SjhuZTh6T0F4cHpvMkpDTmEtaUQ4aWRfTm0xLVQtelVBRVBBSjNfSlluOTc0TzZicGVoOHk2WlBGdk05X1JoOE9KckJmVE1ZOFFf?oc=5"
         },
         {
-          "time": "2026-11-16T09:00:10+09:00",
-          "title": "개발비 먼저, 실패도 나눈다…SK하이닉스의 소부장 동행",
-          "source": "뉴스토마토",
-          "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE1zbjhjZERwZmlzbExveVViS0ExNWtHRlNpeW4tUnp5X2dhenVyN3Vsdnd6UDhRanZWRng0ejZhd0lMUy1jYVJVMjZyZE9nYzdkcURiLXRuSkxvdnBLT1RiUw?oc=5"
+          "time": "2026-11-16T09:00:00+09:00",
+          "title": "SK하이닉스 \"소부장 기술개발 실패도 함께 감수\"…기술개발·금융 전주기 지원",
+          "source": "디지털데일리",
+          "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE0tY1ctemd2TTVnM1pkV2xUM1NiSm5pUGhPRFl3bTNrY3A2OHNPVnhoWGctcnVzYnBJcW9vbnNPYWNGYmhmdXp4ZkQ5TklrM1ZMVUpoR0FmYkNmNV9QRGlIZk1BZXU?oc=5"
         }
       ],
       "price": 1174000.0,
@@ -639,17 +639,30 @@
           "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxNSzdMTC1lUEFuQVhwSWlxN2ZDRUF0RmVSc0JsZi1iVXJfSmk2eExOaTB6VWM2cXR3MV84MkV1SjhuZTh6T0F4cHpvMkpDTmEtaUQ4aWRfTm0xLVQtelVBRVBBSjNfSlluOTc0TzZicGVoOHk2WlBGdk05X1JoOE9KckJmVE1ZOFFf?oc=5"
         },
         {
-          "time": "2026-11-16T09:00:10+09:00",
-          "title": "개발비 먼저, 실패도 나눈다…SK하이닉스의 소부장 동행",
-          "source": "뉴스토마토",
-          "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE1zbjhjZERwZmlzbExveVViS0ExNWtHRlNpeW4tUnp5X2dhenVyN3Vsdnd6UDhRanZWRng0ejZhd0lMUy1jYVJVMjZyZE9nYzdkcURiLXRuSkxvdnBLT1RiUw?oc=5"
+          "time": "2026-11-16T09:00:00+09:00",
+          "title": "SK하이닉스 \"소부장 기술개발 실패도 함께 감수\"…기술개발·금융 전주기 지원",
+          "source": "디지털데일리",
+          "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE0tY1ctemd2TTVnM1pkV2xUM1NiSm5pUGhPRFl3bTNrY3A2OHNPVnhoWGctcnVzYnBJcW9vbnNPYWNGYmhmdXp4ZkQ5TklrM1ZMVUpoR0FmYkNmNV9QRGlIZk1BZXU?oc=5"
         }
       ],
       "price": 1152000.0,
       "kind": "turn_down"
     }
   ],
-  "overnight_news": [],
+  "overnight_news": [
+    {
+      "time": "2026-11-16T08:08:10+09:00",
+      "title": "“SK하이닉스, 주주환원 확대·낮아진 밸류에이션…시간 여전히 매수자 편”",
+      "source": "매일경제 마켓",
+      "link": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE9yVUlfaHN4YTV3Z3g2OEpJc2JaT252QndnMGhkRXNzVlhzRGE4MGF4SXUyNHlpcmtjZWNpLU5xMjAyUVBfeFM2NDRGSlVnVi01RWc?oc=5"
+    },
+    {
+      "time": "2026-11-16T09:00:00+09:00",
+      "title": "SK하이닉스 \"소부장 기술개발 실패도 함께 감수\"…기술개발·금융 전주기 지원",
+      "source": "디지털데일리",
+      "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE0tY1ctemd2TTVnM1pkV2xUM1NiSm5pUGhPRFl3bTNrY3A2OHNPVnhoWGctcnVzYnBJcW9vbnNPYWNGYmhmdXp4ZkQ5TklrM1ZMVUpoR0FmYkNmNV9QRGlIZk1BZXU?oc=5"
+    }
+  ],
   "top_news": [
     {
       "time": "2026-11-16T17:35:06+09:00",

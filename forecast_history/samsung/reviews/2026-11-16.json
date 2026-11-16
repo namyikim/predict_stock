@@ -3,40 +3,82 @@
   "name": "삼성전자",
   "peer_name": "SK하이닉스",
   "session_date": "2026-11-16",
-  "generated_at": "2026-11-17 02:11 KST",
+  "generated_at": "2026-11-17 08:03 KST",
   "summary": {
     "prev_close": 206000.0,
-    "open": NaN,
-    "high": NaN,
-    "low": NaN,
-    "close": NaN,
-    "gap": NaN,
-    "session": NaN,
-    "c2c": NaN,
-    "high_vs_open": NaN,
-    "low_vs_open": NaN,
-    "volume": 17879248.0,
-    "volume_ratio": 0.9894257016863784,
+    "open": 206500.0,
+    "high": 208000.0,
+    "low": 195000.0,
+    "close": 196800.0,
+    "gap": 0.0024271844660195274,
+    "session": -0.04697336561743337,
+    "c2c": -0.044660194174757306,
+    "high_vs_open": 0.007263922518159882,
+    "low_vs_open": -0.05569007263922521,
+    "volume": 16163286.0,
+    "volume_ratio": 0.89446550504292,
     "kospi_c2c": NaN,
-    "peer_c2c": NaN,
-    "usdkrw_chg": 0.0014469639657466171,
+    "peer_c2c": -0.07894736842105265,
+    "usdkrw_chg": 0.0009671137397877505,
     "us_nights": 1,
     "sox_ret": -0.03429722376875555,
     "nasdaq_ret": -0.009060139497874764,
     "micron_ret": -0.025211668780698027,
     "prior_streak": -1,
-    "ma5": 204725.0,
-    "ma20": 213921.05263157896,
+    "ma5": 203140.0,
+    "ma20": 213065.0,
     "high20": 249000.0,
     "high252": 367712.71645480226,
     "price_context": {
-      "breakouts": {},
-      "relative": {}
+      "breakouts": {
+        "20": {
+          "prior_high": 249000.0,
+          "distance": -0.2096385542168675,
+          "close_breakout": false,
+          "intraday_breakout": false
+        },
+        "60": {
+          "prior_high": 283092.2681564246,
+          "distance": -0.30482029310932357,
+          "close_breakout": false,
+          "intraday_breakout": false
+        }
+      },
+      "relative": {
+        "5": {
+          "start": "2026-11-09",
+          "end": "2026-11-16",
+          "own": 0.03633491311216419,
+          "peer": -0.014084507042253502,
+          "excess": 0.05041942015441769
+        },
+        "20": {
+          "start": "2026-10-19",
+          "end": "2026-11-16",
+          "own": -0.0972477064220183,
+          "peer": -0.12294440093970238,
+          "excess": 0.025696694517684082
+        },
+        "60": {
+          "start": "2026-08-18",
+          "end": "2026-11-16",
+          "own": -0.25433238143569903,
+          "peer": -0.32596701541353956,
+          "excess": 0.07163463397784053
+        }
+      }
     },
-    "range": NaN,
-    "peer_range": NaN,
+    "range": 0.06666666666666665,
+    "peer_range": 0.09793351302785269,
     "prior_5d": 0.09167991520932706,
-    "ma_touches": [],
+    "ma_touches": [
+      {
+        "ma": 5,
+        "level": 201760.0,
+        "kind": "fail",
+        "price": 208000.0
+      }
+    ],
     "micron_ah": {
       "regular_close": 778.4000244140625,
       "last": 763.773,
@@ -70,6 +112,7 @@
         "after_high": -0.0008974415975957495
       }
     },
+    "from_high": -0.050422195416163884,
     "buyback": [
       {
         "kind": "직접 취득",
@@ -83,7 +126,7 @@
     "foreign_pressure": {
       "state": "turned_buying",
       "previous_ratio": -0.10088286870979592,
-      "recent_ratio": 0.039154630178919035,
+      "recent_ratio": 0.039991947835453,
       "previous_daily_net": -2333830.6,
       "recent_daily_net": 641805.0
     },
@@ -115,28 +158,16 @@
           "link": "https://news.google.com/rss/articles/CBMigAFBVV95cUxQLS1CX1ZzVnBpWTNGMVlleHJBNUc2Q0ZGSF9xVlFoWkNYa0E3VWR6MlhxVlY2S01Yc2s4ajdrd1pFOUFpWndRVFRfSXBTd3ZvaWpUelBNeE1fRG1CM0xzQURlaVVhMk5ZQjN5NmdIWVNpWEZXdWNRX0hyeF9mN09oSQ?oc=5"
         },
         {
-          "time": "2026-11-16T08:35:04+09:00",
-          "title": "KB證 \"삼성전자, 탈엔비디아 시대 최대 수혜주\"",
-          "source": "연합인포맥스",
-          "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTFBpN3hQMTRhUDhxSy1VbGhudGstR1hNZmczUDd4Y2NQZXlsWm9FaDF2bXpSLWVaUWVvdEZHTDFBNnNEcVdCQmRZVzdHME91cmRBeVN2NkpjODItSk1kMWt1aFgyMzI0V2czNjdnbnpVeGI?oc=5"
-        },
-        {
           "time": "2026-11-16T08:43:02+09:00",
           "title": "젠슨 황 떠난 빈자리, 삼성전자에 기회?…“탈엔비디아 시대 수혜주” [오늘 나온 보고서]",
-          "source": "매일경제 마켓",
-          "link": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE5SWFZ4VmZ5MUVhcTJPQS1IMGRRVGtWTENWUWFlcGVCaTNZTXRmeEZPOU5DWW5mV2lUTEt2M1hod2dGMG5zSXY3WnVIeFRIMV9NSlE?oc=5"
+          "source": "매일경제",
+          "link": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE92aWUtNWVLbElCbUNNbmVvYnp4bDJINTN4Y0Nmb0ZHTXdzVkdYQUtHMVg0OTU2aGo4MnlkRXFBbFhEaG5rbkRYZXVjeDZCbS1hMkE?oc=5"
         },
         {
-          "time": "2026-11-16T10:09:40+09:00",
-          "title": "[특징주] 삼성전자 '상승세' SK하이닉스 '약세'.. 엔비디아발 우려",
-          "source": "글로벌이코노믹",
-          "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxNSzdMTC1lUEFuQVhwSWlxN2ZDRUF0RmVSc0JsZi1iVXJfSmk2eExOaTB6VWM2cXR3MV84MkV1SjhuZTh6T0F4cHpvMkpDTmEtaUQ4aWRfTm0xLVQtelVBRVBBSjNfSlluOTc0TzZicGVoOHk2WlBGdk05X1JoOE9KckJmVE1ZOFFf?oc=5"
-        },
-        {
-          "time": "2026-11-16T09:42:00+09:00",
-          "title": "美법원, D램 담합 소송 허용…삼성·SK하이닉스 'HBM 생산' 영향주나",
-          "source": "뉴스핌",
-          "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE5KMnM0T212RDEzTWs4dzhCUHNEWkVXc0xUVHYyT1hTOVEwYkFxVHEyQ3JlelpTbmJZYnRZSDNldWZOOXFlRXlSNFlSNzBOc1gxWUgtaHJyWFFpUkpS?oc=5"
+          "time": "2026-11-16T10:04:09+09:00",
+          "title": "삼성전자, 수능 고사장 시스템에어컨 긴급 서비스 운영",
+          "source": "전자신문",
+          "link": "https://news.google.com/rss/articles/CBMiTkFVX3lxTE1VY3JmaVF4Q0tjZVl0QUlrcGlQOVVKbGNkQ2U4dm80a3JCUmlzMHJneUhDU2V2NF9Jemc5RU5HdnBNcnduLV9mUmRNazlzQQ?oc=5"
         }
       ]
     },
@@ -157,28 +188,16 @@
           "link": "https://news.google.com/rss/articles/CBMigAFBVV95cUxQLS1CX1ZzVnBpWTNGMVlleHJBNUc2Q0ZGSF9xVlFoWkNYa0E3VWR6MlhxVlY2S01Yc2s4ajdrd1pFOUFpWndRVFRfSXBTd3ZvaWpUelBNeE1fRG1CM0xzQURlaVVhMk5ZQjN5NmdIWVNpWEZXdWNRX0hyeF9mN09oSQ?oc=5"
         },
         {
-          "time": "2026-11-16T10:09:40+09:00",
-          "title": "[특징주] 삼성전자 '상승세' SK하이닉스 '약세'.. 엔비디아발 우려",
-          "source": "글로벌이코노믹",
-          "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxNSzdMTC1lUEFuQVhwSWlxN2ZDRUF0RmVSc0JsZi1iVXJfSmk2eExOaTB6VWM2cXR3MV84MkV1SjhuZTh6T0F4cHpvMkpDTmEtaUQ4aWRfTm0xLVQtelVBRVBBSjNfSlluOTc0TzZicGVoOHk2WlBGdk05X1JoOE9KckJmVE1ZOFFf?oc=5"
-        },
-        {
-          "time": "2026-11-16T09:42:00+09:00",
-          "title": "美법원, D램 담합 소송 허용…삼성·SK하이닉스 'HBM 생산' 영향주나",
-          "source": "뉴스핌",
-          "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE5KMnM0T212RDEzTWs4dzhCUHNEWkVXc0xUVHYyT1hTOVEwYkFxVHEyQ3JlelpTbmJZYnRZSDNldWZOOXFlRXlSNFlSNzBOc1gxWUgtaHJyWFFpUkpS?oc=5"
-        },
-        {
-          "time": "2026-11-16T09:22:10+09:00",
-          "title": "[특징주] 삼성전자, 보합권서 등락…하이닉스, 1%대 하락",
-          "source": "연합뉴스",
-          "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE1hVmY3ek9ra3FGWkF4ZkMwTmpNZ25OZl81M19NMm9FcHE1TmdTeW9XNmtYVEtqR3FUUmlrakZveXVGRVJFREwtTzF6Vy1zS3E2VXA1QXJpcm9iQkXSAWBBVV95cUxPQ0NScnBzTU5Hblo0eGV6UXA1X3BSUk0wV0hRa0UzVF9MLWwtYWkzdTRVWGZWUnVuNWZZMUVING8tb3gzSm9KYUlQQXFDa2gxRFc1b3ZIbGdubUR0REVMa1c?oc=5"
-        },
-        {
           "time": "2026-11-16T10:21:00+09:00",
           "title": "삼성전자 사장단 인사···이재용 회장의 '성과주의 인사' 시험대",
           "source": "뉴스핌",
           "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTFBRNDZNNGFOcE9POWtsTHI2MldpSDZjaVJqRGVZSTdGVDFOeVlhOWNteVVYc29TRXJOSEQ0T0lzb1l0Ny1LMjI0Z3I1NTlFQVNiT283TC1jaTQ4MUJ3?oc=5"
+        },
+        {
+          "time": "2026-11-16T10:04:09+09:00",
+          "title": "삼성전자, 수능 고사장 시스템에어컨 긴급 서비스 운영",
+          "source": "전자신문",
+          "link": "https://news.google.com/rss/articles/CBMiTkFVX3lxTE1VY3JmaVF4Q0tjZVl0QUlrcGlQOVVKbGNkQ2U4dm80a3JCUmlzMHJneUhDU2V2NF9Jemc5RU5HdnBNcnduLV9mUmRNazlzQQ?oc=5"
         }
       ]
     },
@@ -199,12 +218,6 @@
           "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE9qQ0xDSGZVa2xSclFuUFpESWxWX3JCUGpTb2ZBS0FaZl9PeU92UFZ2ZEpETkhuWm1abEF2VjJVM1pacDNKeVhNNUJKZUI3MUg4Q3RFY0diOE1fRDZlSTZRZ3ZMV2dLWjJW?oc=5"
         },
         {
-          "time": "2026-11-16T11:06:31+09:00",
-          "title": "반도체 사업장도 'AI 안경' 경계령…SK하이닉스 반입 금지, 삼성전자도 검토",
-          "source": "뉴시스",
-          "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTFAtZXFBT3hBRDBuRFd2cFR1MVpjenJQaVBqeVl6amZrVFNmbUtuM09jZzVBVXdjY2hGOGZiWXlOSEdVb3ZSSFl4QXBHeU9oWXdDbWVTSk9qaFo4TWg2dFJaU9IBeEFVX3lxTE5yYm1ldUpoWEozcWJCUzdablJrdzdod3hENkpRQjkwb3drT3d1NGdXcFJDWGoyazZUSXBHOFpDUnUyV0MtZURmdTJQY25qaFpqRTdNYUhYMkRPcG1Xa0E0LUxYWjlDWklPTmlZSmp6Z3d3QVJwM0RtXw?oc=5"
-        },
-        {
           "time": "2026-11-16T10:54:41+09:00",
           "title": "삼성전자 20만원 깨지고 하이닉스 -5%…또 파랗게 질린 코스피",
           "source": "서울신문",
@@ -221,6 +234,12 @@
           "title": "삼성전자 사장단 인사···이재용 회장의 '성과주의 인사' 시험대",
           "source": "뉴스핌",
           "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTFBRNDZNNGFOcE9POWtsTHI2MldpSDZjaVJqRGVZSTdGVDFOeVlhOWNteVVYc29TRXJOSEQ0T0lzb1l0Ny1LMjI0Z3I1NTlFQVNiT283TC1jaTQ4MUJ3?oc=5"
+        },
+        {
+          "time": "2026-11-16T11:09:26+09:00",
+          "title": "초고수들 SK하이닉스 '사자', 삼성전자 '팔자'…엇갈린 이유는",
+          "source": "한국경제",
+          "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE5aZ3FCNk9JcWN4RVRuMXhxMnItSTg5aWw4SWdMZWNZU3BGUjMzTVRHV2hwbW9FempSajQ5TlI2ZnFwamdPYlJYeXd6eERNZzhiUzBKMGF5UmRQdw?oc=5"
         }
       ]
     }
@@ -232,9 +251,9 @@
     "low": -0.05569007263922521,
     "pattern": "고점 후 반락"
   },
-  "closing_share": NaN,
+  "closing_share": -0.11966032587223319,
   "intraday_corr_kospi": 0.9246281402234621,
-  "intraday_note": "장중 봉은 09:05~14:55까지만 있어 마감 구간(14:55~15:30)은 일봉 종가로만 봅니다(그 구간 +nan%).",
+  "intraday_note": "장중 봉은 09:05~14:55까지만 있어 마감 구간(14:55~15:30)은 일봉 종가로만 봅니다(그 구간 +0.56%).",
   "intraday_coverage": "09:05~14:55",
   "intraday_path": [
     {
@@ -611,28 +630,16 @@
           "link": "https://news.google.com/rss/articles/CBMigAFBVV95cUxQLS1CX1ZzVnBpWTNGMVlleHJBNUc2Q0ZGSF9xVlFoWkNYa0E3VWR6MlhxVlY2S01Yc2s4ajdrd1pFOUFpWndRVFRfSXBTd3ZvaWpUelBNeE1fRG1CM0xzQURlaVVhMk5ZQjN5NmdIWVNpWEZXdWNRX0hyeF9mN09oSQ?oc=5"
         },
         {
-          "time": "2026-11-16T08:35:04+09:00",
-          "title": "KB證 \"삼성전자, 탈엔비디아 시대 최대 수혜주\"",
-          "source": "연합인포맥스",
-          "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTFBpN3hQMTRhUDhxSy1VbGhudGstR1hNZmczUDd4Y2NQZXlsWm9FaDF2bXpSLWVaUWVvdEZHTDFBNnNEcVdCQmRZVzdHME91cmRBeVN2NkpjODItSk1kMWt1aFgyMzI0V2czNjdnbnpVeGI?oc=5"
-        },
-        {
           "time": "2026-11-16T08:43:02+09:00",
           "title": "젠슨 황 떠난 빈자리, 삼성전자에 기회?…“탈엔비디아 시대 수혜주” [오늘 나온 보고서]",
-          "source": "매일경제 마켓",
-          "link": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE5SWFZ4VmZ5MUVhcTJPQS1IMGRRVGtWTENWUWFlcGVCaTNZTXRmeEZPOU5DWW5mV2lUTEt2M1hod2dGMG5zSXY3WnVIeFRIMV9NSlE?oc=5"
+          "source": "매일경제",
+          "link": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE92aWUtNWVLbElCbUNNbmVvYnp4bDJINTN4Y0Nmb0ZHTXdzVkdYQUtHMVg0OTU2aGo4MnlkRXFBbFhEaG5rbkRYZXVjeDZCbS1hMkE?oc=5"
         },
         {
-          "time": "2026-11-16T10:09:40+09:00",
-          "title": "[특징주] 삼성전자 '상승세' SK하이닉스 '약세'.. 엔비디아발 우려",
-          "source": "글로벌이코노믹",
-          "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxNSzdMTC1lUEFuQVhwSWlxN2ZDRUF0RmVSc0JsZi1iVXJfSmk2eExOaTB6VWM2cXR3MV84MkV1SjhuZTh6T0F4cHpvMkpDTmEtaUQ4aWRfTm0xLVQtelVBRVBBSjNfSlluOTc0TzZicGVoOHk2WlBGdk05X1JoOE9KckJmVE1ZOFFf?oc=5"
-        },
-        {
-          "time": "2026-11-16T09:42:00+09:00",
-          "title": "美법원, D램 담합 소송 허용…삼성·SK하이닉스 'HBM 생산' 영향주나",
-          "source": "뉴스핌",
-          "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE5KMnM0T212RDEzTWs4dzhCUHNEWkVXc0xUVHYyT1hTOVEwYkFxVHEyQ3JlelpTbmJZYnRZSDNldWZOOXFlRXlSNFlSNzBOc1gxWUgtaHJyWFFpUkpS?oc=5"
+          "time": "2026-11-16T10:04:09+09:00",
+          "title": "삼성전자, 수능 고사장 시스템에어컨 긴급 서비스 운영",
+          "source": "전자신문",
+          "link": "https://news.google.com/rss/articles/CBMiTkFVX3lxTE1VY3JmaVF4Q0tjZVl0QUlrcGlQOVVKbGNkQ2U4dm80a3JCUmlzMHJneUhDU2V2NF9Jemc5RU5HdnBNcnduLV9mUmRNazlzQQ?oc=5"
         }
       ],
       "price": 203000.0,
@@ -655,28 +662,16 @@
           "link": "https://news.google.com/rss/articles/CBMigAFBVV95cUxQLS1CX1ZzVnBpWTNGMVlleHJBNUc2Q0ZGSF9xVlFoWkNYa0E3VWR6MlhxVlY2S01Yc2s4ajdrd1pFOUFpWndRVFRfSXBTd3ZvaWpUelBNeE1fRG1CM0xzQURlaVVhMk5ZQjN5NmdIWVNpWEZXdWNRX0hyeF9mN09oSQ?oc=5"
         },
         {
-          "time": "2026-11-16T10:09:40+09:00",
-          "title": "[특징주] 삼성전자 '상승세' SK하이닉스 '약세'.. 엔비디아발 우려",
-          "source": "글로벌이코노믹",
-          "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxNSzdMTC1lUEFuQVhwSWlxN2ZDRUF0RmVSc0JsZi1iVXJfSmk2eExOaTB6VWM2cXR3MV84MkV1SjhuZTh6T0F4cHpvMkpDTmEtaUQ4aWRfTm0xLVQtelVBRVBBSjNfSlluOTc0TzZicGVoOHk2WlBGdk05X1JoOE9KckJmVE1ZOFFf?oc=5"
-        },
-        {
-          "time": "2026-11-16T09:42:00+09:00",
-          "title": "美법원, D램 담합 소송 허용…삼성·SK하이닉스 'HBM 생산' 영향주나",
-          "source": "뉴스핌",
-          "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE5KMnM0T212RDEzTWs4dzhCUHNEWkVXc0xUVHYyT1hTOVEwYkFxVHEyQ3JlelpTbmJZYnRZSDNldWZOOXFlRXlSNFlSNzBOc1gxWUgtaHJyWFFpUkpS?oc=5"
-        },
-        {
-          "time": "2026-11-16T09:22:10+09:00",
-          "title": "[특징주] 삼성전자, 보합권서 등락…하이닉스, 1%대 하락",
-          "source": "연합뉴스",
-          "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE1hVmY3ek9ra3FGWkF4ZkMwTmpNZ25OZl81M19NMm9FcHE1TmdTeW9XNmtYVEtqR3FUUmlrakZveXVGRVJFREwtTzF6Vy1zS3E2VXA1QXJpcm9iQkXSAWBBVV95cUxPQ0NScnBzTU5Hblo0eGV6UXA1X3BSUk0wV0hRa0UzVF9MLWwtYWkzdTRVWGZWUnVuNWZZMUVING8tb3gzSm9KYUlQQXFDa2gxRFc1b3ZIbGdubUR0REVMa1c?oc=5"
-        },
-        {
           "time": "2026-11-16T10:21:00+09:00",
           "title": "삼성전자 사장단 인사···이재용 회장의 '성과주의 인사' 시험대",
           "source": "뉴스핌",
           "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTFBRNDZNNGFOcE9POWtsTHI2MldpSDZjaVJqRGVZSTdGVDFOeVlhOWNteVVYc29TRXJOSEQ0T0lzb1l0Ny1LMjI0Z3I1NTlFQVNiT283TC1jaTQ4MUJ3?oc=5"
+        },
+        {
+          "time": "2026-11-16T10:04:09+09:00",
+          "title": "삼성전자, 수능 고사장 시스템에어컨 긴급 서비스 운영",
+          "source": "전자신문",
+          "link": "https://news.google.com/rss/articles/CBMiTkFVX3lxTE1VY3JmaVF4Q0tjZVl0QUlrcGlQOVVKbGNkQ2U4dm80a3JCUmlzMHJneUhDU2V2NF9Jemc5RU5HdnBNcnduLV9mUmRNazlzQQ?oc=5"
         }
       ],
       "price": 199300.0,
@@ -699,12 +694,6 @@
           "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE9qQ0xDSGZVa2xSclFuUFpESWxWX3JCUGpTb2ZBS0FaZl9PeU92UFZ2ZEpETkhuWm1abEF2VjJVM1pacDNKeVhNNUJKZUI3MUg4Q3RFY0diOE1fRDZlSTZRZ3ZMV2dLWjJW?oc=5"
         },
         {
-          "time": "2026-11-16T11:06:31+09:00",
-          "title": "반도체 사업장도 'AI 안경' 경계령…SK하이닉스 반입 금지, 삼성전자도 검토",
-          "source": "뉴시스",
-          "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTFAtZXFBT3hBRDBuRFd2cFR1MVpjenJQaVBqeVl6amZrVFNmbUtuM09jZzVBVXdjY2hGOGZiWXlOSEdVb3ZSSFl4QXBHeU9oWXdDbWVTSk9qaFo4TWg2dFJaU9IBeEFVX3lxTE5yYm1ldUpoWEozcWJCUzdablJrdzdod3hENkpRQjkwb3drT3d1NGdXcFJDWGoyazZUSXBHOFpDUnUyV0MtZURmdTJQY25qaFpqRTdNYUhYMkRPcG1Xa0E0LUxYWjlDWklPTmlZSmp6Z3d3QVJwM0RtXw?oc=5"
-        },
-        {
           "time": "2026-11-16T10:54:41+09:00",
           "title": "삼성전자 20만원 깨지고 하이닉스 -5%…또 파랗게 질린 코스피",
           "source": "서울신문",
@@ -721,6 +710,12 @@
           "title": "삼성전자 사장단 인사···이재용 회장의 '성과주의 인사' 시험대",
           "source": "뉴스핌",
           "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTFBRNDZNNGFOcE9POWtsTHI2MldpSDZjaVJqRGVZSTdGVDFOeVlhOWNteVVYc29TRXJOSEQ0T0lzb1l0Ny1LMjI0Z3I1NTlFQVNiT283TC1jaTQ4MUJ3?oc=5"
+        },
+        {
+          "time": "2026-11-16T11:09:26+09:00",
+          "title": "초고수들 SK하이닉스 '사자', 삼성전자 '팔자'…엇갈린 이유는",
+          "source": "한국경제",
+          "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE5aZ3FCNk9JcWN4RVRuMXhxMnItSTg5aWw4SWdMZWNZU3BGUjMzTVRHV2hwbW9FempSajQ5TlI2ZnFwamdPYlJYeXd6eERNZzhiUzBKMGF5UmRQdw?oc=5"
         }
       ],
       "price": 197800.0,
@@ -741,31 +736,13 @@
       "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE1FZTFGTVM4ZzVrVXdKbkJvb2lDa0RhVUt4T3dySWhZUGtvdEN6Z1RnSm9QSDRlc1p4X3NCRjFkeElyaE05dUNabWtNSURJOVd4aXNZSk5DWG1sZw?oc=5"
     },
     {
-      "time": "2026-11-16T08:35:04+09:00",
-      "title": "KB證 \"삼성전자, 탈엔비디아 시대 최대 수혜주\"",
-      "source": "연합인포맥스",
-      "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTFBpN3hQMTRhUDhxSy1VbGhudGstR1hNZmczUDd4Y2NQZXlsWm9FaDF2bXpSLWVaUWVvdEZHTDFBNnNEcVdCQmRZVzdHME91cmRBeVN2NkpjODItSk1kMWt1aFgyMzI0V2czNjdnbnpVeGI?oc=5"
-    },
-    {
       "time": "2026-11-16T08:43:02+09:00",
       "title": "젠슨 황 떠난 빈자리, 삼성전자에 기회?…“탈엔비디아 시대 수혜주” [오늘 나온 보고서]",
-      "source": "매일경제 마켓",
-      "link": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE5SWFZ4VmZ5MUVhcTJPQS1IMGRRVGtWTENWUWFlcGVCaTNZTXRmeEZPOU5DWW5mV2lUTEt2M1hod2dGMG5zSXY3WnVIeFRIMV9NSlE?oc=5"
-    },
-    {
-      "time": "2026-11-16T08:18:54+09:00",
-      "title": "삼성전자서비스, 수능 고사장 시스템에어컨 긴급 서비스 지원",
-      "source": "연합뉴스",
-      "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE9hZE9fY2ZpU0hEYVRYZlhVcXNoUlAyRjJ4VUotTXFELVFZOWhBSENubm5uN0F0TGtTUF81RXF4QzU2SE5COEVjZFVUQWRnWDlnREdWRmU3WkVfZEnSAWBBVV95cUxNWTRlaXN0SjZJaHR3WjFGeTVRdFZaTklpT3JpYUczbTBjVTMxY3JMNm1GZ2pQY2UzV2Z5aGVNT19oZ3RiM1Y4NUx6QzV0ODhVX0hzbXpWNHVWem5CanMyNjE?oc=5"
+      "source": "매일경제",
+      "link": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE92aWUtNWVLbElCbUNNbmVvYnp4bDJINTN4Y0Nmb0ZHTXdzVkdYQUtHMVg0OTU2aGo4MnlkRXFBbFhEaG5rbkRYZXVjeDZCbS1hMkE?oc=5"
     }
   ],
   "top_news": [
-    {
-      "time": "2026-11-16T23:27:00+09:00",
-      "title": "[AI MY 뉴스] 뉴욕 반도체주 프리뷰...엔비디아 실적 앞두고 반도체주 급락",
-      "source": "뉴스핌",
-      "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE94cndSM2xYOEdZejNoTzJDSnpCVE5BOURqbUN6bFFQT281SUs3TzdxUTR1V0ttMUtTOENqa0tMNVVMZmpZemdydUVIWUhXc05vSUpNR2xTRmFWa0k0?oc=5"
-    },
     {
       "time": "2026-11-16T09:12:16+09:00",
       "title": "KB증권 \"삼성전자, 脫엔비디아 시대 최대 수혜주\"",
@@ -779,12 +756,6 @@
       "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE9qQ0xDSGZVa2xSclFuUFpESWxWX3JCUGpTb2ZBS0FaZl9PeU92UFZ2ZEpETkhuWm1abEF2VjJVM1pacDNKeVhNNUJKZUI3MUg4Q3RFY0diOE1fRDZlSTZRZ3ZMV2dLWjJW?oc=5"
     },
     {
-      "time": "2026-11-16T11:06:31+09:00",
-      "title": "반도체 사업장도 'AI 안경' 경계령…SK하이닉스 반입 금지, 삼성전자도 검토",
-      "source": "뉴시스",
-      "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTFAtZXFBT3hBRDBuRFd2cFR1MVpjenJQaVBqeVl6amZrVFNmbUtuM09jZzVBVXdjY2hGOGZiWXlOSEdVb3ZSSFl4QXBHeU9oWXdDbWVTSk9qaFo4TWg2dFJaU9IBeEFVX3lxTE5yYm1ldUpoWEozcWJCUzdablJrdzdod3hENkpRQjkwb3drT3d1NGdXcFJDWGoyazZUSXBHOFpDUnUyV0MtZURmdTJQY25qaFpqRTdNYUhYMkRPcG1Xa0E0LUxYWjlDWklPTmlZSmp6Z3d3QVJwM0RtXw?oc=5"
-    },
-    {
       "time": "2026-11-16T15:49:31+09:00",
       "title": "[단독] 삼성전자, 독자 AI로 HBM4 수율 개선…차세대 HBM4E도 고도화",
       "source": "이코노미트리뷴",
@@ -795,6 +766,18 @@
       "title": "삼성전자, 3분기 누적 시설투자 56.9조원…반도체에 52.8조 집중",
       "source": "매일일보",
       "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE9EWWNkYkxfbGM5ZDV1WFNJMmJWWUQ3LUpUVk5KQl9kUEhuWjV4aEhhcXUwQnBKUUJmZmR3Vk5zRXoyRW1fbmt2eDRWTFk1R01SV2thX0J3TC1jY1gwcXR6WVRzZXo?oc=5"
+    },
+    {
+      "time": "2026-11-16T17:19:04+09:00",
+      "title": "삼성전자, 3Q 누적 매출 500조 돌파…반도체 호조에 투자도 역대 최대",
+      "source": "www.ebn.co.kr",
+      "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTFBnZWNuTXJBWDlYdS1PVUpqdGRwQ05IeDBYT1l0N1g3TTYyZTIwY2M2Sjh2TzBJUjkyWGplR09CR1dBTnd2d3Z4czV6aXMtcEFGMFM2bnlsV1dCcjZhZ3h5SlRKOWJYbjdt?oc=5"
+    },
+    {
+      "time": "2026-11-16T17:30:00+09:00",
+      "title": "삼성전자, 메모리 반도체 평균판매가격 값 270% 상승",
+      "source": "이투데이",
+      "link": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE1vRHdEam5oYUNkTHppMG10cmtGMmFxTzN3dDN4NmpWSGVXTFBDNVp4OFBrZnFoRjhnYjJYbmVzUlBWT0s2d1RyT0ZzSzlBVlh1cE1PWg?oc=5"
     }
   ],
   "disclosures": [
@@ -807,37 +790,84 @@
   ],
   "disclosure_note": null,
   "flows": "외국인 -3,105,597 / 기관 +852,610",
-  "flow_story": null,
+  "flow_story": {
+    "direction": "down",
+    "c2c": -0.044660194174757306,
+    "actors": [
+      {
+        "key": "foreign_net",
+        "name": "외국인",
+        "shares": -3105597.0,
+        "won": -611181489600.0,
+        "vs_usual": 2.0564290204025752
+      },
+      {
+        "key": "inst_net",
+        "name": "기관",
+        "shares": 852610.0,
+        "won": 167793648000.0,
+        "vs_usual": 1.1110670940606433
+      },
+      {
+        "key": "indiv_net",
+        "name": "개인",
+        "shares": 2197588.0,
+        "won": 432485318400.0,
+        "vs_usual": 1.4523232921287659
+      }
+    ],
+    "lead": {
+      "key": "foreign_net",
+      "name": "외국인",
+      "shares": -3105597.0,
+      "won": -611181489600.0,
+      "vs_usual": 2.0564290204025752
+    },
+    "counter": {
+      "key": "indiv_net",
+      "name": "개인",
+      "shares": 2197588.0,
+      "won": 432485318400.0,
+      "vs_usual": 1.4523232921287659
+    },
+    "all_one_side": false,
+    "observations": [
+      "전일까지 20거래일 고점: 종가 돌파 없음 · 종가 위치 -20.96%.",
+      "전일까지 60거래일 고점: 종가 돌파 없음 · 종가 위치 -30.48%.",
+      "같은 5거래일 수익률: 이 종목 +3.63%, SK하이닉스 -1.41% · 차이 +5.04%p.",
+      "같은 20거래일 수익률: 이 종목 -9.72%, SK하이닉스 -12.29% · 차이 +2.57%p.",
+      "같은 60거래일 수익률: 이 종목 -25.43%, SK하이닉스 -32.60% · 차이 +7.16%p.",
+      "외국인 5일 합계 순매수 전환: 직전 5일 → 최근 5일 순매수/거래량 -10.09% → +4.00% (일평균 -2,333,831주 → +641,805주). 향후 상승을 뜻하는 신호는 아닙니다.",
+      "SK하이닉스 -7.89% — 반도체 업종이 함께 움직였습니다.",
+      "전날 밤 미국 반도체지수(SOX) -3.43% — 미국 반도체 흐름과 같은 방향입니다.",
+      "전날 밤 마이크론 -2.52% — 미국 메모리 회사와 같은 방향입니다.",
+      "직전 5거래일 +9.17% 오른 뒤의 매도 — 차익 실현과 맞는 모양입니다.",
+      "종가가 당일 범위(저가 195,000~고가 208,000원)의 아래쪽 14% 지점 — 저가 부근에서 마감했습니다.",
+      "장중 5일선(201,760원) 위로 올랐다가 그 아래로 밀려 마감했습니다.",
+      "마이크론은 미국 정규장 마감 뒤 시간외에서 -1.88%(장중 -2.04%~-0.98%) — 정규장 등락에 안 보이는 반응입니다.",
+      "엔비디아는 미국 정규장 마감 뒤 시간외에서 -1.19%(장중 -1.43%~-0.45%) — 정규장 등락에 안 보이는 반응입니다.",
+      "우리 장중(09:00~15:30) 나스닥100 선물 -1.90%, 이 종목 고점 이후 -1.80% · 미 10년물 국채 선물 +0.03%, 이 종목 고점 이후 +0.04% · 원/달러 +0.07%, 이 종목 고점 이후 -0.09%.",
+      "자사주 매입 기간 중(직접 취득 2026-08-24~2026-11-21, 14,999,999,992,000, DART 공시) — 회사 자신의 매수는 기타 법인으로 잡힙니다.",
+      "마감가가 장중 고가보다 -5.04% 아래 — 오른 폭을 장중에 꽤 반납했습니다.",
+      "외국인의 순매도 규모가 최근 20거래일 평균의 2.1배로 컸습니다."
+    ],
+    "estimated_indiv": false,
+    "source_note": "출처 naver+cache · 장 마감 직후 잠정치라 저녁 확정치와 다를 수 있습니다 · KRX는 받지 못함(pykrx 미설치)"
+  },
   "flow_status": {
     "state": "ok",
     "detail": "naver+cache",
     "krx_error": "pykrx 미설치"
   },
   "context": {},
-  "market": {
-    "index": "KOSPI",
-    "date": "2026-11-16",
-    "rise": 263,
-    "fall": 615,
-    "steady": 34,
-    "upper": 0,
-    "lower": 0,
-    "individual": 12904.0,
-    "foreign": -13287.0,
-    "institution": -4562.0,
-    "prev_close": 5290.53,
-    "open": 5305.4,
-    "high": 5327.99,
-    "low": 5069.83,
-    "close": 5100.5
-  },
+  "market": null,
   "earnings_reactions": null,
   "forecasts": [
     {
       "model": "No macro ensemble",
-      "hit": false,
-      "verdict": "틀림 — 예측 하락 45%, 실제 보합(+nan%)",
-      "legs": "갭 +nan%(보합) · 세션 +nan%(보합)",
+      "hit": true,
+      "verdict": "맞음 — 예측 하락 45%, 실제 하락(-4.47%)",
+      "legs": "갭 +0.24%(보합) · 세션 -4.70%(하락)",
       "where": "결과는 주로 장중에서 정해졌습니다.",
       "band": 0.0127085477046405,
       "probs": [
@@ -845,14 +875,14 @@
         0.312723598984113,
         0.2350654382198391
       ],
-      "actual": "보합",
+      "actual": "하락",
       "predicted": "하락"
     },
     {
       "model": "Mean ensemble",
-      "hit": false,
-      "verdict": "틀림 — 예측 하락 46%, 실제 보합(+nan%)",
-      "legs": "갭 +nan%(보합) · 세션 +nan%(보합)",
+      "hit": true,
+      "verdict": "맞음 — 예측 하락 46%, 실제 하락(-4.47%)",
+      "legs": "갭 +0.24%(보합) · 세션 -4.70%(하락)",
       "where": "결과는 주로 장중에서 정해졌습니다.",
       "band": 0.0127085477046405,
       "probs": [
@@ -860,14 +890,14 @@
         0.3014238081097007,
         0.2351800382509067
       ],
-      "actual": "보합",
+      "actual": "하락",
       "predicted": "하락"
     },
     {
       "model": "Candidate expanding",
-      "hit": false,
-      "verdict": "틀림 — 예측 하락 50%, 실제 보합(+nan%)",
-      "legs": "갭 +nan%(보합) · 세션 +nan%(보합)",
+      "hit": true,
+      "verdict": "맞음 — 예측 하락 50%, 실제 하락(-4.47%)",
+      "legs": "갭 +0.24%(보합) · 세션 -4.70%(하락)",
       "where": "결과는 주로 장중에서 정해졌습니다.",
       "band": 0.0127085477046405,
       "probs": [
@@ -875,10 +905,10 @@
         0.2845734575007562,
         0.2117106874561956
       ],
-      "actual": "보합",
+      "actual": "하락",
       "predicted": "하락"
     }
   ],
-  "price_check": "1거래일 예상 구간 192,845~214,800원 · 종가 nan원 → 구간 밖",
+  "price_check": "1거래일 예상 구간 192,845~214,800원 · 종가 196,800원 → 구간 안",
   "disclaimer": "시간이 맞는 것이지 원인 확정이 아닙니다. 뉴스 없이 움직이는 날(수급·프로그램·옵션 만기)이 많고, 기사 발행 시각은 실제 정보 유통보다 늦거나 앞섭니다. 이 절은 설명 도구이며 다음날 예측에 자동 반영되지 않습니다."
 }

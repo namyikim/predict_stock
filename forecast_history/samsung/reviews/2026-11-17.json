@@ -1,0 +1,918 @@
+{
+  "target": "samsung",
+  "name": "삼성전자",
+  "peer_name": "SK하이닉스",
+  "session_date": "2026-11-17",
+  "generated_at": "2026-11-17 17:27 KST",
+  "summary": {
+    "prev_close": 196800.0,
+    "open": 191400.0,
+    "high": 195900.0,
+    "low": 190100.0,
+    "close": 190300.0,
+    "gap": -0.027439024390243927,
+    "session": -0.005747126436781658,
+    "c2c": -0.03302845528455289,
+    "high_vs_open": 0.023510971786833812,
+    "low_vs_open": -0.006792058516196464,
+    "volume": 17343973.0,
+    "volume_ratio": 0.963681336444959,
+    "kospi_c2c": -0.025883740717821735,
+    "peer_c2c": -0.019642857142857184,
+    "usdkrw_chg": 0.003082681681277011,
+    "us_nights": 1,
+    "sox_ret": -0.05279450139328523,
+    "nasdaq_ret": -0.02492453245085191,
+    "micron_ret": -0.07617784457777088,
+    "prior_streak": -2,
+    "ma5": 201420.0,
+    "ma20": 212005.0,
+    "high20": 249000.0,
+    "high252": 367712.7495144774,
+    "price_context": {
+      "breakouts": {
+        "20": {
+          "prior_high": 249000.0,
+          "distance": -0.23574297188755022,
+          "close_breakout": false,
+          "intraday_breakout": false
+        },
+        "60": {
+          "prior_high": 280634.875,
+          "distance": -0.32189468611126826,
+          "close_breakout": false,
+          "intraday_breakout": false
+        }
+      },
+      "relative": {
+        "5": {
+          "start": "2026-11-10",
+          "end": "2026-11-17",
+          "own": -0.043237807943690254,
+          "peer": -0.09405940594059403,
+          "excess": 0.05082159799690378
+        },
+        "20": {
+          "start": "2026-10-20",
+          "end": "2026-11-17",
+          "own": -0.10023640661938538,
+          "peer": -0.10220768601798857,
+          "excess": 0.0019712793986031985
+        },
+        "60": {
+          "start": "2026-08-19",
+          "end": "2026-11-17",
+          "own": -0.21778154568940744,
+          "peer": -0.26784130460277267,
+          "excess": 0.05005975891336523
+        }
+      }
+    },
+    "range": 0.030510257759074122,
+    "peer_range": 0.05311355311355315,
+    "prior_5d": 0.03633491311216419,
+    "ma_touches": [],
+    "micron_ah": {
+      "regular_close": 719.0700073242188,
+      "last": 718.01,
+      "ret": -0.0014741364726964523,
+      "low_ret": -0.013884750055660477,
+      "high_ret": 0.004839574228288068,
+      "last_time": "2026-11-17T08:55:00+09:00"
+    },
+    "nvidia_ah": {
+      "regular_close": 156.16000366210938,
+      "last": 156.15,
+      "ret": -6.406033475137018e-05,
+      "low_ret": -0.005379121685517685,
+      "high_ret": 0.006787886225875006,
+      "last_time": "2026-11-17T08:55:00+09:00"
+    },
+    "session_cross": {
+      "NQ=F": {
+        "label": "나스닥100 선물",
+        "ret": -0.0011909015124449418,
+        "after_high": -0.004355846148226594
+      },
+      "ZN=F": {
+        "label": "미 10년물 국채 선물",
+        "ret": 0.00014814814814823052,
+        "after_high": 0.0010379596678529168
+      },
+      "KRW=X": {
+        "label": "원/달러",
+        "ret": 0.0019096769428128546,
+        "after_high": -0.002980892468361418
+      }
+    },
+    "from_high": -0.022590219264084443,
+    "buyback": [
+      {
+        "kind": "직접 취득",
+        "start": "2026-08-24",
+        "end": "2026-11-21",
+        "amount": "14,999,999,992,000",
+        "purpose": "임직원 주식보상",
+        "rcept_no": "20260821000616"
+      }
+    ],
+    "foreign_pressure": {
+      "state": "turned_buying",
+      "previous_ratio": -0.09074625492567792,
+      "recent_ratio": 0.008122902623629488,
+      "previous_daily_net": -2133768.0,
+      "recent_daily_net": 133697.4
+    },
+    "buyback_transition": null
+  },
+  "classification": {
+    "labels": [
+      "갭 주도",
+      "장중 급변 09:00 주도",
+      "지수 동조"
+    ],
+    "reasons": [
+      "갭 -2.74%가 종가→종가 -3.30%의 83%",
+      "09:00 봉 -2.54%(σ의 10.94배, 거래량 8.03배)가 세션 -0.57%의 405%",
+      "KOSPI -2.59% vs 종목 -3.30%, 5분 수익률 상관 0.93 — 종목 고유 요인이 약함"
+    ]
+  },
+  "events": [
+    {
+      "time": "2026-11-17T09:00:00+09:00",
+      "ret": -0.025406504065040636,
+      "z": 10.94,
+      "volume_ratio": 8.03,
+      "cum_before": 0.0,
+      "cum_after": 0.0015665796344648264,
+      "session_share": 4.054454607046091,
+      "score": 12.9387656858334,
+      "news": [
+        {
+          "time": "2026-11-17T09:04:40+09:00",
+          "title": "삼성전자 \"교실 속 AI 경험 확대한다\"",
+          "source": "한국NGO신문",
+          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTFBHTEs0RVEwQWNmVW40OHdCNjY3Und0WnRFQjZaaDJCRmVzYWN0ZEFiVmJTbzNacmZzTW5vYnVNdjZhcnJXRGY1VzM2TVJYVHhyZ1NHNGRzQjFwcWNRMTN4Qm9UTFQwTENv?oc=5"
+        },
+        {
+          "time": "2026-11-17T08:21:42+09:00",
+          "title": "삼성전자, '갤럭시 AI 클래스'에 'XR' 도입…AI 경험 확대 제공",
+          "source": "글로벌이코노믹",
+          "link": "https://news.google.com/rss/articles/CBMihgFBVV95cUxQamY4aVZqWWxMcks2SVhYM2RpUkg0bFhWbUFwb2VmVC1sZkxhc1ozdTF1U3JTalB2R2xscVBqUm1lU1hsaHNnSnYxSlo5YWlIMFJwVG1YMGt1Z0lXQ3R1LV9SaWhsQnFpamRPek1aTTBZZElnSU1sV1BGNHdDZXlMTTUteUVIdw?oc=5"
+        },
+        {
+          "time": "2026-11-17T08:51:36+09:00",
+          "title": "삼성전자, 갤럭시 AI 클래스에 XR 도입…누적 수료생 20만명 돌파",
+          "source": "더트래커",
+          "link": "https://news.google.com/rss/articles/CBMiWEFVX3lxTFBvSWMtdTdFdHR2MDBSYW9sdWN6M1djYXNnckZhV2ZyY0FCM2I1WkJyUDdMd1BRMG5jYUxVQzJMdnJmay1zanJTNEthMkRFLTRGVUQ3RV9fYWk?oc=5"
+        },
+        {
+          "time": "2026-11-17T09:00:18+09:00",
+          "title": "삼성전자, 교실에 '갤럭시 XR' 도입…20만 명 AI 교육 넘어 몰입형 학습 확대",
+          "source": "인공지능신문",
+          "link": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE1BeElBRmJuc3JKODJXcktjNHhJOTVER3NVcDgyRnM5QnI2YTdrUk9aSUF0b0Voa01BbFFLYjVuanljLW5EdTFwSG9TQ3VueFRkVkxNc0xEeWtOa3FVTWdiN0ZlN0J4UWM?oc=5"
+        },
+        {
+          "time": "2026-11-17T09:09:29+09:00",
+          "title": "교실로 들어온 확장현실…삼성전자, `갤럭시 AI` 클래스에 `갤럭시 XR` 도입",
+          "source": "디지털데일리",
+          "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE4zUG9mcWdVLVE3cHRlX21CYzFxV202VXNhSnNRaTczY21CdGxxWm4yYXJCSGU0LVdOcFZJSWRGenlyYWVNa1ZjTk4wVkxYMjVtR0JDVFotSTFSalEtNnhUSmlSZUU?oc=5"
+        }
+      ]
+    },
+    {
+      "time": "2026-11-17T11:35:00+09:00",
+      "ret": 0.009438909281594077,
+      "z": 4.06,
+      "volume_ratio": 2.38,
+      "cum_before": -0.004177545691905982,
+      "cum_after": 0.005221932114882533,
+      "session_share": -1.50629260618773,
+      "score": 4.5389537679555545,
+      "news": [
+        {
+          "time": "2026-11-17T11:25:24+09:00",
+          "title": "삼성전자·SK하이닉스 현금성 자산 등 329조원 돌파…AI 반도체 호황, 미래 투자 경쟁으로 확산",
+          "source": "시사프리즘",
+          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE1LTlE1ZnNQT2J4T1VLLVFhM0ozc01menVkdEo0RnY3V1NBMHlqTzc0ajU3QWg0Ynh6aEsxd0VrNEVBaHVuUTRaZkFBS0lLdGd6TmFoak11akJHUEU5QmVHZVhkU2c4Y3Bw?oc=5"
+        },
+        {
+          "time": "2026-11-17T10:56:19+09:00",
+          "title": "삼성전자 주가 장중 2%대 내려, 젠슨 황 사임 여파에 미국 반도체주 약세 지속",
+          "source": "비즈니스포스트",
+          "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTE5lUnktSjJ6N1BCZjA4S09JU1Itc05SR3pUTTQ1X2VuZ3dUUzRzQ0hzQWtpOV96VGNpenlKTGJlMXI2LVRwakQyZWNIb2hOaTZIcGhubUswdHFaSzBaMHRMX25PWEZWY1NxQ01Kb1B3V0FoVXM?oc=5"
+        },
+        {
+          "time": "2026-11-17T11:16:56+09:00",
+          "title": "[공시] 미래컴퍼니, 삼성전자와 20억9000만원 반도체 장비 계약",
+          "source": "글로벌이코노믹",
+          "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxOZ3FBdDdrOTE2NTVzZ1BtU2wtaXhWUlI1UHhaV2dVWHgzMEs0OTU5dFNzUzQtTkY5Q25qU1JZT0xlQk54SHFILWFsSEp4am1wSlJXLVBQdnhHM2xWSEFONlFpQ0lOWVc3NkFDdDB6OV9nc0d0a0R6OGw3aHNSMTFpbVZSU1plOVhO?oc=5"
+        },
+        {
+          "time": "2026-11-17T11:29:00+09:00",
+          "title": "AI 반도체 호황에 삼성전자 고객 쏠림 심화…\"빅테크 의존도 커졌다\" By EBN",
+          "source": "Investing.com 한국어",
+          "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE0xMmx6WVRmZUZvWU11ejM1U3dPSEptTWJXdVFKbFhtcENNbWNFVzl6elFrNUQ3eWJ0dEZOdk5MNVJIWG42b283N0dXNXlVYWpfS2F6TFQ5bnR6a3d3RTRDY2t2QnBZRDhlNTFza3JmRzY?oc=5"
+        },
+        {
+          "time": "2026-11-17T11:35:47+09:00",
+          "title": "삼성전자, 3분기 누적 매출 500조원 돌파…반도체 투자·연구개발에 99조원 투입",
+          "source": "뉴스저널리즘",
+          "link": "https://news.google.com/rss/articles/CBMia0FVX3lxTE95a2JEQkczazVhd3NiandMU1M5NTdCdWFnd0o0aTVaUjY1RkZ0WUJSc3M1U0djZUFrRVp2d0xWU0hBZXVaSjdtOEhJYjBuZWppQU9sZ29jM2dZdUktTGpmRWFSd3BUek4zRWRR?oc=5"
+        }
+      ]
+    },
+    {
+      "time": "2026-11-17T10:20:00+09:00",
+      "ret": -0.008213552361396315,
+      "z": 3.54,
+      "volume_ratio": 1.61,
+      "cum_before": 0.017232375979112202,
+      "cum_after": 0.008877284595300239,
+      "session_share": 1.3107460643395026,
+      "score": 3.8577442702416582,
+      "news": [
+        {
+          "time": "2026-11-17T09:21:51+09:00",
+          "title": "ACE 반도체 ETF, 메모리 대표주 삼성전자로 교체…3%대→19%대",
+          "source": "메트로신문",
+          "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE9TY1A0T095Nl9tRjgxTkNfaDhsLU1jX0xRQllXMnZCMWpFZjNYYlE2WlBVMm1KdXU2ck1fR1lRaXBWV1RhXzVaQmJNZ3VLM1lHTVZ4ajdaSHo0dHF1eUQ2NQ?oc=5"
+        },
+        {
+          "time": "2026-11-17T09:25:59+09:00",
+          "title": "코스피, 외국인 매도에 장 초반 5000선 위협…삼성전자·SK하이닉스 약세",
+          "source": "오피니언뉴스",
+          "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTFAzVV9PYjBhSHlrdGNDWWExdElWLW5aM2p5M2tBOUtFZ19KVWU3UVNfUzV2aUQ4blZPSW1vN19nNlZKOHNKa1FyXzdQVS0zV3lhWnRzb0tYVFNTSEhGSUFDSTkzV2U3RTVNa3N0WE15Mnc?oc=5"
+        },
+        {
+          "time": "2026-11-17T09:57:00+09:00",
+          "title": "삼성전자, 3Q 누적 매출 500조 돌파…반도체 호조에 투자도 역대 최대 By EBN",
+          "source": "Investing.com 한국어",
+          "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE1aREY5NHZIeU9yQVYzOEFqUHAtZE5fY0ZnaUZrSWNVUU1GLVRSd2QtWHpHa3cwQ24wNVdockFuMEh6WXk0cEhXTXY1WGZDT2duWGkzT2Rpc0duLW0xTTg1RHdXejF4N2pEbkowaWxnSmQ?oc=5"
+        },
+        {
+          "time": "2026-11-17T09:04:40+09:00",
+          "title": "삼성전자 \"교실 속 AI 경험 확대한다\"",
+          "source": "한국NGO신문",
+          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTFBHTEs0RVEwQWNmVW40OHdCNjY3Und0WnRFQjZaaDJCRmVzYWN0ZEFiVmJTbzNacmZzTW5vYnVNdjZhcnJXRGY1VzM2TVJYVHhyZ1NHNGRzQjFwcWNRMTN4Qm9UTFQwTENv?oc=5"
+        },
+        {
+          "time": "2026-11-17T09:38:28+09:00",
+          "title": "삼성전자 19만원선도 위태…SK하이닉스와 동반 하락에 반도체주 휘청",
+          "source": "진일보 | 전남일보",
+          "link": "https://news.google.com/rss/articles/CBMib0FVX3lxTE5aTVl0dGFBaDIxNWdLcTMxWGRTSVdlaGZSVXFqVGhkSE5IN05OM0NLWEFIM0VRbldmdUEwQUI3b2cxX3YtTlNmMG8zWHN0UWVMaHY3eS1RRjRQTnY4VDR6WXpOb2hmWG9hVi15TFpIZw?oc=5"
+        }
+      ]
+    }
+  ],
+  "turning_point": {
+    "high_time": "2026-11-17T10:15:00+09:00",
+    "high": 0.017232375979112202,
+    "low_time": "2026-11-17T14:55:00+09:00",
+    "low": -0.0062663185378589725,
+    "pattern": "고점 후 반락"
+  },
+  "closing_share": -0.0,
+  "intraday_corr_kospi": 0.9322311587619115,
+  "intraday_note": "장중 봉은 09:00~14:55까지만 있어 마감 구간(14:55~15:30)은 일봉 종가로만 봅니다(그 구간 +0.00%).",
+  "intraday_coverage": "09:00~14:55",
+  "intraday_path": [
+    {
+      "time": "2026-11-17T09:00:00+09:00",
+      "price": 191800.0,
+      "volume": 1240581.0
+    },
+    {
+      "time": "2026-11-17T09:05:00+09:00",
+      "price": 192800.0,
+      "volume": 552122.0
+    },
+    {
+      "time": "2026-11-17T09:10:00+09:00",
+      "price": 192900.0,
+      "volume": 625550.0
+    },
+    {
+      "time": "2026-11-17T09:15:00+09:00",
+      "price": 193300.0,
+      "volume": 311964.0
+    },
+    {
+      "time": "2026-11-17T09:20:00+09:00",
+      "price": 193300.0,
+      "volume": 176992.0
+    },
+    {
+      "time": "2026-11-17T09:25:00+09:00",
+      "price": 192700.0,
+      "volume": 295585.0
+    },
+    {
+      "time": "2026-11-17T09:30:00+09:00",
+      "price": 192200.0,
+      "volume": 224212.0
+    },
+    {
+      "time": "2026-11-17T09:35:00+09:00",
+      "price": 192300.0,
+      "volume": 139012.0
+    },
+    {
+      "time": "2026-11-17T09:40:00+09:00",
+      "price": 192300.0,
+      "volume": 126251.0
+    },
+    {
+      "time": "2026-11-17T09:45:00+09:00",
+      "price": 192900.0,
+      "volume": 128893.0
+    },
+    {
+      "time": "2026-11-17T09:50:00+09:00",
+      "price": 192700.0,
+      "volume": 159282.0
+    },
+    {
+      "time": "2026-11-17T09:55:00+09:00",
+      "price": 193500.0,
+      "volume": 162791.0
+    },
+    {
+      "time": "2026-11-17T10:00:00+09:00",
+      "price": 193100.0,
+      "volume": 266413.0
+    },
+    {
+      "time": "2026-11-17T10:05:00+09:00",
+      "price": 194600.0,
+      "volume": 236705.0
+    },
+    {
+      "time": "2026-11-17T10:10:00+09:00",
+      "price": 194600.0,
+      "volume": 209470.0
+    },
+    {
+      "time": "2026-11-17T10:15:00+09:00",
+      "price": 194800.0,
+      "volume": 419123.0
+    },
+    {
+      "time": "2026-11-17T10:20:00+09:00",
+      "price": 193200.0,
+      "volume": 248209.0
+    },
+    {
+      "time": "2026-11-17T10:25:00+09:00",
+      "price": 192200.0,
+      "volume": 249184.0
+    },
+    {
+      "time": "2026-11-17T10:30:00+09:00",
+      "price": 192300.0,
+      "volume": 213745.0
+    },
+    {
+      "time": "2026-11-17T10:35:00+09:00",
+      "price": 193300.0,
+      "volume": 192931.0
+    },
+    {
+      "time": "2026-11-17T10:40:00+09:00",
+      "price": 193400.0,
+      "volume": 181287.0
+    },
+    {
+      "time": "2026-11-17T10:45:00+09:00",
+      "price": 192200.0,
+      "volume": 208212.0
+    },
+    {
+      "time": "2026-11-17T10:50:00+09:00",
+      "price": 192400.0,
+      "volume": 167721.0
+    },
+    {
+      "time": "2026-11-17T10:55:00+09:00",
+      "price": 192000.0,
+      "volume": 217490.0
+    },
+    {
+      "time": "2026-11-17T11:00:00+09:00",
+      "price": 192600.0,
+      "volume": 171551.0
+    },
+    {
+      "time": "2026-11-17T11:05:00+09:00",
+      "price": 192100.0,
+      "volume": 154673.0
+    },
+    {
+      "time": "2026-11-17T11:10:00+09:00",
+      "price": 191600.0,
+      "volume": 194435.0
+    },
+    {
+      "time": "2026-11-17T11:15:00+09:00",
+      "price": 191900.0,
+      "volume": 184860.0
+    },
+    {
+      "time": "2026-11-17T11:20:00+09:00",
+      "price": 191300.0,
+      "volume": 162631.0
+    },
+    {
+      "time": "2026-11-17T11:25:00+09:00",
+      "price": 190900.0,
+      "volume": 154236.0
+    },
+    {
+      "time": "2026-11-17T11:30:00+09:00",
+      "price": 190700.0,
+      "volume": 130734.0
+    },
+    {
+      "time": "2026-11-17T11:35:00+09:00",
+      "price": 192500.0,
+      "volume": 366855.0
+    },
+    {
+      "time": "2026-11-17T11:40:00+09:00",
+      "price": 192700.0,
+      "volume": 136178.0
+    },
+    {
+      "time": "2026-11-17T11:45:00+09:00",
+      "price": 192800.0,
+      "volume": 165066.0
+    },
+    {
+      "time": "2026-11-17T11:50:00+09:00",
+      "price": 192500.0,
+      "volume": 90039.0
+    },
+    {
+      "time": "2026-11-17T11:55:00+09:00",
+      "price": 192850.0,
+      "volume": 112227.0
+    },
+    {
+      "time": "2026-11-17T12:00:00+09:00",
+      "price": 192500.0,
+      "volume": 102274.0
+    },
+    {
+      "time": "2026-11-17T12:05:00+09:00",
+      "price": 193800.0,
+      "volume": 224573.0
+    },
+    {
+      "time": "2026-11-17T12:10:00+09:00",
+      "price": 193500.0,
+      "volume": 174780.0
+    },
+    {
+      "time": "2026-11-17T12:15:00+09:00",
+      "price": 193700.0,
+      "volume": 119604.0
+    },
+    {
+      "time": "2026-11-17T12:20:00+09:00",
+      "price": 193400.0,
+      "volume": 99701.0
+    },
+    {
+      "time": "2026-11-17T12:25:00+09:00",
+      "price": 193300.0,
+      "volume": 84080.0
+    },
+    {
+      "time": "2026-11-17T12:30:00+09:00",
+      "price": 193600.0,
+      "volume": 102919.0
+    },
+    {
+      "time": "2026-11-17T12:35:00+09:00",
+      "price": 193200.0,
+      "volume": 124109.0
+    },
+    {
+      "time": "2026-11-17T12:40:00+09:00",
+      "price": 192600.0,
+      "volume": 144042.0
+    },
+    {
+      "time": "2026-11-17T12:45:00+09:00",
+      "price": 192100.0,
+      "volume": 124029.0
+    },
+    {
+      "time": "2026-11-17T12:50:00+09:00",
+      "price": 191900.0,
+      "volume": 200320.0
+    },
+    {
+      "time": "2026-11-17T12:55:00+09:00",
+      "price": 191250.0,
+      "volume": 97263.0
+    },
+    {
+      "time": "2026-11-17T13:00:00+09:00",
+      "price": 190700.0,
+      "volume": 203993.0
+    },
+    {
+      "time": "2026-11-17T13:05:00+09:00",
+      "price": 190800.0,
+      "volume": 109085.0
+    },
+    {
+      "time": "2026-11-17T13:10:00+09:00",
+      "price": 190600.0,
+      "volume": 95325.0
+    },
+    {
+      "time": "2026-11-17T13:15:00+09:00",
+      "price": 190800.0,
+      "volume": 136754.0
+    },
+    {
+      "time": "2026-11-17T13:20:00+09:00",
+      "price": 191300.0,
+      "volume": 90574.0
+    },
+    {
+      "time": "2026-11-17T13:25:00+09:00",
+      "price": 191400.0,
+      "volume": 126246.0
+    },
+    {
+      "time": "2026-11-17T13:30:00+09:00",
+      "price": 191700.0,
+      "volume": 142884.0
+    },
+    {
+      "time": "2026-11-17T13:35:00+09:00",
+      "price": 191750.0,
+      "volume": 103996.0
+    },
+    {
+      "time": "2026-11-17T13:40:00+09:00",
+      "price": 191900.0,
+      "volume": 76333.0
+    },
+    {
+      "time": "2026-11-17T13:45:00+09:00",
+      "price": 192150.0,
+      "volume": 99838.0
+    },
+    {
+      "time": "2026-11-17T13:50:00+09:00",
+      "price": 192200.0,
+      "volume": 99131.0
+    },
+    {
+      "time": "2026-11-17T13:55:00+09:00",
+      "price": 192600.0,
+      "volume": 81283.0
+    },
+    {
+      "time": "2026-11-17T14:00:00+09:00",
+      "price": 191700.0,
+      "volume": 113028.0
+    },
+    {
+      "time": "2026-11-17T14:05:00+09:00",
+      "price": 191400.0,
+      "volume": 109979.0
+    },
+    {
+      "time": "2026-11-17T14:10:00+09:00",
+      "price": 191100.0,
+      "volume": 158405.0
+    },
+    {
+      "time": "2026-11-17T14:15:00+09:00",
+      "price": 192000.0,
+      "volume": 175401.0
+    },
+    {
+      "time": "2026-11-17T14:20:00+09:00",
+      "price": 192200.0,
+      "volume": 132394.0
+    },
+    {
+      "time": "2026-11-17T14:25:00+09:00",
+      "price": 192100.0,
+      "volume": 97428.0
+    },
+    {
+      "time": "2026-11-17T14:30:00+09:00",
+      "price": 191800.0,
+      "volume": 120661.0
+    },
+    {
+      "time": "2026-11-17T14:35:00+09:00",
+      "price": 191100.0,
+      "volume": 85388.0
+    },
+    {
+      "time": "2026-11-17T14:40:00+09:00",
+      "price": 191000.0,
+      "volume": 126318.0
+    },
+    {
+      "time": "2026-11-17T14:45:00+09:00",
+      "price": 191000.0,
+      "volume": 122655.0
+    },
+    {
+      "time": "2026-11-17T14:50:00+09:00",
+      "price": 190400.0,
+      "volume": 159133.0
+    },
+    {
+      "time": "2026-11-17T14:55:00+09:00",
+      "price": 190300.0,
+      "volume": 196468.0
+    }
+  ],
+  "timeline_items": [
+    {
+      "time": "2026-11-17T09:00:00+09:00",
+      "ret": -0.025406504065040636,
+      "z": 10.94,
+      "volume_ratio": 8.03,
+      "cum_before": 0.0,
+      "cum_after": 0.0015665796344648264,
+      "session_share": 4.054454607046091,
+      "score": 12.9387656858334,
+      "news": [
+        {
+          "time": "2026-11-17T09:04:40+09:00",
+          "title": "삼성전자 \"교실 속 AI 경험 확대한다\"",
+          "source": "한국NGO신문",
+          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTFBHTEs0RVEwQWNmVW40OHdCNjY3Und0WnRFQjZaaDJCRmVzYWN0ZEFiVmJTbzNacmZzTW5vYnVNdjZhcnJXRGY1VzM2TVJYVHhyZ1NHNGRzQjFwcWNRMTN4Qm9UTFQwTENv?oc=5"
+        },
+        {
+          "time": "2026-11-17T08:21:42+09:00",
+          "title": "삼성전자, '갤럭시 AI 클래스'에 'XR' 도입…AI 경험 확대 제공",
+          "source": "글로벌이코노믹",
+          "link": "https://news.google.com/rss/articles/CBMihgFBVV95cUxQamY4aVZqWWxMcks2SVhYM2RpUkg0bFhWbUFwb2VmVC1sZkxhc1ozdTF1U3JTalB2R2xscVBqUm1lU1hsaHNnSnYxSlo5YWlIMFJwVG1YMGt1Z0lXQ3R1LV9SaWhsQnFpamRPek1aTTBZZElnSU1sV1BGNHdDZXlMTTUteUVIdw?oc=5"
+        },
+        {
+          "time": "2026-11-17T08:51:36+09:00",
+          "title": "삼성전자, 갤럭시 AI 클래스에 XR 도입…누적 수료생 20만명 돌파",
+          "source": "더트래커",
+          "link": "https://news.google.com/rss/articles/CBMiWEFVX3lxTFBvSWMtdTdFdHR2MDBSYW9sdWN6M1djYXNnckZhV2ZyY0FCM2I1WkJyUDdMd1BRMG5jYUxVQzJMdnJmay1zanJTNEthMkRFLTRGVUQ3RV9fYWk?oc=5"
+        },
+        {
+          "time": "2026-11-17T09:00:18+09:00",
+          "title": "삼성전자, 교실에 '갤럭시 XR' 도입…20만 명 AI 교육 넘어 몰입형 학습 확대",
+          "source": "인공지능신문",
+          "link": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE1BeElBRmJuc3JKODJXcktjNHhJOTVER3NVcDgyRnM5QnI2YTdrUk9aSUF0b0Voa01BbFFLYjVuanljLW5EdTFwSG9TQ3VueFRkVkxNc0xEeWtOa3FVTWdiN0ZlN0J4UWM?oc=5"
+        },
+        {
+          "time": "2026-11-17T09:09:29+09:00",
+          "title": "교실로 들어온 확장현실…삼성전자, `갤럭시 AI` 클래스에 `갤럭시 XR` 도입",
+          "source": "디지털데일리",
+          "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE4zUG9mcWdVLVE3cHRlX21CYzFxV202VXNhSnNRaTczY21CdGxxWm4yYXJCSGU0LVdOcFZJSWRGenlyYWVNa1ZjTk4wVkxYMjVtR0JDVFotSTFSalEtNnhUSmlSZUU?oc=5"
+        }
+      ],
+      "price": 191800.0,
+      "kind": "turn_down"
+    },
+    {
+      "time": "2026-11-17T10:20:00+09:00",
+      "ret": -0.008213552361396315,
+      "z": 3.54,
+      "volume_ratio": 1.61,
+      "cum_before": 0.017232375979112202,
+      "cum_after": 0.008877284595300239,
+      "session_share": 1.3107460643395026,
+      "score": 3.8577442702416582,
+      "news": [
+        {
+          "time": "2026-11-17T09:21:51+09:00",
+          "title": "ACE 반도체 ETF, 메모리 대표주 삼성전자로 교체…3%대→19%대",
+          "source": "메트로신문",
+          "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE9TY1A0T095Nl9tRjgxTkNfaDhsLU1jX0xRQllXMnZCMWpFZjNYYlE2WlBVMm1KdXU2ck1fR1lRaXBWV1RhXzVaQmJNZ3VLM1lHTVZ4ajdaSHo0dHF1eUQ2NQ?oc=5"
+        },
+        {
+          "time": "2026-11-17T09:25:59+09:00",
+          "title": "코스피, 외국인 매도에 장 초반 5000선 위협…삼성전자·SK하이닉스 약세",
+          "source": "오피니언뉴스",
+          "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTFAzVV9PYjBhSHlrdGNDWWExdElWLW5aM2p5M2tBOUtFZ19KVWU3UVNfUzV2aUQ4blZPSW1vN19nNlZKOHNKa1FyXzdQVS0zV3lhWnRzb0tYVFNTSEhGSUFDSTkzV2U3RTVNa3N0WE15Mnc?oc=5"
+        },
+        {
+          "time": "2026-11-17T09:57:00+09:00",
+          "title": "삼성전자, 3Q 누적 매출 500조 돌파…반도체 호조에 투자도 역대 최대 By EBN",
+          "source": "Investing.com 한국어",
+          "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE1aREY5NHZIeU9yQVYzOEFqUHAtZE5fY0ZnaUZrSWNVUU1GLVRSd2QtWHpHa3cwQ24wNVdockFuMEh6WXk0cEhXTXY1WGZDT2duWGkzT2Rpc0duLW0xTTg1RHdXejF4N2pEbkowaWxnSmQ?oc=5"
+        },
+        {
+          "time": "2026-11-17T09:04:40+09:00",
+          "title": "삼성전자 \"교실 속 AI 경험 확대한다\"",
+          "source": "한국NGO신문",
+          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTFBHTEs0RVEwQWNmVW40OHdCNjY3Und0WnRFQjZaaDJCRmVzYWN0ZEFiVmJTbzNacmZzTW5vYnVNdjZhcnJXRGY1VzM2TVJYVHhyZ1NHNGRzQjFwcWNRMTN4Qm9UTFQwTENv?oc=5"
+        },
+        {
+          "time": "2026-11-17T09:38:28+09:00",
+          "title": "삼성전자 19만원선도 위태…SK하이닉스와 동반 하락에 반도체주 휘청",
+          "source": "진일보 | 전남일보",
+          "link": "https://news.google.com/rss/articles/CBMib0FVX3lxTE5aTVl0dGFBaDIxNWdLcTMxWGRTSVdlaGZSVXFqVGhkSE5IN05OM0NLWEFIM0VRbldmdUEwQUI3b2cxX3YtTlNmMG8zWHN0UWVMaHY3eS1RRjRQTnY4VDR6WXpOb2hmWG9hVi15TFpIZw?oc=5"
+        }
+      ],
+      "price": 193200.0,
+      "kind": "turn_down"
+    },
+    {
+      "time": "2026-11-17T11:35:00+09:00",
+      "ret": 0.009438909281594077,
+      "z": 4.06,
+      "volume_ratio": 2.38,
+      "cum_before": -0.004177545691905982,
+      "cum_after": 0.005221932114882533,
+      "session_share": -1.50629260618773,
+      "score": 4.5389537679555545,
+      "news": [
+        {
+          "time": "2026-11-17T11:25:24+09:00",
+          "title": "삼성전자·SK하이닉스 현금성 자산 등 329조원 돌파…AI 반도체 호황, 미래 투자 경쟁으로 확산",
+          "source": "시사프리즘",
+          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE1LTlE1ZnNQT2J4T1VLLVFhM0ozc01menVkdEo0RnY3V1NBMHlqTzc0ajU3QWg0Ynh6aEsxd0VrNEVBaHVuUTRaZkFBS0lLdGd6TmFoak11akJHUEU5QmVHZVhkU2c4Y3Bw?oc=5"
+        },
+        {
+          "time": "2026-11-17T10:56:19+09:00",
+          "title": "삼성전자 주가 장중 2%대 내려, 젠슨 황 사임 여파에 미국 반도체주 약세 지속",
+          "source": "비즈니스포스트",
+          "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTE5lUnktSjJ6N1BCZjA4S09JU1Itc05SR3pUTTQ1X2VuZ3dUUzRzQ0hzQWtpOV96VGNpenlKTGJlMXI2LVRwakQyZWNIb2hOaTZIcGhubUswdHFaSzBaMHRMX25PWEZWY1NxQ01Kb1B3V0FoVXM?oc=5"
+        },
+        {
+          "time": "2026-11-17T11:16:56+09:00",
+          "title": "[공시] 미래컴퍼니, 삼성전자와 20억9000만원 반도체 장비 계약",
+          "source": "글로벌이코노믹",
+          "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxOZ3FBdDdrOTE2NTVzZ1BtU2wtaXhWUlI1UHhaV2dVWHgzMEs0OTU5dFNzUzQtTkY5Q25qU1JZT0xlQk54SHFILWFsSEp4am1wSlJXLVBQdnhHM2xWSEFONlFpQ0lOWVc3NkFDdDB6OV9nc0d0a0R6OGw3aHNSMTFpbVZSU1plOVhO?oc=5"
+        },
+        {
+          "time": "2026-11-17T11:29:00+09:00",
+          "title": "AI 반도체 호황에 삼성전자 고객 쏠림 심화…\"빅테크 의존도 커졌다\" By EBN",
+          "source": "Investing.com 한국어",
+          "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE0xMmx6WVRmZUZvWU11ejM1U3dPSEptTWJXdVFKbFhtcENNbWNFVzl6elFrNUQ3eWJ0dEZOdk5MNVJIWG42b283N0dXNXlVYWpfS2F6TFQ5bnR6a3d3RTRDY2t2QnBZRDhlNTFza3JmRzY?oc=5"
+        },
+        {
+          "time": "2026-11-17T11:35:47+09:00",
+          "title": "삼성전자, 3분기 누적 매출 500조원 돌파…반도체 투자·연구개발에 99조원 투입",
+          "source": "뉴스저널리즘",
+          "link": "https://news.google.com/rss/articles/CBMia0FVX3lxTE95a2JEQkczazVhd3NiandMU1M5NTdCdWFnd0o0aTVaUjY1RkZ0WUJSc3M1U0djZUFrRVp2d0xWU0hBZXVaSjdtOEhJYjBuZWppQU9sZ29jM2dZdUktTGpmRWFSd3BUek4zRWRR?oc=5"
+        }
+      ],
+      "price": 192500.0,
+      "kind": "turn_up"
+    }
+  ],
+  "overnight_news": [
+    {
+      "time": "2026-11-17T08:21:42+09:00",
+      "title": "삼성전자, '갤럭시 AI 클래스'에 'XR' 도입…AI 경험 확대 제공",
+      "source": "글로벌이코노믹",
+      "link": "https://news.google.com/rss/articles/CBMihgFBVV95cUxQamY4aVZqWWxMcks2SVhYM2RpUkg0bFhWbUFwb2VmVC1sZkxhc1ozdTF1U3JTalB2R2xscVBqUm1lU1hsaHNnSnYxSlo5YWlIMFJwVG1YMGt1Z0lXQ3R1LV9SaWhsQnFpamRPek1aTTBZZElnSU1sV1BGNHdDZXlMTTUteUVIdw?oc=5"
+    },
+    {
+      "time": "2026-11-17T08:51:36+09:00",
+      "title": "삼성전자, 갤럭시 AI 클래스에 XR 도입…누적 수료생 20만명 돌파",
+      "source": "더트래커",
+      "link": "https://news.google.com/rss/articles/CBMiWEFVX3lxTFBvSWMtdTdFdHR2MDBSYW9sdWN6M1djYXNnckZhV2ZyY0FCM2I1WkJyUDdMd1BRMG5jYUxVQzJMdnJmay1zanJTNEthMkRFLTRGVUQ3RV9fYWk?oc=5"
+    }
+  ],
+  "top_news": [
+    {
+      "time": "2026-11-17T11:25:24+09:00",
+      "title": "삼성전자·SK하이닉스 현금성 자산 등 329조원 돌파…AI 반도체 호황, 미래 투자 경쟁으로 확산",
+      "source": "시사프리즘",
+      "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE1LTlE1ZnNQT2J4T1VLLVFhM0ozc01menVkdEo0RnY3V1NBMHlqTzc0ajU3QWg0Ynh6aEsxd0VrNEVBaHVuUTRaZkFBS0lLdGd6TmFoak11akJHUEU5QmVHZVhkU2c4Y3Bw?oc=5"
+    },
+    {
+      "time": "2026-11-17T14:57:00+09:00",
+      "title": "미국의 신규 반도체 수출 규제에 삼성전자 주가 하락",
+      "source": "Investing.com 한국어",
+      "link": "https://news.google.com/rss/articles/CBMid0FVX3lxTE43dzBvUXhUd2s5d1VydDg2OTdwM2hDbWw1VG9hT01sMG0wZklHQ3FIQ0UyNUdpWkNOY1dZU0wyUGZtdkhCcWFpMmhLZWt4aFh6bkkxXzBVVUdQcTA2eTBRWVowNG51aGdvamplTjBhRWtnWGg4bzF3?oc=5"
+    },
+    {
+      "time": "2026-11-17T16:36:44+09:00",
+      "title": "2028년부터 AI 투자 붐 빠르게 식는다, 삼성전자·SK하이닉스 메모리 슈퍼사이클 3년 만에 멈추나",
+      "source": "비즈니스포스트",
+      "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTE10dk5XVElYcWVIVDBjQ3Vidm45RVlpYUtPa2NCa181NVBjOGs4WDdZRlYxSDVUbnViczloNlhLYzJUVUVSaXp6TXVKVkhqclVQUkZfcmptbUQyX2xaRHFyVGdBV0VHUmZGay1Fd2Q4c284ZEU?oc=5"
+    },
+    {
+      "time": "2026-11-17T09:21:51+09:00",
+      "title": "ACE 반도체 ETF, 메모리 대표주 삼성전자로 교체…3%대→19%대",
+      "source": "메트로신문",
+      "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE9TY1A0T095Nl9tRjgxTkNfaDhsLU1jX0xRQllXMnZCMWpFZjNYYlE2WlBVMm1KdXU2ck1fR1lRaXBWV1RhXzVaQmJNZ3VLM1lHTVZ4ajdaSHo0dHF1eUQ2NQ?oc=5"
+    },
+    {
+      "time": "2026-11-17T09:25:59+09:00",
+      "title": "코스피, 외국인 매도에 장 초반 5000선 위협…삼성전자·SK하이닉스 약세",
+      "source": "오피니언뉴스",
+      "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTFAzVV9PYjBhSHlrdGNDWWExdElWLW5aM2p5M2tBOUtFZ19KVWU3UVNfUzV2aUQ4blZPSW1vN19nNlZKOHNKa1FyXzdQVS0zV3lhWnRzb0tYVFNTSEhGSUFDSTkzV2U3RTVNa3N0WE15Mnc?oc=5"
+    },
+    {
+      "time": "2026-11-17T09:57:00+09:00",
+      "title": "삼성전자, 3Q 누적 매출 500조 돌파…반도체 호조에 투자도 역대 최대 By EBN",
+      "source": "Investing.com 한국어",
+      "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE1aREY5NHZIeU9yQVYzOEFqUHAtZE5fY0ZnaUZrSWNVUU1GLVRSd2QtWHpHa3cwQ24wNVdockFuMEh6WXk0cEhXTXY1WGZDT2duWGkzT2Rpc0duLW0xTTg1RHdXejF4N2pEbkowaWxnSmQ?oc=5"
+    }
+  ],
+  "disclosures": [],
+  "disclosure_note": null,
+  "flows": "외국인 -2,493,956 / 기관 +900,098",
+  "flow_story": {
+    "direction": "down",
+    "c2c": -0.03302845528455289,
+    "actors": [
+      {
+        "key": "foreign_net",
+        "name": "외국인",
+        "shares": -2493956.0,
+        "won": -474599826800.0,
+        "vs_usual": 1.5554268906683062
+      },
+      {
+        "key": "inst_net",
+        "name": "기관",
+        "shares": 900098.0,
+        "won": 171288649400.0,
+        "vs_usual": 1.1141689656277924
+      },
+      {
+        "key": "indiv_net",
+        "name": "개인",
+        "shares": 1545731.0,
+        "won": 294152609300.0,
+        "vs_usual": 0.9789169135204702
+      }
+    ],
+    "lead": {
+      "key": "foreign_net",
+      "name": "외국인",
+      "shares": -2493956.0,
+      "won": -474599826800.0,
+      "vs_usual": 1.5554268906683062
+    },
+    "counter": {
+      "key": "indiv_net",
+      "name": "개인",
+      "shares": 1545731.0,
+      "won": 294152609300.0,
+      "vs_usual": 0.9789169135204702
+    },
+    "all_one_side": false,
+    "observations": [
+      "전일까지 20거래일 고점: 종가 돌파 없음 · 종가 위치 -23.57%.",
+      "전일까지 60거래일 고점: 종가 돌파 없음 · 종가 위치 -32.19%.",
+      "같은 5거래일 수익률: 이 종목 -4.32%, SK하이닉스 -9.41% · 차이 +5.08%p.",
+      "같은 20거래일 수익률: 이 종목 -10.02%, SK하이닉스 -10.22% · 차이 +0.20%p.",
+      "같은 60거래일 수익률: 이 종목 -21.78%, SK하이닉스 -26.78% · 차이 +5.01%p.",
+      "외국인 5일 합계 순매수 전환: 직전 5일 → 최근 5일 순매수/거래량 -9.07% → +0.81% (일평균 -2,133,768주 → +133,697주). 향후 상승을 뜻하는 신호는 아닙니다.",
+      "코스피도 -2.59% — 시장 전체가 같은 방향이었습니다.",
+      "SK하이닉스 -1.96% — 반도체 업종이 함께 움직였습니다.",
+      "원/달러 +0.31%(원화 약세) — 외국인 매도와 같은 방향의 환율 움직임입니다.",
+      "전날 밤 미국 반도체지수(SOX) -5.28% — 미국 반도체 흐름과 같은 방향입니다.",
+      "전날 밤 마이크론 -7.62% — 미국 메모리 회사와 같은 방향입니다.",
+      "종가가 당일 범위(저가 190,100~고가 195,900원)의 아래쪽 3% 지점 — 저가 부근에서 마감했습니다.",
+      "우리 장중(09:00~15:30) 나스닥100 선물 -0.12%, 이 종목 고점 이후 -0.44% · 미 10년물 국채 선물 +0.01%, 이 종목 고점 이후 +0.10% · 원/달러 +0.19%(원화 약세), 이 종목 고점 이후 -0.30%.",
+      "자사주 매입 기간 중(직접 취득 2026-08-24~2026-11-21, 14,999,999,992,000, DART 공시) — 회사 자신의 매수는 기타 법인으로 잡힙니다.",
+      "마감가가 장중 고가보다 -2.26% 아래 — 오른 폭을 장중에 꽤 반납했습니다."
+    ],
+    "estimated_indiv": false,
+    "source_note": "출처 naver+cache · 장 마감 직후 잠정치라 저녁 확정치와 다를 수 있습니다 · KRX는 받지 못함(pykrx 미설치)"
+  },
+  "flow_status": {
+    "state": "ok",
+    "detail": "naver+cache",
+    "krx_error": "pykrx 미설치"
+  },
+  "context": {},
+  "market": {
+    "index": "KOSPI",
+    "date": "2026-11-17",
+    "rise": 185,
+    "fall": 709,
+    "steady": 18,
+    "upper": 4,
+    "lower": 0,
+    "individual": 4087.0,
+    "foreign": -14135.0,
+    "institution": 5292.0,
+    "prev_close": 5100.5,
+    "open": 5008.09,
+    "high": 5084.06,
+    "low": 4957.0,
+    "close": 4968.48
+  },
+  "earnings_reactions": null,
+  "forecasts": [],
+  "price_check": null,
+  "disclaimer": "시간이 맞는 것이지 원인 확정이 아닙니다. 뉴스 없이 움직이는 날(수급·프로그램·옵션 만기)이 많고, 기사 발행 시각은 실제 정보 유통보다 늦거나 앞섭니다. 이 절은 설명 도구이며 다음날 예측에 자동 반영되지 않습니다."
+}

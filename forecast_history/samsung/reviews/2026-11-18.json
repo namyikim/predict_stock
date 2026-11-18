@@ -3,73 +3,38 @@
   "name": "삼성전자",
   "peer_name": "SK하이닉스",
   "session_date": "2026-11-18",
-  "generated_at": "2026-11-18 16:55 KST",
+  "generated_at": "2026-11-19 01:25 KST",
   "summary": {
     "prev_close": 190300.0,
-    "open": 196900.0,
-    "high": 199950.0,
-    "low": 188800.0,
-    "close": 194700.0,
-    "gap": 0.034682080924855585,
-    "session": -0.011173184357541888,
-    "c2c": 0.023121387283236983,
-    "high_vs_open": 0.015490096495683003,
-    "low_vs_open": -0.0411376333164043,
-    "volume": 18959861.0,
-    "volume_ratio": 1.05284432672369,
-    "kospi_c2c": 0.019917552516366177,
-    "peer_c2c": 0.041894353369763104,
-    "usdkrw_chg": -0.003735945308495192,
+    "open": NaN,
+    "high": NaN,
+    "low": NaN,
+    "close": NaN,
+    "gap": NaN,
+    "session": NaN,
+    "c2c": NaN,
+    "high_vs_open": NaN,
+    "low_vs_open": NaN,
+    "volume": 19497849.0,
+    "volume_ratio": 1.0827188924520688,
+    "kospi_c2c": NaN,
+    "peer_c2c": NaN,
+    "usdkrw_chg": -0.002418338686043575,
     "us_nights": 1,
     "sox_ret": 0.003353518323685911,
     "nasdaq_ret": -0.00740027270705379,
     "micron_ret": -0.009179211206659432,
     "prior_streak": -3,
-    "ma5": 199160.0,
-    "ma20": 210565.0,
+    "ma5": 200275.0,
+    "ma20": 211400.0,
     "high20": 249000.0,
-    "high252": 367712.71645480226,
+    "high252": 367712.7495144774,
     "price_context": {
-      "breakouts": {
-        "20": {
-          "prior_high": 249000.0,
-          "distance": -0.21807228915662646,
-          "close_breakout": false,
-          "intraday_breakout": false
-        },
-        "60": {
-          "prior_high": 280634.875,
-          "distance": -0.3062159505300259,
-          "close_breakout": false,
-          "intraday_breakout": false
-        }
-      },
-      "relative": {
-        "5": {
-          "start": "2026-11-11",
-          "end": "2026-11-18",
-          "own": -0.05485436893203888,
-          "peer": -0.1041503523884103,
-          "excess": 0.04929598345637143
-        },
-        "20": {
-          "start": "2026-10-21",
-          "end": "2026-11-18",
-          "own": -0.12885906040268458,
-          "peer": -0.115919629057187,
-          "excess": -0.012939431345497576
-        },
-        "60": {
-          "start": "2026-08-20",
-          "end": "2026-11-18",
-          "own": -0.2690946729103638,
-          "peer": -0.32333052398187745,
-          "excess": 0.05423585107151363
-        }
-      }
+      "breakouts": {},
+      "relative": {}
     },
-    "range": 0.05905720338983045,
-    "peer_range": 0.05866425992779778,
+    "range": NaN,
+    "peer_range": NaN,
     "prior_5d": -0.043237807943690254,
     "ma_touches": [],
     "micron_ah": {
@@ -105,7 +70,6 @@
         "after_high": 0.0007884847855985644
       }
     },
-    "from_high": -0.024053693980139124,
     "buyback": [
       {
         "kind": "직접 취득",
@@ -115,20 +79,22 @@
         "purpose": "임직원 주식보상",
         "rcept_no": "20260821000616"
       }
-    ]
+    ],
+    "foreign_pressure": {
+      "state": "selling_eased",
+      "previous_ratio": -0.03757722767196148,
+      "recent_ratio": -0.033413046889326885,
+      "previous_daily_net": -838403.0,
+      "recent_daily_net": -567925.2
+    },
+    "buyback_transition": null
   },
   "classification": {
     "labels": [
-      "갭 주도",
-      "장중 급변 09:00 주도",
-      "지수 동조",
-      "마감 구간 쏠림(14:55~종가)"
+      "장중 급변 09:00 주도"
     ],
     "reasons": [
-      "갭 +3.47%가 종가→종가 +2.31%의 150%",
-      "09:00 봉 +3.99%(σ의 11.56배, 거래량 6.91배)가 세션 -1.12%의 231%",
-      "KOSPI +1.99% vs 종목 +2.31%, 5분 수익률 상관 0.95 — 종목 고유 요인이 약함",
-      "14:55~종가 구간이 세션 -1.12%의 51% (5분봉이 없는 구간, 일봉 종가 기준)"
+      "09:00 봉 +3.99%(σ의 11.56배, 거래량 6.91배)가 세션 +nan%의 231%"
     ]
   },
   "events": [
@@ -141,7 +107,38 @@
       "cum_after": 0.004568527918781706,
       "session_share": -2.3139933850576573,
       "score": 13.56499412570407,
-      "news": []
+      "news": [
+        {
+          "time": "2026-11-18T08:00:34+09:00",
+          "title": "[넥스트 K-브랜드 대상] [종합 ] 삼성전자, 대한민국 1등 브랜드로 ‘우뚝’",
+          "source": "DealSite경제TV",
+          "link": "https://news.google.com/rss/articles/CBMiVkFVX3lxTFBqdWJPUFBMX3M1RGdlNl9UUjdnQzJjZVJlR1BPUXBldUJJZ2t1YXpxeEU2NDF6ajBVTUZtWkNXeVE0YkZfa1VLbng1QlJEUUF1dW9WX09n?oc=5"
+        },
+        {
+          "time": "2026-11-18T08:22:24+09:00",
+          "title": "삼성전자 '더 프레임 프로', 오프라 윈프리 추천 선물 2년 연속 선정",
+          "source": "www.ebn.co.kr",
+          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE5LcHlsakN3NGU2TEo3LVpSUEU1c3Q0X0FZdkFxRXNNX2lFWTA1a3RKZWlha3VjTVBwMnRYVTFIRTlMeHNERklFZzdWRE5nRDBFdDRDa0VlMEU0dGdMN2ZsTlk3eWdNQlNu?oc=5"
+        },
+        {
+          "time": "2026-11-18T08:28:39+09:00",
+          "title": "삼성전자 ‘더 프레임 프로’, 오프라 연말 선물 목록에 2년 연속 선정",
+          "source": "유교신문",
+          "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTFBRWlNOOGJTeUJmNy0zaXdoNHJ0Skpyamd2X0F0cFJ4MDFhNTQ2d3BXeTRieEZOSVRCQi1MckdIaDh0R1M0dlZ3dUxUSVY2T3UtVng3WGVSZEpaeTV1MEstWQ?oc=5"
+        },
+        {
+          "time": "2026-11-18T08:31:04+09:00",
+          "title": "삼성전자 '더 프레임 프로', 美 '오프라 선물 리스트' 2년 연속 선정",
+          "source": "글로벌이코노믹",
+          "link": "https://news.google.com/rss/articles/CBMihgFBVV95cUxQWnNpWUlKWEpCbUJzclQ1QVFzVHRxQkxyMkVfVmNpVUt6UFRqd1M4Q1U2bThfNG5UckFMbFVIZFRzQXpPV0dnck12d19YdUJ3VjFhcVJYTDVpdDcxY2tJZS1kWUJpdjc3Z3VXYTZwRE1JanBFQ1duclI5N1dTNlJ4YjFLYnlSdw?oc=5"
+        },
+        {
+          "time": "2026-11-18T08:48:52+09:00",
+          "title": "삼성전자 더 프레임 프로, 오프라 윈프리 추천 연말선물로 선정",
+          "source": "연합뉴스",
+          "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTFB3UW5OYTI4bEs2RGZQcnlLQk52cW5pXzU0aXl6cDdqRm5HWjg5UE85TnR2dGFSdGktbFJvd0h4bjFiOTZ4S2pQRHJZMUdFUDctZjFhd3dkRDBscE3SAWBBVV95cUxOQmFUV3NjY2kySlZjeWFmc1h1QUZtT01KZG81VmU3SWlKYXZYUjZqZTJkajB2N1BHVUZ2MTJ4TXpZRkY2bWlETFhYemoxem5TODEtZVJZMEZvSkEycGNLZkI?oc=5"
+        }
+      ]
     },
     {
       "time": "2026-11-18T10:35:00+09:00",
@@ -152,7 +149,38 @@
       "cum_after": -0.026903553299492344,
       "session_share": 0.7164287662514767,
       "score": 4.14776389517652,
-      "news": []
+      "news": [
+        {
+          "time": "2026-11-18T09:15:15+09:00",
+          "title": "[특징주] 삼성전자·하이닉스, 엔비디아 호실적 발표에 반등",
+          "source": "에너지경제신문",
+          "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE85c0lYMkFLUVJUdVNLekRyVFE2eXZRVHF1M3E3V3RPbUxQQWd5SkhlUXNtdmlUemMzRnJsNUVCWFhNbkFSd0ZWNFhUSDd4MmNwOXZqY3RPSVdzS1E?oc=5"
+        },
+        {
+          "time": "2026-11-18T10:26:00+09:00",
+          "title": "[장중수급포착] 삼성전자, 외국인/기관 동시 순매수… 주가 +2.26%",
+          "source": "뉴스핌",
+          "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTFBiX1ZZa2ZBa2N3cDA0cDZkX3gxcF9xUGxIQ3pMWHpLSnAzS1YyTmMwbjVISnNLdFR6TG4ySU91c3JCd3UzVFBJZE5RcVlieHZ5YzZGSHM0cjlFWEpq?oc=5"
+        },
+        {
+          "time": "2026-11-18T09:33:28+09:00",
+          "title": "삼성생명, 삼성전자 주가 하락 반영… 목표가↓-NH",
+          "source": "인포스탁데일리",
+          "link": "https://news.google.com/rss/articles/CBMidkFVX3lxTE8wa0t4YnM3Rjh1U0JQYVpfbWRKeVA5WG5VMGhBU2RFWm9Cd2kxVkN2NTFVX0g5RzREckREelVPaE9lTXVQck5obXNkOTFQeF8zRW5xdnJjd2RkVHRHdG5HUFd1ZVBZUUl5bmV5dkZ3a3dPWi1yRUE?oc=5"
+        },
+        {
+          "time": "2026-11-18T09:33:58+09:00",
+          "title": "코스피, 2% 반등 출발하며 5천 선 회복‥삼성전자 3%↑·SK하이닉스 5%↑",
+          "source": "MBC 뉴스",
+          "link": "https://news.google.com/rss/articles/CBMidEFVX3lxTE8zakdhWVM2VTBIZDlOU3kxSUM5VTA3LXZoblVuc0VsV2tCNnQ3U0ZtYVdHZmphQ2oycExzTTV2N2VieHdVVXVHZGlmV3ZzVkJhdmVkRDdXLTJfUUZsNEtwbzY1UkpTaDBnVTVEV0Q1MVNKTzNF0gF0QVVfeXFMT2hHX0ZpNU9xSjJwQ19sWDA2R1RkczM3M1g0UlNxb1ZUX0J6X0VUWTZYTDltX01RYnl4SHpZTzlzNmluY3B5MmxyZ1NBSFJ0UzNnTzhiQW93YWYxbVprX3lFdDU5c0I3LVV5QUhpa2l5WUJEZmU?oc=5"
+        },
+        {
+          "time": "2026-11-18T09:17:46+09:00",
+          "title": "삼성전자 100조 환원에 우선주 뜨나…‘36% 괴리’ 좁혀질까",
+          "source": "쿠키뉴스",
+          "link": "https://news.google.com/rss/articles/CBMiY0FVX3lxTE5naU5rRW5GbG83c2VYQUl4TnRmYlJNSUlNZ011eWhzM2ZscUZvYkp2QWdQTklBQXRNMWVCZEtjN2NnWGdieFdld2pPR1NSR0VRZU40LWJGY2tWVmVwWXdjUXJfYw?oc=5"
+        }
+      ]
     }
   ],
   "turning_point": {
@@ -162,9 +190,9 @@
     "low": -0.04086294416243652,
     "pattern": "고점 후 반락"
   },
-  "closing_share": -0.5085227272727224,
+  "closing_share": NaN,
   "intraday_corr_kospi": 0.9480530326510829,
-  "intraday_note": "장중 봉은 09:00~14:55까지만 있어 마감 구간(14:55~15:30)은 일봉 종가로만 봅니다(그 구간 +0.57%).",
+  "intraday_note": "장중 봉은 09:00~14:55까지만 있어 마감 구간(14:55~15:30)은 일봉 종가로만 봅니다(그 구간 +nan%).",
   "intraday_coverage": "09:00~14:55",
   "intraday_path": [
     {
@@ -538,7 +566,38 @@
       "cum_after": 0.004568527918781706,
       "session_share": -2.3139933850576573,
       "score": 13.56499412570407,
-      "news": [],
+      "news": [
+        {
+          "time": "2026-11-18T08:00:34+09:00",
+          "title": "[넥스트 K-브랜드 대상] [종합 ] 삼성전자, 대한민국 1등 브랜드로 ‘우뚝’",
+          "source": "DealSite경제TV",
+          "link": "https://news.google.com/rss/articles/CBMiVkFVX3lxTFBqdWJPUFBMX3M1RGdlNl9UUjdnQzJjZVJlR1BPUXBldUJJZ2t1YXpxeEU2NDF6ajBVTUZtWkNXeVE0YkZfa1VLbng1QlJEUUF1dW9WX09n?oc=5"
+        },
+        {
+          "time": "2026-11-18T08:22:24+09:00",
+          "title": "삼성전자 '더 프레임 프로', 오프라 윈프리 추천 선물 2년 연속 선정",
+          "source": "www.ebn.co.kr",
+          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE5LcHlsakN3NGU2TEo3LVpSUEU1c3Q0X0FZdkFxRXNNX2lFWTA1a3RKZWlha3VjTVBwMnRYVTFIRTlMeHNERklFZzdWRE5nRDBFdDRDa0VlMEU0dGdMN2ZsTlk3eWdNQlNu?oc=5"
+        },
+        {
+          "time": "2026-11-18T08:28:39+09:00",
+          "title": "삼성전자 ‘더 프레임 프로’, 오프라 연말 선물 목록에 2년 연속 선정",
+          "source": "유교신문",
+          "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTFBRWlNOOGJTeUJmNy0zaXdoNHJ0Skpyamd2X0F0cFJ4MDFhNTQ2d3BXeTRieEZOSVRCQi1MckdIaDh0R1M0dlZ3dUxUSVY2T3UtVng3WGVSZEpaeTV1MEstWQ?oc=5"
+        },
+        {
+          "time": "2026-11-18T08:31:04+09:00",
+          "title": "삼성전자 '더 프레임 프로', 美 '오프라 선물 리스트' 2년 연속 선정",
+          "source": "글로벌이코노믹",
+          "link": "https://news.google.com/rss/articles/CBMihgFBVV95cUxQWnNpWUlKWEpCbUJzclQ1QVFzVHRxQkxyMkVfVmNpVUt6UFRqd1M4Q1U2bThfNG5UckFMbFVIZFRzQXpPV0dnck12d19YdUJ3VjFhcVJYTDVpdDcxY2tJZS1kWUJpdjc3Z3VXYTZwRE1JanBFQ1duclI5N1dTNlJ4YjFLYnlSdw?oc=5"
+        },
+        {
+          "time": "2026-11-18T08:48:52+09:00",
+          "title": "삼성전자 더 프레임 프로, 오프라 윈프리 추천 연말선물로 선정",
+          "source": "연합뉴스",
+          "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTFB3UW5OYTI4bEs2RGZQcnlLQk52cW5pXzU0aXl6cDdqRm5HWjg5UE85TnR2dGFSdGktbFJvd0h4bjFiOTZ4S2pQRHJZMUdFUDctZjFhd3dkRDBscE3SAWBBVV95cUxOQmFUV3NjY2kySlZjeWFmc1h1QUZtT01KZG81VmU3SWlKYXZYUjZqZTJkajB2N1BHVUZ2MTJ4TXpZRkY2bWlETFhYemoxem5TODEtZVJZMEZvSkEycGNLZkI?oc=5"
+        }
+      ],
       "price": 197900.0,
       "kind": "turn_up"
     },
@@ -551,13 +610,112 @@
       "cum_after": -0.026903553299492344,
       "session_share": 0.7164287662514767,
       "score": 4.14776389517652,
-      "news": [],
+      "news": [
+        {
+          "time": "2026-11-18T09:15:15+09:00",
+          "title": "[특징주] 삼성전자·하이닉스, 엔비디아 호실적 발표에 반등",
+          "source": "에너지경제신문",
+          "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE85c0lYMkFLUVJUdVNLekRyVFE2eXZRVHF1M3E3V3RPbUxQQWd5SkhlUXNtdmlUemMzRnJsNUVCWFhNbkFSd0ZWNFhUSDd4MmNwOXZqY3RPSVdzS1E?oc=5"
+        },
+        {
+          "time": "2026-11-18T10:26:00+09:00",
+          "title": "[장중수급포착] 삼성전자, 외국인/기관 동시 순매수… 주가 +2.26%",
+          "source": "뉴스핌",
+          "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTFBiX1ZZa2ZBa2N3cDA0cDZkX3gxcF9xUGxIQ3pMWHpLSnAzS1YyTmMwbjVISnNLdFR6TG4ySU91c3JCd3UzVFBJZE5RcVlieHZ5YzZGSHM0cjlFWEpq?oc=5"
+        },
+        {
+          "time": "2026-11-18T09:33:28+09:00",
+          "title": "삼성생명, 삼성전자 주가 하락 반영… 목표가↓-NH",
+          "source": "인포스탁데일리",
+          "link": "https://news.google.com/rss/articles/CBMidkFVX3lxTE8wa0t4YnM3Rjh1U0JQYVpfbWRKeVA5WG5VMGhBU2RFWm9Cd2kxVkN2NTFVX0g5RzREckREelVPaE9lTXVQck5obXNkOTFQeF8zRW5xdnJjd2RkVHRHdG5HUFd1ZVBZUUl5bmV5dkZ3a3dPWi1yRUE?oc=5"
+        },
+        {
+          "time": "2026-11-18T09:33:58+09:00",
+          "title": "코스피, 2% 반등 출발하며 5천 선 회복‥삼성전자 3%↑·SK하이닉스 5%↑",
+          "source": "MBC 뉴스",
+          "link": "https://news.google.com/rss/articles/CBMidEFVX3lxTE8zakdhWVM2VTBIZDlOU3kxSUM5VTA3LXZoblVuc0VsV2tCNnQ3U0ZtYVdHZmphQ2oycExzTTV2N2VieHdVVXVHZGlmV3ZzVkJhdmVkRDdXLTJfUUZsNEtwbzY1UkpTaDBnVTVEV0Q1MVNKTzNF0gF0QVVfeXFMT2hHX0ZpNU9xSjJwQ19sWDA2R1RkczM3M1g0UlNxb1ZUX0J6X0VUWTZYTDltX01RYnl4SHpZTzlzNmluY3B5MmxyZ1NBSFJ0UzNnTzhiQW93YWYxbVprX3lFdDU5c0I3LVV5QUhpa2l5WUJEZmU?oc=5"
+        },
+        {
+          "time": "2026-11-18T09:17:46+09:00",
+          "title": "삼성전자 100조 환원에 우선주 뜨나…‘36% 괴리’ 좁혀질까",
+          "source": "쿠키뉴스",
+          "link": "https://news.google.com/rss/articles/CBMiY0FVX3lxTE5naU5rRW5GbG83c2VYQUl4TnRmYlJNSUlNZ011eWhzM2ZscUZvYkp2QWdQTklBQXRNMWVCZEtjN2NnWGdieFdld2pPR1NSR0VRZU40LWJGY2tWVmVwWXdjUXJfYw?oc=5"
+        }
+      ],
       "price": 191700.0,
       "kind": "turn_down"
     }
   ],
-  "overnight_news": [],
-  "top_news": [],
+  "overnight_news": [
+    {
+      "time": "2026-11-17T17:00:00+09:00",
+      "title": "[단독] 삼성전자·애플, D램 장기공급계약 ‘초읽기’",
+      "source": "매일경제",
+      "link": "https://news.google.com/rss/articles/CBMiVkFVX3lxTE1qbmFzeUw0X1VNVlJGOE1ITjhGaXNGZ05SS2ptMmE4OFBZTkxGQ0xYWXNuZ2tLRVhkTkxEcFZNYTdGSkJTRDVLckVuUmpabFRjM1E3X2xn?oc=5"
+    },
+    {
+      "time": "2026-11-18T05:40:14+09:00",
+      "title": "삼성전자 ‘큰손’ 의존 커졌다…5大 고객사 비중 24%",
+      "source": "대한경제",
+      "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTFBCRklwVzhLOUZJMDA5UVNQX3Zvc1I3NlhpTHE5ZUpIREJ3Y2xoNktEamUtWDNCdG45WHJHdU1QUmV4NF9uOTFoTTdUbGRwS29yRlhLX1dfUnd2NFJMaklYMnRzM2s1QVBoVjFCNVhBWC14YzA?oc=5"
+    },
+    {
+      "time": "2026-11-18T07:00:00+09:00",
+      "title": "[2026 기후환경 대상] [기후에너지환경부 장관상] 삼성전자 화성, 미세먼지 저감·수생태계 관리 앞장",
+      "source": "딜사이트",
+      "link": "https://news.google.com/rss/articles/CBMiT0FVX3lxTE4xWng0UnpreHBYeklEeVFJb29GNkFwNnBvdzExd3JTNG5kMm1zRE1jVzdJVTFmX2twZ2VSY010b3BLcXFVVEM1dk5XdUVFY28?oc=5"
+    },
+    {
+      "time": "2026-11-18T07:21:06+09:00",
+      "title": "[삼성전자 컨트롤타워 해부] 상설화 1년 맞은 사업지원실…노조 대응 박학규 체제 '시험대'",
+      "source": "딜사이트",
+      "link": "https://news.google.com/rss/articles/CBMiT0FVX3lxTE5MVXY1Q2tQMEY5cnJTUGhRZ0tvMTNjeDF1eE1PNThvZWViWEozY005S2NFeGxlaS1CN2x6N2NmV3FJT1FxMXFrNVRBZzU0aFk?oc=5"
+    },
+    {
+      "time": "2026-11-18T08:00:34+09:00",
+      "title": "[넥스트 K-브랜드 대상] [종합 ] 삼성전자, 대한민국 1등 브랜드로 ‘우뚝’",
+      "source": "DealSite경제TV",
+      "link": "https://news.google.com/rss/articles/CBMiVkFVX3lxTFBqdWJPUFBMX3M1RGdlNl9UUjdnQzJjZVJlR1BPUXBldUJJZ2t1YXpxeEU2NDF6ajBVTUZtWkNXeVE0YkZfa1VLbng1QlJEUUF1dW9WX09n?oc=5"
+    }
+  ],
+  "top_news": [
+    {
+      "time": "2026-11-18T17:02:53+09:00",
+      "title": "[마감시황] 코스피, 기관 매수에 5000선 회복…엔비디아 호실적에 반도체주 강세",
+      "source": "한양경제",
+      "link": "https://news.google.com/rss/articles/CBMickFVX3lxTE5wMlJYVkJOdFpGSk1idEdPc2dYVmRDdUhOOUtPRTQ0Vy10MU9yMl9nN05VbnZvNk9qSEdVY3dqSXhrTmh6LVprSlNoUnR6MHlYakVLRUVvdWY4NzZCNkIzZzRNY3FiNlF5NWZPN0JDMm8wdw?oc=5"
+    },
+    {
+      "time": "2026-11-18T22:34:00+09:00",
+      "title": "뉴욕증시 프리뷰, 주가 선물 혼조세...엔비디아 호실적에 AI주 반등, 나스닥 0.6%↑",
+      "source": "뉴스핌",
+      "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE9xZE1CWGR1bnlqRGYxWEpXLXJCZkxhM0MzcmQza0syQ3pyMWlEVDZrWVpjM3ZYd09UZE5RbW5yc3htOUM2OGxWZXlacnpJVno5WHJFZVJpSGkzQzln?oc=5"
+    },
+    {
+      "time": "2026-11-18T23:26:00+09:00",
+      "title": "[AI MY 뉴스] 뉴욕 반도체주 프리뷰...엔비디아 호실적에 반도체주 일제 상승",
+      "source": "뉴스핌",
+      "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE1YYlZHYTIxQXR1LU9wTVpHT3RxZGgyZ0pjVlhsRVJxUWNRQWlaaGx4eHhhRkxrN085NVpjRlJLLUM1cmh2bGZPYnRyUWx4V2JmcTZBX0V4VXl3Wlg1?oc=5"
+    },
+    {
+      "time": "2026-11-18T09:15:15+09:00",
+      "title": "[특징주] 삼성전자·하이닉스, 엔비디아 호실적 발표에 반등",
+      "source": "에너지경제신문",
+      "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE85c0lYMkFLUVJUdVNLekRyVFE2eXZRVHF1M3E3V3RPbUxQQWd5SkhlUXNtdmlUemMzRnJsNUVCWFhNbkFSd0ZWNFhUSDd4MmNwOXZqY3RPSVdzS1E?oc=5"
+    },
+    {
+      "time": "2026-11-18T10:26:00+09:00",
+      "title": "[장중수급포착] 삼성전자, 외국인/기관 동시 순매수… 주가 +2.26%",
+      "source": "뉴스핌",
+      "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTFBiX1ZZa2ZBa2N3cDA0cDZkX3gxcF9xUGxIQ3pMWHpLSnAzS1YyTmMwbjVISnNLdFR6TG4ySU91c3JCd3UzVFBJZE5RcVlieHZ5YzZGSHM0cjlFWEpq?oc=5"
+    },
+    {
+      "time": "2026-11-18T11:42:48+09:00",
+      "title": "엔비디아 호실적에 삼성전자우 사고, 삼성전자·SK하이닉스 팔았다 [주식초고수는 지금]",
+      "source": "서울경제",
+      "link": "https://news.google.com/rss/articles/CBMiUkFVX3lxTFB2SVVWdmFsWnJjQ1pYc0VMQlFmUFh1ZE9UMmtzNXI0aWU2Sms4MG5xVkJsQWU0Z3c4Y1FBaGtHOXlxNVdLOS1ydVB2ZHlfWm41YnfSAVNBVV95cUxNVWpxM3AxT3FlTnN4ZV9xZGFSaFVMMkVMZTRaUFA0Z2FEV2ZUT0VQbWhBUVBaalRTRGcyZGU0dEUxSkpCUUtPcGJhb0s4RnNURTIzWQ?oc=5"
+    }
+  ],
   "disclosures": [
     {
       "report_nm": "임원ㆍ주요주주특정증권등소유상황보고서",
@@ -567,11 +725,12 @@
     }
   ],
   "disclosure_note": null,
-  "flows": null,
+  "flows": "외국인 -869,394 / 기관 +1,104,534",
   "flow_story": null,
   "flow_status": {
-    "state": "pending",
-    "detail": "최신 2026-11-17"
+    "state": "ok",
+    "detail": "naver+cache",
+    "krx_error": "pykrx 미설치"
   },
   "context": {},
   "market": {
@@ -582,9 +741,9 @@
     "steady": 43,
     "upper": 0,
     "lower": 0,
-    "individual": -6322.0,
-    "foreign": -3339.0,
-    "institution": 5060.0,
+    "individual": -6169.0,
+    "foreign": -3405.0,
+    "institution": 4926.0,
     "prev_close": 4968.48,
     "open": 5098.82,
     "high": 5133.14,

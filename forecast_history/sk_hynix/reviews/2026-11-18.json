@@ -3,73 +3,38 @@
   "name": "SK하이닉스",
   "peer_name": "삼성전자",
   "session_date": "2026-11-18",
-  "generated_at": "2026-11-18 16:55 KST",
+  "generated_at": "2026-11-19 01:25 KST",
   "summary": {
     "prev_close": 1098000.0,
-    "open": 1154000.0,
-    "high": 1173000.0,
-    "low": 1108000.0,
-    "close": 1144000.0,
-    "gap": 0.051001821493624755,
-    "session": -0.008665511265164683,
-    "c2c": 0.041894353369763104,
-    "high_vs_open": 0.016464471403812908,
-    "low_vs_open": -0.03986135181975736,
-    "volume": 3729472.0,
-    "volume_ratio": 0.9589563226763761,
-    "kospi_c2c": 0.019917552516366177,
-    "peer_c2c": 0.023121387283236983,
-    "usdkrw_chg": -0.003735945308495192,
+    "open": NaN,
+    "high": NaN,
+    "low": NaN,
+    "close": NaN,
+    "gap": NaN,
+    "session": NaN,
+    "c2c": NaN,
+    "high_vs_open": NaN,
+    "low_vs_open": NaN,
+    "volume": 3853066.0,
+    "volume_ratio": 0.9907359546845702,
+    "kospi_c2c": NaN,
+    "peer_c2c": NaN,
+    "usdkrw_chg": -0.002418338686043575,
     "us_nights": 1,
     "sox_ret": 0.003353518323685911,
     "nasdaq_ret": -0.00740027270705379,
     "micron_ret": -0.009179211206659432,
     "prior_streak": -4,
-    "ma5": 1166400.0,
-    "ma20": 1283300.0,
+    "ma5": 1172000.0,
+    "ma20": 1290631.5789473683,
     "high20": 1587000.0,
     "high252": 2986352.5777339735,
     "price_context": {
-      "breakouts": {
-        "20": {
-          "prior_high": 1587000.0,
-          "distance": -0.2791430371770637,
-          "close_breakout": false,
-          "intraday_breakout": false
-        },
-        "60": {
-          "prior_high": 1935000.0,
-          "distance": -0.4087855297157623,
-          "close_breakout": false,
-          "intraday_breakout": false
-        }
-      },
-      "relative": {
-        "5": {
-          "start": "2026-11-11",
-          "end": "2026-11-18",
-          "own": -0.1041503523884103,
-          "peer": -0.05485436893203888,
-          "excess": -0.04929598345637143
-        },
-        "20": {
-          "start": "2026-10-21",
-          "end": "2026-11-18",
-          "own": -0.115919629057187,
-          "peer": -0.12885906040268458,
-          "excess": 0.012939431345497576
-        },
-        "60": {
-          "start": "2026-08-20",
-          "end": "2026-11-18",
-          "own": -0.32333052398187745,
-          "peer": -0.2690946729103638,
-          "excess": -0.05423585107151363
-        }
-      }
+      "breakouts": {},
+      "relative": {}
     },
-    "range": 0.05866425992779778,
-    "peer_range": 0.05905720338983045,
+    "range": NaN,
+    "peer_range": NaN,
     "prior_5d": -0.09405940594059403,
     "ma_touches": [],
     "micron_ah": {
@@ -105,7 +70,6 @@
         "after_high": 0.0014276451724359873
       }
     },
-    "from_high": -0.023890784982935176,
     "buyback": [
       {
         "kind": "직접 취득",
@@ -123,20 +87,22 @@
         "purpose": "주주가치 제고 및 임직원 주식 보상",
         "rcept_no": "20261028000014"
       }
-    ]
+    ],
+    "foreign_pressure": {
+      "state": "selling_eased",
+      "previous_ratio": -0.1120213547176439,
+      "recent_ratio": -0.0861900290437403,
+      "previous_daily_net": -524910.0,
+      "recent_daily_net": -331539.6
+    },
+    "buyback_transition": null
   },
   "classification": {
     "labels": [
-      "갭 주도",
-      "장중 급변 09:00 주도",
-      "지수 동조",
-      "마감 구간 쏠림(14:55~종가)"
+      "장중 급변 09:00 주도"
     ],
     "reasons": [
-      "갭 +5.10%가 종가→종가 +4.19%의 122%",
-      "09:00 봉 +5.74%(σ의 11.0배, 거래량 6.05배)가 세션 -0.87%의 1104%",
-      "KOSPI +1.99% vs 종목 +4.19%, 5분 수익률 상관 0.91 — 종목 고유 요인이 약함",
-      "14:55~종가 구간이 세션 -0.87%의 40% (5분봉이 없는 구간, 일봉 종가 기준)"
+      "09:00 봉 +5.74%(σ의 11.0배, 거래량 6.05배)가 세션 +nan%의 1104%"
     ]
   },
   "events": [
@@ -151,34 +117,34 @@
       "score": 13.000557284168323,
       "news": [
         {
-          "time": "2026-11-18T07:51:02+09:00",
-          "title": "삼성전자·SK하이닉스 날개 단 수출 '1조 달러' 눈앞…반도체 50% 육박",
-          "source": "파이낸셜포스트",
-          "link": "https://news.google.com/rss/articles/CBMidEFVX3lxTE1yV0lrekgtNlVCcjBKa1BQbzlpVmZ2TWRuY2JmRVlPbEN5MkxEUkQwTXIzdmVLT1hQN1NPRVp1QmZJT1R5V1dlZHhzMjdWRjdoM3BLTW80ZFpma2VneWFPTzU1UHVzaE5zQ05pSnNYd3RTRlFn?oc=5"
-        },
-        {
-          "time": "2026-11-18T07:53:37+09:00",
-          "title": "삼성전자·SK하이닉스, AI 메모리 구조적 공급부족 수혜-KB證",
-          "source": "PRESS9",
-          "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE1KOWhEWXNIRWhLS25hNnQ1RmF4U3A0enpGRWtIQVFCQzkyYi1RdXpDa1VmREV5VkpTTUpYM2hUVS1Wdk1uNFV3dnBRYVNPZ21jQkJKZ0lQcjl0R3JuQzVOZWJNRHI?oc=5"
-        },
-        {
           "time": "2026-11-18T07:59:26+09:00",
           "title": "엔비디아, 메모리 확보에 장기 계약 확대…삼성·SK하이닉스에 호재 - 머니투데이",
           "source": "머니투데이",
-          "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE9VU2dMZG0yNDV3RS10RkM5UE84WDh1cDFtU3NOQXprMlVpd3FlOURqeThmLU5zMXRFdVJyY0QwVTBHVHJPNm1wT19jVzVFUm5rQWNhckxnc2FpaGpiaG95TUNTa2l4NTJhMGp2d9IBbEFVX3lxTE9VU2dMZG0yNDV3RS10RkM5UE84WDh1cDFtU3NOQXprMlVpd3FlOURqeThmLU5zMXRFdVJyY0QwVTBHVHJPNm1wT19jVzVFUm5rQWNhckxnc2FpaGpiaG95TUNTa2l4NTJhMGp2dw?oc=5"
+          "link": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTFBRazBhT3ZrMFg4aTZsS0luZnVSTGxEZDA4M2c2U001LWxsbjZaNlpkUlV6ZGFBWXh3amdZVTFaaVhNeVFFUk9JcXB0akkwV3plczFZcnNlTGh2VHNaS3c2UndEYXBjZTDSAWxBVV95cUxPVVNnTGRtMjQ1d0UtdEZDOVBPOFg4dXAxbVNzTkF6azJVaXdxZTlEank4Zi1OczF0RXVScmNEMFUwR1RyTzZtcE9fY1c1RVJua0FjYXJMZ3NhaWhqYmhveU1DU2tpeDUyYTBqdnc?oc=5"
         },
         {
-          "time": "2026-11-18T08:02:00+09:00",
-          "title": "iM證 “엔비디아 실적 호조에 삼성전자·SK하이닉스 반등 시도”",
-          "source": "이투데이",
-          "link": "https://news.google.com/rss/articles/CBMiVEFVX3lxTFB0SGVFdFNuUzNsdzdyNHhyeW5oOW1vZVd1Y3otSThDLXBEaWFuVXBYN0tPUHRJMS1ZVFdMU01iMkc2bU16a1p3ZnBBdllNZkF6SW9VSA?oc=5"
+          "time": "2026-11-18T08:09:00+09:00",
+          "title": "[특징주] 엔비디아 훈풍에 '삼전닉스' 급등…SK하이닉스 5%↑",
+          "source": "뉴스핌",
+          "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE9Pc0wxUGVZQkltRUFlZTZuVzRocU0zekNBSWNqbUdhaWtWeHZLdlFFa1dDWFUwb2lhYnBQSDNsYUFXU1RCOWoyVGYza0Z4cFhPZ3FWWmU1UnVMVlFx?oc=5"
         },
         {
-          "time": "2026-11-18T08:13:05+09:00",
-          "title": "'엔비디아 호실적' 프리마켓서 삼성전자 4% SK하이닉스 5% 반등",
-          "source": "뉴스1",
-          "link": "https://news.google.com/rss/articles/CBMiX0FVX3lxTE9tc0hmdTBoV1FfQ3gycXgtTW02OFdMMXVIQTdOZGd6eXpSQ3lFbWgzTHFsbDdxTlVCOUE0enZSVnRCSWlRZHZVSnBCUHl3SXRDX05vTkRXRlo5MzNYVEhr?oc=5"
+          "time": "2026-11-18T09:11:05+09:00",
+          "title": "[특징주] 엔비디아 어닝 서프라이즈에 삼성전자·SK하이닉스 동반 상승세",
+          "source": "아주경제",
+          "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTFA4Z01aSnItOWtzb240RG1ZRng3Ynh6YnFCZTZSaVYzQkh5aW9PZkRQenRRek1rR3p4QnhSVjl5WTFHOV8tdmJTNXctYUNqUXpWRXRtcjhESjhlZ9IBWEFVX3lxTE1fakZpV3VBb1R5YnBibHVaeG1POEtOeHpRd1NCcVJGUHJmSXRud1kxVW83LTBGSUs5Sm1KWDJqamFpdFBVeFVSZlhBdkcyMEM0Sk0wdWVfN1g?oc=5"
+        },
+        {
+          "time": "2026-11-18T09:13:33+09:00",
+          "title": "[개장시황] 코스피 2.63% 반등…SK하이닉스 5.56% 상승",
+          "source": "한국경제",
+          "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE42Qjl6dUJaQ2pWUUdPcVFZb1lBcmlDYm5jcDVPc1Z4b1hvYVV6QW1wV0N2ZmtWYk8xZzZ6TGU5UF9nS2FYenFFd3p4Ujd4aGx2Q1ptWXNwR0RqUQ?oc=5"
+        },
+        {
+          "time": "2026-11-18T08:51:46+09:00",
+          "title": "SK스퀘어, 하이닉스 호실적에 주주환원 강화…투자 매력 '부각'",
+          "source": "프라임경제",
+          "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE9YdjlUa2E0SFdBdEdJVG5iZ3lXa014YmY5dWtlM0JFd1lOQWVMRVZ3Zy1qVGN2WmljUXZGTXFfZHVSNTdQX0dGWFEzMnNhdGlNZ1pWLXlySXR5LUNHdDZwWm50eVhHS3RqMEprYQ?oc=5"
         }
       ]
     },
@@ -193,34 +159,34 @@
       "score": 3.402946244330211,
       "news": [
         {
-          "time": "2026-11-18T09:22:47+09:00",
-          "title": "삼성전자 SK하이닉스 주가 껑충…엔비디아 어닝서프라이즈 속 반도체주 강세",
-          "source": "CBC뉴스",
-          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE14UzdsYkxsR1Z5QW5IdHQtQzBPLWxuV2J1VDQyTUJ5RHJDcHVkcWpXeldFTHowclZGX2ZSRHNieXIzOFc3UTk5b1VpRWRmclhjS0ZJUURTR1J5R3lITHFtTHNxdlV4aGpN?oc=5"
-        },
-        {
           "time": "2026-11-18T09:28:00+09:00",
           "title": "[특징주] 삼성전자·SK하이닉스 동반 급등…엔비디아 호실적에 투자심리 회복",
           "source": "브릿지경제",
           "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE9TNmFCNnI5QWFsNF9uWTdES29mS3R5NTlnaWRaMmZ0RXBFOUozS2w1dWRfSGROQjZKb0NocFFoZHBmQXFadkR2QldHYXJmUTR3ZzZpRm5XbTFmdw?oc=5"
         },
         {
-          "time": "2026-11-18T09:57:09+09:00",
-          "title": "엔비디아 호실적에 코스피 5100선 회복…삼성전자·SK하이닉스 급등",
-          "source": "미디어인뉴스",
-          "link": "https://news.google.com/rss/articles/CBMibkFVX3lxTFAybnVMZWU5VFBqNEVyU3FYZlRoZTFkYnJBS2UyZUtnUFRDV2V6d2M2aUl1bmQzbzhEdk9uTXg0dXl3N1ZWWVF0R001N2RRRk8wTU9ubWVrakdZSmM4ZlYtYjB3STRFbFItNVhmMzR3?oc=5"
+          "time": "2026-11-18T10:02:34+09:00",
+          "title": "[특징주] SK하이닉스, 엔비디아 호실적에 5%대 급등…삼성전기 협력 확대에 강세",
+          "source": "센머니",
+          "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE1jNURFa3Z0VnNvWmpqNE5ZMXBFTnR5Sm80RU9xU1ZpZ1F0NkRYUXZrOXV3Y2pBbjFkbXJQLUlMRGRjd3QxaGJhODNnQ24wcGI0M2l1UmFtRHVsM0tsLTNDaG1KeWtqeUkzWlpOQw?oc=5"
         },
         {
-          "time": "2026-11-18T09:05:52+09:00",
-          "title": "코스피 2.62% 급등하며 5000 돌파… 삼성전자·SK하이닉스 반도체 투톱 강세",
-          "source": "국제뉴스",
-          "link": "https://news.google.com/rss/articles/CBMibkFVX3lxTE53d2duM2hTYnNjMEtwRWpxNFVFR2EzbEVqRThROHphRGs5aU9vSGM3dnJscmdKcDRfRnQ1cFkwa2J3MFVrZjRNU3ZMUG56TS12U3prR3FQWW00aldVZDFsMUpNZTRGa0Nfdm4yVUtR?oc=5"
+          "time": "2026-11-18T09:11:05+09:00",
+          "title": "[특징주] 엔비디아 어닝 서프라이즈에 삼성전자·SK하이닉스 동반 상승세",
+          "source": "아주경제",
+          "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTFA4Z01aSnItOWtzb240RG1ZRng3Ynh6YnFCZTZSaVYzQkh5aW9PZkRQenRRek1rR3p4QnhSVjl5WTFHOV8tdmJTNXctYUNqUXpWRXRtcjhESjhlZ9IBWEFVX3lxTE1fakZpV3VBb1R5YnBibHVaeG1POEtOeHpRd1NCcVJGUHJmSXRud1kxVW83LTBGSUs5Sm1KWDJqamFpdFBVeFVSZlhBdkcyMEM0Sk0wdWVfN1g?oc=5"
         },
         {
-          "time": "2026-11-18T09:14:00+09:00",
-          "title": "[특징주] 삼성전자 4%대·SK하이닉스 6%대↑…엔비디아 호실적에 급반등",
-          "source": "이투데이",
-          "link": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE1NbjJTelhGNnk3bzhyaU5lSW5IbUg0M090YmxqUUlEM3Z5VzExbFNHcXdjWDdRbm5TcUhTNnBMZXRXQjVuQ2JXQVkxSWJ3OFJSdWtaUg?oc=5"
+          "time": "2026-11-18T09:13:33+09:00",
+          "title": "[개장시황] 코스피 2.63% 반등…SK하이닉스 5.56% 상승",
+          "source": "한국경제",
+          "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE42Qjl6dUJaQ2pWUUdPcVFZb1lBcmlDYm5jcDVPc1Z4b1hvYVV6QW1wV0N2ZmtWYk8xZzZ6TGU5UF9nS2FYenFFd3p4Ujd4aGx2Q1ptWXNwR0RqUQ?oc=5"
+        },
+        {
+          "time": "2026-11-18T09:27:13+09:00",
+          "title": "[특징주] \"엔비디아發 리스크 해소\"⋯삼성전자·SK하이닉스 '강세'",
+          "source": "아이뉴스24",
+          "link": "https://news.google.com/rss/articles/CBMiS0FVX3lxTE1YdjhBT0JFY042cXVJTTF5a0RtR1BFYjl0enhZUVgyazhyeC1zVExtXzdEUUM0UUlWeV9MN1luV1hIUHQ2SC16VmNHRQ?oc=5"
         }
       ]
     }
@@ -232,9 +198,9 @@
     "low": -0.038994800693240905,
     "pattern": "고점 후 반락"
   },
-  "closing_share": 0.40209059233448974,
+  "closing_share": NaN,
   "intraday_corr_kospi": 0.9109492225773687,
-  "intraday_note": "장중 봉은 09:00~14:55까지만 있어 마감 구간(14:55~15:30)은 일봉 종가로만 봅니다(그 구간 -0.35%).",
+  "intraday_note": "장중 봉은 09:00~14:55까지만 있어 마감 구간(14:55~15:30)은 일봉 종가로만 봅니다(그 구간 +nan%).",
   "intraday_coverage": "09:00~14:55",
   "intraday_path": [
     {
@@ -610,34 +576,34 @@
       "score": 13.000557284168323,
       "news": [
         {
-          "time": "2026-11-18T07:51:02+09:00",
-          "title": "삼성전자·SK하이닉스 날개 단 수출 '1조 달러' 눈앞…반도체 50% 육박",
-          "source": "파이낸셜포스트",
-          "link": "https://news.google.com/rss/articles/CBMidEFVX3lxTE1yV0lrekgtNlVCcjBKa1BQbzlpVmZ2TWRuY2JmRVlPbEN5MkxEUkQwTXIzdmVLT1hQN1NPRVp1QmZJT1R5V1dlZHhzMjdWRjdoM3BLTW80ZFpma2VneWFPTzU1UHVzaE5zQ05pSnNYd3RTRlFn?oc=5"
-        },
-        {
-          "time": "2026-11-18T07:53:37+09:00",
-          "title": "삼성전자·SK하이닉스, AI 메모리 구조적 공급부족 수혜-KB證",
-          "source": "PRESS9",
-          "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE1KOWhEWXNIRWhLS25hNnQ1RmF4U3A0enpGRWtIQVFCQzkyYi1RdXpDa1VmREV5VkpTTUpYM2hUVS1Wdk1uNFV3dnBRYVNPZ21jQkJKZ0lQcjl0R3JuQzVOZWJNRHI?oc=5"
-        },
-        {
           "time": "2026-11-18T07:59:26+09:00",
           "title": "엔비디아, 메모리 확보에 장기 계약 확대…삼성·SK하이닉스에 호재 - 머니투데이",
           "source": "머니투데이",
-          "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE9VU2dMZG0yNDV3RS10RkM5UE84WDh1cDFtU3NOQXprMlVpd3FlOURqeThmLU5zMXRFdVJyY0QwVTBHVHJPNm1wT19jVzVFUm5rQWNhckxnc2FpaGpiaG95TUNTa2l4NTJhMGp2d9IBbEFVX3lxTE9VU2dMZG0yNDV3RS10RkM5UE84WDh1cDFtU3NOQXprMlVpd3FlOURqeThmLU5zMXRFdVJyY0QwVTBHVHJPNm1wT19jVzVFUm5rQWNhckxnc2FpaGpiaG95TUNTa2l4NTJhMGp2dw?oc=5"
+          "link": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTFBRazBhT3ZrMFg4aTZsS0luZnVSTGxEZDA4M2c2U001LWxsbjZaNlpkUlV6ZGFBWXh3amdZVTFaaVhNeVFFUk9JcXB0akkwV3plczFZcnNlTGh2VHNaS3c2UndEYXBjZTDSAWxBVV95cUxPVVNnTGRtMjQ1d0UtdEZDOVBPOFg4dXAxbVNzTkF6azJVaXdxZTlEank4Zi1OczF0RXVScmNEMFUwR1RyTzZtcE9fY1c1RVJua0FjYXJMZ3NhaWhqYmhveU1DU2tpeDUyYTBqdnc?oc=5"
         },
         {
-          "time": "2026-11-18T08:02:00+09:00",
-          "title": "iM證 “엔비디아 실적 호조에 삼성전자·SK하이닉스 반등 시도”",
-          "source": "이투데이",
-          "link": "https://news.google.com/rss/articles/CBMiVEFVX3lxTFB0SGVFdFNuUzNsdzdyNHhyeW5oOW1vZVd1Y3otSThDLXBEaWFuVXBYN0tPUHRJMS1ZVFdMU01iMkc2bU16a1p3ZnBBdllNZkF6SW9VSA?oc=5"
+          "time": "2026-11-18T08:09:00+09:00",
+          "title": "[특징주] 엔비디아 훈풍에 '삼전닉스' 급등…SK하이닉스 5%↑",
+          "source": "뉴스핌",
+          "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE9Pc0wxUGVZQkltRUFlZTZuVzRocU0zekNBSWNqbUdhaWtWeHZLdlFFa1dDWFUwb2lhYnBQSDNsYUFXU1RCOWoyVGYza0Z4cFhPZ3FWWmU1UnVMVlFx?oc=5"
         },
         {
-          "time": "2026-11-18T08:13:05+09:00",
-          "title": "'엔비디아 호실적' 프리마켓서 삼성전자 4% SK하이닉스 5% 반등",
-          "source": "뉴스1",
-          "link": "https://news.google.com/rss/articles/CBMiX0FVX3lxTE9tc0hmdTBoV1FfQ3gycXgtTW02OFdMMXVIQTdOZGd6eXpSQ3lFbWgzTHFsbDdxTlVCOUE0enZSVnRCSWlRZHZVSnBCUHl3SXRDX05vTkRXRlo5MzNYVEhr?oc=5"
+          "time": "2026-11-18T09:11:05+09:00",
+          "title": "[특징주] 엔비디아 어닝 서프라이즈에 삼성전자·SK하이닉스 동반 상승세",
+          "source": "아주경제",
+          "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTFA4Z01aSnItOWtzb240RG1ZRng3Ynh6YnFCZTZSaVYzQkh5aW9PZkRQenRRek1rR3p4QnhSVjl5WTFHOV8tdmJTNXctYUNqUXpWRXRtcjhESjhlZ9IBWEFVX3lxTE1fakZpV3VBb1R5YnBibHVaeG1POEtOeHpRd1NCcVJGUHJmSXRud1kxVW83LTBGSUs5Sm1KWDJqamFpdFBVeFVSZlhBdkcyMEM0Sk0wdWVfN1g?oc=5"
+        },
+        {
+          "time": "2026-11-18T09:13:33+09:00",
+          "title": "[개장시황] 코스피 2.63% 반등…SK하이닉스 5.56% 상승",
+          "source": "한국경제",
+          "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE42Qjl6dUJaQ2pWUUdPcVFZb1lBcmlDYm5jcDVPc1Z4b1hvYVV6QW1wV0N2ZmtWYk8xZzZ6TGU5UF9nS2FYenFFd3p4Ujd4aGx2Q1ptWXNwR0RqUQ?oc=5"
+        },
+        {
+          "time": "2026-11-18T08:51:46+09:00",
+          "title": "SK스퀘어, 하이닉스 호실적에 주주환원 강화…투자 매력 '부각'",
+          "source": "프라임경제",
+          "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE9YdjlUa2E0SFdBdEdJVG5iZ3lXa014YmY5dWtlM0JFd1lOQWVMRVZ3Zy1qVGN2WmljUXZGTXFfZHVSNTdQX0dGWFEzMnNhdGlNZ1pWLXlySXR5LUNHdDZwWm50eVhHS3RqMEprYQ?oc=5"
         }
       ],
       "price": 1161000.0,
@@ -654,34 +620,34 @@
       "score": 3.402946244330211,
       "news": [
         {
-          "time": "2026-11-18T09:22:47+09:00",
-          "title": "삼성전자 SK하이닉스 주가 껑충…엔비디아 어닝서프라이즈 속 반도체주 강세",
-          "source": "CBC뉴스",
-          "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE14UzdsYkxsR1Z5QW5IdHQtQzBPLWxuV2J1VDQyTUJ5RHJDcHVkcWpXeldFTHowclZGX2ZSRHNieXIzOFc3UTk5b1VpRWRmclhjS0ZJUURTR1J5R3lITHFtTHNxdlV4aGpN?oc=5"
-        },
-        {
           "time": "2026-11-18T09:28:00+09:00",
           "title": "[특징주] 삼성전자·SK하이닉스 동반 급등…엔비디아 호실적에 투자심리 회복",
           "source": "브릿지경제",
           "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE9TNmFCNnI5QWFsNF9uWTdES29mS3R5NTlnaWRaMmZ0RXBFOUozS2w1dWRfSGROQjZKb0NocFFoZHBmQXFadkR2QldHYXJmUTR3ZzZpRm5XbTFmdw?oc=5"
         },
         {
-          "time": "2026-11-18T09:57:09+09:00",
-          "title": "엔비디아 호실적에 코스피 5100선 회복…삼성전자·SK하이닉스 급등",
-          "source": "미디어인뉴스",
-          "link": "https://news.google.com/rss/articles/CBMibkFVX3lxTFAybnVMZWU5VFBqNEVyU3FYZlRoZTFkYnJBS2UyZUtnUFRDV2V6d2M2aUl1bmQzbzhEdk9uTXg0dXl3N1ZWWVF0R001N2RRRk8wTU9ubWVrakdZSmM4ZlYtYjB3STRFbFItNVhmMzR3?oc=5"
+          "time": "2026-11-18T10:02:34+09:00",
+          "title": "[특징주] SK하이닉스, 엔비디아 호실적에 5%대 급등…삼성전기 협력 확대에 강세",
+          "source": "센머니",
+          "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE1jNURFa3Z0VnNvWmpqNE5ZMXBFTnR5Sm80RU9xU1ZpZ1F0NkRYUXZrOXV3Y2pBbjFkbXJQLUlMRGRjd3QxaGJhODNnQ24wcGI0M2l1UmFtRHVsM0tsLTNDaG1KeWtqeUkzWlpOQw?oc=5"
         },
         {
-          "time": "2026-11-18T09:05:52+09:00",
-          "title": "코스피 2.62% 급등하며 5000 돌파… 삼성전자·SK하이닉스 반도체 투톱 강세",
-          "source": "국제뉴스",
-          "link": "https://news.google.com/rss/articles/CBMibkFVX3lxTE53d2duM2hTYnNjMEtwRWpxNFVFR2EzbEVqRThROHphRGs5aU9vSGM3dnJscmdKcDRfRnQ1cFkwa2J3MFVrZjRNU3ZMUG56TS12U3prR3FQWW00aldVZDFsMUpNZTRGa0Nfdm4yVUtR?oc=5"
+          "time": "2026-11-18T09:11:05+09:00",
+          "title": "[특징주] 엔비디아 어닝 서프라이즈에 삼성전자·SK하이닉스 동반 상승세",
+          "source": "아주경제",
+          "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTFA4Z01aSnItOWtzb240RG1ZRng3Ynh6YnFCZTZSaVYzQkh5aW9PZkRQenRRek1rR3p4QnhSVjl5WTFHOV8tdmJTNXctYUNqUXpWRXRtcjhESjhlZ9IBWEFVX3lxTE1fakZpV3VBb1R5YnBibHVaeG1POEtOeHpRd1NCcVJGUHJmSXRud1kxVW83LTBGSUs5Sm1KWDJqamFpdFBVeFVSZlhBdkcyMEM0Sk0wdWVfN1g?oc=5"
         },
         {
-          "time": "2026-11-18T09:14:00+09:00",
-          "title": "[특징주] 삼성전자 4%대·SK하이닉스 6%대↑…엔비디아 호실적에 급반등",
-          "source": "이투데이",
-          "link": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE1NbjJTelhGNnk3bzhyaU5lSW5IbUg0M090YmxqUUlEM3Z5VzExbFNHcXdjWDdRbm5TcUhTNnBMZXRXQjVuQ2JXQVkxSWJ3OFJSdWtaUg?oc=5"
+          "time": "2026-11-18T09:13:33+09:00",
+          "title": "[개장시황] 코스피 2.63% 반등…SK하이닉스 5.56% 상승",
+          "source": "한국경제",
+          "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE42Qjl6dUJaQ2pWUUdPcVFZb1lBcmlDYm5jcDVPc1Z4b1hvYVV6QW1wV0N2ZmtWYk8xZzZ6TGU5UF9nS2FYenFFd3p4Ujd4aGx2Q1ptWXNwR0RqUQ?oc=5"
+        },
+        {
+          "time": "2026-11-18T09:27:13+09:00",
+          "title": "[특징주] \"엔비디아發 리스크 해소\"⋯삼성전자·SK하이닉스 '강세'",
+          "source": "아이뉴스24",
+          "link": "https://news.google.com/rss/articles/CBMiS0FVX3lxTE1YdjhBT0JFY042cXVJTTF5a0RtR1BFYjl0enhZUVgyazhyeC1zVExtXzdEUUM0UUlWeV9MN1luV1hIUHQ2SC16VmNHRQ?oc=5"
         }
       ],
       "price": 1130000.0,
@@ -690,34 +656,34 @@
   ],
   "overnight_news": [
     {
-      "time": "2026-11-18T07:51:02+09:00",
-      "title": "삼성전자·SK하이닉스 날개 단 수출 '1조 달러' 눈앞…반도체 50% 육박",
-      "source": "파이낸셜포스트",
-      "link": "https://news.google.com/rss/articles/CBMidEFVX3lxTE1yV0lrekgtNlVCcjBKa1BQbzlpVmZ2TWRuY2JmRVlPbEN5MkxEUkQwTXIzdmVLT1hQN1NPRVp1QmZJT1R5V1dlZHhzMjdWRjdoM3BLTW80ZFpma2VneWFPTzU1UHVzaE5zQ05pSnNYd3RTRlFn?oc=5"
-    },
-    {
-      "time": "2026-11-18T07:53:37+09:00",
-      "title": "삼성전자·SK하이닉스, AI 메모리 구조적 공급부족 수혜-KB證",
-      "source": "PRESS9",
-      "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE1KOWhEWXNIRWhLS25hNnQ1RmF4U3A0enpGRWtIQVFCQzkyYi1RdXpDa1VmREV5VkpTTUpYM2hUVS1Wdk1uNFV3dnBRYVNPZ21jQkJKZ0lQcjl0R3JuQzVOZWJNRHI?oc=5"
-    },
-    {
       "time": "2026-11-18T07:59:26+09:00",
       "title": "엔비디아, 메모리 확보에 장기 계약 확대…삼성·SK하이닉스에 호재 - 머니투데이",
       "source": "머니투데이",
-      "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE9VU2dMZG0yNDV3RS10RkM5UE84WDh1cDFtU3NOQXprMlVpd3FlOURqeThmLU5zMXRFdVJyY0QwVTBHVHJPNm1wT19jVzVFUm5rQWNhckxnc2FpaGpiaG95TUNTa2l4NTJhMGp2d9IBbEFVX3lxTE9VU2dMZG0yNDV3RS10RkM5UE84WDh1cDFtU3NOQXprMlVpd3FlOURqeThmLU5zMXRFdVJyY0QwVTBHVHJPNm1wT19jVzVFUm5rQWNhckxnc2FpaGpiaG95TUNTa2l4NTJhMGp2dw?oc=5"
+      "link": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTFBRazBhT3ZrMFg4aTZsS0luZnVSTGxEZDA4M2c2U001LWxsbjZaNlpkUlV6ZGFBWXh3amdZVTFaaVhNeVFFUk9JcXB0akkwV3plczFZcnNlTGh2VHNaS3c2UndEYXBjZTDSAWxBVV95cUxPVVNnTGRtMjQ1d0UtdEZDOVBPOFg4dXAxbVNzTkF6azJVaXdxZTlEank4Zi1OczF0RXVScmNEMFUwR1RyTzZtcE9fY1c1RVJua0FjYXJMZ3NhaWhqYmhveU1DU2tpeDUyYTBqdnc?oc=5"
     },
     {
-      "time": "2026-11-18T08:02:00+09:00",
-      "title": "iM證 “엔비디아 실적 호조에 삼성전자·SK하이닉스 반등 시도”",
-      "source": "이투데이",
-      "link": "https://news.google.com/rss/articles/CBMiVEFVX3lxTFB0SGVFdFNuUzNsdzdyNHhyeW5oOW1vZVd1Y3otSThDLXBEaWFuVXBYN0tPUHRJMS1ZVFdMU01iMkc2bU16a1p3ZnBBdllNZkF6SW9VSA?oc=5"
+      "time": "2026-11-18T06:32:00+09:00",
+      "title": "SK하이닉스, AI 호황 속 생산시설 확대…안전관리 체계 강화 By EBN",
+      "source": "Investing.com 한국어",
+      "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE40RS1aTl94SlFCcFBGUjVSTklwNjJORHFpSkFRQmRXcDBNNkVwaVdkZXFhbmZ5RjE1M0pSZ2xUTl90R3dROG1iOWEwa3haM3JmbzlBNHpNeW1BWjRRWUJlRjF4Mmd4aVMzbFJDdzJfNy0?oc=5"
     },
     {
-      "time": "2026-11-18T08:13:05+09:00",
-      "title": "'엔비디아 호실적' 프리마켓서 삼성전자 4% SK하이닉스 5% 반등",
-      "source": "뉴스1",
-      "link": "https://news.google.com/rss/articles/CBMiX0FVX3lxTE9tc0hmdTBoV1FfQ3gycXgtTW02OFdMMXVIQTdOZGd6eXpSQ3lFbWgzTHFsbDdxTlVCOUE0enZSVnRCSWlRZHZVSnBCUHl3SXRDX05vTkRXRlo5MzNYVEhr?oc=5"
+      "time": "2026-11-18T07:00:00+09:00",
+      "title": "삼성전자·SK하이닉스, '넘치는 현금곳간' 투자확대·차입상환 '이상 무'",
+      "source": "FETV",
+      "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE5zYWNJQ3doaFI2OWRsaWQzZ0lHMTRfNkEyQUZHWjBXOWQ2NWN0N2dRcXZQamp0eEJackF5RGI1SWVvNlJTcDBEM0gxT3c2T1F3Y1p3djUzNThhVU9mRHMzYV93cjRySXNX?oc=5"
+    },
+    {
+      "time": "2026-11-18T08:09:00+09:00",
+      "title": "[특징주] 엔비디아 훈풍에 '삼전닉스' 급등…SK하이닉스 5%↑",
+      "source": "뉴스핌",
+      "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE9Pc0wxUGVZQkltRUFlZTZuVzRocU0zekNBSWNqbUdhaWtWeHZLdlFFa1dDWFUwb2lhYnBQSDNsYUFXU1RCOWoyVGYza0Z4cFhPZ3FWWmU1UnVMVlFx?oc=5"
+    },
+    {
+      "time": "2026-11-18T08:51:46+09:00",
+      "title": "SK스퀘어, 하이닉스 호실적에 주주환원 강화…투자 매력 '부각'",
+      "source": "프라임경제",
+      "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE9YdjlUa2E0SFdBdEdJVG5iZ3lXa014YmY5dWtlM0JFd1lOQWVMRVZ3Zy1qVGN2WmljUXZGTXFfZHVSNTdQX0dGWFEzMnNhdGlNZ1pWLXlySXR5LUNHdDZwWm50eVhHS3RqMEprYQ?oc=5"
     }
   ],
   "top_news": [
@@ -734,37 +700,38 @@
       "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE93SGx2SHEzZG9uSEYxMEtJa3otUnJvV1BMV0R5dGozWlJvbTV1NEFQWENUdnlRcGFvT0xUNFkyd1Z0UzhhRi1BSzJnei1TbDhJV0l4NFdOZmRmV01oVm53UXdRdVI3dzhLa1pfSQ?oc=5"
     },
     {
-      "time": "2026-11-18T09:22:47+09:00",
-      "title": "삼성전자 SK하이닉스 주가 껑충…엔비디아 어닝서프라이즈 속 반도체주 강세",
-      "source": "CBC뉴스",
-      "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE14UzdsYkxsR1Z5QW5IdHQtQzBPLWxuV2J1VDQyTUJ5RHJDcHVkcWpXeldFTHowclZGX2ZSRHNieXIzOFc3UTk5b1VpRWRmclhjS0ZJUURTR1J5R3lITHFtTHNxdlV4aGpN?oc=5"
-    },
-    {
       "time": "2026-11-18T09:28:00+09:00",
       "title": "[특징주] 삼성전자·SK하이닉스 동반 급등…엔비디아 호실적에 투자심리 회복",
       "source": "브릿지경제",
       "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE9TNmFCNnI5QWFsNF9uWTdES29mS3R5NTlnaWRaMmZ0RXBFOUozS2w1dWRfSGROQjZKb0NocFFoZHBmQXFadkR2QldHYXJmUTR3ZzZpRm5XbTFmdw?oc=5"
     },
     {
-      "time": "2026-11-18T09:57:09+09:00",
-      "title": "엔비디아 호실적에 코스피 5100선 회복…삼성전자·SK하이닉스 급등",
-      "source": "미디어인뉴스",
-      "link": "https://news.google.com/rss/articles/CBMibkFVX3lxTFAybnVMZWU5VFBqNEVyU3FYZlRoZTFkYnJBS2UyZUtnUFRDV2V6d2M2aUl1bmQzbzhEdk9uTXg0dXl3N1ZWWVF0R001N2RRRk8wTU9ubWVrakdZSmM4ZlYtYjB3STRFbFItNVhmMzR3?oc=5"
+      "time": "2026-11-18T17:02:53+09:00",
+      "title": "[마감시황] 코스피, 기관 매수에 5000선 회복…엔비디아 호실적에 반도체주 강세",
+      "source": "한양경제",
+      "link": "https://news.google.com/rss/articles/CBMickFVX3lxTE5wMlJYVkJOdFpGSk1idEdPc2dYVmRDdUhOOUtPRTQ0Vy10MU9yMl9nN05VbnZvNk9qSEdVY3dqSXhrTmh6LVprSlNoUnR6MHlYakVLRUVvdWY4NzZCNkIzZzRNY3FiNlF5NWZPN0JDMm8wdw?oc=5"
     },
     {
-      "time": "2026-11-18T11:25:56+09:00",
-      "title": "'삼전닉스' 삼성전자·SK하이닉스 주가 엇갈려…엔비디아 실적 호조에도 희비",
-      "source": "CBC뉴스",
-      "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE9tZWhrRmFRTklDazBvQ3luSlc3d19XLXdoQVZEZFhwR1k3aFMzektqR0psS0ZwNm8tb1YzUkVXQmJORVRjY0hjS215Q1BJQWgtcW5VM25SM2VXRXRpQlZLZ0lxenN4ZkRk?oc=5"
+      "time": "2026-11-18T22:34:00+09:00",
+      "title": "뉴욕증시 프리뷰, 주가 선물 혼조세...엔비디아 호실적에 AI주 반등, 나스닥 0.6%↑",
+      "source": "뉴스핌",
+      "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE9xZE1CWGR1bnlqRGYxWEpXLXJCZkxhM0MzcmQza0syQ3pyMWlEVDZrWVpjM3ZYd09UZE5RbW5yc3htOUM2OGxWZXlacnpJVno5WHJFZVJpSGkzQzln?oc=5"
+    },
+    {
+      "time": "2026-11-18T23:26:00+09:00",
+      "title": "[AI MY 뉴스] 뉴욕 반도체주 프리뷰...엔비디아 호실적에 반도체주 일제 상승",
+      "source": "뉴스핌",
+      "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE1YYlZHYTIxQXR1LU9wTVpHT3RxZGgyZ0pjVlhsRVJxUWNRQWlaaGx4eHhhRkxrN085NVpjRlJLLUM1cmh2bGZPYnRyUWx4V2JmcTZBX0V4VXl3Wlg1?oc=5"
     }
   ],
   "disclosures": [],
   "disclosure_note": null,
-  "flows": null,
+  "flows": "외국인 -42,531 / 기관 +27,949",
   "flow_story": null,
   "flow_status": {
-    "state": "pending",
-    "detail": "최신 2026-11-17"
+    "state": "ok",
+    "detail": "naver+cache",
+    "krx_error": "pykrx 미설치"
   },
   "context": {},
   "market": {
@@ -775,9 +742,9 @@
     "steady": 43,
     "upper": 0,
     "lower": 0,
-    "individual": -6322.0,
-    "foreign": -3339.0,
-    "institution": 5060.0,
+    "individual": -6169.0,
+    "foreign": -3405.0,
+    "institution": 4926.0,
     "prev_close": 4968.48,
     "open": 5098.82,
     "high": 5133.14,

@@ -3,82 +3,40 @@
   "name": "SK하이닉스",
   "peer_name": "삼성전자",
   "session_date": "2026-11-19",
-  "generated_at": "2026-11-19 16:53 KST",
+  "generated_at": "2026-11-20 01:31 KST",
   "summary": {
     "prev_close": 1144000.0,
-    "open": 1154000.0,
-    "high": 1186000.0,
-    "low": 1115000.0,
-    "close": 1183000.0,
-    "gap": 0.00874125874125875,
-    "session": 0.02512998266897748,
-    "c2c": 0.03409090909090917,
-    "high_vs_open": 0.02772963604852685,
-    "low_vs_open": -0.03379549393414216,
-    "volume": 2557606.0,
-    "volume_ratio": 0.6634461226709158,
-    "kospi_c2c": 0.013902522008568674,
-    "peer_c2c": 0.011299435028248483,
-    "usdkrw_chg": -0.0016728910153811505,
+    "open": NaN,
+    "high": NaN,
+    "low": NaN,
+    "close": NaN,
+    "gap": NaN,
+    "session": NaN,
+    "c2c": NaN,
+    "high_vs_open": NaN,
+    "low_vs_open": NaN,
+    "volume": 2730075.0,
+    "volume_ratio": 0.7081847920871317,
+    "kospi_c2c": NaN,
+    "peer_c2c": NaN,
+    "usdkrw_chg": 0.0002775636450416119,
     "us_nights": 1,
     "sox_ret": 0.001028730212919271,
     "nasdaq_ret": 0.004172082005239108,
     "micron_ret": -0.010036163429469558,
     "prior_streak": 1,
-    "ma5": 1152200.0,
-    "ma20": 1281300.0,
+    "ma5": 1144500.0,
+    "ma20": 1286473.6842105263,
     "high20": 1587000.0,
     "high252": 2986352.5777339735,
     "price_context": {
-      "breakouts": {
-        "20": {
-          "prior_high": 1587000.0,
-          "distance": -0.2545683679899181,
-          "close_breakout": false,
-          "intraday_breakout": false
-        },
-        "60": {
-          "prior_high": 1935000.0,
-          "distance": -0.3886304909560724,
-          "close_breakout": false,
-          "intraday_breakout": false
-        }
-      },
-      "relative": {
-        "5": {
-          "start": "2026-11-12",
-          "end": "2026-11-19",
-          "own": -0.05661881977671457,
-          "peer": -0.05336538461538465,
-          "excess": -0.0032534351613299206
-        },
-        "20": {
-          "start": "2026-10-22",
-          "end": "2026-11-19",
-          "own": -0.03270645952575635,
-          "peer": -0.08205128205128209,
-          "excess": 0.049344822525525744
-        },
-        "60": {
-          "start": "2026-08-21",
-          "end": "2026-11-19",
-          "own": -0.3160367131603671,
-          "peer": -0.2884067835812695,
-          "excess": -0.0276299295790976
-        }
-      }
+      "breakouts": {},
+      "relative": {}
     },
-    "range": 0.0636771300448431,
-    "peer_range": 0.03740779768177038,
+    "range": NaN,
+    "peer_range": NaN,
     "prior_5d": -0.1041503523884103,
-    "ma_touches": [
-      {
-        "ma": 5,
-        "level": 1166400.0,
-        "kind": "reclaim",
-        "price": 1115000.0
-      }
-    ],
+    "ma_touches": [],
     "micron_ah": {
       "regular_close": 705.0,
       "last": 712.01,
@@ -112,7 +70,6 @@
         "after_high": -0.0011120813861973389
       }
     },
-    "from_high": 0.01371036846615259,
     "buyback": [
       {
         "kind": "직접 취득",
@@ -130,46 +87,40 @@
         "purpose": "주주가치 제고 및 임직원 주식 보상",
         "rcept_no": "20261028000014"
       }
-    ]
+    ],
+    "foreign_pressure": {
+      "state": "selling_eased",
+      "previous_ratio": -0.0911145571004544,
+      "recent_ratio": -0.05865329725415202,
+      "previous_daily_net": -426166.2,
+      "recent_daily_net": -204341.8
+    },
+    "buyback_transition": null
   },
   "classification": {
     "labels": [
-      "지수 동조",
-      "마감 구간 쏠림(14:55~종가)"
+      "완만한 추세"
     ],
     "reasons": [
-      "KOSPI +1.39% vs 종목 +3.41%, 5분 수익률 상관 0.96 — 종목 고유 요인이 약함",
-      "14:55~종가 구간이 세션 +2.51%의 65% (5분봉이 없는 구간, 일봉 종가 기준)"
+      "특정 시각·갭·지수로 설명되는 큰 구간 없음"
     ]
   },
   "events": [
     {
       "time": "2026-11-19T10:30:00+09:00",
       "ret": -0.009751773049645363,
-      "z": 1.7,
+      "z": 1.9,
       "volume_ratio": 3.87,
-      "cum_before": -0.022530329289428108,
-      "cum_after": -0.03206239168110914,
-      "session_share": -1.1253546099290843,
-      "score": 3.469049890743026,
+      "cum_before": -0.021682567215958404,
+      "cum_after": -0.031222896790980004,
+      "session_share": -1.0221631205673818,
+      "score": 3.6744034634643414,
       "news": [
-        {
-          "time": "2026-11-19T09:05:29+09:00",
-          "title": "KB증권 \"中 AI 투자가 메모리 수요 뒷받침…삼성전자·SK하이닉스 최선호\"",
-          "source": "블루밍비트",
-          "link": "https://news.google.com/rss/articles/CBMiUEFVX3lxTFBuVndGdUdjSTBVd0FoRk5ZZGszRjV3aDJVanlPTHNXZVlJbFdKeVlKQUhEZmJGR0o5QnBHMFVram0tdWFxaDMzQ2RXMnh0WDMw?oc=5"
-        },
         {
           "time": "2026-11-19T09:18:38+09:00",
           "title": "[단독] 美 대형 로펌, SK하이닉스 주가 급락 '집단소송' 조사 착수…투자자 손실 보상 추진",
           "source": "더구루",
           "link": "https://news.google.com/rss/articles/CBMiXkFVX3lxTFBRQXhhdVl2V0s0SDRteVZjWlBfSlNCbVNadXl5a21naVZIamNLdUp4a0ZPbUtKU0l4TUZ1ZHM1MkNNazktaW9mbmJLWTJYZnZXZUdjQjdCd3ZkbWhhWHc?oc=5"
-        },
-        {
-          "time": "2026-11-19T09:15:55+09:00",
-          "title": "유진證 \"메모리 담합 소송 패소 가능성↓…반도체 투자 지속\"",
-          "source": "KB Think",
-          "link": "https://news.google.com/rss/articles/CBMickFVX3lxTE9LYkhzM2o0VXl2ZU1waXlBRHRPVjViejh2MGJCNk9kNTJfeEpvUU0tSlVGb1hzSXM2R3ZZSmFnME9PakhTdzRTUTFMMGswVlBVM19YR1hFYW9fRHlaUk5acWNvTGxvYk5HUlVfWlB6Q1BUZw?oc=5"
         },
         {
           "time": "2026-11-19T10:02:41+09:00",
@@ -182,20 +133,74 @@
           "title": "호남권 반도체 산단 남쪽은 삼전, 북쪽은 SK하이닉스 입주",
           "source": "아주경제",
           "link": "https://news.google.com/rss/articles/CBMiWEFVX3lxTFBteHhnNTBwRzNMbHJ1OHdWTWJxcXo5b3dRbDFNVHNSekpNcUVoa3NodmthUlRwbzJ5YVU4Wk02M1dOblpjVXZzSGo0U05NLXF3VVlXZlltV0PSAVhBVV95cUxQbXh4ZzUwcEczTGxydTh3Vk1icXF6OW93UWwxTVRzUnpKTXFFaGtzaHZrYVJUcG8yeWFVOFpNNjNXTm5aY1V2c0hqNFNOTS1xd1VZV2ZZbVdD?oc=5"
+        },
+        {
+          "time": "2026-11-19T10:19:58+09:00",
+          "title": "외인 '삼전닉스' 다시 사들이나…중국계 유명 투자자, SK하이닉스 주식 100만 달러 매수",
+          "source": "더구루",
+          "link": "https://news.google.com/rss/articles/CBMiXkFVX3lxTFBTeS1Wdi1qMXkzSUhjVm1nZk04UGhvNDFDa1JpUTU2bHltWjJ1MXlCenZkMmpUZVZLdDRzWVlIUkZVUHZXUUc5YWFNMVJkM3hwUnFTUjgzNUloVVJSR1E?oc=5"
+        },
+        {
+          "time": "2026-11-19T10:22:00+09:00",
+          "title": "코스피 상승에 제동…삼성전자·SK하이닉스 동반 흔들 > 뉴스",
+          "source": "지데일리",
+          "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE9DT0ZSbzJDc3pKNkJHMnNRaXR3WUhkU29kQm9rYTlzMnVTRHM3MUtuS1lOVFlVMmVQMkNhREVVRklldW1sOVVfZWZ3d3FvNFI3ZzRSRUZKRVlBVDQwSTFEaWdpN3dXYWtDNlpqeQ?oc=5"
+        }
+      ]
+    },
+    {
+      "time": "2026-11-19T10:05:00+09:00",
+      "ret": -0.005203816131829964,
+      "z": 1.01,
+      "volume_ratio": 3.09,
+      "cum_before": 0.0,
+      "cum_after": -0.005203816131829964,
+      "session_share": -0.5454545454545454,
+      "score": 2.6319506536836936,
+      "news": [
+        {
+          "time": "2026-11-19T09:18:38+09:00",
+          "title": "[단독] 美 대형 로펌, SK하이닉스 주가 급락 '집단소송' 조사 착수…투자자 손실 보상 추진",
+          "source": "더구루",
+          "link": "https://news.google.com/rss/articles/CBMiXkFVX3lxTFBRQXhhdVl2V0s0SDRteVZjWlBfSlNCbVNadXl5a21naVZIamNLdUp4a0ZPbUtKU0l4TUZ1ZHM1MkNNazktaW9mbmJLWTJYZnZXZUdjQjdCd3ZkbWhhWHc?oc=5"
+        },
+        {
+          "time": "2026-11-19T10:02:41+09:00",
+          "title": "[특징주] SK하이닉스, AI 수요 구조론 힘입어 강세…현대차도 동반 상승",
+          "source": "센머니",
+          "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTFBXdGRqaFNkMXg0ckRwM0Ixd0p5WDMwT3hzUnpCSmVHSW1xYTVxVDBJSXVmRldsQVlBZW5OM0NJdzNiRklMT2JkWXVLZUFwOWUwRFBBSXB3OTNHZ1hTTkxWZzlpZ3pPOVVqRUFhcQ?oc=5"
+        },
+        {
+          "time": "2026-11-19T10:05:52+09:00",
+          "title": "호남권 반도체 산단 남쪽은 삼전, 북쪽은 SK하이닉스 입주",
+          "source": "아주경제",
+          "link": "https://news.google.com/rss/articles/CBMiWEFVX3lxTFBteHhnNTBwRzNMbHJ1OHdWTWJxcXo5b3dRbDFNVHNSekpNcUVoa3NodmthUlRwbzJ5YVU4Wk02M1dOblpjVXZzSGo0U05NLXF3VVlXZlltV0PSAVhBVV95cUxQbXh4ZzUwcEczTGxydTh3Vk1icXF6OW93UWwxTVRzUnpKTXFFaGtzaHZrYVJUcG8yeWFVOFpNNjNXTm5aY1V2c0hqNFNOTS1xd1VZV2ZZbVdD?oc=5"
+        },
+        {
+          "time": "2026-11-19T10:19:58+09:00",
+          "title": "외인 '삼전닉스' 다시 사들이나…중국계 유명 투자자, SK하이닉스 주식 100만 달러 매수",
+          "source": "더구루",
+          "link": "https://news.google.com/rss/articles/CBMiXkFVX3lxTFBTeS1Wdi1qMXkzSUhjVm1nZk04UGhvNDFDa1JpUTU2bHltWjJ1MXlCenZkMmpUZVZLdDRzWVlIUkZVUHZXUUc5YWFNMVJkM3hwUnFTUjgzNUloVVJSR1E?oc=5"
+        },
+        {
+          "time": "2026-11-19T09:00:37+09:00",
+          "title": "전남광주통합특별시의회, SK하이닉스 이천캠퍼스 방문",
+          "source": "일간투데이",
+          "link": "https://news.google.com/rss/articles/CBMia0FVX3lxTE1lWlhMdWZ4RWktVXhMVU5PNFM4WWtzTWJrWFpkaW5OTFlpNGlsQVFoWFdZVDdIVmdNZk5UZnJNMlpfUG9ubEFKRC0zeHR2WW1DMnRnQ21hZTVGMFY5UTktZWJSTjZYYTdmZFdF?oc=5"
         }
       ]
     }
   ],
   "turning_point": {
     "high_time": "2026-11-19T13:10:00+09:00",
-    "high": 0.011265164644713943,
+    "high": 0.012142237640936582,
     "low_time": "2026-11-19T10:30:00+09:00",
-    "low": -0.03206239168110914,
+    "low": -0.031222896790980004,
     "pattern": "저점 후 반등"
   },
-  "closing_share": 0.6495437848086241,
-  "intraday_corr_kospi": 0.9575950735893733,
-  "intraday_note": "장중 봉은 10:00~14:55까지만 있어 마감 구간(14:55~15:30)은 일봉 종가로만 봅니다(그 구간 +1.63%).",
+  "closing_share": NaN,
+  "intraday_corr_kospi": 0.9563869566153517,
+  "intraday_note": "장중 봉은 10:00~14:55까지만 있어 마감 구간(14:55~15:30)은 일봉 종가로만 봅니다(그 구간 +nan%).",
   "intraday_coverage": "10:00~14:55",
   "intraday_path": [
     {
@@ -286,12 +291,12 @@
     {
       "time": "2026-11-19T11:25:00+09:00",
       "price": 1133000.0,
-      "volume": 15236.0
+      "volume": 15224.0
     },
     {
       "time": "2026-11-19T11:30:00+09:00",
       "price": 1125000.0,
-      "volume": 59563.0
+      "volume": 59575.0
     },
     {
       "time": "2026-11-19T11:35:00+09:00",
@@ -365,13 +370,13 @@
     },
     {
       "time": "2026-11-19T12:45:00+09:00",
-      "price": 1152000.0,
-      "volume": 50223.0
+      "price": 1151000.0,
+      "volume": 49913.0
     },
     {
       "time": "2026-11-19T12:50:00+09:00",
       "price": 1151000.0,
-      "volume": 18642.0
+      "volume": 18952.0
     },
     {
       "time": "2026-11-19T12:55:00+09:00",
@@ -391,12 +396,12 @@
     {
       "time": "2026-11-19T13:10:00+09:00",
       "price": 1167000.0,
-      "volume": 35228.0
+      "volume": 35225.0
     },
     {
       "time": "2026-11-19T13:15:00+09:00",
       "price": 1161000.0,
-      "volume": 28902.0
+      "volume": 28905.0
     },
     {
       "time": "2026-11-19T13:20:00+09:00",
@@ -466,12 +471,12 @@
     {
       "time": "2026-11-19T14:25:00+09:00",
       "price": 1157000.0,
-      "volume": 18580.0
+      "volume": 18619.0
     },
     {
       "time": "2026-11-19T14:30:00+09:00",
       "price": 1154000.0,
-      "volume": 20721.0
+      "volume": 20682.0
     },
     {
       "time": "2026-11-19T14:35:00+09:00",
@@ -501,32 +506,20 @@
   ],
   "timeline_items": [
     {
-      "time": "2026-11-19T10:30:00+09:00",
-      "ret": -0.009751773049645363,
-      "z": 1.7,
-      "volume_ratio": 3.87,
-      "cum_before": -0.022530329289428108,
-      "cum_after": -0.03206239168110914,
-      "session_share": -1.1253546099290843,
-      "score": 3.469049890743026,
+      "time": "2026-11-19T10:05:00+09:00",
+      "ret": -0.005203816131829964,
+      "z": 1.01,
+      "volume_ratio": 3.09,
+      "cum_before": 0.0,
+      "cum_after": -0.005203816131829964,
+      "session_share": -0.5454545454545454,
+      "score": 2.6319506536836936,
       "news": [
-        {
-          "time": "2026-11-19T09:05:29+09:00",
-          "title": "KB증권 \"中 AI 투자가 메모리 수요 뒷받침…삼성전자·SK하이닉스 최선호\"",
-          "source": "블루밍비트",
-          "link": "https://news.google.com/rss/articles/CBMiUEFVX3lxTFBuVndGdUdjSTBVd0FoRk5ZZGszRjV3aDJVanlPTHNXZVlJbFdKeVlKQUhEZmJGR0o5QnBHMFVram0tdWFxaDMzQ2RXMnh0WDMw?oc=5"
-        },
         {
           "time": "2026-11-19T09:18:38+09:00",
           "title": "[단독] 美 대형 로펌, SK하이닉스 주가 급락 '집단소송' 조사 착수…투자자 손실 보상 추진",
           "source": "더구루",
           "link": "https://news.google.com/rss/articles/CBMiXkFVX3lxTFBRQXhhdVl2V0s0SDRteVZjWlBfSlNCbVNadXl5a21naVZIamNLdUp4a0ZPbUtKU0l4TUZ1ZHM1MkNNazktaW9mbmJLWTJYZnZXZUdjQjdCd3ZkbWhhWHc?oc=5"
-        },
-        {
-          "time": "2026-11-19T09:15:55+09:00",
-          "title": "유진證 \"메모리 담합 소송 패소 가능성↓…반도체 투자 지속\"",
-          "source": "KB Think",
-          "link": "https://news.google.com/rss/articles/CBMickFVX3lxTE9LYkhzM2o0VXl2ZU1waXlBRHRPVjViejh2MGJCNk9kNTJfeEpvUU0tSlVGb1hzSXM2R3ZZSmFnME9PakhTdzRTUTFMMGswVlBVM19YR1hFYW9fRHlaUk5acWNvTGxvYk5HUlVfWlB6Q1BUZw?oc=5"
         },
         {
           "time": "2026-11-19T10:02:41+09:00",
@@ -539,6 +532,62 @@
           "title": "호남권 반도체 산단 남쪽은 삼전, 북쪽은 SK하이닉스 입주",
           "source": "아주경제",
           "link": "https://news.google.com/rss/articles/CBMiWEFVX3lxTFBteHhnNTBwRzNMbHJ1OHdWTWJxcXo5b3dRbDFNVHNSekpNcUVoa3NodmthUlRwbzJ5YVU4Wk02M1dOblpjVXZzSGo0U05NLXF3VVlXZlltV0PSAVhBVV95cUxQbXh4ZzUwcEczTGxydTh3Vk1icXF6OW93UWwxTVRzUnpKTXFFaGtzaHZrYVJUcG8yeWFVOFpNNjNXTm5aY1V2c0hqNFNOTS1xd1VZV2ZZbVdD?oc=5"
+        },
+        {
+          "time": "2026-11-19T10:19:58+09:00",
+          "title": "외인 '삼전닉스' 다시 사들이나…중국계 유명 투자자, SK하이닉스 주식 100만 달러 매수",
+          "source": "더구루",
+          "link": "https://news.google.com/rss/articles/CBMiXkFVX3lxTFBTeS1Wdi1qMXkzSUhjVm1nZk04UGhvNDFDa1JpUTU2bHltWjJ1MXlCenZkMmpUZVZLdDRzWVlIUkZVUHZXUUc5YWFNMVJkM3hwUnFTUjgzNUloVVJSR1E?oc=5"
+        },
+        {
+          "time": "2026-11-19T09:00:37+09:00",
+          "title": "전남광주통합특별시의회, SK하이닉스 이천캠퍼스 방문",
+          "source": "일간투데이",
+          "link": "https://news.google.com/rss/articles/CBMia0FVX3lxTE1lWlhMdWZ4RWktVXhMVU5PNFM4WWtzTWJrWFpkaW5OTFlpNGlsQVFoWFdZVDdIVmdNZk5UZnJNMlpfUG9ubEFKRC0zeHR2WW1DMnRnQ21hZTVGMFY5UTktZWJSTjZYYTdmZFdF?oc=5"
+        }
+      ],
+      "price": 1147000.0,
+      "kind": "volume"
+    },
+    {
+      "time": "2026-11-19T10:30:00+09:00",
+      "ret": -0.009751773049645363,
+      "z": 1.9,
+      "volume_ratio": 3.87,
+      "cum_before": -0.021682567215958404,
+      "cum_after": -0.031222896790980004,
+      "session_share": -1.0221631205673818,
+      "score": 3.6744034634643414,
+      "news": [
+        {
+          "time": "2026-11-19T09:18:38+09:00",
+          "title": "[단독] 美 대형 로펌, SK하이닉스 주가 급락 '집단소송' 조사 착수…투자자 손실 보상 추진",
+          "source": "더구루",
+          "link": "https://news.google.com/rss/articles/CBMiXkFVX3lxTFBRQXhhdVl2V0s0SDRteVZjWlBfSlNCbVNadXl5a21naVZIamNLdUp4a0ZPbUtKU0l4TUZ1ZHM1MkNNazktaW9mbmJLWTJYZnZXZUdjQjdCd3ZkbWhhWHc?oc=5"
+        },
+        {
+          "time": "2026-11-19T10:02:41+09:00",
+          "title": "[특징주] SK하이닉스, AI 수요 구조론 힘입어 강세…현대차도 동반 상승",
+          "source": "센머니",
+          "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTFBXdGRqaFNkMXg0ckRwM0Ixd0p5WDMwT3hzUnpCSmVHSW1xYTVxVDBJSXVmRldsQVlBZW5OM0NJdzNiRklMT2JkWXVLZUFwOWUwRFBBSXB3OTNHZ1hTTkxWZzlpZ3pPOVVqRUFhcQ?oc=5"
+        },
+        {
+          "time": "2026-11-19T10:05:52+09:00",
+          "title": "호남권 반도체 산단 남쪽은 삼전, 북쪽은 SK하이닉스 입주",
+          "source": "아주경제",
+          "link": "https://news.google.com/rss/articles/CBMiWEFVX3lxTFBteHhnNTBwRzNMbHJ1OHdWTWJxcXo5b3dRbDFNVHNSekpNcUVoa3NodmthUlRwbzJ5YVU4Wk02M1dOblpjVXZzSGo0U05NLXF3VVlXZlltV0PSAVhBVV95cUxQbXh4ZzUwcEczTGxydTh3Vk1icXF6OW93UWwxTVRzUnpKTXFFaGtzaHZrYVJUcG8yeWFVOFpNNjNXTm5aY1V2c0hqNFNOTS1xd1VZV2ZZbVdD?oc=5"
+        },
+        {
+          "time": "2026-11-19T10:19:58+09:00",
+          "title": "외인 '삼전닉스' 다시 사들이나…중국계 유명 투자자, SK하이닉스 주식 100만 달러 매수",
+          "source": "더구루",
+          "link": "https://news.google.com/rss/articles/CBMiXkFVX3lxTFBTeS1Wdi1qMXkzSUhjVm1nZk04UGhvNDFDa1JpUTU2bHltWjJ1MXlCenZkMmpUZVZLdDRzWVlIUkZVUHZXUUc5YWFNMVJkM3hwUnFTUjgzNUloVVJSR1E?oc=5"
+        },
+        {
+          "time": "2026-11-19T10:22:00+09:00",
+          "title": "코스피 상승에 제동…삼성전자·SK하이닉스 동반 흔들 > 뉴스",
+          "source": "지데일리",
+          "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE9DT0ZSbzJDc3pKNkJHMnNRaXR3WUhkU29kQm9rYTlzMnVTRHM3MUtuS1lOVFlVMmVQMkNhREVVRklldW1sOVVfZWZ3d3FvNFI3ZzRSRUZKRVlBVDQwSTFEaWdpN3dXYWtDNlpqeQ?oc=5"
         }
       ],
       "price": 1117000.0,
@@ -547,54 +596,24 @@
   ],
   "overnight_news": [
     {
-      "time": "2026-11-19T05:29:28+09:00",
-      "title": "삼성전자·SK하이닉스, 목표주가 괴리 확대 속 반도체주 반등 기대 공존",
-      "source": "Traders Union",
-      "link": "https://news.google.com/rss/articles/CBMinwFBVV95cUxQNkhCWm1fT2NTUXZTVld5VHVsdVdacVBqdXNqNDFNR1RmNkhZcWFTZHludmljcjFnM19Rei1semtwSW5ocDQxMy1DVmpEckpTajV3UHhPbWgxeWF4UDdTcjJfdjZPVVliYlBnTk5ZeXZtX1BVSkUwTGlpTzRncllqam9aVzl0YjdZc19OX1FOckYxTUZOTTZZM1A1SjVkMWs?oc=5"
-    },
-    {
-      "time": "2026-11-19T03:16:00+09:00",
-      "title": "中 장비 수출 막은 美, SK하이닉스 60조 뉴욕 투자도 꼬였다",
-      "source": "한국신용신문",
-      "link": "https://news.google.com/rss/articles/CBMia0FVX3lxTE1Tb3RTaW1vaHRDa09tNEpDamxtTTVQUm1QQzZfME9tQV9OMmkyMjBVdlBtQWZWdUl5TGJtbnhPZ2xKS0JOTFVfYXB4NXl3cUVNMWg5Y29TYllVaFBzYzdhc01faDNMLXRyeFBr?oc=5"
-    },
-    {
-      "time": "2026-11-19T08:28:32+09:00",
-      "title": "KB증권 \"AI 규제, 수요 못 꺾어…삼성전자·SK하이닉스 최선호\"",
-      "source": "뉴스1",
-      "link": "https://news.google.com/rss/articles/CBMiX0FVX3lxTE1xQmNKUGF3SjRxNHg4cXpOMzU4NHF2Y1NIWlVCRFk3YnpFYkJJaUk1d3ptQ2k1X0tFSWNzSmcxek9nZjRQeG9DbktyS3JlaWhXeVBieUxRZnQzVXl5TEl3?oc=5"
-    },
-    {
       "time": "2026-11-19T07:05:00+09:00",
       "title": "[국장방향예측] 코스피 1.35%↓ SK하이닉스 3.16%↓",
       "source": "디지털애셋",
       "link": "https://news.google.com/rss/articles/CBMickFVX3lxTFBpWlpGb21LbFl2bmtPaVBPa2FfTVAxeDZNbDdKbWFfRXdpYzdfLU1LMjNSLU95UE5fS1hQbUNwOU9RZzEyT0l0bUZaOVFodE1KZDhVNEUyWWlWMnVSOFBpUkQ0dFphbHRFTHVxZEJmUHkxZw?oc=5"
     },
     {
-      "time": "2026-11-18T19:27:16+09:00",
-      "title": "SK하이닉스·삼성전자 역대 최고 성과급에도 개미는 소비 줄인 이유",
-      "source": "글로벌이코노믹",
-      "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxOVjV0NmRIV19XU1FQRE9qaDRRaWhKUnE5dW5fOHUyYm94dFdvbXg4ZGZSNXk3cVBtVHJLRDBERzlFa3NjNEdtZlJnaEZDMHpCMjI4Rjc1S0NoTzVHZGJ4N250QjQzQTFkZjRzLXV1RTN6Wl9DQ1ZRbG1qbHYxbXdnM2lKTENzYVN3?oc=5"
+      "time": "2026-11-19T07:00:01+09:00",
+      "title": "SK하이닉스, 미국 매출 1년 새 102조 원 증가",
+      "source": "주간동아",
+      "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTFBudFNvR3RLeFJXSFNHR3ZYVk1XN1VTWG4tTWdOaXFBaVJSRjg5WFlkemkwNjlXZThxb194RHF1cFllREhpZDZ1RGJBMnhmYXdVeW1yU25iRWk2YmxMSFdBaWcyMWZoM2pQ?oc=5"
     }
   ],
   "top_news": [
-    {
-      "time": "2026-11-19T09:05:29+09:00",
-      "title": "KB증권 \"中 AI 투자가 메모리 수요 뒷받침…삼성전자·SK하이닉스 최선호\"",
-      "source": "블루밍비트",
-      "link": "https://news.google.com/rss/articles/CBMiUEFVX3lxTFBuVndGdUdjSTBVd0FoRk5ZZGszRjV3aDJVanlPTHNXZVlJbFdKeVlKQUhEZmJGR0o5QnBHMFVram0tdWFxaDMzQ2RXMnh0WDMw?oc=5"
-    },
     {
       "time": "2026-11-19T14:59:06+09:00",
       "title": "수출 1조달러 주역 HBM… SK하이닉스, `원팀` 생태계로 AI 메모리 도약",
       "source": "디지털데일리",
       "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE03SVVyRWlrYzkzSlFZXzFiZ3B2NktJdWtIT1h3blY4a0MycEQxV2xlemJULWRWYmRvVjhuQnRqNTkwVmFGV094aFZPZ0tyUXVKaVhMUHpWYWhnOE5udm10ck1rWTk?oc=5"
-    },
-    {
-      "time": "2026-11-19T05:29:28+09:00",
-      "title": "삼성전자·SK하이닉스, 목표주가 괴리 확대 속 반도체주 반등 기대 공존",
-      "source": "Traders Union",
-      "link": "https://news.google.com/rss/articles/CBMinwFBVV95cUxQNkhCWm1fT2NTUXZTVld5VHVsdVdacVBqdXNqNDFNR1RmNkhZcWFTZHludmljcjFnM19Rei1semtwSW5ocDQxMy1DVmpEckpTajV3UHhPbWgxeWF4UDdTcjJfdjZPVVliYlBnTk5ZeXZtX1BVSkUwTGlpTzRncllqam9aVzl0YjdZc19OX1FOckYxTUZOTTZZM1A1SjVkMWs?oc=5"
     },
     {
       "time": "2026-11-19T12:01:32+09:00",
@@ -613,15 +632,28 @@
       "title": "“수출 1조 달러 주역 HBM”…SK하이닉스, 소부장과 반도체 경쟁력 강화",
       "source": "이지경제",
       "link": "https://news.google.com/rss/articles/CBMibkFVX3lxTE9NVWxaYmY0Nnk2SXZOajc0aDNsd3U1dzJhc0Q3M1FkdDR4cE02NnF5Y2tvdzBhX0s1eW9Ob0RKUHNiaTB6V3pVR3ZJNDBMOC0zSW5oRzdRS1MxYnlLZEZIdE9XVW1tLTVfWVVuRmdR?oc=5"
+    },
+    {
+      "time": "2026-11-19T17:23:38+09:00",
+      "title": "삼성·SK하이닉스 반등에도 외국인은 매도…앤트로픽 813억달러 IPO, AI 투자 불안 해소할까",
+      "source": "시사프리즘",
+      "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE5rNEJFeWVwZ0xpTTNDR3p3WWJWU2xzaWpsLVBfcng0NkRCQjgwT1M5WnlraVJCTDdMX3diR1BiYkdmNHFjTnRKMzkzeTBTU2d2c0J4dWxTNXVXdFEyMGEzd05iYzg0c1NG?oc=5"
+    },
+    {
+      "time": "2026-11-19T22:55:52+09:00",
+      "title": "미중러 정상회담에도 반도체·관세 합의 없었다…삼성전자·SK하이닉스 투자자가 주목할 변수는",
+      "source": "톱스타뉴스",
+      "link": "https://news.google.com/rss/articles/CBMickFVX3lxTE5fZXFSODYzVm02YUlFWnQ3YWozZG1hLWVuTjNOLWswSTBVc3IzYnNRR0xfcHlQcEN1bFkwS3ZQeEx3MUR6dEFWLUxXcUZfQ0tUb0lVcDVVVkxSZFJHZ1V3dU9rM0dqUDB2STQ2TWE5ZG9Zdw?oc=5"
     }
   ],
   "disclosures": [],
   "disclosure_note": null,
-  "flows": null,
+  "flows": "외국인 -49,813 / 기관 -125,618",
   "flow_story": null,
   "flow_status": {
-    "state": "pending",
-    "detail": "최신 2026-11-18"
+    "state": "ok",
+    "detail": "naver+cache",
+    "krx_error": "pykrx 미설치"
   },
   "context": {},
   "market": {
@@ -632,9 +664,9 @@
     "steady": 43,
     "upper": 1,
     "lower": 0,
-    "individual": -655.0,
-    "foreign": -4054.0,
-    "institution": 195.0,
+    "individual": -560.0,
+    "foreign": -4086.0,
+    "institution": 120.0,
     "prev_close": 5067.44,
     "open": 5090.04,
     "high": 5137.89,

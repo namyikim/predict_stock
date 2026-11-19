@@ -3,18 +3,18 @@ Candidate HAR interval,price,5,close_to_close,53c9db3770b61e827785,8,,,,0,,,1.0
 Candidate HAR interval,price,5,close_to_close,c3efc95d08e699a31d4f,29,,,,22,155762.99429966745,0.12183341492929549,0.5172413793103449
 Candidate HAR interval,price,5,close_to_close,ebdbaad363d27a26ad73,1,,,,0,,,1.0
 Candidate HAR interval,price,20,close_to_close,53c9db3770b61e827785,8,,,,0,,,0.0
-Candidate HAR interval,price,20,close_to_close,c3efc95d08e699a31d4f,15,,,,8,192326.5381314218,0.1659304584351251,0.6
+Candidate HAR interval,price,20,close_to_close,c3efc95d08e699a31d4f,16,,,,9,175676.98279024698,0.15148364785299828,0.625
 Candidate HAR interval,price,20,close_to_close,ebdbaad363d27a26ad73,1,,,,0,,,0.0
 Candidate IV interval,price,1,close_to_close,53c9db3770b61e827785,8,,,,8,42112.32449821077,0.02374741424581427,0.875
 Candidate IV interval,price,1,close_to_close,c3efc95d08e699a31d4f,30,,,,30,56922.04959492842,0.04154491378992628,0.7
 Candidate IV interval,price,5,close_to_close,53c9db3770b61e827785,8,,,,0,,,1.0
 Candidate IV interval,price,5,close_to_close,c3efc95d08e699a31d4f,29,,,,22,155762.99429966745,0.12183341492929549,0.5862068965517241
 Candidate IV interval,price,20,close_to_close,53c9db3770b61e827785,8,,,,0,,,0.25
-Candidate IV interval,price,20,close_to_close,c3efc95d08e699a31d4f,15,,,,8,192326.5381314218,0.1659304584351251,0.6666666666666666
+Candidate IV interval,price,20,close_to_close,c3efc95d08e699a31d4f,16,,,,9,175676.98279024698,0.15148364785299828,0.6875
 Candidate evening forecast,direction,1,close_to_close,53c9db3770b61e827785,9,0.2222222222222222,1.1833116240191164,0.7178249557674484,0,,,
-Candidate evening forecast,direction,1,close_to_close,c3efc95d08e699a31d4f,24,0.375,1.1555506483590254,0.7072969713079265,0,,,
+Candidate evening forecast,direction,1,close_to_close,c3efc95d08e699a31d4f,25,0.36,1.1545876436175726,0.7065921229681471,0,,,
 Candidate evening open,open,1,close_to_close,53c9db3770b61e827785,6,,,,6,37718.08858353571,0.020531910471687224,0.6666666666666666
-Candidate evening open,open,1,close_to_close,c3efc95d08e699a31d4f,24,,,,24,33827.2277861858,0.025061539470505868,0.6666666666666666
+Candidate evening open,open,1,close_to_close,c3efc95d08e699a31d4f,25,,,,25,33014.257021474215,0.024527118053501794,0.68
 Candidate expanding,direction,1,close_to_close,53c9db3770b61e827785,8,0.625,0.9069728655133155,0.5324714193496227,0,,,
 Candidate expanding,direction,1,close_to_close,c3efc95d08e699a31d4f,30,0.4666666666666667,1.0631770263905838,0.6356897626348974,0,,,
 Candidate expanding,direction,1,close_to_close,ebdbaad363d27a26ad73,1,0.0,1.4300778425746752,0.8822236430489339,0,,,
@@ -90,5 +90,5 @@ Ridge,price,20,close_to_close,15c2fee718d49a56adee,1,,,,0,,,1.0
 Ridge,price,20,close_to_close,4f89248afed926b75d78,1,,,,0,,,1.0
 Ridge,price,20,close_to_close,53c9db3770b61e827785,8,,,,0,,,0.25
 Ridge,price,20,close_to_close,a5cc2a709bb33ff3d7f7,1,,,,1,168087.07282322878,0.0999923098294044,1.0
-Ridge,price,20,close_to_close,c3efc95d08e699a31d4f,15,,,,8,192326.5381314218,0.1659304584351251,0.7333333333333333
+Ridge,price,20,close_to_close,c3efc95d08e699a31d4f,16,,,,9,175676.98279024698,0.15148364785299828,0.75
 Ridge,price,20,close_to_close,ebdbaad363d27a26ad73,1,,,,0,,,1.0

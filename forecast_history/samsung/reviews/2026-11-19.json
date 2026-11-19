@@ -3,73 +3,38 @@
   "name": "삼성전자",
   "peer_name": "SK하이닉스",
   "session_date": "2026-11-19",
-  "generated_at": "2026-11-19 16:53 KST",
+  "generated_at": "2026-11-20 01:31 KST",
   "summary": {
     "prev_close": 194700.0,
-    "open": 196000.0,
-    "high": 196900.0,
-    "low": 189800.0,
-    "close": 196900.0,
-    "gap": 0.00667693888032872,
-    "session": 0.004591836734693988,
-    "c2c": 0.011299435028248483,
-    "high_vs_open": 0.004591836734693988,
-    "low_vs_open": -0.031632653061224536,
-    "volume": 12285024.0,
-    "volume_ratio": 0.6813882893481736,
-    "kospi_c2c": 0.013902522008568674,
-    "peer_c2c": 0.03409090909090917,
-    "usdkrw_chg": -0.0018979822194432616,
+    "open": NaN,
+    "high": NaN,
+    "low": NaN,
+    "close": NaN,
+    "gap": NaN,
+    "session": NaN,
+    "c2c": NaN,
+    "high_vs_open": NaN,
+    "low_vs_open": NaN,
+    "volume": 14145141.0,
+    "volume_ratio": 0.7845595929302795,
+    "kospi_c2c": NaN,
+    "peer_c2c": NaN,
+    "usdkrw_chg": 0.0002775636450416119,
     "us_nights": 1,
     "sox_ret": 0.001028730212919271,
     "nasdaq_ret": 0.004172082005239108,
     "micron_ret": -0.010036163429469558,
     "prior_streak": 1,
-    "ma5": 196940.0,
-    "ma20": 209685.0,
+    "ma5": 196950.0,
+    "ma20": 210357.8947368421,
     "high20": 249000.0,
     "high252": 367712.7495144774,
     "price_context": {
-      "breakouts": {
-        "20": {
-          "prior_high": 249000.0,
-          "distance": -0.20923694779116464,
-          "close_breakout": false,
-          "intraday_breakout": false
-        },
-        "60": {
-          "prior_high": 280634.875,
-          "distance": -0.2983765827394047,
-          "close_breakout": false,
-          "intraday_breakout": false
-        }
-      },
-      "relative": {
-        "5": {
-          "start": "2026-11-12",
-          "end": "2026-11-19",
-          "own": -0.05336538461538465,
-          "peer": -0.05661881977671457,
-          "excess": 0.0032534351613299206
-        },
-        "20": {
-          "start": "2026-10-22",
-          "end": "2026-11-19",
-          "own": -0.08205128205128209,
-          "peer": -0.03270645952575635,
-          "excess": -0.049344822525525744
-        },
-        "60": {
-          "start": "2026-08-21",
-          "end": "2026-11-19",
-          "own": -0.2884067835812695,
-          "peer": -0.3160367131603671,
-          "excess": 0.0276299295790976
-        }
-      }
+      "breakouts": {},
+      "relative": {}
     },
-    "range": 0.03740779768177038,
-    "peer_range": 0.0636771300448431,
+    "range": NaN,
+    "peer_range": NaN,
     "prior_5d": -0.05485436893203888,
     "ma_touches": [],
     "micron_ah": {
@@ -105,7 +70,6 @@
         "after_high": -0.001149550946916711
       }
     },
-    "from_high": 0.00561797752808979,
     "buyback": [
       {
         "kind": "직접 취득",
@@ -115,16 +79,22 @@
         "purpose": "임직원 주식보상",
         "rcept_no": "20260821000616"
       }
-    ]
+    ],
+    "foreign_pressure": {
+      "state": "turned_selling",
+      "previous_ratio": 0.048693102031108486,
+      "recent_ratio": -0.09036302393135859,
+      "previous_daily_net": 1038342.8,
+      "recent_daily_net": -1402498.0
+    },
+    "buyback_transition": null
   },
   "classification": {
     "labels": [
-      "지수 동조",
-      "마감 구간 쏠림(14:55~종가)"
+      "완만한 추세"
     ],
     "reasons": [
-      "KOSPI +1.39% vs 종목 +1.13%, 5분 수익률 상관 0.95 — 종목 고유 요인이 약함",
-      "14:55~종가 구간이 세션 +0.46%의 337% (5분봉이 없는 구간, 일봉 종가 기준)"
+      "특정 시각·갭·지수로 설명되는 큰 구간 없음"
     ]
   },
   "events": [
@@ -151,12 +121,6 @@
           "link": "https://news.google.com/rss/articles/CBMijAFBVV95cUxQN3VaY1RzTzQ3NG5zSEN1RlQzeFNYdk1ERFBaS2JqNmNScW1yaEtDWWg4bDg5a3lDdV9QbTlfamRwWHZvTTlROWhOeWdZOW5zYVJnQkpuMUk4T1BjR2dBclhlZXMxX3gtTnVLS29YUFFFc3Z3b2hSRkVYR3N1Q09Na1NoWFRldFUxYmg0btIBoAFBVV95cUxPTFZEdnNHTGd0NzZxUU9iTEVOZFRZZnZpbThiU0dBZTN5d0lrRTlaZElvclp2dkxSa1BXRDdrbTN2akd4dG51M2xfSzItYmI1SHhydWp4QnZvVEx0UkhWZ21fSDdKYzJRN1RjOEloTlVjNVk4WmlJTFhQTDdZNlBRUkhVNm9iVE9GMnlFaVhBZjV5NXZxWTg2X2E5S0NrZlhZ?oc=5"
         },
         {
-          "time": "2026-11-19T09:40:52+09:00",
-          "title": "삼성전자, 2030년까지 베트남 타이응우옌에 ‘낸드 패키징’ 라인 추가 검토",
-          "source": "아세안데일리 뉴스",
-          "link": "https://news.google.com/rss/articles/CBMickFVX3lxTE9PajRaSGpwa1UyeUpUR0E5RF8yejBkdFNiazJjYlAzNFdldlNPQm5jUkIyay1XamtNcHVDb1U1TWc4T2lJLThHU29sMVhPOFhEX2FHVUlBbjlmbHY2WmVtZGRiNVY0c2dCelI2SG82ZC1iZw?oc=5"
-        },
-        {
           "time": "2026-11-19T10:00:22+09:00",
           "title": "삼성전자 \"네오클라우드 8% 불과, AI 궤도 위협 아냐\"",
           "source": "코리아리포트",
@@ -167,6 +131,12 @@
           "title": "삼성전자, 이르면 20일 사장단 인사…메모리·MX 리더십 강화 주목",
           "source": "더트래커",
           "link": "https://news.google.com/rss/articles/CBMiWEFVX3lxTFBHSWlJVG5RaGtXdy01VG1Yb3BveE85aHFVUlJLQ2hTT3AyRDFHNWE3cGxKWm5ERmQyTUcyZDNTOHJMcGN4c2RGemtBdzVIWXpfNllZMUlGWkI?oc=5"
+        },
+        {
+          "time": "2026-11-19T10:13:46+09:00",
+          "title": "삼성전자 \"AI 거품 우려 과도…네오클라우드, 전체 비중 8% 그쳐\"",
+          "source": "한국경제",
+          "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE9fMHR6dUdudGp5Uk9RLUNyQmpfOGFhR1pDby1tb25IVFM1RVRIaFcyUUVGY1JQazJ5RWhVYnZBNWJFOFNkWmctQ0YtN0U0enhQSUpEYjRXRndDdw?oc=5"
         }
       ]
     },
@@ -220,9 +190,9 @@
     "low": -0.030612244897959218,
     "pattern": "저점 후 반등"
   },
-  "closing_share": 3.3694344163657566,
+  "closing_share": NaN,
   "intraday_corr_kospi": 0.9486406213108532,
-  "intraday_note": "장중 봉은 10:00~14:55까지만 있어 마감 구간(14:55~15:30)은 일봉 종가로만 봅니다(그 구간 +1.55%).",
+  "intraday_note": "장중 봉은 10:00~14:55까지만 있어 마감 구간(14:55~15:30)은 일봉 종가로만 봅니다(그 구간 +nan%).",
   "intraday_coverage": "10:00~14:55",
   "intraday_path": [
     {
@@ -550,12 +520,6 @@
           "link": "https://news.google.com/rss/articles/CBMijAFBVV95cUxQN3VaY1RzTzQ3NG5zSEN1RlQzeFNYdk1ERFBaS2JqNmNScW1yaEtDWWg4bDg5a3lDdV9QbTlfamRwWHZvTTlROWhOeWdZOW5zYVJnQkpuMUk4T1BjR2dBclhlZXMxX3gtTnVLS29YUFFFc3Z3b2hSRkVYR3N1Q09Na1NoWFRldFUxYmg0btIBoAFBVV95cUxPTFZEdnNHTGd0NzZxUU9iTEVOZFRZZnZpbThiU0dBZTN5d0lrRTlaZElvclp2dkxSa1BXRDdrbTN2akd4dG51M2xfSzItYmI1SHhydWp4QnZvVEx0UkhWZ21fSDdKYzJRN1RjOEloTlVjNVk4WmlJTFhQTDdZNlBRUkhVNm9iVE9GMnlFaVhBZjV5NXZxWTg2X2E5S0NrZlhZ?oc=5"
         },
         {
-          "time": "2026-11-19T09:40:52+09:00",
-          "title": "삼성전자, 2030년까지 베트남 타이응우옌에 ‘낸드 패키징’ 라인 추가 검토",
-          "source": "아세안데일리 뉴스",
-          "link": "https://news.google.com/rss/articles/CBMickFVX3lxTE9PajRaSGpwa1UyeUpUR0E5RF8yejBkdFNiazJjYlAzNFdldlNPQm5jUkIyay1XamtNcHVDb1U1TWc4T2lJLThHU29sMVhPOFhEX2FHVUlBbjlmbHY2WmVtZGRiNVY0c2dCelI2SG82ZC1iZw?oc=5"
-        },
-        {
           "time": "2026-11-19T10:00:22+09:00",
           "title": "삼성전자 \"네오클라우드 8% 불과, AI 궤도 위협 아냐\"",
           "source": "코리아리포트",
@@ -566,6 +530,12 @@
           "title": "삼성전자, 이르면 20일 사장단 인사…메모리·MX 리더십 강화 주목",
           "source": "더트래커",
           "link": "https://news.google.com/rss/articles/CBMiWEFVX3lxTFBHSWlJVG5RaGtXdy01VG1Yb3BveE85aHFVUlJLQ2hTT3AyRDFHNWE3cGxKWm5ERmQyTUcyZDNTOHJMcGN4c2RGemtBdzVIWXpfNllZMUlGWkI?oc=5"
+        },
+        {
+          "time": "2026-11-19T10:13:46+09:00",
+          "title": "삼성전자 \"AI 거품 우려 과도…네오클라우드, 전체 비중 8% 그쳐\"",
+          "source": "한국경제",
+          "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE9fMHR6dUdudGp5Uk9RLUNyQmpfOGFhR1pDby1tb25IVFM1RVRIaFcyUUVGY1JQazJ5RWhVYnZBNWJFOFNkWmctQ0YtN0U0enhQSUpEYjRXRndDdw?oc=5"
         }
       ],
       "price": 193400.0,
@@ -624,6 +594,12 @@
       "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE5vQWdmWXRzRVlQSXR5dGVQbXFzMFk5VnJQdGR3dkhEYjNINWJKRlJKWjhfU3o3dmRTY0JxR3B1aTNldmVXSTRaZk5FMVJLRzJHTnBNTmtHbm93NHPSAWBBVV95cUxNTV9DQm5wUVFKbEdXQ1V0ZE0zaThuM2p6Ylo4UXk2MlRYRjhrcDZLMXpXWkRoT0NoelNGWnNXaVpSSEM1MXkwYWRnWGxPODNQY1VaU3NxZXZSbHpTamJyNFE?oc=5"
     },
     {
+      "time": "2026-11-19T06:48:14+09:00",
+      "title": "삼성전자 \"네오클라우드 비중 8%…AI 거품 우려 과도\"",
+      "source": "연합뉴스",
+      "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTFBPRVhLWDZTS2xsWjM0RTFZaS11SjF1aHBWVFBvMl83S2tsOXljeFhGX25kT1FVSzRIcXpnTGZRbDF5MzFxNTgwNFhjR3kwQ0prdnhQSjRZZ194OWfSAWBBVV95cUxQeFpLdHo4NWNCUGNMTVl1UEg4dlowYUJCakpvbWFNWTJFMTNkdzlYOFlkSlJXMmFvS2tMYl8tYk9iN1YzcENBWG1Nc3FVQUc5SW1OSVVuSHd0Y3hyU0d1RjI?oc=5"
+    },
+    {
       "time": "2026-11-19T07:31:26+09:00",
       "title": "삼성전자 사장단 인사 20일 유력…메모리·MX 사업부장 새 판 짠다",
       "source": "파이낸셜포스트",
@@ -634,12 +610,6 @@
       "title": "삼성전자, 네오클라우드 부채 리스크 선긋기…AI 성장엔 영향 제한적",
       "source": "매일일보",
       "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTFBGOHEybmZ2VnNkNmJzenUtT0xCNFpIU1ktZ1g5MDNrcHBPSzI4b0hGZHJiWFRHcUZnZTNpMGV2UjRBbFhiWi1pdy1fSVdzWllqZWF3UVpySTN4Vl9wOWJiZThuVDA?oc=5"
-    },
-    {
-      "time": "2026-11-19T08:11:00+09:00",
-      "title": "삼성전자 \"네오클라우드 비중 8% 불과…AI 거품 우려는 과도\"",
-      "source": "뉴스핌",
-      "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE9aX0xMT1ppNWJXTnlZUzJkb1NEZEh5R1lSVUJaNDFHaUc0UE1MOFhTYVdOMmhUMW4yUFBxY0o5R1NvRzBwelhmZkVPb1Rqc1plbmw0R3lVbmh1WXdu?oc=5"
     },
     {
       "time": "2026-11-19T08:15:00+09:00",
@@ -669,30 +639,31 @@
     },
     {
       "time": "2026-11-19T15:35:08+09:00",
-      "title": "앤트로픽 역대 최대 IPO로 '143조' AI 투자 실탄 조달, 삼성전자와 AI칩·HBM 동맹 강화하나",
+      "title": "앤트로픽 역대 최대 IPO로 1073억 달러 AI 투자 실탄 조달, 삼성전자와 AI칩·HBM 동맹 강화하나",
       "source": "비즈니스포스트",
       "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTE5UWFNFaDJRQXFfSGVEOFpBWVY4SDVhaEpaSy04TjhaYmZjMi1EM2k5RGJmbzBIUkl5SHVtV0g0UXd2NHRwX1Q5V2diU0plRy1HQktXQ1UyNlNNVlhTcnFOTG5tSFVXWFE5a2E3RFJhM2U1ME0?oc=5"
     },
     {
-      "time": "2026-11-19T10:25:10+09:00",
-      "title": "삼성전자, 에이전틱 AI 시대 메모리 해법으로 소캠2 제시",
-      "source": "연합뉴스",
-      "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE9EM2IzM1hIWjg2RThiTGRabURfM1o4VFBnZ0g4UklFbV9SM1pOaTY1bVNaZWtxTkZVNWVmYkRaUkczaGhxLTVYRHZjT2ZGRW5oeUU3aFNrTlowZFnSAWBBVV95cUxOaDQ0bzB4LTdlN29OSzNhb1ZlUml6TkpKcDk2WHhmeVF4N3ZNUmY0bmR6eGFoQnNDVEIxUlphRDZ2UWF5ZDNVQk11Z1d5b1RGNUxwdFVXWUJLU2tvMnJqdEk?oc=5"
+      "time": "2026-11-19T20:03:00+09:00",
+      "title": "FT \"TSMC·삼성전자, 일부 중국 고객사에 반도체 출하 중단…美 수출 규제 여파\"",
+      "source": "뉴스핌",
+      "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE9LbUFWYW9VMEF1Vlgwd1R1NGpEUXAwWlhnZlByaGgyUmhLclhxbGxwaEFfNGd1LXU2ZE9MbGlZcFlHUTAzTEpqMHJPUEZEZFNSWndXenlGS01jLXRw?oc=5"
     },
     {
-      "time": "2026-11-19T10:30:40+09:00",
-      "title": "“애플이 삼성전자에 4년치 D램 달라는데”…‘주가 60만원’ 기대감 커진 이유",
-      "source": "데일리25",
-      "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE5MVFhacWxPQUZIMHBVM3VMUnp1ZkF1czRZMUdTbWt3RVg5TXlnbWRYZUtHQTV5cDZ1cW9CSXZRS2xaRnllUEJFRUdKLVY4WFVwU0dHdVdUX3MwOFZHUUtoUjZ5eDZpVVJMS1I2RQ?oc=5"
+      "time": "2026-11-19T22:54:26+09:00",
+      "title": "삼성전자, AI 서버 메모리 증설 유연성 높인다…소캠2 제시",
+      "source": "매일일보",
+      "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE1RVFRaVmFDaG9hdk82LWltc3k3SnhOTTkxLU1qNXhZalJBWDVVeWxJNGRNTU55dXk3WWZULWhuVExGRkJUUFB0Tmk4M3NXcFp4WXBIRzk1VmUxWk5vbW9oTm1uQno?oc=5"
     }
   ],
   "disclosures": [],
   "disclosure_note": null,
-  "flows": null,
+  "flows": "외국인 -561,332 / 기관 -186,318",
   "flow_story": null,
   "flow_status": {
-    "state": "pending",
-    "detail": "최신 2026-11-18"
+    "state": "ok",
+    "detail": "naver+cache",
+    "krx_error": "pykrx 미설치"
   },
   "context": {},
   "market": {
@@ -703,9 +674,9 @@
     "steady": 43,
     "upper": 1,
     "lower": 0,
-    "individual": -655.0,
-    "foreign": -4054.0,
-    "institution": 195.0,
+    "individual": -560.0,
+    "foreign": -4086.0,
+    "institution": 120.0,
     "prev_close": 5067.44,
     "open": 5090.04,
     "high": 5137.89,

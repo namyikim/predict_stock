@@ -6,7 +6,7 @@
   {
    "file": "semiconductor_exports.csv",
    "label": "반도체 수출액(KOSIS)",
-   "have": "2026-09",
+   "have": "2026-10",
    "expected": "2026-09",
    "late": false
   },
@@ -41,14 +41,14 @@
   {
    "file": "investor_flows_005930.csv",
    "label": "삼성전자 외국인·기관 수급",
-   "have": "2026-11-18",
+   "have": "2026-11-19",
    "expected": "2026-11-13 이후",
    "late": false
   },
   {
    "file": "investor_flows_000660.csv",
    "label": "SK하이닉스 외국인·기관 수급",
-   "have": "2026-11-18",
+   "have": "2026-11-19",
    "expected": "2026-11-13 이후",
    "late": false
   }

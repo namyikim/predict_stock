@@ -1,0 +1,849 @@
+{
+  "target": "samsung",
+  "name": "삼성전자",
+  "peer_name": "SK하이닉스",
+  "session_date": "2026-11-20",
+  "generated_at": "2026-11-20 16:43 KST",
+  "summary": {
+    "prev_close": 196900.0,
+    "open": 188100.0,
+    "high": 189300.0,
+    "low": 181400.0,
+    "close": 183100.0,
+    "gap": -0.04469273743016755,
+    "session": -0.02658160552897393,
+    "c2c": -0.07008633824276278,
+    "high_vs_open": 0.006379585326953707,
+    "low_vs_open": -0.035619351408825106,
+    "volume": 18881634.0,
+    "volume_ratio": 1.0433126646925857,
+    "kospi_c2c": -0.05214789897246819,
+    "peer_c2c": -0.059171597633136064,
+    "usdkrw_chg": 0.002284964624475583,
+    "us_nights": 1,
+    "sox_ret": -0.024146370259519268,
+    "nasdaq_ret": -0.022541315031164966,
+    "micron_ret": -0.021027431592371304,
+    "prior_streak": 2,
+    "ma5": 192360.0,
+    "ma20": 208065.0,
+    "high20": 249000.0,
+    "high252": 367712.71645480226,
+    "price_context": {
+      "breakouts": {
+        "20": {
+          "prior_high": 249000.0,
+          "distance": -0.26465863453815264,
+          "close_breakout": false,
+          "intraday_breakout": false
+        },
+        "60": {
+          "prior_high": 280634.875,
+          "distance": -0.34755079888057394,
+          "close_breakout": false,
+          "intraday_breakout": false
+        }
+      },
+      "relative": {
+        "5": {
+          "start": "2026-11-13",
+          "end": "2026-11-20",
+          "own": -0.11116504854368936,
+          "peer": -0.08470394736842102,
+          "excess": -0.026461101175268342
+        },
+        "20": {
+          "start": "2026-10-23",
+          "end": "2026-11-20",
+          "own": -0.15034802784222734,
+          "peer": -0.1284259984338293,
+          "excess": -0.021922029408398047
+        },
+        "60": {
+          "start": "2026-08-24",
+          "end": "2026-11-20",
+          "own": -0.2751974707123097,
+          "peer": -0.3337873515667894,
+          "excess": 0.05858988085447969
+        }
+      }
+    },
+    "range": 0.04355016538037493,
+    "peer_range": 0.025547445255474477,
+    "prior_5d": -0.05336538461538465,
+    "ma_touches": [],
+    "micron_ah": {
+      "regular_close": 690.1199951171875,
+      "last": 683.48,
+      "ret": -0.009621508091589126,
+      "low_ret": -0.016852134700448218,
+      "high_ret": -0.0011737018531827736,
+      "last_time": "2026-11-20T08:55:00+09:00"
+    },
+    "nvidia_ah": {
+      "regular_close": 146.0,
+      "last": 145.84,
+      "ret": -0.0010958904109589218,
+      "low_ret": -0.010273972602739767,
+      "high_ret": 0.005273972602739763,
+      "last_time": "2026-11-20T08:55:00+09:00"
+    },
+    "session_cross": {
+      "NQ=F": {
+        "label": "나스닥100 선물",
+        "ret": -0.00977817931995073,
+        "after_high": -0.00977817931995073
+      },
+      "ZN=F": {
+        "label": "미 10년물 국채 선물",
+        "ret": 0.0025073746312684886,
+        "after_high": 0.0025073746312684886
+      },
+      "KRW=X": {
+        "label": "원/달러",
+        "ret": 0.0009289847069620105,
+        "after_high": 0.0009289847069620105
+      }
+    },
+    "from_high": -0.03070407623080984,
+    "buyback": [
+      {
+        "kind": "직접 취득",
+        "start": "2026-08-24",
+        "end": "2026-11-21",
+        "amount": "14,999,999,992,000",
+        "purpose": "임직원 주식보상",
+        "rcept_no": "20260821000616"
+      }
+    ]
+  },
+  "classification": {
+    "labels": [
+      "갭 주도",
+      "장중 급변 09:00 주도",
+      "지수 동조"
+    ],
+    "reasons": [
+      "갭 -4.47%가 종가→종가 -7.01%의 64%",
+      "09:00 봉 -4.06%(σ의 25.19배, 거래량 3.88배)가 세션 -2.66%의 139%",
+      "KOSPI -5.21% vs 종목 -7.01%, 5분 수익률 상관 0.91 — 종목 고유 요인이 약함"
+    ]
+  },
+  "events": [
+    {
+      "time": "2026-11-20T09:00:00+09:00",
+      "ret": -0.04062976130015239,
+      "z": 25.19,
+      "volume_ratio": 3.88,
+      "cum_before": 0.0,
+      "cum_after": 0.004253056884635731,
+      "session_share": 1.3895378364652091,
+      "score": 26.967727871444858,
+      "news": [
+        {
+          "time": "2026-11-20T08:08:18+09:00",
+          "title": "\"삼성전자·TSMC, 中에 일부 칩 출하 중단…美 수출통제\"",
+          "source": "연합인포맥스",
+          "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE1fSkxqZjRRWXJlSldwR1NTUWhaRzRkM3JMWGowbUVSTmhKUjh6azVia0dRTGJqVk9WNGZ3cF83V05WUWV1bXFmZDAzTFpCT3N5aUp0MDg5SDdsRndtUHVSaFJQVWRMWllSSHRac2RSVEQ?oc=5"
+        },
+        {
+          "time": "2026-11-20T09:12:48+09:00",
+          "title": "삼성전자 사업부장, 반도체 메모리 황상준·모바일경험 최원준",
+          "source": "연합인포맥스",
+          "link": "https://news.google.com/rss/articles/CBMidEFVX3lxTFBoMFU5TUFPQ0tNTjJkZmVuZ1gzdnVRV3lkbG13UkY0VXpOa2lTVGJ4WlF4Z1ZvUFhhVTQzN2JGbjBicFBnQXpmMS0tbTkzVlFQUmdPS3VualFuejJ0azVMR0VJamtpcm5LLV9IMkpsLVJIQk430gF0QVVfeXFMUGgwVTlNQU9DS01OMmRmZW5nWDN2dVFXeWRsbXdSRjRVek5raVNUYnhaUXhnVm9QWGFVNDM3YkZuMGJwUGdBemYxLS1tOTNWUVBSZ09LdW5qUW56MnRrNUxHRUlqa2lybkstX0gySmwtUkhCTjc?oc=5"
+        },
+        {
+          "time": "2026-11-20T09:03:00+09:00",
+          "title": "삼성전자, 사장 3명 승진… 전영현·노태문 ‘투톱’ 유지, 메모리·스마트폰 새 수장 선임",
+          "source": "Chosunbiz",
+          "link": "https://news.google.com/rss/articles/CBMiggFBVV95cUxNU09QMklUV29HS3BmTFJPNmY4LVlpUzlFcmZKd3oyOGtWcm84dGJEbWhPclJMeDU5ZWd0R19rYlkweTRDNmozUnp2ck0xdTZEMHlocXBFT3JPM3JFQVJSM3BsQ0w0TFlJZTNOZ3A5X1NJX3FNLXBZdmVYVzZJbTJGMFVB0gGWAUFVX3lxTE5sN0gtOEd0T0NmU3JFV2xKN2hWeWVUa3B4cFV1eFJhbExRZ0pUbEhDczU1VkJ5OWhBVkVnY0VORkRubmEwa2s5UmxORDVLeUJEZXdEMVI5TWExRVRHM1F0UnFkSHdjbHVpeVd0amZ5aFJQaDgwZmZZM1NYWjdHc2QtbDhkazE1RlBRc2JmLVJEMzNBbnBWZw?oc=5"
+        },
+        {
+          "time": "2026-11-20T09:06:27+09:00",
+          "title": "엇갈린 반도체 '투톱'…초고수, 삼성전자 사고 SK하이닉스 팔았다",
+          "source": "한국경제",
+          "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTFBFa2doU3dlT0lIUGd2a3FLZDJoMzJxT0J5cndZQmlPR2xSaFVza3BxZGs4ZzhydmE2VkE3UTR2by1Hdk44SEVHNkNOeVRsNHIyLWhfMzA2WE50dw?oc=5"
+        },
+        {
+          "time": "2026-11-20T09:14:00+09:00",
+          "title": "삼성전자, 전영현·노태문 투톱 유지...메모리·스마트폰 겸직 해소",
+          "source": "조선일보",
+          "link": "https://news.google.com/rss/articles/CBMigwFBVV95cUxQMVpoSG9tRHYwbFRLTUVNOGZIVFNfZl9lQ2JkeVBkeHFzOEo3am9tU3RVMTRZdTAybkEwYUJHUnZtQWZZYnhjOXpNMi1HSXFyamFNTWpHakVuNjhLQmhBTVNaX1o5c001VkVqcmdoN0QtcW1iSkxQX0dTQTVmQm1mTEJhaw?oc=5"
+        }
+      ]
+    },
+    {
+      "time": "2026-11-20T09:45:00+09:00",
+      "ret": -0.006430868167202619,
+      "z": 3.99,
+      "volume_ratio": 2.25,
+      "cum_before": -0.00797448165869219,
+      "cum_after": -0.014354066985645897,
+      "session_share": 0.21993569131832916,
+      "score": 4.43810289941705,
+      "news": [
+        {
+          "time": "2026-11-20T09:12:48+09:00",
+          "title": "삼성전자 사업부장, 반도체 메모리 황상준·모바일경험 최원준",
+          "source": "연합인포맥스",
+          "link": "https://news.google.com/rss/articles/CBMidEFVX3lxTFBoMFU5TUFPQ0tNTjJkZmVuZ1gzdnVRV3lkbG13UkY0VXpOa2lTVGJ4WlF4Z1ZvUFhhVTQzN2JGbjBicFBnQXpmMS0tbTkzVlFQUmdPS3VualFuejJ0azVMR0VJamtpcm5LLV9IMkpsLVJIQk430gF0QVVfeXFMUGgwVTlNQU9DS01OMmRmZW5nWDN2dVFXeWRsbXdSRjRVek5raVNUYnhaUXhnVm9QWGFVNDM3YkZuMGJwUGdBemYxLS1tOTNWUVBSZ09LdW5qUW56MnRrNUxHRUlqa2lybkstX0gySmwtUkhCTjc?oc=5"
+        },
+        {
+          "time": "2026-11-20T09:16:55+09:00",
+          "title": "삼성전자, 반도체 '실적 주역' 3인 사장 발탁…전영현·노태문 미래사업 전념",
+          "source": "전자신문",
+          "link": "https://news.google.com/rss/articles/CBMiTkFVX3lxTE5zZ2ZRVVN1R2tKWDhyM2NUcXpTOURMd255enpldGtObVNoUDhESDRVejJzYlZwSXBLLWJkQUxYZERhM0VWOGRDM2F5TTNiUQ?oc=5"
+        },
+        {
+          "time": "2026-11-20T09:31:00+09:00",
+          "title": "삼성전자, 반도체 성과 주역 3명 사장 승진…메모리·시스템LSI·반도체 연구개발 수장 교체",
+          "source": "인공지능신문",
+          "link": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE8zYXh3THhOcTl4TnhPZW04cXoxVS1Hb01hcGVCbDBqRjRicGxQalFPdG1PRnFURlNsMnVtcUNCT3htbXNmX3Z1TlhldXM5MjFaQUo1ZzlJSF9NZVF6NVh1UnpISG0xT2M?oc=5"
+        },
+        {
+          "time": "2026-11-20T09:03:00+09:00",
+          "title": "삼성전자, 사장 3명 승진… 전영현·노태문 ‘투톱’ 유지, 메모리·스마트폰 새 수장 선임",
+          "source": "Chosunbiz",
+          "link": "https://news.google.com/rss/articles/CBMiggFBVV95cUxNU09QMklUV29HS3BmTFJPNmY4LVlpUzlFcmZKd3oyOGtWcm84dGJEbWhPclJMeDU5ZWd0R19rYlkweTRDNmozUnp2ck0xdTZEMHlocXBFT3JPM3JFQVJSM3BsQ0w0TFlJZTNOZ3A5X1NJX3FNLXBZdmVYVzZJbTJGMFVB0gGWAUFVX3lxTE5sN0gtOEd0T0NmU3JFV2xKN2hWeWVUa3B4cFV1eFJhbExRZ0pUbEhDczU1VkJ5OWhBVkVnY0VORkRubmEwa2s5UmxORDVLeUJEZXdEMVI5TWExRVRHM1F0UnFkSHdjbHVpeVd0amZ5aFJQaDgwZmZZM1NYWjdHc2QtbDhkazE1RlBRc2JmLVJEMzNBbnBWZw?oc=5"
+        },
+        {
+          "time": "2026-11-20T09:06:27+09:00",
+          "title": "엇갈린 반도체 '투톱'…초고수, 삼성전자 사고 SK하이닉스 팔았다",
+          "source": "한국경제",
+          "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTFBFa2doU3dlT0lIUGd2a3FLZDJoMzJxT0J5cndZQmlPR2xSaFVza3BxZGs4ZzhydmE2VkE3UTR2by1Hdk44SEVHNkNOeVRsNHIyLWhfMzA2WE50dw?oc=5"
+        }
+      ]
+    },
+    {
+      "time": "2026-11-20T12:15:00+09:00",
+      "ret": 0.004909983633387904,
+      "z": 3.04,
+      "volume_ratio": 0.54,
+      "cum_before": -0.02551834130781494,
+      "cum_after": -0.020733652312599715,
+      "session_share": -0.167921440261866,
+      "score": 3.152645377732061,
+      "news": [
+        {
+          "time": "2026-11-20T10:51:26+09:00",
+          "title": "삼성전자, 반도체 사장 3명 승진…전영현·노태문 체제 유지",
+          "source": "뉴스토마토",
+          "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE1lZXFYRDFTTDlDT0VQU3k2YkUweTVhU0pNX1F0SGpEVWphSTJIb29PeEFTd2VyMnhtTHk2bkNmalYweWV3aExtSk51OU96RmJmenVNQWJFY3QwZ1JubHNpMQ?oc=5"
+        },
+        {
+          "time": "2026-11-20T10:54:28+09:00",
+          "title": "[프로필] 이종명 삼성전자 DS부문 CTO 겸 반도체연구소장 사장",
+          "source": "지디넷코리아",
+          "link": "https://news.google.com/rss/articles/CBMiVkFVX3lxTFBQazdkYzlWczJwdnp5T19venhkMkZrRE01RXEtemVWdGJtaGxSRzJwTDhIcHJkSHk5QzFFUHpYamNUcjZJU2ZjSGwydTV4MDVoai1DSGJR?oc=5"
+        },
+        {
+          "time": "2026-11-20T11:00:00+09:00",
+          "title": "삼성전자, 사장 승진 3명 모두 반도체…철저한 성과주의",
+          "source": "뉴스톱",
+          "link": "https://news.google.com/rss/articles/CBMib0FVX3lxTE5wdzdxS0NfMTBEWWRfcVpWNzl3OXlJMk8zTWp4MmpkRF9nencyemp2YkVKUnJMZ1V3Nk8yUmJKUFRndHFocTM3Vk5fZ29icVV3ejVrMDdnTWlVR1NISVJzSTRWQ2dBd3JZRzdHdE9pWQ?oc=5"
+        },
+        {
+          "time": "2026-11-20T11:07:16+09:00",
+          "title": "삼성전자, 전영현·노태문 투톱 유지⋯반도체 사장 3명 승진",
+          "source": "포커스온경제",
+          "link": "https://news.google.com/rss/articles/CBMiXkFVX3lxTE9JaDdMalFuUENxN3NvUU1EeC1IcnV6NUFsUFlzRV9GTGRUd0p5LURPQVFYY3Z0NXE5UEdEQkM0eE0zVjdfWE9oaXRsZU9aWDI3Q04tcXhOaEdvZHdValE?oc=5"
+        },
+        {
+          "time": "2026-11-20T11:10:38+09:00",
+          "title": "[삼성 사장단] 삼성전자 이종명 사장 누구…반도체 신공정 개발 주도",
+          "source": "신아일보",
+          "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE1CR3hSRC11c29hWE5Zb0s4cnhydi1xQnI3ZTE1TGR6ZHlLR2hlVE9LUTN3TlFYbGlVRHNGZWc5LVkxQ3JqZTc5U3ZKa2tVWjd6d1Rfb0llQllGU2RMMmxvWXNnMjI5dEhpN0ZoamZiNTA?oc=5"
+        }
+      ]
+    }
+  ],
+  "turning_point": {
+    "high_time": "2026-11-20T09:00:00+09:00",
+    "high": 0.004253056884635731,
+    "low_time": "2026-11-20T14:30:00+09:00",
+    "low": -0.034821903242955865,
+    "pattern": "고점 후 반락"
+  },
+  "closing_share": -0.10301204819277017,
+  "intraday_corr_kospi": 0.9092648712478408,
+  "intraday_note": "장중 봉은 09:00~14:55까지만 있어 마감 구간(14:55~15:30)은 일봉 종가로만 봅니다(그 구간 +0.27%).",
+  "intraday_coverage": "09:00~14:55",
+  "intraday_path": [
+    {
+      "time": "2026-11-20T09:00:00+09:00",
+      "price": 188900.0,
+      "volume": 650251.0
+    },
+    {
+      "time": "2026-11-20T09:05:00+09:00",
+      "price": 188900.0,
+      "volume": 255194.0
+    },
+    {
+      "time": "2026-11-20T09:10:00+09:00",
+      "price": 188700.0,
+      "volume": 218556.0
+    },
+    {
+      "time": "2026-11-20T09:15:00+09:00",
+      "price": 188600.0,
+      "volume": 150975.0
+    },
+    {
+      "time": "2026-11-20T09:20:00+09:00",
+      "price": 188900.0,
+      "volume": 153943.0
+    },
+    {
+      "time": "2026-11-20T09:25:00+09:00",
+      "price": 188100.0,
+      "volume": 194341.0
+    },
+    {
+      "time": "2026-11-20T09:30:00+09:00",
+      "price": 187400.0,
+      "volume": 239586.0
+    },
+    {
+      "time": "2026-11-20T09:35:00+09:00",
+      "price": 187100.0,
+      "volume": 285285.0
+    },
+    {
+      "time": "2026-11-20T09:40:00+09:00",
+      "price": 186600.0,
+      "volume": 389147.0
+    },
+    {
+      "time": "2026-11-20T09:45:00+09:00",
+      "price": 185400.0,
+      "volume": 377416.0
+    },
+    {
+      "time": "2026-11-20T09:50:00+09:00",
+      "price": 185100.0,
+      "volume": 408682.0
+    },
+    {
+      "time": "2026-11-20T09:55:00+09:00",
+      "price": 186100.0,
+      "volume": 335605.0
+    },
+    {
+      "time": "2026-11-20T10:00:00+09:00",
+      "price": 186900.0,
+      "volume": 195553.0
+    },
+    {
+      "time": "2026-11-20T10:05:00+09:00",
+      "price": 187600.0,
+      "volume": 318623.0
+    },
+    {
+      "time": "2026-11-20T10:10:00+09:00",
+      "price": 187100.0,
+      "volume": 137771.0
+    },
+    {
+      "time": "2026-11-20T10:15:00+09:00",
+      "price": 187800.0,
+      "volume": 191369.0
+    },
+    {
+      "time": "2026-11-20T10:20:00+09:00",
+      "price": 186900.0,
+      "volume": 268071.0
+    },
+    {
+      "time": "2026-11-20T10:25:00+09:00",
+      "price": 186600.0,
+      "volume": 133664.0
+    },
+    {
+      "time": "2026-11-20T10:30:00+09:00",
+      "price": 186200.0,
+      "volume": 150013.0
+    },
+    {
+      "time": "2026-11-20T10:35:00+09:00",
+      "price": 185700.0,
+      "volume": 155414.0
+    },
+    {
+      "time": "2026-11-20T10:40:00+09:00",
+      "price": 185300.0,
+      "volume": 172933.0
+    },
+    {
+      "time": "2026-11-20T10:45:00+09:00",
+      "price": 185500.0,
+      "volume": 154396.0
+    },
+    {
+      "time": "2026-11-20T10:50:00+09:00",
+      "price": 185100.0,
+      "volume": 323331.0
+    },
+    {
+      "time": "2026-11-20T10:55:00+09:00",
+      "price": 185500.0,
+      "volume": 193299.0
+    },
+    {
+      "time": "2026-11-20T11:00:00+09:00",
+      "price": 185300.0,
+      "volume": 125547.0
+    },
+    {
+      "time": "2026-11-20T11:05:00+09:00",
+      "price": 185200.0,
+      "volume": 213298.0
+    },
+    {
+      "time": "2026-11-20T11:10:00+09:00",
+      "price": 185500.0,
+      "volume": 122061.0
+    },
+    {
+      "time": "2026-11-20T11:15:00+09:00",
+      "price": 185100.0,
+      "volume": 120044.0
+    },
+    {
+      "time": "2026-11-20T11:20:00+09:00",
+      "price": 184850.0,
+      "volume": 155079.0
+    },
+    {
+      "time": "2026-11-20T11:25:00+09:00",
+      "price": 184400.0,
+      "volume": 286878.0
+    },
+    {
+      "time": "2026-11-20T11:30:00+09:00",
+      "price": 184100.0,
+      "volume": 149863.0
+    },
+    {
+      "time": "2026-11-20T11:35:00+09:00",
+      "price": 184600.0,
+      "volume": 219461.0
+    },
+    {
+      "time": "2026-11-20T11:40:00+09:00",
+      "price": 184600.0,
+      "volume": 87665.0
+    },
+    {
+      "time": "2026-11-20T11:45:00+09:00",
+      "price": 184200.0,
+      "volume": 80242.0
+    },
+    {
+      "time": "2026-11-20T11:50:00+09:00",
+      "price": 184100.0,
+      "volume": 72196.0
+    },
+    {
+      "time": "2026-11-20T11:55:00+09:00",
+      "price": 184100.0,
+      "volume": 117736.0
+    },
+    {
+      "time": "2026-11-20T12:00:00+09:00",
+      "price": 183700.0,
+      "volume": 176981.0
+    },
+    {
+      "time": "2026-11-20T12:05:00+09:00",
+      "price": 183150.0,
+      "volume": 225347.0
+    },
+    {
+      "time": "2026-11-20T12:10:00+09:00",
+      "price": 183300.0,
+      "volume": 140363.0
+    },
+    {
+      "time": "2026-11-20T12:15:00+09:00",
+      "price": 184200.0,
+      "volume": 90738.0
+    },
+    {
+      "time": "2026-11-20T12:20:00+09:00",
+      "price": 184100.0,
+      "volume": 126752.0
+    },
+    {
+      "time": "2026-11-20T12:25:00+09:00",
+      "price": 184200.0,
+      "volume": 113939.0
+    },
+    {
+      "time": "2026-11-20T12:30:00+09:00",
+      "price": 183700.0,
+      "volume": 107483.0
+    },
+    {
+      "time": "2026-11-20T12:35:00+09:00",
+      "price": 184000.0,
+      "volume": 106233.0
+    },
+    {
+      "time": "2026-11-20T12:40:00+09:00",
+      "price": 184700.0,
+      "volume": 107744.0
+    },
+    {
+      "time": "2026-11-20T12:45:00+09:00",
+      "price": 185300.0,
+      "volume": 165533.0
+    },
+    {
+      "time": "2026-11-20T12:50:00+09:00",
+      "price": 185300.0,
+      "volume": 113267.0
+    },
+    {
+      "time": "2026-11-20T12:55:00+09:00",
+      "price": 185100.0,
+      "volume": 235968.0
+    },
+    {
+      "time": "2026-11-20T13:00:00+09:00",
+      "price": 184800.0,
+      "volume": 119889.0
+    },
+    {
+      "time": "2026-11-20T13:05:00+09:00",
+      "price": 184500.0,
+      "volume": 138183.0
+    },
+    {
+      "time": "2026-11-20T13:10:00+09:00",
+      "price": 184400.0,
+      "volume": 98535.0
+    },
+    {
+      "time": "2026-11-20T13:15:00+09:00",
+      "price": 184200.0,
+      "volume": 104538.0
+    },
+    {
+      "time": "2026-11-20T13:20:00+09:00",
+      "price": 184000.0,
+      "volume": 130523.0
+    },
+    {
+      "time": "2026-11-20T13:25:00+09:00",
+      "price": 183700.0,
+      "volume": 150383.0
+    },
+    {
+      "time": "2026-11-20T13:30:00+09:00",
+      "price": 183600.0,
+      "volume": 188003.0
+    },
+    {
+      "time": "2026-11-20T13:35:00+09:00",
+      "price": 183600.0,
+      "volume": 158181.0
+    },
+    {
+      "time": "2026-11-20T13:40:00+09:00",
+      "price": 183700.0,
+      "volume": 125548.0
+    },
+    {
+      "time": "2026-11-20T13:45:00+09:00",
+      "price": 183300.0,
+      "volume": 104596.0
+    },
+    {
+      "time": "2026-11-20T13:50:00+09:00",
+      "price": 183400.0,
+      "volume": 128194.0
+    },
+    {
+      "time": "2026-11-20T13:55:00+09:00",
+      "price": 183200.0,
+      "volume": 108176.0
+    },
+    {
+      "time": "2026-11-20T14:00:00+09:00",
+      "price": 183000.0,
+      "volume": 251539.0
+    },
+    {
+      "time": "2026-11-20T14:05:00+09:00",
+      "price": 182700.0,
+      "volume": 169280.0
+    },
+    {
+      "time": "2026-11-20T14:10:00+09:00",
+      "price": 182650.0,
+      "volume": 208734.0
+    },
+    {
+      "time": "2026-11-20T14:15:00+09:00",
+      "price": 182300.0,
+      "volume": 180920.0
+    },
+    {
+      "time": "2026-11-20T14:20:00+09:00",
+      "price": 182100.0,
+      "volume": 266186.0
+    },
+    {
+      "time": "2026-11-20T14:25:00+09:00",
+      "price": 182100.0,
+      "volume": 226985.0
+    },
+    {
+      "time": "2026-11-20T14:30:00+09:00",
+      "price": 181550.0,
+      "volume": 183898.0
+    },
+    {
+      "time": "2026-11-20T14:35:00+09:00",
+      "price": 181800.0,
+      "volume": 202626.0
+    },
+    {
+      "time": "2026-11-20T14:40:00+09:00",
+      "price": 181700.0,
+      "volume": 190232.0
+    },
+    {
+      "time": "2026-11-20T14:45:00+09:00",
+      "price": 182200.0,
+      "volume": 232558.0
+    },
+    {
+      "time": "2026-11-20T14:50:00+09:00",
+      "price": 182600.0,
+      "volume": 253196.0
+    },
+    {
+      "time": "2026-11-20T14:55:00+09:00",
+      "price": 182600.0,
+      "volume": 190380.0
+    }
+  ],
+  "timeline_items": [
+    {
+      "time": "2026-11-20T09:00:00+09:00",
+      "ret": -0.04062976130015239,
+      "z": 25.19,
+      "volume_ratio": 3.88,
+      "cum_before": 0.0,
+      "cum_after": 0.004253056884635731,
+      "session_share": 1.3895378364652091,
+      "score": 26.967727871444858,
+      "news": [
+        {
+          "time": "2026-11-20T08:08:18+09:00",
+          "title": "\"삼성전자·TSMC, 中에 일부 칩 출하 중단…美 수출통제\"",
+          "source": "연합인포맥스",
+          "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE1fSkxqZjRRWXJlSldwR1NTUWhaRzRkM3JMWGowbUVSTmhKUjh6azVia0dRTGJqVk9WNGZ3cF83V05WUWV1bXFmZDAzTFpCT3N5aUp0MDg5SDdsRndtUHVSaFJQVWRMWllSSHRac2RSVEQ?oc=5"
+        },
+        {
+          "time": "2026-11-20T09:12:48+09:00",
+          "title": "삼성전자 사업부장, 반도체 메모리 황상준·모바일경험 최원준",
+          "source": "연합인포맥스",
+          "link": "https://news.google.com/rss/articles/CBMidEFVX3lxTFBoMFU5TUFPQ0tNTjJkZmVuZ1gzdnVRV3lkbG13UkY0VXpOa2lTVGJ4WlF4Z1ZvUFhhVTQzN2JGbjBicFBnQXpmMS0tbTkzVlFQUmdPS3VualFuejJ0azVMR0VJamtpcm5LLV9IMkpsLVJIQk430gF0QVVfeXFMUGgwVTlNQU9DS01OMmRmZW5nWDN2dVFXeWRsbXdSRjRVek5raVNUYnhaUXhnVm9QWGFVNDM3YkZuMGJwUGdBemYxLS1tOTNWUVBSZ09LdW5qUW56MnRrNUxHRUlqa2lybkstX0gySmwtUkhCTjc?oc=5"
+        },
+        {
+          "time": "2026-11-20T09:03:00+09:00",
+          "title": "삼성전자, 사장 3명 승진… 전영현·노태문 ‘투톱’ 유지, 메모리·스마트폰 새 수장 선임",
+          "source": "Chosunbiz",
+          "link": "https://news.google.com/rss/articles/CBMiggFBVV95cUxNU09QMklUV29HS3BmTFJPNmY4LVlpUzlFcmZKd3oyOGtWcm84dGJEbWhPclJMeDU5ZWd0R19rYlkweTRDNmozUnp2ck0xdTZEMHlocXBFT3JPM3JFQVJSM3BsQ0w0TFlJZTNOZ3A5X1NJX3FNLXBZdmVYVzZJbTJGMFVB0gGWAUFVX3lxTE5sN0gtOEd0T0NmU3JFV2xKN2hWeWVUa3B4cFV1eFJhbExRZ0pUbEhDczU1VkJ5OWhBVkVnY0VORkRubmEwa2s5UmxORDVLeUJEZXdEMVI5TWExRVRHM1F0UnFkSHdjbHVpeVd0amZ5aFJQaDgwZmZZM1NYWjdHc2QtbDhkazE1RlBRc2JmLVJEMzNBbnBWZw?oc=5"
+        },
+        {
+          "time": "2026-11-20T09:06:27+09:00",
+          "title": "엇갈린 반도체 '투톱'…초고수, 삼성전자 사고 SK하이닉스 팔았다",
+          "source": "한국경제",
+          "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTFBFa2doU3dlT0lIUGd2a3FLZDJoMzJxT0J5cndZQmlPR2xSaFVza3BxZGs4ZzhydmE2VkE3UTR2by1Hdk44SEVHNkNOeVRsNHIyLWhfMzA2WE50dw?oc=5"
+        },
+        {
+          "time": "2026-11-20T09:14:00+09:00",
+          "title": "삼성전자, 전영현·노태문 투톱 유지...메모리·스마트폰 겸직 해소",
+          "source": "조선일보",
+          "link": "https://news.google.com/rss/articles/CBMigwFBVV95cUxQMVpoSG9tRHYwbFRLTUVNOGZIVFNfZl9lQ2JkeVBkeHFzOEo3am9tU3RVMTRZdTAybkEwYUJHUnZtQWZZYnhjOXpNMi1HSXFyamFNTWpHakVuNjhLQmhBTVNaX1o5c001VkVqcmdoN0QtcW1iSkxQX0dTQTVmQm1mTEJhaw?oc=5"
+        }
+      ],
+      "price": 188900.0,
+      "kind": "turn_down"
+    },
+    {
+      "time": "2026-11-20T09:45:00+09:00",
+      "ret": -0.006430868167202619,
+      "z": 3.99,
+      "volume_ratio": 2.25,
+      "cum_before": -0.00797448165869219,
+      "cum_after": -0.014354066985645897,
+      "session_share": 0.21993569131832916,
+      "score": 4.43810289941705,
+      "news": [
+        {
+          "time": "2026-11-20T09:12:48+09:00",
+          "title": "삼성전자 사업부장, 반도체 메모리 황상준·모바일경험 최원준",
+          "source": "연합인포맥스",
+          "link": "https://news.google.com/rss/articles/CBMidEFVX3lxTFBoMFU5TUFPQ0tNTjJkZmVuZ1gzdnVRV3lkbG13UkY0VXpOa2lTVGJ4WlF4Z1ZvUFhhVTQzN2JGbjBicFBnQXpmMS0tbTkzVlFQUmdPS3VualFuejJ0azVMR0VJamtpcm5LLV9IMkpsLVJIQk430gF0QVVfeXFMUGgwVTlNQU9DS01OMmRmZW5nWDN2dVFXeWRsbXdSRjRVek5raVNUYnhaUXhnVm9QWGFVNDM3YkZuMGJwUGdBemYxLS1tOTNWUVBSZ09LdW5qUW56MnRrNUxHRUlqa2lybkstX0gySmwtUkhCTjc?oc=5"
+        },
+        {
+          "time": "2026-11-20T09:16:55+09:00",
+          "title": "삼성전자, 반도체 '실적 주역' 3인 사장 발탁…전영현·노태문 미래사업 전념",
+          "source": "전자신문",
+          "link": "https://news.google.com/rss/articles/CBMiTkFVX3lxTE5zZ2ZRVVN1R2tKWDhyM2NUcXpTOURMd255enpldGtObVNoUDhESDRVejJzYlZwSXBLLWJkQUxYZERhM0VWOGRDM2F5TTNiUQ?oc=5"
+        },
+        {
+          "time": "2026-11-20T09:31:00+09:00",
+          "title": "삼성전자, 반도체 성과 주역 3명 사장 승진…메모리·시스템LSI·반도체 연구개발 수장 교체",
+          "source": "인공지능신문",
+          "link": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE8zYXh3THhOcTl4TnhPZW04cXoxVS1Hb01hcGVCbDBqRjRicGxQalFPdG1PRnFURlNsMnVtcUNCT3htbXNmX3Z1TlhldXM5MjFaQUo1ZzlJSF9NZVF6NVh1UnpISG0xT2M?oc=5"
+        },
+        {
+          "time": "2026-11-20T09:03:00+09:00",
+          "title": "삼성전자, 사장 3명 승진… 전영현·노태문 ‘투톱’ 유지, 메모리·스마트폰 새 수장 선임",
+          "source": "Chosunbiz",
+          "link": "https://news.google.com/rss/articles/CBMiggFBVV95cUxNU09QMklUV29HS3BmTFJPNmY4LVlpUzlFcmZKd3oyOGtWcm84dGJEbWhPclJMeDU5ZWd0R19rYlkweTRDNmozUnp2ck0xdTZEMHlocXBFT3JPM3JFQVJSM3BsQ0w0TFlJZTNOZ3A5X1NJX3FNLXBZdmVYVzZJbTJGMFVB0gGWAUFVX3lxTE5sN0gtOEd0T0NmU3JFV2xKN2hWeWVUa3B4cFV1eFJhbExRZ0pUbEhDczU1VkJ5OWhBVkVnY0VORkRubmEwa2s5UmxORDVLeUJEZXdEMVI5TWExRVRHM1F0UnFkSHdjbHVpeVd0amZ5aFJQaDgwZmZZM1NYWjdHc2QtbDhkazE1RlBRc2JmLVJEMzNBbnBWZw?oc=5"
+        },
+        {
+          "time": "2026-11-20T09:06:27+09:00",
+          "title": "엇갈린 반도체 '투톱'…초고수, 삼성전자 사고 SK하이닉스 팔았다",
+          "source": "한국경제",
+          "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTFBFa2doU3dlT0lIUGd2a3FLZDJoMzJxT0J5cndZQmlPR2xSaFVza3BxZGs4ZzhydmE2VkE3UTR2by1Hdk44SEVHNkNOeVRsNHIyLWhfMzA2WE50dw?oc=5"
+        }
+      ],
+      "price": 185400.0,
+      "kind": "turn_down"
+    },
+    {
+      "time": "2026-11-20T12:15:00+09:00",
+      "ret": 0.004909983633387904,
+      "z": 3.04,
+      "volume_ratio": 0.54,
+      "cum_before": -0.02551834130781494,
+      "cum_after": -0.020733652312599715,
+      "session_share": -0.167921440261866,
+      "score": 3.152645377732061,
+      "news": [
+        {
+          "time": "2026-11-20T10:51:26+09:00",
+          "title": "삼성전자, 반도체 사장 3명 승진…전영현·노태문 체제 유지",
+          "source": "뉴스토마토",
+          "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE1lZXFYRDFTTDlDT0VQU3k2YkUweTVhU0pNX1F0SGpEVWphSTJIb29PeEFTd2VyMnhtTHk2bkNmalYweWV3aExtSk51OU96RmJmenVNQWJFY3QwZ1JubHNpMQ?oc=5"
+        },
+        {
+          "time": "2026-11-20T10:54:28+09:00",
+          "title": "[프로필] 이종명 삼성전자 DS부문 CTO 겸 반도체연구소장 사장",
+          "source": "지디넷코리아",
+          "link": "https://news.google.com/rss/articles/CBMiVkFVX3lxTFBQazdkYzlWczJwdnp5T19venhkMkZrRE01RXEtemVWdGJtaGxSRzJwTDhIcHJkSHk5QzFFUHpYamNUcjZJU2ZjSGwydTV4MDVoai1DSGJR?oc=5"
+        },
+        {
+          "time": "2026-11-20T11:00:00+09:00",
+          "title": "삼성전자, 사장 승진 3명 모두 반도체…철저한 성과주의",
+          "source": "뉴스톱",
+          "link": "https://news.google.com/rss/articles/CBMib0FVX3lxTE5wdzdxS0NfMTBEWWRfcVpWNzl3OXlJMk8zTWp4MmpkRF9nencyemp2YkVKUnJMZ1V3Nk8yUmJKUFRndHFocTM3Vk5fZ29icVV3ejVrMDdnTWlVR1NISVJzSTRWQ2dBd3JZRzdHdE9pWQ?oc=5"
+        },
+        {
+          "time": "2026-11-20T11:07:16+09:00",
+          "title": "삼성전자, 전영현·노태문 투톱 유지⋯반도체 사장 3명 승진",
+          "source": "포커스온경제",
+          "link": "https://news.google.com/rss/articles/CBMiXkFVX3lxTE9JaDdMalFuUENxN3NvUU1EeC1IcnV6NUFsUFlzRV9GTGRUd0p5LURPQVFYY3Z0NXE5UEdEQkM0eE0zVjdfWE9oaXRsZU9aWDI3Q04tcXhOaEdvZHdValE?oc=5"
+        },
+        {
+          "time": "2026-11-20T11:10:38+09:00",
+          "title": "[삼성 사장단] 삼성전자 이종명 사장 누구…반도체 신공정 개발 주도",
+          "source": "신아일보",
+          "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE1CR3hSRC11c29hWE5Zb0s4cnhydi1xQnI3ZTE1TGR6ZHlLR2hlVE9LUTN3TlFYbGlVRHNGZWc5LVkxQ3JqZTc5U3ZKa2tVWjd6d1Rfb0llQllGU2RMMmxvWXNnMjI5dEhpN0ZoamZiNTA?oc=5"
+        }
+      ],
+      "price": 184200.0,
+      "kind": "turn_up"
+    }
+  ],
+  "overnight_news": [
+    {
+      "time": "2026-11-20T08:08:18+09:00",
+      "title": "\"삼성전자·TSMC, 中에 일부 칩 출하 중단…美 수출통제\"",
+      "source": "연합인포맥스",
+      "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE1fSkxqZjRRWXJlSldwR1NTUWhaRzRkM3JMWGowbUVSTmhKUjh6azVia0dRTGJqVk9WNGZ3cF83V05WUWV1bXFmZDAzTFpCT3N5aUp0MDg5SDdsRndtUHVSaFJQVWRMWllSSHRac2RSVEQ?oc=5"
+    },
+    {
+      "time": "2026-11-20T05:30:00+09:00",
+      "title": "삼성전자 오늘 사장단 인사…전영현·노태문 유임 속 겸직 해소",
+      "source": "아이뉴스24",
+      "link": "https://news.google.com/rss/articles/CBMiS0FVX3lxTE05LU5taFJ5SlBNZC1iVEYyek0wb1NoSTZsLXVQNUdaeHhReTVCUmtwWlRhQ1hvRGpzX3JldER4clRWMEZVbFJoMUt1NA?oc=5"
+    }
+  ],
+  "top_news": [
+    {
+      "time": "2026-11-20T15:32:08+09:00",
+      "title": "“설상가상? 내 주식 괜찮을까”…삼성전자·TSMC, 美 수출통제로 中에 반도체 일부 출하 중단",
+      "source": "문화일보",
+      "link": "https://news.google.com/rss/articles/CBMiUEFVX3lxTE1ncTFCYVJyUlFScmw2M3NkWjJ1cXhtUkZ1dTdvSUdHMk10cnJIUnRpdXRsdVFBcHU3VkVyUDE1d1p2bkVoYU84UWhZZ3VxS2Zz?oc=5"
+    },
+    {
+      "time": "2026-11-20T08:08:18+09:00",
+      "title": "\"삼성전자·TSMC, 中에 일부 칩 출하 중단…美 수출통제\"",
+      "source": "연합인포맥스",
+      "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE1fSkxqZjRRWXJlSldwR1NTUWhaRzRkM3JMWGowbUVSTmhKUjh6azVia0dRTGJqVk9WNGZ3cF83V05WUWV1bXFmZDAzTFpCT3N5aUp0MDg5SDdsRndtUHVSaFJQVWRMWllSSHRac2RSVEQ?oc=5"
+    },
+    {
+      "time": "2026-11-20T09:12:48+09:00",
+      "title": "삼성전자 사업부장, 반도체 메모리 황상준·모바일경험 최원준",
+      "source": "연합인포맥스",
+      "link": "https://news.google.com/rss/articles/CBMidEFVX3lxTFBoMFU5TUFPQ0tNTjJkZmVuZ1gzdnVRV3lkbG13UkY0VXpOa2lTVGJ4WlF4Z1ZvUFhhVTQzN2JGbjBicFBnQXpmMS0tbTkzVlFQUmdPS3VualFuejJ0azVMR0VJamtpcm5LLV9IMkpsLVJIQk430gF0QVVfeXFMUGgwVTlNQU9DS01OMmRmZW5nWDN2dVFXeWRsbXdSRjRVek5raVNUYnhaUXhnVm9QWGFVNDM3YkZuMGJwUGdBemYxLS1tOTNWUVBSZ09LdW5qUW56MnRrNUxHRUlqa2lybkstX0gySmwtUkhCTjc?oc=5"
+    },
+    {
+      "time": "2026-11-20T09:16:55+09:00",
+      "title": "삼성전자, 반도체 '실적 주역' 3인 사장 발탁…전영현·노태문 미래사업 전념",
+      "source": "전자신문",
+      "link": "https://news.google.com/rss/articles/CBMiTkFVX3lxTE5zZ2ZRVVN1R2tKWDhyM2NUcXpTOURMd255enpldGtObVNoUDhESDRVejJzYlZwSXBLLWJkQUxYZERhM0VWOGRDM2F5TTNiUQ?oc=5"
+    },
+    {
+      "time": "2026-11-20T09:31:00+09:00",
+      "title": "삼성전자, 반도체 성과 주역 3명 사장 승진…메모리·시스템LSI·반도체 연구개발 수장 교체",
+      "source": "인공지능신문",
+      "link": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE8zYXh3THhOcTl4TnhPZW04cXoxVS1Hb01hcGVCbDBqRjRicGxQalFPdG1PRnFURlNsMnVtcUNCT3htbXNmX3Z1TlhldXM5MjFaQUo1ZzlJSF9NZVF6NVh1UnpISG0xT2M?oc=5"
+    },
+    {
+      "time": "2026-11-20T10:02:19+09:00",
+      "title": "[프로필] 황상준 삼성전자 DS부문 메모리사업부장 겸 DRAM개발실장 사장",
+      "source": "지디넷코리아",
+      "link": "https://news.google.com/rss/articles/CBMiVkFVX3lxTE5lWjdYaUs3MTQycHhsTDFNR3RaNUowZFIwSVkxSDBhaGhqNFRldDU3M3JOU3R1R1BaZnJmODZvdFlVVHo5UTRPSERDT3RrUjhKTlRpanBB?oc=5"
+    }
+  ],
+  "disclosures": [],
+  "disclosure_note": null,
+  "flows": null,
+  "flow_story": null,
+  "flow_status": {
+    "state": "pending",
+    "detail": "최신 2026-11-19"
+  },
+  "context": {},
+  "market": {
+    "index": "KOSPI",
+    "date": "2026-11-20",
+    "rise": 88,
+    "fall": 808,
+    "steady": 16,
+    "upper": 1,
+    "lower": 0,
+    "individual": 16053.0,
+    "foreign": -11380.0,
+    "institution": -9535.0,
+    "prev_close": 5137.89,
+    "open": 4928.51,
+    "high": 4971.31,
+    "low": 4831.69,
+    "close": 4869.96
+  },
+  "earnings_reactions": null,
+  "forecasts": [],
+  "price_check": null,
+  "disclaimer": "시간이 맞는 것이지 원인 확정이 아닙니다. 뉴스 없이 움직이는 날(수급·프로그램·옵션 만기)이 많고, 기사 발행 시각은 실제 정보 유통보다 늦거나 앞섭니다. 이 절은 설명 도구이며 다음날 예측에 자동 반영되지 않습니다."
+}

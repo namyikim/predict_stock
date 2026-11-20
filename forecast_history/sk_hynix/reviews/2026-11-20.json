@@ -3,81 +3,46 @@
   "name": "SK하이닉스",
   "peer_name": "삼성전자",
   "session_date": "2026-11-20",
-  "generated_at": "2026-11-20 16:43 KST",
+  "generated_at": "2026-11-21 01:05 KST",
   "summary": {
     "prev_close": 1183000.0,
-    "open": 1117000.0,
-    "high": 1124000.0,
-    "low": 1096000.0,
-    "close": 1113000.0,
-    "gap": -0.05579036348267119,
-    "session": -0.0035810205908684,
-    "c2c": -0.059171597633136064,
-    "high_vs_open": 0.006266786034019756,
-    "low_vs_open": -0.018800358102059045,
-    "volume": 3462779.0,
-    "volume_ratio": 0.8995450227573049,
-    "kospi_c2c": -0.05214789897246819,
-    "peer_c2c": -0.07008633824276278,
-    "usdkrw_chg": 0.0022924885010850993,
+    "open": NaN,
+    "high": NaN,
+    "low": NaN,
+    "close": NaN,
+    "gap": NaN,
+    "session": NaN,
+    "c2c": NaN,
+    "high_vs_open": NaN,
+    "low_vs_open": NaN,
+    "volume": 3674675.0,
+    "volume_ratio": 0.9545904045567734,
+    "kospi_c2c": NaN,
+    "peer_c2c": NaN,
+    "usdkrw_chg": 0.007373674341112579,
     "us_nights": 1,
     "sox_ret": -0.024146370259519268,
     "nasdaq_ret": -0.022541315031164966,
     "micron_ret": -0.021027431592371304,
     "prior_streak": 2,
-    "ma5": 1131600.0,
-    "ma20": 1273100.0,
+    "ma5": 1136250.0,
+    "ma20": 1281526.3157894737,
     "high20": 1587000.0,
     "high252": 2986352.5777339735,
     "price_context": {
-      "breakouts": {
-        "20": {
-          "prior_high": 1587000.0,
-          "distance": -0.2986767485822306,
-          "close_breakout": false,
-          "intraday_breakout": false
-        },
-        "60": {
-          "prior_high": 1935000.0,
-          "distance": -0.4248062015503876,
-          "close_breakout": false,
-          "intraday_breakout": false
-        }
-      },
-      "relative": {
-        "5": {
-          "start": "2026-11-13",
-          "end": "2026-11-20",
-          "own": -0.08470394736842102,
-          "peer": -0.11116504854368936,
-          "excess": 0.026461101175268342
-        },
-        "20": {
-          "start": "2026-10-23",
-          "end": "2026-11-20",
-          "own": -0.1284259984338293,
-          "peer": -0.15034802784222734,
-          "excess": 0.021922029408398047
-        },
-        "60": {
-          "start": "2026-08-24",
-          "end": "2026-11-20",
-          "own": -0.3337873515667894,
-          "peer": -0.2751974707123097,
-          "excess": -0.05858988085447969
-        }
-      }
+      "breakouts": {},
+      "relative": {}
     },
-    "range": 0.025547445255474477,
-    "peer_range": 0.04355016538037493,
+    "range": NaN,
+    "peer_range": NaN,
     "prior_5d": -0.05661881977671457,
     "ma_touches": [],
     "micron_ah": {
-      "regular_close": 690.1199951171875,
+      "regular_close": 689.97998046875,
       "last": 683.48,
-      "ret": -0.009621508091589126,
-      "low_ret": -0.016852134700448218,
-      "high_ret": -0.0011737018531827736,
+      "ret": -0.009420534874554076,
+      "low_ret": -0.01665262876314766,
+      "high_ret": -0.0009710143594237053,
       "last_time": "2026-11-20T08:55:00+09:00"
     },
     "nvidia_ah": {
@@ -92,7 +57,7 @@
       "NQ=F": {
         "label": "나스닥100 선물",
         "ret": -0.00977817931995073,
-        "after_high": -0.0072556068197042745
+        "after_high": -0.007283706010000945
       },
       "ZN=F": {
         "label": "미 10년물 국채 선물",
@@ -105,7 +70,6 @@
         "after_high": -0.00019457730410132879
       }
     },
-    "from_high": -0.008021390374331583,
     "buyback": [
       {
         "kind": "직접 취득",
@@ -115,20 +79,22 @@
         "purpose": "주주가치 제고 및 임직원 주식 보상",
         "rcept_no": "20261028000014"
       }
-    ]
+    ],
+    "foreign_pressure": {
+      "state": "selling_intensified",
+      "previous_ratio": -0.045595540185122393,
+      "recent_ratio": -0.04582846066264145,
+      "previous_daily_net": -170479.6,
+      "recent_daily_net": -163870.0
+    },
+    "buyback_transition": null
   },
   "classification": {
     "labels": [
-      "갭 주도",
-      "장중 급변 09:00 주도",
-      "지수 동조",
-      "마감 구간 쏠림(14:55~종가)"
+      "장중 급변 09:00 주도"
     ],
     "reasons": [
-      "갭 -5.58%가 종가→종가 -5.92%의 94%",
-      "09:00 봉 -5.66%(σ의 16.93배, 거래량 3.31배)가 세션 -0.36%의 395%",
-      "KOSPI -5.21% vs 종목 -5.92%, 5분 수익률 상관 0.86 — 종목 고유 요인이 약함",
-      "14:55~종가 구간이 세션 -0.36%의 304% (5분봉이 없는 구간, 일봉 종가 기준)"
+      "09:00 봉 -5.66%(σ의 16.93배, 거래량 3.31배)가 세션 +nan%의 395%"
     ]
   },
   "events": [
@@ -141,7 +107,32 @@
       "cum_after": -0.0008952551477170445,
       "session_share": 3.9538778529163117,
       "score": 18.590968291169055,
-      "news": []
+      "news": [
+        {
+          "time": "2026-11-20T08:58:19+09:00",
+          "title": "“메모리를 중심으로 미래 AI 생태계 구축”… SK하이닉스, ‘슈퍼 컴퓨팅 2026’서 기술 비전 제시",
+          "source": "SK hynix",
+          "link": "https://news.google.com/rss/articles/CBMiX0FVX3lxTE9odU9IOS1NbU5YLWVoNGZuNWVNbWRHYkVJbVoyQ2o2RE1lSjdrSVRBUE5fS01uNGtWOHA5czcyWnpIYW45Rlg2ZjlzRzlXeVlGcTNMSmdnellzVjQyRmM0?oc=5"
+        },
+        {
+          "time": "2026-11-20T08:07:00+09:00",
+          "title": "[특징주] 美 증시 급락에 반도체주 '휘청'…SK하이닉스 5%↓",
+          "source": "뉴스핌",
+          "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE1Dc1l1MlFrVmVlYXFJY1ZGeTlqUktyR3I4YXhiR2tOMUhyZHhEX0N5N2J3QU00MmJfN3RNNWdxTDFQbkZ3Z09IcEtwUnVZRzZ1MmIxUnViS3hfWGFV?oc=5"
+        },
+        {
+          "time": "2026-11-20T09:06:27+09:00",
+          "title": "엇갈린 반도체 '투톱'…초고수, 삼성전자 사고 SK하이닉스 팔았다",
+          "source": "한국경제",
+          "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTFBFa2doU3dlT0lIUGd2a3FLZDJoMzJxT0J5cndZQmlPR2xSaFVza3BxZGs4ZzhydmE2VkE3UTR2by1Hdk44SEVHNkNOeVRsNHIyLWhfMzA2WE50dw?oc=5"
+        },
+        {
+          "time": "2026-11-20T09:12:25+09:00",
+          "title": "코스피, 3%대 급락해 4900선…삼성전자·SK하이닉스 동반 약세",
+          "source": "한국경제",
+          "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTFBiVjVoaXllZExmUWticTBvYjA2N091S2treFpDTnVGejQyZTVOdFJvQzNiNU94VHFacFZuUmFsODNwU3lWREE1YVVVMTV4bUFQMjMxOVNOQzRtZw?oc=5"
+        }
+      ]
     }
   ],
   "turning_point": {
@@ -151,9 +142,9 @@
     "low": -0.017905102954342,
     "pattern": "저점 후 반등"
   },
-  "closing_share": -3.0435967302452123,
-  "intraday_corr_kospi": 0.8619258841688655,
-  "intraday_note": "장중 봉은 09:00~14:55까지만 있어 마감 구간(14:55~15:30)은 일봉 종가로만 봅니다(그 구간 +1.09%).",
+  "closing_share": NaN,
+  "intraday_corr_kospi": 0.8623410682950203,
+  "intraday_note": "장중 봉은 09:00~14:55까지만 있어 마감 구간(14:55~15:30)은 일봉 종가로만 봅니다(그 구간 +nan%).",
   "intraday_coverage": "09:00~14:55",
   "intraday_path": [
     {
@@ -214,12 +205,12 @@
     {
       "time": "2026-11-20T09:55:00+09:00",
       "price": 1108000.0,
-      "volume": 38322.0
+      "volume": 38319.0
     },
     {
       "time": "2026-11-20T10:00:00+09:00",
       "price": 1112000.0,
-      "volume": 46966.0
+      "volume": 46969.0
     },
     {
       "time": "2026-11-20T10:05:00+09:00",
@@ -258,13 +249,13 @@
     },
     {
       "time": "2026-11-20T10:40:00+09:00",
-      "price": 1105500.0,
-      "volume": 23627.0
+      "price": 1105000.0,
+      "volume": 23628.0
     },
     {
       "time": "2026-11-20T10:45:00+09:00",
       "price": 1107000.0,
-      "volume": 34826.0
+      "volume": 34825.0
     },
     {
       "time": "2026-11-20T10:50:00+09:00",
@@ -527,13 +518,88 @@
       "cum_after": -0.0008952551477170445,
       "session_share": 3.9538778529163117,
       "score": 18.590968291169055,
-      "news": [],
+      "news": [
+        {
+          "time": "2026-11-20T08:58:19+09:00",
+          "title": "“메모리를 중심으로 미래 AI 생태계 구축”… SK하이닉스, ‘슈퍼 컴퓨팅 2026’서 기술 비전 제시",
+          "source": "SK hynix",
+          "link": "https://news.google.com/rss/articles/CBMiX0FVX3lxTE9odU9IOS1NbU5YLWVoNGZuNWVNbWRHYkVJbVoyQ2o2RE1lSjdrSVRBUE5fS01uNGtWOHA5czcyWnpIYW45Rlg2ZjlzRzlXeVlGcTNMSmdnellzVjQyRmM0?oc=5"
+        },
+        {
+          "time": "2026-11-20T08:07:00+09:00",
+          "title": "[특징주] 美 증시 급락에 반도체주 '휘청'…SK하이닉스 5%↓",
+          "source": "뉴스핌",
+          "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE1Dc1l1MlFrVmVlYXFJY1ZGeTlqUktyR3I4YXhiR2tOMUhyZHhEX0N5N2J3QU00MmJfN3RNNWdxTDFQbkZ3Z09IcEtwUnVZRzZ1MmIxUnViS3hfWGFV?oc=5"
+        },
+        {
+          "time": "2026-11-20T09:06:27+09:00",
+          "title": "엇갈린 반도체 '투톱'…초고수, 삼성전자 사고 SK하이닉스 팔았다",
+          "source": "한국경제",
+          "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTFBFa2doU3dlT0lIUGd2a3FLZDJoMzJxT0J5cndZQmlPR2xSaFVza3BxZGs4ZzhydmE2VkE3UTR2by1Hdk44SEVHNkNOeVRsNHIyLWhfMzA2WE50dw?oc=5"
+        },
+        {
+          "time": "2026-11-20T09:12:25+09:00",
+          "title": "코스피, 3%대 급락해 4900선…삼성전자·SK하이닉스 동반 약세",
+          "source": "한국경제",
+          "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTFBiVjVoaXllZExmUWticTBvYjA2N091S2treFpDTnVGejQyZTVOdFJvQzNiNU94VHFacFZuUmFsODNwU3lWREE1YVVVMTV4bUFQMjMxOVNOQzRtZw?oc=5"
+        }
+      ],
       "price": 1116000.0,
       "kind": "turn_down"
     }
   ],
-  "overnight_news": [],
-  "top_news": [],
+  "overnight_news": [
+    {
+      "time": "2026-11-20T08:58:19+09:00",
+      "title": "“메모리를 중심으로 미래 AI 생태계 구축”… SK하이닉스, ‘슈퍼 컴퓨팅 2026’서 기술 비전 제시",
+      "source": "SK hynix",
+      "link": "https://news.google.com/rss/articles/CBMiX0FVX3lxTE9odU9IOS1NbU5YLWVoNGZuNWVNbWRHYkVJbVoyQ2o2RE1lSjdrSVRBUE5fS01uNGtWOHA5czcyWnpIYW45Rlg2ZjlzRzlXeVlGcTNMSmdnellzVjQyRmM0?oc=5"
+    },
+    {
+      "time": "2026-11-20T08:07:00+09:00",
+      "title": "[특징주] 美 증시 급락에 반도체주 '휘청'…SK하이닉스 5%↓",
+      "source": "뉴스핌",
+      "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE1Dc1l1MlFrVmVlYXFJY1ZGeTlqUktyR3I4YXhiR2tOMUhyZHhEX0N5N2J3QU00MmJfN3RNNWdxTDFQbkZ3Z09IcEtwUnVZRzZ1MmIxUnViS3hfWGFV?oc=5"
+    }
+  ],
+  "top_news": [
+    {
+      "time": "2026-11-20T10:55:00+09:00",
+      "title": "SK하이닉스, HBM 넘어 AI 시스템까지…차세대 메모리 기술 공개",
+      "source": "뉴스핌",
+      "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE10OGJwMGxUYlFxUWZ2VkJQNG1RV21hV2sxTFo3UVFkWFBmaUV6WTFaekVxMm52YVNxdEFaT0VwLUtRMDZpZ2pQTDlnbkFwQlVxRnNvNWI0alA0cGIz?oc=5"
+    },
+    {
+      "time": "2026-11-20T11:08:02+09:00",
+      "title": "삼성전자 주가 장중 5%대 SK하이닉스 6%대 내려, 미국 AI·반도체주 약세 영향",
+      "source": "비즈니스포스트",
+      "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTE85Q0NlYlJyNnJVaDVQd3J2WjlKNTBzNEEtSE1mNU03R0tJSlFTS2M5TUpJdVdfcDVJcDBObXRCdVJpdVNIaVNfM0xBWU9uNGNoc29lb19QMnV1dzVTMXBDWFh1dC0wcFdLSmN1Nkl0UWRVWVU?oc=5"
+    },
+    {
+      "time": "2026-11-20T15:21:09+09:00",
+      "title": "'수출 1조 달러' 견인 韓 반도체⋯HBM 기술력 SK하이닉스 일등 공신",
+      "source": "엠투데이",
+      "link": "https://news.google.com/rss/articles/CBMib0FVX3lxTE5lWmdyVHJHbWpkUjBOQ1dTTWhQVWE5UXU5U0VmbXVfSmN4RTlXS1NLbHNrQ2hfODFHVVk3Q2piVU0xMm92OTRFZVdpRENQcHp4em1lSlVKaXJhSHBnWWhEZDZveUMyaXp5dWtyNWpKdw?oc=5"
+    },
+    {
+      "time": "2026-11-20T18:46:19+09:00",
+      "title": "[반도체포커스] 日 최대 메모리 기업까지 대주주 된 SK하이닉스…'세계 1위 낸드 연합' 큰 그림 그리나",
+      "source": "이코노미트리뷴",
+      "link": "https://news.google.com/rss/articles/CBMid0FVX3lxTE51V0RCMU8tNWEtMWRZeUNqRnBKQ2I5dG9sZHBIRzlMOTcyNk5sSkxTVkRVZGF1S3pOd1hrd1NaSFFmZVpXaVNDWUcxUnk5Q29mczhQMVVKclZXR09TbGF2QndWLUl6Mnh4ZTVkYU1aa3piN3J6R284?oc=5"
+    },
+    {
+      "time": "2026-11-20T08:58:19+09:00",
+      "title": "“메모리를 중심으로 미래 AI 생태계 구축”… SK하이닉스, ‘슈퍼 컴퓨팅 2026’서 기술 비전 제시",
+      "source": "SK hynix",
+      "link": "https://news.google.com/rss/articles/CBMiX0FVX3lxTE9odU9IOS1NbU5YLWVoNGZuNWVNbWRHYkVJbVoyQ2o2RE1lSjdrSVRBUE5fS01uNGtWOHA5czcyWnpIYW45Rlg2ZjlzRzlXeVlGcTNMSmdnellzVjQyRmM0?oc=5"
+    },
+    {
+      "time": "2026-11-20T10:03:20+09:00",
+      "title": "SK하이닉스, 슈퍼컴퓨팅 행사서 차세대 AI 메모리 기술 선봬",
+      "source": "연합뉴스",
+      "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE0tNHR2bDgtTDhrcXJ4OFZ4VFBzbC1BTE1QdEJpMkNIejVfOXFJRFZJSXI4eWVObUwyMmxlSUZhZjZ6cTUtRkprcXVFalpDd2lxVTUwNXNDN2tQREl0Q3V3ctIBYEFVX3lxTE0tNHR2bDgtTDhrcXJ4OFZ4VFBzbC1BTE1QdEJpMkNIejVfOXFJRFZJSXI4eWVObUwyMmxlSUZhZjZ6cTUtRkprcXVFalpDd2lxVTUwNXNDN2tQREl0Q3V3cg?oc=5"
+    }
+  ],
   "disclosures": [
     {
       "report_nm": "[기재정정]타법인주식및출자증권취득결정",
@@ -543,11 +609,12 @@
     }
   ],
   "disclosure_note": null,
-  "flows": null,
+  "flows": "외국인 -167,982 / 기관 -235,664",
   "flow_story": null,
   "flow_status": {
-    "state": "pending",
-    "detail": "최신 2026-11-19"
+    "state": "ok",
+    "detail": "naver+cache",
+    "krx_error": "pykrx 미설치"
   },
   "context": {},
   "market": {
@@ -558,9 +625,9 @@
     "steady": 16,
     "upper": 1,
     "lower": 0,
-    "individual": 16053.0,
-    "foreign": -11380.0,
-    "institution": -9535.0,
+    "individual": 15381.0,
+    "foreign": -10956.0,
+    "institution": -9330.0,
     "prev_close": 5137.89,
     "open": 4928.51,
     "high": 4971.31,

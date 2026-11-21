@@ -1,0 +1,145 @@
+{
+  "recorded_at": "2026-11-21T17:26:14.814909+09:00",
+  "target": "sk_hynix",
+  "valuation": {
+    "status": "available",
+    "ticker": "000660.KS",
+    "price": 1113000.0,
+    "price_date": "2026-11-20",
+    "observed_on": "2026-11-21",
+    "financial_period": "2026-09-30",
+    "eps_ttm": 266915.6388828062,
+    "bps": 435892.66434963443,
+    "per": 4.169856830639592,
+    "pbr": 2.5533808917400136,
+    "source": "https://finance.yahoo.com/quote/000660.KS/key-statistics/",
+    "assumptions": {
+      "version": 1,
+      "per": [
+        8,
+        12,
+        16
+      ],
+      "pbr": [
+        1,
+        1.5,
+        2
+      ],
+      "basis": "배수는 민감도 비교를 위한 공통 예시 가정입니다. 증권사 컨센서스·과거 평균·통계적 신뢰구간이 아니며, 두 회사의 적정 배수가 같다는 뜻도 아닙니다. 설정 파일에서 변경할 수 있습니다."
+    },
+    "scenarios": {
+      "per": [
+        {
+          "multiple": 8,
+          "price": 2135325.1110624494,
+          "upside": 0.9185310970911496
+        },
+        {
+          "multiple": 12,
+          "price": 3202987.666593674,
+          "upside": 1.877796645636724
+        },
+        {
+          "multiple": 16,
+          "price": 4270650.222124899,
+          "upside": 2.837062194182299
+        }
+      ],
+      "pbr": [
+        {
+          "multiple": 1,
+          "price": 435892.66434963443,
+          "upside": -0.6083623860290795
+        },
+        {
+          "multiple": 1.5,
+          "price": 653838.9965244516,
+          "upside": -0.4125435790436194
+        },
+        {
+          "multiple": 2,
+          "price": 871785.3286992689,
+          "upside": -0.2167247720581591
+        }
+      ]
+    },
+    "evaluation_status": "예측 성능 미검증 — 현재 가치 시나리오이며 도달 시점을 예측하지 않음",
+    "basis_note": "분기 재무제표 최근 4분기 순이익(Net Income Common Stockholders) ÷ EPS 기준 주식 수 707,731,431주",
+    "retrieved_on": "2026-11-21",
+    "cached": false
+  },
+  "model_as_of": "2026-10-31",
+  "model_forecast": {
+    "3": {
+      "raw": -0.10657950610297508,
+      "point": -0.02926155309260924
+    },
+    "6": {
+      "raw": 0.1704480772954499,
+      "point": 0.042956485027785526
+    },
+    "12": {
+      "raw": 0.47203534003343683,
+      "point": 0.29945788383621275
+    }
+  },
+  "live_exports": {
+    "as_of": "2026-11-21",
+    "price_last": "2026-10-31",
+    "exports_last_month": "2026-11",
+    "latest_period": {
+      "month": "2026-11",
+      "days": 10,
+      "yoy": 3.3119055680543728,
+      "observed_usd": 16632115000.0,
+      "monthly_usd": 74451756495.42456,
+      "basis": "partial_month_scenario"
+    },
+    "snapshot_hash": "51633448b1ecbf60687e",
+    "generated_at": "2026-11-21 17:24 KST",
+    "flash_info": {
+      "enabled": true,
+      "source": "customs_flash_api",
+      "rows": 43,
+      "first": "2025-09",
+      "last": "2026-11",
+      "last_days": 10,
+      "yoy_rows": 7
+    },
+    "current": {
+      "mom_12m": 0.9308532339369737,
+      "drawdown_36m": -0.4649056603773585,
+      "macro_leading_cycle": 4.200000000000003,
+      "macro_leading_change_3m": 1.2999999999999972,
+      "macro_semiconductor_yoy": 3.3119055680543728,
+      "macro_semiconductor_yoy_change_3m": 1.2220703147736902,
+      "price_to_exports_z": 0.7612303359649079,
+      "exports_cycle": 2.844842752875419,
+      "exports_accel": 0.8875230398133909,
+      "cli_level": 0.019300000000001205,
+      "cli_change_3m": -0.16790000000000305,
+      "exports_daily_yoy": 3.106576731480355,
+      "cycle_score": 1.4947348584981541
+    },
+    "phase": "확장(YoY>0, 가속)",
+    "forecast": {
+      "3": {
+        "point": null,
+        "validated": false,
+        "interval": null
+      },
+      "6": {
+        "point": null,
+        "validated": false,
+        "interval": null
+      },
+      "12": {
+        "point": null,
+        "validated": false,
+        "interval": null
+      }
+    },
+    "validated": false
+  },
+  "evaluation_status": "참고 시나리오 보관 — 미래 성능 평가 결과 아님"
+}

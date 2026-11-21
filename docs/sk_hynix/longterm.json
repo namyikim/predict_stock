@@ -713,13 +713,13 @@
       "fresh": true,
       "source": "OECD API",
       "errors": [],
-      "checked_at": "2026-11-20 17:40 KST"
+      "checked_at": "2026-11-21 17:26 KST"
     },
     "kospi_info": {
       "last": "2026-10",
       "fresh": true,
       "source": "Yahoo Finance",
-      "checked_at": "2026-11-20 17:40 KST"
+      "checked_at": "2026-11-21 17:26 KST"
     },
     "rows": [
       {
@@ -965,7 +965,7 @@
       "source": "FRED API",
       "fresh": true,
       "errors": [],
-      "checked_at": "2026-11-20 17:40 KST",
+      "checked_at": "2026-11-21 17:26 KST",
       "definition": "한국 총수출(달러·계절조정, OECD/FRED)",
       "last": "2026-09"
     },
@@ -981,7 +981,7 @@
       "note": "OECD G20 경기선행지수(OECD 데이터 API). 참조월+1개월 20일 이후에만 사용. 매달 소급 수정되므로 백테스트는 최종 수정치 기준이라 낙관적",
       "snapshot_hash": "9027e1d4bd824600ee57",
       "enabled": true,
-      "checked_at": "2026-11-20 17:40 KST"
+      "checked_at": "2026-11-21 17:26 KST"
     }
   },
   "stock_value": {
@@ -1002,7 +1002,7 @@
       "months_added": [],
       "scale": 1.2853403704544433,
       "source": "customs_api",
-      "checked_at": "2026-11-20 17:39 KST",
+      "checked_at": "2026-11-21 17:24 KST",
       "kosis_last": "2026-10",
       "last": "2026-10"
     },
@@ -1013,7 +1013,7 @@
     "krw": 1336.89726673473
   },
   "chart_first": "2000-01-31",
-  "generated_at": "2026-11-20 17:40 KST",
+  "generated_at": "2026-11-21 17:26 KST",
   "macro_snapshot_hash": "61963e4033125aadbde9",
   "macro_sources": {
     "leading_cycle": "KOSIS_API",
@@ -1021,7 +1021,7 @@
   },
   "frame_hash": "94b8acbd3e8f955d",
   "live_exports": {
-    "as_of": "2026-11-20",
+    "as_of": "2026-11-21",
     "price_last": "2026-10-31",
     "exports_last_month": "2026-11",
     "latest_period": {
@@ -1033,7 +1033,7 @@
       "basis": "partial_month_scenario"
     },
     "snapshot_hash": "51633448b1ecbf60687e",
-    "generated_at": "2026-11-20 17:39 KST",
+    "generated_at": "2026-11-21 17:24 KST",
     "flash_info": {
       "enabled": true,
       "source": "customs_flash_api",
@@ -1081,14 +1081,14 @@
   "valuation": {
     "status": "available",
     "ticker": "000660.KS",
-    "price": 1183000.0,
-    "price_date": "2026-11-19",
-    "observed_on": "2026-11-20",
+    "price": 1113000.0,
+    "price_date": "2026-11-20",
+    "observed_on": "2026-11-21",
     "financial_period": "2026-09-30",
     "eps_ttm": 266915.6388828062,
     "bps": 435892.66434963443,
-    "per": 4.432111977220698,
-    "pbr": 2.7139708849312094,
+    "per": 4.169856830639592,
+    "pbr": 2.5533808917400136,
     "source": "https://finance.yahoo.com/quote/000660.KS/key-statistics/",
     "assumptions": {
       "version": 1,
@@ -1109,40 +1109,40 @@
         {
           "multiple": 8,
           "price": 2135325.1110624494,
-          "upside": 0.8050085469674129
+          "upside": 0.9185310970911496
         },
         {
           "multiple": 12,
           "price": 3202987.666593674,
-          "upside": 1.7075128204511194
+          "upside": 1.877796645636724
         },
         {
           "multiple": 16,
           "price": 4270650.222124899,
-          "upside": 2.6100170939348257
+          "upside": 2.837062194182299
         }
       ],
       "pbr": [
         {
           "multiple": 1,
           "price": 435892.66434963443,
-          "upside": -0.6315362093409684
+          "upside": -0.6083623860290795
         },
         {
           "multiple": 1.5,
           "price": 653838.9965244516,
-          "upside": -0.44730431401145254
+          "upside": -0.4125435790436194
         },
         {
           "multiple": 2,
           "price": 871785.3286992689,
-          "upside": -0.26307241868193676
+          "upside": -0.2167247720581591
         }
       ]
     },
     "evaluation_status": "예측 성능 미검증 — 현재 가치 시나리오이며 도달 시점을 예측하지 않음",
     "basis_note": "분기 재무제표 최근 4분기 순이익(Net Income Common Stockholders) ÷ EPS 기준 주식 수 707,731,431주",
-    "retrieved_on": "2026-11-20",
+    "retrieved_on": "2026-11-21",
     "cached": false
   },
   "policy_inflation": {
@@ -1768,7 +1768,7 @@
       "cpi_index"
     ],
     "failed": {},
-    "checked_at": "2026-11-20T17:40:57.185482",
+    "checked_at": "2026-11-21T17:26:02.719369",
     "stale": false
   }
 }

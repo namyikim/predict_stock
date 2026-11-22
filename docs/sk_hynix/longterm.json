@@ -613,10 +613,10 @@
     "reason": "지금까지 16개월 이어졌는데, 과거 같은 국면 13번 중 이보다 길었던 것이 0번뿐이라 잔여 기간을 말할 표본이 없습니다."
   },
   "cli_info": {
-    "source": "OECD_API(G20)",
+    "source": "last_successful_fetch",
     "series_id": "OECD G20",
-    "fresh": true,
-    "fetch_error": null,
+    "fresh": false,
+    "fetch_error": "OECD CLI 조회 실패(HTTPError 404 Not Found). 연결을 확인하거나 macro_inputs/cli_g20.csv를 사용하세요.",
     "first": "1998-01",
     "last": "2026-10",
     "rows": 346,
@@ -713,13 +713,13 @@
       "fresh": true,
       "source": "OECD API",
       "errors": [],
-      "checked_at": "2026-11-21 17:26 KST"
+      "checked_at": "2026-11-22 17:04 KST"
     },
     "kospi_info": {
       "last": "2026-10",
       "fresh": true,
       "source": "Yahoo Finance",
-      "checked_at": "2026-11-21 17:26 KST"
+      "checked_at": "2026-11-22 17:04 KST"
     },
     "rows": [
       {
@@ -965,15 +965,15 @@
       "source": "FRED API",
       "fresh": true,
       "errors": [],
-      "checked_at": "2026-11-21 17:26 KST",
+      "checked_at": "2026-11-22 17:04 KST",
       "definition": "한국 총수출(달러·계절조정, OECD/FRED)",
       "last": "2026-09"
     },
     "g20_info": {
-      "source": "OECD_API(G20)",
+      "source": "last_successful_fetch",
       "series_id": "OECD G20",
-      "fresh": true,
-      "fetch_error": null,
+      "fresh": false,
+      "fetch_error": "OECD CLI 조회 실패(HTTPError 404 Not Found). 연결을 확인하거나 macro_inputs/cli_g20.csv를 사용하세요.",
       "first": "1998-01",
       "last": "2026-10",
       "rows": 346,
@@ -981,7 +981,7 @@
       "note": "OECD G20 경기선행지수(OECD 데이터 API). 참조월+1개월 20일 이후에만 사용. 매달 소급 수정되므로 백테스트는 최종 수정치 기준이라 낙관적",
       "snapshot_hash": "9027e1d4bd824600ee57",
       "enabled": true,
-      "checked_at": "2026-11-21 17:26 KST"
+      "checked_at": "2026-11-22 17:04 KST"
     }
   },
   "stock_value": {
@@ -1002,7 +1002,7 @@
       "months_added": [],
       "scale": 1.2853403704544433,
       "source": "customs_api",
-      "checked_at": "2026-11-21 17:24 KST",
+      "checked_at": "2026-11-22 17:03 KST",
       "kosis_last": "2026-10",
       "last": "2026-10"
     },
@@ -1013,7 +1013,7 @@
     "krw": 1336.89726673473
   },
   "chart_first": "2000-01-31",
-  "generated_at": "2026-11-21 17:26 KST",
+  "generated_at": "2026-11-22 17:04 KST",
   "macro_snapshot_hash": "61963e4033125aadbde9",
   "macro_sources": {
     "leading_cycle": "KOSIS_API",
@@ -1021,7 +1021,7 @@
   },
   "frame_hash": "94b8acbd3e8f955d",
   "live_exports": {
-    "as_of": "2026-11-21",
+    "as_of": "2026-11-22",
     "price_last": "2026-10-31",
     "exports_last_month": "2026-11",
     "latest_period": {
@@ -1033,7 +1033,7 @@
       "basis": "partial_month_scenario"
     },
     "snapshot_hash": "51633448b1ecbf60687e",
-    "generated_at": "2026-11-21 17:24 KST",
+    "generated_at": "2026-11-22 17:03 KST",
     "flash_info": {
       "enabled": true,
       "source": "customs_flash_api",
@@ -1083,7 +1083,7 @@
     "ticker": "000660.KS",
     "price": 1113000.0,
     "price_date": "2026-11-20",
-    "observed_on": "2026-11-21",
+    "observed_on": "2026-11-22",
     "financial_period": "2026-09-30",
     "eps_ttm": 266915.6388828062,
     "bps": 435892.66434963443,
@@ -1142,7 +1142,7 @@
     },
     "evaluation_status": "예측 성능 미검증 — 현재 가치 시나리오이며 도달 시점을 예측하지 않음",
     "basis_note": "분기 재무제표 최근 4분기 순이익(Net Income Common Stockholders) ÷ EPS 기준 주식 수 707,731,431주",
-    "retrieved_on": "2026-11-21",
+    "retrieved_on": "2026-11-22",
     "cached": false
   },
   "policy_inflation": {
@@ -1768,7 +1768,7 @@
       "cpi_index"
     ],
     "failed": {},
-    "checked_at": "2026-11-21T17:26:02.719369",
+    "checked_at": "2026-11-22T17:04:06.226092",
     "stale": false
   }
 }

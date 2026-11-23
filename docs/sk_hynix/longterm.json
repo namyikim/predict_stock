@@ -613,10 +613,10 @@
     "reason": "지금까지 16개월 이어졌는데, 과거 같은 국면 13번 중 이보다 길었던 것이 0번뿐이라 잔여 기간을 말할 표본이 없습니다."
   },
   "cli_info": {
-    "source": "last_successful_fetch",
+    "source": "OECD_API(G20)",
     "series_id": "OECD G20",
-    "fresh": false,
-    "fetch_error": "OECD CLI 조회 실패(HTTPError 404 Not Found). 연결을 확인하거나 macro_inputs/cli_g20.csv를 사용하세요.",
+    "fresh": true,
+    "fetch_error": null,
     "first": "1998-01",
     "last": "2026-10",
     "rows": 346,
@@ -681,11 +681,11 @@
       "fresh": true,
       "fetch_error": null,
       "first": "2005-01-01",
-      "last": "2026-11-15",
-      "rows": 7989,
+      "last": "2026-11-22",
+      "rows": 7996,
       "release_lag_days": 14,
       "note": "뉴스심리지수는 일별 지수이지만 주 1회, 약 1주 지연 공개되므로 지수 날짜+14일 이후에만 사용. 2026-09 신지수로 과거치가 재계산되어 백테스트는 재계산 이력 기준",
-      "snapshot_hash": "f33a5d51caff9c09548c",
+      "snapshot_hash": "b2e476ff1bb8ea17dc8c",
       "enabled": true
     },
     "term_spread": {
@@ -693,9 +693,9 @@
       "fresh": true,
       "fetch_error": null,
       "first": "2000-12-18",
-      "last": "2026-11-20",
-      "rows": 6419,
-      "snapshot_hash": "c5621accc2b376621144",
+      "last": "2026-11-23",
+      "rows": 6420,
+      "snapshot_hash": "8a0344891687d5fbacae",
       "enabled": true
     }
   },
@@ -713,13 +713,13 @@
       "fresh": true,
       "source": "OECD API",
       "errors": [],
-      "checked_at": "2026-11-22 17:04 KST"
+      "checked_at": "2026-11-23 18:12 KST"
     },
     "kospi_info": {
       "last": "2026-10",
       "fresh": true,
       "source": "Yahoo Finance",
-      "checked_at": "2026-11-22 17:04 KST"
+      "checked_at": "2026-11-23 18:12 KST"
     },
     "rows": [
       {
@@ -965,15 +965,15 @@
       "source": "FRED API",
       "fresh": true,
       "errors": [],
-      "checked_at": "2026-11-22 17:04 KST",
+      "checked_at": "2026-11-23 18:12 KST",
       "definition": "한국 총수출(달러·계절조정, OECD/FRED)",
       "last": "2026-09"
     },
     "g20_info": {
-      "source": "last_successful_fetch",
+      "source": "OECD_API(G20)",
       "series_id": "OECD G20",
-      "fresh": false,
-      "fetch_error": "OECD CLI 조회 실패(HTTPError 404 Not Found). 연결을 확인하거나 macro_inputs/cli_g20.csv를 사용하세요.",
+      "fresh": true,
+      "fetch_error": null,
       "first": "1998-01",
       "last": "2026-10",
       "rows": 346,
@@ -981,7 +981,7 @@
       "note": "OECD G20 경기선행지수(OECD 데이터 API). 참조월+1개월 20일 이후에만 사용. 매달 소급 수정되므로 백테스트는 최종 수정치 기준이라 낙관적",
       "snapshot_hash": "9027e1d4bd824600ee57",
       "enabled": true,
-      "checked_at": "2026-11-22 17:04 KST"
+      "checked_at": "2026-11-23 18:12 KST"
     }
   },
   "stock_value": {
@@ -1002,7 +1002,7 @@
       "months_added": [],
       "scale": 1.2853403704544433,
       "source": "customs_api",
-      "checked_at": "2026-11-22 17:03 KST",
+      "checked_at": "2026-11-23 18:11 KST",
       "kosis_last": "2026-10",
       "last": "2026-10"
     },
@@ -1013,7 +1013,7 @@
     "krw": 1336.89726673473
   },
   "chart_first": "2000-01-31",
-  "generated_at": "2026-11-22 17:04 KST",
+  "generated_at": "2026-11-23 18:12 KST",
   "macro_snapshot_hash": "61963e4033125aadbde9",
   "macro_sources": {
     "leading_cycle": "KOSIS_API",
@@ -1021,42 +1021,42 @@
   },
   "frame_hash": "94b8acbd3e8f955d",
   "live_exports": {
-    "as_of": "2026-11-22",
+    "as_of": "2026-11-23",
     "price_last": "2026-10-31",
     "exports_last_month": "2026-11",
     "latest_period": {
       "month": "2026-11",
-      "days": 10,
-      "yoy": 3.3119055680543728,
-      "observed_usd": 16632115000.0,
-      "monthly_usd": 74451756495.42456,
+      "days": 20,
+      "yoy": 2.94440355858406,
+      "observed_usd": 38466143000.0,
+      "monthly_usd": 68106262678.63653,
       "basis": "partial_month_scenario"
     },
-    "snapshot_hash": "51633448b1ecbf60687e",
-    "generated_at": "2026-11-22 17:03 KST",
+    "snapshot_hash": "a3b2a97c5d428b2ec8b2",
+    "generated_at": "2026-11-23 18:11 KST",
     "flash_info": {
       "enabled": true,
       "source": "customs_flash_api",
-      "rows": 43,
+      "rows": 44,
       "first": "2025-09",
       "last": "2026-11",
-      "last_days": 10,
-      "yoy_rows": 7
+      "last_days": 20,
+      "yoy_rows": 8
     },
     "current": {
       "mom_12m": 0.9308532339369737,
       "drawdown_36m": -0.4649056603773585,
       "macro_leading_cycle": 4.200000000000003,
       "macro_leading_change_3m": 1.2999999999999972,
-      "macro_semiconductor_yoy": 3.3119055680543728,
-      "macro_semiconductor_yoy_change_3m": 1.2220703147736902,
-      "price_to_exports_z": 0.7612303359649079,
-      "exports_cycle": 2.844842752875419,
-      "exports_accel": 0.8875230398133909,
+      "macro_semiconductor_yoy": 2.94440355858406,
+      "macro_semiconductor_yoy_change_3m": 0.8545683053033777,
+      "price_to_exports_z": 0.7777224920725264,
+      "exports_cycle": 2.722342083051982,
+      "exports_accel": 0.7650223699899537,
       "cli_level": 0.019300000000001205,
       "cli_change_3m": -0.16790000000000305,
-      "exports_daily_yoy": 3.106576731480355,
-      "cycle_score": 1.4947348584981541
+      "exports_daily_yoy": 2.7565748176991045,
+      "cycle_score": 1.3164509590110125
     },
     "phase": "확장(YoY>0, 가속)",
     "forecast": {
@@ -1083,7 +1083,7 @@
     "ticker": "000660.KS",
     "price": 1113000.0,
     "price_date": "2026-11-20",
-    "observed_on": "2026-11-22",
+    "observed_on": "2026-11-23",
     "financial_period": "2026-09-30",
     "eps_ttm": 266915.6388828062,
     "bps": 435892.66434963443,
@@ -1142,7 +1142,7 @@
     },
     "evaluation_status": "예측 성능 미검증 — 현재 가치 시나리오이며 도달 시점을 예측하지 않음",
     "basis_note": "분기 재무제표 최근 4분기 순이익(Net Income Common Stockholders) ÷ EPS 기준 주식 수 707,731,431주",
-    "retrieved_on": "2026-11-22",
+    "retrieved_on": "2026-11-23",
     "cached": false
   },
   "policy_inflation": {
@@ -1768,7 +1768,7 @@
       "cpi_index"
     ],
     "failed": {},
-    "checked_at": "2026-11-22T17:04:06.226092",
+    "checked_at": "2026-11-23T18:12:13.741135",
     "stale": false
   }
 }

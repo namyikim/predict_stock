@@ -1050,27 +1050,27 @@
     },
     {
       "month": "2026-11",
-      "value": 74451756495.42456
+      "value": 68106262678.63653
     }
   ],
   "applied": [
     {
       "month": "2026-11",
-      "days": 10,
-      "yoy": 3.3119055680543728,
-      "observed_usd": 16632115000.0,
-      "monthly_usd": 74451756495.42456,
+      "days": 20,
+      "yoy": 2.94440355858406,
+      "observed_usd": 38466143000.0,
+      "monthly_usd": 68106262678.63653,
       "basis": "partial_month_scenario"
     }
   ],
   "flash_info": {
     "enabled": true,
     "source": "customs_flash_api",
-    "rows": 43,
+    "rows": 44,
     "first": "2025-09",
     "last": "2026-11",
-    "last_days": 10,
-    "yoy_rows": 7
+    "last_days": 20,
+    "yoy_rows": 8
   },
   "monthly_info": {
     "customs": {
@@ -1099,6 +1099,6 @@
       "semiconductor_exports": "KOSIS_API"
     }
   },
-  "snapshot_hash": "51633448b1ecbf60687e",
-  "generated_at": "2026-11-22 16:59 KST"
+  "snapshot_hash": "a3b2a97c5d428b2ec8b2",
+  "generated_at": "2026-11-23 18:04 KST"
 }

@@ -1,16 +1,16 @@
 {
   "schema_version": 1,
   "mode": "observe_only",
-  "generated_at": "2026-11-23T04:51:23.125332+00:00",
+  "generated_at": "2026-11-23T15:32:53.052622+00:00",
   "strategies": [
     {
-      "observed_days": 35,
+      "observed_days": 36,
       "first_observed_at": "2026-10-06T11:00:34.402651+00:00",
       "strategy": "range_rebound",
       "strategy_version": "wave-v1",
       "config_hash": "813e2b8c8e49d2bbd7a5d99c9fdb1471ae5b2df3da0c05312e2aa2b6d940b03f",
       "mode": "observe_only",
-      "observed_at": "2026-11-23T04:51:23.125332+00:00",
+      "observed_at": "2026-11-23T15:32:53.052622+00:00",
       "initial_capital": 10000000,
       "cash": 10000000.0,
       "positions": {},
@@ -21,65 +21,27 @@
       "observations": [
         {
           "target": "samsung",
-          "status": "observe_only",
-          "signal": {
-            "action": "wait",
-            "available_bars": 36,
-            "decision_at": "2026-11-20T13:49:02.275954+00:00",
-            "information_cutoff": "2026-11-20T13:49:02.063307+00:00",
-            "range_position": null,
-            "reason_codes": [
-              "insufficient_bars"
-            ],
-            "reference_stop": null,
-            "regime": "unknown",
-            "strategy": "range_rebound",
-            "version": "wave-v1"
-          },
-          "risk_preview": {
-            "budget": 0,
-            "suggested_qty": 0,
-            "reasons": [
-              "stale_quote"
-            ]
-          }
+          "status": "stale_daily",
+          "latest_bar_end": "2026-11-20T06:30:00+00:00",
+          "expected_bar_end": "2026-11-23T06:30:00+00:00"
         },
         {
           "target": "sk_hynix",
-          "status": "observe_only",
-          "signal": {
-            "action": "wait",
-            "available_bars": 56,
-            "decision_at": "2026-11-20T13:49:02.275954+00:00",
-            "information_cutoff": "2026-11-20T13:49:02.136355+00:00",
-            "range_position": null,
-            "reason_codes": [
-              "insufficient_bars"
-            ],
-            "reference_stop": null,
-            "regime": "unknown",
-            "strategy": "range_rebound",
-            "version": "wave-v1"
-          },
-          "risk_preview": {
-            "budget": 0,
-            "suggested_qty": 0,
-            "reasons": [
-              "stale_quote"
-            ]
-          }
+          "status": "stale_daily",
+          "latest_bar_end": "2026-11-20T06:30:00+00:00",
+          "expected_bar_end": "2026-11-23T06:30:00+00:00"
         }
       ],
       "notice": "관측용 배분은 주문이 아닙니다. 독립 계좌의 자금을 합산하지 않습니다."
     },
     {
-      "observed_days": 35,
+      "observed_days": 36,
       "first_observed_at": "2026-10-06T11:00:34.402651+00:00",
       "strategy": "trend_pullback",
       "strategy_version": "wave-v1",
       "config_hash": "90f919d87d5d5b5b1775468511ef725c490ac54a674b2b779761e5869cc3be13",
       "mode": "observe_only",
-      "observed_at": "2026-11-23T04:51:23.125332+00:00",
+      "observed_at": "2026-11-23T15:32:53.052622+00:00",
       "initial_capital": 10000000,
       "cash": 10000000.0,
       "positions": {},
@@ -90,53 +52,15 @@
       "observations": [
         {
           "target": "samsung",
-          "status": "observe_only",
-          "signal": {
-            "action": "wait",
-            "available_bars": 36,
-            "decision_at": "2026-11-20T13:49:02.275954+00:00",
-            "information_cutoff": "2026-11-20T13:49:02.063307+00:00",
-            "range_position": null,
-            "reason_codes": [
-              "insufficient_bars"
-            ],
-            "reference_stop": null,
-            "regime": "unknown",
-            "strategy": "trend_pullback",
-            "version": "wave-v1"
-          },
-          "risk_preview": {
-            "budget": 0,
-            "suggested_qty": 0,
-            "reasons": [
-              "stale_quote"
-            ]
-          }
+          "status": "stale_daily",
+          "latest_bar_end": "2026-11-20T06:30:00+00:00",
+          "expected_bar_end": "2026-11-23T06:30:00+00:00"
         },
         {
           "target": "sk_hynix",
-          "status": "observe_only",
-          "signal": {
-            "action": "wait",
-            "available_bars": 56,
-            "decision_at": "2026-11-20T13:49:02.275954+00:00",
-            "information_cutoff": "2026-11-20T13:49:02.136355+00:00",
-            "range_position": null,
-            "reason_codes": [
-              "insufficient_bars"
-            ],
-            "reference_stop": null,
-            "regime": "unknown",
-            "strategy": "trend_pullback",
-            "version": "wave-v1"
-          },
-          "risk_preview": {
-            "budget": 0,
-            "suggested_qty": 0,
-            "reasons": [
-              "stale_quote"
-            ]
-          }
+          "status": "stale_daily",
+          "latest_bar_end": "2026-11-20T06:30:00+00:00",
+          "expected_bar_end": "2026-11-23T06:30:00+00:00"
         }
       ],
       "notice": "관측용 배분은 주문이 아닙니다. 독립 계좌의 자금을 합산하지 않습니다."

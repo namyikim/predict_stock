@@ -47,8 +47,8 @@
     "yoy_rows": 8
   },
   "exports_snapshot_hash": "a3b2a97c5d428b2ec8b2",
-  "point": 147302669522367.22,
-  "raw_point": 147302669522367.22,
+  "point": 147305171185112.72,
+  "raw_point": 147305171185112.72,
   "nowcast_model": "level_ridge",
   "nowcast_selection": {
     "eligible": false,
@@ -56,7 +56,7 @@
   },
   "low": null,
   "high": null,
-  "change_vs_last": 0.3710164621410319,
+  "change_vs_last": 0.3710397463138031,
   "no_point_reason": "",
   "last_actual": 107440482000000.0,
   "last_actual_quarter": "2026Q3",
@@ -120,8 +120,8 @@
   "tsmc_ablation": {},
   "extrapolation": {
     "max_history": 107440482000000.0,
-    "point": 147302669522367.22,
-    "ratio": 1.371016462141032,
+    "point": 147305171185112.72,
+    "ratio": 1.371039746313803,
     "quarter": "2026Q3"
   },
   "leverage_active": true,
@@ -157,8 +157,8 @@
     "fresh": true,
     "fetch_error": null,
     "first": "2026-09-11",
-    "last": "2026-11-24",
-    "rows": 74,
+    "last": "2026-11-25",
+    "rows": 75,
     "items": [
       "ddr5_16gb",
       "ddr4_16gb",
@@ -169,11 +169,11 @@
   },
   "dram_summary": {
     "item": "ddr5_16gb",
-    "date": "2026-11-24",
-    "value": 60.833,
-    "change_7d": 0.008287338604080707,
-    "change_30d": -0.007083748184177563,
-    "days": 74
+    "date": "2026-11-25",
+    "value": 60.767,
+    "change_7d": 0.004413223140495859,
+    "change_30d": -0.008694942903751945,
+    "days": 75
   },
   "provisional": {},
   "provisional_info": {
@@ -185,10 +185,10 @@
     "quarter": "2027년 1분기",
     "quarter_code": "2027Q1",
     "chosen": "without_cli",
-    "point": 184562354065152.62,
+    "point": 184567778561411.06,
     "low": null,
     "high": null,
-    "raw_point": 184562354065152.62,
+    "raw_point": 184567778561411.06,
     "evaluation": {
       "n": 11,
       "first": "2023Q4",
@@ -313,7 +313,7 @@
     "estimate_basis": "partial_month_scenario",
     "interval_note": "속보와 확정치의 차이를 과거 시점별로 검증하지 않아 예측 구간을 제공하지 않습니다. 아래 월 전체 자료 기준의 검증 성적은 이 속보 기반 시나리오의 성적이 아닙니다."
   },
-  "generated_at": "2026-11-24 19:58 KST",
+  "generated_at": "2026-11-25 18:54 KST",
   "estimate_basis": "partial_month_scenario",
   "interval_note": "속보와 확정치의 차이를 과거 시점별로 검증하지 않아 예측 구간을 제공하지 않습니다. 아래 월 전체 자료 기준의 검증 성적은 이 속보 기반 시나리오의 성적이 아닙니다.",
   "announced_actual": null,

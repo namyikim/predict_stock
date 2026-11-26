@@ -22,41 +22,41 @@
   },
   "cash": 10000000.0,
   "halt_reason": "",
-  "last_tick": "2026-11-25T17:08:21.326674+00:00",
+  "last_tick": "2026-11-26T06:02:21.890301+00:00",
   "last_equity": 10000000.0,
   "positions": {},
   "decisions": [],
   "fresh_targets": [],
   "orders": [],
   "fills": [],
-  "quote_count": 142,
+  "quote_count": 144,
   "diagnostics": {
     "schema_version": 1,
-    "observed_at": "2026-11-25T17:08:21.326674+00:00",
+    "observed_at": "2026-11-26T06:02:21.890301+00:00",
     "last_success_at": null,
     "targets": {
       "samsung": {
-        "quote_timestamp": "2026-11-25T06:00:00+00:00",
-        "observed_at": "2026-11-25T17:08:21.326674+00:00",
-        "quote_age_seconds": 40101.326674,
+        "quote_timestamp": "2026-11-26T05:42:00+00:00",
+        "observed_at": "2026-11-26T06:02:21.890301+00:00",
+        "quote_age_seconds": 1221.890301,
         "signal_count": 1040,
         "eligible_signal_count": 0,
         "reason_counts": {
           "stale_quote": 1,
           "no_eligible_signal": 1,
-          "outside_decision_window": 1
+          "entry_window_closed": 1
         }
       },
       "sk_hynix": {
-        "quote_timestamp": "2026-11-25T06:00:00+00:00",
-        "observed_at": "2026-11-25T17:08:21.326674+00:00",
-        "quote_age_seconds": 40101.326674,
+        "quote_timestamp": "2026-11-26T05:42:00+00:00",
+        "observed_at": "2026-11-26T06:02:21.890301+00:00",
+        "quote_age_seconds": 1221.890301,
         "signal_count": 1154,
         "eligible_signal_count": 0,
         "reason_counts": {
           "stale_quote": 1,
           "no_eligible_signal": 1,
-          "outside_decision_window": 1
+          "entry_window_closed": 1
         }
       }
     }
@@ -64,44 +64,71 @@
   "market_quality": {
     "samsung": {
       "1m": {
-        "observed_at": "2026-11-25T17:08:21.066220+00:00",
+        "observed_at": "2026-11-26T06:02:21.477188+00:00",
         "timeframe": "1m",
-        "received_bars": 360,
-        "new_versions": 9,
-        "expected_bars": 0,
-        "missing_bars": 0,
-        "missing_ratio": null,
+        "received_bars": 342,
+        "new_versions": 342,
+        "expected_bars": 362,
+        "missing_bars": 20,
+        "missing_ratio": 0.055248618784530384,
         "coverage_basis": "이번 수집 응답의 완료 봉",
-        "collection_interval_seconds": 39426.44339,
-        "latest_bar_end": "2026-11-25T06:00:00+00:00",
-        "latest_bar_age_seconds": 40101.06622,
+        "collection_interval_seconds": 46440.410968,
+        "latest_bar_end": "2026-11-26T05:42:00+00:00",
+        "latest_bar_age_seconds": 1221.477188,
         "corporate_action_bars": 0,
         "daily_range_note": null
+      },
+      "1d": {
+        "observed_at": "2026-11-26T06:02:21.970002+00:00",
+        "timeframe": "1d",
+        "received_bars": 62,
+        "new_versions": 1,
+        "expected_bars": 62,
+        "missing_bars": 0,
+        "missing_ratio": 0.0,
+        "coverage_basis": "이번 수집 응답의 완료 봉",
+        "collection_interval_seconds": 85867.025252,
+        "latest_bar_end": "2026-11-25T06:30:00+00:00",
+        "latest_bar_age_seconds": 84741.970002,
+        "corporate_action_bars": 1,
+        "daily_range_note": "응답 시작 이전 자료의 누락은 판정하지 않음"
       }
     },
     "sk_hynix": {
       "1m": {
-        "observed_at": "2026-11-25T17:08:21.280261+00:00",
+        "observed_at": "2026-11-26T06:02:21.782397+00:00",
         "timeframe": "1m",
-        "received_bars": 360,
-        "new_versions": 9,
-        "expected_bars": 0,
-        "missing_bars": 0,
-        "missing_ratio": null,
+        "received_bars": 342,
+        "new_versions": 342,
+        "expected_bars": 362,
+        "missing_bars": 20,
+        "missing_ratio": 0.055248618784530384,
         "coverage_basis": "이번 수집 응답의 완료 봉",
-        "collection_interval_seconds": 39426.441908,
-        "latest_bar_end": "2026-11-25T06:00:00+00:00",
-        "latest_bar_age_seconds": 40101.280261,
+        "collection_interval_seconds": 46440.502136,
+        "latest_bar_end": "2026-11-26T05:42:00+00:00",
+        "latest_bar_age_seconds": 1221.782397,
         "corporate_action_bars": 0,
         "daily_range_note": null
+      },
+      "1d": {
+        "observed_at": "2026-11-26T06:02:22.100033+00:00",
+        "timeframe": "1d",
+        "received_bars": 62,
+        "new_versions": 1,
+        "expected_bars": 62,
+        "missing_bars": 0,
+        "missing_ratio": 0.0,
+        "coverage_basis": "이번 수집 응답의 완료 봉",
+        "collection_interval_seconds": 85867.064577,
+        "latest_bar_end": "2026-11-25T06:30:00+00:00",
+        "latest_bar_age_seconds": 84742.100033,
+        "corporate_action_bars": 1,
+        "daily_range_note": "응답 시작 이전 자료의 누락은 판정하지 않음"
       }
     }
   },
-  "market_errors": [
-    "samsung: 일봉 보관 실패 ValueError",
-    "sk_hynix: 일봉 보관 실패 ValueError"
-  ],
-  "generated_at_utc": "2026-11-25T17:08:21.495167+00:00",
+  "market_errors": [],
+  "generated_at_utc": "2026-11-26T06:02:22.191401+00:00",
   "collection_errors": [],
   "trading_day": true,
   "initialized_only": false,

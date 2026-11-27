@@ -22,7 +22,7 @@
   },
   "cash": 10000000.0,
   "halt_reason": "",
-  "last_tick": "2026-11-27T05:55:32.292479+00:00",
+  "last_tick": "2026-11-27T15:51:56.312895+00:00",
   "last_equity": 10000000.0,
   "positions": {},
   "decisions": [],
@@ -32,105 +32,40 @@
   "quote_count": 148,
   "diagnostics": {
     "schema_version": 1,
-    "observed_at": "2026-11-27T05:55:32.292479+00:00",
+    "observed_at": "2026-11-27T15:51:56.312895+00:00",
     "last_success_at": null,
     "targets": {
       "samsung": {
-        "quote_timestamp": "2026-11-27T05:36:00+00:00",
-        "observed_at": "2026-11-27T05:55:32.292479+00:00",
-        "quote_age_seconds": 1172.292479,
-        "signal_count": 1042,
+        "quote_timestamp": null,
+        "observed_at": "2026-11-27T15:51:56.312895+00:00",
+        "quote_age_seconds": null,
+        "signal_count": 0,
         "eligible_signal_count": 0,
         "reason_counts": {
-          "stale_quote": 1,
-          "no_eligible_signal": 1,
-          "entry_window_closed": 1
+          "no_quote": 1,
+          "no_signal": 1,
+          "non_trading_day": 1
         }
       },
       "sk_hynix": {
-        "quote_timestamp": "2026-11-27T05:36:00+00:00",
-        "observed_at": "2026-11-27T05:55:32.292479+00:00",
-        "quote_age_seconds": 1172.292479,
-        "signal_count": 1156,
+        "quote_timestamp": null,
+        "observed_at": "2026-11-27T15:51:56.312895+00:00",
+        "quote_age_seconds": null,
+        "signal_count": 0,
         "eligible_signal_count": 0,
         "reason_counts": {
-          "stale_quote": 1,
-          "no_eligible_signal": 1,
-          "entry_window_closed": 1
+          "no_quote": 1,
+          "no_signal": 1,
+          "non_trading_day": 1
         }
       }
     }
   },
-  "market_quality": {
-    "samsung": {
-      "1m": {
-        "observed_at": "2026-11-27T05:55:32.035003+00:00",
-        "timeframe": "1m",
-        "received_bars": 336,
-        "new_versions": 336,
-        "expected_bars": 355,
-        "missing_bars": 19,
-        "missing_ratio": 0.05352112676056338,
-        "coverage_basis": "이번 수집 응답의 완료 봉",
-        "collection_interval_seconds": 47247.484344,
-        "latest_bar_end": "2026-11-27T05:36:00+00:00",
-        "latest_bar_age_seconds": 1172.035003,
-        "corporate_action_bars": 0,
-        "daily_range_note": null
-      },
-      "1d": {
-        "observed_at": "2026-11-27T05:55:32.371238+00:00",
-        "timeframe": "1d",
-        "received_bars": 62,
-        "new_versions": 1,
-        "expected_bars": 62,
-        "missing_bars": 0,
-        "missing_ratio": 0.0,
-        "coverage_basis": "이번 수집 응답의 완료 봉",
-        "collection_interval_seconds": 85990.401236,
-        "latest_bar_end": "2026-11-26T06:30:00+00:00",
-        "latest_bar_age_seconds": 84332.371238,
-        "corporate_action_bars": 1,
-        "daily_range_note": "응답 시작 이전 자료의 누락은 판정하지 않음"
-      }
-    },
-    "sk_hynix": {
-      "1m": {
-        "observed_at": "2026-11-27T05:55:32.239650+00:00",
-        "timeframe": "1m",
-        "received_bars": 336,
-        "new_versions": 336,
-        "expected_bars": 355,
-        "missing_bars": 19,
-        "missing_ratio": 0.05352112676056338,
-        "coverage_basis": "이번 수집 응답의 완료 봉",
-        "collection_interval_seconds": 47247.357063,
-        "latest_bar_end": "2026-11-27T05:36:00+00:00",
-        "latest_bar_age_seconds": 1172.23965,
-        "corporate_action_bars": 1,
-        "daily_range_note": null
-      },
-      "1d": {
-        "observed_at": "2026-11-27T05:55:32.466982+00:00",
-        "timeframe": "1d",
-        "received_bars": 62,
-        "new_versions": 1,
-        "expected_bars": 62,
-        "missing_bars": 0,
-        "missing_ratio": 0.0,
-        "coverage_basis": "이번 수집 응답의 완료 봉",
-        "collection_interval_seconds": 85990.366949,
-        "latest_bar_end": "2026-11-26T06:30:00+00:00",
-        "latest_bar_age_seconds": 84332.466982,
-        "corporate_action_bars": 1,
-        "daily_range_note": "응답 시작 이전 자료의 누락은 판정하지 않음"
-      }
-    }
-  },
+  "market_quality": {},
   "market_errors": [],
-  "generated_at_utc": "2026-11-27T05:55:32.475416+00:00",
+  "generated_at_utc": "2026-11-27T15:51:56.315330+00:00",
   "collection_errors": [],
-  "trading_day": true,
+  "trading_day": false,
   "initialized_only": false,
   "notice": "수익성 미검증 관찰 전략. 다음 실행에서 결정 이후의 신선한 1분봉 종가로 가상 체결합니다. 실제 체결·호가를 보장하지 않습니다.",
   "order_count": 0,
